@@ -1,0 +1,324 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update GetUserRoles Procedure */
+/*********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUserRoles]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetUserRoles
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUserRoles  
+@PortalId  int,
+@UserId    int
+
+AS
+
+SELECT     
+    R.*,
+    UR.UserRoleID, 
+    U.UserID, 
+    U.DisplayName, 
+    U.Email, 
+    UR.EffectiveDate, 
+    UR.ExpiryDate, 
+    UR.IsTrialUsed
+FROM {databaseOwner}{objectQualifier}UserRoles UR
+    INNER JOIN {databaseOwner}{objectQualifier}Users U ON UR.UserID = U.UserID 
+    INNER JOIN {databaseOwner}{objectQualifier}Roles R ON UR.RoleID = R.RoleID 
+WHERE
+    U.UserID = @UserId AND R.PortalID = @PortalId 
+    
+GO
+
+/* Disable File Sync Scheduled Task */
+/************************************/
+
+DECLARE @FileSyncEnabled bit
+
+SET @FileSyncEnabled = (SELECT Enabled FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Services.FileSystem.SynchronizeFileSystem, DOTNETNUKE')
+
+IF @FileSyncEnabled = 1
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Schedule
+			SET Enabled = 0
+		WHERE TypeFullName = 'DotNetNuke.Services.FileSystem.SynchronizeFileSystem, DOTNETNUKE'	
+		UPDATE {databaseOwner}{objectQualifier}HostSettings
+			SET SettingValue = 'Y'
+		WHERE SettingName = 'EnableFileAutoSync'	
+	END
+GO
+
+/* Add Name Column to Version */
+/******************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Version 
+	ADD [Name] nvarchar(50) NULL
+GO
+	
+/* Update UpdateDatabaseVersion Procedure */
+/******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateDatabaseVersionAndName]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersionAndName
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersionAndName 
+
+	@Major  int,
+	@Minor  int,
+	@Build  int,
+	@Name	nvarchar(50)
+
+AS
+
+	INSERT INTO {databaseOwner}{objectQualifier}Version (
+		Major,
+		Minor,
+		Build,
+		[Name],
+		CreatedDate
+	)
+		VALUES (
+			@Major,
+			@Minor,
+			@Build,
+			@Name,
+			getdate()
+		)
+
+GO
+
+/* Add Servers Table */
+/*********************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Servers]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Servers]
+		(
+			[ServerID]			[int] IDENTITY(1,1) NOT NULL,
+			[ServerName]		[nvarchar](50) NOT NULL,
+			[CreatedDate]		[datetime] NOT NULL,
+			[LastActivityDate]	[datetime] NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}Servers] PRIMARY KEY CLUSTERED ( [ServerID] ASC )
+		)
+	END
+GO
+
+/* Add UpdateServer Procedure */
+/******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateServer]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateServer
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateServer 
+    @ServerName			nvarchar(50),
+    @CreatedDate		datetime,
+    @LastActivityDate	datetime 
+AS
+
+	DECLARE @ServerID int
+	SET @ServerID = (SELECT ServerID FROM {databaseOwner}{objectQualifier}Servers WHERE ServerName = @ServerName)
+
+	IF @ServerID IS NULL
+		BEGIN
+			-- Insert
+			INSERT INTO {databaseOwner}{objectQualifier}Servers (
+				ServerName,
+				CreatedDate,
+				LastActivityDate
+			)
+			VALUES (
+				@ServerName,
+				@CreatedDate,
+				@LastActivityDate
+			)
+		END
+	ELSE
+		BEGIN
+			-- Update
+			UPDATE {databaseOwner}{objectQualifier}Servers 
+				SET LastActivityDate = @LastActivityDate	
+				WHERE  ServerName = @ServerName
+		END
+GO
+
+/*  Add GetServerErrors  */
+/*************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetServerErrors]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetServerErrors]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Dashboard_GetServerErrors]
+AS
+	SELECT
+		(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}EventLog] WHERE LogTypeKey Like '%EXCEPTION' AND LogCreateDate > DateAdd(day, -1, GetDate())) As ErrorsDay,
+		(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}EventLog] WHERE LogTypeKey Like '%EXCEPTION' AND LogCreateDate > DateAdd(week, -1, GetDate())) As ErrorsWeek,
+		(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}EventLog] WHERE LogTypeKey Like '%EXCEPTION' AND LogCreateDate > DateAdd(month, -1, GetDate())) As ErrorsMonth,
+		(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}EventLog] WHERE LogTypeKey Like '%EXCEPTION' AND LogCreateDate > DateAdd(year, -1, GetDate())) As ErrorsYear
+
+GO
+
+/*  Add GetInstalledModules  */
+/*****************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]
+AS
+	SELECT		
+		DesktopModuleID, 
+		ModuleName,
+		Version,
+		(SELECT     COUNT(*) AS Instances
+			FROM          {databaseOwner}{objectQualifier}DesktopModules 
+				INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions ON {databaseOwner}{objectQualifier}DesktopModules.DesktopModuleID = {databaseOwner}{objectQualifier}ModuleDefinitions.DesktopModuleID 
+				INNER JOIN {databaseOwner}{objectQualifier}Modules ON {databaseOwner}{objectQualifier}ModuleDefinitions.ModuleDefID = {databaseOwner}{objectQualifier}Modules.ModuleDefID
+			WHERE      ({databaseOwner}{objectQualifier}DesktopModules.DesktopModuleID = DM.DesktopModuleID)) AS Instances
+	FROM {databaseOwner}{objectQualifier}DesktopModules AS DM
+	WHERE (IsAdmin = 0)
+	ORDER BY ModuleName
+
+GO
+		
+/*  Add GetDbInfo  */
+/*******************/
+		
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetDbInfo]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetDbInfo]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Dashboard_GetDbInfo]
+AS
+	
+	SELECT
+		ServerProperty('ProductVersion') AS ProductVersion, 
+		ServerProperty('ProductLevel') AS ServicePack, 
+		ServerProperty('Edition') AS ProductEdition, 
+		@@VERSION AS SoftwarePlatform		
+
+GO
+
+/*  Add GetDbFileInfo  */
+/***********************/
+		
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetDbFileInfo]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetDbFileInfo]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Dashboard_GetDbFileInfo]
+AS
+	
+	SELECT 
+		CASE LOWER(RIGHT(filename,3))
+			WHEN 'mdf' THEN 'DATA'
+			WHEN 'ldf' THEN 'LOG'
+			ELSE 'UNKNOWN'
+		END as FileType,
+		Name,
+		size*8 as Size,
+        filename
+	FROM sysfiles
+
+GO
+
+/*  Add GetDbBackups  */
+/**********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetDbBackups]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetDbBackups]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Dashboard_GetDbBackups]
+AS
+	
+	SELECT TOP 20     
+		name, 
+		backup_start_date as StartDate, 
+		backup_finish_date as FinishDate, 
+		backup_size as size, 
+		database_name, 
+		CASE type
+			WHEN 'D' THEN 'Database'
+			WHEN 'I' THEN 'Differential database'
+			WHEN 'L' THEN 'Log'
+			WHEN 'F' THEN 'File or filegroup'
+			WHEN 'G' THEN 'Differential file'
+			WHEN 'P' THEN 'Partial'
+			WHEN 'Q' THEN 'Differential partial'
+		END as BackupType
+	FROM         
+		msdb..backupset
+	WHERE
+		database_name = DB_NAME() 
+	ORDER BY backup_start_date DESC
+
+GO
+
+/*  Add DashboardControls Table  */
+/*********************************/
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_Controls]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Dashboard_Controls](
+			[DashboardControlID] [int] IDENTITY(1,1) NOT NULL,
+			[DashboardControlKey] [nvarchar](50) NOT NULL,
+			[IsEnabled] [bit] NOT NULL,
+			[DashboardControlSrc] [nvarchar](250) NOT NULL,
+			[DashboardControlLocalResources] [nvarchar](250) NOT NULL,
+			[ControllerClass] [nvarchar](250) NULL,
+			[ViewOrder] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}Dashboard_Controls_ViewOrder]  DEFAULT ((0)),
+		 CONSTRAINT [PK_{objectQualifier}Dashboard] PRIMARY KEY CLUSTERED ( [DashboardControlID] ASC )
+		)
+	END
+
+GO
+
+/*  Add GetControls  */
+/*********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetControls]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetControls]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetControls] 
+	@IsEnabled bit
+AS
+	
+	SELECT *
+	  FROM {databaseOwner}[{objectQualifier}Dashboard_Controls]
+		WHERE (@IsEnabled = 0) OR (IsEnabled = 1)
+		ORDER BY ViewOrder
+
+GO
+
+/*  Add Core Controls  */
+/***********************/
+
+INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey],[IsEnabled],[DashboardControlSrc],[DashboardControlLocalResources],[ControllerClass],[ViewOrder]) VALUES (N'Server', 1, N'DesktopModules/Dashboard/Controls/Server.ascx', N'DesktopModules/Dashboard/App_LocalResources/SharedResources.ascx', N'DotNetNuke.Modules.Dashboard.Components.Server.ServerController', 1)
+INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey],[IsEnabled],[DashboardControlSrc],[DashboardControlLocalResources],[ControllerClass],[ViewOrder]) VALUES (N'Database', 1, N'DesktopModules/Dashboard/Controls/Database.ascx', N'DesktopModules/Dashboard/App_LocalResources/SharedResources.ascx', N'DotNetNuke.Modules.Dashboard.Components.Database.DatabaseController', 2)
+INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey],[IsEnabled],[DashboardControlSrc],[DashboardControlLocalResources],[ControllerClass],[ViewOrder]) VALUES (N'Host', 1, N'DesktopModules/Dashboard/Controls/Host.ascx', N'DesktopModules/Dashboard/App_LocalResources/SharedResources.ascx', N'DotNetNuke.Modules.Dashboard.Components.Host.HostController', 3)
+INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey],[IsEnabled],[DashboardControlSrc],[DashboardControlLocalResources],[ControllerClass],[ViewOrder]) VALUES (N'Portals', 1, N'DesktopModules/Dashboard/Controls/Portals.ascx', N'DesktopModules/Dashboard/App_LocalResources/SharedResources.ascx', N'DotNetNuke.Modules.Dashboard.Components.Portals.PortalsController', 4)
+INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey],[IsEnabled],[DashboardControlSrc],[DashboardControlLocalResources],[ControllerClass],[ViewOrder]) VALUES (N'Modules', 1, N'DesktopModules/Dashboard/Controls/Modules.ascx', N'DesktopModules/Dashboard/App_LocalResources/SharedResources.ascx', N'DotNetNuke.Modules.Dashboard.Components.Modules.ModulesController', 5)
+INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey],[IsEnabled],[DashboardControlSrc],[DashboardControlLocalResources],[ControllerClass],[ViewOrder]) VALUES (N'Skins', 1, N'DesktopModules/Dashboard/Controls/Skins.ascx', N'DesktopModules/Dashboard/App_LocalResources/SharedResources.ascx', N'DotNetNuke.Modules.Dashboard.Components.Skins.SkinsController', 6)
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

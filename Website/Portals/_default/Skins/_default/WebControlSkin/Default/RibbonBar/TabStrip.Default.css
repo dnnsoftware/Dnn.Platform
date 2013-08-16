@@ -1,0 +1,110 @@
+.RadTabStrip_Default { width:100%; }
+
+.RadTabStrip_Default .rtsLI,
+.RadTabStrip_Default .rtsLink { color: #2e3d47; font-size:12px; font-family:Verdana, Arial, Helvetica, sans-serif; height:25px; line-height:20px; }
+
+.RadTabStrip_Default .rtsLink { color: #2e3d47; font-size:12px; font-family:Verdana, Arial, Helvetica, sans-serif; border: 1px solid #dadada; background: #f4f4f4; }
+
+.RadTabStrip_Default .rtsLink:hover { background: #dfdfdf; border-color: #dadada; color: #2e3d47; font-size:12px; font-family:Verdana, Arial, Helvetica, sans-serif; text-decoration: none; }
+
+.RadTabStrip_Default .rtsLink:active { color: #2e3d47; font-size:12px; font-family:Verdana, Arial, Helvetica, sans-serif; text-decoration: none; }
+
+.RadTabStrip_Default .rtsLink:visited { color: #2e3d47; font-size:12px; font-family:Verdana, Arial, Helvetica, sans-serif; text-decoration: none; }
+
+.RadTabStrip_Default .rtsSelected,
+.RadTabStrip_Default .rtsSelected:hover { background: #fff; border-color: #dadada; color: #2e3d47; }
+
+.RadTabStrip_Default .rtsLI .rtsLink { padding-left: 8px; }
+.RadTabStrip_Default .rtsLI .rtsOut { padding-right: 8px; }
+
+.RadTabStripLeft_Default .rtsSeparator,
+.RadTabStripRight_Default .rtsSeparator { }
+
+.RadTabStripTop_Default .rtsLevel .rtsLink,
+.RadTabStripTop_Default .rtsLevel .rtsOut,
+.RadTabStripBottom_Default .rtsLevel .rtsLink,
+.RadTabStripBottom_Default .rtsLevel .rtsOut,
+.RadTabStripTop_Default_Baseline .rtsLevel,
+.RadTabStripRight_Default .rtsLink { background-image: none; }
+
+/* <disabled tabs> */
+/* </disabled tabs> */
+
+/* <scrolling arrows> */
+.RadTabStrip_Default .rtsNextArrow,
+.RadTabStrip_Default .rtsPrevArrow,
+.RadTabStrip_Default .rtsPrevArrowDisabled,
+.RadTabStrip_Default .rtsNextArrowDisabled { background-image: url('TabStrip/TabStripStates.png'); }
+.RadTabStrip_Default .rtsLevel .rtsNextArrow { background-position: -18px 0; }
+.RadTabStrip_Default .rtsLevel .rtsPrevArrow { background-position: 0 0; }
+.RadTabStrip_Default .rtsLevel .rtsNextArrow:hover { background-position: -54px 0; }
+.RadTabStrip_Default .rtsLevel .rtsPrevArrow:hover { background-position: -36px 0; }
+.RadTabStrip_Default .rtsLevel .rtsPrevArrowDisabled,
+.RadTabStrip_Default .rtsLevel .rtsPrevArrowDisabled:hover { background-position: -72px 0; }
+.RadTabStrip_Default .rtsLevel .rtsNextArrowDisabled,
+.RadTabStrip_Default .rtsLevel .rtsNextArrowDisabled:hover { background-position: -90px 0; }
+
+.RadTabStripLeft_Default .rtsLevel .rtsNextArrow,
+.RadTabStripRight_Default .rtsLevel .rtsNextArrow { background-position: -18px -20px; }
+.RadTabStripLeft_Default .rtsLevel .rtsPrevArrow, 
+.RadTabStripRight_Default .rtsLevel .rtsPrevArrow { background-position: 0 -20px; }
+.RadTabStripLeft_Default .rtsLevel .rtsNextArrow:hover,
+.RadTabStripRight_Default .rtsLevel .rtsNextArrow:hover  { background-position: -54px -20px; }
+.RadTabStripLeft_Default .rtsLevel .rtsPrevArrow:hover,
+.RadTabStripRight_Default .rtsLevel .rtsPrevArrow:hover { background-position: -36px -20px; }
+.RadTabStripLeft_Default .rtsLevel .rtsPrevArrowDisabled,
+.RadTabStripLeft_Default .rtsLevel .rtsPrevArrowDisabled:hover,
+.RadTabStripRight_Default .rtsLevel .rtsPrevArrowDisabled,
+.RadTabStripRight_Default .rtsLevel .rtsPrevArrowDisabled:hover { background-position: -72px -20px; }
+.RadTabStripLeft_Default .rtsLevel .rtsNextArrowDisabled,
+.RadTabStripLeft_Default .rtsLevel .rtsNextArrowDisabled:hover,
+.RadTabStripRight_Default .rtsLevel .rtsNextArrowDisabled,
+.RadTabStripRight_Default .rtsLevel .rtsNextArrowDisabled:hover { background-position: -90px -20px; }
+/* </scrolling arrows> */
+
+.RadTabStripTop_Default .rtsLevel { background-color: transparent; }
+
+.RadTabStripTop_Default_Baseline .rtsLevel,
+.RadTabStripBottom_Default_Baseline .rtsLevel { background-image: url('TabStrip/TabStripStates.png'); }
+
+
+/* <orientation: top> */
+.RadTabStripTop_Default_Baseline .rtsLevel { background-position: 0 100%; background-repeat: repeat-x; }
+
+.RadTabStripTop_Default .rtsLink { margin-top: 2px; }
+
+.RadTabStripTop_Default .rtsLink:hover { border-bottom-color: #dadada; }
+
+.RadTabStripTop_Default .rtsSelected,
+.RadTabStripTop_Default .rtsSelected:hover { border-bottom-color: #fff; margin-top: 0; padding-top: 0px; }
+/* </orientation: top> */
+
+/* <orientation: bottom> */
+.RadTabStripBottom_Default_Baseline .rtsLevel { background-position: 0 -149px; background-repeat: repeat-x; }
+
+.RadTabStripBottom_Default .rtsLink { margin-bottom: 2px; }
+
+.RadTabStripBottom_Default .rtsLink:hover { border-top-color: #dadada; }
+
+.RadTabStripBottom_Default .rtsSelected,
+.RadTabStripBottom_Default .rtsSelected:hover { border-top-color: #fff; margin-bottom: 0; padding-bottom: 2px; }
+/* </orientation: bottom> */
+
+/* <orientation: left> */
+.RadTabStripLeft_Default .rtsLink:hover { border-right-color: #dadada; }
+
+.RadTabStripLeft_Default .rtsSelected,
+.RadTabStripLeft_Default .rtsSelected:hover { border-right-color: #fff; }
+/* </orientation: left> */
+
+/* <orientation: right> */
+.RadTabStripRight_Default .rtsLink:hover { border-left-color: #dadada; }
+
+.RadTabStripRight_Default .rtsSelected,
+.RadTabStripRight_Default .rtsSelected:hover { border-left-color: #fff; }
+/* </orientation: right> */
+
+/* <disabled states> */
+.RadTabStrip_Default .rtsDisabled,
+.RadTabStrip_Default .rtsDisabled:hover { border-color: #dadada; background: #f4f4f4; color: #aaa; }
+/* </disabled states> */

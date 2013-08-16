@@ -1,0 +1,38 @@
+<Settings>
+  <Setting>
+    <Name>CssClass</Name>
+    <Type>String</Type>
+    <Help>Sets the Command Name, maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>CommandName</Name>
+    <Type>String</Type>
+    <Help>Sets the CSS class used to render this skin object, defaults to 'CommandButton'</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>DisplayLink</Name>
+    <Type>String</Type>
+    <Help>Sets whether the link is displayed, defaults to True</Help>
+    <Value>True, False</Value>
+  </Setting>
+  <Setting>
+    <Name>DisplayIcon</Name>
+    <Type>Boolean</Type>
+    <Help>Sets whether the icon is displayed, defaults to False</Help>
+    <Value>True, False</Value>
+  </Setting>
+  <Setting>
+    <Name>IconFile</Name>
+    <Type>String</Type>
+    <Help>Sets the Icon used, defaults to the icon defined in Action</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>ButtonSeparator</Name>
+    <Type>String</Type>
+    <Help>Sets the Separator between Buttons, defaults to 2 non-breaking spaces</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

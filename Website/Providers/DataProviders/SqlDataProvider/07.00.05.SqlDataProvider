@@ -1,0 +1,672 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/***** Fix bug 25350: update the icon to new file name. *****/
+UPDATE {databaseOwner}[{objectQualifier}Packages]
+	SET IconFile = CASE IconFile
+						WHEN '~/DesktopModules/Admin/Authentication/authentication.gif' THEN '~/DesktopModules/Admin/Authentication/authentication.png'
+						WHEN '~/DesktopModules/Admin/Banners/banners.gif' THEN '~/DesktopModules/Admin/Banners/banners.png'
+						WHEN '~/DesktopModules/Admin/Console/console.gif' THEN '~/DesktopModules/Admin/Console/console.png'
+						WHEN '~/DesktopModules/Admin/ContentList/contentList.gif' THEN '~/DesktopModules/Admin/ContentList/contentList.png'
+						WHEN '~/DesktopModules/Admin/ViewProfile/viewProfile.gif' THEN '~/DesktopModules/Admin/ViewProfile/viewProfile.png'
+						ELSE IconFile
+					END
+GO
+
+/***** Fix bug 24110: add primary key on the temp table. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetFoldersByPermissions
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions] 
+	@PortalID int,
+	@Permissions nvarchar(300),
+	@UserID int,
+	@FolderID int,
+	@FolderPath nvarchar(300)
+
+AS
+	DECLARE @IsSuperUser BIT
+	DECLARE @Admin BIT
+	DECLARE @Read INT
+	DECLARE @Write INT
+	DECLARE @Browse INT
+	DECLARE @Add INT
+
+	--Determine Admin or SuperUser
+	IF @UserId IN (SELECT UserId FROM {databaseOwner}{objectQualifier}UserRoles WHERE RoleId IN (SELECT RoleId FROM {databaseOwner}{objectQualifier}Roles WHERE PortalId = @PortalId AND RoleName = 'Administrators')) BEGIN SET @Admin = 1 END;
+	SELECT @IsSuperUser = IsSuperUser FROM {databaseOwner}{objectQualifier}Users WHERE UserId = @UserId;
+
+	--Retrieve Permission Ids
+	IF @Permissions LIKE '%READ%' BEGIN SELECT TOP 1 @Read = PermissionID FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'READ' END;
+	IF @Permissions LIKE '%WRITE%' BEGIN SELECT TOP 1 @Write = PermissionID FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'WRITE' END;
+	IF @Permissions LIKE '%BROWSE%' BEGIN SELECT TOP 1 @Browse = PermissionID FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'BROWSE' END;
+	IF @Permissions LIKE '%ADD%' BEGIN SELECT TOP 1 @Add = PermissionID FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'ADD' END;
+
+	IF @PortalID IS NULL
+		BEGIN
+			SELECT DISTINCT F.*
+			FROM {databaseOwner}{objectQualifier}Folders F
+			WHERE F.PortalID IS NULL
+				AND (F.FolderID = @FolderID OR @FolderID = -1)
+				AND (F.FolderPath = @FolderPath OR @FolderPath = '')
+		  
+			 ORDER BY F.FolderPath
+		END
+	ELSE
+		BEGIN
+			CREATE TABLE #Skip_Folders(folderid INT PRIMARY KEY(folderid))
+			INSERT INTO #Skip_Folders
+				 SELECT DISTINCT folderid FROM {databaseOwner}{objectQualifier}FolderPermission FP
+									JOIN {databaseOwner}{objectQualifier}Permission P ON FP.PermissionID = P.PermissionID
+									WHERE
+										((P.PermissionKey = 'WRITE' OR @IsSuperUser=1 OR @Admin=1) OR
+										FP.PermissionID = CASE WHEN @Read > 0 THEN @Read END OR
+										FP.PermissionID = CASE WHEN @Write > 0 THEN @Write END OR
+										FP.PermissionID = CASE WHEN @Browse > 0 THEN @Browse END OR
+										FP.PermissionID = CASE WHEN @Add > 0 THEN @Add END)
+										AND FP.FolderID NOT IN (SELECT DISTINCT folderid FROM {databaseOwner}{objectQualifier}FolderPermission WHERE allowaccess=0 AND (userid=@UserId OR roleid=-1 OR roleid IN (SELECT roleid FROM {databaseOwner}{objectQualifier}UserRoles WHERE UserID=@UserId)))		
+
+			SELECT DISTINCT F.*
+			FROM {databaseOwner}{objectQualifier}Folders F
+				JOIN {databaseOwner}{objectQualifier}FolderPermission FP ON F.FolderId = FP.FolderID
+				JOIN {databaseOwner}{objectQualifier}Permission P ON FP.PermissionID = P.PermissionID
+				JOIN {databaseOwner}{objectQualifier}UserRoles UR ON UR.RoleID = FP.RoleID
+				JOIN {databaseOwner}{objectQualifier}Users U ON U.UserId = UR.UserId
+				JOIN #Skip_Folders sf ON sf.folderid=f.folderid 
+			WHERE ((F.PortalID = @PortalID) OR (F.PortalID IS NULL AND @PortalID IS NULL))
+				AND (F.FolderID = @FolderID OR @FolderID = -1)
+				AND (F.FolderPath = @FolderPath OR @FolderPath = '')
+				AND 
+					((P.PermissionKey = 'WRITE' OR @IsSuperUser=1 OR @Admin=1) OR
+						FP.PermissionID = CASE WHEN @Read > 0 THEN @Read END OR
+						FP.PermissionID = CASE WHEN @Write > 0 THEN @Write END OR
+						FP.PermissionID = CASE WHEN @Browse > 0 THEN @Browse END OR
+						FP.PermissionID = CASE WHEN @Add > 0 THEN @Add END)
+				AND FP.AllowAccess = 1
+			 ORDER BY F.FolderPath
+
+			 DROP TABLE #Skip_Folders
+		END
+GO
+
+/***** Fix bug 25446: update sp Dashboard_GetDbBackups. *****/
+IF (EXISTS (SELECT name FROM sysobjects WHERE (name = N'{objectQualifier}Dashboard_GetDbBackups') AND (type = 'P')))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDbBackups
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDbBackups
+AS
+	DECLARE @ProductEdition INT
+	SET @ProductEdition = CAST(ServerProperty('EngineEdition') as INT)
+
+	IF (@ProductEdition = 5) --Check for SQL Azure
+	BEGIN
+		SELECT      
+			'Unsupported' as name, 
+			NULL as StartDate, 
+			NULL as FinishDate, 
+			0 as size, 
+			NULL as database_name, 
+			'UNKNOWN' as BackupType
+	END
+	ELSE
+	BEGIN
+		EXEC('SELECT TOP 20     
+				name, 
+				backup_start_date as StartDate, 
+				backup_finish_date as FinishDate, 
+				backup_size/1024 as size, 
+				database_name, 
+				CASE type
+					WHEN ''D'' THEN ''Database''
+					WHEN ''I'' THEN ''Differential database''
+					WHEN ''L'' THEN ''Log''
+					WHEN ''F'' THEN ''File or filegroup''
+					WHEN ''G'' THEN ''Differential file''
+					WHEN ''P'' THEN ''Partial''
+					WHEN ''Q'' THEN ''Differential partial''
+				END AS BackupType
+				FROM         
+				msdb..backupset
+				WHERE
+				database_name = DB_NAME() 
+				ORDER BY backup_start_date DESC')
+	END
+GO
+
+/***** Fix bug 25444: update sp Dashboard_GetDbFileInfo. *****/
+IF (EXISTS (SELECT name FROM sysobjects WHERE (name = N'{objectQualifier}Dashboard_GetDbFileInfo') AND (type = 'P')))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDbFileInfo
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDbFileInfo
+AS
+	DECLARE @ProductEdition INT
+	SET @ProductEdition = CAST(ServerProperty('EngineEdition') as INT)
+
+	IF (@ProductEdition = 5) --Check for SQL Azure
+	BEGIN
+		SELECT 
+			'UNKNOWN' as FileType,
+			'UNKNOWN' as Name,
+			0 as Size,
+			'UNKOWN' as filename
+	END
+	ELSE
+	BEGIN
+		SELECT 
+			CASE LOWER(RIGHT(filename,3))
+				WHEN 'mdf' THEN 'DATA'
+				WHEN 'ldf' THEN 'LOG'
+				ELSE 'UNKNOWN'
+			END as FileType,
+			Name,
+			size*8 AS Size,
+			filename
+		FROM sysfiles
+	END
+GO
+
+
+/*** Fix bug DNN-24186 - Member Directory Sorting Error 7.0 RC ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch] 
+(
+    @PortalID int,                          -- portal                
+    @UserId int,                            -- for determining correct visibility permissions
+    @FilterUserId int,                      -- for filtering relationships on    
+    @FilterRoleId int,                      -- for filtering by roles
+    @RelationshipTypeId int,                -- for filtering by relationships
+    @IsAdmin bit,                           -- determines visibility
+    @PageSize int,                          -- page size
+    @PageIndex int,                         -- 0 based page index
+    @SortBy nvarchar(100),                  -- sort field
+    @SortAscending bit,                     -- sort flag indicating whether sort is asc or desc
+    @PropertyNames nvarchar(max),           -- list of property names to filter
+    @PropertyValues nvarchar(max)           -- list of property values to filter
+)
+AS
+    -- Setup Top XX
+    DECLARE @topSql nvarchar(20) SET @topSql = ''
+    IF @PageSize > -1 BEGIN SET @topSql = ' TOP ' + CONVERT(nvarchar(20), @PageSize) END
+                
+    -- Setup Specific Page
+    DECLARE @minRowNumberSql nvarchar(20) SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
+    -- Setup Pivot Field List
+    DECLARE @pivotSql nvarchar(max) SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
+
+    -- Get User specific columns
+    DECLARE @UserColumns TABLE(ColumnName NVARCHAR(100))
+    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}vw_Users'
+
+    -- Lists Filters names and values into tables
+    DECLARE @PropertyNamesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    DECLARE @PropertyValuesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    INSERT INTO @PropertyNamesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)                      
+    INSERT INTO @PropertyValuesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyValues)
+                
+    -- Gets filters that are on the User rather than Profile Properties
+    DECLARE @UserFiltersTable TABLE (RowNumber Int, RowValue NVARCHAR(MAX))
+    INSERT INTO @UserFiltersTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',',@PropertyNames) WHERE RowValue IN (SELECT * FROM @UserColumns)
+
+
+    DECLARE @sql nvarchar(max) SET @sql = ''
+    DECLARE @filterSql nvarchar(max)SET @filterSql = ''
+
+    -- ///////////////////////////////////////////////////
+    -- FILTERING by PROFILE PROPERTY or USER PROPERTY
+    -- ///////////////////////////////////////////////////
+    --IF @PropertyNames IS NOT NULL AND @PropertyNames <> ''
+    IF ((SELECT COUNT(*) FROM @PropertyNamesTable) > 0) AND ((SELECT COUNT(*) FROM @PropertyValuesTable)> 0) 
+	    BEGIN
+            DECLARE @propertyFilter nvarchar(max)
+            DECLARE @userFilter nvarchar(max)
+            DECLARE @userFilterJoin nvarchar(max) SET @userFilterJoin = ''
+            DECLARE @profilePropertyCount INT
+            DECLARE @userFilterCount INT
+            DECLARE @propertyAndUserFilter nvarchar(10) SET @propertyAndUserFilter = ''
+            DECLARE @groupBy NVARCHAR(300)
+
+            -- Filters on Profile Properties    
+            ;WITH CTE_PropertyNames(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyNamesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns)),
+            CTE_PropertyValues(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyValuesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns))
+
+            SELECT @propertyFilter = COALESCE(@propertyFilter + ' OR ' , ' ') 
+                                        + ' (PropertyName=''' + N.RowValue 
+                                        + ''' AND ((PropertyValue LIKE ''' + V.RowValue +'%'') OR (PropertyValue LIKE ''% ' + V.RowValue +'%'')))'
+            FROM CTE_PropertyNames AS N INNER JOIN CTE_PropertyValues AS V ON N.RowNumber = V.RowNumber
+                                
+            -- Filters on User Property                           
+            SELECT @userFilter = COALESCE(@userFilter + ' AND ', ' ')  
+										+ ' ((u.' + N.RowValue + ' LIKE ''' + V.RowValue +'%'') OR (u.' + N.RowValue + ' LIKE ''% ' + V.RowValue +'%'')) '
+            FROM @UserFiltersTable AS N  INNER JOIN @PropertyValuesTable AS V ON N.RowNumber = V.RowNumber
+                                
+            SELECT @userFilterCount = COUNT(*) FROM @UserFiltersTable
+            IF @userFilterCount > 0 BEGIN SET @userFilterJoin = ' INNER JOIN {objectQualifier}vw_Users u ON u.UserId = p.UserId ' END
+
+            -- Determining the Group By Clause -- dependant on types of filters used
+            SELECT @profilePropertyCount = COUNT(*) FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)
+            WHERE RowValue IN (SELECT PropertyName FROM {objectQualifier}ProfilePropertyDefinition WHERE PortalID = @PortalId)
+            AND RowValue NOT IN (SELECT ColumnName FROM @UserColumns)
+
+            IF @profilePropertyCount > 0
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) = ' + CONVERT(nvarchar(20),@profilePropertyCount ) END
+            ELSE
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) > 0 '     END
+
+            IF ( @profilePropertyCount > 0 AND @userFilterCount > 0)
+            BEGIN SET @propertyAndUserFilter = ' AND ' END
+
+            -- CREATE FINAL FILTER
+            SET @filterSql = ' DECLARE @MatchingUsers TABLE (UserID INT, Occurrances INT) INSERT INTO @MatchingUsers SELECT p.UserID, COUNT(*) AS occurances ' 
+                                        + ' FROM {databaseOwner}{objectQualifier}vw_profile p ' + @userFilterJoin
+                                        + ' WHERE ' + COALESCE(' ( ' + @propertyFilter + ') ', ' ') + @propertyAndUserFilter + COALESCE(@userFilter, ' ') 
+										+ ' AND ((Visibility = 0) OR (Visibility = 1 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) OR (Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1))' 
+                                        + @groupBy
+		END
+
+        -- ///////////////////////////////////////////////////      
+        -- SETUP ROLE AND RELATIONSHIP FILTERS
+        -- ///////////////////////////////////////////////////
+        DECLARE @roleAndRelationshipFilter nvarchar(1000)
+        DECLARE @roleFilter nvarchar(100) SET @roleFilter = ''
+        DECLARE @relationshipFilter nvarchar(1000) SET @relationshipFilter = ''
+        DECLARE @roleAndRelationshipFlag bit SET @roleAndRelationshipFlag  = 0
+        DECLARE @RoleAndRelationshipSelect nvarchar(100) SET @RoleAndRelationshipSelect = ''
+                                
+        -- Filter by Role
+        IF @FilterRoleId <> -1 
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @roleFilter = ' JOIN {objectQualifier}UserRoles UR ON U.UserID = UR.UserID AND UR.RoleID = ' + CONVERT(nvarchar(20), @FilterRoleId)
+            END
+
+        -- Filter by Relationship
+        IF @RelationshipTypeId <> -1  
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @relationshipFilter = ' JOIN {objectQualifier}Relationships REL ON REL.PortalID = ' + CONVERT(nvarchar(20), @PortalID)
+                                            + ' AND RelationshipTypeID = ' + CONVERT(nvarchar(20), @RelationshipTypeId) 
+                                            + ' JOIN {objectQualifier}UserRelationships UREL ON REL.RelationshipID = UREL.RelationshipID AND
+                                            ((UREL.UserID = ' + CONVERT(nvarchar(20), @FilterUserId) + ' AND UREL.RelatedUserID = U.UserID) OR
+                                            (UREL.UserID = U.UserID AND UREL.RelatedUserID = ' + CONVERT(nvarchar(20), @FilterUserId) + '))'
+                                            + ' WHERE UREL.Status = 2'
+            END 
+
+        IF @roleAndRelationshipFlag = 1 BEGIN SET @RoleAndRelationshipSelect = ' AND s.UserId IN (SELECT userID FROM  RoleAndRelationUsers) ' END
+
+        SET @roleAndRelationshipFilter =  ', RoleAndRelationUsers AS ( SELECT U.userId FROM {objectQualifier}vw_Users U ' + @roleFilter + @relationshipFilter + ' )' 
+
+        -- ///////////////////////////////////////////////////  
+        -- SET UP SORT
+        -- ///////////////////////////////////////////////////
+        DECLARE @sortSql nvarchar(1000) SET @sortSql = ''
+        DECLARE @propertySort nvarchar(1000) SET @propertySort = ''
+        DECLARE @filterJoin nvarchar(100) SET @filterJoin = ''
+        DECLARE @filterSortSql nvarchar(1000) SET @filterSortSql = ''
+        DECLARE @sortByUserProperty BIT         
+        SELECT @sortByUserProperty = COUNT(*) FROM @UserColumns WHERE ColumnName = @SortBy
+
+        IF ( @profilePropertyCount > 0 OR @userFilterCount > 0)
+	        BEGIN SET @filterJoin = ' INNER JOIN @MatchingUsers m ON m.UserID = s.UserID ' END
+
+        -- Determine the Type of Sort
+        IF (@SortBy IS NOT NULL AND @SortBy <> '') AND @sortByUserProperty <> 1
+	        BEGIN -- Sort By Profile Property
+                SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')
+                SET @propertySort = {databaseOwner}{objectQualifier}GetSortSql('PropertyValue',@SortAscending,'UserID')
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @propertySort + ' ) AS RowNumber, *  ' 
+                                                + ' FROM {objectQualifier}vw_Profile WHERE PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' AND PropertyName = ''' + @SortBy + ''' )'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+        ELSE
+		    BEGIN   
+                -- Sort By User Property
+                IF @sortByUserProperty = 1 BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')END
+                                
+                -- Default: Sort By UserID
+                ELSE BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql('UserID',@SortAscending,'UserID') END                        
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @sortSql + ' ) AS RowNumber, * '
+                                                + ' FROM {objectQualifier}vw_Users WHERE (PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR PortalID Is NULL))'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+
+		-- Check if any Profile Property Definitions exist for this portal
+		IF @pivotSql is not null
+			BEGIN
+				-- SELECT with PIVOT
+				SET @pivotSql = 'SELECT * FROM PivotedUsers PIVOT (MAX(PropertyValue) for PropertyName in (' + @pivotSql + ') ) as pivotTable '
+			END
+		ELSE
+			BEGIN
+				-- SELECT with DISTINCT
+				SET @pivotSql = 'SELECT distinct UserID, PortalID, Username, Email, DisplayName, IsSuperUser, IsDeleted, AffiliateID, UpdatePassword, Authorised FROM PivotedUsers '
+			END
+
+        -- ///////////////////////////////////////////////////
+        -- CREATE FINAL QUERY
+        -- ///////////////////////////////////////////////////
+        SET @sql = @filterSql
+                + ' DECLARE @TempUsers TABLE (SortOrder INT, UserID INT) '
+                + @filterSortSql
+                + @roleAndRelationshipFilter
+                + ' INSERT INTO @TempUsers SELECT ' + @topSql + ' * FROM (SELECT '
+                + ' ROW_NUMBER() OVER ( ORDER BY [RowNumber] ) AS RowNumber, s.UserId FROM MatchingSorted s ' 
+                + ' WHERE 1=1 ' + @roleAndRelationshipSelect
+				+ ') t WHERE RowNumber >= '+ @minRowNumberSql
+                + ' ;WITH PivotedUsers AS ( SELECT U.UserID, U.PortalID, U.Username, U.Email, U.DisplayName, U.IsSuperUser, U.IsDeleted, U.CreatedOnDate,        
+                                                U.AffiliateID, U.UpdatePassword, U.Authorised, Prop.PropertyName,
+                                                CASE
+                                                    WHEN (P.Visibility = 0) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 0 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) THEN P.PropertyValue
+                                                    WHEN U.UserID = ' + CONVERT(nvarchar(20), @UserId) + ' OR (P.Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    ELSE NULL
+                                                END AS PropertyValue
+                                            FROM   {objectQualifier}vw_Users AS U
+                                                INNER JOIN {objectQualifier}UserProfile AS P ON U.UserID = P.UserID
+                                                LEFT OUTER JOIN {objectQualifier}ProfilePropertyDefinition AS Prop ON 
+                                                (Prop.PropertyDefinitionID = P.PropertyDefinitionID and Prop.Deleted = 0 and Prop.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ')
+                                            WHERE U.UserId IN (SELECT UserId FROM @TempUsers)
+												AND (U.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalId Is NULL )  
+												AND U.IsDeleted = 0 
+                                            )' +
+                @pivotSql + @sortSql            
+
+        EXEC(@sql)
+GO
+
+/* Fix bug 24615: Update GetAllUsers Procedure */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllUsers]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+	@PortalID        int,
+	@PageIndex       int,
+	@PageSize        INT,
+	@IncludeDeleted  bit,
+	@SuperUsersOnly  bit	
+AS
+	BEGIN
+		-- Set the page bounds
+		DECLARE 
+			@PageLowerBound INT, 
+			@PageUpperBound INT, 
+			@RowsToReturn int
+
+		EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
+
+		IF @PortalID IS NULL
+			BEGIN
+				WITH [tmpUsers] AS (
+					SELECT U.*, row_number() over (ORDER BY U.UserName) AS rowid
+						FROM {databaseOwner}{objectQualifier}vw_Users u
+						WHERE U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+							  AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				)
+				SELECT * FROM [tmpUsers]
+					WHERE rowid > @PageLowerBound AND rowid < @PageUpperBound
+					ORDER BY rowid
+			END 
+		ELSE 
+			BEGIN
+				WITH [tmpUsers] AS (
+					SELECT U.*, row_number() over (order by U.UserName) AS rowid
+						FROM {databaseOwner}{objectQualifier}vw_Users u
+						WHERE U.PortalID = @PortalID AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						  AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				)
+				SELECT * FROM [tmpUsers]
+					WHERE rowid > @PageLowerBound AND rowid < @PageUpperBound
+					ORDER by rowid
+			END
+
+		SET ROWCOUNT 0
+ 
+		IF @PortalId IS NULL
+			BEGIN
+				SELECT COUNT(*) as TotalRecords
+					FROM   {databaseOwner}{objectQualifier}vw_Users as U
+					WHERE U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+				          AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			END 
+		ELSE 
+			BEGIN
+				SELECT COUNT(*) as TotalRecords
+					FROM   {databaseOwner}{objectQualifier}vw_Users U
+						WHERE U.PortalId = @PortalId
+							AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			END
+	END
+GO
+
+
+/* Fix DNNPRO-24925 -  Update Extension and Create Package fails */
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePackage]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePackage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePackage]
+	@PortalID			int,
+	@Name			    nvarchar(128),
+	@FriendlyName	    nvarchar(250),
+	@Description	    nvarchar(2000),
+	@PackageType	    nvarchar(50),
+	@Version		    nvarchar(50),
+	@License		    ntext,
+	@Manifest		    ntext,
+	@Owner				nvarchar(100),
+	@Organization		nvarchar(100),
+	@Url				nvarchar(250),
+	@Email				nvarchar(100),
+	@ReleaseNotes	    ntext,
+	@IsSystemPackage    bit,
+	@LastModifiedByUserID	int,
+	@FolderName			nvarchar(128),
+	@IconFile			nvarchar(100)
+AS
+	UPDATE {databaseOwner}{objectQualifier}Packages
+		SET	
+			PortalID = @PortalID,
+			FriendlyName = @FriendlyName,
+			[Description] = @Description,
+			PackageType = @PackageType,
+			Version = @Version,
+			License = @License,
+			Manifest = @Manifest,
+			[Owner] = @Owner,
+			Organization = @Organization,
+			Url = @Url,
+			Email = @Email,
+			ReleaseNotes = @ReleaseNotes,
+			IsSystemPackage = @IsSystemPackage,
+			[LastModifiedByUserID] = @LastModifiedByUserID,	[LastModifiedOnDate] = getdate(),
+			FolderName = @FolderName,
+			IconFile = @IconFile
+		WHERE  [Name] = @Name AND [PackageType] = @PackageType
+GO
+
+/***** Fix bug DNN-24729 -  Name of recipients not shown in message list after reply.  *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageReply]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageReply]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageReply]
+    @ConversationID    INT,           -- parent message id
+	@PortalID			INT,			--portalID of message
+    @Body               nvarchar(max), -- message body
+    @SenderUserID       INT,           -- create / update user id
+    @From               nvarchar(200), -- message from
+	@CreateUpdateUserID INT            -- create / update user id
+AS
+    DECLARE @ReplyAllAllowed BIT
+    DECLARE @NewMessageID INT
+    DECLARE @OriginalSenderUserID INT
+    DECLARE @OriginalTo nvarchar(2000)
+    DECLARE @OriginalSubject nvarchar(400)
+
+	--Was Sender a Recipient in the Original Message.
+	SELECT @ReplyAllAllowed = [ReplyAllAllowed],
+	       @OriginalSenderUserID = [SenderUserID],
+		   @OriginalTo = REPLACE(REPLACE([TO], ',' + @From, ''), @From + ',', ''),
+		   @OriginalSubject = [Subject]
+	FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages m
+	INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients mr ON m.MessageID = mr.MessageID
+	AND m.MessageID = @ConversationID
+	AND mr.UserID = @SenderUserID
+
+	--Reply can only be create if Sender was Recipient of Orginial message
+	IF @ReplyAllAllowed IS NULL
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	--Create new message
+	INSERT {databaseOwner}{objectQualifier}CoreMessaging_Messages(
+					[PortalID],
+  					[To],
+					[From],
+					[Subject],
+					[Body],
+					[ConversationID],
+					[ReplyAllAllowed],
+					[SenderUserID],
+                    [CreatedByUserID],
+                    [CreatedOnDate],
+                    [LastModifiedByUserID],
+                    [LastModifiedOnDate]
+                    )
+            VALUES  (
+					@PortalID,
+     			    @OriginalTo,
+					@From,
+				    @OriginalSubject,
+					@Body,
+					@ConversationID,
+					@ReplyAllAllowed,
+					@SenderUserID,
+                    @CreateUpdateUserID , -- CreatedBy - int
+                    GETUTCDATE() , -- CreatedOn - datetime
+                    @CreateUpdateUserID , -- LastModifiedBy - int
+                    GETDATE() -- LastModifiedOn - datetime
+                    )
+
+	SELECT @NewMessageID = SCOPE_IDENTITY()
+
+	IF (@ReplyAllAllowed = 0) --original message was sent to a Role, reply will be sent to the original sender only
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+		        ( [MessageID],
+		          [UserID],
+		          [Read],
+		          [Archived],
+		          CreatedByUserID,
+		          CreatedOnDate,
+		          LastModifiedByUserID,
+		          LastModifiedOnDate
+		        )
+		VALUES  ( @NewMessageID, -- MessageID - int
+		          @OriginalSenderUserID, -- UserID - int
+		          0, -- Read - bit
+		          0, -- Archived - bit
+		          @CreateUpdateUserID , -- CreatedByUserID - int
+		          GETDATE() , -- CreatedOnDate - datetime
+		          @CreateUpdateUserID , -- LastModifiedByUserID - int
+		          GETDATE()  -- LastModifiedOnDate - datetime
+		        )
+        
+        IF @OriginalSenderUserID <> @SenderUserID
+        BEGIN
+            INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+		            ( [MessageID],
+		              [UserID],
+		              [Read],
+		              [Archived],
+		              CreatedByUserID,
+		              CreatedOnDate,
+		              LastModifiedByUserID,
+		              LastModifiedOnDate
+		            )
+		    VALUES  ( @NewMessageID, -- MessageID - int
+		              @SenderUserID, -- UserID - int
+		              1, -- Read - bit
+		              0, -- Archived - bit
+		              @CreateUpdateUserID , -- CreatedByUserID - int
+		              GETDATE() , -- CreatedOnDate - datetime
+		              @CreateUpdateUserID , -- LastModifiedByUserID - int
+		              GETDATE()  -- LastModifiedOnDate - datetime
+		            )
+        END
+	END
+	ELSE --Reply should be sent to all the original Recipients
+	BEGIN
+		INSERT {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients(
+			[MessageID],
+			[UserID],
+			[Read],
+			[Archived],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+            )
+			SELECT
+			  @NewMessageID,
+			  UserID,
+			  0,
+			  0,
+              @CreateUpdateUserID , -- CreatedBy - int
+              GETDATE() , -- CreatedOn - datetime
+              @CreateUpdateUserID , -- LastModifiedBy - int
+              GETDATE() -- LastModifiedOn - datetime
+           FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+           WHERE MessageID = @ConversationID
+	END
+
+	SELECT  @NewMessageID
+GO
+
+
+/* Create GetPackage Procedure */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPackage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPackage]
+	@PackageID		int
+AS
+	SELECT *
+		FROM   {databaseOwner}{objectQualifier}Packages
+		WHERE  PackageID = @PackageID
+GO
+
+/************************************************************/
+
+
+/*****              SqlDataProvider                     *****/
+/************************************************************/

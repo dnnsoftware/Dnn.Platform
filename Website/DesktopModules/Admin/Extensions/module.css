@@ -1,0 +1,315 @@
+/* ===========   Extensions Module Styling   =========== */
+#dnnExtensions {
+    min-width: 640px;
+}
+.dnnEditExtension, .dnnInstallExtension, .dnnUnInstallExtension, .dnnEditDefinition, .dnnForm.dnnEditModuleControl {
+    width: 96%;
+    margin: 2em auto;
+}
+.dnnEditExtension .dnnFormItem input[type="text"], .dnnEditExtension .dnnFormItem textarea, .dnnCreateExtension .dnnFormItem input[type="text"], .dnnEditDefinition .dnnFormItem input[type="text"], .dnnEditDefinition .dnnFormItem textarea, .dnnEditModuleControl .dnnFormItem input[type="text"] {
+    /*min-width: 35%;*/
+}
+.dnnExtensionsPackageWriter .dnnFormItem input[type="text"] {
+    margin-right: 15px;
+    min-width: 35%;
+}
+.dnnExtensionsPackageWriter .dnnFormItem.extPWMiltiLine textarea {
+    width: 60%;
+    margin-left: 26%;
+}
+.dnnDeployExtension .dnnFormItem > span, .dnnInstallExtension .dnnFormItem > span, .dnnUnInstallExtension .dnnFormItem span {
+    display: inline-block;
+}
+.dnnDeployExtension .dnnFormItem > span, .dnnInstallExtension .dnnFormItem > span {
+    width: 50%;
+}
+.dnnInstallExtension .dnnFormItem > span.dnnFormLabel {
+    width: auto;
+}
+.dnnEditDefinition .dnnFormInput.dnnSSRadioButtons label {
+    width: 125px;
+    display: inline;
+}
+.dnnAuthenticationSettings .dnnFormItem label {
+    width: 100%;
+}
+#dnnExtensions .dnnGridHeader td, #dnnExtensions .dnnGridHeader th {
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #c9c9c9;
+    border-right: 1px solid #c9c9c9;
+    background: #f0f2f1;
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+}
+#dnnExtensions .dnnGrid td, #dnnExtensions .dnnGrid th {
+    padding: 14px 10px;
+}
+.dnnEditDefinition .dnnFormRadioButtons {
+    min-width: 35%;
+}
+.dnnInstallLogs {
+    height: 350px;
+    overflow: auto;
+}
+
+.dnnEditExtension .dnnForm .dnnFormItem > span {
+    width: 40%;
+    display: inline-block;
+}
+.dnnEditExtension .dnnForm .dnnFormItem > span.dnnCheckbox {
+	width: auto;
+}
+
+/* ===========   Extensions Module Styling   =========== */
+
+/* ===========   More Extensions Module Styling   =========== */
+.dnnProduct {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px #ccc solid;
+}
+.dnnCatalogTags {
+    width: 25%;
+    float: left;
+    margin-top: -65px;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+.dnnCatalogTags h2{
+    font-size: 18px;
+}
+.dnnCatalogSearch input {
+    width: 55%;
+}
+.dnnCatalogSearch .dnnClear {
+    margin-left: 32.5%;
+}
+/*
+.dnnCatalogSearch .dnnClear a.dnnPrimaryAction {
+    padding: 6px 12px;
+    line-height: 1.2;
+}
+*/
+.dnnCatalogListing {
+    width: 68%;
+    float: right;
+}
+.dnnProductImage {
+    float: left;
+    width: 20%;
+}
+.dnnProductImage img {
+    max-height: 100px;
+    max-width: 100px;
+    padding: 5px 20px 5px 5px;
+}
+.dnnProductDetails {
+    float: right;
+    width: 78%;
+}
+a.dnnPDViewDetails {
+    clear: both;
+    display: block;
+}
+.dnnProductDetails a.dnnPrimaryAction, .dnnProductDetails a.dnnPrimaryAction:link, .dnnProductDetails a.dnnPrimaryAction:visited {
+    margin-top: 10px;
+    line-height: 1.2;
+    padding: 8px 12px;
+}
+.dnnIcon {
+    width: 16px;
+}
+a.dnnProductTitle, a.dnnProductTitle:link, a.dnnProductTitle:visited, a.dnnProductTitle:active {
+    font-size: 1.4em;
+    color: black;
+    display: block;
+}
+h3.dnnProductTitle {
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    font-size: 1.4em;
+}
+.dnnProductVersionLabel, .dnnProductLicenseLabel {
+    font-weight: bold;    
+}
+.dnnProductOwner {
+    display: block;
+    padding-bottom: 10px;
+}
+.dnnProductDescription {
+    display: block;
+    padding-bottom: 15px;
+}
+.dnnProductPrice {
+    font-size: 1.4em;
+    font-weight: bold;
+    padding: 10px 15px 5px 0;
+    margin-bottom: 5px;
+    text-align: right;
+    border-bottom: 1px solid #ccc;
+}
+.dnnProduct {
+    padding-top: 10px;
+}
+.dnnSearchFilters, .dnnFormItem label .dnnSearchFilters {
+    border: #46A3D3 2px solid;
+    color: #085B8F;
+    background: #EDF8FF;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-shadow: 0px 1px 1px white;
+    filter: dropshadow(color=white, offx=1, offy=1);
+    font-weight: normal;
+    padding: 0.8em 1em 0.8em 1em;
+    margin: 5px;
+}
+.loading-image {
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    vertical-align: middle;
+}
+.dnnCatalogLoading {
+    text-align: center;
+    vertical-align: middle;
+    width: 150px;
+    height: 20px;
+    background-color: #369;
+    border: 3px solid #000000;
+    color: White;
+    position: absolute;
+    right: 80%;
+    top: 0px;
+    z-index: 1005;
+}
+.dnnFormInfo a.info {
+    font-weight: bold;
+    color: #269D2D;
+}
+/* ===========   More Extensions Module Styling   =========== */
+
+/* ===========   Store Login Styling   =========== */
+.dnnStore input[type=text], .dnnStore input[type=password] {
+    min-width: 35%;
+}
+
+/* clean some form style */
+.RadComboBox_Default + a.dnnSecondaryAction {
+    position: absolute;
+    top: 0;
+}
+
+
+span.CommandButton input[type="image"]{
+    display: none;
+}
+
+span.CommandButton{
+    border: none;
+}
+
+a.CommandButton{
+    background: whiteSmoke;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,whiteSmoke), color-stop(100%,#DFDFDF));
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    text-shadow: 0px 1px 0px white;
+    color: #555;
+    display: inline-block;
+    padding: 9px 9px;
+    cursor: pointer;
+    border: 1px solid #C2C2C2;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #666;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.dnnCreateExtension .dnnForm {
+    margin-top: 18px;
+}
+
+.dnnCatalogSearch{
+    float: right;    
+    background-color: #f0f0f0;
+    width: 68%;
+}
+.dnnCatalogSearch .dnnFormItem{
+    margin: 15px 0 10px 15px;
+}
+.dnnCatalogSearch .dnnLabel{
+    width: 120px;
+    float: left;
+    margin-right: 0;  
+}
+.dnnCatalogSearch #searchText{
+    width: 150px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+}
+.dnnCatalogSearch .RadComboBox_Default{
+    width: 80px !important;
+    display: block;
+    float: left;
+    margin-right: 10px;
+}
+.dnnCatalogSeach .rcbInput{
+    width: 50px !important;
+}
+
+.dnnCatalogSearch .dnnSearchActionBar,
+.dnnCatalogSearch a.dnnPrimaryAction,
+.dnnCatalogSearch a.dnnSecondaryAction{
+    display: block;
+    float: left;
+    margin-right: 10px;
+    padding: 6px;
+    margin-top: -3px;
+}
+
+#tag-list{
+    margin-bottom: 20px;
+}
+
+div.dnnProductVersion + a.dnnSecondaryAction{
+    margin-top: 15px !important;
+}
+
+.sort-options {
+    margin: 10px 0 10px 0;
+}
+.sort-options ul.dnnButtonGroup li{
+    width: auto;
+}
+
+.sort-options ul.dnnButtonGroup li span{
+    width: auto;
+    padding: 6px 6px 0 6px;
+}
+.sort-options ul.dnnButtonGroup li span a{
+    color: #666;
+    text-decoration: none;
+}
+.Store .productTypeImage{
+    padding-right: 5px;
+}
+
+.dnnFixedSizeComboBox{
+    width: 200px !important;
+    margin-right: 10px;
+}
+
+/* remove td left/right border */
+tr.dnnGridItem td, tr.dnnGridAltItem td{
+    border-right: none;
+}
+
+
+
+

@@ -1,0 +1,211 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Fix to Add Property Definition */
+/**********************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddPropertyDefinition') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+	@PortalId int,
+	@ModuleDefId int,
+	@DataType int,
+	@DefaultValue nvarchar(50),
+	@PropertyCategory nvarchar(50),
+	@PropertyName nvarchar(50),
+	@Required bit,
+	@ValidationExpression nvarchar(100),
+	@ViewOrder int,
+	@Visible bit,
+    @Length int
+
+AS
+
+DECLARE @PropertyDefinitionId int
+
+SELECT @PropertyDefinitionId = PropertyDefinitionId
+	FROM   {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+	WHERE  PortalId = @PortalId
+		AND PropertyName = @PropertyName
+
+IF @PropertyDefinitionId is null
+	BEGIN
+		INSERT {databaseOwner}{objectQualifier}ProfilePropertyDefinition	(
+				PortalId,
+				ModuleDefId,
+				Deleted,
+				DataType,
+				DefaultValue,
+				PropertyCategory,
+				PropertyName,
+				Required,
+				ValidationExpression,
+				ViewOrder,
+				Visible,
+				Length
+			)
+			VALUES	(
+				@PortalId,
+				@ModuleDefId,
+				0,
+				@DataType,
+				@DefaultValue,
+				@PropertyCategory,
+				@PropertyName,
+				@Required,
+				@ValidationExpression,
+				@ViewOrder,
+				@Visible,
+				@Length
+			)
+
+		SELECT @PropertyDefinitionId = SCOPE_IDENTITY()
+	END
+ELSE
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+			SET DataType = @DataType,
+				ModuleDefId = @ModuleDefId,
+				DefaultValue = @DefaultValue,
+				PropertyCategory = @PropertyCategory,
+				Required = @Required,
+				ValidationExpression = @ValidationExpression,
+				ViewOrder = @ViewOrder,
+				Deleted = 0,
+				Visible = @Visible,
+				Length = @Length
+			WHERE PropertyDefinitionId = @PropertyDefinitionId
+	END
+	
+SELECT @PropertyDefinitionId
+
+GO
+
+/* Add GetPropertyDefinitionByName */
+/***********************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetPropertyDefinitionByName') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionByName
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionByName
+
+	@PortalID	int,
+	@Name		nvarchar(50)
+
+AS
+SELECT	*
+FROM	{databaseOwner}{objectQualifier}ProfilePropertyDefinition
+WHERE PortalID = @PortalID
+	AND PropertyName = @Name
+ORDER BY ViewOrder
+
+GO
+
+/* Add GetPropertyDefinitionsByCategory */
+/***********************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetPropertyDefinitionsByCategory') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionsByCategory
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionsByCategory
+
+	@PortalID	int,
+	@Category	nvarchar(50)
+
+AS
+SELECT	*
+FROM	{databaseOwner}{objectQualifier}ProfilePropertyDefinition
+WHERE PortalID = @PortalID
+	AND PropertyCategory = @Category
+ORDER BY ViewOrder
+GO
+
+
+/* Add Index on UserId to UserProfile */
+/**************************************/
+
+IF NOT EXISTS ( SELECT * FROM sysindexes WHERE name = N'IX_{objectQualifier}UserProfile')
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}UserProfile ON {databaseOwner}{objectQualifier}UserProfile (UserID) ON [PRIMARY]
+GO
+
+
+/* Fix to GetUserRolesByUsername */
+/*********************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetUserRolesByUsername') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetUserRolesByUsername
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUserRolesByUsername
+
+@PortalId int, 
+@Username nvarchar(100), 
+@Rolename nvarchar(50)
+
+AS
+
+IF @UserName Is Null
+	BEGIN
+		SELECT	R.*,        
+				U.DisplayName As FullName,
+				UR.UserRoleID,
+				UR.UserID,
+				UR.EffectiveDate,
+				UR.ExpiryDate,
+				UR.IsTrialUsed
+			FROM	{databaseOwner}{objectQualifier}UserRoles UR
+				INNER JOIN {databaseOwner}{objectQualifier}Users U ON UR.UserID = U.UserID
+				INNER JOIN {databaseOwner}{objectQualifier}Roles R ON R.RoleID = UR.RoleID
+			WHERE  R.PortalId = @PortalId
+				AND    (R.Rolename = @Rolename or @RoleName is NULL)
+	END
+ELSE
+	BEGIN
+		IF @RoleName Is NULL
+			BEGIN
+				SELECT	R.*,        
+						U.DisplayName As FullName,
+						UR.UserRoleID,
+						UR.UserID,
+						UR.EffectiveDate,
+						UR.ExpiryDate,
+						UR.IsTrialUsed
+					FROM	{databaseOwner}{objectQualifier}UserRoles UR
+						INNER JOIN {databaseOwner}{objectQualifier}Users U ON UR.UserID = U.UserID
+						INNER JOIN {databaseOwner}{objectQualifier}Roles R ON R.RoleID = UR.RoleID
+					WHERE  R.PortalId = @PortalId
+						AND    (U.Username = @Username or @Username is NULL)
+			END
+		ELSE
+			BEGIN
+				SELECT	R.*,        
+						U.DisplayName As FullName,
+						UR.UserRoleID,
+						UR.UserID,
+						UR.EffectiveDate,
+						UR.ExpiryDate,
+						UR.IsTrialUsed
+					FROM	{databaseOwner}{objectQualifier}UserRoles UR
+						INNER JOIN {databaseOwner}{objectQualifier}Users U ON UR.UserID = U.UserID
+						INNER JOIN {databaseOwner}{objectQualifier}Roles R ON R.RoleID = UR.RoleID
+					WHERE  R.PortalId = @PortalId
+						AND    (R.Rolename = @Rolename or @RoleName is NULL)
+						AND    (U.Username = @Username or @Username is NULL)
+			END
+	END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

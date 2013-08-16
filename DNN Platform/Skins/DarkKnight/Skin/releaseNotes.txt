@@ -1,0 +1,9 @@
+<h1>DarkKnight Skin Release Notes</h1>
+<p>Dark Knight - DotNetNuke 6 Default Template</p>
+<h2>Known Issues</h2>
+<p>None</p>
+<h2>Change List</h2>
+<h3>01.00.00 (2011-05-16)</h3>
+<ul>
+<li>Initial Release</li>
+</ul>

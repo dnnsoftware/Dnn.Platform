@@ -1,0 +1,2669 @@
+﻿/* RADWINDOW PROMETHEUS "BLACK" SKIN */
+div.RadWindow.RadWindow_Black.rwMinimizedWindow table td
+{
+	vertical-align: top;
+}
+
+div.RadWindow.RadWindow_Black table td.rwCorner
+{
+	width: 10px;
+}
+
+div.RadWindow.RadWindow_Black table td.rwTopLeft
+{
+    width: 10px; height: 5px;
+	background: url('../images/WindowSprites.gif') no-repeat 0 0;
+}
+
+div.RadWindow.RadWindow_Black table td.rwTopRight
+{
+    width: 10px; height: 5px;
+    background: url('../images/WindowSprites.gif') no-repeat 0 -40px;
+}
+
+div.RadWindow.RadWindow_Black table td.rwTitlebar
+{
+    background: transparent url('../images/WindowSprites.gif')  repeat-x 0 -80px;
+	height: 5px;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent
+{
+	height: 100%;
+	border-bottom: 0;
+	background: white;
+}
+
+div.RadWindow.RadWindow_Black table td.rwBodyLeft
+{
+    width: 10px;
+	background: transparent url('../images/WindowVerticalSprites.gif') repeat-y;
+}
+
+div.RadWindow.RadWindow_Black table td.rwBodyRight
+{
+    width: 10px;
+	background: transparent url('../images/WindowVerticalSprites.gif') repeat-y -10px 0;
+}
+
+div.RadWindow.RadWindow_Black table td.rwFooterLeft
+{
+	width: 10px; height: 10px;
+	background: transparent url('../images/WindowVerticalSprites.gif') no-repeat -20px 0;
+}
+
+div.RadWindow.RadWindow_Black table td.rwFooterRight
+{
+	width: 10px; height: 10px;
+	background: transparent url('../images/WindowVerticalSprites.gif') no-repeat -30px 0;
+}
+
+div.RadWindow.RadWindow_Black table td.rwFooterCenter
+{
+	background: transparent url('../images/WindowSprites.gif') repeat-x 0 -143px;
+	height: 10px;
+}
+
+div.RadWindow.RadWindow_Black td.rwStatusbar
+{
+	height: 23px; line-height: 23px;
+	background: #292929 url('../images/WindowSprites.gif') repeat-x 0 -120px;
+}
+
+div.RadWindow.RadWindow_Black td.rwStatusbar input
+{
+    background-repeat: no-repeat;
+    background: transparent;
+    color: #595959;
+    padding-top: 6px;
+    height: 17px;
+    font: normal 11px "Myriad Pro", Arial, Verdana;
+}
+
+div.RadWindow.RadWindow_Black td.rwStatusbar div
+{
+	margin-top:5px;
+    background: url('../images/WindowVerticalSprites.gif') no-repeat -40px 4px;
+}
+
+/* Support for displayng the loading image in the iframe's parent TD */
+div.RadWindow.RadWindow_Black td.rwLoading
+{
+    background: white url('../images/Loading.gif') no-repeat center;
+}
+
+/* Support for displaying loading image in the status bar  */
+div.RadWindow.RadWindow_Black td.rwStatusbar .rwLoading
+{	
+	background-image: url('../images/Loading.gif');	
+	background-repeat: no-repeat;
+}
+
+div.RadWindow.RadWindow_Black td.rwStatusbar span.statustext
+{
+	font: normal 11px Verdana, Arial, Sans-serif;
+	color: black;
+}
+
+div.RadWindow.RadWindow_Black tr.rwStatusbarRow .rwCorner.rwBodyLeft
+{
+    width: 10px;
+    background: transparent url('../images/WindowVerticalSprites.gif') repeat-y 0 0;
+}
+
+div.RadWindow.RadWindow_Black tr.rwStatusbarRow .rwCorner.rwBodyRight
+{
+    width: 10px;
+    background: transparent url('../images/WindowVerticalSprites.gif') repeat-y -10px 0 !important;
+}
+
+div.RadWindow.RadWindow_Black table.rwTitlebarControls ul.rwControlButtons li a
+{
+	width: 28px; height: 26px; line-height: 26px; font-size: 1px;
+	cursor: default;
+	margin: 2px 1px 0 1px;
+	background-image: url('../images/CommandSprites.gif');
+	background-repeat: no-repeat;
+}
+
+/* reload button */
+div.RadWindow.RadWindow_Black a.rwReloadButton
+{
+	background-position: -84px 0;
+}
+
+div.RadWindow.RadWindow_Black a.rwReloadButton:hover
+{
+	background-position: -84px -26px;
+}
+
+/* unpin button */
+div.RadWindow.RadWindow_Black a.rwPinButton
+{
+	background-position: -140px 0;
+}
+
+div.RadWindow.RadWindow_Black a.rwPinButton:hover
+{
+	background-position: -140px -26px;
+}
+
+/* pin button */
+div.RadWindow.RadWindow_Black a.rwPinButton.on
+{
+	background-position: -112px 0;
+}
+
+div.RadWindow.RadWindow_Black a.rwPinButton.on:hover
+{
+	background-position: -112px -26px;
+}
+
+/* minimize button */
+div.RadWindow.RadWindow_Black a.rwMinimizeButton
+{
+	background-position: -56px 0;
+}
+
+div.RadWindow.RadWindow_Black a.rwMinimizeButton:hover
+{
+	background-position: -56px -26px;
+}
+
+/* maximize button */
+div.RadWindow.RadWindow_Black a.rwMaximizeButton
+{
+	background-position: -28px 0;
+}
+
+div.RadWindow.RadWindow_Black a.rwMaximizeButton:hover
+{
+    background-position: -28px -26px;
+}
+
+/* close button */
+div.RadWindow.RadWindow_Black a.rwCloseButton
+{
+	background-position: -168px 0;
+}
+
+div.RadWindow.RadWindow_Black a.rwCloseButton:hover
+{
+	background-position: -168px -26px;
+}
+
+/* restore button */
+div.RadWindow.RadWindow_Black.rwMinimizedWindow a.rwMaximizeButton,
+div.RadWindow.RadWindow_Black.rwMinimizedWindow a.rwMinimizeButton
+{
+    background-position: 0 0;
+}
+
+div.RadWindow.RadWindow_Black.rwMinimizedWindow a.rwMaximizeButton:hover,
+div.RadWindow.RadWindow_Black.rwMinimizedWindow a.rwMinimizeButton:hover
+{
+	background-position: 0 -26px;
+}
+
+div.RadWindow.RadWindow_Black table.rwTitlebarControls a.rwIcon
+{
+	background: transparent url('../images/Icon.gif') no-repeat left top;
+	width: 16px; 
+	height: 16px;
+	cursor: default;
+	margin: 3px 0 3px 2px;
+}
+
+div.RadWindow.RadWindow_Black table.rwTitlebarControls em
+{
+	font: normal bold 16px SegoeUI, Arial, Verdana, sans-serif !important;
+	color: #0d5776;	
+	margin: 2px;
+	margin-top: 6px;
+}
+
+div.RadWindow.RadWindow_Black.rwMinimizedWindow
+{
+	width: 166px !important;
+	height: 30px !important;
+	background: #1e1e1e;
+	border: solid 2px #000;
+}
+
+/* overlay element should be minimized when the window is minimized */
+iframe.rwMinimizedWindowOverlay_Black
+{
+	/* take into account the borders of the main DIV of the window when setting width/height */
+	width: 170px !important; height: 34px !important;
+}
+
+div.RadWindow.RadWindow_Black.rwMinimizedWindow td
+{
+    background: none !important;
+}
+
+div.RadWindow.radwindow_Black.rwMinimizedWindow table.rwTitlebarControls 
+{
+	width: 150px !important; height: 40px !important;
+	margin-top: -3px;
+}
+
+div.RadWindow.radwindow_Black.rwMinimizedWindow table.rwTitlebarControls ul
+{
+    position: relative; top: -1px;
+}
+
+div.RadWindow.RadWindow_Black.rwMinimizedWindow em
+{
+	color: white !important;
+	width: 75px !important;
+}
+
+div.RadWindow.RadWindow_Black.rwMinimizedWindow td.rwCorner
+{
+	cursor: default;
+}
+
+div.RadWindow.RadWindow_Black.rwMinimizedWindow td.rwCorner.rwTopLeft,
+div.RadWindow.RadWindow_Black.rwMinimizedWindow td.rwCorner.rwTopRight
+{
+	width: 10px !important;
+}
+
+div.RadWindow.RadWindow_Black.rwMinimizedWindow td.rwTitlebar
+{
+	cursor: default !important;
+	background: #4b4b4b;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent .rwDialogPopup
+{
+	margin: 16px;
+	font: normal 11px Arial;
+	color: black;	
+	padding: 0px 0px 16px 50px;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent .rwDialogPopup.radalert
+{
+	background: transparent url('../images/ModalDialogAlert.gif') no-repeat 8px center;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent .rwDialogPopup.radprompt
+{
+	padding: 0;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent .rwDialogPopup.radconfirm
+{
+	background: transparent url('../images/ModalDialogConfirm.gif') no-repeat 8px center;	
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent input.rwDialogInput
+{
+	padding: 3px 4px 0 4px;
+	height: 17px; width: 100%;
+	font: normal 11px Verdana, Arial, Sans-serif;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent a,
+div.RadWindow.RadWindow_Black .rwWindowContent a span
+{
+	text-decoration: none;
+	color: black;
+	line-height: 22px;
+	cursor: default;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton
+{
+	background: transparent url('../images/ModalDialogButtonSprites.gif') no-repeat 0 0; 
+	padding: 0 0 0 3px;
+	margin: 8px 8px 8px 0;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton span.rwOuterSpan
+{
+	background: transparent url('../images/ModalDialogButtonSprites.gif') no-repeat right 0;
+	padding: 0 3px 0 0;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton span.rwInnerSpan
+{
+	background: white url('../images/ModalDialogButtonSprites.gif') repeat-x 0 -22px;
+	padding: 0 12px;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton:hover
+{
+	background: transparent url('../images/ModalDialogButtonSprites.gif') no-repeat 0 -64px; 
+	padding: 0 0 0 3px;
+	margin: 8px 8px 8px 0;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton:hover span.rwOuterSpan
+{
+	background: transparent url('../images/ModalDialogButtonSprites.gif') no-repeat right -64px;
+	padding: 0 3px 0 0;
+}
+
+div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton:hover span.rwInnerSpan
+{
+	background: white url('../images/ModalDialogButtonSprites.gif') repeat-x 0 -86px;
+	padding: 0 12px;
+}
+
+div.modaldialogbacgkround
+{
+	background: black;
+}
+
+.RadWindow.radwindow_Black.rwMinimizedWindow .rwControlButtons
+{
+	margin-top: 3px;
+}
+
+.RadWindow.radwindow_Black.rwMinimizedWindow em
+{
+	margin-top: 10px !important;
+	color: #676767 !important;
+}
+
+.RadWindow.radwindow_Black.rwMinimizedWindow .rwIcon
+{
+	margin-top: 11px !important;
+}
+
+
+.RadEditor ul li, .reDropDownBody ul li
+{list-style: none !important;}
+.RadEditor a, .reDropDownBody a
+{text-decoration: none !important;}
+div.RadWindow table.rwTitlebarControls ul.rwControlButtons li
+{list-style-type: none;}
+.RadEditor .FormatBlock {width:110px !important;}
+
+
+/*-------------------------------------*/
+/* RICH EDITOR
+/*-------------------------------------*/
+
+.RadEditor table
+{
+	border: 0;
+	table-layout: fixed;
+}
+
+.RadEditor table table
+{
+	border: 0;
+	table-layout:auto;
+}
+
+.RadEditor table td
+{
+	vertical-align: top;
+	padding: 0; 
+	margin: 0;
+}
+
+.reModule input
+{
+  border: solid 1px #ccc;
+}
+
+.reToolbar
+{
+	list-style: none !important;
+	padding: 0; 
+	margin: 0;
+	float: left;
+}
+
+.reToolbar li
+{
+	float: left;
+}
+
+.reTlbVertical ul,
+.reTlbVertical ul li
+{
+	float: none !important;
+}
+
+.reTlbVertical .reToolbar
+{
+	float: none !important;
+}
+
+.reTlbVertical ul
+{
+	width: 100%;
+}
+
+.reTlbVertical a
+{
+	width: auto;
+}
+
+.reTlbVertical a span
+{
+	float: left;
+	width: 22px;
+}
+
+.reButton_text
+{
+	font: normal 11px Arial, Verdana, Sans-serif;
+	color: #666;
+	line-height: 22px;
+	padding: 0 4px 0 0;
+	margin: 0 0 0 2px;
+	white-space: nowrap; 
+	width: auto;
+	background: none !important;
+	float: left;
+}
+
+.reTool_disabled
+{
+	filter: alpha(opacity=40);
+	opacity: .4;
+	-moz-opacity: .4;
+}
+
+.reGrip
+{
+	 font-size: 1px;
+}
+
+.reSplitButton span
+{
+	float: left;
+}
+
+
+
+.reSeparator
+{
+	font-size: 1px;
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool_text
+{
+    _display: block;
+}
+
+.reToolbar li .reTool_text span
+{
+	float: left;
+	cursor: default;
+}
+
+.reToolbar li .reTool_text
+{
+	display: block;
+	_display: inline; /* IE6 double margins fix */
+	float: left;	
+	cursor: default;
+	text-decoration: none;
+}
+
+.reToolbar li .reTool_text .reButton_text
+{
+	background-image: none;
+	width: auto;
+}
+
+.reToolbarWrapper
+{
+	float: left;	
+	height: auto;
+}
+
+.reToolZone .reToolbarWrapper
+{
+	background: transparent;
+	float: none;
+	clear: both;
+}
+
+.reAjaxSpellCheckSuggestions table
+{
+    width: 100%;    
+}
+
+.reAjaxSpellCheckSuggestions td
+{
+   width: 100% !important;
+}
+
+.reAlignmentSelector
+{
+	float: left;
+}
+
+.reAlignmentSelector table,
+.reAlignmentSelector td
+{
+	padding: 0px !important;
+	text-align: center;
+}
+
+.reAlignmentSelector div
+{
+	cursor: default;
+}
+
+a.reModule_domlink
+{
+	outline: 0;
+}	
+
+a.reModule_domlink_selected
+{
+	text-decoration: none;
+}
+
+.reAjaxspell_addicon,
+.reAjaxspell_ignoreicon,
+.reAjaxspell_okicon,
+.reLoading
+{
+    float: left;
+}
+
+button.reAjaxspell_okicon
+{
+    float: none;
+}
+
+.reAjaxspell_wrapper button
+{
+	width: auto;
+}
+
+div.reEditorModes
+{
+	width: 100%;
+}
+
+.reEditorModesCell
+{
+    width: auto;
+}
+
+div.reEditorModes ul,
+div.reEditorModes ul li
+{
+	padding: 0;
+	margin: 0;
+	list-style: none !important;
+	float: left;
+}
+
+div.reEditorModes a
+{
+	outline: none;
+	/*font: normal 10px Arial, Verdana, Sans-serif;*/
+	width: auto; 
+	/*height: 21px;
+	margin: 1px;*/
+	text-decoration: none;
+}
+
+div.reEditorModes .reMode_selected
+{
+    margin: 0;
+}
+
+div.reEditorModes a,
+div.reEditorModes a span
+{
+	display: block;
+	cursor: pointer;
+	float: left;
+}
+
+div.reEditorModes a span
+{
+	_display: inline; /* IE6 double margin fix */
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-image: none !important;
+	margin: 2px 0 0 6px;
+	padding: 0 8px 0 18px;
+	line-height: 16px;
+	height: 16px;
+}
+/*
+div.reEditorModes .reMode_design span,
+div.reEditorModes .reMode_selected.reMode_design span
+{
+	background-position: 0 0;
+}
+
+div.reEditorModes .reMode_html span,
+div.reEditorModes .reMode_selected.reMode_html span
+{
+	background-position: 0 -16px;
+}
+
+div.reEditorModes .reMode_preview span,
+div.reEditorModes .reMode_selected.reMode_preview span
+{
+	background-position: 0 -32px;
+}
+*/
+.reDropDownBody
+{
+	overflow: auto;
+	overflow-x: hidden;
+}
+
+.reDropDownBody .reToolbar,
+.reDropDownBody .reTlbVertical .reToolbar
+{
+    height: auto;
+}
+
+.reDropDownBody table
+{
+	padding: 0; 
+	margin: 0; 
+	border: 0;
+}
+
+.reDropDownBody table td
+{
+	cursor:default;
+}
+
+.reColorPicker
+{
+	-moz-user-select: none;
+}
+
+.reColorPicker table
+{
+	border-collapse: collapse;
+}
+
+.reColorPicker table td
+{
+	border:0;
+}
+
+.reColorPicker .reColorPickerFooter
+{
+	overflow: hidden; /* IE6 fix */
+}
+
+.reColorPicker span
+{
+	display: block;
+	text-align: center;
+	float: left;
+	cursor: default;
+}
+
+.reInsertSymbol table td
+{
+	text-align: center;
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.reInsertTable table
+{
+	float: left;
+	cursor: default;	
+}
+
+.reInsertTable .reTlbVertical li
+{
+	float: left !important;
+}
+
+.reInsertTable .reTlbVertical li a,
+.reInsertTable .reTlbVertical .reToolbar a.reTool_disabled
+{
+    outline: none;
+}
+
+.reInsertTable .reTlbVertical li a .reButton_text
+{
+	text-decoration: none;
+	cursor: default;
+}
+
+.reInsertTable .reTlbVertical li a .reButton_text:hover
+{
+	cursor: pointer !important;
+}
+
+.reInsertTable .reTlbVertical ul
+{
+	float: left;
+	clear: left;
+	padding: 0;
+	margin: 0;
+}
+
+.reUndoRedo table
+{
+	border-collapse: collapse;
+}
+
+.reUndoRedo table td,
+.reUndoRedo table td.reItemOver
+{
+	border: 0 !important;
+	margin: 0 !important;
+}
+
+.reApplyClass span
+{
+	font-size: 1px;
+	display: block; 
+	float: left;
+}
+
+ul.reCustomLinks,
+ul.reCustomLinks ul
+{
+	list-style: none !important;
+	padding: 0;
+	margin: 0;
+	cursor: default;
+}
+
+ul.reCustomLinks li ul
+{
+	margin-left: 12px !important;
+}
+
+.reDropDownBody .reCustomLinks a
+{
+    text-decoration: none;	
+}
+
+.reDropDownBody .reCustomLinks a:hover
+{
+    cursor: pointer;
+}
+
+ul.reCustomLinks li
+{
+	clear: both;
+	text-align:left;
+}
+
+ul.reCustomLinks span,
+ul.reCustomLinks a
+{
+	display: block;
+	float: left;
+}
+
+ul.reCustomLinks .reCustomLinksIcon
+{
+	font-size: 1px;
+}
+
+ul.reCustomLinks .reCustomLinksIcon.reIcon_empty
+{
+	cursor: default;
+}
+
+.reToolbar
+{	
+	float: left;	
+}
+
+* html .RadEditor
+{
+	background-image: none !important;
+}
+
+.reTlbVertical .reToolbar,
+.reDropDownBody .reTlbVertical .reToolbar li
+{
+    height: auto;	
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool_text
+{	
+	clear: both;
+	float: none;
+	width: 100% !important;
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool_disabled,
+.reDropDownBody .reTlbVertical .reToolbar .reTool_disabled:hover,
+.reDropDownBody .reTlbVertical .reToolbar .reTool_disabled:active,
+.reDropDownBody .reTlbVertical .reToolbar .reTool_disabled:focus
+{
+	opacity: 1;
+	-moz-opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool_disabled span
+{
+	opacity: 0.4;
+	-moz-opacity: 0.4;
+	filter: alpha(opacity=40);	
+}
+
+.dialogtoolbar
+{
+    width: 1240px !important;
+    overflow: hidden !important;
+}
+
+.reDropDownBody  .reTool_text.reTool_selected,
+.reDropDownBody  .reTool_text
+{
+    _margin: 0 !important;
+}
+
+/* Safari Fix for Table Wizard */
+@media all and (min-width:0px) 
+{
+	body:not(:root:root) .reDropDownBody.reInsertTable div table td
+	{
+	    width: 13px;
+	    height: 13px;
+	    border: solid 1px #777777;
+	    background: white;
+	}
+	body:not(:root:root) .reDropDownBody.reInsertTable div table .reItemOver
+	{
+	    background: #eaeaea;
+	}
+}
+
+td.reTlbVertical .reToolbar .split_arrow
+{
+    display: none !important;
+}
+
+td.reTlbVertical .reToolbar li
+{
+    clear: both !important;
+}
+
+/* new Spinbox implementation. Remember to remove the old one above */
+.reSpinBox td
+{
+    padding: 0 !important;
+    vertical-align: top !important;
+}
+
+.reSpinBox input
+{
+	display: block;
+	float: left;
+	width: 21px;
+	height: 18px;
+	border-right: 0 !important;
+	text-align: right;
+	padding-right: 2px;
+}
+
+.reSpinBox a
+{
+	display: block;
+	width: 9px;
+	height: 11px;
+	line-height: 11px;
+	font-size: 1px;
+	text-indent: -9999px;
+	cursor: pointer;
+	cursor: default;
+}
+
+.reSpinBox .reSpinBoxIncrease
+{
+	background-position: 0 -321px;
+}
+
+.reSpinBox .reSpinBoxIncrease:hover
+{
+	background-position: -9px -321px;
+}
+
+.reSpinBox .reSpinBoxDecrease
+{
+	background-position: 0 -331px;
+}
+
+.reSpinBox .reSpinBoxDecrease:hover
+{
+	background-position: -9px -331px;
+}
+
+.reTableWizardSpinBox
+{
+	font: normal 12px Arial, Verdana, Sans-serif;
+	color: black;
+	-moz-user-select: none;
+}
+
+.reTableWizardSpinBox a
+{
+	margin: 1px;
+	outline: none;
+}
+
+.reTableWizardSpinBox a,
+.reTableWizardSpinBox a span
+{
+	display: block;
+	width: 23px;
+	height: 22px;
+	cursor: pointer;
+	cursor: hand;
+	background-repeat: no-repeat;	
+}
+
+.reTableWizardSpinBox a span
+{
+	text-indent: -9999px;
+}
+
+.reTableWizardSpinBox .reTableWizardSpinBox_Increase
+{
+	background-position: 0 -21px;
+}
+
+.reTableWizardSpinBox .reTableWizardSpinBox_Decrease
+{
+	background-position: 0 -42px;
+}
+
+/* CONSTRAIN PROPORTIONS BEGIN */
+li.ConstrainProportions button
+{
+	position: absolute;
+	top: 7px;
+	left: 0;
+	height: 52px;
+	border: 0;
+	background-repeat: no-repeat;
+	background-position: -7988px 9px;
+}
+
+li.ConstrainProportions.toggle button
+{
+	background-position: -7956px 9px;
+}
+/* CONSTRAIN PROPORTIONS END */
+
+.reAjaxspell_addicon,
+.reAjaxspell_ignoreicon,
+.reAjaxspell_okicon
+{
+    width: 16px !important;
+    height: 16px;
+    border: 0;
+    margin: 2px 4px 0 0;
+}
+
+.reAjaxspell_ignoreicon
+{
+	background-position: -4533px center;
+}
+
+.reAjaxspell_okicon
+{
+	background-position: -4571px center;
+}
+
+.reAjaxspell_addicon
+{
+	background-position: -4610px center;
+}
+
+button.reAjaxspell_okicon
+{
+    width: 22px;
+    height: 22px;
+}
+
+.reDropDownBody.reInsertTable
+{
+	overflow: hidden !important;
+}
+
+.reDropDownBody.reInsertTable span
+{
+	height: 22px !important;
+}
+
+/* global styles css reset (prevent mode) */
+.RadEditor table,
+.reToolbar,
+.reToolbar li,
+.reTlbVertical,
+.reDropDownBody ul,
+.reDropDownBody ul li,
+.radwindow table,
+.radwindow table td,
+.radwindow table td ul,
+.radwindow table td ul li
+{
+	margin: 0 !important;
+	padding: 0 !important;
+	/*border: 0 !important;*/
+	list-style: none !important;
+}
+
+.reWrapper_corner,
+.reWrapper_center,
+.reLeftVerticalSide,
+.reRightVerticalSide,
+.reToolZone,
+.reEditorModes,
+.reResizeCell,
+.reToolZone table td,
+.RadEditor .reToolbar,
+.RadEditor .reEditorModes ul
+{
+	border: 0;
+}
+
+.reToolbar li,
+.reEditorModes ul li,
+.reInsertTable .reTlbVertical .reToolbar li
+{
+	display: inline-block;
+	border: 0;
+}
+
+/* disabled dropdown menu items under Internet Explorer 7 fix */
+.reDropDownBody .reTlbVertical .reToolbar li .reTool_text.reTool_disabled .reButton_text
+{
+	width: auto;
+}
+
+ul.reCustomLinks ul
+{
+	margin-left: 10px;
+}
+
+.reAjaxspell_button
+{
+    border: solid 1px #555;
+    background: #eaeaea;
+    font: normal 11px Arial, Verdana, Sans-serif;
+    white-space: nowrap;
+}
+
+/* COMMANDS BEGIN */
+.CustomDialog
+{
+	background-position: -1448px center;
+}
+
+.FileSave,
+.FileSaveAs,
+.Save,
+.SaveLocal
+{
+	background-position: -1407px center;
+}
+
+.FormatCodeBlock
+{
+	background-position: -305px center;
+}
+
+.PageProperties
+{
+	background-position: -756px center;
+}
+
+.SetImageProperties
+{
+	background-position: -1116px center;
+}
+
+.BringToFront
+{
+	background-position: -1606px center;
+}
+
+.AlignmentSelector
+{	
+	background-position: -1647px center;
+}
+
+.Cancel
+{
+	background-position: -1687px center;
+}
+
+.Custom,
+.ViewHtml
+{
+	background-position: -1728px center;
+}
+
+.DecreaseSize
+{
+	background-position: -1886px center;
+}
+
+.DeleteTable
+{
+	background-position: -1445px center;
+}
+
+.FileOpen
+{
+	background-position: -1967px center;
+}
+
+.IncreaseSize
+{
+	background-position: -2046px center;
+}
+
+.InsertAnchor
+{
+	background-position: -2086px center;
+}
+
+.InsertEmailLink
+{
+	background-position: -2246px center;
+}
+
+.InsertFormImageButton
+{
+	background-position: -2486px center;
+}
+
+.ModuleManager
+{
+	background-position: -2374px center;
+}
+
+.RepeatLastCommand
+{
+	background-position: -3248px center;
+}
+
+.SendToBack
+{
+	background-position: -3326px center;
+}
+
+.FormatStripper
+{
+	background-position: -772px center;
+}
+
+.StyleBuilder
+{
+	background-position: -2946px center;
+}
+
+.ToggleFloatingToolbar
+{
+	background-position: -4006px center;
+}
+
+/* COMMAND SPRITES END */
+
+
+
+
+/* ----------------------------------------- finished commands ----------------------------------------- */
+.XhtmlValidator
+{
+	background-position: -2526px center;
+}
+
+.TrackChangesDialog
+{
+	background-position: -2555px center;
+}
+
+.InsertSymbol
+{
+	background-position: -20px center;
+}
+
+.InsertFormHidden
+{
+	background-position: -1836px center;
+}
+
+
+.reTool .InsertOptions
+{
+    background-position: -863px center;
+}
+
+.reTool .TemplateOptions
+{
+    background-position: -893px center;
+}
+
+.InsertFormButton,
+.InsertFormReset,
+.InsertFormSubmit
+{
+	background-position: -1716px center;
+}
+
+.InsertFormCheckbox
+{
+	background-position: -1745px center;
+}
+
+.InsertFormPassword
+{
+	background-position: -1896px center;
+}
+
+.InsertFormRadio
+{
+	background-position: -1926px center;
+}
+
+.InsertFormSelect
+{
+	background-position: -3546px center;
+}
+
+.InsertFormTextarea
+{
+	background-position: -1986px center;
+}
+
+.InsertFormText
+{
+	background-position: -1956px center;
+}
+
+.StripAll
+{
+	background-position: -2585px center;
+}
+
+.StripCss
+{
+	background-position: -2644px center;
+}
+
+.StripFont
+{
+	background-position: -2675px center;
+}
+
+.StripSpan
+{
+	background-position: -2705px center;
+}
+
+.StripWord
+{
+	background-position: -2736px center;
+}
+
+.AjaxSpellCheck
+{
+	background-position: 6px center;
+}
+
+.Italic
+{
+	background-position: -168px center;
+}
+
+.ImageManager,
+.InsertImage
+{
+	background-position: -366px center;
+}
+
+.ImageMapDialog
+{
+	background-position: -396px center;
+}
+
+.FlashManager,
+.InsertFlash
+{
+	background-position: -1476px center;
+}
+
+.MediaManager,
+.InsertMedia
+{
+	background-position: -1476px center;
+}
+
+.DocumentManager,
+.InsertDocument
+{
+	background-position: -1476px center;
+}
+
+.TemplateManager
+{
+	background-position: -2765px center;
+}
+
+.InsertTable{
+    background-position: -52px center;
+}
+
+.InsertRowAbove
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -65px -12px;
+}
+
+.InsertRowBelow
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -115px -12px;
+}
+
+.DeleteRow
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -165px -12px;
+}
+
+.InsertColumnLeft
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -215px -12px;
+}
+
+.InsertColumnRight
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -265px -12px;
+}
+
+.DeleteColumn
+{
+    background-image: url('../images/spirite-table.png') !important;
+    background-position: -315px -14px;
+}
+
+.MergeColumns
+{
+    background-image: url('../images/spirite-table.png') !important;
+    background-position: -365px -12px;
+}
+
+.MergeRows
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -415px -12px;
+}
+
+.SplitCellHorizontal 
+{
+    background-image: url('../images/spirite-table.png') !important;
+    background-position: -465px -12px;
+}
+
+.SplitCell
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -515px -12px;
+}
+
+.DeleteCell
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -565px -12px;
+}
+
+.SetCellProperties
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -615px -12px;
+}
+
+.SetTableProperties
+{
+	background-image: url('../images/spirite-table.png') !important;
+    background-position: -615px -12px;
+}
+
+.Help
+{
+	background-position: -336px center;
+}
+
+.Undo
+{
+	background-position: -802px center;
+}
+
+.Redo
+{
+	background-position: -832px center;
+}
+
+.Cut
+{
+	background-position: -155px center;
+}
+
+.Copy
+{
+	background-position: -125px center;
+}
+
+.Paste,
+.PasteStrip
+{
+	background-position: -652px center;
+}
+
+.PasteAsHtml,
+.PasteHtml
+{
+	background-position: -815px center;
+}
+
+.PasteFromWord
+{
+	background-position: -845px center;
+}
+
+.PasteFromWordNoFontsNoSizes
+{
+	background-position: -875px center;
+}
+
+.PastePlainText
+{
+	background-position: -905px center;
+}
+
+.Print
+{
+	background-position: -936px center;
+}
+
+.FindAndReplace
+{
+	background-position: -323px center;
+}
+
+.SelectAll
+{
+	background-position: -2435px center;
+}
+
+.InsertGroupbox
+{
+	background-position: -2015px -7px;
+}
+
+.InsertCodeSnippet,
+.InsertSnippet
+{
+	background-position: -2164px center;
+}
+
+.InsertDate
+{
+	background-position: -83px center;
+}
+
+.InsertTime
+{
+	background-position: -112px center;
+}
+
+.AboutDialog
+{
+	background-position: -6px center;
+}
+
+.Bold
+{
+	background-position: -140px center;
+}
+
+.Underline
+{
+	background-position: -200px center;
+}
+
+.StrikeThrough
+{
+	background-position: -230px center;
+}
+
+.JustifyLeft
+{
+	background-position: -502px center;
+}
+
+.JustifyCenter
+{
+	background-position: -532px center;
+}
+
+.JustifyFull
+{
+	background-position: -472px center;
+}
+
+.JustifyNone
+{
+	background-position: -606px center;
+}
+
+.JustifyRight
+{
+	background-position: -563px center;
+}
+
+.InsertParagraph
+{
+	background-position: -1040px center;
+}
+
+.InsertHorizontalRule
+{
+	background-position: -683px center;
+}
+
+.Superscript
+{
+	background-position: -260px center;
+}
+
+.Subscript
+{
+	background-position: -290px center;
+}
+
+.ConvertToLower
+{
+	background-position: -740px center;
+}
+
+.ConvertToUpper
+{
+	background-position: -712px center;
+}
+
+.Indent
+{
+	background-position: -352px center;
+}
+
+.Outdent
+{
+	background-position: -384px center;
+}
+
+.InsertOrderedList
+{
+	background-position: -444px center;
+}
+
+.InsertUnorderedList
+{
+	background-position: -414px center;
+}
+
+.AbsolutePosition
+{
+	background-position: -36px center;
+}
+
+.LinkManager,
+.CreateLink,
+.CustomLinkTool,
+.SetLinkProperties
+{
+	background-position: -921px center;
+}
+
+.Unlink
+{
+	background-position: -952px center;
+}
+
+.ToggleTableBorder
+{
+	background-position: -2885px center;
+}
+
+.ToggleScreenMode
+{
+	background-position: -1012px center;
+}
+
+.ForeColor
+{
+	background-position: -591px center;
+}
+
+.BackColor,
+.borderColor,
+.bgColor
+{
+	background-position: -622px center;
+}
+
+.InsertFormElement
+{
+	background-position: -1774px center;
+}
+
+.InsertFormForm
+{
+	background-position: -1805px -4px;
+}
+.XhtmlValidator {
+	background-position: -1080px center;
+}
+
+/* ALIGNMENT SELECTOR BEGIN */
+.reTopCenter
+{
+    width: 15px;
+    height: 13px;
+    background-position: -3036px -6px;
+}
+
+.reMiddleLeft
+{
+    width: 15px;
+    height: 13px;
+    background-position: -3096px -6px;
+}
+
+.reMiddleCenter
+{
+    width: 15px;
+    height: 13px;
+    background-position: -1236px -6px;
+}
+
+.reMiddleRight
+{
+    width: 15px;
+    height: 13px;
+    background-position: -3155px -6px;
+}
+
+.reBottomCenter
+{
+    width: 15px;
+    height: 13px;
+    background-position: -3216px -6px;
+}
+
+.reNoAlignment
+{
+    width: 15px;
+    height: 13px;
+    background-position: -1266px -6px;
+}
+
+.reTopLeft
+{
+    background-position: -3006px -6px;
+}
+
+.reTopRight
+{
+    background-position: -3155px -6px;
+}
+
+.reBottomLeft
+{
+    background-position: -3186px -6px;
+}
+
+.reBottomRight
+{
+    background-position: -3245px -6px;
+}
+/* ALIGNMENT SELECTOR END */
+
+/* toolbar */
+.reToolbar
+{    
+    margin-bottom: 4px !important;
+    margin-right: 4px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background:#fff !important;
+	background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%) !important; 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)) !important;
+	background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%) !important; 
+	background: linear-gradient(top, #fff 0%,#f0f2f1 100%) !important;
+	box-shadow: 0 1px 0 0 #bbb;
+	-webkit-box-shadow: 0 1px 0 0 #bbb;
+}
+
+.reToolbar li
+{    
+    width: auto !important;  
+    border-left: 1px solid #ccc;
+    padding: 0 !important;
+}
+
+.reToolbar li.grip_first + li{
+    border-left: none !important;
+}
+
+.reTool
+{	
+	display: block;
+}
+
+.reTool span
+{   
+	display: inline-block;
+}
+
+/* split button */
+.reTool.reSplitButton
+{
+	width: 31px;
+	height: 21px;
+	display: block;
+}
+
+.reSplitButton .split_arrow
+{
+	width: 10px !important;
+	float: left;
+}
+
+.reTool_disabled:hover
+{
+	background: none;
+}
+
+.reTool_disabled,
+.reTool_disabled:hover,
+.reTool_disabled:active,
+.reTool_disabled:focus
+{
+	border: 0;
+	background: none;
+}
+/* end of toolbar */
+
+.reDropdown span
+{
+	background: none;
+	overflow: hidden;	
+	white-space: nowrap;
+	/*width: auto !important; */
+	height: 23px;	
+	cursor: pointer;
+	cursor: default;
+}
+
+/* IE 6 and IE 7 have different behavior when showing with AJAX */
+.reToolbar .reDropdown,
+.reToolbar .reDropdown:hover
+{
+	width: auto;
+	height: 30px !important;
+	border: none !important;
+	background-image: none !important;
+	background:#fff !important;
+	background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%) !important; /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)) !important; /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%) !important; /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(top, #fff 0%,#f0f2f1 100%) !important; /* W3C */
+	color : #666 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	display: block !important;
+}
+
+*html .radwindow.normalwindow.transparentwindow .reDropdown
+{
+    _height: 18px !important;
+    _padding-top: 0 !important;
+    _padding-bottom: 0 !important;
+    _overflow-y: hidden !important;
+}
+/* end of dropdown */
+
+/* vertical dropdown */
+.reTlbVertical .reDropdown
+{
+	width: 4px;
+	height: 16px;
+}
+
+.reTlbVertical .reToolbar li .reDropdown
+{
+    margin: 0;
+    margin-left: 4px;
+}
+
+.reTlbVertical .reDropdown span
+{
+	display: none;
+}
+
+td.reTlbVertical .reToolbar .reDropdown,
+td.reTlbVertical .reToolbar .reDropdown:hover
+{
+    _width: 5px !important;
+}
+/* end of vertical dropdown */
+
+/* separator */
+li.reSeparator
+{
+	display: none !important;
+}
+
+.reTlbVertical .reToolbar li.reSeparator
+{
+	height: 4px; 
+	line-height: 4px; 
+	width: 26px; 
+	margin: 0; 
+	padding: 0;
+}
+/* end of separator */
+
+.reDropDownBody .reTlbVertical li
+{
+    background-image: none !important;
+}
+
+td.reTlbVertical .reToolbar .reSeparator
+{
+    display: none !important;
+}
+
+
+
+.reModule_visible_icon,
+.reModule_hidden_icon
+{
+	display: block;
+	float: left;
+	border: 0 !important;
+}
+
+.reModule_hidden_icon
+{
+	display: block;
+	float: left;
+	border: 0 !important;
+	/*background: url('CommandSprites.gif') no-repeat -1695px center !important;*/
+}
+
+.reModule_visible_icon
+{
+	display: block;
+	float: left;
+	border: 0 !important;
+	/*background: url('Editor/CommandSprites.gif') no-repeat -4645px center !important;*/
+}
+
+/*
+* html .reTlbVertical .reToolbar span
+{
+    background-image: url('CommandSpritesLightIE6.gif');
+}
+*/
+
+.reTool_disabled.reSplitButton:hover
+{
+	background: none !important;
+}
+
+.reModule td
+{
+    _font-size: 11px;
+}
+
+/* This color must coincide with back color defined in .reWrapper */
+.reToolbarWrapper,
+td.reToolCell
+{
+	background-color:#e6ebea;
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.reToolZone .reToolbarWrapper
+{
+	background:transparent;
+	float:none;
+	clear:both;
+}
+
+/* ============== rade_textarea =============================================*/
+.reTextarea    
+{
+    border: #808080 1px solid;
+	font:normal 11px Tahoma;
+	background-color: white;
+	color: #000080;
+}
+
+.reAjaxSpellCheck, .reAjaxSpellCheck TD
+{
+    padding:1px !important; 
+}
+
+.reAjaxSpellCheckSeparator
+{
+    padding:0px !important;    		    
+    margin-top:2px !important;    		        		    
+    line-height:4px !important;
+    font-size:2px !important;    		    
+    height:3px !important;
+    border-bottom:1px solid #999999;    		    
+}        	
+
+.reAjaxSpellCheckSuggestions table
+{
+    font-weight:bold !important;			    
+}
+
+.reAjaxSpellCheckSuggestions td
+{
+   font-weight:bold !important;			    
+}
+
+.reAlignmentSelector
+{
+	border: solid 1px #777;
+	background: white;	
+}
+
+.reAlignmentSelector div
+{
+	width: 18px;
+	height: 18px;
+	margin: 1px auto;
+	background-repeat: no-repeat;
+}
+
+.radEditor.reWrapper
+{
+	font: normal 11px Arial, Verdana, Sans-serif;
+}
+
+.reTlbVertical
+{
+	width: 2px;
+	font-size:1px;
+}
+
+.RadEditor.reWrapper table td.reContentCell
+{	
+    border: 1px solid #ccc;
+	background: #fff !important;
+}
+
+.RadEditor.reWrapper
+{
+	height:480px;
+	width:400px;
+	min-width:400px !important;
+	background:#e6ebea;
+	background-color: rgba(0, 0, 0, 0.05);
+	padding: 10px 10px -5px 10px !important;
+	font-size: 12px !important;
+	min-height: 100px !important;
+}
+
+.RadEditor .reWrapper_corner
+{
+    width: 5px; height: 5px; line-height: 5px; font-size:1px;
+    background:#e6ebea;
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.RadEditor .reWrapper_center
+{		
+	height: 5px; line-height: 5px; font-size:1px;
+}
+
+.reCenter_top,
+.reLeftVerticalSide,
+.reRightVerticalSide,
+.reToolZone,
+.reCenter_bottom
+{
+	background-color: #e6ebea;
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.reModule
+{
+	color: #666 !important;
+	padding: 1px 5px;
+	font-size: 12px !important;	
+}
+
+.reModule_visible_icon,
+.reModule_hidden_icon
+{
+	width: 16px;
+	height: 16px;
+	margin: -2px 4px 0;
+}
+
+
+a.reModule_domlink
+{
+	color:#666;
+	font: normal 11px Tahoma;
+	padding: 3px 6px 1px;
+	text-decoration: underline;
+}	
+
+a.reModule_domlink_selected
+{
+	color:#333;
+	font: normal 11px Tahoma;
+	background-color:#eee;
+	border:1px solid #898989;
+	padding:0 5px;
+}
+
+.RadEditor .reResizeCell div
+{
+    width:20px;
+    height:25px;
+    background:url('../images/modal-resize-icn.png') center no-repeat;
+}
+
+.reLoading
+{
+    width:30px;
+    float:left;
+}
+
+.reAjaxspell_wrapper
+{
+    border: 1px solid #515151 !important;
+}
+
+.reAjaxspell_wrapper td
+{
+    line-height:20px;
+}
+
+div.reEditorModes .reMode_selected
+{
+	font-weight: bold !important;
+	color: #000 !important;
+}
+
+div.reEditorModes .reMode_selected span
+{
+    color: #000;
+}
+
+div.reEditorModes a span
+{
+	color: #a2a1a1;
+	display: inline-block;
+	margin-top: 5px;	
+}
+
+.reDropDownBody,
+.reDropDownBody table /*quirks mode*/
+{
+	border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.reDropDownBody a
+{
+    background-image: none;
+    background-color: transparent;
+    margin: 0;
+}
+
+.reDropDownBody a:hover{
+    background-color: #e3e3e3;
+}
+
+.reDropDownBody table td
+{
+	padding: 2px;
+	border: none;
+	color:#666;
+	text-align: left;
+}
+
+.reDropDownBody .reItemOver
+{	
+	background: #e3e3e3;
+	color: #666;
+}
+
+.reColorPicker
+{
+	border: solid 1px #868686;
+	padding: 4px;
+	-moz-border-radius: 3px;
+	background: #fafafa;
+}
+
+.reColorPicker table div
+{
+	width: 11px; height: 11px; line-height: 11px; font-size: 1px;
+	border: solid 1px #c5c5c5;
+}
+
+.reColorPicker table td.reItemOver div
+{
+	border-color:#000;
+}
+
+.reColorPicker table td
+{
+	padding: 2px;
+	padding-bottom: 0;
+	padding-top: 0;
+}
+
+.reDropDownBody.reColorPicker table td.reItemOver
+{
+	border: 0 !important;
+	background: transparent !important;
+}
+
+.reColorPicker .reColorPickerFooter
+{
+	margin:0 auto;
+	font: normal 11px Verdana, Arial, Sans-serif;
+	height: 22px;
+	height: 18px;
+	width: 166px;
+	padding:4px 0;
+}
+
+.reColorPicker span
+{
+	width: 82px;
+	height: 20px;
+	line-height: 18px;
+	border: solid 1px #c5c5c5;
+}
+
+.reColorPicker .reColorPickerFooter .reDarkColor
+{
+	background: black;
+	color: white;
+	border-right:0;
+}
+
+.reColorPicker .reColorPickerFooter .reLightColor
+{
+	background: white;
+	color: black;
+	border-left:0;
+}
+
+.reInsertSymbol
+{
+	background: #646464;
+	width: auto !important;
+}
+
+.reInsertSymbol table
+{
+	width: auto !important;
+}
+
+.reInsertSymbol table td
+{
+	font: bold 11px Tahoma,"Lucida Grande",Verdana,Arial,Helvetica,sans-serif;
+	width: 18px !important;
+	height: 22px !important;
+	padding: 2px;
+	vertical-align: middle;
+}
+
+.reInsertSymbol table td.reItemOver
+{
+	color: #000;
+}
+
+.reInsertTable table
+{
+	float: left;
+	background-color:#f9f9f9;
+	cursor:default;	
+	width: 142px;
+}
+
+.reInsertTable  table td 
+{
+	padding:0 !important;		
+	border: 1px solid #ccc;
+}
+
+.reInsertTable  table td.reItemOver
+{	
+	border: 1px solid #ccc;
+}
+
+.reInsertTable td div
+{	
+	font-size:1px;
+	width:10px;
+	height: 10px;
+	margin:1px !important;
+	padding:0 !important;
+}
+
+.reInsertTable .reTlbVertical{
+    background: white;
+}
+
+.reInsertTable .reTlbVertical li
+{
+	width: 23px;
+	margin: 0;
+}
+
+.reInsertTable .reTlbVertical li a,
+.reInsertTable .reTlbVertical .reToolbar a.reTool_disabled
+{
+    background: none !important;
+    margin: 0 !important;
+    padding: 1px !important;
+    border: 0 !important;
+}
+
+.reInsertTable .reTlbVertical li a .reButton_text
+{
+	width: auto !important;
+	padding-left: 4px;
+	color: #666;
+}
+
+.reInsertTable .reTlbVertical li a .reButton_text:hover
+{
+	color: #fff;
+}
+
+.reUndoRedo
+{
+	border: solid 1px #8f8f8f;
+	background-color: white;
+	padding: 0;
+}
+
+.reApplyClass table td
+{
+	border: 1px solid #cacaca;
+	padding: 2px;
+}
+
+ .reApplyClass span
+{
+	width: 12px; height: 13px; line-height: 13px;
+	background-image: url('Editor/ApplyClassSprites.gif');
+	background-repeat: no-repeat;
+	margin-right: 2px;
+}
+
+.reApplyClass .reClass_all
+{
+    background-position: 0 -52px;
+}
+
+.reApplyClass .reClass_img
+{
+    background-position: 0 -13px;
+}
+.reApplyClass .reClass_a
+{
+    background-position: 0 -26px;
+}
+.reApplyClass .reClass_table
+{
+    background-position: 0 -39px;
+}
+
+.reApplyClass .reClass_unknown
+{	
+    background-position: 0 0;
+}
+
+ul.reCustomLinks,
+ul.reCustomLinks ul
+{
+	font: normal 11px Verdana, Arial, Sans-serif;
+	color: #000;
+	background: white;
+}
+
+ul.reCustomLinks
+{
+	margin: 0 2px;
+}
+
+.reDropDownBody .reCustomLinks a
+{
+    background:none transparent;
+    border: 1px solid #fff;
+	color: #000;
+}
+
+.reDropDownBody .reCustomLinks a:hover
+{
+    background: none #e9e9e9;
+    border:1px solid #8e8e8e;
+    color:#666;
+}
+
+ul.reCustomLinks ul
+{
+	margin-left: 12px;
+}
+
+ul.reCustomLinks li
+{
+	padding: 1px 0;
+}
+
+ul.reCustomLinks span,
+ul.reCustomLinks a
+{
+	padding-left:1px;padding-right:1px;
+}
+
+ul.reCustomLinks .reCustomLinksIcon
+{
+	width: 9px; height: 9px;
+	padding: 0;
+	background-image: url('Editor/CustomLinksSprites.gif');
+	background-repeat: no-repeat;
+	margin: 2px 4px 0 0;
+}
+
+ul.reCustomLinks .reCustomLinksIcon.reIcon_plus
+{
+	background-position: 0 0;
+}
+
+ul.reCustomLinks .reCustomLinksIcon.reIcon_minus
+{
+	background-position: -9px 0;
+}
+
+ul.reCustomLinks .reCustomLinksIcon.reIcon_empty
+{
+	background: none;
+}
+
+ .reTlbVertical
+{
+    background: transparent;
+}
+
+ .reTlbVertical .reToolbar
+{
+	margin-bottom:0px;
+}
+
+td.reTlbVertical .reToolbar
+{
+    width: 26px !important;
+}
+
+.reDropDownBody .reTlbVertical .reToolbar li
+{
+    border-right: none;
+	display: block;
+}
+
+.reDropDownBody .reTlbVertical .reToolbar li a{
+    display: block;
+    color: #666;
+}
+
+.reTlbVertical .reToolbar
+{
+    height: auto !important;
+}
+
+.reTlbVertical .reToolbar li .reTool
+{
+    margin: 0;
+    margin-left: 2px;
+}
+
+.reTlbVertical .reToolbar .grip_first
+{
+	background-position: right 0 !important;
+}
+
+.reTlbVertical .reToolbar .grip_last
+{
+	background-position: right -4px !important;
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool_text
+{	
+	border: 0;
+	padding: 3px 0 3px 0;
+	margin: 0;
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool_text span
+{    
+    float: none !important;
+    display: inline-block !important;
+    font-size: 12px !important;
+    
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool_text:hover,
+.reDropDownBody .reTlbVertical .reToolbar .reTool_selected
+{	
+	color: #fff;
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool:hover span,
+.reDropDownBody .reTlbVertical .reToolbar .reTool_selected span
+{
+	color: #fff;
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool_disabled,
+.reDropDownBody .reTlbVertical .reToolbar .reTool_disabled:hover,
+.reDropDownBody .reTlbVertical .reToolbar .reTool_disabled:active,
+.reDropDownBody .reTlbVertical .reToolbar .reTool_disabled:focus
+{	
+	border: 0;
+	padding: 3px 1px 3px 3px;
+	margin: 0 1px;
+	color:#d9d9d9;
+}
+
+.reDropDownBody .reTlbVertical .reToolbar .reTool_text span.reButton_text
+{
+	padding-left: 13px;
+}
+
+.reTool span
+{
+	background-image: url('../images/editorSprite.png');
+	background-repeat: no-repeat;
+}
+
+.reTool span:hover{
+    background-color: #e3e3e3;
+}
+
+
+.reDropDownBody.reInsertTable .reTool_text .TableWizard
+{
+    height: 23px; 
+    width: 23px; 
+    line-height: 23px;
+    background-image: url('../images/spirite-table.png') !important;
+    background-position: -12px -12px;
+}
+
+.reDropDownBody.reInsertTable .reTool_text .reButton_text,
+.reDropDownBody.reInsertTable .reTool_text:hover .reButton_text
+{
+    color: #666 !important;
+}
+
+.reDropDownBody.reInsertTable
+{
+    _width: 150px !important;
+}
+
+.reDropDownBody.reCustomLinks
+{
+    font-size: 12px !important;
+    color: #666;
+    background-color: #fff;
+}
+
+.reToolbar .reGrip
+{
+    display: none;
+}
+
+.reToolbar .reGrip.grip_last{
+    border-right: none !important;
+    display: none;
+}
+
+.reTool:hover
+{
+     background-image: none !important;
+}
+
+.reTool span
+{
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+}
+
+/* split button */
+.reSplitButton .split_arrow
+{
+	 background: url(../images/down.png) no-repeat;
+	 background-position: left center;
+}
+
+.reSplitButton .split_arrow:hover{
+    background: #e3e3e3 url(../images/down.png) no-repeat;
+    background-position: left center;
+}
+
+.reTool_disabled:hover
+{
+	background: none;
+}
+
+/* dropdown */
+.reDropdown,
+.reTool_disabled.reDropdown:hover
+{
+	border: solid 1px #707070;
+}
+
+.reDropdown span
+{
+	color: #666 !important;	
+	display: inline-block;
+	vertical-align: middle;
+	margin: 6px 8px 0 8px !important;
+	
+}
+
+/* end of dropdown */
+.reTool, .reTool:link, .reTool:visited{
+    width: auto !important;
+    height: 30px !important;
+}
+
+.reApplyClass table td span{
+    display: none !important;
+}
+
+.reApplyClass table td div{
+   margin: 0 !important;
+   padding: 5px  0  5px 5px !important;
+   text-align: left !important;
+}
+
+.reContentArea{
+    overflow: auto;
+}
+/*****************************************
+    View selector panel
+******************************************/
+
+.dnnTextPanelView {
+    background-color: #e6e6e6;
+    height: 25px;
+}
+
+.dnnTextPanelView-basic {
+    padding-right: 16px;
+    border: 1px #e6e6e6 solid;
+    padding-bottom: 5px;
+}
+
+.dnnTextPanelView .dnnLabel {
+    padding-right: 0px;
+    width: auto;
+    float: none;
+}
+
+.dnnTextPanelView .dnnLabel label {
+    opacity: 0;
+}
+.dnnTextPanelView-basic .dnnLabel {
+    padding-right: 0px;
+    width: auto;
+    float: none;
+}
+
+.dnnTextPanelView-basic .dnnLabel label {
+    opacity: 0;
+}
+
+
+/*****************************************  
+     Rad Window
+******************************************/
+
+/* START Telerik.Web.UI.Skins.Window.css */
+.RadWindow table.rwTable,.RadWindow table.rwShadow,.RadWindow .rwTitlebarControls{border:0;padding:0}.RadWindow .rwCorner,.RadWindow .rwTitlebar,.RadWindow .rwStatusbar,.RadWindow .rwFooterCenter,.RadWindow .rwTitlebarControls td{padding:0;margin:0;border:0;border-collapse:collapse;vertical-align:top}.RadWindow .rwTopResize{font-size:1px;line-height:4px;width:100%;height:4px;background-image: none;}.RadWindow .rwStatusbarRow .rwCorner{background-repeat:no-repeat}.RadWindow .rwStatusbarRow .rwBodyLeft{background-position:-16px 0}.RadWindow .rwStatusbarRow .rwBodyRight{background-position:-24px 0}.RadWindow .rwStatusbar{height:22px;background-position:0 -113px;background-repeat:repeat-x}.RadWindow .rwStatusbar div{width:18px;height:18px;padding:0 3px 0 0;background-position:0 -94px;background-repeat:no-repeat}.RadWindow .rwTable{width:100%;height:100%;table-layout:auto}.RadWindow .rwCorner{width:8px}.RadWindow .rwTopLeft,.RadWindow .rwTopRight,.RadWindow .rwTitlebar,.RadWindow .rwFooterLeft,.RadWindow .rwFooterRight,.RadWindow .rwFooterCenter{height:8px;font-size:1px;background-repeat:no-repeat;line-height:1px}.RadWindow .rwBodyLeft,.RadWindow .rwBodyRight{background-repeat:repeat-y}.RadWindow .rwBodyRight{background-position:-8px 0}.RadWindow .rwTopLeft{background-position:0 0}.RadWindow .rwTopRight{background-position:-8px 0}.RadWindow table .rwTitlebar{background-repeat:repeat-x;background-position:0 -31px;-moz-user-select:none}.RadWindow .rwFooterLeft{background-position:0 -62px}.RadWindow .rwFooterRight{background-position:-8px -62px}.RadWindow .rwFooterCenter{background-repeat:repeat-x;background-position:0 -70px}.RadWindow .rwTitlebarControls{width:100%;height:27px}.RadWindow .rwWindowContent{height:100%!important;background:white}.RadWindow td.rwLoading{background-repeat:no-repeat;background-position:center}.RadWindow .rwStatusbar .rwLoading{background-repeat:no-repeat}.RadWindow .rwStatusbar .rwLoading{padding-left:30px}.RadWindow td.rwStatusbar input{font:normal 12px "Segoe UI",Arial,Verdana,Sans-serif;padding:4px 0 0 3px;margin:0;border:0!important;width:100%;height:18px;line-height:18px;background-color:transparent!important;background-repeat:no-repeat!important;background-position:left center!important;cursor:default;-moz-user-select:none;overflow:hidden;text-overflow:ellipsis;display:block;float:left;vertical-align:middle}.RadWindow .rwControlButtons{padding:0;margin:2px 0 0 0;list-style:none;white-space:nowrap;float:right}.RadWindow .rwControlButtons li{float:left;padding:0 1px 0 0}.RadWindow .rwControlButtons a{width:30px;height:21px;line-height:1px;font-size:1px;cursor:default;background-repeat:no-repeat;display:block;text-decoration:none;outline:none}.RadWindow .rwControlButtons span{display:block}.RadWindow .rwReloadButton{background-position:-120px 0}.RadWindow .rwReloadButton:hover{background-position:-120px -21px}.RadWindow .rwPinButton{background-position:-180px 0}.RadWindow .rwPinButton:hover{background-position:-180px -21px}.RadWindow .rwPinButton.on{background-position:-150px 0}.RadWindow .rwPinButton.on:hover{background-position:-150px -21px}.RadWindow .rwMinimizeButton{background-position:0 0}.RadWindow .rwMinimizeButton:hover{background-position:0 -21px}.RadWindow .rwMaximizeButton{background-position:-60px 0}.RadWindow .rwMaximizeButton:hover{background-position:-60px -21px}.RadWindow .rwCloseButton{background-position:-90px 0}.RadWindow .rwCloseButton:hover{background-position:-90px -21px}.RadWindow.rwMaximizedWindow .rwMaximizeButton,.RadWindow.rwMinimizedWindow .rwMinimizeButton{background-position:-30px 0}.RadWindow.rwMaximizedWindow .rwMaximizeButton:hover,.RadWindow.rwMinimizedWindow .rwMinimizeButton:hover{background-position:-30px -21px}.rwMaximizedWindow .rwTopResize,.rwMaximizedWindow .rwCorner,.rwMaximizedWindow .rwFooterCenter,.rwMaximizedWindow .rwTitlebar{cursor:default!important}.RadWindow .rwIcon{display:block;background-repeat:no-repeat;background-position:0 -78px;width:16px;height:16px;cursor:default;margin:5px 5px 0 0}.RadWindow .rwTitleRow em{font:normal bold 12px "Segoe UI",Arial;color:black;padding:5px 0 0 1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;float:left}.RadWindow_rtl .rwControlButtons{float:left}div.RadWindow_rtl .rwControlButtons li{float:right}.RadWindow.rwInactiveWindow .rwTitlebarControls{position:static}.RadWindow .rwDialogPopup{margin:16px;color:black;padding:1px 0 16px 50px;font:normal 12px "Segoe UI",Arial,Verdana;cursor:default}.rwDialogPopup .rwPopupButton{margin:0}.rwDialogPopup .rwPopupButton,.rwDialogPopup .rwPopupButton span{display:block;float:left}.RadWindow .rwControlButtons a{text-indent:-3333px;overflow:hidden;text-align:center}html:first-child .RadWindow ul{float:right;border:solid 1px transparent}.RadWindow .rwDialogText{text-align:left}.RadWindow.rwMinimizedWindow .rwPinButton,.RadWindow.rwMinimizedWindow .rwReloadButton,.RadWindow.rwMinimizedWindow .rwMaximizeButton,.RadWindow.rwMinimizedWindow .rwTopResize{display:none!important}.RadWindow .rwDialogInput{font:normal 12px "Segoe UI",Arial,Verdana;color:black;width:100%;display:block;margin:8px 0}.RadWindow .rwWindowContent .radconfirm,.RadWindow .rwWindowContent .radalert{background-color:transparent;background-position:left center;background-repeat:no-repeat}.RadWindow .rwWindowContent .radconfirm{background-image:url('/WebResource.axd?d=rqx6qyAWtRJK_PunvWX6FtBz4E9lwsxLr49e_oHZm4mlxzCMH79qjhumZFTs4OTUZ3_9WDsoRGdlndsruVa2trS40lq09lPgK_3it4m_pVub94Mmjd0H_OjObxzjriLHhMr3JDQ95n5kozaI9_jOzjQkDzY1&t=634783790348009208')}.RadWindow .rwWindowContent .radalert{background-image:url('/WebResource.axd?d=OGRQM3cITOcyv10r5J_rP_W7Umi-uwtq6kLPvW5zaBZ91oNb-bx5FZU7kOAJJ3LEh89Tym_nfWySJwZxpAAX0zVpxLZu4B8X37pf8edGVFfW8tmFDJ2qWLOCGCxUmzqdLnot5wXUIm1f-PYudQ1TgGm2UDI1&t=634783790348009208')}.RadWindow .rwWindowContent .radprompt{padding:0}.RadWindow .rwPopupButton,.RadWindow .rwPopupButton span{text-decoration:none;color:black;line-height:21px;height:21px;cursor:default}.RadWindow .rwPopupButton{background-repeat:no-repeat;background-position:0 -136px;padding:0 0 0 3px;margin:8px 8px 8px 0}.RadWindow .rwWindowContent .rwPopupButton .rwOuterSpan{background-repeat:no-repeat;background-position:right -136px;padding:0 3px 0 0}.RadWindow .rwWindowContent .rwPopupButton .rwInnerSpan{background-repeat:repeat-x;background-position:0 -157px;padding:0 12px}.RadWindow .rwWindowContent .rwPopupButton:hover{background-position:0 -178px;padding:0 0 0 3px;margin:8px 8px 8px 0}.RadWindow .rwWindowContent .rwPopupButton:hover .rwOuterSpan{background-position:right -178px;padding:0 3px 0 0}.RadWindow .rwWindowContent .rwPopupButton:hover .rwInnerSpan{background-position:0 -199px;padding:0 12px}.RadWindow .rwStatusbarRow .rwBodyLeft{background-position:-16px 0}.RadWindow .rwStatusbarRow .rwBodyRight{background-position:-24px 0}.RadWindow.rwMinimizedWindow .rwContentRow,.RadWindow.rwMinimizedWindow .rwStatusbarRow{display:none}.RadWindow.rwMinimizedWindow table.rwTitlebarControls{margin-top:4px}.RadWindow.rwMinimizedWindow .rwControlButtons{width:66px!important}.RadWindow.rwMinimizedWindow em{width:90px}.RadWindow.rwMinimizedWindow,.rwMinimizedWindowOverlay{width:200px!important;height:30px!important;overflow:hidden!important;float:left!important}.RadWindow.rwMinimizedWindow .rwCorner.rwTopLeft{background-position:0 -220px;background-repeat:no-repeat}.RadWindow.rwMinimizedWindow .rwCorner.rwTopRight{background-position:-8px -220px;background-repeat:no-repeat}.RadWindow.rwMinimizedWindow .rwTitlebar{background-position:0 -250px!important;background-repeat:repeat-x}.RadWindow.rwInactiveWindow .rwCorner,.RadWindow.rwInactiveWindow .rwTitlebar,.RadWindow.rwInactiveWindow .rwFooterCenter{filter:progid:DXImageTransform.Microsoft.Alpha(opacity=65)!important;opacity:.65!important;-moz-opacity:.65!important;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=65)"}.RadWindow ul.rwControlButtons span{display /*\**/:none\9}div.RadWindow.rwNoTitleBar tr.rwTitleRow td.rwTopLeft{background-position:0 -280px}div.RadWindow.rwNoTitleBar tr.rwTitleRow td.rwTitlebar{background-position:0 -288px;background-repeat:repeat-x}div.RadWindow.rwNoTitleBar tr.rwTitleRow td.rwTopRight{background-position:-8px -280px}div.RadWindow.rwNoTitleBar div.rwTopResize{background:none}.RadWindow .rwShadow .rwTopLeft,.RadWindow .rwShadow .rwTopRight,.RadWindow.rwMinimizedWindow .rwShadow .rwCorner.rwTopLeft,.RadWindow.rwMinimizedWindow .rwShadow .rwCorner.rwTopRight{width:15px!important}.RadWindow .rwShadow .rwTopLeft,.RadWindow .rwShadow .rwTopRight{height:38px}.RadWindow .rwShadow .rwTopLeft,.RadWindow.rwMinimizedWindow .rwShadow .rwCorner.rwTopLeft{background-position:0 -297px!important}.RadWindow .rwShadow .rwTopRight,.RadWindow.rwMinimizedWindow .rwShadow .rwCorner.rwTopRight{background-position:0 -335px!important}.RadWindow .rwShadow .rwTopResize{height:8px;background-position:0 -376px!important}.RadWindow .rwShadow .rwTitlebar,.RadWindow.rwMinimizedWindow .rwShadow .rwTitlebar{height:30px!important;background-position:0 -391px!important;background-repeat:repeat-x!important}.rwInactiveWindow.rwMinimizedWindow{height:29px\9!important}* html .rwInactiveWindow.rwMinimizedWindow{height:30px!important}.RadWindow .rwShadow .rwFooterLeft,.RadWindow .rwShadow .rwFooterRight,.RadWindow .rwShadow .rwFooterCenter{height:14px}.RadWindow .rwShadow .rwFooterLeft{width:15px;background-position:0 -431px}.RadWindow .rwShadow .rwFooterCenter{background-position:0 -461px;background-repeat:repeat-x}.RadWindow .rwShadow .rwFooterRight{width:15px;background-position:0 -446px}.RadWindow .rwShadow .rwBodyLeft,.RadWindow .rwShadow .rwBodyRight{width:15px;background-repeat:repeat-y}.RadWindow .rwShadow .rwBodyLeft{background-position:-33px 0}.RadWindow .rwShadow .rwBodyRight{background-position:-52px 0}.RadWindow .rwShadow em{padding:9px 0 0 1px}.RadWindow .rwShadow .rwIcon{margin:8px 5px 0 1px}.RadWindow.rwMinimizedWindow .rwShadow .rwCorner.rwTopLeft,.RadWindow.rwMinimizedWindow .rwShadow .rwCorner.rwTopRight{height:1px!important}.RadWindow.rwMinimizedWindowShadow{overflow:visible!important}.RadWindow.rwMinimizedWindowShadow .rwTable{height:auto!important;width:210px!important}.RadWindow.rwMinimizedWindow .rwShadow .rwFooterLeft{background-position:0 -432px}.RadWindow.rwMinimizedWindow .rwShadow .rwFooterCenter{background-position:0 -462px}.RadWindow.rwMinimizedWindow .rwShadow .rwFooterRight{background-position:0 -447px}.RadWindow.rwMinimizedWindowShadow .rwShadow .rwTitlebarControls{display:block}.RadWindow.rwMinimizedWindowShadow .rwShadow .rwTitlebarControls .rwControlButtons .rwPinButton,.RadWindow.rwMinimizedWindowShadow .rwShadow .rwTitlebarControls .rwControlButtons .rwReloadButton,.RadWindow.rwMinimizedWindowShadow .rwShadow .rwTitlebarControls .rwControlButtons .rwMaximizeButton,.RadWindow.rwMinimizedWindowShadow .rwShadow .rwContentRow,.RadWindow.rwMinimizedWindowShadow .rwShadow .rwStatusbarRow{display:none!important}.rwMinimizedWindowShadow .rwShadow .rwTopLeft,.rwMinimizedWindowShadow .rwShadow .rwTopRight,.rwMinimizedWindowShadow .rwShadow .rwFooterLeft,.rwMinimizedWindowShadow .rwShadow .rwFooterRight,.rwMinimizedWindowShadow .rwShadow .rwFooterCenter,.rwMinimizedWindowShadow .rwShadow .rwTopResize{cursor:default!important}div.RadWindow_rtl table.rwShadow .rwControlButtons li{float:right}div.RadWindow.rwNoTitleBar table.rwShadow td.rwTopLeft{background-position:0 -480px!important}div.RadWindow.rwNoTitleBar table.rwShadow td.rwTitlebar{background-position:0 -525px!important}div.RadWindow.rwNoTitleBar table.rwShadow td.rwTopRight{background-position:0 -500px!important}.RadWindow.rwNoTitleBar .rwShadow .rwTitlebar,.RadWindow.rwNoTitleBar .rwShadow .rwTopLeft,.RadWindow.rwNoTitleBar .rwShadow .rwTopRight{height:13px!important}div.RadWindow.rwNoTitleBar.rwInactiveWindow table.rwShadow td.rwTopLeft{background-position:8px -280px!important}div.RadWindow.rwNoTitleBar.rwInactiveWindow table.rwShadow td.rwTitlebar{background-position:0 -288px!important}div.RadWindow.rwNoTitleBar.rwInactiveWindow table.rwShadow td.rwTopRight{background-position:-9px -280px!important}.RadWindow.rwNoTitleBar.rwInactiveWindow .rwShadow .rwTitlebar,.RadWindow.rwNoTitleBar.rwInactiveWindow .rwShadow .rwTopLeft,.RadWindow.rwNoTitleBar.rwInactiveWindow .rwShadow .rwTopRight{height:8px!important}
+/* END Telerik.Web.UI.Skins.Window.css */
+/* START Telerik.Web.UI.Skins.Window.css */
+.RadWindow_Default .rwTopLeft,.RadWindow_Default .rwTopRight,.RadWindow_Default .rwTitlebar,.RadWindow_Default .rwFooterLeft,.RadWindow_Default .rwFooterRight,.RadWindow_Default .rwFooterCenter,.RadWindow_Default .rwTopResize,.RadWindow_Default .rwStatusbar div,.RadWindow_Default .rwStatusbar,.RadWindow_Default .rwPopupButton,.RadWindow_Default .rwPopupButton span,.RadWindow_Default.rwMinimizedWindow .rwCorner{background-image:url('/WebResource.axd?d=S52A8QTw_Lg0CpwoVnIDCz6JZhCHoBM4axhIu-AmRLYPVxHCoY-OvI_6uJS1Snjt0z9yvdM1h3EaLWegjtJ3-D9-otxQYE9GLPV2lh3LlyaxY0m8NZ748Y0hxvni_8bfbDpUI23Vf5kaYfz6-ewSMxacTykzX4sIOZ4bDw2&t=634783790348009208')}.RadWindow_Default .rwBodyLeft,.RadWindow_Default .rwBodyRight,.RadWindow_Default .rwStatusbarRow .rwCorner{background-image:url('/WebResource.axd?d=icl5NA6Vs0N8GAC4JQMgngjO6LYy9iviP8qcFqQZqpdxCwAKlOA_fWolF2YGIXiDKS0fFdEQm87CHdZCBFprj_1LnqNz7YJvGjCUSjy-0v7Neyp3Wz0RuAvZdv6phqEgJ6nh8dldsbctjnuEsVpzRxEjsTuVU2tNW-1iEA2&t=634783790348009208')}.RadWindow_Default .rwShadow .rwTopLeft,.RadWindow_Default .rwShadow .rwTopRight,.RadWindow_Default .rwShadow .rwTitlebar,.RadWindow_Default .rwShadow .rwFooterLeft,.RadWindow_Default .rwShadow .rwFooterRight,.RadWindow_Default .rwShadow .rwFooterCenter,.RadWindow_Default .rwShadow .rwTopResize,.RadWindow_Default .rwShadow .rwStatusbar div,.RadWindow_Default .rwShadow .rwStatusbar,.RadWindow_Default .rwShadow .rwPopupButton,.RadWindow_Default .rwShadow .rwPopupButton span,.RadWindow_Default .rwShadow .rwBodyLeft,.RadWindow_Default .rwShadow .rwBodyRight,.RadWindow_Default .rwShadow .rwStatusbarRow .rwBodyLeft,.RadWindow_Default .rwShadow .rwStatusbarRow .rwBodyRight{background-image:url('/WebResource.axd?d=lDh-Qt4o64nWFUE_aXeVyfggUgwi48NTQUnasnGSJ4qbEQBYzBoVSUrwnYqSnpFC3GqTM4m2YS7R-KVUxQkUkw3WQ7dGcc2fewh-l-9pcl-NynK_h1etE7W3caKQjReh8gtEJfr5kz0T7e4rn1QMdFCL7VMqRa1MQbqtGA2&t=634783790348009208')}.RadWindow_Default .rwShadow .rwBodyLeft,.RadWindow_Default .rwShadow .rwBodyRight,.RadWindow_Default .rwShadow .rwStatusbarRow .rwBodyLeft,.RadWindow_Default .rwShadow .rwStatusbarRow .rwBodyRight{background-image:url('/WebResource.axd?d=wonO8w6rW_1yoT0pVAKdj_vgr0R2QUca2QJOiZdYf47ySizdtIQaplGJrRjfWCZTndii79RqqMef4ObtTsAv_R53lR1z1hNjECTAabRMOJt8sr0b16b0sNe4V8P3wHeKcokfww-EklBX4wiDfI7bK33wUNZe05e_kvzHuQ2&t=634783790348009208')}.RadWindow_Default .rwStatusbar input{background-color:#f7f3e9}.RadWindow_Default .rwControlButtons a{background-image:url('/WebResource.axd?d=A0eZWSdluNMiNT4OKFZ4w_0eKflyXXfGHhaCRbqRvkpPsRPaFoDgp8MkbdSzYd8czorIKIGsD291H_xHt7aVGbTGA_2MKUPje7S8HgVnDW9t6IejhYB32X7XS8gG31bnDG9Ws5lQqIDYxae_rtESnchz758Bt2aiCfrvsw2&t=634783790348009208')}.RadWindow_Default a.rwIcon{background-image:url('/WebResource.axd?d=S52A8QTw_Lg0CpwoVnIDCz6JZhCHoBM4axhIu-AmRLYPVxHCoY-OvI_6uJS1Snjt0z9yvdM1h3EaLWegjtJ3-D9-otxQYE9GLPV2lh3LlyaxY0m8NZ748Y0hxvni_8bfbDpUI23Vf5kaYfz6-ewSMxacTykzX4sIOZ4bDw2&t=634783790348009208')}div.RadWindow_Default .rwTitlebarControls em{color:black}div.RadWindow_Default .rwDialogInput{border-top:solid 1px #abadb3;border-right:solid 1px #dbdfe6;border-bottom:solid 1px #e3e9ef;border-left:solid 1px #e2e3ea}div.RadWindow_Default .rwDialogInput:hover{border-top:solid 1px #5794bf;border-right:solid 1px #b7d5ea;border-bottom:solid 1px #c7e2f1;border-left:solid 1px #c5daed;color:#565656}.RadWindow_Default td.rwWindowContent{background-color:#fff}div.RadWindow_Default tr td.rwLoading{background-color:#fff}.RadWindow_Default td.rwWindowContent.rwLoading{background-image:url('/WebResource.axd?d=OcgWLhUKJXBPunWea_CX9NArr6rcIXcAa1YV2JBCWafFaTvYq20DxrMIBsnazPPYAMvj-swchVvLNSr2oQ5qb1l7_dvMq-gfwpHssBjoPMQ8M46Yo2o1L8wCjkfYUzpyPgG4dUr0vxfBd6wu0&t=634783790348009208')}.RadWindow_Default input.rwLoading{background-image:url('/WebResource.axd?d=hgf5KX2_8EIglHbLAEOfLBLPZA3ZQnL9-RUP8z8aP478QnRqXvZjc6XDMcI2BnYGXTZbtrwtNbBIJr7ukCqLQhI15KMdYBVvSz8AD0T9aCa_LzH3KRIQP2iIqAADaZY5pfZpOgUfG9nm4kWHYuf6dle_FuA1&t=634783790348009208')}div.RadWindow_Default a.rwCancel,div.RadWindow_Default a.rwCancel span{background:none;cursor:pointer}div.RadWindow_Default a.rwCancel span span{color:#000;text-decoration:underline}.RadWindow_Default .rwShadow .rwControlButtons{margin:5px -2px 0 0}.RadWindow_Default .rwShadow .rwControlButtons{margin:5px -1px 0 0\9}.RadWindow_Default.rwMinimizedWindowShadow .rwShadow .rwControlButtons{margin:7px -8px 0 0}.RadWindow_Default.rwMinimizedWindowShadow .rwShadow .rwIcon{margin:9px 6px 0 0}.RadWindow_Default.rwMinimizedWindowShadow .rwShadow em{margin:4px 0 0 -1px}.RadWindow_Default .rwShadow .rwControlButtons li{float:left;padding:0}.RadWindow_Default .rwShadow .rwControlButtons a{width:26px}.rwInactiveWindow .rwShadow .rwTopLeft,.rwInactiveWindow .rwShadow .rwTopRight,.rwInactiveWindow .rwShadow .rwTitlebar,.rwInactiveWindow .rwShadow .rwFooterLeft,.rwInactiveWindow .rwShadow .rwFooterRight,.rwInactiveWindow .rwShadow .rwFooterCenter,.rwInactiveWindow .rwShadow .rwTopResize,.rwInactiveWindow .rwShadow .rwStatusbar div,.rwInactiveWindow .rwShadow .rwStatusbar,.rwInactiveWindow .rwShadow .rwPopupButton,.rwInactiveWindow .rwShadow .rwPopupButton span,.rwInactiveWindow .rwShadow.rwMinimizedWindow .rwCorner,.RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwTopLeft,.RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwTitlebar,.RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwTopRight,.RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwFooterLeft,.RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwFooterCenter,.RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwFooterRight{background-image:url('/WebResource.axd?d=S52A8QTw_Lg0CpwoVnIDCz6JZhCHoBM4axhIu-AmRLYPVxHCoY-OvI_6uJS1Snjt0z9yvdM1h3EaLWegjtJ3-D9-otxQYE9GLPV2lh3LlyaxY0m8NZ748Y0hxvni_8bfbDpUI23Vf5kaYfz6-ewSMxacTykzX4sIOZ4bDw2&t=634783790348009208')!important}.rwInactiveWindow .rwShadow .rwBodyLeft,.rwInactiveWindow .rwShadow .rwBodyRight,.rwInactiveWindow .rwShadow .rwStatusbarRow .rwCorner,.RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwBodyLeft,.RadWindow_Default.rwNoTitleBar.rwInactiveWindow .rwShadow .rwBodyRight{background-image:url('/WebResource.axd?d=icl5NA6Vs0N8GAC4JQMgngjO6LYy9iviP8qcFqQZqpdxCwAKlOA_fWolF2YGIXiDKS0fFdEQm87CHdZCBFprj_1LnqNz7YJvGjCUSjy-0v7Neyp3Wz0RuAvZdv6phqEgJ6nh8dldsbctjnuEsVpzRxEjsTuVU2tNW-1iEA2&t=634783790348009208')!important}
+/* END Telerik.Web.UI.Skins.Window.css */

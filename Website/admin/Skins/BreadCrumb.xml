@@ -1,0 +1,26 @@
+<Settings>
+  <Setting>
+    <Name>CssClass</Name>
+    <Type>String</Type>
+    <Help>Sets the CSS class used to render this skin object</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>Separator</Name>
+    <Type>String</Type>
+    <Help>Defines the separator to be used in between links</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>RootLevel</Name>
+    <Type>Integer</Type>
+    <Help>Defines from what level in the page hierarchy the breadcrumb should render</Help>
+    <Value>Same,Child,Parent,Root</Value>
+  </Setting>
+  <Setting>
+    <Name>UseTitle</Name>
+    <Type>Boolean</Type>
+    <Help>Defines whether to use the page Name or the page Title</Help>
+    <Value>True,False</Value>
+  </Setting>
+</Settings>

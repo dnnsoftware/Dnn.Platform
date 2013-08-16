@@ -1,0 +1,635 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+Used to determine Browser Capabilities by the Browsers UserAgent String and related
+Browser supplied Headers.
+Copyright (C) 2002-Present  Owen Brady (Ocean at owenbrady dot net)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy 
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights 
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+copies of the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<browsers>
+  <browser refID="Safari">
+    <controlAdapters>
+      <!-- Force the Safari Browser to use the default one assigned from Gecko Parent-->
+      <adapter controlType="System.Web.UI.WebControls.Menu" adapterType="" />
+    </controlAdapters>
+  </browser>
+  <!-- Edited by Owen Brady:02-18-07 -->
+  <!-- General Catch all for AppleWebKit based Browsers -->
+  <!-- http://www.sunrisebrowser.com/en/-->
+  <!-- Mozilla/5.0 (Macintosh; U; PPC Mac OS X; fr-fr) AppleWebKit/125.5.7 (KHTML, like Gecko) SunriseBrowser/0.895 -->
+  <gateway id="AppleWebKitCatchall" parentID="Safari1Plus">
+    <sampleHeaders>
+      <header name="User-Agent" value="Mozilla/5.0 (Macintosh; U; PPC Mac OS X; fr-fr) AppleWebKit/125.5.7 (KHTML, like Gecko) SunriseBrowser/0.895" />
+    </sampleHeaders>
+    <identification>
+      <userAgent match="\(KHTML,\slike\sGecko\)\s(?'browser'[^/\d]*)([\d]*)/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+    </identification>
+    <capture>
+    </capture>
+    <capabilities>
+      <capability name="browser"                         value="${browser}" />
+      <capability name="majorversion"                    value="${major}" />
+      <capability name="minorversion"                    value="${minor}" />
+      <capability name="version"                         value="${version}" />
+    </capabilities>
+  </gateway>
+
+  <!-- Need to get a Base Node to work Future Safari Version From that will not conflict with Microsoft-->
+  <browser id="SafariBase" parentID="Safari1Plus">
+    <identification>
+      <userAgent match="Safari" />
+      <userAgent nonMatch="OmniWeb" />
+      <userAgent nonMatch="SymbianOS" />
+      <userAgent nonMatch="Shiira" />
+      <userAgent nonMatch="SymbianOS" />
+      <userAgent nonMatch="SunriseBrowser" />
+    </identification>
+
+    <capabilities>
+      <capability name="browser"                         value="Safari" />
+    </capabilities>
+  </browser>
+  <browser id="SafariVersion" parentID="SafariBase">
+    <identification>
+      <userAgent match="Version/((?'version'(?'major'\d+)(?'minor'\.\d+.\d+)))|Version/((?'version'(?'major'\d+)(?'minor'\.\d+)))" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="${major}" />
+      <capability name="minorversion"                    value="${minor}" />
+      <capability name="version"                         value="${version}" />
+    </capabilities>
+  </browser>
+  <browser id="SafariiPhone" parentID="SafariVersion">
+    <sampleHeaders>
+      <header name="User-Agent" value="Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3" />
+    </sampleHeaders>
+    <identification>
+      <userAgent match="iPhone" />
+      <userAgent match="Mobile/(?'Model'\w*)" />
+    </identification>
+    <capabilities>
+      <capability name="mobileDeviceManufacturer"        value="Apple" />
+      <capability name="mobileDeviceModel"               value="iPhone ${Model}" />
+      <capability name="isMobileDevice"                  value="true" />
+    </capabilities>
+  </browser>
+  <browser id="SafariiPod" parentID="SafariVersion">
+    <sampleHeaders>
+      <header name="User-Agent" value="Mozilla/5.0 (iPod; U; CPU like Mac OS X; en) AppleWebKit/420.1 (KHTML, like Gecko) Version/3.0 Mobile/3A110a Safari/419.3" />
+    </sampleHeaders>
+    <identification>
+      <userAgent match="iPod" />
+      <userAgent match="Mobile/(?'Model'\w*)" />
+    </identification>
+    <capabilities>
+      <capability name="mobileDeviceManufacturer"        value="Apple" />
+      <capability name="mobileDeviceModel"               value="iPod ${Model}" />
+      <capability name="isMobileDevice"                  value="true" />
+    </capabilities>
+  </browser>
+
+  <!-- Edited By Owen Brady:09-02-08 -->
+  <!-- Added to detect Google - Chrome Browser-->
+  <!-- http://gears.google.com/chrome/intl/en/webmasters-faq.html -->
+  <browser id="AppleWebKitChrome" parentID="SafariBase">
+    <sampleHeaders>
+      <header name="User-Agent" value="Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/419.2.1 (KHTML, like Gecko) Vienna/2.1.2.2110" />
+    </sampleHeaders>
+    <identification>
+      <userAgent match="Chrome/(?'version'(?'major'\d+)(?'minor'\.\d+)\.\d+.\d+)\sSafari/\d+\.\d+" />
+    </identification>
+    <capture>
+    </capture>
+    <capabilities>
+      <capability name="browser"                         value="Chrome" />
+      <capability name="majorversion"                    value="${major}" />
+      <capability name="minorversion"                    value="${minor}" />
+      <capability name="version"                         value="${version}" />
+    </capabilities>
+  </browser>
+  
+  <browser id="SafariFallBack" parentID="SafariBase">
+    <identification>
+      <userAgent nonMatch="Version/(?'version'(?'major'\d+)(?'minor'\.\d+.\d+))|Version/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+    </identification>
+    <capabilities>
+    </capabilities>
+  </browser>
+  <!-- 
+Safari#### where the number represents an ID in a Database where I keep track of Unique 
+combinations for Safari Browsers. This is the easiest way I can track this at the 
+current point. This should only needed for older Version aka older then 3.0.4 the rest
+should have version/#.#.# in them.
+-->
+  <browser id="Safari0001" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/85.7" />
+      <userAgent match="Safari/85.5" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="1.0.0" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0002" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/85.7" />
+      <userAgent match="Safari/85.7" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="1.0.2" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0003" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/85.8.2" />
+      <userAgent match="Safari/85.8" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="1.0.3" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0004" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/85.8.2" />
+      <userAgent match="Safari/85.8.1" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="1.0.3" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0005" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/85.8.5" />
+      <userAgent match="Safari/85.8.1" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="1.0.3" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0006" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/100" />
+      <userAgent match="Safari/100" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".1" />
+      <capability name="version"                         value="1.1" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0007" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/100" />
+      <userAgent match="Safari/100.1" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".1" />
+      <capability name="version"                         value="1.1.1" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0008" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/125.2" />
+      <userAgent match="Safari/125.7" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".1" />
+      <capability name="version"                         value="1.1.1" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0009" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/125.2" />
+      <userAgent match="Safari/125.8" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".2" />
+      <capability name="version"                         value="1.2.2" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0010" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/125.4" />
+      <userAgent match="Safari/125.9" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".2" />
+      <capability name="version"                         value="1.2.3" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0011" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/125.5" />
+      <userAgent match="Safari/125.9" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".2" />
+      <capability name="version"                         value="1.2.3" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0012" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/125.5.5" />
+      <userAgent match="Safari/125.11" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".2" />
+      <capability name="version"                         value="1.2.4" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0013" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/125.5.5" />
+      <userAgent match="Safari/125.12" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".2" />
+      <capability name="version"                         value="1.2.4" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0014" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/125.5.6" />
+      <userAgent match="Safari/125.12" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".2" />
+      <capability name="version"                         value="1.2.4" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0015" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/125.5.7" />
+      <userAgent match="Safari/125.12" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".2" />
+      <capability name="version"                         value="1.2.4" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0016" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/312.1" />
+      <userAgent match="Safari/312" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".3" />
+      <capability name="version"                         value="1.3" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0017" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/312.1.1" />
+      <userAgent match="Safari/312" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".3" />
+      <capability name="version"                         value="1.3" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0018" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/312.5" />
+      <userAgent match="Safari/312.3" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".3" />
+      <capability name="version"                         value="1.3.1" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0019" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/312.5.1" />
+      <userAgent match="Safari/312.3.1" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".3" />
+      <capability name="version"                         value="1.3.1" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0020" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/312.8" />
+      <userAgent match="Safari/312.5" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".3" />
+      <capability name="version"                         value="1.3.2" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0021" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/312.8" />
+      <userAgent match="Safari/312.6" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".3" />
+      <capability name="version"                         value="1.3.2" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0022" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/312.8.1" />
+      <userAgent match="Safari/312.6" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="1" />
+      <capability name="minorversion"                    value=".3" />
+      <capability name="version"                         value="1.3.2" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0023" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/412" />
+      <userAgent match="Safari/412" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="2" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="2.0" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0026" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/412.7" />
+      <userAgent match="Safari/412.5" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="2" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="2.0.1" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0027" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/416.11" />
+      <userAgent match="Safari/416.12" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="2" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="2.0.2" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0028" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/416.12" />
+      <userAgent match="Safari/416.13" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="2" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="2.0.2" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0029" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/417.9" />
+      <userAgent match="Safari/417.8" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="2" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="2.0.3" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0030" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/417" />
+      <userAgent match="Safari/417" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="2" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="2.0.3" />
+    </capabilities>
+  </browser>
+  <browser id="Safari0031" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/418" />
+      <userAgent match="Safari/417" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="2" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="2.0.3" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0033" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/418" />
+      <userAgent match="Safari/419.3" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="2" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="2.0.4" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0036" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/419" />
+      <userAgent match="Safari/419.3" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="2" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="2.0.4" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari0039" parentID="SafariFallBack">
+    <identification>
+      <userAgent match="AppleWebKit/420.1" />
+      <userAgent match="Safari/419.3" />
+    </identification>
+    <capabilities>
+      <capability name="majorversion"                    value="3" />
+      <capability name="minorversion"                    value=".0" />
+      <capability name="version"                         value="3.0.0" />
+    </capabilities>
+  </browser>
+
+  <!-- 
+	Mozilla/5.0 (Macintosh; U; PPC Mac OS X; en-US) AppleWebKit/125.4 (KHTML, like Gecko, Safari) OmniWeb/v563.22
+	Mozilla/5.0 (Macintosh; U; PPC Mac OS X; en-US) AppleWebKit/125.4 (KHTML, like Gecko, Safari) OmniWeb/v563.29
+	Mozilla/5.0 (Macintosh; U; PPC Mac OS X; en-US) AppleWebKit/85 (KHTML, like Gecko) OmniWeb/v496
+	
+	http://www.omnigroup.com/applications/omniweb/developer/
+	-->
+  <browser id="OmniWebAppleWebKit" parentID="Safari1Plus">
+    <identification>
+      <userAgent match="OmniWeb" />
+    </identification>
+
+    <capabilities>
+      <capability name="browser"                         value="OmniWeb" />
+      <capability name="majorversion"                    value="4" />
+      <capability name="minorversion"                    value=".5" />
+      <capability name="version"                         value="4.5" />
+    </capabilities>
+  </browser>
+
+  <browser id="OmniWebv496" parentID="OmniWebAppleWebKit">
+    <identification>
+      <userAgent match="OmniWeb/v496" />
+    </identification>
+
+    <capabilities>
+      <capability name="version"                         value="4.5" />
+      <capability name="majorversion"                    value="4" />
+      <capability name="minorversion"                    value=".5" />
+    </capabilities>
+  </browser>
+
+  <browser id="OmniWebv558" parentID="OmniWebAppleWebKit">
+    <identification>
+      <userAgent match="OmniWeb/v558" />
+    </identification>
+
+    <capabilities>
+      <capability name="version"                         value="5.0" />
+      <capability name="majorversion"                    value="5" />
+      <capability name="minorversion"                    value=".0" />
+    </capabilities>
+  </browser>
+
+  <browser id="OmniWebv563" parentID="OmniWebAppleWebKit">
+    <identification>
+      <userAgent match="OmniWeb/v563" />
+    </identification>
+
+    <capabilities>
+      <capability name="version"                         value="5.1" />
+      <capability name="majorversion"                    value="5" />
+      <capability name="minorversion"                    value=".1" />
+    </capabilities>
+  </browser>
+
+  <browser id="OmniWebv607" parentID="OmniWebAppleWebKit">
+    <identification>
+      <userAgent match="OmniWeb/v607" />
+    </identification>
+
+    <capabilities>
+      <capability name="version"                         value="5.5" />
+      <capability name="majorversion"                    value="5" />
+      <capability name="minorversion"                    value=".5" />
+    </capabilities>
+  </browser>
+
+  <browser id="OmniWebv613" parentID="OmniWebAppleWebKit">
+    <identification>
+      <userAgent match="OmniWeb/v613" />
+    </identification>
+
+    <capabilities>
+      <capability name="version"                         value="5.6" />
+      <capability name="majorversion"                    value="5" />
+      <capability name="minorversion"                    value=".6" />
+    </capabilities>
+  </browser>
+
+  <!--http://shiira.jp/en.php -->
+  <browser id="Shiira" parentID="Safari1Plus">
+    <identification>
+      <userAgent match="Shiira/(?'version'(?'major'\d+)(?'minor'\.\d+)\w*)" />
+    </identification>
+
+    <capabilities>
+      <capability name="browser"                         value="Shiira" />
+      <capability name="majorversion"                    value="${major}" />
+      <capability name="minorversion"                    value="${minor}" />
+      <capability name="version"                         value="${version}" />
+    </capabilities>
+  </browser>
+
+  <!-- http://www.opencommunity.co.uk/vienna2.php -->
+  <!-- Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/419.2.1 (KHTML, like Gecko) Vienna/2.1.2.2110 -->
+  <browser id="AppleWebKitVienna" parentID="Safari1Plus">
+    <sampleHeaders>
+      <header name="User-Agent" value="Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/419.2.1 (KHTML, like Gecko) Vienna/2.1.2.2110" />
+    </sampleHeaders>
+    <identification>
+      <userAgent match="\(KHTML,\slike\sGecko\)\s(?'browser'[^/\d]*)([\d]*)/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+    </identification>
+    <capture>
+    </capture>
+    <capabilities>
+      <capability name="browser"                         value="${browser}" />
+      <capability name="majorversion"                    value="${major}" />
+      <capability name="minorversion"                    value="${minor}" />
+      <capability name="version"                         value="${version}" />
+      <capability name="IsSyndicationReader"             value="true" />
+    </capabilities>
+  </browser>
+ </browsers>

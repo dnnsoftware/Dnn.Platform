@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string" />
+                            <xsd:attribute name="type" type="xsd:string" />
+                            <xsd:attribute name="mimetype" type="xsd:string" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string" />
+                            <xsd:attribute name="name" type="xsd:string" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AddTab.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+    <data name="AddTab.AlternateText" xml:space="preserve">
+    <value>Add New Page</value>
+  </data>
+    <data name="EditTab.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+    <data name="EditTab.AlternateText" xml:space="preserve">
+    <value>Current Page Settings</value>
+  </data>
+    <data name="DeleteTab.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+    <data name="DeleteTab.AlternateText" xml:space="preserve">
+    <value>Delete Current Page</value>
+  </data>
+    <data name="DeleteTabConfirm.Text" xml:space="preserve">
+    <value>Are You Sure You Wish To Delete This Page?</value>
+  </data>
+    <data name="CopyTab.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+    <data name="CopyTab.AlternateText" xml:space="preserve">
+    <value>Copy Current Page</value>
+  </data>
+    <data name="Tab.Text" xml:space="preserve">
+    <value>Page:</value>
+  </data>
+    <data name="Module.Text" xml:space="preserve">
+    <value>Module:</value>
+  </data>
+    <data name="Pane.Text" xml:space="preserve">
+    <value>Pane:</value>
+  </data>
+    <data name="Title.Text" xml:space="preserve">
+    <value>Title:</value>
+  </data>
+    <data name="Align.Text" xml:space="preserve">
+    <value>Align:</value>
+  </data>
+    <data name="Permission.Text" xml:space="preserve">
+    <value>Visibility:</value>
+  </data>
+    <data name="Position.Text" xml:space="preserve">
+    <value>Insert:</value>
+  </data>
+    <data name="AddModule.Text" xml:space="preserve">
+    <value>Add Module To Page</value>
+  </data>
+    <data name="Roles.Text" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+    <data name="Roles.AlternateText" xml:space="preserve">
+    <value>Manage Security Roles</value>
+  </data>
+    <data name="Site.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+    <data name="Site.AlternateText" xml:space="preserve">
+    <value>Edit Site Settings</value>
+  </data>
+    <data name="Users.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
+    <data name="Users.AlternateText" xml:space="preserve">
+    <value>Manage Users</value>
+  </data>
+    <data name="Files.Text" xml:space="preserve">
+    <value>Files</value>
+  </data>
+    <data name="Files.AlternateText" xml:space="preserve">
+    <value>Manage Files</value>
+  </data>
+    <data name="Help.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+    <data name="Help.AlternateText" xml:space="preserve">
+    <value>Goto Online Help</value>
+  </data>
+    <data name="Extensions.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+    <data name="Extensions.AlternateText" xml:space="preserve">
+    <value>View Extensions</value>
+  </data>
+    <data name="PageFunctions.Text" xml:space="preserve">
+    <value>Page Functions</value>
+  </data>
+    <data name="AddNewModule.Text" xml:space="preserve">
+    <value>Add New Module</value>
+  </data>
+    <data name="CommonTasks.Text" xml:space="preserve">
+    <value>Common Tasks</value>
+  </data>
+    <data name="Top.Text" xml:space="preserve">
+    <value>Top</value>
+  </data>
+    <data name="Above.Text" xml:space="preserve">
+    <value>Above</value>
+  </data>
+    <data name="Below.Text" xml:space="preserve">
+    <value>Below</value>
+  </data>
+    <data name="Bottom.Text" xml:space="preserve">
+    <value>Bottom</value>
+  </data>
+    <data name="PermissionView.Text" xml:space="preserve">
+    <value>Same As Page</value>
+  </data>
+    <data name="PermissionEdit.Text" xml:space="preserve">
+    <value>Page Editors Only</value>
+  </data>
+    <data name="optModuleTypeNew.Text" xml:space="preserve">
+    <value>Add New Module</value>
+  </data>
+    <data name="optModuleTypeExisting.Text" xml:space="preserve">
+    <value>Add Existing Module</value>
+  </data>
+    <data name="SelectModule.Text" xml:space="preserve">
+    <value>Select A Module</value>
+  </data>
+    <data name="SelectPage.Text" xml:space="preserve">
+    <value>Select A Page</value>
+  </data>
+    <data name="Mode.Text" xml:space="preserve">
+    <value>Mode:</value>
+  </data>
+    <data name="ModeView.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+    <data name="ModeEdit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+    <data name="ModeLayout.Text" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+    <data name="hypUpgrade.Text" xml:space="preserve">
+    <value>Click Here To Get The Latest Version</value>
+  </data>
+    <data name="ExportTab.AlternateText" xml:space="preserve">
+    <value>Export Page</value>
+  </data>
+    <data name="ExportTab.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+    <data name="ImportTab.AlternateText" xml:space="preserve">
+    <value>Import Page</value>
+  </data>
+    <data name="ImportTab.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+    <data name="hypMessageUrl.Text" xml:space="preserve">
+    <value>http://www.dotnetnuke.com</value>
+  </data>
+    <data name="cmdAdmin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+    <data name="cmdHost.Text" xml:space="preserve">
+    <value>Host</value>
+  </data>
+    <data name="Instance.Text" xml:space="preserve">
+    <value>Module:</value>
+  </data>
+    <data name="DefaultModule.Text" xml:space="preserve">
+    <value>DNN_HTML</value>
+  </data>
+    <data name="AddModule.AlternateText" xml:space="preserve">
+    <value>Add selected module to page</value>
+  </data>
+    <data name="imgAdmin.AlternateText" xml:space="preserve">
+    <value>Admin Page</value>
+  </data>
+    <data name="imgHost.AlternateText" xml:space="preserve">
+    <value>Host Page</value>
+  </data>
+</root>

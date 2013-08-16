@@ -1,0 +1,143 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/** - SearchResults and SearchInput are moved to Admin - **/
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+    SET ControlSrc = 'Admin/Search/SearchResults.ascx'
+    WHERE ControlSrc = 'DesktopModules/SearchResults/SearchResults.ascx'
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+    SET ControlSrc = 'Admin/Search/ResultsSettings.ascx'
+    WHERE ControlSrc = 'DesktopModules/SearchResults/Settings.ascx'
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+    SET ControlSrc = 'Admin/Search/SearchInput.ascx'
+    WHERE ControlSrc = 'DesktopModules/SearchInput/SearchInput.ascx'
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+    SET ControlSrc = 'Admin/Search/InputSettings.ascx'
+    WHERE ControlSrc = 'DesktopModules/SearchInput/Settings.ascx'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddSearchItemWord]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}AddSearchItemWord]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddSearchItemWord]
+	@SearchItemID int,
+	@SearchWordsID int,
+	@Occurrences int
+
+AS
+
+DECLARE @id int
+SELECT @id = SearchItemWordID 
+	FROM {databaseOwner}{objectQualifier}SearchItemWord
+	WHERE SearchItemID=@SearchItemID 
+		AND SearchWordsID=@SearchWordsID
+ 
+
+IF @id IS NULL
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}SearchItemWord (
+			[SearchItemID],
+			[SearchWordsID],
+			[Occurrences]
+			) 
+		VALUES (
+			@SearchItemID,
+			@SearchWordsID,
+			@Occurrences
+			)
+
+		SELECT SCOPE_IDENTITY()
+	END
+ELSE
+
+	UPDATE {databaseOwner}{objectQualifier}SearchItemWord 
+		SET Occurrences = @Occurrences 
+		WHERE SearchItemWordID=@id 
+			AND Occurrences<>@Occurrences
+
+SELECT @id
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddSearchWord]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}AddSearchWord]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddSearchWord]
+	@Word nvarchar(100)
+ 
+AS
+
+DECLARE @id int
+SELECT @id = SearchWordsID 
+	FROM {databaseOwner}{objectQualifier}SearchWord
+	WHERE Word = @Word
+ 
+
+IF @id IS NULL
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}SearchWord (
+			[Word],
+			[IsCommon],
+			[HitCount]
+			) 
+		VALUES (
+			@Word,
+			0,
+			1
+		)
+
+		SELECT SCOPE_IDENTITY()
+	END
+ELSE
+	SELECT @id
+
+GO
+
+TRUNCATE TABLE {databaseOwner}{objectQualifier}SearchItemWordPosition
+DELETE {databaseOwner}{objectQualifier}SearchItemWord
+DELETE {databaseOwner}{objectQualifier}SearchWord
+DELETE {databaseOwner}{objectQualifier}SearchItem
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItemWord
+	DROP CONSTRAINT FK_{objectQualifier}SearchItemWord_{objectQualifier}SearchWord
+GO
+
+if  not exists (select * from dbo.sysobjects where id = object_id(N'IX_{objectQualifier}SearchWord'))
+	ALTER TABLE {databaseOwner}{objectQualifier}SearchWord ADD CONSTRAINT
+		IX_{objectQualifier}SearchWord UNIQUE NONCLUSTERED (Word) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItemWord WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}SearchItemWord_{objectQualifier}SearchWord FOREIGN KEY (SearchWordsID) REFERENCES {databaseOwner}{objectQualifier}SearchWord(SearchWordsID) ON UPDATE CASCADE ON DELETE CASCADE
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItemWordPosition
+	DROP CONSTRAINT FK_{objectQualifier}SearchItemWordPosition_{objectQualifier}SearchItemWord
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'IX_{objectQualifier}SearchItemWord'))
+	ALTER TABLE {databaseOwner}{objectQualifier}SearchItemWord ADD CONSTRAINT
+		IX_{objectQualifier}SearchItemWord UNIQUE NONCLUSTERED (SearchItemID, SearchWordsID) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItemWordPosition WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}SearchItemWordPosition_{objectQualifier}SearchItemWord FOREIGN KEY (SearchItemWordID) REFERENCES {databaseOwner}{objectQualifier}SearchItemWord (SearchItemWordID) ON UPDATE CASCADE ON DELETE CASCADE
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

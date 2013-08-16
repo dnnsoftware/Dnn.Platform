@@ -1,0 +1,45 @@
+﻿<script language="javascript" type="text/javascript">
+function { widgetid : {0} : }Render()
+{
+    var att = [];
+    att["data"] = "http://widgetserver.com/syndication/flash/wrapper/InsertWidget.swf";
+    att["align"] = "middle";
+    att["width"] = "{ width : {0} : 400}";
+    att["height"] = "{ height: {0} : 312}";
+    { styleclass : att["styleclass"] = "{0}"; : }
+
+    var par = [];
+    par["quality"] = "high";
+    par["wmode"] = "transparent";
+    par["menu"] = "false";
+    par["flashvars"] = "r={ r : {0} : 2}&appId={ appid : {0} : 344f5d80-a215-4da3-b946-08a23b11f099 }";    
+    { play : par["play"] = "{0}"; : }
+    { loop : par["loop"] = "{0}"; : }
+    { quality : par["quality"] = "{0}"; : }
+    { scale : par["scale"] = "{0}"; : }
+    { salign : par["salign"] = "{0}"; : }
+    { bgcolor : par["bgcolor"] = "{0}"; : }
+    { base : par["base"] = "{0}"; : }
+    { swliveconnect : par["swliveconnect"] = "{0}"; : }
+    { devicefont : par["devicefont"] = "{0}"; : }
+    { allowscriptaccess : par["allowscriptaccess"] = "{0}"; : }
+    { seamlesstabbing : par["seamlesstabbing"] = "{0}"; : }
+    { allowfullscreen : par["allowfullscreen"] = "{0}"; : }
+    { allownetworking : par["allownetworking"] = "{0}"; : }
+
+    var elementId = { elementid : "{0}" : ""};
+    var widgetId = { widgetid : "{0}" : ""};  
+    swfobject.createSWF(att, par, elementId != "" ? elementId : widgetId);
+}
+
+if (typeof (swfobject) === "undefined")
+{
+    $.getScript(
+                    $dnn.baseResourcesUrl + "Widgets/DNN/EmbedWidgetResources/Flash/swfobject.js", 
+                    { widgetid : {0} : }Render
+               )           
+}       
+else
+    { widgetid : {0} : }Render();
+</script>
+

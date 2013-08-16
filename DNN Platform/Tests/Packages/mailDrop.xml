@@ -1,0 +1,14 @@
+<configuration>
+  <nodes configfile="web.config">
+    <node path="/configuration/system.webServer" action="insertAfter">
+      <system.net>
+        <mailSettings>
+          <smtp deliveryMethod="specifiedPickupDirectory">
+            <specifiedPickupDirectory pickupDirectoryLocation="C:\Tests\TestEmails">
+            </specifiedPickupDirectory>
+          </smtp>
+        </mailSettings>
+      </system.net>
+    </node>
+  </nodes>
+</configuration>

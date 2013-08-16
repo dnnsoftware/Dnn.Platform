@@ -1,0 +1,40 @@
+
+.dnnListEditorTree {
+    width: 20%;
+    float: left;
+    padding: 15px;
+    background-color: #eee;
+    
+}
+
+.dnnListEditorDetails {
+    width: 75%;
+    float: right;
+}
+
+.dnnListEditorNoList {
+    color: #999999;
+    text-align: center;
+}
+
+/* dnn tree */
+.DNNTree{
+    margin-bottom: 20px;
+}
+
+.DNNTree span{
+    display: inline-block;
+    vertical-align: top;
+}
+
+.DNNTree span + span {
+    max-width: 130px;
+    margin-bottom: 5px;
+}
+
+
+.DNNTree span img{
+    margin: 0 5px 0 5px;
+}
+
+

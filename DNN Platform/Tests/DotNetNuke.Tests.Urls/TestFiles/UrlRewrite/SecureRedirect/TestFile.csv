@@ -1,0 +1,12 @@
+﻿Test,							Client,		IsSecure,	Enabled,	Enforced,	Scheme,		Page Name,		Test Url,							Expected Url,								Status,		Final Url,							RedirectReason
+Disabled,						false,		false,		false,		false,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
+Enabled,						false,		false,		true,		false,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
+Enforced,						false,		false,		false,		true,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
+Enforced HTTPS,					false,		false,		false,		true,		https://,	About Us,		https://{alias}/About-Us,			{defaultPage}?TabId={tabId},				302,		http://{alias}/About-Us,				Secure_Page_Requested		
+IsSecure Disabled,				false,		true,		false,		false,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
+IsSecure Enabled,				false,		true,		true,		false,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				302,		https://{alias}/About-Us,			Secure_Page_Requested
+IsSecure Enabled HTTPS,			false,		true,		true,		false,		https://,	About Us,		https://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
+IsSecure Enforced,				false,		true,		false,		true,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
+IsSecure Enforced HTTPS,		false,		true,		false,		true,		https://,	About Us,		https://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
+Client IsSecure Enabled,		true,		true,		true,		false,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				302,		https://{alias}/About-Us,			Secure_Page_Requested
+Client IsSecure Enabled HTTPS,	true,		true,		true,		false,		https://,	About Us,		https://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,

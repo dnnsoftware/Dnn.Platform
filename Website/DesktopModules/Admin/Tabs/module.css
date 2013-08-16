@@ -1,0 +1,245 @@
+﻿/* ===========   Page Settings Module Styling   =========== */
+.dnnTabsModule {
+    width: 100%;
+    margin: 2em auto;
+}
+.dnnTabsModule div.dnnPageDetails, .dnnTabsModule div.dnnCopyPage, .dnnTabsModule div.dnnPermissions, .dnnTabsModule div.dnnLocalization, .dnnTabsModule div.dnnAdvancedSettings {
+    padding: 0;
+    margin-top: 0.5em;
+}
+.dnnTabsModule textarea {
+    min-height: 100px;
+}
+.dnnTabsModule .dnnFormItem input, .dnnTabsModule .dnnFormItem .dnnFormInput, .dnnTabsModule .dnnFormItem textarea {
+    width: 45%;
+}
+.dnnTabsModule .dnnFormItem input[type=checkbox], .dnnTabsModule .dnnFormItem input[type=radio] {
+    width: auto;
+}
+.dnnTabsModule .dnnFormItem input[type=radio] {
+    margin-top: 4px;
+}
+.dnnFormItem.ssbsAppearance label {
+    width: 20%;
+    text-align: right;
+    padding-right: 2%;
+    font-weight: bold;
+}
+.dnnFormItem.ssbsAppearance label label {
+    width: 100%;
+}
+span.CacheDurationRowInfo {
+    width: 100%;
+    float: none;
+    clear: both;
+    display: block;
+}
+.dnnTabsModule .ssseContent textarea {
+    margin: 1em;
+    min-width: 52em;
+}
+.ssseContent ul.dnnActions {
+    padding: 0em 2em 3em;
+    border: none;
+    overflow: hidden;
+    clear: both;
+}
+.dnnTabsModule div.dnnssStat {
+    border-top: 1px #ccc solid;
+    padding: 1em 0 4em;
+    overflow: hidden;
+}
+.dnnssStat p {
+    float: left;
+    padding-right: 2em;
+}
+p.dnnFormRequired span {
+    border-left: 5px #F00 solid;
+    padding-left: 0.5em;
+}
+.dnnPortalAliasGrid {
+    float: right;
+}
+.dnnPortalAliasGrid td {
+    padding: 3px 5px;
+}
+.dnnPortalAliasGrid td input.dnnFormInput {
+    width: 42%;
+}
+.dnnPortalAliasGridHeader {
+    border-bottom: 1px #ddd solid;
+    font-weight: bold;
+    font-size: 110%;
+}
+.dnnPortalAliasGridItem {
+    border-bottom: 1px #eee solid;
+}
+.dnnPortalAliasGridAltItem {
+    background: #f1f1f1;
+}
+.ssasPortalAlias .dnnFormItem span.CommandButton {
+    clear: both;
+    overflow: hidden;
+    display: block;
+    margin-left: 26%;
+}
+.dnnPortalSignup .dnnFormMessage.dnnFormWarning {
+    max-width: 100%;
+}
+.dnnTabsModule .ucLinkTypeRadioButtons input {
+    margin-right: 5px;
+}
+.dnnTabsModule .urlControl {
+    display: block;
+    float: left;
+}
+.dnnPageSettings .urlControlLinkType {
+    min-width: 280px;
+}
+.dnnTabsModule .urlControlLinkType label, .dnnTabsModule .urlControlLinkType .dnnFormLabel, .dnnTabsModule .urlControlFileRow .dnnFormLabel, .dnnTabsModule .urlControlImagesRow .dnnFormLabel, .dnnTabsModule .urlControlFileRow label {
+    width: auto;
+    font-weight: normal;
+    margin: 0;
+}
+.dnnTabsModule .urlControlFileRow .dnnFormItem, .dnnTabsModule .urlControlImagesRow {
+    padding: 0;
+    width: 100%;
+}
+.dnnTabsModule .urlControlFileRow .dnnFormItem select {
+    width: 60% !important;
+}
+.dnnTabsModule .CacheDurationInfo .dnnFormMessage {
+    display: block;
+    overflow: hidden;
+    margin-top: 0.5em;
+    margin-left: 34.5%;
+}
+.dnnTabsModule .CacheDurationInfo {
+    overflow: hidden;
+    width: 75%;
+}
+
+.dnnForm.dnnPageSettings .dnnFormItem span.dnnFormMessage.dnnFormError {
+    left: 65%;
+}
+
+.dnnPageSettings .urlControl {
+    width: 500px;
+}
+
+#DnnPages {
+    width: 705px!important;
+}
+/* ===========   End Page Settings Module Styling   =========== */
+/* ===========   Pages Module Styling   =========== */
+.dnnTabsModule {
+    width: 100%;
+}
+.tmTabContainer {
+    float: left;
+    width: 65%;
+    margin: 20px 0 0 40px;
+}
+.dnnTabContent {
+    padding: 20px;
+}
+.dnnTreeArea {
+    float: left;
+    margin-left: 5px;
+    width: 250px;
+    padding-bottom: 20px;
+}
+.dnnTreePages {
+    border-right: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+.dnnTreeLegend {
+    clear: both;
+    border: 1px solid #d5d5d5;
+    background: #eee;
+    padding: 5px;
+    padding-bottom: 10px;
+}
+.dnnTreeLegend h3 {
+    margin-top: 10px;
+}
+.dtlItem {
+    white-space: normal;
+    text-indent: -20px;
+    margin-left: 25px;
+}
+#dnnTabsModule .dnnHSRadioButtons input {
+    float: none;
+}
+/*#dnnTabsModule .dnnHSRadioButtons label{float:none;width:auto;display:inline;padding-left:4px;}*/
+#dnnTabsModule .ucLinkTypeRadioButtons {
+    width: 100%;
+}
+#dnnTabsModule .dotnetnuke_tree ul {
+    border-bottom: none;
+}
+#dnnTabsModule .dotnetnuke_tree li {
+    float: none;
+}
+#dnnTabsModule .dnnFormExpandContent {
+    position: static;
+    text-align: right;
+}
+.dnnTreeExpand {
+    position: static;
+    text-align: right;
+    padding: 8px;
+    border-right: 1px solid #ccc;
+    margin: 0;
+}
+.tmTabContainer .dnnFormItem textarea {
+    width: 350px;
+    min-height: 200px;
+}
+.BulkContainer .dnnFormHelpContent {
+    position: static;
+}
+.RadTreeView {
+    overflow-x:auto
+}
+#searchKeyword {
+	width: 134px;
+}
+
+div.um-page-url-container-updatable,
+div.um-page-url-container {
+    background: none repeat scroll 0 0 #E3E3E5;
+    display: inline-block;
+    padding: 8px;
+    position: relative;
+    white-space: normal;
+    width: 45%;
+    max-width: 445px;
+    margin: 0 0 14px 0;
+}
+
+.dnnFormItem div.um-page-url-container input[type="text"],
+.dnnFormItem div.um-page-url-container-updatable input[type="text"] {
+    margin-bottom: 0;
+}
+
+.dnnFormItem div.um-page-url-container input[type="text"].um-alias-caption,
+.dnnFormItem div.um-page-url-container-updatable input[type="text"].um-alias-caption {
+    width: 130px;
+    background: #d8d8d8;
+}
+
+.dnnFormItem div.um-page-url-container input[type="text"].um-page-url-textbox {
+    width: 248px;
+}
+
+.dnnFormItem div.um-page-url-container-updatable input[type="text"].um-page-url-textbox {
+    width: 156px;
+}
+
+.dnnFormItem div.um-page-url-container-updatable a.dnnSecondaryAction {
+    margin: 0;
+}
+
+/* ===========   End Pages Module Styling   =========== */
+

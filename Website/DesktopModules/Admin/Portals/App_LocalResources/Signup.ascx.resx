@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>There are two types of websites which can be created using this application:&lt;br&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Parent Websites&lt;/b&gt; are sites which have a unique URL ( ie. www.domain.com ) associated to them. This generally involves purchasing a Domain Name from an Internet Registrar, setting the Primary/Secondary DNS entries to point to the Hosting Provider's DNS Server, and having your Hosting Provider map the Domain Name to the IP Address of your account. An example of a valid Parent Portal Name is &lt;b&gt;www.mydomain.com&lt;/b&gt;. You can also use the IP Address of your site without a Domain Name ( ie. &lt;b&gt;65.174.86.217&lt;/b&gt; ). If you need to have multiple Domain Names pointing to the same portal then you can seperate them with commas ( ie. &lt;b&gt;www.domain1.com,www.domain2.com&lt;/b&gt; ). Do not create a Parent Portal until all of the DNS mappings are in place or else you will not be able to access your portal.&lt;br&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Child Portals&lt;/b&gt; are subhosts of your Hosting Provider account. Essentially this means a directory is created on the web server which allows the site to be accessed through a URL address which includes a Parent domain name as well as the directory name ( ie. www.domain.com/directory ). A Child Portal can be converted into a Parent Portal at any time by simply modifying the Portal Alias entry.&lt;br&gt;&lt;br&gt;*Please Note: Portals will be created using the default properties defined in the Host Settings module ( HostFee, HostSpace, DemoPeriod ) or in the selected template file. Once the portal is created, these properties can be modified in the Admin tab Site Settings module.&lt;br&gt;&lt;br&gt;</value>
+  </data>
+  <data name="plType.Text" xml:space="preserve">
+    <value>Site Type:</value>
+  </data>
+  <data name="plType.Help" xml:space="preserve">
+    <value>There are two types of sites which can be created using this application (see the Module Help available on the Action Menu for more details).</value>
+  </data>
+  <data name="DemoMessage.Text" xml:space="preserve">
+    <value>Demo Site Signup allows you to create your very own Website and experiment with its advanced features {0}. At any time during or after the trial period, you can convert your Demo Site into a Registered Site by logging in as the Administrator and selecting the Renew/Extend Your Site Subscription link in the Admin tab. Registered Sites have the added benefit of using their own domain name ( ie. www.yourdomain.com ) as their Web address.&lt;br&gt;&lt;br&gt;&lt;b&gt;*Note:&lt;/b&gt; Your Site Name must be a simple name for your site and cannot contain spaces or punctuation characters. The URL for your site will take the form of &lt;b&gt; {1}/sitename&lt;/b&gt;&lt;br&gt;&lt;br&gt;</value>
+  </data>
+  <data name="AdminMissing.Text" xml:space="preserve">
+    <value>Your admin.template File Is Missing And Must be Uploaded To The Site.&lt;br&gt;</value>
+  </data>
+  <data name="PortalMissing.Text" xml:space="preserve">
+    <value>Your site  template File Is Missing And Must be Uploaded To The Site.&lt;br&gt;</value>
+  </data>
+  <data name="plPortalName.Text" xml:space="preserve">
+    <value>Site Name:</value>
+  </data>
+  <data name="plPortalName.Help" xml:space="preserve">
+    <value>Enter a name for the Site</value>
+  </data>
+  <data name="valPortalName.ErrorMessage" xml:space="preserve">
+    <value>Site Title Is Required.</value>
+  </data>
+  <data name="plTitle.Text" xml:space="preserve">
+    <value>Title:</value>
+  </data>
+  <data name="plTitle.Help" xml:space="preserve">
+    <value>Give your site a title.</value>
+  </data>
+  <data name="plDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="plDescription.Help" xml:space="preserve">
+    <value>Enter a description for your site.</value>
+  </data>
+  <data name="plKeyWords.Text" xml:space="preserve">
+    <value>Keywords:</value>
+  </data>
+  <data name="plKeyWords.Help" xml:space="preserve">
+    <value>Enter some keywords separated by a comma.  These are added to the Html page as MetaData and help Search Engines index your site.</value>
+  </data>
+  <data name="plTemplate.Text" xml:space="preserve">
+    <value>Template:</value>
+  </data>
+  <data name="plTemplate.Help" xml:space="preserve">
+    <value>Choose a template for the new Site.</value>
+  </data>
+  <data name="plFirstName.Text" xml:space="preserve">
+    <value>First Name:</value>
+  </data>
+  <data name="plFirstName.Help" xml:space="preserve">
+    <value>Enter your first name.</value>
+  </data>
+  <data name="plLastName.Text" xml:space="preserve">
+    <value>Last Name:</value>
+  </data>
+  <data name="plLastName.Help" xml:space="preserve">
+    <value>Enter your last name.</value>
+  </data>
+  <data name="valFirstName.ErrorMessage" xml:space="preserve">
+    <value>First Name Is Required.</value>
+  </data>
+  <data name="valLastName.ErrorMessage" xml:space="preserve">
+    <value>Last Name Is Required.</value>
+  </data>
+  <data name="plUsername.Text" xml:space="preserve">
+    <value>Administrator User Name:</value>
+  </data>
+  <data name="plUsername.Help" xml:space="preserve">
+    <value>Enter a username for the Administrator Account for this site.</value>
+  </data>
+  <data name="plPassword.Text" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="plPassword.Help" xml:space="preserve">
+    <value>Enter a password for the Administrator Account for this site.</value>
+  </data>
+  <data name="plConfirm.Text" xml:space="preserve">
+    <value>Confirm:</value>
+  </data>
+  <data name="plConfirm.Help" xml:space="preserve">
+    <value>Repeat your password to confirm it was typed correctly.</value>
+  </data>
+  <data name="valUsername.ErrorMessage" xml:space="preserve">
+    <value>Username Is Required.</value>
+  </data>
+  <data name="valPassword.ErrorMessage" xml:space="preserve">
+    <value>Password Is Required.</value>
+  </data>
+  <data name="valConfirm.ErrorMessage" xml:space="preserve">
+    <value>Password Confirmation Is Required.</value>
+  </data>
+  <data name="plEmail.Text" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="plEmail.Help" xml:space="preserve">
+    <value>Enter an email address for the Administrator Account for this site.</value>
+  </data>
+  <data name="valEmail.ErrorMessage" xml:space="preserve">
+    <value>Email Is Required.</value>
+  </data>
+  <data name="cmdUpdate.Text" xml:space="preserve">
+    <value>Create Site</value>
+  </data>
+  <data name="Note.Text" xml:space="preserve">
+    <value>&lt;strong&gt;*Note:&lt;/strong&gt; Once your Site is created, you will need to login using the Administrator information specified below.</value>
+  </data>
+  <data name="InvalidTemplate.Text" xml:space="preserve">
+    <value>{0} is not a valid Site Template File.</value>
+  </data>
+  <data name="InvalidName.Text" xml:space="preserve">
+    <value>The Site Alias Must Not Contain Spaces Or Punctuation.</value>
+  </data>
+  <data name="InvalidPassword.Text" xml:space="preserve">
+    <value>The Password Values Entered Do Not Match.</value>
+  </data>
+  <data name="ChildExists.Text" xml:space="preserve">
+    <value>The Child Site Name You Specified Already Exists. Please Choose A Different Child Site Name.</value>
+  </data>
+  <data name="CreateError.Text" xml:space="preserve">
+    <value>An Error Was Encountered During The Creation Of Your Site. This May Have Been Caused By Specifying An Incorrect Password For An Existing User Account. Please Verify Your Details Before You Try Again.</value>
+  </data>
+  <data name="PortalSetup.Text" xml:space="preserve">
+    <value>Site Setup</value>
+  </data>
+  <data name="SecuritySettings.Text" xml:space="preserve">
+    <value>Security Settings</value>
+  </data>
+  <data name="plPortalAlias.Text" xml:space="preserve">
+    <value>Site Alias:</value>
+  </data>
+  <data name="plPortalAlias.Help" xml:space="preserve">
+    <value>Enter the Alias for this Site</value>
+  </data>
+  <data name="plHomeDirectory.Text" xml:space="preserve">
+    <value>Home Directory:</value>
+  </data>
+  <data name="plHomeDirectory.Help" xml:space="preserve">
+    <value>Enter the Home Directory for this Site</value>
+  </data>
+  <data name="Customize.Text" xml:space="preserve">
+    <value>Customize</value>
+  </data>
+  <data name="valTemplate.ErrorMessage" xml:space="preserve">
+    <value>Please select a template file</value>
+  </data>
+  <data name="Parent.Text" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+  <data name="Child.Text" xml:space="preserve">
+    <value>Child</value>
+  </data>
+  <data name="AutoGenerate.Text" xml:space="preserve">
+    <value>Auto Generate</value>
+  </data>
+  <data name="ControlTitle_signup.Text" xml:space="preserve">
+    <value>Add Site</value>
+  </data>
+  <data name="SendMail.Error" xml:space="preserve">
+    <value>There was an error sending confirmation emails - {0}.  However, the website was created. &lt;a href='{1}' {2}&gt;Click Here To Access the new site&lt;/a&gt;</value>
+  </data>
+  <data name="AddPortal.Text" xml:space="preserve">
+    <value>Add New Site</value>
+  </data>
+  <data name="InvalidHomeFolder.Text" xml:space="preserve">
+    <value>The Home Folder you specified is not valid.</value>
+  </data>
+  <data name="DuplicatePortalAlias.Text" xml:space="preserve">
+    <value>The Site Alias Name You Specified Already Exists. Please Choose A Different Site Alias.</value>
+  </data>
+  <data name="UnknownSendMail.Error" xml:space="preserve">
+    <value>There was an error sending confirmation emails.  However, the website was created. &lt;a href='{0}' {1}&gt;Click Here To Access the new site&lt;/a&gt;</value>
+  </data>
+  <data name="ValidationResults.Text" xml:space="preserve">
+    <value>Validation Results</value>
+  </data>
+  <data name="plAnswer.Help" xml:space="preserve">
+    <value>Enter the answer to the above question. </value>
+  </data>
+  <data name="plAnswer.Text" xml:space="preserve">
+    <value>Password Answer:</value>
+  </data>
+  <data name="plQuestion.Help" xml:space="preserve">
+    <value>Enter a question to use when requesting a password.</value>
+  </data>
+  <data name="plQuestion.Text" xml:space="preserve">
+    <value>Password Question:</value>
+  </data>
+  <data name="valEmail2.ErrorMessage" xml:space="preserve">
+    <value>Email address is invalid</value>
+  </data>
+  <data name="useCurrentLabel.Help" xml:space="preserve">
+    <value>Check this box if you want to use the current SuperUser as the Administrator for the site.  If this box is unchecked you will be able to enter user credentials for the Administrator.</value>
+  </data>
+  <data name="useCurrentLabel.Text" xml:space="preserve">
+    <value>Use Current User as Administrator:</value>
+  </data>
+  <data name="valPortalAlias.ErrorMessage" xml:space="preserve">
+    <value>Site Alias is required.</value>
+  </data>
+  <data name="DuplicateWithTab.Text" xml:space="preserve">
+    <value>There has a page which's name is same with your site alias, please change a site alias.</value>
+  </data>
+</root>

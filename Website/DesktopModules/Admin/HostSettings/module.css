@@ -1,0 +1,192 @@
+/* ===========   Host Settings Module Styling   =========== */
+.dnnHostSettings {
+    width: 100%;
+    margin: 2em auto;
+}
+.dnnHostSettings .dnnFormItem .dnnFormInput, .dnnHostSettings .dnnFormItem textarea {
+    width: 45%;
+}
+
+.dnnHostSettings .dnnFormItem textarea {
+    min-height: 8em;
+}
+.dnnForm.dnnHostSettings input[type=image], .dnnForm.dnnHostSettings input[type=checkbox], .dnnForm.dnnHostSettings input[type=radio] {
+    width: auto;
+}
+.dnnForm.dnnHostSettings .dnnFormMessage.dnnFormValidationSummary {
+    max-width: 100%;
+    margin-bottom: 1em;
+}
+.dnnHSRadioButtons, .dnnhsSMTPSettings .dnnHSRadioButtons .dnnHSRadioButtons {
+    display: block;
+    overflow: hidden;
+}
+.dnnFormItem .dnnHSRadioButtons label, .dnnFormItem .dnnHSRadioButtons input {   
+    width: 3%;
+    text-align: left;
+}
+.dnnFormItem .dnnHSRadioButtons label {
+    width: 20%;
+    padding-left: 3px;
+}
+.dnnForm.dnnHostSettings .dnnhsOtherSettings .dnnFormItem input, .dnnForm.dnnHostSettings .dnnhsPaymentSettings .dnnFormItem input {
+    margin-right: 0.5em;
+}
+.dnnForm.dnnHostSettings .dnnHSRadioButtons label, .dnnForm.dnnHostSettings .dnnhsSMTPSettings .dnnHSRadioButtons label, .dnnForm.dnnHostSettings .dnnhsOtherSettings .dnnHSRadioButtons label {
+    width: auto;
+    padding: 0 5px 0 0;
+    margin-left: 3px;
+    text-align: left;
+    font-weight: normal;
+    margin-top: 0;
+}
+.dnnhsPerformanceSettings .psPageStateWarning {
+    margin: 0 0 0.6em 32%;
+    padding: 0;
+}
+.dnnhsPerformanceSettings .psPageStateWarning .dnnFormMessage.dnnFormWarning {
+    width: 20em;
+    display: block;
+    margin-top: 0;
+}
+.dnnForm .dnnFormItem.dnnhsUpgradeLog {
+    border-top: 1px #ccc solid;
+    margin-top: 1em;
+    padding-top: 1.5em;
+}
+.asContentFriendlyUrls a.CommandButton {
+    display: block;
+    font-weight: bold;
+}
+.dnnForm.dnnHostSettings .dnnRequestFilter td {
+    padding: 3px 5px;
+    position: relative;
+}
+.dnnForm.dnnHostSettings .dnnRequestFilter td label {
+    position: relative;
+}
+.dnnForm.dnnHostSettings .dnnRequestFilter label {
+    width: 100%;
+}
+.dnnForm.dnnHostSettings .dnnRequestFilter input {
+    margin-right: 2%;
+    min-width: 16px;
+}
+.dnnForm.dnnHostSettings .dnnRequestFilter .dnnFormWarning {
+    max-width: 100%;
+}
+.ssosContent ul.dnnActions {
+    border: none;
+    margin: 0;
+}
+.dnnHostSettings br {
+    display: none !important;
+    font-size: 0;
+    line-height: 0;
+    border-collapse: collapse;
+}
+.rfAddRule .dnnPrimaryAction, .rfAddRule a.dnnPrimaryAction:link, .rfAddRule a.dnnPrimaryAction:visited {
+    color: #fff;
+}
+.asContentFriendlyUrls .dnnFormItem input, .asContentFriendlyUrls .dnnFormItem textarea {
+    width: 250px;
+}
+/* ===========   End Host Settings Module Styling   =========== */
+
+.dnnLabel{
+    width: 25%;
+}
+
+.dnnFormItem .dnnFormGroup .dnnLabel {
+    width: auto;
+    padding-top: 10px;
+}
+
+.dnnFormItem .dnnFormGroup a.dnnFormHelp {
+    position: relative;
+}
+
+.dnnFormItem .dnnFormGroup select.dnnCharacterList {
+    width: 150px;
+}
+
+.dnnFormItem .dnnFormGroup .dnnExtensionsList {
+    width: 150px;
+}
+
+/* clean some form style */
+.dnnLabel + span {
+    display: inline-block !important;
+    margin-top: 6px;
+    margin-bottom: 8px;
+}
+
+.dnnFormItem input[type="checkbox"] + span, .dnnFormItem input[type="radio"] + span {
+    display: inline-block;
+    margin: 6px 5px 6px 5px;
+    width: auto;
+}
+
+.dnnFixedSizeComboBox{
+    width: 200px !important;
+    margin-right: 10px;
+    float: left;
+}
+
+.dnnFixedSizeComboBox + a.dnnSecondaryAction{
+    float: left;
+    margin-right: 10px;
+    padding: 6px 6px;
+}
+.dnnGrid{
+    border:1px solid #c9c9c9;
+}
+
+span.CommandButton input[type="image"]{
+    display: none;
+}
+
+span.CommandButton{
+    border: none;
+}
+
+a.CommandButton{
+    background: whiteSmoke;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,whiteSmoke), color-stop(100%,#DFDFDF));
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    text-shadow: 0px 1px 0px white;
+    color: #555;
+    display: inline-block;
+    padding: 6px 6px;
+    cursor: pointer;
+    border: 1px solid #C2C2C2;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #666;
+    font-weight: bold;
+    text-decoration: none;
+}
+a[id$='IncrementCrmVersionButton']{
+    margin-left: 25px;
+}
+
+.asContentFriendlyUrls > .dnnFormItem > .dnnCheckbox {
+    padding-left: 10px;
+}
+
+.asContentIPFilters .dnnGrid td a {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.asContentIPFilters div.dnnGrid{
+    border: none;
+}
+.asContentIPFilters .dnnGrid td a img,
+.asContentIPFilters .dnnGrid td a input[type="image"] {
+    display: block;
+}
+
+

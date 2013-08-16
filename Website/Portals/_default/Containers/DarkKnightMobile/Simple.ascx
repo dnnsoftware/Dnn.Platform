@@ -1,0 +1,3 @@
+<%@ Control language="vb" CodeBehind="~/admin/Containers/container.vb" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.UI.Containers.Container" %>
+<%@ Register TagPrefix="dnn" TagName="TITLE" Src="~/Admin/Containers/Title.ascx" %>
+<div class="dnnPEMCont"><h2 class="dnnPEMContTitle"><dnn:TITLE runat="server" /></h2><div id="ContentPane" class="dnnPEMContBody" runat="server"></div></div>

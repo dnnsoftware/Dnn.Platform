@@ -1,0 +1,54 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FindBanners]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}FindBanners]
+GO
+
+create procedure {databaseOwner}{objectQualifier}FindBanners
+
+@PortalId     int,
+@BannerTypeId int,
+@GroupName    nvarchar(100)
+
+AS
+
+SELECT  BannerId,
+        {databaseOwner}{objectQualifier}Banners.VendorId,
+        BannerName,
+        URL,
+        'ImageFile' = case when {databaseOwner}{objectQualifier}Files.FileName is null then {databaseOwner}{objectQualifier}Banners.ImageFile else {databaseOwner}{objectQualifier}Files.Folder + {databaseOwner}{objectQualifier}Files.FileName end,
+        Impressions,
+        CPM,
+        {databaseOwner}{objectQualifier}Banners.Views,
+        {databaseOwner}{objectQualifier}Banners.ClickThroughs,
+        StartDate,
+        EndDate,
+        BannerTypeId,
+        Description,
+        GroupName,
+        Criteria,
+        {databaseOwner}{objectQualifier}Banners.Width,
+        {databaseOwner}{objectQualifier}Banners.Height
+FROM    {databaseOwner}{objectQualifier}Banners
+INNER JOIN {databaseOwner}{objectQualifier}Vendors ON {databaseOwner}{objectQualifier}Banners.VendorId = {databaseOwner}{objectQualifier}Vendors.VendorId
+LEFT OUTER JOIN {databaseOwner}{objectQualifier}Files ON {databaseOwner}{objectQualifier}Banners.ImageFile = 'fileid=' + convert(varchar,{databaseOwner}{objectQualifier}Files.FileID)
+WHERE   ({databaseOwner}{objectQualifier}Banners.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+AND     ({databaseOwner}{objectQualifier}Banners.GroupName = @GroupName or @GroupName is null)
+AND     (({databaseOwner}{objectQualifier}Vendors.PortalId = @PortalId) or (@PortalId is null and {databaseOwner}{objectQualifier}Vendors.PortalId is null))
+AND     {databaseOwner}{objectQualifier}Vendors.Authorized = 1 
+ORDER BY BannerId
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

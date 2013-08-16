@@ -1,0 +1,9 @@
+﻿Test,					Scheme,		Page Name,		Params,					Expected Url,	
+Home,					http://,	Home,			,						http://{alias}/tabid/{tabId}/{defaultPage}
+About Us,				http://,	About Us,		,						http://{alias}/tabid/{tabId}/{defaultPage}
+Admin Site Settings,		http://,	Site Settings,	,						http://{alias}/tabid/{tabId}/{defaultPage}
+Profile Messages,		http://,	Messages,		,						http://{alias}/tabid/{tabId}/{defaultPage}
+Terms,					http://,	Home,			&ctl=Terms,				http://{alias}/tabid/{tabId}/ctl/Terms/{defaultPage}
+Login,					http://,	About Us,		&ctl=Login,				http://{alias}/tabid/{tabId}/ctl/Login/{defaultPage}
+Edit Page Home,			http://,	Home,			&ctl=Edit&mid=100,		http://{alias}/tabid/{tabId}/ctl/Edit/mid/100/{defaultPage}
+Edit Page About Us,		http://,	About Us,		&ctl=Edit&mid=200,		http://{alias}/tabid/{tabId}/ctl/Edit/mid/200/{defaultPage}

@@ -1,0 +1,131 @@
+<?xml version="1.0" ?>
+<xs:schema id="ModuleDefinition" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+	elementFormDefault="unqualified">
+	<xs:element name="dotnetnuke">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="folders">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="folder" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="name" type="xs:string" />
+										<xs:element name="description" type="xs:string" />
+										<xs:element name="version" type="versionNumber" />
+										<xs:element name="resourcefile" type="xs:string" minOccurs="0" />
+										<xs:element name="modules" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="module" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="friendlyname" type="xs:string" />
+																<xs:element name="controls">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="control" maxOccurs="unbounded">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="key" type="xs:string" minOccurs="0" />
+																						<xs:element name="title" type="xs:string" minOccurs="0" />
+																						<xs:element name="src" type="xs:string" />
+																						<xs:element name="iconfile" type="xs:string" minOccurs="0" />
+																						<xs:element name="type" type="securityAccessLevel" />
+																						<xs:element name="vieworder" type="xs:string" minOccurs="0" />
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="files" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="file" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="path" type="xs:string" minOccurs="0" />
+																<xs:element name="name" type="xs:string" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="version" form="unqualified" type="moduleDefinitionVersion" use="required" />
+			<xs:attribute name="type" form="unqualified" type="paType" use="required" />
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="versionNumber">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{2}\.\d{2}\.\d{2}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="moduleDefinitionVersion">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{1}\.\d{1}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="securityAccessLevel">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Anonymous">
+				<xs:annotation>
+					<xs:documentation>Anonymous = -1</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="View">
+				<xs:annotation>
+					<xs:documentation>View = 0</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Edit">
+				<xs:annotation>
+					<xs:documentation>Edit = 1</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Admin">
+				<xs:annotation>
+					<xs:documentation>Admin = 2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Host">
+				<xs:annotation>
+					<xs:documentation>Host = 3</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="paType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Module">
+				<xs:annotation>
+					<xs:documentation>Defines a module installation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SkinObject">
+				<xs:annotation>
+					<xs:documentation>Defines a skin object installation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DataProvider">
+				<xs:annotation>
+					<xs:documentation>Defines a data provider installation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

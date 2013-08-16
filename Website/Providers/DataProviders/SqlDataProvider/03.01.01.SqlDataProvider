@@ -1,0 +1,1416 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteUserPortal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DeleteUserPortal]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}DeleteUserPortal
+	@UserId   int,
+	@PortalId int
+AS
+
+	DELETE FROM {objectQualifier}UserPortals
+	WHERE Userid = @UserId and PortalId = @PortalId
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetEventLog]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetEventLog]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetEventLog
+	@PortalID int,
+	@LogTypeKey nvarchar(35),
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		LogGUID	varchar(36)
+	)
+
+	INSERT INTO #PageIndex (LogGUID)
+	SELECT {objectQualifier}EventLog.LogGUID
+	FROM {objectQualifier}EventLog
+	INNER JOIN {objectQualifier}EventLogConfig
+		ON {objectQualifier}EventLog.LogConfigID = {objectQualifier}EventLogConfig.ID
+	WHERE (LogPortalID = @PortalID or @PortalID IS NULL)
+		AND ({objectQualifier}EventLog.LogTypeKey = @LogTypeKey or @LogTypeKey IS NULL)
+	ORDER BY LogCreateDate DESC
+
+
+	SELECT {objectQualifier}EventLog.*
+	FROM {objectQualifier}EventLog
+	INNER JOIN {objectQualifier}EventLogConfig
+		ON {objectQualifier}EventLog.LogConfigID = {objectQualifier}EventLogConfig.ID
+	INNER JOIN #PageIndex PageIndex
+		ON {objectQualifier}EventLog.LogGUID = PageIndex.LogGUID
+	WHERE PageIndex.IndexID			> @PageLowerBound	
+		AND	PageIndex.IndexID			< @PageUpperBound	
+	ORDER BY
+		PageIndex.IndexID	
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetScheduleByTypeFullName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetScheduleByTypeFullName]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetScheduleByTypeFullName
+	@TypeFullName varchar(200),
+	@Server varchar(150)
+AS
+
+	SELECT S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, S.Servers
+	FROM {objectQualifier}Schedule S
+	WHERE S.TypeFullName = @TypeFullName 
+	AND (S.Servers LIKE ',%' + @Server + '%,' or S.Servers IS NULL)
+	GROUP BY S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, S.Servers
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAffiliate]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetAffiliate]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAffiliate
+	@AffiliateId int,
+	@VendorId int,
+	@PortalID int
+AS
+
+	SELECT	{objectQualifier}Affiliates.AffiliateId,
+		{objectQualifier}Affiliates.VendorId,
+		{objectQualifier}Affiliates.StartDate,
+		{objectQualifier}Affiliates.EndDate,
+		{objectQualifier}Affiliates.CPC,
+		{objectQualifier}Affiliates.Clicks,
+		{objectQualifier}Affiliates.CPA,
+		{objectQualifier}Affiliates.Acquisitions
+	FROM	{objectQualifier}Affiliates 
+	INNER JOIN {objectQualifier}Vendors ON {objectQualifier}Affiliates.VendorId = {objectQualifier}Vendors.VendorId
+	WHERE	{objectQualifier}Affiliates.AffiliateId = @AffiliateId
+	AND	{objectQualifier}Affiliates.VendorId = @VendorId
+	AND	({objectQualifier}Vendors.PortalId = @PortalID or ({objectQualifier}Vendors.PortalId is null and @portalid is null))
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FindBanners]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}FindBanners]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}FindBanners
+	@PortalId     int,
+	@BannerTypeId int,
+	@GroupName    nvarchar(100)
+AS
+
+	SELECT 	BannerId,
+		{objectQualifier}Banners.VendorId,
+		BannerName,
+		URL,
+		'ImageFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Banners.ImageFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+		Impressions,
+		CPM,
+		{objectQualifier}Banners.Views,
+		{objectQualifier}Banners.ClickThroughs,
+		StartDate,
+		EndDate,
+		BannerTypeId,
+		Description,
+		GroupName,
+		Criteria,
+		{objectQualifier}Banners.Width,
+		{objectQualifier}Banners.Height
+	FROM	{objectQualifier}Banners
+	INNER JOIN {objectQualifier}Vendors ON {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId
+	LEFT OUTER JOIN {objectQualifier}Files ON {objectQualifier}Banners.ImageFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+	WHERE	({objectQualifier}Banners.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+	AND	({objectQualifier}Banners.GroupName = @GroupName or @GroupName is null)
+	AND	(({objectQualifier}Vendors.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Vendors.PortalId is null))
+	AND	({objectQualifier}Banners.StartDate is null Or getdate() >= {objectQualifier}Banners.StartDate )
+	AND	(  ( Criteria = 1 /* OR */
+           		and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views Or {objectQualifier}Banners.Impressions = 0)
+           		and (getdate() <= {objectQualifier}Banners.EndDate or {objectQualifier}Banners.EndDate is null) )
+       		or ( Criteria = 0 /* AND */
+           		and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views and {objectQualifier}Banners.Impressions <> 0)
+           		or  (getdate() <= {objectQualifier}Banners.EndDate and {objectQualifier}Banners.EndDate is not null) )  )
+	AND 	{objectQualifier}Vendors.Authorized = 1 
+	ORDER BY BannerId
+GO
+
+
+UPDATE 	{databaseOwner}[{objectQualifier}Lists] 
+SET 	Value = 'NL', Text = 'Newfoundland and Labrador' 
+WHERE	ListName = 'Region'
+AND 	ParentID = 36
+AND	EntryId = 243
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetList]
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetList
+	@ListName nvarchar(50),
+	@ParentKey nvarchar(150),
+	@DefinitionID int
+AS
+
+If @ParentKey = '' 
+Begin
+	Select DISTINCT 	
+	E.[ListName],
+	E.[Level],	
+	E.[DefinitionID],
+	E.[ParentID],	
+	(SELECT MAX([SortOrder]) FROM {objectQualifier}Lists WHERE [ListName] = E.[ListName]) As [MaxSortOrder],
+	(SELECT COUNT(EntryID) FROM {objectQualifier}Lists WHERE [ListName] = E.[ListName] AND ParentID = E.[ParentID]) As EntryCount,
+	IsNull((SELECT [ListName] + '.' + [Value] + ':' FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') + E.[ListName] As [Key],	
+	IsNull((SELECT [ListName] + '.' + [Text] + ':' FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') + E.[ListName] As [DisplayName],
+	IsNull((SELECT [ListName] + '.' + [Value] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [ParentKey],
+	IsNull((SELECT [ListName] + '.' + [Text] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [Parent],
+	IsNull((SELECT [ListName] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]),'') As [ParentList]
+	From {objectQualifier}Lists E (nolock)
+	where  ([ListName] = @ListName or @ListName='')
+	and (DefinitionID = @DefinitionID or @DefinitionID = -1)
+	Order By E.[Level], [DisplayName]
+End
+Else
+Begin
+
+	DECLARE @ParentListName nvarchar(50)
+	DECLARE @ParentValue nvarchar(100)
+	SET @ParentListName = LEFT(@ParentKey, CHARINDEX( '.', @ParentKey) - 1)
+	SET @ParentValue = RIGHT(@ParentKey, LEN(@ParentKey) -  CHARINDEX( '.', @ParentKey))
+	Select DISTINCT 	
+	E.[ListName],
+	E.[Level],	
+	E.[DefinitionID],
+	E.[ParentID],	
+	(SELECT MAX([SortOrder]) FROM {objectQualifier}Lists WHERE [ListName] = E.[ListName]) As [MaxSortOrder],
+	(SELECT COUNT(EntryID) FROM {objectQualifier}Lists WHERE [ListName] = E.[ListName] AND ParentID = E.[ParentID]) As EntryCount,
+	IsNull((SELECT [ListName] + '.' + [Value] + ':' FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') + E.[ListName] As [Key],	
+	IsNull((SELECT [ListName] + '.' + [Text] + ':' FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') + E.[ListName] As [DisplayName],
+	IsNull((SELECT [ListName] + '.' + [Value] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [ParentKey],
+	IsNull((SELECT [ListName] + '.' + [Text] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [Parent],
+	IsNull((SELECT [ListName] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]),'') As [ParentList]
+	
+	From {objectQualifier}Lists E (nolock)
+	where  [ListName] = @ListName And
+	[ParentID] = (SELECT [EntryID] From {objectQualifier}Lists Where [ListName] = @ParentListName And [Value] = @ParentValue)	
+	Order By E.[Level], [DisplayName]
+
+End
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetVendors]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetVendors]
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetVendors
+	@PortalID int,
+	@UnAuthorized bit,
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		VendorId	int
+	)
+
+	INSERT INTO #PageIndex (VendorId)
+	SELECT VendorId
+	FROM {objectQualifier}Vendors
+	WHERE ( ((Authorized = 0 AND @UnAuthorized = 1) OR @UnAuthorized = 0 ) AND ((PortalId = @PortalId) or (@PortalId is null and PortalId is null)) )
+	ORDER BY VendorId DESC
+
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+
+
+	SELECT {objectQualifier}Vendors.*,
+       		'Banners' = ( select count(*) from {objectQualifier}Banners where {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId )
+	FROM {objectQualifier}Vendors
+	INNER JOIN #PageIndex PageIndex
+		ON {objectQualifier}Vendors.VendorId = PageIndex.VendorId
+	WHERE ( (PageIndex.IndexID > @PageLowerBound) OR @PageLowerBound is null )	
+		AND ( (PageIndex.IndexID < @PageUpperBound) OR @PageUpperBound is null )	
+	ORDER BY
+		PageIndex.IndexID	
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetVendorsByEmail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetVendorsByEmail]
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetVendorsByEmail
+	@Filter nvarchar(50),
+	@PortalID int,
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		VendorId	int
+	)
+
+	INSERT INTO #PageIndex (VendorId)
+	SELECT VendorId
+	FROM {objectQualifier}Vendors
+	WHERE ( (Email = @Filter) AND ((PortalId = @PortalId) or (@PortalId is null and PortalId is null)) )
+	ORDER BY VendorId DESC
+
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+
+
+	SELECT {objectQualifier}Vendors.*,
+       		'Banners' = ( select count(*) from {objectQualifier}Banners where {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId )
+	FROM {objectQualifier}Vendors
+	INNER JOIN #PageIndex PageIndex
+		ON {objectQualifier}Vendors.VendorId = PageIndex.VendorId
+	WHERE ( (PageIndex.IndexID > @PageLowerBound) OR @PageLowerBound is null )	
+		AND ( (PageIndex.IndexID < @PageUpperBound) OR @PageUpperBound is null )	
+	ORDER BY
+		PageIndex.IndexID	
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetVendorsByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetVendorsByName]
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetVendorsByName
+	@Filter nvarchar(50),
+	@PortalID int,
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		VendorId	int
+	)
+
+	INSERT INTO #PageIndex (VendorId)
+	SELECT VendorId
+	FROM {objectQualifier}Vendors
+	WHERE ( (VendorName like @Filter + '%') AND ((PortalId = @PortalId) or (@PortalId is null and PortalId is null)) )
+	ORDER BY VendorId DESC
+
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+
+
+	SELECT {objectQualifier}Vendors.*,
+       		'Banners' = ( select count(*) from {objectQualifier}Banners where {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId )
+	FROM {objectQualifier}Vendors
+	INNER JOIN #PageIndex PageIndex
+		ON {objectQualifier}Vendors.VendorId = PageIndex.VendorId
+	WHERE ( (PageIndex.IndexID > @PageLowerBound) OR @PageLowerBound is null )	
+		AND ( (PageIndex.IndexID < @PageUpperBound) OR @PageUpperBound is null )	
+	ORDER BY
+		PageIndex.IndexID	
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EventLog_{objectQualifier}EventLogConfig]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLog] DROP CONSTRAINT [FK_{objectQualifier}EventLog_{objectQualifier}EventLogConfig]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[PK_EventLogConfig]') and OBJECTPROPERTY(id, N'IsPrimaryKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLogConfig] DROP CONSTRAINT [PK_EventLogConfig]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[PK_{objectQualifier}EventLogConfig]') and OBJECTPROPERTY(id, N'IsPrimaryKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLogConfig] DROP CONSTRAINT [PK_{objectQualifier}EventLogConfig]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_EventLogConfig_EventLogTypes]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLogConfig] DROP CONSTRAINT [FK_EventLogConfig_EventLogTypes]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EventLogConfig_{objectQualifier}EventLogTypes]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLogConfig] DROP CONSTRAINT [FK_{objectQualifier}EventLogConfig_{objectQualifier}EventLogTypes]
+GO
+
+DROP INDEX {databaseOwner}[{objectQualifier}EventLogConfig].[LogTypeKey_LogTypePortalID]
+GO
+
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLogConfig] ADD CONSTRAINT [PK_{objectQualifier}EventLogConfig] PRIMARY KEY CLUSTERED  ([ID])
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLogConfig] ADD CONSTRAINT [FK_{objectQualifier}EventLogConfig_{objectQualifier}EventLogTypes] FOREIGN KEY ([LogTypeKey]) REFERENCES {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey])
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLog] ADD CONSTRAINT [FK_{objectQualifier}EventLog_{objectQualifier}EventLogConfig] FOREIGN KEY ([LogConfigID]) REFERENCES {databaseOwner}[{objectQualifier}EventLogConfig] ([ID])
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}LogTypeKey_{objectQualifier}LogTypePortalID] ON {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID])
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ADD
+	RefreshInterval int NULL,
+	PageHeadText nvarchar(500) NULL
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabsByParentId]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetTabsByParentId]
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetTabsByParentId
+
+@ParentId int
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       'IconFile' = case when Files_1.FileName is null then {objectQualifier}Tabs.IconFile else Files_1.Folder + Files_1.FileName end,
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       TabPath,
+       StartDate,
+       EndDate,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       RefreshInterval,
+       PageHeadText
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files Files_1 ON {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,Files_1.FileID)
+where  {objectQualifier}Tabs.ParentId = @ParentId
+order by TabOrder
+
+
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabs]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetTabs]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetTabs
+
+@PortalId int
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       'IconFile' = case when {objectQualifier}Files_1.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files_1.Folder + {objectQualifier}Files_1.FileName end,
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       TabPath,
+       StartDate,
+       EndDate,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end,
+       RefreshInterval,
+       PageHeadText
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files {objectQualifier}Files_1 ON {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files_1.FileID)
+where  {objectQualifier}Tabs.PortalId = @PortalId
+order by TabOrder, TabName
+
+
+
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetTabByName]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetTabByName
+
+@TabName  nvarchar(50),
+@PortalId int
+
+as
+
+select TabID, 
+TabOrder, 
+{objectQualifier}Tabs.PortalID, 
+TabName, 
+IsVisible, 
+ParentId, 
+[Level], 
+DisableLink, 
+Title, 
+Description, 
+KeyWords, 
+IsDeleted, 
+Url, 
+SkinSrc, 
+ContainerSrc, 
+TabPath, 
+StartDate, 
+EndDate,
+ 'IconFile' = case when {objectQualifier}Files_1.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files_1.Folder + {objectQualifier}Files_1.FileName end,
+'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end,
+RefreshInterval,
+PageHeadText
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+LEFT OUTER JOIN {objectQualifier}Files {objectQualifier}Files_1 ON {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files_1.FileID)
+where  TabName = @TabName
+and    (({objectQualifier}Tabs.PortalId = @PortalId) or (@PortalId is null AND {objectQualifier}Tabs.PortalId is null))
+order by TabID
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTab]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}UpdateTab]
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}UpdateTab
+
+@TabId              int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@IsDeleted          bit,
+@Url                nvarchar(255),
+@SkinSrc            nvarchar(200),
+@ContainerSrc       nvarchar(200),
+@TabPath            nvarchar(255),
+@StartDate          DateTime,
+@EndDate            DateTime,
+@RefreshInterval	int,
+@PageHeadText		nvarchar(500)
+
+as
+
+update {objectQualifier}Tabs
+set    TabName            = @TabName,
+       IsVisible          = @IsVisible,
+       DisableLink        = @DisableLink,
+       ParentId           = @ParentId,
+       IconFile           = @IconFile,
+       Title              = @Title,
+       Description        = @Description,
+       KeyWords           = @KeyWords,
+       IsDeleted          = @IsDeleted,
+       Url                = @Url,
+       SkinSrc            = @SkinSrc,
+       ContainerSrc       = @ContainerSrc,
+       TabPath            = @TabPath,
+       StartDate          = @StartDate,
+       EndDate            = @EndDate,
+	   RefreshInterval	  = @RefreshInterval,
+	   PageHeadText		  = @PageHeadText
+where  TabId = @TabId
+
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAllTabs]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetAllTabs]
+GO
+
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetAllTabs
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       'IconFile' = case when {objectQualifier}Files_1.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files_1.Folder + {objectQualifier}Files_1.FileName end,
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       TabPath,
+       StartDate,
+       EndDate,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end,
+       RefreshInterval,
+       PageHeadText
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+LEFT OUTER JOIN {databaseOwner}{objectQualifier}Files {objectQualifier}Files_1 ON {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files_1.FileID)
+order by TabOrder, TabName
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTab]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetTab]
+GO
+
+
+CREATE  procedure {databaseOwner}{objectQualifier}GetTab
+
+@TabId    int
+
+as
+
+select TabID, 
+TabOrder, 
+{objectQualifier}Tabs.PortalID, 
+TabName, 
+IsVisible, 
+ParentId, 
+[Level], 
+DisableLink, 
+Title, 
+Description, 
+KeyWords, 
+IsDeleted, 
+'Url'= case when F2.FileName is null then {objectQualifier}Tabs.Url else F2.Folder + F2.FileName end, 
+SkinSrc, 
+ContainerSrc, 
+TabPath, 
+StartDate, 
+EndDate,
+'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end,
+RefreshInterval,
+PageHeadText
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files F2 on {objectQualifier}Tabs.Url = 'fileid=' + convert(varchar,F2.FileID)
+where  TabId = @TabId
+
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddTab]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}AddTab]
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}AddTab
+
+@PortalId           int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@Url                nvarchar(255),
+@SkinSrc            nvarchar(200),
+@ContainerSrc       nvarchar(200),
+@TabPath            nvarchar(255),
+@StartDate          DateTime,
+@EndDate            DateTime,
+@RefreshInterval	int,
+@PageHeadText		nvarchar(500)
+
+as
+
+insert into {objectQualifier}Tabs (
+    PortalId,
+    TabName,
+    IsVisible,
+    DisableLink,
+    ParentId,
+    IconFile,
+    Title,
+    Description,
+    KeyWords,
+    IsDeleted,
+    Url,
+    SkinSrc,
+    ContainerSrc,
+    TabPath,
+    StartDate,
+    EndDate,
+	RefreshInterval,
+	PageHeadText
+)
+values (
+    @PortalId,
+    @TabName,
+    @IsVisible,
+    @DisableLink,
+    @ParentId,
+    @IconFile,
+    @Title,
+    @Description,
+    @KeyWords,
+    0,
+    @Url,
+    @SkinSrc,
+    @ContainerSrc,
+    @TabPath,
+    @StartDate,
+    @EndDate,
+    @RefreshInterval,
+    @PageHeadText
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAllFiles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetAllFiles]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetAllFiles
+
+as
+
+select FileId,
+       PortalId,
+       FileName,
+       Extension,
+       Size,
+       WIdth,
+       Height,
+       ContentType,
+	   Folder
+from {databaseOwner}{objectQualifier}Files
+
+GO
+
+
+/* update admin controls to use current host module */
+update {databaseOwner}{objectQualifier}modules 
+set moduledefid=(
+	select moduledefid
+	from {databaseOwner}{objectQualifier}desktopmodules dm1
+	join {databaseOwner}{objectQualifier}moduledefinitions  md1 on dm1.desktopmoduleid=md1.desktopmoduleid
+	where dm1.foldername='Languages'
+)
+from {databaseOwner}{objectQualifier}modules m
+join {databaseOwner}{objectQualifier}moduledefinitions md on m.moduledefid=md.moduledefid
+join {databaseOwner}{objectQualifier}desktopmodules dm on md.desktopmoduleid=dm.desktopmoduleid
+where not m.portalid is null and
+dm.foldername='Custom Locales'
+
+GO
+
+/* delete old module */
+delete {databaseOwner}{objectQualifier}desktopmodules
+where foldername='Custom Locales'
+
+GO
+
+/* set control type for admin*/
+update {databaseOwner}{objectQualifier}modulecontrols
+set ControlType=2
+from {databaseOwner}{objectQualifier}modulecontrols mc
+join {databaseOwner}{objectQualifier}moduledefinitions md on mc.moduledefid=md.moduledefid
+join {databaseOwner}{objectQualifier}desktopmodules dm on md.desktopmoduleid=dm.desktopmoduleid
+where dm.foldername='Languages'
+and (controlkey is null or controlkey='Language' or controlkey='FullEditor')
+
+GO
+
+
+/******************************/
+/* Rename unnamed constraints */
+/******************************/
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}AnonymousUsers DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}AnonymousUsers') 
+      AND col.name = 'CreationDate' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}AnonymousUsers DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}AnonymousUsers') 
+      AND col.name = 'LastActiveDate' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}AnonymousUsers ALTER COLUMN [CreationDate] [datetime] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}AnonymousUsers ALTER COLUMN [LastActiveDate] [datetime] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}AnonymousUsers ADD CONSTRAINT [DF_{objectQualifier}AnonymousUsers_CreationDate] DEFAULT (getdate()) FOR [CreationDate]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}AnonymousUsers ADD CONSTRAINT [DF_{objectQualifier}AnonymousUsers_LastActiveDate] DEFAULT (getdate()) FOR [LastActiveDate]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Banners DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Banners') 
+      AND col.name = 'Views' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Banners DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Banners') 
+      AND col.name = 'ClickThroughs' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Banners DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Banners') 
+      AND col.name = 'Criteria' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Banners DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Banners') 
+      AND col.name = 'Width' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Banners DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Banners') 
+      AND col.name = 'Height' 
+    ) 
+EXEC (@sql)
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ALTER COLUMN [Views] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ALTER COLUMN [ClickThroughs] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ALTER COLUMN [Criteria] [bit] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ALTER COLUMN [Width] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ALTER COLUMN [Height] [int] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ADD CONSTRAINT [DF_{objectQualifier}Banners_Views] DEFAULT (0) FOR [Views]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ADD CONSTRAINT [DF_{objectQualifier}Banners_ClickThroughs] DEFAULT (0) FOR [ClickThroughs]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ADD CONSTRAINT [DF_{objectQualifier}Banners_Criteria] DEFAULT (1) FOR [Criteria]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ADD CONSTRAINT [DF_{objectQualifier}Banners_Width] DEFAULT (0) FOR [Width]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ADD CONSTRAINT [DF_{objectQualifier}Banners_Height] DEFAULT (0) FOR [Height]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}DesktopModules DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}DesktopModules') 
+      AND col.name = 'SupportedFeatures' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}DesktopModules ALTER COLUMN [SupportedFeatures] [int] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}DesktopModules ADD CONSTRAINT [DF_{objectQualifier}DesktopModules_SupportedFeatures] DEFAULT (0) FOR [SupportedFeatures]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}HostSettings DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}HostSettings') 
+      AND col.name = 'SettingIsSecure' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}HostSettings ALTER COLUMN [SettingIsSecure] [bit] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}HostSettings ADD CONSTRAINT [DF_{objectQualifier}HostSettings_Secure] DEFAULT (0) FOR [SettingIsSecure]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Lists DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Lists') 
+      AND col.name = 'ParentID' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Lists DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Lists') 
+      AND col.name = 'Level' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Lists DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Lists') 
+      AND col.name = 'SortOrder' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Lists DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Lists') 
+      AND col.name = 'DefinitionID' 
+    ) 
+EXEC (@sql)
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Lists ALTER COLUMN [ParentID] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Lists ALTER COLUMN [Level] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Lists ALTER COLUMN [SortOrder] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Lists ALTER COLUMN [DefinitionID] [int] NOT NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Lists ADD CONSTRAINT [DF_{objectQualifier}Lists_ParentID] DEFAULT (0) FOR [ParentID]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Lists ADD CONSTRAINT [DF_{objectQualifier}Lists_Level] DEFAULT (0) FOR [Level]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Lists ADD CONSTRAINT [DF_{objectQualifier}Lists_SortOrder] DEFAULT (0) FOR [SortOrder]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Lists ADD CONSTRAINT [DF_{objectQualifier}Lists_DefinitionID] DEFAULT (0) FOR [DefinitionID]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}ModuleDefinitions DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}ModuleDefinitions') 
+      AND col.name = 'DefaultCacheTime' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}ModuleDefinitions ALTER COLUMN [DefaultCacheTime] [int] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}ModuleDefinitions ADD CONSTRAINT [DF_{objectQualifier}ModuleDefinitions_DefaultCacheTime] DEFAULT (0) FOR [DefaultCacheTime]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Modules DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Modules') 
+      AND col.name = 'AllTabs' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Modules DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Modules') 
+      AND col.name = 'IsDeleted' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Modules ALTER COLUMN [AllTabs] [bit] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Modules ALTER COLUMN [IsDeleted] [bit] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Modules ADD CONSTRAINT [DF_{objectQualifier}Modules_AllTabs] DEFAULT (0) FOR [AllTabs]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Modules ADD CONSTRAINT [DF_{objectQualifier}Modules_IsDeleted] DEFAULT (0) FOR [IsDeleted]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Portals DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Portals') 
+      AND col.name = 'UserRegistration' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Portals DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Portals') 
+      AND col.name = 'BannerAdvertising' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Portals DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Portals') 
+      AND col.name = 'HostFee' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Portals DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Portals') 
+      AND col.name = 'HostSpace' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Portals DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Portals') 
+      AND col.name = 'GUID' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Portals DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Portals') 
+      AND col.name = 'DefaultLanguage' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Portals DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Portals') 
+      AND col.name = 'TimezoneOffset' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Portals DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Portals') 
+      AND col.name = 'HomeDirectory' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ALTER COLUMN [UserRegistration] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ALTER COLUMN [BannerAdvertising] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ALTER COLUMN [HostFee] [money] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ALTER COLUMN [HostSpace] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ALTER COLUMN [GUID] [uniqueidentifier] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ALTER COLUMN [DefaultLanguage] [nvarchar] (6) NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ALTER COLUMN [TimezoneOffset] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ALTER COLUMN [HomeDirectory] [varchar] (100) NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD CONSTRAINT [DF_{objectQualifier}Portals_UserRegistration] DEFAULT (0) FOR [UserRegistration]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD CONSTRAINT [DF_{objectQualifier}Portals_BannerAdvertising] DEFAULT (0) FOR [BannerAdvertising]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD CONSTRAINT [DF_{objectQualifier}Portals_HostFee] DEFAULT (0) FOR [HostFee]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD CONSTRAINT [DF_{objectQualifier}Portals_HostSpace] DEFAULT (0) FOR [HostSpace]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD CONSTRAINT [DF_{objectQualifier}Portals_GUID]  DEFAULT (newid()) FOR [GUID]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD CONSTRAINT [DF_{objectQualifier}Portals_DefaultLanguage] DEFAULT ('en-US') FOR [DefaultLanguage]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD CONSTRAINT [DF_{objectQualifier}Portals_TimezoneOffset]  DEFAULT ((-8)) FOR [TimezoneOffset]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD CONSTRAINT [DF_{objectQualifier}Portals_HomeDirectory] DEFAULT ('') FOR [HomeDirectory]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Roles DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Roles') 
+      AND col.name = 'ServiceFee' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Roles DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Roles') 
+      AND col.name = 'IsPublic' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Roles DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Roles') 
+      AND col.name = 'AutoAssignment' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Roles ALTER COLUMN [ServiceFee] [money] NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Roles ALTER COLUMN [IsPublic] [bit] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Roles ALTER COLUMN [AutoAssignment] [bit] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Roles ADD CONSTRAINT [DF_{objectQualifier}Roles_ServiceFee] DEFAULT (0) FOR [ServiceFee]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Roles ADD CONSTRAINT [DF_{objectQualifier}Roles_IsPublic] DEFAULT (0) FOR [IsPublic]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Roles ADD CONSTRAINT [DF_{objectQualifier}Roles_AutoAssignment] DEFAULT (0) FOR [AutoAssignment]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}TabModules DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}TabModules') 
+      AND col.name = 'DisplayTitle' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}TabModules DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}TabModules') 
+      AND col.name = 'DisplayPrint' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}TabModules DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}TabModules') 
+      AND col.name = 'DisplaySyndicate' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ALTER COLUMN [DisplayTitle] [bit] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ALTER COLUMN [DisplayPrint] [bit] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ALTER COLUMN [DisplaySyndicate] [bit] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ADD CONSTRAINT [DF_{objectQualifier}TabModules_DisplayTitle] DEFAULT (1) FOR [DisplayTitle]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ADD CONSTRAINT [DF_{objectQualifier}TabModules_DisplayPrint] DEFAULT (1) FOR [DisplayPrint]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ADD CONSTRAINT [DF_{objectQualifier}TabModules_DisplaySyndicate] DEFAULT (1) FOR [DisplaySyndicate]
+GO
+
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Tabs DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Tabs') 
+      AND col.name = 'TabOrder' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Tabs DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Tabs') 
+      AND col.name = 'IsVisible' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Tabs DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Tabs') 
+      AND col.name = 'Level' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Tabs DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Tabs') 
+      AND col.name = 'DisableLink' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Tabs DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Tabs') 
+      AND col.name = 'IsDeleted' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ALTER COLUMN [TabOrder] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ALTER COLUMN [IsVisible] [bit] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ALTER COLUMN [Level] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ALTER COLUMN [DisableLink] [bit] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ALTER COLUMN [IsDeleted] [bit] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD CONSTRAINT [DF_{objectQualifier}Tabs_TabOrder] DEFAULT (0) FOR [TabOrder]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD CONSTRAINT [DF_{objectQualifier}Tabs_IsVisible] DEFAULT (1) FOR [IsVisible]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD CONSTRAINT [DF_{objectQualifier}Tabs_Level] DEFAULT (0) FOR [Level]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD CONSTRAINT [DF_{objectQualifier}Tabs_DisableLink] DEFAULT (0) FOR [DisableLink]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD CONSTRAINT [DF_{objectQualifier}Tabs_IsDeleted] DEFAULT (0) FOR [IsDeleted]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}UrlTracking') 
+      AND col.name = 'TrackClicks' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}UrlTracking') 
+      AND col.name = 'NewWindow' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking ALTER COLUMN [TrackClicks] [bit] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking ALTER COLUMN [NewWindow] [bit] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking ADD CONSTRAINT [DF_{objectQualifier}UrlTracking_TrackClicks] DEFAULT (1) FOR [TrackClicks]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking ADD CONSTRAINT [DF_{objectQualifier}UrlTracking_NewWindow] DEFAULT (0) FOR [NewWindow]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}UserPortals DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}UserPortals') 
+      AND col.name = 'CreatedDate' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UserPortals ALTER COLUMN [CreatedDate] [datetime] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UserPortals ADD CONSTRAINT [DF_{objectQualifier}UserPortals_CreatedDate] DEFAULT (getdate()) FOR [CreatedDate]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Users DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Users') 
+      AND col.name = 'IsSuperUser' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Users ALTER COLUMN [IsSuperUser] [bit] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Users ADD CONSTRAINT [DF_{objectQualifier}Users_IsSuperUser] DEFAULT (0) FOR [IsSuperUser]
+GO
+
+
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Vendors DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Vendors') 
+      AND col.name = 'ClickThroughs' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Vendors DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Vendors') 
+      AND col.name = 'Views' 
+    ) 
+EXEC (@sql)
+GO
+DECLARE @sql NVARCHAR(2000) 
+SET @sql = 'ALTER TABLE {databaseOwner}{objectQualifier}Vendors DROP CONSTRAINT ' + ( 
+    SELECT obj.name 
+    FROM SYSCOLUMNS col JOIN 
+         SYSOBJECTS obj ON col.cdefault = obj.id 
+    WHERE col.id = OBJECT_ID('{databaseOwner}{objectQualifier}Vendors') 
+      AND col.name = 'Authorized' 
+    ) 
+EXEC (@sql)
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Vendors ALTER COLUMN [ClickThroughs] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Vendors ALTER COLUMN [Views] [int] NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}Vendors ALTER COLUMN [Authorized] [bit] NOT NULL
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Vendors ADD CONSTRAINT [DF_{objectQualifier}Vendors_ClickThroughs] DEFAULT (0) FOR [ClickThroughs]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Vendors ADD CONSTRAINT [DF_{objectQualifier}Vendors_Views] DEFAULT (0) FOR [Views]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Vendors ADD CONSTRAINT [DF_{objectQualifier}Vendors_Authorized] DEFAULT (1) FOR [Authorized]
+GO
+
+
+/* Add index to Version table (if it's missing when upgrading from version 1.x to 3.x) */
+if not exists (select * from dbo.sysindexes where name = 'IX_{objectQualifier}Version')
+ALTER TABLE {databaseOwner}{objectQualifier}Version ADD CONSTRAINT [IX_{objectQualifier}Version] UNIQUE NONCLUSTERED  ([Major], [Minor], [Build])
+GO
+
+/* Drop stored procedure 'UpdateVersion' (left-over from 1.x) */
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}UpdateVersion]
+GO
+
+/* Add LanguageSelector skinobject */
+INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ControlKey], [ControlSrc], [ControlType]) VALUES (N'LANGUAGE', N'Admin/Skins/Language.ascx', -2)
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

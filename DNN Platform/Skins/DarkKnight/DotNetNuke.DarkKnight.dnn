@@ -1,0 +1,74 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.DarkKnight.Skin" type="Skin" version="01.00.01">
+      <friendlyName>DotNetNuke.DarkKnight</friendlyName>
+      <description>DarkKnight demo</description>
+	  <iconFile>images/DKLogo.png</iconFile>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <components> 
+        <component type="Skin">
+            <skinFiles>
+              <skinName>DarkKnight</skinName>
+              <basePath>Portals\_default\Skins\DarkKnight</basePath>
+              <skinFile>
+                <name>license.txt</name>
+              </skinFile>
+              <skinFile>
+                <name>releaseNotes.txt</name>
+              </skinFile>
+            </skinFiles>
+        </component> 
+        <component type="ResourceFile">
+            <resourceFiles>
+              <basePath>Portals\_default\Skins\DarkKnight</basePath>
+              <resourceFile>
+                <name>DotNetNuke.DarkKnight.Skin.zip</name>
+              </resourceFile>
+            </resourceFiles>
+        </component> 
+      </components>
+    </package>
+    <package name="DotNetNuke.DarkKnight.Container" type="Container" version="01.00.01">
+      <friendlyName>DotNetNuke.DarkKnight</friendlyName>
+      <description>DarkKnight demo</description>
+	  <iconFile>images/DKLogo.png</iconFile>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <components> 
+        <component type="Container">
+            <containerFiles>
+              <containerName>DarkKnight</containerName>
+              <basePath>Portals\_default\Containers\DarkKnight</basePath>
+              <containerFile>
+                <name>license.txt</name>
+              </containerFile>
+              <containerFile>
+                <name>releaseNotes.txt</name>
+              </containerFile>
+            </containerFiles>
+        </component> 
+        <component type="ResourceFile">
+            <resourceFiles>
+              <basePath>Portals\_default\Containers\DarkKnight</basePath>
+              <resourceFile>
+                <name>DotNetNuke.DarkKnight.Container.zip</name>
+              </resourceFile>
+            </resourceFiles>
+        </component> 
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

@@ -1,0 +1,20 @@
+﻿
+.c_footer{
+    margin-top: 10px;
+    display: block;
+}
+.c_footer a.CommandButton{
+    text-decoration: underline;
+    color: #999;
+    display: block;
+    float: left;
+     margin-right: 10px;
+}
+.c_footer a.CommandButton:hover{
+    color: #666;
+}
+.c_footer input[type="image"]{
+    display: block;
+    float: left;
+    margin-right: 10px;
+}

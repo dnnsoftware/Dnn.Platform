@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="DotNetNuke.UI.Skins.Skin">
+    <Position X="1" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAQDAgQFAQAFoIBCKAACEAAQRQAYAgEEgEIERAEA=</HashCode>
+      <FileName>UI\Skins\Skin.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Panes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DotNetNuke.UI.Skins.Pane">
+    <Position X="6.25" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAQICBAAAEAAAAAAAABAAQAAAIEAAEAQAgAAAAAAAA=</HashCode>
+      <FileName>UI\Skins\Pane.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PaneControl" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Containers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DotNetNuke.UI.Containers.Container">
+    <Position X="10.75" Y="2.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>CAQAACAQAABAgAABAAAgAAIFAAACACAAAABEAAQgAAA=</HashCode>
+      <FileName>UI\Containers\Container.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_ModuleHost" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="System.Web.UI.HtmlControls.HtmlContainerControl" Collapsed="true">
+    <Position X="9.75" Y="0.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="DotNetNuke.UI.Modules.ModuleHost">
+    <Position X="7" Y="4.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAAAACAAAAAAghAQAAAAAAihAAAAAACAgAAAAgAAAAQ=</HashCode>
+      <FileName>UI\Modules\ModuleHost.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ModuleControl" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="DotNetNuke.UI.Modules.IModuleControl">
+    <Position X="7.25" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAABAAAQAAAAAAAAEAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Modules\IModuleControl.vb</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

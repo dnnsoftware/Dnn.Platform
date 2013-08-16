@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountInfo.Text">
+    <value xml:space="preserve">Anmeldeinformationen</value>
+  </data>
+  <data name="AccountInfoIntro.Text">
+    <value xml:space="preserve">Um Ihre DotNetNuke-Installation zu einzurichten, geben Sie bitte die folgenden Informationen an.</value>
+  </data>
+  <data name="AdminInfo.Text">
+    <value xml:space="preserve">Administrative Angaben</value>
+  </data>
+  <data name="CheckingIIS.Text">
+    <value xml:space="preserve">Überprüfen der IIS-Konfiguration</value>
+  </data>
+  <data name="ChooseDbError.Text">
+    <value xml:space="preserve">Sie müssen einen Datenbanktyp auswählen!</value>
+  </data>
+  <data name="cmdContinue.Text">
+    <value xml:space="preserve">weiter</value>
+  </data>
+  <data name="Confirm.Help">
+    <value xml:space="preserve">Bestätigen Sie das zuvor eingegebene Kennwort.</value>
+  </data>
+  <data name="Confirm.Required">
+    <value xml:space="preserve">Sie müssen das Kennwort zweimal identisch eingeben.</value>
+  </data>
+  <data name="Confirm.Text">
+    <value xml:space="preserve">Kennwort bestätigen</value>
+  </data>
+  <data name="CreateSuperUser.Text">
+    <value xml:space="preserve">Systemverwalter-Konto erstellen</value>
+  </data>
+  <data name="CreatingSite.Text">
+    <value xml:space="preserve">Erstelle die Website [{0}]</value>
+  </data>
+  <data name="CreatingSuperUser.Text">
+    <value xml:space="preserve">Erstelle Anmeldekonto</value>
+  </data>
+  <data name="DatabaseAdvanced.Text">
+    <value xml:space="preserve">erweitert</value>
+  </data>
+  <data name="DatabaseConnectionError.Text">
+    <value xml:space="preserve">Fehler bei der Datenbank-Verbindung</value>
+  </data>
+  <data name="DatabaseError.Text">
+    <value xml:space="preserve">Auf die Datenbank kann nicht zugegriffen werden. </value>
+  </data>
+  <data name="DatabaseFilename.Help">
+    <value xml:space="preserve">Name Ihrer Datenbank-Datei.</value>
+  </data>
+  <data name="DatabaseFilename.Required">
+    <value xml:space="preserve">Sie müssen den Dateinamen der Datenbank angeben.</value>
+  </data>
+  <data name="DatabaseFilename.Text">
+    <value xml:space="preserve">Dateiname</value>
+  </data>
+  <data name="DatabaseInfo.Text">
+    <value xml:space="preserve">Datenbank-Informationen</value>
+  </data>
+  <data name="DatabaseInstallation.Text">
+    <value xml:space="preserve">Datenbank-Installation</value>
+  </data>
+  <data name="DatabaseName.Help">
+    <value xml:space="preserve">Geben Sie den Namen Ihrer Datenbank ein.</value>
+  </data>
+  <data name="DatabaseName.Required">
+    <value xml:space="preserve">Sie müssen den Datenbanknamen angeben.</value>
+  </data>
+  <data name="DatabaseName.Text">
+    <value xml:space="preserve">Name der Datenbank</value>
+  </data>
+  <data name="DatabaseObjectQualifier.Help">
+    <value xml:space="preserve">Geben Sie hier den eindeutigen Objekt-Präfix für alle Objekte Ihrer Website innerhalb der Datenbank ein.</value>
+  </data>
+  <data name="DatabaseObjectQualifier.Text">
+    <value xml:space="preserve">Objekt-Präfix</value>
+  </data>
+  <data name="DatabaseOwner.Text">
+    <value xml:space="preserve">Datenbank-Eigentümer</value>
+  </data>
+  <data name="DatabasePassword.Help">
+    <value xml:space="preserve">Geben Sie das Kennwort des Datenbank-Benutzers ein.</value>
+  </data>
+  <data name="DatabasePassword.Required">
+    <value xml:space="preserve">Sie müssen das Kennwort für das Datenbankkonto angeben.</value>
+  </data>
+  <data name="DatabasePassword.Text">
+    <value xml:space="preserve">Benutzerkennwort</value>
+  </data>
+  <data name="DatabaseRunAs.Help">
+    <value xml:space="preserve">Geben Sie hier an, in welchen Kontext die Datenbank ausgeführt wird.</value>
+  </data>
+  <data name="DatabaseRunAs.Text">
+    <value xml:space="preserve">Datenbank ausführen als</value>
+  </data>
+  <data name="DatabaseSecurity.Help">
+    <value xml:space="preserve">Geben Sie hier den Typ der Datenbank-Sicherheit ein.</value>
+  </data>
+  <data name="DatabaseSecurity.Text">
+    <value xml:space="preserve">Sicherheit</value>
+  </data>
+  <data name="DatabaseServer.Help">
+    <value xml:space="preserve">Geben Sie hier den Namen oder die IP-Adresse und Instanz Ihres Datenbank-Servers an.</value>
+  </data>
+  <data name="DatabaseServer.Required">
+    <value xml:space="preserve">Sie müssen den Namen des Datenbankservers angeben.</value>
+  </data>
+  <data name="DatabaseServer.Text">
+    <value xml:space="preserve">Datenbank-Server</value>
+  </data>
+  <data name="DatabaseSetup.Help">
+    <value xml:space="preserve">Wählen Sie, ob Sie die Standard- oder eine erweiterte Einstellung der Datenbank verwenden wollen.</value>
+  </data>
+  <data name="DatabaseSetup.Text">
+    <value xml:space="preserve">Datenbank-Einrichtung</value>
+  </data>
+  <data name="DatabaseStandard.Text">
+    <value xml:space="preserve">Standard</value>
+  </data>
+  <data name="DatabaseType.Help">
+    <value xml:space="preserve">Legen Sie hier den Typ der zu verwendenden Datenbank fest.</value>
+  </data>
+  <data name="DatabaseType.Text">
+    <value xml:space="preserve">Datenbank-Typ</value>
+  </data>
+  <data name="DatabaseUsername.Help">
+    <value xml:space="preserve">Geben Sie hier den zu verwendenden Benutzernamen für den Datenbank-Server an.</value>
+  </data>
+  <data name="DatabaseUsername.Required">
+    <value xml:space="preserve">Sie müssen den Benutzernamen für die Datenbank angeben.</value>
+  </data>
+  <data name="DatabaseUsername.Text">
+    <value xml:space="preserve">Anmeldename am SQL-Server</value>
+  </data>
+  <data name="DbSecurityIntegrated.Text">
+    <value xml:space="preserve">integriert</value>
+  </data>
+  <data name="DbSecurityUserDefined.Text">
+    <value xml:space="preserve">benutzerdefiniert</value>
+  </data>
+  <data name="DeletingOldFiles.Text">
+    <value xml:space="preserve">Ältere Dateien löschen für </value>
+  </data>
+  <data name="Error.Text">
+    <value xml:space="preserve">Fehler</value>
+  </data>
+  <data name="ErrorInStep.Text">
+    <value xml:space="preserve">Es ist ein Fehler aufgetreten: {0}</value>
+  </data>
+  <data name="ExtensionsInstallation.Text">
+    <value xml:space="preserve">Installation von Erweiterungen</value>
+  </data>
+  <data name="FileAndFolderPermissionCheck.Text">
+    <value xml:space="preserve">Berechtigungsprüfung für Dateien und Ordner</value>
+  </data>
+  <data name="FileAndFolderPermissionCheckFailed.Text">
+    <value xml:space="preserve">&lt;div class="permission"&gt;&lt;img alt="Das bild zeigt die Berechtigungseinstellungen für das Basisverzeichnis der Website, die Lesen, Schreiben und Ändern dem Benutzerkonto gewähren müssen, das vom IIS-Anwendungspool verwendet wird." src="..\403-3.gif" align="right" hspace="10"/&gt;
+&lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;Ihre Website hat die Berechtigungsprüfung nicht bestanden.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;
+Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken Sie das Verzeichnis mit der rechten Maustaste an und wählen Sie Sicherheit und Berechtigungen im Kontextmenü und dann den Reiter Berechtigungen. Fügen Sie hier das entsprechenden Benutzerkonto hinzu und gewähren Sie die Berechtigungen.
+&lt;br/&gt;&lt;br/&gt;
+&lt;h3&gt;Falls Sie Windows Server 2003, Windows Vista oder Windows Server 2008 mit IIS6 oder IIS7 verwenden&lt;/h3&gt;
+&lt;p&gt;Das Konto NT AUTHORITY\Netzwerkdienst muss die Berechtigungen Lesen, Schreiben und Ändern für das Basisverzeichnis der Website erhalten.&lt;/p&gt;
+&lt;h3&gt;Falls Sie Windows 7, Windows 8 oder Windows Server 2008 R2 bzw. 2012 verwenden mit IIS7.5&lt;/h3&gt;
+&lt;p&gt;Das Benutzerkonto IIS AppPool\DefaultAppPool muss die Berechtigungen Lesen, Schreiben und Ändern für das Basisverzeichnis der Website erhalten.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Recheck&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="FileAndFolderPermissionCheckTitle.Text">
+    <value xml:space="preserve">Prüfe Berechtigungen für Dateien und Ordner</value>
+  </data>
+  <data name="FileCreateCheck.Text">
+    <value xml:space="preserve">Prüfe das Erstellen von Dateien</value>
+  </data>
+  <data name="FileDeleteCheck.Text">
+    <value xml:space="preserve">Prüfe das Löschen von Dateien</value>
+  </data>
+  <data name="FolderCreateCheck.Text">
+    <value xml:space="preserve">Prüfe das Erstellen von Ordnern</value>
+  </data>
+  <data name="FolderDeleteCheck.Text">
+    <value xml:space="preserve">Prüfe das Löschen von Ordnern</value>
+  </data>
+  <data name="HostWarning.Text">
+    <value xml:space="preserve">Der Name des Systemverwalters enthält nicht zugelassene Zeichen, verwenden dürfen Sie nur a-Z, 0-9, . und -.  Bitte passen Sie den Namen entsprechend an.</value>
+  </data>
+  <data name="IISVerificationFail.Text">
+    <value xml:space="preserve">Der Anwendungspool des Webservers muss im integrierten Modus ausgeführt werden.</value>
+  </data>
+  <data name="InitHostSetting.Text">
+    <value xml:space="preserve">Systemeinstellungen werden initialisiert.</value>
+  </data>
+  <data name="InputErrorInvalidPassword.Text">
+    <value xml:space="preserve">Das Kennwort entspricht nicht den Mindestanforderungen (Länge, Sonderzeichen).</value>
+  </data>
+  <data name="InputErrorMissingRequiredFields.Text">
+    <value xml:space="preserve">Alle Pflichtfelder müssen ausgefüllt werden!</value>
+  </data>
+  <data name="Installation.Text">
+    <value xml:space="preserve">Installation fortsetzen</value>
+  </data>
+  <data name="InstallationComplete.Text">
+    <value xml:space="preserve">Installation abgeschlossen!</value>
+  </data>
+  <data name="InstallationDone.Text">
+    <value xml:space="preserve">abgeschlossen</value>
+  </data>
+  <data name="InstallationIntroInfo.Text">
+    <value xml:space="preserve">DotNetNuke wird installiert. Bitte haben Sie Geduld...</value>
+  </data>
+  <data name="InstallingDataBaseScriptStep.Text">
+    <value xml:space="preserve">Die Datenbank-Skripte werden verarbeitet </value>
+  </data>
+  <data name="InstallingExtension.Text">
+    <value xml:space="preserve">Installiere {0} - {1}</value>
+  </data>
+  <data name="InstallingExtensionType.Text">
+    <value xml:space="preserve">Installiere Pakete des Typs {0}</value>
+  </data>
+  <data name="InstallingLanguagesTitle.Text">
+    <value xml:space="preserve">Sprachen werden installiert</value>
+  </data>
+  <data name="InstallingMembershipDatabaseScriptStep.Text">
+    <value xml:space="preserve">Die Datenbank-Skripte für den Membership-Provider werden ausgeführt.</value>
+  </data>
+  <data name="InstallTitle.Text">
+    <value xml:space="preserve">DotNetNuke-Installation</value>
+  </data>
+  <data name="IntroDetail.Text">
+    <value xml:space="preserve">&lt;a class="dnnSecondaryAction" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Installations-Video&lt;/a&gt; (in engl. Sprache)</value>
+  </data>
+  <data name="InvalidQualifier.Text">
+    <value xml:space="preserve">Der Objekt-Präfix mus mit einem Buchstaben beginnen und darf nicht mehr als 20 Zeichen haben.</value>
+  </data>
+  <data name="IsAbleToPerformDatabaseActions.Text">
+    <value xml:space="preserve">Ihr SQL-Server-Benutzer verfügt nicht über die notwendigen Berechtigungen (dbo) zum Installieren.</value>
+  </data>
+  <data name="IsAbleToPerformDatabaseActionsCheck.Text">
+    <value xml:space="preserve">Prüfe, ob das Benutzerkonto am SQL-Server über die notwendigen Datenbankberechtigungen verfügt.</value>
+  </data>
+  <data name="IsSqlServerDbo.Text">
+    <value xml:space="preserve">Ihr Datenbank-Benutzer verfügt nicht über die DBO-Berechtigungen.</value>
+  </data>
+  <data name="IsValidDotNetVersion.Text">
+    <value xml:space="preserve">DotNetNuke erfordert mindestens Version 4.0 des .Net-Frameworks.</value>
+  </data>
+  <data name="IsValidSqlServerVersion.Text">
+    <value xml:space="preserve">DotNetNuke erfordert mindestens Version 2008 des Microsoft SQL Servers (Express oder höher).</value>
+  </data>
+  <data name="IsValidSqlServerVersionCheck.Text">
+    <value xml:space="preserve">Prüfe, ob mindestens SQL-Server 2008 (Express oder höher) installiert ist.</value>
+  </data>
+  <data name="Language.Help">
+    <value xml:space="preserve">Wählen Sie hier die Standardsprache, die Sie für Ihre Website verwenden wollen.</value>
+  </data>
+  <data name="Language.Text">
+    <value xml:space="preserve">Sprache</value>
+  </data>
+  <data name="LanguageDutch.Text">
+    <value xml:space="preserve">holländisch</value>
+  </data>
+  <data name="LanguageEnglish.Text">
+    <value xml:space="preserve">englisch</value>
+  </data>
+  <data name="LanguageFrench.Text">
+    <value xml:space="preserve">französisch</value>
+  </data>
+  <data name="LanguageGerman.Text">
+    <value xml:space="preserve">deutsch</value>
+  </data>
+  <data name="LanguageItalian.Text">
+    <value xml:space="preserve">italienisch</value>
+  </data>
+  <data name="LanguageSpanish.Text">
+    <value xml:space="preserve">spanisch</value>
+  </data>
+  <data name="LaunchInstall.Text">
+    <value xml:space="preserve">Installation starten</value>
+  </data>
+  <data name="LegacyLangaugePack.Text">
+    <value xml:space="preserve">Das Sprachpaket ist älter als die altuelle Version der Anwendung: </value>
+  </data>
+  <data name="LicenseActivation.Text">
+    <value xml:space="preserve">Lizenz aktivieren</value>
+  </data>
+  <data name="NoErrorsLogged.Text">
+    <value xml:space="preserve">Es wurden bei der Installation keine Fehler aufgezeichnet.</value>
+  </data>
+  <data name="NoInstallationLog.Text">
+    <value xml:space="preserve">Es gibt kein Installationsprotokoll</value>
+  </data>
+  <data name="PageTitle.Text">
+    <value xml:space="preserve">DotNetNuke-Installation</value>
+  </data>
+  <data name="Password.Help">
+    <value xml:space="preserve">Geben Sie hier das Kennwort für das Systemverwalterkonto an.</value>
+  </data>
+  <data name="Password.Required">
+    <value xml:space="preserve">Sie müssen ein Kennwort eingeben.</value>
+  </data>
+  <data name="Password.Text">
+    <value xml:space="preserve">Kennwort:</value>
+  </data>
+  <data name="PasswordMismatch.Text">
+    <value xml:space="preserve">Sie müssen das Kennwort zweimal identisch eingeben.</value>
+  </data>
+  <data name="ProcessingUpgradeScript.Text">
+    <value xml:space="preserve">Aktualisierungsskripte werden verarbeitet</value>
+  </data>
+  <data name="RequiresFileOrDatabase.Text">
+    <value xml:space="preserve">In der Datenbank-Verbindung muss entweder der Name einer angefügten Datenbank oder der Dateiname einer User-Instance-Datenbank angegeben werden.</value>
+  </data>
+  <data name="Retry.Text">
+    <value xml:space="preserve">erneut versuchen</value>
+  </data>
+  <data name="SeeLogs.Text">
+    <value xml:space="preserve">Protokoll einsehen</value>
+  </data>
+  <data name="SkipCreatingSite.Text">
+    <value xml:space="preserve">Der Website-Alias [{0}] existiert bereits, daher wird dieser Schritt übersprungen.</value>
+  </data>
+  <data name="SqlTypeExpress.Text">
+    <value xml:space="preserve">Benutzerinstanz-Datenbankdatei&lt;br /&gt; (nur SQL Server Express)</value>
+  </data>
+  <data name="SqlTypeServer.Text">
+    <value xml:space="preserve">Angefügte Datenbank&lt;br /&gt; an SQL Server (Express)</value>
+  </data>
+  <data name="StandardDatabaseMsg.Text">
+    <value xml:space="preserve">Es wurde keine Standard-Datenbankverbindung festgestellt, daher ist diese Option deaktiviert.</value>
+  </data>
+  <data name="StepFailed.Text">
+    <value xml:space="preserve">Der Schritt ist fehlgeschlagen - {0}</value>
+  </data>
+  <data name="SuperUserCreation.Text">
+    <value xml:space="preserve">Erstellen des Systemverwalterkontos</value>
+  </data>
+  <data name="TemplateBlank.Text">
+    <value xml:space="preserve">leere Vorlage</value>
+  </data>
+  <data name="TemplateDefault.Text">
+    <value xml:space="preserve">Standard-Vorlage</value>
+  </data>
+  <data name="TemplateMobile.Text">
+    <value xml:space="preserve">Vorlage für mobile Geräte</value>
+  </data>
+  <data name="TemplateSolutions.Text">
+    <value xml:space="preserve">Lösungsvorlage</value>
+  </data>
+  <data name="TestingDatabase.Text">
+    <value xml:space="preserve">Die Datenbank-Verbindung wird geprüft...</value>
+  </data>
+  <data name="TimerMinutes.Text">
+    <value xml:space="preserve">Minuten</value>
+  </data>
+  <data name="TimerSeconds.Text">
+    <value xml:space="preserve">Sekunden</value>
+  </data>
+  <data name="UpdatingConfigFile.Text">
+    <value xml:space="preserve">Die Konfiguration wird aktualisiert für</value>
+  </data>
+  <data name="UpgradingNormalApplication.Text">
+    <value xml:space="preserve">Anwendung wird aktualisiert</value>
+  </data>
+  <data name="UpgradingVersionApplication.Text">
+    <value xml:space="preserve">Anwendung wird aktualisiert auf</value>
+  </data>
+  <data name="UserName.Help">
+    <value xml:space="preserve">Geben Sie den Benutzernamen für das Konto des Systemverwalters an.</value>
+  </data>
+  <data name="UserName.Required">
+    <value xml:space="preserve">Sie müssen den Benutzernamen eingeben.</value>
+  </data>
+  <data name="UserName.Text">
+    <value xml:space="preserve">Benutzername</value>
+  </data>
+  <data name="ViewWebsite.Text">
+    <value xml:space="preserve">Website aufrufen</value>
+  </data>
+  <data name="VisitWebsite.Text">
+    <value xml:space="preserve">Website aufrufen</value>
+  </data>
+  <data name="WebsiteCreation.Text">
+    <value xml:space="preserve">Website erstellen</value>
+  </data>
+  <data name="WebsiteInfo.Text">
+    <value xml:space="preserve">Website-Informationen</value>
+  </data>
+  <data name="WebsiteName.Help">
+    <value xml:space="preserve">Geben Sie den Namen Ihrer Website an.</value>
+  </data>
+  <data name="WebsiteName.Required">
+    <value xml:space="preserve">Sie müssen einen Namen für Ihre Website eingeben.</value>
+  </data>
+  <data name="WebsiteName.Text">
+    <value xml:space="preserve">Name der Website</value>
+  </data>
+  <data name="WebsiteTemplate.Help">
+    <value xml:space="preserve">Geben Sie die zu verwendende Vorlage für Ihre Website an.</value>
+  </data>
+  <data name="WebsiteTemplate.Text">
+    <value xml:space="preserve">Vorlage</value>
+  </data>
+</root>

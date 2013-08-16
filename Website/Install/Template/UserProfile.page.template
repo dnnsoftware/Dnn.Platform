@@ -1,0 +1,155 @@
+<portal version="3.0">
+  <description>User Profile template</description>
+  <tabs>
+    <tab>
+      <name>User Profile</name>
+      <visible>false</visible>
+      <iconfile />
+      <iconfilelarge />
+      <disabled>false</disabled>
+      <title>User Profile</title>
+      <description />
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <tabtype>usertab</tabtype>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <title>My Profile</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings />
+              <definition>ViewProfile</definition>
+              <moduledefinition>ViewProfile</moduledefinition>
+            </module>
+            <module>
+              <title>My InBox</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Registered Users</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings />
+              <definition>DotNetNuke.Messaging</definition>
+              <moduledefinition>Messaging</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+  </tabs>
+</portal>
+

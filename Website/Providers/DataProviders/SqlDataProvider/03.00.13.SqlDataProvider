@@ -1,0 +1,204 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Profile
+	DROP CONSTRAINT FK_{objectQualifier}Profile_{objectQualifier}Users
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UserRoles
+	DROP CONSTRAINT FK_{objectQualifier}UserRoles_{objectQualifier}Users
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UserPortals
+	DROP CONSTRAINT FK_{objectQualifier}UserPortals_{objectQualifier}Users
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UsersOnline
+	DROP CONSTRAINT FK_{objectQualifier}UsersOnline_{objectQualifier}Users
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Users
+	DROP CONSTRAINT PK_{objectQualifier}Users
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Users ADD CONSTRAINT
+	PK_{objectQualifier}Users PRIMARY KEY CLUSTERED 
+	(
+	UserID
+	) ON [PRIMARY]
+
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UsersOnline WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}UsersOnline_{objectQualifier}Users FOREIGN KEY
+	(
+	UserID
+	) REFERENCES {databaseOwner}{objectQualifier}Users
+	(
+	UserID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UserPortals WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}UserPortals_{objectQualifier}Users FOREIGN KEY
+	(
+	UserId
+	) REFERENCES {databaseOwner}{objectQualifier}Users
+	(
+	UserID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}UserRoles WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}UserRoles_{objectQualifier}Users FOREIGN KEY
+	(
+	UserID
+	) REFERENCES {databaseOwner}{objectQualifier}Users
+	(
+	UserID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Profile WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}Profile_{objectQualifier}Users FOREIGN KEY
+	(
+	UserId
+	) REFERENCES {databaseOwner}{objectQualifier}Users
+	(
+	UserID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetSearchItems
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchItems
+
+@PortalId int,
+@TabId int,
+@ModuleId int
+
+AS
+
+SELECT si.*,
+       'AuthorName' = u.FirstName + ' ' + u.LastName,
+       t.TabId
+FROM   {databaseOwner}{objectQualifier}SearchItem si
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users u ON si.Author = u.UserID
+	INNER JOIN {databaseOwner}{objectQualifier}Modules m ON si.ModuleId = m.ModuleID 
+	INNER JOIN {databaseOwner}{objectQualifier}TabModules tm ON m.ModuleId = tm.ModuleID 
+	INNER JOIN {databaseOwner}{objectQualifier}Tabs t ON tm.TabID = t.TabID
+	INNER JOIN {databaseOwner}{objectQualifier}Portals p ON t.PortalID = p.PortalID
+WHERE (p.PortalId = @PortalId or @PortalId is null)
+	AND   (t.TabId = @TabId or @TabId is null)
+	AND   (m.ModuleId = @ModuleId or @ModuleId is null)
+ORDER BY PubDate DESC
+GO
+
+UPDATE {databaseOwner}{objectQualifier}DesktopModules set BusinessControllerClass='DotNetNuke.Modules.Images.ImageController, DotNetNuke.Modules.Images'
+WHERE FriendlyName = 'Image'
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Users ADD
+	Email nvarchar(256) NULL
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Users
+SET Email = dbo.aspnet_Membership.Email
+FROM dbo.aspnet_Membership
+INNER JOIN dbo.aspnet_Users on dbo.aspnet_Membership.UserId = dbo.aspnet_Users.UserId
+WHERE {databaseOwner}{objectQualifier}Users.Username = dbo.aspnet_Users.Username
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddUser
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddUser
+
+@PortalID	int,
+@Username	nvarchar(100),
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@AffiliateId    int,
+@IsSuperUser    bit,
+@Email          nvarchar(256)
+
+as
+
+declare @UserID int
+
+select @UserID = UserID
+from   {objectQualifier}Users
+where  Username = @Username
+
+if @UserID is null
+begin
+  insert into {objectQualifier}Users (
+    Username,
+    FirstName, 
+    LastName, 
+    AffiliateId,
+    IsSuperUser,
+    Email
+  )
+  values (
+    @Username,
+    @FirstName, 
+    @LastName, 
+    @AffiliateId,
+    @IsSuperUser,
+    @Email
+  )
+
+  select @UserID = SCOPE_IDENTITY()
+end
+
+if @IsSuperUser = 0
+begin
+  if not exists ( select 1 from {objectQualifier}UserPortals where UserID = @UserID and PortalID = @PortalID )
+  begin
+    insert into {objectQualifier}UserPortals (
+      UserID,
+      PortalID
+    )
+    values (
+      @UserID,
+      @PortalID
+    )
+  end
+end
+
+select @UserID
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateUser
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateUser
+
+@UserId         int,
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@Email          nvarchar(256)
+
+as
+
+update {objectQualifier}Users
+set    FirstName = @FirstName,
+       LastName	 = @LastName,
+       Email = @Email
+where  UserId = @UserId
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

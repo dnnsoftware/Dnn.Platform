@@ -1,0 +1,83 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Issue 19679: Fix GetListEntries Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetListEntries]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetListEntries
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetListEntries
+	@ListName nvarchar(50),
+	@ParentKey nvarchar(150),
+	@PortalID int
+AS
+SELECT *
+	FROM {databaseOwner}{objectQualifier}vw_Lists
+	WHERE (ListName = @ListName OR @ListName='')
+		AND (ParentKey = @ParentKey OR @ParentKey = '')
+		AND (PortalID = @PortalID OR PortalID = -1 OR @PortalID IS NULL or SystemList=1)
+	ORDER BY [Level], ListName, SortOrder, Text
+GO
+
+/* Fix bug 14987: update schedule settingvalue to nvarchar(max) */
+ALTER TABLE {databaseOwner}{objectQualifier}ScheduleItemSettings
+ALTER COLUMN SettingValue nvarchar(max) NOT NULL
+GO
+
+/* Fix bug 14543: Update GetSearchResultsByWord to exclude deleted tab modules*/
+/*********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetSearchResultsByWord]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchResultsByWord]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchResultsByWord
+	@PortalID	int,
+	@Word		nvarchar(100)
+AS
+    SELECT si.SearchItemID,
+	    sw.Word,
+	    siw.Occurrences,
+	    siw.Occurrences + 1000 AS Relevance,
+	    m.ModuleID,
+	    tm.TabID,
+		si.Title, 
+	    si.Description,
+	    si.Author,
+	    si.PubDate,
+	    si.SearchKey,
+	    si.Guid,
+	    si.ImageFileId,
+	    u.FirstName + ' ' + u.LastName As AuthorName,
+	    m.PortalId
+    FROM    {databaseOwner}{objectQualifier}SearchWord sw
+	    INNER JOIN {databaseOwner}{objectQualifier}SearchItemWord siw ON sw.SearchWordsID = siw.SearchWordsID
+	    INNER JOIN {databaseOwner}{objectQualifier}SearchItem si ON siw.SearchItemID = si.SearchItemID
+	    INNER JOIN {databaseOwner}{objectQualifier}Modules m ON si.ModuleId = m.ModuleID
+	    LEFT OUTER JOIN {databaseOwner}{objectQualifier}TabModules tm ON si.ModuleId = tm.ModuleID
+		LEFT JOIN {databaseOwner}{objectQualifier}TabModuleSettings tms ON tms.TabModuleID = tm.TabModuleID AND tms.SettingName = 'DisableSearch'
+	    INNER JOIN {databaseOwner}{objectQualifier}Tabs t ON tm.TabID = t.TabID
+	    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users u ON si.Author = u.UserID
+    WHERE   (((m.StartDate Is Null) OR (GetDate() > m.StartDate)) AND ((m.EndDate Is Null) OR (GetDate() < m.EndDate)))
+	    AND (((t.StartDate Is Null) OR (GetDate() > t.StartDate)) AND ((t.EndDate Is Null) OR (GetDate() < t.EndDate)))
+	    AND (sw.Word = @Word) 
+	    AND (t.IsDeleted = 0) 
+	    AND (m.IsDeleted = 0)
+		AND (tm.IsDeleted = 0)
+	    AND (t.PortalID = @PortalID)
+		AND (tms.TabModuleID is NULL)
+    ORDER BY Relevance DESC
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

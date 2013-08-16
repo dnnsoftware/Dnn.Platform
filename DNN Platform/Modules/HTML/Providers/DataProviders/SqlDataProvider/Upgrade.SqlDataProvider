@@ -1,0 +1,413 @@
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddWorkflow') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}AddWorkflow
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddWorkflow
+
+@PortalID int,
+@WorkflowName nvarchar(50),
+@Description nvarchar(2000),
+@IsDeleted bit
+
+as
+
+insert into {databaseOwner}{objectQualifier}Workflow (
+  PortalID,
+  WorkflowName,
+  Description,
+  IsDeleted  
+)
+values (
+  @PortalID,
+  @WorkflowName,
+  @Description,
+  @IsDeleted  
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateWorkflow') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}UpdateWorkflow
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateWorkflow
+
+@WorkflowID int,
+@WorkflowName nvarchar(50),
+@Description nvarchar(2000),
+@IsDeleted bit
+
+as
+
+update {databaseOwner}{objectQualifier}Workflow
+set    WorkflowName = @WorkflowName,
+       Description = @Description,
+       IsDeleted = @IsDeleted
+where  WorkflowID = @WorkflowID
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflow') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetWorkflow
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetWorkflow
+
+@WorkflowID int
+
+as
+
+select *
+from   {databaseOwner}{objectQualifier}Workflow
+where WorkflowID = @WorkflowID
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}AddWorkflowState
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddWorkflowState
+
+@WorkflowID int,
+@StateName nvarchar(50),
+@Order int,
+@Notify bit,
+@IsActive bit
+
+as
+
+insert into {databaseOwner}{objectQualifier}WorkflowStates (
+  WorkflowID,
+  StateName,
+  [Order],
+  Notify,
+  IsActive
+)
+values (
+  @WorkflowID,
+  @StateName,
+  @Order,
+  @Notify,
+  @IsActive
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}UpdateWorkflowState
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateWorkflowState
+
+@StateID int,
+@StateName nvarchar(50),
+@Order int,
+@Notify bit,
+@IsActive bit
+
+as
+
+update {databaseOwner}{objectQualifier}WorkflowStates
+set    StateName = @StateName,
+       [Order] = @Order,
+       Notify = @Notify,
+       IsActive = @IsActive
+where  StateID = @StateID
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetWorkflowState
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetWorkflowState
+
+@StateID int
+
+as
+
+select *
+from   {databaseOwner}{objectQualifier}WorkflowStates
+inner join {databaseOwner}{objectQualifier}Workflow on {databaseOwner}{objectQualifier}WorkflowStates.WorkflowID = {databaseOwner}{objectQualifier}Workflow.WorkflowID
+where {databaseOwner}{objectQualifier}WorkflowStates.StateID = @StateID
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}DeleteWorkflowState
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteWorkflowState
+
+@StateID int
+
+as
+
+delete
+from  {databaseOwner}{objectQualifier}WorkflowStates
+where  StateID = @StateID
+
+GO
+
+/* Add WorkflowStatePermission Table */
+/*************************************/
+
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}WorkflowStatePermission]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+    BEGIN
+        CREATE TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission]
+	        (
+		        [WorkflowStatePermissionID] [int] IDENTITY(1,1) NOT NULL,
+		        [StateID] [int] NOT NULL,
+		        [PermissionID] [int] NOT NULL,
+		        [AllowAccess] [bit] NOT NULL,
+		        [RoleID] [int] NULL,
+		        [UserID] [int] NULL,
+	                [CreatedByUserID] int NULL,
+	                [CreatedOnDate] datetime NULL,
+	                [LastModifiedByUserID] int NULL,
+	                [LastModifiedOnDate] datetime NULL,
+		        CONSTRAINT [PK_{objectQualifier}WorkflowStatePermission] PRIMARY KEY CLUSTERED ([WorkflowStatePermissionID] ASC),
+		        CONSTRAINT [IX_{objectQualifier}WorkflowStatePermission] UNIQUE NONCLUSTERED ( [StateID] ASC, [PermissionID] ASC, [RoleID] ASC, [UserID] ASC )
+	        ) 
+
+	        ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission] 
+		        ADD CONSTRAINT [FK_{objectQualifier}WorkflowStatePermission_{objectQualifier}WorkflowStates] FOREIGN KEY([StateID]) REFERENCES {databaseOwner}[{objectQualifier}WorkflowStates] ([StateID]) ON DELETE CASCADE
+
+	        ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission]
+		        ADD CONSTRAINT [FK_{objectQualifier}WorkflowStatePermission_{objectQualifier}Permission] FOREIGN KEY([PermissionID]) REFERENCES {databaseOwner}[{objectQualifier}Permission] ([PermissionID]) ON DELETE CASCADE
+	        ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission]  
+		        ADD  CONSTRAINT [FK_{objectQualifier}WorkflowStatePermission{objectQualifier}Users] FOREIGN KEY([UserID]) REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserID]) 
+    END
+GO
+
+/* Add WorkflowStatePermission View */
+/************************************/
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_WorkflowStatePermissions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_WorkflowStatePermissions]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_WorkflowStatePermissions]
+AS
+    SELECT     
+	    WSP.WorkflowStatePermissionID, 
+	    WSP.StateID, 
+	    P.PermissionID, 
+	    WSP.RoleID,
+	    CASE WSP.RoleID
+		    when -1 then 'All Users'
+		    when -2 then 'Superuser'
+		    when -3 then 'Unauthenticated Users'
+		    else 	R.RoleName
+	    END AS 'RoleName',
+	    WSP.AllowAccess, 
+	    WSP.UserID,
+	    U.Username,
+	    U.DisplayName, 
+	    P.PermissionCode, 
+	    P.ModuleDefID, 
+	    P.PermissionKey, 
+	    P.PermissionName, 
+            WSP.CreatedByUserID, 
+            WSP.CreatedOnDate, 
+            WSP.LastModifiedByUserID, 
+            WSP.LastModifiedOnDate    
+            FROM {databaseOwner}{objectQualifier}WorkflowStatePermission AS WSP 
+	    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Permission AS P ON WSP.PermissionID = P.PermissionID 
+	    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Roles AS R ON WSP.RoleID = R.RoleID
+	    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON WSP.UserID = U.UserID
+GO
+
+/* Add GetPermissionsByStateID */
+/*********************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByStateID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPermissionsByStateID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPermissionsByStateID]
+    @StateID int
+AS
+    SELECT  *
+    FROM    {databaseOwner}{objectQualifier}Permission
+    WHERE   PermissionCode = 'SYSTEM_WORKFLOWSTATE'
+    ORDER BY PermissionID
+GO
+
+/* Add GetWorkflowStatePermission */
+/**********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetWorkflowStatePermission]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetWorkflowStatePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetWorkflowStatePermission]
+	@WorkflowStatePermissionID	int
+AS
+    SELECT *
+    FROM {databaseOwner}{objectQualifier}vw_WorkflowStatePermissions
+    WHERE WorkflowStatePermissionID = @WorkflowStatePermissionID
+GO
+
+/* Add GetWorkflowStatePermissions */
+/***********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetWorkflowStatePermissions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetWorkflowStatePermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetWorkflowStatePermissions]
+AS
+    SELECT *
+    FROM {databaseOwner}{objectQualifier}vw_WorkflowStatePermissions
+GO
+
+/* Add GetWorkflowStatePermissionsByStateID */
+/**********************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetWorkflowStatePermissionsByStateID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetWorkflowStatePermissionsByStateID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetWorkflowStatePermissionsByStateID]
+	@StateID int
+AS
+    SELECT *
+    FROM {databaseOwner}{objectQualifier}vw_WorkflowStatePermissions
+	WHERE   StateID = @StateID
+GO
+
+/* Add DeleteWorkflowStatePermission */
+/*************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteWorkflowStatePermission]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteWorkflowStatePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteWorkflowStatePermission]
+	@WorkflowStatePermissionID int
+AS
+    DELETE FROM {databaseOwner}{objectQualifier}WorkflowStatePermission
+    WHERE WorkflowStatePermissionID = @WorkflowStatePermissionID
+GO
+
+/* Add DeleteWorkflowStatePermissionsByStateID */
+/*************************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByStateID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByStateID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByStateID]
+	@StateID int
+AS
+    DELETE FROM {databaseOwner}{objectQualifier}WorkflowStatePermission
+    WHERE StateID = @StateID
+GO
+
+/* Add DeleteWorkflowStatePermissionsByUserID */
+/**********************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByUserID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByUserID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByUserID]
+	@UserID int
+AS
+    DELETE FROM {databaseOwner}{objectQualifier}WorkflowStatePermission
+    WHERE UserID = @UserID
+GO
+
+/* Add AddWorkflowStatePermission */
+/**********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddWorkflowStatePermission]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddWorkflowStatePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddWorkflowStatePermission]
+	@StateID int,
+	@PermissionID int,
+	@RoleID int,
+	@AllowAccess bit,
+        @UserID int,
+        @CreatedByUserID int
+AS
+
+	INSERT INTO {databaseOwner}{objectQualifier}WorkflowStatePermission (
+		[StateID],
+		[PermissionID],
+		[RoleID],
+		[AllowAccess],
+		[UserID],
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate]
+	) VALUES (
+		@StateID,
+		@PermissionID,
+		@RoleID,
+		@AllowAccess,
+		@UserID,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate()
+	)
+
+	select SCOPE_IDENTITY()
+GO
+
+/* Add UpdateWorkflowStatePermission */
+/*************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateWorkflowStatePermission]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateWorkflowStatePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateWorkflowStatePermission]
+	@WorkflowStatePermissionID int, 
+	@StateID int, 
+	@PermissionID int, 
+	@RoleID int ,
+	@AllowAccess bit,
+        @UserID int,
+	@LastModifiedByUserID	int
+AS
+    UPDATE {databaseOwner}{objectQualifier}WorkflowStatePermission 
+    SET     
+	    [StateID] = @StateID,
+	    [PermissionID] = @PermissionID,
+	    [RoleID] = @RoleID,
+	    [AllowAccess] = @AllowAccess,
+            [UserID] = @UserID,
+            [LastModifiedByUserID] = @LastModifiedByUserID,
+	    [LastModifiedOnDate] = getdate()
+    WHERE   [WorkflowStatePermissionID] = @WorkflowStatePermissionID
+GO
+
+/* Add New WorkflowState Permission */
+/************************************/
+
+if not exists ( select 1 from {databaseOwner}{objectQualifier}Permission where PermissionCode = 'SYSTEM_WORKFLOWSTATE' )
+BEGIN
+INSERT INTO {databaseOwner}{objectQualifier}Permission (
+	[PermissionCode],
+	[ModuleDefID],
+	[PermissionKey],
+	[PermissionName]
+) VALUES (
+	'SYSTEM_WORKFLOWSTATE',
+	-1,
+	'REVIEW',
+	'Review Content'
+)
+END
+GO

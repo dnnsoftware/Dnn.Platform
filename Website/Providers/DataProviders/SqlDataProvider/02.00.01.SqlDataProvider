@@ -1,0 +1,469 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+update {objectQualifier}DesktopModules
+set    IsAdmin = 0
+where  FriendlyName = 'Account Login'
+go
+
+update {objectQualifier}DesktopModules
+set    IsAdmin = 0
+where  FriendlyName = 'User Account'
+go
+
+update {objectQualifier}Tabs
+set    DisableLink = 1
+where  TabName = 'Admin'
+or     TabName = 'Host'
+go
+
+ALTER TABLE {databaseOwner}{objectQualifier}FAQs ADD CONSTRAINT
+	PK_{objectQualifier}FAQs PRIMARY KEY CLUSTERED 
+	(
+	ItemID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}FAQs WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}FAQs_{objectQualifier}Modules FOREIGN KEY
+	(
+	ModuleID
+	) REFERENCES {databaseOwner}{objectQualifier}Modules
+	(
+	ModuleID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}ModuleSettings ADD CONSTRAINT
+	PK_{objectQualifier}ModuleSettings PRIMARY KEY CLUSTERED 
+	(
+	ModuleID,
+	SettingName
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}HostSettings ADD CONSTRAINT
+	PK_{objectQualifier}HostSettings PRIMARY KEY CLUSTERED 
+	(
+	SettingName
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs
+	DROP CONSTRAINT IX_{objectQualifier}Tabs
+GO
+
+delete 
+from   {objectQualifier}ModuleControls
+where  ControlSrc = 'Admin/Vendors/Banners.ascx'
+go
+
+delete 
+from   {objectQualifier}ModuleControls
+where  ControlSrc = 'Admin/Vendors/Affiliates.ascx'
+go
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( '[PRINTMODULE]', null, null, 'Admin/Containers/PrintModule.ascx', null, -1, null )
+GO
+
+update {objectQualifier}ModuleControls
+set ControlSrc='Admin/Containers/SolPartActions.ascx'
+where ControlKey='[ACTIONS]'
+GO
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( '[SOLPARTACTIONS]', null, null, 'Admin/Containers/SolPartActions.ascx', null, -1, null )
+GO
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( '[DROPDOWNACTIONS]', null, null, 'Admin/Containers/DropDownActions.ascx', null, -1, null )
+GO
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( '[LINKACTIONS]', null, null, 'Admin/Containers/LinkActions.ascx', null, -1, null )
+GO
+
+update {objectQualifier}ModuleControls
+set ControlSrc='Admin/Skins/SolPartMenu.ascx'
+where ControlKey='[MENU]'
+GO
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( '[SOLPARTMENU]', null, null, 'Admin/Skins/SolPartMenu.ascx', null, -1, null )
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetTabModuleOrder
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetTabModuleOrder
+
+@TabId    int, 
+@PaneName nvarchar(50)
+
+as
+
+select *
+from   {objectQualifier}Modules 
+where  TabId = @TabId 
+and    PaneName = @PaneName
+and   ((ModuleOrder <> 0 and AllTabs = 1) OR (AllTabs = 0)) 
+order by ModuleOrder
+
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}Profile
+	(
+	ProfileId int NOT NULL IDENTITY (1, 1),
+	UserId int NOT NULL,
+	PortalId int NOT NULL,
+	ProfileData ntext NOT NULL,
+	CreatedDate datetime NOT NULL
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Profile ADD CONSTRAINT
+	PK_{objectQualifier}Profile PRIMARY KEY CLUSTERED 
+	(
+	ProfileId
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Profile WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}Profile_{objectQualifier}Portals FOREIGN KEY
+	(
+	PortalId
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+	PortalID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Profile WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}Profile_{objectQualifier}Users FOREIGN KEY
+	(
+	UserId
+	) REFERENCES {databaseOwner}{objectQualifier}Users
+	(
+	UserID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Profile ON {databaseOwner}{objectQualifier}Profile
+	(
+	UserId,
+	PortalId
+	) ON [PRIMARY]
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetProfile
+
+@UserId    int, 
+@PortalId  int
+
+as
+
+select *
+from   {objectQualifier}Profile
+where  UserId = @UserId 
+and    PortalId = @PortalId
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddProfile
+
+@UserId        int, 
+@PortalId      int
+
+as
+
+insert into {objectQualifier}Profile (
+  UserId,
+  PortalId,
+  ProfileData,
+  CreatedDate
+)
+values (
+  @UserId,
+  @PortalId,
+  '',
+  getdate()
+)
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateProfile
+
+@UserId        int, 
+@PortalId      int,
+@ProfileData   ntext
+
+as
+
+update {objectQualifier}Profile
+set    ProfileData = @ProfileData,
+       CreatedDate = getdate()
+where  UserId = @UserId
+and    PortalId = @PortalId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}VerifyPortalTab
+go
+
+create procedure {databaseOwner}{objectQualifier}VerifyPortalTab
+
+@PortalId int,
+@TabId    int
+
+as
+
+select {objectQualifier}Tabs.TabId
+from {objectQualifier}Tabs
+left outer join {objectQualifier}Portals on {objectQualifier}Tabs.PortalId = {objectQualifier}Portals.PortalId
+where  TabId = @TabId
+and    ( {objectQualifier}Portals.PortalId = @PortalId or {objectQualifier}Tabs.PortalId is null )
+and    IsDeleted = 0
+
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetProcessorCodes
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetProcessorCodes
+
+as
+
+select Processor as Description,
+       URL as Code
+from {objectQualifier}CodeProcessor
+order by Processor
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortalTabModules
+go
+
+create procedure {databaseOwner}{objectQualifier}GetPortalTabModules
+
+@PortalId int, 
+@TabId int
+
+as
+
+select {objectQualifier}Modules.*,
+       {objectQualifier}Tabs.AuthorizedRoles, 
+       {objectQualifier}ModuleControls.ControlSrc,
+       {objectQualifier}ModuleControls.ControlType,
+       {objectQualifier}ModuleControls.ControlTitle,
+       {objectQualifier}DesktopModules.*
+from {objectQualifier}Modules
+inner join {objectQualifier}Tabs on {objectQualifier}Modules.TabId = {objectQualifier}Tabs.TabId
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefId = {objectQualifier}ModuleDefinitions.ModuleDefId
+inner join {objectQualifier}ModuleControls on {objectQualifier}ModuleDefinitions.ModuleDefId = {objectQualifier}ModuleControls.ModuleDefId
+inner join {objectQualifier}DesktopModules on {objectQualifier}ModuleDefinitions.DesktopModuleId = {objectQualifier}DesktopModules.DesktopModuleId
+where  ({objectQualifier}Modules.TabId = @TabId or ({objectQualifier}Modules.AllTabs = 1 and {objectQualifier}Tabs.PortalId = @PortalId))
+and    ControlKey is null
+order by ModuleOrder
+
+GO
+
+insert into {objectQualifier}HostSettings (
+  SettingName,
+  SettingValue
+) 
+values (
+  'UsersOnlineTime',
+  '20'
+)
+
+GO
+
+insert into {objectQualifier}HostSettings (
+  SettingName,
+  SettingValue
+) 
+values (
+  'DisableUsersOnline',
+  'N'
+)
+
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}UsersOnline 
+	(
+	[UserID] [int] NOT NULL ,
+	[PortalID] [int] NOT NULL ,
+	[TabID] [int] NOT NULL ,
+	[CreationDate] [datetime] NOT NULL ,
+	[LastActiveDate] [datetime] NOT NULL 
+	) ON [PRIMARY] 
+	
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UsersOnline ADD 
+	CONSTRAINT [DF_{objectQualifier}UsersOnline_CreationDate] DEFAULT (getdate()) FOR [CreationDate],
+	CONSTRAINT [DF_{objectQualifier}UsersOnline_LastActiveDate] DEFAULT (getdate()) FOR [LastActiveDate],
+	CONSTRAINT [PK_{objectQualifier}UsersOnline] PRIMARY KEY  CLUSTERED 
+	(
+		[UserID],
+		[PortalID]
+	)  ON [PRIMARY] 
+	
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UsersOnline WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}UsersOnline_{objectQualifier}Portals FOREIGN KEY
+	(
+	PortalId
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+	PortalID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+	
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UsersOnline WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}UsersOnline_{objectQualifier}Users FOREIGN KEY
+	(
+	UserId
+	) REFERENCES {databaseOwner}{objectQualifier}Users
+	(
+	UserID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}AnonymousUsers 
+	(
+	[UserID] [char] (36) NOT NULL ,
+	[PortalID] [int] NOT NULL ,
+	[TabID] [int] NOT NULL ,
+	[CreationDate] [datetime] NOT NULL ,
+	[LastActiveDate] [datetime] NOT NULL 
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}AnonymousUsers ADD 
+	CONSTRAINT [DF_{objectQualifier}AnonymousUsers_CreationDate] DEFAULT (getdate()) FOR [CreationDate],
+	CONSTRAINT [DF_{objectQualifier}AnonymousUsers_LastActiveDate] DEFAULT (getdate()) FOR [LastActiveDate],
+	CONSTRAINT [PK_{objectQualifier}AnonymousUsers] PRIMARY KEY  CLUSTERED 
+	(
+		[UserID],
+		[PortalID]
+	)  ON [PRIMARY] 
+	
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}AnonymousUsers WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}AnonymousUsers_{objectQualifier}Portals FOREIGN KEY
+	(
+	PortalId
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+	PortalID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+	
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateOnlineUser
+
+@UserID 	int,
+@PortalID 	int,
+@TabID 		int,
+@LastActiveDate datetime 
+
+as
+BEGIN
+	IF EXISTS (SELECT UserID FROM {objectQualifier}UsersOnline WHERE UserID = @UserID and PortalID = @PortalID)
+		UPDATE 
+			{objectQualifier}UsersOnline
+		SET 
+			TabID = @TabID,
+			LastActiveDate = @LastActiveDate
+		WHERE
+			UserID = @UserID
+			and 
+			PortalID = @PortalID
+	ELSE
+		INSERT INTO
+			{objectQualifier}UsersOnline
+			(UserID, PortalID, TabID, CreationDate, LastActiveDate) 
+		VALUES
+			(@UserId, @PortalID, @TabID, GetDate(), @LastActiveDate)
+
+END
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateAnonymousUser
+
+@UserID 	char(36),
+@PortalID 	int,
+@TabID 		int,
+@LastActiveDate datetime 
+
+as
+BEGIN
+	IF EXISTS (SELECT UserID FROM {objectQualifier}AnonymousUsers WHERE UserID = @UserID and PortalID = @PortalID)
+		UPDATE 
+			{objectQualifier}AnonymousUsers
+		SET 
+			TabID = @TabID,
+			LastActiveDate = @LastActiveDate
+		WHERE
+			UserID = @UserID
+			and 
+			PortalID = @PortalID
+	ELSE
+		INSERT INTO
+			{objectQualifier}AnonymousUsers
+			(UserID, PortalID, TabID, CreationDate, LastActiveDate) 
+		VALUES
+			(@UserId, @PortalID, @TabID, GetDate(), @LastActiveDate)
+
+END
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteUsersOnline
+
+	@TimeWindow	int
+	
+as
+	-- Clean up the anonymous users table
+	DELETE from {objectQualifier}AnonymousUsers WHERE LastActiveDate < DateAdd(minute, -@TimeWindow, GetDate())	
+
+	-- Clean up the users online table
+	DELETE from {objectQualifier}UsersOnline WHERE LastActiveDate < DateAdd(minute, -@TimeWindow, GetDate())	
+
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

@@ -1,0 +1,100 @@
+<dotnetnuke>
+  <description>This is the default DotNetNuke Host Installation Template</description>
+  <scripts>
+    <script name="Schema">DotNetNuke.Schema</script>
+    <script name="Data">DotNetNuke.Data</script>
+  </scripts>
+  <version>07.00.00</version>
+  <installCulture>en-US</installCulture>
+  <superuser>
+    <firstname>SuperUser</firstname>
+    <lastname>Account</lastname>
+    <username>host</username>
+    <password>dnnhost</password>
+    <email>host@change.me</email>
+    <locale>en-US</locale>
+    <updatepassword>false</updatepassword>
+  </superuser>
+  <license>
+    <trial></trial>
+    <licenseType></licenseType>
+    <webServer></webServer>
+    <accountEmail></accountEmail>
+    <invoiceNumber></invoiceNumber>
+  </license>
+  <settings>
+    <AuthenticatedCacheability>4</AuthenticatedCacheability>
+    <AutoAccountUnlockDuration>10</AutoAccountUnlockDuration>
+    <AutoAddPortalAlias>Y</AutoAddPortalAlias>
+    <CheckUpgrade>Y</CheckUpgrade>
+    <ControlPanel>Admin/ControlPanel/ControlBar.ascx</ControlPanel>
+    <Copyright>Y</Copyright>
+    <DemoPeriod></DemoPeriod>
+    <DemoSignup>N</DemoSignup>
+    <DisplayBetaNotice>Y</DisplayBetaNotice>
+    <EnableFileAutoSync>Y</EnableFileAutoSync>
+    <EnableContentLocalization>N</EnableContentLocalization>
+    <EnableModuleOnLineHelp>Y</EnableModuleOnLineHelp>
+    <EnableRequestFilters>N</EnableRequestFilters>
+    <EncryptionKey Secure="True"></EncryptionKey>
+    <EventLogBuffer>N</EventLogBuffer>
+    <FileExtensions>swf,jpg,jpeg,jpe,gif,bmp,png,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,xml,xsl,xsd,css,zip,rar,template,htmtemplate,ico,avi,mpg,mpeg,mp3,wmv,mov,wav</FileExtensions>
+    <HelpURL>http://help.dotnetnuke.com/070100/default.htm?showToc=true</HelpURL>
+    <HostCurrency>USD</HostCurrency>
+    <HostEmail></HostEmail>
+    <HostFee></HostFee>
+    <HostPortalId>0</HostPortalId>
+    <HostSpace></HostSpace>
+    <HostTitle>DNN Corp</HostTitle>
+    <HostURL>http://www.dnnsoftware.com</HostURL>
+    <HttpCompression>0</HttpCompression>
+    <HttpCompressionLevel>0</HttpCompressionLevel>
+    <ModuleCaching>FileModuleCachingProvider</ModuleCaching>
+    <PageQuota></PageQuota>
+    <PageStatePersister>P</PageStatePersister>
+    <PaymentProcessor>PayPal</PaymentProcessor>
+    <PerformanceSetting>3</PerformanceSetting>
+    <ProcessorPassword Secure="True"></ProcessorPassword>
+    <ProcessorUserId Secure="True"></ProcessorUserId>
+    <ProxyPassword Secure="True"></ProxyPassword>
+    <ProxyPort></ProxyPort>
+    <ProxyServer></ProxyServer>
+    <ProxyUsername Secure="True"></ProxyUsername>
+    <SchedulerMode>1</SchedulerMode>
+    <SiteLogBuffer>1</SiteLogBuffer>
+    <SiteLogHistory>0</SiteLogHistory>
+    <SiteLogStorage>D</SiteLogStorage>
+    <SkinUpload>G</SkinUpload>
+    <SMTPAuthentication></SMTPAuthentication>
+    <SMTPEnableSSL>N</SMTPEnableSSL>
+    <SMTPPassword Secure="True"></SMTPPassword>
+    <SMTPServer></SMTPServer>
+    <SMTPUsername Secure="True"></SMTPUsername>
+    <UseCustomErrorMessages>Y</UseCustomErrorMessages>
+    <UseFriendlyUrls>Y</UseFriendlyUrls>
+    <UserQuota></UserQuota>
+    <UsersOnlineTime>20</UsersOnlineTime>
+    <WebRequestTimeout></WebRequestTimeout>
+    <WhitespaceFilter>N</WhitespaceFilter>
+  </settings>
+  <desktopmodules/>
+  <portals>
+    <portal>
+      <portalname>My Website</portalname>
+      <administrator>
+        <firstname>Administrator</firstname>
+        <lastname>Account</lastname>
+        <username>admin</username>
+        <password>dnnadmin</password>
+        <email>admin@change.me</email>
+      </administrator>
+      <description>My Website</description>
+      <keywords>DotNetNuke, DNN, Content, Management, CMS</keywords>
+      <templatefile>Default Website.template</templatefile>
+      <portalaliases>
+        <portalalias></portalalias>
+      </portalaliases>
+      <ischild>false</ischild>
+    </portal>
+  </portals>
+</dotnetnuke>

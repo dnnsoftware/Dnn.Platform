@@ -1,0 +1,35 @@
+﻿/*.dnnDashboardControls, .dnnInstallExtension, .dnnDashboardExport{margin:1em auto;width:96%}
+.dnnDashboardPanel .dnnFormItem {line-height:1.0;}
+.dnnDashboardPanel .dnnFormItem label {margin-top:0;}
+.dnnDashboardPanel .dnnFormInput {float:left; width:70%; }
+.dnnDashboardPanel .dnnFormInput span {display:block;}
+.dnnDashboardPanel Head {margin: 10px 5px 10px 0px;}
+.dashboardHeader {height:25px;}
+*/
+
+/* clean some form style */
+span.CommandButton input[type="image"]{
+    display: none;
+}
+
+span.CommandButton{
+    border: none;
+}
+
+a.CommandButton{
+    background: whiteSmoke;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,whiteSmoke), color-stop(100%,#DFDFDF));
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    text-shadow: 0px 1px 0px white;
+    color: #555;
+    display: inline-block;
+    padding: 9px 9px;
+    cursor: pointer;
+    border: 1px solid #C2C2C2;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #666;
+    font-weight: bold;
+    text-decoration: none;
+}

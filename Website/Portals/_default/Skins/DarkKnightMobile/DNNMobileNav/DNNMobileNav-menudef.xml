@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+	<template>DNNMobileNav.xslt</template>
+	<defaultClientOptions>
+		<clientOption name="MenuStyle" type="string" value="DNNMobileNav" />
+	</defaultClientOptions>
+</manifest>

@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="plFolder.Text" xml:space="preserve">
+    <value>Folder:</value>
+  </data>
+  <data name="plFolder.Help" xml:space="preserve">
+    <value>Select the import folder</value>
+  </data>
+  <data name="plTemplate.Text" xml:space="preserve">
+    <value>Template:</value>
+  </data>
+  <data name="plTemplate.Help" xml:space="preserve">
+    <value>Select the page template to import.</value>
+  </data>
+  <data name="cmdImport.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="ControlTitle_importtab.Text" xml:space="preserve">
+    <value>Import Page</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Import Page&lt;/h1&gt;&lt;p&gt;Administrators can import content for the specified page.&lt;/p&gt;</value>
+  </data>
+  <data name="Error.Text" xml:space="preserve">
+    <value>An error occurred during the import</value>
+  </data>
+  <data name="NotCorrectType.Text" xml:space="preserve">
+    <value>The import file specified is not the correct type for this page.</value>
+  </data>
+  <data name="NotValidXml.Text" xml:space="preserve">
+    <value>The file you selected does not contain a valid XML structure</value>
+  </data>
+  <data name="Root.Text" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="ModeAdd.Text" xml:space="preserve">
+    <value>Create a new Page</value>
+  </data>
+  <data name="ModeReplace.Text" xml:space="preserve">
+    <value>Replace the current Page</value>
+  </data>
+  <data name="ModeSettings.Text" xml:space="preserve">
+    <value>Edit imported Page</value>
+  </data>
+  <data name="ModeView.Text" xml:space="preserve">
+    <value>View imported Page</value>
+  </data>
+  <data name="plMode.Help" xml:space="preserve">
+    <value>Select the mode of import</value>
+  </data>
+  <data name="plMode.Text" xml:space="preserve">
+    <value>Import Mode:</value>
+  </data>
+  <data name="plRedirect.Help" xml:space="preserve">
+    <value>Select where to redirect to on successful import.</value>
+  </data>
+  <data name="plRedirect.Text" xml:space="preserve">
+    <value>Redirect Mode?</value>
+  </data>
+  <data name="plTabName.Help" xml:space="preserve">
+    <value>Enter a name for the new page.</value>
+  </data>
+  <data name="plTabName.Text" xml:space="preserve">
+    <value>Page Name:</value>
+  </data>
+  <data name="SpecifyFile.Text" xml:space="preserve">
+    <value>Please specify the template to import</value>
+  </data>
+  <data name="SpecifyMode.Text" xml:space="preserve">
+    <value>Please specify the import mode.</value>
+  </data>
+  <data name="NoTabsInTemplate.Text" xml:space="preserve">
+    <value>Template does not contain any pages.</value>
+  </data>
+  <data name="valTemplate.ErrorMessage" xml:space="preserve">
+    <value>Please select a Template</value>
+  </data>
+  <data name="SpecifyName.Text" xml:space="preserve">
+    <value>You must specify a Name for the Page</value>
+  </data>
+  <data name="InsertAfter.Text" xml:space="preserve">
+    <value>After</value>
+  </data>
+  <data name="InsertBefore.Text" xml:space="preserve">
+    <value>Before</value>
+  </data>
+  <data name="InsertPosition.Help" xml:space="preserve">
+    <value>Select the page that you would like this page to be inserted before or after.</value>
+  </data>
+  <data name="InsertPosition.Text" xml:space="preserve">
+    <value>Insert Page:</value>
+  </data>
+  <data name="plParentTab.Help" xml:space="preserve">
+    <value>Select the page that you would like this page to be a child of.</value>
+  </data>
+  <data name="plParentTab.Text" xml:space="preserve">
+    <value>Parent Page</value>
+  </data>
+  <data name="InsertAtEnd.Text" xml:space="preserve">
+    <value>Add to End</value>
+  </data>
+  <data name="TabExists.Text" xml:space="preserve">
+    <value>The Page Name you chose is already being used for another page at the same level of the page hierarchy.</value>
+  </data>
+  <data name="TabRecycled.Text" xml:space="preserve">
+    <value>A page with this name exists in the Recycle Bin.  To restore this page use the Recycle Bin.</value>
+  </data>
+</root>

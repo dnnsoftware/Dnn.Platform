@@ -1,0 +1,48 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+update {objectQualifier}HostSettings set SettingValue = '1' where SettingName = 'SiteLogBuffer' and SettingValue = '100'
+GO
+
+update {objectQualifier}ModuleControls set ControlTitle = 'Terms Of Use' where ControlKey = 'Terms'
+GO
+
+update {objectQualifier}ModuleControls set ControlTitle = 'Privacy Statement' where ControlKey = 'Privacy'
+GO
+
+delete from {objectQualifier}ModuleControls where ControlSrc = 'Admin/Skins/ErrorControl.ascx'
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetUserRole
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUserRole
+
+@PortalId int, 
+@UserId int, 
+@RoleId int
+
+as
+
+select {objectQualifier}UserRoles.*
+from   {objectQualifier}UserRoles, {objectQualifier}UserPortals
+where  {objectQualifier}UserPortals.PortalId = @PortalId
+and    {objectQualifier}UserPortals.UserId = @UserId
+and    {objectQualifier}UserRoles.RoleId = @RoleId
+and    {objectQualifier}UserRoles.UserId = @UserId
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

@@ -1,0 +1,14 @@
+﻿bin/DotNetNuke.SqlDataProvider.dll
+bin/Providers/DotNetNuke.Provider.DBLoggingProvider.dll
+bin/DotNetNuke.DNNScheduler.dll
+bin/Providers/DotNetNuke.Provider.CorePermissionProvider.dll
+bin/Providers/DotNetNuke.Search.Index.dll
+bin/Providers/DotNetNuke.Search.DataStore.dll
+bin/Providers/DotNetNuke.SitemapProviders.CoreSitemapProvider.dll
+bin/Providers/DotNetNuke.Caching.FileBasedCachingProvider.dll
+bin/Providers/DotNetNuke.Provider.ModuleCaching.FileProvider.dll
+bin/Providers/DotNetNuke.Provider.ModuleCaching.MemoryProvider.dll
+bin/DotNetNuke.Provider.AspNetProvider.dll
+bin/DotNetNuke.Provider.DNNProvider.dll
+bin/DotNetNuke.Membership.DataProvider.dll
+DesktopModules/RazorModules/web.config

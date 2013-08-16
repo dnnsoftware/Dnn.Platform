@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountInfo.Text">
+    <value xml:space="preserve">Account Informatie</value>
+  </data>
+  <data name="BestPractices.Text">
+    <value xml:space="preserve">U staat op het punt om uw website te upgraden naar een recentere versie van de DotNetNuke applicatie. Het toepassen van upgrades op een consistente basis is de beste manier om ervoor te zorgen dat u de integriteit van uw investering en de veiligheid van uw gebruikers en bezittingen te garanderen. Voordat u verder gaat met de geautomatiseerde upgrade-proces moet u ervoor zorgen dat: &lt;ul&gt; &lt;li&gt; je hebt plannen gemaakt om dit proces eerste poging in een staging-omgeving &lt;li&gt; u uw huidige installatie kenmerken gedocumenteerd in onder meer het doen van onderzoek over de verenigbaarheid van een derde partij modules die u gebruikt &lt;li&gt; die u hebt gemaakt van de nodige back-ups van uw omgeving, zodat u in staat zal zijn om uw website te herstellen in het geval van een onverwachte upgrade mislukking. &lt;/ Ul&gt;</value>
+  </data>
+  <data name="CurrentVersion.Text">
+    <value xml:space="preserve">Huidige versie - {0}</value>
+  </data>
+  <data name="DatabaseUpgrade.Text">
+    <value xml:space="preserve">Database bijwerken</value>
+  </data>
+  <data name="Error.Text">
+    <value xml:space="preserve">Fout</value>
+  </data>
+  <data name="ErrorInStep.Text">
+    <value xml:space="preserve">Er is een fout opgetreden - {0}</value>
+  </data>
+  <data name="ExtensionsUpgrade.Text">
+    <value xml:space="preserve">Extensies bijwerken</value>
+  </data>
+  <data name="IntroDetail.Text">
+    <value xml:space="preserve">&lt;p&gt; Welkom op de DotNetNuke Upgrade Pagina.&lt;/p&gt;De eerste stap is het kiezen van de taal die u wilt gebruiken voor de upgrade.&lt;/p&gt;</value>
+  </data>
+  <data name="InvalidCredentials.Text">
+    <value xml:space="preserve">Gebruikersnaam en wachtwoord niet herkend</value>
+  </data>
+  <data name="Next.Text">
+    <value xml:space="preserve">Nu Upgraden</value>
+  </data>
+  <data name="NoInstallationLog.Text">
+    <value xml:space="preserve">Geen installatie log</value>
+  </data>
+  <data name="Password.Help">
+    <value xml:space="preserve">Het wachtwoord voor het Super User account</value>
+  </data>
+  <data name="Password.Text">
+    <value xml:space="preserve">Wachtwoord:</value>
+  </data>
+  <data name="Retry.Text">
+    <value xml:space="preserve">Opnieuw proberen</value>
+  </data>
+  <data name="SeeLogs.Text">
+    <value xml:space="preserve">Logs weergeven</value>
+  </data>
+  <data name="TimerMinutes.Text">
+    <value xml:space="preserve">Minuten</value>
+  </data>
+  <data name="Title.Text">
+    <value xml:space="preserve">DotNetNuke upgrade</value>
+  </data>
+  <data name="Upgrade.Text">
+    <value xml:space="preserve">upgrade</value>
+  </data>
+  <data name="UpgradeDone.Text">
+    <value xml:space="preserve">Upgrade voltooid</value>
+  </data>
+  <data name="UpgradingDatabase.Text">
+    <value xml:space="preserve">Database bijwerken</value>
+  </data>
+  <data name="Username.Help">
+    <value xml:space="preserve">De gebruikersnaam voor het Super User account</value>
+  </data>
+  <data name="Username.Text">
+    <value xml:space="preserve">Host (SuperUser) Gebruikersnaam:</value>
+  </data>
+  <data name="Version.Text">
+    <value xml:space="preserve">DotNetNuke Upgrade - versie {0}</value>
+  </data>
+  <data name="ViewWebsite.Text">
+    <value xml:space="preserve">Website weergeven</value>
+  </data>
+  <data name="VisitWebsite.Text">
+    <value xml:space="preserve">Website bezoeken</value>
+  </data>
+</root>

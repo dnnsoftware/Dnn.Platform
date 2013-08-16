@@ -1,0 +1,402 @@
+#dnnCPWrap {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1001 !important;
+    padding: 6px 0;
+    background: #f3f3f3;
+    background: -moz-linear-gradient(top, #F3F3F3 0%, #CFCFCF 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F3F3F3), color-stop(100%,#CFCFCF));
+    border: 1px #999 solid;
+}
+#dnnCPWrap .dnnCPContent {
+    display: none;
+    -moz-box-shadow: 0 1px 5px #aaa;
+    -webkit-box-shadow: 0 1px 5px #aaa;
+    box-shadow: 0 1px 5px #aaa;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+.dnnControlPanel {
+    margin: 0 auto;
+    font-size: 11px;
+    width: 940px;
+}
+a.dnnCPHMessagednnLeft, a.dnnCPHMessagednnLeft img {
+    display: block !important;
+}
+.dnnControlPanel .dnnFormItem label, .dnnControlPanel .dnnFormItem .dnnFormLabel {
+    margin-top: 0;
+    font-size: 11px;
+}
+.cbcpFiCol a,
+.cbaManage a,
+.cbhTools a,
+.cbcpPageHelp a {
+    display: block;
+    line-height: 1.8em;
+    min-height: 1.8em;
+    padding: 0 15px 0 20px;
+    font-weight: bold;
+    float: left;
+}
+
+div#RibbonBar_SwitchSite_SitesLst{
+    width: 180px;
+    margin-bottom: 8px; 
+    margin-right: 10px;
+    display: block;
+    float: left;   
+}
+
+div#RibbonBar_SwitchSite_SitesLst + a{
+    display: block;
+    float: left;
+}
+
+span.cpEditCurrentPage a {
+    background: url(images/iconbar_edittab_16.gif) no-repeat left;
+}
+span.cpAddNewPage a {
+    background: url(images/iconbar_addtab_16.gif) no-repeat left;
+}
+span.cpCopyPage a {
+    background: url(images/iconbar_copytab_16.gif) no-repeat left;
+}
+a.cpDeletePage {
+    background: url(images/iconbar_deletetab_16.gif) no-repeat left;
+}
+a.cpDeletePage.dnnDisabled {
+    background: url(images/iconbar_deletetab_bw_16.gif) no-repeat left;
+    color: #ccc;
+    cursor: not-allowed;
+    text-decoration: none;
+    border-collapse: collapse;
+}
+span.cpImportPage a {
+    background: url(images/iconbar_importtab_16.gif) no-repeat left;
+}
+span.cpExportPage a {
+    background: url(images/iconbar_exporttab_16.gif) no-repeat left;
+}
+a.cpCopyPermissions {
+    background: url(images/iconbar_copytab_16.gif) no-repeat left;
+}
+a.cpCopyPermissions.dnnDisabled {
+    background: url(images/iconbar_copytab_bw_16.gif) no-repeat left;
+    color: #ccc;
+    cursor: not-allowed;
+    text-decoration: none;
+    border-collapse: collapse;
+}
+a.cpCopyDesign {
+    background: url(images/iconbar_copytab_16.gif) no-repeat left;
+}
+a.cpCopyDesign.dnnDisabled {
+    background: url(images/iconbar_copytab_bw_16.gif) no-repeat left;
+    color: #ccc;
+    cursor: not-allowed;
+    text-decoration: none;
+    border-collapse: collapse;
+}
+.dnnadminmega .megaborder .cpcbCurrentPage label, .dnnadminmega .megaborder .cpcbCurrentPage a, #dnnOtherTools .cpcbAdmin a {
+    font-weight: normal;
+}
+#dnnCPWrap a {
+    font-size: 11px;
+}
+#dnnCurrentPage .megaborder {
+    width: 540px;
+}
+#dnnOtherTools .megaborder {
+    width: 350px;
+}
+#dnnCommonTasks .megaborder {
+    width: 275px;
+    min-width: 275px;
+}
+.cbctAddModule label {
+    font-weight: normal;
+}
+.cbctAddModule .dnnFormItem, #dnnCurrentPage .dnnClear {
+    padding: 0 0 3px 0;
+}
+.cbctAddModule .dnnClear, .cbctAddPage, .cbcpPageEdit {
+    width: 260px;
+    padding: 2px 0;
+}
+.cbctAddModule .dnnClear label, #dnnCurrentPage label {
+    width: 60px !important;
+}
+/*.dnnCPModSelection .dnnClear input[type="text"], .dnnCPModSelection .dnnClear select, .dnnCPModLocation .dnnClear select, #dnnCurrentPage input[type="text"], #dnnCurrentPage select {
+    width: 160px !important;
+    overflow: hidden;
+    margin: 0;
+}
+*/
+#dnnCPWrap input[type="text"] {
+    /*padding: 3px;*/
+}
+#dnnCurrentPage .dnnCPPageList, .dnnFormCheckbox input, .cbctAddModule a.dnnPrimaryAction, #dnnCurrentPage .dnnFormCheckbox {
+    margin-left: 60px;
+}
+#dnnCurrentPage .dnnFormCheckbox input {
+    margin-left: 0px;
+}
+#dnnCurrentPage .dnnFormCheckbox label {
+    width: auto !important;
+    display: inline;
+    float: none;
+}
+#dnnCurrentPage a.dnnPrimaryAction {
+    margin-left: 82px;
+}
+#dnnCPWrapRight a.dnnPrimaryAction {
+    margin: 10px;
+    display: block;
+    float: right;
+}
+#dnnCurrentPage .cbcpPageCopy, #dnnCurrentPage .cbcpPageActions, .cpcbAdmin .dnnClear {
+    padding-bottom: 10px;
+}
+.cpanel_right #dnnCPWrapRight, .cpanel_right #dnnCPWrapLeft, .cpanel_right .dnnControlPanel {
+    background-image: none;
+}
+
+span.cpNewUser a {
+    background: url(images/iconbar_add_users_16.gif) no-repeat left;
+}
+span.cpNewRole a {
+    background: url(images/icon_securityroles_16px.gif) no-repeat left;
+}
+span.cpUploadFile a {
+    background: url(images/action_up.gif) no-repeat left;
+}
+span.cpWebServerManager a {
+    background: url(images/icon_webservers_16px.gif) no-repeat left;
+}
+span.cpSupportTickets a {
+    background: url(images/icon_mytickets_16px.gif) no-repeat left;
+}
+span.cpImpersonateUser a {
+    background: url(images/icon_usersSwitcher_16px.gif) no-repeat left;
+}
+span.cpIntegrityChecker a {
+    background: url(images/icon_appintegrity_16px.gif) no-repeat left;
+}
+a.cpRecycleApp {
+    background: url(images/iconbar_recycleapp_16px.gif) no-repeat left;
+}
+a.cpClearCache {
+    background: url(images/iconbar_clearcache_16px.gif) no-repeat left;
+}
+span.cpPageHelp a {
+    background: url(images/iconbar_help_16.gif) no-repeat left;
+}
+
+.cpcbAdmin .cbhSwitchSite a {
+    float: none;
+}
+ul.dnnadminmega {
+    margin: 0;
+    padding: 5px 0 0 0;
+}
+.dnnadminmega ul, .dnnadminmega li {
+    list-style: none none;
+    margin: 0;
+    padding: 0;
+}
+.dnnadminmega li {
+    float: left;
+    display: block;
+}
+.dnnadminmega .megaborder {
+    position: absolute;
+    top: 18px;
+    left: 0px;
+    z-index: 20;
+    width: 485px;
+    padding: 1em;
+    background: white;
+    -moz-border-radius: 0px 0px 5px 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    border-radius: 0px 0px 5px 5px;
+    -moz-box-shadow: 0 1px 5px #aaa;
+    -webkit-box-shadow: 0 1px 5px #aaa;
+    box-shadow: 0 1px 5px #aaa;
+    border: 4px solid #ccc;
+    display: none;
+}
+.dnnadminmega li.root {
+    float: left;
+    margin: 0 15px 0 0;
+    position: relative;
+}
+.dnnadminmega li.root a {
+    font-weight: bold;
+}
+.dnnadminmega li.root > a {
+    color: Black;
+}
+.dnnadminmega li.category {
+    clear: both;
+    font-weight: bold;
+    margin-bottom: 1em;
+    float: none;
+}
+.dnnadminmega li.category > span {
+    display: block;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 15px;
+    text-align: left;
+    padding: 0 0 8px 0;
+    font-size: 12px;
+}
+.dnnadminmega li.leaf {
+    width: 150px;
+    font-weight: normal;
+    margin: 3px 5px;
+    font-variant: normal;
+}
+.dnnadminmega li.leaf.col0 {
+    clear: both;
+}
+.dnnadminmega li.leaf.col2 {
+    margin-right: 0;
+}
+.dnnadminmega li.leaf img {
+    margin-right: 0.5em;
+    border: 0;
+}
+.dnnadminmega li.leaf > a, .dnnadminmega li.leaf > a:visited {
+    text-decoration: none;
+    color: #000;
+    display: block;
+    text-transform: none;
+    font-weight: normal;
+    padding: 3px 0;
+}
+.dnnadminmega li.leaf > a:hover {
+    background: #F1F1F1;
+}
+.dnnadminmega li.leaf a img {
+    float: left;
+    display: block;
+    min-height: 1.2em;
+    line-height: 1.2;
+}
+.dnnadminmega .megaborder h4 {
+    border-bottom: 1px solid #ccc;
+    margin: 0;
+    text-align: left;
+    padding: 0 0 8px 0;
+    font-size: 14px;
+}
+.dnnadminmega .megaborder h5 {
+    border-bottom: 1px solid #eee;
+    margin: 0 0 10px 0;
+    text-align: left;
+    padding: 0 0 3px 0;
+    font-size: 12px;
+}
+.dnnadminmega .megaborder select {
+    line-height: 20px;
+}
+.dnnadminmega .megaborder label {
+    margin-top: 0;
+    width: auto;
+}
+a.dnnCPHMessage {
+    padding-left: 50px;
+}
+.rcbSlide {
+    z-index: 20000 !important;
+}
+#shareableWarning {
+    padding: 16px;
+    display: none;
+}
+#shareableWarning h3 {
+    font-weight: bold;
+    font-size: 125%;
+}
+
+/* some new UI clean */
+
+.dnnCPHNav > span{
+	display: block;
+	float: left;
+	margin-top: 5px;	    
+}
+.dnnCPHNav > .RadComboBox_Default{
+	display: block;
+	float: left;
+	width: 100px;
+	margin: 0;
+}	
+#RibbonBar_ddlMode .rcbInput{
+	padding: 5px !important;
+}
+
+.cbctAddModule .dnnClear label{
+    width: 100px;
+    display: block; 
+    float:left;
+    margin-top: 8px;
+}
+.cbctAddModule .dnnClear .RadComboBox_Default{
+    width: 200px !important;
+    display: block;
+    float: left;
+    margin-bottom: 8px;
+}
+.cbctAddModule .dnnClear #RibbonBar_AddMod_Title{
+    width: 180px;
+    display:block;
+    float: left;
+    margin-bottom: 8px;
+}
+
+.cbctAddPage .dnnClear label{
+     width: 100px;
+    display: block; 
+    float:left;
+    margin-top: 8px;
+}
+
+.cbctAddPage .dnnClear .RadComboBox_Default{
+    width: 200px !important;
+    display: block;
+    float: left;
+    margin-bottom: 8px;
+}
+.cbctAddPage .dnnClear #RibbonBar_AddPage_Name{
+    width: 180px;
+    display:block;
+    float: left;
+    margin-bottom: 8px;
+}
+
+.cbcpPageEdit .dnnClear label{
+     width: 100px;
+    display: block; 
+    float:left;
+    margin-top: 8px;
+}
+
+.cbcpPageEdit .dnnClear .RadComboBox_Default{
+    width: 200px !important;
+    display: block;
+    float: left;
+    margin-bottom: 8px;
+}
+.cbcpPageEdit .dnnClear #RibbonBar_EditPage_Name{
+    width: 180px;
+    display:block;
+    float: left;
+    margin-bottom: 8px;
+}
+

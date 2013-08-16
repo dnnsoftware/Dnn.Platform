@@ -1,0 +1,26 @@
+<Settings>
+  <Setting>
+    <Name>ProviderName</Name>
+    <Type>String</Type>
+    <Help>Sets the menu provider used to render the action menu, defaults to SolpartMenuNavigationProvider</Help>
+    <Value>SolpartMenuNavigationProvider, DNNMenuNavigationProvider, DNNDropDownNavigationProvider, ASP2MenuNavigationProvider</Value>
+  </Setting>
+  <Setting>
+    <Name>PopulateNodesFromClient</Name>
+    <Type>Boolean</Type>
+    <Help>Sets whether to use AJAX to render the action menu</Help>
+    <Value>True, False</Value>
+  </Setting>
+  <Setting>
+    <Name>ExpandDepth</Name>
+    <Type>Integer</Type>
+    <Help>Sets the depth of the menu. Needs to be set at least to 1 in order for the menu to render</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>PathSystemScript</Name>
+    <Type>String</Type>
+    <Help>Optional override location for the scripts that drive the menu</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

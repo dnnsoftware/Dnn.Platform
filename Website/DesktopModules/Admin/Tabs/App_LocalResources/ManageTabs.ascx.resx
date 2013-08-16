@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BasicSettings.Text" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="BasicSettingsHelp.Text" xml:space="preserve">
+    <value>In this section, you can set up the basic settings for this page.</value>
+  </data>
+  <data name="TabName.Text" xml:space="preserve">
+    <value>Page Name</value>
+  </data>
+  <data name="TabNameHelp.Text" xml:space="preserve">
+    <value>This is the name of the Page.  The text you enter will be displayed in the menu system.</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Page Title</value>
+  </data>
+  <data name="TitleHelp.Text" xml:space="preserve">
+    <value>Enter a title for the Page here. The text you enter will be displayed in the browser window title.</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DescriptionHelp.Text" xml:space="preserve">
+    <value>Enter a description about this page here.</value>
+  </data>
+  <data name="ParentTab.Text" xml:space="preserve">
+    <value>Parent Page</value>
+  </data>
+  <data name="ParentTab.Help" xml:space="preserve">
+    <value>Select the page that you would like this page to be a child of.</value>
+  </data>
+  <data name="DefaultTemplate.Text" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Url.Text" xml:space="preserve">
+    <value>Link URL</value>
+  </data>
+  <data name="UrlHelp.Text" xml:space="preserve">
+    <value>If you would like this page to behave as a navigation link to another resource, you can specify the Link URL value here. Please note that this field is optional.</value>
+  </data>
+  <data name="Copy.Text" xml:space="preserve">
+    <value>Copy Page</value>
+  </data>
+  <data name="CopyModules.Text" xml:space="preserve">
+    <value>Copy From Page</value>
+  </data>
+  <data name="CopyModulesHelp.Text" xml:space="preserve">
+    <value>Select the page (if any) that you would like to copy modules from.</value>
+  </data>
+  <data name="CopyContent.Text" xml:space="preserve">
+    <value>Specify Modules</value>
+  </data>
+  <data name="CopyContentHelp.Text" xml:space="preserve">
+    <value>Select the modules that you wish to copy and enter the title for the module. In addition specify if you want to create a New module ( without content ), a Copy of the module ( with content ), or a Reference to an existing module ( shared content ).</value>
+  </data>
+  <data name="ModuleNew.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ModuleCopy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="ModuleReference.Text" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="AdvancedSettings.Text" xml:space="preserve">
+    <value>Advanced Settings</value>
+  </data>
+  <data name="AdvancedSettingsHelp.Text" xml:space="preserve">
+    <value>In this section, you can set up more advanced settings for this page.</value>
+  </data>
+  <data name="Appearance.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Icon.Text" xml:space="preserve">
+    <value>Icon</value>
+  </data>
+  <data name="IconHelp.Text" xml:space="preserve">
+    <value>You can choose an icon that can be used in the menu.</value>
+  </data>
+  <data name="plSkin.Text" xml:space="preserve">
+    <value>Page Skin</value>
+  </data>
+  <data name="plSkin.Help" xml:space="preserve">
+    <value>The selected skin will be applied to this page.</value>
+  </data>
+  <data name="plContainer.Text" xml:space="preserve">
+    <value>Page Container</value>
+  </data>
+  <data name="plContainer.Help" xml:space="preserve">
+    <value>The selected container will be applied to all modules on this page.</value>
+  </data>
+  <data name="Menu.Text" xml:space="preserve">
+    <value>Include In Menu</value>
+  </data>
+  <data name="MenuHelp.Text" xml:space="preserve">
+    <value>You have the choice on whether or not to include the page in the main navigation menu. If a page is not included in the menu, you can still link to it based on its page URL.</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="DisabledHelp.Text" xml:space="preserve">
+    <value>If the page is disabled it cannot be clicked in any navigation menu.  This option is used to provide place-holders for child menu items.</value>
+  </data>
+  <data name="SecuritySettings.Text" xml:space="preserve">
+    <value>Security Settings</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="PermissionsHelp.Text" xml:space="preserve">
+    <value>Choose the groups of people that can view and administer this page.</value>
+  </data>
+  <data name="OtherSettings.Text" xml:space="preserve">
+    <value>Other Settings</value>
+  </data>
+  <data name="KeyWords.Text" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
+  <data name="KeyWordsHelp.Text" xml:space="preserve">
+    <value>Enter some keywords for this page (separated by commas).  These keywords are used by some internet search engines like Google to help index your site's pages.</value>
+  </data>
+  <data name="plSecure.Text" xml:space="preserve">
+    <value>Secure?</value>
+  </data>
+  <data name="plSecure.Help" xml:space="preserve">
+    <value>Specify whether or not this page should be forced to use a secure connection (SSL). This option will only be enabled if the administrator has Enabled SSL in the site settings.</value>
+  </data>
+  <data name="plStartDate.Text" xml:space="preserve">
+    <value>Start Date:</value>
+  </data>
+  <data name="plStartDate.Help" xml:space="preserve">
+    <value>Enter the start date for displaying this page. You may use the Calendar to pick a date.</value>
+  </data>
+  <data name="plEndDate.Text" xml:space="preserve">
+    <value>End Date:</value>
+  </data>
+  <data name="plEndDate.Help" xml:space="preserve">
+    <value>Enter the end date for displaying this page. You may use the Calendar to pick a date.</value>
+  </data>
+  <data name="SubmitToGoogle.Text" xml:space="preserve">
+    <value>Submit Page To Google</value>
+  </data>
+  <data name="ControlTitle_tab.Text" xml:space="preserve">
+    <value>Page Settings</value>
+  </data>
+  <data name="ControlTitle_edit.Text" xml:space="preserve">
+    <value>Edit Page</value>
+  </data>
+  <data name="valTabName.ErrorMessage" xml:space="preserve">
+    <value>Page Name Is Required</value>
+  </data>
+  <data name="DeleteSpecialPage.Text" xml:space="preserve">
+    <value>A page defined as Home, Splash, Login or User Page for the website, or the last visible Page in the website cannot be deleted. Also the Admin and Host Page can not be deleted.</value>
+  </data>
+  <data name="valStartDate.ErrorMessage" xml:space="preserve">
+    <value>Invalid Start Date</value>
+  </data>
+  <data name="valEndDate.ErrorMessage" xml:space="preserve">
+    <value>Invalid End Date</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Page Management&lt;/h1&gt;&lt;p&gt;This module allows you to modify the settings for an existing page, delete the page, or submit it to Google for indexing.&lt;/p&gt;</value>
+  </data>
+  <data name="PageDetails.Text" xml:space="preserve">
+    <value>Page Details</value>
+  </data>
+  <data name="RefreshInterval.Text" xml:space="preserve">
+    <value>Refresh Interval (seconds)</value>
+  </data>
+  <data name="RefreshInterval.Help" xml:space="preserve">
+    <value>Enter the interval to wait between automatic page refeshes. (Example: Enter "60" for 1 minute or leave blank to disable.)</value>
+  </data>
+  <data name="PageHeadText.Text" xml:space="preserve">
+    <value>Page Header Tags</value>
+  </data>
+  <data name="PageHeadText.Help" xml:space="preserve">
+    <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>
+  </data>
+  <data name="cmdCopySkin.Text" xml:space="preserve">
+    <value>Copy design</value>
+  </data>
+  <data name="plCopySkin.Help" xml:space="preserve">
+    <value>Copies the currently selected design (skin and container) for the page to descendant pages. Option only available to Website Admins and SuperUsers.</value>
+  </data>
+  <data name="plCopySkin.Text" xml:space="preserve">
+    <value>Copy design to descendants:</value>
+  </data>
+  <data name="cmdCopyPerm.Text" xml:space="preserve">
+    <value>Copy Permissions</value>
+  </data>
+  <data name="plCopyPerm.Help" xml:space="preserve">
+    <value>Copies the currently selected permissions for the page to descendant pages.</value>
+  </data>
+  <data name="plCopyPerm.Text" xml:space="preserve">
+    <value>Copy Permissions to Descendants:</value>
+  </data>
+  <data name="ExceededQuota.Text" xml:space="preserve">
+    <value>Adding this page will exceed the Page Quota for this site.  Please contact your hosting provider for inquiries related to increasing your Page Quota.</value>
+  </data>
+  <data name="plFolder.Help" xml:space="preserve">
+    <value>Select the template folder to use</value>
+  </data>
+  <data name="plFolder.Text" xml:space="preserve">
+    <value>Template Folder:</value>
+  </data>
+  <data name="plTemplate.Help" xml:space="preserve">
+    <value>Select a page template which you would like to use to create this page.</value>
+  </data>
+  <data name="plTemplate.Text" xml:space="preserve">
+    <value>Page Template:</value>
+  </data>
+  <data name="Root.Text" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="DesignCopied.Text" xml:space="preserve">
+    <value>Design copied successfully</value>
+  </data>
+  <data name="DesignCopyError.Text" xml:space="preserve">
+    <value>There was an error copying the design</value>
+  </data>
+  <data name="PermissionCopyError.Text" xml:space="preserve">
+    <value>There was an error copying the permissions</value>
+  </data>
+  <data name="PermissionsCopied.Text" xml:space="preserve">
+    <value>Permissions copied successfully</value>
+  </data>
+  <data name="TabExists.Text" xml:space="preserve">
+    <value>The Page Name you chose is already being used for another page at the same level of the page hierarchy.</value>
+  </data>
+  <data name="InsertPosition.Help" xml:space="preserve">
+    <value>Select the page that you would like this page to be inserted before or after, or optionally add the page to end of the current level.</value>
+  </data>
+  <data name="InsertPosition.Text" xml:space="preserve">
+    <value>Insert Page:</value>
+  </data>
+  <data name="InvalidTabName.Text" xml:space="preserve">
+    <value>This is an invalid Page Name</value>
+  </data>
+  <data name="InsertAfter.Text" xml:space="preserve">
+    <value>After</value>
+  </data>
+  <data name="InsertBefore.Text" xml:space="preserve">
+    <value>Before</value>
+  </data>
+  <data name="valEndDate2.ErrorMessage" xml:space="preserve">
+    <value>End Date must be after Start Date</value>
+  </data>
+  <data name="InsertAtEnd.Text" xml:space="preserve">
+    <value>Add to End</value>
+  </data>
+  <data name="plPermanentRedirect.Help" xml:space="preserve">
+    <value>Check this box if you want to notify the client that this page should be considered as permanently moved.  This would allow SearchEngines to modify their URLs to directly link to the resource.  This is ignored if the LinkType is None.</value>
+  </data>
+  <data name="plPermanentRedirect.Text" xml:space="preserve">
+    <value>Permanently Redirect?</value>
+  </data>
+  <data name="plPriority.Help" xml:space="preserve">
+    <value>Enter the desired priority (between 0 and 1.0).  This helps determine how this page is ranked in Google with respect to other pages on your site (0.5 is the default).</value>
+  </data>
+  <data name="plPriority.Text" xml:space="preserve">
+    <value>Site Map Priority:</value>
+  </data>
+  <data name="DeletePermissionError.Text" xml:space="preserve">
+    <value>You don't have permission to delete this page.</value>
+  </data>
+  <data name="IconLarge.Text" xml:space="preserve">
+    <value>Large icon</value>
+  </data>
+  <data name="IconLargeHelp.Text" xml:space="preserve">
+    <value>You can choose a large icon that will be used in the console.</value>
+  </data>
+  <data name="TabRecycled.Text" xml:space="preserve">
+    <value>A page with this name exists in the Recycle Bin.  To restore this page use the Recycle Bin.</value>
+  </data>
+  <data name="InvalidTabDates.Text" xml:space="preserve">
+    <value>You have entered Invalid Start and End dates - the page will never display.</value>
+  </data>
+  <data name="CacheProvider.Help" xml:space="preserve">
+    <value>Select the provider to use for this page.</value>
+  </data>
+  <data name="CacheDuration.Help" xml:space="preserve">
+    <value>Enter the duration (in seconds) to cache the page for.  This must be an integer.</value>
+  </data>
+  <data name="CacheMaxVaryByCount.Help" xml:space="preserve">
+    <value>Enter the maximum number of variations to cache for this page.  This must be an integer. (Note, this feature prevents potential denial of service attacks.)</value>
+  </data>
+  <data name="CacheProvider.Text" xml:space="preserve">
+    <value>Output Cache Provider</value>
+  </data>
+  <data name="CacheDuration.Text" xml:space="preserve">
+    <value>Cache Duration (seconds)</value>
+  </data>
+  <data name="CacheMaxVaryByCount.Text" xml:space="preserve">
+    <value>Vary By Limit</value>
+  </data>
+  <data name="CacheIncludeExclude.Text" xml:space="preserve">
+    <value>Include/Exclude Params by Default</value>
+  </data>
+  <data name="CacheIncludeExclude.Help" xml:space="preserve">
+    <value>If set to INCLUDE, all querystring parameter value variations will result in a new item in the output cache.  If set to EXCLUDE, querystring parameters will not be used to vary the cached page.</value>
+  </data>
+  <data name="IncludeVaryBy.Text" xml:space="preserve">
+    <value>Include Params in Cache Variation</value>
+  </data>
+  <data name="IncludeVaryBy.Help" xml:space="preserve">
+    <value>A list of querystring parameter names (separated by commas) to be INCLUDED in the variations of cached pages.  This setting is only valid when the default above is set to EXCLUDE querystring parameters from cached page variations.</value>
+  </data>
+  <data name="ExcludeVaryBy.Text" xml:space="preserve">
+    <value>Exclude Params from Cache Variation</value>
+  </data>
+  <data name="ExcludeVaryBy.Help" xml:space="preserve">
+    <value>A list of querystring parameter names (separated by commas) to be EXCLUDED from the variations of cached pages.  This setting is only valid when the default above is set to INCLUDE querystring parameters from cached page variations.</value>
+  </data>
+  <data name="cmdClearPageCache.Text" xml:space="preserve">
+    <value>Clear Cache - This Page</value>
+  </data>
+  <data name="cmdClearAllPageCache.Text" xml:space="preserve">
+    <value>Clear Cache - All Pages</value>
+  </data>
+  <data name="lblCachedItemCount.Text" xml:space="preserve">
+    <value>Current Cache Count: {0} variations for this page</value>
+  </data>
+  <data name="valCacheTime.ErrorMessage" xml:space="preserve">
+    <value>Cache Duration must be a number</value>
+  </data>
+  <data name="valCacheVaryByLimit.ErrorMessage" xml:space="preserve">
+    <value>Cache Vary ByLimit must be a number</value>
+  </data>
+  <data name="CacheDurationInfo.Text" xml:space="preserve">
+    <value>Note, there is a Scheduled Task for purging the Output Cache. The task must run more frequently than the Cache Duration you specify here.</value>
+  </data>
+  <data name="BadTemplate.Text" xml:space="preserve">
+    <value>The page template is not a valid xml document.  Please select a different template and try again.</value>
+  </data>
+  <data name="plTags.Help" xml:space="preserve">
+    <value>Select items from the drop-down to tag this Page.</value>
+  </data>
+  <data name="plTags.Text" xml:space="preserve">
+    <value>Tags:</value>
+  </data>
+  <data name="LocalizedModules.Text" xml:space="preserve">
+    <value>Module Localization</value>
+  </data>
+  <data name="cultureLabel.Help" xml:space="preserve">
+    <value>The culture for this page</value>
+  </data>
+  <data name="cultureLabel.Text" xml:space="preserve">
+    <value>Page Culture:</value>
+  </data>
+  <data name="defaultCultureLabel.Help" xml:space="preserve">
+    <value>Click this link to view the version of this page in the default culture</value>
+  </data>
+  <data name="defaultCultureLabel.Text" xml:space="preserve">
+    <value>Default Culture:</value>
+  </data>
+  <data name="edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Localization.Text" xml:space="preserve">
+    <value>Localization</value>
+  </data>
+  <data name="view.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="LocalizedTabs.Text" xml:space="preserve">
+    <value>Page Localization</value>
+  </data>
+  <data name="IsTranslated.Text" xml:space="preserve">
+    <value>Is Translated?</value>
+  </data>
+  <data name="TranslateConfirm.Text" xml:space="preserve">
+    <value>You are about to mark this page as translated?  The action is immediate.  Are you sure?</value>
+  </data>
+  <data name="UnTranslateConfirm.Text" xml:space="preserve">
+    <value>You are about to mark this page as not translated?  The action is immediate.  Are you sure?</value>
+  </data>
+  <data name="CreateLocalizedPages.Text" xml:space="preserve">
+    <value>Create Localized Pages</value>
+  </data>
+  <data name="cultureTypeLabel.Help" xml:space="preserve">
+    <value>Select whether this is a culture neutral page which is the same in all languages or should have localized versions for each language.</value>
+  </data>
+  <data name="cultureTypeLabel.Text" xml:space="preserve">
+    <value>Culture Type:</value>
+  </data>
+  <data name="Localized.Text" xml:space="preserve">
+    <value>Create Localized Versions of Page</value>
+  </data>
+  <data name="Neutral.Text" xml:space="preserve">
+    <value>Create Single Neutral Culture Page</value>
+  </data>
+  <data name="avalableCulturesLabel.Text" xml:space="preserve">
+    <value>Available Languages</value>
+  </data>
+  <data name="DefaultCulture.Text" xml:space="preserve">
+    <value>This is the default site language</value>
+  </data>
+  <data name="IsTranslated.Help" xml:space="preserve">
+    <value>Check/Uncheck this box to indicate whether this page is translated (or not)</value>
+  </data>
+  <data name="PopulatePages.Text" xml:space="preserve">
+    <value>Populate Pages</value>
+  </data>
+  <data name="Localize.Confirm" xml:space="preserve">
+    <value>You are about to create localized copies of all the pages in this site for the "{0}" culture.  These pages will share content with the same page in the default culture - "{1}" until the modules have been localized.</value>
+  </data>
+  <data name="Culture.Text" xml:space="preserve">
+    <value>Create in Current Culture only.</value>
+  </data>
+  <data name="PublishPage.Text" xml:space="preserve">
+    <value>Click this button to publish the page.  This will copy the view permissions from the default culture version of the page, thus making the page visible to site visitors.</value>
+  </data>
+  <data name="Publish.Text" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="Publish.Confirm" xml:space="preserve">
+    <value>You are about to publish this page.  This action will mark all the modules as translated and will automatically copy all the View permissions from the master/default language.  Are you sure you want to do this?</value>
+  </data>
+  <data name="ReadyForTranslation.Text" xml:space="preserve">
+    <value>Notify Translators</value>
+  </data>
+  <data name="NewContentMessage.Body" xml:space="preserve">
+    <value>The following page has new content ready for translation&lt;br/&gt;
+
+Page: &lt;a href='{1}'&gt;{0}&lt;/a&gt;&lt;br/&gt;{2}</value>
+  </data>
+  <data name="NewContentMessage.Subject" xml:space="preserve">
+    <value>New Content Ready for Translation</value>
+  </data>
+  <data name="publishPageLabel.Help" xml:space="preserve">
+    <value>Click the button to the right to publish the page.  This will copy the view permissions from the default culture version of the page, thus making the page visible to site visitors.</value>
+  </data>
+  <data name="publishPageLabel.Text" xml:space="preserve">
+    <value>Publish Page</value>
+  </data>
+  <data name="CacheSettings.Text" xml:space="preserve">
+    <value>Cache Settings</value>
+  </data>
+  <data name="RequiredFields.Text" xml:space="preserve">
+    <value>Indicates required fields</value>
+  </data>
+  <data name="SkinPreview.Text" xml:space="preserve">
+    <value>Preview Skin and Container</value>
+  </data>
+  <data name="PreviewNoSelectionMessage.Text" xml:space="preserve">
+    <value>Please select a skin and/or container to preview.</value>
+  </data>
+  <data name="Add.Text" xml:space="preserve">
+    <value>Add Page</value>
+  </data>
+  <data name="Update.Text" xml:space="preserve">
+    <value>Update Page</value>
+  </data>
+  <data name="CopyPage.Text" xml:space="preserve">
+    <value>Copy Page</value>
+  </data>
+  <data name="TranslationComment.Text" xml:space="preserve">
+    <value>Send notification to Translators</value>
+  </data>
+  <data name="cmdSubmit.Text" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="PathDuplicateWithAlias.Text" xml:space="preserve">
+    <value>There is a site domain identical to your page path.</value>
+  </data>
+  <data name="CopyDesignToChildren.Confirm" xml:space="preserve">
+    <value>Skin and container will be replaced for all children of this page. Are you sure you want to continue?</value>
+  </data>
+  <data name="RefreshInterval.Invalid" xml:space="preserve">
+    <value>Invalid number</value>
+  </data>
+  <data name="valPriority.ErrorMessage" xml:space="preserve">
+    <value>Invalid value for priority</value>
+  </data>
+  <data name="valPriorityRequired.ErrorMessage" xml:space="preserve">
+    <value>Priority is Required</value>
+  </data>
+  <data name="plAllowIndex.Help" xml:space="preserve">
+    <value>This setting controls whether a page should be indexed by search crawlers. It uses the INDEX/NOINDEX values for ROBOTS meta tag.</value>
+  </data>
+  <data name="plAllowIndex.Text" xml:space="preserve">
+    <value>Allow Indexing:</value>
+  </data>
+  <data name="UrlManagement.Text" xml:space="preserve">
+    <value>URL Management</value>
+  </data>
+  <data name="cmdUpdateLocalization.Text" xml:space="preserve">
+    <value>Update Localization</value>
+  </data>
+  <data name="MakeNeutral.Confirm" xml:space="preserve">
+    <value>This will delete all translated version of the page. Only the default culture version of the page will remain. Are you sure you want to do this?</value>
+  </data>
+  <data name="MakeNeutral.Text" xml:space="preserve">
+    <value>Convert page to Neutral Language</value>
+  </data>
+  <data name="MakeTranslatable.Text" xml:space="preserve">
+    <value>Make Page Translatable</value>
+  </data>
+  <data name="AddMissingLanguages.Text" xml:space="preserve">
+    <value>Add Missing Languages</value>
+  </data>
+  <data name="plCustomStylesheet.Help" xml:space="preserve">
+    <value>A stylesheet that will only be loaded for this page. The file must be located in the home directory or a sub folder of the current website.</value>
+  </data>
+  <data name="plCustomStylesheet.Text" xml:space="preserve">
+    <value>Page Stylesheet</value>
+  </data>
+  <data name="urlLabel.Help" xml:space="preserve">
+    <value>You can enter a custom URL for the page.</value>
+  </data>
+  <data name="urlLabel.Text" xml:space="preserve">
+    <value>Page URL:</value>
+  </data>
+  <data name="doNotRedirectLabel.Help" xml:space="preserve">
+    <value>Check this box to ensure that this page is excluded from any rules that may end up in a redirect.</value>
+  </data>
+  <data name="doNotRedirectLabel.Text" xml:space="preserve">
+    <value>Do Not Redirect:</value>
+  </data>
+  <data name="UrlPathCleaned.Error" xml:space="preserve">
+    <value>The submitted Page URL contains illegal characters, which have been removed.  You can click Update again to accept the modified URL.</value>
+  </data>
+  <data name="UrlPathNotUnique.Error" xml:space="preserve">
+    <value>The submitted Page URL is not available.  If you wish to accept the suggested alternative, please click Update.</value>
+  </data>
+  <data name="UpdateUrlButton.Caption" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="UpdateUrlButton.Tooltip" xml:space="preserve">
+    <value>Update URL</value>
+  </data>
+  <data name="TranslationMessageConfirmMessage.Error" xml:space="preserve">
+    <value>Something went wrong notifying the Translators.</value>
+  </data>
+  <data name="TranslationMessageConfirmMessage.Text" xml:space="preserve">
+    <value>Translators successfully notified.</value>
+  </data>
+</root>

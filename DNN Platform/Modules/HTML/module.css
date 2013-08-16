@@ -1,0 +1,5 @@
+﻿.dnnHTMLSettings, .dnnMyWork, .dnnEditHtml{margin:2em auto;}
+	.dnnFormItem input[type=checkbox], .dnnPageSettings .dnnFormItem input[type=radio]{width:auto;}
+	.dnnFormItem .dnnHTMLSRadioButtons label, .dnnFormItem .dnnPSRadioButtons input, .dnnFormItem .dnnHTMLSRadioButtons label, .dnnFormItem .dnnHTMLSRadioButtons input{float:left;padding:0;width:2%;text-align:left;}
+	.dnnFormItem .dnnHTMLSRadioButtons label{width:auto;padding:0 15px 0 6px;font-weight:normal}
+	.dnnHTMLSRadioButtons br{display:none !important;font-size:0;line-height:0;border-collapse:collapse;}

@@ -1,0 +1,106 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/* Fix bug 18705: re-create FolderPermission's foreign key to Users with ON DELETE CASCADE */
+/*******************************************************************************************/
+
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT [FK_{objectQualifier}FolderPermission{objectQualifier}Users]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] 
+	ADD CONSTRAINT [FK_{objectQualifier}FolderPermission{objectQualifier}Users] FOREIGN KEY ([UserID]) REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserID]) ON DELETE CASCADE
+GO
+
+/* Fix bug 18799: SI:Unable to insert images in an HTML module using the media manager */
+/***************************************************************************************/
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Users]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Users]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Users]
+
+AS
+	SELECT DISTINCT 
+		U.UserID, 
+		(CASE WHEN IsSuperUser = 1 THEN NULL ELSE UP.PortalId END) AS PortalId, 
+		U.Username, 
+		U.FirstName, 
+		U.LastName, 
+		U.DisplayName, 
+		U.IsSuperUser, 
+        U.Email, 
+		U.AffiliateId, 
+		U.UpdatePassword, 
+		UP.Authorised, 
+		(CASE WHEN UP.PortalId IS NULL THEN U.IsDeleted ELSE UP.IsDeleted END) AS IsDeleted, 
+        UP.RefreshRoles, 
+		U.LastIPAddress, 
+		U.CreatedByUserID, 
+		U.CreatedOnDate, 
+		U.LastModifiedByUserID, 
+		U.LastModifiedOnDate
+	FROM  {databaseOwner}{objectQualifier}Users AS U LEFT OUTER JOIN
+		{databaseOwner}{objectQualifier}UserPortals AS UP ON U.UserID = UP.UserId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUserByUsername]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserByUsername]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserByUsername]
+
+	@PortalID int,
+	@Username nvarchar(100)
+
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_Users
+	WHERE  Username = @Username
+		AND  ((@PortalId IS NULL) OR (PortalId = @PortalID) OR IsSuperUser = 1)
+GO
+
+/* Add RemoveUser Procedure */
+/****************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}RemoveUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}RemoveUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}RemoveUser] 
+	@UserID		int,
+	@PortalID   int
+AS
+	IF @PortalID IS NULL
+		BEGIN
+			-- Delete SuperUser
+			DELETE FROM {databaseOwner}{objectQualifier}Users
+				WHERE  UserId = @UserID
+		END
+	ELSE
+		BEGIN
+			-- Remove User from Portal			
+			DELETE FROM {databaseOwner}{objectQualifier}UserPortals
+				WHERE  UserId = @UserID
+                 AND PortalId = @PortalID
+			IF NOT EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}UserPortals WHERE  UserId = @UserID) 
+				-- Delete User (but not if SuperUser)
+				BEGIN
+					DELETE FROM {databaseOwner}{objectQualifier}Users
+						WHERE  UserId = @UserID
+							AND IsSuperUser = 0
+				END								
+		END
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

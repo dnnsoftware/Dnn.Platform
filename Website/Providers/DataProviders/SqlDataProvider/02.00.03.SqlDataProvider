@@ -1,0 +1,283 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+insert into {objectQualifier}HostSettings (
+  SettingName,
+  SettingValue
+) 
+values (
+  'UseCustomErrorMessages',
+  'Y'
+)
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetModuleControlsByKey
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetModuleControlsByKey
+
+@ControlKey        nvarchar(20),
+@ModuleDefId       int
+
+as
+
+select {objectQualifier}ModuleDefinitions.*,
+       ControlTitle,
+       ControlSrc,
+       IconFile,
+       ControlType
+from   {objectQualifier}ModuleControls
+left outer join {objectQualifier}ModuleDefinitions on {objectQualifier}ModuleControls.ModuleDefId = {objectQualifier}ModuleDefinitions.ModuleDefId
+where  ((ControlKey is null and @ControlKey is null) or (ControlKey = @ControlKey))
+and    (({objectQualifier}ModuleControls.ModuleDefId is null and @ModuleDefId is null) or ({objectQualifier}ModuleControls.ModuleDefId = @ModuleDefId))
+and    ControlType <> -2
+order by ViewOrder
+GO
+
+update {objectQualifier}ModuleControls set ControlKey = 'MENU', ControlType = -2 where ControlKey = '[MENU]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'LOGIN', ControlType = -2 where ControlKey = '[LOGIN]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'BANNER', ControlType = -2 where ControlKey = '[BANNER]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'BREADCRUMB', ControlType = -2 where ControlKey = '[BREADCRUMB]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'COPYRIGHT', ControlType = -2 where ControlKey = '[COPYRIGHT]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'CURRENTDATE', ControlType = -2 where ControlKey = '[CURRENTDATE]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'DOTNETNUKE', ControlType = -2 where ControlKey = '[DOTNETNUKE]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'HELP', ControlType = -2 where ControlKey = '[HELP]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'HOSTNAME', ControlType = -2 where ControlKey = '[HOSTNAME]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'LINKS', ControlType = -2 where ControlKey = '[LINKS]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'LOGO', ControlType = -2 where ControlKey = '[LOGO]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'PRIVACY', ControlType = -2 where ControlKey = '[PRIVACY]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'SIGNIN', ControlType = -2 where ControlKey = '[SIGNIN]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'TERMS', ControlType = -2 where ControlKey = '[TERMS]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'USER', ControlType = -2 where ControlKey = '[USER]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'ACTIONS', ControlType = -2 where ControlKey = '[ACTIONS]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'ICON', ControlType = -2 where ControlKey = '[ICON]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'TITLE', ControlType = -2 where ControlKey = '[TITLE]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'VISIBILITY', ControlType = -2 where ControlKey = '[VISIBILITY]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'PRINTMODULE', ControlType = -2 where ControlKey = '[PRINTMODULE]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'SOLPARTACTIONS', ControlType = -2 where ControlKey = '[SOLPARTACTIONS]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'DROPDOWNACTIONS', ControlType = -2 where ControlKey = '[DROPDOWNACTIONS]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'LINKACTIONS', ControlType = -2 where ControlKey = '[LINKACTIONS]'
+GO
+update {objectQualifier}ModuleControls set ControlKey = 'SOLPARTMENU', ControlType = -2 where ControlKey = '[SOLPARTMENU]'
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddSiteLog
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddSiteLog
+
+@DateTime                      datetime, 
+@PortalId                      int,
+@UserId                        int                   = null,
+@Referrer                      nvarchar(255)         = null,
+@Url                           nvarchar(255)         = null,
+@UserAgent                     nvarchar(255)         = null,
+@UserHostAddress               nvarchar(255)         = null,
+@UserHostName                  nvarchar(255)         = null,
+@TabId                         int                   = null,
+@AffiliateId                   int                   = null
+
+as
+ 
+declare @SiteLogHistory int
+
+insert into {objectQualifier}SiteLog ( 
+  DateTime,
+  PortalId,
+  UserId,
+  Referrer,
+  Url,
+  UserAgent,
+  UserHostAddress,
+  UserHostName,
+  TabId,
+  AffiliateId
+)
+values (
+  @DateTime,
+  @PortalId,
+  @UserId,
+  @Referrer,
+  @Url,
+  @UserAgent,
+  @UserHostAddress,
+  @UserHostName,
+  @TabId,
+  @AffiliateId
+)
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteSiteLog
+
+@DateTime                      datetime, 
+@PortalId                      int
+
+as
+
+delete
+from {objectQualifier}SiteLog
+where  PortalId = @PortalId
+and    DateTime < @DateTime
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetVendorClassifications
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetVendorClassifications
+
+@VendorId  int
+
+as
+
+select ClassificationId,
+       ClassificationName,
+       'IsAssociated' = case when exists ( select 1 from {objectQualifier}VendorClassification vc where vc.VendorId = @VendorId and vc.ClassificationId = {objectQualifier}Classification.ClassificationId ) then 1 else 0 end
+from {objectQualifier}Classification
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateClicks
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateClicks
+
+@TableName nvarchar(50),
+@KeyField  nvarchar(50),
+@ItemId    int,
+@UserId    int = null
+
+as
+
+declare @SQL nvarchar(200)
+
+select @SQL = 'update ' + @TableName + ' set Clicks = Clicks + 1 where ' + @KeyField + ' = ' + convert(varchar,@ItemId)
+
+EXEC sp_executesql @SQL
+
+insert into {objectQualifier}ClickLog (
+  TableName,
+  ItemId,
+  DateTime,
+  UserId
+)
+values (
+  @TableName,
+  @ItemId,
+  getdate(),
+  @UserId
+)
+GO
+
+update {objectQualifier}ModuleControls
+set    ControlTitle = 'File Upload'
+where  ControlKey = 'File Manager'
+and    ModuleDefId is null
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Roles ADD CONSTRAINT
+	IX_RoleName UNIQUE NONCLUSTERED 
+	(
+	PortalID,
+	RoleName
+	) ON [PRIMARY]
+GO
+
+drop procedure {databaseOwner}{objectQualifier}DeleteUserDefinedData
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteUserDefinedData
+
+@UserDefinedRowId    int, 
+@UserDefinedFieldId  int
+
+as
+
+delete 
+from {objectQualifier}UserDefinedData
+where  UserDefinedFieldId = @UserDefinedFieldId
+and    UserDefinedRowId = @UserDefinedRowId
+GO
+
+delete
+from   {objectQualifier}DesktopModules
+where  FriendlyName = 'Search'
+GO
+
+delete
+from   {objectQualifier}DesktopModules
+where  FriendlyName = 'Service Directory'
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetUserByUsername
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUserByUsername
+
+@PortalId int,
+@Username nvarchar(100)
+
+as
+ 
+select {objectQualifier}Users.UserId,
+       {objectQualifier}Users.Username,
+       {objectQualifier}Users.Password,
+       {objectQualifier}Users.Email,
+       'FullName' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Users.FirstName,
+       {objectQualifier}Users.LastName,
+       {objectQualifier}Users.Unit,
+       {objectQualifier}Users.Street,
+       {objectQualifier}Users.City,
+       {objectQualifier}Users.Region,
+       {objectQualifier}Users.PostalCode,
+       {objectQualifier}Users.Country,
+       {objectQualifier}Users.Telephone,
+       {objectQualifier}Users.IsSuperUser,
+       {objectQualifier}UserPortals.Authorized,
+       {objectQualifier}UserPortals.CreatedDate,
+       {objectQualifier}UserPortals.LastLoginDate
+from {objectQualifier}Users
+left outer join {objectQualifier}UserPortals on {objectQualifier}Users.UserId = {objectQualifier}UserPortals.UserId
+where  username = @Username
+and    ({objectQualifier}UserPortals.PortalId = @PortalId or {objectQualifier}Users.IsSuperUser = 1 or @PortalId is null)
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

@@ -1,0 +1,7 @@
+﻿.dnnForm fieldset {
+    width: 100%;
+}
+
+.dnnFormItem textarea {
+    width: 55%;
+}

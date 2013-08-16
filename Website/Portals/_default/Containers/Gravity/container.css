@@ -1,0 +1,25 @@
+@charset "UTF-8";
+/* Gravity Container Set styles */
+/* NoTitle */
+.DNNContainer_noTitle {
+}
+
+/* Title_h2 */
+.DNNContainer_Title_h2 h2 .TitleH2 {
+	display: block;
+	margin-bottom: 25px;
+}
+
+/* Title_h3 */
+.DNNContainer_Title_h3 h3 .TitleH3 {
+	display: block;
+	padding-bottom: 10px;
+	margin-bottom: 25px;
+	border-bottom: solid 1px #c0c0c0;
+}
+
+/* Title_h4 */
+.DNNContainer_Title_h4 h4 .TitleH4 {
+	display: block;
+	margin-bottom: 25px;
+} 

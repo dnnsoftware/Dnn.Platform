@@ -1,0 +1,9 @@
+﻿Test,					Scheme,		Page Name,		Params,					Expected Url,	
+Home,					http://,	Home,			,						http://{alias}/
+About Us,				http://,	About Us,		,						http://{alias}/AboutUs.aspx
+Admin Site Settings,	http://,	Site Settings,	,						http://{alias}/Admin/SiteSettings.aspx
+Profile Messages,		http://,	Messages,		,						http://{alias}/ActivityFeed/Messages.aspx
+Terms,					http://,	Home,			&ctl=Terms,				http://{alias}/Terms.aspx
+Login,					http://,	About Us,		&ctl=Login,				http://{alias}/Login.aspx
+Edit Page Home,			http://,	Home,			&ctl=Edit&mid=100,		http://{alias}/Home/ctl/Edit/mid/100.aspx
+Edit Page About Us,		http://,	About Us,		&ctl=Edit&mid=200,		http://{alias}/AboutUs/ctl/Edit/mid/200.aspx

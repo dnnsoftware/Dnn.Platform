@@ -1,0 +1,156 @@
+﻿.dnnEditState .DnnModule
+{
+    opacity:0.5;
+    -webkit-transition: opacity 250ms ease-in-out;
+	-moz-transition: opacity 250ms ease-in-out;
+    -ms-transition: opacity 250ms ease-in-out;
+    -o-transition: opacity 250ms ease-in-out;
+	transition: opacity 250ms ease-in-out;
+}
+
+.dnnEditState .DnnModule:hover
+{
+    opacity:1;
+}
+
+
+form .actionMenu ul {z-index:1000 !important;}
+form .actionMenu ul:hover{z-index:1003 !important;}
+form .dnn_mact {
+    margin-bottom: 0;
+    margin-left: 0;
+}
+form .dnn_mact li { 
+	position:relative; 
+	list-style:none;
+}
+form .dnn_mact > li {
+	width:20px; 
+	height:20px;
+	float:left;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    border:1px solid transparent;
+    background:transparent;
+}
+form .dnn_mact > li:hover {
+    border:1px solid #ccc;
+    border-bottom:1px solid #fff;
+    background:#fff;
+}
+form .dnn_mact > li > a {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #000;
+    background-image: url(images/dnnActionMenu.png);
+}
+
+form .dnn_mact > li.actionMenuEdit > a {
+    background-position: 2px 3px;
+}
+
+form .dnn_mact > li.actionMenuAdmin > a {
+    background-position: -48px 3px;
+}
+
+form .dnn_mact > li.actionMenuMove > a {
+    background-position: -99px 3px;
+}
+
+form .dnn_mact > li.actionMenuEdit:hover > a {
+    background-color: #fff;
+    background-position: 2px -47px;
+}
+
+form .dnn_mact > li.actionMenuAdmin:hover > a {
+    background-color: #fff;
+    background-position: -48px -47px;
+}
+
+form .dnn_mact > li.actionMenuMove:hover > a {
+    background-color: #fff;
+    background-position: -99px -47px;
+}
+
+/* Secondary level */
+.dnn_mact > li ul {  /* Styles for all sub levels */
+    display: none;
+    position: absolute;
+    top:20px;
+    width: 180px;
+    padding: 0; margin: 0;
+    margin-right:-1px;
+    background: #fff;
+    border: 1px solid #ccc;
+    list-style-type: none;
+    -webkit-box-shadow:  0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+    box-shadow:  0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+   
+}
+
+.dnn_mact > li > ul { /* styles specific to secondary level */
+    right:0;
+}
+
+.dnn_mact > li > ul > li {
+    display: block;
+    color :#999;
+    padding:0; margin: 0;
+    border-top: 1px solid #ccc;
+    white-space: nowrap;
+}
+.dnn_mact > li > ul > li:first-child{border:none;}
+
+.dnn_mact > li > ul > li:hover {
+    background-color: #E8F1Fa;
+}
+
+.dnn_mact > li ul a {
+	display:block;
+	width: 176px;
+	padding:5px 12px;
+	color:#666;
+	text-decoration:none;
+	overflow:hidden; 
+    overflow:ellipsis;
+    font-size:11px;
+
+}
+
+.dnn_mact > li ul a > * {
+	display:inline-block;
+	margin-right: 5px;
+}
+
+.dnn_mact > li > ul > li:hover a{ color:#333; }
+
+.dnn_mact > li.actionMenuMove > ul {
+    width: 200px;
+    max-height: 220px;
+    overflow: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.dnn_mact > li.actionMenuMove > ul li {
+    display: block;
+    color :#999;
+    padding: 8px 0 5px 10px;
+    height: 20px;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    border-top: none;
+    white-space: nowrap;
+    width: 190px; 
+    cursor: pointer;
+    font-size: 12px;
+    font-family: Arial;
+    line-height: 18px;
+    text-shadow: none;
+}
+
+.dnn_mact > li.actionMenuMove > ul li:hover {
+    background-color: #e8f1fa;
+}

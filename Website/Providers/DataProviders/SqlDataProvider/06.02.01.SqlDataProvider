@@ -1,0 +1,1571 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Add support for deny permissions */
+/************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetFoldersByPermissions
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions] 
+	@PortalID int,
+	@Permissions nvarchar(300),
+	@UserID int,
+	@FolderID int,
+	@FolderPath nvarchar(300)
+
+AS
+	DECLARE @IsSuperUser BIT
+	DECLARE @Admin BIT
+	DECLARE @Read INT
+	DECLARE @Write INT
+	DECLARE @Browse INT
+	DECLARE @Add INT
+
+	--Determine Admin or SuperUser
+	IF @UserId IN (SELECT UserId FROM {databaseOwner}{objectQualifier}UserRoles WHERE RoleId IN (SELECT RoleId FROM {databaseOwner}{objectQualifier}Roles WHERE PortalId = @PortalId AND RoleName = 'Administrators')) BEGIN SET @Admin = 1 END;
+	SELECT @IsSuperUser = IsSuperUser FROM {databaseOwner}{objectQualifier}Users WHERE UserId = @UserId;
+
+	--Retrieve Permission Ids
+	IF @Permissions LIKE '%READ%' BEGIN SELECT TOP 1 @Read = PermissionID FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'READ' END;
+	IF @Permissions LIKE '%WRITE%' BEGIN SELECT TOP 1 @Write = PermissionID FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'WRITE' END;
+	IF @Permissions LIKE '%BROWSE%' BEGIN SELECT TOP 1 @Browse = PermissionID FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'BROWSE' END;
+	IF @Permissions LIKE '%ADD%' BEGIN SELECT TOP 1 @Add = PermissionID FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'ADD' END;
+
+	IF @PortalID IS NULL
+		BEGIN
+			SELECT DISTINCT F.*
+			FROM {databaseOwner}{objectQualifier}Folders F
+			WHERE F.PortalID IS NULL
+				AND (F.FolderID = @FolderID OR @FolderID = -1)
+				AND (F.FolderPath = @FolderPath OR @FolderPath = '')
+		  
+			 ORDER BY F.FolderPath
+		END
+	ELSE
+		BEGIN
+			WITH Skip_Folders (folderid)
+				AS
+				(
+				 SELECT DISTINCT folderid FROM {databaseOwner}{objectQualifier}FolderPermission FP
+									JOIN {databaseOwner}{objectQualifier}Permission P ON FP.PermissionID = P.PermissionID
+									WHERE
+										((P.PermissionKey = 'WRITE' OR @IsSuperUser=1 OR @Admin=1) OR
+										FP.PermissionID = CASE WHEN @Read > 0 THEN @Read END OR
+										FP.PermissionID = CASE WHEN @Write > 0 THEN @Write END OR
+										FP.PermissionID = CASE WHEN @Browse > 0 THEN @Browse END OR
+										FP.PermissionID = CASE WHEN @Add > 0 THEN @Add END)
+										AND FP.FolderID NOT IN (SELECT DISTINCT folderid FROM {databaseOwner}{objectQualifier}FolderPermission WHERE allowaccess=0 AND (userid=@UserId OR roleid=-1 OR roleid IN (SELECT roleid FROM {databaseOwner}{objectQualifier}UserRoles WHERE UserID=@UserId)))		
+				)
+			SELECT DISTINCT F.*
+			FROM {databaseOwner}{objectQualifier}Folders F
+				JOIN {databaseOwner}{objectQualifier}FolderPermission FP ON F.FolderId = FP.FolderID
+				JOIN {databaseOwner}{objectQualifier}Permission P ON FP.PermissionID = P.PermissionID
+				JOIN {databaseOwner}{objectQualifier}UserRoles UR ON UR.RoleID = FP.RoleID
+				JOIN {databaseOwner}{objectQualifier}Users U ON U.UserId = UR.UserId
+				JOIN Skip_Folders sf ON sf.folderid=f.folderid 
+			WHERE ((F.PortalID = @PortalID) OR (F.PortalID IS NULL AND @PortalID IS NULL))
+				AND (F.FolderID = @FolderID OR @FolderID = -1)
+				AND (F.FolderPath = @FolderPath OR @FolderPath = '')
+				AND 
+					((P.PermissionKey = 'WRITE' OR @IsSuperUser=1 OR @Admin=1) OR
+						FP.PermissionID = CASE WHEN @Read > 0 THEN @Read END OR
+						FP.PermissionID = CASE WHEN @Write > 0 THEN @Write END OR
+						FP.PermissionID = CASE WHEN @Browse > 0 THEN @Browse END OR
+						FP.PermissionID = CASE WHEN @Add > 0 THEN @Add END)
+				AND FP.AllowAccess = 1
+			 ORDER BY F.FolderPath
+		END
+GO
+
+/**************** Fix bug 21600 ***************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Tabs' AND COLUMN_NAME='Level')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD [Level] INT NOT NULL DEFAULT 0
+	END
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Tabs' AND COLUMN_NAME='TabPath')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD [TabPath] NVARCHAR(255) NOT NULL DEFAULT ''
+	END
+GO
+
+WITH RecursiveTabs (TabID, Level, TabPath)
+	AS	
+	(
+		SELECT 
+			TabID,
+			0 AS Level,
+			CAST('//' + {databaseOwner}{objectQualifier}RemoveStringCharacters(TabName, '&? ./''-#') AS NVARCHAR(255)) AS TabPath
+		FROM {databaseOwner}{objectQualifier}Tabs
+		WHERE ParentId IS Null
+	  
+		UNION ALL
+	  
+		SELECT 
+			T.TabID,
+			R.Level + 1,
+			CAST(R.TabPath + '//' + {databaseOwner}{objectQualifier}RemoveStringCharacters(TabName, '&? ./''-#') AS NVARCHAR(255))
+		FROM {databaseOwner}{objectQualifier}Tabs T
+		INNER JOIN RecursiveTabs R ON T.ParentId = R.TabID
+	)
+	
+	UPDATE {databaseOwner}{objectQualifier}Tabs SET Level = R.LEVEL, TabPath = R.TabPath
+	FROM {databaseOwner}{objectQualifier}Tabs T
+	LEFT JOIN RecursiveTabs R ON R.TabID = T.tabID
+	
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}BuildTabLevelAndPath]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}BuildTabLevelAndPath]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BuildTabLevelAndPath](@TabId INT, @IncludeChild BIT = 0)
+	AS
+	BEGIN
+		DECLARE @ParentId INT, @Level INT, @TabPath NVARCHAR(255), @TabName NVARCHAR(50)
+		SELECT @ParentId = ParentId, @TabName = TabName FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @TabId
+		IF @ParentId > 0
+		BEGIN
+			SELECT 
+				@Level = [Level] + 1,
+				@TabPath = TabPath + '//' + {databaseOwner}{objectQualifier}RemoveStringCharacters(@TabName, '&? ./''-#')
+			 FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @ParentId
+		END
+		ELSE
+		BEGIN
+			SELECT @Level = 0, @TabPath = '//' + {databaseOwner}{objectQualifier}RemoveStringCharacters(@TabName, '&? ./''-#')
+		END
+		
+		UPDATE {databaseOwner}{objectQualifier}Tabs SET [Level] = @Level, TabPath = @TabPath WHERE TabID = @TabId
+		
+		IF @IncludeChild = 1
+		BEGIN
+			DECLARE @ChildTabs TABLE(TabID INT)
+			DECLARE @ChildID INT
+			INSERT INTO @ChildTabs SELECT TabID FROM {databaseOwner}{objectQualifier}Tabs WHERE ParentId =  @TabId
+			WHILE EXISTS (SELECT TOP 1 TabID FROM @ChildTabs)
+				BEGIN
+					SET @ChildID = (SELECT TOP 1 TabID FROM @ChildTabs)
+					EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @ChildID, @IncludeChild
+					DELETE FROM @ChildTabs WHERE TabID = @ChildID
+				END
+		END
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTab]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTab] 
+    @ContentItemID			int,
+    @PortalID				int,
+    @TabOrder				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(50),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(Max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50)
+
+AS
+    INSERT INTO {databaseOwner}{objectQualifier}Tabs (
+        ContentItemID,
+        PortalID,
+        TabOrder,
+        UniqueId,
+        VersionGuid,
+        DefaultLanguageGuid,
+        LocalizedVersionGuid,
+        TabName,
+        IsVisible,
+        DisableLink,
+        ParentId,
+        IconFile,
+        IconFileLarge,
+        Title,
+        Description,
+        KeyWords,
+        IsDeleted,
+        Url,
+        SkinSrc,
+        ContainerSrc,
+        StartDate,
+        EndDate,
+        RefreshInterval,
+        PageHeadText,
+        IsSecure,
+        PermanentRedirect,
+        SiteMapPriority,
+        CreatedByUserID,
+        CreatedOnDate,
+        LastModifiedByUserID,
+        LastModifiedOnDate,
+        CultureCode
+    )
+    VALUES (
+        @ContentItemID,
+        @PortalID,
+        @TabOrder,
+        @UniqueId,
+        @VersionGuid,
+        @DefaultLanguageGuid,
+        @LocalizedVersionGuid,
+        @TabName,
+        @IsVisible,
+        @DisableLink,
+        @ParentId,
+        @IconFile,
+        @IconFileLarge,
+        @Title,
+        @Description,
+        @KeyWords,
+        0,
+        @Url,
+        @SkinSrc,
+        @ContainerSrc,
+        @StartDate,
+        @EndDate,
+        @RefreshInterval,
+        @PageHeadText,
+        @IsSecure,
+        @PermanentRedirect,
+        @SiteMapPriority,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate(),
+        @CultureCode
+    )
+	DECLARE @TabId INT
+    SELECT @TabId = SCOPE_IDENTITY()
+    EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId
+    SELECT @TabId
+GO
+    
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTab]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab] 
+    @TabId					int,
+    @ContentItemID			int,
+    @PortalId				int,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(50),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @IsDeleted				bit,
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @LastModifiedByUserID	int,
+    @CultureCode			nvarchar(50)
+
+AS
+	BEGIN
+		DECLARE @OldParentId int
+		SET @OldParentId = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+		DECLARE @TabOrder int
+		SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+				
+		-- Get New TabOrder
+		DECLARE @NewTabOrder int
+		SET @NewTabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentId IS NULL)))
+		IF @NewTabOrder IS NULL 
+			SET @NewTabOrder = 1
+		ELSE
+			SET @NewTabOrder = @NewTabOrder + 2
+		
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+			SET
+				ContentItemID			= @ContentItemID,
+				PortalId				= @PortalId,
+				VersionGuid				= @VersionGuid,
+				DefaultLanguageGuid		= @DefaultLanguageGuid,
+				LocalizedVersionGuid	= @LocalizedVersionGuid,
+				TabName					= @TabName,
+				IsVisible				= @IsVisible,
+				DisableLink				= @DisableLink,
+				ParentId				= @ParentId,
+				IconFile				= @IconFile,
+				IconFileLarge			= @IconFileLarge,
+				Title					= @Title,
+				Description				= @Description,
+				KeyWords				= @KeyWords,
+				IsDeleted				= @IsDeleted,
+				Url						= @Url,
+				SkinSrc					= @SkinSrc,
+				ContainerSrc			= @ContainerSrc,
+				StartDate				= @StartDate,
+				EndDate					= @EndDate,
+				RefreshInterval			= @RefreshInterval,
+				PageHeadText			= @PageHeadText,
+				IsSecure				= @IsSecure,
+				PermanentRedirect		= @PermanentRedirect,
+				SiteMapPriority			= @SiteMapPriority,
+				LastModifiedByUserID	= @LastModifiedByUserID,
+				LastModifiedOnDate		= getdate(),
+				CultureCode				= @CultureCode
+		WHERE  TabId = @TabId
+		
+		IF (@OldParentId <> @ParentId)
+			BEGIN
+				-- update TabOrder of Tabs with same original Parent
+				UPDATE {databaseOwner}[{objectQualifier}Tabs]
+					SET TabOrder = TabOrder - 2
+					WHERE (ParentId = @OldParentId) 
+						AND TabOrder > @TabOrder
+
+				-- Update Tab with new TabOrder
+				UPDATE {databaseOwner}[{objectQualifier}Tabs]
+					SET 
+						TabOrder = @NewTabOrder
+					WHERE TabID = @TabId
+					
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+			END
+		ELSE
+			BEGIN
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId
+			END
+    END
+GO
+
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+	SELECT     
+		T.TabID, 
+		T.TabOrder, 
+		T.PortalID, 
+		T.TabName, 
+		T.ParentId, 
+		T.[Level], 
+		T.TabPath, 
+		T.UniqueId, 
+		T.VersionGuid, 
+		T.DefaultLanguageGuid, 
+		T.LocalizedVersionGuid, 
+		T.IsVisible, 
+		CASE WHEN LEFT(LOWER(T .IconFile), 7) = 'fileid=' THEN
+			(SELECT Folder + FileName
+				FROM {databaseOwner}{objectQualifier}Files
+				WHERE fileid = CAST((RIGHT(LOWER(T.IconFile), Len(T.IconFile) - 7)) AS int)
+			) ELSE T.IconFile 
+			END AS IconFile, 
+		CASE WHEN LEFT(LOWER(T .IconFileLarge), 7) = 'fileid=' THEN
+			(SELECT Folder + FileName
+				FROM  {databaseOwner}{objectQualifier}Files
+				WHERE fileid = CAST((RIGHT(LOWER(T.IconFileLarge), Len(T.IconFileLarge) - 7)) AS int)
+			) ELSE T.IconFileLarge
+			END AS IconFileLarge, 
+		T.DisableLink, 
+		T.Title, 
+		T.Description, 
+		T.KeyWords, 
+		T.IsDeleted, 
+		T.SkinSrc, 
+		T.ContainerSrc, 
+		T.StartDate, 
+		T.EndDate, 
+		T.Url, 
+		CASE WHEN EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}Tabs T2 WHERE T2.ParentId = T.TabId) THEN 'true' ELSE 'false' END AS HasChildren, 
+		T.RefreshInterval, 
+		T.PageHeadText, 
+		T.IsSecure, 
+		T.PermanentRedirect, 
+		T.SiteMapPriority, 
+		CI.ContentItemID, 
+		CI.[Content], 
+		CI.ContentTypeID, 
+		CI.ModuleID, 
+		CI.ContentKey, 
+		CI.Indexed, 
+		T.CultureCode, 
+		T.CreatedByUserID, 
+		T.CreatedOnDate, 
+		T.LastModifiedByUserID, 
+		T.LastModifiedOnDate
+	FROM  {databaseOwner}{objectQualifier}Tabs AS T
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON T.ContentItemID = CI.ContentItemID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}MoveTabAfter]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}MoveTabAfter]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}MoveTabAfter] 
+	@TabId					int,
+	@AfterTabId				int,
+	@LastModifiedByUserID	int
+AS
+	BEGIN
+		DECLARE @OldParentId int
+		DECLARE @NewParentId int
+		
+		SET @OldParentId = (SELECT ParentId FROM {objectQualifier}Tabs WHERE TabID = @TabId)
+		SET @NewParentId = (SELECT ParentId FROM {objectQualifier}Tabs WHERE TabID = @AfterTabId)
+		
+		DECLARE @TabOrder int
+		SET @TabOrder = (SELECT TabOrder FROM {objectQualifier}Tabs WHERE TabID = @TabId)
+		
+		IF (@OldParentId <> @NewParentId OR NOT (@OldParentId IS NULL AND @NewParentId IS NULL))
+			-- Parent has changed
+			BEGIN
+				-- update TabOrder of Tabs with same original Parent
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = TabOrder - 2
+					WHERE (ParentId = @OldParentId OR (ParentId IS NULL AND @OldParentId IS NULL)) 
+						AND TabOrder > @TabOrder
+
+				-- Get TabOrder of AfterTab
+				SET @TabOrder = (SELECT TabOrder FROM {objectQualifier}Tabs WHERE TabID = @AfterTabId)
+						
+				-- update TabOrder of Tabs with same new Parent
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = TabOrder + 2
+					WHERE (ParentId = @NewParentId OR (ParentId IS NULL AND @NewParentId IS NULL)) 
+						AND TabOrder > @TabOrder
+
+				-- Update Tab with new TabOrder
+				UPDATE {objectQualifier}Tabs
+					SET 
+						ParentId				= @NewParentId,
+						TabOrder				= @TabOrder + 2,
+						LastModifiedByUserID	= @LastModifiedByUserID,
+						LastModifiedOnDate		= GETDATE()					
+					WHERE TabID = @TabId
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+			END
+		ELSE
+			-- Parent has not changed
+			BEGIN
+				-- Remove Tab from TabOrder
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = -1
+					WHERE TabID = @TabId
+					
+				-- Reorder
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = TabOrder - 2
+					WHERE (ParentId = @OldParentId OR (ParentId IS NULL AND @OldParentId IS NULL)) 
+						AND TabOrder > @TabOrder
+						AND TabId <> @TabId
+						
+				-- Get TabOrder of AfterTab
+				SET @TabOrder = (SELECT TabOrder FROM {objectQualifier}Tabs WHERE TabID = @AfterTabId)
+										
+				-- Reorder					
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = TabOrder + 2
+					WHERE (ParentId = @OldParentId OR (ParentId IS NULL AND @OldParentId IS NULL)) 
+						AND TabOrder > @TabOrder
+
+				-- Update Tab with new TabOrder
+				UPDATE {objectQualifier}Tabs
+					SET 
+						TabOrder				= @TabOrder + 2,
+						LastModifiedByUserID	= @LastModifiedByUserID,
+						LastModifiedOnDate		= GETDATE()					
+					WHERE TabID = @TabId
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId
+			END
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}MoveTabBefore]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}MoveTabBefore]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}MoveTabBefore] 
+	@TabId					int,
+	@BeforeTabId			int,
+	@LastModifiedByUserID	int
+AS
+	BEGIN
+		DECLARE @OldParentId int
+		DECLARE @NewParentId int
+		
+		SET @OldParentId = (SELECT ParentId FROM {objectQualifier}Tabs WHERE TabID = @TabId)
+		SET @NewParentId = (SELECT ParentId FROM {objectQualifier}Tabs WHERE TabID = @BeforeTabId)
+		
+		DECLARE @TabOrder int
+		SET @TabOrder = (SELECT TabOrder FROM {objectQualifier}Tabs WHERE TabID = @TabId)
+		
+		IF (@OldParentId <> @NewParentId OR NOT (@OldParentId IS NULL AND @NewParentId IS NULL))
+			-- Parent has changed
+			BEGIN
+				-- update TabOrder of Tabs with same original Parent
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = TabOrder - 2
+					WHERE (ParentId = @OldParentId OR (ParentId IS NULL AND @OldParentId IS NULL)) 
+						AND TabOrder > @TabOrder
+
+				-- Get TabOrder of AfterTab
+				SET @TabOrder = (SELECT TabOrder FROM {objectQualifier}Tabs WHERE TabID = @BeforeTabId)
+						
+				-- update TabOrder of Tabs with same new Parent
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = TabOrder + 2
+					WHERE (ParentId = @NewParentId OR (ParentId IS NULL AND @NewParentId IS NULL)) 
+						AND TabOrder >= @TabOrder
+
+				-- Update Tab with new TabOrder
+				UPDATE {objectQualifier}Tabs
+					SET 
+						ParentId				= @NewParentId,
+						TabOrder				= @TabOrder,
+						LastModifiedByUserID	= @LastModifiedByUserID,
+						LastModifiedOnDate		= GETDATE()					
+					WHERE TabID = @TabId
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+			END
+		ELSE
+			-- Parent has not changed
+			BEGIN
+				-- Remove Tab from TabOrder
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = -1
+					WHERE TabID = @TabId
+					
+				-- Reorder
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = TabOrder - 2
+					WHERE (ParentId = @OldParentId OR (ParentId IS NULL AND @OldParentId IS NULL)) 
+						AND TabOrder > @TabOrder
+						AND TabId <> @TabId
+						
+				-- Get TabOrder of BeforeTab
+				SET @TabOrder = (SELECT TabOrder FROM {objectQualifier}Tabs WHERE TabID = @BeforeTabId)
+										
+				-- Reorder					
+				UPDATE {objectQualifier}Tabs
+					SET TabOrder = TabOrder + 2
+					WHERE (ParentId = @OldParentId OR (ParentId IS NULL AND @OldParentId IS NULL)) 
+						AND TabOrder >= @TabOrder
+
+				-- Update Tab with new TabOrder
+				UPDATE {objectQualifier}Tabs
+					SET 
+						TabOrder				= @TabOrder,
+						LastModifiedByUserID	= @LastModifiedByUserID,
+						LastModifiedOnDate		= GETDATE()					
+					WHERE TabID = @TabId
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId
+			END
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}MoveTabToParent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}MoveTabToParent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}MoveTabToParent] 
+	@TabId					int,
+	@NewParentId			int,
+	@LastModifiedByUserID	int
+AS
+	BEGIN
+		DECLARE @OldParentId int
+		SET @OldParentId = (SELECT ParentId FROM {objectQualifier}Tabs WHERE TabID = @TabId)
+		
+		DECLARE @TabOrder int
+		SET @TabOrder = (SELECT TabOrder FROM {objectQualifier}Tabs WHERE TabID = @TabId)
+		
+		-- Get New TabOrder
+		DECLARE @NewTabOrder int
+		SET @NewTabOrder = (SELECT MAX(TabOrder) FROM {objectQualifier}Tabs WHERE (ParentId = @NewParentId OR (ParentId IS NULL AND @NewParentId IS NULL)))
+		IF @NewTabOrder IS NULL 
+			SET @NewTabOrder = 1
+		ELSE
+			SET @NewTabOrder = @NewTabOrder + 2			
+				
+		BEGIN
+			-- update TabOrder of Tabs with same original Parent
+			UPDATE {objectQualifier}Tabs
+				SET TabOrder = TabOrder - 2
+				WHERE (ParentId = @OldParentId OR (ParentId IS NULL AND @OldParentId IS NULL)) 
+					AND TabOrder > @TabOrder
+
+			-- Update Tab with new TabOrder
+			UPDATE {objectQualifier}Tabs
+				SET 
+					ParentId				= @NewParentId,
+					TabOrder				= @NewTabOrder,
+					LastModifiedByUserID	= @LastModifiedByUserID,
+					LastModifiedOnDate		= GETDATE()					
+				WHERE TabID = @TabId
+		END
+		IF @OldParentId <> @NewParentId
+			BEGIN
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+			END
+		ELSE
+			BEGIN
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId
+			END
+	END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTabOrder]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabOrder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabOrder] 
+	@TabId					int,
+	@TabOrder				int,
+	@ParentId				int,
+	@LastModifiedByUserID	int
+AS
+	DECLARE @OldParentId INT
+	SELECT @OldParentId = ParentId FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @TabId
+	UPDATE {objectQualifier}Tabs
+		SET
+			TabOrder				= @TabOrder,
+			ParentId				= @ParentId,
+			LastModifiedByUserID	= @LastModifiedByUserID,
+			LastModifiedOnDate		= GETDATE()
+	WHERE  TabId = @TabId
+	IF @OldParentId <> @ParentId
+		BEGIN
+			EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+		END
+	ELSE
+		BEGIN
+			EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId
+		END
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Users]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Users]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Users]
+AS
+	SELECT DISTINCT 
+		U.UserID, 
+		(CASE WHEN IsSuperUser = 1 THEN NULL ELSE UP.PortalId END) AS PortalId, 
+		U.Username, 
+		U.FirstName, 
+		U.LastName, 
+        U.DisplayName, 
+		U.IsSuperUser, 
+		U.Email, 
+		U.AffiliateId, 
+		U.UpdatePassword, 
+		UP.Authorised, 
+		(CASE WHEN UP.PortalId IS NULL THEN U.IsDeleted ELSE UP.IsDeleted END) AS IsDeleted, 
+		UP.RefreshRoles, 
+		U.LastIPAddress, 
+		U.CreatedByUserID, 
+		U.CreatedOnDate, 
+		U.LastModifiedByUserID, 
+        U.LastModifiedOnDate
+	FROM {databaseOwner}{objectQualifier}Users AS U 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}UserPortals AS UP ON U.UserID = UP.UserId
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Profile]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Profile]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Profile]
+AS
+	SELECT     
+		UP.UserID, 
+		PD.PortalID, 
+		PD.PropertyName, 
+		CASE WHEN PropertyText IS NULL THEN PropertyValue ELSE PropertyText END AS PropertyValue, 
+		UP.Visibility
+	FROM {databaseOwner}{objectQualifier}UserProfile AS UP 
+		INNER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition AS PD ON PD.PropertyDefinitionID = UP.PropertyDefinitionID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch] 
+(
+    @PortalID int,                          -- portal                
+    @UserId int,                            -- for determining correct visibility permissions
+    @FilterUserId int,                      -- for filtering relationships on    
+    @FilterRoleId int,                      -- for filtering by roles
+    @RelationshipTypeId int,                -- for filtering by relationships
+    @IsAdmin bit,                           -- determines visibility
+    @PageSize int,                          -- page size
+    @PageIndex int,                         -- 0 based page index
+    @SortBy nvarchar(100),                  -- sort field
+    @SortAscending bit,                     -- sort flag indicating whether sort is asc or desc
+    @PropertyNames nvarchar(max),           -- list of property names to filter
+    @PropertyValues nvarchar(max)           -- list of property values to filter
+)
+AS
+    -- Setup Top XX
+    DECLARE @topSql nvarchar(20) SET @topSql = ''
+    IF @PageSize > -1 BEGIN SET @topSql = ' TOP ' + CONVERT(nvarchar(20), @PageSize) END
+                
+    -- Setup Specific Page
+    DECLARE @minRowNumberSql nvarchar(20) SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
+    -- Setup Pivot Field List
+    DECLARE @pivotSql nvarchar(max) SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
+
+    -- Get User specific columns
+    DECLARE @UserColumns TABLE(ColumnName NVARCHAR(100))
+    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}vw_Users'
+
+    -- Lists Filters names and values into tables
+    DECLARE @PropertyNamesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    DECLARE @PropertyValuesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    INSERT INTO @PropertyNamesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)                      
+    INSERT INTO @PropertyValuesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyValues)
+                
+    -- Gets filters that are on the User rather than Profile Properties
+    DECLARE @UserFiltersTable TABLE (RowNumber Int, RowValue NVARCHAR(MAX))
+    INSERT INTO @UserFiltersTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',',@PropertyNames) WHERE RowValue IN (SELECT * FROM @UserColumns)
+
+
+    DECLARE @sql nvarchar(max) SET @sql = ''
+    DECLARE @filterSql nvarchar(max)SET @filterSql = ''
+
+    -- ///////////////////////////////////////////////////
+    -- FILTERING by PROFILE PROPERTY or USER PROPERTY
+    -- ///////////////////////////////////////////////////
+    --IF @PropertyNames IS NOT NULL AND @PropertyNames <> ''
+    IF ((SELECT COUNT(*) FROM @PropertyNamesTable) > 0) AND ((SELECT COUNT(*) FROM @PropertyValuesTable)> 0) 
+	    BEGIN
+            DECLARE @propertyFilter nvarchar(max)
+            DECLARE @userFilter nvarchar(max)
+            DECLARE @userFilterJoin nvarchar(max) SET @userFilterJoin = ''
+            DECLARE @profilePropertyCount INT
+            DECLARE @userFilterCount INT
+            DECLARE @propertyAndUserFilter nvarchar(10) SET @propertyAndUserFilter = ''
+            DECLARE @groupBy NVARCHAR(300)
+
+            -- Filters on Profile Properties    
+            ;WITH CTE_PropertyNames(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyNamesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns)),
+            CTE_PropertyValues(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyValuesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns))
+
+            SELECT @propertyFilter = COALESCE(@propertyFilter + ' OR ' , ' ') 
+                                        + ' (PropertyName=''' + N.RowValue 
+                                        + ''' AND ((PropertyValue LIKE ''' + V.RowValue +'%'') OR (PropertyValue LIKE ''% ' + V.RowValue +'%'')))'
+            FROM CTE_PropertyNames AS N INNER JOIN CTE_PropertyValues AS V ON N.RowNumber = V.RowNumber
+                                
+            -- Filters on User Property                           
+            SELECT @userFilter = COALESCE(@userFilter + ' AND ', ' ')  
+										+ ' ((u.' + N.RowValue + ' LIKE ''' + V.RowValue +'%'') OR (u.' + N.RowValue + ' LIKE ''% ' + V.RowValue +'%'')) '
+            FROM @UserFiltersTable AS N  INNER JOIN @PropertyValuesTable AS V ON N.RowNumber = V.RowNumber
+                                
+            SELECT @userFilterCount = COUNT(*) FROM @UserFiltersTable
+            IF @userFilterCount > 0 BEGIN SET @userFilterJoin = ' INNER JOIN {objectQualifier}vw_Users u ON u.UserId = p.UserId ' END
+
+            -- Determining the Group By Clause -- dependant on types of filters used
+            SELECT @profilePropertyCount = COUNT(*) FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)
+            WHERE RowValue IN (SELECT PropertyName FROM {objectQualifier}ProfilePropertyDefinition WHERE PortalID = @PortalId)
+            AND RowValue NOT IN (SELECT ColumnName FROM @UserColumns)
+
+            IF @profilePropertyCount > 0
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) = ' + CONVERT(nvarchar(20),@profilePropertyCount ) END
+            ELSE
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) > 0 '     END
+
+            IF ( @profilePropertyCount > 0 AND @userFilterCount > 0)
+            BEGIN SET @propertyAndUserFilter = ' AND ' END
+
+            -- CREATE FINAL FILTER
+            SET @filterSql = ' DECLARE @MatchingUsers TABLE (UserID INT, Occurrances INT) INSERT INTO @MatchingUsers SELECT p.UserID, COUNT(*) AS occurances ' 
+                                        + ' FROM {databaseOwner}{objectQualifier}vw_profile p ' + @userFilterJoin
+                                        + ' WHERE ' + COALESCE(' ( ' + @propertyFilter + ') ', ' ') + @propertyAndUserFilter + COALESCE(@userFilter, ' ') 
+										+ ' AND ((Visibility = 0) OR (Visibility = 1 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) OR (Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1))' 
+                                        + @groupBy
+		END
+
+        -- ///////////////////////////////////////////////////      
+        -- SETUP ROLE AND RELATIONSHIP FILTERS
+        -- ///////////////////////////////////////////////////
+        DECLARE @roleAndRelationshipFilter nvarchar(1000)
+        DECLARE @roleFilter nvarchar(100) SET @roleFilter = ''
+        DECLARE @relationshipFilter nvarchar(1000) SET @relationshipFilter = ''
+        DECLARE @roleAndRelationshipFlag bit SET @roleAndRelationshipFlag  = 0
+        DECLARE @RoleAndRelationshipSelect nvarchar(100) SET @RoleAndRelationshipSelect = ''
+                                
+        -- Filter by Role
+        IF @FilterRoleId <> -1 
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @roleFilter = ' JOIN {objectQualifier}UserRoles UR ON U.UserID = UR.UserID AND UR.RoleID = ' + CONVERT(nvarchar(20), @FilterRoleId)
+            END
+
+        -- Filter by Relationship
+        IF @RelationshipTypeId <> -1  
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @relationshipFilter = ' JOIN {objectQualifier}Relationships REL ON REL.PortalID = ' + CONVERT(nvarchar(20), @PortalID)
+                                            + ' AND RelationshipTypeID = ' + CONVERT(nvarchar(20), @RelationshipTypeId) 
+                                            + ' JOIN {objectQualifier}UserRelationships UREL ON REL.RelationshipID = UREL.RelationshipID AND
+                                            ((UREL.UserID = ' + CONVERT(nvarchar(20), @FilterUserId) + ' AND UREL.RelatedUserID = U.UserID) OR
+                                            (UREL.UserID = U.UserID AND UREL.RelatedUserID = ' + CONVERT(nvarchar(20), @FilterUserId) + '))'
+                                            + ' WHERE UREL.Status = 2'
+            END 
+
+        IF @roleAndRelationshipFlag = 1 BEGIN SET @RoleAndRelationshipSelect = ' AND s.UserId IN (SELECT userID FROM  RoleAndRelationUsers) ' END
+
+        SET @roleAndRelationshipFilter =  ', RoleAndRelationUsers AS ( SELECT U.userId FROM {objectQualifier}vw_Users U ' + @roleFilter + @relationshipFilter + ' )' 
+
+        -- ///////////////////////////////////////////////////  
+        -- SET UP SORT
+        -- ///////////////////////////////////////////////////
+        DECLARE @sortSql nvarchar(1000) SET @sortSql = ''
+        DECLARE @propertySort nvarchar(1000) SET @propertySort = ''
+        DECLARE @filterJoin nvarchar(100) SET @filterJoin = ''
+        DECLARE @filterSortSql nvarchar(1000) SET @filterSortSql = ''
+        DECLARE @sortByUserProperty BIT         
+        SELECT @sortByUserProperty = COUNT(*) FROM @UserColumns WHERE ColumnName = @SortBy
+
+        IF ( @profilePropertyCount > 0 OR @userFilterCount > 0)
+	        BEGIN SET @filterJoin = ' INNER JOIN @MatchingUsers m ON m.UserID = s.UserID ' END
+
+        -- Determine the Type of Sort
+        IF (@SortBy IS NOT NULL AND @SortBy <> '') AND @sortByUserProperty <> 1
+	        BEGIN -- Sort By Profile Property
+                SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')
+                SET @propertySort = {databaseOwner}{objectQualifier}GetSortSql('PropertyValue',@SortAscending,'UserID')
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @propertySort + ' ) AS RowNumber, *  ' 
+                                                + ' FROM {objectQualifier}vw_Profile WHERE PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' AND PropertyName = ''' + @SortBy + ''' )'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+        ELSE
+		    BEGIN   
+                -- Sort By User Property
+                IF @sortByUserProperty = 1 BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')END
+                                
+                -- Default: Sort By UserID
+                ELSE BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql('UserID',@SortAscending,'UserID') END                        
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @sortSql + ' ) AS RowNumber, * '
+                                                + ' FROM {objectQualifier}vw_Users WHERE (PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR PortalID Is NULL))'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+
+        -- ///////////////////////////////////////////////////
+        -- CREATE FINAL QUERY
+        -- ///////////////////////////////////////////////////
+        SET @sql = @filterSql
+                + ' DECLARE @TempUsers TABLE (SortOrder INT, UserID INT) '
+                + @filterSortSql
+                + @roleAndRelationshipFilter
+                + ' INSERT INTO @TempUsers SELECT ' + @topSql
+                + ' s.RowNumber, s.UserId FROM MatchingSorted s ' 
+                + ' WHERE RowNumber >= ' + @minRowNumberSql 
+                + @roleAndRelationshipSelect
+                + ' ;WITH PivotedUsers AS ( SELECT U.UserID, U.PortalID, U.Username, U.Email, U.DisplayName, U.IsSuperUser, U.IsDeleted,        
+                                                U.AffiliateID, U.UpdatePassword, U.Authorised, Prop.PropertyName,
+                                                CASE
+                                                    WHEN (P.Visibility = 0) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 0 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) THEN P.PropertyValue
+                                                    WHEN U.UserID = ' + CONVERT(nvarchar(20), @UserId) + ' OR (P.Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    ELSE NULL
+                                                END AS PropertyValue
+                                            FROM   {objectQualifier}vw_Users AS U
+                                                INNER JOIN {objectQualifier}UserProfile AS P ON U.UserID = P.UserID
+                                                INNER JOIN {objectQualifier}ProfilePropertyDefinition AS Prop ON Prop.PropertyDefinitionID = P.PropertyDefinitionID
+                                            WHERE U.UserId IN (SELECT UserId FROM @TempUsers)
+												AND (U.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalId Is NULL )  
+												AND U.IsDeleted = 0 
+                                            )
+                SELECT * FROM PivotedUsers PIVOT (MAX(PropertyValue) for PropertyName in (' + @pivotSql + ') ) as pivotTable '
+        + @sortSql                          
+
+        EXEC(@sql)
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersBasicSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersBasicSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersBasicSearch] 
+(
+	@PortalID int,					-- portal
+	@PageSize int,					-- page size
+	@PageIndex int,					-- 0 based page index
+	@SortBy nvarchar(100),			-- sort field
+	@SortAscending bit,				-- sort flag indicating whether sort is asc or desc
+	@PropertyName nvarchar(256),    -- property to filter by (username, diaplayname, email)
+	@PropertyValue nvarchar(256)	-- value of property
+)
+AS
+	-- Set up Top XX
+	DECLARE @topSql nvarchar(20)
+	SET @topSql = CONVERT(nvarchar(20), @PageSize)
+	
+	--Set up Count
+	DECLARE @minRowNumberSql nvarchar(20)
+	SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
+	
+	-- Set up Sort
+	DECLARE @sortSql nvarchar(1000)
+	SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy, @SortAscending, 'UserID')
+
+	-- Setup Pivot Field List
+	DECLARE @pivotSql nvarchar(max)
+	SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
+
+	-- Setup FieldName Field List for temporary table
+	DECLARE @fieldNames nvarchar(max)
+	SELECT @fieldNames = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, ' nvarchar(max)')
+	
+	DECLARE @sql nvarchar(max)
+	SELECT @sql=
+				'
+					DECLARE @pivotedUsers TABLE
+					(
+						RowNumber int,
+						UserID int,
+						PortalID int,
+						Username nvarchar(100),
+						Email nvarchar(256),
+						DisplayName nvarchar(128),
+						IsSuperUser bit,
+						IsDeleted bit,
+						AffiliateID int,
+						UpdatePassword bit,
+						Authorised bit,
+						' + @fieldNames + '
+					);
+
+					WITH TempUsers
+					AS
+					(
+						SELECT TOP ' + @topSql + ' * FROM (
+							SELECT 	
+								ROW_NUMBER() OVER(' + @sortSql + ') AS RowNumber,
+								U.UserID,
+								U.PortalID,
+								U.Username,
+								U.Email,
+								U.DisplayName,
+								U.IsSuperUser,
+								U.IsDeleted,
+								U.AffiliateID,
+								U.UpdatePassword,
+								U.Authorised
+								FROM {databaseOwner}{objectQualifier}vw_Users AS U
+							WHERE (U.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalID Is NULL )
+								AND (U.' + @PropertyName + ' LIKE ''' + @PropertyValue + '%'')
+									OR ((U.' + @PropertyName + ' LIKE ''% ' + @PropertyValue + '%''))
+								AND U.IsDeleted = 0
+						) AS U
+						WHERE RowNumber >= ' + @minRowNumberSql + ' 
+					),
+					TempUsersWithProfile
+					AS
+					(
+						SELECT 
+							U.UserID,
+							U.PortalID,
+							U.Username,
+							U.Email,
+							U.DisplayName,
+							U.IsSuperUser,
+							U.IsDeleted,
+							U.AffiliateID,
+							U.UpdatePassword,
+							U.Authorised,
+							P.PropertyName,
+							P.PropertyValue
+						FROM TempUsers U
+							INNER JOIN {databaseOwner}{objectQualifier}vw_Profile P ON P.UserID = U.UserID
+					)
+										
+					SELECT  * FROM TempUsersWithProfile
+					PIVOT 
+					(
+						MAX(PropertyValue) for PropertyName in (' + @pivotSql + ')
+					) as pivotTable
+					' + @sortSql
+	EXEC(@sql)
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTabAfter]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddTabAfter
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabAfter] 
+	@AfterTabID				int,
+	@ContentItemID			int,
+    @PortalID				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(50),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50)
+
+AS
+	BEGIN
+		DECLARE @TabId int
+		DECLARE @TabOrder INT 
+		SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @AfterTabID)
+		
+		-- Update TabOrders for all Tabs higher than @TabOrder
+		UPDATE {databaseOwner}{objectQualifier}Tabs
+			SET TabOrder = TabOrder + 2
+			WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentID IS NULL))
+				AND TabOrder > @TabOrder
+		
+		-- Create Tab
+		SET @TabOrder = @TabOrder + 2
+		EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab 
+							@ContentItemID,
+							@PortalID,
+							@TabOrder,
+							@UniqueId,
+							@VersionGuid,
+							@DefaultLanguageGuid,
+							@LocalizedVersionGuid,
+							@TabName,
+							@IsVisible,
+							@DisableLink,
+							@ParentId,
+							@IconFile,
+							@IconFileLarge,
+							@Title,
+							@Description,
+							@KeyWords,
+							@Url,
+							@SkinSrc,
+							@ContainerSrc,
+							@StartDate,
+							@EndDate,
+							@RefreshInterval,
+							@PageHeadText,
+							@IsSecure,
+							@PermanentRedirect,
+							@SiteMapPriority,
+							@CreatedByUserID,
+							@CultureCode;
+		
+		-- Update Content Item
+		UPDATE {databaseOwner}{objectQualifier}ContentItems
+			SET TabID = @TabId
+			WHERE ContentItemID = @ContentItemID
+
+		SELECT @TabId
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTabBefore]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddTabBefore
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabBefore] 
+	@BeforeTabID			int,
+	@ContentItemID			int,
+    @PortalID				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(50),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50)
+
+AS
+
+	BEGIN
+		DECLARE @TabId int
+		DECLARE @TabOrder INT 
+		SELECT @TabOrder = TabOrder FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @BeforeTabID
+		
+		-- Update TabOrders for all Tabs higher than @TabOrder
+		UPDATE {databaseOwner}{objectQualifier}Tabs
+			SET TabOrder = TabOrder + 2
+			WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentID IS NULL))
+				AND TabOrder >= @TabOrder
+		
+		-- Create Tab
+		EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab 
+							@ContentItemID,
+							@PortalID,
+							@TabOrder,
+							@UniqueId,
+							@VersionGuid,
+							@DefaultLanguageGuid,
+							@LocalizedVersionGuid,
+							@TabName,
+							@IsVisible,
+							@DisableLink,
+							@ParentId,
+							@IconFile,
+							@IconFileLarge,
+							@Title,
+							@Description,
+							@KeyWords,
+							@Url,
+							@SkinSrc,
+							@ContainerSrc,
+							@StartDate,
+							@EndDate,
+							@RefreshInterval,
+							@PageHeadText,
+							@IsSecure,
+							@PermanentRedirect,
+							@SiteMapPriority,
+							@CreatedByUserID,
+							@CultureCode;
+		
+		-- Update Content Item
+		UPDATE {databaseOwner}{objectQualifier}ContentItems
+			SET TabID = @TabId
+			WHERE ContentItemID = @ContentItemID
+
+		SELECT @TabId
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTabToEnd]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddTabToEnd
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabToEnd] 
+	@ContentItemID			int,
+    @PortalID				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(50),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(500),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50)
+
+AS
+
+	BEGIN
+		DECLARE @TabId int
+		DECLARE @TabOrder int 
+		SET @TabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}{objectQualifier}Tabs WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentID IS NULL)))
+		IF @TabOrder IS NULL
+			SET @TabOrder = 1
+		ELSE
+			SET @TabOrder = @TabOrder + 2
+
+		-- Create Tab
+		EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab 
+							@ContentItemID,
+							@PortalID,
+							@TabOrder,
+							@UniqueId,
+							@VersionGuid,
+							@DefaultLanguageGuid,
+							@LocalizedVersionGuid,
+							@TabName,
+							@IsVisible,
+							@DisableLink,
+							@ParentId,
+							@IconFile,
+							@IconFileLarge,
+							@Title,
+							@Description,
+							@KeyWords,
+							@Url,
+							@SkinSrc,
+							@ContainerSrc,
+							@StartDate,
+							@EndDate,
+							@RefreshInterval,
+							@PageHeadText,
+							@IsSecure,
+							@PermanentRedirect,
+							@SiteMapPriority,
+							@CreatedByUserID,
+							@CultureCode;
+		
+		-- Update Content Item
+		UPDATE {databaseOwner}{objectQualifier}ContentItems
+			SET TabID = @TabId
+			WHERE ContentItemID = @ContentItemID
+
+		SELECT @TabId
+	END
+GO
+
+/**************** Fix bug 17836 ***************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Files' AND COLUMN_NAME='LastModificationTime')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Files ADD [LastModificationTime] DATETIME NOT NULL DEFAULT GETDATE()
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddFile]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddFile
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+ @PortalId   int,
+ @UniqueId   uniqueidentifier,
+ @VersionGuid  uniqueidentifier,
+ @FileName   nvarchar(246),
+ @Extension   nvarchar(100),
+ @Size    int,
+ @Width    int,
+ @Height    int,
+ @ContentType  nvarchar(200),
+ @Folder    nvarchar(246),
+ @FolderID   int,
+ @CreatedByUserID   int,
+ @Hash     varchar(40),
+ @LastModificationTime	DATETIME
+AS
+BEGIN
+ DECLARE @FileID int
+
+ UPDATE {databaseOwner}{objectQualifier}Files
+ SET
+  /* retrieves FileId from table */
+  @FileID = FileId,
+  FileName = @FileName,
+  VersionGuid = @VersionGuid,
+  Extension = @Extension,
+  Size = @Size,
+  Width = @Width,
+  Height = @Height,
+  ContentType = @ContentType,
+  Folder = @Folder,
+  FolderID = @FolderID,
+  LastModifiedByUserID = @CreatedByUserID,
+  LastModifiedOnDate = getdate(),
+  SHA1Hash = @Hash,
+  LastModificationTime = @LastModificationTime
+ WHERE
+  FolderID = @FolderID AND FileName = @FileName
+
+ IF @@ROWCOUNT = 0
+ BEGIN
+    INSERT INTO {databaseOwner}{objectQualifier}Files (
+   PortalId,
+   UniqueId,
+   VersionGuid,
+   FileName,
+   Extension,
+   Size,
+   Width,
+   Height,
+   ContentType,
+   Folder,
+   FolderID,
+   CreatedByUserID,
+   CreatedOnDate,
+   LastModifiedByUserID,
+   LastModifiedOnDate,
+   SHA1Hash,
+   LastModificationTime
+    )
+    VALUES (
+   @PortalId,
+   @UniqueId,
+   @VersionGuid,
+   @FileName,
+   @Extension,
+   @Size,
+   @Width,
+   @Height,
+   @ContentType,
+   @Folder,
+   @FolderID,
+   @CreatedByUserID,
+   getdate(),
+   @CreatedByUserID,
+   getdate(),
+   @Hash,
+   @LastModificationTime
+    )
+
+  SELECT @FileID = SCOPE_IDENTITY()
+ END
+
+ SELECT @FileID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFile]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateFile
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateFile
+    @FileId					int,
+    @VersionGuid			uniqueidentifier,	
+    @FileName				nvarchar(246),
+    @Extension				nvarchar(100),
+    @Size					int,
+    @Width					int,
+    @Height					int,
+    @ContentType			nvarchar(200),	
+    @Folder					nvarchar(246),
+    @FolderID				int,
+	@LastModifiedByUserID  	int,
+	@Hash					varchar(40),
+	@LastModificationTime	DATETIME
+AS
+    UPDATE {databaseOwner}{objectQualifier}Files
+        SET    FileName = @FileName,
+               VersionGuid = @VersionGuid,
+               Extension = @Extension,
+               Size = @Size,
+               Width = @Width,
+               Height = @Height,
+               ContentType = @ContentType,
+               Folder = @Folder,
+               FolderID = @FolderID,
+               LastModifiedByUserID = @LastModifiedByUserID,
+               LastModifiedOnDate = getdate(),
+			   SHA1Hash = @Hash,
+			   LastModificationTime = @LastModificationTime
+    WHERE  FileId = @FileId
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFiles]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetFiles
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetFiles
+	@FolderID int
+AS
+BEGIN
+	SELECT 
+		FileId,
+		FO.PortalId,
+		[FileName],
+		Extension,
+		Size,
+		Width,
+		Height,
+		ContentType,
+		F.FolderID,
+		FolderPath AS 'Folder',
+		StorageLocation,
+		IsCached,
+		FolderMappingID,
+		LastModificationTime
+	FROM {databaseOwner}[{objectQualifier}Files] F
+	INNER JOIN {databaseOwner}[{objectQualifier}Folders] FO ON F.FolderID = FO.FolderID
+	WHERE F.FolderID = @FolderID
+	ORDER BY [FileName]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFile]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetFile
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetFile
+	@FileName nvarchar(246),
+	@FolderID int
+AS
+BEGIN
+	SELECT FileId,
+		   folders.PortalId,
+		   [FileName],
+		   Extension,
+		   Size,
+		   Width,
+		   Height,
+		   ContentType,
+		   files.FolderID,
+		   FolderPath AS 'Folder',
+		   StorageLocation,
+		   IsCached,
+		   files.UniqueId,
+		   files.VersionGuid,	   
+		   files.SHA1Hash,
+		   FolderMappingID,
+		   LastModificationTime
+	FROM {databaseOwner}[{objectQualifier}Files] AS files
+	INNER JOIN {databaseOwner}[{objectQualifier}Folders] AS folders ON files.FolderID = folders.FolderID
+	WHERE [FileName] = @FileName AND files.FolderID = @FolderID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFileById]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetFileById
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+	@FileId int	
+AS
+BEGIN
+	SELECT FileId,
+		   folders.PortalId,
+		   [FileName],
+		   Extension,
+		   Size,
+		   Width,
+		   Height,
+		   ContentType,
+		   files.FolderID,
+		   FolderPath AS 'Folder',
+		   StorageLocation,
+		   IsCached,
+		   SHA1Hash,
+		   FolderMappingID,
+		   LastModificationTime
+	FROM {databaseOwner}[{objectQualifier}Files] AS files
+	INNER JOIN {databaseOwner}[{objectQualifier}Folders] AS folders ON files.FolderID = folders.FolderID
+	WHERE FileId = @FileId
+END
+
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}EventLogTypes WHERE LogTypeKey = N'USER_IMPERSONATED')
+BEGIN  
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'USER_IMPERSONATED', N'User Impersonated', N'', N'DotNetNuke.Logging.EventLogType', N'OperationSuccess')
+END
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}EventLogConfig WHERE LogTypeKey = 'USER_IMPERSONATED')
+BEGIN  
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ( [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES ( N'USER_IMPERSONATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+END
+
+GO
+
+/*******Fix bug 21802  ***********/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetMessage]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetMessage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetMessage]
+    @MessageID INT
+AS 
+	SELECT [MessageID], [PortalId], [To], [From], [Subject], [Body], [ConversationID], [ReplyAllAllowed], [SenderUserID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate] 
+	FROM   {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
+	WHERE  [MessageID] = @MessageID 
+
+GO
+
+/* Update role descriptions*/
+/***************************/
+
+UPDATE {databaseOwner}{objectQualifier}Roles
+	SET [Description] = 'Administrators of this Website'
+	WHERE RoleName = 'Administrators'
+	AND [Description] = 'Portal Administrators'
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Roles
+	SET [Description] = 'A public role for site subscriptions'
+	WHERE RoleName = 'Subscribers'
+	AND [Description] = 'A public role for portal subscriptions'
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

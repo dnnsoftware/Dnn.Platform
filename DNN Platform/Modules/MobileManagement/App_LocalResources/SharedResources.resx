@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="cmdAdd.Text" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="cmdSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="RedirectionSettings.Text" xml:space="preserve">
+    <value>Redirection Settings</value>
+  </data>
+  <data name="lblRedirectName.Text" xml:space="preserve">
+    <value>Site redirection name</value>
+  </data>
+  <data name="lblRedirectName.Help" xml:space="preserve">
+    <value>The name of your redirect</value>
+  </data>
+  <data name="lblRedirectSource.Help" xml:space="preserve">
+    <value>Determines if you redirect is website or page level</value>
+  </data>
+  <data name="lblRedirectTarget.Help" xml:space="preserve">
+    <value>The target destination for the redirect</value>
+  </data>
+  <data name="lblRedirectTarget.Text" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="lblRedirectType.Help" xml:space="preserve">
+    <value>Determines the type of source the user is browsing from</value>
+  </data>
+  <data name="lblRedirectType.Text" xml:space="preserve">
+    <value>Select user device</value>
+  </data>
+  <data name="lblTargetUrl.Help" xml:space="preserve">
+    <value>Destination URL for the redirect</value>
+  </data>
+  <data name="lblTargetUrl.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="lnkPortalAlias.Text" xml:space="preserve">
+    <value>Enter new website alias</value>
+  </data>
+  <data name="optBoth.Text" xml:space="preserve">
+    <value>Mobile and Tablet</value>
+  </data>
+  <data name="optOther.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="optPage.Text" xml:space="preserve">
+    <value>Page within this site</value>
+  </data>
+  <data name="optPhone.Text" xml:space="preserve">
+    <value>Mobile Phone</value>
+  </data>
+  <data name="optPortal.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="optTablet.Text" xml:space="preserve">
+    <value>Tablet</value>
+  </data>
+  <data name="optUrl.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="OtherType.Text" xml:space="preserve">
+    <value>Define your rules below. Add multiple rules by clicking the ADD button.</value>
+  </data>
+  <data name="valRedirectName.Text" xml:space="preserve">
+    <value>You must enter a name for your redirection</value>
+  </data>
+  <data name="lblCapability.Text" xml:space="preserve">
+    <value>Capability</value>
+  </data>
+  <data name="lblCapabilityValue.Text" xml:space="preserve">
+    <value>Matching Value</value>
+  </data>
+  <data name="lblEnabled.Text" xml:space="preserve">
+    <value>&lt;b&gt;Enabled&lt;/b&gt;</value>
+  </data>
+  <data name="lblRedirectionType.Text" xml:space="preserve">
+    <value>&lt;b&gt;Device Type&lt;/b&gt;</value>
+  </data>
+  <data name="lblRedirectionRules.Text" xml:space="preserve">
+    <value>&lt;b&gt;Redirection Rules&lt;/b&gt;</value>
+  </data>
+  <data name="lnkAdd.Text" xml:space="preserve">
+    <value>Create site redirection</value>
+  </data>
+  <data name="RedirectManagerMessage.Text" xml:space="preserve">
+    <value>Below is a list of site redirections. To add a new one, click &lt;b&gt;"Create"&lt;/b&gt; to start.</value>
+  </data>
+  <data name="lblEnable.Help" xml:space="preserve">
+    <value>Enable the redirection rule</value>
+  </data>
+  <data name="lblEnable.Text" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="optAdvanced.Text" xml:space="preserve">
+    <value>Create a redirection using advanced options</value>
+  </data>
+  <data name="optSimple.Text" xml:space="preserve">
+    <value>Create a mobile website redirection</value>
+  </data>
+  <data name="PageSelect.Text" xml:space="preserve">
+    <value>Select a page</value>
+  </data>
+  <data name="lblRedirect.Help" xml:space="preserve">
+    <value>This is your current home page that will be redirected</value>
+  </data>
+  <data name="lblRedirect.Text" xml:space="preserve">
+    <value>Redirecting</value>
+  </data>
+  <data name="SimpleSettings.Text" xml:space="preserve">
+    <value>Create a Mobile Site Redirection</value>
+  </data>
+  <data name="lblTarget.Help" xml:space="preserve">
+    <value>The destination where you will be redirected</value>
+  </data>
+  <data name="lblTarget.Text" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="DefaultRedirectName.Text" xml:space="preserve">
+    <value>Default Redirect</value>
+  </data>
+  <data name="EnableItem.Text" xml:space="preserve">
+    <value>Are you sure you want to Toggle the Enable Setting for this Item?</value>
+  </data>
+  <data name="chkChildPages.Text" xml:space="preserve">
+    <value>Include all child pages</value>
+  </data>
+  <data name="RedirectTooltipSource.Text" xml:space="preserve">
+    <value>Source: {0}</value>
+  </data>
+  <data name="lblNoCapabilities.Text" xml:space="preserve">
+    <value>No Capabilities Added</value>
+  </data>
+  <data name="selectCapabilityName.Text" xml:space="preserve">
+    <value>Select a Capability...</value>
+  </data>
+  <data name="RedirectTooltipDestination.Text" xml:space="preserve">
+    <value>Destination: {0}</value>
+  </data>
+  <data name="DuplicateNameError.Text" xml:space="preserve">
+    <value>Redirection with that name already exists, please use a different name</value>
+  </data>
+  <data name="addCapability.Text" xml:space="preserve">
+    <value>Add Capability</value>
+  </data>
+  <data name="TrialFiftyOneProvider.Text" xml:space="preserve">
+    <value>The device redirection rules are dependent on the device data available in your system. To upgrade to the premium data go to Host | Device Detection Management.</value>
+  </data>
+  <data name="AllMobile.Text" xml:space="preserve">
+    <value>All Mobile Devices</value>
+  </data>
+  <data name="Device Type.Header" xml:space="preserve">
+    <value>Device Type</value>
+  </data>
+  <data name="Enabled.Header" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="MobilePhone.Text" xml:space="preserve">
+    <value>Mobile Phone</value>
+  </data>
+  <data name="Other.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="Redirection Rule.Header" xml:space="preserve">
+    <value>Redirection Rule</value>
+  </data>
+  <data name="Tablet.Text" xml:space="preserve">
+    <value>Tablet</value>
+  </data>
+  <data name="optSmartPhone.Text" xml:space="preserve">
+    <value>Smart Phone</value>
+  </data>
+  <data name="SmartPhone.Text" xml:space="preserve">
+    <value>Smart Phone</value>
+  </data>
+</root>

@@ -1,0 +1,98 @@
+
+div.TabStrip-Platinum-TabsContainer
+{
+	margin-top: 30px;
+	height:30px;
+	background-color:white;
+	background-image:url(filler.gif);
+	background-repeat:repeat-x;
+	display:block;
+	white-space: nowrap;
+}
+
+ul.TabStrip-Platinum-Tabs
+{
+     list-style: none;
+     padding: 0px;
+     margin: 0px;
+     margin-left: 40px;
+     white-space: nowrap;
+}
+
+ul.TabStrip-Platinum-Tabs li 
+{
+     list-style: none;
+     float: left;
+     white-space: nowrap;
+     height: 30px;
+     text-align: center;
+     padding: 8px 0px 0px 0px;
+     cursor: pointer;
+}
+
+li.TabStrip-Platinum-Tabs-LeftSelected,
+li.TabStrip-Platinum-Tabs-LeftNormal,
+li.TabStrip-Platinum-Tabs-RightNormal,
+li.TabStrip-Platinum-Tabs-RightSelected,
+li.TabStrip-Platinum-Tabs-RightNormalNormal,
+li.TabStrip-Platinum-Tabs-RightNormalSelected,
+li.TabStrip-Platinum-Tabs-RightSelectedNormal
+{
+    list-style: none;
+    width: 66px;
+    background-repeat: no-repeat;
+}
+
+/* Left side of first tab; only two possibilities */
+li.TabStrip-Platinum-Tabs-LeftSelected
+{
+	background-image: url(leftSelected.gif);
+}
+
+li.TabStrip-Platinum-Tabs-LeftNormal
+{
+	background-image: url(leftNormal.gif);
+}
+
+/* Middle of tab; only two possibilities */
+li.TabStrip-Platinum-Tabs-MiddleNormal,
+li.TabStrip-Platinum-Tabs-MiddleSelected
+{
+    list-style: none;
+	background-repeat: repeat-x;
+}
+
+li.TabStrip-Platinum-Tabs-MiddleNormal
+{
+	background-image: url(middleNormal.gif);
+}
+
+li.TabStrip-Platinum-Tabs-MiddleSelected
+{
+	background-image: url(middleSelected.gif);
+}
+
+li.TabStrip-Platinum-Tabs-RightNormal
+{
+	background-image: url(rightNormal.gif);
+}
+
+li.TabStrip-Platinum-Tabs-RightSelected
+{
+	background-image: url(rightSelected.gif);
+}
+
+li.TabStrip-Platinum-Tabs-RightNormalNormal
+{
+	background-image: url(rightNormalNormal.gif);
+}
+
+li.TabStrip-Platinum-Tabs-RightNormalSelected
+{
+	background-image: url(rightNormalSelected.gif);
+}
+
+li.TabStrip-Platinum-Tabs-RightSelectedNormal
+{
+	background-image: url(rightSelectedNormal.gif);
+}

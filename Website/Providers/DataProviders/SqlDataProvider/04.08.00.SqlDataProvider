@@ -1,0 +1,161 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update GetPortalRoles */
+/*************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetPortalRoles]
+	@PortalId     int
+
+AS
+	SELECT R.RoleId,
+		   R.PortalId,
+		   R.RoleGroupId,
+		   R.RoleName,
+		   R.Description,
+		   'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+		   'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+		   'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end,
+		   'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+		   'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+		   'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.Text else '' end,
+		   'IsPublic' = case when R.IsPublic = 1 then 'True' else 'False' end,
+		   'AutoAssignment' = case when R.AutoAssignment = 1 then 'True' else 'False' end,
+		   RSVPCode,
+		   IconFile
+	FROM {databaseOwner}{objectQualifier}Roles R
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L1 ON R.BillingFrequency = L1.Value AND L1.ListName='Frequency'
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L2 ON R.TrialFrequency = L2.Value AND L2.ListName='Frequency'
+	WHERE  ( R.PortalId = @PortalId OR R.PortalId is null )
+	ORDER BY R.RoleName
+
+GO
+
+/* Add DeleteModulePermissionsByUserID */
+/***************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteModulePermissionsByUserID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteModulePermissionsByUserID]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}DeleteModulePermissionsByUserID]
+	@PortalID int,
+	@UserID int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}ModulePermission
+		FROM {databaseOwner}{objectQualifier}ModulePermission MP
+			INNER JOIN {databaseOwner}{objectQualifier}Modules AS M ON MP.ModuleID = M.ModuleID
+		WHERE M.PortalID = @PortalID
+		AND MP.UserID = @UserID
+GO
+
+/* Add DeleteTabPermissionsByUserID */
+/************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabPermissionsByUserID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabPermissionsByUserID]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}DeleteTabPermissionsByUserID]
+	@PortalID int,
+	@UserID int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}TabPermission
+		FROM {databaseOwner}{objectQualifier}TabPermission TP
+			INNER JOIN {databaseOwner}{objectQualifier}Tabs AS T ON TP.TabID = T.TabID
+		WHERE T.PortalID = @PortalID
+		AND TP.UserID = @UserID
+GO
+
+/* Add DeleteFolderPermissionsByUserID */
+/***************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteFolderPermissionsByUserID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByUserID]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByUserID]
+	@PortalID int,
+	@UserID int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}FolderPermission
+		FROM {databaseOwner}{objectQualifier}FolderPermission FP
+			INNER JOIN {databaseOwner}{objectQualifier}Folders AS F ON FP.FolderID  = F.FolderID 
+		WHERE F.PortalID = @PortalID
+		AND FP.UserID = @UserID
+GO
+
+/* Update GetSchedule */
+/**********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetSchedule]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSchedule]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetSchedule]
+	@Server varchar(150)
+AS
+	SELECT 
+		S.ScheduleID, 
+		S.TypeFullName, 
+		S.TimeLapse, 
+		S.TimeLapseMeasurement,  
+		S.RetryTimeLapse, 
+		S.RetryTimeLapseMeasurement, 
+		S.ObjectDependencies, 
+		S.AttachToEvent, 
+		S.RetainHistoryNum, 
+		S.CatchUpEnabled, 
+		S.Enabled, 
+		MAX(SH.NextStart), 
+		S.Servers
+	FROM {databaseOwner}{objectQualifier}Schedule S
+		LEFT JOIN {databaseOwner}{objectQualifier}ScheduleHistory SH ON S.ScheduleID = SH.ScheduleID
+	WHERE @Server IS NULL or S.Servers LIKE '%,' + @Server + ',%' or S.Servers IS NULL
+	GROUP BY S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, SH.NextStart, S.Servers
+GO
+
+/* Update GetScheduleNextTask */
+/******************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetScheduleNextTask]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetScheduleNextTask]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetScheduleNextTask]
+	@Server varchar(150)
+AS
+	SELECT TOP 1 
+		S.ScheduleID, 
+		S.TypeFullName, 
+		S.TimeLapse, 
+		S.TimeLapseMeasurement,  
+		S.RetryTimeLapse, 
+		S.RetryTimeLapseMeasurement, 
+		S.ObjectDependencies, 
+		S.AttachToEvent, 
+		S.RetainHistoryNum, 
+		S.CatchUpEnabled, 
+		S.Enabled, 
+		MAX(SH.NextStart)
+	FROM {databaseOwner}{objectQualifier}Schedule S
+		LEFT JOIN {databaseOwner}{objectQualifier}ScheduleHistory SH ON S.ScheduleID = SH.ScheduleID
+	WHERE S.Servers LIKE '%,' + @Server + ',%' or S.Servers IS NULL
+	GROUP BY S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, SH.NextStart
+	ORDER BY SH.NextStart ASC
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

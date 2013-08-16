@@ -1,0 +1,109 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}HtmlText' AND COLUMN_NAME='Summary')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlText
+			ADD [Summary] [ntext] NULL
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}AddHtmlText
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddHtmlText
+
+@ModuleID        int,
+@Content         ntext,
+@Summary	     ntext,
+@StateID         int,
+@IsPublished     bit,
+@UserID          int,
+@History         int
+
+as
+
+declare @Version int
+
+select @Version = max(Version) from {databaseOwner}{objectQualifier}HtmlText where ModuleID = @ModuleID
+
+if @Version is null
+  select @Version = 1
+else
+  select @Version = @Version + 1
+
+insert into {databaseOwner}{objectQualifier}HtmlText (
+  ModuleID,
+  Content,
+  Summary,
+  Version,
+  StateID,
+  IsPublished,
+  CreatedByUserID,
+  CreatedOnDate,
+  LastModifiedByUserID,
+  LastModifiedOnDate
+) 
+values (
+  @ModuleID,
+  @Content,
+  @Summary,
+  @Version,
+  @StateID,
+  @IsPublished,
+  @UserID,
+  getdate(),
+  @UserID,
+  getdate()
+)
+
+if @History > 0
+begin
+  delete
+  from   {databaseOwner}{objectQualifier}HtmlText
+  where  ModuleID = @ModuleID
+  and    Version <= (@Version - @History)
+end
+
+select SCOPE_IDENTITY()
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}UpdateHtmlText
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateHtmlText
+
+@ItemID          int,
+@Content         ntext,
+@Summary		 ntext,
+@StateID         int,
+@IsPublished     bit,
+@UserID          int
+
+as
+
+update {databaseOwner}{objectQualifier}HtmlText
+set    Content              = @Content,
+	   Summary				= @Summary,
+       StateID              = @StateID,
+       IsPublished          = @IsPublished,
+       LastModifiedByUserID = @UserID,
+       LastModifiedOnDate   = getdate()
+where  ItemID = @ItemID
+
+GO

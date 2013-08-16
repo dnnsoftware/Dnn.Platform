@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <modules>
+    <module name="RadEditorStatistics" dockingZone="Bottom"/>
+  </modules>
+  <tools name="MainToolbar">
+    <tool name="Print" shortcut="CTRL+P"/>
+    <tool name="AjaxSpellCheck"/>
+    <tool name="FindAndReplace" shortcut="CTRL+F"/>
+    <tool name="SelectAll" shortcut="CTRL+A"/>
+    <tool name="Cut" />
+    <tool name="Copy" shortcut="CTRL+C"/>
+    <tool name="Paste" shortcut="CTRL+V"/>
+    <tool name="PasteStrip"/>
+    <tool separator="true"/>
+    <tool name="Undo" shortcut="CTRL+Z"/>
+    <tool name="Redo" shortcut="CTRL+Y"/>
+  </tools>
+  <tools name="InsertToolbar" >
+    <tool name="ImageManager" shortcut="CTRL+G"/>
+    <tool name="DocumentManager" />
+    <tool name="FlashManager" />
+    <tool name="MediaManager" />
+    <tool name="TemplateManager" />
+    <tool name="SaveTemplate" />
+    <tool separator="true"/>
+    <tool name="LinkManager" shortcut="CTRL+K"/>
+    <tool name="Unlink" shortcut="CTRL+SHIFT+K"/>
+  </tools>
+  <tools>
+    <tool name="Superscript" />
+    <tool name="Subscript" />
+    <tool name="InsertParagraph" />
+    <tool name="InsertGroupbox" />
+    <tool name="InsertHorizontalRule" />
+    <tool name="InsertDate" />
+    <tool name="InsertTime" />
+    <tool separator="true"/>
+    <tool name="FormatCodeBlock" />
+  </tools>
+  <tools>
+    <tool name="FormatBlock"/>
+    <tool name="FontName" shortcut="CTRL+SHIFT+F"/>
+    <tool name="RealFontSize" shortcut="CTRL+SHIFT+P"/>
+  </tools>
+  <tools>
+    <tool name="Bold" shortcut="CTRL+B"/>
+    <tool name="Italic" shortcut="CTRL+I"/>
+    <tool name="Underline" shortcut="CTRL+U"/>
+    <tool name="StrikeThrough" />
+    <tool separator="true"/>
+    <tool name="JustifyLeft" />
+    <tool name="JustifyCenter" />
+    <tool name="JustifyRight" />
+    <tool name="JustifyFull" />
+    <tool name="JustifyNone" />
+    <tool separator="true"/>
+    <tool name="Indent" />
+    <tool name="Outdent" />
+    <tool separator="true"/>
+    <tool name="InsertOrderedList" />
+    <tool name="InsertUnorderedList" />
+    <tool separator="true"/>
+    <tool name="ToggleTableBorder" />
+    <tool name="XhtmlValidator" />
+  </tools>
+  <tools>
+    <tool name="ForeColor"/>
+    <tool name="BackColor"/>
+    <tool name="ApplyClass"/>
+    <tool name="FormatStripper"/>
+  </tools>
+  <tools name="DropdownToolbar" >
+    <tool name="InsertSymbol"/>
+    <tool name="InsertTable"/>
+    <tool name="InsertSnippet"/>
+    <tool name="AbsolutePosition" />
+    <tool name="ImageMapDialog"/>
+    <tool name="InsertCustomLink" shortcut="CTRL+ALT+K"/>
+    <tool separator="true"/>
+    <tool name="ConvertToLower" />
+    <tool name="ConvertToUpper" />
+    <tool separator="true"/>
+    <tool name="ModuleManager" />
+    <tool name="ToggleScreenMode" shortcut="F11"/>
+    <tool name="AboutDialog" />
+  </tools>
+</root>

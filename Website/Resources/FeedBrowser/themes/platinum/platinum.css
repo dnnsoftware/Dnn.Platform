@@ -1,0 +1,184 @@
+/**************************************************************************************/
+/* BEGIN: Overall Layout                                                              */
+/**************************************************************************************/
+
+.FeedBrowser-Platinum-MainTable
+{
+	border: 1px solid #dddddd;
+	width: 100%;
+	background-color: White;
+}
+
+td.FeedBrowser-Platinum-NavTop
+{
+	background-image: url(nav-top-bar.gif);
+	background-repeat: repeat-x;
+	height: 51px;
+	width: 100%;
+	margin: 0px;
+}
+
+.FeedBrowser-Platinum-NavLeft
+{
+	background-image: url(nav-left.gif);
+	background-repeat: repeat-y;
+	margin: 0px;
+}
+
+.FeedBrowser-Platinum-NavLeftCurve
+{
+	background-image: url(nav-left-curve.gif);
+	background-repeat: no-repeat;
+	width: 250px;
+	height: 36px;
+	margin: 0px;
+}
+
+.FeedBrowser-Platinum-NavBottom
+{
+	background-image: url(nav-bottom-bar.gif);
+	background-repeat: repeat-x;
+	height: 39px;
+	margin: 0px;
+}
+
+.FeedBrowser-Platinum-Loader
+{
+    background-image: url(loading.gif);
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100px;
+}
+
+/**************************************************************************************/
+/* BEGIN: Sections                                                                    */
+/**************************************************************************************/
+ul.FeedBrowser-Platinum-SectionMenu,
+ul.FeedBrowser-Platinum-SectionMenu li 
+{
+     list-style: none;
+     padding: 0px 0px 0px 15px;
+     margin: 0px;
+     white-space: nowrap;
+}
+
+
+ul.FeedBrowser-Platinum-SectionMenu li 
+{
+     float: left;
+     text-align: center;
+     cursor: pointer;  
+}
+
+li.FeedBrowser-Platinum-SectionMenu-Selected,
+li.FeedBrowser-Platinum-SectionMenu-Normal
+{
+    list-style: none;
+}
+
+/**************************************************************************************/
+/* BEGIN: Categories                                                                  */
+/**************************************************************************************/
+table.FeedBrowser-Platinum-Category
+{
+	padding-left: 10px;
+	width: 250px;
+}
+
+.FeedBrowser-Platinum-Category .Off
+{
+	height: 34px;
+	color: #333333;
+    cursor: pointer;
+}
+
+.FeedBrowser-Platinum-Category .On
+{
+	height: 34px;
+	border-top: 1px solid #dddddd;
+	border-bottom: 1px solid #dddddd;
+    cursor: pointer;
+}
+
+.FeedBrowser-Platinum-Category .Indent
+{
+    width: 15px;
+    height: 20px;
+    overflow: hidden;
+    float: left;    
+}
+
+.FeedBrowser-Platinum-Category .Pointer
+{
+    padding: 0px;
+    background-image: url(pointer.gif);
+    background-repeat: no-repeat;
+    background-position: top left;
+    width: 69px;
+    overflow: hidden;
+}
+
+.FeedBrowser-Platinum-Category .NoPointer
+{
+    padding: 0px;
+    width: 69px;
+}
+
+.FeedBrowser-Platinum-Category .SearchBox
+{
+    width: 140px;
+    border:1px solid #dddddd;
+    height: 20px;
+}
+
+.FeedBrowser-Platinum-Category .SearchButton
+{
+    width: 24px;
+    height: 20px;
+    background-image: url(search.gif);
+    background-repeat: no-repeat;
+    border-width: 0px;
+    cursor: pointer;
+}
+
+/**************************************************************************************/
+/* BEGIN: Content                                                                     */
+/**************************************************************************************/
+
+.FeedBrowser-Platinum-Content
+{
+    width: 99%;
+	height: 300px;
+}
+
+/**************************************************************************************/
+/* BEGIN: Balloon                                                                     */
+/**************************************************************************************/
+
+.FeedBrowser-Platinum-PreviewContainer
+{
+	position:absolute;
+	left:50%;
+	width:500px;
+	margin-top:50px;
+	margin-left:-266px;
+	padding:5px;
+	background-color:#eee;
+    border: 1px solid #777777;
+    display: none;
+    z-index: 1000;
+    text-align: center;
+}
+
+.FeedBrowser-Platinum-PreviewContainerTitle
+{
+    background-color: #e0e0e0;
+    color: Black;    
+}
+
+.FeedBrowser-Platinum-PreviewBrowser
+{
+    width: 490px;
+    height: 490px;
+    border: 0px;
+}

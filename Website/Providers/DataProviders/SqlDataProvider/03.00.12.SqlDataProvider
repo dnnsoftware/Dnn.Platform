@@ -1,0 +1,455 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+update {objectQualifier}Banners
+set    GroupName = null
+where  GroupName = 'Site Banner'
+and    BannerTypeId = 1
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ADD
+	Width int NOT NULL CONSTRAINT DF_{objectQualifier}Banners_Width DEFAULT 0,
+	Height int NOT NULL CONSTRAINT DF_{objectQualifier}Banners_Height DEFAULT 0
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddBanner
+GO
+
+
+create procedure {databaseOwner}{objectQualifier}AddBanner
+
+@BannerName    nvarchar(100),
+@VendorId      int,
+@ImageFile     nvarchar(100),
+@URL           nvarchar(255),
+@Impressions   int,
+@CPM           float,
+@StartDate     datetime,
+@EndDate       datetime,
+@UserName      nvarchar(100),
+@BannerTypeId  int,
+@Description   nvarchar(2000),
+@GroupName     nvarchar(100),
+@Criteria      bit,
+@Width         int,
+@Height        int
+
+as
+
+insert into {objectQualifier}Banners (
+    VendorId,
+    ImageFile,
+    BannerName,
+    URL,
+    Impressions,
+    CPM,
+    Views,
+    ClickThroughs,
+    StartDate,
+    EndDate,
+    CreatedByUser,
+    CreatedDate,
+    BannerTypeId,
+    Description,
+    GroupName,
+    Criteria,
+    Width,
+    Height
+)
+values (
+    @VendorId,
+    @ImageFile,
+    @BannerName,
+    @URL,
+    @Impressions,
+    @CPM,
+    0,
+    0,
+    @StartDate,
+    @EndDate,
+    @UserName,
+    getdate(),
+    @BannerTypeId,
+    @Description,
+    @GroupName,
+    @Criteria,
+    @Width,
+    @Height
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}FindBanners
+GO
+
+create procedure {databaseOwner}{objectQualifier}FindBanners
+
+@PortalId     int,
+@BannerTypeId int,
+@GroupName    nvarchar(100)
+
+as
+
+select BannerId,
+       {objectQualifier}Banners.VendorId,
+       BannerName,
+       URL,
+       'ImageFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Banners.ImageFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       Impressions,
+       CPM,
+       {objectQualifier}Banners.Views,
+       {objectQualifier}Banners.ClickThroughs,
+       StartDate,
+       EndDate,
+       BannerTypeId,
+       Description,
+       GroupName,
+       Criteria,
+       {objectQualifier}Banners.Width,
+       {objectQualifier}Banners.Height
+from {objectQualifier}Banners
+inner join {objectQualifier}Vendors on {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId
+left outer join {objectQualifier}Files on {objectQualifier}Banners.ImageFile = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  ({objectQualifier}Banners.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+and    ({objectQualifier}Banners.GroupName = @GroupName or @GroupName is null)
+and    (({objectQualifier}Vendors.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Vendors.PortalId is null))
+and    ({objectQualifier}Banners.StartDate is null Or getdate() >= {objectQualifier}Banners.StartDate )
+and    (  ( Criteria = 1 /* OR */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views Or {objectQualifier}Banners.Impressions = 0)
+           and (getdate() <= {objectQualifier}Banners.EndDate or {objectQualifier}Banners.EndDate is null) )
+       or ( Criteria = 0 /* AND */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views and {objectQualifier}Banners.Impressions <> 0)
+           or  (getdate() <= {objectQualifier}Banners.EndDate and {objectQualifier}Banners.EndDate is not null) )  )
+order by BannerId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetBanner
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetBanner
+
+@BannerId int,
+@VendorId int,
+@PortalID int
+
+as
+
+select {objectQualifier}Banners.BannerId,
+       {objectQualifier}Banners.VendorId,
+       'ImageFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Banners.ImageFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Banners.BannerName,
+       {objectQualifier}Banners.Impressions,
+       {objectQualifier}Banners.CPM,
+       {objectQualifier}Banners.Views,
+       {objectQualifier}Banners.ClickThroughs,
+       {objectQualifier}Banners.StartDate,
+       {objectQualifier}Banners.EndDate,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Banners.CreatedDate,
+       {objectQualifier}Banners.BannerTypeId,
+       {objectQualifier}Banners.Description,
+       {objectQualifier}Banners.GroupName,
+       {objectQualifier}Banners.Criteria,
+       {objectQualifier}Banners.URL,        
+       {objectQualifier}Banners.Width,
+       {objectQualifier}Banners.Height
+FROM   {objectQualifier}Banners 
+INNER JOIN {objectQualifier}Vendors ON {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId 
+LEFT OUTER JOIN {objectQualifier}Users ON {objectQualifier}Banners.CreatedByUser = {objectQualifier}Users.UserID
+left outer join {objectQualifier}Files on {objectQualifier}Banners.ImageFile = 'FileId=' + convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Banners.BannerId = @BannerId
+and   {objectQualifier}Banners.vendorId = @VendorId
+AND ({objectQualifier}Vendors.PortalId = @PortalID or ({objectQualifier}Vendors.PortalId is null and @portalid is null))
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetBanners
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetBanners
+
+@VendorId int
+
+as
+
+select BannerId,
+       BannerName,
+       URL,
+       Impressions,
+       CPM,
+       Views,
+       ClickThroughs,
+       StartDate,
+       EndDate,
+       BannerTypeId,
+       Description,
+       GroupName,
+       Criteria,
+       Width,
+       Height
+from   {objectQualifier}Banners
+where  VendorId = @VendorId
+order  by CreatedDate desc
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateBanner
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateBanner
+
+@BannerId     int,
+@BannerName   nvarchar(100),
+@ImageFile    nvarchar(100),
+@URL          nvarchar(255),
+@Impressions  int,
+@CPM          float,
+@StartDate    datetime,
+@EndDate      datetime,
+@UserName     nvarchar(100),
+@BannerTypeId int,
+@Description  nvarchar(2000),
+@GroupName    nvarchar(100),
+@Criteria     bit,
+@Width        int,
+@Height       int
+
+as
+
+update {objectQualifier}Banners
+set    ImageFile     = @ImageFile,
+       BannerName    = @BannerName,
+       URL           = @URL,
+       Impressions   = @Impressions,
+       CPM           = @CPM,
+       StartDate     = @StartDate,
+       EndDate       = @EndDate,
+       CreatedByUser = @UserName,
+       CreatedDate   = getdate(),
+       BannerTypeId  = @BannerTypeId,
+       Description   = @Description,
+       GroupName     = @GroupName,
+       Criteria      = @Criteria,
+       Width         = @Width,
+       Height        = @Height
+where  BannerId = @BannerId 
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetScheduleNextTask
+AS
+SELECT TOP 1 S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, SH.NextStart
+FROM {objectQualifier}Schedule S
+LEFT JOIN {objectQualifier}ScheduleHistory SH
+ON S.ScheduleID = SH.ScheduleID
+WHERE (SH.ScheduleHistoryID = (SELECT TOP 1 S1.ScheduleHistoryID FROM {objectQualifier}ScheduleHistory S1 WHERE S1.ScheduleID = S.ScheduleID ORDER BY S1.NextStart DESC)
+OR  SH.ScheduleHistoryID IS NULL) AND S.Enabled = 1
+GROUP BY S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, SH.NextStart
+ORDER BY SH.NextStart ASC
+GO
+
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}AddSchedule
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSchedule
+@TypeFullName varchar(200)
+,@TimeLapse int
+,@TimeLapseMeasurement varchar(2)
+,@RetryTimeLapse int
+,@RetryTimeLapseMeasurement varchar(2)
+,@RetainHistoryNum int
+,@AttachToEvent varchar(50)
+,@CatchUpEnabled bit
+,@Enabled bit
+,@ObjectDependencies varchar(300)
+AS
+INSERT INTO {objectQualifier}Schedule
+(TypeFullName
+,TimeLapse
+,TimeLapseMeasurement
+,RetryTimeLapse
+,RetryTimeLapseMeasurement
+,RetainHistoryNum
+,AttachToEvent
+,CatchUpEnabled
+,Enabled
+,ObjectDependencies
+)
+VALUES
+(@TypeFullName
+,@TimeLapse
+,@TimeLapseMeasurement
+,@RetryTimeLapse
+,@RetryTimeLapseMeasurement
+,@RetainHistoryNum
+,@AttachToEvent
+,@CatchUpEnabled
+,@Enabled
+,@ObjectDependencies
+)
+
+
+select SCOPE_IDENTITY()
+GO
+
+Update 	{databaseOwner}{objectQualifier}Skins
+Set	SkinSrc = replace(SkinSrc, 'DNN - ', 'DNN-')
+GO
+
+Update 	{databaseOwner}{objectQualifier}Tabs
+Set	SkinSrc = replace(SkinSrc, 'DNN - ', 'DNN-'), 
+	ContainerSrc = replace(ContainerSrc, 'DNN - ', 'DNN-')
+GO
+
+Update 	{databaseOwner}{objectQualifier}TabModules
+Set	ContainerSrc = replace(ContainerSrc, 'DNN - ', 'DNN-')
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchModules
+
+@PortalID int
+
+as
+
+select M.ModuleID,
+       M.ModuleDefID,
+       M.ModuleTitle,
+       M.AllTabs,
+       M.IsDeleted,
+       M.InheritViewPermissions,
+       M.Header,
+       M.Footer,
+       M.StartDate,
+       M.EndDate,
+       M.PortalID,
+       TM.TabModuleId,
+       TM.TabId,
+       TM.PaneName,
+       TM.ModuleOrder,
+       TM.CacheTime,
+       TM.Alignment,
+       TM.Color,
+       TM.Border,
+       TM.Visibility,
+       TM.ContainerSrc,
+       TM.DisplayTitle,
+       TM.DisplayPrint,
+       TM.DisplaySyndicate,
+       'IconFile' = case when F.FileName is null then TM.IconFile else F.Folder + F.FileName end,
+       DM.*,
+       MC.ModuleControlId,
+       MC.ControlSrc,
+       MC.ControlType,
+       MC.ControlTitle,
+       MC.HelpURL
+from {objectQualifier}Modules M
+inner join {objectQualifier}TabModules TM on M.ModuleId = TM.ModuleId
+inner join {objectQualifier}Tabs T on TM.TabId = T.TabId
+inner join {objectQualifier}ModuleDefinitions MD on M.ModuleDefId = MD.ModuleDefId
+inner join {objectQualifier}DesktopModules DM on MD.DesktopModuleId = DM.DesktopModuleId
+inner join {objectQualifier}ModuleControls MC on MD.ModuleDefId = MC.ModuleDefId
+left outer join {objectQualifier}Files F on TM.IconFile = 'fileid=' + convert(varchar,F.FileID)
+where  M.IsDeleted = 0  
+	and T.IsDeleted = 0  
+	and ControlKey is null 
+	and DM.IsAdmin = 0
+	and (T.EndDate < GETDATE() or T.EndDate IS NULL) 
+	and (T.StartDate > GETDATE() or T.StartDate IS NULL) 
+	and (M.StartDate > GETDATE() or M.StartDate IS NULL) 
+	and (M.EndDate < GETDATE() or M.EndDate IS NULL) 
+	and (NOT (DM.BusinessControllerClass IS NULL))
+	and (T.PortalID = @PortalID OR (T.PortalID IS NULL AND @PortalID Is NULL))
+order by TM.ModuleOrder
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}HostSettings ADD 
+	SettingIsSecure bit NOT NULL CONSTRAINT DF_{objectQualifier}HostSettings_Secure DEFAULT 0
+GO
+
+Update {databaseOwner}{objectQualifier}HostSettings
+  Set SettingIsSecure = 1
+  Where SettingName in ('EncryptionKey',
+                        'ProcessorPassword',
+                        'ProcessorUserId',
+                        'ProxyPassword', 
+                        'ProxyUsername', 
+                        'SMTPPassword', 
+                        'SMTPUsername')
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}GetHostSettings
+as
+select SettingName,
+       SettingValue,
+       SettingIsSecure
+from {objectQualifier}HostSettings
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}AddHostSetting
+
+@SettingName   nvarchar(50),
+@SettingValue  nvarchar(256),
+@SettingIsSecure bit
+
+as
+
+insert into {objectQualifier}HostSettings (
+  SettingName,
+  SettingValue,
+  SettingIsSecure
+) 
+values (
+  @SettingName,
+  @SettingValue,
+  @SettingIsSecure
+)
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}UpdateHostSetting
+
+@SettingName   nvarchar(50),
+@SettingValue  nvarchar(256),
+@SettingIsSecure bit
+
+as
+
+update {objectQualifier}HostSettings
+set    SettingValue = @SettingValue, SettingIsSecure = @SettingIsSecure
+where  SettingName = @SettingName
+GO
+
+update {objectQualifier}HostSettings
+set    SettingValue = 'swf,' + SettingValue
+where  SettingName = 'FileExtensions'
+GO
+
+update  {objectQualifier}DesktopModules
+set     Version = '01.00.00'
+where   IsAdmin = 0
+and     Version is null
+GO
+
+/* -- fix orphaned modules: not deleted but without any tabmodule instance - caused by deleting a tab -- */
+update {objectQualifier}Modules
+set    IsDeleted = 1
+where  IsDeleted = 0
+and    PortalID is not null
+and    not exists ( select 1 from {objectQualifier}TabModules where {objectQualifier}Modules.ModuleID = {objectQualifier}TabModules.ModuleID )
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

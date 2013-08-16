@@ -1,0 +1,30 @@
+﻿#emulator {position: relative;display: inline-block;margin-left: 60px; }
+
+#emulator .dimension_h {display: inline-block;position: absolute;height: 10px;left: 10px;}
+#emulator .dimension_h span { display: block;text-align: center;vertical-align: middle;color: #939393;float: left;}
+#emulator .dimension_h span.left{ background: url(images/arrow.png) no-repeat 0 -3px;width: 3px;height: 5px;}
+#emulator .dimension_h span.center{ border-bottom: 1px solid #e0e0e0;height: 23px;margin-top: -21px;}
+#emulator .dimension_h span.right{ background: url(images/arrow.png) no-repeat -8px -3px;width: 3px;height: 5px;}
+
+#emulator .dimension_v {display: inline-block;position: absolute;width: 10px;top: 70px;}
+#emulator .dimension_v span { display: block;text-align: center;vertical-align: middle;color: #939393;}
+#emulator .dimension_v span.top{ background: url(images/arrow.png) no-repeat -3px 0;width: 5px;height: 3px;}
+#emulator .dimension_v span.middle{ border-right: 1px solid #e0e0e0;width: 60px;margin-left: -58px;}
+#emulator .dimension_v span.bottom{ background: url(images/arrow.png) no-repeat -3px -8px;width: 5px;height: 3px;}
+
+
+
+#emulator .emulator_c{top: 10px;left:10px;border: 1px solid #e0e0e0; overflow: hidden;position: relative;-webkit-user-select: none;}
+#emulator .emulator_c iframe{ border: none;position: relative;}
+#emulator .emulator_c .scroll{ background-color: #e0e0e0;position: absolute;overflow: hidden;}
+#emulator .emulator_c .scroll .bar{ position: absolute;background-color: #939393;cursor:pointer;-webkit-user-select: none;}
+#emulator .emulator_c .vertical{top: 0; right: 0;width: 10px;height: 100%;-moz-user-select:none;}
+#emulator .emulator_c .vertical .bar{ width: 100%;top: 0px;}
+#emulator .emulator_c .horizontal{bottom: 0; left: 0;height: 10px;width: 100%;-moz-user-select:none;}
+#emulator .emulator_c .horizontal .bar{ height: 100%;left: 0px;}
+#emulator .emulator_c .status{ bottom: 0;right: 0;width: 10px;height: 10px;background-color: #fff;position: absolute;}
+#emulator .emulator_c .mask{ position: absolute;left: 0;top: 0;background-color: #f00;}
+
+#emulator .emulator_addr{ top: 0px;left: 10px;background-color: #ccc; position: relative;height: 30px;line-height: 30px;font-size: 14px;overflow: hidden;margin-bottom: 30px;}
+
+div.dnnFormItem label, div.dnnFormItem .dnnFormLabel, div.dnnFormItem .dnnTooltip{ width: 20%;}

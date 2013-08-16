@@ -1,0 +1,7854 @@
+/************************************************************/
+/*****              Upgrade Script 1.0.8                *****/
+/************************************************************/
+
+/* drop all stored procedures */
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddAnnouncement') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddAnnouncement
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddBanner') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddBanner
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddContact') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddContact
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddDocument') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddDocument
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddFAQ') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddFAQ
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddFile') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddFile
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddLink') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddLink
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddMessage') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddMessage
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddModule
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddModuleDefinition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddModuleDefinition
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddModuleEvent') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddModuleEvent
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddPortalInfo') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddPortalInfo
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddRole') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddRole
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddSearch
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddSiteLog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddSiteLog
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddTab') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddTab
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddUser') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddUser
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddUserDefinedField') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddUserDefinedField
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddUserDefinedRow') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddUserDefinedRow
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddUserRole') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddUserRole
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddVendor') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddVendor
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'AddVendorClassification') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure AddVendorClassification
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'CopyTab') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure CopyTab
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteAnnouncement') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteAnnouncement
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteBanner') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteBanner
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteContact') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteContact
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteDocument') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteDocument
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteFAQ') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteFAQ
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteFile') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteFile
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteFiles') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteFiles
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteLink') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteLink
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteMessage') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteMessage
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteModule
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteModuleDefinition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteModuleDefinition
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteModuleEvent') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteModuleEvent
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeletePortalInfo') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeletePortalInfo
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteRole') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteRole
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteSearch
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteTab') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteTab
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteUser') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteUser
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteUserDefinedField') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteUserDefinedField
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteUserDefinedRow') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteUserDefinedRow
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteUserRole') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteUserRole
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteVendor') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteVendor
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteVendorClassifications') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteVendorClassifications
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DeleteVendorFeedback') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure DeleteVendorFeedback
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'FindBanners') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure FindBanners
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'FindVendors') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure FindVendors
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetAnnouncements') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetAnnouncements
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetAuthRoles') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetAuthRoles
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetBannerClickThrough') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetBannerClickThrough
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetBannerLog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetBannerLog
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetBannerTypes') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetBannerTypes
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetBanners') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetBanners
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetBillingFrequencyCode') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetBillingFrequencyCode
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetBillingFrequencyCodes') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetBillingFrequencyCodes
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetClicks') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetClicks
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetContacts') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetContacts
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetCountryCodes') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetCountryCodes
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetCurrencies') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetCurrencies
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetDocuments') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetDocuments
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetFAQs') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetFAQs
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetFiles') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetFiles
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetHostSetting') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetHostSetting
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetHostSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetHostSettings
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetHtmlText') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetHtmlText
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetLinks') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetLinks
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetModule
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetModuleDefinitions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetModuleDefinitions
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetModuleEvents') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetModuleEvents
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetModuleSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetModuleSettings
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetPortalByAlias') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetPortalByAlias
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetPortalByTab') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetPortalByTab
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetPortalModuleDefinitionFee') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetPortalModuleDefinitionFee
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetPortalModuleDefinitions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetPortalModuleDefinitions
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetPortalRoles') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetPortalRoles
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetPortalSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetPortalSettings
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetPortalSpaceUsed') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetPortalSpaceUsed
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetPortals') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetPortals
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetProcessorCodes') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetProcessorCodes
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetRegionCodes') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetRegionCodes
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetRoleMembership') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetRoleMembership
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetRolesByUser') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetRolesByUser
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSearch
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetServices') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetServices
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetServicesByUser') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetServicesByUser
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleAnnouncement') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleAnnouncement
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleBanner') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleBanner
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleContact') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleContact
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleCountry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleCountry
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleDocument') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleDocument
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleFAQ') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleFAQ
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleFile') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleFile
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleLink') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleLink
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleMessage') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleMessage
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleModuleDefinition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleModuleDefinition
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleModuleDefinitionByName') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleModuleDefinitionByName
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleModuleEvent') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleModuleEvent
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSinglePortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSinglePortal
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleRegion') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleRegion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleRole') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleRole
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleSearch
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleUser') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleUser
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleUserByUsername') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleUserByUsername
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleUserDefinedField') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleUserDefinedField
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleUserDefinedRow') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleUserDefinedRow
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleUserRole') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleUserRole
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleVendor') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleVendor
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSingleVendorFeedback') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSingleVendorFeedback
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSiteLog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSiteLog
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSiteLogReports') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSiteLogReports
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetSiteModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetSiteModule
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetTabById') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetTabById
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetTabByName') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetTabByName
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetTabs') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetTabs
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetTabsByParentId') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetTabsByParentId
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetThreadMessages') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetThreadMessages
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetTopLevelMessages') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetTopLevelMessages
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetUserDefinedFields') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetUserDefinedFields
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetUserDefinedRows') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetUserDefinedRows
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetUsers') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetUsers
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetVendorClassifications') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetVendorClassifications
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetVendorClickThrough') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetVendorClickThrough
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetVendorFeedback') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetVendorFeedback
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetVendorLog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetVendorLog
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'GetVendors') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure GetVendors
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateAnnouncement') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateAnnouncement
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateBanner') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateBanner
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateClicks') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateClicks
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateContact') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateContact
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateDocument') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateDocument
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateFAQ') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateFAQ
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateHostSetting') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateHostSetting
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateHtmlText') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateHtmlText
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateImage') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateImage
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateLink') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateLink
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateMessage') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateMessage
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateModule
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateModuleDefinition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateModuleDefinition
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateModuleEvent') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateModuleEvent
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateModuleOrder') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateModuleOrder
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateModuleSetting') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateModuleSetting
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdatePortalExpiry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdatePortalExpiry
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdatePortalInfo') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdatePortalInfo
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdatePortalModuleDefinition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdatePortalModuleDefinition
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdatePortalTabOrder') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdatePortalTabOrder
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateReferrer') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateReferrer
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateRole') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateRole
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateSearch
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateService') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateService
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateTab') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateTab
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateTabModuleOrder') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateTabModuleOrder
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateTabOrder') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateTabOrder
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateUser') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateUser
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateUserDefinedData') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateUserDefinedData
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateUserDefinedField') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateUserDefinedField
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateUserDefinedFieldOrder') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateUserDefinedFieldOrder
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateUserDefinedRow') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateUserDefinedRow
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateUserLogin') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateUserLogin
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateVendor') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateVendor
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UpdateVendorFeedback') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UpdateVendorFeedback
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'UserLogin') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure UserLogin
+GO
+
+/* add all stored procedures with dbo owner */
+
+create procedure dbo.AddAnnouncement
+
+@ModuleID       int,
+@UserName       nvarchar(100),
+@Title          nvarchar(150),
+@URL            nvarchar(150),
+@Syndicate      bit,
+@ExpireDate     DateTime,
+@Description    nvarchar(2000),
+@ViewOrder	int
+
+as
+
+insert into Announcements (
+  ModuleID,
+  CreatedByUser,
+  CreatedDate,
+  Title,
+  URL,
+  Syndicate,
+  ExpireDate,
+  Description,
+  ViewOrder
+)
+values (
+  @ModuleID,
+  @UserName,
+  getdate(),
+  @Title,
+  @URL,
+  @Syndicate,
+  @ExpireDate,
+  @Description,
+  @ViewOrder
+)
+
+GO
+
+create procedure dbo.AddBanner
+
+@BannerName    nvarchar(100),
+@VendorId      int,
+@ImageFile     nvarchar(50),
+@URL           nvarchar(100) = null,
+@Impressions   int,
+@CPM           float,
+@StartDate     datetime = null,
+@EndDate       datetime = null,
+@UserName      nvarchar(100),
+@BannerTypeId  int = null
+
+as
+
+insert into Banners (
+    VendorId,
+    ImageFile,
+    BannerName,
+    URL,
+    Impressions,
+    CPM,
+    Views,
+    ClickThroughs,
+    StartDate,
+    EndDate,
+    CreatedByUser,
+    CreatedDate,
+    BannerTypeId
+)
+values (
+    @VendorId,
+    @ImageFile,
+    @BannerName,
+    @URL,
+    @Impressions,
+    @CPM,
+    0,
+    0,
+    @StartDate,
+    @EndDate,
+    @UserName,
+    getdate(),
+    @BannerTypeId
+)
+
+GO
+
+create procedure dbo.AddContact
+
+@ModuleID int,
+@UserName nvarchar(100),
+@Name     nvarchar(50),
+@Role     nvarchar(100),
+@Email    nvarchar(100),
+@Contact1 nvarchar(250),
+@Contact2 nvarchar(250)
+
+as
+
+insert into Contacts (
+  CreatedByUser,
+  CreatedDate,
+  ModuleID,
+  Name,
+  Role,
+  Email,
+  Contact1,
+  Contact2
+)
+values (
+  @UserName,
+  getdate(),
+  @ModuleID,
+  @Name,
+  @Role,
+  @Email,
+  @Contact1,
+  @Contact2
+)
+
+GO
+
+create procedure dbo.AddDocument
+
+@ModuleID         int,
+@Title            nvarchar(150),
+@URL              nvarchar(250),
+@UserName         nvarchar(100),
+@Category         nvarchar(50),
+@Syndicate        bit
+
+as
+
+insert into Documents (
+  ModuleID,
+  Title,
+  URL,
+  CreatedByUser,
+  CreatedDate,
+  Category,
+  Syndicate
+)
+values (
+  @ModuleID,
+  @Title,
+  @URL,
+  @UserName,
+  getdate(),
+  @Category,
+  @Syndicate
+)
+
+GO
+
+create procedure dbo.AddFAQ
+
+@ModuleID int,
+@UserName nvarchar(100),
+@Question text,
+@Answer   text
+
+as
+
+insert into FAQs (
+  CreatedByUser,
+  CreatedDate,
+  ModuleID,
+  Question,
+  Answer
+)
+values (
+  @UserName,
+  getdate(),
+  @ModuleID,
+  @Question,
+  @Answer
+)
+
+GO
+
+create procedure dbo.AddFile
+
+@PortalId    int,
+@FileName    nvarchar(100),
+@Extension   nvarchar(100),
+@Size        int,
+@Width       int,
+@Height      int,
+@ContentType nvarchar(200)
+
+as
+
+declare @FileId int
+
+select @FileId = null
+
+select @FileId = FileId
+from   Files
+where  FileName = @FileName
+and    PortalId = @PortalId
+
+if @FileId is null
+begin
+  insert Files ( 
+    PortalId,
+    FileName,
+    Extension,
+    Size,
+    Width,
+    Height,
+    ContentType 
+  )
+  values (
+    @PortalId,
+    @FileName,
+    @Extension,
+    @Size,
+    @Width,
+    @Height,
+    @ContentType 
+  )
+end
+else
+begin
+  update Files
+  set    FileName = @FileName,
+         Extension = @Extension,
+         Size = @Size,
+         Width = @Width,
+         Height = @Height,
+         ContentType = @ContentType
+  where  FileId = @FileId
+end
+
+GO
+
+create procedure dbo.AddLink
+
+@ModuleID    int,
+@UserName    nvarchar(100),
+@Title       nvarchar(100),
+@Url         nvarchar(250),
+@MobileUrl   nvarchar(250),
+@ViewOrder   int,
+@Description nvarchar(2000),
+@NewWindow   bit
+
+as
+
+insert into Links (
+  ModuleID,
+  CreatedByUser,
+  CreatedDate,
+  Title,
+  Url,
+  MobileUrl,
+  ViewOrder,
+  Description,
+  NewWindow
+)
+values (
+  @ModuleID,
+  @UserName,
+  getdate(),
+  @Title,
+  @Url,
+  @MobileUrl,
+  @ViewOrder,
+  @Description,
+  @NewWindow
+)
+
+GO
+
+create procedure dbo.AddMessage
+
+@Title nvarchar(100),
+@Body nvarchar(3000),
+@ParentID int,
+@UserName nvarchar(100),
+@ModuleID int
+
+as
+
+declare @ParentDisplayOrder nvarchar(750)
+
+select @ParentDisplayOrder = ''
+
+select @ParentDisplayOrder = DisplayOrder
+from   Discussion 
+where  ItemID = @ParentID
+
+insert into Discussion (
+  Title,
+  Body,
+  DisplayOrder,
+  CreatedDate, 
+  CreatedByUser,
+  ModuleID
+)
+values (
+  @Title,
+  @Body,
+  @ParentDisplayOrder + convert(nvarchar(24),getdate(),21),
+  getdate(),
+  @UserName,
+  @ModuleID
+)
+
+GO
+
+create procedure dbo.AddModule
+    
+@TabID          int,
+@ModuleOrder    int,
+@ModuleTitle    nvarchar(256),
+@PaneName       nvarchar(50),
+@ModuleDefID    int,
+@CacheTime      int,
+@EditRoles      nvarchar(256),
+@ShowMobile     bit
+
+as
+
+if @ModuleOrder = -1
+begin
+  select @ModuleOrder = max(ModuleOrder) + 2
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+  if @ModuleOrder is null
+    select @ModuleOrder = 1
+end
+
+insert into Modules (
+  TabID,
+  ModuleOrder,
+  ModuleTitle,
+  PaneName,
+  ModuleDefID,
+  CacheTime,
+  AuthorizedEditRoles,
+  ShowMobile
+) 
+values (
+  @TabID,
+  @ModuleOrder,
+  @ModuleTitle,
+  @PaneName,
+  @ModuleDefID,
+  @CacheTime,
+  @EditRoles,
+  @ShowMobile
+)
+
+GO
+
+create procedure dbo.AddModuleDefinition
+    
+@FriendlyName nvarchar(128),
+@DesktopSrc   nvarchar(256),
+@MobileSrc    nvarchar(256),
+@AdminOrder   int,
+@EditSrc      nvarchar(256),
+@Secure       bit,
+@Description  nvarchar(2000),
+@HostFee      money
+
+as
+
+declare @ModuleDefId int
+declare @TabId int
+declare @AdministratorRoleId int
+declare @PortalId int
+declare @TabOrder int
+declare @ChildTabId int
+
+insert into ModuleDefinitions (
+  FriendlyName,
+  DesktopSrc,
+  MobileSrc,
+  AdminOrder,
+  EditSrc,
+  Secure,
+  Description,
+  HostFee
+)
+values (
+  @FriendlyName,
+  @DesktopSrc,
+  @MobileSrc,
+  @AdminOrder,
+  @EditSrc,
+  @Secure,
+  @Description,
+  @HostFee
+)
+
+select @ModuleDefID = @@IDENTITY
+
+/* add to all Admin tabs */
+if @AdminOrder is not null and @AdminOrder > 0
+begin
+  select @TabId = min(TabId)
+  from Tabs
+  where TabName = 'Admin'
+  while @TabId is not null
+  begin
+    select @AdministratorRoleId = AdministratorRoleId,
+           @PortalId = Tabs.PortalId
+    from   Portals
+    inner join Tabs on Portals.PortalId = Tabs.PortalId
+    where TabId = @TabId
+    if not exists ( select 1 from Tabs inner join Modules on Tabs.TabId = Modules.TabId where PortalID = @PortalId and ModuleDefID = @ModuleDefId )
+    begin
+      select @TabOrder = (max(TabOrder) + 2)
+      from   Tabs
+      where  PortalId = @PortalId
+      and    IsVisible = 1
+      insert into Tabs (
+        TabOrder,
+        PortalID,
+        TabName,
+        MobileTabName,
+        AuthorizedRoles,
+        ShowMobile,
+        LeftPaneWidth,
+        RightPaneWidth,
+        IsVisible,
+        ParentId,
+        IconFile,
+        Level
+      )
+      values (
+        @TabOrder,
+        @PortalID,
+        @FriendlyName,
+        '',
+        convert(varchar,@AdministratorRoleId) + ';',
+        0,
+        '200',
+        '200',
+        1,
+        @TabID,
+        null,
+        1      
+      )
+      select @ChildTabId = @@IDENTITY
+      
+      insert into Modules (
+        TabID,
+        ModuleDefID,
+        ModuleOrder,
+        PaneName,
+        ModuleTitle,
+        AuthorizedEditRoles,
+        CacheTime,
+        ShowMobile,
+        AuthorizedViewRoles
+      )
+      values (
+        @ChildTabId,
+        @ModuleDefId,
+        1,
+        'ContentPane',
+        @FriendlyName,
+        convert(varchar,@AdministratorRoleId) + ';',
+        0,
+        0,
+        ''
+      )
+    end
+    select @TabId = min(TabId)
+    from Tabs
+    where TabName = 'Admin'
+    and TabId > @TabId
+  end
+end
+
+GO
+
+create procedure dbo.AddModuleEvent
+
+@ModuleID    int,
+@Description nvarchar(2000),
+@DateTime    datetime,
+@Title       nvarchar(100),
+@ExpireDate  datetime = null,
+@UserName    nvarchar(200),
+@Every       int,
+@Period      char(1),
+@IconFile    nvarchar(256)
+
+as
+
+insert ModuleEvents ( 
+  ModuleID,
+  Description,
+  DateTime,
+  Title,
+  ExpireDate,
+  CreatedByUser,
+  CreatedDate,
+  Every,
+  Period,
+  IconFile
+)
+values (
+  @ModuleID,
+  @Description,
+  @DateTime,
+  @Title,
+  @ExpireDate,
+  @UserName,
+  getdate(),
+  @Every,
+  @Period,
+  @IconFile
+)
+
+GO
+
+create procedure dbo.AddPortalInfo
+
+@PortalName         nvarchar(128),
+@PortalAlias        nvarchar(200),
+@Currency           char(3) = null,
+@FirstName          nvarchar(100),
+@LastName           nvarchar(100),
+@Username           nvarchar(100),
+@Password           nvarchar(50),
+@Email              nvarchar(100),
+@ExpiryDate         datetime = null,
+@HostFee            money = 0,
+@HostSpace          int = null,
+@SiteLogHistory     int = null,
+@PortalID           int OUTPUT
+
+as
+
+declare @AdminOrder int
+declare @ModuleDefId int
+declare @FriendlyName nvarchar(128)
+declare @PaneName nvarchar(50)
+declare @TabId int
+declare @TabOrder int
+declare @ChildTabId int
+declare @RoleId int
+declare @UserId int
+declare @AdministratorRoleId int
+declare @RegisteredRoleId    int
+
+begin transaction
+
+insert into Portals (
+  PortalName,
+  PortalAlias,
+  LogoFile,
+  FooterText,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  AdministratorId,
+  HostFee,
+  HostSpace,
+  AdministratorRoleId,
+  RegisteredRoleId,
+  Description,
+  KeyWords,
+  BackgroundFile
+)
+values (
+  @PortalName,
+  @PortalAlias,
+  null,
+  null,
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  null,
+  @HostFee,
+  @HostSpace,
+  null,
+  null,
+  @PortalName,
+  @PortalName,
+  null
+)
+
+select @PortalID = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingFrequency,
+  TrialPeriod,
+  TrialFrequency
+)
+values (
+  @PortalID,
+  'Administrators',
+  'Portal Administration',
+  null,
+  4,
+  null,
+  null
+)
+
+select @AdministratorRoleId = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingFrequency,
+  TrialPeriod,
+  TrialFrequency
+)
+values (
+  @PortalID,
+  'Registered Users',
+  'Registered Users',
+  null,
+  0,
+  null,
+  null
+)
+
+select @RegisteredRoleId = @@IDENTITY
+
+select @TabOrder = 1
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    AdministratorRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    Level
+) 
+values (
+    @PortalID,
+    @TabOrder,
+    'Home',
+    '-1;',
+    null,
+    'Home',
+    1,
+    '200',
+    '200',
+    1,
+    null,
+    null,
+    0
+)
+
+select @TabOrder = @TabOrder + 2
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    AdministratorRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    Level
+) 
+values (
+    @PortalID,
+    @TabOrder,
+    'Admin',
+    convert(varchar,@AdministratorRoleId) + ';',
+    null,
+    'Admin',
+    0,
+    '200',
+    '200',
+    1,
+    null,
+    null,
+    0
+)
+
+select @TabId = @@IDENTITY
+
+select @AdminOrder = min(AdminOrder)
+from   ModuleDefinitions
+where  AdminOrder is not null
+and    AdminOrder > 0
+while @AdminOrder is not null
+begin
+  select @ModuleDefId = ModuleDefId,
+         @FriendlyName = FriendlyName
+  from   ModuleDefinitions
+  where  AdminOrder = @AdminOrder
+
+  select @TabOrder = @TabOrder + 2
+
+  insert into Tabs (
+    TabOrder,
+    PortalID,
+    TabName,
+    MobileTabName,
+    AuthorizedRoles,
+    AdministratorRoles,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    Level
+  )
+  values (
+    @TabOrder,
+    @PortalID,
+    @FriendlyName,
+    '',
+    convert(varchar,@AdministratorRoleId) + ';',
+    convert(varchar,@AdministratorRoleId) + ';',
+    0,
+    '200',
+    '200',
+    1,
+    @TabID,
+    null,
+    1      
+  )
+
+  select @ChildTabId = @@IDENTITY
+
+  insert Modules ( 
+    TabID,
+    ModuleDefID,
+    ModuleOrder,
+    PaneName,
+    ModuleTitle,
+    AuthorizedEditRoles,
+    CacheTime,
+    ShowMobile
+  )
+  values (
+    @ChildTabId,
+    @ModuleDefId,
+    1,
+    'ContentPane',
+    @FriendlyName,
+    convert(varchar,@AdministratorRoleId) + ';',
+    0,
+    0
+  )
+
+  select @AdminOrder = min(AdminOrder)
+  from   ModuleDefinitions
+  where  AdminOrder is not null
+  and    AdminOrder > @AdminOrder
+end 
+
+select @UserId = null
+
+select @UserId = UserId
+from   Users
+where  Username = @Username
+
+if @UserId is null
+begin
+  insert into Users (
+    FirstName,
+    LastName,
+    Username, 
+    Password,
+    Email
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Username,
+    @Password,
+    @Email
+  )
+
+  select @UserId = @@IDENTITY
+end
+
+insert into UserPortals (
+  UserId,
+  PortalId,
+  Authorized,
+  CreatedDate,
+  LastLoginDate
+)
+values (
+  @UserId,
+  @PortalID,
+  1,
+  getdate(),
+  getdate()
+)
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @AdministratorRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @AdministratorRoleId, /* Administrators */
+    null
+  )
+end
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @RegisteredRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @RegisteredRoleId, /* Registered */
+    null
+  )
+end
+
+update Portals
+set    AdministratorId = @UserId,
+       AdministratorRoleId = @AdministratorRoleId,
+       RegisteredRoleId = @RegisteredRoleId
+where  PortalID = @PortalID
+
+if @@error <> 0
+  rollback transaction
+else
+  commit transaction
+
+GO
+
+create procedure dbo.AddRole
+
+@PortalID         int,
+@RoleName         nvarchar(50),
+@Description      nvarchar(1000) = null,
+@ServiceFee       money = null,
+@BillingFrequency char(1),
+@TrialPeriod      int = null,
+@TrialFrequency   char(1)
+
+as
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingFrequency,
+  TrialPeriod,
+  TrialFrequency
+)
+values (
+  @PortalID,
+  @RoleName,
+  @Description,
+  @ServiceFee,
+  @BillingFrequency,
+  @TrialPeriod,
+  @TrialFrequency
+)
+
+GO
+
+create procedure dbo.AddSearch
+
+@ModuleID  int,
+@TableName nvarchar(50)
+
+as
+
+if not exists ( select 1 from Search where ModuleId = @ModuleId and TableName = @TableName )
+begin
+  insert into Search (
+    ModuleId,
+    TableName
+  )
+  values (
+    @ModuleId,
+    @TableName
+  )
+end
+
+GO
+
+create procedure dbo.AddSiteLog
+
+@PortalId                      int,
+@UserId                        int                   = null,
+@Referrer                      nvarchar(255)         = null,
+@Url                           nvarchar(255)         = null,
+@UserAgent                     nvarchar(255)         = null,
+@UserHostAddress               nvarchar(255)         = null,
+@UserHostName                  nvarchar(255)         = null,
+@TabId                         int                   = null,
+@AffiliateId                   int                   = null
+
+as
+ 
+declare @SiteLogHistory int
+
+insert SiteLog ( 
+  DateTime,
+  PortalId,
+  UserId,
+  Referrer,
+  Url,
+  UserAgent,
+  UserHostAddress,
+  UserHostName,
+  TabId,
+  AffiliateId
+)
+values (
+  getdate(),
+  @PortalId,
+  @UserId,
+  @Referrer,
+  @Url,
+  @UserAgent,
+  @UserHostAddress,
+  @UserHostName,
+  @TabId,
+  @AffiliateId
+)
+
+/* purge site log history */
+select @SiteLogHistory = SiteLogHistory
+from   Portals
+where  PortalID = @PortalId
+
+if @SiteLogHistory is not null
+begin
+  delete
+  from   SiteLog
+  where  PortalID = @PortalId
+  and    datediff(day,DateTime,getdate()) > @SiteLogHistory
+  and    AffiliateId is null
+end
+
+GO
+
+create procedure dbo.AddTab
+
+@PortalID           int,
+@TabName            nvarchar(50),
+@ShowMobile         bit,
+@MobileTabName      nvarchar(50),
+@AuthorizedRoles    nvarchar (256),
+@LeftPaneWidth      nvarchar(5),
+@RightPaneWidth     nvarchar(5),
+@IsVisible          bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@AdministratorRoles nvarchar (256),
+@TabID              int OUTPUT
+
+as
+
+if @ParentId is not null
+begin
+  select @IsVisible = 1
+end
+
+insert into Tabs (
+    PortalID,
+    TabName,
+    ShowMobile,
+    MobileTabName,
+    AuthorizedRoles,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    AdministratorRoles
+)
+values (
+    @PortalID,
+    @TabName,
+    @ShowMobile,
+    @MobileTabName,
+    @AuthorizedRoles,
+    @LeftPaneWidth,
+    @RightPaneWidth,
+    @IsVisible,
+    @ParentId,
+    @IconFile,
+    @AdministratorRoles
+)
+
+select @TabID = @@IDENTITY
+
+GO
+
+create procedure dbo.AddUser
+
+@PortalId       int,
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@Unit		nvarchar(50),
+@Street		nvarchar(50),
+@City		nvarchar(50),
+@Region		nvarchar(50),
+@PostalCode	nvarchar(50),
+@Country	nvarchar(50),
+@Telephone      nvarchar(50),
+@Email		nvarchar(100),
+@Username	nvarchar(100),
+@Password	nvarchar(50),
+@Authorized     bit,
+@UserID	int	OUTPUT
+
+as
+
+select @UserID = null
+
+select	@UserID = UserID
+from 	Users
+where	Username = @Username 
+
+if @UserID is null
+begin
+  insert into Users (
+    FirstName,
+    LastName,
+    Unit, 
+    Street, 
+    City,
+    Region, 
+    PostalCode,
+    Country,
+    Telephone,
+    Email,
+    Username,
+    Password
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Unit,
+    @Street,
+    @City,
+    @Region,
+    @PostalCode,
+    @Country,
+    @Telephone,
+    @Email,
+    @Username,
+    @Password
+  )
+
+  select @UserID = @@IDENTITY
+end
+
+if not exists ( select 1 from UserPortals where UserId = @UserId and PortalId = @PortalId )
+begin
+  insert into UserPortals (
+    UserId,
+    PortalId,
+    Authorized,
+    CreatedDate
+  )
+  values (
+    @UserId,
+    @PortalId,
+    @Authorized,
+    getdate()
+  )
+end
+
+GO
+
+create procedure dbo.AddUserDefinedField
+
+@ModuleId     int,
+@FieldTitle   varchar(50),
+@Visible      bit,
+@FieldType    varchar(20)
+
+as
+
+declare @FieldOrder int
+
+select @FieldOrder = count(*) + 1
+from   UserDefinedFields
+where  ModuleId = @ModuleId
+
+insert UserDefinedFields ( 
+  ModuleId,
+  FieldTitle,
+  Visible,
+  FieldType
+)
+values (
+  @ModuleId,
+  @FieldTitle,
+  @Visible,
+  @FieldType
+)
+
+GO
+
+create procedure dbo.AddUserDefinedRow
+
+@ModuleId         int,
+@UserDefinedRowId int OUTPUT
+
+as
+
+insert UserDefinedRows ( 
+  ModuleId
+)
+values (
+  @ModuleId
+)
+
+select @UserDefinedRowId = @@IDENTITY
+
+GO
+
+create procedure dbo.AddUserRole
+
+@PortalID   int,
+@UserID     int,
+@RoleID     int,
+@ExpiryDate datetime = null
+
+as
+
+declare @UserRoleID int
+
+select @UserRoleID = null
+
+select @UserRoleID = UserRoleID
+from   UserRoles
+inner join UserPortals on UserPortals.UserId = @UserID
+where  UserRoles.UserID = @UserID
+and    UserRoles.RoleID = @RoleID
+and    PortalID = @PortalID
+ 
+if @UserRoleID is not null
+begin
+  update UserRoles
+  set    ExpiryDate = @ExpiryDate
+  where  UserRoleId = @UserRoleID
+end
+else
+begin
+  insert UserRoles (
+    UserID,
+    RoleID,
+    ExpiryDate
+  )
+  values (
+    @UserID,
+    @RoleID,
+    @ExpiryDate
+  )
+end
+
+GO
+
+create procedure dbo.AddVendor
+
+@PortalID 	int,
+@VendorName 	nvarchar(50),
+@Unit    	nvarchar(50),
+@Street 	nvarchar(50),
+@City		nvarchar(50),
+@Region	        nvarchar(50),
+@Country	nvarchar(50),
+@PostalCode	nvarchar(50),
+@Telephone	nvarchar(50),
+@Fax   	        nvarchar(50),
+@Email    	nvarchar(50),
+@Website	nvarchar(100),
+@Contact	nvarchar(50),
+@UserName       nvarchar(100),
+@LogoFile       nvarchar(100),
+@KeyWords       text,
+@VendorID	int OUTPUT
+
+as
+
+insert into Vendors (
+  VendorName,
+  Unit,
+  Street,
+  City,
+  Region,
+  Country,
+  PostalCode,
+  Telephone,
+  PortalId,
+  Fax,
+  Email,
+  Website,
+  Contact,
+  ClickThroughs,
+  Views,
+  CreatedByUser,
+  CreatedDate,
+  LogoFile,
+  KeyWords
+)
+values (
+  @VendorName,
+  @Unit,
+  @Street,
+  @City,
+  @Region,
+  @Country,
+  @PostalCode,
+  @Telephone,
+  @PortalID,
+  @Fax,
+  @Email,
+  @Website,
+  @Contact,
+  0,
+  0,
+  @UserName,
+  getdate(), 
+  @LogoFile,
+  @KeyWords
+)
+select @VendorID = @@IDENTITY
+
+GO
+
+create procedure dbo.AddVendorClassification
+
+@VendorId           int,
+@ClassificationId   int
+
+as
+
+insert VendorClassification ( 
+  VendorId,
+  ClassificationId
+)
+values (
+  @VendorId,
+  @ClassificationId
+)
+
+GO
+
+create procedure dbo.CopyTab
+
+@FromTabId       int,
+@ToTabId         int
+
+as
+
+declare @ModuleId int
+
+select @ModuleId = min(ModuleId)
+from   Modules
+where  TabId = @FromTabId
+
+while @ModuleId is not null
+begin
+  insert into Modules ( TabId, ModuleDefID, ModuleOrder, PaneName, ModuleTitle, AuthorizedEditRoles, CacheTime, ShowMobile, AuthorizedViewRoles, Alignment, Color, Border, IconFile )
+    select @ToTabId, ModuleDefID, ModuleOrder, PaneName, ModuleTitle, AuthorizedEditRoles, CacheTime, ShowMobile, AuthorizedViewRoles, Alignment, Color, Border, IconFile
+    from   Modules
+    where  ModuleId = @ModuleId
+  select @ModuleId = min(ModuleId)
+  from   Modules
+  where  TabId = @FromTabId
+  and    ModuleId > @ModuleId
+end
+
+GO
+
+create procedure dbo.DeleteAnnouncement
+
+@ItemID int
+
+as
+
+delete
+from   Announcements
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.DeleteBanner
+
+@BannerId int
+
+as
+
+delete
+from   Banners
+where  BannerId = @BannerId
+
+GO
+
+create procedure dbo.DeleteContact
+
+@ItemID int
+
+as
+
+delete
+from   Contacts
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.DeleteDocument
+
+@ItemID int
+
+as
+
+delete
+from   Documents
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.DeleteFAQ
+
+@ItemID int
+
+as
+
+delete
+from   FAQs
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.DeleteFile
+
+@FileName nvarchar(100),
+@PortalId int
+
+as
+
+if @PortalId is null
+begin
+  delete 
+  from   Files
+  where  FileName = @FileName
+  and    PortalId is null
+end
+else
+begin
+  delete 
+  from   Files
+  where  FileName = @FileName
+  and    PortalId = @PortalId
+end
+
+GO
+
+create procedure dbo.DeleteFiles
+
+@PortalId int
+
+as
+
+if @PortalId is null
+begin
+  delete 
+  from   Files
+  where  PortalId is null
+end
+else
+begin
+  delete 
+  from   Files
+  where  PortalId = @PortalId
+end
+
+GO
+
+create procedure dbo.DeleteLink
+
+@ItemID int
+
+as
+
+delete
+from   Links
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.DeleteMessage
+
+@ItemId int
+
+as
+
+declare @ModuleId int
+declare @Start int
+declare @Parent nvarchar(23)
+
+select @ModuleId = ModuleId,
+       @Start = len(DisplayOrder) - 22,
+       @Parent = substring(DisplayOrder,len(DisplayOrder) - 22,23)
+from   Discussion
+where  ItemId = @ItemId
+
+delete
+from   Discussion
+where  ModuleId = @ModuleId
+and    substring(DisplayOrder, @Start,23) = @Parent
+
+GO
+
+create procedure dbo.DeleteModule
+
+@ModuleID       int
+
+as
+
+delete
+from   Modules 
+where  ModuleID = @ModuleID
+
+GO
+
+create procedure dbo.DeleteModuleDefinition
+
+@ModuleDefID int
+
+as
+
+delete
+from   ModuleDefinitions
+where  ModuleDefID = @ModuleDefID
+
+GO
+
+create procedure dbo.DeleteModuleEvent
+
+@ItemID int
+
+as
+
+delete
+from   ModuleEvents
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.DeletePortalInfo
+
+@PortalID int
+
+as
+
+delete
+from   Portals
+where  PortalID = @PortalID
+
+GO
+
+create procedure dbo.DeleteRole
+
+@RoleID int
+
+as
+
+if @RoleID <> 0 /* Admins Role */
+begin
+  delete 
+  from   Roles
+  where  RoleID = @RoleID
+end
+
+GO
+
+create procedure dbo.DeleteSearch
+
+@SearchID int
+
+as
+
+delete
+from   Search
+where  SearchId = @SearchId
+
+GO
+
+create procedure dbo.DeleteTab
+
+@TabID int
+
+as
+
+if not exists ( select 1 from Tabs where ParentId = @TabID )
+begin 
+  delete
+  from   Tabs
+  where  TabID = @TabID
+end
+
+GO
+
+create procedure dbo.DeleteUser
+
+@PortalId int,
+@UserID   int
+
+as
+
+declare @RoleId int
+
+if not exists ( select 1 from Portals where AdministratorId = @UserID )
+begin
+  delete
+  from   UserPortals
+  where  PortalId = @PortalId
+  and    UserID = @UserID
+
+  select @RoleId = min(RoleId)
+  from   Roles
+  where  PortalId = @PortalId
+  while @RoleId is not null
+  begin
+    delete
+    from   UserRoles
+    where  UserId = @UserId
+    and    RoleId = @RoleId
+    select @RoleId = min(RoleId)
+    from   Roles
+    where  PortalId = @PortalId
+    and    RoleId > @RoleId
+  end
+
+  if not exists ( select 1 from UserPortals where UserId = @UserID )
+  begin
+    delete
+    from   Users
+    where  UserID = @UserID
+  end
+end
+
+GO
+
+create procedure dbo.DeleteUserDefinedField
+
+@UserDefinedFieldId    int 
+
+as
+
+delete 
+from   UserDefinedData
+where  UserDefinedFieldId = @UserDefinedFieldId
+
+delete 
+from   UserDefinedFields
+where  UserDefinedFieldId = @UserDefinedFieldId
+
+GO
+
+create procedure dbo.DeleteUserDefinedRow
+
+@UserDefinedRowId    int 
+
+as
+
+delete 
+from   UserDefinedData
+where  UserDefinedRowId = @UserDefinedRowId
+
+delete 
+from   UserDefinedRows
+where  UserDefinedRowId = @UserDefinedRowId
+
+GO
+
+create procedure dbo.DeleteUserRole
+
+@UserRoleID int
+
+as
+
+declare @UserID int
+declare @RoleID int
+declare @AdministratorRoleId int
+
+select @UserID = UserID,
+       @RoleID = RoleID
+from   UserRoles
+where  UserRoleID = @UserRoleID
+
+select @AdministratorRoleId = AdministratorRoleId
+from   Roles
+inner join Portals on Roles.PortalID = Portals.PortalID
+where  RoleID = @RoleID
+
+/* do not remove Administrators role from Portal Administrator */
+if not exists ( select 1 from Portals where AdministratorId = @UserID and @RoleID = @AdministratorRoleId ) 
+begin
+  delete
+  from   UserRoles
+  where  UserRoleID = @UserRoleID
+end
+
+GO
+
+create procedure dbo.DeleteVendor
+
+@VendorID int
+
+as
+
+delete
+from   Vendors
+where  VendorID = @VendorID
+
+GO
+
+create procedure dbo.DeleteVendorClassifications
+
+@VendorId  int
+
+as
+
+delete
+from   VendorClassification
+where  VendorId = @VendorId
+
+GO
+
+create procedure dbo.DeleteVendorFeedback
+
+@VendorId int,
+@UserId   int
+
+as
+
+delete
+from   VendorFeedback
+where  VendorId = @VendorId
+and    UserId = @UserId
+
+GO
+
+create procedure dbo.FindBanners
+
+@DisplayPortalId int,
+@BannerTypeId int = null,
+@SelectPortalId int = null,
+@Banners  int = 1
+
+as
+
+declare @RecordCounter int
+declare @RandomRecord int
+declare @BannerId int
+declare @StartDate smalldatetime
+declare @EndDate smalldatetime
+declare @Views int
+declare @Impressions int
+declare @VendorId int
+declare @SiteLogHistory int
+
+if @BannerTypeId is null
+begin
+  select @BannerTypeId = BannerTypeId
+  from   BannerTypes
+  where  BannerTypeName = 'Banner'
+end
+
+/* purge vendor log */
+select @SiteLogHistory = SiteLogHistory
+from   Portals
+where  PortalID = @DisplayPortalId
+
+if @SiteLogHistory is not null
+begin
+  delete
+  from   VendorLog
+  where  PortalID = @DisplayPortalId
+  and    datediff(day,DateTime,getdate()) > @SiteLogHistory
+end
+
+/* find number of banners */
+select @RecordCounter = count(*)
+from   Banners
+inner join Vendors on Banners.VendorId = Vendors.VendorId
+where  Banners.BannerTypeId = @BannerTypeId
+and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+
+if @Banners > @RecordCounter
+begin
+  select @Banners = @RecordCounter
+end
+
+/* generate random number */
+select @RandomRecord = Round(RAND() * (@RecordCounter - @Banners + 1),0)
+if @RandomRecord = 0
+begin
+  select @RandomRecord = 1
+end
+
+/* move record pointer to random record */
+select @RecordCounter = 1
+
+select @BannerId = min(Banners.BannerId)
+from   Banners
+inner join Vendors on Banners.VendorId = Vendors.VendorId
+where  Banners.BannerTypeId = @BannerTypeId
+and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+
+while @BannerId is not null and @RecordCounter <> @RandomRecord
+begin
+  select @BannerId = min(Banners.BannerId)
+  from   Banners
+  inner join Vendors on Banners.VendorId = Vendors.VendorId
+  where  Banners.BannerTypeId = @BannerTypeId
+  and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+  and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+  and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+  and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+  and    Banners.BannerId > @BannerId
+
+  select @RecordCounter = @RecordCounter + 1
+end
+
+/* return matching banners */
+set rowcount @Banners
+
+if @SelectPortalId is null
+begin
+  select BannerId,
+         BannerName,
+         ImageFile
+  from   Banners
+  inner join Vendors on Banners.VendorId = Vendors.VendorId
+  where  Banners.BannerTypeId = @BannerTypeId
+  and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+  and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+  and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+  and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+  and    BannerId >= @BannerId
+end
+else
+begin
+  select BannerId,
+         BannerName,
+         ImageFile
+  from   Banners
+  inner join Vendors on Banners.VendorId = Vendors.VendorId
+  where  Banners.BannerTypeId = @BannerTypeId
+  and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+  and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+  and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+  and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+  and    BannerId >= @BannerId
+end
+
+set rowcount 0
+
+/* update banners */
+select @RecordCounter = 0
+
+while @RecordCounter < @Banners
+begin
+  update Banners
+  set    Views = Views + 1
+  where  BannerId = @BannerId
+
+  select @vendorId = VendorId
+  from   Banners
+  where  BannerId = @BannerId
+
+  insert VendorLog (
+    DateTime,
+    PortalId,
+    VendorId,
+    BannerId,
+    Search
+  )
+  values (
+    getdate(),    @DisplayPortalId,
+    @VendorId,
+    @BannerId,
+    null
+  ) 
+
+  select @StartDate = StartDate,
+         @EndDate = EndDate,
+         @Views = Views,
+         @Impressions = Impressions
+  from   Banners
+  where  BannerId = @BannerId
+
+  if @StartDate is null
+    select @StartDate = getdate()
+  if @Views = @Impressions
+    select @EndDate = getdate()
+
+  update Banners
+  set    StartDate = @StartDate,
+         EndDate = @EndDate
+  where  BannerId = @BannerId
+
+  select @BannerId = min(Banners.BannerId)
+  from   Banners
+  inner join Vendors on Banners.VendorId = Vendors.VendorId
+  where  Banners.BannerTypeId = @BannerTypeId
+  and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+  and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+  and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+  and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+  and    Banners.BannerId > @BannerId
+
+  select @RecordCounter = @RecordCounter + 1
+end
+
+
+GO
+
+create procedure dbo.FindVendors
+
+@DisplayPortalId  int,
+@SelectPortalId   int = null,
+@Search           nvarchar(200) = null
+
+as
+
+if @Search is not null
+begin
+  insert VendorSearch (
+    PortalId,
+    DateTime,
+    Search
+  )
+  values (
+    @DisplayPortalId,
+    getdate(),
+    @Search
+  )
+end
+
+if @SelectPortalId is null
+begin
+  update Vendors
+  set    Views = Views + 1
+  where  VendorId in (
+    select distinct Vendors.VendorId
+    from Vendors
+    left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+    left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+    where  PortalId is null
+    and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+  )
+  insert VendorLog ( VendorId, DateTime, PortalId, BannerId, Search ) 
+    select distinct Vendors.VendorId, getdate(), @DisplayPortalId, null, @Search
+    from   Vendors
+    left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+    left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+    where  PortalId is null
+    and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+  select distinct Vendors.VendorId,
+         VendorName,
+         Unit,
+         Street,
+         City,
+         Region,
+         Country,
+         PostalCode,
+         Telephone,
+         PortalId,
+         Fax,
+         Email,
+         Website,
+         Contact,
+         LogoFile,
+         'Feedback' = ( select sum(Value) from VendorFeedback where VendorFeedback.VendorId = Vendors.VendorId )
+  from   Vendors
+  left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+  left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+  where  PortalId is null
+  and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+end
+else
+begin
+  update Vendors
+  set    Views = Views + 1
+  where  VendorId in (
+    select distinct Vendors.VendorId
+    from Vendors
+    left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+    left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+    where  PortalId = @SelectPortalId
+    and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+  )
+  insert VendorLog ( VendorId, DateTime, PortalId, BannerId, Search ) 
+    select distinct Vendors.VendorId, getdate(), @DisplayPortalId, null, @Search
+    from   Vendors
+    left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+    left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+    where  PortalId = @SelectPortalId
+    and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+  select distinct Vendors.VendorId,
+         VendorName,
+         Unit,
+         Street,
+         City,
+         Region,
+         Country,
+         PostalCode,
+         Telephone,
+         PortalId,
+         Fax,
+         Email,
+         Website,
+         Contact,
+         LogoFile,
+         'Feedback' = ( select sum(Value) from VendorFeedback where VendorFeedback.VendorId = Vendors.VendorId )
+  from   Vendors
+  left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+  left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+  where  PortalId = @SelectPortalId
+  and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+end
+
+GO
+
+create procedure dbo.GetAnnouncements
+
+@ModuleID int
+
+as
+
+select ItemID,
+       CreatedByUser,
+       CreatedDate,
+       Title,
+       URL,
+       Syndicate,
+       ExpireDate,
+       Description,
+       ViewOrder
+from   Announcements
+where  ModuleID = @ModuleID
+and    (ExpireDate > GetDate() or ExpireDate is null)
+order by ViewOrder
+
+GO
+
+create procedure dbo.GetAuthRoles
+
+@PortalID    int,
+@ModuleID    int
+
+as
+
+select Tabs.AuthorizedRoles,
+       Modules.AuthorizedEditRoles
+from   Modules
+inner join Tabs ON Modules.TabID = Tabs.TabID
+where  Modules.ModuleID = @ModuleID
+and    Tabs.PortalID = @PortalID
+
+GO
+
+create procedure dbo.GetBannerClickThrough
+
+@BannerId int
+
+as
+
+update Banners
+set    ClickThroughs = ClickThroughs + 1
+where  BannerId = @BannerId
+
+select URL,
+       VendorId
+from   Banners
+where  BannerId = @BannerId
+
+GO
+
+create procedure dbo.GetBannerLog
+
+@BannerId  int
+
+as
+
+select 'LogDate' = convert(varchar,DateTime,102),
+       'Views' = count(*)
+from   VendorLog
+where  BannerId = @BannerId
+group by convert(varchar,DateTime,102)
+order by LogDate desc
+
+GO
+
+create procedure dbo.GetBannerTypes
+
+as
+
+select BannerTypeId,
+       BannerTypeName
+from   BannerTypes
+
+GO
+
+create procedure dbo.GetBanners
+
+@VendorId int
+
+as
+
+select BannerId,
+       BannerName,
+       BannerTypeName,
+       URL,
+       Impressions,
+       CPM,
+       Views,
+       ClickThroughs,
+       StartDate,
+       EndDate
+from   Banners
+inner join BannerTypes on Banners.BannerTypeId = BannerTypes.BannerTypeId
+where  VendorId = @VendorId
+order  by CreatedDate desc
+
+GO
+
+create procedure dbo.GetBillingFrequencyCode
+    
+@Code char(1)
+
+as
+
+select Description
+from   CodeFrequency
+where  Code = @Code
+
+GO
+
+create procedure dbo.GetBillingFrequencyCodes
+    
+as
+
+select *
+from   CodeFrequency
+
+GO
+
+create procedure dbo.GetClicks
+
+@TableName nvarchar(50),
+@ItemId    int
+
+as
+
+select DateTime,
+       'FullName' = Users.FirstName + ' ' + Users.LastName
+from   ClickLog
+left outer join Users on ClickLog.UserId = Users.UserId
+where  TableName = @TableName
+and    ItemId = @ItemId
+order by DateTime desc
+
+GO
+
+create procedure dbo.GetContacts
+
+@ModuleID int
+
+as
+
+select ItemID,
+       CreatedDate,
+       CreatedByUser,
+       Name,
+       Role,
+       Email,
+       Contact1,
+       Contact2
+from   Contacts
+where  ModuleID = @ModuleID
+
+GO
+
+create procedure dbo.GetCountryCodes
+    
+as
+
+select *
+from   CodeCountry
+order by Description
+
+GO
+
+create procedure dbo.GetCurrencies
+
+as
+
+select Code,
+       Description
+from   CodeCurrency
+
+GO
+
+create procedure dbo.GetDocuments
+
+@ModuleID int,
+@PortalID int
+
+as
+
+select ItemID,
+       Title,
+       URL,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Documents.CreatedDate,
+       Category,
+       Size,
+       Syndicate
+from   Documents
+left outer join Users on Documents.CreatedByUser = Users.UserID
+left outer join Files on Documents.URL = Files.FileName and Files.PortalId = @PortalId
+where  ModuleID = @ModuleID
+
+GO
+
+create procedure dbo.GetFAQs
+
+@ModuleID int
+
+as
+
+select ItemID,
+       CreatedDate,
+       CreatedByUser,
+       Question,
+       Answer
+from   FAQs
+where  ModuleID = @ModuleID
+
+GO
+
+create procedure dbo.GetFiles
+
+@PortalId   int
+
+as
+
+if @PortalId is null
+begin
+  select FileId,
+         PortalId,
+         FileName,
+         Extension,
+         Size,
+         Width,
+         Height,
+         ContentType
+  from   Files
+  where  PortalId is null
+  order by FileName
+end
+else
+begin
+  select FileId,
+         PortalId,
+         FileName,
+         Extension,
+         Size,
+         Width,
+         Height,
+         ContentType
+  from   Files
+  where  PortalId = @PortalId
+  order by FileName
+end
+
+GO
+
+create procedure dbo.GetHostSetting
+
+@SettingName nvarchar(50)
+
+as
+
+select SettingValue
+from   HostSettings
+where  SettingName = @SettingName
+
+GO
+
+create procedure dbo.GetHostSettings
+
+as
+
+select SettingName,
+       SettingValue
+from   HostSettings
+
+GO
+
+create procedure dbo.GetHtmlText
+
+@ModuleID int
+
+as
+
+select *
+from   HtmlText
+where  ModuleID = @ModuleID
+
+GO
+
+create procedure dbo.GetLinks
+
+@ModuleID int
+
+as
+
+select ItemID,
+       CreatedByUser,
+       CreatedDate,
+       Title,
+       Url,
+       ViewOrder,
+       Description,
+       NewWindow
+from   Links
+where  ModuleID = @ModuleID
+order by ViewOrder, Title
+
+GO
+
+create procedure dbo.GetModule
+
+@ModuleID int
+
+as
+
+select *
+from   Modules
+inner join ModuleDefinitions on Modules.ModuleDefId = ModuleDefinitions.ModuleDefId
+where  ModuleID = @ModuleID
+
+GO
+
+create procedure dbo.GetModuleDefinitions
+
+@PortalID int,
+@Admin    bit = 1
+
+as
+
+if @Admin = 1
+begin
+  select FriendlyName,
+         DesktopSrc,
+         MobileSrc,
+         ModuleDefID,
+         Description,
+         HostFee
+  from   ModuleDefinitions
+  order  by FriendlyName
+end
+else
+begin
+  select distinct(ModuleDefinitions.ModuleDefID),
+         ModuleDefinitions.FriendlyName,
+         ModuleDefinitions.DesktopSrc,
+         ModuleDefinitions.MobileSrc,
+         ModuleDefinitions.Description
+  from   ModuleDefinitions
+  left outer join PortalModuleDefinitions on ModuleDefinitions.ModuleDefID = PortalModuleDefinitions.ModuleDefID
+  left outer join Portals on PortalModuleDefinitions.PortalID = @PortalID
+  where  AdminOrder is null
+  and    DesktopSrc is not null
+  and    ( ModuleDefinitions.HostFee = 0 or PortalModuleDefinitions.PortalModuleDefinitionId is not null)
+  order  by FriendlyName
+end
+
+GO
+
+create procedure dbo.GetModuleEvents
+
+@ModuleID int,
+@StartDate datetime = null,
+@EndDate datetime = null
+
+as
+
+declare @MaxWidth int
+
+if @StartDate is null
+begin
+  select @MaxWidth = max(Width)
+  from   ModuleEvents
+  left outer join Files on ModuleEvents.IconFile = Files.FileName
+  where  ModuleID = @ModuleID
+  and    (ExpireDate > getdate() or ExpireDate is null)
+  select ItemID,
+         Description,
+         DateTime,
+         Title,
+         ExpireDate,
+         CreatedByUser,
+         CreatedDate,
+         IconFile,
+         'MaxWidth' = @MaxWidth
+  from   ModuleEvents
+  where  ModuleID = @ModuleID
+  and    (ExpireDate > getdate() or ExpireDate is null)
+  order by DateTime
+end
+else
+begin
+  select ItemID,
+         Description,
+         DateTime,
+         Title,
+         ExpireDate,
+         CreatedByUser,
+         CreatedDate,
+         Every,
+         Period,
+         IconFile
+  from   ModuleEvents
+  where  ModuleID = @ModuleID
+  and    ( (Period is null and (DateTime >= @StartDate and DateTime <= @EndDate)) or Period is not null )
+  order by DateTime
+end
+
+GO
+
+create procedure dbo.GetModuleSettings
+
+@ModuleID int
+
+as
+
+select SettingName,
+       SettingValue
+from   ModuleSettings
+where  ModuleID = @ModuleID
+
+GO
+
+create procedure dbo.GetPortalByAlias
+
+@PortalAlias nvarchar(200)
+
+as
+
+declare @PortalID int
+
+select @PortalID = null
+
+select @PortalID = min(PortalID)
+from   Portals
+where  PortalAlias like '%' + @PortalAlias + '%'
+
+if @PortalID is null
+begin
+  update Portals
+  set    PortalAlias = @PortalAlias
+  where  PortalAlias = '_default'
+  select @PortalID = PortalID
+  from   Portals
+  where  PortalAlias = @PortalAlias
+end
+
+select 'PortalID' = @PortalID
+
+GO
+
+create procedure dbo.GetPortalByTab
+
+@TabID int,
+@PortalAlias nvarchar(200)
+ 
+as
+
+declare @PortalID int
+
+select @PortalID = -1
+
+select @PortalID = PortalID
+from   Tabs
+where  TabID = @TabID
+
+if @PortalID is null /* SuperTab */
+begin
+  select 'PortalAlias' = @PortalAlias
+end
+else
+begin
+  select PortalAlias
+  from   Portals
+  inner join Tabs on Portals.PortalID = Tabs.PortalID
+  where  TabID = @TabID
+  and    PortalAlias like '%' + @PortalAlias + '%'
+end
+
+GO
+
+create procedure dbo.GetPortalModuleDefinitionFee
+
+@PortalID int
+
+as
+
+select 'HostFee' = sum(HostFee)
+from   PortalModuleDefinitions
+where  PortalID = @PortalID
+
+GO
+
+create procedure dbo.GetPortalModuleDefinitions
+
+@PortalID int
+
+as
+
+select distinct(ModuleDefinitions.ModuleDefID),
+       'Subscribed' = case when PortalModuleDefinitions.PortalModuleDefinitionId is not null then 1 else 0 end,
+       ModuleDefinitions.FriendlyName,
+       ModuleDefinitions.Description,
+       'HostFee' = case when PortalModuleDefinitions.HostFee is not null then PortalModuleDefinitions.HostFee else ModuleDefinitions.HostFee end
+from   ModuleDefinitions
+left outer join PortalModuleDefinitions on ModuleDefinitions.ModuleDefID = PortalModuleDefinitions.ModuleDefID
+left outer join Portals on PortalModuleDefinitions.PortalID = @PortalID
+where  ModuleDefinitions.HostFee <> 0
+order  by FriendlyName
+
+GO
+
+create procedure dbo.GetPortalRoles
+
+@PortalID     int
+
+as
+
+select Roles.RoleID,
+       Roles.RoleName,
+       Roles.Description,
+       Roles.ServiceFee,
+       'BillingFrequency' = case when Roles.ServiceFee is not null then C1.Description else null end,
+       Roles.TrialPeriod,
+       'TrialFrequency' = case when Roles.TrialPeriod is not null then C2.Description else null end
+from   Roles
+left outer join CodeFrequency C1 on Roles.BillingFrequency = C1.Code
+left outer join CodeFrequency C2 on Roles.TrialFrequency = C2.Code
+where  PortalID = @PortalID
+or     PortalID is null
+order by Roles.RoleName
+
+GO
+
+create procedure dbo.GetPortalSettings
+
+@PortalAlias nvarchar(200),
+@TabID       int
+
+as
+
+declare @PortalID int
+declare @VerifyTabID int
+
+/* convert PortalAlias to PortalID */
+
+select @PortalID = null
+
+select @PortalID = PortalID
+from   Portals
+where  PortalAlias = @PortalAlias
+
+if @PortalID is null
+begin
+  select @PortalID = min(PortalID)
+  from   Portals
+  where  PortalAlias like '%' + @PortalAlias + '%' /* multiple alias may be specified seperated by commas */
+end
+
+select @VerifyTabID = null
+
+/* verify the TabID belongs to the portal */
+if @TabID <> 0
+begin
+  select @VerifyTabID = Tabs.TabID
+  from   Tabs
+  left outer join Portals on Tabs.PortalID = Portals.PortalID
+  where  TabId = @TabId
+  and    ( Portals.PortalID = @PortalID or Tabs.PortalId is null )
+end
+else
+begin
+  select @VerifyTabID = null
+end
+
+/* get the TabID if none provided */
+if @VerifyTabID is null
+begin
+  select @TabID = Tabs.TabID
+  from Tabs
+  inner join Portals on Tabs.PortalID = Portals.PortalID
+  where Portals.PortalID = @PortalID
+  and Tabs.TabOrder = 1  
+end
+
+/* First, get Out Params */
+select Portals.PortalAlias,
+       Portals.PortalID,
+       Portals.GUID,
+       Portals.PortalName,
+       Portals.LogoFile,
+       Portals.FooterText,
+       Portals.ExpiryDate,
+       Portals.UserRegistration,
+       Portals.BannerAdvertising,
+       Portals.Currency,
+       Portals.AdministratorId,
+       Users.Email,
+       Portals.HostFee,
+       Portals.HostSpace,
+       Portals.AdministratorRoleId,
+       Portals.RegisteredRoleId,
+       Portals.Description,
+       Portals.KeyWords,
+       Portals.BackgroundFile,
+       Portals.SiteLogHistory,
+       'AdminTabId' = ( select TabID from Tabs where PortalId = @PortalId and TabName = 'Admin' ),
+       'SuperUserId' = ( select UserID from Users where IsSuperUser = 1 ),
+       'SuperTabId' = ( select TabID from Tabs where PortalId is null and ParentId is null ),
+       Tabs.TabID,
+       Tabs.TabOrder,
+       Tabs.TabName,
+       Tabs.MobileTabName,
+       Tabs.AuthorizedRoles,
+       Tabs.AdministratorRoles,
+       Tabs.ShowMobile,
+       Tabs.LeftPaneWidth,
+       Tabs.RightPaneWidth,
+       Tabs.IsVisible,
+       'ParentId' = isnull(Tabs.ParentID,-1),
+       Tabs.Level,
+       Tabs.IconFile,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName ),
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+inner join Portals on Portals.PortalID = @PortalID
+inner join Users on Portals.AdministratorId = Users.UserId
+where  TabID = @TabID
+
+/* Get Tabs list */
+select TabName,
+       AuthorizedRoles,
+       AdministratorRoles,
+       TabID,
+       TabOrder,
+       IsVisible,
+       'ParentId' = isnull(Tabs.ParentID,-1),
+       Tabs.Level,
+       Tabs.IconFile,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName ),
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+where  PortalID = @PortalId
+order  by TabOrder, TabName
+
+/* Get Mobile Tabs list */
+select MobileTabName,
+       AuthorizedRoles,
+       AdministratorRoles,
+       TabID,
+       IsVisible,
+       'ParentId' = isnull(Tabs.ParentID,-1),
+       Tabs.Level,
+       Tabs.IconFile,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName ),
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+where  PortalID = @PortalID
+and    ShowMobile = 1
+order  by TabOrder, TabName
+
+/* Then, get the DataTable of module info */
+select Modules.*, ModuleDefinitions.*
+from   Modules
+inner join ModuleDefinitions on Modules.ModuleDefID = ModuleDefinitions.ModuleDefID
+inner join Tabs on Modules.TabID = Tabs.TabID
+where  Modules.TabID = @TabID
+or     (Modules.AllTabs = 1 and Tabs.PortalID = @PortalID)
+order by ModuleOrder
+
+GO
+
+create procedure dbo.GetPortalSpaceUsed
+
+@PortalId int
+
+as
+
+if @PortalId is null
+begin
+  select 'SpaceUsed' = sum(Size)
+  from   Files
+  where  PortalId is null
+end
+else
+begin
+  select 'SpaceUsed' = sum(Size)
+  from   Files
+  where  PortalId = @PortalId
+end
+
+GO
+
+create procedure dbo.GetPortals
+
+as
+
+select Portals.*,
+       'Users' = ( select count(*) from UserPortals where UserPortals.PortalId = Portals.PortalId )
+from   Portals
+order by PortalName
+
+GO
+
+create procedure dbo.GetProcessorCodes
+
+as
+
+select Processor,
+       URL
+from   CodeProcessor
+order by Processor
+
+GO
+
+create procedure dbo.GetRegionCodes
+    
+@Country char(2)
+
+as
+
+select *
+from   CodeRegion
+where  Country = @Country
+order by Description
+
+GO
+
+create procedure dbo.GetRoleMembership
+    
+@PortalId int,
+@RoleId   int = null,
+@UserId   int = null
+
+as
+
+if @RoleId is null
+begin
+  select UserRoles.UserRoleID,
+         UserRoles.UserId,
+         'FullName' = Users.FirstName + ' ' + Users.LastName,
+         Users.Email,
+         UserRoles.RoleId,
+         Roles.RoleName,
+         UserRoles.ExpiryDate
+  from   UserRoles
+  inner join Users On Users.UserId = UserRoles.UserId
+  inner join Roles On Roles.RoleId = UserRoles.RoleId
+  inner join UserPortals On Users.UserId = UserPortals.UserId and UserPortals.PortalID = @PortalID
+  where  Roles.PortalId = @PortalId
+  and    UserRoles.UserId = @UserId
+  and    UserPortals.Authorized = 1
+end
+else
+begin
+  select UserRoles.UserRoleID,
+         UserRoles.UserId,
+         'FullName' = Users.FirstName + ' ' + Users.LastName,
+         Users.Email,
+         UserRoles.RoleId,
+         Roles.RoleName,
+         UserRoles.ExpiryDate
+  from   UserRoles
+  inner join Users On Users.UserId = UserRoles.UserId
+  inner join Roles On Roles.RoleId = UserRoles.RoleId
+  inner join UserPortals On Users.UserId = UserPortals.UserId and UserPortals.PortalID = @PortalID
+  where  Roles.PortalId = @PortalId
+  and    UserRoles.RoleId = @RoleId
+  and    UserPortals.Authorized = 1
+end
+
+GO
+
+create procedure dbo.GetRolesByUser
+    
+@UserId        int,
+@PortalId      int
+
+as
+
+select Roles.RoleName,
+       Roles.RoleID
+from   UserRoles
+inner join Users on UserRoles.UserID = Users.UserID
+inner join Roles on UserRoles.RoleID = Roles.RoleID
+where  Users.UserId = @UserId
+and    Roles.PortalId = @PortalId
+and    (ExpiryDate >= getdate() or ExpiryDate is null)
+
+GO
+
+create procedure dbo.GetSearch
+
+@ModuleID int
+
+as
+
+select SearchId,
+       TableName,
+       TitleField,
+       DescriptionField,
+       CreatedDateField,
+       CreatedByUserField
+from   Search
+where  ModuleID = @ModuleID
+order by TableName
+
+GO
+
+create procedure dbo.GetServices
+    
+@PortalId  int,
+@UserId    int = null
+
+as
+
+select RoleID,
+       Roles.RoleName,
+       Roles.Description,
+       Roles.ServiceFee,
+       'BillingFrequency' = C1.Description,
+       Roles.TrialPeriod,
+       'TrialFrequency' = case when C2.Code <> 0 then C2.Description else '' end,
+       'ExpiryDate' = ( select ExpiryDate from UserRoles where UserRoles.RoleId = Roles.RoleID and UserRoles.UserID = @UserID )
+from   Roles
+inner join CodeFrequency C1 on Roles.BillingFrequency = C1.Code
+left outer join CodeFrequency C2 on Roles.TrialFrequency = C2.Code
+where  Roles.PortalId = @PortalId
+and    Roles.ServiceFee is not null
+
+GO
+
+create procedure dbo.GetSingleAnnouncement
+
+@ItemID   int,
+@ModuleId int
+
+as
+
+select Title,
+       URL,
+       Syndicate,
+       ExpireDate,
+       Description,
+       Clicks,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Announcements.CreatedDate,
+       ViewOrder
+from   Announcements
+left outer join Users on Announcements.CreatedByUser = Users.UserID
+where  ItemID = @ItemID
+and    ModuleId = @ModuleId
+
+GO
+
+create procedure dbo.GetSingleBanner
+
+@BannerId int,
+@VendorId int
+
+as
+
+select BannerId,
+       VendorId,
+       ImageFile,
+       BannerName,
+       URL,
+       Impressions,
+       CPM,
+       Views,
+       ClickThroughs,
+       StartDate,
+       EndDate,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Banners.CreatedDate,
+       BannerTypeId       
+from   Banners
+left outer join Users on Banners.CreatedByUser = Users.UserID
+where  BannerId = @BannerId
+and    vendorId = @VendorId
+
+GO
+
+create procedure dbo.GetSingleContact
+
+@ItemID   int,
+@ModuleId int
+
+as
+
+select Name,
+       Role,
+       Contacts.Email,
+       Contact1,
+       Contact2,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Contacts.CreatedDate
+from   Contacts
+left outer join Users on Contacts.CreatedByUser = Users.UserID
+where  ItemID = @ItemID
+and    ModuleId = @ModuleId
+
+GO
+
+create procedure dbo.GetSingleCountry
+
+@Code        char(2) = null,
+@Description varchar(100) = null
+
+as
+
+if @Code is null
+begin
+  select 'Country' = Code
+  from   CodeCountry
+  where  Description = @Description
+end
+else
+begin
+  select 'Country' = Description
+  from   CodeCountry
+  where  Code = @Code
+end
+
+GO
+
+create procedure dbo.GetSingleDocument
+
+@ItemID   int,
+@ModuleId int
+
+as
+
+select Title,
+       URL,
+       Category,
+       Syndicate,
+       Clicks,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Documents.CreatedDate
+from   Documents
+left outer join Users on Documents.CreatedByUser = Users.UserID
+where  ItemID = @ItemID
+and    ModuleId = @ModuleId
+
+GO
+
+create procedure dbo.GetSingleFAQ
+
+@ItemID   int,
+@ModuleId int
+
+as
+
+select ItemID,
+       ModuleID,
+       Question,
+       Answer,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       FAQs.CreatedDate
+from   FAQs
+left outer join Users on FAQs.CreatedByUser = Users.UserID
+where  ItemID = @ItemID
+and    ModuleId = @ModuleId
+
+GO
+
+create procedure dbo.GetSingleFile
+
+@FileName  nvarchar(100),
+@PortalId  int
+
+as
+
+if @PortalId is null
+begin
+  select FileName,
+         Extension,
+         Size,
+         Width,
+         Height,
+         ContentType
+  from   Files
+  where  FileName = @FileName
+  and    PortalId is null
+end
+else
+begin
+  select FileName,
+         Extension,
+         Size,
+         Width,
+         Height,
+         ContentType
+  from   Files
+  where  FileName = @FileName
+  and    PortalId = @PortalId
+end
+
+GO
+
+create procedure dbo.GetSingleLink
+
+@ItemID   int,
+@ModuleId int
+
+as
+
+select Title,
+       Url,
+       MobileUrl,
+       ViewOrder,
+       Description,
+       NewWindow,
+       Clicks,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Links.CreatedDate
+from   Links
+left outer join Users on Links.CreatedByUser = Users.UserID
+where  ItemID = @ItemID
+and    ModuleId = @ModuleId
+
+GO
+
+create procedure dbo.GetSingleMessage
+
+@ItemID   int,
+@ModuleId int
+
+as
+
+select ItemID,
+       Title,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Discussion.CreatedDate,
+       Body,
+       DisplayOrder
+from   Discussion
+left outer join Users on Discussion.CreatedByUser = Users.UserID
+where  ItemID = @ItemID
+and    ModuleId = @ModuleId
+
+GO
+
+create procedure dbo.GetSingleModuleDefinition
+
+@ModuleDefID int
+
+as
+
+select FriendlyName,
+       DesktopSrc,
+       MobileSrc,
+       AdminOrder,
+       EditSrc,
+       Secure,
+       Description,
+       HostFee
+from   ModuleDefinitions
+where  ModuleDefID = @ModuleDefID
+
+GO
+
+create procedure dbo.GetSingleModuleDefinitionByName
+
+@FriendlyName nvarchar(128)
+
+as
+
+select *
+from   ModuleDefinitions
+where  FriendlyName = @FriendlyName
+
+GO
+
+create procedure dbo.GetSingleModuleEvent
+
+@ItemID   int,
+@ModuleId int
+
+as
+
+select ItemID,
+       Description,
+       DateTime,
+       Title,
+       ExpireDate,
+       'CreatedByUser' = FirstName + ' ' + LastName,
+       ModuleEvents.CreatedDate,
+       Every,
+       Period,
+       IconFile
+from   ModuleEvents
+left outer join Users on ModuleEvents.CreatedByUser = Users.UserId
+where  ItemID = @ItemID
+and    ModuleId = @ModuleId
+
+GO
+
+create procedure dbo.GetSinglePortal
+
+@PortalID  int
+
+as
+
+select *
+from   Portals
+where  PortalID = @PortalID
+
+GO
+
+create procedure dbo.GetSingleRegion
+
+@Code        char(2) = null,
+@Description varchar(100) = null
+
+as
+
+if @Code is null
+begin
+  select 'Region' = Code
+  from   CodeRegion
+  where  Description = @Description
+end
+else
+begin
+  select 'Region' = Description
+  from   CodeRegion
+  where  Code = @Code
+end
+
+GO
+
+create procedure dbo.GetSingleRole
+
+@RoleID   int
+
+as
+
+select RoleId,
+       PortalId,
+       RoleName,
+       Description,
+       ServiceFee,
+       BillingFrequency,
+       TrialPeriod,
+       TrialFrequency
+from   Roles
+where  RoleID = @RoleID
+
+GO
+
+create procedure dbo.GetSingleSearch
+
+@SearchID int,
+@ModuleId int
+
+as
+
+select TableName,
+       TitleField,
+       DescriptionField,
+       CreatedDateField,
+       CreatedByUserField
+from   Search
+where  SearchId = @SearchId
+and    ModuleID = @ModuleID
+
+GO
+
+create procedure dbo.GetSingleUser
+
+@PortalId int,
+@UserId int
+
+as
+
+select Users.UserID,
+       Users.Username,
+       Users.Password,
+       Users.Email,
+       'FullName' = Users.FirstName + ' ' + Users.LastName,
+       Users.FirstName,
+       Users.LastName,
+       Users.Unit,
+       Users.Street,
+       Users.City,
+       Users.Region,
+       Users.PostalCode,
+       Users.Country,
+       Users.Telephone,
+       Users.IsSuperUser,
+       UserPortals.Authorized,
+       UserPortals.CreatedDate,
+       UserPortals.LastLoginDate
+from   Users
+left outer join UserPortals on Users.UserId = UserPortals.UserId
+where  Users.UserId = @UserId
+and    (UserPortals.PortalId = @PortalId or Users.IsSuperUser = 1)
+
+GO
+
+create procedure dbo.GetSingleUserByUsername
+
+@PortalID int,
+@Username nvarchar(100)
+
+as
+ 
+select Users.UserId,
+       Users.Username,
+       Users.Password,
+       Users.Email,
+       'FullName' = Users.FirstName + ' ' + Users.LastName,
+       Users.FirstName,
+       Users.LastName,
+       Users.Unit,
+       Users.Street,
+       Users.City,
+       Users.Region,
+       Users.PostalCode,
+       Users.Country,
+       Users.Telephone,
+       Users.IsSuperUser,
+       UserPortals.Authorized,
+       UserPortals.CreatedDate,
+       UserPortals.LastLoginDate
+from   Users
+left outer join UserPortals on Users.UserId = UserPortals.UserId
+where  username = @Username
+and    (UserPortals.PortalId = @PortalId or Users.IsSuperUser = 1)
+
+GO
+
+create procedure dbo.GetSingleUserDefinedField
+
+@UserDefinedFieldId  int
+
+as
+
+select ModuleId,
+       FieldTitle,
+       Visible,
+       FieldOrder
+from   UserDefinedFields
+where  UserDefinedFieldId = @UserDefinedFieldId
+
+GO
+
+create procedure dbo.GetSingleUserDefinedRow
+
+@UserDefinedRowID   int,
+@ModuleId           int
+
+as
+
+select UserDefinedFields.FieldTitle,
+       UserDefinedData.FieldValue
+from   UserDefinedData
+inner join UserDefinedFields on UserDefinedData.UserDefinedFieldId = UserDefinedFields.UserDefinedFieldId
+where  UserDefinedData.UserDefinedRowID = @UserDefinedRowID
+and    UserDefinedFields.ModuleId = @ModuleId
+
+GO
+
+create procedure dbo.GetSingleUserRole
+    
+@UserId        int,
+@RoleId        int,
+@PortalId      int
+
+as
+
+select UserRoles.UserID,
+       UserRoles.RoleID
+from   UserRoles
+inner join Roles on UserRoles.RoleID = Roles.RoleID
+where  UserRoles.UserId = @UserId
+and    UserRoles.RoleId = @RoleId
+and    Roles.PortalId = @PortalId
+and    (UserRoles.ExpiryDate >= getdate() or UserRoles.ExpiryDate is null)
+
+GO
+
+create procedure dbo.GetSingleVendor
+
+@VendorID int
+
+as
+
+select Vendors.VendorName, 
+       Vendors.Unit, 
+       Vendors.Street, 
+       Vendors.City, 
+       Vendors.Region, 
+       Vendors.Country, 
+       Vendors.PostalCode, 
+       Vendors.Telephone,
+       Vendors.Fax,
+       Vendors.Email,
+       Vendors.Website,
+       Vendors.Contact,
+       Vendors.ClickThroughs,
+       Vendors.Views,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Vendors.CreatedDate,
+       Vendors.LogoFile,
+       Vendors.KeyWords
+from   Vendors
+left outer join Users on Vendors.CreatedByUser = Users.UserID
+where  VendorID = @VendorID
+
+GO
+
+create procedure dbo.GetSingleVendorFeedback
+
+@VendorId  int,
+@UserId    int
+
+as
+
+select VendorFeedbackId,
+       VendorId,
+       UserId,
+       Date,
+       Comment,
+       Value
+from   VendorFeedback
+where  VendorId = @VendorId
+and    UserId = @UserId
+
+GO
+
+create procedure dbo.GetSiteLog
+
+@PortalId   int,
+@PortalAlias nvarchar(50),
+@ReportType int = null,
+@StartDate  datetime = null,
+@EndDate    datetime = null
+
+as
+
+if @StartDate is null
+  select @StartDate = min(DateTime) from SiteLog where PortalId = @PortalId
+
+if @EndDate is null
+  select @EndDate = max(DateTime) from SiteLog where PortalId = @PortalId
+
+if @ReportType = 1 /* page views per day */
+begin
+  select 'Date' = convert(varchar,DateTime,102),
+         'Views' = count(*),
+         'Visitors' = count(distinct SiteLog.UserHostAddress),
+         'Users' = count(distinct SiteLog.UserId)
+  from   SiteLog
+  where  PortalId = @PortalId
+  and   SiteLog.DateTime between @StartDate and @EndDate
+  group by convert(varchar,DateTime,102)
+  order by Date desc
+end
+else
+begin
+  if @ReportType = 2 /* detailed site log */
+  begin
+    select SiteLog.DateTime,
+           'Name' = 
+	      case
+                when SiteLog.UserId is null then null
+                else Users.FirstName + ' ' + Users.LastName
+              end,
+           'Referrer' = 
+             case 
+               when SiteLog.Referrer like '%' + @PortalAlias + '%' then null 
+               else SiteLog.Referrer
+             end,
+           'UserAgent' = 
+             case 
+               when SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
+               when SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
+               when SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
+               when SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
+               when SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
+               when SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
+               when SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
+               when SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
+               when SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
+               when SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
+               when SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
+               when SiteLog.UserAgent like '%Mozilla/5%' then 'Netscape Navigator 6+'
+               else SiteLog.UserAgent
+             end,
+             SiteLog.UserHostAddress,
+             Tabs.TabName
+    from SiteLog
+    left outer join Users on SiteLog.UserId = Users.UserId 
+    left outer join Tabs on SiteLog.TabId = Tabs.TabId 
+    where SiteLog.PortalId = @PortalId
+    and   SiteLog.DateTime between @StartDate and @EndDate
+    order by SiteLog.DateTime desc
+  end
+  else
+  begin
+    if @ReportType = 3 /* user frequency */
+    begin
+      select 'Name' = Users.FirstName + ' ' + Users.LastName,
+             'Requests' = count(*),
+             'LastRequest' = max(DateTime)
+      from   SiteLog
+      inner join Users on SiteLog.UserId = Users.UserId
+      where  PortalID = @PortalId
+      and   SiteLog.DateTime between @StartDate and @EndDate
+      and    SiteLog.UserId is not null
+      group by Users.FirstName + ' ' + Users.LastName
+      order by Requests desc
+    end
+    else
+    begin
+      if @ReportType = 4 /* site referrals */
+      begin
+        select Referrer,
+               'Requests' = count(*),
+               'LastRequest' = max(DateTime)
+        from   SiteLog
+        where  SiteLog.PortalID = @PortalId
+        and   SiteLog.DateTime between @StartDate and @EndDate
+        and    Referrer is not null
+        and    Referrer not like '%' + @PortalAlias + '%'
+        group by Referrer
+        order by Requests desc
+      end
+      else
+      begin
+        if @ReportType = 5 /* user agents */
+        begin
+          select'UserAgent' = 
+                   case 
+                     when SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
+                     when SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
+                     when SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
+                     when SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
+                     when SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
+                     when SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
+                     when SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
+                     when SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
+                     when SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
+                     when SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
+                     when SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
+                     when SiteLog.UserAgent like '%Mozilla/5%' then 'Netscape Navigator 6+'
+                     else SiteLog.UserAgent
+                   end,
+                 'Requests' = count(*),
+                 'LastRequest' = max(DateTime)
+          from   SiteLog
+          where  PortalID = @PortalId
+          and   SiteLog.DateTime between @StartDate and @EndDate
+          group by case 
+                     when SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
+                     when SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
+                     when SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
+                     when SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
+                     when SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
+                     when SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
+                     when SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
+                     when SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
+                     when SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
+                     when SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
+                     when SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
+                     when SiteLog.UserAgent like '%Mozilla/5%' then 'Netscape Navigator 6+'
+                     else SiteLog.UserAgent
+                   end
+          order by Requests desc
+        end
+        else
+        begin
+          if @ReportType = 6 /* page views by hour */
+          begin
+            select 'Hour' = datepart(hour,DateTime),
+                   'Views' = count(*),
+                   'Visitors' = count(distinct SiteLog.UserHostAddress),
+                   'Users' = count(distinct SiteLog.UserId)
+            from   SiteLog
+            where  PortalId = @PortalId
+            and   SiteLog.DateTime between @StartDate and @EndDate
+            group by datepart(hour,DateTime)
+            order by Hour
+          end
+          else
+          begin
+            if @ReportType = 7 /* page views by week day */
+            begin
+              select 'WeekDay' = datepart(weekday,DateTime),
+                     'Views' = count(*),
+                     'Visitors' = count(distinct SiteLog.UserHostAddress),
+                     'Users' = count(distinct SiteLog.UserId)
+              from   SiteLog
+              where  PortalId = @PortalId
+              and   SiteLog.DateTime between @StartDate and @EndDate
+              group by datepart(weekday,DateTime)
+              order by WeekDay
+            end
+            else
+            begin
+              if @ReportType = 8 /* page views by month */
+              begin
+                select 'Month' = datepart(month,DateTime),
+                       'Views' = count(*),
+                       'Visitors' = count(distinct SiteLog.UserHostAddress),
+                       'Users' = count(distinct SiteLog.UserId)
+                from   SiteLog
+                where  PortalId = @PortalId
+                and   SiteLog.DateTime between @StartDate and @EndDate
+                group by datepart(month,DateTime)
+                order by Month
+              end              else
+              begin
+                if @ReportType = 9 /* page popularity */
+                begin
+                  select 'Page' = Tabs.TabName,
+                         'Requests' = count(*),
+                         'LastRequest' = max(DateTime)
+                  from   SiteLog
+                  inner join Tabs on SiteLog.TabID = Tabs.TabID
+                  where  SiteLog.PortalId = @PortalId
+                  and   SiteLog.DateTime between @StartDate and @EndDate
+                  and    SiteLog.TabId is not null
+                  group by Tabs.TabName
+                  order by Requests desc
+                end
+                else
+                begin
+                  if @ReportType = 10 /* user registrations by date */
+                  begin
+                    select 'Date' = convert(varchar,CreatedDate,102),
+                           'Users' = count(*)
+                    from   UserPortals
+                    where  PortalId = @PortalId
+                    and   CreatedDate between @StartDate and @EndDate
+                    group by convert(varchar,CreatedDate,102)
+                    order by Date desc
+                  end
+                  else
+                  begin
+                    if @ReportType = 11 /* user registrations by country */
+                    begin
+                      select Country,
+                             'Users' = count(*)
+                      from   UserPortals
+                      inner join Users on UserPortals.UserID = Users.UserID
+                      where  PortalId = @PortalId
+                      and   CreatedDate between @StartDate and @EndDate
+                      group by Country
+                      order by 'Users' desc
+                    end
+                    else
+                    begin
+                      if @ReportType = 12 /* affiliate referrals */
+                      begin
+                        select AffiliateId,
+                               'Requests' = count(*),
+                               'LastReferral' = max(DateTime)
+                        from   SiteLog
+                        where  SiteLog.PortalID = @PortalId
+                        and   SiteLog.DateTime between @StartDate and @EndDate
+                        and    AffiliateId is not null
+                        group by AffiliateId
+                        order by Requests desc
+                      end
+                      else /* default = all */
+                      begin
+                        select *
+                        from   SiteLog
+                        where  SiteLog.PortalID = @PortalId
+                        and   SiteLog.DateTime between @StartDate and @EndDate
+                        order by SiteLog.DateTime
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+
+GO
+
+create procedure dbo.GetSiteLogReports
+
+as
+
+select *
+from   CodeSiteLogReport
+order by Description
+
+GO
+
+create procedure dbo.GetSiteModule
+
+@FriendlyName nvarchar(128),
+@PortalID int = null
+
+as
+
+if @PortalId is null
+begin
+  select Modules.ModuleId
+  from   Modules
+  inner join Tabs on Modules.TabId = Tabs.TabId
+  inner join ModuleDefinitions on Modules.ModuleDefId = ModuleDefinitions.ModuleDefId
+  where  Tabs.PortalID is null
+  and    ModuleDefinitions.FriendlyName = @FriendlyName
+end
+else
+begin
+  select Modules.ModuleId
+  from   Modules
+  inner join Tabs on Modules.TabId = Tabs.TabId
+  inner join ModuleDefinitions on Modules.ModuleDefId = ModuleDefinitions.ModuleDefId
+  where  Tabs.PortalID = @PortalId
+  and    ModuleDefinitions.FriendlyName = @FriendlyName
+end
+
+GO
+
+create procedure dbo.GetTabById
+
+@TabId int
+
+as
+
+select TabID,
+       TabOrder,
+       PortalID,
+       TabName,
+       MobileTabName,
+       AuthorizedRoles,
+       ShowMobile,
+       LeftPaneWidth,
+       RightPaneWidth,
+       IsVisible,
+       ParentId,
+       Level,
+       IconFile,
+       AdministratorRoles
+from   Tabs
+where  TabId = @TabId
+
+GO
+
+create procedure dbo.GetTabByName
+
+@PortalID int,
+@TabName  nvarchar(50)
+
+as
+
+select TabID,
+       TabOrder
+from   Tabs
+where  PortalID = @PortalID
+and    TabName = @TabName
+
+GO
+
+create procedure dbo.GetTabs
+
+@PortalID   int 
+
+as
+
+select TabID,
+       'TabOrder' = case when TabOrder = 0 then 999 else Taborder end,
+       TabName,
+       MobileTabName,
+       AuthorizedRoles,
+       ShowMobile,
+       LeftPaneWidth,
+       RightPaneWidth,
+       IsVisible,
+       ParentId,
+       Level,
+       IconFile,
+       AdministratorRoles,
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+where  PortalID = @PortalID
+order by TabOrder, TabName
+
+GO
+
+create procedure dbo.GetTabsByParentId
+
+@ParentId int
+
+as
+
+select TabID,
+       TabOrder,
+       PortalID,
+       TabName,
+       MobileTabName,
+       AuthorizedRoles,
+       ShowMobile,
+       LeftPaneWidth,
+       RightPaneWidth,
+       IsVisible,
+       Level,
+       IconFile,
+       AdministratorRoles,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName )
+from   Tabs
+where  ParentId = @ParentId
+order by TabOrder
+
+GO
+
+create procedure dbo.GetThreadMessages
+
+@Parent nvarchar(750)
+
+as
+
+select ItemID,
+       DisplayOrder,
+       'Indent' = REPLICATE( '&nbsp;', ( ( LEN( DisplayOrder ) / 23 ) - 1 ) * 5 ),
+       Title,  
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Discussion.CreatedDate,
+       Body
+from   Discussion
+inner join Users on Discussion.CreatedByUser = Users.UserID
+where  LEFT(DisplayOrder, 23) = @Parent
+and    (LEN( DisplayOrder ) / 23 ) > 1
+order by DisplayOrder
+
+GO
+
+create procedure dbo.GetTopLevelMessages
+
+@ModuleID int
+
+as
+
+select ItemID,
+       DisplayOrder,
+       'Parent' = LEFT(DisplayOrder, 23),    
+       'ChildCount' = (SELECT COUNT(*) -1  FROM Discussion Disc2 WHERE LEFT(Disc2.DisplayOrder,LEN(RTRIM(Disc.DisplayOrder))) = Disc.DisplayOrder),
+       Title,  
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Disc.CreatedDate
+from   Discussion Disc
+inner join Users on Disc.CreatedByUser = Users.UserID
+where  ModuleID = @ModuleID
+and    (LEN( DisplayOrder ) / 23 ) = 1
+order by DisplayOrder
+
+GO
+
+create procedure dbo.GetUserDefinedFields
+
+@ModuleId  int
+
+as
+
+select UserDefinedFieldId,
+       FieldTitle,
+       Visible,
+       FieldType
+from   UserDefinedFields
+where  ModuleId = @ModuleId
+order by FieldOrder
+
+GO
+
+create procedure dbo.GetUserDefinedRows
+
+@ModuleId    int 
+
+as
+
+select UserDefinedRows.UserDefinedRowId,
+       UserDefinedFields.FieldTitle,
+       UserDefinedData.FieldValue
+from   UserDefinedRows
+left outer join UserDefinedData on UserDefinedRows.UserDefinedRowId = UserDefinedData.UserDefinedRowId
+inner join UserDefinedFields on UserDefinedData.UserDefinedFieldId = UserDefinedFields.UserDefinedFieldId 
+where  UserDefinedRows.ModuleId = @ModuleId
+
+GO
+
+create procedure dbo.GetUsers
+
+@PortalId int,
+@Filter   nvarchar(1)
+
+as
+
+if @PortalID is null
+begin
+  select Users.*,
+         'FullName' = Users.FirstName + ' ' + Users.LastName
+  from   Users
+  order by UserID
+end
+else
+begin
+  if @Filter = '-'
+  begin
+    select Users.UserID,
+           Users.Username,
+           Users.Email,
+           'FullName' = Users.FirstName + ' ' + Users.LastName,
+           Users.FirstName,
+           Users.LastName,
+           Users.Unit,
+           Users.Street,
+           Users.City,
+           Users.Region,
+           Users.PostalCode,
+           Users.Country,
+           Users.Telephone,
+           'Authorized' = 'N',
+           UserPortals.CreatedDate,
+           UserPortals.LastLoginDate
+    from   Users
+    inner join UserPortals on Users.UserId = UserPortals.UserId
+    where  UserPortals.PortalId = @PortalId
+    and    ( UserPortals.Authorized = 0 or UserPortals.LastLoginDate is null )
+    order  by 'FullName'
+  end
+  else
+  begin
+    select Users.UserID,
+           users.Username,
+           Users.Email,
+           'FullName' = Users.FirstName + ' ' + Users.LastName,
+           Users.FirstName,
+           Users.LastName,
+           Users.Unit,
+           Users.Street,
+           Users.City,
+           Users.Region,
+           Users.PostalCode,
+           Users.Country,
+           Users.Telephone,
+           'Authorized' = case when UserPortals.Authorized = 1 then 'Y' else 'N' end,
+           UserPortals.CreatedDate,
+           UserPortals.LastLoginDate
+    from   Users
+    inner join UserPortals on Users.UserId = UserPortals.UserId
+    where  UserPortals.PortalId = @PortalId
+    and    Users.FirstName like @Filter + '%'
+    order  by 'FullName'
+  end
+end
+
+GO
+
+create procedure dbo.GetVendorClassifications
+
+@VendorId  int = null
+
+as
+
+if @VendorId is null
+begin
+  select ClassificationId,
+         ClassificationName,
+         'IsAssociated' = 0
+  from   Classification
+end
+else
+begin
+  select ClassificationId,
+         ClassificationName,
+         'IsAssociated' = case when exists ( select 1 from VendorClassification vc where vc.VendorId = @VendorId and vc.ClassificationId = Classification.ClassificationId ) then 1 else 0 end
+  from   Classification
+end
+
+GO
+
+create procedure dbo.GetVendorClickThrough
+
+@VendorId int
+
+as
+
+update Vendors
+set    ClickThroughs = ClickThroughs + 1
+where  VendorId = @VendorId
+
+select VendorId,
+       VendorName,
+       Street,
+       City,
+       Region,
+       Country,
+       PostalCode,
+       Telephone,
+       PortalId,
+       Fax,
+       Email,
+       Website,
+       Contact
+from   Vendors
+where  VendorId = @VendorId
+
+GO
+
+create procedure dbo.GetVendorFeedback
+
+@VendorId  int 
+
+as
+
+select VendorFeedback.VendorFeedbackId,
+       VendorFeedback.UserId,
+       'FullName' = Users.FirstName + ' ' + Users.LastName,
+       Users.Email,
+       VendorFeedback.Date,
+       VendorFeedback.Comment,
+       VendorFeedback.Value
+from   VendorFeedback
+inner join Users on VendorFeedback.UserId = Users.UserId
+where  VendorId = @VendorId
+order by Date desc
+
+GO
+
+create procedure dbo.GetVendorLog
+
+@VendorId  int
+
+as
+
+select Search,
+       'Requests' = count(*),
+       'LastRequest' = max(DateTime)
+from   VendorLog
+where  VendorId = @VendorId
+and    BannerId is null
+group by Search
+order by Requests desc
+
+GO
+
+create procedure dbo.GetVendors
+
+@PortalId int,
+@Filter   nvarchar(1)
+
+as
+
+if @PortalId is null
+begin
+  select VendorID,
+         VendorName,
+         Unit, 
+         Street, 
+         City, 
+         Region, 
+         Country, 
+         PostalCode, 
+         Telephone,
+         Fax,
+         Email,
+         Website,
+         Contact,
+         ClickThroughs,
+         Views,
+         'Banners' = ( select count(*) from Banners where Banners.VendorId = Vendors.VendorId )
+  from   Vendors
+  where  PortalId is null
+  and    VendorName like @Filter + '%'
+  order  by VendorName
+end
+else
+begin
+  select VendorID,
+         VendorName,
+         Unit, 
+         Street, 
+         City, 
+         Region, 
+         Country, 
+         PostalCode, 
+         Telephone,
+         Fax,
+         Email,
+         Website,
+         Contact,
+         ClickThroughs,
+         Views,
+         'Banners' = ( select count(*) from Banners where Banners.VendorId = Vendors.VendorId )
+  from   Vendors
+  where  PortalId = @PortalId
+  and    VendorName like @Filter + '%'
+  order  by VendorName
+end
+
+GO
+
+create procedure dbo.UpdateAnnouncement
+
+@ItemID         int,
+@UserName       nvarchar(100),
+@Title          nvarchar(150),
+@URL            nvarchar(150),
+@Syndicate      bit,
+@ExpireDate     datetime,
+@Description    nvarchar(2000),
+@ViewOrder	int
+
+as
+
+update Announcements
+set    CreatedByUser = @UserName,
+       CreatedDate   = GetDate(),
+       Title         = @Title,
+       URL           = @URL,
+       Syndicate     = @Syndicate,
+       ExpireDate    = @ExpireDate,
+       Description   = @Description,
+       ViewOrder     = @ViewOrder
+where  ItemID = @ItemID
+
+
+GO
+
+create procedure dbo.UpdateBanner
+
+@BannerId     int,
+@BannerName   nvarchar(100),
+@ImageFile    nvarchar(50),
+@URL          nvarchar(100) = null,
+@Impressions  int,
+@CPM          float,
+@StartDate    datetime = null,
+@EndDate      datetime = null,
+@UserName     nvarchar(100),
+@BannerTypeId int
+
+as
+
+update Banners
+set    ImageFile     = @ImageFile,
+       BannerName    = @BannerName,
+       URL           = @URL,
+       Impressions   = @Impressions,
+       CPM           = @CPM,
+       StartDate     = @StartDate,
+       EndDate       = @EndDate,
+       CreatedByUser = @UserName,
+       CreatedDate   = getdate(),
+       BannerTypeId  = @BannerTypeId
+where  BannerId = @BannerId 
+
+GO
+
+create procedure dbo.UpdateClicks
+
+@TableName nvarchar(50),
+@KeyField  nvarchar(50),
+@ItemId    int,
+@UserId    int = null
+
+as
+
+declare @SQL nvarchar(200)
+
+select @SQL = 'update ' + @TableName + ' set Clicks = Clicks + 1 where ' + @KeyField + ' = ' + convert(varchar,@ItemId)
+
+EXEC sp_executesql @SQL
+
+insert into ClickLog (
+  TableName,
+  ItemId,
+  DateTime,
+  UserId
+)
+values (
+  @TableName,
+  @ItemId,
+  getdate(),
+  @UserId
+)
+
+
+GO
+
+create procedure dbo.UpdateContact
+
+@ItemID   int,
+@UserName nvarchar(100),
+@Name     nvarchar(50),
+@Role     nvarchar(100),
+@Email    nvarchar(100),
+@Contact1 nvarchar(250),
+@Contact2 nvarchar(250)
+
+as
+
+update Contacts
+set    CreatedByUser = @UserName,
+       CreatedDate   = GetDate(),
+       Name          = @Name,
+       Role          = @Role,
+       Email         = @Email,
+       Contact1      = @Contact1,
+       Contact2      = @Contact2
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.UpdateDocument
+
+@ItemID           int,
+@Title            nvarchar(150),
+@URL              nvarchar(250),
+@UserName         nvarchar(100),
+@Category         nvarchar(50),
+@Syndicate        bit
+
+as
+
+update Documents
+set    Title             = @Title,
+       URL               = @URL,
+       CreatedByUser     = @UserName,
+       CreatedDate       = getdate(),
+       Category          = @Category,
+       Syndicate         = @Syndicate
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.UpdateFAQ
+
+@ItemID   int,
+@UserName nvarchar(100),
+@Question  text,
+@Answer    text
+
+as
+
+update FAQs
+set    Question = @Question,
+       Answer = @Answer,
+       CreatedByUser = @UserName,
+       CreatedDate = getdate()
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.UpdateHostSetting
+
+@SettingName   nvarchar(50),
+@SettingValue  nvarchar(256)
+
+as
+
+if not exists ( select 1 from HostSettings where SettingName = @SettingName ) 
+begin
+  insert into HostSettings (
+    SettingName,
+    SettingValue
+  ) 
+  values (
+    @SettingName,
+    @SettingValue
+  )
+end
+else
+begin
+  update HostSettings
+  set    SettingValue = @SettingValue
+  where  SettingName = @SettingName
+end
+
+GO
+
+create procedure dbo.UpdateHtmlText
+
+@ModuleID      int,
+@DesktopHtml   ntext,
+@MobileSummary ntext,
+@MobileDetails ntext
+
+as
+
+if not exists ( select * from HtmlText where ModuleID = @ModuleID )
+begin
+  insert into HtmlText (
+    ModuleID,
+    DesktopHtml,
+    MobileSummary,
+    MobileDetails
+  ) 
+  values (
+    @ModuleID,
+    @DesktopHtml,
+    @MobileSummary,
+    @MobileDetails
+  )
+end
+else
+begin
+  update HtmlText
+  set    DesktopHtml   = @DesktopHtml,
+         MobileSummary = @MobileSummary,
+         MobileDetails = @MobileDetails
+  where  ModuleID = @ModuleID
+end
+
+GO
+
+create procedure dbo.UpdateLink
+  
+@ItemID      int,
+@UserName    nvarchar(100),
+@Title       nvarchar(100),
+@Url         nvarchar(250),
+@MobileUrl   nvarchar(250),
+@ViewOrder   int,
+@Description nvarchar(2000),
+@NewWindow   bit
+
+as
+
+update Links
+set    CreatedByUser = @UserName,
+       CreatedDate   = GetDate(),
+       Title         = @Title,
+       Url           = @Url,
+       MobileUrl     = @MobileUrl,
+       ViewOrder     = @ViewOrder,
+       Description   = @Description,
+       NewWindow     = @NewWindow
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.UpdateMessage
+
+@ItemID     int,
+@Title      nvarchar(100),
+@Body       nvarchar(3000),
+@UserName   nvarchar(100)
+
+as
+
+update Discussion
+set    Title             = @Title,
+       Body              = @Body,
+       CreatedByUser     = @UserName,
+       CreatedDate       = getdate()
+where  ItemID = @ItemID
+
+GO
+
+create procedure dbo.UpdateModule
+
+@ModuleID       int,
+@ModuleTitle    nvarchar(256),
+@Alignment      nvarchar(10),
+@Color          nvarchar(20),
+@Border         nvarchar(1),
+@IconFile       nvarchar(100),
+@CacheTime      int,
+@ViewRoles      nvarchar(256),
+@EditRoles      nvarchar(256),
+@ShowMobile     bit,
+@TabId          int,
+@AllTabs        bit,
+@ShowTitle      bit,
+@Personalize    int
+
+as
+
+declare @OldTabId int
+declare @ModuleOrder int
+
+select @OldTabId = TabId
+from   Modules
+where  ModuleID = @ModuleID
+
+update Modules
+set    ModuleTitle = @ModuleTitle,
+       CacheTime   = @CacheTime,
+       ShowMobile  = @ShowMobile,
+       AuthorizedViewRoles = @ViewRoles,
+       AuthorizedEditRoles = @EditRoles,
+       Alignment = @Alignment,
+       Color = @Color,
+       Border = @Border,
+       IconFile = @IconFile,
+       TabId = @TabId,
+       AllTabs = @AllTabs,
+       ShowTitle = @ShowTitle,
+       Personalize = @Personalize
+where  ModuleID = @ModuleID
+
+if @OldTabId <> @TabId
+begin
+  select @ModuleOrder = max(ModuleOrder) + 2
+  from   Modules
+  where  TabID = @TabId
+  and    PaneName = 'ContentPane'
+  if @ModuleOrder is null
+    select @ModuleOrder = 1
+  update Modules
+  set    PaneName = 'ContentPane',
+         ModuleOrder = @ModuleOrder
+  where  ModuleId = @ModuleId
+end
+
+if @AllTabs = 1
+begin
+  update Modules
+  set    ModuleOrder = 0
+  where  ModuleId = @ModuleId
+end
+
+GO
+
+create procedure dbo.UpdateModuleDefinition
+
+@ModuleDefID   int,
+@FriendlyName  nvarchar(128),
+@DesktopSrc    nvarchar(256),
+@MobileSrc     nvarchar(256),
+@AdminOrder    int,
+@EditSrc       nvarchar(256),
+@Secure        bit,
+@Description   nvarchar(2000),
+@HostFee       money
+
+as
+
+declare @TabId int
+declare @ModuleOrder int
+declare @AdministratorRoleId int
+declare @PortalId int
+declare @TabOrder int
+declare @ChildTabId int
+
+update ModuleDefinitions
+set    FriendlyName = @FriendlyName,
+       DesktopSrc   = @DesktopSrc,
+       MobileSrc    = @MobileSrc,
+       AdminOrder   = @AdminOrder,
+       EditSrc      = @EditSrc,
+       Secure       = @Secure,
+       Description  = @Description,
+       HostFee      = @HostFee
+where  ModuleDefID = @ModuleDefID
+
+if @HostFee = 0
+begin
+  delete
+  from   PortalModuleDefinitions
+  where  ModuleDefID = @ModuleDefID
+end
+
+GO
+
+create procedure dbo.UpdateModuleEvent
+
+@ItemId      int,
+@Description nvarchar(2000),
+@DateTime    datetime,
+@Title       nvarchar(100),
+@ExpireDate  datetime = null,
+@UserName    nvarchar(200),
+@Every       int,
+@Period      char(1),
+@IconFile    nvarchar(256)
+
+as
+
+update ModuleEvents
+set    Description = @Description,
+       DateTime = @DateTime,
+       Title = @Title,
+       ExpireDate = @ExpireDate,
+       CreatedByUser = @UserName,
+       CreatedDate = getdate(),
+       Every = @Every,
+       Period = @Period,
+       IconFile = @IconFile
+where  ItemId = @ItemId
+
+GO
+
+create procedure dbo.UpdateModuleOrder
+
+@ModuleID           int,
+@ModuleOrder        int,
+@PaneName           nvarchar(50)
+
+as
+
+declare @TabID int
+declare @AllTabs bit
+
+select @TabID = TabID,
+       @AllTabs = AllTabs
+from   Modules
+where  ModuleID = @ModuleID
+
+if @ModuleOrder = -1
+begin
+  select @ModuleOrder = max(ModuleOrder) + 2
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+  if @ModuleOrder is null
+    select @ModuleOrder = 1
+end
+
+if @AllTabs = 1
+begin
+  select @ModuleOrder = 0
+end
+
+update Modules
+set    ModuleOrder = @ModuleOrder,
+       PaneName = @PaneName
+where  ModuleID = @ModuleID
+
+GO
+
+create procedure dbo.UpdateModuleSetting
+
+@ModuleID      int,
+@SettingName   nvarchar(50),
+@SettingValue  nvarchar(256)
+
+as
+
+if not exists ( select * from ModuleSettings where ModuleID = @ModuleID and SettingName = @SettingName )
+begin
+  insert into ModuleSettings (
+    ModuleID,
+    SettingName,
+    SettingValue
+  ) 
+  values (
+    @ModuleID,
+    @SettingName,
+    @SettingValue
+  )
+end
+else
+begin
+  update ModuleSettings
+  set SettingValue = @SettingValue
+  where ModuleID = @ModuleID
+  and SettingName = @SettingName
+end
+
+GO
+
+create procedure dbo.UpdatePortalExpiry
+
+@PortalID   int
+
+as
+
+declare @ExpiryDate datetime
+
+select @ExpiryDate = null
+
+select @ExpiryDate = ExpiryDate
+from   Portals
+where  PortalID = @PortalID
+
+if @ExpiryDate is null or @ExpiryDate < getdate()
+  select @ExpiryDate = getdate()
+
+update Portals
+set    ExpiryDate = dateadd(Month,1,@ExpiryDate)
+where  PortalID = @PortalID
+
+GO
+
+create procedure dbo.UpdatePortalInfo
+
+@PortalID           int,
+@PortalName         nvarchar(128),
+@PortalAlias        nvarchar(200) = null,
+@LogoFile           nvarchar(50) = null,
+@FooterText         nvarchar(100) = null,
+@ExpiryDate         datetime = null,
+@UserRegistration   int = null,
+@BannerAdvertising  int = null,
+@Currency           char(3) = null,
+@AdministratorId    int = null,
+@HostFee            money = 0,
+@HostSpace          int = null,
+@PaymentProcessor   nvarchar(50) = null,
+@ProcessorUserId    nvarchar(50) = null,
+@ProcessorPassword  nvarchar(50) = null,
+@Description        nvarchar(500) = null,
+@KeyWords           nvarchar(500) = null,
+@BackgroundFile     nvarchar(50) = null,
+@SiteLogHistory     int = null
+
+as
+
+update Portals
+set    PortalName = @PortalName,
+       PortalAlias = isnull(@PortalAlias,PortalAlias),
+       LogoFile = @LogoFile,
+       FooterText = @FooterText,
+       ExpiryDate = @ExpiryDate,
+       UserRegistration = @UserRegistration,
+       BannerAdvertising = @BannerAdvertising,
+       Currency = @Currency,
+       AdministratorId = @AdministratorId,
+       HostFee = @HostFee,
+       HostSpace = @HostSpace,
+       PaymentProcessor = @PaymentProcessor,
+       ProcessorUserId = @ProcessorUserId,
+       ProcessorPassword = @ProcessorPassword,
+       Description = @Description,
+       KeyWords = @KeyWords,
+       BackgroundFile = @BackgroundFile,
+       SiteLogHistory = @SiteLogHistory
+where  PortalID = @PortalID
+
+GO
+
+create procedure dbo.UpdatePortalModuleDefinition
+
+@PortalID int,
+@ModuleDefID int,
+@Subscribed  bit,
+@HostFee money
+
+as
+
+if exists ( select 1 from PortalModuleDefinitions where PortalID = @PortalID and ModuleDefID = @ModuleDefID )
+begin
+  if @Subscribed = 1
+  begin
+    update PortalModuleDefinitions
+    set    HostFee = @HostFee
+    where  PortalID = @PortalID
+    and    ModuleDefID = @ModuleDefID
+  end
+  else
+  begin
+    if not exists ( select 1 from Modules inner join Tabs on Modules.TabId = Tabs.TabId where Modules.ModuleDefId = @ModuleDefId and Tabs.PortalID = @PortalID )
+    begin
+      delete
+      from   PortalModuleDefinitions
+      where  PortalID = @PortalID
+      and    ModuleDefID = @ModuleDefID
+    end 
+  end  
+end
+else
+begin
+  if @Subscribed = 1
+  begin
+    insert into PortalModuleDefinitions ( 
+      PortalID,
+      ModuleDefID,
+      HostFee
+    )
+    values (
+      @PortalID,
+      @ModuleDefID,
+      @HostFee
+    )
+  end
+end
+
+GO
+
+create procedure dbo.UpdatePortalTabOrder
+
+@PortalID int
+
+as
+
+declare @TabCounter int
+declare @TabOrder int
+
+select @TabCounter = 0
+
+update Tabs
+set    TabOrder = -999
+where  PortalID = @PortalID
+and    (ParentId is not null or IsVisible = 0)
+
+update Tabs
+set    TabOrder = 999
+where  PortalID = @PortalID
+and    TabName = 'Admin'
+
+select @TabOrder = min(TabOrder)
+from   Tabs
+where  PortalID = @PortalID
+and    TabOrder <> -999
+
+while @TabOrder is not null
+begin
+  select @TabCounter = @TabCounter + 1        
+  update Tabs
+  set    TabOrder = ((@TabCounter * 2) - 1) * -1 
+  where  PortalID = @PortalID
+  and    TabOrder = @TabOrder  
+  select @TabOrder = min(TabOrder)
+  from   Tabs
+  where  PortalID = @PortalID
+  and    TabOrder > @TabOrder
+end 
+
+update Tabs
+set    TabOrder = 0
+where  PortalID = @PortalID
+and    TabOrder = -999
+
+update Tabs
+set    TabOrder = TabOrder * -1 
+where  PortalID = @PortalID
+
+GO
+
+create procedure dbo.UpdateReferrer
+
+@Referrer nvarchar(500),
+@Description nvarchar(500)
+
+as
+
+declare @ReferrerId int
+
+select @ReferrerId = null
+
+select @ReferrerId = ReferrerId
+from   Referrer
+where  Referrer = @Referrer
+
+if @ReferrerId is null
+begin
+  insert into Referrer (
+    Referrer,
+    Description,
+    CreatedDate,
+    LastModifiedDate
+  )
+  values (
+    @Referrer,
+    @Description,
+    getdate(),
+    getdate()
+  )
+end
+else
+begin
+  update Referrer
+  set    Description = @Description,
+         LastModifiedDate = getdate()
+  where  ReferrerId = @ReferrerId
+end
+
+GO
+
+create procedure dbo.UpdateRole
+
+@RoleID           int,
+@RoleName         nvarchar(50),
+@Description      nvarchar(1000) = null,
+@ServiceFee       money = null,
+@BillingFrequency char(1),
+@TrialPeriod      int = null,
+@TrialFrequency   char(1)
+
+as
+
+update Roles
+set    RoleName = @RoleName,
+       Description = @Description,
+       ServiceFee = @ServiceFee,
+       BillingFrequency = @BillingFrequency,
+       TrialPeriod = @TrialPeriod,
+       TrialFrequency = @TrialFrequency
+where  RoleID = @RoleID
+
+GO
+
+create procedure dbo.UpdateSearch
+
+@SearchID           int,
+@TitleField         nvarchar(50),
+@DescriptionField   nvarchar(50),
+@CreatedDateField   nvarchar(50),
+@CreatedByUserField nvarchar(50)
+
+as
+
+update Search
+set    TitleField = @TitleField,
+       DescriptionField = @DescriptionField,
+       CreatedDateField = @CreatedDateField,
+       CreatedByUserField = @CreatedByUserField
+where  SearchId = @SearchId
+
+
+GO
+
+create procedure dbo.UpdateService
+    
+@UserId       int,
+@RoleId       int,
+@Units        int
+
+as
+
+declare @TrialPeriod int
+declare @Frequency char(1)
+declare @ExpiryDate datetime
+declare @IsTrialUsed bit
+
+select @TrialPeriod = TrialPeriod
+from   Roles
+where  RoleId = @RoleId
+
+if @TrialPeriod is not null
+begin
+  select @ExpiryDate = ExpiryDate,
+         @IsTrialUsed = IsTrialUsed
+  from   UserRoles
+  where  UserId = @UserId
+  and    RoleId = @RoleId
+
+  if @Units = 0
+  begin
+    if @IsTrialUsed is null /* trial period not used */
+    begin
+      select @Frequency = TrialFrequency,
+             @Units = TrialPeriod
+      from   Roles
+      where  RoleId = @RoleId
+      if @Units is null /* no trial period for role */
+      begin
+        select @Frequency = '0'
+      end
+      else
+      begin
+        if @ExpiryDate is null or @ExpiryDate < getdate()
+          select @ExpiryDate = getdate()
+      end
+    end
+    else
+    begin
+      select @Frequency = '0'
+    end
+  end
+  else  
+  begin
+    select @Frequency = BillingFrequency
+    from   Roles
+    where  RoleId = @RoleId
+    if @ExpiryDate is null or @ExpiryDate < getdate()
+      select @ExpiryDate = getdate()
+  end
+  select @ExpiryDate =
+    case
+      when @Frequency = '0' then @ExpiryDate
+      when @Frequency = '1' then convert(datetime,'12/31/9999')
+      when @Frequency = '2' then dateadd(Day,@Units,@ExpiryDate)
+      when @Frequency = '3' then dateadd(Week,@Units,@ExpiryDate)
+      when @Frequency = '4' then dateadd(Month,@Units,@ExpiryDate)
+      when @Frequency = '5' then dateadd(Year,@Units,@ExpiryDate)
+    end
+  if exists ( select 1 from UserRoles where UserId = @UserId and RoleId = @RoleId )
+  begin
+    update UserRoles
+    set    ExpiryDate = @ExpiryDate,
+           IsTrialUsed = 1
+    where  UserId = @UserId
+    and    RoleId = @RoleId
+  end
+  else
+  begin
+    insert UserRoles (
+      UserId,
+      RoleId,
+      ExpiryDate,
+      IsTrialUsed
+    )
+    values (
+      @UserId,
+      @RoleId,
+      @ExpiryDate,
+      1
+    )
+  end
+end
+
+GO
+
+create procedure dbo.UpdateTab
+
+@TabID              int,
+@TabName            nvarchar(50),
+@ShowMobile         bit,
+@MobileTabName      nvarchar(50),
+@AuthorizedRoles    nvarchar(256),
+@LeftPaneWidth      nvarchar(5),
+@RightPaneWidth     nvarchar(5),
+@IsVisible          bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@AdministratorRoles nvarchar(256)
+
+as
+
+declare @PortalID int
+
+select @PortalID = PortalID
+from   Tabs
+where  TabID = @TabID
+
+/* hierarchical tabs must be visible */
+if (exists ( select 1 from Tabs where ParentId = @TabId )) or (@ParentId is not null)
+begin
+  select @IsVisible = 1
+end
+
+update Tabs
+set    TabName = @TabName,
+       ShowMobile = @ShowMobile,
+       MobileTabName = @MobileTabName,
+       AuthorizedRoles = @AuthorizedRoles,
+       LeftPaneWidth = @LeftPaneWidth,
+       RightPaneWidth = @RightPaneWidth,
+       IsVisible = @IsVisible,
+       ParentId = @ParentId,
+       IconFile = @IconFile,
+       AdministratorRoles = @AdministratorRoles
+where  TabID = @TabID
+
+GO
+
+create procedure dbo.UpdateTabModuleOrder
+
+@TabID           int
+
+as
+
+declare @PaneName nvarchar(50)
+declare @ModuleCounter int
+declare @ModuleOrder int
+
+select @PaneName = min(PaneName)
+from   Modules
+where  TabID = @TabID
+
+while @PaneName is not null 
+begin
+  select @ModuleCounter = 0
+
+  select @ModuleOrder = min(ModuleOrder)
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+  and    ModuleOrder <> 0
+
+  while @ModuleOrder is not null
+  begin
+    select @ModuleCounter = @ModuleCounter + 1        
+
+    update Modules
+    set    ModuleOrder = ((@ModuleCounter * 2) - 1) * -1 
+    where  TabID = @TabID
+    and    PaneName = @PaneName
+    and    ModuleOrder = @ModuleOrder  
+
+    select @ModuleOrder = min(ModuleOrder)
+    from   Modules
+    where  TabID = @TabID
+    and    PaneName = @PaneName
+    and    ModuleOrder > @ModuleOrder
+  end 
+
+  update Modules
+  set    ModuleOrder = ModuleOrder * -1 
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+
+  select @PaneName = min(PaneName)
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName > @PaneName
+end
+
+GO
+
+create procedure dbo.UpdateTabOrder
+
+@TabID    int,
+@TabOrder int,
+@Level    int,
+@ParentId int
+
+as
+
+update Tabs
+set    TabOrder = @TabOrder,
+       Level = @Level,
+       ParentId = @ParentId
+where  TabID = @TabID
+
+GO
+
+create procedure dbo.UpdateUser
+
+@PortalId       int,
+@UserID         int,
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@Unit		nvarchar(50),
+@Street		nvarchar(50),
+@City	        nvarchar(50),
+@Region	        nvarchar(50),
+@PostalCode	nvarchar(50),
+@Country	nvarchar(50),
+@Telephone	nvarchar(50),
+@Email		nvarchar(100),
+@Username       nvarchar(100),
+@Password	nvarchar(50) = null,
+@Authorized     bit = null
+
+as
+
+update Users
+set    FirstName = @FirstName,
+       LastName	 = @LastName,
+       Unit	 = @Unit,
+       Street	 = @Street,
+       City	 = @City,
+       Region	 = @Region,
+       PostalCode = @PostalCode,
+       Country	 = @Country,
+       Telephone = @Telephone,
+       Email	 = @Email,
+       Username	 = @Username,
+       Password	 = isnull(@Password,Password)
+where  UserId = @UserID
+
+if @Authorized is not null
+begin
+  update UserPortals
+  set    Authorized = @Authorized
+  where  PortalId = @PortalId
+  and    userId = @UserId
+end
+
+GO
+
+create procedure dbo.UpdateUserDefinedData
+
+@UserDefinedRowId    int,
+@UserDefinedFieldId  int,
+@FieldValue          nvarchar(2000) = null
+
+as
+
+if @FieldValue is null
+begin
+  if exists ( select 1 from UserDefinedData where UserDefinedFieldId = @UserDefinedFieldId and UserDefinedRowId = @UserDefinedRowId )
+  begin
+    delete
+    from UserDefinedData
+    where UserDefinedFieldId = @UserDefinedFieldId
+    and UserDefinedRowId = @UserDefinedRowId
+  end
+end
+else
+begin
+  if not exists ( select 1 from UserDefinedData where UserDefinedFieldId = @UserDefinedFieldId and UserDefinedRowId = @UserDefinedRowId )
+  begin
+    insert UserDefinedData ( 
+      UserDefinedFieldId,
+      UserDefinedRowId,
+      FieldValue
+    )
+    values (
+      @UserDefinedFieldId,
+      @UserDefinedRowId,
+      @FieldValue
+    )
+  end
+  else
+  begin
+    update UserDefinedData
+    set    FieldValue = @FieldValue
+    where UserDefinedFieldId = @UserDefinedFieldId
+    and UserDefinedRowId = @UserDefinedRowId
+  end
+end
+
+GO
+
+create procedure dbo.UpdateUserDefinedField
+
+@UserDefinedFieldId   int,
+@FieldTitle           varchar(50),
+@Visible              bit,
+@FieldType            varchar(20)
+
+as
+
+update UserDefinedFields
+set    FieldTitle = @FieldTitle,
+       Visible = @Visible,
+       FieldType = @FieldType
+where  UserDefinedFieldId = @UserDefinedFieldId
+
+GO
+
+create procedure dbo.UpdateUserDefinedFieldOrder
+
+@UserDefinedFieldId  int,
+@Direction           int
+
+as
+
+declare @ModuleId int
+
+declare @FieldOrder int
+
+select @ModuleId = ModuleId,
+       @FieldOrder = FieldOrder
+from   UserDefinedFields
+where  UserDefinedFieldId = @UserDefinedFieldId
+
+if (@Direction = -1 and @FieldOrder > 0) or (@Direction = 1 and @FieldOrder < ( select (count(*) - 1) from UserDefinedFields where ModuleId = @ModuleId ))
+begin
+  update UserDefinedFields
+  set    FieldOrder = @FieldOrder
+  where  ModuleId = @ModuleId
+  and    FieldOrder = @FieldOrder + @Direction
+
+  update UserDefinedFields
+  set    FieldOrder = @FieldOrder + @Direction
+  where  UserDefinedFieldId = @UserDefinedFieldId
+end
+
+GO
+
+create procedure dbo.UpdateUserDefinedRow
+
+@UserDefinedRowId int
+
+as
+if not exists ( select 1 from UserDefinedData where UserDefinedRowId = @UserDefinedRowId )
+begin
+  delete
+  from   UserDefinedRows
+  where  userDefinedRowId = @UserDefinedRowId
+end
+
+GO
+
+create procedure dbo.UpdateUserLogin
+
+@UserID   int,
+@PortalID int
+
+as
+
+declare @Authorized bit
+declare @SuperUserId int
+declare @UserPortalId int
+
+select @Authorized = 0
+
+select @SuperUserId = UserId
+from   Users
+where  IsSuperUser = 1
+
+if @UserID <> @SuperUserId
+begin
+  select @Authorized = Authorized
+  from   UserPortals
+  where  UserId = @UserId
+  and    PortalId = @PortalId
+
+  if @Authorized = 1
+  begin
+    update UserPortals
+    set    LastLoginDate = getdate()
+    where  UserId = @UserId
+    and    PortalId = @PortalId
+  end
+end
+else
+begin
+  select @Authorized = 1
+end
+select 'Authorized' = @Authorized
+
+GO
+
+create procedure dbo.UpdateVendor
+
+@VendorID	int,
+@VendorName 	nvarchar(50),
+@Unit	 	nvarchar(50),
+@Street 	nvarchar(50),
+@City		nvarchar(50),
+@Region	        nvarchar(50),
+@Country	nvarchar(50),
+@PostalCode	nvarchar(50),
+@Telephone	nvarchar(50),
+@Fax		nvarchar(50),
+@Email		nvarchar(50),
+@Website	nvarchar(100),
+@Contact	nvarchar(50),
+@UserName       nvarchar(100),
+@LogoFile       nvarchar(100),
+@KeyWords       text
+
+as
+
+update Vendors
+set    VendorName    = @VendorName,
+       Unit          = @Unit,
+       Street        = @Street,
+       City          = @City,
+       Region        = @Region,
+       Country       = @Country,
+       PostalCode    = @PostalCode,
+       Telephone     = @Telephone,
+       Fax           = @Fax,
+       Email         = @Email,
+       Website       = @Website,
+       Contact       = @Contact,
+       CreatedByUser = @UserName,
+       CreatedDate   = getdate(),
+       LogoFile      = @LogoFile,
+       KeyWords      = @KeyWords
+where  VendorId = @VendorId
+
+GO
+
+create procedure dbo.UpdateVendorFeedback
+
+@VendorId  int,
+@UserId    int,
+@Comment   nvarchar(4000),
+@Value     int
+
+as
+
+if not exists ( select 1 from VendorFeedback where VendorId = @VendorId and UserId = @UserId )
+begin
+  insert VendorFeedback ( 
+    VendorId,
+    UserId,
+    Date,
+    Comment,
+    Value
+  )
+  values (
+    @VendorId,
+    @UserId,
+    getdate(),
+    @Comment,
+    @Value
+  )
+end
+else
+begin
+  update VendorFeedback
+  set    Date = getdate(),
+         Comment = @Comment,
+         Value = @Value
+  where  VendorId = @VendorId
+  and    UserId = @UserId
+end
+
+GO
+
+create procedure dbo.UserLogin
+
+@Username nvarchar(100),
+@Password nvarchar(50),
+@PortalID int
+
+as
+
+declare @UserId int
+declare @SuperUserId int
+
+select @SuperUserId = UserId
+from   Users
+where  IsSuperUser = 1
+
+select @UserId = null
+
+/* validate the user */
+select @UserId = UserId
+from   Users
+where  Username = @Username
+and    Password = @Password
+
+if @UserId is not null
+begin
+  if @UserId <> @SuperUserId
+  begin
+    select @UserId = null
+
+    /* validate the user belongs to the portal */
+    select @UserId = Users.UserId
+    from   UserPortals
+    inner join Users on UserPortals.UserId = Users.UserId
+    where  PortalID = @PortalID
+    and    Username = @Username
+    and    Password = @Password
+    and    Authorized = 1
+
+    if not @UserId is null
+    begin
+      update UserPortals
+      set    LastLoginDate = getdate()
+      where  UserId = @UserId
+      and    PortalID = @PortalID
+    end
+  end
+end
+
+select 'UserId' = @UserId
+
+GO
+
+/* version 1.0.8 specific changes */
+
+ALTER TABLE dbo.ModuleDefinitions ADD CONSTRAINT
+	IX_ModuleDefinitions UNIQUE NONCLUSTERED 
+	(
+	FriendlyName
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE dbo.ModuleDefinitions ADD
+	IsPremium bit NOT NULL CONSTRAINT DF_ModuleDefinitions_IsPremium DEFAULT 0
+GO
+
+update ModuleDefinitions
+set    IsPremium = 0
+GO
+
+update ModuleDefinitions
+set    IsPremium = 1
+where  convert(int,HostFee) <> 0 
+GO
+
+ALTER TABLE dbo.ModuleDefinitions
+	DROP CONSTRAINT DF_ModuleDefinitions_HostFee
+GO
+  
+ALTER TABLE dbo.ModuleDefinitions
+	DROP COLUMN HostFee
+GO
+
+drop procedure dbo.AddModuleDefinition
+GO
+
+create procedure dbo.AddModuleDefinition
+    
+@FriendlyName   nvarchar(128),
+@DesktopSrc     nvarchar(256),
+@MobileSrc      nvarchar(256),
+@AdminOrder     int,
+@EditSrc        nvarchar(256),
+@Secure         bit,
+@Description    nvarchar(2000),
+@EditModuleIcon nvarchar(100),
+@IsPremium      bit
+
+as
+
+declare @ModuleDefId int
+declare @TabId int
+declare @AdministratorRoleId int
+declare @PortalId int
+declare @TabOrder int
+declare @ChildTabId int
+
+insert into ModuleDefinitions (
+  FriendlyName,
+  DesktopSrc,
+  MobileSrc,
+  AdminOrder,
+  EditSrc,
+  Secure,
+  Description,
+  EditModuleIcon,
+  IsPremium
+)
+values (
+  @FriendlyName,
+  @DesktopSrc,
+  @MobileSrc,
+  @AdminOrder,
+  @EditSrc,
+  @Secure,
+  @Description,
+  @EditModuleIcon,
+  @IsPremium
+)
+
+select @ModuleDefID = @@IDENTITY
+
+GO
+
+drop procedure dbo.GetSingleModuleDefinition
+GO
+
+create procedure dbo.GetSingleModuleDefinition
+
+@ModuleDefID int
+
+as
+
+select FriendlyName,
+       DesktopSrc,
+       MobileSrc,
+       AdminOrder,
+       EditSrc,
+       Secure,
+       Description,
+       EditModuleIcon,
+       IsPremium
+from   ModuleDefinitions
+where  ModuleDefID = @ModuleDefID
+
+GO
+
+drop procedure dbo.UpdateModuleDefinition
+GO
+
+create procedure dbo.UpdateModuleDefinition
+
+@ModuleDefID    int,
+@FriendlyName   nvarchar(128),
+@DesktopSrc     nvarchar(256),
+@MobileSrc      nvarchar(256),
+@AdminOrder     int,
+@EditSrc        nvarchar(256),
+@Secure         bit,
+@Description    nvarchar(2000),
+@EditModuleIcon nvarchar(100),
+@IsPremium      bit
+
+as
+
+declare @TabId int
+declare @ModuleOrder int
+declare @AdministratorRoleId int
+declare @PortalId int
+declare @TabOrder int
+declare @ChildTabId int
+
+update ModuleDefinitions
+set    FriendlyName   = @FriendlyName,
+       DesktopSrc     = @DesktopSrc,
+       MobileSrc      = @MobileSrc,
+       AdminOrder     = @AdminOrder,
+       EditSrc        = @EditSrc,
+       Secure         = @Secure,
+       Description    = @Description,
+       EditModuleIcon = @EditModuleIcon,
+       IsPremium      = @IsPremium
+where  ModuleDefID = @ModuleDefID
+
+if @IsPremium = 0
+begin
+  delete
+  from   PortalModuleDefinitions
+  where  ModuleDefID = @ModuleDefID
+end
+
+GO
+
+drop procedure dbo.GetModuleDefinitions
+GO
+
+create procedure dbo.GetModuleDefinitions
+
+@PortalID int,
+@Admin    bit = 1
+
+as
+
+if @Admin = 1
+begin
+  select ModuleDefID,
+         FriendlyName,
+         Description,
+         'IsPremium' = case when IsPremium = 1 then 'Y' else 'N' end
+  from   ModuleDefinitions
+  where  AdminOrder is null
+  and    DesktopSrc is not null
+  order  by FriendlyName
+end
+else
+begin
+  select distinct(ModuleDefinitions.ModuleDefID),
+         ModuleDefinitions.FriendlyName,
+         ModuleDefinitions.Description
+  from   ModuleDefinitions
+  left outer join PortalModuleDefinitions on ModuleDefinitions.ModuleDefID = PortalModuleDefinitions.ModuleDefID
+  where  AdminOrder is null
+  and    DesktopSrc is not null
+  and    ( ModuleDefinitions.IsPremium = 0 or (PortalId = @PortalId and PortalModuleDefinitionId is not null))
+  order  by FriendlyName
+end
+
+GO
+
+drop procedure dbo.GetPortalModuleDefinitions
+GO
+
+create procedure dbo.GetPortalModuleDefinitions
+
+@PortalID int
+
+as
+
+select distinct(ModuleDefinitions.ModuleDefID),
+       'Subscribed' = case when (PortalId = @PortalID and PortalModuleDefinitionId is not null) then 1 else 0 end,
+       ModuleDefinitions.FriendlyName,
+       ModuleDefinitions.Description,
+       PortalModuleDefinitions.HostFee
+from   ModuleDefinitions
+left outer join PortalModuleDefinitions on ModuleDefinitions.ModuleDefID = PortalModuleDefinitions.ModuleDefID
+where  ModuleDefinitions.IsPremium = 1
+order  by FriendlyName
+
+GO
+
+ALTER TABLE dbo.Tabs ADD CONSTRAINT
+	IX_Tabs UNIQUE NONCLUSTERED 
+	(
+	PortalID,
+	TabName
+	) ON [PRIMARY]
+GO
+
+update Tabs
+set    TabName = 'User Accounts'
+where  TabName = 'Manage Users'
+GO
+
+update ModuleDefinitions
+set    FriendlyName = 'User Accounts'
+where  FriendlyName = 'Manage Users'
+GO
+
+drop procedure dbo.GetTabByName
+GO
+
+create procedure dbo.GetTabByName
+
+@TabName  nvarchar(50),
+@PortalID int = null
+
+as
+
+if @PortalID is null
+begin
+  select TabID,
+         TabOrder
+  from   Tabs
+  where  TabName = @TabName
+  and    PortalID is null
+end
+else
+begin
+  select TabID,
+         TabOrder
+  from   Tabs
+  where  TabName = @TabName
+  and    PortalID = @PortalID
+end
+
+GO
+
+exec updateHostSetting 'FileExtensions', 'jpg,jpeg,jpe,gif,bmp,png,doc,xls,ppt,pdf,txt,xml,xsl,css'
+GO
+
+drop procedure dbo.GetContacts
+GO
+
+create procedure dbo.GetContacts
+
+@ModuleID int
+
+as
+
+select ItemID,
+       CreatedDate,
+       CreatedByUser,
+       Name,
+       Role,
+       Email,
+       Contact1,
+       Contact2
+from   Contacts
+where  ModuleID = @ModuleID
+order by Name
+GO
+
+ALTER TABLE dbo.Modules ADD
+	Container nvarchar(1000) NULL
+GO
+
+drop procedure dbo.UpdateModule
+GO
+
+create procedure dbo.UpdateModule
+
+@ModuleID       int,
+@ModuleTitle    nvarchar(256),
+@Alignment      nvarchar(10),
+@Color          nvarchar(20),
+@Border         nvarchar(1),
+@IconFile       nvarchar(100),
+@CacheTime      int,
+@ViewRoles      nvarchar(256),
+@EditRoles      nvarchar(256),
+@ShowMobile     bit,
+@TabId          int,
+@AllTabs        bit,
+@ShowTitle      bit,
+@Personalize    int,
+@Container      nvarchar(1000)
+
+as
+
+declare @OldTabId int
+declare @ModuleOrder int
+
+select @OldTabId = TabId
+from   Modules
+where  ModuleID = @ModuleID
+
+update Modules
+set    ModuleTitle = @ModuleTitle,
+       CacheTime   = @CacheTime,
+       ShowMobile  = @ShowMobile,
+       AuthorizedViewRoles = @ViewRoles,
+       AuthorizedEditRoles = @EditRoles,
+       Alignment = @Alignment,
+       Color = @Color,
+       Border = @Border,
+       IconFile = @IconFile,
+       TabId = @TabId,
+       AllTabs = @AllTabs,
+       ShowTitle = @ShowTitle,
+       Personalize = @Personalize,
+       Container = @Container
+where  ModuleID = @ModuleID
+
+if @OldTabId <> @TabId
+begin
+  select @ModuleOrder = max(ModuleOrder) + 2
+  from   Modules
+  where  TabID = @TabId
+  and    PaneName = 'ContentPane'
+
+  if @ModuleOrder is null
+    select @ModuleOrder = 1
+
+  update Modules
+  set    PaneName = 'ContentPane',
+         ModuleOrder = @ModuleOrder
+  where  ModuleId = @ModuleId
+end
+
+if @AllTabs = 1
+begin
+  update Modules
+  set    ModuleOrder = 0
+  where  ModuleId = @ModuleId
+end
+GO
+
+drop procedure dbo.CopyTab
+GO
+
+create procedure dbo.CopyTab
+
+@FromTabId       int,
+@ToTabId         int
+
+as
+
+declare @ModuleId int
+
+select @ModuleId = min(ModuleId)
+from   Modules
+where  TabId = @FromTabId
+while @ModuleId is not null
+begin
+  insert into Modules ( TabId, ModuleDefID, ModuleOrder, PaneName, ModuleTitle, AuthorizedEditRoles, CacheTime, ShowMobile, AuthorizedViewRoles, Alignment, Color, Border, IconFile, AllTabs, ShowTitle, Personalize, Container )
+    select @ToTabId, ModuleDefID, ModuleOrder, PaneName, ModuleTitle, AuthorizedEditRoles, CacheTime, ShowMobile, AuthorizedViewRoles, Alignment, Color, Border, IconFile, AllTabs, ShowTitle, Personalize, Container
+    from   Modules
+    where  ModuleId = @ModuleId
+
+  select @ModuleId = min(ModuleId)
+  from   Modules
+  where  TabId = @FromTabId
+  and    ModuleId > @ModuleId
+end
+GO
+
+ALTER TABLE dbo.ModuleSettings
+	DROP CONSTRAINT FK_ModuleSettings_Modules
+GO
+
+CREATE TABLE dbo.Tmp_ModuleSettings
+	(
+	ModuleID int NOT NULL,
+	SettingName nvarchar(50) NOT NULL,
+	SettingValue nvarchar(2000) NOT NULL
+	)  ON [PRIMARY]
+GO
+
+IF EXISTS(SELECT * FROM dbo.ModuleSettings)
+	 EXEC('INSERT INTO dbo.Tmp_ModuleSettings (ModuleID, SettingName, SettingValue) SELECT ModuleID, SettingName, SettingValue FROM dbo.ModuleSettings TABLOCKX')
+GO
+
+DROP TABLE dbo.ModuleSettings
+GO
+
+EXECUTE sp_rename N'dbo.Tmp_ModuleSettings', N'ModuleSettings', 'OBJECT'
+GO
+
+CREATE NONCLUSTERED INDEX IX_ModuleSettings ON dbo.ModuleSettings
+	(
+	ModuleID,
+	SettingName
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE dbo.ModuleSettings WITH NOCHECK ADD CONSTRAINT
+	FK_ModuleSettings_Modules FOREIGN KEY
+	(
+	ModuleID
+	) REFERENCES dbo.Modules
+	(
+	ModuleID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+GO
+
+drop procedure dbo.UpdateModuleSetting
+GO
+
+create procedure dbo.UpdateModuleSetting
+
+@ModuleID      int,
+@SettingName   nvarchar(50),
+@SettingValue  nvarchar(2000)
+
+as
+
+if not exists ( select * from ModuleSettings where ModuleID = @ModuleID and SettingName = @SettingName )
+begin
+  insert into ModuleSettings (
+    ModuleID,
+    SettingName,
+    SettingValue
+  ) 
+  values (
+    @ModuleID,
+    @SettingName,
+    @SettingValue
+  )
+end
+else
+begin
+  update ModuleSettings
+  set SettingValue = @SettingValue
+  where ModuleID = @ModuleID
+  and SettingName = @SettingName
+end
+
+GO
+
+declare @PortalId int
+declare @ModuleId int
+
+select @PortalId = min(PortalId)
+from Portals
+while @PortalId is not null
+begin
+  select @ModuleId = ModuleId
+  from   Modules
+  inner join Tabs on Modules.TabId = Tabs.TabId
+  inner join ModuleDefinitions on Modules.ModuleDefId = ModuleDefinitions.ModuleDefId
+  where  Tabs.PortalID = @PortalId
+  and    ModuleDefinitions.FriendlyName = 'Site Settings'
+
+  exec UpdateModuleSetting @ModuleId, 'container', '<table cellpadding="2" cellspacing="0" width="100%"[COLOR][BORDER]><tr><td[ALIGN]>[MODULE]</td></tr></table>'
+
+  select @PortalId = min(PortalId)
+  from Portals
+  where PortalId > @PortalId
+end
+GO
+
+create procedure dbo.UpdatePortalModules
+
+@PortalID int
+
+as
+
+update Modules
+set    Container = null
+from   Modules, Tabs
+where  Modules.TabId = Tabs.TabId
+and    Tabs.PortalId = @PortalId 
+
+GO
+
+ALTER TABLE dbo.Vendors ADD CONSTRAINT
+	IX_Vendors UNIQUE NONCLUSTERED 
+	(
+	PortalId, VendorName
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE dbo.Vendors ADD
+	Authorized bit NOT NULL CONSTRAINT DF_Vendors_Authorized DEFAULT 1,
+	FirstName nvarchar(50) NULL,
+	LastName nvarchar(50) NULL
+GO
+
+update Vendors
+set    Authorized = 1
+GO
+
+update Vendors
+set    FirstName = Contact
+GO
+
+ALTER TABLE dbo.Vendors
+	DROP COLUMN Contact
+GO
+
+drop procedure dbo.AddVendor
+GO
+
+create procedure dbo.AddVendor
+
+@PortalID 	int,
+@VendorName 	nvarchar(50),
+@Unit    	nvarchar(50),
+@Street 	nvarchar(50),
+@City		nvarchar(50),
+@Region	        nvarchar(50),
+@Country	nvarchar(50),
+@PostalCode	nvarchar(50),
+@Telephone	nvarchar(50),
+@Fax   	        nvarchar(50),
+@Email    	nvarchar(50),
+@Website	nvarchar(100),
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@UserName       nvarchar(100),
+@LogoFile       nvarchar(100),
+@KeyWords       text,
+@Authorized     bit,
+@VendorID	int OUTPUT
+
+as
+
+if exists ( select 1 from Vendors where VendorName = @VendorName and Authorized = 0 )
+begin
+  delete
+  from   Vendors
+  where  VendorName = @VendorName
+end
+
+insert into Vendors (
+  VendorName,
+  Unit,
+  Street,
+  City,
+  Region,
+  Country,
+  PostalCode,
+  Telephone,
+  PortalId,
+  Fax,
+  Email,
+  Website,
+  FirstName,
+  Lastname,
+  ClickThroughs,
+  Views,
+  CreatedByUser,
+  CreatedDate,
+  LogoFile,
+  KeyWords,
+  Authorized
+)
+values (
+  @VendorName,
+  @Unit,
+  @Street,
+  @City,
+  @Region,
+  @Country,
+  @PostalCode,
+  @Telephone,
+  @PortalID,
+  @Fax,
+  @Email,
+  @Website,
+  @FirstName,
+  @LastName,
+  0,
+  0,
+  @UserName,
+  getdate(), 
+  @LogoFile,
+  @KeyWords,
+  @Authorized
+)
+
+select @VendorID = @@IDENTITY
+GO
+
+drop procedure dbo.GetSingleVendor
+GO
+
+create procedure dbo.GetSingleVendor
+
+@VendorID int
+
+as
+
+select Vendors.VendorName, 
+       Vendors.Unit, 
+       Vendors.Street, 
+       Vendors.City, 
+       Vendors.Region, 
+       Vendors.Country, 
+       Vendors.PostalCode, 
+       Vendors.Telephone,
+       Vendors.Fax,
+       Vendors.Email,
+       Vendors.Website,
+       Vendors.FirstName,
+       Vendors.LastName,
+       Vendors.ClickThroughs,
+       Vendors.Views,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Vendors.CreatedDate,
+       Vendors.LogoFile,
+       Vendors.KeyWords,
+       Vendors.Authorized
+from   Vendors
+left outer join Users on Vendors.CreatedByUser = Users.UserID
+where  VendorID = @VendorID
+
+GO
+
+drop procedure dbo.GetVendors
+GO
+
+create procedure dbo.GetVendors
+
+@PortalId int,
+@Filter   nvarchar(1)
+
+as
+
+if @Filter = '-'
+begin
+  if @PortalId is null
+  begin
+    select VendorID,
+           VendorName,
+           Unit, 
+           Street, 
+           City, 
+           Region, 
+           Country, 
+           PostalCode, 
+           Telephone,
+           Fax,
+           Email,
+           Website,
+           FirstName,
+           LastName,
+           ClickThroughs,
+           Views,
+           'Authorized' = case when Authorized = 1 then 'Y' else 'N' end,         
+           'Banners' = ( select count(*) from Banners where Banners.VendorId = Vendors.VendorId )
+    from   Vendors
+    where  PortalId is null
+    and    Authorized = 0
+    order  by VendorName
+  end
+  else
+  begin
+    select VendorID,
+           VendorName,
+           Unit, 
+           Street, 
+           City, 
+           Region, 
+           Country, 
+           PostalCode, 
+           Telephone,
+           Fax,
+           Email,
+           Website,
+           FirstName,
+           LastName,
+           ClickThroughs,
+           Views,
+           'Authorized' = case when Authorized = 1 then 'Y' else 'N' end,         
+           'Banners' = ( select count(*) from Banners where Banners.VendorId = Vendors.VendorId )
+    from   Vendors
+    where  PortalId = @PortalId
+    and    Authorized = 0
+    order  by VendorName
+  end
+end
+else
+begin
+  if @PortalId is null
+  begin
+    select VendorID,
+           VendorName,
+           Unit, 
+           Street, 
+           City, 
+           Region, 
+           Country, 
+           PostalCode, 
+           Telephone,
+           Fax,
+           Email,
+           Website,
+           FirstName,
+           LastName,
+           ClickThroughs,
+           Views,
+           'Authorized' = case when Authorized = 1 then 'Y' else 'N' end,         
+           'Banners' = ( select count(*) from Banners where Banners.VendorId = Vendors.VendorId )
+    from   Vendors
+    where  PortalId is null
+    and    VendorName like @Filter + '%'
+    order  by VendorName
+  end
+  else
+  begin
+    select VendorID,
+           VendorName,
+           Unit, 
+           Street, 
+           City, 
+           Region, 
+           Country, 
+           PostalCode, 
+           Telephone,
+           Fax,
+           Email,
+           Website,
+           FirstName,
+           LastName,
+           ClickThroughs,
+           Views,
+           'Authorized' = case when Authorized = 1 then 'Y' else 'N' end,         
+           'Banners' = ( select count(*) from Banners where Banners.VendorId = Vendors.VendorId )
+    from   Vendors
+    where  PortalId = @PortalId
+    and    VendorName like @Filter + '%'
+    order  by VendorName
+  end
+end
+
+return 1
+
+GO
+
+drop procedure dbo.GetVendorClickThrough
+GO
+
+create procedure dbo.GetVendorClickThrough
+
+@VendorId int
+
+as
+
+update Vendors
+set    ClickThroughs = ClickThroughs + 1
+where  VendorId = @VendorId
+
+select VendorID,
+       VendorName,
+       Unit, 
+       Street, 
+       City, 
+       Region, 
+       Country, 
+       PostalCode, 
+       Telephone,
+       Fax,
+       Email,
+       Website,
+       FirstName,
+       LastName
+from   Vendors
+where  VendorId = @VendorId
+
+GO
+
+drop procedure dbo.UpdateVendor
+GO
+
+create procedure dbo.UpdateVendor
+
+@VendorID	int,
+@VendorName 	nvarchar(50),
+@Unit	 	nvarchar(50),
+@Street 	nvarchar(50),
+@City		nvarchar(50),
+@Region	        nvarchar(50),
+@Country	nvarchar(50),
+@PostalCode	nvarchar(50),
+@Telephone	nvarchar(50),
+@Fax		nvarchar(50),
+@Email		nvarchar(50),
+@Website	nvarchar(100),
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@UserName       nvarchar(100),
+@LogoFile       nvarchar(100),
+@KeyWords       text,
+@Authorized     bit
+
+as
+
+update Vendors
+set    VendorName    = @VendorName,
+       Unit          = @Unit,
+       Street        = @Street,
+       City          = @City,
+       Region        = @Region,
+       Country       = @Country,
+       PostalCode    = @PostalCode,
+       Telephone     = @Telephone,
+       Fax           = @Fax,
+       Email         = @Email,
+       Website       = @Website,
+       FirstName     = @FirstName,
+       LastName      = @LastName,
+       CreatedByUser = @UserName,
+       CreatedDate   = getdate(),
+       LogoFile      = @LogoFile,
+       KeyWords      = @KeyWords,
+       Authorized    = @Authorized
+where  VendorId = @VendorId
+
+GO
+
+drop procedure dbo.FindVendors
+GO
+
+create procedure dbo.FindVendors
+
+@DisplayPortalId  int,
+@SelectPortalId   int = null,
+@Search           nvarchar(200) = null
+
+as
+
+if @Search is not null
+begin
+  insert VendorSearch (
+    PortalId,
+    DateTime,
+    Search
+  )
+  values (
+    @DisplayPortalId,
+    getdate(),
+    @Search
+  )
+end
+
+if @SelectPortalId is null
+begin
+  update Vendors
+  set    Views = Views + 1
+  where  VendorId in (
+    select distinct Vendors.VendorId
+    from Vendors
+    left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+    left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+    where  PortalId is null
+    and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+    and    Authorized = 1
+  )
+
+  insert VendorLog ( VendorId, DateTime, PortalId, BannerId, Search ) 
+    select distinct Vendors.VendorId, getdate(), @DisplayPortalId, null, @Search
+    from   Vendors
+    left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+    left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+    where  PortalId is null
+    and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+    and    Authorized = 1
+
+  select distinct Vendors.VendorId,
+         VendorName,
+         Unit,
+         Street,
+         City,
+         Region,
+         Country,
+         PostalCode,
+         Telephone,
+         PortalId,
+         Fax,
+         Email,
+         Website,
+         FirstName,
+         LastName,
+         LogoFile,
+         'Feedback' = ( select sum(Value) from VendorFeedback where VendorFeedback.VendorId = Vendors.VendorId )
+  from   Vendors
+  left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+  left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+  where  PortalId is null
+  and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+  and    Authorized = 1
+end
+else
+begin
+  update Vendors
+  set    Views = Views + 1
+  where  VendorId in (
+    select distinct Vendors.VendorId
+    from Vendors
+    left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+    left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+    where  PortalId = @SelectPortalId
+    and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+    and    Authorized = 1
+  )
+
+  insert VendorLog ( VendorId, DateTime, PortalId, BannerId, Search ) 
+    select distinct Vendors.VendorId, getdate(), @DisplayPortalId, null, @Search
+    from   Vendors
+    left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+    left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+    where  PortalId = @SelectPortalId
+    and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+    and    Authorized = 1
+
+  select distinct Vendors.VendorId,
+         VendorName,
+         Unit,
+         Street,
+         City,
+         Region,
+         Country,
+         PostalCode,
+         Telephone,
+         PortalId,
+         Fax,
+         Email,
+         Website,
+         FirstName,
+         LastName,
+         LogoFile,
+         'Feedback' = ( select sum(Value) from VendorFeedback where VendorFeedback.VendorId = Vendors.VendorId )
+  from   Vendors
+  left outer join VendorClassification on Vendors.VendorId = VendorClassification.VendorId
+  left outer join Classification on VendorClassification.ClassificationId = Classification.ClassificationId
+  where  PortalId = @SelectPortalId
+  and    (VendorName like '%' + @Search + '%' or KeyWords like '%' + @Search + '%' or ClassificationName like '%' + @Search + '%')
+  and    Authorized = 1
+end
+
+return 1
+
+GO
+
+ALTER TABLE dbo.Roles ADD
+	BillingPeriod int NULL,
+	TrialFee money NULL,
+	IsPublic bit NOT NULL CONSTRAINT DF_Roles_IsPublic DEFAULT 0,
+	AutoAssignment bit NOT NULL CONSTRAINT DF_Roles_AutoAssignment DEFAULT 0
+GO
+
+update Roles
+set    AutoAssignment = 1
+where  RoleName = 'Registered Users'
+GO
+
+insert into CodeFrequency ( Code, Description ) values ( 'N', 'None' )
+GO
+update Roles set BillingFrequency = 'N' where BillingFrequency = '0'
+GO
+update Roles set TrialFrequency = 'N' where TrialFrequency = '0'
+GO
+delete from CodeFrequency where Code = '0'
+GO
+
+insert into CodeFrequency ( Code, Description ) values ( 'O', 'One-time Fee' )
+GO
+update Roles set BillingFrequency = 'O' where BillingFrequency = '1'
+GO
+update Roles set TrialFrequency = 'O' where TrialFrequency = '1'
+GO
+delete from CodeFrequency where Code = '1'
+GO
+
+insert into CodeFrequency ( Code, Description ) values ( 'D', 'Day(s)' )
+GO
+update Roles set BillingFrequency = 'D' where BillingFrequency = '2'
+GO
+update Roles set TrialFrequency = 'D' where TrialFrequency = '2'
+GO
+delete from CodeFrequency where Code = '2'
+GO
+
+insert into CodeFrequency ( Code, Description ) values ( 'W', 'Week(s)' )
+GO
+update Roles set BillingFrequency = 'W' where BillingFrequency = '3'
+GO
+update Roles set TrialFrequency = 'W' where TrialFrequency = '3'
+GO
+delete from CodeFrequency where Code = '3'
+GO
+
+insert into CodeFrequency ( Code, Description ) values ( 'M', 'Month(s)' )
+GO
+update Roles set BillingFrequency = 'M' where BillingFrequency = '4'
+GO
+update Roles set TrialFrequency = 'M' where TrialFrequency = '4'
+GO
+delete from CodeFrequency where Code = '4'
+GO
+
+insert into CodeFrequency ( Code, Description ) values ( 'Y', 'Year(s)' )
+GO
+update Roles set BillingFrequency = 'Y' where BillingFrequency = '5'
+GO
+update Roles set TrialFrequency = 'Y' where TrialFrequency = '5'
+GO
+delete from CodeFrequency where Code = '5'
+GO
+
+update Roles
+set    ServiceFee = 0
+where  ServiceFee is null
+GO
+
+update Roles
+set    BillingPeriod = 1
+where  BillingPeriod is null
+GO
+
+update Roles
+set    BillingFrequency = 'N'
+where  BillingFrequency is null
+GO
+
+update Roles
+set    TrialFee = 0
+where  TrialFee is null
+GO
+
+update Roles
+set    TrialPeriod = 1
+where  TrialPeriod is null
+GO
+
+update Roles
+set    TrialFrequency = 'N'
+where  TrialFrequency is null
+GO
+
+update Roles
+set    IsPublic = 1
+where  ServiceFee <> 0
+GO
+
+drop procedure dbo.AddRole
+GO
+
+create procedure dbo.AddRole
+
+@PortalID         int,
+@RoleName         nvarchar(50),
+@Description      nvarchar(1000),
+@ServiceFee       money,
+@BillingPeriod    int,
+@BillingFrequency char(1),
+@TrialFee         money,
+@TrialPeriod      int,
+@TrialFrequency   char(1),
+@IsPublic         bit,
+@AutoAssignment   bit
+
+as
+
+declare @RoleId int
+declare @UserId int
+
+insert into Roles(
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingPeriod,
+  BillingFrequency,
+  TrialFee,
+  TrialPeriod,
+  TrialFrequency,
+  IsPublic,
+  AutoAssignment
+)
+values (
+  @PortalID,
+  @RoleName,
+  @Description,
+  @ServiceFee,
+  @BillingPeriod,
+  @BillingFrequency,
+  @TrialFee,
+  @TrialPeriod,
+  @TrialFrequency,
+  @IsPublic,
+  @AutoAssignment
+)
+
+select @RoleId = @@IDENTITY
+
+If @RoleId is not null and @AutoAssignment = 1
+begin
+  select @UserId = min(UserId)
+  from   UserPortals
+  where  PortalId = @PortalId
+  While @UserId is not null
+  begin
+    if not exists ( select 1 from UserRoles where UserId = @UserId and RoleId = @RoleId )
+    begin
+      insert into UserRoles (
+        UserID,
+        RoleID,
+        ExpiryDate,
+        IsTrialUsed
+      )
+      values (
+        @UserID,
+        @RoleID,
+        null,
+        0 
+      )
+    end
+    select @UserId = min(UserId)
+    from   UserPortals
+    where  PortalId = @PortalId
+    and    UserId > @UserId
+  end  
+end
+
+GO
+
+drop procedure dbo.GetPortalRoles
+GO
+
+create procedure dbo.GetPortalRoles
+
+@PortalID     int
+
+as
+
+select Roles.RoleID,
+       Roles.RoleName,
+       Roles.Description,
+       'ServiceFee' = case when convert(int,Roles.ServiceFee) <> 0 then Roles.ServiceFee else null end,
+       'BillingPeriod' = case when convert(int,Roles.ServiceFee) <> 0 then Roles.BillingPeriod else null end,
+       'BillingFrequency' = case when convert(int,Roles.ServiceFee) <> 0 then C1.Description else '' end,
+       'TrialFee' = case when Roles.TrialFrequency <> 'N' then Roles.TrialFee else null end,
+       'TrialPeriod' = case when Roles.TrialFrequency <> 'N' then Roles.TrialPeriod else null end,
+       'TrialFrequency' = case when Roles.TrialFrequency <> 'N' then C2.Description else '' end,
+       'IsPublic' = case when Roles.IsPublic = 1 then 'Y' else 'N' end,
+       'AutoAssignment' = case when Roles.AutoAssignment = 1 then 'Y' else 'N' end
+from   Roles
+left outer join CodeFrequency C1 on Roles.BillingFrequency = C1.Code
+left outer join CodeFrequency C2 on Roles.TrialFrequency = C2.Code
+where  PortalID = @PortalID
+or     PortalID is null
+order by Roles.RoleName
+
+GO
+
+drop procedure dbo.GetServices
+GO
+
+create procedure dbo.GetServices
+    
+@PortalId  int,
+@UserId    int = null
+
+as
+
+select RoleID,
+       Roles.RoleName,
+       Roles.Description,
+       'ServiceFee' = case when convert(int,Roles.ServiceFee) <> 0 then Roles.ServiceFee else null end,
+       'BillingPeriod' = case when convert(int,Roles.ServiceFee) <> 0 then Roles.BillingPeriod else null end,
+       'BillingFrequency' = case when convert(int,Roles.ServiceFee) <> 0 then C1.Description else '' end,
+       'TrialFee' = case when Roles.TrialFrequency <> 'N' then Roles.TrialFee else null end,
+       'TrialPeriod' = case when Roles.TrialFrequency <> 'N' then Roles.TrialPeriod else null end,
+       'TrialFrequency' = case when Roles.TrialFrequency <> 'N' then C2.Description else '' end,
+       'ExpiryDate' = ( select ExpiryDate from UserRoles where UserRoles.RoleId = Roles.RoleID and UserRoles.UserID = @UserID ),
+       'Subscribed' = ( select UserRoleId from UserRoles where UserRoles.RoleId = Roles.RoleID and UserRoles.UserID = @UserID )
+from   Roles
+inner join CodeFrequency C1 on Roles.BillingFrequency = C1.Code
+left outer join CodeFrequency C2 on Roles.TrialFrequency = C2.Code
+where  Roles.PortalId = @PortalId
+and    Roles.IsPublic = 1
+
+GO
+
+drop procedure dbo.GetSingleRole
+GO
+
+create procedure dbo.GetSingleRole
+
+@RoleID   int
+
+as
+
+select RoleId,
+       PortalId,
+       RoleName,
+       Description,
+       ServiceFee,
+       BillingPeriod,
+       BillingFrequency,
+       TrialFee,
+       TrialPeriod,
+       TrialFrequency,
+       IsPublic,
+       AutoAssignment
+from   Roles
+where  RoleID = @RoleID
+
+GO
+
+drop procedure dbo.UpdateRole
+GO
+
+create procedure dbo.UpdateRole
+
+@RoleID           int,
+@RoleName         nvarchar(50),
+@Description      nvarchar(1000),
+@ServiceFee       money,
+@BillingPeriod    int,
+@BillingFrequency char(1),
+@TrialFee         money,
+@TrialPeriod      int,
+@TrialFrequency   char(1),
+@IsPublic         bit,
+@AutoAssignment   bit
+
+as
+
+declare @UserId int
+declare @PortalId int
+
+update Roles
+set    RoleName = @RoleName,
+       Description = @Description,
+       ServiceFee = @ServiceFee,
+       BillingPeriod = @BillingPeriod,
+       BillingFrequency = @BillingFrequency,
+       TrialFee = @TrialFee,
+       TrialPeriod = @TrialPeriod,
+       TrialFrequency = @TrialFrequency,
+       IsPublic = @IsPublic,
+       AutoAssignment = @AutoAssignment
+where  RoleID = @RoleID
+
+If @AutoAssignment = 1
+begin
+  select @PortalId  = PortalId
+  from   Roles
+  where  RoleId = @RoleId
+
+  select @UserId = min(UserId)
+  from   UserPortals
+  where  PortalId = @PortalId
+  While @UserId is not null
+  begin
+    if not exists ( select 1 from UserRoles where UserId = @UserId and RoleId = @RoleId )
+    begin
+      insert into UserRoles (
+        UserID,
+        RoleID,
+        ExpiryDate,
+        IsTrialUsed
+      )
+      values (
+        @UserID,
+        @RoleID,
+        null,
+        0 
+      )
+    end
+    select @UserId = min(UserId)
+    from   UserPortals
+    where  PortalId = @PortalId
+    and    UserId > @UserId
+  end  
+end
+
+GO
+
+drop procedure dbo.AddPortalInfo
+GO
+
+create procedure dbo.AddPortalInfo
+
+@PortalName         nvarchar(128),
+@PortalAlias        nvarchar(200),
+@Currency           char(3) = null,
+@FirstName          nvarchar(100),
+@LastName           nvarchar(100),
+@Username           nvarchar(100),
+@Password           nvarchar(50),
+@Email              nvarchar(100),
+@ExpiryDate         datetime = null,
+@HostFee            money = 0,
+@HostSpace          int = null,
+@SiteLogHistory     int = null,
+@PortalID           int OUTPUT
+
+as
+
+declare @AdminOrder int
+declare @ModuleDefId int
+declare @FriendlyName nvarchar(128)
+declare @PaneName nvarchar(50)
+declare @TabId int
+declare @TabOrder int
+declare @ChildTabId int
+declare @RoleId int
+declare @UserId int
+declare @AdministratorRoleId int
+declare @RegisteredRoleId    int
+declare @ModuleId int
+
+begin transaction
+
+insert into Portals (
+  PortalName,
+  PortalAlias,
+  LogoFile,
+  FooterText,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  AdministratorId,
+  HostFee,
+  HostSpace,
+  AdministratorRoleId,
+  RegisteredRoleId,
+  Description,
+  KeyWords,
+  BackgroundFile
+)
+values (
+  @PortalName,
+  @PortalAlias,
+  null,
+  null,
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  null,
+  @HostFee,
+  @HostSpace,
+  null,
+  null,
+  @PortalName,
+  @PortalName,
+  null
+)
+
+select @PortalID = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingPeriod,
+  BillingFrequency,
+  TrialFee,
+  TrialPeriod,
+  TrialFrequency,
+  IsPublic,
+  AutoAssignment
+)
+values (
+  @PortalID,
+  'Administrators',
+  'Portal Administration',
+  null,
+  null,
+  'M',
+  null,
+  null,
+  'N',
+  0,
+  0
+)
+
+select @AdministratorRoleId = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingPeriod,
+  BillingFrequency,
+  TrialFee,
+  TrialPeriod,
+  TrialFrequency,
+  IsPublic,
+  AutoAssignment
+)
+values (
+  @PortalID,
+  'Registered Users',
+  'Registered Users',
+  null,
+  null,
+  'N',
+  null,
+  null,
+  'N',
+  0,
+  1
+)
+
+select @RegisteredRoleId = @@IDENTITY
+
+select @TabOrder = 1
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    AdministratorRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    Level
+) 
+values (
+    @PortalID,
+    @TabOrder,
+    'Home',
+    '-1;',
+    null,
+    'Home',
+    1,
+    '200',
+    '200',
+    1,
+    null,
+    null,
+    0
+)
+
+select @TabOrder = @TabOrder + 2
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    AdministratorRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    Level
+) 
+values (
+    @PortalID,
+    @TabOrder,
+    'Admin',
+    convert(varchar,@AdministratorRoleId) + ';',
+    null,
+    'Admin',
+    0,
+    '200',
+    '200',
+    1,
+    null,
+    null,
+    0
+)
+
+select @TabId = @@IDENTITY
+
+select @AdminOrder = min(AdminOrder)
+from   ModuleDefinitions
+where  AdminOrder is not null
+and    AdminOrder > 0
+while @AdminOrder is not null
+begin
+  select @ModuleDefId = ModuleDefId,
+         @FriendlyName = FriendlyName
+  from   ModuleDefinitions
+  where  AdminOrder = @AdminOrder
+
+  select @TabOrder = @TabOrder + 2
+
+  insert into Tabs (
+    TabOrder,
+    PortalID,
+    TabName,
+    MobileTabName,
+    AuthorizedRoles,
+    AdministratorRoles,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    Level
+  )
+  values (
+    @TabOrder,
+    @PortalID,
+    @FriendlyName,
+    '',
+    convert(varchar,@AdministratorRoleId) + ';',
+    convert(varchar,@AdministratorRoleId) + ';',
+    0,
+    '200',
+    '200',
+    1,
+    @TabID,
+    null,
+    1      
+  )
+
+  select @ChildTabId = @@IDENTITY
+
+  insert Modules ( 
+    TabID,
+    ModuleDefID,
+    ModuleOrder,
+    PaneName,
+    ModuleTitle,
+    AuthorizedEditRoles,
+    CacheTime,
+    ShowMobile
+  )
+  values (
+    @ChildTabId,
+    @ModuleDefId,
+    1,
+    'ContentPane',
+    @FriendlyName,
+    convert(varchar,@AdministratorRoleId) + ';',
+    0,
+    0
+  )
+
+  select @ModuleId = @@IDENTITY
+
+  if @FriendlyName = 'Site Settings'
+  begin
+    exec UpdateModuleSetting @ModuleId, 'container', '<table cellpadding="2" cellspacing="0" width="100%"[COLOR][BORDER]><tr><td[ALIGN]>[MODULE]</td></tr></table>'
+  end
+
+  select @AdminOrder = min(AdminOrder)
+  from   ModuleDefinitions
+  where  AdminOrder is not null
+  and    AdminOrder > @AdminOrder
+end 
+
+select @UserId = null
+
+select @UserId = UserId
+from   Users
+where  Username = @Username
+
+if @UserId is null
+begin
+  insert into Users (
+    FirstName,
+    LastName,
+    Username, 
+    Password,
+    Email
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Username,
+    @Password,
+    @Email
+  )
+
+  select @UserId = @@IDENTITY
+end
+
+insert into UserPortals (
+  UserId,
+  PortalId,
+  Authorized,
+  CreatedDate,
+  LastLoginDate
+)
+values (
+  @UserId,
+  @PortalID,
+  1,
+  getdate(),
+  getdate()
+)
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @AdministratorRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @AdministratorRoleId, /* Administrators */
+    null
+  )
+end
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @RegisteredRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @RegisteredRoleId, /* Registered */
+    null
+  )
+end
+
+update Portals
+set    AdministratorId = @UserId,
+       AdministratorRoleId = @AdministratorRoleId,
+       RegisteredRoleId = @RegisteredRoleId
+where  PortalID = @PortalID
+
+if @@error <> 0
+  rollback transaction
+else
+  commit transaction
+
+GO
+
+drop procedure dbo.AddUser
+GO
+
+create procedure dbo.AddUser
+
+@PortalId       int,
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@Unit		nvarchar(50),
+@Street		nvarchar(50),
+@City		nvarchar(50),
+@Region		nvarchar(50),
+@PostalCode	nvarchar(50),
+@Country	nvarchar(50),
+@Telephone      nvarchar(50),
+@Email		nvarchar(100),
+@Username	nvarchar(100),
+@Password	nvarchar(50),
+@Authorized     bit,
+@UserID	int	OUTPUT
+
+as
+
+declare @RoleID int
+
+select @UserID = null
+
+select	@UserID = UserID
+from 	Users
+where	Username = @Username 
+and     Password = @Password
+
+if @UserID is null
+begin
+  insert into Users (
+    FirstName,
+    LastName,
+    Unit, 
+    Street, 
+    City,
+    Region, 
+    PostalCode,
+    Country,
+    Telephone,
+    Email,
+    Username,
+    Password
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Unit,
+    @Street,
+    @City,
+    @Region,
+    @PostalCode,
+    @Country,
+    @Telephone,
+    @Email,
+    @Username,
+    @Password
+  )
+
+  select @UserID = @@IDENTITY
+end
+
+if @UserId is not null
+begin
+  if not exists ( select 1 from UserPortals where UserId = @UserId and PortalId = @PortalId ) 
+  begin
+    insert into UserPortals (
+      UserId,
+      PortalId,
+      Authorized,
+      CreatedDate
+    )
+    values (
+      @UserId,
+      @PortalId,
+      @Authorized,
+      getdate()
+    )
+  end
+
+  select @RoleID = min(RoleID)
+  from   Roles
+  where  PortalID = @PortalID
+  and    AutoAssignment = 1
+  while @RoleID is not null
+  begin
+    if not exists ( select 1 from UserRoles where UserId = @UserId and RoleId = @RoleId )
+    begin
+      insert into UserRoles (
+        UserID,
+        RoleID,
+        ExpiryDate,
+        IsTrialUsed
+      )
+      values (
+        @UserID,
+        @RoleID,
+        null,
+        0 
+      )
+    end
+
+    select @RoleID = min(RoleID)
+    from   Roles
+    where  PortalID = @PortalID
+    and    AutoAssignment = 1
+    and    RoleID > @RoleID
+  end
+end
+
+GO
+
+drop procedure dbo.UpdateService
+GO
+
+create procedure dbo.UpdateService
+    
+@UserId       int,
+@RoleId       int,
+@Cancel       bit
+
+as
+
+declare @Trial char(1)
+declare @ExpiryDate datetime
+declare @IsTrialUsed bit
+declare @Period int
+declare @Frequency char(1)
+
+if @Cancel = 1
+begin
+  delete
+  from   UserRoles
+  where  UserId = @UserId
+  and    RoleId = @RoleId
+end
+else
+begin
+  select @Trial = TrialFrequency
+  from   Roles
+  where  RoleId = @RoleId
+
+  select @ExpiryDate = ExpiryDate,
+         @IsTrialUsed = IsTrialUsed
+  from   UserRoles
+  where  UserId = @UserId
+  and    RoleId = @RoleId
+
+  if @IsTrialUsed is null and @Trial <> 'N' /* trial period not used */
+  begin
+    select @Period = TrialPeriod,
+           @Frequency = TrialFrequency         
+    from   Roles
+    where  RoleId = @RoleId
+  end
+  else
+  begin
+    select @Period = BillingPeriod,
+           @Frequency = BillingFrequency         
+    from   Roles
+    where  RoleId = @RoleId
+  end
+
+  if @ExpiryDate is null or @ExpiryDate < getdate()
+    select @ExpiryDate = getdate()
+  if @Frequency = 'N'
+    select @ExpiryDate = null
+
+  select @ExpiryDate =
+    case
+      when @Frequency = 'N' then @ExpiryDate
+      when @Frequency = 'O' then convert(datetime,'12/31/9999')
+      when @Frequency = 'D' then dateadd(Day,@Period,@ExpiryDate)
+      when @Frequency = 'W' then dateadd(Week,@Period,@ExpiryDate)
+      when @Frequency = 'M' then dateadd(Month,@Period,@ExpiryDate)
+      when @Frequency = 'Y' then dateadd(Year,@Period,@ExpiryDate)
+    end
+
+  if exists ( select 1 from UserRoles where UserId = @UserId and RoleId = @RoleId )
+  begin
+    update UserRoles
+    set    ExpiryDate = @ExpiryDate,
+           IsTrialUsed = 1
+    where  UserId = @UserId
+    and    RoleId = @RoleId
+  end
+  else
+  begin
+     insert UserRoles (
+      UserId,
+      RoleId,
+      ExpiryDate,
+      IsTrialUsed
+    )
+    values (
+      @UserId,
+      @RoleId,
+      @ExpiryDate,
+      1
+    )
+  end
+end
+
+GO
+
+drop procedure dbo.UpdateTabModuleOrder
+GO
+
+create procedure dbo.UpdateTabModuleOrder
+
+@TabID           int
+
+as
+
+declare @PaneName nvarchar(50)
+declare @ModuleCounter int
+declare @ModuleOrder int
+
+select @PaneName = min(PaneName)
+from   Modules
+where  TabID = @TabID
+while @PaneName is not null 
+begin
+  select @ModuleCounter = 0
+
+  select @ModuleOrder = min(ModuleOrder)
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+  and    ((ModuleOrder <> 0 and AllTabs = 1) or (AllTabs = 0))
+  while @ModuleOrder is not null
+  begin
+    select @ModuleCounter = @ModuleCounter + 1        
+
+    update Modules
+    set    ModuleOrder = ((@ModuleCounter * 2) - 1) * -1 
+    where  TabID = @TabID
+    and    PaneName = @PaneName
+    and    ModuleOrder = @ModuleOrder  
+
+    select @ModuleOrder = min(ModuleOrder)
+    from   Modules
+    where  TabID = @TabID
+    and    PaneName = @PaneName
+    and    ((ModuleOrder <> 0 and AllTabs = 1) or (AllTabs = 0))
+    and    ModuleOrder > @ModuleOrder
+  end 
+
+  update Modules
+  set    ModuleOrder = ModuleOrder * -1 
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+
+  select @PaneName = min(PaneName)
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName > @PaneName
+end
+
+GO
+
+update ModuleDefinitions
+set    Secure = 0
+where  FriendlyName = 'Vendors'
+GO
+
+update ModuleDefinitions
+set    Secure = 0
+where  FriendlyName = 'File Manager'
+GO
+
+drop procedure dbo.GetAnnouncements
+GO
+
+create procedure dbo.GetAnnouncements
+
+@ModuleID int
+
+as
+
+select ItemID,
+       CreatedByUser,
+       CreatedDate,
+       Title,
+       URL,
+       Syndicate,
+       ExpireDate,
+       Description,
+       ViewOrder
+from   Announcements
+where  ModuleID = @ModuleID
+and    (ExpireDate > GetDate() or ExpireDate is null)
+order by ViewOrder, CreatedDate
+
+GO
+
+update ModuleDefinitions
+set    FriendlyName = 'Text/HTML'
+where  FriendlyName = 'HTML'
+GO
+
+drop procedure dbo.DeleteModuleDefinition
+GO
+
+create procedure dbo.DeleteModuleDefinition
+
+@ModuleDefID int
+
+as
+
+delete
+from   Modules
+where  ModuleDefID = @ModuleDefID
+
+delete
+from   ModuleDefinitions
+where  ModuleDefID = @ModuleDefID
+
+GO
+
+/************************************************************/
+/*****              Upgrade Script 1.0.8                *****/
+/************************************************************/

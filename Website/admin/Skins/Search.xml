@@ -1,0 +1,42 @@
+<Settings>
+  <Setting>
+    <Name>submit</Name>
+    <Help>Overrides the Text for the Search link</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>cssClass</Name>
+    <Help>Overrides the CSS class used to render the Search link</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>showSite</Name>
+    <Help>Instructs the Search control to display an internal Site search option</Help>
+    <Value>True,False</Value>
+  </Setting>
+  <Setting>
+    <Name>showWeb</Name>
+    <Help>Instructs the Search control to display an external Web search option</Help>
+    <Value>True,False</Value>
+  </Setting>
+  <Setting>
+    <Name>useWebForSite</Name>
+    <Help>Instructs the Search control to use the external Web search feature for the internal Site search</Help>
+    <Value>True,False</Value>
+  </Setting>
+  <Setting>
+    <Name>MinCharRequired</Name>
+    <Help>minium chars required to trigger auto search</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>AutoSearchDelayInMilliSecond</Name>
+    <Help>The millisecond to delay trigger auto search</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>EnableWildSearch</Name>
+    <Help>Enable wild search</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

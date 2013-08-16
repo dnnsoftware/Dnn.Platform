@@ -1,0 +1,746 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+update {objectQualifier}Tabs set AuthorizedRoles = '-1;0;' where TabName = 'Home' and AuthorizedRoles = '-1;'
+GO
+
+update {objectQualifier}Tabs set AdministratorRoles = '0;' where TabName = 'Home' and AdministratorRoles is null
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddDesktopModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddDesktopModule
+    
+@FriendlyName   nvarchar(128),
+@Description    nvarchar(2000),
+@Version        nvarchar(8),
+@IsPremium      bit,
+@IsAdmin        bit
+
+as
+
+insert into {objectQualifier}DesktopModules (
+  FriendlyName,
+  Description,
+  Version,
+  IsPremium,
+  IsAdmin
+)
+values (
+  @FriendlyName,
+  @Description,
+  @Version,
+  @IsPremium,
+  @IsAdmin
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateDesktopModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateDesktopModule
+
+@DesktopModuleId int,    
+@FriendlyName    nvarchar(128),
+@Description     nvarchar(2000),
+@Version         nvarchar(8),
+@IsPremium       bit,
+@IsAdmin         bit
+
+as
+
+update {objectQualifier}DesktopModules
+set    FriendlyName    = @FriendlyName,
+       Description     = @Description,
+       Version         = @Version,
+       IsPremium       = @IsPremium,
+       IsAdmin         = @IsAdmin
+where  DesktopModuleId = @DesktopModuleId
+
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}SystemMessages
+	(
+	MessageID int NOT NULL IDENTITY (1, 1),
+	PortalID int NULL,
+	MessageName nvarchar(50) NOT NULL,
+	MessageValue ntext NOT NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}SystemMessages ADD CONSTRAINT
+	PK_SystemMessages PRIMARY KEY CLUSTERED 
+	(
+	MessageID
+	) ON [PRIMARY]
+
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}SystemMessages ADD CONSTRAINT
+	IX_SystemMessages UNIQUE NONCLUSTERED 
+	(
+	MessageName,
+	PortalID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SystemMessages WITH NOCHECK ADD CONSTRAINT
+	FK_SystemMessages_Portals FOREIGN KEY
+	(
+	PortalID
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+	PortalID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddSystemMessage
+
+@PortalID     int,
+@MessageName  nvarchar(50),
+@MessageValue ntext
+
+as
+
+insert into {objectQualifier}SystemMessages (
+  PortalID,
+  MessageName,
+  MessageValue
+)
+values (
+  @PortalID,
+  @MessageName,
+  @MessageValue
+)
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateSystemMessage
+
+@PortalID     int,
+@MessageName  nvarchar(50),
+@MessageValue ntext
+
+as
+
+update {objectQualifier}SystemMessages
+set    MessageValue = @MessageValue
+where  ((PortalID = @PortalID) or (PortalID is null and @PortalID is null))
+and    MessageName = @MessageName
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteSystemMessage
+
+@PortalID     int,
+@MessageName  nvarchar(50)
+
+as
+
+delete
+from   {objectQualifier}SystemMessages
+where  PortalID = @PortalID
+and    MessageName = @MessageName
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSystemMessage
+
+@PortalID     int,
+@MessageName  nvarchar(50)
+
+as
+
+select MessageValue
+from   {objectQualifier}SystemMessages
+where  ((PortalID = @PortalID) or (PortalID is null and @PortalID is null)) 
+and    MessageName = @MessageName
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSystemMessages
+
+as
+
+select MessageName
+from   {objectQualifier}SystemMessages
+where  PortalID is null
+
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}Urls
+	(
+	UrlID int NOT NULL IDENTITY (1, 1),
+	PortalID int NULL,
+	Url nvarchar(255) NOT NULL
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Urls ADD CONSTRAINT
+	PK_Urls PRIMARY KEY CLUSTERED 
+	(
+	UrlID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Urls ADD CONSTRAINT
+	IX_Urls UNIQUE NONCLUSTERED 
+	(
+	Url,
+	PortalID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Urls WITH NOCHECK ADD CONSTRAINT
+	FK_Urls_Portals FOREIGN KEY
+	(
+	PortalID
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+	PortalID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}UrlTracking
+	(
+	UrlTrackingID int NOT NULL IDENTITY (1, 1),
+	PortalID int NULL,
+	Url nvarchar(255) NOT NULL,
+        UrlType char(1) NOT NULL,
+	Clicks int NOT NULL,
+        LastClick datetime NULL,
+        CreatedDate datetime NOT NULL,
+        LogActivity bit NOT NULL
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking ADD CONSTRAINT
+	PK_UrlTracking PRIMARY KEY CLUSTERED 
+	(
+	UrlTrackingID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking ADD CONSTRAINT
+	IX_UrlTracking UNIQUE NONCLUSTERED 
+	(
+	Url,
+	PortalID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking WITH NOCHECK ADD CONSTRAINT
+	FK_UrlTracking_Portals FOREIGN KEY
+	(
+	PortalID
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+	PortalID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}UrlLog
+	(
+	UrlLogID int NOT NULL IDENTITY (1, 1),
+	UrlTrackingID int NOT NULL,
+	ClickDate datetime NOT NULL,
+	UserID int NULL,
+        ModuleID int NULL
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UrlLog ADD CONSTRAINT
+	PK_{objectQualifier}UrlLog PRIMARY KEY CLUSTERED 
+	(
+	UrlLogID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UrlLog WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}UrlLog_{objectQualifier}UrlTracking FOREIGN KEY
+	(
+	UrlTrackingID
+	) REFERENCES {databaseOwner}{objectQualifier}UrlTracking
+	(
+	UrlTrackingID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddUrl
+
+@PortalID     int,
+@Url          nvarchar(255)
+
+as
+
+insert into {objectQualifier}Urls (
+  PortalID,
+  Url
+)
+values (
+  @PortalID,
+  @Url
+)
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteUrl
+
+@PortalID     int,
+@Url          nvarchar(255)
+
+as
+
+delete
+from   {objectQualifier}Urls
+where  PortalID = @PortalID
+and    Url = @Url
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUrl
+
+@PortalID     int,
+@Url          nvarchar(255)
+
+as
+
+select *
+from   {objectQualifier}Urls
+where  PortalID = @PortalID
+and    Url = @Url
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUrls
+
+@PortalID     int
+
+as
+
+select *
+from   {objectQualifier}Urls
+where  PortalID = @PortalID
+order by Url
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddUrlTracking
+
+@PortalID     int,
+@Url          nvarchar(255),
+@UrlType      char(1),
+@Clicks       int,
+@LastClick    datetime,
+@CreatedDate  datetime,
+@LogActivity  bit
+
+as
+
+insert into {objectQualifier}UrlTracking (
+  PortalID,
+  Url,
+  UrlType,
+  Clicks,
+  LastClick,
+  CreatedDate,
+  LogActivity
+)
+values (
+  @PortalID,
+  @Url,
+  @UrlType,
+  @Clicks,
+  @LastClick,
+  @CreatedDate,
+  @LogActivity
+)
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateUrlTracking
+
+@PortalID     int,
+@Url          nvarchar(255),
+@UrlType      char(1),
+@Clicks       int,
+@LastClick    datetime,
+@CreatedDate  datetime,
+@LogActivity  bit
+
+as
+
+update {objectQualifier}UrlTracking
+set    UrlType = @UrlType,
+       Clicks = @Clicks,
+       LastClick = @LastClick,
+       CreatedDate = @CreatedDate,
+       LogActivity = @LogActivity
+where  PortalID = @PortalID
+and    Url = @Url
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteUrlTracking
+
+@PortalID     int,
+@Url          nvarchar(255)
+
+as
+
+delete
+from   {objectQualifier}UrlTracking
+where  PortalID = @PortalID
+and    Url = @Url
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUrlTracking
+
+@PortalID     int,
+@Url          nvarchar(255)
+
+as
+
+select *
+from   {objectQualifier}UrlTracking
+where  PortalID = @PortalID
+and    Url = @Url
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddUrlLog
+
+@UrlTrackingID int,
+@ModuleID      int,
+@UserID        int
+
+as
+
+insert into {objectQualifier}UrlLog (
+  UrlTrackingID,
+  ClickDate,
+  UserID,
+  ModuleID
+)
+values (
+  @UrlTrackingID,
+  getdate(),
+  @UserID,
+  @ModuleID
+)
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUrlLog
+
+@URLTrackingID int,
+@ModuleID      int,
+@StartDate     datetime,
+@EndDate       datetime
+
+as
+
+select {objectQualifier}UrlLog.*,
+       'FullName' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       ModuleTitle
+from   {objectQualifier}UrlLog
+left outer join {objectQualifier}Users on {objectQualifier}UrlLog.UserId = {objectQualifier}Users.UserId
+left outer join {objectQualifier}Modules on {objectQualifier}UrlLog.ModuleId = {objectQualifier}Modules.ModuleId
+where  UrlTrackingID = @UrlTrackingID
+and    (({objectQualifier}UrlLog.ModuleID = @ModuleID) or @ModuleID is null)
+and    ((ClickDate >= @StartDate) or @StartDate is null)
+and    ((ClickDate <= @EndDate) or @EndDate is null)
+order by ClickDate
+
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}ClickLog
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetClicks
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateClicks
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}Schedule (
+	[ScheduleID] [int] IDENTITY (1, 1) NOT NULL ,
+	[TypeFullName] [varchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[TimeLapse] [int] NOT NULL ,
+	[TimeLapseMeasurement] [varchar] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[RetryTimeLapse] [int] NOT NULL ,
+	[RetryTimeLapseMeasurement] [varchar] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[RetainHistoryNum] [int] NOT NULL ,
+	[AttachToEvent] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[CatchUpEnabled] [bit] NOT NULL ,
+	[Enabled] [bit] NOT NULL ,
+	[ObjectDependencies] [varchar] (300) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}ScheduleHistory (
+	[ScheduleHistoryID] [int] IDENTITY (1, 1) NOT NULL ,
+	[ScheduleID] [int] NOT NULL ,
+	[StartDate] [datetime] NOT NULL ,
+	[EndDate] [datetime] NULL ,
+	[Succeeded] [bit] NULL ,
+	[LogNotes] [ntext] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[NextStart] [datetime] NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}ScheduleItemSettings (
+	[ScheduleID] [int] NOT NULL ,
+	[SettingName] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[SettingValue] [nvarchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+) ON [PRIMARY]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSchedule
+@TypeFullName varchar(200)
+,@TimeLapse int
+,@TimeLapseMeasurement varchar(2)
+,@RetryTimeLapse int
+,@RetryTimeLapseMeasurement varchar(2)
+,@RetainHistoryNum int
+,@AttachToEvent varchar(50)
+,@CatchUpEnabled bit
+,@Enabled bit
+,@ObjectDependencies varchar(300)
+AS
+INSERT INTO {databaseOwner}{objectQualifier}Schedule
+(TypeFullName
+,TimeLapse
+,TimeLapseMeasurement
+,RetryTimeLapse
+,RetryTimeLapseMeasurement
+,RetainHistoryNum
+,AttachToEvent
+,CatchUpEnabled
+,Enabled
+,ObjectDependencies
+)
+VALUES
+(@TypeFullName
+,@TimeLapse
+,@TimeLapseMeasurement
+,@RetryTimeLapse
+,@RetryTimeLapseMeasurement
+,@RetainHistoryNum
+,@AttachToEvent
+,@CatchUpEnabled
+,@Enabled
+,@ObjectDependencies
+)
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddScheduleHistory
+@ScheduleID int,
+@StartDate datetime
+AS
+INSERT INTO {databaseOwner}{objectQualifier}ScheduleHistory
+(ScheduleID,
+StartDate)
+VALUES
+(@ScheduleID,
+@StartDate)
+
+select SCOPE_IDENTITY()
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteSchedule
+@ScheduleID int
+AS
+DELETE FROM {databaseOwner}{objectQualifier}Schedule
+WHERE ScheduleID = @ScheduleID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
+AS
+SELECT S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, ISNULL(SH.NextStart, getDate()) 'NextStart'
+FROM {databaseOwner}{objectQualifier}Schedule S
+LEFT JOIN {databaseOwner}{objectQualifier}ScheduleHistory SH
+ON S.ScheduleID = SH.ScheduleID
+WHERE SH.ScheduleHistoryID = (SELECT TOP 1 S1.ScheduleHistoryID FROM {databaseOwner}{objectQualifier}ScheduleHistory S1 WHERE S1.ScheduleID = S.ScheduleID ORDER BY S1.NextStart DESC)
+OR  SH.ScheduleHistoryID IS NULL
+GROUP BY S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, SH.NextStart
+GO
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetScheduleByEvent
+@EventName varchar(50)
+AS
+SELECT S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled
+FROM {databaseOwner}{objectQualifier}Schedule S
+WHERE S.AttachToEvent = @EventName
+GROUP BY S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled
+
+
+GO
+ 
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetScheduleByScheduleID
+@ScheduleID int
+AS
+SELECT S.*
+FROM {databaseOwner}{objectQualifier}Schedule S
+WHERE S.ScheduleID = @ScheduleID
+
+GO
+ 
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetScheduleItemSettings 
+@ScheduleID int
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}ScheduleItemSettings
+WHERE ScheduleID = @ScheduleID
+
+GO
+ 
+CREATE PROCEDURE {databaseOwner}{objectQualifier}PurgeScheduleHistory
+AS
+DELETE FROM {databaseOwner}{objectQualifier}ScheduleHistory
+FROM {databaseOwner}{objectQualifier}Schedule s
+WHERE
+    (
+    SELECT COUNT(*)
+    FROM {databaseOwner}{objectQualifier}ScheduleHistory sh
+    WHERE
+        sh.ScheduleID = {databaseOwner}{objectQualifier}ScheduleHistory.ScheduleID AND
+        sh.ScheduleID = s.ScheduleID AND
+        sh.StartDate >= {databaseOwner}{objectQualifier}ScheduleHistory.StartDate
+    ) > s.RetainHistoryNum
+AND RetainHistoryNum<>-1
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSchedule
+@ScheduleID int
+,@TypeFullName varchar(200)
+,@TimeLapse int
+,@TimeLapseMeasurement varchar(2)
+,@RetryTimeLapse int
+,@RetryTimeLapseMeasurement varchar(2)
+,@RetainHistoryNum int
+,@AttachToEvent varchar(50)
+,@CatchUpEnabled bit
+,@Enabled bit
+,@ObjectDependencies varchar(300)
+AS
+UPDATE {databaseOwner}{objectQualifier}Schedule
+SET TypeFullName = @TypeFullName
+,TimeLapse = @TimeLapse
+,TimeLapseMeasurement = @TimeLapseMeasurement
+,RetryTimeLapse = @RetryTimeLapse
+,RetryTimeLapseMeasurement = @RetryTimeLapseMeasurement
+,RetainHistoryNum = @RetainHistoryNum
+,AttachToEvent = @AttachToEvent
+,CatchUpEnabled = @CatchUpEnabled
+,Enabled = @Enabled
+,ObjectDependencies = @ObjectDependencies
+WHERE ScheduleID = @ScheduleID
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetScheduleHistory
+@ScheduleID int
+AS
+SELECT S.ScheduleID, S.TypeFullName, SH.StartDate, SH.EndDate, SH.Succeeded, SH.LogNotes, SH.NextStart
+FROM {databaseOwner}{objectQualifier}Schedule S
+INNER JOIN {databaseOwner}{objectQualifier}ScheduleHistory SH
+ON S.ScheduleID = SH.ScheduleID
+WHERE S.ScheduleID = @ScheduleID or @ScheduleID = -1
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateScheduleHistory
+@ScheduleHistoryID int,
+@EndDate datetime,
+@Succeeded bit,
+@LogNotes ntext,
+@NextStart datetime
+AS
+UPDATE {databaseOwner}{objectQualifier}ScheduleHistory
+SET	EndDate = @EndDate,
+	Succeeded = @Succeeded,
+	LogNotes = @LogNotes,
+	NextStart = @NextStart
+WHERE ScheduleHistoryID = @ScheduleHistoryID
+
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Entities.Users.PurgeUsersOnline, DOTNETNUKE', 1, 'm', 5, 'm', 60, '', 0, 1, 'UsersOnline')
+GO
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Log.SiteLog.PurgeSiteLog, DOTNETNUKE', 1, 'd', 2, 'h', 10, '', 0, 1, 'SiteLog')
+GO
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Scheduling.PurgeScheduleHistory, DOTNETNUKE', 1, 'm', 5, 'm', 60, '', 0, 1, 'ScheduleHistory')
+GO
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Log.EventLog.PurgeLogBuffer, DOTNETNUKE.XMLLOGGINGPROVIDER', 1, 'm', 5, 'm', 60, '', 0, 1, 'XMLLoggingProvider')
+GO
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Log.EventLog.SendLogNotifications, DOTNETNUKE.XMLLOGGINGPROVIDER', 5, 'm', 10, 'm', 60, '', 0, 1, 'XMLLoggingProvider')
+GO
+DELETE FROM {databaseOwner}{objectQualifier}Modules WHERE ModuleTitle='Exception Viewer'
+GO
+DELETE FROM {databaseOwner}{objectQualifier}Tabs WHERE TabName='Exception Viewer'
+GO
+DELETE FROM {databaseOwner}{objectQualifier}DesktopModules WHERE FriendlyName='Exception Viewer'
+GO
+DELETE FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ControlSrc='Admin/Portal/ExceptionViewer.ascx'
+GO
+DELETE FROM {databaseOwner}{objectQualifier}ModuleDefinitions WHERE FriendlyName='Exception Viewer'
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetPremiumDesktopModules
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetPremiumDesktopModules
+    
+@PortalId int
+
+as
+
+select distinct({objectQualifier}DesktopModules.DesktopModuleId) as DesktopModuleId,
+       PortalModuleDefinitionId,
+       {objectQualifier}DesktopModules.FriendlyName,
+       {objectQualifier}DesktopModules.Description,
+       'HostFee' = case when HostFee is null then 0 else HostFee end
+from {objectQualifier}DesktopModules
+left outer join {objectQualifier}PortalModuleDefinitions on {objectQualifier}DesktopModules.DesktopModuleId = {objectQualifier}PortalModuleDefinitions.DesktopModuleId AND PortalId = @PortalId
+where  {objectQualifier}DesktopModules.IsPremium = 1
+order  by FriendlyName
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

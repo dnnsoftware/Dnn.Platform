@@ -1,0 +1,221 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Set FriendlyName to TypeFullName in Schedule Table - fix 05.02.00 bug */
+/******************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Schedule 
+	ALTER COLUMN FriendlyName nvarchar(200) NULL
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = 'Purge Users Online' WHERE TypeFullName = 'DotNetNuke.Entities.Users.PurgeUsersOnline, DOTNETNUKE'
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = 'Purge Site Log' WHERE TypeFullName = 'DotNetNuke.Services.Log.SiteLog.PurgeSiteLog, DOTNETNUKE'
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = 'Purge Schedule History' WHERE TypeFullName = 'DotNetNuke.Services.Scheduling.PurgeScheduleHistory, DOTNETNUKE'
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = 'Purge Log Buffer' WHERE TypeFullName = 'DotNetNuke.Services.Log.EventLog.PurgeLogBuffer, DOTNETNUKE'
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = 'Send Log Notifications' WHERE TypeFullName = 'DotNetNuke.Services.Log.EventLog.SendLogNotifications, DOTNETNUKE'
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = 'Search Engine Scheduler' WHERE TypeFullName = 'DotNetNuke.Services.Search.SearchEngineScheduler, DOTNETNUKE'
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = 'Purge Cache' WHERE TypeFullName = 'DotNetNuke.Services.Cache.PurgeCache, DOTNETNUKE'
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = 'Purge Module Cache' WHERE TypeFullName = 'DotNetNuke.Services.ModuleCache.PurgeModuleCache, DOTNETNUKE'
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = 'Purge Output Cache' WHERE TypeFullName = 'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke'
+UPDATE {databaseOwner}{objectQualifier}Schedule SET FriendlyName = LEFT(TypeFullName, 100) WHERE FriendlyName = '' OR FriendlyName IS NULL
+
+GO
+
+/* Set DataType List to be a SystemList */
+/****************************************/
+
+UPDATE {databaseOwner}{objectQualifier}Lists SET SystemList = 'True' WHERE ListName = 'DataType'
+
+GO
+
+/* Update UpdateSchedule Procedure */
+/******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateSchedule
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSchedule
+@ScheduleID int
+,@TypeFullName varchar(200)
+,@TimeLapse int
+,@TimeLapseMeasurement varchar(2)
+,@RetryTimeLapse int
+,@RetryTimeLapseMeasurement varchar(2)
+,@RetainHistoryNum int
+,@AttachToEvent varchar(50)
+,@CatchUpEnabled bit
+,@Enabled bit
+,@ObjectDependencies varchar(300)
+,@Servers varchar(150)
+,@LastModifiedByUserID	int
+,@FriendlyName varchar(200)
+AS
+UPDATE {databaseOwner}{objectQualifier}Schedule
+SET TypeFullName = @TypeFullName
+,FriendlyName = @FriendlyName
+,TimeLapse = @TimeLapse
+,TimeLapseMeasurement = @TimeLapseMeasurement
+,RetryTimeLapse = @RetryTimeLapse
+,RetryTimeLapseMeasurement = @RetryTimeLapseMeasurement
+,RetainHistoryNum = @RetainHistoryNum
+,AttachToEvent = @AttachToEvent
+,CatchUpEnabled = @CatchUpEnabled
+,Enabled = @Enabled
+,ObjectDependencies = @ObjectDependencies
+,Servers = @Servers,
+[LastModifiedByUserID] = @LastModifiedByUserID,	
+[LastModifiedOnDate] = getdate()
+WHERE ScheduleID = @ScheduleID
+
+GO
+
+/* Update AddSchedule Procedure */
+/******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddSchedule
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSchedule
+
+@TypeFullName varchar(200)
+,@TimeLapse int
+,@TimeLapseMeasurement varchar(2)
+,@RetryTimeLapse int
+,@RetryTimeLapseMeasurement varchar(2)
+,@RetainHistoryNum int
+,@AttachToEvent varchar(50)
+,@CatchUpEnabled bit
+,@Enabled bit
+,@ObjectDependencies varchar(300)
+,@Servers varchar(150)
+,@CreatedByUserID	int
+,@FriendlyName varchar(200)
+AS
+INSERT INTO {databaseOwner}{objectQualifier}Schedule
+(TypeFullName
+,TimeLapse
+,TimeLapseMeasurement
+,RetryTimeLapse
+,RetryTimeLapseMeasurement
+,RetainHistoryNum
+,AttachToEvent
+,CatchUpEnabled
+,Enabled
+,ObjectDependencies
+,Servers
+,FriendlyName
+,[CreatedByUserID]
+,[CreatedOnDate]
+,[LastModifiedByUserID]
+,[LastModifiedOnDate]
+)
+VALUES
+(@TypeFullName
+,@TimeLapse
+,@TimeLapseMeasurement
+,@RetryTimeLapse
+,@RetryTimeLapseMeasurement
+,@RetainHistoryNum
+,@AttachToEvent
+,@CatchUpEnabled
+,@Enabled
+,@ObjectDependencies
+,@Servers
+,@FriendlyName
+,@CreatedByUserID
+,getdate()
+,@CreatedByUserID
+,getdate()
+)
+
+
+select SCOPE_IDENTITY()
+
+GO
+
+/* update templates folder to admin read and write - fix 05.02.00 bug */
+/**********************************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}folderpermission set AllowAccess=1 where (folderid in(select folderid from {databaseOwner}{objectQualifier}Folders where FolderPath='Templates/') and roleid in (select roleid from {databaseOwner}{objectQualifier}roles where RoleName='Administrators'))
+GO
+
+/* Fix GetListEntries Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetListEntries]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetListEntries
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetListEntries  
+
+	@ListName nvarchar(50),
+	@ParentKey nvarchar(150),
+	@PortalID int
+
+AS
+SELECT *
+	FROM {databaseOwner}{objectQualifier}vw_Lists
+	WHERE (ListName = @ListName OR @ListName='')
+		AND (ParentKey = @ParentKey OR @ParentKey = '')
+		AND (PortalID = @PortalID OR @PortalID IS NULL or SystemList=1)
+	ORDER BY [Level], ListName, SortOrder, Text
+GO
+
+/* Fix Packages Unique Index to include PackageType */
+/****************************************************/
+
+DROP INDEX IX_{objectQualifier}Packages ON {objectQualifier}Packages
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Packages ON {objectQualifier}Packages ( [Owner], Name, PackageType, PortalID )
+
+GO
+
+/* ensure every portal has a default language         */
+/* This is a temporary procedure that will be deleted */
+/* after application upgrade completes                */
+/******************************************************/
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpgradeDefaultLanguages  
+
+AS
+DECLARE @PortalID int
+DECLARE @DefaultLanguage nvarchar(10)
+DECLARE @LanguageID int
+
+--Iterate through each portal
+DECLARE Languages_Cursor CURSOR FOR
+SELECT PortalID, DefaultLanguage
+FROM   {databaseOwner}{objectQualifier}Portals
+
+OPEN Languages_Cursor
+--get first
+FETCH NEXT FROM Languages_Cursor
+into @PortalID, @DefaultLanguage
+WHILE @@FETCH_STATUS = 0
+   BEGIN
+set @LanguageID=(select languageid from {databaseOwner}{objectQualifier}Languages where CultureCode=@DefaultLanguage)
+
+if  not exists(select * from {databaseOwner}{objectQualifier}PortalLanguages where PortalID=@PortalID) 
+
+exec {databaseOwner}[{objectQualifier}AddPortalLanguage] @PortalId,@LanguageId,-1
+
+       FETCH NEXT FROM Languages_Cursor
+       into @PortalID, @DefaultLanguage
+
+   END
+CLOSE Languages_Cursor
+DEALLOCATE Languages_Cursor
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

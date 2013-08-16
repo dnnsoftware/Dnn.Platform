@@ -1,0 +1,4 @@
+' Remove uninstalled module packages that have new versions in distribution.
+Install\Module\Forum_03.20.09_Install.resources
+Install\Module\HTML_04.06.01_Install.zip
+

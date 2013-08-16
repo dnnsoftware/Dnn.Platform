@@ -1,0 +1,22 @@
+﻿<h3>DotNetNuke Client Capability Provider</h3>
+<hr/>
+<div class="License">
+	
+	<p class="Owner">
+		<b>Version </b>1.0.0<br /><br />
+	</p>
+	<p><b>Identify mobile web traffic using a comprehensive set of device and browser specific properties from 51Degrees.mobi</b></p>
+	<p>Device data contains information about thousands of different mobiles, tablets, games consoles and many more. By using our device data, a web developer can automatically redirect users to a device type specific web site. For example; a tablet or mobile micro site.</p>
+	<ul>
+		<li>Improve your customer experience by customising your mobile web site to suit every individual visitor</li>
+		<li>Validate a user's device type before offering downloadable content or attempting to interact</li>
+		<li>Maximum performance and availability with locally stored and automatically updated data. No cloud service involved</li>
+	</ul>
+	<p>This DotNetNuke module provides seamless access to these capabilities.</p>
+	<p><b>Important:</b> A new page is added to the <b>hosts</b> menu providing Administrators a dictionary of available properties and values, option to upgrade to Premium adding more properties, a facility to browse available devices (Premium only), and for advanced developers a method of checking browser useragent strings.</p>
+
+	<h4>Bug Fixes</h4>
+	<ul>
+		<li>None</li>
+	</ul>
+</div>

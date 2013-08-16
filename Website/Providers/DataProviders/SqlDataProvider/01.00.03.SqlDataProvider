@@ -1,0 +1,51 @@
+/************************************************************/
+/*****              Upgrade Script 1.0.3                *****/
+/************************************************************/
+
+drop procedure GetFiles
+GO
+
+create procedure GetFiles
+
+@PortalId   int
+
+as
+
+if @PortalId is null
+begin
+  select FileId,
+         PortalId,
+         FileName,
+         Extension,
+         Size,
+         Width,
+         Height,
+         ContentType
+  from   Files
+  where  PortalId is null
+  order by FileName
+end
+else
+begin
+  select FileId,
+         PortalId,
+         FileName,
+         Extension,
+         Size,
+         Width,
+         Height,
+         ContentType
+  from   Files
+  where  PortalId = @PortalId
+  order by FileName
+end
+
+return 1
+
+GO
+
+/************************************************************/
+/*****              Upgrade Script 1.0.3                *****/
+/************************************************************/
+
+

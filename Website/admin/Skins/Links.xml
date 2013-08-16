@@ -1,0 +1,38 @@
+<Settings>
+	<Setting>
+		<Name>CssClass</Name>
+		<Type>String</Type>
+		<Help>Sets the CSS class used to render this skin object</Help>
+		<Value></Value>
+	</Setting>
+	<Setting>
+		<Name>Separator</Name>
+		<Type>String</Type>
+		<Help>Defines the separator to be used in between links</Help>
+		<Value></Value>
+	</Setting>
+	<Setting>
+		<Name>Level</Name>
+		<Type>String</Type>
+		<Help>Defines from where in the page tree links should be rendered</Help>
+		<Value>Same,Child,Parent,Root</Value>
+	</Setting>
+	<Setting>
+		<Name>Alignment</Name>
+		<Type>String</Type>
+		<Help>Defines whether the links will be rendered horizontally or vertically</Help>
+		<Value>Horizontal,Vertical</Value>
+	</Setting>
+	<Setting>
+		<Name>ShowDisabled</Name>
+		<Type>Boolean</Type>
+		<Help>Sets whether disabled pages are displayed, defaults to False</Help>
+		<Value>True, False</Value>
+	</Setting>
+		<Setting>
+		<Name>ForceLinks</Name>
+		<Type>Boolean</Type>
+		<Help>Sets if the links will rendered with Level "Same", if not links are returned</Help>
+		<Value>True, False</Value>
+	</Setting>
+</Settings>

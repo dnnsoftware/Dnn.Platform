@@ -1,0 +1,9 @@
+﻿Test,				Scheme,		Page Name,		Test Url,											Expected Url,										Status,		Final Url,										RedirectReason
+Home,				http://,	Home,			http://{alias}/,									{defaultPage}?TabId={tabId},						200,
+About,				http://,	About Us,		http://{alias}/About-Us.aspx,						{defaultPage}?TabId={tabId},						301,		http://{alias}/About-Us,							Unfriendly_Url_2
+Admin,				http://,	Site Settings,	http://{alias}/Admin/Site-Settings.aspx,			{defaultPage}?TabId={tabId},						301,		http://{alias}/Admin/Site-Settings,				Unfriendly_Url_2
+Profile Messages,	http://,	Messages,		http://{alias}/Activity-Feed/Messages.aspx,			{defaultPage}?TabId={tabId},						301,		http://{alias}/Activity-Feed/Messages,			Unfriendly_Url_2
+Terms,				http://,	Home,			http://{alias}/Terms.aspx,							{defaultPage}?PortalId={portalId}&ctl=Terms,		200
+Login,				http://,	About Us,		http://{alias}/Login.aspx,							{defaultPage}?PortalId={portalId}&ctl=Login,		200
+Edit Page,			http://,	Home,			http://{alias}/Home/ctl/Edit/mid/100.aspx,			{defaultPage}?TabId={tabId}&ctl=Edit&mid=100,		301,		http://{alias}/Home/ctl/Edit/mid/100,			Unfriendly_Url_2
+Edit Page 2,		http://,	About Us,		http://{alias}/About-Us/ctl/Edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		301,		http://{alias}/About-Us/ctl/Edit/mid/200,		Unfriendly_Url_2

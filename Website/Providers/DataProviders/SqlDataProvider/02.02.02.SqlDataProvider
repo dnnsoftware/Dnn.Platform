@@ -1,0 +1,4175 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****              Upgrade 02.02.02                    *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}AddHtmlText    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}AddHtmlText') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}AddHtmlText
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}UpdateHtmlText    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}UpdateHtmlText') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}UpdateHtmlText
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}HtmlText ADD
+  [DesktopSummary] [ntext] ,
+	[CreatedByUser] int NULL,
+	[CreatedDate] [datetime] NULL
+GO
+
+update {objectQualifier}HtmlText
+set    CreatedDate = getdate()
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}HtmlText DROP
+  COLUMN MobileSummary,
+  COLUMN MobileDetails
+GO
+
+
+create procedure {databaseOwner}{objectQualifier}AddHtmlText
+
+@ModuleId       int,
+@DesktopHtml    ntext,
+@DesktopSummary ntext,
+@UserID         int
+
+as
+
+insert into {objectQualifier}HtmlText (
+  ModuleId,
+  DesktopHtml,
+  DesktopSummary,
+  CreatedByUser,
+  CreatedDate
+) 
+values (
+  @ModuleId,
+  @DesktopHtml,
+  @DesktopSummary,
+  @UserID,
+  getdate()
+)
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateHtmlText
+
+@ModuleId       int,
+@DesktopHtml    ntext,
+@DesktopSummary ntext,
+@UserID         int
+
+as
+
+update {objectQualifier}HtmlText
+set    DesktopHtml    = @DesktopHtml,
+       DesktopSummary = @DesktopSummary,
+       CreatedByUser  = @UserID,
+       CreatedDate    = getdate()
+where  ModuleId = @ModuleId
+
+GO
+
+/************************************************************/
+/*****  SearchIndexer                                   *****/
+/************************************************************/
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchIndexers    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchIndexers') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchIndexers
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}SearchIndexer 
+(
+	SearchIndexerID int IDENTITY (1, 1) NOT NULL ,
+	SearchIndexerAssemblyQualifiedName char (200)  NOT NULL ,
+	CONSTRAINT PK_SearchIndexer PRIMARY KEY  CLUSTERED 
+	(
+		SearchIndexerID
+	)  ON [PRIMARY] 
+) ON [PRIMARY]
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}SearchIndexer 
+(SearchIndexerAssemblyQualifiedName)
+VALUES ('DotNetNuke.Services.Search.ModuleIndexer, dotnetnuke.search')
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSearchIndexers
+
+as
+
+select {objectQualifier}SearchIndexer.*
+from {objectQualifier}SearchIndexer
+
+GO
+
+
+ALTER TABLE {databaseOwner}{objectQualifier}DesktopModules ADD
+	BusinessControllerClass nvarchar (200)
+GO
+
+update {databaseOwner}{objectQualifier}DesktopModules
+set    BusinessControllerClass   = 'DotNetNuke.Modules.Announcements.AnnouncementsController, DotNetNuke.Modules.Announcements'
+where  FriendlyName = 'Announcements'
+GO
+
+update {databaseOwner}{objectQualifier}DesktopModules
+set    BusinessControllerClass   = 'DotNetNuke.Modules.Contacts.ContactController, DotNetNuke.Modules.Contacts'
+where  FriendlyName = 'Contacts'
+GO
+
+update {databaseOwner}{objectQualifier}DesktopModules
+set    BusinessControllerClass   = 'DotNetNuke.Modules.Discussions.DiscussionController, DotNetNuke.Modules.Discussions'
+where  FriendlyName = 'Discussions'
+GO
+
+update {databaseOwner}{objectQualifier}DesktopModules
+set    BusinessControllerClass   = 'DotNetNuke.Modules.Documents.DocumentController, DotNetNuke.Modules.Documents'
+where  FriendlyName = 'Documents'
+GO
+
+update {databaseOwner}{objectQualifier}DesktopModules
+set    BusinessControllerClass   = 'DotNetNuke.Modules.Events.EventController, DotNetNuke.Modules.Events'
+where  FriendlyName = 'Events'
+GO
+
+update {databaseOwner}{objectQualifier}DesktopModules
+set    BusinessControllerClass   = 'DotNetNuke.Modules.FAQs.FAQsController, DotNetNuke.Modules.FAQs'
+where  FriendlyName = 'FAQs'
+GO
+
+update {databaseOwner}{objectQualifier}DesktopModules
+set    BusinessControllerClass   = 'DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html'
+where  FriendlyName = 'Text/HTML'
+GO
+
+update {databaseOwner}{objectQualifier}DesktopModules
+set    BusinessControllerClass   = 'DotNetNuke.Modules.Links.LinkController, DotNetNuke.Modules.Links'
+where  FriendlyName = 'Links'
+GO
+
+/************************************************************/
+/*****  Search Storage                                  *****/
+/************************************************************/
+
+CREATE TABLE {databaseOwner}{objectQualifier}SearchItem (
+	[SearchItemID] [int] IDENTITY (1, 1) NOT NULL ,
+	[Title] [nvarchar] (200)  NOT NULL ,
+	[Link] [nvarchar] (256)  NOT NULL ,
+	[Description] [nvarchar] (2000)  NOT NULL ,
+	[Author] [int] NULL ,
+	[PubDate] [datetime] NOT NULL ,
+	[ModuleId] [int] NOT NULL ,
+	[SearchKey] [nvarchar] (100)  NOT NULL ,
+	[Content] [text]  NOT NULL ,
+	[Guid] [nvarchar] (40)  NULL ,
+	[HitCount] [int] NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}SearchItemWord (
+	[SearchItemWordID] [int] IDENTITY (1, 1) NOT NULL ,
+	[SearchItemID] [int] NOT NULL ,
+	[SearchWordsID] [int] NOT NULL ,
+	[Occurrences] [int] NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}SearchItemWordPosition (
+	[SearchItemWordPositionID] [int] IDENTITY (1, 1) NOT NULL ,
+	[SearchItemWordID] [int] NOT NULL ,
+	[ContentPosition] [int] NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}SearchWord (
+	[SearchWordsID] [int] IDENTITY (1, 1) NOT NULL ,
+	[Word] [nvarchar] (100)  NOT NULL ,
+	[IsCommon] [bit] NULL ,
+	[HitCount] [int] NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItem WITH NOCHECK ADD 
+	CONSTRAINT PK_{objectQualifier}SearchItem PRIMARY KEY  CLUSTERED 
+	(
+		[SearchItemID]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  UNIQUE  INDEX IX_{objectQualifier}SearchItem ON {databaseOwner}{objectQualifier}SearchItem([ModuleId], [SearchKey]) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItemWord WITH NOCHECK ADD 
+	CONSTRAINT PK_{objectQualifier}SearchItemWords PRIMARY KEY  CLUSTERED 
+	(
+		[SearchItemWordID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItemWordPosition WITH NOCHECK ADD 
+	CONSTRAINT PK_{objectQualifier}SearchItemWordPosition PRIMARY KEY  CLUSTERED 
+	(
+		[SearchItemWordPositionID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchWord WITH NOCHECK ADD 
+	CONSTRAINT PK_{objectQualifier}SearchWord PRIMARY KEY  CLUSTERED 
+	(
+		[SearchWordsID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItemWord ADD 
+	CONSTRAINT FK_{objectQualifier}SearchItemWord_{objectQualifier}SearchItem FOREIGN KEY 
+	(
+		[SearchItemID]
+	) REFERENCES {databaseOwner}{objectQualifier}SearchItem (
+		[SearchItemID]
+	) ON DELETE CASCADE  ON UPDATE CASCADE ,
+	CONSTRAINT FK_{objectQualifier}SearchItemWord_{objectQualifier}SearchWord FOREIGN KEY 
+	(
+		[SearchWordsID]
+	) REFERENCES {databaseOwner}{objectQualifier}SearchWord (
+		[SearchWordsID]
+	) ON DELETE CASCADE  ON UPDATE CASCADE 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItemWordPosition ADD 
+	CONSTRAINT FK_{objectQualifier}SearchItemWordPosition_{objectQualifier}SearchItemWord FOREIGN KEY 
+	(
+		[SearchItemWordID]
+	) REFERENCES {databaseOwner}{objectQualifier}SearchItemWord (
+		[SearchItemWordID]
+	) ON DELETE CASCADE  ON UPDATE CASCADE 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchItem    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchItem') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchItem
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}ListSearchItem    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}ListSearchItem') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}ListSearchItem
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}AddSearchItem    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}AddSearchItem') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}AddSearchItem
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}UpdateSearchItem    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}UpdateSearchItem') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}UpdateSearchItem
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}DeleteSearchItem    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeleteSearchItem') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}DeleteSearchItem
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchItemWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchItemWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchItemWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}ListSearchItemWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}ListSearchItemWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}ListSearchItemWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchItemWordBySearchItem    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchItemWordBySearchItem') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchItemWordBySearchItem
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchItemWordBySearchWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchItemWordBySearchWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchItemWordBySearchWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}AddSearchItemWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}AddSearchItemWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}AddSearchItemWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}UpdateSearchItemWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}UpdateSearchItemWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}UpdateSearchItemWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}DeleteSearchItemWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeleteSearchItemWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}DeleteSearchItemWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}ListSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}ListSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}ListSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchItemWordPositionBySearchItemWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchItemWordPositionBySearchItemWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchItemWordPositionBySearchItemWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}AddSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}AddSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}AddSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}UpdateSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}UpdateSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}UpdateSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}DeleteSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeleteSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}DeleteSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}ListSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}ListSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}ListSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchItemWordPositionBySearchItemWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchItemWordPositionBySearchItemWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchItemWordPositionBySearchItemWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}AddSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}AddSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}AddSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}UpdateSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}UpdateSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}UpdateSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}DeleteSearchItemWordPosition    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeleteSearchItemWordPosition') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}DeleteSearchItemWordPosition
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}ListSearchWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}ListSearchWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}ListSearchWord
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}AddSearchWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}AddSearchWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}AddSearchWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}UpdateSearchWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}UpdateSearchWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}UpdateSearchWord
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}DeleteSearchWord    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeleteSearchWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}DeleteSearchWord
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchItem
+	@ModuleId int
+	,@SearchKey varchar(100) 
+AS
+
+SELECT
+	[SearchItemID],
+	[Title],
+	[Link],
+	[Description],
+	[Author],
+	[PubDate],
+	[ModuleId],
+	[SearchKey],
+	[Content],
+	[Guid],
+	[HitCount]
+FROM
+	{databaseOwner}{objectQualifier}SearchItem
+WHERE
+	[ModuleID] = @ModuleID AND
+	[SearchKey] = @SearchKey
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}ListSearchItem
+AS
+
+SELECT
+	[SearchItemID],
+	[Title],
+	[Link],
+	[Description],
+	[Author],
+	[PubDate],
+	[ModuleId],
+	[SearchKey],
+	[Content],
+	[Guid],
+	[HitCount]
+FROM
+	{databaseOwner}{objectQualifier}SearchItem
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSearchItem
+	@Title nvarchar(200),
+	@Link nvarchar(256),
+	@Description nvarchar(2000),
+	@Author int,
+	@ModuleId int,
+	@SearchKey nvarchar(100),
+	@Content text
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}SearchItem (
+	[Title],
+	[Link],
+	[Description],
+	[Author],
+	[PubDate],
+	[ModuleId],
+	[SearchKey],
+	[Content],
+	[Guid],
+	[HitCount]
+) VALUES (
+	@Title,
+	@Link,
+	@Description,
+	@Author,
+	GETDATE(),
+	@ModuleId,
+	@SearchKey,
+	@Content,
+	CONVERT(nvarchar(40), NEWID()),
+	0
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSearchItem
+	@SearchItemID int, 
+	@Title varchar(200), 
+	@Link varchar(256), 
+	@Description varchar(500), 
+	@Author int, 
+	@PubDate datetime, 
+	@ModuleId int, 
+	@SearchKey varchar(100), 
+	@Content text, 
+	@Guid nvarchar(40), 
+	@HitCount int 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}SearchItem SET
+	[Title] = @Title,
+	[Link] = @Link,
+	[Description] = @Description,
+	[Author] = @Author,
+	[PubDate] = @PubDate,
+	[ModuleId] = @ModuleId,
+	[SearchKey] = @SearchKey,
+	[Content] = @Content,
+	[Guid] = @Guid,
+	[HitCount] = @HitCount
+WHERE
+	[SearchItemID] = @SearchItemID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteSearchItem
+	@SearchItemID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}SearchItem
+WHERE
+	[SearchItemID] = @SearchItemID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchItemWord
+	@SearchItemWordID int
+	
+AS
+
+SELECT
+	[SearchItemWordID],
+	[SearchItemID],
+	[SearchWordsID],
+	[Occurrences]
+FROM
+	{databaseOwner}{objectQualifier}SearchItemWord
+WHERE
+	[SearchItemWordID] = @SearchItemWordID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}ListSearchItemWord
+AS
+
+SELECT
+	[SearchItemWordID],
+	[SearchItemID],
+	[SearchWordsID],
+	[Occurrences]
+FROM
+	{databaseOwner}{objectQualifier}SearchItemWord
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchItemWordBySearchItem
+	@SearchItemID int
+AS
+
+SELECT
+	[SearchItemWordID],
+	[SearchItemID],
+	[SearchWordsID],
+	[Occurrences]
+FROM
+	{databaseOwner}{objectQualifier}SearchItemWord
+WHERE
+	[SearchItemID]=@SearchItemID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchItemWordBySearchWord
+	@SearchWordsID int
+AS
+
+SELECT
+	[SearchItemWordID],
+	[SearchItemID],
+	[SearchWordsID],
+	[Occurrences]
+FROM
+	{databaseOwner}{objectQualifier}SearchItemWord
+WHERE
+	[SearchWordsID]=@SearchWordsID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSearchItemWord
+	@SearchItemID int,
+	@SearchWordsID int,
+	@Occurrences int
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}SearchItemWord (
+	[SearchItemID],
+	[SearchWordsID],
+	[Occurrences]
+) VALUES (
+	@SearchItemID,
+	@SearchWordsID,
+	@Occurrences
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSearchItemWord
+	@SearchItemWordID int, 
+	@SearchItemID int, 
+	@SearchWordsID int, 
+	@Occurrences int 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}SearchItemWord SET
+	[SearchItemID] = @SearchItemID,
+	[SearchWordsID] = @SearchWordsID,
+	[Occurrences] = @Occurrences
+WHERE
+	[SearchItemWordID] = @SearchItemWordID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteSearchItemWord
+	@SearchItemWordID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}SearchItemWord
+WHERE
+	[SearchItemWordID] = @SearchItemWordID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchItemWordPosition
+	@SearchItemWordPositionID int
+	
+AS
+
+SELECT
+	[SearchItemWordPositionID],
+	[SearchItemWordID],
+	[ContentPosition]
+FROM
+	{databaseOwner}{objectQualifier}SearchItemWordPosition
+WHERE
+	[SearchItemWordPositionID] = @SearchItemWordPositionID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}ListSearchItemWordPosition
+AS
+
+SELECT
+	[SearchItemWordPositionID],
+	[SearchItemWordID],
+	[ContentPosition]
+FROM
+	{databaseOwner}{objectQualifier}SearchItemWordPosition
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchItemWordPositionBySearchItemWord
+	@SearchItemWordID int
+AS
+
+SELECT
+	[SearchItemWordPositionID],
+	[SearchItemWordID],
+	[ContentPosition]
+FROM
+	{databaseOwner}{objectQualifier}SearchItemWordPosition
+WHERE
+	[SearchItemWordID]=@SearchItemWordID
+GO
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}AddSearchItemWordPosition
+	@SearchItemWordID int,
+	@ContentPositions varChar(2000)
+AS
+
+	SET NOCOUNT ON
+
+	DECLARE @TempList table
+	(
+		ItemWordID int,
+		Position int
+	)
+
+	DECLARE @Position varchar(10), @Pos int
+
+	SET @ContentPositions = LTRIM(RTRIM(@ContentPositions))+ ','
+	SET @Pos = CHARINDEX(',', @ContentPositions, 1)
+
+	IF REPLACE(@ContentPositions, ',', '') <> ''
+	BEGIN
+		WHILE @Pos > 0
+		BEGIN
+			SET @Position = LTRIM(RTRIM(LEFT(@ContentPositions, @Pos - 1)))
+			IF @Position <> ''
+			BEGIN
+				INSERT INTO @TempList (ItemWordID, Position) VALUES (@SearchItemWordID, CAST(@Position AS int)) 
+			END
+			SET @ContentPositions = RIGHT(@ContentPositions, LEN(@ContentPositions) - @Pos)
+			SET @Pos = CHARINDEX(',', @ContentPositions, 1)
+
+		END
+	END	
+
+	INSERT INTO {databaseOwner}{objectQualifier}SearchItemWordPosition (
+		[SearchItemWordID],
+		[ContentPosition]) 
+	SELECT ItemWordID, Position FROM @TempList
+
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSearchItemWordPosition
+	@SearchItemWordPositionID int, 
+	@SearchItemWordID int, 
+	@ContentPosition int 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}SearchItemWordPosition SET
+	[SearchItemWordID] = @SearchItemWordID,
+	[ContentPosition] = @ContentPosition
+WHERE
+	[SearchItemWordPositionID] = @SearchItemWordPositionID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteSearchItemWordPosition
+	@SearchItemWordPositionID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}SearchItemWordPosition
+WHERE
+	[SearchItemWordPositionID] = @SearchItemWordPositionID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchWordByID
+	@SearchWordsID int
+	
+AS
+
+SELECT
+	[SearchWordsID],
+	[Word],
+	[IsCommon],
+	[HitCount]
+FROM
+	{databaseOwner}{objectQualifier}SearchWord
+WHERE
+	[SearchWordsID] = @SearchWordsID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchWords
+AS
+
+SELECT
+	[SearchWordsID],
+	[Word],
+	[HitCount]
+FROM
+	{databaseOwner}{objectQualifier}SearchWord
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSearchWord
+	@Word nvarchar(100)
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}SearchWord (
+	[Word],
+	[IsCommon],
+	[HitCount]
+) VALUES (
+	@Word,
+	0,
+	1
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSearchWord
+	@SearchWordsID int, 
+	@Word nvarchar(100), 
+	@IsCommon bit, 
+	@HitCount int 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}SearchWord SET
+	[Word] = @Word,
+	[IsCommon] = @IsCommon,
+	[HitCount] = @HitCount
+WHERE
+	[SearchWordsID] = @SearchWordsID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteSearchWord
+	@SearchWordsID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}SearchWord
+WHERE
+	[SearchWordsID] = @SearchWordsID
+GO
+
+
+CREATE PROC {databaseOwner}{objectQualifier}DeleteSearchItems
+(
+	@ModuleList varchar(1000)
+)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DECLARE @TempList table
+	(
+		ModuleID int
+	)
+
+	DECLARE @ModuleID varchar(10), @Pos int
+
+	SET @ModuleList = LTRIM(RTRIM(@ModuleList))+ ','
+	SET @Pos = CHARINDEX(',', @ModuleList, 1)
+
+	IF REPLACE(@ModuleList, ',', '') <> ''
+	BEGIN
+		WHILE @Pos > 0
+		BEGIN
+			SET @ModuleID = LTRIM(RTRIM(LEFT(@ModuleList, @Pos - 1)))
+			IF @ModuleID <> ''
+			BEGIN
+				INSERT INTO @TempList (ModuleID) VALUES (CAST(@ModuleID AS int)) 
+			END
+			SET @ModuleList = RIGHT(@ModuleList, LEN(@ModuleList) - @Pos)
+			SET @Pos = CHARINDEX(',', @ModuleList, 1)
+
+		END
+	END	
+
+	DELETE
+	FROM	{databaseOwner}{objectQualifier}SearchItem
+	WHERE	ModuleID in 
+		(SELECT ModuleID FROM @TempList)
+		
+END
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchCommonWords    Script Date: Sunday, October 03, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchCommonWords') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchCommonWords
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}ListSearchCommonWords    Script Date: Sunday, October 03, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}ListSearchCommonWords') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}ListSearchCommonWords
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}AddSearchCommonWords    Script Date: Sunday, October 03, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}AddSearchCommonWords') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}AddSearchCommonWords
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}UpdateSearchCommonWords    Script Date: Sunday, October 03, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}UpdateSearchCommonWords') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}UpdateSearchCommonWords
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}DeleteSearchCommonWords    Script Date: Sunday, October 03, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeleteSearchCommonWords') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}DeleteSearchCommonWords
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}SearchCommonWords (
+	[CommonWordID] [int] IDENTITY (1, 1) NOT NULL ,
+	[CommonWord] [nvarchar] (255)  NOT NULL ,
+	[Locale] [nvarchar] (10)  NULL ,
+	CONSTRAINT [PK_{objectQualifier}SearchCommonWords] PRIMARY KEY  CLUSTERED 
+	(
+		[CommonWordID]
+	)  ON [PRIMARY] 
+) ON [PRIMARY]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchCommonWordByID
+	@CommonWordID int
+	
+AS
+
+SELECT
+	[CommonWordID],
+	[CommonWord],
+	[Locale]
+FROM
+	{databaseOwner}{objectQualifier}SearchCommonWords
+WHERE
+	[CommonWordID] = @CommonWordID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchCommonWordsByLocale
+	@Locale nvarchar(10)
+	
+AS
+
+SELECT
+	[CommonWordID],
+	[CommonWord],
+	[Locale]
+FROM
+	{databaseOwner}{objectQualifier}SearchCommonWords
+WHERE
+	[Locale] = @Locale
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSearchCommonWord
+	@CommonWord nvarchar(255),
+	@Locale nvarchar(10)
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}SearchCommonWords (
+	[CommonWord],
+	[Locale]
+) VALUES (
+	@CommonWord,
+	@Locale
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSearchCommonWord
+	@CommonWordID int, 
+	@CommonWord nvarchar(255), 
+	@Locale nvarchar(10) 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}SearchCommonWords SET
+	[CommonWord] = @CommonWord,
+	[Locale] = @Locale
+WHERE
+	[CommonWordID] = @CommonWordID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteSearchCommonWord
+	@CommonWordID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}SearchCommonWords
+WHERE
+	[CommonWordID] = @CommonWordID
+GO
+
+TRUNCATE TABLE {databaseOwner}{objectQualifier}SearchCommonWords
+
+DBCC CHECKIDENT ('{databaseOwner}{objectQualifier}SearchCommonWords', RESEED, 1)
+
+SET IDENTITY_INSERT {databaseOwner}{objectQualifier}SearchCommonWords ON
+
+INSERT INTO {databaseOwner}{objectQualifier}SearchCommonWords (
+	[CommonWordID],
+	[CommonWord],
+	[Locale]
+)
+	SELECT 1, 'a', 'en-US' UNION
+	SELECT 2, 'about', 'en-US' UNION
+	SELECT 3, 'above', 'en-US' UNION
+	SELECT 4, 'according', 'en-US' UNION
+	SELECT 5, 'across', 'en-US' UNION
+	SELECT 6, 'actually', 'en-US' UNION
+	SELECT 7, 'adj', 'en-US' UNION
+	SELECT 8, 'after', 'en-US' UNION
+	SELECT 9, 'afterwards', 'en-US' UNION
+	SELECT 10, 'again', 'en-US' UNION
+	SELECT 11, 'against', 'en-US' UNION
+	SELECT 12, 'all', 'en-US' UNION
+	SELECT 13, 'almost', 'en-US' UNION
+	SELECT 14, 'alone', 'en-US' UNION
+	SELECT 15, 'along', 'en-US' UNION
+	SELECT 16, 'already', 'en-US' UNION
+	SELECT 17, 'also', 'en-US' UNION
+	SELECT 18, 'although', 'en-US' UNION
+	SELECT 19, 'always', 'en-US' UNION
+	SELECT 20, 'among', 'en-US' UNION
+	SELECT 21, 'amongst', 'en-US' UNION
+	SELECT 22, 'an', 'en-US' UNION
+	SELECT 23, 'and', 'en-US' UNION
+	SELECT 24, 'another', 'en-US' UNION
+	SELECT 25, 'any', 'en-US' UNION
+	SELECT 26, 'anyhow', 'en-US' UNION
+	SELECT 27, 'anyone', 'en-US' UNION
+	SELECT 28, 'anything', 'en-US' UNION
+	SELECT 29, 'anywhere', 'en-US' UNION
+	SELECT 30, 'are', 'en-US' UNION
+	SELECT 31, 'aren''t', 'en-US' UNION
+	SELECT 32, 'around', 'en-US' UNION
+	SELECT 33, 'as', 'en-US' UNION
+	SELECT 34, 'at', 'en-US' UNION
+	SELECT 35, 'b', 'en-US' UNION
+	SELECT 36, 'be', 'en-US' UNION
+	SELECT 37, 'became', 'en-US' UNION
+	SELECT 38, 'because', 'en-US' UNION
+	SELECT 39, 'become', 'en-US' UNION
+	SELECT 40, 'becomes', 'en-US' UNION
+	SELECT 41, 'becoming', 'en-US' UNION
+	SELECT 42, 'been', 'en-US' UNION
+	SELECT 43, 'before', 'en-US' UNION
+	SELECT 44, 'beforehand', 'en-US' UNION
+	SELECT 45, 'begin', 'en-US' UNION
+	SELECT 46, 'behind', 'en-US' UNION
+	SELECT 47, 'being', 'en-US' UNION
+	SELECT 48, 'below', 'en-US' UNION
+	SELECT 49, 'beside', 'en-US' UNION
+	SELECT 50, 'besides', 'en-US' UNION
+	SELECT 51, 'between', 'en-US' UNION
+	SELECT 52, 'beyond', 'en-US' UNION
+	SELECT 53, 'both', 'en-US' UNION
+	SELECT 54, 'but', 'en-US' UNION
+	SELECT 55, 'by', 'en-US' UNION
+	SELECT 56, 'c', 'en-US' UNION
+	SELECT 57, 'can', 'en-US' UNION
+	SELECT 58, 'can''t', 'en-US' UNION
+	SELECT 59, 'cannot', 'en-US' UNION
+	SELECT 60, 'caption', 'en-US' UNION
+	SELECT 61, 'co', 'en-US' UNION
+	SELECT 62, 'could', 'en-US' UNION
+	SELECT 63, 'couldn''t', 'en-US' UNION
+	SELECT 64, 'd', 'en-US' UNION
+	SELECT 65, 'did', 'en-US' UNION
+	SELECT 66, 'didn''t', 'en-US' UNION
+	SELECT 67, 'do', 'en-US' UNION
+	SELECT 68, 'does', 'en-US' UNION
+	SELECT 69, 'doesn''t', 'en-US' UNION
+	SELECT 70, 'don''t', 'en-US' UNION
+	SELECT 71, 'during', 'en-US' UNION
+	SELECT 72, 'e', 'en-US' UNION
+	SELECT 73, 'each', 'en-US' UNION
+	SELECT 74, 'eg', 'en-US' UNION
+	SELECT 75, 'eight', 'en-US' UNION
+	SELECT 76, 'eighty', 'en-US' UNION
+	SELECT 77, 'either', 'en-US' UNION
+	SELECT 78, 'else', 'en-US' UNION
+	SELECT 79, 'elsewhere', 'en-US' UNION
+	SELECT 80, 'end', 'en-US' UNION
+	SELECT 81, 'ending', 'en-US' UNION
+	SELECT 82, 'enough', 'en-US' UNION
+	SELECT 83, 'etc', 'en-US' UNION
+	SELECT 84, 'even', 'en-US' UNION
+	SELECT 85, 'ever', 'en-US' UNION
+	SELECT 86, 'every', 'en-US' UNION
+	SELECT 87, 'everyone', 'en-US' UNION
+	SELECT 88, 'everything', 'en-US' UNION
+	SELECT 89, 'everywhere', 'en-US' UNION
+	SELECT 90, 'except', 'en-US' UNION
+	SELECT 91, 'f', 'en-US' UNION
+	SELECT 92, 'few', 'en-US' UNION
+	SELECT 93, 'first', 'en-US' UNION
+	SELECT 94, 'for', 'en-US' UNION
+	SELECT 95, 'found', 'en-US' UNION
+	SELECT 96, 'from', 'en-US' UNION
+	SELECT 97, 'further', 'en-US' UNION
+	SELECT 98, 'g', 'en-US' UNION
+	SELECT 99, 'h', 'en-US' UNION
+	SELECT 100, 'had', 'en-US' UNION
+	SELECT 101, 'has', 'en-US' UNION
+	SELECT 102, 'hasn''t', 'en-US' UNION
+	SELECT 103, 'have', 'en-US' UNION
+	SELECT 104, 'haven''t', 'en-US' UNION
+	SELECT 105, 'he', 'en-US' UNION
+	SELECT 106, 'he''d', 'en-US' UNION
+	SELECT 107, 'he''ll', 'en-US' UNION
+	SELECT 108, 'he''s', 'en-US' UNION
+	SELECT 109, 'hence', 'en-US' UNION
+	SELECT 110, 'her', 'en-US' UNION
+	SELECT 111, 'here', 'en-US' UNION
+	SELECT 112, 'here''s', 'en-US' UNION
+	SELECT 113, 'hereafter', 'en-US' UNION
+	SELECT 114, 'hereby', 'en-US' UNION
+	SELECT 115, 'herein', 'en-US' UNION
+	SELECT 116, 'hereupon', 'en-US' UNION
+	SELECT 117, 'hers', 'en-US' UNION
+	SELECT 118, 'herself', 'en-US' UNION
+	SELECT 119, 'him', 'en-US' UNION
+	SELECT 120, 'himself', 'en-US' UNION
+	SELECT 121, 'his', 'en-US' UNION
+	SELECT 122, 'how', 'en-US' UNION
+	SELECT 123, 'however', 'en-US' UNION
+	SELECT 124, 'hundred', 'en-US' UNION
+	SELECT 125, 'i', 'en-US' UNION
+	SELECT 126, 'i''d', 'en-US' UNION
+	SELECT 127, 'i''ll', 'en-US' UNION
+	SELECT 128, 'i''m', 'en-US' UNION
+	SELECT 129, 'i''ve', 'en-US' UNION
+	SELECT 130, 'ie', 'en-US' UNION
+	SELECT 131, 'if', 'en-US' UNION
+	SELECT 132, 'in', 'en-US' UNION
+	SELECT 133, 'indeed', 'en-US' UNION
+	SELECT 134, 'instead', 'en-US' UNION
+	SELECT 135, 'into', 'en-US' UNION
+	SELECT 136, 'is', 'en-US' UNION
+	SELECT 137, 'isn''t', 'en-US' UNION
+	SELECT 138, 'it', 'en-US' UNION
+	SELECT 139, 'it''s', 'en-US' UNION
+	SELECT 140, 'its', 'en-US' UNION
+	SELECT 141, 'itself', 'en-US' UNION
+	SELECT 142, 'j', 'en-US' UNION
+	SELECT 143, 'k', 'en-US' UNION
+	SELECT 144, 'l', 'en-US' UNION
+	SELECT 145, 'last', 'en-US' UNION
+	SELECT 146, 'later', 'en-US' UNION
+	SELECT 147, 'latter', 'en-US' UNION
+	SELECT 148, 'latterly', 'en-US' UNION
+	SELECT 149, 'least', 'en-US' UNION
+	SELECT 150, 'less', 'en-US' UNION
+	SELECT 151, 'let', 'en-US' UNION
+	SELECT 152, 'let''s', 'en-US' UNION
+	SELECT 153, 'like', 'en-US' UNION
+	SELECT 154, 'likely', 'en-US' UNION
+	SELECT 155, 'ltd', 'en-US' UNION
+	SELECT 156, 'm', 'en-US' UNION
+	SELECT 157, 'made', 'en-US' UNION
+	SELECT 158, 'make', 'en-US' UNION
+	SELECT 159, 'makes', 'en-US' UNION
+	SELECT 160, 'many', 'en-US' UNION
+	SELECT 161, 'maybe', 'en-US' UNION
+	SELECT 162, 'me', 'en-US' UNION
+	SELECT 163, 'meantime', 'en-US' UNION
+	SELECT 164, 'meanwhile', 'en-US' UNION
+	SELECT 165, 'might', 'en-US' UNION
+	SELECT 166, 'miss', 'en-US' UNION
+	SELECT 167, 'more', 'en-US' UNION
+	SELECT 168, 'moreover', 'en-US' UNION
+	SELECT 169, 'most', 'en-US' UNION
+	SELECT 170, 'mostly', 'en-US' UNION
+	SELECT 171, 'mr', 'en-US' UNION
+	SELECT 172, 'mrs', 'en-US' UNION
+	SELECT 173, 'much', 'en-US' UNION
+	SELECT 174, 'must', 'en-US' UNION
+	SELECT 175, 'my', 'en-US' UNION
+	SELECT 176, 'myself', 'en-US' UNION
+	SELECT 177, 'n', 'en-US' UNION
+	SELECT 178, 'namely', 'en-US' UNION
+	SELECT 179, 'near', 'en-US' UNION
+	SELECT 180, 'neither', 'en-US' UNION
+	SELECT 181, 'never', 'en-US' UNION
+	SELECT 182, 'nevertheless', 'en-US' UNION
+	SELECT 183, 'next', 'en-US' UNION
+	SELECT 184, 'nine', 'en-US' UNION
+	SELECT 185, 'ninety', 'en-US' UNION
+	SELECT 186, 'no', 'en-US' UNION
+	SELECT 187, 'not', 'en-US' UNION
+	SELECT 188, 'nobody', 'en-US' UNION
+	SELECT 189, 'none', 'en-US' UNION
+	SELECT 190, 'nonetheless', 'en-US' UNION
+	SELECT 191, 'noone', 'en-US' UNION
+	SELECT 192, 'nor', 'en-US' UNION
+	SELECT 193, 'nothing', 'en-US' UNION
+	SELECT 194, 'now', 'en-US' UNION
+	SELECT 195, 'nowhere', 'en-US' UNION
+	SELECT 196, 'o', 'en-US' UNION
+	SELECT 197, 'of', 'en-US' UNION
+	SELECT 198, 'off', 'en-US' UNION
+	SELECT 199, 'often', 'en-US' UNION
+	SELECT 200, 'on', 'en-US' UNION
+	SELECT 201, 'once', 'en-US' UNION
+	SELECT 202, 'one', 'en-US' UNION
+	SELECT 203, 'one''s', 'en-US' UNION
+	SELECT 204, 'only', 'en-US' UNION
+	SELECT 205, 'onto', 'en-US' UNION
+	SELECT 206, 'or', 'en-US' UNION
+	SELECT 207, 'other', 'en-US' UNION
+	SELECT 208, 'others', 'en-US' UNION
+	SELECT 209, 'otherwise', 'en-US' UNION
+	SELECT 210, 'our', 'en-US' UNION
+	SELECT 211, 'ours', 'en-US' UNION
+	SELECT 212, 'ourselves', 'en-US' UNION
+	SELECT 213, 'out', 'en-US' UNION
+	SELECT 214, 'over', 'en-US' UNION
+	SELECT 215, 'overall', 'en-US' UNION
+	SELECT 216, 'own', 'en-US' UNION
+	SELECT 217, 'p', 'en-US' UNION
+	SELECT 218, 'per', 'en-US' UNION
+	SELECT 219, 'perhaps', 'en-US' UNION
+	SELECT 220, 'q', 'en-US' UNION
+	SELECT 221, 'r', 'en-US' UNION
+	SELECT 222, 'rather', 'en-US' UNION
+	SELECT 223, 'recent', 'en-US' UNION
+	SELECT 224, 'recently', 'en-US' UNION
+	SELECT 225, 's', 'en-US' UNION
+	SELECT 226, 'same', 'en-US' UNION
+	SELECT 227, 'seem', 'en-US' UNION
+	SELECT 228, 'seemed', 'en-US' UNION
+	SELECT 229, 'seeming', 'en-US' UNION
+	SELECT 230, 'seems', 'en-US' UNION
+	SELECT 231, 'seven', 'en-US' UNION
+	SELECT 232, 'several', 'en-US' UNION
+	SELECT 233, 'she', 'en-US' UNION
+	SELECT 234, 'she''d', 'en-US' UNION
+	SELECT 235, 'she''ll', 'en-US' UNION
+	SELECT 236, 'she''s', 'en-US' UNION
+	SELECT 237, 'should', 'en-US' UNION
+	SELECT 238, 'shouldn''t', 'en-US' UNION
+	SELECT 239, 'since', 'en-US' UNION
+	SELECT 240, 'so', 'en-US' UNION
+	SELECT 241, 'some', 'en-US' UNION
+	SELECT 242, 'somehow', 'en-US' UNION
+	SELECT 243, 'someone', 'en-US' UNION
+	SELECT 244, 'something', 'en-US' UNION
+	SELECT 245, 'sometime', 'en-US' UNION
+	SELECT 246, 'sometimes', 'en-US' UNION
+	SELECT 247, 'somewhere', 'en-US' UNION
+	SELECT 248, 'still', 'en-US' UNION
+	SELECT 249, 'such', 'en-US' UNION
+	SELECT 250, 't', 'en-US' UNION
+	SELECT 251, 'taking', 'en-US' UNION
+	SELECT 252, 'than', 'en-US' UNION
+	SELECT 253, 'that', 'en-US' UNION
+	SELECT 254, 'that''ll', 'en-US' UNION
+	SELECT 255, 'that''s', 'en-US' UNION
+	SELECT 256, 'that''ve', 'en-US' UNION
+	SELECT 257, 'the', 'en-US' UNION
+	SELECT 258, 'their', 'en-US' UNION
+	SELECT 259, 'them', 'en-US' UNION
+	SELECT 260, 'themselves', 'en-US' UNION
+	SELECT 261, 'then', 'en-US' UNION
+	SELECT 262, 'thence', 'en-US' UNION
+	SELECT 263, 'there', 'en-US' UNION
+	SELECT 264, 'there''d', 'en-US' UNION
+	SELECT 265, 'there''ll', 'en-US' UNION
+	SELECT 266, 'there''re', 'en-US' UNION
+	SELECT 267, 'there''s', 'en-US' UNION
+	SELECT 268, 'there''ve', 'en-US' UNION
+	SELECT 269, 'thereafter', 'en-US' UNION
+	SELECT 270, 'thereby', 'en-US' UNION
+	SELECT 271, 'therefore', 'en-US' UNION
+	SELECT 272, 'therein', 'en-US' UNION
+	SELECT 273, 'thereupon', 'en-US' UNION
+	SELECT 274, 'these', 'en-US' UNION
+	SELECT 275, 'they', 'en-US' UNION
+	SELECT 276, 'they''d', 'en-US' UNION
+	SELECT 277, 'they''ll', 'en-US' UNION
+	SELECT 278, 'they''re', 'en-US' UNION
+	SELECT 279, 'they''ve', 'en-US' UNION
+	SELECT 280, 'thirty', 'en-US' UNION
+	SELECT 281, 'this', 'en-US' UNION
+	SELECT 282, 'those', 'en-US' UNION
+	SELECT 283, 'though', 'en-US' UNION
+	SELECT 284, 'three', 'en-US' UNION
+	SELECT 285, 'through', 'en-US' UNION
+	SELECT 286, 'throughout', 'en-US' UNION
+	SELECT 287, 'thru', 'en-US' UNION
+	SELECT 288, 'thus', 'en-US' UNION
+	SELECT 289, 'to', 'en-US' UNION
+	SELECT 290, 'together', 'en-US' UNION
+	SELECT 291, 'too', 'en-US' UNION
+	SELECT 292, 'toward', 'en-US' UNION
+	SELECT 293, 'towards', 'en-US' UNION
+	SELECT 294, 'u', 'en-US' UNION
+	SELECT 295, 'under', 'en-US' UNION
+	SELECT 296, 'unless', 'en-US' UNION
+	SELECT 297, 'unlike', 'en-US' UNION
+	SELECT 298, 'unlikely', 'en-US' UNION
+	SELECT 299, 'until', 'en-US' UNION
+	SELECT 300, 'up', 'en-US' UNION
+	SELECT 301, 'upon', 'en-US' UNION
+	SELECT 302, 'us', 'en-US' UNION
+	SELECT 303, 'used', 'en-US' UNION
+	SELECT 304, 'using', 'en-US' UNION
+	SELECT 305, 'v', 'en-US' UNION
+	SELECT 306, 'very', 'en-US' UNION
+	SELECT 307, 'via', 'en-US' UNION
+	SELECT 308, 'w', 'en-US' UNION
+	SELECT 309, 'was', 'en-US' UNION
+	SELECT 310, 'wasn''t', 'en-US' UNION
+	SELECT 311, 'we', 'en-US' UNION
+	SELECT 312, 'we''d', 'en-US' UNION
+	SELECT 313, 'we''ll', 'en-US' UNION
+	SELECT 314, 'we''re', 'en-US' UNION
+	SELECT 315, 'we''ve', 'en-US' UNION
+	SELECT 316, 'well', 'en-US' UNION
+	SELECT 317, 'were', 'en-US' UNION
+	SELECT 318, 'weren''t', 'en-US' UNION
+	SELECT 319, 'what', 'en-US' UNION
+	SELECT 320, 'what''ll', 'en-US' UNION
+	SELECT 321, 'what''s', 'en-US' UNION
+	SELECT 322, 'what''ve', 'en-US' UNION
+	SELECT 323, 'whatever', 'en-US' UNION
+	SELECT 324, 'when', 'en-US' UNION
+	SELECT 325, 'whence', 'en-US' UNION
+	SELECT 326, 'whenever', 'en-US' UNION
+	SELECT 327, 'where', 'en-US' UNION
+	SELECT 328, 'where''s', 'en-US' UNION
+	SELECT 329, 'whereafter', 'en-US' UNION
+	SELECT 330, 'whereas', 'en-US' UNION
+	SELECT 331, 'whereby', 'en-US' UNION
+	SELECT 332, 'wherein', 'en-US' UNION
+	SELECT 333, 'whereupon', 'en-US' UNION
+	SELECT 334, 'wherever', 'en-US' UNION
+	SELECT 335, 'whether', 'en-US' UNION
+	SELECT 336, 'which', 'en-US' UNION
+	SELECT 337, 'while', 'en-US' UNION
+	SELECT 338, 'whither', 'en-US' UNION
+	SELECT 339, 'who', 'en-US' UNION
+	SELECT 340, 'who''d', 'en-US' UNION
+	SELECT 341, 'who''ll', 'en-US' UNION
+	SELECT 342, 'who''s', 'en-US' UNION
+	SELECT 343, 'whoever', 'en-US' UNION
+	SELECT 344, 'whole', 'en-US' UNION
+	SELECT 345, 'whom', 'en-US' UNION
+	SELECT 346, 'whomever', 'en-US' UNION
+	SELECT 347, 'whose', 'en-US' UNION
+	SELECT 348, 'why', 'en-US' UNION
+	SELECT 349, 'will', 'en-US' UNION
+	SELECT 350, 'with', 'en-US' UNION
+	SELECT 351, 'within', 'en-US' UNION
+	SELECT 352, 'without', 'en-US' UNION
+	SELECT 353, 'won''t', 'en-US' UNION
+	SELECT 354, 'would', 'en-US' UNION
+	SELECT 355, 'wouldn''t', 'en-US' UNION
+	SELECT 356, 'x', 'en-US' UNION
+	SELECT 357, 'y', 'en-US' UNION
+	SELECT 358, 'yes', 'en-US' UNION
+	SELECT 359, 'yet', 'en-US' UNION
+	SELECT 360, 'you', 'en-US' UNION
+	SELECT 361, 'you''d', 'en-US' UNION
+	SELECT 362, 'you''ll', 'en-US' UNION
+	SELECT 363, 'you''re', 'en-US' UNION
+	SELECT 364, 'you''ve', 'en-US' UNION
+	SELECT 365, 'your', 'en-US' UNION
+	SELECT 366, 'yours', 'en-US' UNION
+	SELECT 367, 'yourself', 'en-US' UNION
+	SELECT 368, 'yourselves', 'en-US' UNION
+	SELECT 369, 'z', 'en-US'
+
+SET IDENTITY_INSERT {databaseOwner}{objectQualifier}SearchCommonWords OFF
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetPortalIDsByModule    Script Date: Sunday, October 3, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPortalIDsByModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetPortalIDsByModule 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetDefaultLanguageByModule
+(
+	@ModuleList varchar(1000)
+)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DECLARE @TempList table
+	(
+		ModuleID int
+	)
+
+	DECLARE @ModuleID varchar(10), @Pos int
+
+	SET @ModuleList = LTRIM(RTRIM(@ModuleList))+ ','
+	SET @Pos = CHARINDEX(',', @ModuleList, 1)
+
+	IF REPLACE(@ModuleList, ',', '') <> ''
+	BEGIN
+		WHILE @Pos > 0
+		BEGIN
+			SET @ModuleID = LTRIM(RTRIM(LEFT(@ModuleList, @Pos - 1)))
+			IF @ModuleID <> ''
+			BEGIN
+				INSERT INTO @TempList (ModuleID) VALUES (CAST(@ModuleID AS int)) 
+			END
+			SET @ModuleList = RIGHT(@ModuleList, LEN(@ModuleList) - @Pos)
+			SET @Pos = CHARINDEX(',', @ModuleList, 1)
+
+		END
+	END	
+
+SELECT DISTINCT m.ModuleID, p.DefaultLanguage
+FROM            {objectQualifier}Modules  m
+INNER JOIN      {objectQualifier}Tabs t ON m.TabID = t.TabID
+INNER JOIN      {objectQualifier}Portals p ON p.PortalID = t.PortalID
+WHERE		        m.ModuleID in (SELECT ModuleID FROM @TempList)
+ORDER BY        m.ModuleID	
+		
+END
+
+GO
+
+/************************************************************/
+/*****  Search Storage                                  *****/
+/************************************************************/
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchResultModules') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchResultModules
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchResultModules
+
+@PortalID INT
+
+AS
+SELECT  {objectQualifier}Modules.TabID,
+	      {objectQualifier}Tabs.TabName + ' - <' + {objectQualifier}Modules.ModuleTitle + '>' AS SearchTabName
+FROM    {objectQualifier}ModuleDefinitions INNER JOIN
+        {objectQualifier}Modules ON {objectQualifier}ModuleDefinitions.ModuleDefID = {objectQualifier}Modules.ModuleDefID INNER JOIN
+        {objectQualifier}Tabs ON {objectQualifier}Modules.TabID = {objectQualifier}Tabs.TabID
+WHERE	FriendlyName = 'Search Results'
+AND     {objectQualifier}Tabs.PortalID = @PortalID
+AND     {objectQualifier}Tabs.IsDeleted = 0
+AND     {objectQualifier}Modules.IsDeleted = 0
+ORDER BY SearchTabName
+
+GO
+
+
+/************************************************************/
+/*****  Cleanup old search code                         *****/
+/************************************************************/
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}AddSearch    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}AddSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}AddSearch 
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}DeleteSearch    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeleteSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}DeleteSearch
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearch    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearch
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}GetSearchModule    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetSearchModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchModule
+GO
+
+/****** Object:  Stored Procedure {databaseOwner}{objectQualifier}UpdateSearch    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}UpdateSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}UpdateSearch
+GO
+
+/****** Object:  Table {databaseOwner}{objectQualifier}Search    Script Date: Sunday, September 26, 2004 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Search') and OBJECTPROPERTY(id, N'IsTable') = 1)
+drop table {databaseOwner}{objectQualifier}Search
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Search.SearchEngineScheduler, DOTNETNUKE', 5, 'm', 10, 'm', 60, '', 0, 1, 'SearchEngine')
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortal
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetPortal
+
+@PortalId  int
+
+as
+
+select P.*,
+       'SuperTabId' = ( select TabId from {objectQualifier}Tabs where PortalId is null and ParentId is null ),
+       'AdministratorRoleName' = ( select RoleName from {databaseOwner}{objectQualifier}Roles where RoleId = P.AdministratorRoleID ),
+       'RegisteredRoleName' = ( select RoleName from {databaseOwner}{objectQualifier}Roles where RoleId = P.RegisteredRoleID )
+from {objectQualifier}Portals P
+where  PortalId = @PortalId
+
+GO
+
+drop  procedure {databaseOwner}{objectQualifier}GetPortalTabModules
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetPortalTabModules
+
+@PortalId int, 
+@TabId int
+
+as
+
+select M.*,
+       MC.ModuleControlId,
+       MC.ControlSrc,
+       MC.ControlType,
+       MC.ControlTitle,
+       MC.HelpURL,
+       DM.*
+from {databaseOwner}{objectQualifier}Modules M
+inner join {databaseOwner}{objectQualifier}Tabs T on M.TabId = T.TabId
+inner join {databaseOwner}{objectQualifier}ModuleDefinitions MD on M.ModuleDefId = MD.ModuleDefId
+inner join {databaseOwner}{objectQualifier}ModuleControls MC on MD.ModuleDefId = MC.ModuleDefId
+inner join {databaseOwner}{objectQualifier}DesktopModules DM on MD.DesktopModuleId = DM.DesktopModuleId
+where  (M.TabId = @TabId or (M.AllTabs = 1 and T.PortalId = @PortalId))
+and    ControlKey is null
+order by ModuleOrder
+
+GO
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( 'Help', 'Module Help', null, 'controls/Help.ascx', 'icon_help_32px.gif', 0, null )
+GO
+
+
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking ADD
+	TrackClicks bit NOT NULL CONSTRAINT DF_{objectQualifier}UrlTracking_{objectQualifier}TrackClicks DEFAULT 1,
+	ModuleId int NULL,
+        NewWindow bit NOT NULL CONSTRAINT DF_{objectQualifier}UrlTracking_{objectQualifier}NewWindow DEFAULT 0
+GO
+
+
+update {databaseOwner}{objectQualifier}UrlTracking
+set    ModuleId = ( select min(ModuleId) from {objectQualifier}UrlLog where {objectQualifier}UrlLog.UrlTrackingID = {objectQualifier}UrlTracking.UrlTrackingID )
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UrlLog
+	DROP COLUMN ModuleID
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking
+	DROP CONSTRAINT IX_UrlTracking
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UrlTracking ADD CONSTRAINT
+	IX_{objectQualifier}UrlTracking UNIQUE NONCLUSTERED 
+	(
+	PortalID,
+	Url,
+	ModuleId
+	) ON [PRIMARY]
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddUrlTracking
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddUrlTracking
+
+@PortalID     int,
+@Url          nvarchar(255),
+@UrlType      char(1),
+@LogActivity  bit,
+@TrackClicks  bit,
+@ModuleId     int,
+@NewWindow    bit
+
+as
+
+insert into {objectQualifier}UrlTracking (
+  PortalID,
+  Url,
+  UrlType,
+  Clicks,
+  LastClick,
+  CreatedDate,
+  LogActivity,
+  TrackClicks,
+  ModuleId,
+  NewWindow
+)
+values (
+  @PortalID,
+  @Url,
+  @UrlType,
+  0,
+  null,
+  getdate(),
+  @LogActivity,
+  @TrackClicks,
+  @ModuleId,
+  @NewWindow
+)
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddUrlLog
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddUrlLog
+
+@UrlTrackingID int,
+@UserID        int
+
+as
+
+insert into {objectQualifier}UrlLog (
+  UrlTrackingID,
+  ClickDate,
+  UserID
+)
+values (
+  @UrlTrackingID,
+  getdate(),
+  @UserID
+)
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}DeleteUrlTracking
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteUrlTracking
+
+@PortalID     int,
+@Url          nvarchar(255),
+@ModuleID     int
+
+as
+
+delete
+from   {objectQualifier}UrlTracking
+where  PortalID = @PortalID
+and    Url = @Url
+and    ((ModuleId = @ModuleId) or (ModuleId is null and @ModuleId is null))
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetUrlTracking
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUrlTracking
+
+@PortalID     int,
+@Url          nvarchar(255),
+@ModuleId     int
+
+as
+
+select *
+from   {objectQualifier}UrlTracking
+where  PortalID = @PortalID
+and    Url = @Url
+and    ((ModuleId = @ModuleId) or (ModuleId is null and @ModuleId is null))
+
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetUrlLog
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUrlLog
+
+@URLTrackingID int,
+@StartDate     datetime,
+@EndDate       datetime
+
+as
+
+select {objectQualifier}UrlLog.*,
+       'FullName' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName
+from   {objectQualifier}UrlLog
+inner join {objectQualifier}UrlTracking on {objectQualifier}UrlLog.UrlTrackingId = {objectQualifier}UrlTracking.UrlTrackingId
+left outer join {objectQualifier}Users on {objectQualifier}UrlLog.UserId = {objectQualifier}Users.UserId
+where  {objectQualifier}UrlLog.UrlTrackingID = @UrlTrackingID
+and    ((ClickDate >= @StartDate) or @StartDate is null)
+and    ((ClickDate <= @EndDate) or @EndDate is null)
+order by ClickDate
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateUrlTracking
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateUrlTracking
+
+@PortalID     int,
+@Url          nvarchar(255),
+@LogActivity  bit,
+@TrackClicks  bit,
+@ModuleId     int,
+@NewWindow    bit
+
+as
+
+update {objectQualifier}UrlTracking
+set    LogActivity = @LogActivity,
+       TrackClicks = @TrackClicks,
+       NewWindow = @NewWindow
+where  PortalID = @PortalID
+and    Url = @Url
+and    ((ModuleId = @ModuleId) or (ModuleId is null and @ModuleId is null))
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateUrlTrackingStats
+
+@PortalID     int,
+@Url          nvarchar(255),
+@ModuleId     int
+
+as
+
+update {objectQualifier}UrlTracking
+set    Clicks = Clicks + 1,
+       LastClick = getdate()
+where  PortalID = @PortalID
+and    Url = @Url
+and    ((ModuleId = @ModuleId) or (ModuleId is null and @ModuleId is null))
+   
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Announcements
+	DROP CONSTRAINT DF_{objectQualifier}Announcements_Clicks
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Announcements
+	DROP COLUMN Clicks, Syndicate
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddAnnouncement
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddAnnouncement
+
+@ModuleId       int,
+@UserName       nvarchar(100),
+@Title          nvarchar(150),
+@URL            nvarchar(150),
+@ExpireDate     DateTime,
+@Description    nvarchar(2000),
+@ViewOrder	int
+
+as
+
+insert into {objectQualifier}Announcements (
+  ModuleId,
+  CreatedByUser,
+  CreatedDate,
+  Title,
+  URL,
+  ExpireDate,
+  Description,
+  ViewOrder
+)
+values (
+  @ModuleId,
+  @UserName,
+  getdate(),
+  @Title,
+  @URL,
+  @ExpireDate,
+  @Description,
+  @ViewOrder
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateAnnouncement
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateAnnouncement
+
+@ItemId         int,
+@UserName       nvarchar(100),
+@Title          nvarchar(150),
+@URL            nvarchar(150),
+@ExpireDate     datetime,
+@Description    nvarchar(2000),
+@ViewOrder	int
+
+as
+
+update {objectQualifier}Announcements
+set    CreatedByUser = @UserName,
+       CreatedDate   = GetDate(),
+       Title         = @Title,
+       URL           = @URL,
+       ExpireDate    = @ExpireDate,
+       Description   = @Description,
+       ViewOrder     = @ViewOrder
+where  ItemId = @ItemId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetAnnouncement
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetAnnouncement
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Announcements.Title,
+       {objectQualifier}Announcements.URL,
+       {objectQualifier}Announcements.ExpireDate,
+       {objectQualifier}Announcements.Description,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Announcements.CreatedDate,
+       {objectQualifier}Announcements.ViewOrder,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Announcements
+left outer join {objectQualifier}Users on {objectQualifier}Announcements.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Announcements.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID
+where  {objectQualifier}Announcements.ItemId = @ItemId
+and    {objectQualifier}Announcements.ModuleId = @ModuleId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetAnnouncements
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetAnnouncements
+
+@ModuleId int
+
+as
+
+select {objectQualifier}Announcements.ItemId,
+       {objectQualifier}Announcements.CreatedByUser,
+       {objectQualifier}Announcements.CreatedDate,
+       {objectQualifier}Announcements.Title,
+       {objectQualifier}Announcements.URL,
+       {objectQualifier}Announcements.ExpireDate,
+       {objectQualifier}Announcements.Description,
+       {objectQualifier}Announcements.ViewOrder,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Announcements
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Announcements.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID
+where  {objectQualifier}Announcements.ModuleId = @ModuleId
+and    ({objectQualifier}Announcements.ExpireDate > GetDate() or {objectQualifier}Announcements.ExpireDate is null)
+order by {objectQualifier}Announcements.ViewOrder asc, {objectQualifier}Announcements.CreatedDate desc
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Documents
+	DROP CONSTRAINT DF_{objectQualifier}Documents_Clicks
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Documents
+	DROP COLUMN Clicks, Syndicate
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddDocument
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddDocument
+
+@ModuleId         int,
+@Title            nvarchar(150),
+@URL              nvarchar(250),
+@UserName         nvarchar(100),
+@Category         nvarchar(50)
+
+as
+
+insert into {objectQualifier}Documents (
+  ModuleId,
+  Title,
+  URL,
+  CreatedByUser,
+  CreatedDate,
+  Category
+)
+values (
+  @ModuleId,
+  @Title,
+  @URL,
+  @UserName,
+  getdate(),
+  @Category
+)
+
+select SCOPE_IDENTITY()
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateDocument
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateDocument
+
+@ItemId           int,
+@Title            nvarchar(150),
+@URL              nvarchar(250),
+@UserName         nvarchar(100),
+@Category         nvarchar(50)
+
+as
+
+update {objectQualifier}Documents
+set    Title             = @Title,
+       URL               = @URL,
+       CreatedByUser     = @UserName,
+       CreatedDate       = getdate(),
+       Category          = @Category
+where  ItemId = @ItemId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetDocument
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetDocument
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Documents.Title,
+       {objectQualifier}Documents.URL,
+       {objectQualifier}Documents.Category,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Documents.CreatedDate,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Documents
+left outer join {objectQualifier}Users on {objectQualifier}Documents.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Documents.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID
+where  {objectQualifier}Documents.ItemId = @ItemId
+and    {objectQualifier}Documents.ModuleId = @ModuleId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetDocuments
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetDocuments
+
+@ModuleId int,
+@PortalId int
+
+as
+
+select {objectQualifier}Documents.ItemId,
+       {objectQualifier}Documents.Title,
+       {objectQualifier}Documents.URL,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Documents.CreatedDate,
+       {objectQualifier}Documents.Category,
+       {objectQualifier}Files.Size,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Documents
+left outer join {objectQualifier}Users on {objectQualifier}Documents.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}Files on {objectQualifier}Documents.URL = {objectQualifier}Files.FileName and {objectQualifier}Files.PortalId = @PortalId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Documents.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID
+where  {objectQualifier}Documents.ModuleId = @ModuleId
+order by {objectQualifier}Documents.Title
+
+GO
+
+update {objectQualifier}UrlTracking
+set    NewWindow = ( select NewWindow from {objectQualifier}Links where {objectQualifier}UrlTracking.ModuleId = {objectQualifier}Links.ModuleId and {objectQualifier}UrlTracking.Url = {objectQualifier}Links.Url )
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Links
+	DROP CONSTRAINT DF_{objectQualifier}Links_NewWindow
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Links
+	DROP CONSTRAINT DF_{objectQualifier}Links_Clicks
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Links
+	DROP COLUMN Clicks, MobileURL, NewWindow
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddLink
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddLink
+
+@ModuleId    int,
+@UserName    nvarchar(100),
+@Title       nvarchar(100),
+@Url         nvarchar(250),
+@ViewOrder   int,
+@Description nvarchar(2000)
+
+as
+
+insert into {objectQualifier}Links (
+  ModuleId,
+  CreatedByUser,
+  CreatedDate,
+  Title,
+  Url,
+  ViewOrder,
+  Description
+)
+values (
+  @ModuleId,
+  @UserName,
+  getdate(),
+  @Title,
+  @Url,
+  @ViewOrder,
+  @Description
+)
+
+select SCOPE_IDENTITY()
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateLink
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateLink
+  
+@ItemId      int,
+@UserName    nvarchar(100),
+@Title       nvarchar(100),
+@Url         nvarchar(250),
+@ViewOrder   int,
+@Description nvarchar(2000)
+
+as
+
+update {objectQualifier}Links
+set    CreatedByUser = @UserName,
+       CreatedDate   = GetDate(),
+       Title         = @Title,
+       Url           = @Url,
+       ViewOrder     = @ViewOrder,
+       Description   = @Description
+where  ItemId = @ItemId
+GO
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( 'CONTROLPANEL:CLASSIC', null, null, 'Admin/ControlPanel/Classic.ascx', null, -3, null )
+GO
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( 'CONTROLPANEL:ICONBAR', null, null, 'Admin/ControlPanel/IconBar.ascx', null, -3, null )
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetModuleControlsByKey
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetModuleControlsByKey
+
+@ControlKey        nvarchar(50),
+@ModuleDefId       int
+
+as
+
+select {objectQualifier}ModuleDefinitions.*,
+       ModuleControlID,
+       ControlTitle,
+       ControlSrc,
+       IconFile,
+       ControlType,
+       HelpUrl
+from   {objectQualifier}ModuleControls
+left outer join {objectQualifier}ModuleDefinitions on {objectQualifier}ModuleControls.ModuleDefId = {objectQualifier}ModuleDefinitions.ModuleDefId
+where  ((ControlKey is null and @ControlKey is null) or (ControlKey = @ControlKey))
+and    (({objectQualifier}ModuleControls.ModuleDefId is null and @ModuleDefId is null) or ({objectQualifier}ModuleControls.ModuleDefId = @ModuleDefId))
+and    ControlType >= -1
+order by ViewOrder
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetModule
+
+@ModuleId int
+
+as
+
+select	{objectQualifier}Modules.*,
+        {objectQualifier}DesktopModules.*
+from	{objectQualifier}Modules
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefID = {objectQualifier}ModuleDefinitions.ModuleDefID
+inner join {objectQualifier}DesktopModules on {objectQualifier}ModuleDefinitions.DesktopModuleID = {objectQualifier}DesktopModules.DesktopModuleID
+where   ModuleId = @ModuleId
+
+GO
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( 'ImportModule', 'Import Module', null, 'Admin/Modules/Import.ascx', null, 0, null )
+GO
+
+insert into {objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+values ( 'ExportModule', 'Export Module', null, 'Admin/Modules/Export.ascx', null, 0, null )
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetBannerTypes
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Banners
+	DROP CONSTRAINT FK_{objectQualifier}Banners_{objectQualifier}BannerType
+GO
+
+drop table {databaseOwner}{objectQualifier}BannerTypes
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Banners
+	DROP CONSTRAINT FK_{objectQualifier}Banner_{objectQualifier}Vendor
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Banners
+	DROP CONSTRAINT DF_{objectQualifier}Banners_Views
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Banners
+	DROP CONSTRAINT DF_{objectQualifier}Banners_ClickThroughs
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}Tmp_Banners
+	(
+	BannerId int NOT NULL IDENTITY (1, 1),
+	VendorId int NOT NULL,
+	ImageFile nvarchar(100) NULL,
+	BannerName nvarchar(100) NOT NULL,
+	URL nvarchar(100) NULL,
+	Impressions int NOT NULL,
+	CPM float(53) NOT NULL,
+	Views int NOT NULL,
+	ClickThroughs int NOT NULL,
+	StartDate datetime NULL,
+	EndDate datetime NULL,
+	CreatedByUser nvarchar(100) NOT NULL,
+	CreatedDate datetime NOT NULL,
+	BannerTypeId int NULL,
+	Description nvarchar(2000) NULL,
+	GroupName nvarchar(100) NULL,
+	Criteria bit NOT NULL CONSTRAINT DF_{objectQualifier}Banners_Criteria DEFAULT 1        
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Tmp_Banners ADD CONSTRAINT
+	DF_{objectQualifier}Banners_Views DEFAULT (0) FOR Views
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Tmp_Banners ADD CONSTRAINT
+	DF_{objectQualifier}Banners_ClickThroughs DEFAULT (0) FOR ClickThroughs
+GO
+
+SET IDENTITY_INSERT {databaseOwner}{objectQualifier}Tmp_Banners ON
+GO
+
+IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Banners)
+	 EXEC('INSERT INTO {databaseOwner}{objectQualifier}Tmp_Banners (BannerId, VendorId, ImageFile, BannerName, URL, Impressions, CPM, Views, ClickThroughs, StartDate, EndDate, CreatedByUser, CreatedDate, BannerTypeId, Description, GroupName, Criteria)
+		SELECT BannerId, VendorId, ImageFile, BannerName, URL, Impressions, CPM, Views, ClickThroughs, StartDate, EndDate, CreatedByUser, CreatedDate, BannerTypeId, null, null, 1 FROM {databaseOwner}{objectQualifier}Banners TABLOCKX')
+GO
+
+SET IDENTITY_INSERT {databaseOwner}{objectQualifier}Tmp_Banners OFF
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}Banners
+GO
+
+EXECUTE sp_rename N'{databaseOwner}{objectQualifier}Tmp_Banners', N'{objectQualifier}Banners', 'OBJECT'
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Banners ADD CONSTRAINT
+	PK_{objectQualifier}Banner PRIMARY KEY CLUSTERED 
+	(
+	BannerId
+	) ON [PRIMARY]
+
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Banners ON {databaseOwner}{objectQualifier}Banners
+	(
+	BannerTypeId
+	) ON [PRIMARY]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Banners_1 ON {databaseOwner}{objectQualifier}Banners
+	(
+	VendorId
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Banners WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}Banner_{objectQualifier}Vendor FOREIGN KEY
+	(
+	VendorId
+	) REFERENCES {databaseOwner}{objectQualifier}Vendors
+	(
+	VendorId
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddBanner
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddBanner
+
+@BannerName    nvarchar(100),
+@VendorId      int,
+@ImageFile     nvarchar(50),
+@URL           nvarchar(100),
+@Impressions   int,
+@CPM           float,
+@StartDate     datetime,
+@EndDate       datetime,
+@UserName      nvarchar(100),
+@BannerTypeId  int,
+@Description   nvarchar(2000),
+@GroupName     nvarchar(100),
+@Criteria      bit
+
+as
+
+insert into {objectQualifier}Banners (
+    VendorId,
+    ImageFile,
+    BannerName,
+    URL,
+    Impressions,
+    CPM,
+    Views,
+    ClickThroughs,
+    StartDate,
+    EndDate,
+    CreatedByUser,
+    CreatedDate,
+    BannerTypeId,
+    Description,
+    GroupName,
+    Criteria
+)
+values (
+    @VendorId,
+    @ImageFile,
+    @BannerName,
+    @URL,
+    @Impressions,
+    @CPM,
+    0,
+    0,
+    @StartDate,
+    @EndDate,
+    @UserName,
+    getdate(),
+    @BannerTypeId,
+    @Description,
+    @GroupName,
+    @Criteria
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateBanner
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateBanner
+
+@BannerId     int,
+@BannerName   nvarchar(100),
+@ImageFile    nvarchar(50),
+@URL          nvarchar(100),
+@Impressions  int,
+@CPM          float,
+@StartDate    datetime,
+@EndDate      datetime,
+@UserName     nvarchar(100),
+@BannerTypeId int,
+@Description  nvarchar(2000),
+@GroupName    nvarchar(100),
+@Criteria     bit
+
+as
+
+update {objectQualifier}Banners
+set    ImageFile     = @ImageFile,
+       BannerName    = @BannerName,
+       URL           = @URL,
+       Impressions   = @Impressions,
+       CPM           = @CPM,
+       StartDate     = @StartDate,
+       EndDate       = @EndDate,
+       CreatedByUser = @UserName,
+       CreatedDate   = getdate(),
+       BannerTypeId  = @BannerTypeId,
+       Description   = @Description,
+       GroupName     = @GroupName,
+       Criteria      = @Criteria
+where  BannerId = @BannerId 
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}FindBanners
+GO
+
+create procedure {databaseOwner}{objectQualifier}FindBanners
+
+@PortalId     int,
+@BannerTypeId int,
+@GroupName    nvarchar(100)
+
+as
+
+select {objectQualifier}Banners.*
+from   {objectQualifier}Banners
+inner join {objectQualifier}Vendors on {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId
+where  ({objectQualifier}Banners.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+and    ({objectQualifier}Banners.GroupName = @GroupName or @GroupName is null)
+and    (({objectQualifier}Vendors.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Vendors.PortalId is null))
+and    ({objectQualifier}Banners.StartDate is null Or getdate() >= {objectQualifier}Banners.StartDate )
+and    (  ( Criteria = 1 /* OR */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views Or {objectQualifier}Banners.Impressions = 0)
+           and (getdate() <= {objectQualifier}Banners.EndDate or {objectQualifier}Banners.EndDate is null) )
+       or ( Criteria = 0 /* AND */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views and {objectQualifier}Banners.Impressions <> 0)
+           or  (getdate() <= {objectQualifier}Banners.EndDate and {objectQualifier}Banners.EndDate is not null) )  )
+order by BannerId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateBannerViews
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateBannerViews
+
+@BannerId  int, 
+@StartDate datetime, 
+@EndDate   datetime
+
+as
+
+update {objectQualifier}Banners
+set    Views = Views + 1,
+       StartDate = @StartDate,
+       EndDate = @EndDate
+where  BannerId = @BannerId
+
+GO
+
+insert into {objectQualifier}HostSettings (
+  SettingName,
+  SettingValue
+) 
+values (
+  'UseFriendlyUrls',
+  'N'
+)
+
+GO
+
+
+ALTER TABLE {databaseOwner}{objectQualifier}Files ADD
+  [Folder] nvarchar(200)
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}AddFile
+
+@PortalId    int,
+@FileName    nvarchar(100),
+@Extension   nvarchar(100),
+@Size        int,
+@WIdth       int,
+@Height      int,
+@ContentType nvarchar(200),
+@Folder nvarchar(200)
+
+as
+
+insert into {objectQualifier}Files ( 
+  PortalId,
+  FileName,
+  Extension,
+  Size,
+  WIdth,
+  Height,
+  ContentType,
+  Folder
+)
+values (
+  @PortalId,
+  @FileName,
+  @Extension,
+  @Size,
+  @WIdth,
+  @Height,
+  @ContentType,
+  @Folder
+)
+
+select SCOPE_IDENTITY()
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}GetAnnouncement
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Announcements.Title,
+        'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Announcements.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Announcements.ExpireDate,
+       {objectQualifier}Announcements.Description,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Announcements.CreatedDate,
+       {objectQualifier}Announcements.ViewOrder,
+       {objectQualifier}UrlTracking.TrackClicks
+from {objectQualifier}Announcements
+left outer join {objectQualifier}Users on {objectQualifier}Announcements.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Announcements.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Announcements.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Announcements.ItemId = @ItemId
+and    {objectQualifier}Announcements.ModuleId = @ModuleId
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}GetAnnouncements
+
+@ModuleId int
+
+as
+
+select {objectQualifier}Announcements.ItemId,
+       {objectQualifier}Announcements.CreatedByUser,
+       {objectQualifier}Announcements.CreatedDate,
+       {objectQualifier}Announcements.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Announcements.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Announcements.ExpireDate,
+       {objectQualifier}Announcements.Description,
+       {objectQualifier}Announcements.ViewOrder,
+       {objectQualifier}UrlTracking.TrackClicks
+from {objectQualifier}Announcements
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Announcements.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Announcements.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Announcements.ModuleId = @ModuleId
+and    ({objectQualifier}Announcements.ExpireDate > GetDate() or {objectQualifier}Announcements.ExpireDate is null)
+order by {objectQualifier}Announcements.ViewOrder asc, {objectQualifier}Announcements.CreatedDate desc
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+ALTER procedure {databaseOwner}{objectQualifier}GetFile
+
+@FileName  nvarchar(100),
+@PortalId  int,
+@Folder nvarchar(200)
+
+as
+
+select FileId,
+       FileName,
+       Extension,
+       Size,
+       WIdth,
+       Height,
+       ContentType
+from {objectQualifier}Files
+where  FileName = @FileName AND Folder=@Folder
+and    ((PortalId = @PortalId) or (@PortalId is null and PortalId is null))
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+ALTER procedure {databaseOwner}{objectQualifier}GetFiles
+
+@PortalId   int,
+@Folder nvarchar(200)
+as
+
+select FileId,
+       PortalId,
+       FileName,
+       Extension,
+       Size,
+       WIdth,
+       Height,
+       ContentType
+from {objectQualifier}Files
+where  ((PortalId = @PortalId AND Folder=@Folder) or (@PortalId is null and PortalId is null AND Folder=@Folder))
+order by FileName
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}UpdateFile
+
+@FileId      int,
+@FileName    nvarchar(100),
+@Extension   nvarchar(100),
+@Size        int,
+@WIdth       int,
+@Height      int,
+@ContentType nvarchar(200),
+@Folder nvarchar(200)
+
+as
+
+update {objectQualifier}Files
+set    FileName = @FileName,
+       Extension = @Extension,
+       Size = @Size,
+       WIdth = @WIdth,
+       Height = @Height,
+       ContentType = @ContentType,
+       Folder=@Folder
+where  FileId = @FileId
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+ALTER TABLE {databaseOwner}{objectQualifier}Modules ADD
+	ContainerSrc nvarchar(200) NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD
+	SkinSrc nvarchar(200) NULL,
+	ContainerSrc nvarchar(200) NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Skins ADD
+	Src nvarchar(200) NOT NULL CONSTRAINT DF_{objectQualifier}Skins_Src DEFAULT '',
+	Type int NOT NULL CONSTRAINT DF_{objectQualifier}Skins_Type DEFAULT 0
+GO
+
+
+declare @SkinID int
+declare @ModuleID int
+declare @TabID int
+declare @SkinRoot nvarchar(50)
+declare @SkinType nvarchar(1)
+declare @SkinName nvarchar(50)
+declare @SkinSrc nvarchar(50)
+
+select @SkinID = min(SkinID)
+from {objectQualifier}Skins
+while @SkinID is not null
+begin
+  select @ModuleID = ModuleID,
+         @TabID = TabID,
+         @SkinRoot = SkinRoot,
+         @SkinType = SkinType,
+         @SkinName = SkinName,
+         @SkinSrc = SkinSrc
+  from {objectQualifier}Skins
+  where SkinID = @SkinID
+
+  if @ModuleID is not null
+  begin
+    update {objectQualifier}Modules
+    set ContainerSrc = '[' + @SkinType + ']' + @SkinRoot + '/' + @SkinName + '/' + @SkinSrc
+    where ModuleID = @ModuleID
+  end
+  
+  if @TabID is not null
+  begin
+    if @SkinRoot = 'Skins'
+      update {objectQualifier}Tabs
+      set SkinSrc = '[' + @SkinType + ']' + @SkinRoot + '/' + @SkinName + '/' + @SkinSrc
+      where TabID = @TabID
+    else
+      update {objectQualifier}Tabs
+      set ContainerSrc = '[' + @SkinType + ']' + @SkinRoot + '/' + @SkinName + '/' + @SkinSrc
+      where TabID = @TabID
+  end
+
+  update {objectQualifier}Skins
+  set Src = '[' + @SkinType + ']' + @SkinRoot + '/' + @SkinName + '/' + @SkinSrc,
+      Type = convert(int,IsAdmin)
+  where SkinID = @SkinID
+
+  select @SkinID = min(SkinID)
+  from {objectQualifier}Skins
+  where SkinID > @SkinID
+end
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Skins
+	DROP CONSTRAINT DF_{objectQualifier}Skins_Src
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Skins
+	DROP CONSTRAINT DF_{objectQualifier}Skins_Type
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Skins
+	DROP CONSTRAINT FK_{objectQualifier}Skins_{objectQualifier}Modules
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Skins
+	DROP CONSTRAINT FK_{objectQualifier}Skins_{objectQualifier}Tabs
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Skins
+	DROP COLUMN TabID, ModuleID, IsAdmin, SkinType, SkinName, SkinSrc
+GO
+
+EXECUTE sp_rename N'{databaseOwner}{objectQualifier}Skins.Src', N'SkinSrc', 'COLUMN'
+GO
+
+EXECUTE sp_rename N'{databaseOwner}{objectQualifier}Skins.Type', N'SkinType', 'COLUMN'
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddSkin
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddSkin
+
+@SkinRoot               nvarchar(50),
+@PortalID		int,
+@SkinType               int,
+@SkinSrc                nvarchar(200)
+
+as
+
+insert into {objectQualifier}Skins (
+  SkinRoot,
+  PortalID,
+  SkinType,
+  SkinSrc
+)
+values (
+  @SkinRoot,
+  @PortalID,
+  @SkinType,
+  @SkinSrc
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}DeleteSkin
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteSkin
+
+@SkinRoot               nvarchar(50),
+@PortalID		int,
+@SkinType               int
+
+as
+
+delete
+from   {objectQualifier}Skins
+where   SkinRoot = @SkinRoot
+and     SkinType = @SkinType
+and    ((PortalID is null and @PortalID is null) or (PortalID = @PortalID))
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSkin
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSkin
+
+@SkinRoot               nvarchar(50),
+@PortalID		int,
+@SkinType               int
+
+as
+	
+select *
+from	{objectQualifier}Skins
+where   SkinRoot = @SkinRoot
+and     SkinType = @SkinType
+and     ( PortalID is null or PortalID = @PortalID )
+order by PortalID desc
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddModule
+    
+@TabId                         int,
+@ModuleDefId                   int,
+@ModuleOrder                   int,
+@PaneName                      nvarchar(50),
+@ModuleTitle                   nvarchar(256),
+@CacheTime                     int,
+@Alignment                     nvarchar(10),
+@Color                         nvarchar(20),
+@Border                        nvarchar(1),
+@IconFile                      nvarchar(100),
+@AllTabs                       bit,
+@ShowTitle                     bit,
+@Personalize                   int,
+@Header                        text,
+@Footer                        text,
+@StartDate                     datetime,
+@EndDate                       datetime,
+@InheritViewPermissions        bit,
+@ContainerSrc                  nvarchar(200)
+
+as
+
+insert into {objectQualifier}Modules ( 
+  TabId,
+  ModuleDefId,
+  ModuleOrder,
+  PaneName,
+  ModuleTitle,
+  CacheTime,
+  Alignment,
+  Color,
+  Border,
+  IconFile,
+  AllTabs,
+  ShowTitle,
+  Personalize,
+  IsDeleted,
+  Header,
+  Footer, 
+  StartDate,
+  EndDate,
+  InheritViewPermissions,
+  ContainerSrc
+)
+values (
+  @TabId,
+  @ModuleDefId,
+  @ModuleOrder,
+  @PaneName,
+  @ModuleTitle,
+  @CacheTime,
+  @Alignment,
+  @Color,
+  @Border,
+  @IconFile,
+  @AllTabs,
+  @ShowTitle,
+  @Personalize,
+  0,
+  @Header,
+  @Footer, 
+  @StartDate,
+  @EndDate,
+  @InheritViewPermissions,
+  @ContainerSrc
+)
+
+select SCOPE_IDENTITY()
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateModule
+
+@ModuleId            int,
+@ModuleOrder         int,
+@ModuleTitle         nvarchar(256),
+@Alignment           nvarchar(10),
+@Color               nvarchar(20),
+@Border              nvarchar(1),
+@IconFile            nvarchar(100),
+@CacheTime           int,
+@TabId               int,
+@AllTabs             bit, 
+@ShowTitle           bit,
+@Personalize         int,
+@IsDeleted           bit,
+@Header              text,
+@Footer              text,
+@StartDate           datetime,
+@EndDate             datetime,
+@InheritViewPermissions	bit,
+@ContainerSrc        nvarchar(200)
+
+as
+
+update {objectQualifier}Modules
+set    ModuleOrder = @ModuleOrder,
+       ModuleTitle = @ModuleTitle,
+       CacheTime   = @CacheTime,
+       Alignment = @Alignment,
+       Color = @Color,
+       Border = @Border,
+       IconFile = @IconFile,
+       TabId = @TabId,
+       AllTabs = @AllTabs,
+       ShowTitle = @ShowTitle,
+       Personalize = @Personalize,
+       IsDeleted = @IsDeleted,
+       Header = @Header,
+       Footer = @Footer, 
+       StartDate = @StartDate,
+       EndDate = @EndDate,
+       InheritViewPermissions = @InheritViewPermissions,
+       ContainerSrc = @ContainerSrc
+where  ModuleId = @ModuleId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddTab
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddTab
+
+@PortalId           int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@Url                nvarchar(255),
+@SkinSrc            nvarchar(200),
+@ContainerSrc       nvarchar(200)
+
+as
+
+insert into {objectQualifier}Tabs (
+    PortalId,
+    TabName,
+    IsVisible,
+    DisableLink,
+    ParentId,
+    IconFile,
+    Title,
+    Description,
+    KeyWords,
+    IsDeleted,
+    Url,
+    SkinSrc,
+    ContainerSrc
+)
+values (
+    @PortalId,
+    @TabName,
+    @IsVisible,
+    @DisableLink,
+    @ParentId,
+    @IconFile,
+    @Title,
+    @Description,
+    @KeyWords,
+    0,
+    @Url,
+    @SkinSrc,
+    @ContainerSrc
+)
+
+select SCOPE_IDENTITY()
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateTab
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateTab
+
+@TabId              int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@IsDeleted          bit,
+@Url                nvarchar(255),
+@SkinSrc            nvarchar(200),
+@ContainerSrc       nvarchar(200)
+
+as
+
+update {databaseOwner}{objectQualifier}Tabs
+set    TabName            = @TabName,
+       IsVisible          = @IsVisible,
+       DisableLink        = @DisableLink,
+       ParentId           = @ParentId,
+       IconFile           = @IconFile,
+       Title              = @Title,
+       Description        = @Description,
+       KeyWords           = @KeyWords,
+       IsDeleted          = @IsDeleted,
+       Url                = @Url,
+       SkinSrc            = @SkinSrc,
+       ContainerSrc       = @ContainerSrc
+where  TabId = @TabId
+
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}GetTabs
+
+@PortalId int
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       AuthorizedRoles, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       IconFile, 
+       AdministratorRoles, 
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Tabs.PortalId = @PortalId
+order by TabOrder, TabName
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}GetTabsByParentId
+
+@ParentId int
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       AuthorizedRoles, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       IconFile, 
+       AdministratorRoles, 
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Tabs.ParentId = @ParentId
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+update {databaseOwner}{objectQualifier}ModuleControls
+set ControlSrc='admin/Host/HostSettings.ascx'
+where ControlSrc='admin/Portal/HostSettings.ascx'
+
+GO
+
+update {databaseOwner}{objectQualifier}ModuleControls
+set ControlSrc='Admin/Modules/ModuleSettings.ascx'
+where ControlSrc='Admin/Tabs/ModuleSettings.ascx'
+
+GO
+
+update {databaseOwner}{objectQualifier}ModuleControls
+set ControlSrc='Admin/Security/EditRoles.ascx'
+where ControlSrc='Admin/Users/EditRoles.ascx'
+
+GO
+
+update {databaseOwner}{objectQualifier}ModuleControls
+set ControlSrc='Admin/Security/Roles.ascx'
+where ControlSrc='Admin/Users/Roles.ascx'
+
+GO
+
+update {databaseOwner}{objectQualifier}ModuleControls
+set ControlSrc='Admin/Security/SecurityRoles.ascx'
+where ControlSrc='Admin/Users/SecurityRoles.ascx'
+
+GO
+
+update {databaseOwner}{objectQualifier}ModuleControls
+set ControlSrc='Admin/Security/Register.ascx'
+where ControlSrc='Admin/Users/Register.ascx'
+
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}PortalDesktopModules
+	(
+	PortalDesktopModuleID int NOT NULL IDENTITY (1, 1),
+	PortalID int NOT NULL,
+	DesktopModuleID int NOT NULL
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalDesktopModules ADD CONSTRAINT
+	PK_{objectQualifier}PortalDesktopModules PRIMARY KEY CLUSTERED 
+	(
+	PortalDesktopModuleID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalDesktopModules ADD CONSTRAINT
+	IX_{objectQualifier}PortalDesktopModules UNIQUE NONCLUSTERED 
+	(
+	PortalID,
+	DesktopModuleID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalDesktopModules WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}PortalDesktopModules_{objectQualifier}DesktopModules FOREIGN KEY
+	(
+	DesktopModuleID
+	) REFERENCES {databaseOwner}{objectQualifier}DesktopModules
+	(
+	DesktopModuleID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalDesktopModules WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}PortalDesktopModules_{objectQualifier}Portals FOREIGN KEY
+	(
+	PortalID
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+	PortalID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}PortalDesktopModules (PortalID, DesktopModuleID)
+SELECT PortalID, DesktopModuleID FROM {databaseOwner}{objectQualifier}PortalModuleDefinitions
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalModuleDefinitions
+	DROP CONSTRAINT FK_{objectQualifier}PortalModuleDefinitions_{objectQualifier}Portals
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalModuleDefinitions
+	DROP CONSTRAINT FK_{objectQualifier}PortalModuleDefinitions_{objectQualifier}DesktopModules
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalModuleDefinitions
+	DROP CONSTRAINT DF_{objectQualifier}PortalModuleDefinitions_HostFee
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}PortalModuleDefinitions
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddPortalModuleDefinition
+GO
+
+drop procedure {databaseOwner}{objectQualifier}DeletePortalModuleDefinition
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdatePortalModuleDefinition
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortalModuleDefinition
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPremiumDesktopModules
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddPortalDesktopModule
+
+@PortalId int,
+@DesktopModuleId int
+
+as
+
+insert into {objectQualifier}PortalDesktopModules ( 
+  PortalId,
+  DesktopModuleId
+)
+values (
+  @PortalId,
+  @DesktopModuleId
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeletePortalDesktopModules
+
+@PortalId        int,
+@DesktopModuleId int
+
+as
+
+delete
+from   {objectQualifier}PortalDesktopModules
+where  ((PortalId = @PortalId) or (@PortalId is null and @DesktopModuleId is not null))
+and    ((DesktopModuleId = @DesktopModuleId) or (@DesktopModuleId is null and @PortalId is not null))
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortalDesktopModules
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetPortalDesktopModules
+
+@PortalId int,
+@DesktopModuleId int
+
+as
+
+select {objectQualifier}PortalDesktopModules.*,
+       PortalName,
+       FriendlyName
+from   {objectQualifier}PortalDesktopModules
+inner join {objectQualifier}Portals on {objectQualifier}PortalDesktopModules.PortalId = {objectQualifier}Portals.PortalId
+inner join {objectQualifier}DesktopModules on {objectQualifier}PortalDesktopModules.DesktopModuleId = {objectQualifier}DesktopModules.DesktopModuleId
+where  (({objectQualifier}PortalDesktopModules.PortalId = @PortalId) or @PortalId is null)
+and    (({objectQualifier}PortalDesktopModules.DesktopModuleId = @DesktopModuleId) or @DesktopModuleId is null)
+order by {objectQualifier}PortalDesktopModules.PortalId, {objectQualifier}PortalDesktopModules.DesktopModuleId
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetDesktopModulesByPortal
+
+@PortalId int
+
+as
+
+select distinct({objectQualifier}DesktopModules.DesktopModuleId) as DesktopModuleId,
+       {objectQualifier}DesktopModules.FriendlyName,
+       {objectQualifier}DesktopModules.Description
+from {objectQualifier}DesktopModules
+left outer join {objectQualifier}PortalDesktopModules on {objectQualifier}DesktopModules.DesktopModuleId = {objectQualifier}PortalDesktopModules.DesktopModuleId
+where  IsAdmin = 0
+and    ( IsPremium = 0 or (PortalId = @PortalId and PortalDesktopModuleId is not null)) 
+order  by FriendlyName
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD
+	TabPath nvarchar(255) NULL,
+        StartDate datetime NULL,
+        EndDate datetime NULL
+GO
+
+
+Alter procedure {databaseOwner}{objectQualifier}GetTabsByParentId
+
+@ParentId int
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       AuthorizedRoles, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       IconFile, 
+       AdministratorRoles, 
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       TabPath,
+       StartDate,
+       EndDate,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Tabs.ParentId = @ParentId
+
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}GetTabs
+
+@PortalId int
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       AuthorizedRoles, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       IconFile, 
+       AdministratorRoles, 
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       TabPath,
+       StartDate,
+       EndDate,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Tabs.PortalId = @PortalId
+order by TabOrder, TabName
+
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}UpdateTab
+
+@TabId              int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@IsDeleted          bit,
+@Url                nvarchar(255),
+@SkinSrc            nvarchar(200),
+@ContainerSrc       nvarchar(200),
+@TabPath            nvarchar(255),
+@StartDate          DateTime,
+@EndDate            DateTime
+
+as
+
+update {objectQualifier}Tabs
+set    TabName            = @TabName,
+       IsVisible          = @IsVisible,
+       DisableLink        = @DisableLink,
+       ParentId           = @ParentId,
+       IconFile           = @IconFile,
+       Title              = @Title,
+       Description        = @Description,
+       KeyWords           = @KeyWords,
+       IsDeleted          = @IsDeleted,
+       Url                = @Url,
+       SkinSrc            = @SkinSrc,
+       ContainerSrc       = @ContainerSrc,
+       TabPath            = @TabPath,
+       StartDate          = @StartDate,
+       EndDate            = @EndDate
+where  TabId = @TabId
+
+
+GO
+
+
+Alter procedure {databaseOwner}{objectQualifier}AddTab
+
+@PortalId           int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@Url                nvarchar(255),
+@SkinSrc            nvarchar(200),
+@ContainerSrc       nvarchar(200),
+@TabPath            nvarchar(255),
+@StartDate          DateTime,
+@EndDate            DateTime
+
+as
+
+insert into {objectQualifier}Tabs (
+    PortalId,
+    TabName,
+    IsVisible,
+    DisableLink,
+    ParentId,
+    IconFile,
+    Title,
+    Description,
+    KeyWords,
+    IsDeleted,
+    Url,
+    SkinSrc,
+    ContainerSrc,
+    TabPath,
+    StartDate,
+    EndDate
+)
+values (
+    @PortalId,
+    @TabName,
+    @IsVisible,
+    @DisableLink,
+    @ParentId,
+    @IconFile,
+    @Title,
+    @Description,
+    @KeyWords,
+    0,
+    @Url,
+    @SkinSrc,
+    @ContainerSrc,
+    @TabPath,
+    @StartDate,
+    @EndDate
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}FindBanners
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetAnnouncement
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetAnnouncements
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetBanner
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetBanners
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetDocument
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetDocuments
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetModuleSetting
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetModuleSettings
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}GetLink
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetLink
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Links.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Links.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Links.ViewOrder,
+       {objectQualifier}Links.Description,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Links.CreatedDate,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Links
+left outer join {objectQualifier}Users on {objectQualifier}Links.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Links.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Links.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Links.ItemId = @ItemId
+and    {objectQualifier}Links.ModuleId = @ModuleId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetLinks
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetLinks
+
+@ModuleId int
+
+as
+
+select {objectQualifier}Links.ItemId,
+       {objectQualifier}Links.CreatedByUser,
+       {objectQualifier}Links.CreatedDate,
+       {objectQualifier}Links.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Links.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Links.ViewOrder,
+       {objectQualifier}Links.Description,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Links
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Links.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Links.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Links.ModuleId = @ModuleId
+order by {objectQualifier}Links.ViewOrder, {objectQualifier}Links.Title
+
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}FindBanners
+
+@PortalId     int,
+@BannerTypeId int,
+@GroupName    nvarchar(100)
+
+as
+
+select BannerId,
+       BannerName,
+       URL,
+       'ImageFile' = {objectQualifier}Files.Folder + {objectQualifier}Files.FileName,
+       Impressions,
+       CPM,
+       {objectQualifier}Banners.Views,
+       {objectQualifier}Banners.ClickThroughs,
+       StartDate,
+       EndDate,
+       BannerTypeId,
+       Description,
+       GroupName,
+       Criteria
+from {objectQualifier}Banners
+inner join {objectQualifier}Vendors on {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId
+left outer join {objectQualifier}Files on {objectQualifier}Banners.ImageFile = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  ({objectQualifier}Banners.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+and    ({objectQualifier}Banners.GroupName = @GroupName or @GroupName is null)
+and    (({objectQualifier}Vendors.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Vendors.PortalId is null))
+and    ({objectQualifier}Banners.StartDate is null Or getdate() >= {objectQualifier}Banners.StartDate )
+and    (  ( Criteria = 1 /* OR */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views Or {objectQualifier}Banners.Impressions = 0)
+           and (getdate() <= {objectQualifier}Banners.EndDate or {objectQualifier}Banners.EndDate is null) )
+       or ( Criteria = 0 /* AND */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views and {objectQualifier}Banners.Impressions <> 0)
+           or  (getdate() <= {objectQualifier}Banners.EndDate and {objectQualifier}Banners.EndDate is not null) )  )
+order by BannerId
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetAnnouncement
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Announcements.Title,
+        'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Announcements.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Announcements.ExpireDate,
+       {objectQualifier}Announcements.Description,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Announcements.CreatedDate,
+       {objectQualifier}Announcements.ViewOrder,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Announcements
+left outer join {objectQualifier}Users on {objectQualifier}Announcements.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Announcements.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Announcements.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Announcements.ItemId = @ItemId
+and    {objectQualifier}Announcements.ModuleId = @ModuleId
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetAnnouncements
+
+@ModuleId int
+
+as
+
+select {objectQualifier}Announcements.ItemId,
+       {objectQualifier}Announcements.CreatedByUser,
+       {objectQualifier}Announcements.CreatedDate,
+       {objectQualifier}Announcements.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Announcements.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Announcements.ExpireDate,
+       {objectQualifier}Announcements.Description,
+       {objectQualifier}Announcements.ViewOrder,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Announcements
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Announcements.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Announcements.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Announcements.ModuleId = @ModuleId
+and    ({objectQualifier}Announcements.ExpireDate > GetDate() or {objectQualifier}Announcements.ExpireDate is null)
+order by {objectQualifier}Announcements.ViewOrder asc, {objectQualifier}Announcements.CreatedDate desc
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetDocument
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Documents.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Documents.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Documents.Category,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Documents.CreatedDate,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Documents
+left outer join {objectQualifier}Users on {objectQualifier}Documents.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Documents.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID
+left outer join {objectQualifier}Files on {objectQualifier}Documents.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Documents.ItemId = @ItemId
+and    {objectQualifier}Documents.ModuleId = @ModuleId
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetDocuments
+
+@ModuleId int,
+@PortalId int
+
+as
+
+select {objectQualifier}Documents.ItemId,
+       {objectQualifier}Documents.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Documents.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Documents.CreatedDate,
+       {objectQualifier}Documents.Category,
+       {objectQualifier}Files.Size,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Documents
+left outer join {objectQualifier}Users on {objectQualifier}Documents.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}Files on {objectQualifier}Documents.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Documents.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID
+where  {objectQualifier}Documents.ModuleId = @ModuleId
+order by {objectQualifier}Documents.Title
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetModuleSetting
+
+@ModuleId      int,
+@SettingName   nvarchar(50)
+
+as
+
+select 
+'SettingValue' = case when {objectQualifier}Files.FileName is null then {objectQualifier}ModuleSettings.SettingValue else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end
+
+from {objectQualifier}ModuleSettings 
+left outer join {objectQualifier}Files on {objectQualifier}ModuleSettings.SettingValue = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where SettingName = @SettingName and moduleid=@moduleid
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetModuleSettings
+
+@ModuleId int
+
+as
+
+select SettingName,
+
+'SettingValue' = case when {objectQualifier}Files.FileName is null then {objectQualifier}ModuleSettings.SettingValue else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end
+
+from {objectQualifier}ModuleSettings 
+left outer join {objectQualifier}Files on {objectQualifier}ModuleSettings.SettingValue = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  ModuleId = @ModuleId
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetBanner
+
+@BannerId int,
+@VendorId int
+
+as
+
+select BannerId,
+       VendorId,
+       'ImageFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Banners.ImageFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       BannerName,
+       URL,
+       Impressions,
+       CPM,
+       Views,
+       ClickThroughs,
+       StartDate,
+       EndDate,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Banners.CreatedDate,
+       BannerTypeId,
+       Description,
+       GroupName,
+       Criteria       
+from {objectQualifier}Banners
+left outer join {objectQualifier}Users on {objectQualifier}Banners.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}Files on {objectQualifier}Banners.ImageFile = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  BannerId = @BannerId
+and    vendorId = @VendorId
+GO
+
+UPDATE {objectQualifier}Files
+
+SET Folder=''
+
+GO
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}GetSearchResults
+	@Word nVarChar(100)
+AS
+
+	/*****************************************************************************
+	 *  This procedure applies filters to the SearchItems to make sure that only
+	 *  active Search content is returned.  All security checks will be done in 
+	 *  the Business Logic.
+	 *****************************************************************************/
+	DECLARE @TempList table
+	(
+		Word nvarchar(100),
+		Occurences int,
+		Relevance int,
+		ModuleID int,
+		TabID int,
+		ModStartDate datetime,
+		ModEndDate datetime,
+		TabStartDate datetime,
+		TabEndDate datetime,
+		Title varchar(200),
+		Link varchar(256),
+		Description varchar(500),
+		Author int,
+		PubDate datetime,
+		Content text,
+		SearchKey varchar(100)
+	)
+
+	INSERT @TempList
+	SELECT    sw.Word, siw.Occurrences, siw.Occurrences + 1000 as Relevance, m.ModuleID, t.TabID,
+						ISNULL(m.StartDate, GETDATE() - 1) AS ModStartDate, ISNULL(m.EndDate, GETDATE() + 1) AS ModEndDate, 
+						ISNULL(t.StartDate, GETDATE() - 1) AS TabStartDate, ISNULL(t.EndDate, GETDATE() + 1) AS TabEndDate, 
+						si.Title, si.Link, si.Description, si.Author, si.PubDate, si.Content, si.SearchKey
+	FROM      {databaseOwner}{objectQualifier}SearchWord sw INNER JOIN
+	          {databaseOwner}{objectQualifier}SearchItemWord siw ON sw.SearchWordsID = siw.SearchWordsID INNER JOIN
+	          {databaseOwner}{objectQualifier}SearchItem si ON siw.SearchItemID = si.SearchItemID INNER JOIN
+	          {databaseOwner}{objectQualifier}Modules m ON si.ModuleId = m.ModuleID INNER JOIN
+	          {databaseOwner}{objectQualifier}Tabs t ON m.TabID = t.TabID
+	WHERE     (sw.Word = @Word) AND (t.IsDeleted = 0) AND (m.IsDeleted = 0)
+
+	SELECT Word, Occurences, Relevance, ModuleID, TabID, Title, Link, Description, Pubdate, SearchKey FROM @TempList 
+	WHERE GetDate() between ModStartDate and ModEndDate
+	AND GetDate() between TabStartDate and TabEndDate
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetModuleControlByKeyAndSrc') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetModuleControlByKeyAndSrc
+GO
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}GetModuleControlByKeyAndSrc
+
+@ModuleDefId int,
+@ControlKey nvarchar(50),
+@ControlSrc nvarchar(256)
+
+as
+SELECT     ModuleControlID, 
+	       ModuleDefID, 
+           ControlKey, 
+           ControlTitle, 
+           ControlSrc, 
+           IconFile, 
+           ControlType, 
+           ViewOrder
+from       {databaseOwner}{objectQualifier}ModuleControls
+where ((ModuleDefId is null and @ModuleDefId is null) or (ModuleDefID = @ModuleDefID))
+and ((ControlKey is null and @ControlKey is null) or (ControlKey = @ControlKey))
+and ((ControlSrc is null and @ControlSrc is null) or (ControlSrc = @ControlSrc))
+
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}PortalAlias (
+	[PortalAliasID] [int] IDENTITY (1, 1) NOT NULL ,
+	[PortalID] [int] NOT NULL ,
+	[HTTPAlias] [nvarchar] (200)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalAlias ADD CONSTRAINT
+	FK_{objectQualifier}PortalAlias_{objectQualifier}Portals FOREIGN KEY
+	(
+	PortalID
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+	PortalID
+	) ON DELETE CASCADE
+	
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD
+	[HomeDirectory] [varchar](100) NOT NULL  DEFAULT ''  
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Portals
+SET HomeDirectory='Portals/' + convert(varchar(10), PortalID)
+
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortalByPortalAliasID
+
+@PortalAliasId  int
+
+as
+
+select P.*, PA.HTTPAlias, PA.PortalAliasID, 'SuperTabId' = ( select TabId from {objectQualifier}Tabs where PortalId is null and ParentId is null )
+from {databaseOwner}{objectQualifier}Portals P
+INNER JOIN {databaseOwner}{objectQualifier}PortalAlias PA
+ON P.PortalID = PA.PortalID
+where PA.PortalAliasId = @PortalAliasId
+
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortalAlias
+
+@HTTPAlias nvarchar(200),
+@PortalID int
+
+as
+
+select *
+from {databaseOwner}{objectQualifier}PortalAlias
+where HTTPAlias = @HTTPAlias 
+and PortalID = @PortalID
+
+
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortalAliasByPortalID
+
+@PortalID int
+
+as
+
+select *
+from {databaseOwner}{objectQualifier}PortalAlias
+where (PortalID = @PortalID or @PortalID = -1)
+
+
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortalAliasByPortalAliasID
+
+@PortalAliasID int
+
+as
+
+select *
+from {databaseOwner}{objectQualifier}PortalAlias
+where PortalAliasID = @PortalAliasID
+
+GO
+ 
+declare @PortalID int
+declare @PortalAlias nvarchar(200)
+declare @Pos int
+declare @HTTPAlias nvarchar(200)
+
+select @PortalID = min(PortalID)
+from   {databaseOwner}{objectQualifier}Portals
+while @PortalID is not null
+begin
+  select @PortalAlias = PortalAlias
+  from   {databaseOwner}{objectQualifier}Portals
+  where  PortalID = @PortalID
+
+  if @PortalAlias is not null
+  begin
+    if substring(@PortalAlias,len(@PortalAlias),1) <> ','
+      select @PortalAlias = @PortalAlias + ','
+
+      select @Pos = CHARINDEX(',', @PortalAlias, 1)
+      
+      while @Pos > 0
+      begin
+          select @HTTPAlias = LTRIM(RTRIM(LEFT(@PortalAlias, @Pos - 1)))
+          IF @HTTPAlias <> ''
+          begin
+            insert into {databaseOwner}{objectQualifier}PortalAlias (PortalID, HTTPAlias) values (@PortalID, @HTTPAlias)
+          end
+          select @PortalAlias = RIGHT(@PortalAlias, LEN(@PortalAlias) - @Pos)
+          select @Pos = CHARINDEX(',', @PortalAlias, 1)
+      end    
+  end
+
+  select @PortalID = min(PortalID)
+  from   {databaseOwner}{objectQualifier}Portals
+  where  PortalID > @PortalID
+end
+
+GO
+
+alter table {databaseOwner}{objectQualifier}Portals
+drop column portalalias
+
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}GetPortalByAlias
+
+@HTTPAlias nvarchar(200)
+
+as
+
+select 'PortalId' = min(PortalId)
+from {databaseOwner}{objectQualifier}PortalAlias
+where  HTTPAlias = @HTTPAlias
+
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}GetPortalByTab
+
+@TabId int,
+@HTTPAlias nvarchar(200)
+ 
+as
+
+select HTTPAlias
+from {databaseOwner}{objectQualifier}PortalAlias
+inner join {databaseOwner}{objectQualifier}Tabs on {databaseOwner}{objectQualifier}PortalAlias.PortalId = {databaseOwner}{objectQualifier}Tabs.PortalId
+where  TabId = @TabId
+and    HTTPAlias = @HTTPAlias 
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalAlias ADD 
+	CONSTRAINT [PK_{objectQualifier}PortalAlias] PRIMARY KEY  CLUSTERED 
+	(
+		[PortalAliasID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}UpdatePortalInfo
+
+@PortalId           int,
+@PortalName         nvarchar(128),
+@LogoFile           nvarchar(50),
+@FooterText         nvarchar(100),
+@ExpiryDate         datetime,
+@UserRegistration   int,
+@BannerAdvertising  int,
+@Currency           char(3),
+@AdministratorId    int,
+@HostFee            money,
+@HostSpace          int,
+@PaymentProcessor   nvarchar(50),
+@ProcessorUserId    nvarchar(50),
+@ProcessorPassword  nvarchar(50),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@BackgroundFile     nvarchar(50),
+@SiteLogHistory     int,
+@HomeTabId          int,
+@LoginTabId         int,
+@UserTabId          int,
+@DefaultLanguage    nvarchar(6),
+@TimeZoneOffset	    int,
+@HomeDirectory varchar(100)
+
+as
+
+update {databaseOwner}{objectQualifier}Portals
+set    PortalName = @PortalName,
+       LogoFile = @LogoFile,
+       FooterText = @FooterText,
+       ExpiryDate = @ExpiryDate,
+       UserRegistration = @UserRegistration,
+       BannerAdvertising = @BannerAdvertising,
+       Currency = @Currency,
+       AdministratorId = @AdministratorId,
+       HostFee = @HostFee,
+       HostSpace = @HostSpace,
+       PaymentProcessor = @PaymentProcessor,
+       ProcessorUserId = @ProcessorUserId,
+       ProcessorPassword = @ProcessorPassword,
+       Description = @Description,
+       KeyWords = @KeyWords,
+       BackgroundFile = @BackgroundFile,
+       SiteLogHistory = @SiteLogHistory,
+       HomeTabId = @HomeTabId,
+       LoginTabId = @LoginTabId,
+       UserTabId = @UserTabId,
+       DefaultLanguage = @DefaultLanguage,
+       TimeZoneOffset = @TimeZoneOffset,
+       HomeDirectory = @HomeDirectory
+where  PortalId = @PortalId
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}AddPortalInfo
+
+@PortalName         nvarchar(128),
+@Currency           char(3),
+@FirstName          nvarchar(100),
+@LastName           nvarchar(100),
+@Username           nvarchar(100),
+@Password           nvarchar(50),
+@Email              nvarchar(100),
+@ExpiryDate         datetime,
+@HostFee            money,
+@HostSpace          int,
+@SiteLogHistory     int
+
+as
+
+insert into {databaseOwner}{objectQualifier}Portals (
+  PortalName,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  HostFee,
+  HostSpace,
+  Description,
+  KeyWords,
+  SiteLogHistory
+)
+values (
+  @PortalName,
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  @HostFee,
+  @HostSpace,
+  @PortalName,
+  @PortalName,
+  @SiteLogHistory
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalAlias
+
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}UpdatePortalAliasOnInstall
+
+@PortalAlias nvarchar(200)
+
+as
+
+update {databaseOwner}{objectQualifier}PortalAlias 
+set    HTTPAlias = @PortalAlias
+where  HTTPAlias = '_default'
+
+GO
+CREATE procedure {databaseOwner}{objectQualifier}AddPortalAlias
+
+@PortalID int,
+@HTTPAlias nvarchar(200)
+
+as
+
+INSERT INTO {databaseOwner}{objectQualifier}PortalAlias 
+(PortalID, HTTPAlias)
+VALUES
+(@PortalID, @HTTPAlias)
+
+select SCOPE_IDENTITY()
+
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}UpdatePortalAlias
+@PortalAliasID int,
+@PortalID int,
+@HTTPAlias nvarchar(200)
+
+as
+
+UPDATE {databaseOwner}{objectQualifier}PortalAlias 
+SET HTTPAlias = @HTTPAlias
+WHERE PortalID = @PortalID
+AND	  PortalAliasID = @PortalAliasID
+	
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}DeletePortalAlias
+@PortalAliasID int
+
+as
+
+DELETE FROM {databaseOwner}{objectQualifier}PortalAlias 
+WHERE PortalAliasID = @PortalAliasID
+	
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}AddPortalInfo
+@PortalName         nvarchar(128),
+@Currency           char(3),
+@FirstName          nvarchar(100),
+@LastName           nvarchar(100),
+@Username           nvarchar(100),
+@Password           nvarchar(50),
+@Email              nvarchar(100),
+@ExpiryDate         datetime,
+@HostFee            money,
+@HostSpace          int,
+@SiteLogHistory     int,
+@HomeDirectory varchar(100)
+
+as
+
+DECLARE @PortalID int
+
+insert into {databaseOwner}{objectQualifier}Portals (
+  PortalName,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  HostFee,
+  HostSpace,
+  Description,
+  KeyWords,
+  SiteLogHistory,
+  HomeDirectory
+)
+values (
+  @PortalName,
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  @HostFee,
+  @HostSpace,
+  @PortalName,
+  @PortalName,
+  @SiteLogHistory,
+  @HomeDirectory
+)
+
+SET @PortalID = SCOPE_IDENTITY()
+
+IF @HomeDirectory = ''
+BEGIN
+	UPDATE {databaseOwner}{objectQualifier}Portals SET HomeDirectory = 'Portals/' + convert(varchar(10), @PortalID) WHERE PortalID = @PortalID
+END
+
+SELECT @PortalID
+
+GO
+

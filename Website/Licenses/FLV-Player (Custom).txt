@@ -1,0 +1,8 @@
+License 
+
+http://oos.moxiecode.com/flvplayer/
+
+(from bottom of page)
+
+I get a few questions about what kind of license this player is released under. I don´t know, really.
+You can do pretty much whatever the hell you want with it as far as I´m concerned ;) So use it for whatever, redistribute it, etc.

@@ -1,0 +1,1680 @@
+<portal version="5.0">
+  <tabs>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>43</KeyID>
+      <name>Admin</name>
+      <visible>false</visible>
+      <iconfile />
+      <iconfilelarge />
+      <disabled>false</disabled>
+      <title>Portal Administration</title>
+      <description />
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>360</moduleID>
+              <Terms />
+              <KeyID>360</KeyID>
+              <title>Basic Features</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <content type="Console" version="01.00.00"><![CDATA[&lt;ConsoleSettings&gt;&lt;DefaultSize&gt;IconFileLarge&lt;/DefaultSize&gt;&lt;AllowSizeChange&gt;False&lt;/AllowSizeChange&gt;&lt;DefaultView&gt;Hide&lt;/DefaultView&gt;&lt;AllowViewChange&gt;False&lt;/AllowViewChange&gt;&lt;ShowTooltip&gt;True&lt;/ShowTooltip&gt;&lt;ConsoleWidth&gt;&lt;/ConsoleWidth&gt;&lt;/ConsoleSettings&gt;]]></content>
+              <modulesettings>
+                <modulesetting>
+                  <settingname>ShowTooltip</settingname>
+                  <settingvalue>True</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultSize</settingname>
+                  <settingvalue>IconFileLarge</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowSizeChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ConsoleWidth</settingname>
+                  <settingvalue></settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultView</settingname>
+                  <settingvalue>Hide</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowViewChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Console</definition>
+              <moduledefinition>Console</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>44</KeyID>
+      <name>Site Settings</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/SiteSettings_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/SiteSettings_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Site Settings</title>
+      <description>Manage configuration settings for the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>361</moduleID>
+              <Terms />
+              <KeyID>361</KeyID>
+              <title>Site Settings</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/SiteSettings_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Portals</definition>
+              <moduledefinition>Site Settings</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>45</KeyID>
+      <name>Pages</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Tabs_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Tabs_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Pages</title>
+      <description>Manage pages within the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>362</moduleID>
+              <Terms />
+              <KeyID>362</KeyID>
+              <title>Pages</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Tabs_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Tabs</definition>
+              <moduledefinition>Tabs</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>46</KeyID>
+      <name>Extensions</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Extensions_16x16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Extensions_32x32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Extensions</title>
+      <description>Install, add, modify and delete extensions, such as modules, skins and language packs.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>363</moduleID>
+              <Terms />
+              <KeyID>363</KeyID>
+              <title>Extensions</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Extensions_32x32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Extensions</definition>
+              <moduledefinition>Extensions</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>47</KeyID>
+      <name>Languages</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Languages_16x16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Languages_32x32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Languages</title>
+      <description>Manage Language Resources.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>364</moduleID>
+              <Terms />
+              <KeyID>364</KeyID>
+              <title>Language Editor</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Languages_32x32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Languages</definition>
+              <moduledefinition>Languages</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>48</KeyID>
+      <name>Skins</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Skins_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Skins_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Skins</title>
+      <description>Manage Skin Resources.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>365</moduleID>
+              <Terms />
+              <KeyID>365</KeyID>
+              <title>Skin Editor</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Skins_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Skins</definition>
+              <moduledefinition>Skins</moduledefinition>
+            </module>
+            <module>
+              <moduleID>366</moduleID>
+              <Terms />
+              <KeyID>366</KeyID>
+              <title>Skin Designer</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Skins_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>SkinDesigner</definition>
+              <moduledefinition>Skin Designer</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>49</KeyID>
+      <name>Security Roles</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/SecurityRoles_16x16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/SecurityRoles_32x32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Security Roles</title>
+      <description>Manage security roles for the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>367</moduleID>
+              <Terms />
+              <KeyID>367</KeyID>
+              <title>Security Roles</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/SecurityRoles_32x32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Security</definition>
+              <moduledefinition>Security Roles</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>50</KeyID>
+      <name>User Accounts</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Users_16x16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Users_32x32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>User Accounts</title>
+      <description>Manage user accounts for the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>368</moduleID>
+              <Terms />
+              <KeyID>368</KeyID>
+              <title>User Accounts</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Users_32x32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Security</definition>
+              <moduledefinition>User Accounts</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>51</KeyID>
+      <name>Vendors</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Vendors_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Vendors_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Vendors</title>
+      <description>Manage vendor accounts, banner advertising and affiliate referrals within the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>369</moduleID>
+              <Terms />
+              <KeyID>369</KeyID>
+              <title>Vendors</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Vendors_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Vendors</definition>
+              <moduledefinition>Vendors</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>52</KeyID>
+      <name>Site Log</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/SiteLog_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Sitelog_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Site Log</title>
+      <description>View statistical reports on site activity for the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>370</moduleID>
+              <Terms />
+              <KeyID>370</KeyID>
+              <title>Site Log</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Sitelog_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>SiteLog</definition>
+              <moduledefinition>Site Log</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>53</KeyID>
+      <name>Newsletters</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/BulkMail_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/BulkMail_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Newsletters</title>
+      <description>Send email messages to users, security roles and specific email addresses.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>371</moduleID>
+              <Terms />
+              <KeyID>371</KeyID>
+              <title>Newsletters</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/BulkMail_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Newsletters</definition>
+              <moduledefinition>Newsletters</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>54</KeyID>
+      <name>File Manager</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Files_16x16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Files_32x32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>File Manager</title>
+      <description>Manage files within the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>372</moduleID>
+              <Terms />
+              <KeyID>372</KeyID>
+              <title>File Manager</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Files_32x32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>FileManager</definition>
+              <moduledefinition>File Manager</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>55</KeyID>
+      <name>Recycle Bin</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Trash_16x16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Trash_32x32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Recycle Bin</title>
+      <description>View, restore or permanently recycle pages and modules that have been deleted from the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>373</moduleID>
+              <Terms />
+              <KeyID>373</KeyID>
+              <title>Recycle Bin</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Trash_32x32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>RecycleBin</definition>
+              <moduledefinition>Recycle Bin</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>56</KeyID>
+      <name>Log Viewer</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/ViewStats_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/ViewStats_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Log Viewer</title>
+      <description>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>374</moduleID>
+              <Terms />
+              <KeyID>374</KeyID>
+              <title>Log Viewer</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/ViewStats_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>LogViewer</definition>
+              <moduledefinition>Log Viewer</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>57</KeyID>
+      <name>Site Wizard</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Wizard_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Wizard_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Site Wizard</title>
+      <description>Configure portal settings, page design and apply a site template using a step-by-step wizard.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>375</moduleID>
+              <Terms />
+              <KeyID>375</KeyID>
+              <title>Site Wizard</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Wizard_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>SiteWizard</definition>
+              <moduledefinition>Site Wizard</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>58</KeyID>
+      <name>Google Analytics</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/GoogleAnalytics_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Google Analytics</title>
+      <description>Configure Site Google Analytics settings.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>376</moduleID>
+              <Terms />
+              <KeyID>376</KeyID>
+              <title>Google Analytics</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>GoogleAnalytics</definition>
+              <moduledefinition>GoogleAnalytics</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>59</KeyID>
+      <name>Taxonomy</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Tag_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Tag_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Taxonomy</title>
+      <description>Manage the Taxonomy for your Site.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>377</moduleID>
+              <Terms />
+              <KeyID>377</KeyID>
+              <title>Taxonomy Manager</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Tag_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>DotNetNuke.Taxonomy</definition>
+              <moduledefinition>Taxonomy Manager</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <moduleID>-1</moduleID>
+      <Terms />
+      <KeyID>60</KeyID>
+      <name>Search Engine SiteMap</name>
+      <visible>true</visible>
+      <iconfile>~/Icons/Sigma/Sitemap_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Sitemap_32X32_Standard.png</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Site Settings</title>
+      <description>Configure the sitemap for submission to common search engines.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>378</moduleID>
+              <Terms />
+              <KeyID>378</KeyID>
+              <title>Search Engine SiteMap</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Sitemap_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Sitemap</definition>
+              <moduledefinition>Sitemap</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+  </tabs>
+</portal>

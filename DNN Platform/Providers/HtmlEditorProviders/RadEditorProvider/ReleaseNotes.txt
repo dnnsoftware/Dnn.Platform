@@ -1,0 +1,17 @@
+<h3>RadEditor Provider 6.0.0</h3>
+<p class="Contributor">
+	Philipp Becker (dnnWerk) <br />
+	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the DotNetNuke RadEditor Provider</h3>
+	<p class="Owner">
+		<b>Version 6.0.0</b><br /><br />
+		This version of the module & provider requires DotNetNuke Core 6.0.0 or greater. 
+		FYI: Developers should be aware that the project uses Visual Studio 2010 only. 
+	</p>
+	<ul>
+		<li></li>
+	</ul>
+</div>

@@ -1,0 +1,4 @@
+bin\DotNetNuke.Modules.SearchInput.dll
+bin\DotNetNuke.Modules.SearchInput.SqlDataProvider.dll
+bin\DotNetNuke.Modules.SearchResults.dll
+DesktopModules\BDPDT\UploadFilePopUp.aspx

@@ -1,0 +1,55 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+update {databaseOwner}[{objectQualifier}Tabs] set IsSecure = 1
+    where PortalID is NULL
+        or TabID in (select AdminTabId from {databaseOwner}[{objectQualifier}Portals])
+        or ParentId in (select AdminTabId from {databaseOwner}[{objectQualifier}Portals])
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetUserRoles
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUserRoles
+
+@PortalId  int,
+@UserId    int
+
+AS
+
+SELECT     
+	UR.UserRoleID,
+        R.RoleID, 
+	U.UserID, 
+	U.DisplayName, 
+	U.Email, 
+	UR.EffectiveDate, 
+        UR.ExpiryDate, 
+	UR.IsTrialUsed
+FROM {databaseOwner}{objectQualifier}UserRoles UR
+	INNER JOIN {databaseOwner}{objectQualifier}Users U ON UR.UserID = U.UserID 
+	INNER JOIN {databaseOwner}{objectQualifier}Roles R ON UR.RoleID = R.RoleID 
+WHERE
+	U.UserID = @UserId AND R.PortalID = @PortalId
+
+GO
+
+update {databaseOwner}{objectQualifier}HostSettings
+set    SettingValue = 'template,' + SettingValue
+where  SettingName = 'FileExtensions'
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

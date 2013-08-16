@@ -1,0 +1,1512 @@
+/************************************************************/
+/*****              Upgrade Script 1.0.2                *****/
+/************************************************************/
+
+
+declare @TabID int
+
+select @TabID = TabID
+from   Tabs
+where  PortalID is null
+
+update Modules
+set    ModuleOrder = 3
+where  TabID = @TabID
+and    ModuleTitle = 'Module Definitions'
+
+declare @ModuleDefID int
+
+select @ModuleDefID = ModuleDefID
+from   ModuleDefinitions
+where  FriendlyName = 'Manage Users'
+
+insert Modules ( 
+  TabID,
+  ModuleDefID,
+  ModuleOrder,
+  PaneName,
+  ModuleTitle,
+  AuthorizedEditRoles,
+  CacheTime,
+  ShowMobile,
+  AuthorizedViewRoles,
+  Alignment,
+  Color,
+  Border,
+  IconFile
+)
+values (
+  @TabID,
+  @ModuleDefID,
+  5,
+  'ContentPane',
+  'Manage Users',
+  '-2;',
+  0,
+  0,
+  '',
+  '',
+  '',
+  '',
+  null
+)
+
+update Modules
+set    ModuleOrder = 7
+where  TabID = @TabID
+and    ModuleTitle = 'File Manager'
+
+update Modules
+set    ModuleOrder = 9
+where  TabID = @TabID
+and    ModuleTitle = 'Vendors'
+
+update Modules
+set    ModuleOrder = 11
+where  TabID = @TabID
+and    ModuleTitle = 'SQL'
+go
+
+drop procedure FindBanners
+GO
+
+create procedure FindBanners
+
+@DisplayPortalId int,
+@BannerTypeId int = null,
+@SelectPortalId int = null,
+@Banners  int = 1
+
+as
+
+declare @RecordCounter int
+declare @RandomRecord int
+declare @BannerId int
+declare @StartDate smalldatetime
+declare @EndDate smalldatetime
+declare @Views int
+declare @Impressions int
+declare @VendorId int
+
+if @BannerTypeId is null
+begin
+  select @BannerTypeId = BannerTypeId
+  from   BannerTypes
+  where  BannerTypeName = 'Banner'
+end
+
+/* find number of banners */
+select @RecordCounter = count(*)
+from   Banners
+inner join Vendors on Banners.VendorId = Vendors.VendorId
+where  Banners.BannerTypeId = @BannerTypeId
+and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+
+if @Banners > @RecordCounter
+begin
+  select @Banners = @RecordCounter
+end
+
+/* generate random number */
+select @RandomRecord = Round(RAND() * (@RecordCounter - @Banners + 1),0)
+if @RandomRecord = 0
+begin
+  select @RandomRecord = 1
+end
+
+/* move record pointer to random record */
+select @RecordCounter = 1
+
+select @BannerId = min(Banners.BannerId)
+from   Banners
+inner join Vendors on Banners.VendorId = Vendors.VendorId
+where  Banners.BannerTypeId = @BannerTypeId
+and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+
+while @BannerId is not null and @RecordCounter <> @RandomRecord
+begin
+  select @BannerId = min(Banners.BannerId)
+  from   Banners
+  inner join Vendors on Banners.VendorId = Vendors.VendorId
+  where  Banners.BannerTypeId = @BannerTypeId
+  and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+  and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+  and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+  and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+  and    Banners.BannerId > @BannerId
+
+  select @RecordCounter = @RecordCounter + 1
+end
+
+/* return matching banners */
+set rowcount @Banners
+
+if @SelectPortalId is null
+begin
+  select BannerId,
+         BannerName,
+         ImageFile
+  from   Banners
+  inner join Vendors on Banners.VendorId = Vendors.VendorId
+  where  Banners.BannerTypeId = @BannerTypeId
+  and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+  and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+  and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+  and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+  and    BannerId >= @BannerId
+end
+else
+begin
+  select BannerId,
+         BannerName,
+         ImageFile
+  from   Banners
+  inner join Vendors on Banners.VendorId = Vendors.VendorId
+  where  Banners.BannerTypeId = @BannerTypeId
+  and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+  and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+  and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+  and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+  and    BannerId >= @BannerId
+end
+
+set rowcount 0
+
+/* update banners */
+select @RecordCounter = 0
+
+while @RecordCounter < @Banners
+begin
+  update Banners
+  set    Views = Views + 1
+  where  BannerId = @BannerId
+
+  select @vendorId = VendorId
+  from   Banners
+  where  BannerId = @BannerId
+
+  insert VendorLog (
+    DateTime,
+    PortalId,
+    VendorId,
+    BannerId,
+    Search
+  )
+  values (
+    getdate(),    @DisplayPortalId,
+    @VendorId,
+    @BannerId,
+    null
+  ) 
+
+  select @StartDate = StartDate,
+         @EndDate = EndDate,
+         @Views = Views,
+         @Impressions = Impressions
+  from   Banners
+  where  BannerId = @BannerId
+
+  if @StartDate is null
+    select @StartDate = getdate()
+  if @Views = @Impressions
+    select @EndDate = getdate()
+
+  update Banners
+  set    StartDate = @StartDate,
+         EndDate = @EndDate
+  where  BannerId = @BannerId
+
+  select @BannerId = min(Banners.BannerId)
+  from   Banners
+  inner join Vendors on Banners.VendorId = Vendors.VendorId
+  where  Banners.BannerTypeId = @BannerTypeId
+  and    ((Vendors.PortalId = @SelectPortalId) or (@SelectPortalId is null and Vendors.PortalId is null))
+  and    (Banners.Impressions > Banners.Views Or Banners.Impressions = 0)
+  and    (Banners.StartDate is null Or getdate() >= Banners.StartDate )
+  and    (Banners.EndDate is null Or getdate() <= Banners.EndDate )
+  and    Banners.BannerId > @BannerId
+
+  select @RecordCounter = @RecordCounter + 1
+end
+
+return 1
+
+GO
+
+ALTER TABLE dbo.Users ADD
+	IsSuperUser bit NOT NULL CONSTRAINT DF_Users_IsSuperUser DEFAULT (0)
+GO
+
+if not exists ( select 1 from Users where IsSuperUser = 1 )
+begin
+  update Users
+  set    IsSuperUser = 1
+  where  Email = 'host'
+end
+go
+
+ALTER TABLE dbo.UserPortals ADD
+	CreatedDate datetime NULL,
+	LastLoginDate datetime NULL
+GO
+
+declare @UserID int
+declare @CreatedDate datetime
+declare @LastLoginDate datetime
+
+select @UserID = min(UserID)
+from   Users
+while @UserID is not null
+begin
+  select @CreatedDate = CreatedDate,
+         @LastLoginDate = LastLoginDate
+  from   Users
+  where  UserID = @UserID
+
+  update UserPortals
+  set    CreatedDate = @CreatedDate,
+         LastLoginDate = isnull(@LastLoginDate,@CreatedDate)
+  where  UserID = @UserID
+       
+  select @UserID = min(UserID)
+  from   Users
+  where  UserID > @UserID
+end
+
+ALTER TABLE dbo.Users
+	DROP COLUMN CreatedDate, LastLoginDate
+GO
+
+drop procedure UserLogin
+GO
+
+create procedure UserLogin
+
+@Email    nvarchar(100),
+@Password nvarchar(20),
+@PortalID int
+
+as
+
+declare @UserId int
+declare @SuperUserId int
+
+select @SuperUserId = UserId
+from   Users
+where  IsSuperUser = 1
+
+select @UserId = null
+
+/* validate the user */
+select @UserId = UserId
+from   Users
+where  Email = @Email
+and    Password = @Password
+
+if @UserId is not null
+begin
+  if @UserId <> @SuperUserId
+  begin
+    select @UserId = null
+
+    /* validate the user belongs to the portal */
+    select @UserId = Users.UserId
+    from   UserPortals
+    inner join Users on UserPortals.UserId = Users.UserId
+    where  PortalID = @PortalID
+    and    Email = @Email
+    and    Password = @Password
+    and    Authorized = 1
+
+    if not @UserId is null
+    begin
+      update UserPortals
+      set    LastLoginDate = getdate()
+      where  UserId = @UserId
+      and    PortalID = @PortalID
+    end
+  end
+end
+
+select 'UserId' = @UserId
+
+GO
+
+drop procedure GetSingleUser
+GO
+
+create procedure GetSingleUser
+
+@PortalId int,
+@UserId int
+
+as
+
+select Users.UserID,
+       Users.Email,
+       Users.Password,
+       'FullName' = Users.FirstName + ' ' + Users.LastName,
+       Users.FirstName,
+       Users.LastName,
+       Users.Unit,
+       Users.Street,
+       Users.City,
+       Users.Region,
+       Users.PostalCode,
+       Users.Country,
+       Users.IsSuperUser,
+       UserPortals.Authorized,
+       UserPortals.CreatedDate,
+       UserPortals.LastLoginDate
+from   Users
+left outer join UserPortals on Users.UserId = UserPortals.UserId
+where  Users.UserId = @UserId
+and    (UserPortals.PortalId = @PortalId or Users.IsSuperUser = 1)
+
+GO
+
+drop procedure GetSingleUserByEmail
+GO
+
+create procedure GetSingleUserByEmail
+
+@PortalID int,
+@Email nvarchar(100)
+
+as
+ 
+select Users.UserId,
+       Users.Email,
+       Users.Password,
+       'FullName' = Users.FirstName + ' ' + Users.LastName,
+       Users.FirstName,
+       Users.LastName,
+       Users.Unit,
+       Users.Street,
+       Users.City,
+       Users.Region,
+       Users.PostalCode,
+       Users.Country,
+       Users.IsSuperUser,
+       UserPortals.Authorized,
+       UserPortals.CreatedDate,
+       UserPortals.LastLoginDate
+from   Users
+left outer join UserPortals on Users.UserId = UserPortals.UserId
+where  Email  = @Email
+and    (UserPortals.PortalId = @PortalId or Users.IsSuperUser = 1)
+
+GO
+
+drop procedure AddUser
+GO
+
+
+create procedure AddUser
+
+@PortalId       int,
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@Unit		nvarchar(50),
+@Street		nvarchar(20),
+@City		nvarchar(20),
+@Region		nvarchar(20),
+@PostalCode	nvarchar(10),
+@Country	nvarchar(20),
+@Email		nvarchar(100),
+@Password	nvarchar(20),
+@Authorized     bit,
+@UserID	int	OUTPUT
+
+as
+
+select	@UserID = UserID
+from 	Users
+where	Email = @Email 
+and Password = @Password
+
+if @UserID is null
+begin
+  insert into Users (
+    FirstName,
+    LastName,
+    Unit, 
+    Street, 
+    City,
+    Region, 
+    PostalCode,
+    Country,
+    Email,
+    Password
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Unit,
+    @Street,
+    @City,
+    @Region,
+    @PostalCode,
+    @Country,
+    @Email,
+    @Password
+  )
+
+  select @UserID = @@IDENTITY
+end
+
+if @@ERROR = 0
+begin
+  insert into UserPortals (
+    UserId,
+    PortalId,
+    Authorized,
+    CreatedDate
+  )
+  values (
+    @UserId,
+    @PortalId,
+    @Authorized,
+    getdate()
+  )
+end
+
+GO
+
+drop procedure GetUsers
+GO
+
+
+create procedure GetUsers
+
+@PortalId int,
+@Filter   nvarchar(1)
+
+as
+
+select Users.UserID,
+       Users.Email,
+       'FullName' = Users.FirstName + ' ' + Users.LastName,
+       Users.FirstName,
+       Users.LastName,
+       Users.Unit,
+       Users.Street,
+       Users.City,
+       Users.Region,
+       Users.PostalCode,
+       Users.Country,
+       'Authorized' = case when UserPortals.Authorized = 1 then 'Y' else 'N' end,
+       UserPortals.CreatedDate,
+       UserPortals.LastLoginDate
+from   Users
+inner join UserPortals on Users.UserId = UserPortals.UserId
+where  UserPortals.PortalId = @PortalId
+and    Users.FirstName like @Filter + '%'
+order  by 'FullName'
+
+GO
+
+ALTER TABLE dbo.SiteLog ADD
+	TabId int NULL
+GO
+
+declare @SiteLogId int
+declare @URL nvarchar(255)
+declare @StartPos int
+declare @Length int
+
+select @SiteLogId = min(SiteLogId)
+from SiteLog
+while @SiteLogId is not null
+begin
+  select @URL = URL
+  from SiteLog
+  where SiteLogId = @SiteLogId
+
+  select @StartPos = charindex('tabid=',@URL)
+
+  if @StartPos <> 0
+  begin
+    if charindex('&',@URL,@StartPos) <> 0
+      select @Length = (charindex('&',@URL,@StartPos) - @StartPos) - 6
+    else
+      select @Length = (len(@URL) - @StartPos) - 5
+
+    update SiteLog
+    set    TabId = convert(int,substring(@URL,@StartPos + 6,@Length))
+    where  SiteLogId = @SiteLogId
+  end
+
+  select @SiteLogId = min(SiteLogId)
+  from SiteLog
+  where SiteLogId > @SiteLogId
+end
+
+drop procedure AddSiteLog
+GO
+
+
+create procedure AddSiteLog
+
+@PortalId                      int,
+@UserId                        int                   = null,
+@Referrer                      nvarchar(255)         = null,
+@Url                           nvarchar(255)         = null,
+@UserAgent                     nvarchar(255)         = null,
+@UserHostAddress               nvarchar(255)         = null,
+@UserHostName                  nvarchar(255)         = null,
+@TabId                         int                   = null
+
+as
+ 
+insert SiteLog ( 
+  DateTime,
+  PortalId,
+  UserId,
+  Referrer,
+  Url,
+  UserAgent,
+  UserHostAddress,
+  UserHostName,
+  TabId
+)
+values (
+  getdate(),
+  @PortalId,
+  @UserId,
+  @Referrer,
+  @Url,
+  @UserAgent,
+  @UserHostAddress,
+  @UserHostName,
+  @TabId
+)
+
+return 1
+
+GO
+
+CREATE TABLE dbo.CodeSiteLogReport
+	(
+	Code int NOT NULL,
+	Description nvarchar(50) NOT NULL
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE CodeSiteLogReport ADD CONSTRAINT
+	PK_CodeSiteLogReport PRIMARY KEY CLUSTERED 
+	(
+	Code
+	) ON [PRIMARY]
+
+GO
+
+create procedure GetSiteLogReports
+
+as
+
+select *
+from   CodeSiteLogReport
+order by Description
+
+go
+
+insert into CodeSiteLogReport ( code, description ) values ( 1, 'Page Views By Day' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 2, 'Detailed Site Log' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 3, 'User Frequency' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 4, 'Site Referrals' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 5, 'User Agents' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 6, 'Page Views By Hour' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 7, 'Page Views By Day Of Week' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 8, 'Page Views By Month' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 9, 'Page Popularity' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 10, 'User Registrations By Date' )
+go
+insert into CodeSiteLogReport ( code, description ) values ( 11, 'User Registrations By Country' )
+go
+
+drop procedure GetSiteLogDetail
+GO
+
+drop procedure GetSiteLog
+GO
+
+create procedure GetSiteLog
+
+@PortalId   int,
+@PortalAlias nvarchar(50),
+@ReportType int = null,
+@StartDate  datetime = null,
+@EndDate    datetime = null
+
+as
+
+if @ReportType is null
+  select @ReportType = 1
+if @StartDate is null
+  select @StartDate = min(DateTime) from SiteLog where PortalId = @PortalId
+
+if @EndDate is null
+  select @EndDate = max(DateTime) from SiteLog where PortalId = @PortalId
+
+if @ReportType = 1 /* page views per day */
+begin
+  select 'Date' = convert(varchar,DateTime,102),
+         'Views' = count(*),
+         'Visitors' = count(distinct SiteLog.UserHostAddress),
+         'Users' = count(distinct SiteLog.UserId)
+  from   SiteLog
+  where  PortalId = @PortalId
+  and   SiteLog.DateTime between @StartDate and @EndDate
+  group by convert(varchar,DateTime,102)
+  order by Date desc
+end
+else
+begin
+  if @ReportType = 2 /* detailed site log */
+  begin
+    select SiteLog.DateTime,
+           'Name' = 
+	      case
+                when SiteLog.UserId is null then null
+                else Users.FirstName + ' ' + Users.LastName
+              end,
+           'Referrer' = 
+             case 
+               when SiteLog.Referrer like '%' + @PortalAlias + '%' then null 
+               else SiteLog.Referrer
+             end,
+           'UserAgent' = 
+             case 
+               when SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
+               when SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
+               when SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
+               when SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
+               when SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
+               when SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
+               when SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
+               when SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
+               when SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
+               when SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
+               when SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
+               else SiteLog.UserAgent
+             end,
+             SiteLog.UserHostAddress,
+             Tabs.TabName
+    from SiteLog
+    left outer join Users on SiteLog.UserId = Users.UserId 
+    left outer join Tabs on SiteLog.TabId = Tabs.TabId 
+    where SiteLog.PortalId = @PortalId
+    and   SiteLog.DateTime between @StartDate and @EndDate
+    order by SiteLog.DateTime desc
+  end
+  else
+  begin
+    if @ReportType = 3 /* user frequency */
+    begin
+      select 'Name' = Users.FirstName + ' ' + Users.LastName,
+             'Requests' = count(*),
+             'LastRequest' = max(DateTime)
+      from   SiteLog
+      inner join Users on SiteLog.UserId = Users.UserId
+      where  PortalID = @PortalId
+      and   SiteLog.DateTime between @StartDate and @EndDate
+      and    SiteLog.UserId is not null
+      group by Users.FirstName + ' ' + Users.LastName
+      order by Requests desc
+    end
+    else
+    begin
+      if @ReportType = 4 /* site referrals */
+      begin
+        select Referrer,
+                 'Requests' = count(*),
+                 'LastRequest' = max(DateTime)
+          from   SiteLog
+          where  SiteLog.PortalID = @PortalId
+          and   SiteLog.DateTime between @StartDate and @EndDate
+          and    Referrer is not null
+          and    Referrer not like '%' + @PortalAlias + '%'
+          group by Referrer
+          order by Requests desc
+      end
+      else
+      begin
+        if @ReportType = 5 /* user agents */
+        begin
+          select'UserAgent' = 
+                   case 
+                     when SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
+                     when SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
+                     when SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
+                     when SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
+                     when SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
+                     when SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
+                     when SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
+                     when SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
+                     when SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
+                     when SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
+                     when SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
+                     else SiteLog.UserAgent
+                   end,
+                 'Requests' = count(*),
+                 'LastRequest' = max(DateTime)
+          from   SiteLog
+          where  PortalID = @PortalId
+          and   SiteLog.DateTime between @StartDate and @EndDate
+          group by case 
+                     when SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
+                     when SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
+                     when SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
+                     when SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
+                     when SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
+                     when SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
+                     when SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
+                     when SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
+                     when SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
+                     when SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
+                     when SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
+                     else SiteLog.UserAgent
+                   end
+          order by Requests desc
+        end
+        else
+        begin
+          if @ReportType = 6 /* page views by hour */
+          begin
+            select 'Hour' = datepart(hour,DateTime),
+                   'Views' = count(*),
+                   'Visitors' = count(distinct SiteLog.UserHostAddress),
+                   'Users' = count(distinct SiteLog.UserId)
+            from   SiteLog
+            where  PortalId = @PortalId
+            and   SiteLog.DateTime between @StartDate and @EndDate
+            group by datepart(hour,DateTime)
+            order by Hour
+          end
+          else
+          begin
+            if @ReportType = 7 /* page views by week day */
+            begin
+              select 'WeekDay' = datepart(weekday,DateTime),
+                     'Views' = count(*),
+                     'Visitors' = count(distinct SiteLog.UserHostAddress),
+                     'Users' = count(distinct SiteLog.UserId)
+              from   SiteLog
+              where  PortalId = @PortalId
+              and   SiteLog.DateTime between @StartDate and @EndDate
+              group by datepart(weekday,DateTime)
+              order by WeekDay
+            end
+            else
+            begin
+              if @ReportType = 8 /* page views by month */
+              begin
+                select 'Month' = datepart(month,DateTime),
+                       'Views' = count(*),
+                       'Visitors' = count(distinct SiteLog.UserHostAddress),
+                       'Users' = count(distinct SiteLog.UserId)
+                from   SiteLog
+                where  PortalId = @PortalId
+                and   SiteLog.DateTime between @StartDate and @EndDate
+                group by datepart(month,DateTime)
+                order by Month
+              end
+              else
+              begin
+                if @ReportType = 9 /* page popularity */
+                begin
+                  select 'Page' = Tabs.TabName,
+                         'Requests' = count(*),
+                         'LastRequest' = max(DateTime)
+                  from   SiteLog
+                  inner join Tabs on SiteLog.TabID = Tabs.TabID
+                  where  SiteLog.PortalId = @PortalId
+                  and   SiteLog.DateTime between @StartDate and @EndDate
+                  and    SiteLog.TabId is not null
+                  group by Tabs.TabName
+                  order by Requests desc
+                end
+                else
+                begin
+                  if @ReportType = 10 /* user registrations by date */
+                  begin
+                    select 'Date' = convert(varchar,CreatedDate,102),
+                           'Users' = count(*)
+                    from   UserPortals
+                    where  PortalId = @PortalId
+                    and   CreatedDate between @StartDate and @EndDate
+                    group by convert(varchar,CreatedDate,102)
+                    order by Date desc
+                  end
+                  else
+                  begin
+                    if @ReportType = 11 /* user registrations by country */
+                    begin
+                      select Country,
+                             'Users' = count(*)
+                      from   UserPortals
+                      inner join Users on UserPortals.UserID = Users.UserID
+                      where  PortalId = @PortalId
+                      and   CreatedDate between @StartDate and @EndDate
+                      group by Country
+                      order by 'Users' desc
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+go
+
+ALTER TABLE dbo.Portals ADD
+	Description nvarchar(500) NULL,
+	KeyWords nvarchar(500) NULL,
+	BackgroundFile nvarchar(50) NULL
+GO
+
+ALTER TABLE dbo.Portals
+	DROP COLUMN UploadDirectory
+GO
+
+drop procedure GetPortalSettings
+GO
+
+create procedure GetPortalSettings
+
+@PortalAlias nvarchar(200),
+@TabID       int
+
+as
+
+declare @PortalID int
+declare @VerifyTabID int
+
+/* convert PortalAlias to PortalID */
+
+select @PortalID = null
+
+select @PortalID = PortalID
+from   Portals
+where  PortalAlias = @PortalAlias
+
+if @PortalID is null
+begin
+  select @PortalID = min(PortalID)
+  from   Portals
+  where  PortalAlias like '%' + @PortalAlias + '%' /* multiple alias may be specified seperated by commas */
+end
+
+select @VerifyTabID = null
+
+/* verify the TabID belongs to the portal */
+if @TabID <> 0
+begin
+  select @VerifyTabID = Tabs.TabID
+  from   Tabs
+  left outer join Portals on Tabs.PortalID = Portals.PortalID
+  where  TabId = @TabId
+  and    ( Portals.PortalID = @PortalID or Tabs.PortalId is null )
+end
+else
+begin
+  select @VerifyTabID = null
+end
+
+/* get the TabID if none provided */
+if @VerifyTabID is null
+begin
+  select @TabID = min(Tabs.TabID)
+  from Tabs
+  inner join Portals on Tabs.PortalID = Portals.PortalID
+  where Portals.PortalID = @PortalID
+end
+
+/* First, get Out Params */
+select Portals.PortalAlias,
+       Portals.PortalID,
+       Portals.GUID,
+       Portals.PortalName,
+       Portals.LogoFile,
+       Portals.FooterText,
+       Portals.ExpiryDate,
+       Portals.UserRegistration,
+       Portals.BannerAdvertising,
+       Portals.Currency,
+       Portals.AdministratorId,
+       Users.Email,
+       Portals.HostFee,
+       Portals.HostSpace,
+       Portals.PayPalId,
+       Portals.AdministratorRoleId,
+       Portals.RegisteredRoleId,
+       Portals.Description,
+       Portals.KeyWords,
+       Portals.BackgroundFile,
+       'SuperUserId' = ( select UserID from Users where IsSuperUser = 1 ),
+       'SuperTabId' = ( select TabID from Tabs where PortalId is null ),
+       Tabs.TabID,
+       Tabs.TabOrder,
+       Tabs.TabName,
+       Tabs.MobileTabName,
+       Tabs.AuthorizedRoles,
+       Tabs.ShowMobile,
+       Tabs.LeftPaneWidth,
+       Tabs.RightPaneWidth,
+       Tabs.IsVisible
+from   Tabs
+inner join Portals on Portals.PortalID = @PortalID
+inner join Users on Portals.AdministratorId = Users.UserId
+where  TabID = @TabID
+
+/* Get Tabs list */
+select TabName,
+       AuthorizedRoles,
+       TabID,
+       TabOrder,
+       IsVisible
+from   Tabs
+where  PortalID = @PortalID
+order  by TabOrder
+
+/* Get Mobile Tabs list */
+select MobileTabName,
+       AuthorizedRoles,
+       TabID,
+       IsVisible,
+       ShowMobile
+from   Tabs
+where  PortalID = @PortalID
+and    ShowMobile = 1
+order  by TabOrder
+
+/* Then, get the DataTable of module info */
+select *
+from   Modules
+inner join ModuleDefinitions on Modules.ModuleDefID = ModuleDefinitions.ModuleDefID
+where  TabID = @TabID
+order by ModuleOrder
+
+GO
+
+drop procedure UpdatePortalInfo
+GO
+
+create procedure UpdatePortalInfo
+
+@PortalID           int,
+@PortalName         nvarchar(50),
+@PortalAlias        nvarchar(200) = null,
+@LogoFile           nvarchar(50) = null,
+@FooterText         nvarchar(100) = null,
+@ExpiryDate         datetime = null,
+@UserRegistration   int = null,
+@BannerAdvertising  int = null,
+@Currency           char(3) = null,
+@AdministratorId    int = null,
+@HostFee            nvarchar(10) = null,
+@HostSpace          int = null,
+@PayPalId           nvarchar(50) = null,
+@Description        nvarchar(500) = null,
+@KeyWords           nvarchar(500) = null,
+@BackgroundFile     nvarchar(50) = null
+
+as
+
+update Portals
+set    PortalName = @PortalName,
+       PortalAlias = isnull(@PortalAlias,PortalAlias),
+       LogoFile = @LogoFile,
+       FooterText = @FooterText,
+       ExpiryDate = @ExpiryDate,
+       UserRegistration = @UserRegistration,
+       BannerAdvertising = @BannerAdvertising,
+       Currency = @Currency,
+       AdministratorId = @AdministratorId,
+       HostFee = @HostFee,
+       HostSpace = @HostSpace,
+       PayPalId = @PayPalId,
+       Description = @Description,
+       KeyWords = @KeyWords,
+       BackgroundFile = @BackgroundFile
+where  PortalID = @PortalID
+
+GO
+
+drop procedure AddPortalInfo
+GO
+
+create procedure AddPortalInfo
+
+@PortalName         nvarchar(50),
+@PortalAlias        nvarchar(200),
+@LogoFile           nvarchar(50) = null,
+@FooterText         nvarchar(100) = null,
+@UserRegistration   int = null,
+@BannerAdvertising  int = null,
+@Currency           char(3) = null,
+@AdministratorId    int = null,
+@FirstName          nvarchar(100),
+@LastName           nvarchar(100),
+@Email              nvarchar(200),
+@Password           nvarchar(40),
+@ExpiryDate         datetime = null,
+@HostFee            nvarchar(10) = null,
+@HostSpace          int = null,
+@PayPalId           nvarchar(50) = null,
+@PortalID           int OUTPUT
+
+as
+
+declare @AdminOrder int
+declare @ModuleDefId int
+declare @FriendlyName nvarchar(128)
+declare @PaneName nvarchar(50)
+declare @TabId int
+declare @ModuleOrder int
+declare @RoleId int
+declare @UserId int
+declare @AdministratorRoleId int
+declare @RegisteredRoleId    int
+
+begin transaction
+
+insert into Portals (
+  PortalName,
+  PortalAlias,
+  LogoFile,
+  FooterText,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  AdministratorId,
+  HostFee,
+  HostSpace,
+  PayPalId,
+  AdministratorRoleId,
+  RegisteredRoleId
+)
+values (
+  @PortalName,
+  @PortalAlias,
+  @LogoFile,
+  @FooterText,
+  @ExpiryDate,
+  @UserRegistration,
+  @BannerAdvertising,
+  @Currency,
+  null,
+  @HostFee,
+  @HostSpace,
+  @PayPalId,
+  null,
+  null
+)
+
+select @PortalID = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingFrequency,
+  TrialPeriod,
+  TrialFrequency
+)
+values (
+  @PortalID,
+  'Administrators',
+  'Portal Administration',
+  null,
+  4,
+  null,
+  null
+)
+
+select @AdministratorRoleId = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingFrequency,
+  TrialPeriod,
+  TrialFrequency
+)
+values (
+  @PortalID,
+  'Registered Users',
+  'Registered Users',
+  null,
+  0,
+  null,
+  null
+)
+
+select @RegisteredRoleId = @@IDENTITY
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth
+) 
+values (
+    @PortalID,
+    1,
+    'Home',
+    '-1;',
+    'Home',
+    1,
+    '200',
+    '200'   
+)
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth
+) 
+values (
+    @PortalID,
+    5,
+    'Admin',
+    convert(varchar,@AdministratorRoleId) + ';',
+    'Admin',
+    0,
+    '200',
+    '200'   
+)
+
+select @TabId = @@IDENTITY
+
+select @ModuleOrder = 0
+
+select @AdminOrder = min(AdminOrder)
+from   ModuleDefinitions
+where  AdminOrder is not null
+and    AdminOrder > 0
+while @AdminOrder is not null
+begin
+  select @ModuleDefId = ModuleDefId,
+         @FriendlyName = FriendlyName
+  from   ModuleDefinitions
+  where  AdminOrder = @AdminOrder
+
+  select @ModuleOrder = @ModuleOrder + 1
+
+  select @PaneName = 'ContentPane'
+
+  insert Modules ( 
+    TabID,
+    ModuleDefID,
+    ModuleOrder,
+    PaneName,
+    ModuleTitle,
+    AuthorizedEditRoles,
+    CacheTime,
+    ShowMobile
+  )
+  values (
+    @TabId,
+    @ModuleDefId,
+    @ModuleOrder,
+    @PaneName,
+    @FriendlyName,
+    convert(varchar,@AdministratorRoleId) + ';',
+    0,
+    0
+  )
+
+  select @AdminOrder = min(AdminOrder)
+  from   ModuleDefinitions
+  where  AdminOrder is not null
+  and    AdminOrder > @AdminOrder
+end 
+
+select @UserId = null
+
+if @AdministratorId is null
+  select @UserId = UserId
+  from   Users
+  where  Email = @Email
+else
+  select @UserId = @AdministratorId
+
+if @UserId is null
+begin
+  insert into Users (
+    FirstName,
+    LastName, 
+    Email,
+    Password
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Email,
+    @Password
+  )
+
+  select @UserId = @@IDENTITY
+end
+
+insert into UserPortals (
+  UserId,
+  PortalId,
+  Authorized,
+  CreatedDate,
+  LastLoginDate
+)
+values (
+  @UserId,
+  @PortalID,
+  1,
+  getdate(),
+  getdate()
+)
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @AdministratorRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @AdministratorRoleId, /* Administrators */
+    null
+  )
+end
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @RegisteredRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @RegisteredRoleId, /* Registered */
+    null
+  )
+end
+
+update Portals
+set    AdministratorId = @UserId,
+       AdministratorRoleId = @AdministratorRoleId,
+       RegisteredRoleId = @RegisteredRoleId
+where  PortalID = @PortalID
+
+if @@error <> 0
+  rollback transaction
+else
+  commit transaction
+
+GO
+
+drop procedure GetTabById
+GO
+
+create procedure GetTabById
+
+@TabId int
+
+as
+
+select TabID,
+       TabOrder,
+       PortalID,
+       TabName,
+       MobileTabName,
+       AuthorizedRoles,
+       ShowMobile,
+       LeftPaneWidth,
+       RightPaneWidth,
+       IsVisible
+from   Tabs
+where  TabId = @TabId
+
+GO
+
+create procedure GetPortalByTab
+
+@TabID int,
+@PortalAlias nvarchar(200)
+ 
+as
+
+declare @PortalID int
+
+select @PortalID = -1
+
+select @PortalID = PortalID
+from   Tabs
+where  TabID = @TabID
+
+if @PortalID is null /* SuperTab */
+begin
+  select 'PortalAlias' = @PortalAlias
+end
+else
+begin
+  select PortalAlias
+  from   Portals
+  inner join Tabs on Portals.PortalID = Tabs.PortalID
+  where  TabID = @TabID
+  and    PortalAlias like '%' + @PortalAlias + '%'
+end
+
+GO
+
+declare @PortalId int
+declare @PortalAlias nvarchar(200)
+
+select @PortalId = min(PortalId)
+from Portals
+while @PortalId is not null
+begin
+  select @PortalAlias = PortalAlias 
+  from   Portals
+  where  PortalId = @PortalId
+
+  if charindex('.',@PortalAlias) = 0 and charindex(',',@PortalAlias) = 0 and charindex('localhost',@PortalAlias) = 0 and @PortalAlias <> '_default'
+  begin
+    update Portals
+    set    PortalAlias = 'localhost/' + @PortalAlias
+    where  PortalId = @PortalId
+  end
+
+  select @PortalId = min(PortalId)
+  from Portals
+  where PortalId > @PortalId
+end
+go
+
+update Tabs
+set    TabName = 'Super Tab'
+where PortalId is null
+go
+
+drop procedure GetAnnouncements
+GO
+
+create procedure GetAnnouncements
+
+@ModuleID int
+
+as
+
+select ItemID,
+       CreatedByUser,
+       CreatedDate,
+       Title,
+       URL,
+       Syndicate,
+       ExpireDate,
+       Description
+from   Announcements
+where  ModuleID = @ModuleID
+and    (ExpireDate > GetDate() or ExpireDate is null)
+
+GO
+
+delete
+from ModuleDefinitions
+where FriendlyName = 'Help'
+GO
+
+drop procedure GetUsers
+GO
+
+create procedure GetUsers
+
+@PortalId int,
+@Filter   nvarchar(1)
+
+as
+
+if @PortalID is null
+begin
+  select *
+  from   Users
+  order by UserID
+end
+else
+begin
+  select Users.UserID,
+         Users.Email,
+         'FullName' = Users.FirstName + ' ' + Users.LastName,
+         Users.FirstName,
+         Users.LastName,
+         Users.Unit,
+         Users.Street,
+         Users.City,
+         Users.Region,
+         Users.PostalCode,
+         Users.Country,
+         'Authorized' = case when UserPortals.Authorized = 1 then 'Y' else 'N' end,
+         UserPortals.CreatedDate,
+         UserPortals.LastLoginDate
+  from   Users
+  inner join UserPortals on Users.UserId = UserPortals.UserId
+  where  UserPortals.PortalId = @PortalId
+  and    Users.FirstName like @Filter + '%'
+  order  by 'FullName'
+end
+
+GO
+
+create procedure GetSiteModule
+
+as
+
+select Modules.ModuleId
+from   Modules
+inner join Tabs on Modules.TabId = Tabs.TabId
+inner join ModuleDefinitions on Modules.ModuleDefId = ModuleDefinitions.ModuleDefId
+where  Tabs.PortalID is null
+and    ModuleDefinitions.FriendlyName = 'Portals'
+
+GO
+
+
+
+
+
+

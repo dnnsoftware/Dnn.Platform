@@ -1,0 +1,44 @@
+.c_DNN6 .dnnModuleActions {display:inline-block;width:19px;height:19px;float:left;}
+.c_DNN6 .dnnIcon{display: inline-block;vertical-align: middle; margin-right: 4px;}
+.c_DNN6 .dnnActionButtons{float: right;}
+.c_DNN6 .dnnActionButtons .CommandButton{margin: 4px;}
+.c_DNN6_Header .Head{color:#333;font-size:22px;line-height:24px;padding:0 10px 0 0;text-transform:uppercase;text-shadow: 1px 1px 1px #FAFAFA;}
+#Footer .c_DNN6_Header .Head{color:#e5e5e5;}
+.c_DNN6_Header .Title{margin:0 0 .5em 0; overflow:hidden;}
+.c_DNN6_Header .Title .TitleBar{margin:0 -100% 0 0; vertical-align:middle; width: 100%; height: 24px; }
+
+.c_DNN6_SubTitle .Head{color:#333;font-size:18px;line-height:24px;padding:0 10px 0 0;text-transform:uppercase;text-shadow: 1px 1px 1px #FAFAFA;}
+.c_DNN6_SubTitle .Title{margin:0 0 .5em 0; overflow:hidden;}
+.c_DNN6_SubTitle .Title .TitleBar{margin:0 -100% 0 0; vertical-align:middle; width: 100%; height: 24px; }
+
+.c_DNN6_Footer .Head{color:#e5e5e5;font-size:18px;text-transform:uppercase;}
+.c_DNN6_Footer .Title{margin:0 0 .5em 0;}
+
+.c_DNN6_Aside {width: 100%;}
+.c_DNN6_Aside .Title{text-transform:uppercase;}
+.c_DNN6_Aside .TopL{background: url(images/Grey-Gradient-TL.png) no-repeat 0 0;padding:0 0 0 10px;}
+.c_DNN6_Aside .Title{margin:0 10px 10px 10px;padding:4px 0 0 0;}
+.c_DNN6_Aside .BottomL{height: 10px;background: url(images/Grey-Gradient-BL.png) no-repeat left top;padding:0 0 0 10px;}
+.c_DNN6_Aside .TopR{background:url(images/Grey-Gradient-TR.png) no-repeat right 0;padding:0 10px 0 0;}
+.c_DNN6_Aside .BottomR{height: 10px;background:url(images/Grey-Gradient-BR.png) no-repeat right top;padding:0 10px 0 0;}
+.c_DNN6_Aside .Top{background:url(images/Grey-Gradient-T.png) repeat-x 0 0;padding:10px 0 0 0;}
+.c_DNN6_Aside .Bottom{height: 10px;background:url(images/Grey-Gradient-B.png) repeat-x left top;padding:0 0 0 0;}
+.c_DNN6_Aside .Middle {border-left:solid 1px #c6c6c6;border-right:solid 1px #FFF;background:-moz-linear-gradient(top, #e5e5e5, #d7d7d7);background:-webkit-gradient(linear, left top, left bottom, from(#e5e5e5), to(#d7d7d7));filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#e5e5e5', endColorstr='#d7d7d7');-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#e5e5e5', endColorstr='#d7d7d7')";height:100%;}
+.c_DNN6_Aside .DNNModuleContent{padding:0 12px;}
+.AdminActions input, .AdminActions a.CommandButton{text-decoration:none;}
+
+/*  Banner Rotator
+    -- Banners will automatically cycle along with navigation by inserting 
+    -- the desired images into a Text/HTML module using the Banner Container. */
+    
+ /* Set height of div.Normal to equal the height of banners + 34px for shadow */
+.RotatorWrapper div.DNNModuleContent > div.Normal {height:339px;background:url(images/Slide-Shadow.png) no-repeat 0 bottom;}
+
+ /* Set width and height of banners within div.Normal img */
+.RotatorWrapper div.DNNModuleContent > div.Normal img{width:960px;height:305px;} 
+
+.RotatorNav {position:absolute;z-index:20;width:960px;height:40px;background:url(images/50black.png) repeat top left;margin:-74px 0 0;padding:0;list-style: none;}
+.RotatorNav li {float:left;}
+.RotatorNav li a {padding:0 10px;display:block;color:#b8b8b8;line-height:40px;text-decoration:none;}
+.RotatorNav li a:hover{text-decoration:underline;}
+.RotatorNav li.activeSlide a{color:#fff;}

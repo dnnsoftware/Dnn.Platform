@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountInfo.Text">
+    <value xml:space="preserve">Info Account</value>
+  </data>
+  <data name="BestPractices.Text">
+    <value xml:space="preserve">Si sta per aggiornare il tuo Sito Web a una versione più recente dell'applicazione DotNetNuke. Applicare gli aggiornamenti su base omogenea è il modo migliore per garantire che si sta proteggendo l'integrità del vostro investimento e la sicurezza degli utenti e risorse. Prima di procedere con il processo di aggiornamento automatizzato assicurarsi di:&lt;ul&gt;
+&lt;li&gt;Aver pianificato un primo test di aggiornamento in un ambiente di TEST.&lt;li&gt;Aver documentato le caratteristiche della tua attuale installazione includendo tutti i moduli di terze parti installati.&lt;li&gt;Aver creato il backup del vostro ambiente necessario per ripristinare il tuo sito Web in caso di un errore imprevisto durante aggiornamento.&lt;/li&gt;&lt;/li&gt;&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="CurrentVersion.Text">
+    <value xml:space="preserve">Versione corrente - {0}</value>
+  </data>
+  <data name="DatabaseUpgrade.Text">
+    <value xml:space="preserve">Aggiornamento Database</value>
+  </data>
+  <data name="Error.Text">
+    <value xml:space="preserve">Errore</value>
+  </data>
+  <data name="ErrorInStep.Text">
+    <value xml:space="preserve">si è verificato ERRORE  - {0}</value>
+  </data>
+  <data name="ExtensionsUpgrade.Text">
+    <value xml:space="preserve">Aggiornamento Estensioni</value>
+  </data>
+  <data name="IntroDetail.Text">
+    <value xml:space="preserve">&lt;p&gt;Benvenuti alla Pagina di Aggiornamento DotNetNuke.&lt;/p&gt;
+
+&lt;p&gt;Il primo passo è quello di scegliere la lingua che si desidera utilizzare per l'aggiornamento.&lt;/p&gt;
+
+</value>
+  </data>
+  <data name="InvalidCredentials.Text">
+    <value xml:space="preserve">Nome Utente e Password non riconosciuti.</value>
+  </data>
+  <data name="Next.Text">
+    <value xml:space="preserve">Aggiorna ora</value>
+  </data>
+  <data name="NoInstallationLog.Text">
+    <value xml:space="preserve">Nessun Log di Installazione</value>
+  </data>
+  <data name="Password.Help">
+    <value xml:space="preserve">La password per l'account utente amministratore.</value>
+  </data>
+  <data name="Password.Text">
+    <value xml:space="preserve">Password:</value>
+  </data>
+  <data name="Retry.Text">
+    <value xml:space="preserve">Riprova</value>
+  </data>
+  <data name="SeeLogs.Text">
+    <value xml:space="preserve">Vedi Logs</value>
+  </data>
+  <data name="TimerMinutes.Text">
+    <value xml:space="preserve">Minuti</value>
+  </data>
+  <data name="Title.Text">
+    <value xml:space="preserve">Aggiornamento DotNetNuke</value>
+  </data>
+  <data name="Upgrade.Text">
+    <value xml:space="preserve">Aggiornamento</value>
+  </data>
+  <data name="UpgradeDone.Text">
+    <value xml:space="preserve">Aggiornamento Completato</value>
+  </data>
+  <data name="UpgradingDatabase.Text">
+    <value xml:space="preserve">Aggiornamento  Database</value>
+  </data>
+  <data name="Username.Help">
+    <value xml:space="preserve">Il nome utente per l'account utente amministratore.</value>
+  </data>
+  <data name="Username.Text">
+    <value xml:space="preserve">Host (SuperUtente) Username:</value>
+  </data>
+  <data name="Version.Text">
+    <value xml:space="preserve">Aggiornamento DotNetNuke - Versione {0}</value>
+  </data>
+  <data name="ViewWebsite.Text">
+    <value xml:space="preserve">Vedi Sito Web</value>
+  </data>
+  <data name="VisitWebsite.Text">
+    <value xml:space="preserve">Visita Sito Web</value>
+  </data>
+</root>

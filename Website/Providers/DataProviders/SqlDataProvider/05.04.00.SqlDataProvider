@@ -1,0 +1,789 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Initialize HideAdminBorder setting for modules under the Admin and Host tabs */
+/*************************************************/
+
+DECLARE @TabModuleID int
+DECLARE CursorQuery CURSOR FOR
+
+SELECT TabModuleID
+FROM {databaseOwner}{objectQualifier}TabModules
+WHERE (TabID IN(SELECT TabID
+FROM {databaseOwner}{objectQualifier}Tabs
+WHERE (TabID IN(SELECT AdminTabId FROM {databaseOwner}{objectQualifier}vw_Portals)) OR
+(ParentId IN(SELECT AdminTabId FROM {databaseOwner}{objectQualifier}vw_Portals AS vw_Portals_1)) OR (PortalID IS NULL)))
+
+OPEN CursorQuery
+---Perform fetch
+FETCH NEXT FROM CursorQuery
+INTO @TabModuleID
+-- Check @@FETCH_STATUS to see if there are any more rows to fetch.
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+            -- now insert the id from the main table into the related table.
+            -- hard code values for now for some options.
+            -- This is executed as long as the previous fetch succeeds.
+        INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings (
+			TabModuleId,
+     			SettingName,
+			SettingValue,
+			CreatedByUserID,
+			CreatedOnDate,
+			LastModifiedByUserId,
+			LastModifiedOnDate
+			) VALUES (
+			@TabModuleID,
+			'hideadminborder',
+			'True',
+			-1,
+			GetDate(),
+			-1,
+			GetDate())
+
+ FETCH NEXT FROM CursorQuery
+ INTO @TabModuleID
+
+END
+
+CLOSE CursorQuery
+DEALLOCATE CursorQuery
+
+/* Add RegisterTabId to PortalLocalization Table */
+/*************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}PortalLocalization' AND COLUMN_NAME='RegisterTabId')
+	BEGIN
+		-- Add new RegisterTabId Column
+		ALTER TABLE {databaseOwner}{objectQualifier}PortalLocalization
+			ADD RegisterTabId int NULL
+	END
+GO
+
+/* Add vw_PortalsDefaultLanguage View */
+/**************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+AS
+    SELECT DISTINCT    
+        P.PortalID,   
+        PL.PortalName as PortalName, 
+        CASE WHEN LEFT(LOWER(PL.LogoFile), 7) = 'fileid=' THEN  
+                      (SELECT Folder + FileName  
+                        FROM  {databaseOwner}{objectQualifier}Files  
+                        WHERE fileid = CAST((RIGHT(LOWER(PL.LogoFile), Len(PL.LogoFile) - 7)) AS int)) ELSE PL.LogoFile END AS LogoFile,       
+        PL.FooterText as FooterText,   
+        P.ExpiryDate,   
+        P.UserRegistration,   
+        P.BannerAdvertising,   
+        P.AdministratorId,   
+        P.Currency,   
+        P.HostFee,   
+        P.HostSpace,   
+        P.PageQuota,   
+        P.UserQuota,   
+        P.AdministratorRoleId,   
+        P.RegisteredRoleId,   
+        PL.Description as Description,   
+        PL.KeyWords as KeyWords,   
+         CASE WHEN LEFT(LOWER(PL.BackgroundFile), 7) = 'fileid=' THEN  
+                          (SELECT Folder + FileName  
+                            FROM {databaseOwner}{objectQualifier}Files  
+                            WHERE fileid = CAST((RIGHT(LOWER(PL.BackgroundFile), Len(PL.BackgroundFile) - 7)) AS int)) ELSE PL.BackgroundFile END AS BackgroundFile,   
+        P.GUID,   
+        P.PaymentProcessor,   
+        P.ProcessorUserId,   
+        P.ProcessorPassword,   
+        P.SiteLogHistory,   
+        U.Email,   
+        P.DefaultLanguage,   
+        P.TimezoneOffset,   
+        PL.AdminTabId as AdminTabId,   
+        P.HomeDirectory,   
+        PL.SplashTabId as SplashTabId,   
+        PL.HomeTabId as HomeTabId,   
+        PL.LoginTabId as LoginTabId,   
+        PL.RegisterTabId as RegisterTabId,   
+        PL.UserTabId as UserTabId,  
+        (SELECT TOP 1 TabID FROM {databaseOwner}{objectQualifier}Tabs WHERE (PortalID IS NULL) AND (ParentId IS NULL)) AS SuperTabId,
+        P.CreatedByUserID, 
+        P.CreatedOnDate, 
+        P.LastModifiedByUserID, 
+        P.LastModifiedOnDate,
+        PL.CultureCode
+	FROM  {databaseOwner}{objectQualifier}Portals AS P 
+		INNER JOIN {databaseOwner}{objectQualifier}PortalLocalization AS PL ON P.PortalID = PL.PortalID AND PL.CultureCode = P.DefaultLanguage 
+        LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON P.AdministratorId = U.UserID
+
+GO
+
+/* Update GetPortals */
+/*********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortals]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_PortalsDefaultLanguage
+ORDER BY PortalName
+GO
+
+/* Update vw_Portals View */
+/**************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_Portals]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Portals]  
+AS  
+    SELECT DISTINCT    
+        P.PortalID,   
+        PL.PortalName as PortalName, 
+        CASE WHEN LEFT(LOWER(PL.LogoFile), 7) = 'fileid=' THEN  
+                      (SELECT Folder + FileName  
+                        FROM  {databaseOwner}{objectQualifier}Files  
+                        WHERE fileid = CAST((RIGHT(LOWER(PL.LogoFile), Len(PL.LogoFile) - 7)) AS int)) ELSE PL.LogoFile END AS LogoFile,       
+        PL.FooterText as FooterText,   
+        P.ExpiryDate,   
+        P.UserRegistration,   
+        P.BannerAdvertising,   
+        P.AdministratorId,   
+        P.Currency,   
+        P.HostFee,   
+        P.HostSpace,   
+        P.PageQuota,   
+        P.UserQuota,   
+        P.AdministratorRoleId,   
+        P.RegisteredRoleId,   
+        PL.Description as Description,   
+        PL.KeyWords as KeyWords,   
+         CASE WHEN LEFT(LOWER(PL.BackgroundFile), 7) = 'fileid=' THEN  
+                          (SELECT Folder + FileName  
+                            FROM {databaseOwner}{objectQualifier}Files  
+                            WHERE fileid = CAST((RIGHT(LOWER(PL.BackgroundFile), Len(PL.BackgroundFile) - 7)) AS int)) ELSE PL.BackgroundFile END AS BackgroundFile,   
+        P.GUID,   
+        P.PaymentProcessor,   
+        P.ProcessorUserId,   
+        P.ProcessorPassword,   
+        P.SiteLogHistory,   
+        U.Email,   
+        P.DefaultLanguage,   
+        P.TimezoneOffset,   
+        PL.AdminTabId as AdminTabId,   
+        P.HomeDirectory,   
+        PL.SplashTabId as SplashTabId,   
+        PL.HomeTabId as HomeTabId,   
+        PL.LoginTabId as LoginTabId,   
+        PL.RegisterTabId as RegisterTabId,   
+        PL.UserTabId as UserTabId,  
+        (SELECT TOP 1 TabID FROM {databaseOwner}{objectQualifier}Tabs WHERE (PortalID IS NULL) AND (ParentId IS NULL)) AS SuperTabId,
+        P.CreatedByUserID, 
+        P.CreatedOnDate, 
+        P.LastModifiedByUserID, 
+        P.LastModifiedOnDate,
+        PL.CultureCode
+	FROM  {databaseOwner}{objectQualifier}Portals AS P 
+		INNER JOIN {databaseOwner}{objectQualifier}PortalLocalization AS PL ON P.PortalID = PL.PortalID
+        LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON P.AdministratorId = U.UserID
+
+GO
+
+/* Update UpdatePortalInfo Stored Procedure */
+/********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalInfo]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalInfo
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalInfo
+	@PortalID           int,
+	@PortalName         nvarchar(128),
+	@LogoFile           nvarchar(50),
+	@FooterText         nvarchar(100),
+	@ExpiryDate         datetime,
+	@UserRegistration   int,
+	@BannerAdvertising  int,
+	@Currency           char(3),
+	@AdministratorId    int,
+	@HostFee            money,
+	@HostSpace          int,
+	@PageQuota          int,
+	@UserQuota          int,
+	@PaymentProcessor   nvarchar(50),
+	@ProcessorUserId    nvarchar(50),
+	@ProcessorPassword  nvarchar(50),
+	@Description        nvarchar(500),
+	@KeyWords           nvarchar(500),
+	@BackgroundFile     nvarchar(50),
+	@SiteLogHistory     int,
+	@SplashTabId        int,
+	@HomeTabId          int,
+	@LoginTabId         int,
+	@RegisterTabId      int,
+	@UserTabId          int,
+	@DefaultLanguage    nvarchar(10),
+	@TimeZoneOffset	    int,
+	@HomeDirectory		varchar(100),
+	@LastModifiedByUserID	int,
+	@CultureCode   nvarchar(50)
+
+AS
+	UPDATE {databaseOwner}{objectQualifier}Portals
+		SET    
+			   ExpiryDate = @ExpiryDate,
+			   UserRegistration = @UserRegistration,
+			   BannerAdvertising = @BannerAdvertising,
+			   Currency = @Currency,
+			   AdministratorId = @AdministratorId,
+			   HostFee = @HostFee,
+			   HostSpace = @HostSpace,
+			   PageQuota = @PageQuota,
+			   UserQuota = @UserQuota,
+			   PaymentProcessor = @PaymentProcessor,
+			   ProcessorUserId = @ProcessorUserId,
+			   ProcessorPassword = @ProcessorPassword,
+			   SiteLogHistory = @SiteLogHistory,
+			   DefaultLanguage = @DefaultLanguage,
+			   TimeZoneOffset = @TimeZoneOffset,
+			   HomeDirectory = @HomeDirectory,
+			   LastModifiedByUserID = @LastModifiedByUserID,
+			   LastModifiedOnDate = getdate()
+	WHERE  PortalId = @PortalID
+
+	UPDATE {databaseOwner}{objectQualifier}PortalLocalization
+		SET
+				PortalName = @PortalName,
+				LogoFile = @LogoFile,
+				FooterText = @FooterText,
+				Description = @Description,
+				KeyWords = @KeyWords,
+				BackgroundFile = @BackgroundFile,
+				HomeTabId = @HomeTabId,
+				LoginTabId = @LoginTabId,
+				RegisterTabId = @RegisterTabId,
+				UserTabId = @UserTabId,
+				SplashTabId = @SplashTabId,
+				LastModifiedByUserID = @LastModifiedByUserID,
+				LastModifiedOnDate = getdate()
+	WHERE	PortalId = @PortalID AND CultureCode = @CultureCode
+GO
+
+/* Update UpdatePortalSetup Stored Procedure */
+/********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalSetup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalSetup
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalSetup
+	@PortalId				int,
+	@AdministratorId		int,
+	@AdministratorRoleId	int,
+	@RegisteredRoleId		int,
+	@SplashTabId			int,
+	@HomeTabId				int,
+	@LoginTabId				int,
+	@RegisterTabId			int,
+	@UserTabId				int,
+	@AdminTabId				int,
+	@CultureCode			nvarchar(50)
+
+AS
+	UPDATE {databaseOwner}{objectQualifier}Portals
+		SET    
+			AdministratorId = @AdministratorId, 
+			AdministratorRoleId = @AdministratorRoleId, 
+			RegisteredRoleId = @RegisteredRoleId
+	WHERE  PortalId = @PortalId
+
+	UPDATE {databaseOwner}{objectQualifier}PortalLocalization
+		SET 
+			HomeTabId = @HomeTabId,
+			LoginTabId = @LoginTabId,
+			UserTabId = @UserTabId,
+			RegisterTabId = @RegisterTabId,
+			AdminTabId = @AdminTabId,
+			SplashTabId = @SplashTabId
+      WHERE portalID = @PortalID
+GO
+
+/* Add Missing Foreign Keys For ContentItems_Tags */
+/**************************************************/
+
+ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_Tags]  WITH CHECK 
+	ADD  CONSTRAINT [FK_{objectQualifier}ContentItems_Tags_{objectQualifier}ContentItems] FOREIGN KEY([ContentItemID]) REFERENCES {databaseOwner}[{objectQualifier}ContentItems] ([ContentItemID]) ON UPDATE CASCADE ON DELETE CASCADE
+	
+ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_Tags]  WITH CHECK 
+	ADD  CONSTRAINT [FK_{objectQualifier}ContentItems_Tags_{objectQualifier}Taxonomy_Terms] FOREIGN KEY([TermID]) REFERENCES {databaseOwner}[{objectQualifier}Taxonomy_Terms] ([TermID]) ON UPDATE CASCADE ON DELETE CASCADE
+GO
+
+/* Add MetaData Table */
+/**********************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}MetaData]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}MetaData]
+		(
+			[MetaDataID] [int] IDENTITY(1,1) NOT NULL,
+			[MetaDataName] [nvarchar](100) NOT NULL,
+			[MetaDataDescription] [nvarchar](2500) NULL,
+			CONSTRAINT [PK_{objectQualifier}MetaData] PRIMARY KEY CLUSTERED ( [MetaDataID] ASC )
+		)
+	END
+GO
+
+/* Add Initial MetaData */
+/************************/
+
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Title')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Creator')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Subject')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Description')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Publisher')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Contributor')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Date')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Type')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Format')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Identifier')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Source')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Language')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Relation')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Coverage')
+INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ( [MetaDataName] ) VALUES ('Rights')
+
+GO
+
+/* Add ContentItems_MetaData Table */
+/***********************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}ContentItems_MetaData]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentItems_MetaData]
+		(
+				[ContentItemMetaDataID] [int] IDENTITY(1,1) NOT NULL,
+				[ContentItemID] [int] NOT NULL,
+				[MetaDataID] [int] NOT NULL,
+				[MetaDataValue] [nvarchar](max) NULL,
+				CONSTRAINT [PK_{objectQualifier}Content_MetaData] PRIMARY KEY CLUSTERED ( [ContentItemMetaDataID] ASC )
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_MetaData]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentItems_MetaData_{objectQualifier}ContentItems] FOREIGN KEY([ContentItemID]) REFERENCES {databaseOwner}[{objectQualifier}ContentItems] ([ContentItemID]) ON UPDATE CASCADE ON DELETE CASCADE
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_MetaData]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentItems_MetaData{objectQualifier}MetaData] FOREIGN KEY([MetaDataID]) REFERENCES {databaseOwner}[{objectQualifier}MetaData] ([MetaDataID]) ON UPDATE CASCADE ON DELETE CASCADE
+	END
+GO
+
+/* Add AddMetaData Procedure */
+/******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddMetaData]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddMetaData
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddMetaData] 
+	@ContentItemID		int,
+	@Name				nvarchar(100),
+	@Value				nvarchar(MAX)
+AS
+	DECLARE @MetaDataID	int
+	SET @MetaDataID = (SELECT MetaDataID FROM {objectQualifier}MetaData WHERE MetaDataName = @Name)
+	
+	IF @MetaDataID IS NULL
+		BEGIN
+			--Insert new item into MetaData table
+			INSERT INTO {databaseOwner}{objectQualifier}MetaData ( MetaDataName ) VALUES ( @Name )
+
+			SET @MetaDataID = (SELECT SCOPE_IDENTITY() )
+		END
+		
+	INSERT INTO {databaseOwner}{objectQualifier}ContentItems_MetaData (
+		ContentItemID,
+		MetaDataID,
+		MetaDataValue
+	)
+	VALUES (
+		@ContentItemID,
+		@MetaDataID,
+		@Value
+	)
+		
+GO
+
+/* Add DeleteMetaData Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteMetaData]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteMetaData
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteMetaData] 
+	@ContentItemId		int,
+	@Name				nvarchar(100),
+	@Value				nvarchar(MAX)
+	
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}ContentItems_MetaData
+	FROM {databaseOwner}{objectQualifier}ContentItems_MetaData AS cm
+		INNER JOIN {databaseOwner}{objectQualifier}MetaData AS m ON cm.MetaDataID = m.MetaDataID
+	WHERE cm.ContentItemId = @ContentItemId AND m.MetaDataName = @Name AND cm.MetaDataValue = @Value
+GO
+
+/* Add GetMetaData Procedure */
+/*****************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetMetaData]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetMetaData
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetMetaData] 
+	@ContentItemId			int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}ContentItems_MetaData
+	WHERE ContentItemId = @ContentItemId
+GO
+
+/* Add IsSystem to Vocabularies Table */
+/**************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Taxonomy_Vocabularies' AND COLUMN_NAME='IsSystem')
+	BEGIN
+		-- Add new RegisterTabId Column
+		ALTER TABLE {databaseOwner}{objectQualifier}Taxonomy_Vocabularies
+			ADD IsSystem bit NOT NULL CONSTRAINT DF_{objectQualifier}Taxonomy_Vocabularies_IsSystem DEFAULT 0
+	END
+GO
+
+/* Add Tags System Vocabulary */
+/******************************/
+
+INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_Vocabularies	(
+		[VocabularyTypeID],
+		[Name],
+		[Description],
+		[IsSystem],
+		[ScopeTypeID],
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate]
+    )
+     VALUES	(
+			1,
+			'Tags',
+			'System Vocabulary for free form user entered Tags',
+			1,
+			1,
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+        )
+GO
+
+/* Add RibbonBar Control Panel */
+/*******************************/
+
+IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ControlKey='CONTROLPANEL:RIBBONBAR')
+	BEGIN
+		INSERT {databaseOwner}{objectQualifier}ModuleControls (ControlKey, ControlSrc, ControlType)
+		VALUES('CONTROLPANEL:RIBBONBAR', 'Admin/ControlPanel/RibbonBar.ascx', -3)
+	END
+
+GO
+
+/* Add GetPortalDefaultLanguage Procedure */
+/******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalDefaultLanguage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalDefaultLanguage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortalDefaultLanguage
+
+	@PortalId            int
+
+AS
+	SELECT defaultlanguage
+		FROM {databaseOwner}{objectQualifier}Portals
+		where portalid=@PortalId 
+GO
+
+/* Add UpdatePortalDefaultLanguage Procedure */
+/*********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalDefaultLanguage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalDefaultLanguage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalDefaultLanguage
+
+	@PortalId            int,
+	@CultureCode   nvarchar(50)
+AS
+	UPDATE {databaseOwner}{objectQualifier}Portals
+		SET defaultlanguage=@CultureCode
+		where portalid=@PortalId 
+GO
+
+/* Add Foreign Key to PortalLocalization Table */
+/***********************************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'FK_{objectQualifier}PortalLocalization_{objectQualifier}Portals') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	BEGIN
+		/* Delete unused entries in PortalLocalization */
+		DELETE FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE portalID not In (SELECT PortalID from {databaseOwner}{objectQualifier}Portals)
+
+		/* add key and cascade delete rule */
+		ALTER TABLE {databaseOwner}{objectQualifier}PortalLocalization 
+			ADD CONSTRAINT FK_{objectQualifier}PortalLocalization_{objectQualifier}Portals 
+				FOREIGN KEY ( PortalID ) REFERENCES {databaseOwner}{objectQualifier}Portals ( PortalID ) ON DELETE  CASCADE 
+	END	
+GO
+
+/* Add GetTabPermissionsByPortal Procedure */
+/*********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabPermissionsByPortal]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTabPermissionsByPortal
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetTabPermissionsByPortal
+	
+	@PortalID int
+
+AS
+
+	IF @portalid is not null
+		BEGIN 
+			SELECT *
+				FROM {databaseOwner}{objectQualifier}vw_TabPermissions
+				WHERE PortalID = @PortalID
+		END
+	ELSE
+		BEGIN
+			SELECT *
+				FROM {databaseOwner}{objectQualifier}vw_TabPermissions
+				WHERE PortalID IS NULL 
+		END
+GO
+
+/* portals */
+/* Update UpdatePortalInfo Stored Procedure */
+/********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalInfo]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalInfo
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalInfo
+	@PortalID           int,
+	@PortalName         nvarchar(128),
+	@LogoFile           nvarchar(50),
+	@FooterText         nvarchar(100),
+	@ExpiryDate         datetime,
+	@UserRegistration   int,
+	@BannerAdvertising  int,
+	@Currency           char(3),
+	@AdministratorId    int,
+	@HostFee            money,
+	@HostSpace          int,
+	@PageQuota          int,
+	@UserQuota          int,
+	@PaymentProcessor   nvarchar(50),
+	@ProcessorUserId    nvarchar(50),
+	@ProcessorPassword  nvarchar(50),
+	@Description        nvarchar(500),
+	@KeyWords           nvarchar(500),
+	@BackgroundFile     nvarchar(50),
+	@SiteLogHistory     int,
+	@SplashTabId        int,
+	@HomeTabId          int,
+	@LoginTabId         int,
+	@RegisterTabId      int,
+	@UserTabId          int,
+	@DefaultLanguage    nvarchar(10),
+	@TimeZoneOffset	    int,
+	@HomeDirectory		varchar(100),
+	@LastModifiedByUserID	int,
+	@CultureCode   nvarchar(50)
+
+AS
+
+	UPDATE {databaseOwner}{objectQualifier}Portals
+		SET    
+		   ExpiryDate = @ExpiryDate,
+		   UserRegistration = @UserRegistration,
+		   BannerAdvertising = @BannerAdvertising,
+		   Currency = @Currency,
+		   AdministratorId = @AdministratorId,
+		   HostFee = @HostFee,
+		   HostSpace = @HostSpace,
+		   PageQuota = @PageQuota,
+		   UserQuota = @UserQuota,
+		   PaymentProcessor = @PaymentProcessor,
+		   ProcessorUserId = @ProcessorUserId,
+		   ProcessorPassword = @ProcessorPassword,
+		   SiteLogHistory = @SiteLogHistory,
+		   DefaultLanguage = @DefaultLanguage,
+		   TimeZoneOffset = @TimeZoneOffset,
+		   HomeDirectory = @HomeDirectory,
+		   LastModifiedByUserID = @LastModifiedByUserID,
+		   LastModifiedOnDate = getdate()
+	WHERE  PortalId = @PortalID
+
+IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE PortalId = @PortalID AND CultureCode = @CultureCode)
+	BEGIN 
+		UPDATE {databaseOwner}{objectQualifier}PortalLocalization
+		SET
+			PortalName = @PortalName,
+			LogoFile = @LogoFile,
+			FooterText = @FooterText,
+			Description = @Description,
+			KeyWords = @KeyWords,
+			BackgroundFile = @BackgroundFile,
+			HomeTabId = @HomeTabId,
+			LoginTabId = @LoginTabId,
+			RegisterTabId = @RegisterTabId,
+			UserTabId = @UserTabId,
+			SplashTabId = @SplashTabId,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+		WHERE	PortalId = @PortalID AND CultureCode = @CultureCode
+	END 
+ELSE
+	BEGIN 
+		DECLARE @AdminTabId int
+		SET @AdminTabId = (SELECT AdminTabId 
+								FROM {databaseOwner}{objectQualifier}PortalLocalization 
+								WHERE PortalID = @PortalID and CultureCode='en-US')
+
+		INSERT INTO {databaseOwner}[{objectQualifier}PortalLocalization] (
+			[PortalID],
+			[CultureCode],
+			[PortalName],
+			[LogoFile],
+			[FooterText],
+			[Description],
+			[KeyWords],
+			[BackgroundFile],
+			[HomeTabId],
+			[LoginTabId],
+			[UserTabId],
+			[AdminTabId],
+			[SplashTabId],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate]
+		)
+		VALUES (
+			@PortalID,
+			@CultureCode,
+			@PortalName,
+			@LogoFile, 
+			@FooterText,
+			@Description,
+			@KeyWords,
+			@BackgroundFile,
+			@HomeTabId ,
+			@LoginTabId ,
+			@UserTabId,
+			@AdminTabid,
+			@SplashTabId  ,
+			-1,
+			getdate(),
+			-1,
+			getdate()
+		)
+	END 
+
+GO
+
+/* Update GetPortal */
+/********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortal]
+
+	@PortalId  int,
+	@CultureCode	nvarchar(50)
+
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}vw_Portals
+	WHERE PortalId = @PortalId
+		AND CultureCode=@CultureCode
+GO
+
+/* Update GetPortalsByName */
+/***************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalsByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalsByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalsByName]
+
+    @NameToMatch	nvarchar(256),
+    @PageIndex			int,
+    @PageSize			int
+AS
+	BEGIN
+		-- Set the page bounds
+		DECLARE @PageLowerBound INT
+		DECLARE @PageUpperBound INT
+		SET @PageLowerBound = @PageSize * @PageIndex
+		SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+		-- Create a temp table TO store the select results
+		CREATE TABLE #PageIndexForPortals
+		(
+			IndexId int IDENTITY (0, 1) NOT NULL,
+			PortalId int
+		)
+
+		-- Insert into our temp table
+		INSERT INTO #PageIndexForPortals (PortalId)
+			SELECT PortalId FROM	{databaseOwner}{objectQualifier}vw_PortalsDefaultLanguage
+			WHERE  PortalName LIKE @NameToMatch
+			ORDER BY PortalName
+
+		SELECT  *
+		FROM	{databaseOwner}{objectQualifier}vw_PortalsDefaultLanguage p, 
+				#PageIndexForPortals i
+		WHERE  p.PortalId = i.PortalId
+				AND i.IndexId >= @PageLowerBound AND i.IndexId <= @PageUpperBound
+		ORDER BY p.PortalName
+
+		SELECT  TotalRecords = COUNT(*)
+		FROM    #PageIndexForPortals
+	END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+

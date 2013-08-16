@@ -1,0 +1,123 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFiles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetFiles
+
+@PortalId   int,
+@Folder nvarchar(200)
+as
+
+select FileId,
+       PortalId,
+       FileName,
+       Extension,
+       Size,
+       WIdth,
+       Height,
+       ContentType,
+       Folder
+from {objectQualifier}Files
+where  ((PortalId = @PortalId AND Folder=@Folder) or (@PortalId is null and PortalId is null AND Folder=@Folder))
+order by FileName
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetDesktopModulesByPortal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}GetDesktopModulesByPortal]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetDesktopModulesByPortal
+
+@PortalId int
+
+as
+
+select distinct({objectQualifier}DesktopModules.DesktopModuleId) as DesktopModuleId,
+       {objectQualifier}DesktopModules.FriendlyName,
+       {objectQualifier}DesktopModules.Description,
+       {objectQualifier}DesktopModules.Version,
+       {objectQualifier}DesktopModules.IsPremium,
+       {objectQualifier}DesktopModules.IsAdmin,
+       {objectQualifier}DesktopModules.businesscontrollerclass,
+       {objectQualifier}DesktopModules.foldername,
+       {objectQualifier}DesktopModules.modulename,
+       {objectQualifier}DesktopModules.supportedfeatures
+from {objectQualifier}DesktopModules
+left outer join {objectQualifier}PortalDesktopModules on {objectQualifier}DesktopModules.DesktopModuleId = {objectQualifier}PortalDesktopModules.DesktopModuleId
+where  IsAdmin = 0
+and    ( IsPremium = 0 or (PortalId = @PortalId and PortalDesktopModuleId is not null)) 
+order  by FriendlyName
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteModuleSetting]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DeleteModuleSetting]
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteModuleSetting
+@ModuleId      int,
+@SettingName   nvarchar(50)
+as
+
+DELETE FROM {objectQualifier}ModuleSettings 
+WHERE ModuleId = @ModuleId
+AND SettingName = @SettingName
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteModuleSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DeleteModuleSettings]
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteModuleSettings
+@ModuleId      int
+as
+
+DELETE FROM {objectQualifier}ModuleSettings 
+WHERE ModuleId = @ModuleId
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModuleSetting]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DeleteTabModuleSetting]
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteTabModuleSetting
+@TabModuleId      int,
+@SettingName   nvarchar(50)
+as
+
+DELETE FROM {objectQualifier}TabModuleSettings 
+WHERE TabModuleId = @TabModuleId
+AND SettingName = @SettingName
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModuleSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DeleteTabModuleSettings]
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteTabModuleSettings
+@TabModuleId      int
+as
+
+DELETE FROM {objectQualifier}TabModuleSettings 
+WHERE TabModuleId = @TabModuleId
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

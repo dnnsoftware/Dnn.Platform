@@ -1,0 +1,759 @@
+﻿<div id="disqus_thread"></div>
+<script language="javascript" type="text/javascript">
+
+var disqus_container_id2 = ("{ elementid : {0} : }" == "" ?
+                           "{ widgetid : {0} : }" : 
+                           "{ elementid : {0} : }"
+                           );
+var disqus_no_style = true;                          
+{ develop : var disqus_developer = 1; : }
+{ title : var disqus_title = "{0}"; : }
+{ url : var disqus_url = "{0}"; : }
+{ message : var disqus_message = "{0}"; : }
+
+$.getScript("http://disqus.com/forums/{ src : {0} : }/embed.js");
+</script>
+<!-- 
+The disqus_no_style variable is required because the embed script uses document.write which
+messes up the page. The styles below are what the script would render if disqus_no_style were false
+-->
+<style type="text/css" media="screen">
+	 #dsq-content #dsq-comments .dsq-comment {
+	 list-style-type: none;
+	 padding: 0;
+	 margin: 0;
+	 border: 0;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment {
+	 margin-bottom: 20px;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-rate {
+	 float: left;
+	 line-height: 1.22em;
+	 *margin-top: 15px;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-rate a,
+	 #dsq-content #dsq-comments .dsq-comment-rate img {
+	 border: 0;
+	 margin: 0;
+	 padding: 0;
+	 background-color: transparent;
+	 }
+	 #dsq-content #dsq-comments .dsq-arrows,
+	 #dsq-content #dsq-comments .not-votable .dsq-arrows:hover {
+	 opacity: .25;
+	 filter: alpha(opacity=25);
+	 _width: 16px;
+	 _height: 14px;
+	 }
+	 #dsq-content #dsq-comments .dsq-arrows.voted {
+	 opacity: .5;
+	 filter: alpha(opacity=50);
+	 }
+	 #dsq-content #dsq-comments .dsq-arrows:hover {
+	 opacity: 1;
+	 filter: alpha(opacity=100);
+	 }
+	 #dsq-content #dsq-comments .dsq-arrows img {
+	 _width: 16px;
+	 _height: 14px;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-header {
+	 margin-left: 20px;
+	 background: url('http://media.disqus.com/images/embed/header-grey.png') repeat-x;
+	 height: 30px;
+	 line-height: 30px;
+	 height: 38px;
+	 line-height: 38px;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment.special .dsq-comment-header {
+	 background: url('http://media.disqus.com/images/embed/header-blue.png') repeat-x;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-header a {
+	 text-decoration: none;
+	 }
+	 #dsq-content #dsq-comments .dsq-header-avatar {
+	 position: relative;
+	 float: left;
+	 width: 32px;
+	 height: 34px;
+	 margin-top: -2px;
+	 height: 43px;
+	 width: 40px;
+	 }
+	 #dsq-content #dsq-comments .dsq-header-avatar.dsq-menu-on,
+	 #dsq-content #dsq-comments .dsq-header-avatar:hover{
+	 background: url('http://media.disqus.com/images/embed/avatar-frame-32.png') no-repeat top left;
+	 cursor: pointer;
+	 z-index: 9999;
+	 }
+	 #dsq-content #dsq-comments .dsq-header-avatar img{
+	 float: left;
+	 margin: 4px;
+	 width: 32px;
+	 height: 32px;
+	 }
+	 #dsq-content #dsq-comments .dsq-header-avatar .dsq-menu img {
+	 height: 8px;
+	 width: 7px;
+	 display: inline;
+	 float: none;
+	 margin-bottom: -1px;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-header cite {
+	 float: left;
+	 font-style: normal;
+	 font-weight: bold;
+	 margin: 0 3px;
+	 line-height: inherit;
+	 cursor: pointer;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-header cite a {
+	 line-height: inherit;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-header .dsq-header-meta {
+	 font-size: 90%;
+	 line-height: inherit;
+	 }
+	 #dsq-content #dsq-comments a.dsq-header-time{
+	 margin: 0 5px;
+	 color: inherit;
+	 line-height: inherit;
+	 }
+	 #dsq-content #dsq-comments span.dsq-header-points{
+	 margin: 0 5px;
+	 color: inherit;
+	 line-height: inherit;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-body{
+	 margin-left: 20px;
+	 padding-top: 5px;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-footer {
+	 font-size: 90%;
+	 margin: 10px 0 0 20px;
+	 }
+	 #dsq-content #dsq-comments .dsq-footer-alert {
+	 text-align: right;
+	 }
+	 #dsq-content #dsq-comments .dsq-header-avatar .dsq-menu {
+	 display: none;
+	 }
+	 #dsq-content #dsq-comments .dsq-header-avatar .dsq-menu {
+	 float: left;
+	 left: 0px;
+	 position: relative;
+	 _position: absolute;
+	 _top: 30px;
+	 background: #f0f0f0;
+	 z-index: 2;
+	 border-left: 1px solid #888;
+	 border-right: 1px solid #888;
+	 border-bottom: 1px solid #888;
+	 -moz-border-radius: 0px 0px 4px 4px;
+	 -webkit-border-bottom-right-radius: 4px;
+	 -webkit-border-bottom-left-radius: 4px;
+	 display: inline;
+	 padding: 5px 10px 5px 0;
+	 }
+	 #dsq-content #dsq-comments .dsq-menu li{
+	 float: left;
+	 clear: both;
+	 line-height: 1.3em;
+	 font-size: 12px;
+	 margin-bottom: 2px;
+	 margin-left: 4px;
+	 white-space: nowrap;
+	 }
+	 #dsq-content #dsq-comments .dsq-menu li a.dsq-admin-toggle {
+	 font-weight: bold;
+	 }
+	 #dsq-content #dsq-comments .dsq-menu li.dsq-admin-email,
+	 #dsq-content #dsq-comments .dsq-menu li.dsq-admin-ip {
+	 color: #555;
+	 font-style: italic;
+	 cursor: default;
+	 }
+	 #dsq-content #dsq-comments .dsq-menu li.dsq-admin-ip {
+	 padding-bottom: 3px;
+	 border-bottom: 1px dotted #aaa;
+	 cursor: default;
+	 }
+	 #dsq-content #dsq-comments .dsq-menu li a{
+	 text-decoration: none;
+	 color: #333;
+	 }
+	 #dsq-content #dsq-comments .dsq-menu li a:hover {
+	 color: #869AAD;
+	 }
+	 #dsq-content #dsq-comments .dsq-menu-clout{
+	 margin: 6px 0;
+	 width: 72px;
+	 height: 32px;
+	 background: url('http://media.disqus.com/images/embed/clout-background.png') no-repeat top left;
+	 }
+	 #dsq-content #dsq-comments .dsq-menu-clout.unverified{
+	 background: url('http://media.disqus.com/images/embed/unverified-background.png') no-repeat top left;
+	 }
+	 #dsq-content #dsq-comments li.dsq-menu-clout a{
+	 float: left;
+	 width: 100%;
+	 text-align: center;
+	 color: #FFF;
+	 font-size: 16px;
+	 font-weight: bold;
+	 margin-top: 5px;
+	 }
+	 #dsq-content #dsq-comments li.dsq-menu-clout.unverified a{
+	 font-size: 10px;
+	 font-weight: normal;
+	 }
+	 #dsq-content #dsq-comments li.dsq-menu-clout a:hover{
+	 color: #FFF;
+	 }
+	 img.dsq-record-img {
+	 border: 0;
+	 padding: 0;
+	 margin: 0;
+	 float: none;
+	 text-indent: 0;
+	 background: none;
+	 }
+	 a.dsq-brlink {
+	 font-size: 90%;
+	 color: #666;
+	 text-decoration: none;
+	 font-family: Trebuchet MS, Trebuchet, Verdana, Arial, sans-serif;
+	 }
+	 span.disqus {
+	 font-family: Trebuchet MS, Trebuchet, Verdana, Arial, sans-serif;
+	 font-size: 90%;
+	 text-transform: uppercase;
+	 color: #64747d;
+	 }
+	 span.logo-disqus {
+	 font-family: Trebuchet MS, Trebuchet, Verdana, Arial, sans-serif;
+	 font-size: 95%;
+	 text-transform: uppercase;
+	 color: #64747d;
+	 font-weight: bold;
+	 }
+	 span.logo-disq {
+	 font-family: Trebuchet MS, Trebuchet, Verdana, Arial, sans-serif;
+	 font-size: 95%;
+	 text-transform: uppercase;
+	 color: #64747d;
+	 font-weight: bold;
+	 }
+	 span.logo-us {
+	 font-family: Trebuchet MS, Trebuchet, Verdana, Arial, sans-serif;
+	 font-size: 95%;
+	 text-transform: uppercase;
+	 color: #ff9300;
+	 font-weight: bold;
+	 }
+	 #disqus_thread #dsq-content {
+	 text-align: left;
+	 font-family: inherit;
+	 font-size: 13px;
+	 }
+	 #disqus_thread #dsq-content iframe {
+	 overflow-y: auto;
+	 overflow-x: hidden;
+	 *overflow-x: visible;
+	 width: 100%;
+	 height: 150px;
+	 background-color: transparent;
+	 <!--[if IE 7]>
+	 width: 0px;
+	 <![endif]-->
+	 }
+	 #disqus_thread #dsq-content iframe.dsq-post-video {
+	 height: 330px;
+	 overflow: hidden;
+	 }
+	 #disqus_thread #dsq-content a.dsq-post-report {
+	 /*  color: #c03000;*/
+	 /*  background-color: #fff;*/
+	 }
+	 .clearfix:after {
+	 content:".";
+	 display: block;
+	 height: 0;
+	 clear: both;
+	 visibility: hidden;
+	 }
+	 #dsq-content #dsq-comments img.icon-adjust {
+	 margin-bottom: -3px;
+	 }
+	 #disqus_thread #dsq-content ul,
+	 #disqus_thread #dsq-content li,
+	 #disqus_thread #dsq-content ol,
+	 #disqus_thread #dsq-content cite,
+	 #disqus_thread #dsq-content img, /* dsq-content */
+	 #dsq-content #dsq-comments ul,
+	 #dsq-content #dsq-comments li,
+	 #dsq-content #dsq-comments ol,
+	 #dsq-content #dsq-comments div,
+	 #dsq-content #dsq-comments p,
+	 #dsq-content #dsq-comments a,
+	 #dsq-content #dsq-comments cite,
+	 #dsq-content #dsq-comments img {
+	 border: 0;
+	 padding: 0;
+	 margin: 0;
+	 float: none;
+	 text-indent: 0;
+	 background: none;
+	 }
+	 #disqus_thread #dsq-content cite,
+	 #dsq-content #dsq-comments cite {
+	 font-style: normal;
+	 }
+	 #dsq-content #dsq-comments img {
+	 max-width: none;
+	 }
+	 #disqus_thread #dsq-content li,
+	 #disqus_thread #dsq-content ul,
+	 #disqus_thread #dsq-content ol,
+	 #dsq-content #dsq-extra-links li,
+	 #dsq-content #dsq-comments ul,
+	 #dsq-content #dsq-comments li,
+	 #dsq-content #dsq-comments ol {
+	 list-style-type: none;
+	 list-style-image: none;
+	 background: none;
+	 display: block;
+	 }
+	 #dsq-content #dsq-extra-links li:before,
+	 #dsq-content #dsq-comments li:before {
+	 content: "";
+	 }
+	 #dsq-content #dsq-content #dsq-post-add {
+	 margin: 0 0 10px 0;
+	 }
+	 #dsq-content #dsq-comments {
+	 width: 100%;
+	 list-style-type: none;
+	 padding: 0;
+	 border: 0;
+	 }
+	 #dsq-content #dsq-comments .dsq-remove-message {
+	 color: #555;
+	 list-style-type: none;
+	 margin: 10px 0;
+	 padding: 5px;
+	 border: 1px solid #c03000;
+	 background-color: #FDDFD0;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-alert,
+	 #dsq-content #dsq-alerts p {
+	 font-weight: bold;
+	 color: #555;
+	 margin: 15px 0;
+	 padding: 5px;
+	 background-color: #fdf1d0;
+	 border: 1px solid #fad163;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-header .dsq-hl-up {
+	 background-color: #92C72A;
+	 color: #fff;
+	 margin:0pt 5px;
+	 padding:0 2px;
+	 }
+	 #dsq-content #dsq-comments .dsq-comment-header .dsq-hl-down {
+	 background-color: #c03000;
+	 color: #fff;
+	 margin:0pt 5px;
+	 padding:0 2px;
+	 }
+	 #dsq-content #dsq-comments .dsq-hl-anchor {
+	 background-color: #ffff99 !important;
+	 color: #000 !important;
+	 }
+	 #dsq-content #dsq-comments .dsq-hl-anchor p {
+	 color: #000 !important;
+	 }
+	 #dsq-content #dsq-comments .dsq-hl-anchor a {
+	 color: #000 !important;
+	 }
+	 /* ------ outside comment list ------ */
+	 #dsq-content #dsq-auth .dsq-auth-header{
+	 margin-bottom: 10px;
+	 }
+	 #dsq-content h3 { margin: 10px 0; }
+	 #disqus_thread #dsq-content h3 {
+	 font-weight: bold;
+	 }
+	 #dsq-content #dsq-auth .dsq-by {
+	 float: right;
+	 }
+	 #dsq-content #dsq-auth img,
+	 #dsq-content #dsq-options-toggle img {
+	 border: 0;
+	 margin: 0;
+	 padding: 0;
+	 max-width: none;
+	 float: none;
+	 }
+	 #dsq-content #dsq-options {
+	 margin-bottom: 20px;
+	 }
+	 #dsq-options .dsq-extra-meta {
+	 background: transparent url('http://media.disqus.com/images/embed/transp-line-10.png') repeat-x top center;
+	 margin-top:10px;
+	 padding-top:10px;
+	 }
+	 #dsq-extra-links {
+	 margin-top: 15px;
+	 font-size: 90%;
+	 }
+	 #dsq-extra-links img {
+	 margin-bottom: -3px;
+	 }
+	 /* ------- pagination -------- */
+	 #dsq-content #dsq-pagination {
+	 margin-bottom: 20px;
+	 }
+	 #dsq-content #dsq-pagination a {
+	 font-weight: bold;
+	 }
+	 /* ------- popup div -------- */
+	 #dsq-popup-profile h4,
+	 #dsq-popup-profile ul,
+	 #dsq-popup-profile li,
+	 #dsq-popup-profile ol,
+	 #dsq-popup-profile div,
+	 #dsq-popup-profile p,
+	 #dsq-popup-profile a,
+	 #dsq-popup-profile cite,
+	 #dsq-popup-profile img {
+	 border: 0;
+	 padding: 0;
+	 margin: 0;
+	 float: none;
+	 text-indent: 0;
+	 background: none;
+	 }
+	 #dsq-popup-profile img {
+	 max-width: none;
+	 }
+	 #dsq-popup-profile ul,
+	 #dsq-popup-profile li,
+	 #dsq-popup-profile ol {
+	 list-style-type: none;
+	 list-style-image: none;
+	 background: none;
+	 display: block;
+	 }
+	 #dsq-popup-profile li:before {
+	 content: "";
+	 }
+	 #dsq-popup-profile {
+	 padding: 0;
+	 border: 0;
+	 }
+	 .dsq-popupdiv,
+	 .dsq-reblogdiv {
+	 color: #333;
+	 display: none;
+	 position: absolute;
+	 z-index: 9999;
+	 }
+	 .dsq-popupdiv p {
+	 color: #222;
+	 line-height: 1.22em;
+	 }
+	 .dsq-popupdiv a {
+	 color: #1C5392;
+	 }
+	 .dsq-popupdiv a:hover {
+	 color: #869AAD;
+	 }
+	 #dsq-popup-profile {
+	 text-align: left;
+	 width: 520px;
+	 _background: transparent url(http://media.disqus.com/images/embed/popup-body.png) repeat-y;
+	 }
+	 #dsq-popup-profile #dsq-popup-top {
+	 position: relative;
+	 text-align: right;
+	 width: 520px;
+	 height: 20px;
+	 background: transparent url(http://media.disqus.com/images/embed/popup-top.png) no-repeat;
+	 }
+	 #dsq-popup-profile #dsq-popup-top img {
+	 margin: 12px 13px 0 0;
+	 *margin: 12px 13px 0 0;
+	 }
+	 #dsq-popup-profile #dsq-popup-bottom {
+	 text-align: right;
+	 width: 520px;
+	 height: 20px;
+	 background: transparent url(http://media.disqus.com/images/embed/popup-bottom.png) no-repeat;
+	 }
+	 #dsq-popup-profile #dsq-popup-body div.show-more{
+	 padding-left: 10px;
+	 font-size: 95%;
+	 color:#7aa5d5;
+	 }
+	 #dsq-popup-profile #dsq-popup-body div.powered-by{
+	 font-size: 90%;
+	 text-align: right;
+	 padding-right: 15px;
+	 }
+	 #dsq-popup-profile #dsq-popup-body div.powered-by a {
+	 color: #888;
+	 text-decoration:none;
+	 }
+	 #dsq-popup-profile  #dsq-popup-body {
+	 width: 520px;
+	 background: transparent url(http://media.disqus.com/images/embed/popup-body.png) repeat-y;
+	 }
+	 #dsq-popup-profile #dsq-popup-body #dsq-popup-body-padding {
+	 padding: 0 10px;
+	 font-size: 13px;
+	 }
+	 #dsq-popup-profile #dsq-popup-body #dsq-popup-header {
+	 background-color: #e5ebed;
+	 padding: 0 10px;
+	 position: relative;
+	 padding-bottom: 10px;
+	 border-bottom: 1px solid #445460;
+	 }
+	 #dsq-popup-profile #dsq-popup-body #dsq-popup-header a.dsq-close-link {
+	 color:#7aa5d5;
+	 position: absolute;
+	 top:-10px;
+	 right: 5px;
+	 text-decoration:none;
+	 }
+	 #dsq-popup-profile #dsq-popup-body #dsq-popup-header img {
+	 border: 1px solid #fff;
+	 width: 32px;
+	 height: 32px;
+	 }
+	 #dsq-popup-profile #dsq-popup-body #dsq-popup-body-padding cite {
+	 margin-left: 5px;
+	 top: 8px;
+	 position: absolute;
+	 font-style: normal;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile #dsq-popup-body #dsq-popup-body-padding cite {
+	 position: static;
+	 margin: 0;
+	 }
+	 #dsq-popup-profile #dsq-popup-body #dsq-popup-body-padding cite span {
+	 font-weight: bold;
+	 font-size: 150%;
+	 font-style: normal;
+	 margin-right: 10px;
+	 }
+	 #dsq-popup-profile #dsq-popup-body #dsq-popup-body-padding cite a{
+	 /* pass */
+	 }
+	 #dsq-popup-profile #dsq-popup-body #dsq-popup-body-padding .dsq-popup-profilelink {
+	 margin: 0 0 0 5px;
+	 font-size: 90%;
+	 }
+	 #dsq-popup-profile .dsq-clout {
+	 float: left;
+	 width: 72px;
+	 height: 32px;
+	 line-height: 32px;
+	 background: url('http://media.disqus.com/images/embed/clout-background.png') no-repeat top left;
+	 }
+	 #dsq-popup-profile .dsq-clout.unverified {
+	 background: url('http://media.disqus.com/images/embed/unverified-background.png') no-repeat top left;
+	 line-height: 24px;
+	 }
+	 #dsq-popup-profile .dsq-clout a{
+	 float: left;
+	 width: 100%;
+	 text-align: center;
+	 color: #FFF;
+	 font-size: 16px;
+	 font-weight: bold;
+	 text-decoration: none;
+	 }
+	 #dsq-popup-profile .dsq-clout.unverified a{
+	 font-size: 11px;
+	 font-weight: normal;
+	 }
+	 #dsq-popup-profile .dsq-clout a:hover {
+	 color: #fff;
+	 }
+	 #dsq-popup-profile #dsq-profile-services {
+	 padding: 10px;
+	 background-color: #f0f0f0;
+	 border-bottom: 1px solid #aaa;
+	 height: 1%;
+	 overflow: hidden;
+	 }
+	 #dsq-popup-profile #dsq-profile-services a.dsq-profile-badge {
+	 font-size: 95%;
+	 color: #fff;
+	 text-decoration: none;
+	 font-weight: bold;
+	 float: left;
+	 display: block;
+	 padding: 0 3px;
+	 text-align: center;
+	 background-color: #ffaf42;
+	 border: 1px solid #dc7f00;
+	 }
+	 #dsq-popup-profile #dsq-profile-services a.dsq-profile-badge.anon {
+	 border-color: #888;
+	 background-color: #aaa;
+	 color: #666;
+	 }
+	 #dsq-popup-profile #dsq-profile-services ul {
+	 margin-left: 15px;
+	 float: left;
+	 }
+	 #dsq-popup-profile #dsq-profile-services ul li{
+	 display: inline;
+	 margin-right: 15px;
+	 }
+	 #dsq-popup-profile #dsq-profile-services span.dsq-services-description {
+	 font-size: 85%;
+	 color: #555;
+	 position: absolute;
+	 top: 25px;
+	 left: 5px;
+	 display: none;
+	 white-space: nowrap;
+	 }
+	 #dsq-popup-profile #dsq-clout-label {
+	 margin-top: 5px;
+	 font-size: 85%;
+	 color: #555;
+	 visibility: hidden;
+	 clear: both;
+	 padding-left: 10px;
+	 }
+	 #dsq-popup-profile #dsq-profile-services img {
+	 border:2px solid #fff;
+	 }
+	 #dsq-popup-profile a#dsq-profile-follow {
+	 color:#7aa5d5;
+	 }
+	 #dsq-popup-profile #dsq-profile-status,
+	 #dsq-popup-profile #dsq-profile-recentcomments {
+	 clear: both;
+	 padding: 10px;
+	 }
+	 #dsq-popup-profile #dsq-profile-status h4,
+	 #dsq-popup-profile #dsq-profile-recentcomments h4 {
+	 font-size: 110%;
+	 border-bottom: 2px solid #D7DBDD;
+	 margin-bottom: 10px;
+	 }
+	 #dsq-popup-profile #dsq-profile-status h4 span,
+	 #dsq-popup-profile #dsq-profile-recentcomments h4 span {
+	 background-color: #D7DBDD;
+	 padding: 2px 5px;
+	 color: #555;
+	 font-weight: bold;
+	 }
+	 #dsq-popup-profile p.dsq-profile-label {
+	 font-family: Trebuchet MS, Trebuchet, Verdana, sans-serif;
+	 font-size: 95%;
+	 color: #aaa;
+	 }
+	 #dsq-popup-profile ul#dsq-profile-commentlist {
+	 margin-top: 10px;
+	 }
+	 #dsq-popup-profile #dsq-profile-commentlist li{
+	 padding: 5px 0;
+	 border-bottom: 2px solid #e9ebed;
+	 }
+	 #dsq-popup-profile #dsq-profile-commentlist li img.avatar-small {
+	 width: 24px;
+	 height: 24px;
+	 border: 1px solid #DDD;
+	 float: left;
+	 }
+	 #dsq-popup-profile #dsq-profile-commentlist li .comment-message {
+	 margin-left: 30px;
+	 *float: left;
+	 *margin-left: 5px;
+	 }
+	 #dsq-popup-profile #dsq-profile-commentlist li span.comment-meta {
+	 clear: both;
+	 margin-left: 30px;
+	 display: block;
+	 font-size: 90%;
+	 }
+	 #dsq-popup-profile #dsq-profile-commentlist span{
+	 color: #666;
+	 font-size: 95%;
+	 }
+	 /* Reblog */
+	 .dsq-reblogdiv #dsq-popup-profile cite {
+	 font-size:115%;
+	 font-weight: bold;
+	 color: #333;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile #dsq-reblog-form {
+	 padding: 10px;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile #dsq-blogauth-form {
+	 margin: 10px 0;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile #dsq-blogauth-form li {
+	 margin-bottom: 5px;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile #dsq-blogauth-form li input {
+	 width: 250px;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile #dsq-blogauth-form li label {
+	 width: 100px;
+	 display: block;
+	 float: left;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile ul.dsq-reblog-input {
+	 margin: 10px 0;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile ul.dsq-reblog-input li {
+	 margin-bottom: 10px;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile ul.dsq-reblog-input li input {
+	 width: 450px;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile ul.dsq-reblog-input li textarea {
+	 width: 450px;
+	 font-size: 12px;
+	 font-family: Arial, Helvetica, sans-serif;
+	 height: 175px;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile ul.dsq-reblog-input li label {
+	 float: none;
+	 display: block;
+	 font-weight: bold;
+	 }
+	 .dsq-reblogdiv #dsq-popup-profile .dsq-blogauth-toggle {
+	 font-weight: bold;
+	 }
+	 p.dsq-reblog-supported {
+	 font-size: 90%;
+	 color: #555;
+	 }
+	 /* Trackbacks and Pingbacks */
+	 #disqus_thread #dsq-content ul#dsq-references li {
+	 margin-bottom: 20px;
+	 display: list-item;
+	 list-style: disc;
+	 margin-left: 15px;
+	 }
+	 #disqus_thread #dsq-content ul#dsq-references cite {
+	 margin-bottom: 0px;
+	 padding-bottom: 0px;
+	 font-weight: bold;
+	 }
+	 #disqus_thread #dsq-content ul#dsq-references p.dsq-meta {
+	 margin-top: 0px;
+	 padding-top: 0px;
+	 font-size: 95%;
+	 }
+ </style>

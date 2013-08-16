@@ -1,0 +1,56 @@
+﻿/* Mega Menu Styles */
+ul.dnnmega{width: 100%;list-style: none;}
+ul.dnnmega ul{padding:0;}
+/*WAM - removed z-index*/
+ul.dnnmega li{float:left;list-style: none none;position: relative;}
+
+ul.dnnmega li.root {line-height:33px;height:38px;display:block;text-align:left;margin:0 10px 0 0;background:url(images/rootItemR.png) no-repeat right 6px;}
+ul.dnnmega li.root span{display:block;line-height:33px;height:38px;background:url(images/rootItemL.png) no-repeat 0 6px;margin:0 15px 0 0;padding:6px 0 0 15px;}
+ul.dnnmega li.root>span{color:White;}
+
+ul.dnnmega li.root a {color: #FFF;background:url(images/rootItemR.png) no-repeat right 6px;}
+ul.dnnmega li.root a:hover{color: #c11820;text-decoration:none;background:url(images/rootItemR_Hover.png) no-repeat right 6px;}
+ul.dnnmega li.root a:hover span{background:url(images/rootItemL_Hover.png) no-repeat 0 6px;}
+
+ul.dnnmega li.root img.mmArrow {margin-left: 5px;}
+
+body ul.dnnmega li.mmItemHover a,
+body ul.dnnmega li.mmItemHover a:hover{color: #c11820;background:url(images/rootItemR_Hover_Child.png) no-repeat right 3px;position:relative;z-index:1230;}
+body ul.dnnmega li.mmItemHover a span,
+body ul.dnnmega li.mmItemHover a:hover span{background:url(images/rootItemL_Hover_Child.png) no-repeat 0 3px;}
+
+ul.dnnmega li a {display:inline-block;}
+
+ul.dnnmega li:hover a, ul.dnnmega li a:hover { background-position: left bottom; }
+
+ul.dnnmega li .megaborder {position: absolute;font-family: Verdana, Geneva, sans-serif;top:41px;left:0px;z-index: 1200;float: left;display: none; /*--Hidden for those with js turned off--*/background:none;}
+
+ul.dnnmega .megaborder .TL{background:url(images/PanelBGTL.png) no-repeat 0 0;height:15px;margin:0 15px 0 0;}
+ul.dnnmega .megaborder .TR{background:url(images/PanelBGTR.png) no-repeat right 0;}
+ul.dnnmega .megaborder .M{display:block;background:#fefefe url(images/PanelBG.jpg) repeat-x 0 bottom;border-top:0;border-bottom:0;min-height:135px;}
+ul.dnnmega .megaborder .ML{background:url(images/PanelBGML.png) repeat-y 0 0;padding:0 0 0 3px;}
+ul.dnnmega .megaborder .MR{background:url(images/PanelBGMR.png) repeat-y right 0;padding:0 3px 0 0;}
+ul.dnnmega .megaborder .BL{background:url(images/PanelBGBL.png) no-repeat 0 0;height:15px;margin:0 15px 0 0;}
+ul.dnnmega .megaborder .BR{background:url(images/PanelBGBR.png) no-repeat right 0;}
+
+/*--Sub nav heading style--*/
+ul.dnnmega .megaborder ul li.category{background:url(images/SubPage-Border.jpg) repeat-y right 0;margin:0 0 15px 0;}
+ul.dnnmega .megaborder ul li.mmLast{background:none;}
+ul.dnnmega .megaborder ul li.mmRightColumn{background:none;}
+ul.dnnmega .megaborder ul li.category a, 
+ul.dnnmega .megaborder ul li.category a span{background: none;height:auto;}
+
+
+ul.dnnmega li.category {display:block;width:180px;float:left;}
+ul.dnnmega li.category a{display:block;padding:0;margin:0;}
+ul.dnnmega li.category a span{display:block;font-size:18px;color:#686868;border-bottom:1px solid #e5e4e4;margin:0 14px 0 18px;padding:0;}
+ul.dnnmega li.category a:hover span{color:#c11820;}
+
+ul.dnnmega li.category ul{padding:8px 0 0 0;}
+
+ul.dnnmega li.category li.leaf, ul.dnnmega li.category li.mmLast{clear:left;float:none;position:static;background:url(images/MegaMenuLI.png) no-repeat 16px 8px;padding:0 0 0 15px;}
+ul.dnnmega li.category li.leaf a span{font-size:12px;line-height:26px;border:0;}
+
+ul.dnnmega img.mmIcon {max-height: 24px; margin-right: 5px; vertical-align: middle;}
+ul.dnnmega li.root > a > span img.mmIcon {height: 16px;}
+/*--Sub nav heading link style--*/

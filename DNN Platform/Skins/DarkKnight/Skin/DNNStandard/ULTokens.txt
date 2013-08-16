@@ -1,0 +1,39 @@
+<!--SEO NOINDEX-->
+<div id="dnnMenu">
+    <ul class="topLevel">
+	    [*>NODE-TOP]
+    </ul>
+</div>
+<!--END SEO-->
+[>NODE-TOP]
+	<li class="item[?FIRST] first[/?][?LAST] last[/?][?SELECTED] selected[/?][?NODE] haschild[/?]">
+		[?ENABLED]
+			<a href="[=URL]"><div>[=TEXT]</div></a>
+		[?ELSE]
+			<a><div>[=TEXT]</div></a>
+		[/?]
+		[?NODE]
+            <div class="subLevel">
+			    <ul>
+				    [*>NODE]
+			    </ul>
+            </div>
+		[/?]
+	</li>
+[/>]
+[>NODE]
+	<li class="item[?FIRST] first[/?][?LAST] last[/?][?SELECTED] selected[/?][?NODE] haschild[/?]">
+		[?ENABLED]
+			<a href="[=URL]"><div><img src="[?ICON][=ICON][?ELSE]/portals/_default/skins/darkknight/dnnstandard/images/StandardLI.png[/?]" /><span>[=TEXT]</span></div></a>
+		[?ELSE]
+			<a><div><img src="[?ICON][=ICON][?ELSE]/portals/_default/skins/darkknight/dnnstandard/images/StandardLI.png[/?]" /><span>[=TEXT]</span></div></a>
+		[/?]
+		[?NODE]
+            <div class="subLevelRight">
+			    <ul>
+				    [*>NODE]
+			    </ul>
+            </div>
+		[/?]
+	</li>
+[/>]

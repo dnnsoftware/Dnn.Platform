@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="Add.Title" xml:space="preserve">
+    <value>Create New Module</value>
+  </data>
+	<data name="Edit.Title" xml:space="preserve">
+    <value>Edit Module</value>
+  </data>
+	<data name="cmdCreate.Text" xml:space="preserve">
+    <value>Create Module</value>
+  </data>
+	<data name="Control.Text" xml:space="preserve">
+    <value>Control</value>
+  </data>
+	<data name="Manifest.Text" xml:space="preserve">
+    <value>Manifest</value>
+  </data>
+	<data name="New.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+	<data name="plAddPage.Help" xml:space="preserve">
+    <value>Chcek this box to create a test page for your new module.</value>
+  </data>
+	<data name="plAddPage.Text" xml:space="preserve">
+    <value>Add Test Page?</value>
+  </data>
+	<data name="plCreate.Help" xml:space="preserve">
+    <value>You can create a new module in three ways.  Select which method to use.  New - creates a new module control, Control - creates a module from an existing control,  Manifest - creates a module from an existing manifest.</value>
+  </data>
+	<data name="plCreate.Text" xml:space="preserve">
+    <value>Create Module From:</value>
+  </data>
+	<data name="plDescription.Help" xml:space="preserve">
+    <value>You can provide a description for your module.</value>
+  </data>
+	<data name="plDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+	<data name="plFile1.Help" xml:space="preserve">
+    <value>Select the resource to use to create your module.</value>
+  </data>
+	<data name="plFile1.Text" xml:space="preserve">
+    <value>Resource:</value>
+  </data>
+	<data name="plModule1.Help" xml:space="preserve">
+    <value>This is the folder where your module files and folders are populated.</value>
+  </data>
+	<data name="plModule1.Text" xml:space="preserve">
+    <value>Module Folder:</value>
+  </data>
+	<data name="plName.Help" xml:space="preserve">
+    <value>Enter a Friendly Name for your module.</value>
+  </data>
+	<data name="plName.Text" xml:space="preserve">
+    <value>Module Name:</value>
+  </data>
+	<data name="plOwner1.Help" xml:space="preserve">
+    <value>Module Developers are encouraged to use a "unique" folder inside DesktopModules for all the development, to avoid potential clashes with other developers.  Select the folder you would like to use for your Module Development. Note: Folders with user controls (.ascx files) and the core admin folder are excluded from this list.</value>
+  </data>
+	<data name="plOwner1.Text" xml:space="preserve">
+    <value>Owner Folder:</value>
+  </data>
+	<data name="Template.Text" xml:space="preserve">
+    <value>Template</value>
+  </data>
+	<data name="cmdAdd.Text" xml:space="preserve">
+    <value>Add Folder</value>
+  </data>
+	<data name="cmdCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+	<data name="cmdSave.Text" xml:space="preserve">
+    <value>Create Folder</value>
+  </data>
+	<data name="CSharp.Text" xml:space="preserve">
+    <value>C# (C sharp)</value>
+  </data>
+	<data name="LanguageError.Text" xml:space="preserve">
+    <value>You must select a language for your module control.</value>
+  </data>
+	<data name="ModuleControlTemplate.Text" xml:space="preserve">
+    <value>&lt;%@ Control Language="{0}" ClassName="{1}" Inherits="DotNetNuke.Entities.Modules.PortalModuleBase" %&gt;
+&lt;h1&gt;Congratulations&lt;/h1&gt;
+&lt;p&gt;You have successfully created your module.  You can edit the source of the module control by selecting the View Source Action from the Action Menu.&lt;/p&gt;
+&lt;script runat="server"&gt;
+
+&lt;/script&gt;</value>
+  </data>
+	<data name="plFile2.Help" xml:space="preserve">
+    <value>Enter a name for the new module control</value>
+  </data>
+	<data name="plFile2.Text" xml:space="preserve">
+    <value>File Name:</value>
+  </data>
+	<data name="VisualBasic.Text" xml:space="preserve">
+    <value>Visual Basic</value>
+  </data>
+	<data name="FileExists.Text" xml:space="preserve">
+    <value>The filename you chose already exists.  Please use a different name.</value>
+  </data>
+	<data name="ModuleFolder.Text" xml:space="preserve">
+    <value>You must select a Module Folder.  You can create one if neccessary.</value>
+  </data>
+	<data name="TabExists.Text" xml:space="preserve">
+    <value>The page name exists for this module name.  The module was created but the test page was not generated.</value>
+  </data>
+	<data name="plModule2.Help" xml:space="preserve">
+    <value>Enter a name for the new module folder.</value>
+  </data>
+	<data name="plModule2.Text" xml:space="preserve">
+    <value>Folder Name:</value>
+  </data>
+	<data name="plOwner2.Help" xml:space="preserve">
+    <value>Enter a name for the new owner folder.</value>
+  </data>
+	<data name="plOwner2.Text" xml:space="preserve">
+    <value>Folder Name:</value>
+  </data>
+	<data name="plLang.Help" xml:space="preserve">
+    <value>Choose the language to  use.</value>
+  </data>
+	<data name="plLang.Text" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+	<data name="ImportControl.ErrorMessage" xml:space="preserve">
+    <value>There was an error importing the module control, please see the event log for further details</value>
+  </data>
+	<data name="InvalidFilename.Text" xml:space="preserve">
+    <value>File names cannot contain invalid characters</value>
+  </data>
+	<data name="MissingControl.Text" xml:space="preserve">
+    <value>You must provide a file name for the module control</value>
+  </data>
+	<data name="MissingFriendlyname.Text" xml:space="preserve">
+    <value>You must provide a name for the module</value>
+  </data>
+	<data name="NonuniqueName.Text" xml:space="preserve">
+    <value>A package already exists with this name  - please provide an alternative Name</value>
+  </data>
+  <data name="NonuniqueNameModule.Text" xml:space="preserve">
+    <value>The module from the selected location exists and registered as {0}</value>
+  </data>
+  <data name="MissingManifest.Text" xml:space="preserve">
+    <value>You must provide a mainfest file (.dnn or .dnn5 file)</value>
+  </data>
+	<data name="NoControl.Text" xml:space="preserve">
+    <value>You must select a Control from the List of "Resources"</value>
+  </data>
+</root>

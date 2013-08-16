@@ -1,0 +1,17 @@
+' Remove files which are no longer required in version 5.1.0
+App_Browser\
+Admin\Authentication\
+Admin\Dashboard\
+Admin\Files\
+Admin\Host\
+Admin\Lists\
+Admin\Localization\
+Admin\Log\
+Admin\Logging\
+Admin\ModuleDefinitions\
+Admin\Packages\
+Admin\Scheduling\
+Admin\Search\
+Admin\Syndication\
+Admin\Vendors\
+Admin\Vendors\

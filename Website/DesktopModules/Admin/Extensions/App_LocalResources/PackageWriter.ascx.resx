@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers && schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;About Package writer&lt;/h1&gt;&lt;p&gt;Allows you to create packages.&lt;/p&gt;</value>
+  </data>
+  <data name="ControlTitle_packagewriter.Text" xml:space="preserve">
+    <value>Create Package</value>
+  </data>
+  <data name="Introduction.Help" xml:space="preserve">
+    <value>In this wizard you will be able to package all the files neccessary to install the feature in a different DotNetnuke installation</value>
+  </data>
+  <data name="Introduction.Title" xml:space="preserve">
+    <value>Create Package</value>
+  </data>
+  <data name="plBasePath.Help" xml:space="preserve">
+    <value>Folder where package files can be found</value>
+  </data>
+  <data name="plBasePath.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="plBinFolder.Help" xml:space="preserve">
+    <value>Folder where package assemblies can be found</value>
+  </data>
+  <data name="plBinFolder.Text" xml:space="preserve">
+    <value>Assembly Folder</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Return</value>
+  </data>
+  <data name="ChooseFiles.Help" xml:space="preserve">
+    <value>At this step you can choose the files to include in your package.  The wizard has attempted to determine the files to include, but you can add or delete files from the list.  In addition you decide whether to include the source files, by checking the "Include Source" checkbox.</value>
+  </data>
+  <data name="ChooseFiles.Title" xml:space="preserve">
+    <value>Choose Files to include</value>
+  </data>
+  <data name="cmdGetFiles.Text" xml:space="preserve">
+    <value>Refresh File List</value>
+  </data>
+  <data name="chkIncludeSource.Text" xml:space="preserve">
+    <value>Include Source:</value>
+  </data>
+  <data name="ChooseAssemblies.Help" xml:space="preserve">
+    <value>At this step you can add the assemblies to include in your package.  If there is a project file in the Package folder, the wizard has attempted to determine the assemblies to include, but you can add or delete assemblies from the list.</value>
+  </data>
+  <data name="ChooseAssemblies.Title" xml:space="preserve">
+    <value>Choose Assemblies to include</value>
+  </data>
+  <data name="cmdGetAssemblies.Text" xml:space="preserve">
+    <value>Refresh List</value>
+  </data>
+  <data name="Complete.Text" xml:space="preserve">
+    <value>Complete Package (zip):</value>
+  </data>
+  <data name="FinalStep.Help" xml:space="preserve">
+    <value>The final step is to create the package.  To create a copy of the Manifest file check the "Create Manifest File" check box - the file will be created in the Package's folder.  Regardless of the setting you use here the manifest will be saved in the database and it will be added to the package.&lt;br/&gt;&lt;br/&gt;  
+To create a package check the "Create Package" check box.  The package will be created in the relavant Install folder (eg Install/Modules for modules, Install/Skins for skins etc).</value>
+  </data>
+  <data name="FinalStep.Title" xml:space="preserve">
+    <value>Create Package</value>
+  </data>
+  <data name="Manifest.Text" xml:space="preserve">
+    <value>Manifest Only (dnn):</value>
+  </data>
+  <data name="plManifestName.Help" xml:space="preserve">
+    <value>Enter the file name to use for the manifest.</value>
+  </data>
+  <data name="plManifestName.Text" xml:space="preserve">
+    <value>Manifest File Name:</value>
+  </data>
+  <data name="LogTitle.Text" xml:space="preserve">
+    <value>Package Creation Logs</value>
+  </data>
+  <data name="plArchiveName.Help" xml:space="preserve">
+    <value>Enter the file name to use for the archive (zip).</value>
+  </data>
+  <data name="plArchiveName.Text" xml:space="preserve">
+    <value>Archive File Name:</value>
+  </data>
+  <data name="WriterResults.Help" xml:space="preserve">
+    <value>The results of the package creation are shown below.</value>
+  </data>
+  <data name="WriterResults.Title" xml:space="preserve">
+    <value>Create Package Results</value>
+  </data>
+  <data name="CreateManifest.Help" xml:space="preserve">
+    <value>Based on your selections the wizard has created the manifest for the package.  The manifest is displayed in the text box below.  You can edit the manifest, before creating the package.</value>
+  </data>
+  <data name="CreateManifest.Title" xml:space="preserve">
+    <value>Create Manifest</value>
+  </data>
+  <data name="plManifest.Help" xml:space="preserve">
+    <value>Check this box to create a manifest file.</value>
+  </data>
+  <data name="plManifest.Text" xml:space="preserve">
+    <value>Create Manifest File:</value>
+  </data>
+  <data name="plPackage.Help" xml:space="preserve">
+    <value>Check this box to create a package (zip) file</value>
+  </data>
+  <data name="plPackage.Text" xml:space="preserve">
+    <value>Create Package:</value>
+  </data>
+  <data name="plReviewManifest.Help" xml:space="preserve">
+    <value>Check this box to review the manifest before you create the new Package.</value>
+  </data>
+  <data name="plReviewManifest.Text" xml:space="preserve">
+    <value>Review Manifest:</value>
+  </data>
+  <data name="plUseManifest.Help" xml:space="preserve">
+    <value>Check this box to use the existing manifest for the Package.</value>
+  </data>
+  <data name="plUseManifest.Text" xml:space="preserve">
+    <value>Use Existing Manifest:</value>
+  </data>
+  <data name="plChooseManifest.Help" xml:space="preserve">
+    <value>If you have elected to use a previously created manifest, you can choose which manifest to use.</value>
+  </data>
+  <data name="plChooseManifest.Text" xml:space="preserve">
+    <value>Choose Manifest File:</value>
+  </data>
+  <data name="NoFileName.Text" xml:space="preserve">
+    <value>You must provide a FileName for the Package</value>
+  </data>
+  <data name="ManifestHelp.Text" xml:space="preserve">
+    <value>&lt;p&gt;This wizard will create a manifest for your extension.  You have a number of options to choose. If you already created a manifest (either by running this Wizard or by manually creating a manifest file) you can select to use that manifest, by checking "Use Existing Manifest" and choosing the manifest from the drop-dwon list of manifests that the system has found for this extension.&lt;/p&gt;
+&lt;p&gt;In addition you can elect to review the manifest at the last stage of the wizard - in case you want to make some mionor changes to the manifest before the zip package is created.&lt;/p&gt;</value>
+  </data>
+  <data name="InvalidPackageName.Text" xml:space="preserve">
+    <value>Invalid package name - package name must have a ".zip" extension.</value>
+  </data>
+  <data name="InvalidManifestExtension.Text" xml:space="preserve">
+    <value>Invalid Manifest Extension - the manfest extension must be ".dnn".</value>
+  </data>
+  <data name="Success.Text" xml:space="preserve">
+    <value>The Package was created and can be found in the {0} folder</value>
+  </data>
+</root>

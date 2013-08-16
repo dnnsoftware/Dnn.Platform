@@ -1,0 +1,33 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* Add Full Gradient to Message / Notifications New Message bubble */
+.ui-tabs-nav .ui-state-default a{background:url(../images/ie-backgrounds.png) repeat-x 0 -100px;}
+.ui-tabs-nav .ui-state-default.ui-state-active a,
+.ui-tabs-nav .ui-state-default a:hover{background:url(../images/ie-backgrounds.png) repeat-x 0 0;}
+.ui-tabs-nav  .ui-state-default a span{background:url(../images/ie-backgrounds.png) repeat-x 0 -400px;}
+
+/* Select Drop Down Fix - :after pseudo selector doesnt work*/
+	.selectDrop .dnnTertiaryAction:after{ *display:none; } /* Target IE 7 Only hack */
+	.selectDrop .dnnTertiaryAction span{ 
+		*padding-right:10px; /* Target IE 7 Only hack */
+		*background:url(../images/downArrow.png) no-repeat right 6px; /* Target IE 7 Only hack */
+	}
+	.selectDrop .dnnTertiaryAction span:hover{*background: url(../images/downArrow-hover.png) no-repeat right 6px; /* Target IE 7 Only hack */}
+
+
+/* Add Gradient to Tertiary Button Style */
+.dnnTertiaryAction{background:url(../images/ie-backgrounds.png) repeat-x 0 -200px;}
+.dnnTertiaryAction:hover, .dnnTertiaryAction.active{
+	background:url(../images/ie-backgrounds.png) repeat-x 0 -301px;
+}
+
+.dnnTertiaryAction.ArchiveItems span{ display:block; }
+.dnnTertiaryAction.ToggleOrder span {display:block;}
+
+/* Listing Styles */
+#listings ul li{ *margin-bottom:-3px;} /* Target IE 7 Only hack */
+#listings .active .ActiveToggle, #listings .ActiveToggle:hover {background: url(../images/ie-backgrounds.png) repeat-x 0 -400px;}
+#listings .active .ActiveToggle:hover, #listings .ActiveToggle {background: url(../images/ie-backgrounds.png) repeat-x 0 -500px;}
+
+#listings .profileImg img{ width:50px; height:50px;	}

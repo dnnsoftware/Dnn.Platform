@@ -1,0 +1,29 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}CanDeleteWorkFlowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}CanDeleteWorkFlowState
+GO
+
+create procedure {databaseOwner}{objectQualifier}CanDeleteWorkFlowState
+	@StateID int 
+AS
+	BEGIN
+		IF exists(SELECT * FROM {databaseOwner}{objectQualifier}HtmlTextLog WHERE StateID = @StateID) 
+			SELECT 0
+		ELSE
+			SELECT 1
+	END
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

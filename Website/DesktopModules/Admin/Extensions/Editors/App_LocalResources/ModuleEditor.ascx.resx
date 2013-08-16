@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="cmdUpdate.Text" xml:space="preserve">
+    <value>Update Desktop Module</value>
+  </data>
+  <data name="BusinessControllerClass.Help" xml:space="preserve">
+    <value>The fully qualified namespace of the class that implements the Modules Features (IPortable, ISearchable etc)</value>
+  </data>
+  <data name="BusinessControllerClass.Text" xml:space="preserve">
+    <value>Business Controller Class:</value>
+  </data>
+  <data name="IsPortable.Help" xml:space="preserve">
+    <value>Identifies if the module supports the IPortable interface allowing it to Export and Import content.</value>
+  </data>
+  <data name="IsPortable.Text" xml:space="preserve">
+    <value>Is Portable?</value>
+  </data>
+  <data name="IsSearchable.Help" xml:space="preserve">
+    <value>Identifies if the module supports the ISearchable interface allowing it to have its content indexed.</value>
+  </data>
+  <data name="IsSearchable.Text" xml:space="preserve">
+    <value>Is Searchable?</value>
+  </data>
+  <data name="IsUpgradeable.Help" xml:space="preserve">
+    <value>Identifies if the module supports the IUpgradable interface allowing it to run custom code when upgraded.</value>
+  </data>
+  <data name="IsUpgradeable.Text" xml:space="preserve">
+    <value>Is Upgradable?</value>
+  </data>
+  <data name="ModuleName.Help" xml:space="preserve">
+    <value>The name of the Module</value>
+  </data>
+  <data name="ModuleName.Text" xml:space="preserve">
+    <value>Module Name:</value>
+  </data>
+  <data name="HostHelp.Text" xml:space="preserve">
+    <value>This editor allows you to configure the Desktop Module.</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Desktop Module Settings</value>
+  </data>
+  <data name="Controls.Text" xml:space="preserve">
+    <value>Module Controls </value>
+  </data>
+  <data name="Definitions.Text" xml:space="preserve">
+    <value>Module Definitions</value>
+  </data>
+  <data name="cmdAddControl.Text" xml:space="preserve">
+    <value>Add Module Control</value>
+  </data>
+  <data name="cmdAddDefinition.Text" xml:space="preserve">
+    <value>Add Definition</value>
+  </data>
+  <data name="cmdSaveControl.Text" xml:space="preserve">
+    <value>Update Module Control</value>
+  </data>
+  <data name="ModuleControlInfo_ControlKey.Help" xml:space="preserve">
+    <value>Enter a Unique Key for this control</value>
+  </data>
+  <data name="ModuleControlInfo_ControlKey.Text" xml:space="preserve">
+    <value>Control Key:</value>
+  </data>
+  <data name="ModuleControlInfo_ControlSrc.Help" xml:space="preserve">
+    <value>Enter the source for this control</value>
+  </data>
+  <data name="ModuleControlInfo_ControlSrc.Text" xml:space="preserve">
+    <value>Control Src:</value>
+  </data>
+  <data name="ModuleControlInfo_ControlTitle.Help" xml:space="preserve">
+    <value>Enter the title of this control.</value>
+  </data>
+  <data name="ModuleControlInfo_ControlTitle.Text" xml:space="preserve">
+    <value>Control Title:</value>
+  </data>
+  <data name="Admin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Anonymous.Text" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
+  <data name="cmdCreateDefinition.Text" xml:space="preserve">
+    <value>Create Definition</value>
+  </data>
+  <data name="cmdDeleteDefinition.Text" xml:space="preserve">
+    <value>Delete Definition</value>
+  </data>
+  <data name="cmdUpdateDefinition.Text" xml:space="preserve">
+    <value>Update Definition</value>
+  </data>
+  <data name="ControlPanel.Text" xml:space="preserve">
+    <value>Control Panel</value>
+  </data>
+  <data name="Host.Text" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="ModuleControlInfo_ControlType.Help" xml:space="preserve">
+    <value>Select the security access type for this control.</value>
+  </data>
+  <data name="ModuleControlInfo_ControlType.Text" xml:space="preserve">
+    <value>Control Type:</value>
+  </data>
+  <data name="ModuleControlInfo_HelpURL.Help" xml:space="preserve">
+    <value>You can provide a Help URL for this control. This will appear on the Actions menu.</value>
+  </data>
+  <data name="ModuleControlInfo_HelpURL.Text" xml:space="preserve">
+    <value>Help URL:</value>
+  </data>
+  <data name="ModuleControlInfo_IconFile.Help" xml:space="preserve">
+    <value>The URL to the Icon for this control</value>
+  </data>
+  <data name="ModuleControlInfo_IconFile.Text" xml:space="preserve">
+    <value>Icon File:</value>
+  </data>
+  <data name="ModuleControlInfo_SupportsPartialRendering.Help" xml:space="preserve">
+    <value>This flag indicates whether the module control supports AJAX partial rendering.</value>
+  </data>
+  <data name="ModuleControlInfo_SupportsPartialRendering.Text" xml:space="preserve">
+    <value>Supports Partial Rendering:</value>
+  </data>
+  <data name="ModuleControlInfo_ViewOrder.Help" xml:space="preserve">
+    <value>Enter the View Order for this module control.</value>
+  </data>
+  <data name="ModuleControlInfo_ViewOrder.Text" xml:space="preserve">
+    <value>View Order:</value>
+  </data>
+  <data name="DefaultCacheTime.Help" xml:space="preserve">
+    <value>This is the default Cache Time to be used for this Module Definition. A default cache time of "-1" indicates that the module does not support output caching.</value>
+  </data>
+  <data name="DefaultCacheTime.Text" xml:space="preserve">
+    <value>Default Cache Time:</value>
+  </data>
+  <data name="FriendlyName.Help" xml:space="preserve">
+    <value>Enter a friendly name for the Module Definition.</value>
+  </data>
+  <data name="FriendlyName.Text" xml:space="preserve">
+    <value>Friendly Name:</value>
+  </data>
+  <data name="plSelectDefinition.Help" xml:space="preserve">
+    <value>You can select a definition to edit from the drop-down list.</value>
+  </data>
+  <data name="plSelectDefinition.Text" xml:space="preserve">
+    <value>Select Definition:</value>
+  </data>
+  <data name="SkinObject.Text" xml:space="preserve">
+    <value>Skin Object</value>
+  </data>
+  <data name="View.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="cmdCreateControl.Text" xml:space="preserve">
+    <value>Create Module Control</value>
+  </data>
+  <data name="cmdDeleteControl.Text" xml:space="preserve">
+    <value>Delete Module Control</value>
+  </data>
+  <data name="cmdUpdateControl.Text" xml:space="preserve">
+    <value>Update Module Control</value>
+  </data>
+  <data name="plSelectControl.Help" xml:space="preserve">
+    <value>You can select a module control to edit from the drop-down list.</value>
+  </data>
+  <data name="plSelectControl.Text" xml:space="preserve">
+    <value>Select Control:</value>
+  </data>
+  <data name="IsPremium.Help" xml:space="preserve">
+    <value>All Modules can be assigned/unassigned from a website.  However, on website Creation Premium Modules are not auto-assigned to a new website.</value>
+  </data>
+  <data name="IsPremium.Text" xml:space="preserve">
+    <value>Is Premium Module?</value>
+  </data>
+  <data name="ctlPortals_Available.Text" xml:space="preserve">
+    <value>UnAssigned</value>
+  </data>
+  <data name="ctlPortals_Selected.Text" xml:space="preserve">
+    <value>Assigned</value>
+  </data>
+  <data name="FolderName.Help" xml:space="preserve">
+    <value>Specify the folder name for this module</value>
+  </data>
+  <data name="FolderName.Text" xml:space="preserve">
+    <value>Folder Name:</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions:</value>
+  </data>
+  <data name="DuplicateName.Text" xml:space="preserve">
+    <value>You entered a Friendly Name that is already in use.  Friendly Names must be unique - please enter a different name and try again.</value>
+  </data>
+  <data name="AdminHelp.Text" xml:space="preserve">
+    <value>In this section you can set deploy permissions for this module. Clicking a checkbox twice will make sure users in that role cannot put this module on a page (Deny Permission).</value>
+  </data>
+  <data name="NoPermission.Text" xml:space="preserve">
+    <value>You are not allowed to put this module on an page in this website. For more information please contact your hosting provider</value>
+  </data>
+  <data name="Control.Header" xml:space="preserve">
+    <value>Control</value>
+  </data>
+  <data name="Source.Header" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="Title.Header" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="plPremium.Text" xml:space="preserve">
+    <value>Assigned Premium Modules</value>
+  </data>
+  <data name="Dependencies.Help" xml:space="preserve">
+    <value>You can list any dependencies that the module has here.</value>
+  </data>
+  <data name="Dependencies.Text" xml:space="preserve">
+    <value>Dependencies:</value>
+  </data>
+  <data name="Permissions.Help" xml:space="preserve">
+    <value>You can list any Code Access Security Permissions your module requires here.</value>
+  </data>
+  <data name="Category.Text" xml:space="preserve">
+    <value>Module Category</value>
+  </data>
+  <data name="Category.Help" xml:space="preserve">
+    <value>Select the Module Category for this module</value>
+  </data>
+  <data name="Dependencies.Hint" xml:space="preserve">
+    <value>Enter Dependencies</value>
+  </data>
+  <data name="Permissions.Hint" xml:space="preserve">
+    <value>Enter Code Access Permissions</value>
+  </data>
+  <data name="BusinessControllerClass.Hint" xml:space="preserve">
+    <value>Enter Business Controller Class</value>
+  </data>
+  <data name="ModuleSettings.Text" xml:space="preserve">
+    <value>Module Settings</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>&lt; None &gt;</value>
+  </data>
+  <data name="FriendlyName.Required" xml:space="preserve">
+    <value>The friendly name is required.</value>
+  </data>
+  <data name="Shareable.Help" xml:space="preserve">
+    <value>Identifies whether the module supports sharing itself across multiple sites.</value>
+  </data>
+  <data name="Shareable.Text" xml:space="preserve">
+    <value>Module Sharing</value>
+  </data>
+  <data name="DefinitionName.Help" xml:space="preserve">
+    <value>An unchanging name for the Module Definition</value>
+  </data>
+  <data name="DefinitionName.Required" xml:space="preserve">
+    <value>The definition name is required</value>
+  </data>
+  <data name="DefinitionName.Text" xml:space="preserve">
+    <value>Definition Name:</value>
+  </data>
+</root>

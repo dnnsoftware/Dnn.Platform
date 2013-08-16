@@ -1,0 +1,348 @@
+==========================================================
+SolpartMenu v1.6.0.1 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- MacIE support added!
+
+==========================================================
+SolpartMenu v1.6.0.0 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Addition of SPMenuCaps.config file to configure which browsers
+  have which features (i.e. which ones render uplevel vs. downlevel)
+
+
+==========================================================
+SolpartMenu v1.5.0.2 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Fixed issue with Safari upgrade 1.3.312
+
+==========================================================
+SolpartMenu v1.5.0.0 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Fixed issue with Safari (IFrame trick caused menu not to show)
+- Fixed function naming for Netscape/FireFox/Mozilla
+  when control has '-' character in it.  
+
+==========================================================
+SolpartMenu v1.4.0.3 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Fixed issue with IFRAME trick and SSL (void(0) no longer 
+  works no using src=spacer.gif
+
+==========================================================
+SolpartMenu v1.4.0.2 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Fixed minor issue with rendering vertical menu and it 
+  scrolled off page.  
+- Fixed error When rendering ForceFullMenuList and no child nodes 
+  exist
+- Fixed issue that stopped menu from being used in a 
+  Trust=Medium
+
+==========================================================
+SolpartMenu v1.4.0.0 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Fixed issues with Safari
+	- sub-menu alignment (Safari bug workaround)
+	- mouseout delay always set to 5 sec
+	- Browser identification sometimes rendered downlevel
+
+- applying keeping saved css class on hover
+- Applying submenu class to menu when forcefullmenuList on
+- reading in zindex for menu and incrementing 1 higher for 
+  iframe trick.
+
+
+==========================================================
+SolpartMenu v1.3.0.5 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Fixed MapPath issue with menu module
+- Added new menu provider to allow role based custom menus
+
+==========================================================
+SolpartMenu v1.3.0.3 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Made IFrame trick a property to turn off
+- When using IFrame trick setting src = javascript code
+  to avoid page not found message bleeding through
+- Made different technique to avoid operation aborted and
+  load up front at the same time
+
+==========================================================
+SolpartMenu v1.3.0.2 - Notes
+==========================================================
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Changed dir="rtl" alignment of submenus to be from right corner
+- Fixed issue with IFRAME trick and SSL
+- Fixed issue with IE5/5.5 for pages with menus that were set
+  to be invisible.
+- Absolute positioned menu support added!
+- Default way of handling windowed controls now is using an 
+  IFRAME.  Therefore you will no longer see your SELECT and
+  OBJECT tags disappear when the menu overlaps.
+  It should be noted that this idea originated from 
+  http://dotnetjunkies.com/WebLog/jking/archive/2003/07/21/488.aspx
+- New CSS class ability ItemSelectedCss - for specifying a 
+  different class for the selected item than the default MenuItemSel
+- Allowing Seperators to contain HTML - new overloaded methods
+  for AddBreak now accepts HTML parameter
+- New MenuEffect Property MouseOverScroll.  Defaults to true,
+  when set having the mouse over the ... will scroll the menu
+  in addition to clicking ...
+- Added Target property to allow menu items with urls specified
+  to change the source of specified frame.
+- New examples - showing absolute positioning and image menus
+
+
+==========================================================
+SolpartMenu v1.2.0.3 - Notes
+==========================================================
+
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Added new method FindMenuItem.  Useful for applying a 
+  specific style to selected menu item.
+- Now hiding overlapping OBJECT tags (along with SELECT tags)
+- Fixed issue with submenus positioning when root menu items 
+  scrolled off page
+- Fixed issue with Mozilla/NS/Opera where submenu would scroll
+  off page
+- ItemStyle now applying to TDs in addition to the TR 
+  WARNING:  MAY CAUSE DISPLAY CHANGES IF PROPERTY WAS USED!
+- Added ItemCss to go along with ItemStyle so that special 
+  class can be applied on item level.
+- Fixed minor issue with savecss (for menuitem css).
+
+--- DNN MenuModule Specific ---
+----------------------------------------------------------
+- Added new MenuDataProvider to allow the showing of only
+  child tabs from current active tab
+- Changed ForceFullMenuList to output tree-like structure,
+  complete with styles.  Allows for an easy way to do a site
+  map.
+- Added ForceFullMenuList to MenuDesigner in DNN
+- Added Tooltip to menuitem for MenuDesigner in DNN
+- Added css to menuitem for MenuDesigner in DNN
+- Fixed css style applying to preview in MenuDesigner
+
+
+==========================================================
+SolpartMenu v1.2.0.0 - Notes
+==========================================================
+
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+
+- Added ToolTip functionality
+- When menu detects there is not enough room to display
+  it will automatically add a scroll menu item to the top
+  and bottom when applicable.  
+- New MenuCSS.MenuScroll class to customize display 
+- Fixed Mozilla/Netscape border color issues
+- Minor fixes to ALT text of images
+- Fixed issue with menu designer where left/righthtml
+  not safely encoded
+- If menu detects dir="rtl" it will cause sub-menus to be 
+  displayed on the left instead of right.  IE seems to work
+  correctly, Mozilla/Netscape seem to have problems.
+  
+
+==========================================================
+SolpartMenu v1.1.1.2 - Notes
+==========================================================
+
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+
+- Added functionality to detect Crawlers and have menu
+  render in a fashion that the Crawler can detect
+- Added property ForceFullMenuList - to force output to 
+  render as if Crawler is requesting the page
+- Added DataBindMappings collection to allow for any menu
+  item attribute to be bound to datasource
+- Fixed Netscape 7.1 problem where doesn't report 'this'
+  onclick of menu item (now runat server works for this 
+  browser)
+- Fixed Opera 7 postbacks (cannot access name property on client)
+- Added root level menubreak
+- Added script type to SCRIPT tags (javascript)
+
+
+==========================================================
+SolpartMenu v1.1.1.0 - Notes
+==========================================================
+
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Fixed problem with MenuClick event when in a UserControl
+- Added MenuItems collection to navigate through nodes
+- Added SeparateCSS property to stop sending of CSS styles
+- Fixed Shadow issue when no transition style specified
+- Fixed problem with sending duplicate styles down after postback
+- renamed attributes to be under 15 characters to allow
+  getAttribute to work with Konqueror and Safari. 
+  (SystemImagesPath --> SysImgPath)
+- Allowing Data binding to have non-numeric keys
+- Fixed positioning when window is scrolled
+- Updated Safari support
+- Fixed problem when SmartNavigation is turned on
+	- Problem:  postback with SmartNav enabled does 
+		    not fire the readystate event
+	- Solution: when smartnav is enabled menu will 
+		    use setTimeout to continually poll
+		    the page until readyState is complete
+
+==========================================================
+SolpartMenu v1.1.0.7 - Notes
+==========================================================
+
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Support for new Mac browser Safari
+	- Problem:  Safari doesn't report offsetWidths/heights of some elements 
+	- Solution:  go to parent to get width/height
+	- Problem:  Safari needs to include BODY when getting element positions via offsetTop/Left 
+	- Solution:  apparently only the root menu items need to include Body offset
+	- Problem:  a bug in Safari where the HTMLcollection object returned for cells is always empty
+	- Solution:  none, safari menus cannot display selected border colors until its resolved by safari development team.
+			this has been entered into the Safari bug tracking system (#3426081)
+
+- Added new property MenuItems to access collection of SPMenuItemNode
+- Added script to handle lack of events firing when SmartNavigation is enabled
+
+
+
+==========================================================
+SolpartMenu v1.1.0.6 - Notes
+==========================================================
+I just realized that you may want the source of the menu
+that is used in the DNN menu designer.  Thus, am doing this
+minor release.
+
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- using SafeClientID property to render menu (fixes IDs starting with _)
+- attempting to fix Safari (not there yet)
+
+
+==========================================================
+SolpartMenu v1.1 - Notes
+==========================================================
+
+----------------------------------------------------------
+Enhancements
+----------------------------------------------------------
+- Introduced wrapper class around Menu Item XMLNode called SPMenuItemNode to ease programming of attributes.
+- Downlevel browser appearance has been updated to handle new properties, including placing icons on menu bar (also supported on uplevel browsers)
+- Added ability to render UpLevel menu in browser without an XML parser using JS array
+- Added Menu designer - see comments in code to help out integrating with DNN
+- Added ALT tags to images to improve ADA compliance
+
+
+----------------------------------------------------------
+Properties of interest
+----------------------------------------------------------
+- Menu Object 
+-- IconImagesPath – Location of the icon images (in DNN this would be the GUID location) – if not specified defaults to SystemImagePath
+-- SystemImagesPath – Location of the images specific to the rendering of the menu (i.e. spacer.gif)
+-- MenuBarLeftHTML - allows custom HTML to be placed to the left of the menu bar
+-- MenuBarRightHTML - allows custom HTML to be placed to the right of the menu bar
+-- MenuCSSPlaceHolderControl - allows a placeholder tag to be specified so menu's css properties can be set within the <HEAD> tag.
+
+-MenuItem Object
+-- ImagePath – If icon is not coming from the IconImagesPath then specify a path here.  This is for admin icons.
+-- LeftHTML – Allows for a custom HTML to be displayed to the left of the menuitem’s Title. 
+-- RightHTML – Allows for a custom HTML to be displayed to the right of the menuitem’s Title.  This is for the selected menu item image.
+
+
+
+----------------------------------------------------------
+The following browsers will render the UpLevel menu
+----------------------------------------------------------
+IE 5.0 				- uses JSXMLArray 
+IE5.5 				- uses XML DataIslands (for superior caching)
+IE6 				- uses XML DataIslands (for superior caching)
+Mozilla (Mac/Win/Linux) 	- uses XML Parser
+Netscape 6 (Mac/Win/Linux)	- uses XML Parser 
+Netscape 7 (Mac/Win/Linux)	- uses XML Parser
+Opera 7    (Win/Linux)		- uses JSXMLArray - DNN HTML Layout issues causes transparent menus
+Konqueror(Linux)		- minor positioning issues
+Safari (Mac) 			- trying...
+
+----------------------------------------------------------
+The following browsers will render the DownLevel menu
+----------------------------------------------------------
+IE5 (Mac) 			- Absolute positioning issues
+NS 4				- 
+Opera 6 			- 
+Any other browser		-
+
+
+----------------------------------------------------------
+IMPORTANT! MenuCSSPlaceHolderControl
+----------------------------------------------------------
+I have added a property called MenuCSSPlaceHolderControl which is set to SPMenuStyle.  This allows the menu's 
+CSS style to be inserted at the desired location within the <HEAD> tag.  It is highly
+recommended that you place the following tag within the <HEAD> section. 
+<style id="SPMenuStyle" runat="server"></style>
+Failure to do so will result in the menu placing its style at the very beginning of the output stream,
+which I believe is not valid in some browsers.
+
+
+----------------------------------------------------------
+Fixes
+----------------------------------------------------------
+- Fixed registering of systemscript so only sends down once
+- Fixed 1 pixel jump to right on entry of submenu, was due to the menu not having a border set.  Now am checking this before applying left border on icon.
+- Fixed issue with border on root arrow
+- Fixed style issue for netscape 4
+
+
+
+----------------------------------------------------------
+IE For the Mac
+----------------------------------------------------------
+Well what can I say?  After many attempts at getting this to work in an uplevel fashion I have
+made some headway but not enough.  I have determined that this is not going to hold up my release
+any longer, so for now the menu will render downlevel.  On a positive note I have determined
+what was causing the css not to render properly (extra spaces in the class property).  Unfortunately,
+I have not been able to resolve the positioning yet (you should only need to modify the spm_elementTop 
+and spm_elementLeft functions in the .js file).  I want to say thank you to everyone who has
+helped out with this issue, especially Davor and Erin. 
+
+
+

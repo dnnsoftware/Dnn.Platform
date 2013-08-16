@@ -1,0 +1,273 @@
+ /* *********************************************************************
+ * The contents of this file are subject to the Mozilla Public License 
+ * Version 1.1 (the "License"); you may not use this file except in 
+ * compliance with the License. You may obtain a copy of the License at 
+ * http://www.mozilla.org/MPL/
+ * 
+ * Software distributed under the License is distributed on an "AS IS" 
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing rights and 
+ * limitations under the License.
+ *
+ * The Original Code is named .NET Mobile API, first released under 
+ * this licence on 11th March 2009.
+ * 
+ * The Initial Developer of the Original Code is owned by 
+ * 51 Degrees Mobile Experts Limited. Portions created by 51 Degrees
+ * Mobile Experts Limited are Copyright (C) 2009 - 2012. All Rights Reserved.
+ * 
+ * Contributor(s):
+ *     James Rosewell <james@51degrees.mobi>
+ * 
+ * ********************************************************************* */
+ 
+ @charset "utf-8";
+/* CSS Document */
+
+/* DEVICE MESSAGE
+----------------------------------------------- */
+.DnnModule-Device-Detection .deviceMsg{
+	display:block;
+	padding:25px; margin-bottom:25px;
+	width:870px;
+/*
+    background:#efefef;
+	border:1px solid #ccc;
+	line-height:1.5em;
+	
+	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px; 
+    */
+}
+#fiftyOneDegrees .upgradePremium h5 + div{
+	width:60%;
+	padding-right:30px;
+	float:left;
+}
+
+#fiftyOneDegrees .upgradePremium {
+	display:inline-block; zoom:1;
+	border-bottom:1px solid #ddd;
+	margin-bottom:15px; padding-bottom:20px;
+}
+
+	.DnnModule-Device-Detection .upgradePremium .dnnFormMessage{margin:0 0 15px 0!important;}
+	.DnnModule-Device-Detection .upgradePremium em{font-size:11px;}
+	.DnnModule-Device-Detection .upgradePremium p{margin:0;}
+	.DnnModule-Device-Detection .upgradePremium input[type="text"]{width:250px; padding:5px; margin:0 5px 10px 0;}
+	.DnnModule-Device-Detection .upgradePremium input[type="text"] + input[type="submit"]{
+		display:inline-block;
+		zoom:1;
+		padding:5px 15px;
+		font-size:12px;
+		vertical-align:top;
+		background:#818181;
+		background:-moz-linear-gradient(top,#818181 0,#656565 100%);
+		background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#818181),color-stop(100%,#656565));
+		filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#818181',endColorstr='#656565',GradientType=0 );
+		-moz-border-radius:3px;
+		border-radius:3px;
+		border:1px solid #555;
+		text-shadow:0 1px 1px #222;
+		color:#fff;
+		text-decoration:none;
+		font-weight:bold;
+		cursor:pointer;
+	}
+	.DnnModule-Device-Detection .upgradePremium input[type="text"] + input[type="submit"]:hover{
+		background:#4E4E4E;
+		background:-moz-linear-gradient(top, #4E4E4E 0%, #282828 100%);
+		background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#4E4E4E), color-stop(100%,#282828));
+		filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#4E4E4E', endColorstr='#282828',GradientType=0 );
+		color:#fff;
+	}
+	.DnnModule-Device-Detection .upgradePremium input[type="submit"] + p{margin-top:15px;}
+	
+	.DnnModule-Device-Detection .upgradePremium input[value="Refresh"]{display:block;}
+	.DnnModule-Device-Detection .deviceMsg div{float:left; margin-right: 10px; }
+	.DnnModule-Device-Detection .deviceMsg .dnnFormMessage{margin:15px 0; display:inline-block; zoom:1; width:480px}
+	.DnnModule-Device-Detection .deviceMsg .dnnFormMessage + div{clear:left;  min-width:400px;}
+	.DnnModule-Device-Detection .deviceMsg .footer{
+		float:right; 
+		width:200px;
+		padding:25px; 
+		padding-bottom: 12px;
+		margin-bottom:15px;
+		background:#eaeaea;
+		margin-top: -30px;
+	}
+	.DnnModule-Device-Detection .deviceMsg .footer span{display:block; font-size: 13px; margin-bottom: 12px; text-align: center; width: 100%; }
+	.DnnModule-Device-Detection .footer span strong{display:inline; width:auto;}
+	.DnnModule-Device-Detection .deviceMsg .footer + input[type="submit"]{
+		display:inline-block;
+		margin-bottom:15px;
+	}
+	
+	.DnnModule-Device-Detection .deviceMsg .purchaseBox{
+		width:290px;
+		padding:10px; 
+		background:#aaa;
+
+	}	
+	.DnnModule-Device-Detection .upgradePoints {
+		overflow:auto;
+		padding:0 0 15px 0; 
+		margin-bottom:15px;
+		border-bottom:1px solid #ddd;
+	 }
+	.DnnModule-Device-Detection .upgradePoints li{
+		width:395px;
+		padding:0 20px 0 0; margin:0 0 0 15px!important;
+		float:left;
+		font-size:11px; font-style:italic;
+	}
+	.DnnModule-Device-Detection .upgradePoints + p {color:#111; font-weight:bold;}
+
+.DnnModule-Device-Detection h4 {font-size:16px; color: #666;}
+.DnnModule-Device-Detection h5{margin:0 0 10px 0; padding:0; font-size:14px;}
+
+.DnnModule-Device-Detection .deviceColGroup{
+	overflow:auto;
+	margin-bottom:15px;
+}
+
+.DnnModule-Device-Detection .deviceCol-left{
+	float:left;
+	width:305px;
+	padding: 25px;
+	background-color: #eaeaea;
+}
+.DnnModule-Device-Detection .deviceCol-left input[type="text"]{padding:5px; margin-right:5px;}
+.DnnModule-Device-Detection .deviceCol-right{
+	position:relative;
+	float:left;
+	width:550px;
+	padding:0 0 15px 15px;
+	border-left:1px solid #ddd;
+    height: 400px;
+    /*overflow-y: scroll;
+    overflow-x: hidden;*/
+    overflow: auto;
+}
+.DnnModule-Device-Detection .deviceCol-right .contents-help,
+.DnnModule-Device-Detection .deviceCol-right .contents-back{position:absolute; top:10px; right:25px; color: #028BFF;}
+
+.DnnModule-Device-Detection .deviceCol-right .contents-help strong,
+.DnnModule-Device-Detection .deviceCol-right .contents-back strong{color: #028BFF;}
+
+.DnnModule-Device-Detection .deviceCol-left label{
+	display:block;
+	margin-bottom:5px;
+	font-weight:bold;
+}
+
+.DnnModule-Device-Detection .deviceCol-right .explorer{
+	padding-right:15px;
+}
+
+
+.DnnModule-Device-Detection .content > .footer{
+	clear:both;
+	padding-top:10px;
+	margin-top:15px;
+	border-top:1px solid #ddd;
+}
+
+.DnnModule-Device-Detection .contents-header{
+	margin-bottom:25px;
+	border-bottom:1px solid #999;
+	padding-bottom: 25px;
+}
+
+/* VENDORS BROWSING */
+.deviceExplorerVendors .item, .deviceExplorerDevices .item { 
+	display:block;
+	height: 2.5em; 
+	width: 130px;
+	margin-right:8px;
+	float: left; 
+	overflow: hidden; 
+	vertical-align: top;
+}
+.deviceExplorerVendors .item .vendor { 
+	text-align: center; 
+	font-weight: bold; 
+}
+
+.deviceExplorerDevices h1, .deviceExplorerDevice h1 { 
+	font-size: 16px; clear: both; 
+}
+.deviceExplorerDevice h2 { font-size: 1.1em; clear: both; }
+
+/* VENDORS DEVICE BROWSING */ 
+.deviceExplorerDevices .item{margin-bottom:5px; min-height:150px;}
+.deviceExplorerDevices .item .model{font-weight:bold;}
+
+.DnnModule-Device-Detection .dnnTertiaryAction{margin-bottom:15px;}
+
+/* EXPLORE DEVICE */ 
+.deviceExplorerDevice .item{
+	width:520px;
+	display:inline-block;
+	padding:3px;
+	clear:both;
+}
+.deviceExplorerDevice .item:nth-child(2n+1){background:#f1f1f1;}
+.deviceExplorerDevice div.item > div:first-child{
+	width:240px;
+	float:left;
+}
+
+/*
+.deviceExplorerDevice .dnnTooltip{display:inline-block;}
+.deviceExplorerDevice .dnnTooltip label{
+	display:block; float:left;
+}
+.deviceExplorerDevice .dnnTooltip label a.dnnFormHelp{
+	padding-right:20px;
+	background: url("/ce_060200_878/images/help-icn.png") no-repeat right center;
+}
+.deviceExplorerDevice .dnnFormHelpContent, .deviceExplorerDevice .dnnFormItem .dnnFormHelpContent{
+	position: absolute;
+    top: -12px;
+	left:auto!important;
+	right:-230px;
+    max-width: 30em;
+	width: 200px;
+    overflow: hidden;
+    z-index: 25;
+}
+*/
+.wide .dnnTooltip{ display:inline-block;}
+.wide label{float:left; width:auto;}
+.wide label a{padding-right:20px;}
+.deviceExplorerDevice .wide .dnnTooltip label a.dnnFormHelp{background-position:right center;}
+.deviceExplorerDevice .wide .dnnFormHelpContent{
+	left:auto;
+	right:-230px; top:-12px;
+}
+
+.deviceMsg > h2{
+
+    color :#666;
+    font-size: 18px;
+    width: 500px;   
+    display: block;
+}
+
+.deviceMsg > fieldset{   
+    display: block;
+}
+
+.deviceMsg > fieldset p{
+    width: 600px;
+    float: left;
+}
+
+.deviceExplorerVendors > p{
+    color: #666;
+}
+
+

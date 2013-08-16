@@ -1,0 +1,1574 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/************************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}HostSettings Set SettingValue ='http://help.dotnetnuke.com/070000/default.htm' Where SettingName='HelpURL'
+
+/***** Fix bug 23885: make sure return correct row numbers *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForSummary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_ListForSummary
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForSummary]
+@PortalId int,
+@ModuleId int,
+@CurrentUserId int,
+@RowIndex int,
+@MaxRows int
+AS
+IF @RowIndex = 0
+BEGIN
+	SET @RowIndex = 1
+END
+DECLARE @EndRow int
+SET @EndRow = @RowIndex + @MaxRows - 1;
+
+DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+INSERT INTO @j 
+	SELECT j.journalid, jt.datecreated from (
+		SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+			WHERE j.PortalId = @PortalId
+		) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+		INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+		ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+ELSE
+INSERT INTO @j 
+	SELECT j.journalid, jt.datecreated from (
+		SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+			WHERE j.PortalId = @PortalId
+		) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+		ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+
+WITH journalItems  AS
+(
+	SELECT	j.JournalId,
+			ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+	FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+	WHERE j.PortalId = @PortalId
+)
+SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+			j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+			"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+			"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+			"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+			 jt.Icon, jt.JournalType,
+			"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+			jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber
+FROM	journalItems as ji INNER JOIN 
+	{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+			{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+WHERE	RowNumber BETWEEN @RowIndex AND @EndRow
+ORDER BY RowNumber ASC;
+GO
+
+/* Fix DNN-24001 -  Gravity Skin is marked as legacy, also fixing Aphelia, DK Mobile and Facebook.*/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Packages] WHERE [Name] = N'Facebook')
+BEGIN
+	DECLARE @PackageId int
+	
+	INSERT INTO {databaseOwner}{objectQualifier}Packages
+	(
+		PortalID,
+		[Name],
+		FriendlyName,
+		[Description],
+		PackageType,
+		Version,
+		License,
+		Manifest,
+		ReleaseNotes,
+		[Owner],
+		Organization,
+		Url,
+		Email,
+		IsSystemPackage,
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		FolderName,
+		IconFile
+	)
+	VALUES (
+		Null,
+		'Facebook',
+		'Facebook',
+		'Facebook Skin',
+		'Skin',
+		'07.00.00',
+		'',
+		'<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Facebook" type="Skin" version="07.00.00">
+      <friendlyName>Facebook</friendlyName>
+      <description>Facebook</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <skinName>Facebook</skinName>
+            <basePath>Portals\_default\Skins\Facebook</basePath>
+          </skinFiles>
+        </component>
+      </components>
+    </package>
+    <package name="Facebook" type="Container" version="07.00.00">
+      <friendlyName>Facebook</friendlyName>
+      <description>Facebook</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Container">
+          <containerFiles>
+            <containerName>Facebook</containerName>
+            <basePath>Portals\_default\Containers\Facebook</basePath>
+          </containerFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>',
+		'',
+		'DotNetNuke',
+		'DotNetNuke Corp',
+		'www.dotnetnuke.com',
+		'support@dotnetnuke.com',
+		1,
+		-1,
+		getdate(),
+		-1,
+		getdate(),
+		Null,
+		Null
+	)
+	Set @PackageId = SCOPE_IDENTITY()
+
+	INSERT INTO {databaseOwner}{objectQualifier}SkinPackages (
+	  PackageID,
+	  PortalID,
+	  SkinName,
+	  SkinType,
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate]
+	)
+	VALUES (
+	  @PackageID,
+	  Null,
+	  'Facebook',
+	  'Skin',
+	  -1,
+	  getdate(),
+	  -1,
+	  getdate()
+	)
+
+		INSERT INTO {databaseOwner}{objectQualifier}Packages
+	(
+		PortalID,
+		[Name],
+		FriendlyName,
+		[Description],
+		PackageType,
+		Version,
+		License,
+		Manifest,
+		ReleaseNotes,
+		[Owner],
+		Organization,
+		Url,
+		Email,
+		IsSystemPackage,
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		FolderName,
+		IconFile
+	)
+	VALUES (
+		Null,
+		'Facebook',
+		'Facebook',
+		'Facebook Container',
+		'Container',
+		'07.00.00',
+		'',
+		'<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Facebook" type="Skin" version="07.00.00">
+      <friendlyName>Facebook</friendlyName>
+      <description>Facebook skin</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <skinName>Facebook</skinName>
+            <basePath>Portals\_default\Skins\Facebook</basePath>
+          </skinFiles>
+        </component>
+      </components>
+    </package>
+    <package name="Facebook" type="Container" version="07.00.00">
+      <friendlyName>Facebook</friendlyName>
+      <description>Facebook</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Container">
+          <containerFiles>
+            <containerName>Facebook</containerName>
+            <basePath>Portals\_default\Containers\Facebook</basePath>
+          </containerFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>',
+		'',
+		'DotNetNuke',
+		'DotNetNuke Corp',
+		'www.dotnetnuke.com',
+		'support@dotnetnuke.com',
+		1,
+		-1,
+		getdate(),
+		-1,
+		getdate(),
+		Null,
+		Null
+	)
+
+		Set @PackageId = SCOPE_IDENTITY()
+
+	INSERT INTO {databaseOwner}{objectQualifier}SkinPackages (
+	  PackageID,
+	  PortalID,
+	  SkinName,
+	  SkinType,
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate]
+	)
+	VALUES (
+	  @PackageID,
+	  Null,
+	  'Facebook',
+	  'Container',
+	  -1,
+	  getdate(),
+	  -1,
+	  getdate()
+	)
+END
+
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Packages] WHERE [Name] = 'Aphelia')
+BEGIN
+	DECLARE @PackageId int
+	
+	INSERT INTO {databaseOwner}{objectQualifier}Packages
+	(
+		PortalID,
+		[Name],
+		FriendlyName,
+		[Description],
+		PackageType,
+		Version,
+		License,
+		Manifest,
+		ReleaseNotes,
+		[Owner],
+		Organization,
+		Url,
+		Email,
+		IsSystemPackage,
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		FolderName,
+		IconFile
+	)
+	VALUES (
+		Null,
+		'Aphelia',
+		'Aphelia',
+		'Aphelia Skin',
+		'Skin',
+		'07.00.00',
+		'',
+		'<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Aphelia" type="Skin" version="07.00.00">
+      <friendlyName>Aphelia</friendlyName>
+      <description>Aphelia</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <skinName>Aphelia</skinName>
+            <basePath>Portals\_default\Skins\Aphelia</basePath>
+          </skinFiles>
+        </component>
+      </components>
+    </package>
+    <package name="Aphelia" type="Container" version="07.00.00">
+      <friendlyName>Aphelia</friendlyName>
+      <description>Aphelia</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Container">
+          <containerFiles>
+            <containerName>Aphelia</containerName>
+            <basePath>Portals\_default\Containers\Aphelia</basePath>
+          </containerFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>',
+		'',
+		'DotNetNuke',
+		'DotNetNuke Corp',
+		'www.dotnetnuke.com',
+		'support@dotnetnuke.com',
+		1,
+		-1,
+		getdate(),
+		-1,
+		getdate(),
+		Null,
+		Null
+	)
+	Set @PackageId = SCOPE_IDENTITY()
+
+	INSERT INTO {databaseOwner}{objectQualifier}SkinPackages (
+	  PackageID,
+	  PortalID,
+	  SkinName,
+	  SkinType,
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate]
+	)
+	VALUES (
+	  @PackageID,
+	  Null,
+	  'Aphelia',
+	  'Skin',
+	  -1,
+	  getdate(),
+	  -1,
+	  getdate()
+	)
+
+		INSERT INTO {databaseOwner}{objectQualifier}Packages
+	(
+		PortalID,
+		[Name],
+		FriendlyName,
+		[Description],
+		PackageType,
+		Version,
+		License,
+		Manifest,
+		ReleaseNotes,
+		[Owner],
+		Organization,
+		Url,
+		Email,
+		IsSystemPackage,
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		FolderName,
+		IconFile
+	)
+	VALUES (
+		Null,
+		'Aphelia',
+		'Aphelia',
+		'Aphelia Container',
+		'Container',
+		'07.00.00',
+		'',
+		'<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Aphelia" type="Skin" version="07.00.00">
+      <friendlyName>Aphelia</friendlyName>
+      <description>Aphelia skin</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <skinName>Aphelia</skinName>
+            <basePath>Portals\_default\Skins\Aphelia</basePath>
+          </skinFiles>
+        </component>
+      </components>
+    </package>
+    <package name="Aphelia" type="Container" version="07.00.00">
+      <friendlyName>Aphelia</friendlyName>
+      <description>Aphelia</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Container">
+          <containerFiles>
+            <containerName>Aphelia</containerName>
+            <basePath>Portals\_default\Containers\Aphelia</basePath>
+          </containerFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>',
+		'',
+		'DotNetNuke',
+		'DotNetNuke Corp',
+		'www.dotnetnuke.com',
+		'support@dotnetnuke.com',
+		1,
+		-1,
+		getdate(),
+		-1,
+		getdate(),
+		Null,
+		Null
+	)
+
+		Set @PackageId = SCOPE_IDENTITY()
+
+	INSERT INTO {databaseOwner}{objectQualifier}SkinPackages (
+	  PackageID,
+	  PortalID,
+	  SkinName,
+	  SkinType,
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate]
+	)
+	VALUES (
+	  @PackageID,
+	  Null,
+	  'Aphelia',
+	  'Container',
+	  -1,
+	  getdate(),
+	  -1,
+	  getdate()
+	)
+END
+
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Packages] WHERE [Name] = 'DarkKnightMobile')
+BEGIN
+	DECLARE @PackageId int
+	
+	INSERT INTO {databaseOwner}{objectQualifier}Packages
+	(
+		PortalID,
+		[Name],
+		FriendlyName,
+		[Description],
+		PackageType,
+		Version,
+		License,
+		Manifest,
+		ReleaseNotes,
+		[Owner],
+		Organization,
+		Url,
+		Email,
+		IsSystemPackage,
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		FolderName,
+		IconFile
+	)
+	VALUES (
+		Null,
+		'DarkKnightMobile',
+		'DarkKnightMobile',
+		'DarkKnightMobile Skin',
+		'Skin',
+		'07.00.00',
+		'',
+		'<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DarkKnightMobile" type="Skin" version="07.00.00">
+      <friendlyName>DarkKnightMobile</friendlyName>
+      <description>DarkKnightMobile</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <skinName>DarkKnightMobile</skinName>
+            <basePath>Portals\_default\Skins\DarkKnightMobile</basePath>
+          </skinFiles>
+        </component>
+      </components>
+    </package>
+    <package name="DarkKnightMobile" type="Container" version="07.00.00">
+      <friendlyName>DarkKnightMobile</friendlyName>
+      <description>DarkKnightMobile</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Container">
+          <containerFiles>
+            <containerName>DarkKnightMobile</containerName>
+            <basePath>Portals\_default\Containers\DarkKnightMobile</basePath>
+          </containerFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>',
+		'',
+		'DotNetNuke',
+		'DotNetNuke Corp',
+		'www.dotnetnuke.com',
+		'support@dotnetnuke.com',
+		1,
+		-1,
+		getdate(),
+		-1,
+		getdate(),
+		Null,
+		Null
+	)
+	Set @PackageId = SCOPE_IDENTITY()
+
+	INSERT INTO {databaseOwner}{objectQualifier}SkinPackages (
+	  PackageID,
+	  PortalID,
+	  SkinName,
+	  SkinType,
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate]
+	)
+	VALUES (
+	  @PackageID,
+	  Null,
+	  'DarkKnightMobile',
+	  'Skin',
+	  -1,
+	  getdate(),
+	  -1,
+	  getdate()
+	)
+
+		INSERT INTO {databaseOwner}{objectQualifier}Packages
+	(
+		PortalID,
+		[Name],
+		FriendlyName,
+		[Description],
+		PackageType,
+		Version,
+		License,
+		Manifest,
+		ReleaseNotes,
+		[Owner],
+		Organization,
+		Url,
+		Email,
+		IsSystemPackage,
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		FolderName,
+		IconFile
+	)
+	VALUES (
+		Null,
+		'DarkKnightMobile',
+		'DarkKnightMobile',
+		'DarkKnightMobile Container',
+		'Container',
+		'07.00.00',
+		'',
+		'<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DarkKnightMobile" type="Skin" version="07.00.00">
+      <friendlyName>DarkKnightMobile</friendlyName>
+      <description>DarkKnightMobile skin</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <skinName>DarkKnightMobile</skinName>
+            <basePath>Portals\_default\Skins\DarkKnightMobile</basePath>
+          </skinFiles>
+        </component>
+      </components>
+    </package>
+    <package name="DarkKnightMobile" type="Container" version="07.00.00">
+      <friendlyName>DarkKnightMobile</friendlyName>
+      <description>DarkKnightMobile</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Container">
+          <containerFiles>
+            <containerName>DarkKnightMobile</containerName>
+            <basePath>Portals\_default\Containers\DarkKnightMobile</basePath>
+          </containerFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>',
+		'',
+		'DotNetNuke',
+		'DotNetNuke Corp',
+		'www.dotnetnuke.com',
+		'support@dotnetnuke.com',
+		1,
+		-1,
+		getdate(),
+		-1,
+		getdate(),
+		Null,
+		Null
+	)
+
+		Set @PackageId = SCOPE_IDENTITY()
+
+	INSERT INTO {databaseOwner}{objectQualifier}SkinPackages (
+	  PackageID,
+	  PortalID,
+	  SkinName,
+	  SkinType,
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate]
+	)
+	VALUES (
+	  @PackageID,
+	  Null,
+	  'DarkKnightMobile',
+	  'Container',
+	  -1,
+	  getdate(),
+	  -1,
+	  getdate()
+	)
+END
+
+GO
+
+/* Fix bug 23677: add sp GetAllPortals to return all portals. */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllPortals]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllPortals]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllPortals]
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_Portals
+	ORDER BY PortalName
+GO
+
+/**************** Fix bug 23127: also remove plus char(+) from tab path. ***************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}BuildTabLevelAndPath]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}BuildTabLevelAndPath]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BuildTabLevelAndPath](@TabId INT, @IncludeChild BIT = 0)
+	AS
+	BEGIN
+		DECLARE @ParentId INT, @Level INT, @TabPath NVARCHAR(255), @TabName NVARCHAR(50)
+		SELECT @ParentId = ParentId, @TabName = TabName FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId
+		IF @ParentId > 0
+		BEGIN
+			SELECT 
+				@Level = [Level] + 1,
+				@TabPath = TabPath + '//' + {databaseOwner}[{objectQualifier}RemoveStringCharacters](@TabName, '&? ./''-#:*+')
+			 FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @ParentId
+		END
+		ELSE
+		BEGIN
+			SELECT @Level = 0, @TabPath = '//' + {databaseOwner}[{objectQualifier}RemoveStringCharacters](@TabName, '&? ./''-#:*+')
+		END
+		
+		UPDATE {databaseOwner}[{objectQualifier}Tabs] SET [Level] = @Level, TabPath = @TabPath WHERE TabID = @TabId
+		
+		IF @IncludeChild = 1
+		BEGIN
+			DECLARE @ChildTabs TABLE(TabID INT)
+			DECLARE @ChildID INT
+			INSERT INTO @ChildTabs SELECT TabID FROM {databaseOwner}[{objectQualifier}Tabs] WHERE ParentId =  @TabId
+			WHILE EXISTS (SELECT TOP 1 TabID FROM @ChildTabs)
+				BEGIN
+					SET @ChildID = (SELECT TOP 1 TabID FROM @ChildTabs)
+					EXEC {databaseOwner}[{objectQualifier}BuildTabLevelAndPath] @ChildID, @IncludeChild
+					DELETE FROM @ChildTabs WHERE TabID = @ChildID
+				END
+		END
+	END
+
+GO
+
+-- we need to ensure that after upgrade all the paths are also fixed
+UPDATE {databaseOwner}[{objectQualifier}Tabs] SET [TabPath] = Replace([TabPath], '+', '') WHERE [TabPath] LIKE '%+%'
+GO
+
+/***** Fix bug 23824: update packages to use new icon file *****/
+UPDATE {databaseOwner}[{objectQualifier}Packages]
+	SET IconFile = CASE IconFile
+						WHEN '~/DesktopModules/Admin/XmlMerge/xmlMerge.png' THEN '~/Icons/Sigma/Configuration_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Dashboard/dashboard.gif' THEN '~/Icons/Sigma/Dashboard_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Extensions/extensions.gif' THEN '~/Icons/Sigma/Extensions_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/FileManager/icon_filemanager_32px.gif' THEN '~/Icons/Sigma/Files_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Analytics/analytics.gif' THEN '~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png'
+						WHEN '~/DesktopModules/DNNCorp/GoogleAnalytics/Images/analytics.gif' THEN '~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/HostSettings/hostSettings.gif' THEN '~/Icons/Sigma/Hostsettings_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Languages/languages.gif' THEN '~/Icons/Sigma/Languages_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Lists/lists.gif' THEN '~/Icons/Sigma/Lists_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/LogViewer/logViewer.gif' THEN '~/Icons/Sigma/ViewStats_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Newsletters/newsletters.gif' THEN '~/Icons/Sigma/BulkMail_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Tabs/icon_tabs_32px.gif' THEN '~/Icons/Sigma/Tabs_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/RecycleBin/recycleBin.gif' THEN '~/Icons/Sigma/Trash_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Scheduler/scheduler.gif' THEN '~/Icons/Sigma/ScheduleHistory_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/SearchAdmin/search.gif' THEN '~/Icons/Sigma/Search_32x32_Standard.png'
+						WHEN '~/DesktopModules/Admin/SiteLog/siteLog.gif' THEN '~/Icons/Sigma/SiteLog_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Portals/icon_sitesettings_32px.gif' THEN '~/Icons/Sigma/SiteSettings_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/SiteWizard/siteWizard.gif' THEN '~/Icons/Sigma/Wizard_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Sitemap/sitemap.gif' THEN '~/Icons/Sigma/Sitemap_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/SkinDesigner/skinDesigner.gif' THEN '~/Icons/Sigma/Skins_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Skins/skins.gif' THEN '~/Icons/Sigma/Skins_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/SQL/sql.gif' THEN '~/Icons/Sigma/Sql_32x32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Taxonomy/Images/taxonomy.gif' THEN '~/Icons/Sigma/Tag_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Security/icon_users_32px.gif' THEN '~/Icons/Sigma/Hostuser_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/Vendors/icon_Vendors_32px.gif' THEN '~/Icons/Sigma/Vendors_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/WhatsNew/whatsNew.gif' THEN '~/Icons/Sigma/Whatsnew_32X32_Standard.png'
+						WHEN '~/DesktopModules/Admin/SearchInput/search.gif' THEN '~/Icons/Sigma/Search_32x32_Standard.png'
+						WHEN '~/DesktopModules/Admin/SearchResults/search.gif' THEN '~/Icons/Sigma/Search_32x32_Standard.png'
+						ELSE IconFile
+					END
+GO
+
+/***** Fix bug 22480: define register control as a desktop module. *****/
+IF NOT EXISTS ( SELECT  PackageID
+                FROM    {databaseOwner}[{objectQualifier}Packages]
+                WHERE   Name = 'DotNetNuke.Registration' ) 
+    BEGIN
+        DECLARE @PackageID INT ,
+            @ContentItemID INT ,
+			@ContentTypeID INT ,
+            @DesktopModuleID INT ,
+            @ModuleDefID INT
+		DECLARE @Ident TABLE(PrimaryKey INT)          
+		
+		IF NOT EXISTS(SELECT ContentTypeID FROM {databaseOwner}[{objectQualifier}ContentTypes] WHERE ContentType = 'DesktopModule')
+		BEGIN
+			EXEC {databaseOwner}[{objectQualifier}AddContentType] @ContentType = N'DesktopModule'
+		END
+		SELECT @ContentTypeID = ContentTypeID FROM {databaseOwner}[{objectQualifier}ContentTypes] WHERE ContentType = 'DesktopModule'
+
+        INSERT @Ident EXEC {databaseOwner}[{objectQualifier}AddContentItem] @Content = N'Account Registration', -- nvarchar(max)
+            @ContentTypeID = @ContentTypeID, -- int
+            @TabID = -1, -- int
+            @ModuleID = -1, -- int
+            @ContentKey = N'', -- nvarchar(250)
+            @Indexed = 0, -- bit
+            @CreatedByUserID = -1 -- int) t
+        SELECT  @ContentItemID = PrimaryKey FROM @Ident
+		DELETE FROM @Ident
+
+        INSERT @Ident EXEC {databaseOwner}[{objectQualifier}AddPackage] @PortalID = NULL, -- int
+            @Name = N'DotNetNuke.Registration', -- nvarchar(128)
+            @FriendlyName = N'Registration', -- nvarchar(250)
+            @Description = N'Allow users to create membership in the site.', -- nvarchar(2000)
+            @PackageType = N'Module', -- nvarchar(50)
+            @Version = N'07.00.01', -- nvarchar(50)
+            @License = NULL, -- ntext
+            @Manifest = NULL, -- ntext
+            @Owner = N'DotNetNuke', -- nvarchar(100)
+            @Organization = N'DotNetNuke Corporation', -- nvarchar(100)
+            @Url = N'www.dotnetnuke.com', -- nvarchar(250)
+            @Email = N'support@dotnetnuke.com', -- nvarchar(100)
+            @ReleaseNotes = NULL, -- ntext
+            @IsSystemPackage = 0, -- bit
+            @CreatedByUserID = -1, -- int
+            @FolderName = N'Admin/Security', -- nvarchar(127)
+            @IconFile = N'~/Icons/Sigma/Users_32x32_Standard.png' -- nvarchar(100)
+        SELECT  @PackageID = PrimaryKey FROM @Ident
+		DELETE FROM @Ident
+		
+
+        INSERT @Ident EXEC {databaseOwner}[{objectQualifier}AddDesktopModule] @PackageID = @PackageID, -- int
+            @ModuleName = N'Registration', -- nvarchar(128)
+            @FolderName = N'Admin/Security', -- nvarchar(128)
+            @FriendlyName = N'Account Registration', -- nvarchar(128)
+            @Description = N'Allow users to create membership in the site.', -- nvarchar(2000)
+            @Version = N'07.00.01', -- nvarchar(8)
+            @IsPremium = 0, -- bit
+            @IsAdmin = 0, -- bit
+            @BusinessController = N'', -- nvarchar(200)
+            @SupportedFeatures = 0, -- int
+            @Shareable = 0, -- int
+            @CompatibleVersions = NULL, -- nvarchar(500)
+            @Dependencies = NULL, -- nvarchar(400)
+            @Permissions = NULL, -- nvarchar(400)
+            @ContentItemId = @ContentItemID, -- int
+            @CreatedByUserID = -1 -- int
+        SELECT  @DesktopModuleID = PrimaryKey FROM @Ident
+		DELETE FROM @Ident
+		
+        INSERT @Ident EXEC {databaseOwner}[{objectQualifier}AddModuleDefinition] @DesktopModuleId = @DesktopModuleID, -- int
+            @FriendlyName = N'Account Registration', -- nvarchar(128)
+            @DefinitionName = N'Account Registration', -- nvarchar(128)
+            @DefaultCacheTime = -1, -- int
+            @CreatedByUserID = -1 -- int
+        SELECT  @ModuleDefID = PrimaryKey FROM @Ident
+		DELETE FROM @Ident
+
+        EXEC {databaseOwner}[{objectQualifier}AddModuleControl] @ModuleDefID = @ModuleDefID, -- int
+            @ControlKey = NULL, -- nvarchar(50)
+            @ControlTitle = N'Account Registration', -- nvarchar(50)
+            @ControlSrc = N'DesktopModules/Admin/Security/Register.ascx', -- nvarchar(256)
+            @IconFile = N'~/Icons/Sigma/Users_32x32_Standard.png', -- nvarchar(100)
+            @ControlType = -1, -- int
+            @ViewOrder = NULL, -- int
+            @HelpUrl = N'', -- nvarchar(200)
+            @SupportsPartialRendering = 1, -- bit
+            @SupportsPopUps = 1, -- bit
+            @CreatedByUserID = -1 -- int
+    END
+GO
+
+/*** DNNPRO-23120 - SI:User PortalID set incorrectly when site groups enabled ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch] 
+(
+    @PortalID int,                          -- portal                
+    @UserId int,                            -- for determining correct visibility permissions
+    @FilterUserId int,                      -- for filtering relationships on    
+    @FilterRoleId int,                      -- for filtering by roles
+    @RelationshipTypeId int,                -- for filtering by relationships
+    @IsAdmin bit,                           -- determines visibility
+    @PageSize int,                          -- page size
+    @PageIndex int,                         -- 0 based page index
+    @SortBy nvarchar(100),                  -- sort field
+    @SortAscending bit,                     -- sort flag indicating whether sort is asc or desc
+    @PropertyNames nvarchar(max),           -- list of property names to filter
+    @PropertyValues nvarchar(max)           -- list of property values to filter
+)
+AS
+    -- Setup Top XX
+    DECLARE @topSql nvarchar(20) SET @topSql = ''
+    IF @PageSize > -1 BEGIN SET @topSql = ' TOP ' + CONVERT(nvarchar(20), @PageSize) END
+                
+    -- Setup Specific Page
+    DECLARE @minRowNumberSql nvarchar(20) SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
+    -- Setup Pivot Field List
+    DECLARE @pivotSql nvarchar(max) SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
+
+    -- Get User specific columns
+    DECLARE @UserColumns TABLE(ColumnName NVARCHAR(100))
+    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}vw_Users'
+
+    -- Lists Filters names and values into tables
+    DECLARE @PropertyNamesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    DECLARE @PropertyValuesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    INSERT INTO @PropertyNamesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)                      
+    INSERT INTO @PropertyValuesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyValues)
+                
+    -- Gets filters that are on the User rather than Profile Properties
+    DECLARE @UserFiltersTable TABLE (RowNumber Int, RowValue NVARCHAR(MAX))
+    INSERT INTO @UserFiltersTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',',@PropertyNames) WHERE RowValue IN (SELECT * FROM @UserColumns)
+
+
+    DECLARE @sql nvarchar(max) SET @sql = ''
+    DECLARE @filterSql nvarchar(max)SET @filterSql = ''
+
+    -- ///////////////////////////////////////////////////
+    -- FILTERING by PROFILE PROPERTY or USER PROPERTY
+    -- ///////////////////////////////////////////////////
+    --IF @PropertyNames IS NOT NULL AND @PropertyNames <> ''
+    IF ((SELECT COUNT(*) FROM @PropertyNamesTable) > 0) AND ((SELECT COUNT(*) FROM @PropertyValuesTable)> 0) 
+	    BEGIN
+            DECLARE @propertyFilter nvarchar(max)
+            DECLARE @userFilter nvarchar(max)
+            DECLARE @userFilterJoin nvarchar(max) SET @userFilterJoin = ''
+            DECLARE @profilePropertyCount INT
+            DECLARE @userFilterCount INT
+            DECLARE @propertyAndUserFilter nvarchar(10) SET @propertyAndUserFilter = ''
+            DECLARE @groupBy NVARCHAR(300)
+
+            -- Filters on Profile Properties    
+            ;WITH CTE_PropertyNames(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyNamesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns)),
+            CTE_PropertyValues(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyValuesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns))
+
+            SELECT @propertyFilter = COALESCE(@propertyFilter + ' OR ' , ' ') 
+                                        + ' (PropertyName=''' + N.RowValue 
+                                        + ''' AND ((PropertyValue LIKE ''' + V.RowValue +'%'') OR (PropertyValue LIKE ''% ' + V.RowValue +'%'')))'
+            FROM CTE_PropertyNames AS N INNER JOIN CTE_PropertyValues AS V ON N.RowNumber = V.RowNumber
+                                
+            -- Filters on User Property                           
+            SELECT @userFilter = COALESCE(@userFilter + ' AND ', ' ')  
+										+ ' ((u.' + N.RowValue + ' LIKE ''' + V.RowValue +'%'') OR (u.' + N.RowValue + ' LIKE ''% ' + V.RowValue +'%'')) '
+            FROM @UserFiltersTable AS N  INNER JOIN @PropertyValuesTable AS V ON N.RowNumber = V.RowNumber
+                                
+            SELECT @userFilterCount = COUNT(*) FROM @UserFiltersTable
+            IF @userFilterCount > 0 BEGIN SET @userFilterJoin = ' INNER JOIN {objectQualifier}vw_Users u ON u.UserId = p.UserId ' END
+
+            -- Determining the Group By Clause -- dependant on types of filters used
+            SELECT @profilePropertyCount = COUNT(*) FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)
+            WHERE RowValue IN (SELECT PropertyName FROM {objectQualifier}ProfilePropertyDefinition WHERE PortalID = @PortalId)
+            AND RowValue NOT IN (SELECT ColumnName FROM @UserColumns)
+
+            IF @profilePropertyCount > 0
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) = ' + CONVERT(nvarchar(20),@profilePropertyCount ) END
+            ELSE
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) > 0 '     END
+
+            IF ( @profilePropertyCount > 0 AND @userFilterCount > 0)
+            BEGIN SET @propertyAndUserFilter = ' AND ' END
+
+            -- CREATE FINAL FILTER
+            SET @filterSql = ' DECLARE @MatchingUsers TABLE (UserID INT, Occurrances INT) INSERT INTO @MatchingUsers SELECT p.UserID, COUNT(*) AS occurances ' 
+                                        + ' FROM {databaseOwner}{objectQualifier}vw_profile p ' + @userFilterJoin
+                                        + ' WHERE ' + COALESCE(' ( ' + @propertyFilter + ') ', ' ') + @propertyAndUserFilter + COALESCE(@userFilter, ' ') 
+										+ ' AND ((Visibility = 0) OR (Visibility = 1 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) OR (Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1))' 
+                                        + @groupBy
+		END
+
+        -- ///////////////////////////////////////////////////      
+        -- SETUP ROLE AND RELATIONSHIP FILTERS
+        -- ///////////////////////////////////////////////////
+        DECLARE @roleAndRelationshipFilter nvarchar(1000)
+        DECLARE @roleFilter nvarchar(100) SET @roleFilter = ''
+        DECLARE @relationshipFilter nvarchar(1000) SET @relationshipFilter = ''
+        DECLARE @roleAndRelationshipFlag bit SET @roleAndRelationshipFlag  = 0
+        DECLARE @RoleAndRelationshipSelect nvarchar(100) SET @RoleAndRelationshipSelect = ''
+                                
+        -- Filter by Role
+        IF @FilterRoleId <> -1 
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @roleFilter = ' JOIN {objectQualifier}UserRoles UR ON U.UserID = UR.UserID AND UR.RoleID = ' + CONVERT(nvarchar(20), @FilterRoleId)
+            END
+
+        -- Filter by Relationship
+        IF @RelationshipTypeId <> -1  
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @relationshipFilter = ' JOIN {objectQualifier}Relationships REL ON REL.PortalID = ' + CONVERT(nvarchar(20), @PortalID)
+                                            + ' AND RelationshipTypeID = ' + CONVERT(nvarchar(20), @RelationshipTypeId) 
+                                            + ' JOIN {objectQualifier}UserRelationships UREL ON REL.RelationshipID = UREL.RelationshipID AND
+                                            ((UREL.UserID = ' + CONVERT(nvarchar(20), @FilterUserId) + ' AND UREL.RelatedUserID = U.UserID) OR
+                                            (UREL.UserID = U.UserID AND UREL.RelatedUserID = ' + CONVERT(nvarchar(20), @FilterUserId) + '))'
+                                            + ' WHERE UREL.Status = 2'
+            END 
+
+        IF @roleAndRelationshipFlag = 1 BEGIN SET @RoleAndRelationshipSelect = ' AND s.UserId IN (SELECT userID FROM  RoleAndRelationUsers) ' END
+
+        SET @roleAndRelationshipFilter =  ', RoleAndRelationUsers AS ( SELECT U.userId FROM {objectQualifier}vw_Users U ' + @roleFilter + @relationshipFilter + ' )' 
+
+        -- ///////////////////////////////////////////////////  
+        -- SET UP SORT
+        -- ///////////////////////////////////////////////////
+        DECLARE @sortSql nvarchar(1000) SET @sortSql = ''
+        DECLARE @propertySort nvarchar(1000) SET @propertySort = ''
+        DECLARE @filterJoin nvarchar(100) SET @filterJoin = ''
+        DECLARE @filterSortSql nvarchar(1000) SET @filterSortSql = ''
+        DECLARE @sortByUserProperty BIT         
+        SELECT @sortByUserProperty = COUNT(*) FROM @UserColumns WHERE ColumnName = @SortBy
+
+        IF ( @profilePropertyCount > 0 OR @userFilterCount > 0)
+	        BEGIN SET @filterJoin = ' INNER JOIN @MatchingUsers m ON m.UserID = s.UserID ' END
+
+        -- Determine the Type of Sort
+        IF (@SortBy IS NOT NULL AND @SortBy <> '') AND @sortByUserProperty <> 1
+	        BEGIN -- Sort By Profile Property
+                SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')
+                SET @propertySort = {databaseOwner}{objectQualifier}GetSortSql('PropertyValue',@SortAscending,'UserID')
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @propertySort + ' ) AS RowNumber, *  ' 
+                                                + ' FROM {objectQualifier}vw_Profile WHERE PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' AND PropertyName = ''' + @SortBy + ''' )'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+        ELSE
+		    BEGIN   
+                -- Sort By User Property
+                IF @sortByUserProperty = 1 BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')END
+                                
+                -- Default: Sort By UserID
+                ELSE BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql('UserID',@SortAscending,'UserID') END                        
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @sortSql + ' ) AS RowNumber, * '
+                                                + ' FROM {objectQualifier}vw_Users WHERE (PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR PortalID Is NULL))'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+
+		-- Check if any Profile Property Definitions exist for this portal
+		IF @pivotSql is not null
+			BEGIN
+				-- SELECT with PIVOT
+				SET @pivotSql = 'SELECT * FROM PivotedUsers PIVOT (MAX(PropertyValue) for PropertyName in (' + @pivotSql + ') ) as pivotTable '
+			END
+		ELSE
+			BEGIN
+				-- SELECT with DISTINCT
+				SET @pivotSql = 'SELECT distinct UserID, PortalID, Username, Email, DisplayName, IsSuperUser, IsDeleted, AffiliateID, UpdatePassword, Authorised FROM PivotedUsers '
+			END
+
+        -- ///////////////////////////////////////////////////
+        -- CREATE FINAL QUERY
+        -- ///////////////////////////////////////////////////
+        SET @sql = @filterSql
+                + ' DECLARE @TempUsers TABLE (SortOrder INT, UserID INT) '
+                + @filterSortSql
+                + @roleAndRelationshipFilter
+                + ' INSERT INTO @TempUsers SELECT ' + @topSql
+                + ' s.RowNumber, s.UserId FROM MatchingSorted s ' 
+                + ' WHERE RowNumber >= ' + @minRowNumberSql 
+                + @roleAndRelationshipSelect
+                + ' ;WITH PivotedUsers AS ( SELECT U.UserID, U.PortalID, U.Username, U.Email, U.DisplayName, U.IsSuperUser, U.IsDeleted,        
+                                                U.AffiliateID, U.UpdatePassword, U.Authorised, Prop.PropertyName,
+                                                CASE
+                                                    WHEN (P.Visibility = 0) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 0 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) THEN P.PropertyValue
+                                                    WHEN U.UserID = ' + CONVERT(nvarchar(20), @UserId) + ' OR (P.Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    ELSE NULL
+                                                END AS PropertyValue
+                                            FROM   {objectQualifier}vw_Users AS U
+                                                INNER JOIN {objectQualifier}UserProfile AS P ON U.UserID = P.UserID
+                                                LEFT OUTER JOIN {objectQualifier}ProfilePropertyDefinition AS Prop ON 
+                                                (Prop.PropertyDefinitionID = P.PropertyDefinitionID and Prop.Deleted = 0 and Prop.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ')
+                                            WHERE U.UserId IN (SELECT UserId FROM @TempUsers)
+												AND (U.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalId Is NULL )  
+												AND U.IsDeleted = 0 
+                                            )' +
+                @pivotSql + @sortSql            
+
+        EXEC(@sql)
+GO
+
+/*************** Journal API Changes:  Adding IsDeleted Column to support Soft Deletes ***************/
+/*** DNN-24455 - Journal: Add "IsDeleted" Column to DB ***/
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Journal' AND COLUMN_NAME='IsDeleted')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Journal
+			ADD IsDeleted bit NOT NULL CONSTRAINT DF_{objectQualifier}Journal_IsDeleted DEFAULT 0
+	END
+GO
+
+/*************** Adding "IsDeleted" to Journal Queries: Journal_Get ***************/
+/*** DNN-24455 - Journal: Add "IsDeleted" Column to DB ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+GO
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+	@PortalId int,
+	@CurrentUserId int,
+	@JournalId int,
+	@IsDeleted int = 1
+	AS
+	SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted
+	FROM       	{databaseOwner}[{objectQualifier}Journal] AS j INNER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE j.JournalId = @JournalId AND j.IsDeleted <> @IsDeleted
+GO
+
+/*************** Adding "IsDeleted" to Journal Queries: Journal_GetByKey ***************/
+/*** DNN-24455 - Journal: Add "IsDeleted" Column to DB ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_GetByKey]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_GetByKey]
+GO
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_GetByKey]
+	@PortalId int,
+	@ObjectKey nvarchar(255),
+	@IsDeleted int = 1
+	AS
+	SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted
+	FROM       	{databaseOwner}[{objectQualifier}Journal] AS j INNER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE j.ObjectKey = @ObjectKey AND j.ObjectKey IS NOT NULL AND @ObjectKey <> '' AND j.IsDeleted <> @IsDeleted
+GO
+
+/*************** Adding "IsDeleted" to Journal Queries: Journal_ListForGroup ***************/
+/*** DNN-24455 - Journal: Add "IsDeleted" Column to DB ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForGroup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
+GO
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@GroupId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IsDeleted int = 1
+	AS
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows;
+	
+		DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+					INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+					ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+					WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+					ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+					WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(r.RoleId as nvarchar(150)) + '</id><name><![CDATA[' + r.RoleName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+		{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId INNER JOIN
+		{databaseOwner}[{objectQualifier}Roles] as r ON j.GroupId = r.RoleId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE	RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted <> @IsDeleted
+	ORDER BY RowNumber ASC;
+GO
+
+/*************** Adding "IsDeleted" to Journal Queries: Journal_ListForProfile ***************/
+/*** DNN-24455 - Journal: Add "IsDeleted" Column to DB ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForProfile]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForProfile]
+GO
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForProfile]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@ProfileId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IsDeleted int = 1
+	AS
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows;
+
+	DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.ProfileId = @ProfileId AND j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.ProfileId = @ProfileId AND j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId AND j.ProfileId = @ProfileId
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+	{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE	RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted <> @IsDeleted
+	ORDER BY RowNumber ASC;
+GO
+
+/*************** Adding "IsDeleted" to Journal Queries: Journal_ListForSummary ***************/
+/*** DNN-24455 - Journal: Add "IsDeleted" Column to DB ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForSummary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForSummary]
+GO
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForSummary]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IsDeleted int = 1
+	AS
+	IF @RowIndex = 0
+	BEGIN
+		SET @RowIndex = 1
+	END
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows - 1;
+
+	DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+	{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE	RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted <> @IsDeleted
+	ORDER BY RowNumber ASC;
+GO
+
+/*************** Updating Journal SPROCs to support SOFT Deletes: Journal_Delete ***************/
+/*** DNN-24485 - Journal: Update SPROCs to Support Soft Delete as well as Hard Deletes ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Delete]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Delete]
+GO					 
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Delete]
+	@JournalId int,
+	@SoftDelete int = 0
+	AS
+
+	-- Hard Delete
+	IF @SoftDelete <> 1 
+	BEGIN
+		DELETE FROM {databaseOwner}[{objectQualifier}Journal_Security] WHERE JournalId = @JournalId
+		DELETE FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE JournalId = @JournalId
+		DELETE FROM {databaseOwner}[{objectQualifier}Journal] WHERE JournalId = @JournalId
+	END
+
+	-- Soft Delete
+	IF @SoftDelete = 1 
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Journal] SET IsDeleted = 1 WHERE JournalId = @JournalId
+	END
+GO
+
+/*************** Updating Journal SPROCs to support SOFT Deletes: Journal_DeleteByGroupId ***************/
+/*** DNN-24485 - Journal: Update SPROCs to Support Soft Delete as well as Hard Deletes ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_DeleteByGroupId]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_DeleteByGroupId]
+GO
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_DeleteByGroupId]
+	@PortalId int,
+	@GroupId int,
+	@SoftDelete int = 0
+	AS
+
+	-- Hard Delete
+	IF @SoftDelete <> 1 
+	BEGIN
+		DELETE {databaseOwner}[{objectQualifier}Journal_Security] 
+		FROM {databaseOwner}[{objectQualifier}Journal_Security] as js  INNER JOIN {databaseOwner}[{objectQualifier}Journal] as j 
+		   ON js.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId AND j.GroupId = @GroupId AND @GroupId > 0 AND j.GroupId IS NOT NULL
+
+		DELETE {databaseOwner}[{objectQualifier}Journal_Comments] 
+		FROM {databaseOwner}[{objectQualifier}Journal_Comments] as jc  INNER JOIN {databaseOwner}[{objectQualifier}Journal] as j 
+		   ON jc.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId AND j.GroupId = @GroupId AND @GroupId > 0 AND j.GroupId IS NOT NULL
+
+		DELETE FROM {databaseOwner}[{objectQualifier}Journal] WHERE PortalId = @PortalId AND GroupId = @GroupId AND @GroupId > 0 AND GroupId IS NOT NULL
+	END
+
+	-- Soft Delete
+	IF @SoftDelete = 1 
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Journal] SET IsDeleted = 1 WHERE PortalId = @PortalId AND GroupId = @GroupId AND @GroupId > 0 AND GroupId IS NOT NULL
+	END
+GO
+
+/*************** Updating Journal SPROCs to support SOFT Deletes: Journal_DeleteByKey ***************/
+/*** DNN-24485 - Journal: Update SPROCs to Support Soft Delete as well as Hard Deletes ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_DeleteByKey]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_DeleteByKey]
+GO
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_DeleteByKey]
+	@PortalId int,
+	@ObjectKey nvarchar(255),
+	@SoftDelete int = 0
+	AS
+	DECLARE @JournalId int
+	SET @JournalId = (SELECT JournalId FROM {databaseOwner}[{objectQualifier}Journal] WHERE PortalId = @PortalId AND ObjectKey = @ObjectKey AND @ObjectKey <> '' AND ObjectKey IS NOT NULL)
+
+	-- Hard Delete
+	IF @JournalId > 0 AND @SoftDelete <> 1 
+	BEGIN
+		DELETE FROM {databaseOwner}[{objectQualifier}Journal_Security] WHERE JournalId = @JournalId
+		DELETE FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE JournalId = @JournalId
+		DELETE FROM {databaseOwner}[{objectQualifier}Journal] WHERE JournalId = @JournalId
+	END
+
+	-- Soft Delete
+	IF @JournalId > 0 AND @SoftDelete = 1 
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Journal] SET IsDeleted = 1 WHERE JournalId = @JournalId
+	END
+GO
+
+/* Update [GetPortalRoles] Stored Procedure to returns the same result of the Stored Procedure GetRoles  */
+/*************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalRoles
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortalRoles
+	@PortalId     int
+AS
+	SELECT R.*,
+		   (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}UserRoles U WHERE U.RoleID = R.RoleID) AS UserCount
+	FROM {databaseOwner}{objectQualifier}Roles R
+	WHERE  ( R.PortalId = @PortalId OR R.PortalId is null )
+	ORDER BY R.RoleName
+GO
+
+/***** Fix bug 24525: add the task of message dispath *****/
+IF NOT EXISTS(SELECT ScheduleID FROM {databaseOwner}[{objectQualifier}Schedule] WHERE FriendlyName = 'Messaging Dispatch')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName]) VALUES ('DotNetNuke.Services.Messaging.Scheduler.MessagingScheduler, DotNetNuke', 1, 'm', 30, 's', 10, '', 0, 1, 'Messaging', NULL, NULL, NULL, NULL, NULL, N'Messaging Dispatch')
+END
+GO
+
+/* FIXING BUG: NEBULA-24561 - Blog - Unable to "like" comments  */
+/* existing errors in SPROC */
+/****************************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Comment_Like]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Comment_Like
+GO
+	CREATE PROCEDURE {databaseOwner}{objectQualifier}Journal_Comment_Like
+		@JournalId int,
+		@CommentId int,
+		@UserId int,
+		@UserName nvarchar(50)
+	AS
+	DECLARE @cxml xml
+	SET @cxml = (SELECT CommentXML FROM {databaseOwner}{objectQualifier}Journal_Comments WHERE CommentId = @CommentId AND JournalId = @JournalId)
+	IF @cxml IS NULL 
+		BEGIN
+		DECLARE @x xml
+			SET @x = '<root></root>';
+			UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+				SET CommentXML = @x
+				WHERE JournalId = @JournalId AND CommentId = @CommentId
+		END
+	IF EXISTS(SELECT CommentId
+				FROM {databaseOwner}{objectQualifier}Journal_Comments
+				WHERE JournalId = @JournalId AND CommentId = @CommentId
+				AND CommentXML.exist('/root/likes/u[@uid=sql:variable("@userid")]') = 1)
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+				SET CommentXML.modify('delete (/root/likes/u[@uid=sql:variable("@UserId")])')
+				WHERE JournalId = @JournalId AND CommentId = @CommentId
+				AND CommentXML.exist('/root/likes/u[@uid=sql:variable("@UserId")]') = 1
+		END
+	ELSE
+		BEGIN
+			BEGIN
+				IF NOT EXISTS(SELECT CommentId FROM {databaseOwner}{objectQualifier}Journal_Comments
+								WHERE JournalId = @JournalId AND CommentId = @CommentID
+								AND CommentXML.exist('/root/likes') = 1)
+					BEGIN
+						UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+						SET CommentXML.modify('insert <likes /> as last into (/root)[1]') 
+						WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root') = 1
+					END
+			END
+			BEGIN
+				UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+				SET CommentXML.modify('insert <u uid="{xs:string(sql:variable("@UserId"))}" un="{xs:string(sql:variable("@UserName"))}" /> as last into (/root/likes)[1]')
+				WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root/likes') = 1
+			END
+		END
+GO
+
+/*****              SqlDataProvider                     *****/
+/************************************************************/

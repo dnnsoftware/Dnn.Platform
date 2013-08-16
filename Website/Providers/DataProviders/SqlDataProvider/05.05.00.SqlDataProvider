@@ -1,0 +1,1990 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Delete Orphaned Module*/
+/*************************/
+DELETE 
+	FROM {databaseOwner}{objectQualifier}Modules 
+	WHERE ModuleID IN (SELECT ModuleID FROM {databaseOwner}{objectQualifier}vw_modules WHERE TabModuleID IS NULL)
+GO
+
+/* Add UniqueId Column to Tabs Table */
+/*************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Tabs' AND COLUMN_NAME='UniqueId')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}Tabs
+            ADD UniqueId uniqueidentifier NOT NULL CONSTRAINT DF_{objectQualifier}Tabs_Guid DEFAULT newId()
+
+		ALTER TABLE {databaseOwner}{objectQualifier}Tabs 
+			ADD CONSTRAINT IX_{objectQualifier}Tabs_UniqueId UNIQUE NONCLUSTERED
+	    (
+                UniqueId
+		)
+
+    END
+
+GO
+
+/* Add VersionGuid Column to Tabs Table */
+/****************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Tabs' AND COLUMN_NAME='VersionGuid')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}Tabs
+            ADD VersionGuid uniqueidentifier NOT NULL CONSTRAINT DF_{objectQualifier}Tabs_VersionGuid DEFAULT newId()
+    END
+
+GO
+
+/* Add DefaultLanguageGuid Column to Tabs Table */
+/************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Tabs' AND COLUMN_NAME='DefaultLanguageGuid')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}Tabs
+            ADD DefaultLanguageGuid uniqueidentifier NULL
+    END
+
+GO
+
+/* Add LocalizedVersionGuid Column to Tabs Table */
+/*************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Tabs' AND COLUMN_NAME='LocalizedVersionGuid')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}Tabs
+            ADD LocalizedVersionGuid uniqueidentifier NOT NULL CONSTRAINT DF_{objectQualifier}Tabs_LocalizedVersionGuid DEFAULT newId()
+    END
+
+GO
+
+/* Update Tabs View to Include new Guids */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') AND OBJECTPROPERTY(id, N'IsVIEW') = 1)
+  DROP VIEW {databaseOwner}{objectQualifier}vw_Tabs
+GO
+    
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Tabs
+AS
+    SELECT     
+        T.TabID,
+        T.UniqueId, 
+        T.VersionGuid, 
+        T.DefaultLanguageGuid, 
+        T.LocalizedVersionGuid, 
+        T.TabOrder, 
+        T.PortalID, 
+        T.TabName, 
+        T.IsVisible, 
+        T.ParentId, 
+        T.[Level], 
+        CASE WHEN LEFT(LOWER(T.IconFile), 7) = 'fileid=' THEN
+                  (SELECT Folder + FileName
+                    FROM  {databaseOwner}{objectQualifier}Files
+                    WHERE fileid = CAST((RIGHT(LOWER(T.IconFile), Len(T.IconFile) - 7)) AS int)) ELSE T.IconFile END AS IconFile, 
+        CASE WHEN LEFT(LOWER(T.IconFileLarge), 7) = 'fileid=' THEN
+                  (SELECT Folder + FileName
+                    FROM  {databaseOwner}{objectQualifier}Files
+                    WHERE fileid = CAST((RIGHT(LOWER(T.IconFileLarge), Len(T.IconFileLarge) - 7)) AS int)) ELSE T.IconFileLarge END AS IconFileLarge, 
+        T.DisableLink, 
+        T.Title, 
+        T.Description, 
+        T.KeyWords, 
+        T.IsDeleted, 
+        T.SkinSrc, 
+        T.ContainerSrc, 
+        T.TabPath, 
+        T.StartDate, 
+        T.EndDate, 
+        T.Url, 
+        CASE WHEN EXISTS (SELECT  1 FROM {databaseOwner}{objectQualifier}Tabs T2 WHERE T2.ParentId = T.TabId) THEN 'true' ELSE 'false' END AS HasChildren, 
+        T.RefreshInterval, 
+        T.PageHeadText, 
+        T.IsSecure, 
+        T.PermanentRedirect, 
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID, 
+        CI.ModuleID, 
+        CI.ContentKey,
+        CI.Indexed,
+        T.CultureCode,
+        T.CreatedByUserID, 
+        T.CreatedOnDate, 
+        T.LastModifiedByUserID, 
+        T.LastModifiedOnDate
+    FROM {databaseOwner}{objectQualifier}Tabs AS T
+        LEFT OUTER JOIN  {databaseOwner}{objectQualifier}ContentItems AS CI ON T.ContentItemID = CI.ContentItemID
+
+GO
+
+/**********************************************************/
+/* Adding UniqueId and VersionGuid Columns to Files Table */
+/**********************************************************/
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Files' AND COLUMN_NAME='UniqueId')
+     BEGIN
+           -- Add a new UniqueId Column
+           ALTER TABLE {databaseOwner}{objectQualifier}Files
+                ADD UniqueId UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_{objectQualifier}Files_UniqueId DEFAULT NEWID()
+
+		   ALTER TABLE {databaseOwner}{objectQualifier}Files
+				ADD CONSTRAINT IX_{objectQualifier}Files_UniqueId UNIQUE NONCLUSTERED
+			(
+                UniqueId
+			)
+     END
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Files' AND COLUMN_NAME='VersionGuid')
+     BEGIN
+           -- Add a new VersionGuid Column
+           ALTER TABLE {databaseOwner}{objectQualifier}Files
+                ADD VersionGuid UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_{objectQualifier}Files_VersionGuid DEFAULT NEWID()
+     END
+GO
+
+/**********************************************************/
+/* Adding SHA1Hash Column to Files Table				  */
+/**********************************************************/
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Files' AND COLUMN_NAME='SHA1Hash')
+     BEGIN
+           -- Add a new SHA1Hash Column
+           ALTER TABLE {databaseOwner}{objectQualifier}Files
+                ADD SHA1Hash varchar(40)
+     END
+GO
+
+/**********************************************************/
+/* Adding UniqueId and VersionGuid Columns to Folders Table	*/
+/**********************************************************/
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Folders' AND COLUMN_NAME='UniqueId')
+     BEGIN
+           -- Add a new UniqueId Column
+			ALTER TABLE {databaseOwner}{objectQualifier}Folders
+                ADD UniqueId UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_{objectQualifier}Folders_UniqueId DEFAULT NEWID()
+			
+			ALTER TABLE {databaseOwner}{objectQualifier}Folders 
+				ADD CONSTRAINT IX_{objectQualifier}Folders_UniqueId UNIQUE NONCLUSTERED
+				(
+					UniqueId
+				)
+     END
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Folders' AND COLUMN_NAME='VersionGuid')
+     BEGIN
+           -- Add a new VersionGuid Column
+           ALTER TABLE {databaseOwner}{objectQualifier}Folders
+                ADD VersionGuid UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_{objectQualifier}Folders_VersionGuid DEFAULT NEWID()
+     END
+GO
+
+/**********************************************************/
+/* Modify AddFile SP									  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddFile]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddFile
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddFile
+    @PortalId			int,
+    @UniqueId			uniqueidentifier,
+    @VersionGuid		uniqueidentifier,
+    @FileName			nvarchar(100),
+    @Extension			nvarchar(100),
+    @Size				int,
+    @Width				int,
+    @Height				int,
+    @ContentType		nvarchar(200),
+    @Folder				nvarchar(200),
+    @FolderID			int,
+	@CreatedByUserID  	int,
+	@Hash 				varchar(40)
+AS
+    DECLARE @FileID int
+    SELECT @FileId = FileID FROM {databaseOwner}{objectQualifier}Files WHERE FolderID = @FolderID AND FileName = @FileName
+
+    IF @FileID IS Null
+        BEGIN
+          INSERT INTO {databaseOwner}{objectQualifier}Files (
+            PortalId,
+            UniqueId,
+            VersionGuid,
+            FileName,
+            Extension,
+            Size,
+            Width,
+            Height,
+            ContentType,
+            Folder,
+            FolderID,
+			CreatedByUserID,
+			CreatedOnDate,
+			LastModifiedByUserID,
+			LastModifiedOnDate,
+			SHA1Hash
+          )
+          VALUES (
+            @PortalId,
+            @UniqueId,
+            @VersionGuid,
+            @FileName,
+            @Extension,
+            @Size,
+            @Width,
+            @Height,
+            @ContentType,
+            @Folder,
+            @FolderID,
+			@CreatedByUserID,
+			getdate(),
+			@CreatedByUserID,
+			getdate(),
+			@Hash
+          )
+
+          SELECT @FileID = SCOPE_IDENTITY()
+        END
+    ELSE
+        BEGIN
+          UPDATE {databaseOwner}{objectQualifier}Files
+          SET    FileName = @FileName,
+                 VersionGuid = @VersionGuid,
+                 Extension = @Extension,
+                 Size = @Size,
+                 Width = @Width,
+                 Height = @Height,
+                 ContentType = @ContentType,
+                 Folder = @Folder,
+                 FolderID = @FolderID,
+				 LastModifiedByUserID = @CreatedByUserID,
+				 LastModifiedOnDate = getdate(),
+				 SHA1Hash = @Hash
+          WHERE  FileId = @FileID
+        END
+
+    SELECT @FileID
+GO
+
+/**********************************************************/
+/* Modify UpdateFile SP									  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFile]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateFile
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+    @FileId					int,
+    @VersionGuid			uniqueidentifier,	
+    @FileName				nvarchar(100),
+    @Extension				nvarchar(100),
+    @Size					int,
+    @Width					int,
+    @Height					int,
+    @ContentType			nvarchar(200),	
+    @Folder					nvarchar(200),
+    @FolderID				int,
+	@LastModifiedByUserID  	int,
+	@Hash					varchar(40)
+AS
+    UPDATE {databaseOwner}{objectQualifier}Files
+        SET    FileName = @FileName,
+               VersionGuid = @VersionGuid,
+               Extension = @Extension,
+               Size = @Size,
+               Width = @Width,
+               Height = @Height,
+               ContentType = @ContentType,
+               Folder = @Folder,
+               FolderID = @FolderID,
+               LastModifiedByUserID = @LastModifiedByUserID,
+               LastModifiedOnDate = getdate(),
+			   SHA1Hash = @Hash
+    WHERE  FileId = @FileId
+GO
+
+/**********************************************************/
+/* Modify AddFolder SP									  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddFolder]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddFolder
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFolder]
+    @PortalID 			int,
+    @UniqueId	 		uniqueidentifier,
+    @VersionGuid 		uniqueidentifier,
+    @FolderPath 		varchar(300),
+    @StorageLocation 	int,
+    @IsProtected 		bit,
+    @IsCached 			bit,
+    @LastUpdated 		datetime,
+    @CreatedByUserID  	int
+AS
+    INSERT INTO {databaseOwner}{objectQualifier}Folders (
+        PortalID, 
+        UniqueId,
+        VersionGuid,
+        FolderPath, 
+        StorageLocation, 
+        IsProtected, 
+        IsCached, 
+        LastUpdated,
+        CreatedByUserID,
+        CreatedOnDate,
+        LastModifiedByUserID,
+        LastModifiedOnDate
+    )
+    VALUES (
+        @PortalID, 
+        @UniqueId,
+        @VersionGuid,
+        @FolderPath, 
+        @StorageLocation, 
+        @IsProtected, 
+        @IsCached, 
+        @LastUpdated,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate()
+    )
+    SELECT SCOPE_IDENTITY()
+GO
+
+/**********************************************************/
+/* Modify UpdateFolder SP								  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFolder]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateFolder
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolder]
+    @PortalID 				int,
+    @VersionGuid 			uniqueidentifier,	
+    @FolderID 				int,
+    @FolderPath 			varchar(300),
+    @StorageLocation 		int,
+    @IsProtected 			bit,
+    @IsCached 				bit,
+    @LastUpdated 			datetime,
+    @LastModifiedByUserID  	int
+AS
+    UPDATE {databaseOwner}{objectQualifier}Folders
+        SET    FolderPath = @FolderPath,
+               VersionGuid = @VersionGuid,
+               StorageLocation = @StorageLocation,
+               IsProtected = @IsProtected,
+               IsCached = @IsCached,
+               LastUpdated = @LastUpdated,
+               LastModifiedByUserID = @LastModifiedByUserID,
+               LastModifiedOnDate = getdate()
+        WHERE  ((PortalID = @PortalID) OR (PortalID IS Null AND @PortalID IS Null)) AND FolderID = @FolderID
+GO
+
+/* Modify AddTab */
+/*****************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTab]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddTab
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTab]
+    @ContentItemID			int,
+    @PortalID				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(50),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @TabPath				nvarchar(255),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(500),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50)
+
+AS
+
+    INSERT INTO {databaseOwner}{objectQualifier}Tabs (
+        ContentItemID,
+        PortalID,
+        UniqueId,
+        VersionGuid,
+        DefaultLanguageGuid,
+        LocalizedVersionGuid,
+        TabName,
+        IsVisible,
+        DisableLink,
+        ParentId,
+        IconFile,
+        IconFileLarge,
+        Title,
+        Description,
+        KeyWords,
+        IsDeleted,
+        Url,
+        SkinSrc,
+        ContainerSrc,
+        TabPath,
+        StartDate,
+        EndDate,
+        RefreshInterval,
+        PageHeadText,
+        IsSecure,
+        PermanentRedirect,
+        SiteMapPriority,
+        CreatedByUserID,
+        CreatedOnDate,
+        LastModifiedByUserID,
+        LastModifiedOnDate,
+        CultureCode
+    )
+    VALUES (
+        @ContentItemID,
+        @PortalID,
+        @UniqueId,
+        @VersionGuid,
+        @DefaultLanguageGuid,
+        @LocalizedVersionGuid,
+        @TabName,
+        @IsVisible,
+        @DisableLink,
+        @ParentId,
+        @IconFile,
+        @IconFileLarge,
+        @Title,
+        @Description,
+        @KeyWords,
+        0,
+        @Url,
+        @SkinSrc,
+        @ContainerSrc,
+        @TabPath,
+        @StartDate,
+        @EndDate,
+        @RefreshInterval,
+        @PageHeadText,
+        @IsSecure,
+        @PermanentRedirect,
+        @SiteMapPriority,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate(),
+        @CultureCode
+    )
+
+    SELECT SCOPE_IDENTITY()
+GO
+
+/* Modify UpdateTab */
+/********************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTab]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateTab
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+    @TabId					int,
+    @ContentItemID			int,
+    @PortalId				int,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(50),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @IsDeleted				bit,
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @TabPath				nvarchar(255),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(500),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @LastModifiedByUserID	int,
+    @CultureCode			nvarchar(50)
+
+AS
+
+    UPDATE {databaseOwner}{objectQualifier}Tabs
+        SET
+            ContentItemID			= @ContentItemID,
+            PortalId				= @PortalId,
+            VersionGuid				= @VersionGuid,
+            DefaultLanguageGuid		= @DefaultLanguageGuid,
+            LocalizedVersionGuid	= @LocalizedVersionGuid,
+            TabName					= @TabName,
+            IsVisible				= @IsVisible,
+            DisableLink				= @DisableLink,
+            ParentId				= @ParentId,
+            IconFile				= @IconFile,
+            IconFileLarge			= @IconFileLarge,
+            Title					= @Title,
+            Description				= @Description,
+            KeyWords				= @KeyWords,
+            IsDeleted				= @IsDeleted,
+            Url						= @Url,
+            SkinSrc					= @SkinSrc,
+            ContainerSrc			= @ContainerSrc,
+            TabPath					= @TabPath,
+            StartDate				= @StartDate,
+            EndDate					= @EndDate,
+            RefreshInterval			= @RefreshInterval,
+            PageHeadText			= @PageHeadText,
+            IsSecure				= @IsSecure,
+            PermanentRedirect		= @PermanentRedirect,
+            SiteMapPriority			= @SiteMapPriority,
+            LastModifiedByUserID	= @LastModifiedByUserID,
+            LastModifiedOnDate		= getdate(),
+            CultureCode				= @CultureCode
+    WHERE  TabId = @TabId
+GO
+
+
+/* Add UpdateTabVersion */
+/************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTabVersion]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateTabVersion
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabVersion]
+    @TabID			int,
+    @VersionGuid	uniqueidentifier
+AS
+    UPDATE {databaseOwner}{objectQualifier}Tabs
+        SET    VersionGuid = @VersionGuid
+    WHERE  TabID = @TabID
+GO
+
+
+/* Add IsPublished Column to PortalLanguages Table */
+/***************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}PortalLanguages' AND COLUMN_NAME='IsPublished')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}PortalLanguages
+            ADD IsPublished bit NOT NULL CONSTRAINT DF_{objectQualifier}PortalLanguages_IsPublished DEFAULT ((0))
+    END
+
+GO
+
+/* Modify AddPortalLanguage */
+/****************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPortalLanguage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddPortalLanguage
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPortalLanguage]
+    @PortalId			int,
+    @LanguageId			int,
+    @IsPublished		bit,
+    @CreatedByUserID	int
+
+AS
+    INSERT INTO {databaseOwner}{objectQualifier}PortalLanguages (
+        PortalId,
+        LanguageId,
+        IsPublished,
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate]
+    )
+    VALUES (
+        @PortalId,
+        @LanguageId,
+        @IsPublished,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate()
+    )
+
+    SELECT SCOPE_IDENTITY()
+
+GO
+
+/* Modify GetLanguagesByPortal */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetLanguagesByPortal]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetLanguagesByPortal
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetLanguagesByPortal]
+    @PortalId			int
+AS
+    SELECT 
+        L.*,
+        PL.PortalId,
+        PL.IsPublished
+    FROM   {databaseOwner}{objectQualifier}Languages L
+        INNER JOIN {databaseOwner}{objectQualifier}PortalLanguages PL On L.LanguageID = PL.LanguageID
+    WHERE PL.PortalID = @PortalID
+GO
+
+/* Create UpdatePortalLanguage */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalLanguage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalLanguage
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalLanguage]
+    @PortalId				int,
+    @LanguageId				int,
+    @IsPublished			bit,
+    @LastModifiedByUserID  	int
+
+AS
+    UPDATE {databaseOwner}{objectQualifier}PortalLanguages 
+        SET		
+            IsPublished				= @IsPublished,
+            LastModifiedByUserID	= @LastModifiedByUserID,
+            LastModifiedOnDate		= getdate()
+    WHERE PortalId = @PortalId
+        AND LanguageId = @LanguageId
+GO
+
+/* Copy ModuleTitle, Header, Footer to TabModule table */
+/*******************************************************/
+
+-- this was done in 5.2.0 script - but any modules added since would not be updated - so redo
+
+UPDATE {databaseOwner}{objectQualifier}TabModules
+	SET ModuleTitle = M.ModuleTitle,
+		Header = M.Header,
+		Footer = M.Footer
+	FROM {databaseOwner}{objectQualifier}Modules M
+		INNER JOIN {databaseOwner}{objectQualifier}TabModules TM ON M.ModuleID = TM.ModuleID
+GO
+
+/* Add CultureCode Column to Tabmodules Table */
+/**********************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}TabModules' AND COLUMN_NAME='CultureCode')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}TabModules
+            ADD CultureCode nvarchar(10) NULL
+    END
+
+GO
+
+/* Add UniqueId Column to Tabmodules Table */
+/******************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}TabModules' AND COLUMN_NAME='UniqueId')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}TabModules
+            ADD UniqueId uniqueidentifier NOT NULL CONSTRAINT DF_{objectQualifier}TabModules_Guid DEFAULT newId()
+
+		ALTER TABLE {databaseOwner}{objectQualifier}TabModules 
+			ADD CONSTRAINT IX_{objectQualifier}TabModules_UniqueId UNIQUE NONCLUSTERED
+			(
+                UniqueId
+			)
+    END
+
+GO
+
+/* Add VersionGuid Column to Tabmodules Table */
+/*********************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}TabModules' AND COLUMN_NAME='VersionGuid')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}TabModules
+            ADD VersionGuid uniqueidentifier NOT NULL CONSTRAINT DF_{objectQualifier}TabModules_VersionGuid DEFAULT newId()
+    END
+
+GO
+
+/* Add DefaultLanguageGuid Column to Tabmodules Table */
+/*****************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}TabModules' AND COLUMN_NAME='DefaultLanguageGuid')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}TabModules
+            ADD DefaultLanguageGuid uniqueidentifier NULL
+    END
+
+GO
+
+/* Add LocalizedVersionGuid Column to Tabmodules Table */
+/*******************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}TabModules' AND COLUMN_NAME='LocalizedVersionGuid')
+    BEGIN
+        -- Add new Column
+        ALTER TABLE {databaseOwner}{objectQualifier}TabModules
+            ADD LocalizedVersionGuid uniqueidentifier NOT NULL CONSTRAINT DF_{objectQualifier}TabModules_LocalizedVersionGuid DEFAULT newId()
+    END
+
+GO
+
+/* Update Modules View */
+/***********************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_Modules]') AND OBJECTPROPERTY(id, N'IsVIEW') = 1)
+  DROP VIEW {databaseOwner}{objectQualifier}vw_Modules
+GO
+
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Modules
+AS
+    SELECT     
+        M.PortalID, 
+        TM.TabID, 
+        TM.TabModuleID, 
+        M.ModuleID, 
+        M.ModuleDefID, 
+        TM.ModuleOrder, 
+        TM.PaneName, 
+        TM.ModuleTitle, 
+        TM.CacheTime, 
+        TM.CacheMethod, 
+        TM.Alignment, 
+        TM.Color, 
+        TM.Border, 
+        CASE WHEN LEFT(LOWER(TM.IconFile), 6) = 'fileid' THEN (SELECT Folder + FileName FROM {databaseOwner}{objectQualifier}Files WHERE 'fileid=' + CONVERT(varchar, {databaseOwner}{objectQualifier}Files.FileID) = TM.IconFile) ELSE TM.IconFile END AS IconFile, 
+        M.AllTabs, 
+        TM.Visibility, 
+        TM.IsDeleted, 
+        TM.Header, 
+        TM.Footer, 
+        M.StartDate, 
+        M.EndDate, 
+        TM.ContainerSrc, 
+        TM.DisplayTitle, 
+        TM.DisplayPrint, 
+        TM.DisplaySyndicate, 
+        TM.IsWebSlice, 
+        TM.WebSliceTitle, 
+        TM.WebSliceExpiryDate, 
+        TM.WebSliceTTL, 
+        M.InheritViewPermissions, 
+        MD.DesktopModuleID, 
+        MD.DefaultCacheTime, 
+        MC.ModuleControlID, 
+        DM.BusinessControllerClass, 
+        DM.IsAdmin, 
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        M.CreatedByUserID, 
+        M.CreatedOnDate, 
+        M.LastModifiedByUserID, 
+        M.LastModifiedOnDate,
+        TM.UniqueId, 
+        TM.VersionGuid, 
+        TM.DefaultLanguageGuid, 
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM {databaseOwner}{objectQualifier}ModuleDefinitions AS MD 
+        INNER JOIN {databaseOwner}{objectQualifier}Modules AS M ON MD.ModuleDefID = M.ModuleDefID 
+        INNER JOIN {databaseOwner}{objectQualifier}ModuleControls AS MC ON MD.ModuleDefID = MC.ModuleDefID 
+        INNER JOIN {databaseOwner}{objectQualifier}DesktopModules AS DM ON MD.DesktopModuleID = DM.DesktopModuleID 
+        LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON M.ContentItemID = CI.ContentItemID
+        LEFT OUTER JOIN {databaseOwner}{objectQualifier}TabModules AS TM ON M.ModuleID = TM.ModuleID
+    WHERE (MC.ControlKey IS NULL)
+
+GO
+
+/* Update AddTabModule  */
+/************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddTabModule
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabModule]
+    @TabId                  int,
+    @ModuleId               int,
+	@ModuleTitle			nvarchar(256),
+	@Header					ntext,
+	@Footer					ntext,
+    @ModuleOrder            int,
+    @PaneName               nvarchar(50),
+    @CacheTime              int,
+    @CacheMethod			varchar(50),
+    @Alignment              nvarchar(10),
+    @Color                  nvarchar(20),
+    @Border                 nvarchar(1),
+    @IconFile               nvarchar(100),
+    @Visibility             int,
+    @ContainerSrc           nvarchar(200),
+    @DisplayTitle           bit,
+    @DisplayPrint           bit,
+    @DisplaySyndicate       bit,
+    @IsWebSlice				bit,
+    @WebSliceTitle			nvarchar(256),
+    @WebSliceExpiryDate     datetime,
+    @WebSliceTTL			int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @CultureCode			nvarchar(10),
+    @CreatedByUserID  		int
+
+AS
+    INSERT INTO {databaseOwner}{objectQualifier}TabModules ( 
+        TabId,
+        ModuleId,
+        ModuleTitle,
+        Header,
+        Footer,
+		ModuleOrder,
+        PaneName,
+        CacheTime,
+        CacheMethod,
+        Alignment,
+        Color,
+        Border,
+        IconFile,
+        Visibility,
+        ContainerSrc,
+        DisplayTitle,
+        DisplayPrint,
+        DisplaySyndicate,
+        IsWebSlice,
+        WebSliceTitle,
+        WebSliceExpiryDate,
+        WebSliceTTL,
+        UniqueId,
+        VersionGuid,
+        DefaultLanguageGuid,
+        LocalizedVersionGuid,
+        CultureCode,
+        CreatedByUserID,
+        CreatedOnDate,
+        LastModifiedByUserID,
+        LastModifiedOnDate
+    )
+    VALUES (
+        @TabId,
+        @ModuleId,
+        @ModuleTitle,
+        @Header,
+        @Footer,
+        @ModuleOrder,
+        @PaneName,
+        @CacheTime,
+        @CacheMethod,
+        @Alignment,
+        @Color,
+        @Border,
+        @IconFile,
+        @Visibility,
+        @ContainerSrc,
+        @DisplayTitle,
+        @DisplayPrint,
+        @DisplaySyndicate,
+        @IsWebSlice,
+        @WebSliceTitle,
+        @WebSliceExpiryDate,
+        @WebSliceTTL,
+        @UniqueId,
+        @VersionGuid,
+        @DefaultLanguageGuid,
+        @LocalizedVersionGuid,
+        @CultureCode,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate()
+    )
+
+GO
+
+/* Update DeleteTabModule  */
+/***************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteTabModule
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModule]
+	@TabId      int,
+	@ModuleId   int,
+	@SoftDelete	bit
+AS
+	IF @SoftDelete = 1
+		UPDATE {databaseOwner}{objectQualifier}TabModules
+			SET	IsDeleted = 1,
+				VersionGuid = newId()
+		WHERE  TabId = @TabId
+			AND    ModuleId = @ModuleId
+	ELSE
+		DELETE
+		FROM   {databaseOwner}{objectQualifier}TabModules 
+		WHERE  TabId = @TabId
+			AND    ModuleId = @ModuleId
+
+GO
+
+/* Update RestoreTabModule */
+/***************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}RestoreTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}RestoreTabModule
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}RestoreTabModule]
+	@TabId      int,
+	@ModuleId   int
+AS
+	UPDATE {databaseOwner}{objectQualifier}TabModules
+		SET IsDeleted = 0,
+			VersionGuid = newId()
+	WHERE  TabId = @TabId
+		AND    ModuleId = @ModuleId
+
+GO
+
+/* Update UpdateModuleOrder */
+/***************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateModuleOrder]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateModuleOrder
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleOrder]
+	@TabId              int,
+	@ModuleId           int,
+	@ModuleOrder        int,
+	@PaneName           nvarchar(50)
+AS
+	UPDATE {databaseOwner}{objectQualifier}TabModules
+		SET	ModuleOrder = @ModuleOrder,
+			PaneName = @PaneName,
+			VersionGuid = newId()
+	WHERE TabId = @TabId
+		AND ModuleId = @ModuleId
+
+GO
+
+/* Update UpdateTabModule */
+/**************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateTabModule
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModule]
+    @TabModuleId            int,
+    @TabId					int,
+    @ModuleId				int,
+	@ModuleTitle			nvarchar(256),
+	@Header					ntext,
+	@Footer					ntext,
+    @ModuleOrder			int,
+    @PaneName				nvarchar(50),
+    @CacheTime				int,
+    @CacheMethod			varchar(50),
+    @Alignment				nvarchar(10),
+    @Color					nvarchar(20),
+    @Border					nvarchar(1),
+    @IconFile				nvarchar(100),
+    @Visibility				int,
+    @ContainerSrc			nvarchar(200),
+    @DisplayTitle			bit,
+    @DisplayPrint			bit,
+    @DisplaySyndicate		bit,
+    @IsWebSlice				bit,
+    @WebSliceTitle			nvarchar(256),
+    @WebSliceExpiryDate		datetime,
+    @WebSliceTTL			int,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @CultureCode			nvarchar(10),
+    @LastModifiedByUserID	int
+
+AS
+    UPDATE {databaseOwner}{objectQualifier}TabModules
+        SET    
+            TabId = @TabId,
+            ModuleId = @ModuleId,
+			ModuleTitle = @ModuleTitle,
+			Header = @Header,
+			Footer = @Footer, 
+            ModuleOrder = @ModuleOrder,
+            PaneName = @PaneName,
+            CacheTime = @CacheTime,
+            CacheMethod = @CacheMethod,
+            Alignment = @Alignment,
+            Color = @Color,
+            Border = @Border,
+            IconFile = @IconFile,
+            Visibility = @Visibility,
+            ContainerSrc = @ContainerSrc,
+            DisplayTitle = @DisplayTitle,
+            DisplayPrint = @DisplayPrint,
+            DisplaySyndicate = @DisplaySyndicate,
+            IsWebSlice = @IsWebSlice,
+            WebSliceTitle = @WebSliceTitle,
+            WebSliceExpiryDate = @WebSliceExpiryDate,
+            WebSliceTTL = @WebSliceTTL,
+            VersionGuid = @VersionGuid,
+            DefaultLanguageGuid = @DefaultLanguageGuid,
+            LocalizedVersionGuid = @LocalizedVersionGuid,
+            CultureCode= @CultureCode,
+            LastModifiedByUserID = @LastModifiedByUserID,
+            LastModifiedOnDate = getdate()
+        WHERE  TabModuleId = @TabModuleId
+
+GO
+
+/* Add UpdateTabModuleVersion SP						  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTabModuleVersion]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateTabModuleVersion
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleVersion]
+    @TabModuleID	int,
+    @VersionGuid	uniqueidentifier
+AS
+    UPDATE {databaseOwner}{objectQualifier}TabModules
+        SET    VersionGuid = @VersionGuid
+    WHERE  TabModuleID = @TabModuleID
+GO
+
+
+/* Add GetTabModule SP						  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetTabModule
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModule]
+    @TabModuleID	int
+AS
+    SELECT *
+	FROM {databaseOwner}{objectQualifier}vw_Modules        
+    WHERE  TabModuleID = @TabModuleID		
+GO
+
+/* Add GetAllTabsModulesByModuleID SP					  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAllTabsModulesByModuleID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetAllTabsModulesByModuleID
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllTabsModulesByModuleID]
+    @ModuleID	int
+AS
+	SELECT	* 
+	FROM {databaseOwner}{objectQualifier}vw_Modules
+	WHERE  ModuleID = @ModuleID
+GO
+
+/* Add EnsureLocalizationExists Procedure */
+/******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EnsureLocalizationExists]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}EnsureLocalizationExists
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}EnsureLocalizationExists
+	@PortalId       int,
+	@CultureCode	nvarchar(10)
+AS
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE CultureCode=@CultureCode AND Portalid=@PortalId)
+		BEGIN
+			DECLARE @PortalName nvarchar(128)
+			DECLARE @LogoFile nvarchar(50)
+			DECLARE @FooterText nvarchar(100)
+			DECLARE @Description nvarchar(500)
+			DECLARE @KeyWords nvarchar(500)
+			DECLARE @BackgroundFile nvarchar(50)
+			DECLARE @HomeTabId int
+			DECLARE @LoginTabId int
+			DECLARE @UserTabId int
+			DECLARE @AdminTabId int
+			DECLARE @RegisterTabId int
+	
+			DECLARE @defaultlanguage nvarchar(10)
+			
+			SELECT @defaultlanguage= DefaultLanguage FROM {databaseOwner}{objectQualifier}Portals WHERE Portalid=@PortalId
+
+			IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE CultureCode=@defaultlanguage AND Portalid=@PortalId)
+				BEGIN
+					--clone the default language
+					SELECT 
+						@PortalName = PortalName,
+						@LogoFile = LogoFile,
+						@FooterText = FooterText,
+						@Description = Description,
+						@KeyWords = KeyWords,
+						@BackgroundFile = BackgroundFile,
+						@HomeTabId = HomeTabId,
+						@LoginTabId = LoginTabId,
+						@UserTabId = UserTabId,
+						@AdminTabId = AdminTabId,
+						@RegisterTabId = RegisterTabId 
+					FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE CultureCode=@defaultlanguage AND Portalid=@PortalId
+						
+					INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+						PortalId,
+						CultureCode,
+						PortalName,
+						LogoFile,
+						FooterText,
+						Description,
+						KeyWords,
+						BackgroundFile, 
+						HomeTabId,
+						LoginTabId,
+						UserTabId,
+						AdminTabId,
+						RegisterTabId,
+						CreatedByUserID,
+						CreatedOnDate,
+						LastModifiedByUserID,
+						LastModifiedOnDate
+						) 
+						VALUES	(
+							@PortalId,
+							@CultureCode,
+							@PortalName,
+							@LogoFile,
+							@FooterText,
+							@Description,
+							@KeyWords,
+							@BackgroundFile,
+							@HomeTabId,
+							@LoginTabId,
+							@UserTabId,
+							@AdminTabId,
+							@RegisterTabId,
+							-1,
+							getdate(),
+							-1,
+							getdate()
+						)
+				END
+			ELSE
+				BEGIN
+					IF EXISTS (select * from {databaseOwner}{objectQualifier}PortalLocalization where CultureCode='en-us' and Portalid=@PortalId)
+						BEGIN
+							--if defaultlanguage is missing clone en-us if available
+							SELECT 
+								@PortalName = PortalName,
+								@LogoFile = LogoFile,
+								@FooterText = FooterText,
+								@Description = Description,
+								@KeyWords = KeyWords,
+								@BackgroundFile = BackgroundFile,
+								@HomeTabId = HomeTabId,
+								@LoginTabId=LoginTabId,
+								@UserTabId=UserTabId,
+								@AdminTabId=AdminTabId,
+								@RegisterTabId=RegisterTabId 
+							FROM {databaseOwner}{objectQualifier}PortalLocalization where CultureCode='en-us' and Portalid=@PortalId
+							
+							INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+								PortalId,
+								CultureCode,
+								PortalName,
+								LogoFile,
+								FooterText,
+								Description,
+								KeyWords,
+								BackgroundFile, 
+								HomeTabId,
+								LoginTabId,
+								UserTabId,
+								AdminTabId,
+								RegisterTabId,
+								CreatedByUserID,
+								CreatedOnDate,
+								LastModifiedByUserID,
+								LastModifiedOnDate
+							) 
+							VALUES	(
+								@PortalId,
+								@CultureCode,
+								@PortalName,
+								@LogoFile,
+								@FooterText,
+								@Description,
+								@KeyWords,
+								@BackgroundFile,
+								@HomeTabId,
+								@LoginTabId,
+								@UserTabId,
+								@AdminTabId,
+								@RegisterTabId,
+								-1,
+								getdate(),
+								-1,
+								getdate()
+							)
+						END
+					ELSE
+						BEGIN
+							IF EXISTS (select top 1 * from {databaseOwner}{objectQualifier}PortalLocalization where  Portalid=@PortalId)
+								BEGIN
+									--cannot select by particular culturecode as defaultlanguage has been deleted (possible in early versions of DotNetNuke)
+									SELECT TOP 1 
+										@PortalName = PortalName,
+										@LogoFile = LogoFile,
+										@FooterText = FooterText,
+										@Description = Description,
+										@KeyWords = KeyWords,
+										@BackgroundFile = BackgroundFile,
+										@HomeTabId = HomeTabId,
+										@LoginTabId=LoginTabId,
+										@UserTabId=UserTabId,
+										@AdminTabId=AdminTabId,
+										@RegisterTabId=RegisterTabId 
+									FROM {databaseOwner}{objectQualifier}PortalLocalization where portalid=@PortalId
+									
+									INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+										PortalId,
+										CultureCode,
+										PortalName,
+										LogoFile,
+										FooterText,
+										Description,
+										KeyWords,
+										BackgroundFile, 
+										HomeTabId,
+										LoginTabId,
+										UserTabId,
+										AdminTabId,
+										RegisterTabId,
+										CreatedByUserID,
+										CreatedOnDate,
+										LastModifiedByUserID,
+										LastModifiedOnDate
+									) 
+									VALUES	(
+										@PortalId,
+										@CultureCode,
+										@PortalName,
+										@LogoFile,
+										@FooterText,
+										@Description,
+										@KeyWords,
+										@BackgroundFile,
+										@HomeTabId,
+										@LoginTabId,
+										@UserTabId,
+										@AdminTabId,
+										@RegisterTabId,
+										-1,
+										getdate(),
+										-1,
+										getdate()
+									)
+								END
+						END	
+				END
+		END
+GO
+
+/* Fix GetHostSettings SP								  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetHostSettings]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetHostSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHostSettings]
+AS
+	IF NOT EXISTS ( select 1 from {databaseOwner}{objectQualifier}HostSettings where SettingName = 'GUID' )
+	  INSERT INTO {databaseOwner}{objectQualifier}HostSettings ( SettingName, SettingValue, SettingIsSecure ) values ( 'GUID', newid(), 0 )
+
+	SELECT SettingName,
+		   SettingValue,
+		   SettingIsSecure,
+		   CreatedByUserID,
+		   CreatedOnDate,
+	       LastModifiedByUserID,
+		   LastModifiedOnDate
+	FROM   {databaseOwner}{objectQualifier}HostSettings
+GO
+
+
+/* Add GetModuleByUniqueID SP								  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleByUniqueID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetModuleByUniqueID
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByUniqueID]
+    @UniqueID   uniqueidentifier
+AS
+	SELECT	* 
+	FROM	{databaseOwner}{objectQualifier}vw_Modules
+	WHERE	UniqueID = @UniqueID
+GO
+
+
+/* Add GetTabByUniqueID SP								  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabByUniqueID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetTabByUniqueID
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabByUniqueID]
+    @UniqueID   uniqueidentifier
+AS
+	SELECT	* 
+	FROM	{databaseOwner}{objectQualifier}vw_Tabs
+	WHERE	UniqueID = @UniqueID
+GO
+
+
+/* Add UpdateFileVersion SP						  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFileVersion]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateFileVersion
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileVersion]
+	@FileID			int,
+    @VersionGuid	uniqueidentifier
+AS
+    UPDATE {databaseOwner}{objectQualifier}Files
+        SET    VersionGuid = @VersionGuid
+    WHERE  FileID = @FileID
+GO
+
+
+/* Add UpdateFolderVersion SP						  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFolderVersion]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateFolderVersion
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolderVersion]
+	@FolderID		int,
+    @VersionGuid	uniqueidentifier
+AS
+    UPDATE {databaseOwner}{objectQualifier}Folders
+        SET    VersionGuid = @VersionGuid
+    WHERE  FolderID = @FolderID
+GO
+
+/* Update GetTabPaths SP */
+/*************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabPaths]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetTabPaths
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabPaths]
+	@PortalID		int,
+	@CultureCode	nvarchar(10)
+AS
+	SELECT
+		TabID, 
+		PortalID, 
+		TabPath
+	FROM {databaseOwner}{objectQualifier}Tabs
+	WHERE (PortalID = @PortalID AND (CultureCode = @CultureCode OR CultureCode Is Null))
+		OR @PortalID Is NULL
+GO
+
+
+/* Add GetFileByUniqueID SP								  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFileByUniqueID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetFileByUniqueID
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFileByUniqueID]
+    @UniqueID   uniqueidentifier
+AS
+	SELECT	* 
+	FROM	{databaseOwner}{objectQualifier}Files
+	WHERE	UniqueID = @UniqueID
+GO
+
+/* Add GetFolderByUniqueID SP								  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFolderByUniqueID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetFolderByUniqueID
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolderByUniqueID]
+    @UniqueID   uniqueidentifier
+AS
+	SELECT	* 
+	FROM	{databaseOwner}{objectQualifier}Folders
+	WHERE	UniqueID = @UniqueID
+GO
+
+/* Add UpdateTabTranslationStatus */
+/**********************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTabTranslationStatus]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateTabTranslationStatus
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabTranslationStatus]
+	@TabId					int,
+    @LocalizedVersionGuid	uniqueidentifier,
+	@LastModifiedByUserID	int
+AS
+	UPDATE {databaseOwner}{objectQualifier}Tabs
+		SET
+		LocalizedVersionGuid	= @LocalizedVersionGuid,
+		LastModifiedByUserID	= @LastModifiedByUserID,
+		LastModifiedOnDate		= getdate()
+	WHERE  TabId = @TabId
+GO
+
+/* Add UpdateTabModuleTranslationStatus */
+/****************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTabModuleTranslationStatus]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateTabModuleTranslationStatus
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleTranslationStatus]
+	@TabModuleId			int,
+    @LocalizedVersionGuid	uniqueidentifier,
+	@LastModifiedByUserID	int
+AS
+	UPDATE {databaseOwner}{objectQualifier}TabModules
+		SET
+		LocalizedVersionGuid	= @LocalizedVersionGuid,
+		LastModifiedByUserID	= @LastModifiedByUserID,
+		LastModifiedOnDate		= getdate()
+	WHERE  TabModuleId = @TabModuleId
+GO
+  
+/* Modify GetFile				  */
+/**********************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFile]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetFile
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+@FileName  nvarchar(100),
+@PortalID  int,
+@FolderID  int
+
+AS
+
+SELECT FileId,
+       {databaseOwner}{objectQualifier}Folders.PortalId,
+       FileName,
+       Extension,
+       Size,
+       Width,
+       Height,
+       ContentType,
+       {databaseOwner}{objectQualifier}Files.FolderID,
+       'Folder' = FolderPath,
+       StorageLocation,
+       IsCached,
+	   {databaseOwner}{objectQualifier}Files.UniqueId,
+	   {databaseOwner}{objectQualifier}Files.VersionGuid,	   
+	   {databaseOwner}{objectQualifier}Files.SHA1Hash
+FROM		{databaseOwner}{objectQualifier}Files
+INNER JOIN	{databaseOwner}{objectQualifier}Folders ON {databaseOwner}{objectQualifier}Files.FolderID = {databaseOwner}{objectQualifier}Folders.FolderID
+WHERE		FileName = @FileName 
+AND			{databaseOwner}{objectQualifier}Files.FolderID = @FolderID
+AND			(({databaseOwner}{objectQualifier}Folders.PortalId = @PortalID) OR (@PortalID IS NULL AND {databaseOwner}{objectQualifier}Folders.PortalId IS NULL))
+
+GO
+
+/* Modify GetFileById			  */
+/**********************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFileById]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetFileById
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+	@FileId   int,
+	@PortalID int
+AS
+
+SELECT FileId,
+       {databaseOwner}{objectQualifier}Folders.PortalId,
+       FileName,
+       Extension,
+       Size,
+       Width,
+       Height,
+       ContentType,
+       {databaseOwner}{objectQualifier}Files.FolderID,
+       'Folder' = FolderPath,
+       StorageLocation,
+       IsCached,
+	   SHA1Hash
+FROM		{databaseOwner}{objectQualifier}Files
+INNER JOIN	{databaseOwner}{objectQualifier}Folders ON {databaseOwner}{objectQualifier}Files.FolderID = {databaseOwner}{objectQualifier}Folders.FolderID
+WHERE		FileId = @FileId
+AND			(({databaseOwner}{objectQualifier}Folders.PortalId = @PortalID) OR (@PortalID IS NULL AND {databaseOwner}{objectQualifier}Folders.PortalId IS NULL))
+
+GO
+
+
+
+/* Modify AddModule */
+/********************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddModule
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddModule]
+	@ContentItemID				int,
+	@PortalID					int,
+	@ModuleDefId				int,
+	@AllTabs					bit,
+	@StartDate					datetime,
+	@EndDate					datetime,
+	@InheritViewPermissions     bit,
+	@IsDeleted					bit,
+	@CreatedByUserID  			int
+	
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}Modules (
+		ContentItemID, 
+		PortalId,
+		ModuleDefId,
+		AllTabs,
+		StartDate,
+		EndDate,
+		InheritViewPermissions,
+		IsDeleted,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate
+	)
+	VALUES (
+		@ContentItemID,
+		@PortalID,
+		@ModuleDefId,
+		@AllTabs,
+		@StartDate,
+		@EndDate,
+		@InheritViewPermissions,
+		@IsDeleted,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate()
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Modify UpdateModule */
+/***********************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateModule
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModule]
+	@ModuleId               int,
+	@ContentItemID			int,
+	@AllTabs                bit, 
+	@StartDate              datetime,
+	@EndDate                datetime,
+	@InheritViewPermissions	bit,
+	@IsDeleted              bit,
+	@LastModifiedByUserID  	int
+	
+AS
+UPDATE	{databaseOwner}{objectQualifier}Modules
+	SET		
+			ContentItemID = @ContentItemID,
+			AllTabs = @AllTabs,
+			StartDate = @StartDate,
+			EndDate = @EndDate,
+			InheritViewPermissions = @InheritViewPermissions,
+			IsDeleted = @IsDeleted,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+WHERE  ModuleId = @ModuleId
+GO
+
+/* Remove ModuleTitle, Header and Footer from Modules */
+/******************************************************/
+
+IF  EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Modules' AND COLUMN_NAME='ModuleTitle')
+    BEGIN
+        -- Drop Column
+        ALTER TABLE {databaseOwner}{objectQualifier}Modules
+            DROP COLUMN ModuleTitle
+    END
+
+IF  EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Modules' AND COLUMN_NAME='Header')
+    BEGIN
+        -- Drop Column
+        ALTER TABLE {databaseOwner}{objectQualifier}Modules
+            DROP COLUMN Header
+    END
+
+IF  EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Modules' AND COLUMN_NAME='Footer')
+    BEGIN
+        -- Drop Column
+        ALTER TABLE {databaseOwner}{objectQualifier}Modules
+            DROP COLUMN Footer
+    END
+
+GO
+
+/* Add DefaultVisibility to ProfilePropertyDefinition */
+/******************************************************/
+
+IF  NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}ProfilePropertyDefinition' AND COLUMN_NAME='DefaultVisibility')
+    BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+            ADD DefaultVisibility int NULL
+
+    END
+GO
+
+/* Set default value of new column */
+/********************************/
+
+UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+	SET DefaultVisibility = 2
+	WHERE PropertyName Not In ('Prefix', 'FirstName', 'MiddleName', 'LastName', 'Suffix', 'Photo')
+GO
+
+UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+	SET DefaultVisibility = 0
+	WHERE PropertyName In ('Prefix', 'FirstName', 'MiddleName', 'LastName', 'Suffix', 'Photo')
+GO
+
+/* Update AddPropertyDefinition */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPropertyDefinition]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+	@PortalId int,
+	@ModuleDefId int,
+	@DataType int,
+	@DefaultValue ntext,
+	@PropertyCategory nvarchar(50),
+	@PropertyName nvarchar(50),
+	@Required bit,
+	@ValidationExpression nvarchar(2000),
+	@ViewOrder int,
+	@Visible bit,
+    @Length int,
+    @DefaultVisibility int,
+	@CreatedByUserID int
+
+AS
+	DECLARE @PropertyDefinitionId int
+
+	SELECT @PropertyDefinitionId = PropertyDefinitionId
+		FROM   {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+		WHERE  (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+			AND PropertyName = @PropertyName
+			
+	IF @vieworder=-1
+		BEGIN
+			SELECT         @vieworder = MAX(ViewOrder) + 1 
+			FROM           {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+		END
+
+	IF @PropertyDefinitionId is null
+		BEGIN
+			INSERT {databaseOwner}{objectQualifier}ProfilePropertyDefinition	(
+					PortalId,
+					ModuleDefId,
+					Deleted,
+					DataType,
+					DefaultValue,
+					PropertyCategory,
+					PropertyName,
+					Required,
+					ValidationExpression,
+					ViewOrder,
+					Visible,
+					Length,
+                    DefaultVisibility,
+					[CreatedByUserID],
+					[CreatedOnDate],
+					[LastModifiedByUserID],
+					[LastModifiedOnDate]
+
+				)
+				VALUES	(
+					@PortalId,
+					@ModuleDefId,
+					0,
+					@DataType,
+					@DefaultValue,
+					@PropertyCategory,
+					@PropertyName,
+					@Required,
+					@ValidationExpression,
+					@ViewOrder,
+					@Visible,
+					@Length,
+                    @DefaultVisibility,
+					@CreatedByUserID,
+  					getdate(),
+  					@CreatedByUserID,
+  					getdate()
+				)
+
+			SELECT @PropertyDefinitionId = SCOPE_IDENTITY()
+		END
+	ELSE
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+				SET DataType = @DataType,
+					ModuleDefId = @ModuleDefId,
+					DefaultValue = @DefaultValue,
+					PropertyCategory = @PropertyCategory,
+					Required = @Required,
+					ValidationExpression = @ValidationExpression,
+					ViewOrder = @ViewOrder,
+					Deleted = 0,
+					Visible = @Visible,
+					Length = @Length,
+                    DefaultVisibility = @DefaultVisibility,
+					[LastModifiedByUserID] = @CreatedByUserID,	
+					[LastModifiedOnDate] = getdate()
+				WHERE PropertyDefinitionId = @PropertyDefinitionId
+		END
+		
+	SELECT @PropertyDefinitionId
+
+GO
+
+/* Update UpdatePropertyDefinition */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePropertyDefinition]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePropertyDefinition
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePropertyDefinition
+
+	@PropertyDefinitionId int,
+	@DataType int,
+	@DefaultValue nvarchar(50),
+	@PropertyCategory nvarchar(50),
+	@PropertyName nvarchar(50),
+	@Required bit,
+	@ValidationExpression nvarchar(100),
+	@ViewOrder int,
+	@Visible bit,
+    @Length int,
+    @DefaultVisibility int,
+	@LastModifiedByUserID	int
+
+AS
+	UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+		SET DataType = @DataType,
+			DefaultValue = @DefaultValue,
+			PropertyCategory = @PropertyCategory,
+			PropertyName = @PropertyName,
+			Required = @Required,
+			ValidationExpression = @ValidationExpression,
+			ViewOrder = @ViewOrder,
+			Visible = @Visible,
+			Length = @Length,
+            DefaultVisibility = @DefaultVisibility,
+			[LastModifiedByUserID] = @LastModifiedByUserID,	
+			[LastModifiedOnDate] = getdate()
+		WHERE PropertyDefinitionId = @PropertyDefinitionId
+
+GO
+
+if not exists ( select 1 from {databaseOwner}{objectQualifier}Permission where PermissionCode = 'SYSTEM_FOLDER' and ModuleDefId = -1 and PermissionKey = 'BROWSE' )
+begin
+
+INSERT INTO {databaseOwner}{objectQualifier}Permission (
+  PermissionCode,
+  ModuleDefId,
+  PermissionKey,
+  PermissionName,
+  ViewOrder,
+  CreatedByUserID,
+  CreatedOnDate,
+  LastModifiedByUserID,
+  LastModifiedOnDate
+)
+values (
+  'SYSTEM_FOLDER',
+  -1,
+  'BROWSE',
+  'Browse Folder',
+  0,
+  NULL,
+  NULL,
+  NULL,
+  NULL
+)
+
+declare @READ int
+
+select @READ = PermissionID
+from {databaseOwner}{objectQualifier}Permission
+where PermissionCode = 'SYSTEM_FOLDER'
+and ModuleDefId = -1
+and PermissionKey = 'READ'
+
+declare @BROWSE int
+
+select @BROWSE = PermissionID
+from {databaseOwner}{objectQualifier}Permission
+where PermissionCode = 'SYSTEM_FOLDER'
+and ModuleDefId = -1
+and PermissionKey = 'BROWSE'
+
+INSERT INTO {databaseOwner}{objectQualifier}FolderPermission
+SELECT FP.FolderID, @BROWSE, FP.AllowAccess, FP.RoleID, FP.UserID, FP.CreatedByUserID, FP.CreatedOnDate, FP.LastModifiedByUserID, FP.LastModifiedOnDate
+FROM {databaseOwner}{objectQualifier}FolderPermission FP
+INNER JOIN {databaseOwner}{objectQualifier}Folders ON FP.FolderID = {databaseOwner}{objectQualifier}Folders.FolderID
+WHERE PermissionID = @READ
+AND SUBSTRING(FolderPath,1,6) <> 'Users/'
+
+end
+
+GO
+
+
+/*  script to fix issue with errorneous administratorroleid values*/
+
+DECLARE @PortalID int
+DECLARE @AdministratorRoleId int
+
+--Iterate through each portal
+DECLARE Portals_Cursor CURSOR FOR
+SELECT PortalID,AdministratorRoleId
+FROM         {databaseOwner}{objectQualifier}Portals
+
+OPEN Portals_Cursor
+--get first
+FETCH NEXT FROM Portals_Cursor
+into @PortalID,@AdministratorRoleId
+WHILE @@FETCH_STATUS = 0
+   BEGIN
+   if @AdministratorRoleId=-1 or @AdministratorRoleId not in (select roleid from {databaseOwner}{objectQualifier}userroles as ur inner join {databaseOwner}{objectQualifier}userportals as up on ur.userid=up.userid where up.portalid=@portalid)
+   
+   update {databaseOwner}{objectQualifier}portals set AdministratorRoleId = 
+(select roleid from {databaseOwner}{objectQualifier}Roles as r where 
+r.PortalID ={databaseOwner}{objectQualifier}Portals.PortalID and RoleName = 'Administrators' and {databaseOwner}{objectQualifier}Portals.portalid=@portalid) where portalid=@portalid
+
+       FETCH NEXT FROM Portals_Cursor
+       into @PortalID, @AdministratorRoleId 
+
+   END
+CLOSE Portals_Cursor
+DEALLOCATE Portals_Cursor
+GO
+
+/* Cleanup code Add Foreign Key to PortalLocalization Table for previous failed 5.4.0 versions */
+/***********************************************************************************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'FK_{objectQualifier}PortalLocalization_{objectQualifier}Portals') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	BEGIN
+		/* Delete unused entries in PortalLocalization */
+		DELETE FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE portalID not In (SELECT PortalID from {databaseOwner}{objectQualifier}Portals)
+		/* add key and cascade delete rule */
+		ALTER TABLE {databaseOwner}{objectQualifier}PortalLocalization 
+			ADD CONSTRAINT FK_{objectQualifier}PortalLocalization_{objectQualifier}Portals 
+				FOREIGN KEY ( PortalID ) REFERENCES {databaseOwner}{objectQualifier}Portals ( PortalID ) ON DELETE  CASCADE 
+	END	
+GO
+
+/**********************************************************/
+/* Modify GetAllFiles SP								  */
+/**********************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAllFiles]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetAllFiles
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+
+AS
+
+	SELECT
+		F.FileId,
+        FO.PortalId,
+        F.FileName,
+        F.Extension,
+        F.Size,
+        F.Width,
+        F.Height,
+        F.ContentType,
+        F.FolderID,
+        'Folder' = FolderPath,
+	    FO.StorageLocation,
+        FO.IsCached,
+        F.UniqueId,
+        F.VersionGuid,
+        F.SHA1Hash
+
+FROM 
+	{databaseOwner}[{objectQualifier}Files] F
+
+INNER JOIN 
+	{databaseOwner}[{objectQualifier}Folders] FO on F.FolderID = FO.FolderID
+GO
+
+/* Fix incorrect culture codes assigned pre-5.5 */
+/************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}Tabs
+	SET CultureCode = NULL
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

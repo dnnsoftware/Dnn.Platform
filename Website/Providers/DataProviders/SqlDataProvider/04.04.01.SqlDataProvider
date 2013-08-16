@@ -1,0 +1,168 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update GetPortalRoles */
+/*************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetPortalRoles]
+
+	@PortalId     int
+
+AS
+	SELECT R.RoleId,
+		   R.PortalId,
+		   R.RoleGroupId,
+		   R.RoleName,
+		   R.Description,
+		   'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+		   'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+		   'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end,
+		   'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+		   'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+		   'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.Text else '' end,
+		   'IsPublic' = case when R.IsPublic = 1 then 'True' else 'False' end,
+		   'AutoAssignment' = case when R.AutoAssignment = 1 then 'True' else 'False' end,
+		   RSVPCode,
+		   IconFile
+	FROM {databaseOwner}{objectQualifier}Roles R
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L1 ON R.BillingFrequency = L1.Value
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L2 ON R.TrialFrequency = L2.Value
+	WHERE  ( PortalId = @PortalId OR PortalId is null )
+		AND L1.ListName='Frequency'
+		AND L2.ListName='Frequency'
+	ORDER BY R.RoleName
+GO
+
+/* Update GetModuleByDefinition */
+/********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleByDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+      @PortalId int,
+      @FriendlyName nvarchar(128)
+AS
+	SELECT {databaseOwner}{objectQualifier}vw_Modules.*   
+	FROM {databaseOwner}{objectQualifier}vw_Modules 
+		INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions as MD ON {databaseOwner}{objectQualifier}vw_Modules.ModuleDefID = MD.ModuleDefID
+	WHERE ((PortalId = @PortalId) or (PortalId is null and @PortalID is null))
+		  AND MD.FriendlyName = @FriendlyName
+		  AND IsDeleted = 0
+GO
+
+/* Update GetAllTabsModules */
+/****************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAllTabsModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllTabsModules]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetAllTabsModules]
+	@PortalID int,
+	@AllTabs bit
+AS
+	SELECT	* 
+	FROM {databaseOwner}{objectQualifier}vw_Modules M
+	WHERE  M.PortalID = @PortalID 
+		AND M.IsDeleted = 0
+		AND M.AllTabs = @AllTabs
+		AND M.TabModuleID =(SELECT min(TabModuleID) 
+			FROM {databaseOwner}{objectQualifier}TabModules
+			WHERE ModuleID = M.ModuleID)
+	ORDER BY M.ModuleId
+GO
+
+/* Update GetFoldersByUser */
+/****************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFoldersByUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByUser]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetFoldersByUser]
+	@PortalID int,
+	@UserID int,
+	@IncludeSecure bit,
+	@IncludeDatabase bit,
+	@AllowAccess bit,
+	@PermissionKeys nvarchar(200)
+AS
+	SELECT 
+		F.FolderID,
+		F.PortalID,
+		F.FolderPath,
+		F.StorageLocation,
+		F.IsProtected,
+		F.IsCached,
+		F.LastUpdated
+	FROM {databaseOwner}{objectQualifier}Folders F
+	WHERE EXISTS (
+		SELECT * FROM {databaseOwner}{objectQualifier}FolderPermission FP 
+		INNER JOIN {databaseOwner}{objectQualifier}Permission P ON FP.PermissionID = P.PermissionID 
+		INNER JOIN {databaseOwner}{objectQualifier}Roles R ON R.RoleID = FP.RoleID
+		INNER JOIN {databaseOwner}{objectQualifier}UserRoles UR ON UR.RoleID = R.RoleID
+			WHERE F.FolderID = FP.FolderID AND
+				( UR.UserID = @UserID
+					OR (FP.RoleID = - 1)
+					OR (FP.RoleID = - 3 AND @UserID IS NULL)
+				)
+				AND CHARINDEX(P.PermissionKey, @PermissionKeys) > 0
+				AND FP.AllowAccess = @AllowAccess
+			)
+			 AND F.PortalID = @PortalID
+			 AND (F.StorageLocation = 0 
+			  OR (F.StorageLocation = 1 AND @IncludeSecure = 1) 
+			  OR (F.StorageLocation = 2 AND @IncludeDatabase = 1)
+	)
+
+	ORDER BY F.FolderPath 
+
+GO
+
+/* Create CanDeleteSkin */
+/************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CanDeleteSkin]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CanDeleteSkin]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CanDeleteSkin]
+	@SkinType char(1),
+	@SkinFolderName nvarchar(200) 
+AS
+BEGIN
+
+    if exists(select * from {databaseOwner}{objectQualifier}Skins where SkinSrc like '%![' + @SkinType + '!]' + @SkinFolderName + '%' ESCAPE '!')
+		select 0
+	else
+	begin
+        if exists(select * from {databaseOwner}{objectQualifier}Tabs where (SkinSrc like '%![' + @SkinType + '!]' + @SkinFolderName + '%' ESCAPE '!') or (ContainerSrc like '%![' + @SkinType + '!]' + @SkinFolderName + '%' ESCAPE '!'))
+            select 0
+        else
+        begin
+            if exists(select * from {databaseOwner}{objectQualifier}TabModules where ContainerSrc like '%![' + @SkinType + '!]' + @SkinFolderName + '%' ESCAPE '!')
+                select 0
+            else
+                select 1
+        end
+	end
+	
+END
+
+GO
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

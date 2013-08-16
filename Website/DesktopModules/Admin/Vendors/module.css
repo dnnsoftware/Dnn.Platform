@@ -1,0 +1,39 @@
+﻿input[type="text"].dnnVendorsSearchFilter { width: 25%; }
+
+.dnnVendors .vLetterSearch li {
+    display: inline;
+    list-style-type: none;
+    padding-left: 1em;
+}
+
+.vLetterSearch {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.dnnVendors div.dnnVendorsSearchFilter {
+    margin: 0 8px;
+    padding: 5px;
+    width: 20%;
+}
+
+.dnnFixedSizeComboBox{
+    width: 200px !important;
+    margin-right: 10px;
+    float: left;
+}
+
+.dnnFixedSizeComboBox + a.dnnSecondaryAction{
+    float: left;
+    margin-right: 10px;
+    padding: 6px 6px;
+}
+
+.RadComboBox_Default .rcbInput {
+    width: 100% !important;
+}
+
+.dnnAddressCountry .dnnLeft {width: 47%}
+
+.dnnAddressCountry .dnnLeft select {width: 100%}

@@ -1,0 +1,23 @@
+﻿<h3>Journal</h3>
+<p class="Contributor">
+	DotNetNuke Corporation <br />
+	<a href="mailto:training@dotnetnuke.com">training@dotnetnuke.com</a><br />
+	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the Journal</h3>
+	<p class="Owner">
+		<b>Version CHANGEME</b><br /><br />
+	</p>
+	<p>Description about version.</p>
+	
+	<h4>Bug Fixes</h4>
+	<ul>
+			<li>List</li>
+			<li>of</li>
+			<li>bug</li>
+			<li>fixes</li>
+	</ul>
+	
+</div>

@@ -1,0 +1,52 @@
+﻿<div id="dnnUserFileManager" class="dnnFileManager dnnClear">
+    <div class="fm-explorer-wrap dnnLeft">
+        <div class="fm-breadcrumb">
+        <p>
+          <span data-bind="foreach: currentBreadcrumbs">
+            <span data-bind="visible: id === $root.chosenFolderId(), text: name"></span>
+            <span data-bind="visible: id !== $root.chosenFolderId()"><a href="#" data-bind="text: name, click: $root.goToFolder"></a> /</span>
+          </span>
+        </p>
+        </div>
+        <div class="fm-explorer">
+            <!--[if lt ie 8]><div style="zoom:1;"><![endif]-->
+            <table data-bind="with: chosenFolderData" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <thead>
+                    <tr>
+                        <th class="fm-number" width="4%"></th>
+                        <th class="fm-name" width="50%" data-bind="text: $root.nameHeaderText"></th>
+                        <th class="fm-type" width="23%" data-bind="text: $root.typeHeaderText"></th>
+                        <th class="fm-last-modified" width="23%" data-bind="text: $root.lastModifiedHeaderText"></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: children, updateRowNumbers: children">
+                    <!-- ko if: folder === true -->
+                    <tr data-bind="event: { dblclick: $root.goToFolder }">
+                        <td class="fm-number"></td>
+                        <td><span data-bind="visible: folder" class="fm-folder"></span><span data-bind="text: name"></span></td>
+                        <td data-bind="text: type" class="fm-file-type"></td>
+                        <td data-bind="text: modified" class="fm-modified-time"></td>
+                    </tr>
+                    <!-- /ko -->
+                    <!-- ko if: folder === false -->
+                    <tr data-bind="event: { click: $root.showFilePreview, dblclick: $root.attachFile }">
+                        <td class="fm-number"></td>
+                        <td><span data-bind="visible: folder" class="fm-folder"></span><span data-bind="text: name"></span></td>
+                        <td data-bind="text: type" class="fm-file-type"></td>
+                        <td data-bind="text: modified" class="fm-modified-time"></td>
+                    </tr>
+                    <!-- /ko -->
+                </tbody>
+            </table>
+            <!--[if lt ie 8]></div><![endif]-->
+        </div>
+    </div>
+    <div class="fm-preview-area dnnRight" data-bind="with: chosenFileData">
+        <div class="fm-file-preview">
+            <img data-bind="visible: thumb_url != null, attr: { src: thumb_url }" alt="" />
+        </div>
+        <div class="fm-file-info">
+            <p><span data-bind="text: $root.fileSizeText"></span> <span data-bind="text: size"></span></p>
+        </div>
+    </div>
+</div>

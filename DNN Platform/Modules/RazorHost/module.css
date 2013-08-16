@@ -1,0 +1,6 @@
+.dnnRazorHostEditScript{margin:1em auto;}
+.dnnRazorHostAddScript{padding:1em 2em;}
+.dnnRazorHostEditScript .dnnFormItem input[type="text"], .dnnRazorHostEditScript .dnnFormItem textarea{width:80%;}
+	.razorHostModSource{margin:1em 0 1em 16%;}
+.dnnRazorHostEditScript .dnnFormItem .dnnTooltip{ width: 15%;}
+.dnnRazorHostCreateModule .dnnFormItem .dnnTooltip{ width: 15%;}

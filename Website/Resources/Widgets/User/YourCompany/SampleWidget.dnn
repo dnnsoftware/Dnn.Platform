@@ -1,0 +1,32 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="YourCompany.SampleWidget" type="Widget" version="1.0.0">
+      <friendlyName>Sample Widget</friendlyName>
+      <description>The Sample Widget is a demonstration widget for DotNetNuke.</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releasenotes.txt" />
+      <components>
+        <component type="Widget">
+          <widgetFiles>
+            <basePath>YourCompany</basePath>
+            <widgetFile>
+              <name>YourCompany.Widgets.SampleWidget.js</name>
+            </widgetFile>
+            <widgetFile>
+              <name>license.txt</name>
+            </widgetFile>
+            <widgetFile>
+              <name>releasenotes.txt</name>
+            </widgetFile>
+          </widgetFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

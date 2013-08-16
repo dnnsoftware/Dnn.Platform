@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>
+    </SchemaVersion>
+    <ProjectGuid>{94C9A90C-C0E9-41D0-AC33-FA5B35CB9C7D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>DotNetNuke.Modules.RazorHost</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>DotNetNuke.Modules.RazorHost.xml</DocumentationFile>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591</NoWarn>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>DotNetNuke.Modules.RazorHost.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+  </PropertyGroup>
+  <PropertyGroup>
+  </PropertyGroup>
+  <PropertyGroup>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="AddScript.ascx.designer.cs">
+      <DependentUpon>AddScript.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AddScript.ascx.cs">
+      <DependentUpon>AddScript.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateModule.ascx.designer.cs">
+      <DependentUpon>CreateModule.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateModule.ascx.cs">
+      <DependentUpon>CreateModule.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditScript.ascx.designer.cs">
+      <DependentUpon>EditScript.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditScript.ascx.cs">
+      <DependentUpon>EditScript.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RazorHost.ascx.designer.cs">
+      <DependentUpon>RazorHost.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="RazorHost.ascx.cs">
+      <DependentUpon>RazorHost.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RazorHostSettingsExtensions.cs" />
+    <Compile Include="Settings.ascx.designer.cs">
+      <DependentUpon>Settings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.ascx.cs">
+      <DependentUpon>Settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AddScript.ascx" />
+    <Content Include="CreateModule.ascx" />
+    <Content Include="EditScript.ascx" />
+    <Content Include="license.txt" />
+    <Content Include="module.css" />
+    <Content Include="releaseNotes.txt" />
+    <Content Include="RazorHost.ascx" />
+    <Content Include="Settings.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Manifest.dnn">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RazorHost.dnn">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Scripts\_2_AddNumbers.cshtml" />
+    <Content Include="Scripts\Shared\_Footer.cshtml" />
+    <Content Include="Scripts\_3a_RenderPage.cshtml" />
+    <Content Include="Scripts\Shared\_Layout.cshtml" />
+    <Content Include="Scripts\Shared\_Header2.cshtml" />
+    <Content Include="Scripts\_3b_UsingLayout.cshtml" />
+    <Content Include="Scripts\Shared\_Layout2.cshtml" />
+    <Content Include="Scripts\_3d_PassingData.cshtml" />
+    <Content Include="Scripts\Shared\_Layout3.cshtml" />
+    <Content Include="Scripts\Shared\_List.cshtml" />
+    <Content Include="Scripts\_4a_SimpleFormData.cshtml" />
+    <Content Include="Scripts\_4b_FormValidation.cshtml" />
+    <Content Include="Scripts\_4c_FormValueRetention.cshtml" />
+    <None Include="Scripts\_UserList.cshtml" />
+    <None Include="Scripts\_1_SampleRazorScript.cshtml" />
+    <None Include="Scripts\_PortalInfo.cshtml" />
+    <None Include="Scripts\_ModuleInfo.cshtml" />
+    <None Include="Scripts\_TabInfo.cshtml" />
+    <Content Include="Scripts\Shared\_Header.cshtml" />
+    <Content Include="Scripts\_3c_UsingSections.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+      <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
+      <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj">
+      <Project>{58FD62C7-3F26-4945-B810-428481E6300A}</Project>
+      <Name>DotNetNuke.Web.Razor</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
+      <Project>{B1699614-39D4-468A-AB1D-A2FBA97CADDF}</Project>
+      <Name>DotNetNuke.Web</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
+      <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
+      <Name>DotNetNuke.Library</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\RazorHost.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Settings.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\EditScript.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App_LocalResources\AddScript.ascx.resx" />
+    <Content Include="App_LocalResources\CreateModule.ascx.resx" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>60155</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>RazorHost</DNNFileName>
+    <PackageName>DNNCE_RazorHost</PackageName>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+  </PropertyGroup>
+  <Import Project="$(BuildScriptsPath)\ModulePackage.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="DebugProject;PackageRazor">
+  </Target>
+  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <CreateItem Include="..\..\Components\WebPages\*.dll">
+      <Output TaskParameter="Include" ItemName="ComponentReferences" />
+    </CreateItem>
+    <CreateItem Include="*.ascx;*.dnn;*.txt;*.css">
+      <Output TaskParameter="Include" ItemName="ModuleFiles" />
+    </CreateItem>
+    <CreateItem Include="RazorHelpers\*.cshtml">
+      <Output TaskParameter="Include" ItemName="RazorHelpers" />
+    </CreateItem>
+    <CreateItem Include="Scripts\*.cshtml">
+      <Output TaskParameter="Include" ItemName="CSHtmlFiles" />
+    </CreateItem>
+    <CreateItem Include="Scripts\*.vbhtml">
+      <Output TaskParameter="Include" ItemName="VBHtmlFiles" />
+    </CreateItem>
+    <CreateItem Include="Scripts\Shared\*.cshtml">
+      <Output TaskParameter="Include" ItemName="SharedCSHtmlFiles" />
+    </CreateItem>
+    <CreateItem Include="Scripts\Shared\*.vbhtml">
+      <Output TaskParameter="Include" ItemName="SharedVBHtmlFiles" />
+    </CreateItem>
+    <CreateItem Include="App_LocalResources\*.resx">
+      <Output TaskParameter="Include" ItemName="LocalResourceFilesFiles" />
+    </CreateItem>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="@(ComponentReferences)" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules" />
+    <Copy SourceFiles="@(ModuleFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost" />
+    <Copy SourceFiles="@(RazorHelpers)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\RazorHelpers" />
+    <Copy SourceFiles="@(CSHtmlFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\Scripts" />
+    <Copy SourceFiles="@(VBHtmlFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\Scripts" />
+    <Copy SourceFiles="@(SharedCSHtmlFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\Scripts\Shared" />
+    <Copy SourceFiles="@(SharedVBHtmlFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\Scripts\Shared" />
+    <Copy SourceFiles="@(LocalResourceFilesFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\App_LocalResources" />
+  </Target>
+  <Target Name="PackageRazor" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <XmlRead Prefix="n" Namespace="http://schemas.microsoft.com/developer/msbuild/2003" XPath="dotnetnuke/packages/package/@version" XmlFileName="$(DNNFileName).dnn">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </XmlRead>
+    <CreateItem Include="$(DNNFileName).dnn">
+      <Output TaskParameter="Include" ItemName="PackageManifestFiles" />
+    </CreateItem>
+    <CreateItem Include="*.txt">
+      <Output TaskParameter="Include" ItemName="PackageTextFiles" />
+    </CreateItem>
+    <CreateItem Include="*.asmx;*.ascx;*.css;*.xsl;*.svc;*.xml">
+      <Output TaskParameter="Include" ItemName="PackageSourceFiles" />
+    </CreateItem>
+    <CreateItem Include="App_LocalResources\*.resx">
+      <Output TaskParameter="Include" ItemName="PackageLocalResourceFiles" />
+    </CreateItem>
+    <CreateItem Include="Documentation\*.txt">
+      <Output TaskParameter="Include" ItemName="PackageDocumentationFiles" />
+    </CreateItem>
+    <CreateItem Include="Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
+      <Output TaskParameter="Include" ItemName="PackageSqlDataProviderFiles" />
+    </CreateItem>
+    <CreateItem Include="Data\*.SqlDataProvider">
+      <Output TaskParameter="Include" ItemName="PackageDataFiles" />
+    </CreateItem>
+    <CreateItem Include="images\*.*">
+      <Output TaskParameter="Include" ItemName="MyImages" />
+    </CreateItem>
+    <CreateItem Include="js\*.js">
+      <Output TaskParameter="Include" ItemName="MyJsFiles" />
+    </CreateItem>
+    <CreateItem Include="keys\*.*">
+      <Output TaskParameter="Include" ItemName="MyKeys" />
+    </CreateItem>
+    <CreateItem Include="Views\*.ascx">
+      <Output TaskParameter="Include" ItemName="MyViews" />
+    </CreateItem>
+    <CreateItem Include="Views\Controls\*.ascx">
+      <Output TaskParameter="Include" ItemName="MyViewControls" />
+    </CreateItem>
+    <CreateItem Include="Scripts\*.cshtml">
+      <Output TaskParameter="Include" ItemName="MyScripts" />
+    </CreateItem>
+    <CreateItem Include="Scripts\Shared\*.cshtml">
+      <Output TaskParameter="Include" ItemName="MySharedScripts" />
+    </CreateItem>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin" />
+    <Copy SourceFiles="@(PackageSourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(PackageLocalResourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\App_LocalResources" />
+    <Copy SourceFiles="@(PackageSqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Providers\DataProviders\SqlDataProvider" />
+    <Copy SourceFiles="@(PackageDataFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Data" />
+    <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(PackageTextFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(PackageDocumentationFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Documentation" />
+    <Copy SourceFiles="@(MyImages)" DestinationFolder="$(MSBuildProjectDirectory)\Package\images" />
+    <Copy SourceFiles="@(MyJsFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\js" />
+    <Copy SourceFiles="@(MyKeys)" DestinationFolder="$(MSBuildProjectDirectory)\Package\keys" />
+    <Copy SourceFiles="@(MyViews)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(MyViewControls)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Controls" />
+    <Copy SourceFiles="@(MyScripts)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Scripts" />
+    <Copy SourceFiles="@(MySharedScripts)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Scripts\Shared" />
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(WebsitePath)/Install/Module" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\Package" />
+  </Target>
+</Project>

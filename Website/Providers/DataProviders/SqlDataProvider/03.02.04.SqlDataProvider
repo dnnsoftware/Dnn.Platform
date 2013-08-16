@@ -1,0 +1,88 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Add NAV skinobject */
+/**********************/
+
+INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ControlKey], [ControlSrc], [ControlType]) VALUES (N'NAV', N'Admin/Skins/Nav.ascx', -2)
+GO
+
+/* Update Folder Permissions */
+/*****************************/
+
+DECLARE @ReadPermissionID	int
+DECLARE @WritePermissionID	int
+DECLARE @AdminRoleID		int
+DECLARE @PortalID			int
+
+/* get the PermissionID for READ permissions on the SYSTEM_FOLDER */
+SELECT @ReadPermissionID = PermissionID
+FROM   {databaseOwner}{objectQualifier}Permission
+WHERE  PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'READ'
+
+/* get the PermissionID for WRITE permissions on the SYSTEM_FOLDER */
+SELECT @WritePermissionID = PermissionID
+FROM   {databaseOwner}{objectQualifier}Permission
+WHERE  PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'WRITE'
+
+--Iterate through each portal
+SELECT @PortalID = min(PortalID)
+FROM   {databaseOwner}{objectQualifier}Portals
+WHILE @PortalID is not null
+BEGIN
+
+	/* get the Administrator Role ID */
+	SELECT @AdminRoleID = AdministratorRoleID
+		FROM {databaseOwner}{objectQualifier}Portals
+		WHERE PortalID = @PortalID	
+
+	/* remove any records which already exist to avoid a duplicate key error on the insert */
+	DELETE
+		FROM   {databaseOwner}{objectQualifier}FolderPermission
+		WHERE  (PermissionID = @ReadPermissionID AND RoleID = @AdminRoleID)
+			OR  (PermissionID = @WritePermissionID AND RoleID = @AdminRoleID)
+
+	/* give Administrators READ access to unsecure folders */
+	INSERT INTO {databaseOwner}{objectQualifier}FolderPermission
+		SELECT FolderID, @ReadPermissionID, @AdminRoleID, 1
+		FROM {databaseOwner}{objectQualifier}Folders
+		WHERE PortalID = @PortalID
+
+	/* give Administrators WRITE access to unsecure folders */
+	INSERT INTO {databaseOwner}{objectQualifier}FolderPermission
+		SELECT FolderID, @WritePermissionID, @AdminRoleID, 1
+		FROM {databaseOwner}{objectQualifier}Folders
+		WHERE PortalID = @PortalID
+
+	SELECT @PortalID = min(PortalID)
+		FROM   {databaseOwner}{objectQualifier}Portals
+		WHERE  PortalID > @PortalID
+END
+
+GO
+
+/* Add Host Root Folder to Database */
+/************************************/
+
+DECLARE @FolderID int
+SET @FolderID = (SELECT FolderID 
+					FROM {objectQualifier}Folders 
+					WHERE PortalID IS NULL AND FolderPath = '')
+If @FolderID IS NULL
+	BEGIN
+		INSERT INTO {objectQualifier}Folders 
+			( PortalID, FolderPath, StorageLocation, IsProtected, IsCached )
+			VALUES	( NULL, '', 0, 1, 0)
+	END
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

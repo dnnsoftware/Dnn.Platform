@@ -1,0 +1,9 @@
+﻿Test,								TestPageName,	AutoAscii,	ReplaceChars,	Scheme,		Page Name,	Params,					Expected Url,	
+Page Default,						ábout Us,		,			,				http://,	About Us,	,						http://{alias}/áboutUs.aspx
+Edit Page Home Default,				ábout Us,		,			,				http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/áboutUs/ctl/Edit/mid/100.aspx
+Page Off,							ábout Us,		false,		,				http://,	About Us,	,						http://{alias}/áboutUs.aspx
+Edit Page Home Off,					ábout Us,		false,		,				http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/áboutUs/ctl/Edit/mid/100.aspx
+Page On,							ábout Us,		true,		,				http://,	About Us,	,						http://{alias}/aboutUs.aspx
+Edit Page Home On,					ábout Us,		true,		,				http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/aboutUs/ctl/Edit/mid/100.aspx
+Page Custom,						æbout Us,		true,		æ:ae,			http://,	About Us,	,						http://{alias}/aeboutUs.aspx
+Edit Page Home Custom,				æßout Us,		true,		æ:ae;ß:ss,		http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/aessoutUs/ctl/Edit/mid/100.aspx

@@ -1,0 +1,199 @@
+﻿.dnnLanguages input[type="checkbox"] {
+    width: auto;
+}
+.dnnLanguages .enableLocalization {
+    float: right;
+}
+.dnnLanguageEditor .dnnLangEditorTree {
+    width: 20%;
+}
+.dnnLanguageEditor .dnnLangEditorContent {
+    width: 80%;
+}
+.dnnLangEditorContent .dnnGrid {
+    width: 100%;
+    border: none !important;
+}
+.dnnFormItem input[type="text"] {
+    width: 30%;
+    margin-right: 15px;
+}
+.dnnLangEditorContent .dnnGrid input[type="text"], .dnnLangEditorContent .dnnGrid textarea {
+    width: 75%;
+}
+/*.dnnFormItem input[type="checkbox"] {
+    margin-right: 5px;
+    float: left;
+}*/
+.dnnLanguagePackWriter .dnnFormItem .dnnFormLabel {
+    
+    display: block;
+    margin-left: 33%;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: bold;
+}
+/*
+.dnnLanguageEditor .dnnTree .dnnFormItem label {
+    width: 70%;
+}
+.dnnFormItem .lpwRadioButtons label {
+    width: auto;
+}
+.dnnFormItem .lpwCheckBoxes label {
+    width: auto;
+    text-align: left;
+}
+*/
+.dnnFormItem .lpwRadioButtons input[type=radio] {
+    width: auto;
+}
+
+.dnnFormItem .lpwRadioButtons br {
+    display: none !important;
+    font-size: 0;
+    line-height: 0;
+    border-collapse: collapse;
+}
+.dnnFormItem .lpwRadioButtons label {
+    width: auto;
+    padding-left: 5px;
+    padding-right: 15px;
+    font-weight: normal;
+    margin-top: 0;
+}
+.dnnLanguageCombo {
+    width: 450px;
+    float: left;
+}
+.dnnFormItem .dnnLanguageCombo label {
+    width: auto;
+    padding-right: 15px;
+    padding-left: 5px;
+    font-weight: normal;
+    margin-top: 0;
+}
+
+.dnnLanguagePackWriter .lpwCheckBoxes {
+    display: block;
+    min-width: 450px;
+    margin-left: 33%;
+}
+.dnnLanguagePackWriter .lpwCheckBoxes label {
+    font-weight: normal;
+    margin-top: 0;
+}
+.dnnLanguageTextEditor .dnnLTextEditor {
+    margin-left: 31%;
+}
+.dnnLanguageTextEditor .dnnLTextEditor label {
+    width: auto;
+    font-weight: normal;
+    margin-top: 0;
+    margin-left: 5px;
+    text-align: left;
+}
+
+.enableLocalizationProgress .RadUploadProgressArea {
+    width: 900px;
+}
+.enableLocalizationProgress .RadUploadProgressArea .ruShadow {
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+}
+.enableLocalizationProgress .RadUploadProgressArea .ruShadow > div {
+    margin: 10px;
+    background-image: none;
+    padding-left: 20px;
+}
+.enableLocalizationProgress .RadUploadProgressArea .ruShadow .ruProgress li {
+    margin-bottom: 14px;
+    list-style-type: none;
+}
+.enableLocalizationProgress .RadUploadProgressArea .ruShadow li.ruProgressHeader {
+    margin-bottom: 24px;
+}
+.enableLocalizationProgress .RadUploadProgressArea .ruShadow .ruProgress li.ruCurrentFile {
+    margin-top: 10px;
+}
+.enableLocalizationProgress .RadUploadProgressArea .ruShadow .ruProgress li.ruTimeSpeed {
+    margin-bottom: 10px;
+}
+
+.enableLocalizationProgress .RadUploadProgressArea_Simple .ruProgress {
+    background-image: none;
+    padding-left: 20px;
+}
+.enableLocalizationProgress .RadUploadProgressArea_Simple .ruProgress .ruBar div {
+    background-image: none;
+    background: #ccc;
+    border-right: 1px solid #333;
+}
+.enableLocalizationProgress .RadUploadProgressArea > .ruShadow {
+    background-image: none;
+}
+
+.dnnLangEditorContent .dnnGrid .Pending {
+    border-style: solid;
+    border-color: Red;
+}
+.dnnResourceVerifier .dnnFormItem input {
+    float: none;
+    vertical-align: bottom;
+}
+.dnnResourceVerifier .dnnFormItem table {
+    margin-left: 26px;
+}
+
+/* clearn some form */
+
+.dnnLangEditorTree .RadTreeView_Default{
+    display: block;
+    margin-top: 25px;
+}
+.RadGrid_Default{
+    width: 100% !important;
+}
+
+.RadComboBox + table{
+       background-color: #f0f0f0;
+	    margin-bottom: 5px;
+}
+.dnnLEMode{
+    width: 50%;
+}
+.dnnResourceVerifier table{ width: 100%; margin-top: 5px; }
+.dnnResourceVerifier input[type="image"]{
+    display: block;
+    float: left;
+    margin-right: 5px;
+}
+.dnnResourceVerifier span.SubHead{
+    display: block;
+    float: left;
+}
+input.txtFileName{
+    width: 80px !important;
+    margin-right: 0 !important;
+}
+input.txtFileName + span{
+    margin-left: 0 !important;
+}
+.dnnLanguageEditor .dnnGrid span.dnnLabelBox{width: 85%; margin-right: 15px; min-width: 35%;min-height: 17px;float:left;-moz-border-radius:3px;border-radius:3px;padding:5px;
+		background-color:#fffff5;-moz-box-shadow:inset 0 0 3px 3px #fffbe1;-webkit-box-shadow:inset 0 0 3px 3px #fffbe1;box-shadow:inset 0 0 3px 3px #fffbe1;
+		border-color:#686450 #bcb691 #bcb691 #686450;border-width:1px;border-style: solid;margin:0;font-family:Helvetica, Arial, Verdana, sans-serif;display: inline-block;
+        text-align: left;color: #a3a3a3;font-size: 13px;word-wrap: break-word;}
+.dnnLanguageEditor .dnnGrid span.dnnTextArea{ min-height: 80px;max-height: 108px;overflow: auto;}
+
+.ssLanguages{ }
+.ssContentLocalization{ }
+.ssSettings{ }
+.cmdDeleteTranslation { }
+
+.clControl {
+    background-color: rgb(201, 201, 201);
+    height: 60px;
+    padding-top: 17px;
+}
+

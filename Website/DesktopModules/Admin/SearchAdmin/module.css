@@ -1,0 +1,106 @@
+﻿.dnnSearchAdmin .dnnLabel + span {
+    margin-top: 0;
+}
+
+.dnnSearchAdmin .dnnFormRadioButtons {
+    padding: 0;
+    background-color: inherit;
+}
+
+.dnnSearchAdmin .dnnLeftListBox {
+    float: left;
+    width: 218px !important;
+    margin-right: 15px;
+}
+
+.dnnSearchAdmin .dnnTableDisplay {
+    border-collapse: collapse;
+}
+
+.dnnSearchAdmin .dnnTableHeader .dnnLabel,
+.dnnSearchAdmin .dnnTableHeader .dnnLeftCultureList {
+    margin-top: 5px;   
+}
+
+.dnnSearchAdmin tr.synonymsGroupEditRow,
+.dnnSearchAdmin tr.stopwordsEditRow {
+    background-color: #4169e1;
+}
+
+.dnnSearchAdmin a.btnEditSynonymsGroup,
+.dnnSearchAdmin a.btnDeleteSynonymsGroup,
+.dnnSearchAdmin a.btnSaveSynonymsGroup,
+.dnnSearchAdmin a.btnCancelSynonymsGroup,
+
+.dnnSearchAdmin a.btnEditStopwords,
+.dnnSearchAdmin a.btnDeleteStopwords,
+.dnnSearchAdmin a.btnSaveStopwords,
+.dnnSearchAdmin a.btnCancelStopwords {
+    display: block;
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-right: 7px;
+}
+
+.dnnSearchAdmin a.btnEditSynonymsGroup,
+.dnnSearchAdmin a.btnEditStopwords {
+    margin-top: 2px;
+    background: url('../../../icons/sigma/Edit_16X16_Standard.png') no-repeat;
+}
+
+.dnnSearchAdmin a.btnDeleteSynonymsGroup,
+.dnnSearchAdmin a.btnDeleteStopwords {
+    background: url('../../../icons/sigma/Delete_16X16_Standard.png') no-repeat;
+    margin-right: 0;
+}
+
+.dnnSearchAdmin a.btnSaveSynonymsGroup,
+.dnnSearchAdmin a.btnSaveStopwords {
+    margin-top: 2px;
+    background: url('../../../icons/sigma/Save_16X16_Standard.png') no-repeat;
+}
+
+.dnnSearchAdmin a.btnCancelSynonymsGroup,
+.dnnSearchAdmin a.btnCancelStopwords {
+    background: url('../../../icons/sigma/Cancel_16X16_Standard.png') no-repeat;
+    margin-right: 0;
+}
+
+#synonymsGroupTable td span.synonymsGroupTags,
+#stopwordsTable td span.stopwordsTags {
+    word-wrap: break-word;
+    max-width: 800px;
+    display: block;
+}
+
+#synonymsGroupTable td div.editSynonymsContainer,
+#stopwordsTable td div.editStopwordsContainer {
+    position: relative;
+}
+
+#synonymsGroupTable td span.dnnFormMessage.dnnFormError,
+#stopwordsTable td span.dnnFormMessage.dnnFormError {
+    right: 50%;
+    display: none;
+}
+
+#saStopWords input[type="image"], #saSynonyms input[type="image"] {
+    opacity: 0.3;
+}
+
+#saStopWords input[type="image"]:hover,#saSynonyms input[type="image"]:hover {
+    opacity: 1;
+}
+
+#saStopWords input[type="image"].stopwordsCultureSelected, #saSynonyms input[type="image"].stopwordsCultureSelected {
+    opacity: 1;
+}
+
+#saStopWords #stopWordsList {
+    margin-top: 15px;
+}
+
+#saStopWords a#btnAddStopwords {
+    margin-left: 10px;
+}

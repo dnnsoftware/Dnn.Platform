@@ -1,0 +1,32 @@
+<dotnetnuke version="2.0" type="Module"> * Can be "Module", "SkinObject", "DataProvider"
+  <folders>
+    <folder>
+      <name></name> * creates /DesktopModules/<name> - no writing outside the DesktopModules folder ( except /bin )
+      <description></description> * will be blank for admin or skin objects *
+      <version>01.00.00</version> * required - format xx.xx.xx where xx is 2 digit numeric
+      <resourcefile></resourcefile> * a zip file which contains resources to be extracted to the parent folder - folders in zip are relative to current folder
+      <modules>
+        <module>
+          <friendlyname></friendlyname> * will be blank for admin or skin objects *
+          <controls>
+            <control>
+              <key></key> * will be blank for the master module control *
+              <title></title> * optional *
+              <src></src> * required
+              <iconfile></iconfile> * optional
+              <type></type> * required - one of five types which correspond to security access levels {Anonymous, View, Edit, Admin, Host}
+              <vieworder></vieworder> * optional
+            </control>
+          </controls>
+        </module>
+      </modules>
+      <files>
+        <file>
+          <path></path> * relative to the <folder><name> value - Optional
+          <name></name> * dll copied to /bin, *DataProvider executed as DB script, all other files stored in <path> 
+        </file>
+      </files>
+    </folder>
+  </folders>  
+</dotnetnuke>
+

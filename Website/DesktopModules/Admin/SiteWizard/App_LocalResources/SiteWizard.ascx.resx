@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Introduction.Title" xml:space="preserve">
+    <value>Site Configuration Wizard</value>
+  </data>
+  <data name="Introduction.Help" xml:space="preserve">
+    <value>
+			The Site Configuration Wizard provides an Administrator with a User-Friendly
+			way to set up the more common features of a Website.
+			You can step through the Wizard using the Next/Back buttons at the bottom
+			of the Wizard Page.
+			Once enough detail has been collected to complete the Wizard, the Finish Button will be
+			enabled.
+		</value>
+  </data>
+  <data name="Template.Title" xml:space="preserve">
+    <value>Choose a Template for your site</value>
+  </data>
+  <data name="Template.Help" xml:space="preserve">
+    <value>								
+				You can optionally choose to build your site from a preexisting template.  To choose a template
+				click the checkbox to enable the list of templates, and choose a template from the list.
+				If you elect to build your site using a template, you need to choose
+				how to deal with duplicate Modules (Modules that are in the Template and
+				also already on your site).
+		</value>
+  </data>
+  <data name="lblMergeModule.Help" xml:space="preserve">
+    <value>Choose how to deal with duplicate Modules (Modules that are in the Template and also already on your site).</value>
+  </data>
+  <data name="Ignore.Text" xml:space="preserve">
+    <value>Ignore</value>
+  </data>
+  <data name="Replace.Text" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="Merge.Text" xml:space="preserve">
+    <value>Merge</value>
+  </data>
+  <data name="MergeWarning.Text" xml:space="preserve">
+    <value>								
+			&lt;span class="NormalRed"&gt;
+				Note: If you choose "Replace", all existing content on pages that are
+				also in the template will be lost.
+			&lt;/span&gt;
+		</value>
+  </data>
+  <data name="TemplateRequired.Text" xml:space="preserve">
+    <value>You must select a Template before you can proceed.</value>
+  </data>
+  <data name="InvalidTemplate.Text" xml:space="preserve">
+    <value>{0} is not a valid Website Template File.</value>
+  </data>
+  <data name="Skin.Title" xml:space="preserve">
+    <value>Select a Skin for your Site</value>
+  </data>
+  <data name="Skin.Help" xml:space="preserve">
+    <value>
+			You can select a Skin from the Skin Viewer (below). This skin will be applied to all
+			pages in your site. However, when you edit the Page properties you will have the
+			ability to override this default skin with a different one.
+		</value>
+  </data>
+  <data name="Container.Title" xml:space="preserve">
+    <value>Choose a Default Container for your site</value>
+  </data>
+  <data name="Container.Help" xml:space="preserve">
+    <value>
+			You can select a Container from the Container Viewer. This container will be applied to all
+			modules on all pages in your site. However, when you edit the Module properties you will have the
+			ability to override this default container with a different one.
+		</value>
+  </data>
+  <data name="IncludeAll.Text" xml:space="preserve">
+    <value>Show All Containers:</value>
+  </data>
+  <data name="Details.Title" xml:space="preserve">
+    <value>Add Site Details</value>
+  </data>
+  <data name="Details.Help" xml:space="preserve">
+    <value>
+			On this page you can provide some basic information about your site.
+			You can optionally provide a Description and Keywords that help describe your site.
+			These are used by search engines, together with the site's name to help identify and index your site.
+			The keywords need to be separated by commas.
+			&lt;p&gt;
+			Some skins support a Logo, usually in the top left hand corner.  If you are
+			using a skin that supports logos you can choose it on this page.
+			If the file you would like is not on this site, you can upload one from
+			your local computer.
+			&lt;/p&gt;
+		</value>
+  </data>
+  <data name="lblPortalName.Text" xml:space="preserve">
+    <value>Name/Title:</value>
+  </data>
+  <data name="lblPortalName.Help" xml:space="preserve">
+    <value>The site Name will display in the TitleBar of the Browser.</value>
+  </data>
+  <data name="lblDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="lblDescription.Help" xml:space="preserve">
+    <value>Enter a description for your site</value>
+  </data>
+  <data name="lblKeyWords.Text" xml:space="preserve">
+    <value>KeyWords:</value>
+  </data>
+  <data name="lblKeyWords.Help" xml:space="preserve">
+    <value>Enter some keywords for your site (separated by a comma).</value>
+  </data>
+  <data name="lblLogo.Text" xml:space="preserve">
+    <value>Logo:</value>
+  </data>
+  <data name="lblLogo.Help" xml:space="preserve">
+    <value>Select a Logo.</value>
+  </data>
+  <data name="Complete.Title" xml:space="preserve">
+    <value>Site Configuration Completed</value>
+  </data>
+  <data name="Complete.Help" xml:space="preserve">
+    <value>
+			&lt;p&gt;
+				Your Site has been successfully configured.
+			&lt;/p&gt;
+			&lt;p&gt;
+				If you changed the skin for your site, it should change when you leave this page.
+			&lt;/p&gt;
+        </value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Site Wizard</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;About Site Wizard&lt;/h1&gt;&lt;p&gt;The Administrator can use this user-friendly wizard to set up the common features of the Website.&lt;/p&gt;</value>
+  </data>
+  <data name="Finish.Text" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="Next.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Previous.Text" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="EditOnly.Text" xml:space="preserve">
+    <value>This module is only available for users who have been given Edit permission.  Please contact the site administrator if you think you should have this permission.</value>
+  </data>
+  <data name="lblMergeModule.Text" xml:space="preserve">
+    <value>How to deal with duplicate Modules</value>
+  </data>
+  <data name="lblTemplateList.Help" xml:space="preserve">
+    <value>You can select a template which you want to build the site with.</value>
+  </data>
+  <data name="lblTemplateList.Text" xml:space="preserve">
+    <value>Template List</value>
+  </data>
+  <data name="lblTemplateMessage.Help" xml:space="preserve">
+    <value>If you want to rebuild your site with a template, please select this checkbox.</value>
+  </data>
+  <data name="lblTemplateMessage.Text" xml:space="preserve">
+    <value>Build your site from a template</value>
+  </data>
+  <data name="ModulesNotInstalled.Text" xml:space="preserve">
+    <value>This template has the following modules that are not installed.&lt;br /&gt;{0}</value>
+  </data>
+</root>

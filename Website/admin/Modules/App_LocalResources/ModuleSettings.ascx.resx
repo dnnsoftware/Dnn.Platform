@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ModuleSettings.Text" xml:space="preserve">
+    <value>Module Settings</value>
+  </data>
+  <data name="plFriendlyName.Text" xml:space="preserve">
+    <value>Module:</value>
+  </data>
+  <data name="plFriendlyName.Help" xml:space="preserve">
+    <value>Displays the name of the module.</value>
+  </data>
+  <data name="plTitle.Text" xml:space="preserve">
+    <value>Module Title:</value>
+  </data>
+  <data name="plTitle.Help" xml:space="preserve">
+    <value>Enter a title for the Module.  This will appear in the Title Bar of the Container for this Module, if supported by the Container.</value>
+  </data>
+  <data name="PageSettings.Text" xml:space="preserve">
+    <value>Page Settings</value>
+  </data>
+  <data name="Security.Text" xml:space="preserve">
+    <value>Advanced Settings</value>
+  </data>
+  <data name="plAllTabs.Text" xml:space="preserve">
+    <value>Display Module On All Pages?</value>
+  </data>
+  <data name="plAllTabs.Help" xml:space="preserve">
+    <value>Select whether the module should appear in the same location on all pages of the site</value>
+  </data>
+  <data name="plVisibility.Text" xml:space="preserve">
+    <value>Collapse/Expand:</value>
+  </data>
+  <data name="plVisibility.Help" xml:space="preserve">
+    <value>Choose the default visibility for this Module ie whether the module is collapsed or expanded.</value>
+  </data>
+  <data name="plTab.Text" xml:space="preserve">
+    <value>Move To Page:</value>
+  </data>
+  <data name="plTab.Help" xml:space="preserve">
+    <value>Move this module instance to another Page.</value>
+  </data>
+  <data name="plHeader.Text" xml:space="preserve">
+    <value>Header:</value>
+  </data>
+  <data name="plHeader.Help" xml:space="preserve">
+    <value>Enter header text for this Module</value>
+  </data>
+  <data name="plFooter.Text" xml:space="preserve">
+    <value>Footer:</value>
+  </data>
+  <data name="plFooter.Help" xml:space="preserve">
+    <value>Enter footer text for this Module</value>
+  </data>
+  <data name="plIcon.Text" xml:space="preserve">
+    <value>Icon:</value>
+  </data>
+  <data name="plIcon.Help" xml:space="preserve">
+    <value>Select an Icon for this Module to display in the Title Bar</value>
+  </data>
+  <data name="plAlign.Text" xml:space="preserve">
+    <value>Alignment:</value>
+  </data>
+  <data name="plAlign.Help" xml:space="preserve">
+    <value>Select the Alignment of the Module</value>
+  </data>
+  <data name="plColor.Text" xml:space="preserve">
+    <value>Color:</value>
+  </data>
+  <data name="plColor.Help" xml:space="preserve">
+    <value>Enter a Color for the module</value>
+  </data>
+  <data name="plBorder.Text" xml:space="preserve">
+    <value>Border:</value>
+  </data>
+  <data name="plBorder.Help" xml:space="preserve">
+    <value>Enter a Border width for the Module</value>
+  </data>
+  <data name="plModuleContainer.Text" xml:space="preserve">
+    <value>Module Container:</value>
+  </data>
+  <data name="plModuleContainer.Help" xml:space="preserve">
+    <value>Select a Container for the Module ( to add a new Container go to the File Manager)</value>
+  </data>
+  <data name="plPermissions.Text" xml:space="preserve">
+    <value>Permissions:</value>
+  </data>
+  <data name="plPermissions.Help" xml:space="preserve">
+    <value>Select the View and Edit permissions by checking/unchecking the boxes in the grid.  The module can inherit its permissions from the Page.  To do this check the Inherit View Permissions checkbox.</value>
+  </data>
+  <data name="plCacheTime.Text" xml:space="preserve">
+    <value>Cache Time (secs):</value>
+  </data>
+  <data name="plCacheTime.Help" xml:space="preserve">
+    <value>Enter the time this object is kept in the Cache</value>
+  </data>
+  <data name="plStartDate.Text" xml:space="preserve">
+    <value>Start Date:</value>
+  </data>
+  <data name="plStartDate.Help" xml:space="preserve">
+    <value>The start date for displaying this module. Prior to this date the module will only be visible to users with Manage permissions.</value>
+  </data>
+  <data name="plEndDate.Text" xml:space="preserve">
+    <value>End Date:</value>
+  </data>
+  <data name="plEndDate.Help" xml:space="preserve">
+    <value>The end date for displaying this module. After this date the module will only be visible to users with Manage permissions.</value>
+  </data>
+  <data name="plDefault.Text" xml:space="preserve">
+    <value>Set As Default Settings? </value>
+  </data>
+  <data name="plDefault.Help" xml:space="preserve">
+    <value>Select this option if you would like the Page Settings for this module to be used as the default settings when adding new modules. Option only available to Website Admins and SuperUsers.</value>
+  </data>
+  <data name="plAllModules.Text" xml:space="preserve">
+    <value>Apply To All Modules?</value>
+  </data>
+  <data name="plAllModules.Help" xml:space="preserve">
+    <value>Select this option if you would like the Page Settings for this module to be applied to all existing modules in the site. Option only available to Website Admins and SuperUsers.</value>
+  </data>
+  <data name="GeneralDetails.Text" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="Appearance.Text" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="OtherSettings.Text" xml:space="preserve">
+    <value>Advanced Settings</value>
+  </data>
+  <data name="InheritPermissions.Text" xml:space="preserve">
+    <value>Inherit &lt;b&gt;View&lt;/b&gt; permissions from &lt;b&gt;Page&lt;/b&gt;</value>
+  </data>
+  <data name="ControlTitle_module.Text" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="plDisplayTitle.Text" xml:space="preserve">
+    <value>Display Container?</value>
+  </data>
+  <data name="plDisplayTitle.Help" xml:space="preserve">
+    <value>Select this option if you would like to display the Module container.</value>
+  </data>
+  <data name="plDisplaySyndicate.Text" xml:space="preserve">
+    <value>Allow Syndicate?</value>
+  </data>
+  <data name="plDisplayPrint.Help" xml:space="preserve">
+    <value>Select this option if you would like to enable printing on this module</value>
+  </data>
+  <data name="plDisplaySyndicate.Help" xml:space="preserve">
+    <value>Select this option if you would like to enable RSS on this module</value>
+  </data>
+  <data name="plDisplayPrint.Text" xml:space="preserve">
+    <value>Allow Print?</value>
+  </data>
+  <data name="valStartDate.ErrorMessage" xml:space="preserve">
+    <value>Invalid Start Date</value>
+  </data>
+  <data name="valEndDate.ErrorMessage" xml:space="preserve">
+    <value>Invalid End Date</value>
+  </data>
+  <data name="valCacheTime.ErrorMessage" xml:space="preserve">
+    <value>Invalid Cache Time</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Module Settings&lt;/h1&gt;&lt;p&gt;Administrators can manage the Module Settings for the current Page. This allows you to specify characteristics of the module including content, permissions, and display properties.&lt;/p&gt;</value>
+  </data>
+  <data name="valBorder.ErrorMessage" xml:space="preserve">
+    <value>Invalid Border (must be a number between 0 and 9)</value>
+  </data>
+  <data name="valEndDate2.ErrorMessage" xml:space="preserve">
+    <value>End Date must be after Start Date</value>
+  </data>
+  <data name="plNewTabs.Help" xml:space="preserve">
+    <value>Check this box to add the module to new pages only. Option only available to Website Admins and SuperUsers.</value>
+  </data>
+  <data name="plNewTabs.Text" xml:space="preserve">
+    <value>Add to new pages only?</value>
+  </data>
+  <data name="plWebSlice.Help" xml:space="preserve">
+    <value>Check this box to make this module an IE8 WebSlice</value>
+  </data>
+  <data name="plWebSlice.Text" xml:space="preserve">
+    <value>Is a WebSlice?</value>
+  </data>
+  <data name="plWebSliceExpiry.Help" xml:space="preserve">
+    <value>Enter a date when the Web Slice will expire - if left blank the Module's End date will be used</value>
+  </data>
+  <data name="plWebSliceExpiry.Text" xml:space="preserve">
+    <value>Web Slice Expires:</value>
+  </data>
+  <data name="plWebSliceTitle.Help" xml:space="preserve">
+    <value>Enter a title for the Web Slice - if you leave this blank the Module's Title will be used.</value>
+  </data>
+  <data name="plWebSliceTitle.Text" xml:space="preserve">
+    <value>Web Slice Title:</value>
+  </data>
+  <data name="plWebSliceTTL.Help" xml:space="preserve">
+    <value>Enter the Time to Live (TTL) for this web slice in minutes.  If left blank this will default to the cache time (converted to minutes)</value>
+  </data>
+  <data name="plWebSliceTTL.Text" xml:space="preserve">
+    <value>Web Slice TTL:</value>
+  </data>
+  <data name="valWebSliceExpiry.ErrorMessage" xml:space="preserve">
+    <value>Invalide Expiry Date</value>
+  </data>
+  <data name="valWebSliceTTL.ErrorMessage" xml:space="preserve">
+    <value>Invalid TTL - value must be an integer</value>
+  </data>
+  <data name="InstalledOn.Text" xml:space="preserve">
+    <value>This module has been added to the following pages:</value>
+  </data>
+  <data name="ModuleInstalledOn.Text" xml:space="preserve">
+    <value>Added to Pages</value>
+  </data>
+  <data name="InstalledOn.Help" xml:space="preserve">
+    <value>Lists the pages that contain this module. An existing module can be added to other pages by using the Add Existing Module feature. This list only includes pages this module was added to using the Add Existing Module feature.</value>
+  </data>
+  <data name="MsgInstalledOnNone.Text" xml:space="preserve">
+    <value>This module instance has not been added to any additional pages.</value>
+  </data>
+  <data name="MsgInstalledOnAll.Text" xml:space="preserve">
+    <value>This module instance is displayed on all pages.</value>
+  </data>
+  <data name="CustomSettings.Text" xml:space="preserve">
+    <value>{0} Settings</value>
+  </data>
+  <data name="ModuleExists.Text" xml:space="preserve">
+    <value>This module already exists on the target page (it may be in the recycle bin), and only one instance of a module can exist on a page.</value>
+  </data>
+  <data name="CacheProvider.Help" xml:space="preserve">
+    <value>Select the provider to use for this page.</value>
+  </data>
+  <data name="CacheDuration.Help" xml:space="preserve">
+    <value>Enter the duration (in seconds) to cache the page for.  This must be an integer.</value>
+  </data>
+  <data name="CacheProvider.Text" xml:space="preserve">
+    <value>Output Cache Provider</value>
+  </data>
+  <data name="CacheDuration.Text" xml:space="preserve">
+    <value>Cache Duration (seconds)</value>
+  </data>
+  <data name="cmdClearTabModuleCache.Text" xml:space="preserve">
+    <value>Clear Cache for This Tab Module</value>
+  </data>
+  <data name="cmdClearAllTabModuleCache.Text" xml:space="preserve">
+    <value>Clear Cache for All Tab Modules</value>
+  </data>
+  <data name="lblCachedItemCount.Text" xml:space="preserve">
+    <value>Current Cache Count: {0} item for this tab module</value>
+  </data>
+  <data name="CacheDurationWarning.Text" xml:space="preserve">
+    <value>This module has indicated a recommendation to disable caching (select NONE from the Output Cache Provider list above).  Enabling caching on this module is not recommended and may cause the module to display stale data.</value>
+  </data>
+  <data name="CacheInherited.Text" xml:space="preserve">
+    <value>Inherited</value>
+  </data>
+  <data name="plTags.Help" xml:space="preserve">
+    <value>Select items from the drop-down to tag this Module.</value>
+  </data>
+  <data name="plTags.Text" xml:space="preserve">
+    <value>Tags:</value>
+  </data>
+  <data name="plAdminBorder.Help" xml:space="preserve">
+    <value>Checking this box will enable red admin border to be displayed around the module to admins when logged on to the site.</value>
+  </data>
+  <data name="plAdminBorder.Text" xml:space="preserve">
+    <value>Hide Admin Border</value>
+  </data>
+  <data name="cultureLabel.Help" xml:space="preserve">
+    <value>The culture for this module</value>
+  </data>
+  <data name="cultureLabel.Text" xml:space="preserve">
+    <value>Module Culture:</value>
+  </data>
+  <data name="defaultCultureLabel.Help" xml:space="preserve">
+    <value>Click this link to view the version of this module in the default culture</value>
+  </data>
+  <data name="defaultCultureLabel.Text" xml:space="preserve">
+    <value>Default Culture:</value>
+  </data>
+  <data name="Bind.Text" xml:space="preserve">
+    <value>Bind</value>
+  </data>
+  <data name="edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="UnBind.Text" xml:space="preserve">
+    <value>UnBind</value>
+  </data>
+  <data name="LocalizedModules.Text" xml:space="preserve">
+    <value>Module Localization</value>
+  </data>
+  <data name="Translated.Text" xml:space="preserve">
+    <value>Mark Translated</value>
+  </data>
+  <data name="UnTranslated.Text" xml:space="preserve">
+    <value>Mark UnTranslated</value>
+  </data>
+  <data name="CreateBoundCopies.Text" xml:space="preserve">
+    <value>Create Bound Copies</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="CacheSettings.Text" xml:space="preserve">
+    <value>Cache Settings</value>
+  </data>
+  <data name="ContainerPreview.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="ExpandAll.Text" xml:space="preserve">
+    <value>Expand All</value>
+  </data>
+  <data name="PreviewNoSelectionMessage.Text" xml:space="preserve">
+    <value>Please select a container to preview.</value>
+  </data>
+  <data name="lblNoRecords.Text" xml:space="preserve">
+    <value>This module has not been added to any other pages.</value>
+  </data>
+  <data name="Page.Header" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>{0} Settings</value>
+  </data>
+  <data name="AllowIndexLabel.Help" xml:space="preserve">
+    <value>This setting controls whether a module should be indexed by search crawlers.</value>
+  </data>
+  <data name="AllowIndexLabel.Text" xml:space="preserve">
+    <value>Allow Indexing?</value>
+  </data>
+  <data name="isShareableLabel.Help" xml:space="preserve">
+    <value>Check this box to allow the module to be shared across sites.</value>
+  </data>
+  <data name="isShareableLabel.Text" xml:space="preserve">
+    <value>Is Shareable?</value>
+  </data>
+  <data name="isShareableViewOnlyLabel.Help" xml:space="preserve">
+    <value>Check this box to restrict the module to be shared as View Only.</value>
+  </data>
+  <data name="isShareableViewOnlyLabel.Text" xml:space="preserve">
+    <value>View Only?</value>
+  </data>
+</root>

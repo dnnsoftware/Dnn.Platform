@@ -1,0 +1,74 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.Facebook.Skin" type="Skin" version="01.00.00">
+      <friendlyName>DotNetNuke.Facebook</friendlyName>
+      <description>Facebook demo</description>
+	  <iconFile>images/FacebookLogo.png</iconFile>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <components> 
+        <component type="Skin">
+            <skinFiles>
+              <skinName>Facebook</skinName>
+              <basePath>Portals\_default\Skins\Facebook</basePath>
+              <skinFile>
+                <name>license.txt</name>
+              </skinFile>
+              <skinFile>
+                <name>releaseNotes.txt</name>
+              </skinFile>
+            </skinFiles>
+        </component> 
+        <component type="ResourceFile">
+            <resourceFiles>
+              <basePath>Portals\_default\Skins\Facebook</basePath>
+              <resourceFile>
+                <name>DotNetNuke.Facebook.Skin.zip</name>
+              </resourceFile>
+            </resourceFiles>
+        </component> 
+      </components>
+    </package>
+    <package name="DotNetNuke.Facebook.Container" type="Container" version="02.00.00">
+      <friendlyName>DotNetNuke.Facebook</friendlyName>
+      <description>Facebook demo</description>
+	  <iconFile>images/FacebookLogo.png</iconFile>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <components> 
+        <component type="Container">
+            <containerFiles>
+              <containerName>Facebook</containerName>
+              <basePath>Portals\_default\Containers\Facebook</basePath>
+              <containerFile>
+                <name>license.txt</name>
+              </containerFile>
+              <containerFile>
+                <name>releaseNotes.txt</name>
+              </containerFile>
+            </containerFiles>
+        </component> 
+        <component type="ResourceFile">
+            <resourceFiles>
+              <basePath>Portals\_default\Containers\Facebook</basePath>
+              <resourceFile>
+                <name>DotNetNuke.Facebook.Container.zip</name>
+              </resourceFile>
+            </resourceFiles>
+        </component> 
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

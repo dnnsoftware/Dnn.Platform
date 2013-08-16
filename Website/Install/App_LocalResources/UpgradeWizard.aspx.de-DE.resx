@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountInfo.Text">
+    <value xml:space="preserve">Benutzerkonto</value>
+  </data>
+  <data name="BestPractices.Text">
+    <value xml:space="preserve">Sie sind dabei, Ihre Website auf die Verwendung einer aktuelleren Version von DotNetNuke anzupassen. Durch regelmäßige Aktualisierungen stellen Sie die Sicherheit und Leistungsfähigkeit der Anwendung sicher. Bevor Sie fortfahren, sollten Sie folgende Vorbereitungen ausgeführt haben: 
+Sie wenden Aktualisierungen zuerst auf eine Kopie Ihrer Website (und Datenbank) an.&lt;ul&gt;
+&lt;li&gt;Sie haben die Einstellungen Ihrer bestehenden Website dokumentiert.&lt;/li&gt;
+&lt;li&gt;Sie haben für alle Erweiterungen von Drittanbietern geprüft, ob diese mit der neuen Version kompatibel sind und ggf. aktualisierte Versionen installiert.&lt;/li&gt;
+&lt;li&gt;Sie haben alle Dateien und die Datenbank gesichert, so dass Sie im Fall eines Upgrade-Fehlers den Ausgangszustand wiederherstellen können.&lt;/li&gt;&lt;/ul&gt;
+</value>
+  </data>
+  <data name="CurrentVersion.Text">
+    <value xml:space="preserve">Aktuelle Version - {0}</value>
+  </data>
+  <data name="DatabaseUpgrade.Text">
+    <value xml:space="preserve">Datenbank wird aktualisiert</value>
+  </data>
+  <data name="Error.Text">
+    <value xml:space="preserve">Fehler</value>
+  </data>
+  <data name="ErrorInStep.Text">
+    <value xml:space="preserve">Es ist ein Fehler aufgetreten - {0}</value>
+  </data>
+  <data name="ExtensionsUpgrade.Text">
+    <value xml:space="preserve">Die Erweiterungen werden aktualisiert</value>
+  </data>
+  <data name="IntroDetail.Text">
+    <value xml:space="preserve">&lt;p&gt;Willkommen auf der DotNetNuke Upgrade-Seite.&lt;/p&gt;
+&lt;p&gt;Wählen Sie zunächst die gewünschte Sprache für diese Seite.&lt;/p&gt;</value>
+  </data>
+  <data name="InvalidCredentials.Text">
+    <value xml:space="preserve">Benutzername und/oder Kennwort sind nicht bekannt</value>
+  </data>
+  <data name="Next.Text">
+    <value xml:space="preserve">Jetzt aktualisieren</value>
+  </data>
+  <data name="NoInstallationLog.Text">
+    <value xml:space="preserve">es gibt kein Aktualisierungsprotokoll.</value>
+  </data>
+  <data name="Password.Help">
+    <value xml:space="preserve">Geben Sie das Kennword des Systemverwalters ein.</value>
+  </data>
+  <data name="Password.Text">
+    <value xml:space="preserve">Kennwort:</value>
+  </data>
+  <data name="Retry.Text">
+    <value xml:space="preserve">erneut versuchen</value>
+  </data>
+  <data name="SeeLogs.Text">
+    <value xml:space="preserve">Protokoll anzeigen</value>
+  </data>
+  <data name="TimerMinutes.Text">
+    <value xml:space="preserve">Minuten</value>
+  </data>
+  <data name="Title.Text">
+    <value xml:space="preserve">DotNetNuke Update</value>
+  </data>
+  <data name="Upgrade.Text">
+    <value xml:space="preserve">Aktualisieren</value>
+  </data>
+  <data name="UpgradeDone.Text">
+    <value xml:space="preserve">Die Aktualisierung ist abgeschlossen</value>
+  </data>
+  <data name="UpgradingDatabase.Text">
+    <value xml:space="preserve">Die Datenbank wird aktualisiert</value>
+  </data>
+  <data name="Username.Help">
+    <value xml:space="preserve">Geben Sie den Anmeldenamen des Systemverwalters ein.</value>
+  </data>
+  <data name="Username.Text">
+    <value xml:space="preserve">Anmeldename des Systemverwalters:</value>
+  </data>
+  <data name="Version.Text">
+    <value xml:space="preserve">DotNetNuke Update - Version {0}</value>
+  </data>
+  <data name="ViewWebsite.Text">
+    <value xml:space="preserve">Website anzeigen</value>
+  </data>
+  <data name="VisitWebsite.Text">
+    <value xml:space="preserve">Website aufrufen</value>
+  </data>
+</root>

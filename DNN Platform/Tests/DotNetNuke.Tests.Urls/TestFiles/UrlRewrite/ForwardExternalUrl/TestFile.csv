@@ -1,0 +1,3 @@
+﻿Test,				ExternalUrl,				Scheme,		Page Name,		Test Url,										Expected Url,					Status,		Final Url,				RedirectReason
+Friendly Url,		http://www.google.com,		http://,	Test Page,		http://{alias}/Test-Page,						{defaultPage}?TabId={tabId},	301,		http://www.google.com,	Tab_External_Url
+Unfriendly Url,		http://www.google.com,		http://,	Test Page,		http://{alias}/{defaultPage}?TabId={tabId},		{defaultPage}?TabId={tabId},	301,		http://www.google.com,	Tab_External_Url

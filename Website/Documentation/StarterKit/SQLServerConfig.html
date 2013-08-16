@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>DotNetNuke</title>
+    <link rel="stylesheet" type="text/css" href="Documents.css">
+</head>
+<body bottommargin="5" leftmargin="5" topmargin="5" rightmargin="5" marginwidth="0"
+    marginheight="0">
+    <img src="logo.gif" border="0">
+    <h1>Configuring SQL Server 2000 for DotNetNuke</h1>
+    <p>This section includes more detailed information on how to create and configure a SQL Server 2000 database for use with DotNetNuke.</p>
+    <p>1. In Enterprise Manager, Select Databases, right-click and select the New Database
+        option.</p>
+    <p style="text-align:center"><img src="images/NewDatabase.jpg" align="middle" /></p>
+    <p>2. In the Database Properties give the Database a name (in the example below the
+        Databse is called Website), and click OK.</p>
+    <p style="text-align:center"><img src="images/DatabaseProperties.jpg" align="middle" /></p>
+    <p>3. If you decide to use SQL Server Authorization then you will need to use a SQL
+        Server Login.&nbsp; If you do not already have one created then you can create one
+        by selecting Logins under Security, right click and select New Login.</p>
+    <p style="text-align:center"><img src="images/NewLogin.jpg" align="middle" /></p>
+    <p>4. Once you have created a Login you need to add that "Login" as a User for your new Database.&nbsp; To do this select the Database you just created, select the
+        Users section, right click on Users and select the New Database User option.</p>
+    <p style="text-align:center"><img src="images/NewUser.jpg" align="middle" /></p>
+    <p>5. Select the Login name from the combo box - this will automatically populate the
+        User name field, make sure that the db_owner role is selected, and click OK</p>
+    <p style="text-align:center"><img src="images/UserProperties.jpg" align="middle" /></p>
+    <p>Your database is now ready to be installed.</p>
+    <p>Back to <a href="Welcome.html#Step1">Welcome page</a>.</p>
+    <hr />
+</body>
+</html>

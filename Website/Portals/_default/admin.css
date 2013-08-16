@@ -1,0 +1,177 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/*-------------------------------------*/
+/* ADMIN CONTROL PANEL - TEMPORARY */
+/*-------------------------------------*/
+	.ControlPanel {}
+	form #dnnCPWrap {
+		height:36px;
+		padding:0;
+		-webkit-box-shadow: 	0 1px 3px 0px rgba(0, 0, 0, 0.55);
+		box-shadow: 			0 1px 3px 0px rgba(0, 0, 0, 0.55);
+	}
+	#dnnCPWrap #RibbonBar_ControlPanel{width:960px;}
+	
+	/* Navigation */
+	#dnnCPWrap #RibbonBar_adminMenus{}
+	#dnnCPWrap ul.dnnadminmega { padding-top:0; }
+	#dnnCPWrap .dnnCPHMode {}
+	#RibbonBar_adminMenus > ul,
+	#dnn_cp_RibbonBar_adminMenus > ul{
+		height:35px;
+		border-right:1px solid #eee;
+		border-left:1px solid #aaa;
+	}
+	#RibbonBar_adminMenus > ul > li,
+	#dnn_cp_RibbonBar_adminMenus > ul > li
+	{margin-right:0}
+	#RibbonBar_adminMenus > ul > li > a,
+	#dnn_cp_RibbonBar_adminMenus > ul > li > a {
+		display:block;
+		padding:8px 16px;
+		text-decoration:none;
+		color:#444;
+		text-shadow:0px 1px 0px rgba(255,255,255,0.7);
+		border-right:1px solid #aaa;
+		border-left:1px solid #eee;
+	}
+	#RibbonBar_adminMenus > ul > li > a:hover,
+	#dnn_cp_RibbonBar_adminMenus > ul > li > a:hover {
+		color:#333;
+		background: #f2f2f2; /* Old browsers */
+		background: -moz-linear-gradient(top,  #f2f2f2 0%, #c4c4c4 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f2f2f2), color-stop(100%,#c4c4c4)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  #f2f2f2 0%,#c4c4c4 100%); /* Chrome10+,Safari5.1+ */
+	}
+	#RibbonBar_adminMenus .dnnadminmega .megaborder,
+	#dnn_cp_RibbonBar_adminMenus  .dnnadminmega .megaborder {
+		top:25px;
+	}
+	
+	
+	/* Mode */
+	#dnnCPWrap .dnnCPHNav {
+		margin-top:5px;
+	}
+	#dnnCPWrap .dnnCPHNav select {
+		padding:2px;
+		margin-bottom:0;
+	}
+	#dnnCPWrap .dnnCPHNav span {
+		display:inline-block;
+		margin-right:8px;
+	}
+
+
+/*-------------------------------------*/
+/* MODULE ACTIONS - TEMPORARY */
+/*-------------------------------------*/
+
+	.DnnModule {
+		position:relative;
+		/*z-index:902;*/
+	}
+	.dnnActionMenu {
+		position:absolute;
+		left:10px; top:10px;
+		margin:0; padding:0;
+		z-index:3;
+		color:#000;
+	}
+	/* Button */
+	.dnnActionMenuTag {
+		display:block;
+		height:16px;
+		min-width:65px;
+		padding:5px 10px;
+		background:#efefef;
+		border:1px #999 solid;
+		border-radius:3px;
+		-moz-border-radius:3px;
+		line-height:16px;
+		font-weight:bold;
+		font-size:11px;
+		cursor:default;
+	}
+	.dnnActionMenuTag img {
+		float:left;
+		display:block;
+		padding-right:3px;
+	}
+	/* Action Menu Body */
+	ul.dnnActionMenuBody {
+		display:none;
+		position:absolute;
+		left:0;
+		top:10;
+		min-width:320px;
+		padding:18px;
+		background:#fff;
+		border:1px solid #ddd;
+		border-radius:3px;
+		-moz-border-radius:3px;
+		text-align:left;
+		-moz-box-shadow:		0 0 5px 0 rgba(0,0,0,0.35);
+		-webkit-box-shadow:		0 0 5px 0 rgba(0,0,0,0.35);
+		box-shadow:				0 0 5px 0 rgba(0,0,0,0.35);
+		z-index: 10;
+	}
+	ul.dnnActionMenuBody li {
+		list-style:none;
+	}
+	ul.dnnActionMenuBody li span {
+		clear:both;
+		display:block;
+		margin-bottom:10px;
+		border-bottom:1px solid #ddd;
+		font-weight:bold;
+	}
+	/* Sub ul */
+	ul.dnnActionMenuBody li ul {
+		/*display:inline-block;*/
+		margin:0 0 12px 0;
+	}
+	ul.dnnActionMenuBody li ul li {
+		float:left;
+		width:150px;
+	}
+	ul.dnnActionMenuBody li ul li a {
+		text-decoration:none;
+		font-size:12px;
+	}
+	ul.dnnActionMenuBody li ul li a img {
+		display:block;
+		float:left;
+		min-height:16px;
+		padding-right:3px;
+		line-height:16px;
+	}
+	/* List of Form Actions */
+	.dnnActions {
+		display:inline-block;
+	}
+	.dnnActions li {
+		margin-right:5px;
+		list-style:none;
+		float:left;
+	}
+
+
+/*-------------------------------------*/
+/* EDIT STATE Z-INDEX MANAGEMENT */
+/*-------------------------------------*/
+
+/* Set Z-index of module action menus on edit state */
+.dnnEditState .actionMenu{ z-index:3; } 
+.dnnEditState .actionMenu:hover{ z-index:4; }
+
+/* Set Z-index of Control Panel */
+body > form #ControlBar_ControlPanel { z-index:1001 !important; /* set higher than module action menus */ }
+
+/* Set Z-index of Telerik Dropdowns */
+body > form > .rcbSlide { z-index:6000!important;} 
+
+/* Set Z-index of Telerik Tree context menu */
+body > form > .RadMenu_Context { z-index: 1000 !important;} 
+

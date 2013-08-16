@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Module.Text" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="Mode.Text" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="ModeView.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="ModeEdit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ModeLayout.Text" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="hypUpgrade.Text" xml:space="preserve">
+    <value>Click Here To Get The Latest Version</value>
+  </data>
+  <data name="hypMessageUrl.Text" xml:space="preserve">
+    <value>http://www.dotnetnuke.com</value>
+  </data>
+  <data name="AdminConsole.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="HostConsole.Text" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Tool.Console.Text" xml:space="preserve">
+    <value>Console</value>
+  </data>
+  <data name="Tool.CopyPage.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Tool.DeletePage.Confirm" xml:space="preserve">
+    <value>Are you sure you want to delete this page?</value>
+  </data>
+  <data name="Tool.DeletePage.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Tool.ExportPage.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Tool.Help.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Tool.HostConsole.Text" xml:space="preserve">
+    <value>Console</value>
+  </data>
+  <data name="Tool.ImportPage.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Tool.NewPage.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Tool.PageSettings.Text" xml:space="preserve">
+    <value>Page Settings</value>
+  </data>
+  <data name="AdminConsole.ToolTip" xml:space="preserve">
+    <value>Admin Console</value>
+  </data>
+  <data name="HostConsole.ToolTip" xml:space="preserve">
+    <value>Host Console</value>
+  </data>
+  <data name="Tool.CopyPage.ToolTip" xml:space="preserve">
+    <value>Copy Page</value>
+  </data>
+  <data name="Tool.DeletePage.ToolTip" xml:space="preserve">
+    <value>Delete Page</value>
+  </data>
+  <data name="Tool.ExportPage.ToolTip" xml:space="preserve">
+    <value>Export Page</value>
+  </data>
+  <data name="Tool.ImportPage.ToolTip" xml:space="preserve">
+    <value>Import Page</value>
+  </data>
+  <data name="Tool.NewPage.ToolTip" xml:space="preserve">
+    <value>Create New Page</value>
+  </data>
+  <data name="Tool.PageSettings.ToolTip" xml:space="preserve">
+    <value>Page Settings</value>
+  </data>
+  <data name="CurrentTabEditPage.Text" xml:space="preserve">
+    <value>Update Current Page</value>
+  </data>
+  <data name="CurrentTabHelp.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="CurrentTabSettings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="CommonTabActions.Text" xml:space="preserve">
+    <value>Page Actions:</value>
+  </data>
+  <data name="CommonTabAddPage.Text" xml:space="preserve">
+    <value>Insert Page</value>
+  </data>
+  <data name="CommonTabInsertModule.Text" xml:space="preserve">
+    <value>Insert Module</value>
+  </data>
+  <data name="SiteTabAddPage.Text" xml:space="preserve">
+    <value>Insert Page</value>
+  </data>
+  <data name="SiteTabFeatures.Text" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="SiteTabManage.Text" xml:space="preserve">
+    <value>Common Actions</value>
+  </data>
+  <data name="SiteTabRestore.Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="SiteTabSettings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SystemTabInformation.Text" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="SystemTabManage.Text" xml:space="preserve">
+    <value>Manage</value>
+  </data>
+  <data name="SystemTabMarketplace.Text" xml:space="preserve">
+    <value>Marketplace</value>
+  </data>
+  <data name="SystemTabSettings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SystemTabSwitchSite.Text" xml:space="preserve">
+    <value>View Website</value>
+  </data>
+  <data name="SystemTabTools.Text" xml:space="preserve">
+    <value>Advanced Tools</value>
+  </data>
+  <data name="Tool.Console.ToolTip" xml:space="preserve">
+    <value>Admin Console</value>
+  </data>
+  <data name="Tab_CurrentPage.Text" xml:space="preserve">
+    <value>Current Page</value>
+  </data>
+  <data name="Tab_CommonTasks.Text" xml:space="preserve">
+    <value>Common Tasks</value>
+  </data>
+  <data name="Tab_Host.Text" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Tab_Site.Text" xml:space="preserve">
+    <value>Other Tools</value>
+  </data>
+  <data name="CurrentTabCopyToChildren.Text" xml:space="preserve">
+    <value>Copy Actions</value>
+  </data>
+  <data name="Tool.CopyDesignToChildren.Confirm" xml:space="preserve">
+    <value>Skin and container will be replaced for all children of this page.&lt;br /&gt;&lt;br /&gt;Are you sure you want to continue?</value>
+  </data>
+  <data name="Tool.CopyDesignToChildren.Text" xml:space="preserve">
+    <value>Copy Design to Children</value>
+  </data>
+  <data name="Tool.CopyPermissionsToChildren.Confirm" xml:space="preserve">
+    <value>Permissions will be replaced for all children of this page.&lt;br /&gt;&lt;br /&gt;Are you sure you want to continue?</value>
+  </data>
+  <data name="Tool.CopyPermissionsToChildren.Text" xml:space="preserve">
+    <value>Copy Permissions to Children</value>
+  </data>
+  <data name="Tool.CopyDesignToChildrenPageEditor.Confirm" xml:space="preserve">
+    <value>Skin and container will be replaced for children of this page that you have permissions to edit.&lt;br /&gt;&lt;br /&gt;Are you sure you want to continue?</value>
+  </data>
+  <data name="Tool.DeletePage.Special.ToolTip" xml:space="preserve">
+    <value>Cannot delete this page because it is a system page or the page is in use. See Site Settings &gt;Advanced Settings &gt; Page Management or contact your system administrator.</value>
+  </data>
+  <data name="Tool.CopyDesignToChildren.ToolTip" xml:space="preserve">
+    <value>Copy Skin and Container Settings to Children</value>
+  </data>
+  <data name="CurrentTabActions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="SiteTabLogging.Text" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="SiteTabUsers.Text" xml:space="preserve">
+    <value>User Security</value>
+  </data>
+  <data name="Tool.CopyPermissionsToChildrenPageEditor.Confirm" xml:space="preserve">
+    <value>Permissions will be replaced for all children of this page that you have permissions to edit.&lt;br /&gt;&lt;br /&gt;Are you sure you want to continue?</value>
+  </data>
+  <data name="Tool.NewRole.Text" xml:space="preserve">
+    <value>Add Role</value>
+  </data>
+  <data name="Tool.NewUser.Text" xml:space="preserve">
+    <value>Add User</value>
+  </data>
+  <data name="SiteNewPage.Text" xml:space="preserve">
+    <value>New Page</value>
+  </data>
+  <data name="SiteNewPage.ToolTip" xml:space="preserve">
+    <value>Create New Page</value>
+  </data>
+  <data name="Tool.UploadFile.Text" xml:space="preserve">
+    <value>Upload File</value>
+  </data>
+  <data name="Tool.HealthMonitoring.Text" xml:space="preserve">
+    <value>Health</value>
+  </data>
+  <data name="Tool.ImpersonateUser.Text" xml:space="preserve">
+    <value>Impersonate</value>
+  </data>
+  <data name="Tool.WebServerManager.Text" xml:space="preserve">
+    <value>Web Servers</value>
+  </data>
+  <data name="Tool.HealthMonitoring.ToolTip" xml:space="preserve">
+    <value>Health Monitoring</value>
+  </data>
+  <data name="Tool.ImpersonateUser.ToolTip" xml:space="preserve">
+    <value>Impersontate User</value>
+  </data>
+  <data name="Tool.IntegrityChecker.Text" xml:space="preserve">
+    <value>Integrity</value>
+  </data>
+  <data name="Tool.IntegrityChecker.ToolTip" xml:space="preserve">
+    <value>Application Integrity</value>
+  </data>
+  <data name="Tool.SupportTickets.Text" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Tool.SupportTickets.ToolTip" xml:space="preserve">
+    <value>Support Tickets</value>
+  </data>
+  <data name="Tool.WebServerManager.ToolTip" xml:space="preserve">
+    <value>Web Server Manager</value>
+  </data>
+  <data name="IncludeInMenu.Text" xml:space="preserve">
+    <value>Include in Menu</value>
+  </data>
+  <data name="Tool.CopyPermissionsToChildren.ToolTip" xml:space="preserve">
+    <value>Copy Permissions to Children</value>
+  </data>
+  <data name="Tool.Help.ToolTip" xml:space="preserve">
+    <value>Online Help</value>
+  </data>
+  <data name="Tool.NewRole.ToolTip" xml:space="preserve">
+    <value>Add New Role</value>
+  </data>
+  <data name="Tool.NewUser.ToolTip" xml:space="preserve">
+    <value>Add New User</value>
+  </data>
+  <data name="Tool.UploadFile.ToolTip" xml:space="preserve">
+    <value>Upload File to Server</value>
+  </data>
+  <data name="AddButton.Text" xml:space="preserve">
+    <value>Add Page</value>
+  </data>
+  <data name="Location.Text" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="Template.Text" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="AddExisting.Text" xml:space="preserve">
+    <value>Add Existing Module</value>
+  </data>
+  <data name="AddModule.Text" xml:space="preserve">
+    <value>Add Module</value>
+  </data>
+  <data name="AddNew.Text" xml:space="preserve">
+    <value>Add New Module</value>
+  </data>
+  <data name="Category.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Insert.Text" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Pane.Text" xml:space="preserve">
+    <value>Pane</value>
+  </data>
+  <data name="Site.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="Skin.Text" xml:space="preserve">
+    <value>Skin</value>
+  </data>
+  <data name="SwitchButton.Text" xml:space="preserve">
+    <value>Switch Site</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="UpdateButton.Text" xml:space="preserve">
+    <value>Update Page</value>
+  </data>
+  <data name="CurrentTabAddPage.Text" xml:space="preserve">
+    <value>Add New Page</value>
+  </data>
+  <data name="LocateModule.Text" xml:space="preserve">
+    <value>Module Location</value>
+  </data>
+  <data name="SelectModule.Text" xml:space="preserve">
+    <value>Module Selection</value>
+  </data>
+  <data name="Tool.ClearCache.Text" xml:space="preserve">
+    <value>Clear Cache</value>
+  </data>
+  <data name="Tool.RecycleApp.Text" xml:space="preserve">
+    <value>Recycle Application Pool</value>
+  </data>
+  <data name="Tool.ClearCache.ToolTip" xml:space="preserve">
+    <value>Forces the application to purge all of its cache.</value>
+  </data>
+  <data name="Tool.RecycleApp.ToolTip" xml:space="preserve">
+    <value>Forces the application pool to recycle. Your website will be unavilable for a few moments.</value>
+  </data>
+  <data name="ModeMobilePreview.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="lblUILanguage.Text" xml:space="preserve">
+    <value>Interface:</value>
+  </data>
+  <data name="MenuTitleSuffix.Text" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="cmdCancelAdd.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="cmdConfirmAdd.Text" xml:space="preserve">
+    <value>I Understand the Risks</value>
+  </data>
+</root>

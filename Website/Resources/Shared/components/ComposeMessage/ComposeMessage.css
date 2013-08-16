@@ -1,0 +1,33 @@
+﻿.composeMessageDialog .dnnLeft .dnnFormItem{border-bottom:solid 1px #eee;width:400px;}
+.composeMessageDialog .dnnLeft .dnnFormItem img{vertical-align:middle;float:right;}
+.composeMessageDialog .dnnLeft button{cursor:pointer;padding:0.5em 1em;border:none;}
+.composeMessageDialog .dnnFormItem label, .composeMessageDialog .dnnFormItem .dnnFormLabel, .composeMessageDialog .dnnFormItem .dnnTooltip{width: 25%;}
+ul.token-input-list-facebook{width: 46%; margin-bottom: 18px;}
+div.token-input-dropdown-facebook ul li img{padding-right:10px;vertical-align:middle;}
+/* MESSAGE ATTACHMENTS */
+.composeMessageDialog .messageAttachments {
+    width:300px;
+    float:right;
+}
+.composeMessageDialog .messageAttachments ul li{
+	overflow:auto;
+	list-style:none;
+	border-bottom:1px solid #ddd;
+	margin-bottom:5px;
+}
+.composeMessageDialog .messageAttachments ul li a{
+	float:left;
+	font-size:12px;
+	text-decoration:none;
+}
+.composeMessageDialog .messageAttachments a.removeAttachment{
+	float:right;
+	display:block;
+	padding:3px;
+	width:10px; height:10px;
+	background:url(images/delete.png) no-repeat 3px 3px;
+	opacity:0.75; 
+}
+.composeMessageDialog .messageAttachments a.removeAttachment:hover{
+	opacity:1;
+}

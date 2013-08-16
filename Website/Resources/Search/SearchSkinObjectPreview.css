@@ -1,0 +1,101 @@
+﻿.searchInputContainer {
+    display: inline-block !important;
+    margin: 0 -3px 0 0 !important;
+    position: relative !important;
+}
+    .searchInputContainer > input[type="text"]::-ms-clear {
+        display: none;
+    }
+
+    .searchInputContainer a.dnnSearchBoxClearText {
+        display: block !important;
+        position: absolute !important;
+        right: 10px !important;
+        width: 16px !important;
+        height: 16px !important;
+        background: none !important;
+        cursor: pointer;
+        margin: 7px 0 7px 0;
+        z-index: 20;
+    }
+
+        .searchInputContainer a.dnnSearchBoxClearText.dnnShow {
+            background: url(../../../images/search/clearText.png) center center no-repeat !important;
+        }
+
+ul.searchSkinObjectPreview {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    margin: 0;
+    list-style: none;
+    border: 1px solid #c9c9c9;
+    width: 350px;
+    z-index: 200;
+    padding: 0;
+}
+
+ul.searchSkinObjectPreview li {
+    list-style: none !important;
+}
+
+    ul.searchSkinObjectPreview > li {
+        padding: 6px 12px 6px 22px;
+        border-top: 1px solid #c9c9c9;
+        color: #666;
+        cursor: pointer;
+        position: relative;
+        margin: 0;
+        text-transform: none;
+    }
+
+        ul.searchSkinObjectPreview > li:hover {
+            background-color: #e8f1fa;
+            color: #333;
+        }
+
+        ul.searchSkinObjectPreview > li > span {
+        }
+
+            ul.searchSkinObjectPreview > li > span > b {
+                font-weight: bold;
+                color: #000;
+            }
+
+        ul.searchSkinObjectPreview > li p {
+            margin: 0;
+            font-size: 10px;
+            line-height: 1.2em;
+            color: #999;
+            font-style: italic;
+            white-space: normal;
+        }
+
+            ul.searchSkinObjectPreview > li p b {
+                color: #000;
+            }
+
+        ul.searchSkinObjectPreview > li.searchSkinObjectPreview_group {
+            padding: 6px 12px 6px 12px;
+            font-weight: bold;
+            color: #000;
+            border-bottom: 2px solid #000;
+            cursor: inherit;
+        }
+
+            ul.searchSkinObjectPreview > li.searchSkinObjectPreview_group:hover {
+                background-color: #fff;
+                color: #000;
+            }
+
+        ul.searchSkinObjectPreview > li > a.searchSkinObjectPreview_more {
+            display: inline !important;
+            position: static !important;
+            background: none !important;
+            z-index: inherit !important;
+            width: auto !important;
+            height: auto !important;
+            text-indent: inherit !important;
+            float: none !important;
+        }

@@ -1,0 +1,10 @@
+﻿<configuration>
+    <distraction></distraction>
+    <location>
+        <distraction2></distraction2>
+    </location>
+    <distraction3></distraction3>
+    <location>
+        <updateme></updateme>
+    </location>
+</configuration>

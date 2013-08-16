@@ -1,0 +1,3075 @@
+﻿<portal version="5.0">
+  <description>Default Website Template</description>
+  <settings>
+    <logofile>logo.gif</logofile>
+    <footertext>Copyright 2011 by DotNetNuke Corporation</footertext>
+    <userregistration>2</userregistration>
+    <banneradvertising>0</banneradvertising>
+    <defaultlanguage>en-US</defaultlanguage>
+    <timezone>Pacific Standard Time</timezone>
+    <enableskinwidgets>true</enableskinwidgets>
+    <hostspace>0</hostspace>
+    <userquota>0</userquota>
+    <pagequota>0</pagequota>
+    <portalaliasmapping>canonicalurl</portalaliasmapping>
+  </settings>
+  <profiledefinitions>
+    <profiledefinition>
+      <propertycategory>Name</propertycategory>
+      <propertyname>Prefix</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>0</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Name</propertycategory>
+      <propertyname>FirstName</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>0</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Name</propertycategory>
+      <propertyname>MiddleName</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>0</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Name</propertycategory>
+      <propertyname>LastName</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>0</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Name</propertycategory>
+      <propertyname>Suffix</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>0</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Address</propertycategory>
+      <propertyname>Unit</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Address</propertycategory>
+      <propertyname>Street</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Address</propertycategory>
+      <propertyname>City</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Address</propertycategory>
+      <propertyname>Region</propertyname>
+      <datatype>Region</datatype>
+      <length>0</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Address</propertycategory>
+      <propertyname>Country</propertyname>
+      <datatype>Country</datatype>
+      <length>0</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Address</propertycategory>
+      <propertyname>PostalCode</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Contact Info</propertycategory>
+      <propertyname>Telephone</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Contact Info</propertycategory>
+      <propertyname>Cell</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Contact Info</propertycategory>
+      <propertyname>Fax</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Contact Info</propertycategory>
+      <propertyname>Website</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Contact Info</propertycategory>
+      <propertyname>IM</propertyname>
+      <datatype>Text</datatype>
+      <length>50</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Preferences</propertycategory>
+      <propertyname>Photo</propertyname>
+      <datatype>Image</datatype>
+      <length>0</length>
+      <defaultvisibility>0</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Preferences</propertycategory>
+      <propertyname>Biography</propertyname>
+      <datatype>RichText</datatype>
+      <length>0</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Preferences</propertycategory>
+      <propertyname>TimeZoneInfo</propertyname>
+      <datatype>TimeZoneInfo</datatype>
+      <length>0</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+    <profiledefinition>
+      <propertycategory>Preferences</propertycategory>
+      <propertyname>PreferredLocale</propertyname>
+      <datatype>Locale</datatype>
+      <length>0</length>
+      <defaultvisibility>2</defaultvisibility>
+    </profiledefinition>
+  </profiledefinitions>
+  <portalDesktopModules>
+    <portalDesktopModule>
+      <friendlyname>Tabs</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Vendors</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Banners</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>File Manager</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Site Log</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Newsletters</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Recycle Bin</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Log Viewer</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Search Input</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Search Results</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Site Wizard</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Account Login</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Feed Explorer</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Extensions</friendlyname>
+      <portalDesktopModulePermissions />
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Solutions</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>WhatsNew</friendlyname>
+      <portalDesktopModulePermissions />
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Dashboard</friendlyname>
+      <portalDesktopModulePermissions />
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Languages</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Skins</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Console</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Google Analytics</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Marketplace</friendlyname>
+      <portalDesktopModulePermissions />
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>ViewProfile</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Sitemap</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>ContentList</friendlyname>
+      <portalDesktopModulePermissions />
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>HTML</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Taxonomy Manager</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+  </portalDesktopModules>
+  <rolegroups>
+    <rolegroup>
+      <rolegroupname>GlobalRoles</rolegroupname>
+      <description>A dummy role group that represents the Global roles</description>
+      <roles>
+        <role>
+          <rolename>Administrators</rolename>
+          <description>Portal Administration</description>
+          <billingfrequency />
+          <billingperiod>-1</billingperiod>
+          <servicefee>-3.402823E+38</servicefee>
+          <trialfrequency />
+          <trialperiod>-1</trialperiod>
+          <trialfee>-3.402823E+38</trialfee>
+          <ispublic>false</ispublic>
+          <autoassignment>false</autoassignment>
+          <rsvpcode />
+          <iconfile />
+          <roletype>adminrole</roletype>
+        </role>
+        <role>
+          <rolename>Registered Users</rolename>
+          <description>Registered Users</description>
+          <billingfrequency />
+          <billingperiod>-1</billingperiod>
+          <servicefee>-3.402823E+38</servicefee>
+          <trialfrequency />
+          <trialperiod>-1</trialperiod>
+          <trialfee>-3.402823E+38</trialfee>
+          <ispublic>false</ispublic>
+          <autoassignment>true</autoassignment>
+          <rsvpcode />
+          <iconfile />
+          <roletype>registeredrole</roletype>
+        </role>
+        <role>
+          <rolename>Subscribers</rolename>
+          <description>A public role for portal subscriptions</description>
+          <billingfrequency />
+          <billingperiod>-1</billingperiod>
+          <servicefee>-3.402823E+38</servicefee>
+          <trialfrequency />
+          <trialperiod>-1</trialperiod>
+          <trialfee>-3.402823E+38</trialfee>
+          <ispublic>true</ispublic>
+          <autoassignment>true</autoassignment>
+          <rsvpcode />
+          <iconfile />
+          <roletype>subscriberrole</roletype>
+        </role>
+        <role>
+          <rolename>Translator (en-US)</rolename>
+          <description>A role for English (United States) translators</description>
+          <billingfrequency />
+          <billingperiod>-1</billingperiod>
+          <servicefee>-3.402823E+38</servicefee>
+          <trialfrequency />
+          <trialperiod>-1</trialperiod>
+          <trialfee>-3.402823E+38</trialfee>
+          <ispublic>false</ispublic>
+          <autoassignment>false</autoassignment>
+          <rsvpcode />
+          <iconfile />
+          <roletype>none</roletype>
+        </role>
+      </roles>
+    </rolegroup>
+  </rolegroups>
+  <tabs>
+    <tab>
+      <name>Home</name>
+      <visible>true</visible>
+      <iconfile />
+      <iconfilelarge />
+      <disabled>false</disabled>
+      <title />
+      <description />
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings>
+        <tabsetting>
+          <settingname>CacheIncludeExclude</settingname>
+          <settingvalue></settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>CacheDuration</settingname>
+          <settingvalue></settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>IncludeVaryBy</settingname>
+          <settingvalue></settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>CacheProvider</settingname>
+          <settingvalue></settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>MaxVaryByCount</settingname>
+          <settingvalue></settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>ExcludeVaryBy</settingname>
+          <settingvalue></settingvalue>
+        </tabsetting>
+      </tabsettings>
+      <tabtype>hometab</tabtype>
+      <panes>
+        <pane>
+          <name>BottomPane</name>
+          <modules>
+            <module>
+              <moduleID>354</moduleID>
+              <title>DotNetNuke® Community Edition</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>3600</cachetime>
+              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <alignment>left</alignment>
+              <color />
+              <border />
+              <iconfile />
+              <visibility>None</visibility>
+              <containersrc />
+              <displaytitle>false</displaytitle>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <content type="DNNHTML" version="05.04.03"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;branding-top&amp;quot;&amp;gt;
+&amp;lt;div class=&amp;quot;link_main&amp;quot;&amp;gt;
+&amp;lt;div class=&amp;quot;link_proedition&amp;quot; onclick=&amp;quot;window.open(&amp;#39;http://www.dotnetnuke.com/tabid/1250/Default.aspx&amp;#39;)&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;link_manuals&amp;quot; onclick=&amp;quot;window.open(&amp;#39;http://www.dotnetnuke.com/tabid/1667/Default.aspx&amp;#39;)&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;div&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;branding-bottom&amp;quot;&amp;gt;
+&amp;lt;ul&amp;gt;
+    &amp;lt;li class=&amp;quot;commmunity&amp;quot; onclick=&amp;quot;window.open(&amp;#39;http://www.dotnetnuke.com/tabid/1350/Default.aspx&amp;#39;)&amp;quot;&amp;gt;
+    &amp;lt;ul class=&amp;quot;feature-block&amp;quot;&amp;gt;
+        &amp;lt;li class=&amp;quot;feature-icon&amp;quot;&amp;gt;&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;
+        &amp;lt;div class=&amp;quot;feature-text&amp;quot;&amp;gt;Engage with other members of the DotNetNuke community&amp;lt;/div&amp;gt;
+        &amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+    &amp;lt;ul class=&amp;quot;bt&amp;quot;&amp;gt;
+        &amp;lt;li class=&amp;quot;action-btn engage-action&amp;quot;&amp;gt;&amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+    &amp;lt;/li&amp;gt;
+    &amp;lt;li class=&amp;quot;marketplace&amp;quot; onclick=&amp;quot;window.open(&amp;#39;http://www.snowcovered.com/Snowcovered2/Default.aspx&amp;#39;)&amp;quot;&amp;gt;
+    &amp;lt;ul class=&amp;quot;feature-block&amp;quot;&amp;gt;
+        &amp;lt;li class=&amp;quot;feature-icon&amp;quot;&amp;gt;&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;
+        &amp;lt;div class=&amp;quot;feature-text&amp;quot;&amp;gt;Select from nearly 10,000 apps at Snowcovered.com&amp;lt;/div&amp;gt;
+        &amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+    &amp;lt;ul class=&amp;quot;bt&amp;quot;&amp;gt;
+        &amp;lt;li class=&amp;quot;action-btn shop-action&amp;quot;&amp;gt;&amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+    &amp;lt;/li&amp;gt;
+    &amp;lt;li class=&amp;quot;conferences&amp;quot; onclick=&amp;quot;window.open(&amp;#39;http://www.dotnetnuke.com/News/Events/tabid/1282/Default.aspx&amp;#39;)&amp;quot;&amp;gt;
+    &amp;lt;ul class=&amp;quot;feature-block&amp;quot;&amp;gt;
+        &amp;lt;li class=&amp;quot;feature-icon&amp;quot;&amp;gt;&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;
+        &amp;lt;div class=&amp;quot;feature-text&amp;quot;&amp;gt;Look for DotNetNuke conferences and user groups in your area&amp;lt;/div&amp;gt;
+        &amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+    &amp;lt;ul class=&amp;quot;bt&amp;quot;&amp;gt;
+        &amp;lt;li class=&amp;quot;action-btn connect-action&amp;quot;&amp;gt;&amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+    &amp;lt;/li&amp;gt;
+    &amp;lt;li class=&amp;quot;training&amp;quot; onclick=&amp;quot;window.open(&amp;#39;http://www.dotnetnuke.com/Resources/Training/tabid/1299/Default.aspx&amp;#39;)&amp;quot;&amp;gt;
+    &amp;lt;ul class=&amp;quot;feature-block&amp;quot;&amp;gt;
+        &amp;lt;li class=&amp;quot;feature-icon&amp;quot;&amp;gt;&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;
+        &amp;lt;div class=&amp;quot;feature-text&amp;quot;&amp;gt;View training videos or register for upcoming sessions&amp;lt;/div&amp;gt;
+        &amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+    &amp;lt;ul class=&amp;quot;bt&amp;quot;&amp;gt;
+        &amp;lt;li class=&amp;quot;action-btn learn-action&amp;quot;&amp;gt;&amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+    &amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
+              <modulesettings>
+                <modulesetting>
+                  <settingname>HtmlText_ReplaceTokens</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>WorkflowID</settingname>
+                  <settingvalue>1</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>DNN_HTML</definition>
+              <moduledefinition>Text/HTML</moduledefinition>
+            </module>
+            <module>
+              <moduleID>355</moduleID>
+              <title />
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>3600</cachetime>
+              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <alignment>left</alignment>
+              <color />
+              <border />
+              <iconfile />
+              <visibility>None</visibility>
+              <containersrc />
+              <displaytitle>false</displaytitle>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <content type="DNNHTML" version="05.04.03"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;hr&amp;quot;&amp;gt;&amp;lt;hr /&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div id=&amp;quot;LoginInfo&amp;quot;&amp;gt;
+&amp;lt;h2 class=&amp;quot;Head&amp;quot;&amp;gt;Getting Started&amp;lt;/h2&amp;gt;
+&amp;lt;p&amp;gt;In order to get started, you should login to your site and review the default settings under the &amp;lt;em&amp;gt;Host&amp;amp;gt;Host Settings &amp;lt;/em&amp;gt;menu and the&amp;lt;em&amp;gt; Admin&amp;amp;gt;Site Settings &amp;lt;/em&amp;gt;menu.&amp;amp;nbsp; DotNetNuke is highly configurable and these pages are the first step in customizing your site.&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;If your site was installed using the &amp;quot;Auto&amp;quot; option in the installation wizard, a couple of default user accounts were created which will&amp;amp;nbsp;allow you to access the various site management features offered by the application. In this case, please take note of the following user account information:&amp;lt;/p&amp;gt;
+&amp;lt;div class=&amp;quot;LoginBlock&amp;quot;&amp;gt;
+&amp;lt;h3 class=&amp;quot;NormalBold&amp;quot;&amp;gt;Administrator Login:&amp;lt;/h3&amp;gt;
+&amp;lt;dl&amp;gt;
+    &amp;lt;dt&amp;gt;Username: &amp;lt;/dt&amp;gt;
+    &amp;lt;dd&amp;gt;admin&amp;lt;br /&amp;gt;
+    &amp;lt;/dd&amp;gt;
+    &amp;lt;dt&amp;gt;Password: &amp;lt;/dt&amp;gt;
+    &amp;lt;dd&amp;gt;dnnadmin &amp;lt;/dd&amp;gt;
+&amp;lt;/dl&amp;gt;
+&amp;lt;p class=&amp;quot;LoginNotes&amp;quot;&amp;gt;* The Administrator account is a privileged user account which allows you to manage various aspects of your site. Once you login as the Administrator, an Admin menu option will be visible in the site navigation. Please note that the first time you login to the site using this account, you will be prompted to enter a new password for security purposes.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;LoginBlock&amp;quot;&amp;gt;
+&amp;lt;h3 class=&amp;quot;NormalBold&amp;quot;&amp;gt;Host Login:&amp;lt;/h3&amp;gt;
+&amp;lt;dl&amp;gt;
+    &amp;lt;dt&amp;gt;Username: &amp;lt;/dt&amp;gt;
+    &amp;lt;dd&amp;gt;host&amp;lt;br /&amp;gt;
+    &amp;lt;/dd&amp;gt;
+    &amp;lt;dt&amp;gt;Password: &amp;lt;/dt&amp;gt;
+    &amp;lt;dd&amp;gt;dnnhost &amp;lt;/dd&amp;gt;
+&amp;lt;/dl&amp;gt;
+&amp;lt;p class=&amp;quot;LoginNotes&amp;quot;&amp;gt;* The Host account is a highly privileged user account which allows you to manage various aspects of your hosting environment. Once you login as the Host, a Host menu option will be visible in the site navigation. Please note that the first time you login to the site using this account, you will be prompted to enter a new password for security purposes.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div id=&amp;quot;RightColumnInfo&amp;quot;&amp;gt;
+&amp;lt;div id=&amp;quot;TelerikInside&amp;quot;&amp;gt;
+&amp;lt;h2 class=&amp;quot;Head&amp;quot;&amp;gt;Includes Telerik ASP.Net AJAX&amp;lt;/h2&amp;gt;
+DotNetNuke now includes Telerik ASP.Net AJAX support. For licensing information on using Telerik within your own modules please refer to the &amp;lt;a href=&amp;quot;Documentation/TELERIK_EULA.pdf&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;Telerik Commercial EULA&amp;lt;/a&amp;gt;.&amp;lt;/div&amp;gt;
+&amp;lt;div id=&amp;quot;QuickLinks&amp;quot;&amp;gt;
+&amp;lt;h2 class=&amp;quot;Head&amp;quot;&amp;gt;Quick Links&amp;lt;/h2&amp;gt;
+&amp;lt;p&amp;gt;The following links provide additional information about using DotNetNuke and some of the people behind the project.&amp;lt;/p&amp;gt;
+&amp;lt;ul id=&amp;quot;qlCol1&amp;quot;&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/Products/Development/Forge/tabid/824/Default.aspx&amp;quot; title=&amp;quot;DotNetNuke Forge&amp;quot; class=&amp;quot;Normal&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;DotNetNuke Forge&amp;lt;/a&amp;gt; &amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/tabid/825/default.aspx&amp;quot; title=&amp;quot;DotNetNuke Project Blogs&amp;quot; class=&amp;quot;Normal&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;Project Blogs&amp;lt;/a&amp;gt; &amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/Development/LanguagePacks/tabid/933/Default.aspx&amp;quot; title=&amp;quot;Language Packs for DotNetNuke&amp;quot; class=&amp;quot;Normal&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;Language Packs&amp;lt;/a&amp;gt; &amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/tabid/787/default.aspx&amp;quot; title=&amp;quot;Online Help for DotNetNuke&amp;quot; class=&amp;quot;Normal&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;Online Help&amp;lt;/a&amp;gt; &amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;ul id=&amp;quot;qlCol2&amp;quot;&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/Community/UserGroupProgram/tabid/1074/Default.aspx&amp;quot; title=&amp;quot;Join or Create a DotNetNuke User Group in your area.&amp;quot; class=&amp;quot;Normal&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;Join a User Group&amp;lt;/a&amp;gt; &amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;http://support.dotnetnuke.com/Default.aspx&amp;quot; title=&amp;quot;The DotNetNuke Issue Tracking System&amp;quot; class=&amp;quot;Normal&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;Issue Tracking&amp;lt;/a&amp;gt; &amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/About/Overview/tabid/822/Default.aspx&amp;quot; title=&amp;quot;Creators and maintainers of DotNetNuke.&amp;quot; class=&amp;quot;Normal&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;DotNetNuke Corporation&amp;lt;/a&amp;gt; &amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;div style=&amp;quot;clear: both;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;hr&amp;quot;&amp;gt;&amp;lt;hr /&amp;gt;
+&amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
+              <modulesettings>
+                <modulesetting>
+                  <settingname>HtmlText_ReplaceTokens</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>WorkflowID</settingname>
+                  <settingvalue>1</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>DNN_HTML</definition>
+              <moduledefinition>Text/HTML</moduledefinition>
+            </module>
+            <module>
+              <moduleID>356</moduleID>
+              <title>Sponsors</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>3600</cachetime>
+              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <alignment>center</alignment>
+              <color />
+              <border />
+              <iconfile />
+              <visibility>None</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <content type="DNNHTML" version="05.06.02"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=24&amp;amp;amp;VendorId=21&amp;quot; class=&amp;quot;SponsorIcon&amp;quot; target=&amp;quot;new&amp;quot;&amp;gt;&amp;lt;img style=&amp;quot;border: 0px solid;&amp;quot; alt=&amp;quot;The Official Microsoft ASP.NET Site&amp;quot; src=&amp;quot;aspnet.gif&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=35&amp;amp;amp;VendorId=49&amp;quot; class=&amp;quot;SponsorIcon&amp;quot; target=&amp;quot;new&amp;quot;&amp;gt;&amp;lt;img style=&amp;quot;border: 0px solid;&amp;quot; alt=&amp;quot;MaximumASP - Serious Web Hosting For Serious Microsoft Developers&amp;quot; src=&amp;quot;MaximumASP.gif&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=73&amp;amp;amp;VendorId=63&amp;quot; class=&amp;quot;SponsorIcon&amp;quot; target=&amp;quot;new&amp;quot;&amp;gt;&amp;lt;img style=&amp;quot;border: 0px solid;&amp;quot; alt=&amp;quot;Telerik - The Most Comprehensive Toolset For ASP.NET&amp;quot; src=&amp;quot;telerik.gif&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=78&amp;amp;amp;VendorId=66&amp;quot; class=&amp;quot;SponsorIcon&amp;quot; target=&amp;quot;new&amp;quot;&amp;gt;&amp;lt;img style=&amp;quot;border: 0px solid;&amp;quot; alt=&amp;quot;ExactTarget&amp;quot; src=&amp;quot;exacttarget.gif&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=629&amp;amp;amp;VendorId=21&amp;quot; class=&amp;quot;SponsorIcon&amp;quot; target=&amp;quot;new&amp;quot;&amp;gt;&amp;lt;img style=&amp;quot;border: 0px solid;&amp;quot; alt=&amp;quot;Click here to go to dev.live.com for Windows Live developer resources&amp;quot; src=&amp;quot;windowslive.gif&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;a href=&amp;quot;http://www.dotnetnuke.com/DesktopModules/Admin/Banners/BannerClickThrough.aspx?BannerId=29&amp;amp;amp;VendorId=42&amp;quot; class=&amp;quot;SponsorIcon&amp;quot; target=&amp;quot;new&amp;quot;&amp;gt;&amp;lt;img style=&amp;quot;border: 0px solid;&amp;quot; alt=&amp;quot;Red-Gate&amp;quot; src=&amp;quot;redgate.gif&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;a href=&amp;quot;https://www.dotnetnuke.com/DesktopModules/Admin/Banners/BannerClickThrough.aspx?BannerId=1386&amp;amp;amp;VendorId=143&amp;quot; class=&amp;quot;SponsorIcon&amp;quot; target=&amp;quot;new&amp;quot;&amp;gt;&amp;lt;img style=&amp;quot;border: 0px solid;&amp;quot; alt=&amp;quot;Applied Innovations&amp;quot; src=&amp;quot;AI_120x60.gif&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;
+                  &amp;lt;div style=&amp;quot;clear: both;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;lt;/div&amp;gt;
+                  &amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
+              </content>
+              <modulesettings>
+                <modulesetting>
+                  <settingname>HtmlText_ReplaceTokens</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>WorkflowID</settingname>
+                  <settingvalue>1</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>DNN_HTML</definition>
+              <moduledefinition>Text/HTML</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Search Results</name>
+      <visible>false</visible>
+      <iconfile />
+      <iconfilelarge />
+      <disabled>false</disabled>
+      <title>Search Results</title>
+      <description />
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>357</moduleID>
+              <title>Search Results</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings />
+              <definition>SearchResults</definition>
+              <moduledefinition>Search Results</moduledefinition>
+            </module>
+            <module>
+              <moduleID>358</moduleID>
+              <title>Results</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings />
+              <definition>ContentList</definition>
+              <moduledefinition>Content List</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>User Profile</name>
+      <visible>false</visible>
+      <iconfile />
+      <iconfilelarge />
+      <disabled>false</disabled>
+      <title>User Profile</title>
+      <description />
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <tabtype>usertab</tabtype>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>359</moduleID>
+              <title>My Profile</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings />
+              <definition>ViewProfile</definition>
+              <moduledefinition>ViewProfile</moduledefinition>
+            </module>
+            <module>
+              <moduleID>360</moduleID>
+              <title>My InBox</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Registered Users</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings />
+              <definition>DotNetNuke.Messaging</definition>
+              <moduledefinition>Messaging</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Admin</name>
+      <visible>false</visible>
+      <iconfile />
+      <iconfilelarge />
+      <disabled>false</disabled>
+      <title>Portal Administration</title>
+      <description />
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>361</moduleID>
+              <title>Basic Features</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <content type="Console" version="01.00.00"><![CDATA[&lt;ConsoleSettings&gt;&lt;DefaultSize&gt;IconFileLarge&lt;/DefaultSize&gt;&lt;AllowSizeChange&gt;False&lt;/AllowSizeChange&gt;&lt;DefaultView&gt;Hide&lt;/DefaultView&gt;&lt;AllowViewChange&gt;False&lt;/AllowViewChange&gt;&lt;ShowTooltip&gt;True&lt;/ShowTooltip&gt;&lt;ConsoleWidth&gt;&lt;/ConsoleWidth&gt;&lt;/ConsoleSettings&gt;]]></content>
+              <modulesettings>
+                <modulesetting>
+                  <settingname>ShowTooltip</settingname>
+                  <settingvalue>True</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultSize</settingname>
+                  <settingvalue>IconFileLarge</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowSizeChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ConsoleWidth</settingname>
+                  <settingvalue></settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultView</settingname>
+                  <settingvalue>Hide</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowViewChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Console</definition>
+              <moduledefinition>Console</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Site Settings</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_sitesettings_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_sitesettings_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Site Settings</title>
+      <description>Manage configuration settings for the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>362</moduleID>
+              <title>Site Settings</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_sitesettings_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Portals</definition>
+              <moduledefinition>Site Settings</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Pages</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_tabs_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_tabs_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Pages</title>
+      <description>Manage pages within the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>363</moduleID>
+              <title>Pages</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_tabs_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Tabs</definition>
+              <moduledefinition>Tabs</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Extensions</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_extensions_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_extensions_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Extensions</title>
+      <description>Install, add, modify and delete extensions, such as modules, skins and language packs.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>364</moduleID>
+              <title>Extensions</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_extensions_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Extensions</definition>
+              <moduledefinition>Extensions</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Languages</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_language_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_language_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Languages</title>
+      <description>Manage Language Resources.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>365</moduleID>
+              <title>Language Management</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_language_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Languages</definition>
+              <moduledefinition>Languages</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Skins</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_skins_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_skins_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Skins</title>
+      <description>Manage Skin Resources.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>366</moduleID>
+              <title>Skin Editor</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_skins_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Skins</definition>
+              <moduledefinition>Skins</moduledefinition>
+            </module>
+            <module>
+              <moduleID>367</moduleID>
+              <title>Skin Designer</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_skins_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>SkinDesigner</definition>
+              <moduledefinition>Skin Designer</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Security Roles</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_securityroles_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_securityroles_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Security Roles</title>
+      <description>Manage security roles for the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>368</moduleID>
+              <title>Security Roles</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_securityroles_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Security</definition>
+              <moduledefinition>Security Roles</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>User Accounts</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_users_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_users_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>User Accounts</title>
+      <description>Manage user accounts for the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>369</moduleID>
+              <title>User Accounts</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_users_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Security</definition>
+              <moduledefinition>User Accounts</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Vendors</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_vendors_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_vendors_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Vendors</title>
+      <description>Manage vendor accounts, banner advertising and affiliate referrals within the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>370</moduleID>
+              <title>Vendors</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_vendors_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Vendors</definition>
+              <moduledefinition>Vendors</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Site Log</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_sitelog_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_sitelog_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Site Log</title>
+      <description>View statistical reports on site activity for the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>371</moduleID>
+              <title>Site Log</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_sitelog_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>SiteLog</definition>
+              <moduledefinition>Site Log</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Newsletters</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_bulkmail_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_bulkmail_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Newsletters</title>
+      <description>Send email messages to users, security roles and specific email addresses.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>372</moduleID>
+              <title>Newsletters</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_bulkmail_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Newsletters</definition>
+              <moduledefinition>Newsletters</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>File Manager</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_filemanager_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_filemanager_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>File Manager</title>
+      <description>Manage files within the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>373</moduleID>
+              <title>File Manager</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_filemanager_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>FileManager</definition>
+              <moduledefinition>File Manager</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Recycle Bin</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_recyclebin_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_recyclebin_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Recycle Bin</title>
+      <description>View, restore or permanently recycle pages and modules that have been deleted from the portal.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>374</moduleID>
+              <title>Recycle Bin</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_recyclebin_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>RecycleBin</definition>
+              <moduledefinition>Recycle Bin</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Log Viewer</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_viewstats_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_viewstats_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Log Viewer</title>
+      <description>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>375</moduleID>
+              <title>Log Viewer</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_viewstats_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>LogViewer</definition>
+              <moduledefinition>Log Viewer</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Site Wizard</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_wizard_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_wizard_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Site Wizard</title>
+      <description>Configure portal settings, page design and apply a site template using a step-by-step wizard.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>376</moduleID>
+              <title>Site Wizard</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_wizard_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>SiteWizard</definition>
+              <moduledefinition>Site Wizard</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Google Analytics</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_analytics_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_analytics_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Google Analytics</title>
+      <description>Configure portal Google Analytics settings.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>377</moduleID>
+              <title>Google Analytics</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_analytics_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>GoogleAnalytics</definition>
+              <moduledefinition>GoogleAnalytics</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Taxonomy</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_tag_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_tag_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Taxonomy</title>
+      <description>Manage the Taxonomy for your Site.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>378</moduleID>
+              <title>Taxonomy Manager</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_tag_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>DotNetNuke.Taxonomy</definition>
+              <moduledefinition>Taxonomy Manager</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <name>Search Engine SiteMap</name>
+      <visible>true</visible>
+      <iconfile>~/images/icon_siteMap_16px.gif</iconfile>
+      <iconfilelarge>~/images/icon_siteMap_32px.gif</iconfilelarge>
+      <disabled>false</disabled>
+      <title>Site Settings</title>
+      <description>Configure the sitemap for submission to common search engines.</description>
+      <keywords />
+      <url type="Normal" />
+      <skinsrc />
+      <containersrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <refreshinterval>-1</refreshinterval>
+      <pageheadtext />
+      <issecure>false</issecure>
+      <permanentredirect>false</permanentredirect>
+      <sitemappriority>0.5</sitemappriority>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <moduleID>379</moduleID>
+              <title>Search Engine SiteMap</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/images/icon_analytics_32px.gif</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Sitemap</definition>
+              <moduledefinition>Sitemap</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+  </tabs>
+  <folders>
+    <folder>
+      <folderpath />
+      <storagelocation>0</storagelocation>
+      <folderpermissions>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>WRITE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+      </folderpermissions>
+      <files>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>aspnet.gif</filename>
+          <height>60</height>
+          <size>2965</size>
+          <width>120</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>community_icon.gif</filename>
+          <height>54</height>
+          <size>1666</size>
+          <width>77</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>community_title.gif</filename>
+          <height>33</height>
+          <size>2190</size>
+          <width>210</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>conferences_icon.gif</filename>
+          <height>54</height>
+          <size>1510</size>
+          <width>77</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>conferences_title.gif</filename>
+          <height>33</height>
+          <size>2630</size>
+          <width>210</width>
+        </file>
+        <file>
+          <contenttype>application/octet-stream</contenttype>
+          <extension>png</extension>
+          <filename>dnn_manuals.png</filename>
+          <height>137</height>
+          <size>10209</size>
+          <width>316</width>
+        </file>
+        <file>
+          <contenttype>application/octet-stream</contenttype>
+          <extension>png</extension>
+          <filename>dnn_large_banner.png</filename>
+          <height>428</height>
+          <size>116468</size>
+          <width>900</width>
+        </file>
+        <file>
+          <contenttype>application/octet-stream</contenttype>
+          <extension>png</extension>
+          <filename>connect_btn.png</filename>
+          <height>26</height>
+          <size>2802</size>
+          <width>118</width>
+        </file>
+        <file>
+          <contenttype>application/octet-stream</contenttype>
+          <extension>png</extension>
+          <filename>engage_btn.png</filename>
+          <height>26</height>
+          <size>2783</size>
+          <width>118</width>
+        </file>
+        <file>
+          <contenttype>application/octet-stream</contenttype>
+          <extension>png</extension>
+          <filename>learn_btn.png</filename>
+          <height>26</height>
+          <size>2666</size>
+          <width>118</width>
+        </file>
+        <file>
+          <contenttype>application/octet-stream</contenttype>
+          <extension>png</extension>
+          <filename>shop_btn.png</filename>
+          <height>26</height>
+          <size>2592</size>
+          <width>118</width>
+        </file>
+        <file>
+          <contenttype>application/octet-stream</contenttype>
+          <extension>png</extension>
+          <filename>dnn_proedition.png</filename>
+          <height>137</height>
+          <size>13807</size>
+          <width>514</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>exacttarget.gif</filename>
+          <height>60</height>
+          <size>1001</size>
+          <width>120</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>item_bt_bg.gif</filename>
+          <height>32</height>
+          <size>1234</size>
+          <width>210</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>itembg.gif</filename>
+          <height>2</height>
+          <size>225</size>
+          <width>210</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>logo.gif</filename>
+          <height>86</height>
+          <size>3934</size>
+          <width>279</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>marketplace_icon.gif</filename>
+          <height>54</height>
+          <size>1606</size>
+          <width>77</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>marketplace_title.gif</filename>
+          <height>33</height>
+          <size>2626</size>
+          <width>210</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>maximumasp.gif</filename>
+          <height>60</height>
+          <size>2016</size>
+          <width>120</width>
+        </file>
+        <file>
+          <contenttype>application/octet-stream</contenttype>
+          <extension>css</extension>
+          <filename>portal.css</filename>
+          <height>-1</height>
+          <size>3617</size>
+          <width>-1</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>redgate.gif</filename>
+          <height>60</height>
+          <size>1725</size>
+          <width>120</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>telerik.gif</filename>
+          <height>60</height>
+          <size>1193</size>
+          <width>120</width>
+        </file>
+        <file>
+          <contenttype>image/jpeg</contenttype>
+          <extension>jpg</extension>
+          <filename>telerikInside.jpg</filename>
+          <height>171</height>
+          <size>7366</size>
+          <width>340</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>training_icon.gif</filename>
+          <height>54</height>
+          <size>1693</size>
+          <width>77</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>training_title.gif</filename>
+          <height>33</height>
+          <size>2100</size>
+          <width>210</width>
+        </file>
+        <file>
+          <contenttype>image/gif</contenttype>
+          <extension>gif</extension>
+          <filename>windowslive.gif</filename>
+          <height>60</height>
+          <size>3262</size>
+          <width>120</width>
+        </file>
+      </files>
+    </folder>
+    <folder>
+      <folderpath>Cache/</folderpath>
+      <storagelocation>0</storagelocation>
+      <folderpermissions>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>WRITE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+      </folderpermissions>
+      <files />
+    </folder>
+    <folder>
+      <folderpath>Cache/Modules/</folderpath>
+      <storagelocation>0</storagelocation>
+      <folderpermissions>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>WRITE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+      </folderpermissions>
+      <files />
+    </folder>
+    <folder>
+      <folderpath>Templates/</folderpath>
+      <storagelocation>0</storagelocation>
+      <folderpermissions>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>WRITE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+      </folderpermissions>
+      <files>
+        <file>
+          <contenttype>application/octet-stream</contenttype>
+          <extension>template</extension>
+          <filename>Default.page.template</filename>
+          <height>-1</height>
+          <size>1592</size>
+          <width>-1</width>
+        </file>
+      </files>
+    </folder>
+    <folder>
+      <folderpath>Users/</folderpath>
+      <storagelocation>0</storagelocation>
+      <folderpermissions>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>false</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>WRITE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>false</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>false</allowaccess>
+        </permission>
+      </folderpermissions>
+      <files />
+    </folder>
+  </folders>
+</portal>

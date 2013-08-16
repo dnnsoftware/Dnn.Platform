@@ -1,0 +1,74 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.DarkKnightMobile.Skin" type="Skin" version="01.00.00">
+      <friendlyName>DotNetNuke.DarkKnightMobile</friendlyName>
+      <description>DarkKnight Mobile Skin</description>
+	  <iconFile>images/DKLogo.png</iconFile>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <components> 
+        <component type="Skin">
+            <skinFiles>
+              <skinName>DarkKnightMobile</skinName>
+              <basePath>Portals\_default\Skins\DarkKnightMobile</basePath>
+              <skinFile>
+                <name>license.txt</name>
+              </skinFile>
+              <skinFile>
+                <name>releaseNotes.txt</name>
+              </skinFile>
+            </skinFiles>
+        </component> 
+        <component type="ResourceFile">
+            <resourceFiles>
+              <basePath>Portals\_default\Skins\DarkKnightMobile</basePath>
+              <resourceFile>
+                <name>DotNetNuke.DarkKnightMobile.Skin.zip</name>
+              </resourceFile>
+            </resourceFiles>
+        </component> 
+      </components>
+    </package>
+    <package name="DotNetNuke.DarkKnightMobile.Container" type="Container" version="01.00.01">
+      <friendlyName>DotNetNuke.DarkKnightMobile</friendlyName>
+      <description>DarkKnight Mobile Container</description>
+	  <iconFile>images/DKLogo.png</iconFile>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <components> 
+        <component type="Container">
+            <containerFiles>
+              <containerName>DarkKnightMobile</containerName>
+              <basePath>Portals\_default\Containers\DarkKnightMobile</basePath>
+              <containerFile>
+                <name>license.txt</name>
+              </containerFile>
+              <containerFile>
+                <name>releaseNotes.txt</name>
+              </containerFile>
+            </containerFiles>
+        </component> 
+        <component type="ResourceFile">
+            <resourceFiles>
+              <basePath>Portals\_default\Containers\DarkKnightMobile</basePath>
+              <resourceFile>
+                <name>DotNetNuke.DarkKnightMobile.Container.zip</name>
+              </resourceFile>
+            </resourceFiles>
+        </component> 
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

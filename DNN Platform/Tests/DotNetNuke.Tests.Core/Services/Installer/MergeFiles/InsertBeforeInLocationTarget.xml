@@ -1,0 +1,15 @@
+﻿<configuration>
+    <location>
+        <distraction1></distraction1>
+    </location>
+    <node1>
+        <foo></foo>
+        <fee></fee>
+    </node1>
+    <location>
+        <node2></node2>
+    </location>
+    <location>
+        <distraction2></distraction2>
+    </location>
+</configuration>

@@ -1,0 +1,981 @@
+/************************************************************/
+/*****              Upgrade Script 1.0.10                *****/
+/************************************************************/
+
+IF (SELECT COL_LENGTH('[dbo].ModuleEvents', 'AltText')) IS NULL
+  ALTER TABLE [dbo].ModuleEvents ADD AltText nvarchar(50) NULL 
+GO
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].AddModuleEvent') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+  drop procedure [dbo].AddModuleEvent
+GO
+
+create procedure [dbo].AddModuleEvent
+
+@ModuleID    int,
+@Description nvarchar(2000),
+@DateTime    datetime,
+@Title       nvarchar(100),
+@ExpireDate  datetime = null,
+@UserName    nvarchar(200),
+@Every       int,
+@Period      char(1),
+@IconFile    nvarchar(256),
+@AltText     nvarchar(50)
+as
+
+insert ModuleEvents ( 
+  ModuleID,
+  Description,
+  DateTime,
+  Title,
+  ExpireDate,
+  CreatedByUser,
+  CreatedDate,
+  Every,
+  Period,
+  IconFile,
+  AltText
+)
+values (
+  @ModuleID,
+  @Description,
+  @DateTime,
+  @Title,
+  @ExpireDate,
+  @UserName,
+  getdate(),
+  @Every,
+  @Period,
+  @IconFile,
+  @AltText
+)
+GO
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].GetModuleEvents') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+  drop procedure [dbo].GetModuleEvents
+GO
+
+create procedure [dbo].GetModuleEvents
+
+@ModuleID int,
+@StartDate datetime = null,
+@EndDate datetime = null
+
+as
+
+declare @MaxWidth int
+
+if @StartDate is null
+begin
+  select @MaxWidth = max(Width)
+  from   ModuleEvents
+  left outer join Files on ModuleEvents.IconFile = Files.FileName
+  where  ModuleID = @ModuleID
+  and    (ExpireDate > getdate() or ExpireDate is null)
+
+  select ItemID,
+         Description,
+         DateTime,
+         Title,
+         ExpireDate,
+         CreatedByUser,
+         CreatedDate,
+         IconFile,
+         AltText,
+         'MaxWidth' = @MaxWidth
+  from   ModuleEvents
+  where  ModuleID = @ModuleID
+  and    (ExpireDate > getdate() or ExpireDate is null)
+  order by DateTime
+end
+else
+begin
+  select ItemID,
+         Description,
+         DateTime,
+         Title,
+         ExpireDate,
+         CreatedByUser,
+         CreatedDate,
+         Every,
+         Period,
+         IconFile,
+         AltText
+  from   ModuleEvents
+  where  ModuleID = @ModuleID
+  and    ( (Period is null and (DateTime >= @StartDate and DateTime <= @EndDate)) or Period is not null )
+  order by DateTime
+end
+
+GO
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].GetSingleModuleEvent') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+  drop procedure [dbo].GetSingleModuleEvent
+GO
+
+create procedure [dbo].GetSingleModuleEvent
+
+@ItemID   int,
+@ModuleId int
+
+as
+
+select ItemID,
+       Description,
+       DateTime,
+       Title,
+       ExpireDate,
+       'CreatedByUser' = FirstName + ' ' + LastName,
+       ModuleEvents.CreatedDate,
+       Every,
+       Period,
+       IconFile,
+       AltText
+from   ModuleEvents
+left outer join Users on ModuleEvents.CreatedByUser = Users.UserId
+where  ItemID = @ItemID
+and    ModuleId = @ModuleId
+
+GO
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].UpdateModuleEvent') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+  drop procedure [dbo].UpdateModuleEvent
+GO
+
+create procedure [dbo].UpdateModuleEvent
+
+@ItemId      int,
+@Description nvarchar(2000),
+@DateTime    datetime,
+@Title       nvarchar(100),
+@ExpireDate  datetime = null,
+@UserName    nvarchar(200),
+@Every       int,
+@Period      char(1),
+@IconFile    nvarchar(256),
+@AltText     nvarchar(50)
+
+as
+
+update ModuleEvents
+set    Description = @Description,
+       DateTime = @DateTime,
+       Title = @Title,
+       ExpireDate = @ExpireDate,
+       CreatedByUser = @UserName,
+       CreatedDate = getdate(),
+       Every = @Every,
+       Period = @Period,
+       IconFile = @IconFile,
+       AltText = @AltText
+where  ItemId = @ItemId
+GO
+
+update ModuleSettings 
+set SettingValue = '<table cellpadding="2" cellspacing="0" summary="Module Design Table" width="100%"[COLOR][BORDER]><tr><td[ALIGN]>[MODULE]</td></tr></table>'
+where SettingName = 'container'
+GO
+
+ALTER TABLE [dbo].UserDefinedData
+	DROP CONSTRAINT FK_UserDefinedData_UserDefinedRows
+GO
+
+ALTER TABLE [dbo].UserDefinedData WITH NOCHECK ADD CONSTRAINT
+	FK_UserDefinedData_UserDefinedRows FOREIGN KEY
+	(
+	UserDefinedRowId
+	) REFERENCES [dbo].UserDefinedRows
+	(
+	UserDefinedRowId
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].GetUserDefinedRows') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+  drop procedure [dbo].GetUserDefinedRows
+GO
+
+create procedure [dbo].GetUserDefinedRows 
+
+@ModuleId int 
+
+as 
+
+select UserDefinedRows.UserDefinedRowId, 
+       UserDefinedFields.FieldTitle, 
+       'FieldValue' = 
+         Case charindex('http:', UserDefinedData.FieldValue) 
+           When 0 Then
+             Case charindex('@', UserDefinedData.FieldValue) 
+               When 0 Then 
+                 UserDefinedData.FieldValue 
+               Else 
+                 '<a href=mailto:' + UserDefinedData.FieldValue + '>' + UserDefinedData.FieldValue + '</a>' 
+               End 
+           Else 
+             '<a href=' + UserDefinedData.FieldValue + '>' + UserDefinedData.FieldValue + '</a>' 
+         End 
+from   UserDefinedRows
+left outer join UserDefinedData on UserDefinedRows.UserDefinedRowId = UserDefinedData.UserDefinedRowId
+inner join UserDefinedFields on UserDefinedData.UserDefinedFieldId = UserDefinedFields.UserDefinedFieldId 
+where  UserDefinedRows.ModuleId = @ModuleId
+order by UserDefinedRows.UserDefinedRowId
+
+GO
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].UpdateClicks') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+  drop procedure [dbo].UpdateClicks
+GO
+
+create   procedure [dbo].UpdateClicks
+
+@TableName nvarchar(50),
+@KeyField  nvarchar(50),
+@ItemId    int,
+@UserId    int = null
+
+as
+
+/* 
+The following if...then ensures that 1) the TableName evaluates to a UserTable
+and 2) that the KeyField is an actual column in the named table.  This check
+is necessary to prevent SQL Injection attacks.  The ItemID is not subject
+to attack since it must be an integer value.
+*/
+if (OBJECTPROPERTY(object_id(@TableName) , N'IsUserTable') = 1) and (COl_LENGTH(@TableName, @KeyField) > 0)
+begin
+
+	declare @SQL nvarchar(200)
+	
+	select @SQL = 'update ' + @TableName + ' set Clicks = Clicks + 1 where ' + @KeyField + ' = ' + convert(varchar,@ItemId)
+	
+	EXEC sp_executesql @SQL
+	
+	insert into ClickLog (
+	  TableName,
+	  ItemId,
+	  DateTime,
+	  UserId
+	)
+	values (
+	  @TableName,
+	  @ItemId,
+	  getdate(),
+	  @UserId
+	)
+
+end
+GO
+
+IF NOT EXISTS(SELECT 1 FROM [dbo].HostSettings WHERE SettingName = 'DisablePageTitleVersion')
+  INSERT INTO [dbo].HostSettings VALUES ('DisablePageTitleVersion', 'N')
+GO
+
+IF (SELECT COL_LENGTH('[dbo].Tabs', 'DisableLink')) IS NULL
+  ALTER TABLE [dbo].Tabs ADD DisableLink bit NOT NULL DEFAULT (0)
+GO
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].[AddTab]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+  drop procedure [dbo].[AddTab]
+GO
+
+CREATE procedure [dbo].AddTab
+
+@PortalID           int,
+@TabName            nvarchar(50),
+@ShowMobile         bit,
+@MobileTabName      nvarchar(50),
+@AuthorizedRoles    nvarchar (256),
+@LeftPaneWidth      nvarchar(5),
+@RightPaneWidth     nvarchar(5),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@AdministratorRoles nvarchar (256),
+@TabID              int OUTPUT
+
+as
+
+if @ParentId is not null
+begin
+  select @IsVisible = 1
+end
+
+insert into Tabs (
+    PortalID,
+    TabName,
+    ShowMobile,
+    MobileTabName,
+    AuthorizedRoles,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    DisableLink,
+    ParentId,
+    IconFile,
+    AdministratorRoles
+)
+values (
+    @PortalID,
+    @TabName,
+    @ShowMobile,
+    @MobileTabName,
+    @AuthorizedRoles,
+    @LeftPaneWidth,
+    @RightPaneWidth,
+    @IsVisible,
+    @DisableLink,
+    @ParentId,
+    @IconFile,
+    @AdministratorRoles
+)
+
+select @TabID = @@IDENTITY
+
+GO
+
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].[UpdateTab]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+  drop procedure [dbo].[UpdateTab]
+GO
+
+CREATE procedure [dbo].UpdateTab
+
+@TabID              int,
+@TabName            nvarchar(50),
+@ShowMobile         bit,
+@MobileTabName      nvarchar(50),
+@AuthorizedRoles    nvarchar(256),
+@LeftPaneWidth      nvarchar(5),
+@RightPaneWidth     nvarchar(5),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@AdministratorRoles nvarchar(256)
+
+as
+
+declare @PortalID int
+
+select @PortalID = PortalID
+from   Tabs
+where  TabID = @TabID
+
+if (exists ( select 1 from Tabs where ParentId = @TabId )) or (@ParentId is not null)
+begin
+  select @IsVisible = 1
+end
+
+update Tabs
+set    TabName = @TabName,
+       ShowMobile = @ShowMobile,
+       MobileTabName = @MobileTabName,
+       AuthorizedRoles = @AuthorizedRoles,
+       LeftPaneWidth = @LeftPaneWidth,
+       RightPaneWidth = @RightPaneWidth,
+       IsVisible = @IsVisible,
+       DisableLink = @DisableLink,
+       ParentId = @ParentId,
+       IconFile = @IconFile,
+       AdministratorRoles = @AdministratorRoles
+where  TabID = @TabID
+GO
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].[GetPortalSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[GetPortalSettings]
+GO
+
+CREATE procedure [dbo].GetPortalSettings
+
+@PortalAlias nvarchar(200),
+@TabID       int
+
+as
+
+declare @PortalID int
+declare @VerifyTabID int
+
+/* convert PortalAlias to PortalID */
+
+select @PortalID = null
+
+select @PortalID = PortalID
+from   Portals
+where  PortalAlias = @PortalAlias
+
+if @PortalID is null
+begin
+  select @PortalID = min(PortalID)
+  from   Portals
+  where  PortalAlias like '%' + @PortalAlias + '%' /* multiple alias may be specified seperated by commas */
+end
+
+select @VerifyTabID = null
+
+/* verify the TabID belongs to the portal */
+if @TabID <> 0
+begin
+  select @VerifyTabID = Tabs.TabID
+  from   Tabs
+  left outer join Portals on Tabs.PortalID = Portals.PortalID
+  where  TabId = @TabId
+  and    ( Portals.PortalID = @PortalID or Tabs.PortalId is null )
+end
+else
+begin
+  select @VerifyTabID = null
+end
+
+/* get the TabID if none provided */
+if @VerifyTabID is null
+begin
+  select @TabID = Tabs.TabID
+  from Tabs
+  inner join Portals on Tabs.PortalID = Portals.PortalID
+  where Portals.PortalID = @PortalID
+  and Tabs.TabOrder = 1  
+end
+
+/* First, get Out Params */
+select Portals.PortalAlias,
+       Portals.PortalID,
+       Portals.GUID,
+       Portals.PortalName,
+       Portals.LogoFile,
+       Portals.FooterText,
+       Portals.ExpiryDate,
+       Portals.UserRegistration,
+       Portals.BannerAdvertising,
+       Portals.Currency,
+       Portals.AdministratorId,
+       Users.Email,
+       Portals.HostFee,
+       Portals.HostSpace,
+       Portals.AdministratorRoleId,
+       Portals.RegisteredRoleId,
+       Portals.Description,
+       Portals.KeyWords,
+       Portals.BackgroundFile,
+       Portals.SiteLogHistory,
+       'AdminTabId' = ( select TabID from Tabs where PortalId = @PortalId and TabName = 'Admin' ),
+       'SuperUserId' = ( select UserID from Users where IsSuperUser = 1 ),
+       'SuperTabId' = ( select TabID from Tabs where PortalId is null and ParentId is null ),
+       Tabs.TabID,
+       Tabs.TabOrder,
+       Tabs.TabName,
+       Tabs.MobileTabName,
+       Tabs.AuthorizedRoles,
+       Tabs.AdministratorRoles,
+       Tabs.ShowMobile,
+       Tabs.LeftPaneWidth,
+       Tabs.RightPaneWidth,
+       Tabs.IsVisible,
+       Tabs.DisableLink,
+       'ParentId' = isnull(Tabs.ParentID,-1),
+       Tabs.Level,
+       Tabs.IconFile,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName ),
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+inner join Portals on Portals.PortalID = @PortalID
+inner join Users on Portals.AdministratorId = Users.UserId
+where  TabID = @TabID
+
+/* Get Tabs list */
+select TabName,
+       AuthorizedRoles,
+       AdministratorRoles,
+       TabID,
+       TabOrder,
+       IsVisible,
+       DisableLink,
+       'ParentId' = isnull(Tabs.ParentID,-1),
+       Tabs.Level,
+       Tabs.IconFile,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName ),
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+where  PortalID = @PortalId
+order  by TabOrder, TabName
+
+/* Get Mobile Tabs list */
+select MobileTabName,
+       AuthorizedRoles,
+       AdministratorRoles,
+       TabID,
+       IsVisible,
+       DisableLink,
+       'ParentId' = isnull(Tabs.ParentID,-1),
+       Tabs.Level,
+       Tabs.IconFile,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName ),
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+where  PortalID = @PortalID
+and    ShowMobile = 1
+order  by TabOrder, TabName
+
+/* Then, get the DataTable of module info */
+select Modules.*, ModuleDefinitions.*
+from   Modules
+inner join ModuleDefinitions on Modules.ModuleDefID = ModuleDefinitions.ModuleDefID
+inner join Tabs on Modules.TabID = Tabs.TabID
+where  Modules.TabID = @TabID
+or     (Modules.AllTabs = 1 and Tabs.PortalID = @PortalID)
+order by ModuleOrder
+GO
+
+if exists (select * from [dbo].sysobjects where id = object_id(N'[dbo].[AddUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+  drop procedure [dbo].[AddUser]
+GO
+
+
+CREATE procedure [dbo].AddUser
+
+@PortalId       int,
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@Unit		nvarchar(50),
+@Street		nvarchar(50),
+@City		nvarchar(50),
+@Region		nvarchar(50),
+@PostalCode	nvarchar(50),
+@Country	nvarchar(50),
+@Telephone      nvarchar(50),
+@Email		nvarchar(100),
+@Username	nvarchar(100),
+@Password	nvarchar(50),
+@Authorized     bit,
+@UserID	int	OUTPUT
+
+as
+
+declare @RoleID int, @count int
+
+select	@count = count(UserID)
+from 	Users
+where	Username = @Username 
+
+if @count = 0
+begin
+  insert into Users (
+    FirstName,
+    LastName,
+    Unit, 
+    Street, 
+    City,
+    Region, 
+    PostalCode,
+    Country,
+    Telephone,
+    Email,
+    Username,
+    Password
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Unit,
+    @Street,
+    @City,
+    @Region,
+    @PostalCode,
+    @Country,
+    @Telephone,
+    @Email,
+    @Username,
+    @Password
+  )
+
+  select @UserID = @@IDENTITY
+end
+
+if @UserId is not null
+begin
+  if not exists ( select 1 from UserPortals where UserId = @UserId and PortalId = @PortalId ) 
+  begin
+    insert into UserPortals (
+      UserId,
+      PortalId,
+      Authorized,
+      CreatedDate
+    )
+    values (
+      @UserId,
+      @PortalId,
+      @Authorized,
+      getdate()
+    )
+  end
+
+  select @RoleID = min(RoleID)
+  from   Roles
+  where  PortalID = @PortalID
+  and    AutoAssignment = 1
+  while @RoleID is not null
+  begin
+    if not exists ( select 1 from UserRoles where UserId = @UserId and RoleId = @RoleId )
+    begin
+      insert into UserRoles (
+        UserID,
+        RoleID,
+        ExpiryDate,
+        IsTrialUsed
+      )
+      values (
+        @UserID,
+        @RoleID,
+        null,
+        0 
+      )
+    end
+
+    select @RoleID = min(RoleID)
+    from   Roles
+    where  PortalID = @PortalID
+    and    AutoAssignment = 1
+    and    RoleID > @RoleID
+  end
+end
+
+GO
+
+
+/*
+** The following procedure will repair the tab level of all tabs in the database
+*/
+
+DECLARE FixTabLevelCursor  CURSOR LOCAL SCROLL STATIC READ_ONLY FOR
+	SELECT TabId, Level FROM [dbo].Tabs
+OPEN FixTabLevelCursor
+
+DECLARE @TabId [int]
+DECLARE @ParentId [int]
+DECLARE @OldLevel [int]
+DECLARE @NewLevel [int]
+DECLARE @IndexId [int]
+
+FETCH NEXT FROM FixTabLevelCursor INTO @TabId, @OldLevel
+WHILE (@@FETCH_STATUS <> -1)
+BEGIN
+	IF (@@FETCH_STATUS <> -2)
+	BEGIN
+		SET @NewLevel = 0
+		SET @IndexId = @TabId
+		SELECT @ParentId = ParentId FROM [dbo].Tabs WHERE TabId = @IndexId
+		WHILE @ParentId IS NOT NULL
+		BEGIN
+			SET @NewLevel = @NewLevel + 1
+			SET @IndexId = @ParentId
+			SELECT @ParentId = ParentId FROM [dbo].Tabs WHERE TabId = @IndexId
+		END
+		IF (@OldLevel <> @NewLevel)
+		BEGIN
+			UPDATE [dbo].Tabs SET Level = @NewLevel WHERE TabId = @TabId
+		END
+	END
+	FETCH NEXT FROM FixTabLevelCursor INTO @TabId, @OldLevel
+END
+CLOSE FixTabLevelCursor
+DEALLOCATE FixTabLevelCursor
+
+/*
+** End of tab level repair
+*/
+
+
+/*****************************************************************************************/
+/**********      PLEASE KEEP THIS INDEX SECTION AT THE END OF THE SCRIPT        **********/
+/*****************************************************************************************/
+
+if exists (select name from [dbo].sysindexes where name = 'IX_VendorSearch')
+   drop index [dbo].VendorSearch.IX_VendorSearch
+go
+
+create index [IX_VendorSearch] on [dbo].[VendorSearch] (
+	[PortalId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Vendors_1')
+   drop index [dbo].Vendors.IX_Vendors_1
+go
+
+create index [IX_Vendors_1] on [dbo].[Vendors] (
+	[PortalId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_VendorLog')
+   drop index [dbo].VendorLog.IX_VendorLog
+go
+
+create index [IX_VendorLog] on [dbo].[VendorLog] (
+	[PortalId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_VendorFeedback')
+   drop index [dbo].VendorFeedback.IX_VendorFeedback
+go
+
+create index [IX_VendorFeedback] on [dbo].[VendorFeedback] (
+	[VendorId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_VendorClassification_1')
+   drop index [dbo].VendorClassification.IX_VendorClassification_1
+go
+
+create index [IX_VendorClassification_1] on [dbo].[VendorClassification] (
+	[ClassificationId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_VendorClassification_2')
+   drop index [dbo].VendorClassification.IX_VendorClassification_2
+go
+
+create index [IX_VendorClassification_2] on [dbo].[VendorClassification] (
+	[VendorId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_UserRoles')
+   drop index [dbo].UserRoles.IX_UserRoles
+go
+
+create index [IX_UserRoles] on [dbo].[UserRoles] (
+	[RoleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_UserRoles_1')
+   drop index [dbo].UserRoles.IX_UserRoles_1
+go
+
+create index [IX_UserRoles_1] on [dbo].[UserRoles] (
+	[UserID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_UserPortals')
+   drop index [dbo].UserPortals.IX_UserPortals
+go
+
+create index [IX_UserPortals] on [dbo].[UserPortals] (
+	[PortalId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_UserPortals_1')
+   drop index [dbo].UserPortals.IX_UserPortals_1
+go
+
+create index [IX_UserPortals_1] on [dbo].[UserPortals] (
+	[UserID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_UserDefinedRows')
+   drop index [dbo].UserDefinedRows.IX_UserDefinedRows
+go
+
+create index [IX_UserDefinedRows] on [dbo].[UserDefinedRows] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_UserDefinedFields')
+   drop index [dbo].UserDefinedFields.IX_UserDefinedFields
+go
+
+create index [IX_UserDefinedFields] on [dbo].[UserDefinedFields] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_UserDefinedData')
+   drop index [dbo].UserDefinedData.IX_UserDefinedData
+go
+
+create index [IX_UserDefinedData] on [dbo].[UserDefinedData] (
+	[UserDefinedFieldId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_UserDefinedData_1')
+   drop index [dbo].UserDefinedData.IX_UserDefinedData_1
+go
+
+create index [IX_UserDefinedData_1] on [dbo].[UserDefinedData] (
+	[UserDefinedRowId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Tabs_1')
+   drop index [dbo].Tabs.IX_Tabs_1
+go
+
+create index [IX_Tabs_1] on [dbo].[Tabs] (
+	[PortalId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Tabs_2')
+   drop index [dbo].Tabs.IX_Tabs_2
+go
+
+create index [IX_Tabs_2] on [dbo].[Tabs] (
+	[ParentId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_SiteLog')
+   drop index [dbo].SiteLog.IX_SiteLog
+go
+
+create index [IX_SiteLog] on [dbo].[SiteLog] (
+	[PortalId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Search')
+   drop index [dbo].Search.IX_Search
+go
+
+create index [IX_Search] on [dbo].[Search] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Roles')
+   drop index [dbo].Roles.IX_Roles
+go
+
+create index [IX_Roles] on [dbo].[Roles] (
+	[BillingFrequency]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Roles_1')
+   drop index [dbo].Roles.IX_Roles_1
+go
+
+create index [IX_Roles_1] on [dbo].[Roles] (
+	[PortalId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_PortalModuleDefinitions_1')
+   drop index [dbo].PortalModuleDefinitions.IX_PortalModuleDefinitions_1
+go
+
+create index [IX_PortalModuleDefinitions_1] on [dbo].[PortalModuleDefinitions] (
+	[ModuleDefID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_PortalModuleDefinitions_2')
+   drop index [dbo].PortalModuleDefinitions.IX_PortalModuleDefinitions_2
+go
+
+create index [IX_PortalModuleDefinitions_2] on [dbo].[PortalModuleDefinitions] (
+	[PortalId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Modules')
+   drop index [dbo].Modules.IX_Modules
+go
+
+create index [IX_Modules] on [dbo].[Modules] (
+	[ModuleDefID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Modules_1')
+   drop index [dbo].Modules.IX_Modules_1
+go
+
+create index [IX_Modules_1] on [dbo].[Modules] (
+	[TabID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_ModuleEvents')
+   drop index [dbo].ModuleEvents.IX_ModuleEvents
+go
+
+create index [IX_ModuleEvents] on [dbo].[ModuleEvents] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Links')
+   drop index [dbo].Links.IX_Links
+go
+
+create index [IX_Links] on [dbo].[Links] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Files')
+   drop index [dbo].Files.IX_Files
+go
+
+create index [IX_Files] on [dbo].[Files] (
+	[PortalId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_FAQs')
+   drop index [dbo].FAQs.IX_FAQs
+go
+
+create index [IX_FAQs] on [dbo].[FAQs] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Documents')
+   drop index [dbo].Documents.IX_Documents
+go
+
+create index [IX_Documents] on [dbo].[Documents] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Discussion')
+   drop index [dbo].Discussion.IX_Discussion
+go
+
+create index [IX_Discussion] on [dbo].[Discussion] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Contacts')
+   drop index [dbo].Contacts.IX_Contacts
+go
+
+create index [IX_Contacts] on [dbo].[Contacts] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Classification')
+   drop index [dbo].Classification.IX_Classification
+go
+
+create index [IX_Classification] on [dbo].[Classification] (
+	[ParentId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Banners')
+   drop index [dbo].Banners.IX_Banners
+go
+
+create index [IX_Banners] on [dbo].[Banners] (
+	[BannerTypeId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Banners_1')
+   drop index [dbo].Banners.IX_Banners_1
+go
+
+create index [IX_Banners_1] on [dbo].[Banners] (
+	[VendorId]) on [PRIMARY]  
+go
+
+if exists (select name from [dbo].sysindexes where name = 'IX_Announcements')
+   drop index [dbo].Announcements.IX_Announcements
+go
+
+create index [IX_Announcements] on [dbo].[Announcements] (
+	[ModuleID]) on [PRIMARY]  
+go
+
+/************************************************************/
+/*****              Upgrade Script 1.0.10                *****/
+/************************************************************/
+
+
+
+

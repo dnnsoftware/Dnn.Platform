@@ -1,0 +1,9 @@
+' Remove uninstalled module packages that have new versions in distribution.
+Install\Module\Announcements_03.04.00_Install.resources
+Install\Module\Blog_03.03.01_Install.resources
+Install\Module\Feedback_04.04.01_Install.resources
+Install\Module\IFrame_03.02.03_Install.resources
+Install\Module\Reports_04.05.02_Install.resources
+Install\Module\Feedback_04.04.02_Install.resources
+Install\Module\Announcements_04.00.00_Install.resources
+Install\Module\HTML_04.07.00_Install.zip

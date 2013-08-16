@@ -1,0 +1,585 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update ProfilePropertyDefinition */
+/************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}ProfilePropertyDefinition]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		ALTER TABLE {databaseOwner}[{objectQualifier}ProfilePropertyDefinition]
+			ALTER COLUMN ValidationExpression nvarchar(2000) 
+	END
+GO
+
+
+/* Add GetPermissionsByModuleDefID */
+/***********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByModuleDefID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPermissionsByModuleDefID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPermissionsByModuleDefID]
+	@ModuleDefID int
+AS
+SELECT
+	P.[PermissionID],
+	P.[PermissionCode],
+	P.[ModuleDefID],
+	P.[PermissionKey],
+	P.[PermissionName]
+FROM
+	{databaseOwner}{objectQualifier}Permission P
+WHERE
+	P.ModuleDefID = @ModuleDefID
+GO
+
+/* Update Add Portal Procedure */
+/*******************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddPortalInfo]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddPortalInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPortalInfo]
+	@PortalName         nvarchar(128),
+	@Currency           char(3),
+	@ExpiryDate         datetime,
+	@HostFee            money,
+	@HostSpace          int,
+	@SiteLogHistory     int,
+	@HomeDirectory		varchar(100)
+
+as
+DECLARE @PortalID int
+
+insert into {databaseOwner}{objectQualifier}Portals (
+  PortalName,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  HostFee,
+  HostSpace,
+  Description,
+  KeyWords,
+  SiteLogHistory,
+  HomeDirectory
+)
+values (
+  @PortalName,
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  @HostFee,
+  @HostSpace,
+  @PortalName,
+  @PortalName,
+  @SiteLogHistory,
+  @HomeDirectory
+)
+
+SET @PortalID = SCOPE_IDENTITY()
+
+IF @HomeDirectory = ''
+BEGIN
+	UPDATE {databaseOwner}{objectQualifier}Portals SET HomeDirectory = 'Portals/' + convert(varchar(10), @PortalID) WHERE PortalID = @PortalID
+END
+
+SELECT @PortalID
+GO
+
+/* Add LastUpdated Column to Folders */
+/*************************************/
+
+IF (SELECT ColumnProperty(Object_ID(N'{databaseOwner}[{objectQualifier}Folders]'), 'LastUpdated', 'AllowsNull')) IS NULL
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Folders ADD
+			LastUpdated datetime NOT NULL CONSTRAINT DF_{objectQualifier}Folders_LastUpdated DEFAULT getUtcDate()
+	END
+GO
+
+/* Update AddFolder */
+/********************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddFolder') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}AddFolder
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddFolder
+	@PortalID int,
+	@FolderPath varchar(300),
+	@StorageLocation int,
+	@IsProtected bit,
+    @IsCached bit
+AS
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}Folders WHERE PortalID = @PortalID and FolderPath = @FolderPath)
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}Folders
+		(PortalID, FolderPath, StorageLocation, IsProtected, IsCached, LastUpdated)
+		VALUES
+		(@PortalID, @FolderPath, @StorageLocation, @IsProtected, @IsCached, getUtcDate())
+		
+		SELECT SCOPE_IDENTITY()
+	END
+GO
+
+/* Update AddFile */
+/******************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddFile') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}AddFile
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddFile
+	@PortalId    int,
+	@FileName    nvarchar(100),
+	@Extension   nvarchar(100),
+	@Size        int,
+	@WIdth       int,
+	@Height      int,
+	@ContentType nvarchar(200),
+	@Folder      nvarchar(200),
+	@FolderID    int
+
+AS
+
+DECLARE @FileID int
+SET @FileID = (SELECT FileId FROM {databaseOwner}{objectQualifier}Files WHERE FolderID = @FolderID and FileName = @FileName)
+
+IF @FileID IS NULL
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}Files ( 
+		  PortalId,
+		  FileName,
+		  Extension,
+		  Size,
+		  Width,
+		  Height,
+		  ContentType,
+		  Folder,
+		  FolderID
+		)
+		VALUES (
+		  @PortalId,
+		  @FileName,
+		  @Extension,
+		  @Size,
+		  @Width,
+		  @Height,
+		  @ContentType,
+		  @Folder,
+		  @FolderID
+		)
+	END
+ELSE
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Files
+			SET	FileName = @FileName,
+				Extension = @Extension,
+				Size = @Size,
+				Width = @Width,
+				Height = @Height,
+				ContentType = @ContentType,
+				Folder = @Folder,
+				FolderID = @FolderID
+			WHERE  FileId = @FileID
+	END
+
+
+
+UPDATE {databaseOwner}{objectQualifier}Folders
+	SET LastUpdated = getUtcDate()
+	WHERE FolderID = @FolderID
+
+SELECT SCOPE_IDENTITY()
+GO
+/* Update DeleteFile */
+/*********************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteFile') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteFile
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteFile
+	@PortalId int,
+	@FileName nvarchar(100),
+	@FolderID int
+
+AS
+DELETE 
+	FROM {databaseOwner}{objectQualifier}Files
+	WHERE  FileName = @FileName
+		AND    FolderID = @FolderID
+		AND    ((PortalId = @PortalId) OR (@PortalId is null and PortalId is null))
+
+UPDATE {databaseOwner}{objectQualifier}Folders
+	SET LastUpdated = getUtcDate()
+	WHERE FolderID = @FolderID
+GO
+
+/* Update UpdateFile */
+/*********************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateFile') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateFile
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateFile
+	@FileId      int,
+	@FileName    nvarchar(100),
+	@Extension   nvarchar(100),
+	@Size        int,
+	@Width       int,
+	@Height      int,
+	@ContentType nvarchar(200),
+	@Folder      nvarchar(200),
+	@FolderID    int
+
+AS
+UPDATE {databaseOwner}{objectQualifier}Files
+	SET	FileName = @FileName,
+		Extension = @Extension,
+		Size = @Size,
+		Width = @Width,
+		Height = @Height,
+		ContentType = @ContentType,
+		Folder = @Folder,
+		FolderID = @FolderID
+	WHERE  FileId = @FileId
+
+UPDATE {databaseOwner}{objectQualifier}Folders
+	SET LastUpdated = getUtcDate()
+	WHERE FolderID = @FolderID
+GO
+
+/* Update UpdateFolder */
+/***********************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateFolder') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateFolder
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateFolder
+	@PortalID int,
+	@FolderID int,
+	@FolderPath varchar(300),
+	@StorageLocation int,
+	@IsProtected bit,
+    @IsCached bit
+AS
+UPDATE {databaseOwner}{objectQualifier}Folders
+	SET FolderPath = @FolderPath,
+		StorageLocation = @StorageLocation,
+	    IsProtected = @IsProtected,
+        IsCached = @IsCached,
+		LastUpdated = getUtcDate()
+	WHERE ((PortalID = @PortalID) or (PortalID is null and @PortalID is null))
+	AND FolderID = @FolderID
+GO
+
+/* DefaultLanguage */
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ALTER COLUMN
+	DefaultLanguage nvarchar(10) NOT NULL
+GO
+
+/* Update UpdatePortalInfo */
+/***************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdatePortalInfo') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalInfo
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalInfo
+
+@PortalId           int,
+@PortalName         nvarchar(128),
+@LogoFile           nvarchar(50),
+@FooterText         nvarchar(100),
+@ExpiryDate         datetime,
+@UserRegistration   int,
+@BannerAdvertising  int,
+@Currency           char(3),
+@AdministratorId    int,
+@HostFee            money,
+@HostSpace          int,
+@PaymentProcessor   nvarchar(50),
+@ProcessorUserId    nvarchar(50),
+@ProcessorPassword  nvarchar(50),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@BackgroundFile     nvarchar(50),
+@SiteLogHistory     int,
+@SplashTabId          int,
+@HomeTabId          int,
+@LoginTabId         int,
+@UserTabId          int,
+@DefaultLanguage    nvarchar(10),
+@TimeZoneOffset	    int,
+@HomeDirectory varchar(100)
+
+as
+
+update {databaseOwner}{objectQualifier}Portals
+set    PortalName = @PortalName,
+       LogoFile = @LogoFile,
+       FooterText = @FooterText,
+       ExpiryDate = @ExpiryDate,
+       UserRegistration = @UserRegistration,
+       BannerAdvertising = @BannerAdvertising,
+       Currency = @Currency,
+       AdministratorId = @AdministratorId,
+       HostFee = @HostFee,
+       HostSpace = @HostSpace,
+       PaymentProcessor = @PaymentProcessor,
+       ProcessorUserId = @ProcessorUserId,
+       ProcessorPassword = @ProcessorPassword,
+       Description = @Description,
+       KeyWords = @KeyWords,
+       BackgroundFile = @BackgroundFile,
+       SiteLogHistory = @SiteLogHistory,
+       SplashTabId = @SplashTabId,
+       HomeTabId = @HomeTabId,
+       LoginTabId = @LoginTabId,
+       UserTabId = @UserTabId,
+       DefaultLanguage = @DefaultLanguage,
+       TimeZoneOffset = @TimeZoneOffset,
+       HomeDirectory = @HomeDirectory
+where  PortalId = @PortalId
+
+GO
+
+/* Update GetSearchResults */
+/***************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetSearchResults') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP procedure {databaseOwner}{objectQualifier}GetSearchResults
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetSearchResults
+	@PortalID int,
+	@Word nVarChar(100)
+AS
+SELECT si.SearchItemID,
+	sw.Word,
+	siw.Occurrences,
+	siw.Occurrences + 1000 as Relevance,
+	m.ModuleID,
+	tm.TabID,
+	si.Title,
+	si.Description,
+	si.Author,
+	si.PubDate,
+	si.SearchKey,
+	si.Guid,
+	si.ImageFileId,
+	u.FirstName + ' ' + u.LastName As AuthorName,
+	m.PortalId
+FROM    {databaseOwner}{objectQualifier}SearchWord sw
+	INNER JOIN {databaseOwner}{objectQualifier}SearchItemWord siw ON sw.SearchWordsID = siw.SearchWordsID
+	INNER JOIN {databaseOwner}{objectQualifier}SearchItem si ON siw.SearchItemID = si.SearchItemID
+	INNER JOIN {databaseOwner}{objectQualifier}Modules m ON si.ModuleId = m.ModuleID
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}TabModules tm ON si.ModuleId = tm.ModuleID
+	INNER JOIN {databaseOwner}{objectQualifier}Tabs t ON tm.TabID = t.TabID
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users u ON si.Author = u.UserID
+WHERE   (((m.StartDate Is Null) OR (GetDate() > m.StartDate)) AND ((m.EndDate Is Null) OR (GetDate() < m.EndDate)))
+	AND (((t.StartDate Is Null) OR (GetDate() > t.StartDate)) AND ((t.EndDate Is Null) OR (GetDate() < t.EndDate)))
+	AND (sw.Word = @Word) 
+	AND (t.IsDeleted = 0) 
+	AND (m.IsDeleted = 0) 
+	AND (t.PortalID = @PortalID)
+ORDER BY Relevance DESC
+GO
+
+/* Update GetSearchResults */
+/***************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetFoldersByUser') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP procedure {databaseOwner}{objectQualifier}GetFoldersByUser
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetFoldersByUser
+	@PortalID int,
+	@UserID int,
+	@IncludeSecure bit,
+	@IncludeDatabase bit,
+	@AllowAccess bit,
+	@PermissionKeys nvarchar(200)
+
+AS
+SELECT DISTINCT
+	F.FolderID,
+	F.PortalID,
+	F.FolderPath,
+	F.StorageLocation,
+	F.IsProtected,
+	F.IsCached,
+	F.LastUpdated
+FROM {databaseOwner}{objectQualifier}Roles R
+	INNER JOIN {databaseOwner}{objectQualifier}UserRoles UR ON R.RoleID = UR.RoleID 
+	RIGHT OUTER JOIN {databaseOwner}{objectQualifier}Folders F
+		INNER JOIN {databaseOwner}{objectQualifier}FolderPermission FP ON F.FolderID = FP.FolderID 
+		INNER JOIN {databaseOwner}{objectQualifier}Permission P ON FP.PermissionID = P.PermissionID 
+	ON R.RoleID = FP.RoleID
+WHERE (	UR.UserID = @UserID
+			OR (FP.RoleID = - 1 AND @UserID Is Not NULL)
+			OR (FP.RoleID = - 3)
+			)
+		AND CHARINDEX(P.PermissionKey, @PermissionKeys) > 0
+		AND FP.AllowAccess = @AllowAccess
+	AND F.PortalID = @PortalID
+	AND (F.StorageLocation = 0 
+		OR (F.StorageLocation = 1 AND @IncludeSecure = 1) 
+		OR (F.StorageLocation = 2 AND @IncludeDatabase = 1)
+	)
+GO
+
+/* Add GetFolderByFolderID */
+/***************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetFolderByFolderID') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP procedure {databaseOwner}{objectQualifier}GetFolderByFolderID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetFolderByFolderID
+	@PortalID int,
+	@FolderID int
+AS
+SELECT *
+	FROM {databaseOwner}{objectQualifier}Folders
+	WHERE ((PortalID = @PortalID) or (PortalID is null and @PortalID is null))
+		AND (FolderID = @FolderID)
+GO
+
+/* Add GetFolderByFolderPath */
+/*****************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetFolderByFolderPath') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP procedure {databaseOwner}{objectQualifier}GetFolderByFolderPath
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetFolderByFolderPath
+	@PortalID int,
+	@FolderPath nvarchar(300)
+AS
+SELECT *
+	FROM {databaseOwner}{objectQualifier}Folders
+	WHERE ((PortalID = @PortalID) or (PortalID is null and @PortalID is null))
+		AND (FolderPath = @FolderPath)
+	ORDER BY FolderPath
+GO
+
+/* Update GetSearchModules */
+/***************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetSearchModules') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP procedure {databaseOwner}{objectQualifier}GetSearchModules
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchModules
+
+@PortalID int
+
+AS
+
+SELECT M.ModuleID,
+       M.ModuleDefID,
+       M.ModuleTitle,
+       M.AllTabs,
+       M.IsDeleted,
+       M.InheritViewPermissions,
+       M.Header,
+       M.Footer,
+       M.StartDate,
+       M.EndDate,
+       M.PortalID,
+       TM.TabModuleId,
+       TM.TabId,
+       TM.PaneName,
+       TM.ModuleOrder,
+       TM.CacheTime,
+       TM.Alignment,
+       TM.Color,
+       TM.Border,
+       TM.Visibility,
+       TM.ContainerSrc,
+       TM.DisplayTitle,
+       TM.DisplayPrint,
+       TM.DisplaySyndicate,
+       'IconFile' = case when F.FileName is null then TM.IconFile else F.Folder + F.FileName end,
+       DM.*,
+       MC.ModuleControlId,
+       MC.ControlSrc,
+       MC.ControlType,
+       MC.ControlTitle,
+       MC.HelpURL
+FROM {databaseOwner}{objectQualifier}Modules M
+	INNER JOIN {databaseOwner}{objectQualifier}TabModules TM ON M.ModuleId = TM.ModuleId
+	INNER JOIN {databaseOwner}{objectQualifier}Tabs T ON TM.TabId = T.TabId
+	INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions MD ON M.ModuleDefId = MD.ModuleDefId
+	INNER JOIN {databaseOwner}{objectQualifier}DesktopModules DM ON MD.DesktopModuleId = DM.DesktopModuleId
+	INNER JOIN {databaseOwner}{objectQualifier}ModuleControls MC ON MD.ModuleDefId = MC.ModuleDefId
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Files F ON TM.IconFile = 'fileid=' + convert(varchar,F.FileID)
+WHERE  M.IsDeleted = 0  
+	AND T.IsDeleted = 0  
+	AND ControlKey is null 
+	AND DM.IsAdmin = 0
+	AND (DM.SupportedFeatures & 2 = 2)
+	AND (T.EndDate > GETDATE() or T.EndDate IS NULL) 
+	AND (T.StartDate <= GETDATE() or T.StartDate IS NULL) 
+	AND (M.StartDate <= GETDATE() or M.StartDate IS NULL) 
+	AND (M.EndDate > GETDATE() or M.EndDate IS NULL) 
+	AND (NOT (DM.BusinessControllerClass IS NULL))
+	AND (T.PortalID = @PortalID OR (T.PortalID IS NULL AND @PortalID Is NULL))
+ORDER BY TM.ModuleOrder
+
+GO
+
+/* Update UpdateSearchItem */
+/***************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateSearchItem') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP procedure {databaseOwner}{objectQualifier}UpdateSearchItem
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSearchItem
+	@SearchItemID int, 
+	@Title nvarchar(200), 
+	@Description nvarchar(2000), 
+	@Author int, 
+	@PubDate datetime, 
+	@ModuleId int, 
+	@SearchKey nvarchar(100), 
+	@Guid nvarchar(200), 
+	@HitCount int, 
+	@ImageFileId int
+AS
+
+UPDATE {databaseOwner}{objectQualifier}SearchItem 
+SET	[Title] = @Title,
+	[Description] = @Description,
+	[Author] = @Author,
+	[PubDate] = @PubDate,
+	[ModuleId] = @ModuleId,
+	[SearchKey] = @SearchKey,
+	[Guid] = @Guid,
+	[HitCount] = @HitCount,
+	ImageFileId = 	@ImageFileId
+WHERE   [SearchItemID] = @SearchItemID
+
+GO
+
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

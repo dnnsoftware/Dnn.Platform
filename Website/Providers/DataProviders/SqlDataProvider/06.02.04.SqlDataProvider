@@ -1,0 +1,304 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/***** Fix bug 22350: correct sp GetUsersBasicSearch to exclude deleted users *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersBasicSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersBasicSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersBasicSearch] 
+(
+	@PortalID int,					-- portal
+	@PageSize int,					-- page size
+	@PageIndex int,					-- 0 based page index
+	@SortBy nvarchar(100),			-- sort field
+	@SortAscending bit,				-- sort flag indicating whether sort is asc or desc
+	@PropertyName nvarchar(256),    -- property to filter by (username, diaplayname, email)
+	@PropertyValue nvarchar(256)	-- value of property
+)
+AS
+	-- Set up Top XX
+	DECLARE @topSql nvarchar(20)
+	SET @topSql = CONVERT(nvarchar(20), @PageSize)
+	
+	--Set up Count
+	DECLARE @minRowNumberSql nvarchar(20)
+	SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
+	
+	-- Set up Sort
+	DECLARE @sortSql nvarchar(1000)
+	SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy, @SortAscending, 'UserID')
+
+	-- Setup Pivot Field List
+	DECLARE @pivotSql nvarchar(max)
+	SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
+
+	-- Setup FieldName Field List for temporary table
+	DECLARE @fieldNames nvarchar(max)
+	SELECT @fieldNames = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, ' nvarchar(max)')
+	
+	DECLARE @sql nvarchar(max)
+	SELECT @sql=
+				'
+					DECLARE @pivotedUsers TABLE
+					(
+						RowNumber int,
+						UserID int,
+						PortalID int,
+						Username nvarchar(100),
+						Email nvarchar(256),
+						DisplayName nvarchar(128),
+						IsSuperUser bit,
+						IsDeleted bit,
+						AffiliateID int,
+						UpdatePassword bit,
+						Authorised bit,
+						' + @fieldNames + '
+					);
+
+					WITH TempUsers
+					AS
+					(
+						SELECT TOP ' + @topSql + ' * FROM (
+							SELECT 	
+								ROW_NUMBER() OVER(' + @sortSql + ') AS RowNumber,
+								U.UserID,
+								U.PortalID,
+								U.Username,
+								U.Email,
+								U.DisplayName,
+								U.IsSuperUser,
+								U.IsDeleted,
+								U.AffiliateID,
+								U.UpdatePassword,
+								U.Authorised
+								FROM {databaseOwner}{objectQualifier}vw_Users AS U
+							WHERE (U.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalID Is NULL )
+								AND ((U.' + @PropertyName + ' LIKE ''' + @PropertyValue + '%'')
+									OR (U.' + @PropertyName + ' LIKE ''% ' + @PropertyValue + '%''))
+								AND U.IsDeleted = 0
+						) AS U
+						WHERE RowNumber >= ' + @minRowNumberSql + ' 
+					),
+					TempUsersWithProfile
+					AS
+					(
+						SELECT 
+							U.UserID,
+							U.PortalID,
+							U.Username,
+							U.Email,
+							U.DisplayName,
+							U.IsSuperUser,
+							U.IsDeleted,
+							U.AffiliateID,
+							U.UpdatePassword,
+							U.Authorised,
+							P.PropertyName,
+							P.PropertyValue
+						FROM TempUsers U
+							INNER JOIN {databaseOwner}{objectQualifier}vw_Profile P ON P.UserID = U.UserID
+					)
+										
+					SELECT  * FROM TempUsersWithProfile
+					PIVOT 
+					(
+						MAX(PropertyValue) for PropertyName in (' + @pivotSql + ')
+					) as pivotTable
+					' + @sortSql
+	EXEC(@sql)
+
+GO
+
+/**************** Fix bug 22078: also remove start char(*) from tab path. ***************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}BuildTabLevelAndPath]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}BuildTabLevelAndPath]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BuildTabLevelAndPath](@TabId INT, @IncludeChild BIT = 0)
+	AS
+	BEGIN
+		DECLARE @ParentId INT, @Level INT, @TabPath NVARCHAR(255), @TabName NVARCHAR(50)
+		SELECT @ParentId = ParentId, @TabName = TabName FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId
+		IF @ParentId > 0
+		BEGIN
+			SELECT 
+				@Level = [Level] + 1,
+				@TabPath = TabPath + '//' + {databaseOwner}[{objectQualifier}RemoveStringCharacters](@TabName, '&? ./''-#:*')
+			 FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @ParentId
+		END
+		ELSE
+		BEGIN
+			SELECT @Level = 0, @TabPath = '//' + {databaseOwner}[{objectQualifier}RemoveStringCharacters](@TabName, '&? ./''-#:*')
+		END
+		
+		UPDATE {databaseOwner}[{objectQualifier}Tabs] SET [Level] = @Level, TabPath = @TabPath WHERE TabID = @TabId
+		
+		IF @IncludeChild = 1
+		BEGIN
+			DECLARE @ChildTabs TABLE(TabID INT)
+			DECLARE @ChildID INT
+			INSERT INTO @ChildTabs SELECT TabID FROM {databaseOwner}[{objectQualifier}Tabs] WHERE ParentId =  @TabId
+			WHILE EXISTS (SELECT TOP 1 TabID FROM @ChildTabs)
+				BEGIN
+					SET @ChildID = (SELECT TOP 1 TabID FROM @ChildTabs)
+					EXEC {databaseOwner}[{objectQualifier}BuildTabLevelAndPath] @ChildID, @IncludeChild
+					DELETE FROM @ChildTabs WHERE TabID = @ChildID
+				END
+		END
+	END
+
+GO
+
+/***** Fix bug 22130: update sp CoreMessaging_CreateMessageReply to add send user as a recipient. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageReply]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageReply]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageReply]
+    @ConversationID    INT,           -- parent message id
+	@PortalID			INT,			--portalID of message
+    @Body               nvarchar(max), -- message body
+    @SenderUserID       INT,           -- create / update user id
+    @From               nvarchar(200), -- message from
+	@CreateUpdateUserID INT            -- create / update user id
+AS
+    DECLARE @ReplyAllAllowed BIT
+    DECLARE @NewMessageID INT
+    DECLARE @OriginalSenderUserID INT
+    DECLARE @OriginalTo nvarchar(2000)
+    DECLARE @OriginalSubject nvarchar(400)
+
+	--Was Sender a Recipient in the Original Message.
+	SELECT @ReplyAllAllowed = [ReplyAllAllowed],
+	       @OriginalSenderUserID = [SenderUserID],
+		   @OriginalTo = [TO],
+		   @OriginalSubject = [Subject]
+	FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages m
+	INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients mr ON m.MessageID = mr.MessageID
+	AND m.MessageID = @ConversationID
+	AND mr.UserID = @SenderUserID
+
+	--Reply can only be create if Sender was Recipient of Orginial message
+	IF @ReplyAllAllowed IS NULL
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	--Create new message
+	INSERT {databaseOwner}{objectQualifier}CoreMessaging_Messages(
+					[PortalID],
+  					[To],
+					[From],
+					[Subject],
+					[Body],
+					[ConversationID],
+					[ReplyAllAllowed],
+					[SenderUserID],
+                    [CreatedByUserID],
+                    [CreatedOnDate],
+                    [LastModifiedByUserID],
+                    [LastModifiedOnDate]
+                    )
+            VALUES  (
+					@PortalID,
+     			    @OriginalTo,
+					@From,
+				    @OriginalSubject,
+					@Body,
+					@ConversationID,
+					@ReplyAllAllowed,
+					@SenderUserID,
+                    @CreateUpdateUserID , -- CreatedBy - int
+                    GETUTCDATE() , -- CreatedOn - datetime
+                    @CreateUpdateUserID , -- LastModifiedBy - int
+                    GETDATE() -- LastModifiedOn - datetime
+                    )
+
+	SELECT @NewMessageID = SCOPE_IDENTITY()
+
+	IF (@ReplyAllAllowed = 0) --original message was sent to a Role, reply will be sent to the original sender only
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+		        ( [MessageID],
+		          [UserID],
+		          [Read],
+		          [Archived],
+		          CreatedByUserID,
+		          CreatedOnDate,
+		          LastModifiedByUserID,
+		          LastModifiedOnDate
+		        )
+		VALUES  ( @NewMessageID, -- MessageID - int
+		          @OriginalSenderUserID, -- UserID - int
+		          0, -- Read - bit
+		          0, -- Archived - bit
+		          @CreateUpdateUserID , -- CreatedByUserID - int
+		          GETDATE() , -- CreatedOnDate - datetime
+		          @CreateUpdateUserID , -- LastModifiedByUserID - int
+		          GETDATE()  -- LastModifiedOnDate - datetime
+		        )
+        
+        IF @OriginalSenderUserID <> @SenderUserID
+        BEGIN
+            INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+		            ( [MessageID],
+		              [UserID],
+		              [Read],
+		              [Archived],
+		              CreatedByUserID,
+		              CreatedOnDate,
+		              LastModifiedByUserID,
+		              LastModifiedOnDate
+		            )
+		    VALUES  ( @NewMessageID, -- MessageID - int
+		              @SenderUserID, -- UserID - int
+		              1, -- Read - bit
+		              0, -- Archived - bit
+		              @CreateUpdateUserID , -- CreatedByUserID - int
+		              GETDATE() , -- CreatedOnDate - datetime
+		              @CreateUpdateUserID , -- LastModifiedByUserID - int
+		              GETDATE()  -- LastModifiedOnDate - datetime
+		            )
+        END
+	END
+	ELSE --Reply should be sent to all the original Recipients
+	BEGIN
+		INSERT {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients(
+			[MessageID],
+			[UserID],
+			[Read],
+			[Archived],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+            )
+			SELECT
+			  @NewMessageID,
+			  UserID,
+			  0,
+			  0,
+              @CreateUpdateUserID , -- CreatedBy - int
+              GETDATE() , -- CreatedOn - datetime
+              @CreateUpdateUserID , -- LastModifiedBy - int
+              GETDATE() -- LastModifiedOn - datetime
+           FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+           WHERE MessageID = @ConversationID
+	END
+
+	SELECT  @NewMessageID
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

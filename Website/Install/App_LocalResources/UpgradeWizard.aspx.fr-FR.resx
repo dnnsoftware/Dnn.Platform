@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountInfo.Text">
+    <value xml:space="preserve">Infos de compte</value>
+  </data>
+  <data name="BestPractices.Text">
+    <value xml:space="preserve">Vous vous apprêtez  à mettre à jour votre site dans une version plus récente de DotNetNuke. Avant de procéder à la mise à jour automatique vérifiez que :&lt;ul&gt;&lt;li&gt;vous allez effectuer cette mise à jour dans un environnement de test&lt;/li&gt;&lt;li&gt;vous avez documenté toutes les informations spécifiques  à votre installation et vérifié la compatibilité de cette mise à jour avec les modules tiers.&lt;/li&gt;&lt;li&gt;vous avez créé les sauvegardes nécessaires afin de pouvoir procéder à une restauration en cas d’erreur lors du processus de mise à jour&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="CurrentVersion.Text">
+    <value xml:space="preserve">Verion actuelle - {0}</value>
+  </data>
+  <data name="DatabaseUpgrade.Text">
+    <value xml:space="preserve">Mise à jour de la base de données</value>
+  </data>
+  <data name="Error.Text">
+    <value xml:space="preserve">Erreur</value>
+  </data>
+  <data name="ErrorInStep.Text">
+    <value xml:space="preserve">Une erreur s'est produite - {0}</value>
+  </data>
+  <data name="ExtensionsUpgrade.Text">
+    <value xml:space="preserve">Mise à jour des extensions</value>
+  </data>
+  <data name="IntroDetail.Text">
+    <value xml:space="preserve">&lt;p&gt;Bienvenue dans l’assistant de mise à jour DotNetNuke&lt;/p&gt;&lt;p&gt;La première chose à faire est de sélectionner la langue à utiliser pour le processus de mise à jour/p&gt;</value>
+  </data>
+  <data name="InvalidCredentials.Text">
+    <value xml:space="preserve">Nom d'utilisateur et mot de passe non reconnus.</value>
+  </data>
+  <data name="Next.Text">
+    <value xml:space="preserve">Mettre à jour</value>
+  </data>
+  <data name="NoInstallationLog.Text">
+    <value xml:space="preserve">Aucun journal d'installation</value>
+  </data>
+  <data name="Password.Help">
+    <value xml:space="preserve">Le mot de passe pour le compte de super utilisateur (hôte).</value>
+  </data>
+  <data name="Password.Text">
+    <value xml:space="preserve">Mot de passe :</value>
+  </data>
+  <data name="Retry.Text">
+    <value xml:space="preserve">Réessayer</value>
+  </data>
+  <data name="SeeLogs.Text">
+    <value xml:space="preserve">Afficher les journaux</value>
+  </data>
+  <data name="TimerMinutes.Text">
+    <value xml:space="preserve">Minutes</value>
+  </data>
+  <data name="Title.Text">
+    <value xml:space="preserve">Mise à jour DotNetNuke</value>
+  </data>
+  <data name="Upgrade.Text">
+    <value xml:space="preserve">Mise à jour</value>
+  </data>
+  <data name="UpgradeDone.Text">
+    <value xml:space="preserve">Mise à jour complète</value>
+  </data>
+  <data name="UpgradingDatabase.Text">
+    <value xml:space="preserve">Mise à jour de la base de données</value>
+  </data>
+  <data name="Username.Help">
+    <value xml:space="preserve">Le nom d'utilisateur pour le compte de super utilisateur (hôte).</value>
+  </data>
+  <data name="Username.Text">
+    <value xml:space="preserve">Identifiant hôte (SuperUtilisateur) :</value>
+  </data>
+  <data name="Version.Text">
+    <value xml:space="preserve">Versino de la mise à jour - {0}</value>
+  </data>
+  <data name="ViewWebsite.Text">
+    <value xml:space="preserve">Changer de site</value>
+  </data>
+  <data name="VisitWebsite.Text">
+    <value xml:space="preserve">Visiter le site web</value>
+  </data>
+</root>

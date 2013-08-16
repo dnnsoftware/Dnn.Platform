@@ -1,0 +1,3 @@
+Public Domain
+No warranty expressed or implied. Use at your own risk.
+See http://www.JSON.org/js.html

@@ -1,0 +1,77 @@
+Third Party Acknowledgements
+==============================================================================
+
+Brian Bilbro ( bbilbro@hotmail.com ) 
+- Module Communicator code and architecture (http://aspalliance.com/bbilbro/DesktopDefault.aspx?tabindex=1&tabid=7&ArticleID=6 )
+
+Atif Aziz
+- SQLCommandGenerator
+
+Daniel Willmott 
+- Unauthenticated user
+
+Fredi Gertsch ( fredi@gerts.ch ) 
+- Tab Administrator
+
+Jon Henning - Solution Partners - (http://www.solpart.com)
+- Solpart Menu
+
+John Dyer - Revjon Studios (http://www.revjon.com)
+- FreeTextBox
+
+Robin Lilly, Vanessa Monzon, Mike Hernandez
+- UTEP ADA Code Base
+
+Tom Trefz && Scott Willhite
+- PopupCalendar.js (original by Tom, localization && Netscape by Scott)
+
+Richard Cox ( http://www.bydesignwebsights.com )
+- Search engine optimization at the Tab level ( Description, KeyWords, Title )
+
+Dino Esposito ( http://weblogs.asp.net/despos )
+- Personalization architecture from MSDN magazine ( Cutting Edge - March 2004 )
+
+Jeff Martin ( http://www.jeffmartin.com )
+- move ViewState to bottom of page for better search engine spidering
+
+Jonathan de Halleux ( http://www.dotnetwiki.org )
+- PA Installer
+
+David Haggard ( http://www.newcovenant.com )
+- function to obfuscate sensitive data to prevent collection by robots and spiders and crawlers
+
+Vicen?Masanas ( http://lacolla.europe.webmatrixhosting.net )
+- SMTP authentication
+
+Bert Corderman
+- Several base classes for Exception Management in DNN 2.0
+
+Joe Brinkman ( http://www.tag-software.net )
+- Module Action Menu concept
+
+Patrick Santry ( http://www.wwwcoder.com )
+- PayPal price checking and account checking
+
+M. Murali Dharan ( http://www.phpbuilder.com/columns/dhar20040217.php3 )
+- Search Engine Concepts
+
+Craig Dunn ( http://users.bigpond.com/conceptdevelopment/ )
+- Search Engine Concepts ( Searcharoo )
+
+Stan Schultes ( http://www.csnetexpert.com )
+- RSS Generator ( Visual Studio Magazine - April 2004 )
+
+James Clarkson ( http://www.blogolith.com )
+- Favicon per portal
+
+Scott Mitchell ( http://4guysfromrolla.com )
+- URL Rewriting
+
+Scott Stokes ( http://www.adverageous.com )
+- File Manager UI ( based on DNNExplorer )
+
+Michael Beller ( http://www.lightshippartners.com )
+- Database model for abstraction and refactoring of the core database
+
+Sebastian Leupold ( http://www.gamma-concept.de )
+- German resource files

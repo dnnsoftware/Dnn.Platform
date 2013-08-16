@@ -1,0 +1,11 @@
+﻿Test,							ForceLowerCaseRegex,	Scheme,		Page Name,		Params,					Expected Url,	
+Home,							,						http://,	Home,			,						http://{alias}/
+About Us,						,						http://,	About Us,		,						http://{alias}/aboutus.aspx
+Admin Site Settings,			,						http://,	Site Settings,	,						http://{alias}/Admin/SiteSettings.aspx
+Profile Messages,				,						http://,	Messages,		,						http://{alias}/activityfeed/messages.aspx
+Terms,							,						http://,	Home,			&ctl=Terms,				http://{alias}/terms.aspx
+Login,							,						http://,	About Us,		&ctl=Login,				http://{alias}/login.aspx
+Edit Page Home,					,						http://,	Home,			&ctl=Edit&mid=100,		http://{alias}/home/ctl/edit/mid/100.aspx
+Edit Page About Us,				,						http://,	About Us,		&ctl=Edit&mid=200,		http://{alias}/aboutus/ctl/edit/mid/200.aspx
+About Us regex,					aboutus,				http://,	About Us,		,						http://{alias}/AboutUs.aspx
+Edit Page About Us regex,		edit,					http://,	About Us,		&ctl=Edit&mid=200,		http://{alias}/aboutus/ctl/Edit/mid/200.aspx

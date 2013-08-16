@@ -1,0 +1,104 @@
+<html>
+<head>
+    <title>DotNetNuke</title>
+    <link rel="stylesheet" type="text/css" href="Documents.css">
+</head>
+<body bottommargin="5" leftmargin="5" topmargin="5" rightmargin="5" marginwidth="0" marginheight="0">
+    <img src="logo.gif" border="0">
+    <h1>DotNetNuke?Web Application Framework ($safeprojectname$)</h1>
+    <h2>Introduction</h2>
+    <p>Congratulations! You have created your own DotNetNuke project.&nbsp; Please
+        take a few minutes to read this document, as it will help you install and configure
+        your new website.</p>
+    <h2>Quick Installation</h2>
+    <p>In order to make your experience with DotNetNuke as productive as possible, we have optimized the number of installation steps required for web developers.</p>
+    <p>
+    As long as you selected the default options for creating a web project in Visual Studio 2005 
+    ( selected "File System" as the Location: for your website ) and want to use the default SQL Server 2005 Express database included with the application, 
+    you simpy need to <b>press Ctrl-F5</b> (ie. hold the Ctrl key down while clicking on the F5 function key) in order to complete your installation. 
+    The application may take a few minutes to build and you may find it useful to monitor the build progress output 
+    ( select View / Output or CTRL-ALT-O within Visual Studio 2005 ). When your web browser loads the initial Installation screen, <b>you must choose the Auto Installation option</b> to successfully complete the process.
+    </p>
+    <hr />
+    <h2>Advanced Installation</h2>
+    <p>For those developers are not satisfied with the default options used in the Quick Installation option above 
+       or perhaps want a little more control over the installation process, 
+       we have included Advanced Installation instrustions to cover the most common customizations.
+    </p>
+    <ul>
+        <li><a href="#Step1">Create/Configure</a> a SQL Server Database</li>
+        <li><a href="#Step2">Edit</a> the SQL Server Connection String in web.config </li>
+        <li><a href="#Step3">Configure</a> your WebServer</li>
+        <li><a href="#Step4">Configure</a> NTFS File Permissions</li>
+        <li><a href="#Step5">Choose</a> a site template</li>
+        <li><a href="#Step6">Install</a> DotNetNuke</li>
+    </ul>
+    <a name="Step1" /><h3>1. Create/Configure Database</h3>
+    <p>DotNetNuke is a dynamic web application; therefore, you must create/configure a Database.&nbsp; The default
+        connection string provided assumes that you will be using a SQL Server
+        2005 Express database file called Database.mdf.</p>
+    <p>Data Source=.\SQLExpress;<br />
+        Integrated Security=True;<br />
+        User Instance=True;<br />
+        AttachDBFilename=|DataDirectory|Database.mdf; &nbsp;</p>
+    <p>If you would like instructions on creating a SQL Server Express 2005 Database file with a different name then see <a href="SQLServerXpressConfig.html">SQL Server 2005 Express Configuration</a>.</p>
+    <p>If you would like to use a standard SQL Server 2000 or SQL Server 2005 Database then
+        you will need to create and configure one before proceeding.&nbsp; You will also need to decide on the credentials used to access the Database you created.&nbsp;
+        You can use Integrated Security (credentials based on your Windows User Account),
+        or you can use SQL Server's own security.&nbsp; Again, the default connection string
+        assumes the latter.&nbsp; For more information, on setting up a SQL Server Database
+        see <a href="SQLServerConfig.html">SQL Server 2000 Configuration</a> or <a href="SQLServer2005Config.html">SQL Server 2005 Configuration</a>.</p>
+    <a name="Step2" /><h3>2. Edit the Connection String in web.config</h3>
+    <p>Once you have created your database you will need to hook up the connection string in
+        web.config. There are <b>TWO</b> places in web.config where you need to verify the connection string.&nbsp;
+        In the &lt;connectionStrings&gt; node:</p>
+    <p><img src="images/ConnectionString.gif"/>&nbsp;</p>
+    <p>and under the &lt;appSettings&gt; node</p>
+    <p><img src="images/AppSetting.gif"/>&nbsp;</p>
+    <p><em>(Note that the connection string attributes includes line-breaks to make them
+        more readable - the
+        actual string must be on one line.)</em></p>
+    <p><em></em>The examples shown above are for the default SQL Server 2005 Express database file
+        "Database.mdf".&nbsp; If you used 
+        a different filename for the database file, you need to change the <i>AttachDBFilename=|DataDirectory|Database.mdf;</i> section.</p>
+    <p>To use a SQL Server 2000 or 2005 database replace the whole connection string by
+        something similar to</p>
+    <p>Server=(local);Database=DatabaseName;uid=LoginName;pwd=LoginPassword;</p>
+    <a name="Step3" /><h3>3. Configure the Web Server</h3>
+    <p>For the most part, you should not need to configure your web server.&nbsp; It does
+        not matter whether you selected the File System (default) or HTTP (IIS) as the Location: for your web server. 
+        In either case the default configurations should work.&nbsp;
+        In fact the File System web server has no configuration options.&nbsp; However,
+        if you would like further information on configuring IIS please see <a href="WebServerConfig.html">Configuring Internet Information Server (IIS)</a>.</p>
+    <a name="Step4" /><h3>4. Configure NTFS File Permissions</h3>
+    <p>If you created your new project using the HTTP option (IIS) then you need to set
+        the permissions for the System Account used by ASP.NET.&nbsp; This step is not neccessary
+        if you used the File System (default) option to create your new site.</p>
+    <p>The NETWORK SERVICE account (Windows 2003) or the ASPNET account (Windows 2000) must
+        be given Full Control on the Virtual Directory you are using.&nbsp; For more information
+        see <a href="NTFSConfig.html">NTFS Permissions Configuration</a>.</p>
+    <a name="Step5" /><h3>5. Choose a Site Template</h3>
+    <p>DotNetNuke installations use a template to determine what content gets loaded when the site is first created.&nbsp;
+        There are 4 templates available</p>
+    <ul>
+        <li>DotNetNuke (default)</li>
+        <li>Personal</li>
+        <li>Club</li>
+        <li>Small Business</li>
+    </ul>
+    <p>Under normal circumstances you do not need to do anything ( the site will install using the default template ),
+        but if you would like to install based on one of the alternate templates, or would
+        like more information on templates see <a href="TemplateConfig.html">Configuring the Install Template</a>.</p>
+    <a name="Step6" /><h3>6. Install DotNetNuke</h3>
+    <p>If you have completed the steps above, you are now ready to install your new
+        DotNetNuke site.&nbsp; To install the site press Ctrl-F5 (ie hold the Ctrl key down while clicking on the F5 function key). The application may take a few minutes to build if this
+        is your first installation. In order to view the build progress you should select
+        View / Output ( CTRL- ALT-O ) from Visual Studio 2005.<br />
+        &nbsp;
+    </p>
+    <hr />
+    <h3>Further Resources</h3>
+    <p>The information in this page is only an overview of the DotNetNuke?Web Application Framework. For more information, visit <a href="http://www.dotnetnuke.com">www.dotnetnuke.com</a>.
+    </p>
+</body>
+</html>

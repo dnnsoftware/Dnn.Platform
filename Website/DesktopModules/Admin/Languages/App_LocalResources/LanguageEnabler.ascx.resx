@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="plEnabled.Text" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="plLanguage.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="viewTypeLabel.Text" xml:space="preserve">
+    <value>Display type:</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;P&gt;A LanguageEnabler module</value>
+  </data>
+  <data name="PortalDefaultEnabled.Text" xml:space="preserve">
+    <value>- &lt;em&gt;The default site language cannot be disabled&lt;/em&gt;</value>
+  </data>
+  <data name="Fallback.Text" xml:space="preserve">
+    <value>Fallback language</value>
+  </data>
+  <data name="siteDefaultLabel.Help" xml:space="preserve">
+    <value>You can select the default language for the site here. If the language is not enabled yet, it will be enabled automatically.  Also, once Content Localization is enabled this can no longer be changed.</value>
+  </data>
+  <data name="siteDefaultLabel.Text" xml:space="preserve">
+    <value>Site Default:</value>
+  </data>
+  <data name="viewTypeLabel.Help" xml:space="preserve">
+    <value>Select the display type for languages on this page</value>
+  </data>
+  <data name="plEnabled.Help" xml:space="preserve">
+    <value>Below you can enable or disable languages for this site</value>
+  </data>
+  <data name="Host.Help" xml:space="preserve">
+    <value>Edit resourcekeys for the host installation</value>
+  </data>
+  <data name="Host.Text" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="plLanguage.Help" xml:space="preserve">
+    <value>This is a list of all available &lt;br /&gt;languages in the installation.</value>
+  </data>
+  <data name="Portal.Help" xml:space="preserve">
+    <value>Edit resourcekeys for this website</value>
+  </data>
+  <data name="Portal.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="System.Help" xml:space="preserve">
+    <value>Edit system resourcekeys</value>
+  </data>
+  <data name="System.Text" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Culture.Header" xml:space="preserve">
+    <value>Culture</value>
+  </data>
+  <data name="Active.Header" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Enabled.Header" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="Static.Header" xml:space="preserve">
+    <value>Static Resources</value>
+  </data>
+  <data name="Content.Header" xml:space="preserve">
+    <value>Content Localization</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit this language</value>
+  </data>
+  <data name="Available.Text" xml:space="preserve">
+    <value>Available Languages</value>
+  </data>
+  <data name="AddLanguage.Text" xml:space="preserve">
+    <value>Add New Language</value>
+  </data>
+  <data name="Update.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="CreateLocalizedPages.Text" xml:space="preserve">
+    <value>Create Pages in this Language</value>
+  </data>
+  <data name="CreateLanguage.Text" xml:space="preserve">
+    <value>Create Language Pack</value>
+  </data>
+  <data name="EnabledPublishedMessage.Text" xml:space="preserve">
+    <value>- &lt;em&gt;A language must be enabled before it can be activated and it must be deactivated before it can be disabled&lt;/em&gt;</value>
+  </data>
+  <data name="EnableLocalization.Text" xml:space="preserve">
+    <value>Enable Localized Content</value>
+  </data>
+  <data name="InstallLanguage.Text" xml:space="preserve">
+    <value>Install Language Pack</value>
+  </data>
+  <data name="PortalDefaultPublished.Text" xml:space="preserve">
+    <value>- &lt;em&gt;The default site language cannot be deactivated or disabled&lt;/em&gt;</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="TranslationStatus.Text" xml:space="preserve">
+    <value>Click the link to go to the Translation Summary Page for this language</value>
+  </data>
+  <data name="Verify.Text" xml:space="preserve">
+    <value>Verify Language Resource Files</value>
+  </data>
+  <data name="LanguageSettings.Text" xml:space="preserve">
+    <value>Language Settings</value>
+  </data>
+  <data name="LocalizePages.Text" xml:space="preserve">
+    <value>No of Pages</value>
+  </data>
+  <data name="TranslatedPages.Text" xml:space="preserve">
+    <value>Translated Pages</value>
+  </data>
+  <data name="TranslationSummary.Text" xml:space="preserve">
+    <value>Translation Status</value>
+  </data>
+  <data name="HostOnly.Text" xml:space="preserve">
+    <value>Host User Required</value>
+  </data>
+  <data name="HostOnlyMessage.Text" xml:space="preserve">
+    <value>DotNetNuke's security model requires that host users must create new languages.  As a site administrator you can manage existing languages.  If you would like more languages please contact the Host User for your site.</value>
+  </data>
+  <data name="systemDefaultLabel.Help" xml:space="preserve">
+    <value>The SystemDefault Language is language that the application uses if no other language is available.  It is the ultimate fallback.</value>
+  </data>
+  <data name="systemDefaultLabel.Text" xml:space="preserve">
+    <value>System Default:</value>
+  </data>
+  <data name="detectBrowserLable.Help" xml:space="preserve">
+    <value>Should the user's browser language be used to detect the user's preferred language?</value>
+  </data>
+  <data name="detectBrowserLable.Text" xml:space="preserve">
+    <value>Enable Browser Language Detection?</value>
+  </data>
+  <data name="Publish.Header" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="PublishTranslatedPages.Text" xml:space="preserve">
+    <value>Publish Pages in this Language that are marked as Translated</value>
+  </data>
+  <data name="Publish.Confirm" xml:space="preserve">
+    <value>Would you like to publish all pages in the {0} language?</value>
+  </data>
+  <data name="allowUserCulture.Help" xml:space="preserve">
+    <value>When enabled will allow user to select a different language for the interface than the one used for content</value>
+  </data>
+  <data name="allowUserCulture.Text" xml:space="preserve">
+    <value>Allow users to choose interface language?</value>
+  </data>
+  <data name="InstallAvailabeLanguage.Text" xml:space="preserve">
+    <value>Install Available Languages</value>
+  </data>
+  <data name="DisableLocalization.Text" xml:space="preserve">
+    <value>Disable Localized Content</value>
+  </data>
+  <data name="ContentLocalization.Tab" xml:space="preserve">
+    <value>Content Localization</value>
+  </data>
+  <data name="Languages.Tab" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="Settings.Tab" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="LocalizablePages.Text" xml:space="preserve">
+    <value>Number of Localizable Pages</value>
+  </data>
+  <data name="cmdDeleteTranslation.Text" xml:space="preserve">
+    <value>Remove all translations for this language</value>
+  </data>
+  <data name="DeleteTranslations.Confirm" xml:space="preserve">
+    <value>You are about to permanently &lt;b&gt;remove&lt;/b&gt; all translations for the '&lt;b&gt;{0}&lt;/b&gt;' language. Are you sure about this?</value>
+  </data>
+  <data name="MakeNeutral.Text" xml:space="preserve">
+    <value>Convert page to Neutral Language</value>
+  </data>
+  <data name="MakeTranslatable.Text" xml:space="preserve">
+    <value>Make Page Translatable</value>
+  </data>
+  <data name="ChildrenExistWhenConvertingToNeutral.Text" xml:space="preserve">
+    <value>Page can not be converted to a neutral culture, because there are child pages.</value>
+  </data>
+  <data name="AddMissingLanguages.Text" xml:space="preserve">
+    <value>Add Missing Languages</value>
+  </data>
+  <data name="Page.Help" xml:space="preserve">
+    <value>Select a page here to filter the information below</value>
+  </data>
+  <data name="Page.Text" xml:space="preserve">
+    <value>Select a Page:</value>
+  </data>
+  <data name="DisableLocalization.Confirm" xml:space="preserve">
+    <value>Are you sure you want to disable Content Localization for this web site? This action will &lt;b&gt;delete&lt;/b&gt; all translated pages, and &lt;b&gt;cannot&lt;/b&gt; be undone.</value>
+  </data>
+  <data name="MakeNeutral.Confirm" xml:space="preserve">
+    <value>This will delete all translations of the page. Only the default language version of the page will remain. Are you sure you want to do this?</value>
+  </data>
+  <data name="plUrl.Help" xml:space="preserve">
+    <value>Check this box to enable the Language Parameter in the URL.</value>
+  </data>
+  <data name="plUrl.Text" xml:space="preserve">
+    <value>Enable Language Parameter in URLs?</value>
+  </data>
+  <data name="NeutralMessage.Text" xml:space="preserve">
+    <value>This is a "Language Neutral" page, which means that the page will be visible in every language of the site. Language Neutral pages cannot be translated.</value>
+  </data>
+</root>

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{03E3AFA5-DDC9-48FB-A839-AD4282CE237E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotNetNuke.Web.Client</RootNamespace>
+    <AssemblyName>DotNetNuke.Web.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\DotNetNuke.Web.Client.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\DotNetNuke.Web.Client.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FileOrder.cs" />
+    <Compile Include="Controls\ClientResourceInclude.cs" />
+    <Compile Include="Controls\ClientResourceLoader.cs" />
+    <Compile Include="ClientResourceManager.cs" />
+    <Compile Include="Controls\ClientResourcePath.cs" />
+    <Compile Include="Controls\ClientResourcePathCollection.cs" />
+    <Compile Include="Controls\DnnCssInclude.cs" />
+    <Compile Include="Controls\DnnHtmlInclude.cs" />
+    <Compile Include="Controls\DnnJsInclude.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="ClientResourceSettings.cs" />
+    <Compile Include="Providers\DnnCompositeFileProcessingProvider.cs" />
+    <Compile Include="Providers\DnnFileRegistrationProvider.cs" />
+    <Compile Include="Providers\DnnPageHeaderProvider.cs" />
+    <Compile Include="Providers\DnnFormBottomRenderProvider.cs" />
+    <Compile Include="Providers\DnnBodyRenderProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3b64e72e-63cc-4a90-adff-4b919ef17239}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+      <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
+      <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild" DependsOnTargets="DebugProject">
+  </Target>
+  <Target Name="DebugProject">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Client.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Client.pdb" DestinationFolder="..\..\Website\bin\" />
+  </Target>
+</Project>

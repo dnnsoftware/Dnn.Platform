@@ -1,0 +1,48 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/********************************************************/
+/* fix 5.2.0 bug - Set DataType List to be a SystemList */
+/********************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}Lists SET SystemList = 'True' WHERE ListName = 'DataType'
+
+GO
+
+/***********************/
+/* fix tabcount issue */
+/***********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabCount]
+	
+	@PortalId	int
+
+AS
+
+DECLARE @AdminTabId int
+SET @AdminTabId = (SELECT AdminTabId 
+						FROM {databaseOwner}{objectQualifier}vw_Portals 
+						WHERE PortalID = @PortalID)
+
+SELECT COUNT(*) - 1 
+FROM  {databaseOwner}{objectQualifier}Tabs
+WHERE (PortalID = @PortalID) 
+	AND (TabID <> @AdminTabId) 
+	AND (ParentId <> @AdminTabId OR ParentId IS NULL)
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

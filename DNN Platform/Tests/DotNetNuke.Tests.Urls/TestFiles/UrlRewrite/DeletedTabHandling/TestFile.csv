@@ -1,0 +1,16 @@
+﻿Test,						DeletedTabHandling,			SoftDeleted,	HardDeleted,	Disabled,	Expired,		Scheme,		Page Name,		Test Url,					Expected Url,					Status,		Final Url,				RedirectReason
+Default,					,							false,			false,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	200
+Disabled Default,			,							false,			false,			true,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Disabled_Page
+Expired Default	,			,							false,			false,			false,		true,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Deleted_Page
+SoftDeleted Default	,		,							true,			false,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Deleted_Page
+HardDeleted Default	,		,							false,			true,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Deleted_Page
+301 Redirect,				Do301RedirectToPortalHome,	false,			false,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	200
+Disabled 301 Redirect,		Do301RedirectToPortalHome,	false,			false,			true,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	301,		http://{alias}/,		Disabled_Page
+Expired 301 Redirect,		Do301RedirectToPortalHome,	false,			false,			false,		true,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	301,		http://{alias}/,		Deleted_Page
+SoftDeleted 301 Redirect,	Do301RedirectToPortalHome,	true,			false,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	301,		http://{alias}/,		Deleted_Page
+HardDeleted 301 Redirect,	Do301RedirectToPortalHome,	false,			true,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	301,		http://{alias}/,		Deleted_Page
+404 Error,					Do404Error,					false,			false,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	200
+Disabled 404 Error,			Do404Error,					false,			false,			true,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Disabled_Page
+Expired 404 Error,			Do404Error,					false,			false,			false,		true,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Deleted_Page
+SoftDeleted 404 Error,		Do404Error,					true,			false,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Deleted_Page
+HardDeleted 404 Error,		Do404Error,					false,			true,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Deleted_Page

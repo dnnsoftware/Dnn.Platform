@@ -1,0 +1,20 @@
+<Settings>
+  <Setting>
+    <Name>CssClass</Name>
+    <Type>String</Type>
+    <Help>Sets the CSS class used to render this skin object</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>Text</Name>
+    <Type>String</Type>
+    <Help>Overrides the default text for "Login"</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>LogoffText</Name>
+    <Type>String</Type>
+    <Help>Overrides the default text for "Logout"</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

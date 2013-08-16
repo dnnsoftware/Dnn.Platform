@@ -1,0 +1,28 @@
+' Remove uninstalled module packages that have new versions in distribution.
+' Remove files which are no longer required in version 4.6.0
+admin\Security\App_LocalResources\AuthenticationSettings.ascx.resx
+admin\Security\App_LocalResources\Signin.ascx.resx
+admin\Security\AuthenticationSettings.ascx
+admin\Security\AuthenticationSettings.ascx.vb
+admin\Security\logoff.aspx
+admin\Security\Logoff.aspx.vb
+admin\Security\signin.ascx
+admin\Security\Signin.ascx.vb
+admin\Security\WindowsSignin.aspx
+admin\Security\WindowsSignin.aspx.vb
+bin\DotNetNuke.Authentication.ADSI.dll
+bin\DotNetNuke.Authentication.ADSIProvider.dll
+bin\DotNetNuke.Caching.BroadcastPollingCachingProvider.SQLDataProvider.dll
+bin\DotNetNuke.DNNScheduler.SqlDataProvider.dll
+bin\DotNetNuke.HttpModules.Authentication.dll
+bin\DotNetNuke.HttpModules.Compression.dll
+bin\DotNetNuke.HttpModules.DNNMembership.dll
+bin\DotNetNuke.HttpModules.Exception.dll
+bin\DotNetNuke.HttpModules.Personalization.dll
+bin\DotNetNuke.HttpModules.UrlRewrite.dll
+bin\DotNetNuke.HttpModules.UsersOnline.dll
+bin\DotNetNuke.Provider.DBLoggingProvider.SqlDataProvider.dll
+bin\DotNetNuke.Provider.Membership.SqlDataProvider.dll
+Install\Module\HTML_04.05.00_Install.zip
+Install\Module\Survey_04.00.85_Install.resources
+Install\Module\UserDefinedTable_03.03.06_Install.resources

@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Activate.Text" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="ActivateButtonText.Text" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="ActivatedMessageHtml.Text" xml:space="preserve">
+    <value>&lt;p class="{0}"&gt;Premium Data is active. Thank you.&lt;/p&gt;</value>
+  </data>
+  <data name="ActivateInstructionsHtml.Text" xml:space="preserve">
+    <value>&lt;p&gt;Paste your Premium Data license key into the textbox below. Select "Activate" to use the license key with this web site.&lt;/p&gt;</value>
+  </data>
+  <data name="ActivationDataInvalidHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;&lt;p&gt;The data source provided does not contain valid data.&lt;/p&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="ActivationFailureCouldNotUpdateConfigHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;&lt;p&gt;The fiftyOne/detection element of the config file '{1}' could not be inserted. Please ensure the following text is present between the fiftyOne tags and try activating the license key again.&lt;/p&gt;
+&lt;br/&gt;
+&lt;span style="margin-left: 0px !important;"&gt;&lt;code style="color: #000000;"&gt;&amp;lt;&lt;/code&gt;&lt;code&gt;&lt;span style="color: #006699;"&gt;&lt;strong&gt;detection&lt;/strong&gt;&lt;/span&gt;&lt;/code&gt;&amp;nbsp;&lt;code style="color: #808080;"&gt;binaryFilePath&lt;/code&gt;&lt;code style="color: #000000;"&gt;=&lt;/code&gt;&lt;code style="color: blue;"&gt;"~/App_Data/51Degrees-Premium.dat"&lt;/code&gt;&lt;code&gt;&lt;span style="color: #000000;"&gt;/&amp;gt;&lt;/span&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="ActivationFailureCouldNotWriteDataFileHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;
+&lt;p&gt;The device data file '{1}' could not be saved. Check the user '{2}' has write access to the folder, or change the folder location to one with write access.&lt;/p&gt;
+&lt;/div&gt;</value>
+  </data>
+  <data name="ActivationFailureCouldNotWriteLicenceFileHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;&lt;p&gt;The license file '{1}' could not be written to this web sites bin folder '{2}'. Create a text file with the extension .lic and paste the license key  into the file. Save the text file in the bin folder.&lt;/p&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="ActivationFailureGenericHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;&lt;p&gt;Whoops. There was a problem activating the license key. We're unsure why the license key provided could not be activated. Please &lt;a href="http://51degrees.mobi/AboutUs/ContactUs.aspx"&gt;Contact Us&lt;/a&gt; providing details of your web site implementation and we'll try and help you.&lt;/p&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="ActivationFailureHttpHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;&lt;p&gt;We were unable to reach the 51Degrees.mobi license validation web site at the host '{1}'. This could be for one of the following reasons.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+This web site is running in medium trust mode and the 
+&lt;a href="http://msdn.microsoft.com/en-us/library/system.web.configuration.trustsection.originurl(v=VS.80).aspx"&gt;originUrl&lt;/a&gt; 
+attribute in the web.config does not allow access the host '{1}'. Change the originUrl to include '{1}'. Multiple host names can 
+be seperated by | signs.&lt;/li&gt;
+&lt;li&gt;
+The web servers firewall or another firewall is blocking access to the host or the SSL port 443. Check the firewall configuration.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When you've completed these checks try activating the license key again.&lt;/p&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="ActivationFailureInvalidHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;&lt;p&gt;The license key provided failed validation. Please check the license key is validate with your reseller.&lt;/p&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="ActivationStreamFailureHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;&lt;p&gt;The data source provided could not be read from.&lt;/p&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="ActivationSuccessHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;&lt;p&gt;Success. Select the "Refresh" button to reload the web page and and start using Premium Device Data.  Note: There may be a short delay as the application restarts.&lt;/p&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="BackToExplorer.Text" xml:space="preserve">
+    <value>Back to Device Explorer</value>
+  </data>
+  <data name="BrowserList.Header" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="ContentList.Header" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="DeviceExplorer.Header" xml:space="preserve">
+    <value>Device Explorer</value>
+  </data>
+  <data name="GetLatestData.Text" xml:space="preserve">
+    <value>Get Latest Data</value>
+  </data>
+  <data name="Glossary.Header" xml:space="preserve">
+    <value>Help &gt;Glossary</value>
+  </data>
+  <data name="Glossary.Text" xml:space="preserve">
+    <value>* Property is included ONLY in the Premium data sets.</value>
+  </data>
+  <data name="HardwareList.Header" xml:space="preserve">
+    <value>Hardware</value>
+  </data>
+  <data name="Help.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="HelpLink.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Introduction.Header" xml:space="preserve">
+    <value>Browse for Device</value>
+  </data>
+  <data name="Introduction.Text" xml:space="preserve">
+    <value>Below is a glossary of available properties broken out by category.</value>
+  </data>
+  <data name="Lite.Header" xml:space="preserve">
+    <value>Thank you for using Lite device data</value>
+  </data>
+  <data name="LiteSearchResults.Header" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="LiteSearchResults.Text" xml:space="preserve">
+    <value>Select a hardware vendor to view the device models they produce.</value>
+  </data>
+  <data name="LiteUpgrade.Label" xml:space="preserve">
+    <value>Upgrade to Premium Data:</value>
+  </data>
+  <data name="NoResultsFound.Text" xml:space="preserve">
+    <value>There were no results found matching your search.</value>
+  </data>
+  <data name="Premium.Header" xml:space="preserve">
+    <value>Thank you for using {0} device data</value>
+  </data>
+  <data name="PremiumIntro.Text" xml:space="preserve">
+    <value>The {0} data contains thousands of devices, including games consoles, eBook readers, tablets, smart phones and feature phones. Each device is associated with a wide range of relevant properties, from screen size and input methods to operating system, browser and hardware.</value>
+  </data>
+  <data name="PurchaseInfo.Text" xml:space="preserve">
+    <value>To get the premium data, you can purchase your license from the </value>
+  </data>
+  <data name="PurchaseInfoEnd.Text" xml:space="preserve">
+    <value>, or upgrade to one of the &lt;a href="http://store.dotnetnuke.com/home/product-details/dotnetnuke-professional-and-enterprise-edition-subscriptions" target="_blank"&gt;Commercial Editions&lt;/a&gt;.</value>
+  </data>
+  <data name="PurchaseInfoLink.Href" xml:space="preserve">
+    <value>http://store.dotnetnuke.com/home/product-details/premium-mobile-device-data-51degreesmobi</value>
+  </data>
+  <data name="PurchaseInfoLink.Text" xml:space="preserve">
+    <value>DotNetNuke Store</value>
+  </data>
+  <data name="RefreshButtonText.Text" xml:space="preserve">
+    <value>Refresh</value>
+    <comment>Used to reload page after upgrade to premium.</comment>
+  </data>
+  <data name="SearchButton.Text" xml:space="preserve">
+    <value>Find Device</value>
+  </data>
+  <data name="SearchLite.Header" xml:space="preserve">
+    <value>User Agent Search</value>
+  </data>
+  <data name="SearchLite.Text" xml:space="preserve">
+    <value>Enter the user agent you would like to test and click Find Device.</value>
+  </data>
+  <data name="SearchPremium.Header" xml:space="preserve">
+    <value>Search for Device</value>
+  </data>
+  <data name="SearchPremium.Text" xml:space="preserve">
+    <value>Enter your search term and press the Find Device button to search. Hardware vendor, model, device name, browser and operating system information will be searched.</value>
+  </data>
+  <data name="SoftwareList.Header" xml:space="preserve">
+    <value>Software</value>
+  </data>
+  <data name="UpgradePoint1.Text" xml:space="preserve">
+    <value>Automatically redirect users to optimized web pages, enabling you to create separate sites for tablets, feature phones and smartphones.</value>
+  </data>
+  <data name="UpgradePoint2.Text" xml:space="preserve">
+    <value>Enhance the isMobile and Screen Size properties in Lite data with over 50 device properties including isTablet, screen size in millimeters, vendor, model, platform details, input methods and levels of JavaScript support.</value>
+  </data>
+  <data name="UpgradePoint3.Text" xml:space="preserve">
+    <value>Regular weekly updates of device data</value>
+  </data>
+  <data name="UpgradePoint4.Text" xml:space="preserve">
+    <value>An option to automatically install new updates.</value>
+  </data>
+  <data name="UploadButtonText.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="UploadData.Text" xml:space="preserve">
+    <value>Upload Data</value>
+  </data>
+  <data name="UploadInstructionsHtml.Text" xml:space="preserve">
+    <value>&lt;p&gt;Alternatively upload a Premium data file using the "Browse" and "Upload" buttons below.&lt;/p&gt;</value>
+  </data>
+  <data name="ValidationFileErrorText.Text" xml:space="preserve">
+    <value>Use the Browse button to select a Premium data file to upload.</value>
+  </data>
+  <data name="ValidationRequiredErrorText.Text" xml:space="preserve">
+    <value>A license key must be entered.</value>
+  </data>
+  <data name="ViewLicenseAgreement.Text" xml:space="preserve">
+    <value>View License Agreement</value>
+  </data>
+  <data name="WhyUpgrade.Text" xml:space="preserve">
+    <value>Why upgrade to premium data</value>
+  </data>
+  <data name="StatsHtml.Text" xml:space="preserve">
+    <value>&lt;div class="{0}"&gt;&lt;span&gt;Data Version: &lt;b&gt;{1}&lt;/b&gt;&lt;/span&gt; &lt;span&gt;Published: &lt;b&gt;{2:d}&lt;/b&gt;&lt;/span&gt; &lt;span&gt;Properties: &lt;b&gt;{3}&lt;/b&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="ValidationRegExErrorText.Text" xml:space="preserve">
+    <value>The license key must only contain upper case alpha characters or numerics.</value>
+  </data>
+  <data name="BackButtonDevicesText.Text" xml:space="preserve">
+    <value>Other Vendors</value>
+  </data>
+  <data name="DeviceExplorerDeviceInstructionsHtml.Text" xml:space="preserve">
+    <value>&lt;p&gt;Use the help icons to find out more information about the property or value.&lt;/p&gt;</value>
+  </data>
+  <data name="DeviceExplorerModelsInstructionsHtml.Text" xml:space="preserve">
+    <value>&lt;p&gt;Select a model to view its capabilities along with the different browser and software combinations.&lt;/p&gt;</value>
+  </data>
+  <data name="DeviceExplorerVendorsHtml.Text" xml:space="preserve">
+    <value>&lt;p&gt;Select a hardware vendor to view the device models they produce.&lt;/p&gt;</value>
+  </data>
+  <data name="DeviceSearchRequired.Text" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="StatsRefreshButton.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="BackButtonDeviceText.Text" xml:space="preserve">
+    <value>Other {0} Devices</value>
+  </data>
+  <data name="PremiumUploadError.Text" xml:space="preserve">
+    <value>There was a problem uploading your data.</value>
+  </data>
+  <data name="PremiumUploadSuccess.Text" xml:space="preserve">
+    <value>Data has been uploaded successfully.</value>
+  </data>
+  <data name="LicenseType_CMS.Text" xml:space="preserve">
+    <value>CMS</value>
+  </data>
+  <data name="LicenseType_Lite.Text" xml:space="preserve">
+    <value>Lite</value>
+  </data>
+  <data name="LicenseType_Premium.Text" xml:space="preserve">
+    <value>Premium</value>
+  </data>
+</root>

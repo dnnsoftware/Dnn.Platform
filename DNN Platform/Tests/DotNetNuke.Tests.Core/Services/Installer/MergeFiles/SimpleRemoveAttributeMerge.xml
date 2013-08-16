@@ -1,0 +1,5 @@
+﻿<configuration>
+    <nodes configfile="Web.config">
+        <node path="/configuration/updateme" name="attrib" action="removeattribute" collision="overwrite" />
+    </nodes>
+</configuration>

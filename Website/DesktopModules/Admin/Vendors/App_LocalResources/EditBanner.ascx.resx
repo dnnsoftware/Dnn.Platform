@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="plBannerName.Text" xml:space="preserve">
+    <value>Banner Name</value>
+  </data>
+  <data name="plBannerName.Help" xml:space="preserve">
+    <value>Enter a name for the Banner. The Name will be displayed as alternate text for the displayed image</value>
+  </data>
+  <data name="BannerName.ErrorMessage" xml:space="preserve">
+    <value>You Must Enter a Banner Name</value>
+  </data>
+  <data name="plBannerType.Text" xml:space="preserve">
+    <value>Banner Type</value>
+  </data>
+  <data name="plBannerType.Help" xml:space="preserve">
+    <value>Select a type of Banner to display</value>
+  </data>
+  <data name="plBannerGroup.Text" xml:space="preserve">
+    <value>Banner Group</value>
+  </data>
+  <data name="plBannerGroup.Help" xml:space="preserve">
+    <value>Enter a banner group if you wish to relate a set of banners</value>
+  </data>
+  <data name="plImage.Text" xml:space="preserve">
+    <value>Image/Link</value>
+  </data>
+  <data name="plImage.Help" xml:space="preserve">
+    <value>For graphical banners you should specify the banner image ( by either uploading an image file or linking to a remote image file via URL ). For text banners you should specify the URL you want displayed in the ad text.</value>
+  </data>
+  <data name="plWidth.Text" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="plWidth.Help" xml:space="preserve">
+    <value>Enter the banner image width. This is optional for image banners but is mandatory for flash banners.</value>
+  </data>
+  <data name="plHeight.Text" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="plHeight.Help" xml:space="preserve">
+    <value>Enter the banner image height. This is optional for image banners but is mandatory for flash banners.</value>
+  </data>
+  <data name="plDescription.Text" xml:space="preserve">
+    <value>Text/Script</value>
+  </data>
+  <data name="plDescription.Help" xml:space="preserve">
+    <value>Enter a banner description. This will be used as alternate text for Image banners or as the actual text for Text banners</value>
+  </data>
+  <data name="plURL.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="plURL.Help" xml:space="preserve">
+    <value>Enter the URL which you wish the user to be directed to if they click the banner. If you do not enter a URL, the URL for the Vendor will be used</value>
+  </data>
+  <data name="plImpressions.Text" xml:space="preserve">
+    <value>Impressions</value>
+  </data>
+  <data name="plImpressions.Help" xml:space="preserve">
+    <value>Enter the number of Impressions to display. For unlimited Impressions enter Zero (0).</value>
+  </data>
+  <data name="Impressions.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;You Must Enter a Valid Number of Impressions</value>
+  </data>
+  <data name="plCPM.Text" xml:space="preserve">
+    <value>CPM/Cost</value>
+  </data>
+  <data name="plCPM.Help" xml:space="preserve">
+    <value>CPM is the cost for 1000 Impressions. Cost may also be a flat fee.</value>
+  </data>
+  <data name="CPM.ErrorMessage" xml:space="preserve">
+    <value>You Must Enter a Valid CPM or Cost</value>
+  </data>
+  <data name="plStartDate.Text" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="plStartDate.Help" xml:space="preserve">
+    <value>Use the Start Date to control when the ad campaign should start</value>
+  </data>
+  <data name="plEndDate.Text" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="plEndDate.Help" xml:space="preserve">
+    <value>Use the End Date to control when the ad campaign should end</value>
+  </data>
+  <data name="plCriteria.Text" xml:space="preserve">
+    <value>Criteria</value>
+  </data>
+  <data name="plCriteria.Help" xml:space="preserve">
+    <value>Specify whether the campaign should end when the Impressions are used AND/OR the End Date is past</value>
+  </data>
+  <data name="cmdEmail.Text" xml:space="preserve">
+    <value>Email Status to Vendor</value>
+  </data>
+  <data name="ControlTitle_banner.Text" xml:space="preserve">
+    <value>Edit Banner</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;About The Banners Module&lt;/h1&gt;
+
+&lt;p&gt;The Banners Module displays rotating banner advertising for Site and Host Vendors.  &lt;/p&gt;
+
+&lt;h1&gt;Set Banner Options&lt;/h1&gt;
+
+&lt;ol&gt;&lt;li&gt;Add a &lt;b&gt;Banners&lt;/b&gt; module, or go to an existing &lt;b&gt;Banners&lt;/b&gt; module.&lt;/li&gt;
+&lt;li&gt;Click &lt;b&gt;Set Banner Options&lt;/b&gt;. 
+&lt;li&gt;At Banner Source&lt;/b&gt;, select &lt;b&gt;Site&lt;/b&gt; or &lt;b&gt;Host&lt;/b&gt;. 
+&lt;li&gt;At Banner Type&lt;/b&gt;, select the banner type.
+&lt;li&gt;At Banner Count&lt;/b&gt;, select the nubmer of banners to be displayed. 
+&lt;li&gt;Click &lt;b&gt;Update&lt;/b&gt;.&lt;/ol&gt;</value>
+  </data>
+  <data name="EmailSuccess.Text" xml:space="preserve">
+    <value>Email sent</value>
+  </data>
+  <data name="EmailFailure.Text" xml:space="preserve">
+    <value>Email not sent: {0}</value>
+  </data>
+  <data name="cmdCopy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="and.Text" xml:space="preserve">
+    <value>AND</value>
+  </data>
+  <data name="or.Text" xml:space="preserve">
+    <value>OR</value>
+  </data>
+</root>

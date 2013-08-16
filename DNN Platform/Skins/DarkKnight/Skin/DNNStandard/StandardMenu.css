@@ -1,0 +1,40 @@
+﻿#dnnMenu{height:39px;}
+#dnnMenu .topLevel{height:39px;position:relative;}
+#dnnMenu .topLevel li{float:left;margin:0 10px 0 0;list-style-type:none;position:relative;margin:0 10px 0 0;}
+
+#dnnMenu .topLevel li a{display:block;color:#fff;line-height:33px;background:url(images/rootItemR.png) no-repeat right 6px;}
+#dnnMenu .topLevel li.hover a, #dnnMenu .topLevel li a:hover{color:#c11820;text-decoration:none;background:url(images/rootItemR_Hover.png) no-repeat right 6px;}
+
+#dnnMenu .topLevel li a div{display:block;line-height:33px;background:url(images/rootItemL.png) no-repeat 0 6px;margin:0 15px 0 0;padding:6px 0 0 15px;}
+#dnnMenu .topLevel li.hover a div, #dnnMenu .topLevel li a:hover div{background:url(images/rootItemL_Hover.png) no-repeat 0 6px;}
+
+#dnnMenu .subLevel{display:none;position:absolute;width:auto;margin:0;padding:0;z-index:1210;}
+#dnnMenu .topLevel li.hover .subLevel{display:block;white-space:nowrap;}
+#dnnMenu .subLevel ul{margin:0;padding:0;position:relative;z-index:1200;}
+#dnnMenu .subLevel li{float:none;clear:both;width:auto;}
+#dnnMenu .subLevel li{margin-bottom:-.55em;}
+#dnnMenu .subLevel li.item a{background:url(images/PanelBGMR.png) no-repeat right 0;}
+#dnnMenu .subLevel li.item a div{display:block;background:url(images/PanelBGML.png) no-repeat 0 0;color:#666;line-height:30px;padding:0 0 0 15px;}
+#dnnMenu .subLevel li.item a div img{margin-right:.5em;width:16px;height:16px;vertical-align:middle;}
+#dnnMenu .subLevel li.item a div span{}
+#dnnMenu .subLevel li.item a:hover div{color:#c11820;}
+#dnnMenu .subLevel li.first > a{background:url(images/PanelBGTR.png) no-repeat right 8px;}
+#dnnMenu .subLevel li.first > a div{background:url(images/PanelBGTLS.png) no-repeat 0 0;line-height:24px;padding:16px 0 3px 15px;}
+#dnnMenu .subLevel li.last > a{background:url(images/PanelBGBR.png) no-repeat right bottom;}
+#dnnMenu .subLevel li.last > a div{background:url(images/PanelBGBL.png) no-repeat 0 bottom;line-height:24px;padding:3px 0 6px 15px;}
+#dnnMenu .subLevel li.first.last > a{background:url(images/PanelBGNR.png) no-repeat right bottom;}
+#dnnMenu .subLevel li.first.last > a div{display:block;background:url(images/PanelBGNLS.png) no-repeat 0 bottom;line-height:30px;padding:8px 0 0 15px;}
+
+
+#dnnMenu .subLevelRight{display:none;position:absolute;left:100%;top:-6px;width:auto;margin:0 0 0 -3px;}
+#dnnMenu .subLevel li.first > .subLevelRight{top:8px;}
+#dnnMenu .subLevel li.first.last > .subLevelRight{top:2px;}
+#dnnMenu .subLevel li.hover > .subLevelRight{display:block;}
+#dnnMenu .subLevel li.first > .subLevelRight li.first > .subLevelRight {top:0px;}
+#dnnMenu .subLevelRight ul{display:block;}
+#dnnMenu .subLevelRight ul li{position:relative;}
+#dnnMenu .subLevelRight ul li a{display:block;}
+#dnnMenu .subLevelRight ul li a div{display:block;white-space:nowrap;}
+#dnnMenu .subLevelRight ul li.first > a{background:url(images/PanelBGTR.png) no-repeat right 0;}
+#dnnMenu .subLevelRight ul li.first > a div{background:url(images/PanelBGTL.png) no-repeat 0 0;line-height:24px;padding:6px 0 0 15px;}
+#dnnMenu .subLevelRight ul li.first.last > a div{background:url(images/PanelBGNL.png) no-repeat 0 bottom;padding:6px 0 0 15px;}

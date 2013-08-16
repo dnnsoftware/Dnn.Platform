@@ -1,0 +1,70 @@
+﻿/************************************************************************************************************/
+/*                                                                                                          */
+/* DotNetNuke Rounded Corners Stylesheet                                                                            */
+/* Created:     May 25, 2008                                                                                */
+/* Modified by:                                                                                             */
+/* Author:      Nik Kalyani                                                                                 */
+/*                                                                                                          */
+/************************************************************************************************************/
+
+.RoundedCorners .NW,
+.RoundedCorners .NE,
+.RoundedCorners .SW,
+.RoundedCorners .SE
+{
+    background-repeat: no-repeat;
+}
+
+.RoundedCorners .W,
+.RoundedCorners .E
+{
+    background-repeat: repeat-y;
+}
+
+.RoundedCorners .N,
+.RoundedCorners .S
+{   
+    background-repeat: repeat-x;
+}
+
+.RoundedCorners .N,
+.RoundedCorners .NW,
+.RoundedCorners .W
+{   
+    background-position: left top;    
+}
+
+.RoundedCorners .NE
+{
+    /* Begin fix to ensure header background is correctly displayed */
+    min-height: 100px;
+    height: auto !important;
+    height: 100px;
+    /* End fix to ensure header background is correctly displayed */
+}
+
+.RoundedCorners .SE
+{
+    /* Begin fix to ensure footer background is correctly displayed */
+    min-height: 50px;
+    height: auto !important;
+    height: 50px;
+    /* End fix to ensure footer background is correctly displayed */
+}
+
+.RoundedCorners .NE,
+.RoundedCorners .E
+{   
+    background-position: right top;
+}
+
+.RoundedCorners .SW,
+.RoundedCorners .S
+{
+    background-position: left bottom;
+}
+
+.RoundedCorners .SE
+{
+    background-position: right bottom;
+}
