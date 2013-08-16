@@ -26,7 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>DotNetNuke.Instrumentation.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Instrumentation.xml</DocumentationFile>
     <NoWarn>1591, 0649</NoWarn>
     <LangVersion>default</LangVersion>
   </PropertyGroup>
@@ -37,7 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>DotNetNuke.Instrumentation.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Instrumentation.xml</DocumentationFile>
     <NoWarn>1591, 0649</NoWarn>
   </PropertyGroup>
   <ItemGroup>

@@ -38,8 +38,7 @@
       <HintPath>..\..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
@@ -68,6 +67,7 @@
     <None Include="..\App.config">
       <Link>App.config</Link>
     </None>
+    <None Include="packages.config" />
     <None Include="TestFiles\FriendlyUrl\PrimaryPortalAlias\Settings.csv" />
     <None Include="TestFiles\FriendlyUrl\PrimaryPortalAlias\TestFile.csv" />
     <None Include="TestFiles\FriendlyUrl\Regex\Settings.csv" />
@@ -83,7 +83,6 @@
     <None Include="TestFiles\UrlRewrite\Regex\TestFile.csv" />
     <None Include="TestFiles\Users.csv" />
     <None Include="DotNetNuke.config" />
-    <None Include="packages.config" />
     <None Include="SiteUrls.config" />
     <None Include="TestFiles\Aliases.csv" />
     <None Include="TestFiles\FriendlyUrl\BaseFriendlyUrl\Settings.csv" />

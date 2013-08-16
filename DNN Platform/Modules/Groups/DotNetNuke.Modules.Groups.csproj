@@ -28,7 +28,7 @@
     <DebugType>full</DebugType>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputPath>Bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.Modules.Groups.XML</DocumentationFile>
+    <DocumentationFile>Bin\DotNetNuke.Modules.Groups.XML</DocumentationFile>
     <WarningLevel>1</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
@@ -38,7 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <OutputPath>Bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.Modules.Groups.XML</DocumentationFile>
+    <DocumentationFile>Bin\DotNetNuke.Modules.Groups.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>

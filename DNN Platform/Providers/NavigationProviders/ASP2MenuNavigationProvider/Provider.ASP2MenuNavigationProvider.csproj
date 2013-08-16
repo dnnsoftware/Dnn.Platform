@@ -36,7 +36,7 @@
     <DebugType>full</DebugType>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.ASP2MenuNavigationProvider.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.ASP2MenuNavigationProvider.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
     <LangVersion>default</LangVersion>
@@ -45,7 +45,7 @@
     <DebugType>pdbonly</DebugType>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.ASP2MenuNavigationProvider.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.ASP2MenuNavigationProvider.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>

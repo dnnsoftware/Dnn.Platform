@@ -1,0 +1,1893 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LocalizedTemplateName.Text" xml:space="preserve">
+    <value>Default Website</value>
+  </data>
+  <data name="Setting.DefaultLanguage.Text" xml:space="preserve">
+    <value>en-US</value>
+  </data>
+  <data name="Setting.FooterText.Text" xml:space="preserve">
+    <value>Copyright [year] by DNN Corp</value>
+  </data>
+  <data name="Tab.About.ContentPane.AboutUsModule.Title.Text" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="Tab.About.ContentPane.OurTeamModule.Title.Text" xml:space="preserve">
+    <value>Our Team</value>
+  </data>
+  <data name="Tab.About.FooterLeftPane.Module.Title.Text" xml:space="preserve">
+    <value>Customer Support</value>
+  </data>
+  <data name="Tab.About.FooterCenterPane.Module.Title.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Tab.About.FooterRightPane.Module.Title.Text" xml:space="preserve">
+    <value>Contact Information</value>
+  </data>
+  <data name="Tab.About.FooterLeftOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Tab.About.FooterRightOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="Tab.About.Content.Text" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="Tab.About.Name.Text" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="Tab.About.RightPane.OtherModule.Content.8.Text" xml:space="preserve">
+    <value>Share your feedback</value>
+  </data>
+  <data name="Tab.GettingStarted.Actions.Module.Content.0.Text" xml:space="preserve">
+    <value>Watch the Getting Started Video</value>
+  </data>
+  <data name="Tab.GettingStarted.Actions.Module.Content.1.Text" xml:space="preserve">
+    <value>Let me at it</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>The video below will &lt;strong&gt; help get you started &lt;/strong&gt; building your new site. Using DNN is fast and easy and you can have your new site up and running with real content in just a matter of minutes.</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Watch the Video</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Title.0.Text" xml:space="preserve">
+    <value>What's new with 7.0</value>
+  </data>
+  <data name="Tab.GettingStarted.Name.Text" xml:space="preserve">
+    <value>Getting Started</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Already an expert?</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Setup your email, install languages, and other advanced configuration settings</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Set Advanced Configuration Settings</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Looking for answers?</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Do you have any questions, ideas for improvement or just want to meet some other members?</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Find an Answer</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Submit your Ideas</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.7.Text" xml:space="preserve">
+    <value>We always appreciate your feedback</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.8.Text" xml:space="preserve">
+    <value>We would love to hear how we're doing</value>
+  </data>
+  <data name="Tab.GettingStarted.Title.Text" xml:space="preserve">
+    <value>Welcome to Your Installation</value>
+  </data>
+  <data name="Tab.Home.Name.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Tab.Products.Content.Text" xml:space="preserve">
+    <value>Our Products</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Our Products</value>
+  </data>
+  <data name="Tab.Products.FooterLeftPane.Module.Title.Text" xml:space="preserve">
+    <value>Customer Support</value>
+  </data>
+  <data name="Tab.Products.FooterCenterPane.Module.Title.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Tab.Products.FooterRightOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="Tab.ContactUs.Content.Text" xml:space="preserve">
+    <value>News and Promotions</value>
+  </data>
+  <data name="Tab.ContactUs.Name.Text" xml:space="preserve">
+    <value>Contact Us</value>
+  </data>
+  <data name="Tab.ContactUs.FooterRightPane.Module.Title.Text" xml:space="preserve">
+    <value>Contact Us</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Title.Text" xml:space="preserve">
+    <value>Reach Us</value>
+  </data>
+  <data name="Tab.ContactUs.RightPane.Module.Title.Text" xml:space="preserve">
+    <value>Message Us</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftPane.Module.Title.Text" xml:space="preserve">
+    <value>Customer Support</value>
+  </data>
+  <data name="Tab.ContactUs.FooterCenterPane.Module.Title.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Tab.ContactUs.FooterRightOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Title.Text" xml:space="preserve">
+    <value>Visit Us</value>
+  </data>
+  <data name="Tab.ActivityFeed.Content.Text" xml:space="preserve">
+    <value>Activity Feed</value>
+  </data>
+  <data name="Tab.ActivityFeed.Name.Text" xml:space="preserve">
+    <value>Activity Feed</value>
+  </data>
+  <data name="Tab.ActivityFeed.Title.Text" xml:space="preserve">
+    <value>Activity Feed</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterRightPane.Module.Title.Text" xml:space="preserve">
+    <value>Contact Us</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Tab.ActivityFeed.RightPane.Module.Title.Text" xml:space="preserve">
+    <value>Member Directory</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Title.Text" xml:space="preserve">
+    <value>Customer Support</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterCenterPane.Module.Title.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterRightOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="Tab.ActivityFeed.CenterPane.ProfileModule.Title.Text" xml:space="preserve">
+    <value>ViewProfile</value>
+  </data>
+  <data name="Tab.ActivityFeed.CenterPane.JournalModule.Title.Text" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="Tab.MyProfile.Content.Text" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="Tab.MyProfile.Name.Text" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="Tab.MyProfile.Title.Text" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="Tab.MyProfile.FooterRightPane.Module.Title.Text" xml:space="preserve">
+    <value>Contact Us</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Tab.MyProfile.LeftPane.Module.Title.Text" xml:space="preserve">
+    <value>ViewProfile</value>
+  </data>
+  <data name="Tab.MyProfile.RightPane.MemberDirectoryModule.Title.Text" xml:space="preserve">
+    <value>Member Directory</value>
+  </data>
+  <data name="Tab.MyProfile.RightPane.NavigationModule.Title.Text" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="Tab.MyProfile.CenterPane.ViewProfileModule.Title.Text" xml:space="preserve">
+    <value>ViewProfile</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftPane.Module.Title.Text" xml:space="preserve">
+    <value>Customer Support</value>
+  </data>
+  <data name="Tab.MyProfile.FooterCenterPane.Module.Title.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Tab.MyProfile.FooterRightOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="Tab.MyFriends.Content.Text" xml:space="preserve">
+    <value>My Friends</value>
+  </data>
+  <data name="Tab.MyFriends.Name.Text" xml:space="preserve">
+    <value>Friends</value>
+  </data>
+  <data name="Tab.MyFriends.Title.Text" xml:space="preserve">
+    <value>My Friends</value>
+  </data>
+  <data name="Tab.MyFriends.FooterRightPane.Module.Title.Text" xml:space="preserve">
+    <value>Contact Us</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Tab.MyFriends.LeftPane.Module.Title.Text" xml:space="preserve">
+    <value>ViewProfile</value>
+  </data>
+  <data name="Tab.MyFriends.RightPane.MemberDirectoryModule.Title.Text" xml:space="preserve">
+    <value>Member Directory</value>
+  </data>
+  <data name="Tab.MyFriends.RightPane.NavigationModule.Title.Text" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="Tab.MyFriends.CenterPane.ViewProfileModule.Title.Text" xml:space="preserve">
+    <value>ViewProfile</value>
+  </data>
+  <data name="Tab.MyFriends.CenterPane.MemberDirectoryModule.Title.Text" xml:space="preserve">
+    <value>Member Directory</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftPane.Module.Title.Text" xml:space="preserve">
+    <value>Customer Support</value>
+  </data>
+  <data name="Tab.MyFriends.FooterCenterPane.Module.Title.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Tab.MyFriends.FooterRightOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="Tab.MyMessages.Content.Text" xml:space="preserve">
+    <value>My Messages</value>
+  </data>
+  <data name="Tab.MyMessages.Name.Text" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="Tab.MyMessages.Title.Text" xml:space="preserve">
+    <value>My Messages</value>
+  </data>
+  <data name="Tab.MyMessages.FooterRightPane.Module.Title.Text" xml:space="preserve">
+    <value>Contact Us</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Tab.MyMessages.LeftPane.Module.Title.Text" xml:space="preserve">
+    <value>ViewProfile</value>
+  </data>
+  <data name="Tab.MyMessages.RightPane.MemberDirectoryModule.Title.Text" xml:space="preserve">
+    <value>Member Directory</value>
+  </data>
+  <data name="Tab.MyMessages.RightPane.NavigationModule.Title.Text" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="Tab.MyMessages.CenterPane.ViewProfileModule.Title.Text" xml:space="preserve">
+    <value>ViewProfile</value>
+  </data>
+  <data name="Tab.MyMessages.CenterPane.MessageCenterModule.Title.Text" xml:space="preserve">
+    <value>Message Center</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftPane.Module.Title.Text" xml:space="preserve">
+    <value>Customer Support</value>
+  </data>
+  <data name="Tab.MyMessages.FooterCenterPane.Module.Title.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Tab.MyMessages.FooterRightOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="Tab.PortalAdministration.Content.Text" xml:space="preserve">
+    <value>Website Administration</value>
+  </data>
+  <data name="Tab.PortalAdministration.Name.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Tab.PortalAdministration.Title.Text" xml:space="preserve">
+    <value>Website Administration</value>
+  </data>
+  <data name="Tab.PortalAdministration.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Basic Features</value>
+  </data>
+  <data name="Tab.AdvancedSettings.Description.Text" xml:space="preserve">
+    <value>Advanced Configuration Settings</value>
+  </data>
+  <data name="Tab.AdvancedSettings.Name.Text" xml:space="preserve">
+    <value>Advanced Configuration Settings</value>
+  </data>
+  <data name="Tab.AdvancedSettings.Title.Text" xml:space="preserve">
+    <value>Advanced Configuration Settings</value>
+  </data>
+  <data name="Tab.AdvancedSettings.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Advanced Configuration Settings</value>
+  </data>
+  <data name="Tab.SiteSettings.Content.Text" xml:space="preserve">
+    <value>Site Settings</value>
+  </data>
+  <data name="Tab.SiteSettings.Description.Text" xml:space="preserve">
+    <value>Manage configuration settings for the portal.</value>
+  </data>
+  <data name="Tab.SiteSettings.Name.Text" xml:space="preserve">
+    <value>Site Settings</value>
+  </data>
+  <data name="Tab.SiteSettings.Title.Text" xml:space="preserve">
+    <value>Site Settings</value>
+  </data>
+  <data name="Tab.SiteSettings.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Site Settings</value>
+  </data>
+  <data name="Tab.PageManagement.Content.Text" xml:space="preserve">
+    <value>Page Management</value>
+  </data>
+  <data name="Tab.PageManagement.Description.Text" xml:space="preserve">
+    <value>Manage pages within the site.</value>
+  </data>
+  <data name="Tab.PageManagement.Name.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Tab.PageManagement.Title.Text" xml:space="preserve">
+    <value>Page Management</value>
+  </data>
+  <data name="Tab.PageManagement.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Page Management</value>
+  </data>
+  <data name="Tab.Extensions.Content.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+  <data name="Tab.Extensions.Description.Text" xml:space="preserve">
+    <value>Install, add, modify and delete extensions, such as modules, skins and language packs.</value>
+  </data>
+  <data name="Tab.Extensions.Name.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+  <data name="Tab.Extensions.Title.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+  <data name="Tab.Extensions.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+  <data name="Tab.Skins.Content.Text" xml:space="preserve">
+    <value>Skins</value>
+  </data>
+  <data name="Tab.Skins.Description.Text" xml:space="preserve">
+    <value>Manage Skin Resources.</value>
+  </data>
+  <data name="Tab.Skins.Name.Text" xml:space="preserve">
+    <value>Skins</value>
+  </data>
+  <data name="Tab.Skins.Title.Text" xml:space="preserve">
+    <value>Skins</value>
+  </data>
+  <data name="Tab.Skins.ContentPane.SkinEditorModule.Title.Text" xml:space="preserve">
+    <value>Skin Editor</value>
+  </data>
+  <data name="Tab.Skins.ContentPane.SkinDesignerModule.Title.Text" xml:space="preserve">
+    <value>Skin Designer</value>
+  </data>
+  <data name="Tab.Languages.Content.Text" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="Tab.Languages.Description.Text" xml:space="preserve">
+    <value>Manage Language Resources.</value>
+  </data>
+  <data name="Tab.Languages.Name.Text" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="Tab.Languages.Title.Text" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="Tab.Languages.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Language Management</value>
+  </data>
+  <data name="Tab.SecurityRoles.Content.Text" xml:space="preserve">
+    <value>Security Roles</value>
+  </data>
+  <data name="Tab.SecurityRoles.Description.Text" xml:space="preserve">
+    <value>Manage security roles for the portal.</value>
+  </data>
+  <data name="Tab.SecurityRoles.Name.Text" xml:space="preserve">
+    <value>Security Roles</value>
+  </data>
+  <data name="Tab.SecurityRoles.Title.Text" xml:space="preserve">
+    <value>Security Roles</value>
+  </data>
+  <data name="Tab.SecurityRoles.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Security Roles</value>
+  </data>
+  <data name="Tab.UserAccounts.Content.Text" xml:space="preserve">
+    <value>User Accounts</value>
+  </data>
+  <data name="Tab.UserAccounts.Description.Text" xml:space="preserve">
+    <value>Manage user accounts for the portal.</value>
+  </data>
+  <data name="Tab.UserAccounts.Name.Text" xml:space="preserve">
+    <value>User Accounts</value>
+  </data>
+  <data name="Tab.UserAccounts.Title.Text" xml:space="preserve">
+    <value>User Accounts</value>
+  </data>
+  <data name="Tab.UserAccounts.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>User Accounts</value>
+  </data>
+  <data name="Tab.Vendors.Content.Text" xml:space="preserve">
+    <value>Vendors</value>
+  </data>
+  <data name="Tab.Vendors.Description.Text" xml:space="preserve">
+    <value>Manage vendor accounts, banner advertising and affiliate referrals within the portal.</value>
+  </data>
+  <data name="Tab.Vendors.Name.Text" xml:space="preserve">
+    <value>Vendors</value>
+  </data>
+  <data name="Tab.Vendors.Title.Text" xml:space="preserve">
+    <value>Vendors</value>
+  </data>
+  <data name="Tab.Vendors.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Vendors</value>
+  </data>
+  <data name="Tab.SiteLog.Content.Text" xml:space="preserve">
+    <value>Site Log</value>
+  </data>
+  <data name="Tab.SiteLog.Description.Text" xml:space="preserve">
+    <value>View statistical reports on site activity for the portal.</value>
+  </data>
+  <data name="Tab.SiteLog.Name.Text" xml:space="preserve">
+    <value>Site Log</value>
+  </data>
+  <data name="Tab.SiteLog.Title.Text" xml:space="preserve">
+    <value>Site Log</value>
+  </data>
+  <data name="Tab.SiteLog.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Site Log</value>
+  </data>
+  <data name="Tab.Newsletters.Content.Text" xml:space="preserve">
+    <value>Newsletters</value>
+  </data>
+  <data name="Tab.Newsletters.Description.Text" xml:space="preserve">
+    <value>Send email messages to users, security roles and specific email addresses.</value>
+  </data>
+  <data name="Tab.Newsletters.Name.Text" xml:space="preserve">
+    <value>Newsletters</value>
+  </data>
+  <data name="Tab.Newsletters.Title.Text" xml:space="preserve">
+    <value>Newsletters</value>
+  </data>
+  <data name="Tab.Newsletters.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Newsletters</value>
+  </data>
+  <data name="Tab.DigitalAssetsManagement.Content.Text" xml:space="preserve">
+    <value>File Management</value>
+  </data>
+  <data name="Tab.DigitalAssetsManagement.Description.Text" xml:space="preserve">
+    <value>Manage assets within the portal.</value>
+  </data>
+  <data name="Tab.DigitalAssetsManagement.Name.Text" xml:space="preserve">
+    <value>File Management</value>
+  </data>
+  <data name="Tab.DigitalAssetsManagement.Title.Text" xml:space="preserve">
+    <value>File Management</value>
+  </data>
+  <data name="Tab.DigitalAssetsManagement.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>File Management</value>
+  </data>
+  <data name="Tab.RecycleBin.Content.Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="Tab.RecycleBin.Description.Text" xml:space="preserve">
+    <value>View, restore or permanently recycle pages and modules that have been deleted from the portal.</value>
+  </data>
+  <data name="Tab.RecycleBin.Name.Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="Tab.RecycleBin.Title.Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="Tab.RecycleBin.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="Tab.LogViewer.Content.Text" xml:space="preserve">
+    <value>Log Viewer</value>
+  </data>
+  <data name="Tab.LogViewer.Description.Text" xml:space="preserve">
+    <value>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</value>
+  </data>
+  <data name="Tab.LogViewer.Name.Text" xml:space="preserve">
+    <value>Log Viewer</value>
+  </data>
+  <data name="Tab.LogViewer.Title.Text" xml:space="preserve">
+    <value>Log Viewer</value>
+  </data>
+  <data name="Tab.LogViewer.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Log Viewer</value>
+  </data>
+  <data name="Tab.SiteWizard.Content.Text" xml:space="preserve">
+    <value>Site Wizard</value>
+  </data>
+  <data name="Tab.SiteWizard.Description.Text" xml:space="preserve">
+    <value>Configure portal settings, page design and apply a site template using a step-by-step wizard.</value>
+  </data>
+  <data name="Tab.SiteWizard.Name.Text" xml:space="preserve">
+    <value>Site Wizard</value>
+  </data>
+  <data name="Tab.SiteWizard.Title.Text" xml:space="preserve">
+    <value>Site Wizard</value>
+  </data>
+  <data name="Tab.SiteWizard.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Site Wizard</value>
+  </data>
+  <data name="Tab.Taxonomy.Content.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>
+  <data name="Tab.Taxonomy.Description.Text" xml:space="preserve">
+    <value>Manage the Taxonomy for your Site.</value>
+  </data>
+  <data name="Tab.Taxonomy.Name.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>
+  <data name="Tab.Taxonomy.Title.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>
+  <data name="Tab.Taxonomy.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Taxonomy Manager</value>
+  </data>
+  <data name="Tab.SiteMapSettings.Content.Text" xml:space="preserve">
+    <value>Site Map Settings</value>
+  </data>
+  <data name="Tab.SiteMapSettings.Description.Text" xml:space="preserve">
+    <value>Configure the sitemap for submission to common search engines.</value>
+  </data>
+  <data name="Tab.SiteMapSettings.Name.Text" xml:space="preserve">
+    <value>Search Engine SiteMap</value>
+  </data>
+  <data name="Tab.SiteMapSettings.Title.Text" xml:space="preserve">
+    <value>Site Map Settings</value>
+  </data>
+  <data name="Tab.SiteMapSettings.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Search Engine SiteMap</value>
+  </data>
+  <data name="Tab.Lists.Content.Text" xml:space="preserve">
+    <value>Lists</value>
+  </data>
+  <data name="Tab.Lists.Description.Text" xml:space="preserve">
+    <value>Manage common lists</value>
+  </data>
+  <data name="Tab.Lists.Name.Text" xml:space="preserve">
+    <value>Lists</value>
+  </data>
+  <data name="Tab.Lists.Title.Text" xml:space="preserve">
+    <value>Lists</value>
+  </data>
+  <data name="Tab.Lists.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Lists</value>
+  </data>
+  <data name="Tab.SiteRedirection.Content.Text" xml:space="preserve">
+    <value>Site Redirection Management</value>
+  </data>
+  <data name="Tab.SiteRedirection.Description.Text" xml:space="preserve">
+    <value>Site Redirection Management.</value>
+  </data>
+  <data name="Tab.SiteRedirection.Name.Text" xml:space="preserve">
+    <value>Site Redirection Management</value>
+  </data>
+  <data name="Tab.SiteRedirection.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Site Redirection Management</value>
+  </data>
+  <data name="Tab.DevicePreview.Content.Text" xml:space="preserve">
+    <value>Device Preview Management</value>
+  </data>
+  <data name="Tab.DevicePreview.Description.Text" xml:space="preserve">
+    <value>Device Preview Management.</value>
+  </data>
+  <data name="Tab.DevicePreview.Name.Text" xml:space="preserve">
+    <value>Device Preview Management</value>
+  </data>
+  <data name="Tab.DevicePreview.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Device Preview Management</value>
+  </data>
+  <data name="Tab.SearchResultsCE.Content.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Tab.SearchResultsCE.Title.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Tab.SearchResultsCE.Name.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Tab.SearchResultsCE.ContentPane.SearchResultsModule.Title.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Tab.SearchResultsCE.ContentPane.ResultsModule.Title.Text" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="Tab.GoogleAnalytics.Content.Text" xml:space="preserve">
+    <value>Google Analytics</value>
+  </data>
+  <data name="Tab.GoogleAnalytics.Description.Text" xml:space="preserve">
+    <value>Configure Site Google Analytics settings.</value>
+  </data>
+  <data name="Tab.GoogleAnalytics.Name.Text" xml:space="preserve">
+    <value>Google Analytics</value>
+  </data>
+  <data name="Tab.GoogleAnalytics.Title.Text" xml:space="preserve">
+    <value>Google Analytics</value>
+  </data>
+  <data name="Tab.GoogleAnalytics.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Google Analytics</value>
+  </data>
+  <data name="Tab.GoogleAnalyticsPro.Description.Text" xml:space="preserve">
+    <value>Configure Site Google Analytics Pro settings.</value>
+  </data>
+  <data name="Tab.GoogleAnalyticsPro.Name.Text" xml:space="preserve">
+    <value>Google Analytics Pro</value>
+  </data>
+  <data name="Tab.GoogleAnalyticsPro.Title.Text" xml:space="preserve">
+    <value>Google Analytics Pro</value>
+  </data>
+  <data name="Tab.GoogleAnalyticsPro.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Google Analytics Pro</value>
+  </data>
+  <data name="Tab.SearchResultsPro.Name.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Tab.SearchResultsPro.Title.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Tab.SearchResultsPro.ContentPane.SearchResultsModule.Title.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Tab.SearchResultsPro.ContentPane.ResultsModule.Title.Text" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="Tab.ContentStaging.Description.Text" xml:space="preserve">
+    <value>Manage the Staging of Content for your Site</value>
+  </data>
+  <data name="Tab.ContentStaging.Name.Text" xml:space="preserve">
+    <value>Content Staging</value>
+  </data>
+  <data name="Tab.ContentStaging.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Content Staging</value>
+  </data>
+  <data name="Tab.Sharepoint.Description.Text" xml:space="preserve">
+    <value>The SharePoint Connector module allows users to connect and sync files between a SharePoint and DNN Server.</value>
+  </data>
+  <data name="Tab.Sharepoint.Name.Text" xml:space="preserve">
+    <value>SharePoint Connector</value>
+  </data>
+  <data name="Tab.Sharepoint.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>SharePoint Connector</value>
+  </data>
+  <data name="Tab.SearchAdmin.Description.Text" xml:space="preserve">
+    <value>Search Admin</value>
+  </data>
+  <data name="Tab.SearchAdmin.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Search Admin</value>
+  </data>
+  <data name="Tab.StyleGuide.Content.Text" xml:space="preserve">
+    <value>StyleGuide</value>
+  </data>
+  <data name="Tab.StyleGuide.Name.Text" xml:space="preserve">
+    <value>StyleGuide</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Title.Text" xml:space="preserve">
+    <value>Headings</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ButtonsModule.Title.Text" xml:space="preserve">
+    <value>Buttons</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ListsModule.Title.Text" xml:space="preserve">
+    <value>Lists</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.TableModule.Title.Text" xml:space="preserve">
+    <value>Table</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Title.Text" xml:space="preserve">
+    <value>Image Alignment</value>
+  </data>
+  <data name="Tab.StyleGuide.RightPane.Module.Title.Text" xml:space="preserve">
+    <value>Awesome Cycles News</value>
+  </data>
+  <data name="Tab.Products.FooterRightPane.Module.Title.Text" xml:space="preserve">
+    <value>Contact Us</value>
+  </data>
+  <data name="Tab.Products.FooterLeftOuterPane.Module.Title.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Tab.Products.Name.Text" xml:space="preserve">
+    <value>Our Products</value>
+  </data>
+  <data name="PortalDescription.Text" xml:space="preserve">
+    <value>Default Website Template</value>
+  </data>
+  <data name="RoleGroup.Description.Text" xml:space="preserve">
+    <value>A dummy role group that represents the Global roles</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Title.1.Text" xml:space="preserve">
+    <value>Learn the basics of working with DNN</value>
+  </data>
+  <data name="Tab.GettingStarted.Header.Module.Title.Text" xml:space="preserve">
+    <value>&lt;strong&gt;Way to go!&lt;/strong&gt; You just completed your installation. &lt;strong&gt;What would you like to do next?&lt;/strong&gt;</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Find out what improvements and additions we've made to DNN Platform 7.1.</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Watch the Video</value>
+  </data>
+  <data name="Tab.Home.SidebarPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Featured Product: </value>
+  </data>
+  <data name="Tab.Home.SidebarPane.Module.Content.1.Text" xml:space="preserve">
+    <value>WP 2G Downhill</value>
+  </data>
+  <data name="Tab.Home.SidebarPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Learn More</value>
+  </data>
+  <data name="Tab.Home.SidebarPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+The flagship downhill bike from Awesome Cycles is finally avaliable!
+</value>
+  </data>
+  <data name="Tab.Home.FooterRightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Awesome Cycles, Inc.</value>
+  </data>
+  <data name="Tab.Home.FooterRightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+3457 W. Somewhere Street.
+Someplace, CA 12345</value>
+  </data>
+  <data name="Tab.Home.FooterRightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>
+Phone: (555) 555-4563</value>
+  </data>
+  <data name="Tab.Home.FooterRightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+Fax: (555) 555-4564</value>
+  </data>
+  <data name="Tab.Home.LeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>2013 Models are in stock now</value>
+  </data>
+  <data name="Tab.Home.LeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Published by</value>
+  </data>
+  <data name="Tab.Home.LeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value> Awesome Cycles - </value>
+  </data>
+  <data name="Tab.Home.LeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>14 August 2012</value>
+  </data>
+  <data name="Tab.Home.LeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Introducing the new line up of Awesome Cycles for 2013. We have brought more new bikes to our line up this year. Come and get them!</value>
+  </data>
+  <data name="Tab.Home.LeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Read More</value>
+  </data>
+  <data name="Tab.Home.LeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Awesome Cycles at Crankworx 2012</value>
+  </data>
+  <data name="Tab.Home.LeftPane.Module.Content.7.Text" xml:space="preserve">
+    <value>10 August 2012</value>
+  </data>
+  <data name="Tab.Home.LeftPane.Module.Content.8.Text" xml:space="preserve">
+    <value>This year Awesome Cycles will make its first appearance at one of the largest mountain bike festivals in the world.</value>
+  </data>
+  <data name="Tab.Home.FooterLeftOuterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Mountain</value>
+  </data>
+  <data name="Tab.Home.FooterLeftOuterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Gravity</value>
+  </data>
+  <data name="Tab.Home.FooterLeftOuterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Road</value>
+  </data>
+  <data name="Tab.Home.FooterLeftOuterPane.Module.Content.3.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Tab.Home.FooterLeftOuterPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Junior</value>
+  </data>
+  <data name="Tab.Home.FooterLeftOuterPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Dirt/ Street</value>
+  </data>
+  <data name="Tab.Home.ContentpaneLower.Module.Content.0.Text" xml:space="preserve">
+    <value>The 2013 Nebula</value>
+  </data>
+  <data name="Tab.Home.ContentpaneLower.Module.Content.1.Text" xml:space="preserve">
+    <value>Competition ready right out of the box.</value>
+  </data>
+  <data name="Tab.Home.ContentpaneLower.Module.Content.2.Text" xml:space="preserve">
+    <value>Perfection is in our nature.</value>
+  </data>
+  <data name="Tab.Home.ContentpaneLower.Module.Content.3.Text" xml:space="preserve">
+    <value>Read the Awesome Cycles Story.</value>
+  </data>
+  <data name="Tab.Home.ContentpaneLower.Module.Content.4.Text" xml:space="preserve">
+    <value>BMX is Back.</value>
+  </data>
+  <data name="Tab.Home.ContentpaneLower.Module.Content.5.Text" xml:space="preserve">
+    <value>Go big or go home.</value>
+  </data>
+  <data name="Tab.Home.Contentpane.Module.Content.0.Text" xml:space="preserve">
+    <value>Welcome to Awesome Cycles.</value>
+  </data>
+  <data name="Tab.Home.Contentpane.Module.Content.1.Text" xml:space="preserve">
+    <value> We make your riding dreams a reality. </value>
+  </data>
+  <data name="Tab.Home.Contentpane.Module.Content.2.Text" xml:space="preserve">
+    <value>We love it when we can provide our customers with their dream bicycle. That’s why we have the best and most creative</value>
+  </data>
+  <data name="Tab.Home.Contentpane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+people in the industry on hand to design and build exactly what you want.</value>
+  </data>
+  <data name="Tab.Home.Contentpane.Module.Content.4.Text" xml:space="preserve">
+    <value> Learn More</value>
+  </data>
+  <data name="Tab.Home.FooterLeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Tab.Home.FooterLeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Bike Manuals</value>
+  </data>
+  <data name="Tab.Home.FooterLeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Product Catalogs</value>
+  </data>
+  <data name="Tab.Home.FooterLeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Product Archive</value>
+  </data>
+  <data name="Tab.Home.FooterLeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Product Support</value>
+  </data>
+  <data name="Tab.Home.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Bike Warranty</value>
+  </data>
+  <data name="Tab.Home.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Newsletter</value>
+  </data>
+  <data name="Tab.Home.FooterCenterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Tab.Home.FooterCenterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Careers</value>
+  </data>
+  <data name="Tab.Home.FooterCenterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Tab.About.FooterRightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Awesome Cycles, Inc.</value>
+  </data>
+  <data name="Tab.About.FooterRightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+3457 W. Somewhere Street.
+Someplace, CA 12345</value>
+  </data>
+  <data name="Tab.About.FooterRightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>
+Phone: (555) 555-4563</value>
+  </data>
+  <data name="Tab.About.FooterRightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+Fax: (555) 555-4564</value>
+  </data>
+  <data name="Tab.About.FooterLeftOuterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Mountain</value>
+  </data>
+  <data name="Tab.About.FooterLeftOuterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Gravity</value>
+  </data>
+  <data name="Tab.About.FooterLeftOuterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Road</value>
+  </data>
+  <data name="Tab.About.FooterLeftOuterPane.Module.Content.3.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Tab.About.FooterLeftOuterPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Junior</value>
+  </data>
+  <data name="Tab.About.FooterLeftOuterPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Dirt/ Street</value>
+  </data>
+  <data name="Tab.About.FooterLeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Tab.About.FooterLeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Bike Manuals</value>
+  </data>
+  <data name="Tab.About.FooterLeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Product Catalogs</value>
+  </data>
+  <data name="Tab.About.FooterLeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Product Archive</value>
+  </data>
+  <data name="Tab.About.FooterLeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Product Support</value>
+  </data>
+  <data name="Tab.About.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Bike Warranty</value>
+  </data>
+  <data name="Tab.About.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Newsletter</value>
+  </data>
+  <data name="Tab.About.FooterCenterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Tab.About.FooterCenterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Careers</value>
+  </data>
+  <data name="Tab.About.FooterCenterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.0.Text" xml:space="preserve">
+    <value>Our very first shop opened in 2011 in SomePlace,</value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.1.Text" xml:space="preserve">
+    <value>
+California. We build, sell and ship our bikes worldwide</value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.2.Text" xml:space="preserve">
+    <value>
+from this location.</value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.3.Text" xml:space="preserve">
+    <value>We love it when we can provide our customers with their dream bicycle.</value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.4.Text" xml:space="preserve">
+    <value>That's why we have the best and most creative people in the industry on hand to design and build exactly what you want.</value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.5.Text" xml:space="preserve">
+    <value>The story of Awesome cycles started numerous years ago with two guys, a simple idea and shed in Chris's moms backyard. After hundreds of hours of mindstorming and Will's steady hand with a welder the first awesome cycle was forged out of fire in molten lava that had been blessed by Chuck Norris himself! Just kidding, can you imagine?</value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.6.Text" xml:space="preserve">
+    <value>Today the company has evolved to a level that neither Will nor Chris could have ever imagined.</value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.7.Text" xml:space="preserve">
+    <value>Our bikes are created by some of the most passionate people in the industry.  We use only the finest materials to elegantly craft some of the most beautiful bikes the roads and trails have ever seen. The use of modern technologies and practices has helped us achieve being one of the top bicycle brands in the world.</value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.8.Text" xml:space="preserve">
+    <value>We continue to push the limits of what bikes are capable of achieving in the hopes of building a future where our bikes are enjoyed by people the world over. </value>
+  </data>
+  <data name="Tab.About.Contentpane.AboutUsModule.Content.9.Text" xml:space="preserve">
+    <value>Isn't it about time you joined the Awesome Cycles family?</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.0.Text" xml:space="preserve">
+    <value>Chris Watts</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.1.Text" xml:space="preserve">
+    <value>Co Founder</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.2.Text" xml:space="preserve">
+    <value>Will Blackburn</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.3.Text" xml:space="preserve">
+    <value>Michele Hensley</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.4.Text" xml:space="preserve">
+    <value>CEO</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.5.Text" xml:space="preserve">
+    <value>Jose Martinez</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.6.Text" xml:space="preserve">
+    <value>CFO</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.7.Text" xml:space="preserve">
+    <value>Lynn Chase</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.8.Text" xml:space="preserve">
+    <value>Marketing</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.9.Text" xml:space="preserve">
+    <value>Tracey Bauer</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.10.Text" xml:space="preserve">
+    <value>Alejandro Conway</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.11.Text" xml:space="preserve">
+    <value>Sales and Support</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.12.Text" xml:space="preserve">
+    <value>Beck Livingston</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.13.Text" xml:space="preserve">
+    <value>Oliver Witt</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.14.Text" xml:space="preserve">
+    <value>Product Manager</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.15.Text" xml:space="preserve">
+    <value>Nathan O'Riley</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.16.Text" xml:space="preserve">
+    <value>Designer</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.17.Text" xml:space="preserve">
+    <value>Drew-Paul Fauling</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.18.Text" xml:space="preserve">
+    <value>Engineer</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.19.Text" xml:space="preserve">
+    <value>Max Davidson</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.20.Text" xml:space="preserve">
+    <value>Kip Hamilton</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.21.Text" xml:space="preserve">
+    <value>Quality Assurance</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.22.Text" xml:space="preserve">
+    <value>Loyd White</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.23.Text" xml:space="preserve">
+    <value>Wiley Soto</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.24.Text" xml:space="preserve">
+    <value>Technician</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.25.Text" xml:space="preserve">
+    <value>Ivan Krivonogov</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.26.Text" xml:space="preserve">
+    <value>Cat Herder / Painter</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.27.Text" xml:space="preserve">
+    <value>Mitch Potter</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.28.Text" xml:space="preserve">
+    <value>Fabrication</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.29.Text" xml:space="preserve">
+    <value>Myles Hampton</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.30.Text" xml:space="preserve">
+    <value>Robert Juarez</value>
+  </data>
+  <data name="Tab.About.Contentpane.OurTeamModule.Content.31.Text" xml:space="preserve">
+    <value>Fabrication / CBO</value>
+  </data>
+  <data name="Tab.Products.FooterRightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Awesome Cycles, Inc.</value>
+  </data>
+  <data name="Tab.Products.FooterRightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+3457 W. Somewhere Street.
+Someplace, CA 12345</value>
+  </data>
+  <data name="Tab.Products.FooterRightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>
+Phone: (555) 555-4563</value>
+  </data>
+  <data name="Tab.Products.FooterRightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+Fax: (555) 555-4564</value>
+  </data>
+  <data name="Tab.Products.FooterLeftOuterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Mountain</value>
+  </data>
+  <data name="Tab.Products.FooterLeftOuterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Gravity</value>
+  </data>
+  <data name="Tab.Products.FooterLeftOuterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Road</value>
+  </data>
+  <data name="Tab.Products.FooterLeftOuterPane.Module.Content.3.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Tab.Products.FooterLeftOuterPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Junior</value>
+  </data>
+  <data name="Tab.Products.FooterLeftOuterPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Dirt/ Street</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Gravity Series</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.1.Text" xml:space="preserve">
+    <value>We are constantly pushing the limits of what bikes are capable of. Through careful testing, evaluation and production practices we can 100% guarantee that our gravity specific bikes will help you push the limits in the ever evolving sport of freeride mountain biking.</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Read more</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Mountain Series</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.4.Text" xml:space="preserve">
+    <value>The mountain is where we at Awesome Cycles like to call home. Whether it’s a short ride through the woods with your family, or an epic all day adventure through some of the toughest terrain. We are sure have the perfect mountain bike for any situation.</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Road Series</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.6.Text" xml:space="preserve">
+    <value>From the Tour De France to the roads in California our road bikes have done it all. Taking some of the purest materials possible we have developed these modern road bikes to be both strong and amazingly light all without breaking the bank.</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.7.Text" xml:space="preserve">
+    <value>City Series</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.8.Text" xml:space="preserve">
+    <value>With the rising cost of gas who has money to commute by car anymore? That is why for 2012 we are proud to launch our new line of city specific bikes. Stylish, affordable and easily customizable our city bikes could be just what you are looking for.</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.9.Text" xml:space="preserve">
+    <value>Junior Series</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.10.Text" xml:space="preserve">
+    <value>This is where it all starts. A kids first bike is one of the greatest gifts you can give to them. With bikes designed to fit kids of all ages, we are sure you can find some thing that they will truly enjoy for many years to come.</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.11.Text" xml:space="preserve">
+    <value>Dirt / Street Series</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.12.Text" xml:space="preserve">
+    <value>Our next generation of purpose built street, park and dirt jump machines have arrived. Built out of 100% Chromoly steel our BMX and Hard Tail frames can handle it all.</value>
+  </data>
+  <data name="Tab.Products.ContentPane.Module.Content.13.Text" xml:space="preserve">
+    <value>So what are you waiting for?</value>
+  </data>
+  <data name="Tab.Products.FooterLeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Tab.Products.FooterLeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Bike Manuals</value>
+  </data>
+  <data name="Tab.Products.FooterLeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Product Catalogs</value>
+  </data>
+  <data name="Tab.Products.FooterLeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Product Archive</value>
+  </data>
+  <data name="Tab.Products.FooterLeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Product Support</value>
+  </data>
+  <data name="Tab.Products.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Bike Warranty</value>
+  </data>
+  <data name="Tab.Products.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Newsletter</value>
+  </data>
+  <data name="Tab.Products.FooterCenterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Tab.Products.FooterCenterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Careers</value>
+  </data>
+  <data name="Tab.Products.FooterCenterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Tab.ContactUs.FooterRightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Awesome Cycles, Inc.</value>
+  </data>
+  <data name="Tab.ContactUs.FooterRightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+3457 W. Somewhere Street.
+Someplace, CA 12345</value>
+  </data>
+  <data name="Tab.ContactUs.FooterRightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>
+Phone: (555) 555-4563</value>
+  </data>
+  <data name="Tab.ContactUs.FooterRightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+Fax: (555) 555-4564</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftOuterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Mountain</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftOuterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Gravity</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftOuterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Road</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftOuterPane.Module.Content.3.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftOuterPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Junior</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftOuterPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Dirt/ Street</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Email Addresses</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+General: </value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>webmaster@awesomecycles.biz</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+Advertising: </value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.4.Text" xml:space="preserve">
+    <value>advertising@awesomecycles.biz</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.5.Text" xml:space="preserve">
+    <value>
+Sponsorships: </value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.6.Text" xml:space="preserve">
+    <value>sales@awesomecycles.biz</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.7.Text" xml:space="preserve">
+    <value>
+Marketing: </value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.8.Text" xml:space="preserve">
+    <value>marketing@awesomecycles.biz</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.9.Text" xml:space="preserve">
+    <value>
+Partnerships: </value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.10.Text" xml:space="preserve">
+    <value>partners@awesomecycles.biz</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.11.Text" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.12.Text" xml:space="preserve">
+    <value>To reach Awesome Cycles by telephone during office hours (Monday-Friday 8:00am-5:00pm PST) please call (650) 288-3150. You can fax us at (650) 288-3191.</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.13.Text" xml:space="preserve">
+    <value>Everything Else</value>
+  </data>
+  <data name="Tab.ContactUs.CenterPane.Module.Content.14.Text" xml:space="preserve">
+    <value>If you can't find what you are looking for in the lists we have provide hare, please use the contact form to the right and we will respond within 24 hours.</value>
+  </data>
+  <data name="Tab.ContactUs.RightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Your Name:</value>
+  </data>
+  <data name="Tab.ContactUs.RightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Your Email Address:</value>
+  </data>
+  <data name="Tab.ContactUs.RightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Your Message:</value>
+  </data>
+  <data name="Tab.ContactUs.RightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Bike Manuals</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Product Catalogs</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Product Archive</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Product Support</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Bike Warranty</value>
+  </data>
+  <data name="Tab.ContactUs.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Newsletter</value>
+  </data>
+  <data name="Tab.ContactUs.FooterCenterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Tab.ContactUs.FooterCenterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Careers</value>
+  </data>
+  <data name="Tab.ContactUs.FooterCenterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>San Mateo, California, USA | HQ</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+155 Bovet Road, Suite 201</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>
+San Mateo, California 94402</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+USA
+</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Amsterdam, The Netherlands | Store</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>
+Barbara Strozzilaan 201</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>
+1083 HN Amsterdam</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.7.Text" xml:space="preserve">
+    <value>
+The Netherlands
+</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.8.Text" xml:space="preserve">
+    <value>Langley, B.C. Canada | Office</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.9.Text" xml:space="preserve">
+    <value>
+#211 - 9440 202nd Street</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.10.Text" xml:space="preserve">
+    <value>
+Langley, British Columbia, Canada</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.11.Text" xml:space="preserve">
+    <value>
+V1M 4A6
+</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.12.Text" xml:space="preserve">
+    <value>Dealer Locator</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.13.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Tab.ContactUs.LeftPane.Module.Content.14.Text" xml:space="preserve">
+    <value>Enter postal code or city and country</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.0.Text" xml:space="preserve">
+    <value>This is an h1 heading. </value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.1.Text" xml:space="preserve">
+    <value>Copy 13px Arial Regular on 18px leading</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.2.Text" xml:space="preserve">
+    <value> Lorem ipsum dolor sit amet,
+consectetur adipiscing elit. Fusce sed leo. Maecenas ultrices lorem sit amet diam. Aliquam sollicitudin tristique nulla.</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.3.Text" xml:space="preserve">
+    <value>This is an h2 heading. </value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.4.Text" xml:space="preserve">
+    <value> Lorem ipsum dolor sit amet,
+consectetur adipiscing elit. Fusce sed leo. Maecenas ultrices lorem sit amet  diam. Aliquam sollicitudin tristique nulla.</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.5.Text" xml:space="preserve">
+    <value>This is an h3 heading. </value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.6.Text" xml:space="preserve">
+    <value>This is an h4 heading. </value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.7.Text" xml:space="preserve">
+    <value>This is an h5 heading. </value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.8.Text" xml:space="preserve">
+    <value>This is an h6 heading. </value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ButtonsModule.Content.0.Text" xml:space="preserve">
+    <value>Hyperlink Buttons [</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ButtonsModule.Content.1.Text" xml:space="preserve">
+    <value>Primary Style</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ButtonsModule.Content.2.Text" xml:space="preserve">
+    <value>Secondary Style</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ButtonsModule.Content.3.Text" xml:space="preserve">
+    <value>Alternative Style</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ButtonsModule.Content.4.Text" xml:space="preserve">
+    <value>Form Buttons [</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ListsModule.Content.0.Text" xml:space="preserve">
+    <value>Unordered List</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ListsModule.Content.1.Text" xml:space="preserve">
+    <value>Pellentesque eu semt adipiscing tortor.</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ListsModule.Content.2.Text" xml:space="preserve">
+    <value>Duis fringilla urnla accumsan venenatis.</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ListsModule.Content.3.Text" xml:space="preserve">
+    <value>Nulla id ligula veltesque ac id magna.</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ListsModule.Content.4.Text" xml:space="preserve">
+    <value>Duis sollicitudin nisl adipiscing aliquet.</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneLowerRight.ListsModule.Content.5.Text" xml:space="preserve">
+    <value>Ordered List</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.TableModule.Content.0.Text" xml:space="preserve">
+    <value>Table Heading One</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.TableModule.Content.1.Text" xml:space="preserve">
+    <value>Table Heading Two</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.TableModule.Content.2.Text" xml:space="preserve">
+    <value>Table Heading Three</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.TableModule.Content.3.Text" xml:space="preserve">
+    <value>Table Heading Four</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.TableModule.Content.4.Text" xml:space="preserve">
+    <value>Column One</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.TableModule.Content.5.Text" xml:space="preserve">
+    <value>Column Two</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.TableModule.Content.6.Text" xml:space="preserve">
+    <value>Column Three</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.TableModule.Content.7.Text" xml:space="preserve">
+    <value>Column Four</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.0.Text" xml:space="preserve">
+    <value>Image - Align Left</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.1.Text" xml:space="preserve">
+    <value>Image Align Left</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.2.Text" xml:space="preserve">
+    <value> amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.
+</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.3.Text" xml:space="preserve">
+    <value>Image - Align Right</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.4.Text" xml:space="preserve">
+    <value>Image Align Right</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.5.Text" xml:space="preserve">
+    <value>Image - Border Style</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.6.Text" xml:space="preserve">
+    <value>Image Border Style</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.7.Text" xml:space="preserve">
+    <value>Image - Polaroid Style</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.8.Text" xml:space="preserve">
+    <value>Enter Description Here!</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.9.Text" xml:space="preserve">
+    <value>Image Polaroid Style</value>
+  </data>
+  <data name="Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.10.Text" xml:space="preserve">
+    <value> amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</value>
+  </data>
+  <data name="Tab.StyleGuide.RightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>2013 Models are in stock now</value>
+  </data>
+  <data name="Tab.StyleGuide.RightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>14 August 2012</value>
+  </data>
+  <data name="Tab.StyleGuide.RightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Awesome Cycles at Crankworx 2012</value>
+  </data>
+  <data name="Tab.StyleGuide.RightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>10 August 2012</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterRightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Awesome Cycles, Inc.</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterRightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+3457 W. Somewhere Street.
+Someplace, CA 12345</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterRightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>
+Phone: (555) 555-4563</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterRightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+Fax: (555) 555-4564</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftOuterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Mountain</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftOuterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Gravity</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftOuterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Road</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftOuterPane.Module.Content.3.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftOuterPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Junior</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftOuterPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Dirt/ Street</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Bike Manuals</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Product Catalogs</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Product Archive</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Product Support</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Bike Warranty</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Newsletter</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterCenterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterCenterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Careers</value>
+  </data>
+  <data name="Tab.ActivityFeed.FooterCenterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Tab.MyProfile.FooterRightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Awesome Cycles, Inc.</value>
+  </data>
+  <data name="Tab.MyProfile.FooterRightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+3457 W. Somewhere Street.
+Someplace, CA 12345</value>
+  </data>
+  <data name="Tab.MyProfile.FooterRightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>
+Phone: (555) 555-4563</value>
+  </data>
+  <data name="Tab.MyProfile.FooterRightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+Fax: (555) 555-4564</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftOuterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Mountain</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftOuterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Gravity</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftOuterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Road</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftOuterPane.Module.Content.3.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftOuterPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Junior</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftOuterPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Dirt/ Street</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Bike Manuals</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Product Catalogs</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Product Archive</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Product Support</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Bike Warranty</value>
+  </data>
+  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Newsletter</value>
+  </data>
+  <data name="Tab.MyProfile.FooterCenterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Tab.MyProfile.FooterCenterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Careers</value>
+  </data>
+  <data name="Tab.MyProfile.FooterCenterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Tab.MyFriends.FooterRightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Awesome Cycles, Inc.</value>
+  </data>
+  <data name="Tab.MyFriends.FooterRightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+3457 W. Somewhere Street.
+Someplace, CA 12345</value>
+  </data>
+  <data name="Tab.MyFriends.FooterRightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>
+Phone: (555) 555-4563</value>
+  </data>
+  <data name="Tab.MyFriends.FooterRightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+Fax: (555) 555-4564</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftOuterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Mountain</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftOuterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Gravity</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftOuterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Road</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftOuterPane.Module.Content.3.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftOuterPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Junior</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftOuterPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Dirt/ Street</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Bike Manuals</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Product Catalogs</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Product Archive</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Product Support</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Bike Warranty</value>
+  </data>
+  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Newsletter</value>
+  </data>
+  <data name="Tab.MyFriends.FooterCenterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Tab.MyFriends.FooterCenterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Careers</value>
+  </data>
+  <data name="Tab.MyFriends.FooterCenterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Tab.MyMessages.FooterRightPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Awesome Cycles, Inc.</value>
+  </data>
+  <data name="Tab.MyMessages.FooterRightPane.Module.Content.1.Text" xml:space="preserve">
+    <value>
+3457 W. Somewhere Street.
+Someplace, CA 12345</value>
+  </data>
+  <data name="Tab.MyMessages.FooterRightPane.Module.Content.2.Text" xml:space="preserve">
+    <value>
+Phone: (555) 555-4563</value>
+  </data>
+  <data name="Tab.MyMessages.FooterRightPane.Module.Content.3.Text" xml:space="preserve">
+    <value>
+Fax: (555) 555-4564</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftOuterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>Mountain</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftOuterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Gravity</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftOuterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Road</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftOuterPane.Module.Content.3.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftOuterPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Junior</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftOuterPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Dirt/ Street</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.0.Text" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Bike Manuals</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Product Catalogs</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.3.Text" xml:space="preserve">
+    <value>Product Archive</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Product Support</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Bike Warranty</value>
+  </data>
+  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>Newsletter</value>
+  </data>
+  <data name="Tab.MyMessages.FooterCenterPane.Module.Content.0.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Tab.MyMessages.FooterCenterPane.Module.Content.1.Text" xml:space="preserve">
+    <value>Careers</value>
+  </data>
+  <data name="Tab.MyMessages.FooterCenterPane.Module.Content.2.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.10.Text" xml:space="preserve">
+    <value>Add New Functionality</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.11.Text" xml:space="preserve">
+    <value>Enhance your site with capabilities such as e-commerce.</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.12.Text" xml:space="preserve">
+    <value>Visit the DNN Store</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.13.Text" xml:space="preserve">
+    <value>Sponsors</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.4.Text" xml:space="preserve">
+    <value>Personalize your site</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.5.Text" xml:space="preserve">
+    <value>Are you ready to make the DNN Platform your own?</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.6.Text" xml:space="preserve">
+    <value>We have the resources and tools to do just about anything you can imagine.</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.7.Text" xml:space="preserve">
+    <value>I want to...</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.8.Text" xml:space="preserve">
+    <value>Change the look of my site</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.9.Text" xml:space="preserve">
+    <value>Find new skin designs for your website on the DNN Store.</value>
+  </data>
+  <data name="Tab.404ErrorPage.Content.Text" xml:space="preserve">
+    <value>404 Error Page</value>
+  </data>
+  <data name="Tab.404ErrorPage.Title.Text" xml:space="preserve">
+    <value>404 Error Page</value>
+  </data>
+  <data name="Tab.AdvUrlManagement.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Advanced URL Management</value>
+  </data>
+  <data name="Tab.AdvUrlManagement.Description.Text" xml:space="preserve">
+    <value>Manage advanced url settings.</value>
+  </data>
+  <data name="Tab.404ErrorPage..Module.Content.Text" xml:space="preserve">
+    <value>Sorry, the page you are looking for cannot be found and might have been removed, had its name changed, or is temporarily unavailable. It is recommended that you start again from the homepage. Feel free to contact us if the problem persists or if you definitely cannot find what you’re looking for.</value>
+  </data>
+  <data name="Tab.404ErrorPage..Module.Title.Text" xml:space="preserve">
+    <value>Page cannot be found</value>
+  </data>
+</root>

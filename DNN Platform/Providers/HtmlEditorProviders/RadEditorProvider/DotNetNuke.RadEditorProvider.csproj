@@ -34,7 +34,7 @@
     <DebugType>full</DebugType>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.RadEditorProvider.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.RadEditorProvider.XML</DocumentationFile>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591,612,618,672</NoWarn>
@@ -45,7 +45,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.RadEditorProvider.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.RadEditorProvider.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591,612,618,672</NoWarn>
   </PropertyGroup>

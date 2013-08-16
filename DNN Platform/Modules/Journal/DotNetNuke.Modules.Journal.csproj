@@ -28,7 +28,7 @@
     <DebugType>full</DebugType>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.Modules.Journal.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Modules.Journal.XML</DocumentationFile>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
@@ -38,7 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.Modules.Journal.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Modules.Journal.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>

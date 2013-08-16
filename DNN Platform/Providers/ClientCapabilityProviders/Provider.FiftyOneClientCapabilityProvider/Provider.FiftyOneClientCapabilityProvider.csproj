@@ -22,7 +22,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <OutputPath>bin\Providers\</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>DotNetNuke.Providers.FiftyOneClientCapabilityProvider.XML</DocumentationFile>
+    <DocumentationFile>bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.XML</DocumentationFile>
     <NoWarn>1591,0618</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <OutputPath>bin\Providers\</OutputPath>
-    <DocumentationFile>DotNetNuke.Providers.FiftyOneClientCapabilityProvider.XML</DocumentationFile>
+    <DocumentationFile>bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.XML</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1591,0618</NoWarn>
   </PropertyGroup>

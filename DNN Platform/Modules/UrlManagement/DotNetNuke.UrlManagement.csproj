@@ -32,7 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>DotNetNuke.Modules.UrlManagement.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Modules.UrlManagement.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <IntermediateOutputPath>C:\Users\Charles\AppData\Local\Temp\vs1E1E.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
@@ -44,7 +44,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
-    <DocumentationFile>DotNetNuke.Modules.UrlManagement.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Modules.UrlManagement.XML</DocumentationFile>
     <IntermediateOutputPath>C:\Users\Charles\AppData\Local\Temp\vs1E1E.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>

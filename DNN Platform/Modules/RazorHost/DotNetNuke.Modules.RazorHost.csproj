@@ -36,7 +36,7 @@
     <DebugType>full</DebugType>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.Modules.RazorHost.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Modules.RazorHost.XML</DocumentationFile>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
     <LangVersion>default</LangVersion>
@@ -46,7 +46,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.Modules.RazorHost.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Modules.RazorHost.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup>

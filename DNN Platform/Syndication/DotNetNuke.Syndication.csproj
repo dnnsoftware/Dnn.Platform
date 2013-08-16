@@ -40,7 +40,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>DotNetNuke.Services.Syndication.XML</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Services.Syndication.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>default</LangVersion>
   </PropertyGroup>
@@ -53,6 +53,7 @@
     <DebugSymbols>true</DebugSymbols>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
+    <DocumentationFile>bin\DotNetNuke.Services.Syndication.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

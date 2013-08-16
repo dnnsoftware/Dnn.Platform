@@ -124,20 +124,20 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://loca
 		UseIISExpress = "false"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Debug.AspNetCompiler.PhysicalPath = "..\Website\"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\DNN Software\Website\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Release.AspNetCompiler.PhysicalPath = "..\Website\"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\DNN Software\Website\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "..\Website\"
+		SlnRelativePath = "..\..\..\DNN Software\Website\"
 	EndProjectSection
 EndProject
 Global

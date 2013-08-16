@@ -33,7 +33,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.DNNTreeNavigationProvider.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.DNNTreeNavigationProvider.XML</DocumentationFile>
     <DefineTrace>true</DefineTrace>
     <DebugSymbols>true</DebugSymbols>
     <WarningLevel>4</WarningLevel>
@@ -44,7 +44,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.DNNTreeNavigationProvider.xml</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.DNNTreeNavigationProvider.XML</DocumentationFile>
     <DefineTrace>true</DefineTrace>
     <DebugSymbols>true</DebugSymbols>
     <WarningLevel>4</WarningLevel>
