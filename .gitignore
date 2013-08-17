@@ -44,7 +44,17 @@
 _ReSharper*
 
 # Others
-[Bb]in
+!DNN Platform/Components
+!DNN Platform/Controls
+DNN Platform/Controls/CountryListBox/[Bb]in/*
+
+DNN Platform/*/[Bb]in/*
+DNN Platform/Modules/*/[Bb]in/*
+DNN Platform/Providers/*/*/[Bb]in/*
+DNN Platform/Providers/*/*/*/[Bb]in/*
+DNN Platform/Syndication/[Bb]in/*
+[Ww]ebsite/[Bb]in
+
 [Oo]bj
 sql
 TestResults
