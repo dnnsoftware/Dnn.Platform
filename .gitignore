@@ -45,7 +45,7 @@ _ReSharper*
 # Others
 !DNN Platform/Components
 !DNN Platform/Controls
-DNN Platform/Components/ClientDependency/Source/[Bb]in/*
+DNN Platform/Components/ClientDependency/Source/[Bb]in
 DNN Platform/Controls/CountryListBox/[Bb]in/*
 
 DNN Platform/*/[Bb]in/*

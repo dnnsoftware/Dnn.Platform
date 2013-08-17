@@ -121,24 +121,28 @@
     <Compile Include="Components\WorkflowStatePermissionInfo.cs" />
     <Compile Include="EditHtml.ascx.cs">
       <DependentUpon>EditHtml.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditHtml.ascx.designer.cs">
       <DependentUpon>EditHtml.ascx</DependentUpon>
     </Compile>
     <Compile Include="HtmlModule.ascx.cs">
       <DependentUpon>HtmlModule.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HtmlModule.ascx.designer.cs">
       <DependentUpon>HtmlModule.ascx</DependentUpon>
     </Compile>
     <Compile Include="MyWork.ascx.cs">
       <DependentUpon>MyWork.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MyWork.ascx.designer.cs">
       <DependentUpon>MyWork.ascx</DependentUpon>
     </Compile>
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>

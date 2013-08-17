@@ -116,7 +116,9 @@
     <Compile Include="Components\Controllers\Models\PageViewModel.cs" />
     <Compile Include="Components\Controllers\Models\PermissionViewModel.cs" />
     <Compile Include="Components\ExtensionPoint\IFieldsControl.cs" />
-    <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs" />
+    <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Components\ExtensionPoint\ToolBarButton\UnzipFileToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\DefaultMenuButtonItem.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\SyncToolBarMenuButtonExtensionPoint.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Components\ExtensionPoint\UserControls\PreviewInfoPanelExtensionPoint.cs" />
     <Compile Include="FileFieldsControl.ascx.cs">
       <DependentUpon>FileFieldsControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FileFieldsControl.ascx.designer.cs">
       <DependentUpon>FileFieldsControl.ascx</DependentUpon>
@@ -161,24 +164,28 @@
     <Compile Include="Components\Controllers\Models\Field.cs" />
     <Compile Include="EditFolderMapping.ascx.cs">
       <DependentUpon>EditFolderMapping.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditFolderMapping.ascx.designer.cs">
       <DependentUpon>EditFolderMapping.ascx</DependentUpon>
     </Compile>
     <Compile Include="FileProperties.ascx.cs">
       <DependentUpon>FileProperties.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FileProperties.ascx.designer.cs">
       <DependentUpon>FileProperties.ascx</DependentUpon>
     </Compile>
     <Compile Include="FolderMappings.ascx.cs">
       <DependentUpon>FolderMappings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FolderMappings.ascx.designer.cs">
       <DependentUpon>FolderMappings.ascx</DependentUpon>
     </Compile>
     <Compile Include="EditFolder.ascx.cs">
       <DependentUpon>EditFolder.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditFolder.ascx.designer.cs">
       <DependentUpon>EditFolder.ascx</DependentUpon>
@@ -204,12 +211,14 @@
     <Compile Include="Services\Factory.cs" />
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
     </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View.ascx.designer.cs">
       <DependentUpon>View.ascx</DependentUpon>
