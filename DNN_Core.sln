@@ -2,52 +2,52 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientDependency.Core", "Components\ClientDependency\Source\ClientDependency.Core.csproj", "{3B64E72E-63CC-4A90-ADFF-4B919EF17239}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientDependency.Core", "DNN Platform\Components\ClientDependency\Source\ClientDependency.Core.csproj", "{3B64E72E-63CC-4A90-ADFF-4B919EF17239}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Instrumentation", "DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj", "{3CD5F6B8-8360-4862-80B6-F402892DB7DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Instrumentation", "DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj", "{3CD5F6B8-8360-4862-80B6-F402892DB7DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Client", "DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj", "{03E3AFA5-DDC9-48FB-A839-AD4282CE237E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Client", "DNN Platform\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj", "{03E3AFA5-DDC9-48FB-A839-AD4282CE237E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Syndication", "Syndication\DotNetNuke.Syndication.csproj", "{9F2F4076-D434-448F-9CBB-7BF7A9766AB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Syndication", "DNN Platform\Syndication\DotNetNuke.Syndication.csproj", "{9F2F4076-D434-448F-9CBB-7BF7A9766AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Library", "Library\DotNetNuke.Library.csproj", "{6B29ADED-7B56-4484-BEA5-C0E09079535B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Library", "DNN Platform\Library\DotNetNuke.Library.csproj", "{6B29ADED-7B56-4484-BEA5-C0E09079535B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountryListBox", "Controls\CountryListBox\CountryListBox.csproj", "{CA056730-5759-41F8-A6C1-420F9C0C63E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountryListBox", "DNN Platform\Controls\CountryListBox\CountryListBox.csproj", "{CA056730-5759-41F8-A6C1-420F9C0C63E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web", "DotNetNuke.Web\DotNetNuke.Web.csproj", "{EE1329FE-FD88-4E1A-968C-345E394EF080}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web", "DNN Platform\DotNetNuke.Web\DotNetNuke.Web.csproj", "{EE1329FE-FD88-4E1A-968C-345E394EF080}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.HttpModules", "HttpModules\DotNetNuke.HttpModules.csproj", "{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.HttpModules", "DNN Platform\HttpModules\DotNetNuke.HttpModules.csproj", "{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{973A675B-1CF8-42E0-8566-09B4EFD3E83E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{88E649D7-1379-430F-B794-1F3B9B442C80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Utilities", "Tests\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj", "{68368906-57DD-40D1-AC10-35211A17D617}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Utilities", "DNN Platform\Tests\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj", "{68368906-57DD-40D1-AC10-35211A17D617}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Content", "Tests\DotNetNuke.Tests.Content\DotNetNuke.Tests.Content.csproj", "{22A67B3F-D9B6-4447-A3F7-E387075AF969}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Content", "DNN Platform\Tests\DotNetNuke.Tests.Content\DotNetNuke.Tests.Content.csproj", "{22A67B3F-D9B6-4447-A3F7-E387075AF969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Data", "Tests\DotNetNuke.Tests.Data\DotNetNuke.Tests.Data.csproj", "{2595AADE-D3E0-4205-B8AF-109CB23F4223}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Data", "DNN Platform\Tests\DotNetNuke.Tests.Data\DotNetNuke.Tests.Data.csproj", "{2595AADE-D3E0-4205-B8AF-109CB23F4223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.UI", "Tests\DotNetNuke.Tests.UI\DotNetNuke.Tests.UI.csproj", "{5484768D-80AA-4D07-86F0-8CB0A06AFD99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.UI", "DNN Platform\Tests\DotNetNuke.Tests.UI\DotNetNuke.Tests.UI.csproj", "{5484768D-80AA-4D07-86F0-8CB0A06AFD99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Core", "Tests\DotNetNuke.Tests.Core\DotNetNuke.Tests.Core.csproj", "{BCA9AC2A-1DF7-4697-8836-452E13E7CAFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Core", "DNN Platform\Tests\DotNetNuke.Tests.Core\DotNetNuke.Tests.Core.csproj", "{BCA9AC2A-1DF7-4697-8836-452E13E7CAFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Automation", "Automation", "{98739F02-F34A-4427-9A17-C0509E7AAD75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.DNNSelenium", "Tests\DotNetNuke.Tests.Selenium\DotNetNuke.Tests.DNNSelenium.csproj", "{96FD101E-326A-4038-A081-A347061A6B77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.DNNSelenium", "DNN Platform\Tests\DotNetNuke.Tests.Selenium\DotNetNuke.Tests.DNNSelenium.csproj", "{96FD101E-326A-4038-A081-A347061A6B77}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{7E98CA08-903E-45F7-BD83-853763D5E15B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "Tests\DotNetNuke.Tests.Web\DotNetNuke.Tests.Web.csproj", "{705708E8-6AD9-4021-9B36-EFC83AD42EE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN Platform\Tests\DotNetNuke.Tests.Web\DotNetNuke.Tests.Web.csproj", "{705708E8-6AD9-4021-9B36-EFC83AD42EE7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}"
 	ProjectSection(SolutionItems) = preProject
-		Tests\App.config = Tests\App.config
+		DNN Platform\Tests\App.config = DNN Platform\Tests\App.config
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://localhost/DNN_Platform", "{269E2C32-893A-4AFD-A061-C50A5D43E0A4}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://localhost/DNN_Platform", "{6CD360CB-28EF-4727-90D3-06E2741EC568}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = "SAK"
 		SccAuxPath = "SAK"
@@ -56,111 +56,31 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://loca
 		UseIISExpress = "false"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Debug.AspNetCompiler.PhysicalPath = "..\Website\"
+		Debug.AspNetCompiler.PhysicalPath = "Website\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Release.AspNetCompiler.PhysicalPath = "..\Website\"
+		Release.AspNetCompiler.PhysicalPath = "Website\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "..\Website\"
+		SlnRelativePath = "Website\"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{68F5A9B4-99E1-4FB8-B19C-DCC63C87B4A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.FiftyOneClientCapabilityProvider", "Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\Provider.FiftyOneClientCapabilityProvider.csproj", "{0EB2D920-395F-4DB7-8525-D9712E92FC3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.FiftyOneClientCapabilityProvider", "DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\Provider.FiftyOneClientCapabilityProvider.csproj", "{0EB2D920-395F-4DB7-8525-D9712E92FC3E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{7A8F690C-1779-425D-8A89-132E9371AFBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Taxonomy", "Modules\Taxonomy\DotNetNuke.Modules.Taxonomy.csproj", "{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Taxonomy", "DNN Platform\Modules\Taxonomy\DotNetNuke.Modules.Taxonomy.csproj", "{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 20
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.dotnetnuke.com:8088/tfs/dotnetnuke
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Components\\ClientDependency\\Source\\ClientDependency.Core.csproj
-		SccProjectTopLevelParentUniqueName1 = DNN_Core.sln
-		SccProjectName1 = Components/ClientDependency/Source
-		SccLocalPath1 = Components\\ClientDependency\\Source
-		SccProjectUniqueName2 = DotNetNuke.Instrumentation\\DotNetNuke.Instrumentation.csproj
-		SccProjectTopLevelParentUniqueName2 = DNN_Core.sln
-		SccProjectName2 = DotNetNuke.Instrumentation
-		SccLocalPath2 = DotNetNuke.Instrumentation
-		SccProjectUniqueName3 = DotNetNuke.Web.Client\\DotNetNuke.Web.Client.csproj
-		SccProjectTopLevelParentUniqueName3 = DNN_Core.sln
-		SccProjectName3 = DotNetNuke.Web.Client
-		SccLocalPath3 = DotNetNuke.Web.Client
-		SccProjectUniqueName4 = Syndication\\DotNetNuke.Syndication.csproj
-		SccProjectTopLevelParentUniqueName4 = DNN_Core.sln
-		SccProjectName4 = Syndication
-		SccLocalPath4 = Syndication
-		SccProjectUniqueName5 = Library\\DotNetNuke.Library.csproj
-		SccProjectName5 = Library
-		SccLocalPath5 = Library
-		SccProjectUniqueName6 = Controls\\CountryListBox\\CountryListBox.csproj
-		SccProjectTopLevelParentUniqueName6 = DNN_Core.sln
-		SccProjectName6 = Controls/CountryListBox
-		SccLocalPath6 = Controls\\CountryListBox
-		SccProjectUniqueName7 = DotNetNuke.Web\\DotNetNuke.Web.csproj
-		SccProjectName7 = DotNetNuke.Web
-		SccLocalPath7 = DotNetNuke.Web
-		SccProjectUniqueName8 = HttpModules\\DotNetNuke.HttpModules.csproj
-		SccProjectName8 = HttpModules
-		SccLocalPath8 = HttpModules
-		SccProjectUniqueName9 = Tests\\DotNetNuke.Tests.Utilities\\DotNetNuke.Tests.Utilities.csproj
-		SccProjectTopLevelParentUniqueName9 = DNN_Core.sln
-		SccProjectName9 = Tests/DotNetNuke.Tests.Utilities
-		SccLocalPath9 = Tests\\DotNetNuke.Tests.Utilities
-		SccProjectUniqueName10 = Tests\\DotNetNuke.Tests.Content\\DotNetNuke.Tests.Content.csproj
-		SccProjectTopLevelParentUniqueName10 = DNN_Core.sln
-		SccProjectName10 = Tests/DotNetNuke.Tests.Content
-		SccLocalPath10 = Tests\\DotNetNuke.Tests.Content
-		SccProjectUniqueName11 = Tests\\DotNetNuke.Tests.Data\\DotNetNuke.Tests.Data.csproj
-		SccProjectTopLevelParentUniqueName11 = DNN_Core.sln
-		SccProjectName11 = Tests/DotNetNuke.Tests.Data
-		SccLocalPath11 = Tests\\DotNetNuke.Tests.Data
-		SccProjectUniqueName12 = Tests\\DotNetNuke.Tests.UI\\DotNetNuke.Tests.UI.csproj
-		SccProjectTopLevelParentUniqueName12 = DNN_Core.sln
-		SccProjectName12 = Tests/DotNetNuke.Tests.UI
-		SccLocalPath12 = Tests\\DotNetNuke.Tests.UI
-		SccProjectUniqueName13 = Tests\\DotNetNuke.Tests.Core\\DotNetNuke.Tests.Core.csproj
-		SccProjectTopLevelParentUniqueName13 = DNN_Core.sln
-		SccProjectName13 = Tests/DotNetNuke.Tests.Core
-		SccLocalPath13 = Tests\\DotNetNuke.Tests.Core
-		SccProjectUniqueName14 = Tests\\DotNetNuke.Tests.Selenium\\DotNetNuke.Tests.DNNSelenium.csproj
-		SccProjectTopLevelParentUniqueName14 = DNN_Core.sln
-		SccProjectName14 = Tests/DotNetNuke.Tests.Selenium
-		SccLocalPath14 = Tests\\DotNetNuke.Tests.Selenium
-		SccProjectUniqueName15 = Tests\\DotNetNuke.Tests.Urls\\DotNetNuke.Tests.Urls.csproj
-		SccProjectTopLevelParentUniqueName15 = DNN_Core.sln
-		SccProjectName15 = Tests/DotNetNuke.Tests.Urls
-		SccLocalPath15 = Tests\\DotNetNuke.Tests.Urls
-		SccProjectUniqueName16 = Tests\\DotNetNuke.Tests.Web\\DotNetNuke.Tests.Web.csproj
-		SccProjectTopLevelParentUniqueName16 = DNN_Core.sln
-		SccProjectName16 = Tests/DotNetNuke.Tests.Web
-		SccLocalPath16 = Tests\\DotNetNuke.Tests.Web
-		SccWebProject17 = true
-		SccProjectUniqueName17 = http://localhost/DNN_Platform
-		SccProjectName17 = ../Website
-		SccLocalPath17 = ..\\Website
-		SccProjectEnlistmentChoice17 = 2
-		SccProjectUniqueName18 = Providers\\ClientCapabilityProviders\\Provider.FiftyOneClientCapabilityProvider\\Provider.FiftyOneClientCapabilityProvider.csproj
-		SccProjectTopLevelParentUniqueName18 = DNN_Core.sln
-		SccProjectName18 = Providers/ClientCapabilityProviders/Provider.FiftyOneClientCapabilityProvider
-		SccLocalPath18 = Providers\\ClientCapabilityProviders\\Provider.FiftyOneClientCapabilityProvider
-		SccProjectUniqueName19 = Modules\\Taxonomy\\DotNetNuke.Modules.Taxonomy.csproj
-		SccProjectTopLevelParentUniqueName19 = DNN_Core.sln
-		SccProjectName19 = Modules/Taxonomy
-		SccLocalPath19 = Modules\\Taxonomy
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -268,10 +188,10 @@ Global
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|x86.ActiveCfg = Release|Any CPU
-		{269E2C32-893A-4AFD-A061-C50A5D43E0A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{269E2C32-893A-4AFD-A061-C50A5D43E0A4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{269E2C32-893A-4AFD-A061-C50A5D43E0A4}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{269E2C32-893A-4AFD-A061-C50A5D43E0A4}.Release|x86.ActiveCfg = Debug|Any CPU
+		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|x86.ActiveCfg = Debug|Any CPU
 		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Debug|x86.ActiveCfg = Debug|Any CPU
