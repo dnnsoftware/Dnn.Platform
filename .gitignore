@@ -83,6 +83,8 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 
 [Ww]ebsite/[Bb]in
 
+[Ww]ebsite/[Cc]onfig
+
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Ff]ifty[Oo]ne[Cc]lient[Cc]apability[Pp]rovider
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Rr]ad[Ee]ditor[Pp]rovider
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Tt]axonomy
@@ -108,7 +110,8 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 
 [Ww]ebsite/[Ii]nstall/*/*.zip
 [Ww]ebsite/[Ii]nstall/*/*.resources
-[Ww]ebsite/[Ii]nstall/Cleanup/*
+[Ww]ebsite/[Ii]nstall/[Cc]leanup
+[Ww]ebsite/[Ii]nstall/[Cc]onfig
 [Ww]ebsite/[Ii]nstall/[Dd]ot[Nn]et[Nn]uke.install.config
 [Ww]ebsite/[Ii]nstall/installstat.log.resources.txt
 
@@ -122,6 +125,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Pp]roviders/[Dd]ata[Pp]roviders/*/*.resources
 [Ww]ebsite/[Pp]roviders/*/*/license.txt
 [Ww]ebsite/[Pp]roviders/*/*/release[Nn]otes.txt
+[Ww]ebsite/[Pp]roviders/[Ff]older[Pp]roviders
 
 [Ww]ebsite/[Ss]ignatures
 

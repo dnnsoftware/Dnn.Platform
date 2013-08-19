@@ -80,15 +80,12 @@
   <ItemGroup>
     <Compile Include="Administration.ascx.cs">
       <DependentUpon>Administration.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Administration.ascx.designer.cs">
       <DependentUpon>Administration.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\FeatureController.cs" />
-    <Compile Include="Components\ModuleBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\ModuleBase.cs" />
     <Compile Include="DnnDeviceExplorer.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -97,9 +94,7 @@
     <Compile Include="FiftyOneClientCapability.cs" />
     <Compile Include="FiftyOneClientCapabilityProvider.cs" />
     <Compile Include="Properties\RetailerConstants.cs" />
-    <Compile Include="Components\SettingsBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\SettingsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Administration.ascx">

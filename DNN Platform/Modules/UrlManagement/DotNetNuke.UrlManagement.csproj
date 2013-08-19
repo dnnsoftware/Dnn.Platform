@@ -72,19 +72,15 @@
   <ItemGroup>
     <Compile Include="AdvancedUrlSettings.ascx.cs">
       <DependentUpon>AdvancedUrlSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="AdvancedUrlSettings.ascx.designer.cs">
       <DependentUpon>AdvancedUrlSettings.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\ExtensionPoints\UserControls\AdvancedUrlSettingsExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoints\UserControls\FriendlyUrlsExtensionPoint.cs" />
-    <Compile Include="Components\PortAliasesModuleBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\PortAliasesModuleBase.cs" />
     <Compile Include="FriendlyUrls.ascx.cs">
       <DependentUpon>FriendlyUrls.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FriendlyUrls.ascx.designer.cs">
       <DependentUpon>FriendlyUrls.ascx</DependentUpon>
@@ -96,11 +92,9 @@
     <Compile Include="Components\ExtensionPoints\UserControls\PortalAliasesExtensionPoint.cs" />
     <Compile Include="PortalAliases.ascx.cs">
       <DependentUpon>PortalAliases.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UrlProviderSettings.ascx.cs">
       <DependentUpon>UrlProviderSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UrlProviderSettings.ascx.designer.cs">
       <DependentUpon>UrlProviderSettings.ascx</DependentUpon>

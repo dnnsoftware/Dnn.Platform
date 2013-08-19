@@ -1,0 +1,47 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\Website</WebsitePath>
+    <WebsiteAppDataPath>$(WebsitePath)\App_Data</WebsiteAppDataPath>
+    <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
+    <WebsiteConfigPath>$(WebsitePath)\Config</WebsiteConfigPath>
+    <WebsiteCleanupPath>$(WebsitePath)\Install\Cleanup</WebsiteCleanupPath>
+    <WebsiteConfigMergePath>$(WebsitePath)\Install\Config</WebsiteConfigMergePath>
+    <WebsiteHostPortalPath>$(WebsitePath)\Portals\_default</WebsiteHostPortalPath>
+  </PropertyGroup>
+  <Target Name="AfterBuild" DependsOnTargets="GetFiles;DebugProject">
+  </Target>
+  <Target Name="GetFiles">
+    <ItemGroup>
+      <Templates Include="..\Library\Templates\*.*" />
+      <Database Include="..\Website\App_Data\Database.mdf" />
+      <ConfigFiles Include="..\Website\Config\*.*" />
+      <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
+      <ConfigMergeFiles Include="..\Website\Install\Config\*.*" />
+    </ItemGroup>
+  </Target>
+  <Target Name="DebugProject">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.pdb" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.xml" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Controls\CountryListBox\bin\CountryListBox.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Syndication\bin\DotNetNuke.Services.Syndication.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\PetaPoco\bin\PetaPoco.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\SharpZipLib\bin\SharpZipLib.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\Lucene.Net\bin\Lucene.Net.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.FastVectorHighlighter.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll" DestinationFolder="$(WebsiteBinPath)" />
+
+    <Copy SourceFiles="@(Database)" DestinationFolder="$(WebsiteAppDataPath)" />
+    <Copy SourceFiles="@(Templates)" DestinationFolder="$(WebsiteHostPortalPath)" />
+    <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsiteConfigPath)" />
+    <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteCleanupPath)" />
+    <Copy SourceFiles="@(ConfigMergeFiles)" DestinationFolder="$(WebsiteConfigMergePath)" />
+
+  </Target>
+</Project>
