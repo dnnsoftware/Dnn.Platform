@@ -77,9 +77,7 @@ DNN [Pp]latform/[Pp]roviders/*/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/*/[Bb]in/*
 DNN [Pp]latform/Syndication/[Bb]in/*
 
-[Ww]ebsite/[Aa]pp_[Dd]ata/[Cc]lient[Dd]ependency
-[Ww]ebsite/[Aa]pp_[Dd]ata/[Ss]earch
-[Ww]ebsite/[Aa]pp_[Dd]ata/[Dd]atabase.mdf
+[Ww]ebsite/[Aa]pp_[Dd]ata
 
 [Ww]ebsite/[Bb]in
 
