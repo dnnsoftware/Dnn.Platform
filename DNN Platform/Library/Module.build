@@ -43,6 +43,6 @@
     <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteCleanupPath)" />
     <Copy SourceFiles="@(ConfigMergeFiles)" DestinationFolder="$(WebsiteConfigMergePath)" />
 
-    <Copy SourceFiles="$(WebsiteBinPath)\development.config" DestinationFolder="$(WebsiteBinPath)\web.config" />
+    <Copy SourceFiles="$(WebsitePath)\development.config" DestinationFiles="$(WebsitePath)\web.config" />
   </Target>
 </Project>

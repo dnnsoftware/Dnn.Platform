@@ -97,21 +97,18 @@
     <Compile Include="Views\IRedirectionSettingsView.cs" />
     <Compile Include="Views\RedirectionManagerView.ascx.cs">
       <DependentUpon>RedirectionManagerView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\RedirectionManagerView.ascx.designer.cs">
       <DependentUpon>RedirectionManagerView.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\RedirectionSettingsView.ascx.cs">
       <DependentUpon>RedirectionSettingsView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\RedirectionSettingsView.ascx.designer.cs">
       <DependentUpon>RedirectionSettingsView.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\SimpleSettingsView.ascx.cs">
       <DependentUpon>SimpleSettingsView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\SimpleSettingsView.ascx.designer.cs">
       <DependentUpon>SimpleSettingsView.ascx</DependentUpon>
