@@ -92,6 +92,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]uthentication[Ss]ervices/[Gg]oogle
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]uthentication[Ss]ervices/[Ll]ive
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]uthentication[Ss]ervices/[Tt]witter
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]uthentication[Ss]ervices/DNN[Pp]ro_[Aa]ctive[Dd]irectory
 
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Cc]ore[Mm]essaging
 [Ww]ebsite/[Dd]esktop[Mm]odules/DDRMenu
@@ -114,11 +115,15 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 
 [Ww]ebsite/[Pp]ortals/_default/[Ll]ogs
 [Ww]ebsite/[Pp]ortals/_default/[Mm]erged[Tt]emplate
+[Ww]ebsite/[Pp]ortals/_default/[Mm]obile*
+[Ww]ebsite/[Pp]ortals/_default/[Uu]ser*
 [Ww]ebsite/[Pp]ortals/0/
 
 [Ww]ebsite/[Pp]roviders/[Dd]ata[Pp]roviders/*/*.resources
 [Ww]ebsite/[Pp]roviders/*/*/license.txt
 [Ww]ebsite/[Pp]roviders/*/*/release[Nn]otes.txt
+
+[Ww]ebsite/[Ss]ignatures
 
 [Ww]ebsite/51[Dd]egrees.mobi.config
 [Ww]ebsite/[Dd]ot[Nn]et[Nn]uke.log4net.config
