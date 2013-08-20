@@ -43,6 +43,15 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblCreatedBy;
         protected Label lblUpdatedBy;
 
+		[Serializable]
+		private class EntityInfo
+		{
+			public int CreatedByUserID { get; set; }
+			public DateTime CreatedOnDate { get; set; }
+			public int LastModifiedByUserID { get; set; }
+			public DateTime LastModifiedOnDate { get; set; }
+		}
+
         public ModuleAuditControl()
         {
             LastModifiedDate = String.Empty;
@@ -59,7 +68,31 @@ namespace DotNetNuke.UI.UserControls
 
         public string LastModifiedDate { private get; set; }
 
-        public BaseEntityInfo Entity { private get; set; }
+		public BaseEntityInfo Entity
+		{
+			set
+			{
+				if (value != null)
+				{
+					var entity = new EntityInfo();
+					entity.CreatedByUserID = value.CreatedByUserID;
+					entity.CreatedOnDate = value.CreatedOnDate;
+					entity.LastModifiedByUserID = value.LastModifiedByUserID;
+					entity.LastModifiedOnDate = value.LastModifiedOnDate;
+
+					ViewState["Entity"] = entity;
+				}
+				else
+				{
+					ViewState["Entity"] = null;
+				}
+			}
+		}
+
+	    private EntityInfo Model
+	    {
+		    get { return ViewState["Entity"] as EntityInfo; }
+	    }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -67,12 +100,12 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                if (Entity != null)
+				if (Model != null)
                 {
-                    CreatedByUser = Entity.CreatedByUserID.ToString();
-                    CreatedDate = Entity.CreatedOnDate.ToString();
-                    LastModifiedByUser = Entity.LastModifiedByUserID.ToString();
-                    LastModifiedDate = Entity.LastModifiedOnDate.ToString();
+					CreatedByUser = Model.CreatedByUserID.ToString();
+					CreatedDate = Model.CreatedOnDate.ToString();
+					LastModifiedByUser = Model.LastModifiedByUserID.ToString();
+					LastModifiedDate = Model.LastModifiedOnDate.ToString();
                 }
 
                 //check to see if updated check is redundant
