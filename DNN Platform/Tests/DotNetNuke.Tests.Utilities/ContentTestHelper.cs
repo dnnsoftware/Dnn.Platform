@@ -18,51 +18,50 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Security.Cryptography;
 using System.Text;
+
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Tests.Utilities;
 
-namespace DotNetNuke.Tests.Content
+namespace DotNetNuke.Tests.Utilities
 {
     public class ContentTestHelper
     {
-        internal static ContentItem CreateValidContentItem()
+        public static ContentItem CreateValidContentItem()
         {
             ContentItem content = new ContentItem {Content = Constants.CONTENT_ValidContent, ContentKey = Constants.CONTENT_ValidContentKey, Indexed = Constants.CONTENT_IndexedFalse};
             return content;
         }
 
-        internal static ContentType CreateValidContentType()
+        public static ContentType CreateValidContentType()
         {
             ContentType contentType = new ContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
             return contentType;
         }
 
-        internal static Term CreateValidHeirarchicalTerm(int vocabularyId, int parentId)
+        public static Term CreateValidHeirarchicalTerm(int vocabularyId, int parentId)
         {
             Term term = new Term(vocabularyId) {Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight, ParentTermId = parentId};
             return term;
         }
 
-        internal static ScopeType CreateValidScopeType()
+        public static ScopeType CreateValidScopeType()
         {
             ScopeType scopeType = new ScopeType { ScopeType = Constants.SCOPETYPE_ValidScopeType };
             return scopeType;
         }
 
-        internal static Term CreateValidSimpleTerm(int vocabularyId)
+        public static Term CreateValidSimpleTerm(int vocabularyId)
         {
             Term term = new Term(vocabularyId) {Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight};
             return term;
         }
 
-        internal static Vocabulary CreateValidVocabulary()
+        public static Vocabulary CreateValidVocabulary()
         {
             Vocabulary vocabulary = new Vocabulary
                                         {
@@ -76,7 +75,7 @@ namespace DotNetNuke.Tests.Content
             return vocabulary;
         }
 
-        internal static FileInfo CreateValidFile(int fileId)
+        public static FileInfo CreateValidFile(int fileId)
         {
             var sb = new StringBuilder();
 
@@ -107,7 +106,7 @@ namespace DotNetNuke.Tests.Content
                 };
         }
 
-        internal static string GetContent(int i)
+        public static string GetContent(int i)
         {
             return String.Format(String.Format(Constants.CONTENT_ValidContentFormat, i));
         }
@@ -117,22 +116,22 @@ namespace DotNetNuke.Tests.Content
             return String.Format(String.Format(Constants.CONTENT_ValidContentKeyFormat, i));
         }
 
-        internal static string GetContentType(int i)
+        public static string GetContentType(int i)
         {
             return String.Format(Constants.CONTENTTYPE_ValidContentTypeFormat, i);
         }
 
-        internal static string GetScopeType(int i)
+        public static string GetScopeType(int i)
         {
             return String.Format(Constants.SCOPETYPE_ValidScopeTypeFormat, i);
         }
 
-        internal static string GetTermName(int i)
+        public static string GetTermName(int i)
         {
             return String.Format(Constants.TERM_ValidNameFormat, i);
         }
 
-        internal static string GetVocabularyName(int i)
+        public static string GetVocabularyName(int i)
         {
             return String.Format(Constants.VOCABULARY_ValidNameFormat, i);
         }

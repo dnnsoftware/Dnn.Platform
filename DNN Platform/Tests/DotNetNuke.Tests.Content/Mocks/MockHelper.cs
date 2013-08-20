@@ -42,39 +42,6 @@ namespace DotNetNuke.Tests.Content.Mocks
 {
     public static class MockHelper
     {
-        internal static readonly ValidationResult InvalidResult = new ValidationResult(new[] {new ValidationError {ErrorMessage = "Foo", PropertyName = "Bar"}});
-
-        internal static IQueryable<ScopeType> TestScopeTypes
-        {
-            get
-            {
-                List<ScopeType> scopeTypes = new List<ScopeType> { new ScopeType { ScopeTypeId = 1, ScopeType = "Application" }, new ScopeType { ScopeTypeId = 2, ScopeType = "Portal" } };
-
-                return scopeTypes.AsQueryable();
-            }
-        }
-
-        internal static IQueryable<Term> TestTerms
-        {
-            get
-            {
-                List<Term> terms = new List<Term>();
-
-                for (int i = Constants.TERM_ValidTermId; i < Constants.TERM_ValidTermId + Constants.TERM_ValidCount; i++)
-                {
-                    Term term = new Term(Constants.VOCABULARY_ValidVocabularyId);
-                    term.TermId = i;
-                    term.Name = ContentTestHelper.GetTermName(i);
-                    term.Description = ContentTestHelper.GetTermName(i);
-                    term.Weight = Constants.TERM_ValidWeight;
-
-                    terms.Add(term);
-                }
-
-                return terms.AsQueryable();
-            }
-        }
-
         internal static IQueryable<Vocabulary> TestVocabularies
         {
             get
@@ -281,26 +248,6 @@ namespace DotNetNuke.Tests.Content.Mocks
             return httpContext;
         }
 
-        internal static Mock<IScopeTypeController> CreateMockScopeTypeController()
-        {
-            // Create the mock
-            var mockScopeTypes = new Mock<IScopeTypeController>();
-            mockScopeTypes.Setup(s => s.GetScopeTypes()).Returns(TestScopeTypes);
-
-            //Register Mock
-            return RegisterMockController(mockScopeTypes);
-        }
-
-        internal static Mock<ITermController> CreateMockTermController()
-        {
-            // Create the mock
-            var mockTerms = new Mock<ITermController>();
-            mockTerms.Setup(t => t.GetTermsByVocabulary(Constants.VOCABULARY_ValidVocabularyId)).Returns(TestTerms);
-
-            //Return Mock
-            return mockTerms;
-        }
-
         internal static Mock<IVocabularyController> CreateMockVocabularyController()
         {
             // Create the mock
@@ -492,37 +439,6 @@ namespace DotNetNuke.Tests.Content.Mocks
             }
 
             return table.CreateDataReader();
-        }
-
-
-        internal static Mock<ObjectValidator> EnableValidMockValidator<T>(Validator validator, T target) where T : class
-        {
-            return EnableMockValidator(validator, ValidationResult.Successful, target);
-        }
-
-        internal static Mock<ObjectValidator> EnableInvalidMockValidator<T>(Validator validator, T target) where T : class
-        {
-            return EnableMockValidator(validator, InvalidResult, target);
-        }
-
-        internal static Mock<ObjectValidator> EnableMockValidator<T>(Validator validator, ValidationResult result, T target) where T : class
-        {
-            Mock<ObjectValidator> mockValidator = new Mock<ObjectValidator>();
-
-            Expression<Func<ObjectValidator, ValidationResult>> setupExpression;
-            if (target == null)
-            {
-                setupExpression = v => v.ValidateObject(It.IsAny<T>());
-            }
-            else
-            {
-                setupExpression = v => v.ValidateObject(target);
-            }
-            mockValidator.Setup(setupExpression).Returns(result);
-
-            validator.Validators.Clear();
-            validator.Validators.Add(mockValidator.Object);
-            return mockValidator;
         }
 
         internal static IFileInfo CreateRandomFile(int fileId)

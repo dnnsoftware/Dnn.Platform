@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="ContentTestHelper.cs" />
     <Compile Include="DnnUnitTest.cs" />
     <Compile Include="EnumerableAssert.cs" />
     <Compile Include="ExceptionAssert.cs" />

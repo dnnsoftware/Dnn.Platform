@@ -18,10 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-using System;
-using System.Collections.Generic;
 
-using DotNetNuke.ComponentModel;
+using System;
+
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
@@ -30,7 +29,6 @@ using DotNetNuke.Modules.Taxonomy.Views;
 using DotNetNuke.Modules.Taxonomy.Views.Models;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Data.Fakes;
 using DotNetNuke.Tests.Utilities.Mocks;
 using DotNetNuke.UI.Modules;
 
@@ -38,7 +36,7 @@ using Moq;
 
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.Presenters
+namespace DotNetNuke.Tests.Taxonomy
 {
     /// <summary>
     ///   Summary description for VocabulariesListPresenter Tests
@@ -46,8 +44,7 @@ namespace DotNetNuke.Tests.Content.Presenters
     [TestFixture]
     public class VocabularyListPresenterTests
     {
-         private Mock<CachingProvider> mockCache;
-	    private Mock<PermissionProvider> _mockPermission;
+        private Mock<PermissionProvider> _mockPermission;
 
         #region SetUp and TearDown
 
@@ -55,7 +52,7 @@ namespace DotNetNuke.Tests.Content.Presenters
         public void SetUp()
         {
             //Register MockCachingProvider
-            mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            MockComponentProvider.CreateNew<CachingProvider>();
 			_mockPermission = MockComponentProvider.CreateNew<PermissionProvider>();
 
 			var mockData = MockComponentProvider.CreateNew<DataProvider>();
@@ -180,7 +177,7 @@ namespace DotNetNuke.Tests.Content.Presenters
 		{
 			var context = new ModuleInstanceContext { Configuration = new ModuleInfo() };
 			context.Configuration.ModulePermissions = new ModulePermissionCollection();
-			context.Configuration.ModulePermissions.Add(new ModulePermissionInfo() {PermissionKey = "Edit"});
+			context.Configuration.ModulePermissions.Add(new ModulePermissionInfo {PermissionKey = "Edit"});
 			return context;
 		}
     }

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{22A67B3F-D9B6-4447-A3F7-E387075AF969}</ProjectGuid>
+    <ProjectGuid>{86019DD5-96F3-4748-B47C-E51D0E81F219}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetNuke.Tests.Content</RootNamespace>
-    <AssemblyName>DotNetNuke.Tests.Content</AssemblyName>
+    <RootNamespace>DotNetNuke.Tests.Taxonomy</RootNamespace>
+    <AssemblyName>DotNetNuke.Tests.Taxonomy</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -80,18 +80,16 @@
     <Reference Include="Telerik.Web.UI">
       <HintPath>..\..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
     </Reference>
+    <Reference Include="WebFormsMvp">
+      <HintPath>..\..\..\packages\WebFormsMvp.1.2.0.0\lib\WebFormsMvp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ContentControllerTests.cs" />
-    <Compile Include="ContentTypeControllerTests.cs" />
-    <Compile Include="AttachmentControllerTests.cs" />
-    <Compile Include="Mocks\MockHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ScopeTypeControllerTests.cs" />
-    <Compile Include="TermControllerTests.cs" />
-    <Compile Include="VocabularyControllerTests.cs" />
+    <Compile Include="CreateVocabularyPresenterTests.cs" />
+    <Compile Include="EditVocabularyPresenterTests.cs" />
+    <Compile Include="Mocks\MockHelper.cs" />
+    <Compile Include="VocabularyListPresenterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
@@ -105,6 +103,10 @@
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
       <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Modules\Taxonomy\DotNetNuke.Modules.Taxonomy.csproj">
+      <Project>{7B8E5F63-8BDD-454F-AFCE-0C824C7CAE67}</Project>
+      <Name>DotNetNuke.Modules.Taxonomy</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Tests.Data\DotNetNuke.Tests.Data.csproj">
       <Project>{2595aade-d3e0-4205-b8af-109cb23f4223}</Project>
@@ -139,9 +141,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

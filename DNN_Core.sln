@@ -76,10 +76,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.FiftyOneClientCapabilityProvider", "DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\Provider.FiftyOneClientCapabilityProvider.csproj", "{0EB2D920-395F-4DB7-8525-D9712E92FC3E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{7A8F690C-1779-425D-8A89-132E9371AFBB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Taxonomy", "DNN Platform\Modules\Taxonomy\DotNetNuke.Modules.Taxonomy.csproj", "{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -198,14 +194,6 @@ Global
 		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Release|x86.ActiveCfg = Release|Any CPU
-		{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}.Debug|x86.ActiveCfg = Debug|x86
-		{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}.Debug|x86.Build.0 = Debug|x86
-		{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}.Release|x86.ActiveCfg = Release|x86
-		{9355B984-F051-4C5F-812C-3EA6AAF3F1CF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -228,6 +216,5 @@ Global
 		{96FD101E-326A-4038-A081-A347061A6B77} = {98739F02-F34A-4427-9A17-C0509E7AAD75}
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
 		{0EB2D920-395F-4DB7-8525-D9712E92FC3E} = {68F5A9B4-99E1-4FB8-B19C-DCC63C87B4A7}
-		{9355B984-F051-4C5F-812C-3EA6AAF3F1CF} = {7A8F690C-1779-425D-8A89-132E9371AFBB}
 	EndGlobalSection
 EndGlobal

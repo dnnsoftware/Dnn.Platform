@@ -18,10 +18,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data.SqlClient;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -32,7 +32,7 @@ using DotNetNuke.Modules.Taxonomy.Presenters;
 using DotNetNuke.Modules.Taxonomy.Views;
 using DotNetNuke.Modules.Taxonomy.Views.Models;
 using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Content.Mocks;
+using DotNetNuke.Tests.Taxonomy.Mocks;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using DotNetNuke.Web.UI.WebControls;
@@ -42,7 +42,7 @@ using Moq;
 
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.Presenters
+namespace DotNetNuke.Tests.Taxonomy
 {
     /// <summary>
     ///   Summary description for VocabulariesListPresenter Tests
