@@ -6,6 +6,7 @@
 <script language="javascript" type="text/javascript">
 /*globals jQuery, window, Sys */
 (function ($, Sys) {
+	var needReload = false;
 	function setUpTabsModule() {
 		$('#dnnTabsModule').dnnPanels()
 			.find('.dnnFormExpandContent a').dnnExpandAll({
@@ -22,6 +23,10 @@
 				$("#btnPageSearch", $('#dnnTabsModule')).click();
 				e.preventDefault();
 			}
+		});
+		
+		$("#<%=cmdUpdate.ClientID%>").click(function() {
+			needReload = true;
 		});
 	}
 
@@ -89,11 +94,15 @@
 				setTimeout(msgQueue[0], 0);
 				msgQueue.splice(0, 1);
 			}
-		}
+		};
 
 		Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-			setUpTabsModule();
-			processMsgQueue();
+			if (needReload) {
+				location.reload();
+			} else {
+				setUpTabsModule();
+				processMsgQueue();
+			}
 		});
 	});
 
