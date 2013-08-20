@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="RazorHost.ascx.cs">
       <DependentUpon>RazorHost.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="RazorHostSettingsExtensions.cs" />
     <Compile Include="Settings.ascx.designer.cs">
