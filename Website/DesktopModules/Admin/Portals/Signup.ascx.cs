@@ -347,7 +347,8 @@ namespace DotNetNuke.Modules.Admin.Portals
 
                     //check whether have conflict between tab path and portal alias.
                     var checkTabPath = string.Format("//{0}", strPortalAlias);
-                    if (TabController.GetTabByTabPath(PortalSettings.PortalId, checkTabPath, string.Empty) != Null.NullInteger)
+                    if (TabController.GetTabByTabPath(PortalSettings.PortalId, checkTabPath, string.Empty) != Null.NullInteger
+						|| TabController.GetTabByTabPath(Null.NullInteger, checkTabPath, string.Empty) != Null.NullInteger)
                     {
                         message = Localization.GetString("DuplicateWithTab", LocalResourceFile);
                     }
