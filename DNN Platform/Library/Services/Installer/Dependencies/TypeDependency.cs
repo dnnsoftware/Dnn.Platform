@@ -41,14 +41,14 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// -----------------------------------------------------------------------------
     public class TypeDependency : DependencyBase
     {
-        private readonly string _dependentType = String.Empty;
+        private string _missingDependentType = String.Empty;
         private string _dependentTypes;
 
         public override string ErrorMessage
         {
             get
             {
-                return Util.INSTALL_Namespace + " - " + _dependentType;
+                return Util.INSTALL_Namespace + " - " + _missingDependentType;
             }
         }
 
@@ -65,6 +65,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
                         {
                             if (Reflection.CreateType(dependentType, true) == null)
                             {
+                                _missingDependentType = dependentType;
                                 isValid = false;
                                 break;
                             }
