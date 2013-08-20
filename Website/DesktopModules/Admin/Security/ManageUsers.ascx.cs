@@ -507,6 +507,8 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlMembership.MembershipPasswordUpdateChanged += MembershipPasswordUpdateChanged;
             ctlMembership.MembershipUnAuthorized += MembershipUnAuthorized;
             ctlMembership.MembershipUnLocked += MembershipUnLocked;
+            ctlMembership.MembershipDemoteFromSuperuser += MembershipDemoteFromSuperuser;
+            ctlMembership.MembershipPromoteToSuperuser += MembershipPromoteToSuperuser;
             
             jQuery.RequestDnnPluginsRegistration();
 
@@ -709,6 +711,58 @@ namespace DotNetNuke.Modules.Admin.Users
             try
             {
                 AddModuleMessage("UserPasswordUpdateChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
+
+                BindMembership();
+            }
+            catch (Exception exc) //Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// MembershipPromoteToSuperuser runs when the User has been promoted to a superuser
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void MembershipPromoteToSuperuser(object sender, EventArgs e)
+        {
+            if (IsAdmin == false)
+            {
+                return;
+            }
+            try
+            {
+                AddModuleMessage("UserPromotedToSuperuser", ModuleMessage.ModuleMessageType.GreenSuccess, true);
+
+                BindMembership();
+            }
+            catch (Exception exc) //Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// MembershipDemoteFromSuperuser runs when the User has been demoted to a regular user
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void MembershipDemoteFromSuperuser(object sender, EventArgs e)
+        {
+            if (IsAdmin == false)
+            {
+                return;
+            }
+            try
+            {
+                AddModuleMessage("UserDemotedFromSuperuser", ModuleMessage.ModuleMessageType.GreenSuccess, true);
 
                 BindMembership();
             }

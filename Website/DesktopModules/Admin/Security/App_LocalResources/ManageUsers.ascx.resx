@@ -265,4 +265,10 @@
   <data name="MembershipDetails.Text" xml:space="preserve">
     <value>Account Information</value>
   </data>
+  <data name="UserPromotedToSuperuser.Text" xml:space="preserve">
+    <value>User has been updated to be a SuperUser.</value>
+  </data>
+  <data name="UserDemotedFromSuperuser.Text" xml:space="preserve">
+    <value>User has been updated to be a regular user.</value>
+  </data>
 </root>

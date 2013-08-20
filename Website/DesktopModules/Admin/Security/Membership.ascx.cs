@@ -21,14 +21,12 @@
 #region Usings
 
 using System;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -91,11 +89,47 @@ namespace DotNetNuke.Modules.Admin.Users
         public event EventHandler MembershipPasswordUpdateChanged;
         public event EventHandler MembershipUnAuthorized;
         public event EventHandler MembershipUnLocked;
-
-		#endregion
+        public event EventHandler MembershipPromoteToSuperuser;
+        public event EventHandler MembershipDemoteFromSuperuser;
+        
+        #endregion
 
 		#region "Event Methods"
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Raises the MembershipPromoteToSuperuser Event
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public void OnMembershipPromoteToSuperuser(EventArgs e)
+        {
+            if (IsUserOrAdmin == false)
+            {
+                return;
+            }
+            if (MembershipPromoteToSuperuser != null)
+            {
+                MembershipPromoteToSuperuser(this, e);
+            }
+        }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Raises the MembershipPromoteToSuperuser Event
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public void OnMembershipDemoteFromSuperuser(EventArgs e)
+        {
+            if (IsUserOrAdmin == false)
+            {
+                return;
+            }
+            if (MembershipDemoteFromSuperuser != null)
+            {
+                MembershipDemoteFromSuperuser(this, e);
+            }
+        }
+
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipAuthorized Event
@@ -205,7 +239,20 @@ namespace DotNetNuke.Modules.Admin.Users
                 cmdAuthorize.Visible = !UserMembership.Approved;
                 cmdPassword.Visible = !UserMembership.UpdatePassword;
             }
+            if (UserController.GetCurrentUserInfo().IsSuperUser)
+            {
+                cmdToggleSuperuser.Visible = true;
+               
+                if (User.IsSuperUser)
+                {
+                    cmdToggleSuperuser.Text = Localization.GetString("DemoteFromSuperUser", LocalResourceFile);
+                }
+                else
+                {
+                    cmdToggleSuperuser.Text = Localization.GetString("PromoteToSuperUser", LocalResourceFile);
+                }
 
+            }
             lastLockoutDate.Value = UserMembership.LastLockoutDate.Year > 2000 
                                         ? (object) UserMembership.LastLockoutDate 
                                         : LocalizeString("Never");
@@ -243,7 +290,9 @@ namespace DotNetNuke.Modules.Admin.Users
             cmdPassword.Click += cmdPassword_Click;
             cmdUnAuthorize.Click += cmdUnAuthorize_Click;
             cmdUnLock.Click += cmdUnLock_Click;
+            cmdToggleSuperuser.Click+=cmdToggleSuperuser_Click;
         }
+
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -346,7 +395,37 @@ namespace DotNetNuke.Modules.Admin.Users
 
             OnMembershipUnAuthorized(EventArgs.Empty);
         }
+        /// <summary>
+        /// cmdToggleSuperuser_Click runs when the toggle superuser button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdToggleSuperuser_Click(object sender, EventArgs e)
+        {
+            if (IsUserOrAdmin == false)
+            {
+                return;
+            }
+            if (Request.IsAuthenticated != true) return;
+            ////ensure only superusers can change user superuser state
+            if (UserController.GetCurrentUserInfo().IsSuperUser != true) return;
+            
+            var currentSuperUserState = User.IsSuperUser;
+            User.IsSuperUser = !currentSuperUserState;
+            //Update User
+            UserController.UpdateUser(PortalId, User);
+            DataCache.ClearCache();
+   
+            if (currentSuperUserState)
+            {
+                OnMembershipDemoteFromSuperuser(EventArgs.Empty);
+            }
+            else
+            {
+                OnMembershipPromoteToSuperuser(EventArgs.Empty);
+            }
 
+        }
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdUnlock_Click runs when the Unlock Account Button is clicked

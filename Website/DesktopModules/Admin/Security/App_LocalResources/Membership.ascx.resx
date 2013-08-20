@@ -195,4 +195,10 @@
   <data name="OptionUnavailable.Text" xml:space="preserve">
     <value>Reset Password option is currently unavailable.</value>
   </data>
+  <data name="DemoteFromSuperUser.Text" xml:space="preserve">
+    <value>Make Regular User.</value>
+  </data>
+  <data name="PromoteToSuperUser.Text" xml:space="preserve">
+    <value>Make SuperUser.</value>
+  </data>
 </root>
