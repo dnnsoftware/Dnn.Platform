@@ -11,8 +11,7 @@
 *.sln.docstates
 
 # Build results
-[Dd]ebug/
-[Rr]elease/
+[Rr]elease
 *_i.c
 *_p.c
 *.ilk
@@ -71,11 +70,13 @@ UpgradeLog*.XML
 DNN [Pp]latform/[Cc]omponents/[Cc]lient[Dd]ependency/[Ss]ource/[Bb]in
 DNN [Pp]latform/[Cc]ontrols/[Cc]ountry[Ll]ist[Bb]ox/[Bb]in/*
 
-DNN [Pp]latform/*/[Bb]in/*
+DNN [Pp]latform/*/[Bb]in
+DNN [Pp]latform/Tests/*/[Bb]in/*
 DNN [Pp]latform/Modules/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/*/[Bb]in/*
 DNN [Pp]latform/Syndication/[Bb]in/*
+
 
 [Ww]ebsite/[Aa]pp_[Dd]ata
 

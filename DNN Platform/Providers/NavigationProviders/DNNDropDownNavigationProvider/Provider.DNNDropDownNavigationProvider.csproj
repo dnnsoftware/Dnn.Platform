@@ -68,7 +68,9 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DNNDropDownNavigationProvider.cs" />
+    <Compile Include="DNNDropDownNavigationProvider.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\DotNetNuke.Library.csproj">
