@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="cmdDeleteModule.Text" xml:space="preserve">
+    <value>Permanently delete this module</value>
+  </data>
+  <data name="cmdRestoreModule.Text" xml:space="preserve">
+    <value>Restore this module to the page</value>
+  </data>
   <data name="CopyModule.Text" xml:space="preserve">
     <value>Copy Module</value>
   </data>
@@ -137,6 +143,9 @@
   </data>
   <data name="ModuleColHeader.Text" xml:space="preserve">
     <value>Page Modules</value>
+  </data>
+  <data name="ModuleDeleted.Text" xml:space="preserve">
+    <value>This module is deleted, and exists in the recycle bin</value>
   </data>
   <data name="ModuleInfo.Text" xml:space="preserve">
     <value>Module: {0}&lt;br/&gt;ModuleTitle: {1}&lt;br/&gt;Pane: {2}</value>

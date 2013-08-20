@@ -88,8 +88,8 @@
                                 <asp:Panel ID="pDnnModule" runat="server" Visible='<%# Convert.ToBoolean(Eval("Exist")) && Convert.ToBoolean(Eval("CanViewModule")) %>' class="dnnFormItem">
                                     <asp:HiddenField ID="hfTabModuleID" runat="server" Value='<%# Eval("TabModuleID") %>' />
                                     <dnn:Label ID="plInfo" runat="server" HelpText='<%# GetModuleInfo(Eval("ModuleID")) %>'></dnn:Label>
-                                    <asp:TextBox ID="tbModuleTitle" runat="server" Text='<%# Eval("ModuleTitle") %>' Visible='<%# Eval("Exist") %>' ToolTip='<%# LocalizeString("ModuleTitle.Text")%>' Enabled='<%# Eval("CanAdminModule") %>'></asp:TextBox>
-                                    <div class="infoCheckBoxes" runat="server" visible='<%# Convert.ToBoolean(Eval("LocalizedVisible")) || Convert.ToBoolean(Eval("TranslatedVisible")) %>'>
+                                    <asp:TextBox ID="tbModuleTitle" runat="server" Text='<%# Eval("ModuleTitle") %>' Visible='<%# Eval("Exist") %>' ToolTip='<%# GetModuleTitleHint(Convert.ToBoolean(Eval("IsDeleted")))%>' Enabled='<%# Convert.ToBoolean(Eval("CanAdminModule")) && !Convert.ToBoolean(Eval("IsDeleted")) %>' CssClass='<%# DeletedClass(Convert.ToBoolean(Eval("IsDeleted")))%>'></asp:TextBox>
+                                    <div class="infoCheckBoxes" runat="server" visible='<%# ( Convert.ToBoolean(Eval("LocalizedVisible")) || Convert.ToBoolean(Eval("TranslatedVisible")) ) && !Convert.ToBoolean(Eval("IsDeleted")) %>'>
                                         <div class='detached-<%# Eval("CultureCode") + "-" + Eval("TabId") %> infoCheckBox'>
                                             <asp:CheckBox ID="cbLocalized" runat="server" Checked='<%# Eval("IsLocalized")  %>' Visible='<%# Eval("LocalizedVisible") %>' ToolTip='<%# Eval("LocalizedTooltip") %>' CssClass="detached" />
                                         </div>
@@ -97,7 +97,27 @@
                                             <asp:CheckBox ID="cbTranslated" runat="server" Checked='<%# Eval("IsTranslated")  %>' Visible='<%# Eval("TranslatedVisible")  %>' ToolTip='<%# Eval("TranslatedTooltip")  %>' />
                                         </div>
                                     </div>
-                                </asp:Panel>
+                                    <div id="DeletedModuleActions" class="infoActions" runat="server" visible='<%# Convert.ToBoolean(Eval("IsDeleted")) %>'>
+                                        <div class="infoCheckBox">
+                                            <asp:LinkButton ID="cmdRestoreModule" runat="server" 
+                                                    CommandArgument='<%# Eval("TabModuleID") %>' 
+                                                    OnClick="cmdRestoreModule" 
+                                                    CausesValidation="False"  
+                                                    ToolTip='<%# LocalizeString("cmdRestoreModule") %>'>
+                                                <dnn:DnnImage ID="DnnImage1" runat="server" ResourceKey="cmdRestoreModule" IconKey="FolderRefreshSync" IconStyle="Gray" />
+                                            </asp:LinkButton>
+                                        </div>
+                                        <div class="infoCheckBox">
+                                            <asp:LinkButton ID="cmdDeleteModule" runat="server" 
+                                                    CommandArgument='<%# Eval("TabModuleID") %>' 
+                                                    OnClick="cmdDeleteModule" 
+                                                    CausesValidation="False"  
+                                                    ToolTip='<%# LocalizeString("cmdDeleteModule") %>'>
+                                                <dnn:DnnImage ID="imgDeleteTranslation" runat="server" ResourceKey="cmdDeleteModule" IconKey="Delete" IconStyle="Gray" />
+                                            </asp:LinkButton>
+                                        </div>
+                                    </div>
+                                 </asp:Panel>
                                 <asp:Panel ID="Panel1" runat="server" Visible='<%# Convert.ToBoolean(Eval("Exist")) && !Convert.ToBoolean(Eval("CanViewModule")) %>' class="dnnFormItem" />
 
                             </td>
@@ -140,6 +160,15 @@
                 
                 $(this).dnnConfirm({
                     text: customText,
+                    yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+                    noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+                    title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+                });
+            });
+            
+            $('a[id*="cmdDeleteModule"]').each(function (index) {
+                $(this).dnnConfirm({
+                    text: '<%= Localization.GetSafeJSString("DeleteModule.Confirm", Localization.SharedResourceFile) %>',
                     yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
                     noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
                     title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'

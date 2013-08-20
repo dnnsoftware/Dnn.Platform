@@ -245,6 +245,13 @@
     margin-top: 3px
 }
 
+#DnnPages .infoActions {
+    float: right; 
+    padding-left: 0px; 
+    padding-right: 5px; 
+    margin-top: 3px
+}
+
 #DnnPages .dnnLabel {
     padding-left: 9px;
 }
@@ -285,4 +292,11 @@
 
 #DnnPages .detached .dnnCheckbox-checked img {
     background-position: -51px 0px;
+}
+
+#DnnPages .moduleDeleted
+{
+    background-color: red;
+    background-color: rgba(255, 0, 0, 0.5);
+    color: white;
 }

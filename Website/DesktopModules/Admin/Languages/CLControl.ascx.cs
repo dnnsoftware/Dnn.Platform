@@ -117,6 +117,37 @@ namespace DotNetNuke.Modules.Admin.Languages
             }
         }
 
+        protected void cmdDeleteModule(object sender, EventArgs e)
+        {
+            if ((sender) is LinkButton)
+            {
+                var cmdDeleteModule = (LinkButton)sender;
+                var tabModuleId = int.Parse(cmdDeleteModule.CommandArgument);
+                var moduleInfo = ModuleController.GetTabModule(tabModuleId);
+                ModuleController.DeleteTabModule(moduleInfo.TabID, moduleInfo.ModuleID, false);
+                Response.Redirect(Request.RawUrl, false);
+            }
+
+        }
+
+        protected void cmdRestoreModule(object sender, EventArgs e)
+        {
+            if ((sender) is LinkButton)
+            {
+                var cmdRestoreModule = (LinkButton)sender;
+                var tabModuleId = int.Parse(cmdRestoreModule.CommandArgument);
+                var moduleInfo = ModuleController.GetTabModule(tabModuleId);
+                ModuleController.RestoreModule(moduleInfo);
+                Response.Redirect(Request.RawUrl, false);
+            }
+        }
+
+        protected string GetModuleTitleHint(bool isDeleted)
+        {
+            return LocalizeString(isDeleted ? "ModuleDeleted.Text" : "ModuleTitle.Text");
+        }
+
+
         protected string GetModuleInfo(object moduleID)
         {
             string returnValue = "";
@@ -125,13 +156,20 @@ namespace DotNetNuke.Modules.Admin.Languages
                 var moduleInfo = ModuleController.GetModule((int)moduleID);
                 if (moduleInfo != null)
                 {
-                    if (ModulePermissionController.CanAdminModule(moduleInfo))
+                    if (moduleInfo.IsDeleted)
                     {
-                        returnValue = string.Format(LocalizeString("ModuleInfo.Text"), moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName);
+                        returnValue = LocalizeString("ModuleDeleted.Text");
                     }
                     else
                     {
-                        returnValue = LocalizeString("ModuleInfoForNonAdmins.Text");
+                        if (ModulePermissionController.CanAdminModule(moduleInfo))
+                        {
+                            returnValue = string.Format(LocalizeString("ModuleInfo.Text"), moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName);
+                        }
+                        else
+                        {
+                            returnValue = LocalizeString("ModuleInfoForNonAdmins.Text");
+                        }
                     }
                 }
             }
@@ -169,6 +207,11 @@ namespace DotNetNuke.Modules.Admin.Languages
                 isPublished = enabledLanguage.IsPublished && (enabledLanguage.Code != PortalSettings.DefaultLanguage);
             }
             return isPublished;
+        }
+
+        protected string DeletedClass(bool isDeleted)
+        {
+            return isDeleted ? "moduleDeleted" : "";
         }
 
         #endregion
@@ -306,7 +349,8 @@ namespace DotNetNuke.Modules.Admin.Languages
                 dnnPage.IsTranslated = localTabInfo.IsTranslated;
                 dnnPage.IsPublished = TabController.IsTabPublished(localTabInfo);
                 // generate modules information
-                foreach (var moduleInfo in ModuleController.GetTabModules(localTabInfo.TabID).Values.Where(m => !m.IsDeleted))
+                foreach (var moduleInfo in ModuleController.GetTabModules(localTabInfo.TabID).Values)
+                //foreach (var moduleInfo in ModuleController.GetTabModules(localTabInfo.TabID).Values.Where(m => !m.IsDeleted))
                 {
                     var guid = moduleInfo.DefaultLanguageGuid == Null.NullGuid ? moduleInfo.UniqueId : moduleInfo.DefaultLanguageGuid;
 
@@ -328,7 +372,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     dnnModule.ModuleID = moduleInfo.ModuleID;
                     dnnModule.CanAdminModule = ModulePermissionController.CanAdminModule(moduleInfo);
                     dnnModule.CanViewModule = ModulePermissionController.CanViewModule(moduleInfo);
-
+                    dnnModule.IsDeleted = moduleInfo.IsDeleted;
                     if (moduleInfo.DefaultLanguageGuid != Null.NullGuid)
                     {
                         ModuleInfo defaultLanguageModule = ModuleController.GetModuleByUniqueID(moduleInfo.DefaultLanguageGuid);
@@ -471,6 +515,8 @@ namespace DotNetNuke.Modules.Admin.Languages
                                         var tabId = int.Parse(hfTabID.Value);
                                         var toTabInfo = TabController.GetTab(tabId, PortalSettings.PortalId, false);
                                         ModuleController.CopyModule(miCopy, toTabInfo, Null.NullString, true);
+                                        var localizedModule = ModuleController.GetModule(miCopy.ModuleID, tabId);
+                                        ModuleController.LocalizeModule(localizedModule,LocaleController.Instance.GetLocale(localizedModule.CultureCode));
                                     }
                                     else
                                     {
@@ -852,6 +898,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             public bool IsTranslated { get; set; }
             public bool IsLocalized { get; set; }
             public bool IsShared { get; set; }
+            public bool IsDeleted { get; set; }
             public bool ErrorDuplicateModule { get; set; }
             public bool ErrorDefaultOnOtherTab { get; set; }
             public bool ErrorCultureOfModuleNotCultureOfTab { get; set; }
