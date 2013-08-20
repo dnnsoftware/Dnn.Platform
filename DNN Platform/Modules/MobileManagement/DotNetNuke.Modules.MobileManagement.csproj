@@ -14,10 +14,6 @@
     <RootNamespace>DotNetNuke.Modules.MobileManagement</RootNamespace>
     <AssemblyName>DotNetNuke.Modules.MobileManagement</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
     <UseIISExpress>false</UseIISExpress>
     <TargetFrameworkProfile />
     <FileUpgradeFlags>

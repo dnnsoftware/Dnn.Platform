@@ -14,10 +14,6 @@
     <AssemblyName>DotNetNuke.Modules.CoreMessaging</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
     <UseIISExpress>false</UseIISExpress>
     <FileUpgradeFlags>
