@@ -282,13 +282,13 @@ namespace DotNetNuke.Framework
             if (Host.DisplayCopyright)
             {
                 Comment += string.Concat(Environment.NewLine,
-                                         "<!--**********************************************************************************-->",
+                                         "<!--************************************************************************************-->",
                                          Environment.NewLine,
-                                         "<!-- DotNetNuke - http://www.dotnetnuke.com                                          -->",
+                                         "<!-- DNN Platform - http://www.dnnsoftware.com                                        -->",
                                          Environment.NewLine,
                                          "<!-- Copyright (c) 2002-2013                                                          -->",
                                          Environment.NewLine,
-                                         "<!-- by DotNetNuke Corporation                                                        -->",
+                                         "<!-- by DNN Corporation                                                               -->",
                                          Environment.NewLine,
                                          "<!--**********************************************************************************-->",
                                          Environment.NewLine);
