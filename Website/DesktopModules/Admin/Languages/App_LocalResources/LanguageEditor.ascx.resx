@@ -252,4 +252,19 @@
   <data name="SiteTemplates.Text" xml:space="preserve">
     <value>Site Templates</value>
   </data>
+  <data name="Exceptions.Text" xml:space="preserve">
+    <value>Exceptions</value>
+  </data>
+  <data name="HostSkins.Text" xml:space="preserve">
+    <value>Host Skins</value>
+  </data>
+  <data name="PortalSkins.Text" xml:space="preserve">
+    <value>Site Skins</value>
+  </data>
+  <data name="Template.Text" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="WebControls.Text" xml:space="preserve">
+    <value>WebControls</value>
+  </data>
 </root>

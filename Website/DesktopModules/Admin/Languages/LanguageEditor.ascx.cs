@@ -884,17 +884,20 @@ namespace DotNetNuke.Modules.Admin.Languages
                     node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
                     e.Node.Nodes.Add(node);
 
-                    node = new RadTreeNode();
-                    node.Text = "HostSkins";
-                    node.Value = Path.Combine(Globals.HostMapPath, "Skins");
-                    node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
-                    e.Node.Nodes.Add(node);
+                    if (HasLocalResources(Path.Combine(Globals.HostMapPath, "Skins")))
+                    {
+                        node = new RadTreeNode();
+                        node.Text = LocalizeString("HostSkins");
+                        node.Value = Path.Combine(Globals.HostMapPath, "Skins");
+                        node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+                        e.Node.Nodes.Add(node);
+                    }
 
                     string portalSkinFolder = Path.Combine(PortalSettings.HomeDirectoryMapPath, "Skins");
                     if (Directory.Exists(portalSkinFolder) && (PortalSettings.ActiveTab.ParentId == PortalSettings.AdminTabId))
                     {
                         node = new RadTreeNode();
-                        node.Text = "PortalSkins";
+                        node.Text = LocalizeString("PortalSkins");
                         node.Value = Path.Combine(PortalSettings.HomeDirectoryMapPath, "Skins");
                         node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
                         e.Node.Nodes.Add(node);
@@ -902,7 +905,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     break;
                 case "Global Resources":
                     node = new RadTreeNode();
-                    node.Text = "Exceptions";
+                    node.Text = LocalizeString("Exceptions");
                     node.Value = Server.MapPath("~/App_GlobalResources/Exceptions");
                     e.Node.Nodes.Add(node);
                     node = new RadTreeNode();
@@ -914,11 +917,11 @@ namespace DotNetNuke.Modules.Admin.Languages
                     node.Value = Server.MapPath(Localization.SharedResourceFile);
                     e.Node.Nodes.Add(node);
                     node = new RadTreeNode();
-                    node.Text = "Template";
+                    node.Text = LocalizeString("Template");
                     node.Value = Server.MapPath("~/App_GlobalResources/Template");
                     e.Node.Nodes.Add(node);
                     node = new RadTreeNode();
-                    node.Text = "WebControls";
+                    node.Text = LocalizeString("WebControls");
                     node.Value = Server.MapPath("~/App_GlobalResources/WebControls");
                     e.Node.Nodes.Add(node);
                     break;
@@ -926,31 +929,49 @@ namespace DotNetNuke.Modules.Admin.Languages
                     GetResxFiles(Server.MapPath("~/Portals/_default"), e);
                     break;
                 default:
-                    foreach (string folder in Directory.GetDirectories(e.Node.Value))
-                    {
-                        var folderInfo = new DirectoryInfo(folder);
-                        node = new RadTreeNode();
-                        node.Value = folderInfo.FullName;
-                        node.Text = folderInfo.Name;
-                        node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
-
-                        if (folderInfo.GetFiles("*.resx").Length > 0 || folderInfo.GetDirectories().Length > 0)
-                        {
-                            e.Node.Nodes.Add(node);
-                        }
-                    }
-
+                    GetResxDirectories(e.Node.Value, e);
                     GetResxFiles(e.Node.Value, e);
-
                     break;
             }
 
             e.Node.Expanded = true;
         }
 
+        private void GetResxDirectories(string path, RadTreeNodeEventArgs e)
+        {
+            foreach (string folder in Directory.GetDirectories(path))
+            {
+                var folderInfo = new DirectoryInfo(folder);
+                var node = new RadTreeNode {Value = folderInfo.FullName, Text = folderInfo.Name, ExpandMode = TreeNodeExpandMode.ServerSideCallBack};
+
+                if (HasLocalResources(folderInfo.FullName))
+                {
+                    e.Node.Nodes.Add(node);
+                }
+            }
+        }
+
+        private bool HasLocalResources(string path)
+        {
+            var folderInfo = new DirectoryInfo(path);
+
+            if (path.ToLowerInvariant().EndsWith(Localization.LocalResourceDirectory))
+            {
+                return true;
+            }
+            foreach (string folder in Directory.GetDirectories(path))
+            {
+                if ((File.GetAttributes(folder) & FileAttributes.ReparsePoint) != FileAttributes.ReparsePoint)
+                {
+                    folderInfo = new DirectoryInfo(folder);
+                    return HasLocalResources(folderInfo.FullName);
+                }
+            }
+            return folderInfo.GetFiles("*.resx").Length > 0;
+        }
+
         private void GetResxFiles(string path, RadTreeNodeEventArgs e)
         {
-            RadTreeNode node;
             foreach (string file in Directory.GetFiles(path, "*.resx"))
             {
                 var fileInfo = new FileInfo(file);
@@ -960,7 +981,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 {
                     continue;
                 }
-                node = new RadTreeNode {Value = fileInfo.FullName, Text = fileInfo.Name.Replace(".resx", "")};
+                var node = new RadTreeNode {Value = fileInfo.FullName, Text = fileInfo.Name.Replace(".resx", "")};
                 e.Node.Nodes.Add(node);
             }
         }
