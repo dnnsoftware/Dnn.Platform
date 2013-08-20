@@ -610,54 +610,7 @@ namespace DotNetNuke.Security.Membership
             return System.Web.Security.Membership.GetUser(userName);
         }
 
-        private void AddPasswordHistory(string password,int retained)
-        {
-            HashAlgorithm ha = HashAlgorithm.Create();
-            byte[] newSalt = GetRandomSaltValue();
-            byte[] bytePassword = Encoding.Unicode.GetBytes(password);
-            byte[] inputBuffer = new byte[bytePassword.Length + 16];
-            Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
-            Buffer.BlockCopy(newSalt, 0, inputBuffer, bytePassword.Length, 16);
-            byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
-            string hashedPassword = Convert.ToBase64String(bhashedPassword);
-
-            _dataProvider.AddPasswordHistory(UserController.GetCurrentUserInfo().UserID, hashedPassword, Convert.ToBase64String(newSalt),retained);
-        }
-
-        private byte[] GetRandomSaltValue()
-        {
-            RNGCryptoServiceProvider rcsp = new RNGCryptoServiceProvider();
-            byte[] bSalt = new byte[16];
-            rcsp.GetBytes(bSalt);
-            return bSalt;
-        }
-
-        private bool GetPasswordHistory(string password)
-        {
-            //use default algorithm (SHA1CryptoServiceProvider )
-            HashAlgorithm ha = HashAlgorithm.Create();
-            bool foundMatch = false;
-
-            var t = new MembershipPasswordController();
-            List<PasswordHistory> history = t.GetPasswordHistory();
-            foreach (var ph in history)
-            {
-                string oldEncodedPassword = ph.Password;
-                string oldEncodedSalt = ph.PasswordSalt;
-                byte[] oldSalt = Convert.FromBase64String(oldEncodedSalt);
-                byte[] bytePassword = Encoding.Unicode.GetBytes(password);
-                byte[] inputBuffer = new byte[bytePassword.Length + 16];
-                Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
-                Buffer.BlockCopy(oldSalt, 0, inputBuffer, bytePassword.Length, 16);
-                byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
-                string hashedPassword = Convert.ToBase64String(bhashedPassword);
-                if (hashedPassword == oldEncodedPassword)
-                    foundMatch = true;
-            }
-            
-            return foundMatch;
-        }
-
+       
         private UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
         {
             IDataReader dr = _dataProvider.GetUserByAuthToken(portalId, userToken, authType);
@@ -782,19 +735,11 @@ namespace DotNetNuke.Security.Membership
         public override bool ChangePassword(UserInfo user, string oldPassword, string newPassword)
         {
             MembershipUser aspnetUser = GetMembershipUser(user);
-            var settings = new MembershipPasswordSettings(user.PortalID);
-
-            if (settings.EnablePasswordHistory)
+           
+            var m = new MembershipPasswordController();
+            if (m.IsPasswordInHistory(user.PortalID, newPassword))
             {
-                if (GetPasswordHistory(newPassword) == false)
-                {
-                    AddPasswordHistory(newPassword,settings.NumberOfPasswordsStored);
-                }
-                else
-                {
-                    throw new SecurityException("Cannot use that password");
-                }
-    
+                return false;
             }
             
             if (string.IsNullOrEmpty(oldPassword))

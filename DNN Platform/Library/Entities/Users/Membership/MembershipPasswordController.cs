@@ -24,7 +24,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Security.Cryptography;
+using System.Text;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -34,24 +36,125 @@ namespace DotNetNuke.Entities.Users.Membership
 {
     public class MembershipPasswordController
     {
-        private static readonly DataProvider Provider = DataProvider.Instance();
+        #region Private Members
 
+        private readonly DataProvider _dataProvider = DataProvider.Instance();
+
+        #endregion
+
+        #region Private functions
+
+        private void AddPasswordHistory(string password, int retained)
+        {
+            HashAlgorithm ha = HashAlgorithm.Create();
+            byte[] newSalt = GetRandomSaltValue();
+            byte[] bytePassword = Encoding.Unicode.GetBytes(password);
+            var inputBuffer = new byte[bytePassword.Length + 16];
+            Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
+            Buffer.BlockCopy(newSalt, 0, inputBuffer, bytePassword.Length, 16);
+            byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
+            string hashedPassword = Convert.ToBase64String(bhashedPassword);
+
+            _dataProvider.AddPasswordHistory(UserController.GetCurrentUserInfo().UserID, hashedPassword,
+                Convert.ToBase64String(newSalt), retained);
+        }
+
+        private byte[] GetRandomSaltValue()
+        {
+            var rcsp = new RNGCryptoServiceProvider();
+            var bSalt = new byte[16];
+            rcsp.GetBytes(bSalt);
+            return bSalt;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// returns the password history of the current user
+        /// </summary>
+        /// <returns>list of PasswordHistory objects</returns>
         public List<PasswordHistory> GetPasswordHistory()
         {
-            List<PasswordHistory> history = CBO.FillCollection<PasswordHistory>(Provider.GetPasswordHistory(UserController.GetCurrentUserInfo().UserID));
+            List<PasswordHistory> history =
+                CBO.FillCollection<PasswordHistory>(
+                    _dataProvider.GetPasswordHistory(UserController.GetCurrentUserInfo().UserID));
             return history;
         }
 
+        /// <summary>
+        /// checks to see if the password is in history and adds it if it is not
+        /// </summary>
+        /// <param name="portalId">portalid - futureproofing against any setting become site level</param>
+        /// <param name="newPassword">users new password suggestion</param>
+        /// <returns>true if password is unique in users history, false otherwise</returns>
+        public bool IsPasswordInHistory(int portalId, string newPassword)
+        {
+            Requires.NotNullOrEmpty("newPassword", newPassword);
+            bool isNewPassword = false;
+            var settings = new MembershipPasswordSettings(portalId);
+            if (settings.EnablePasswordHistory)
+            {
+                if (IsPasswordPreviouslyUser(newPassword) == false)
+                {
+                    AddPasswordHistory(newPassword, settings.NumberOfPasswordsStored);
+                    isNewPassword = true;
+                }
+            }
+            return isNewPassword;
+        }
 
+        /// <summary>
+        /// checks if the new password matches a previously used password when hashed with the same salt
+        /// </summary>
+        /// <param name="password">users entered new password</param>
+        /// <returns>true if previously used, false otherwise</returns>
+        public bool IsPasswordPreviouslyUser(string password)
+        {
+            //use default algorithm (SHA1CryptoServiceProvider )
+            HashAlgorithm ha = HashAlgorithm.Create();
+            bool foundMatch = false;
+
+            List<PasswordHistory> history = GetPasswordHistory();
+            foreach (PasswordHistory ph in history)
+            {
+                string oldEncodedPassword = ph.Password;
+                string oldEncodedSalt = ph.PasswordSalt;
+                byte[] oldSalt = Convert.FromBase64String(oldEncodedSalt);
+                byte[] bytePassword = Encoding.Unicode.GetBytes(password);
+                var inputBuffer = new byte[bytePassword.Length + 16];
+                Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
+                Buffer.BlockCopy(oldSalt, 0, inputBuffer, bytePassword.Length, 16);
+                byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
+                string hashedPassword = Convert.ToBase64String(bhashedPassword);
+                if (hashedPassword == oldEncodedPassword)
+                    foundMatch = true;
+            }
+
+            return foundMatch;
+        }
+
+        /// <summary>
+        /// checks if the password reset token being used is valid i.e. has not been used before and is within the the expiration period
+        /// </summary>
+        /// <param name="userId">user attempting to reset their password</param>
+        /// <param name="resetToken">reset token supplied via email link</param>
+        /// <returns>true if value matches (so has not been used before) and is within expiration window</returns>
         public bool IsValidToken(int userId, Guid resetToken)
         {
-            if (UserController.GetCurrentUserInfo().PasswordResetToken == resetToken && UserController.GetCurrentUserInfo().PasswordResetExpiration <= DateTime.Now)
+            if (UserController.GetCurrentUserInfo().PasswordResetToken == resetToken &&
+                UserController.GetCurrentUserInfo().PasswordResetExpiration <= DateTime.Now)
             {
                 return true;
             }
             return false;
         }
 
+        /// <summary>
+        /// Checks if user entered password is on the list of banned passwords
+        /// combines host level list with current site level list
+        /// </summary>
+        /// <param name="inputString">user entered password</param>
+        /// <returns>true if password found, false otherwise</returns>
         public bool FoundBannedPassword(string inputString)
         {
             const string listName = "BannedPasswords";
@@ -59,12 +162,14 @@ namespace DotNetNuke.Entities.Users.Membership
             var listController = new ListController();
             PortalSettings settings = PortalController.GetCurrentPortalSettings();
 
-            IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
-            IEnumerable<ListEntryInfo> listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
-            
+            IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(listName, "",
+                Null.NullInteger);
+            IEnumerable<ListEntryInfo> listEntryPortalInfos =
+                listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+
             IEnumerable<ListEntryInfo> query2 = listEntryHostInfos.Where(test => test.Text == inputString);
             IEnumerable<ListEntryInfo> query3 = listEntryPortalInfos.Where(test => test.Text == inputString);
-            
+
             if (query2.Any() || query3.Any())
             {
                 return true;

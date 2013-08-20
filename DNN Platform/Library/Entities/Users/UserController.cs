@@ -505,6 +505,11 @@ namespace DotNetNuke.Entities.Users
             {
                 return false;
             }
+            var m = new MembershipPasswordController();
+            if (m.IsPasswordInHistory(user.PortalID, newPassword))
+            {
+                return false;
+            }
             
             //Although we would hope that the caller has already validated the password,
             //Validate the new Password
