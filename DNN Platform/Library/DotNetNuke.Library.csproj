@@ -1453,7 +1453,9 @@
     </Compile>
     <Compile Include="WebControls\FeedBrowser.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
-    <None Include="Module.build" />
+    <None Include="Module.build">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="UI\Diagrams\Skinning.cd" />
   </ItemGroup>
   <ItemGroup>
