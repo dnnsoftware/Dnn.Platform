@@ -399,6 +399,8 @@
     <Compile Include="UI\WebControls\Extensions\ListControlExtensions.cs" />
     <Compile Include="UI\WebControls\Extensions\WebControlExtensions.cs" />
     <Compile Include="UI\WebControls\IDnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\PropertyEditorControls\DateEditControl.cs" />
+    <Compile Include="UI\WebControls\PropertyEditorControls\DateTimeEditControl.cs" />
     <Compile Include="UI\WebControls\RibbonBarToolInfo.cs" />
     <Compile Include="UI\WebControls\TypedControlCollection.cs" />
     <Compile Include="UI\WebControls\UniformControlCollection.cs" />
@@ -510,6 +512,7 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.js" />
   </ItemGroup>
+  <ItemGroup />
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
   </Target>
   <Target Name="DebugProject">

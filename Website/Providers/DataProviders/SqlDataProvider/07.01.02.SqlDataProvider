@@ -412,6 +412,15 @@ WHERE   ( S.[Enabled] = 1 )
 ORDER BY H.[NextStart] ASC
 
 GO
+
+/***** Fix bug DNN-3322: update the date/datetime control to new type. *****/
+UPDATE {databaseOwner}[{objectQualifier}Lists] SET Text = 'DotNetNuke.Web.UI.WebControls.PropertyEditorControls.DateEditControl, DotNetNuke.Web'
+	WHERE ListName = 'DataType' AND Value = 'Date'
+
+UPDATE {databaseOwner}[{objectQualifier}Lists] SET Text = 'DotNetNuke.Web.UI.WebControls.PropertyEditorControls.DateTimeEditControl, DotNetNuke.Web'
+	WHERE ListName = 'DataType' AND Value = 'DateTime'
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

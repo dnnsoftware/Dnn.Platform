@@ -158,10 +158,14 @@ p.dnnFormRequired span
 }
 
 .dnnProfileDetails .dnnFormItem input[type="text"],
-.dnnProfileDetails .dnnFormItem select{
+.dnnProfileDetails .dnnFormItem select,
+.dnnProfileDetails .RadPicker{
     display: block;
     float: left;
     width: 300px;
+}
+.dnnProfileDetails .RadPicker .riTextBox {
+	height: auto;
 }
 .dnnProfileDetails .dnnFormItem select{
     width: 315px;
