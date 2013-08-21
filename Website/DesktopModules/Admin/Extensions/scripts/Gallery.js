@@ -125,7 +125,7 @@ function Gallery(params) {
     $(document).keydown(function (e) {
         e = e || window.event;
         if (e.which == 13) {
-            window.stop();
+            window.stop ? window.stop() : document.execCommand("stop");
             e.stopPropagation();
             e.preventDefault();
             _gallery.SearchGallery($('#searchText').val());
