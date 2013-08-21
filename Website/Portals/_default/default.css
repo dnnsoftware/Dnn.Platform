@@ -1389,7 +1389,9 @@ a.pinHelp {
 .dnnCheckbox-error img {
     background-position: -100px 0px;
 }
-
+.dnnCheckbox-focus {
+	background-color: #e3e3e5;
+}
 /* normal checkbox fix */
 .dnnFormItem input[type="checkbox"].normalCheckBox {
     display: inline-block;
@@ -1441,7 +1443,9 @@ a.pinHelp {
 .dnnRadiobutton-error img {
     background-position: -100px 0px;
 }
-
+.dnnRadiobutton-focus {
+	background-color: #e3e3e5;
+}
 /* Input RadioButton group */
 div.dnnFormRadioButtons,
 div.dnnHSRadioButtons,

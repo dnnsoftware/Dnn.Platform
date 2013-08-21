@@ -523,7 +523,7 @@
                 function (e) { ch.wrapperInner.removeClass(settings.cls + '-hover'); cb(e); }
             );
             
-            $ch.css({ position: 'absolute', zIndex: -1, visibility: 'hidden' }).after(ch.wrapper);
+            $ch.css({ position: 'absolute', zIndex: -1, opacity: 0 }).after(ch.wrapper);
             
             var label, parentLabel = false;
             label = $ch.closest('label');
@@ -575,6 +575,7 @@
 
             $ch.bind('disable', function () { ch.wrapperInner.addClass(settings.cls + '-disabled'); }).bind('enable', function () { ch.wrapperInner.removeClass(settings.cls + '-disabled'); });
             $ch.bind('check', function () { ch.wrapper.addClass(settings.cls + '-checked'); }).bind('uncheck', function () { ch.wrapper.removeClass(settings.cls + '-checked'); });
+	        $ch.bind('focus', function () { ch.wrapper.addClass(settings.cls + '-focus'); }).bind('blur', function () { ch.wrapper.removeClass(settings.cls + '-focus'); });
 
             /* Applying checkbox state */
             if (ch.checked)
