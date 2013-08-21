@@ -123,7 +123,7 @@ namespace DotNetNuke.Modules.Groups
             roleInfo.Settings.Add("ReviewMembers", chkMemberApproved.Checked.ToString());
 
             TestableRoleController.Instance.UpdateRoleSettings(roleInfo, true);
-            if (inpFile.PostedFile.ContentLength > 0)
+	    if (inpFile.PostedFile != null && inpFile.PostedFile.ContentLength > 0)
             {
                 IFileManager _fileManager = FileManager.Instance;
                 IFolderManager _folderManager = FolderManager.Instance;
