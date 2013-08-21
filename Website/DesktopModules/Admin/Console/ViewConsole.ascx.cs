@@ -418,8 +418,13 @@ namespace DesktopModules.Admin.Console
 							_tabs.Add(tab);  
 						}
 					}
-					var minLevel = _tabs.Min(t => t.Level);
-					DetailView.DataSource = _tabs.Where(t => t.Level == minLevel);
+
+				    int minLevel = -1;
+                    if (_tabs.Count > 0)
+                    {
+                        minLevel = _tabs.Min(t => t.Level);
+                    }
+					DetailView.DataSource = (minLevel > -1) ? _tabs.Where(t => t.Level == minLevel) : _tabs;
 					DetailView.DataBind();
 				}
 				if ((ConsoleWidth != string.Empty))
