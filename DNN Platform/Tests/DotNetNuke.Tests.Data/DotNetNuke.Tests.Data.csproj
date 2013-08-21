@@ -103,10 +103,6 @@
     <Compile Include="Models\CacheableCat.cs" />
     <Compile Include="Models\Dog.cs" />
     <Compile Include="Models\Person.cs" />
-    <Compile Include="PetaPocoDataContextTests.cs" />
-    <Compile Include="PetaPocoIntegrationTests.cs" />
-    <Compile Include="PetaPocoMapperTests.cs" />
-    <Compile Include="PetaPocoRepositoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DataResources.resx">

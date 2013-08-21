@@ -120,34 +120,7 @@ namespace DotNetNuke.Tests.Taxonomy
 
         #endregion
 
-        #region View Load Tests
-
-        [Test]
-        [TestCase(true)]
-        [TestCase(false)]
-        public void VocabularyListPresenter_Load_Calls_View_ShowAddButton(bool isEditable)
-        {
-			_mockPermission.Setup(p => p.HasModulePermission(It.IsAny<ModulePermissionCollection>(), It.IsAny<string>())).Returns(isEditable);
-            // Arrange
-            var mockController = new Mock<IVocabularyController>();
-            var view = new Mock<IVocabularyListView>();
-            view.Setup(v => v.Model).Returns(new VocabularyListModel());
-
-            var presenter = new VocabularyListPresenter(view.Object, mockController.Object)
-	            {
-		            ModuleContext = CreateModuleContext()
-	            };
-            presenter.IsEditable = isEditable;
-
-            // Act (Raise the Load Event)
-            view.Raise(v => v.Load += null, EventArgs.Empty);
-
-            // Assert
-            view.Verify(v => v.ShowAddButton(isEditable));
-        }
-
-        #endregion
-
+ 
         #region AddVocabulary Tests
 
         //[Test]
@@ -173,11 +146,14 @@ namespace DotNetNuke.Tests.Taxonomy
 
         #endregion
 
-		private ModuleInstanceContext CreateModuleContext()
+		private ModuleInstanceContext CreateModuleContext(bool isEditable)
 		{
 			var context = new ModuleInstanceContext { Configuration = new ModuleInfo() };
 			context.Configuration.ModulePermissions = new ModulePermissionCollection();
-			context.Configuration.ModulePermissions.Add(new ModulePermissionInfo {PermissionKey = "Edit"});
+			if (isEditable)
+			{
+                context.Configuration.ModulePermissions.Add(new ModulePermissionInfo { PermissionKey = "Edit" });
+            }
 			return context;
 		}
     }

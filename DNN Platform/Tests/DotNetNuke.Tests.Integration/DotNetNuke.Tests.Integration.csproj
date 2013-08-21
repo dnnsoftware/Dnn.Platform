@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BCA9AC2A-1DF7-4697-8836-452E13E7CAFA}</ProjectGuid>
+    <ProjectGuid>{6629A64D-58B9-48B9-B932-15AF193C2212}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetNuke.Tests.Core</RootNamespace>
-    <AssemblyName>DotNetNuke.Tests.Core</AssemblyName>
+    <RootNamespace>DotNetNuke.Tests.Integration</RootNamespace>
+    <AssemblyName>DotNetNuke.Tests.Integration</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -74,6 +74,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PetaPoco">
+      <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -92,62 +95,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Collections\CollectionExtensionTests.cs" />
-    <Compile Include="Collections\ExclusiveLockSharedDictionaryTests.cs" />
-    <Compile Include="Collections\ExclusiveLockSharedListTests.cs" />
-    <Compile Include="Collections\ExclusiveLockStrategyTests.cs" />
-    <Compile Include="Collections\LockStrategyTests.cs" />
-    <Compile Include="Collections\NaiveLockingListTests.cs" />
-    <Compile Include="Collections\PagedListTests.cs" />
-    <Compile Include="Collections\PageSelectorTests.cs" />
-    <Compile Include="Collections\PagingExtensionsTests.cs" />
-    <Compile Include="Collections\ReaderWriterLockSharedDictionaryTests.cs" />
-    <Compile Include="Collections\ReaderWriterLockSharedListTests.cs" />
-    <Compile Include="Collections\ReaderWriterLockStrategyTests.cs" />
-    <Compile Include="Collections\ReaderWriterSlimLockTests.cs" />
-    <Compile Include="Collections\SharedDictionaryTests.cs" />
-    <Compile Include="Collections\SharedListTests.cs" />
-    <Compile Include="ComponentModel\ComponentFactoryTests.cs" />
-    <Compile Include="ComponentModel\Helpers\ServiceImpl.cs" />
-    <Compile Include="ComponentModel\Helpers\IService.cs" />
-    <Compile Include="ComponentModel\Helpers\IService2.cs" />
-    <Compile Include="ComponentModel\Helpers\Service2Impl.cs" />
-    <Compile Include="ComponentModel\SimpleContainerTests.cs" />
-    <Compile Include="Controllers\ConfigurationSettingsComparer.cs" />
-    <Compile Include="Controllers\PortalControllerTests.cs" />
-    <Compile Include="Controllers\PortalGroupControllerTests.cs" />
-    <Compile Include="Controllers\HostControllerTest.cs" />
-    <Compile Include="CBOTest.cs" />
-    <Compile Include="Controllers\Search\InternalSearchControllerTests.cs" />
-    <Compile Include="Controllers\Search\LuceneControllerTests.cs" />
-    <Compile Include="Controllers\Search\FakeModuleCrawlerController.cs" />
-    <Compile Include="Controllers\Search\SearchControllerTests.cs" />
-    <Compile Include="Controllers\Search\SearchHelperTests.cs" />
-    <Compile Include="Controllers\Social\MessagingControllerTests.cs" />
-    <Compile Include="Controllers\Social\NotificationsControllerTests.cs" />
-    <Compile Include="Controllers\Social\RelationshipControllerTests.cs" />
-    <Compile Include="Framework\ServicesFrameworkTests.cs" />
-    <Compile Include="Providers\Folder\DatabaseFolderProviderTests.cs" />
-    <Compile Include="Providers\Folder\FileManagerTests.cs" />
-    <Compile Include="Providers\Folder\FolderManagerTests.cs" />
-    <Compile Include="Providers\Folder\DefaultFolderProvidersTests.cs" />
-    <Compile Include="Providers\Folder\SecureFolderProviderTests.cs" />
-    <Compile Include="Providers\Folder\StandardFolderProviderTests.cs" />
-    <Compile Include="EscapedStringTest.cs" />
-    <Compile Include="RetryableActionTests.cs" />
-    <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
-    <Compile Include="Services\Localization\LocalizationTests.cs" />
-    <Compile Include="Services\Mail\MailTests.cs" />
-    <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
-    <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
-    <Compile Include="Services\Tokens\PropertyAccessTests.cs" />
-    <Compile Include="TabCollectionTest.cs" />
-    <Compile Include="Services\HtmlUtilsTest.cs" />
+    <Compile Include="Data\PetaPocoDataContextTests.cs" />
+    <Compile Include="Data\PetaPocoMapperTests.cs" />
+    <Compile Include="Data\PetaPocoRepositoryTests.cs" />
+    <Compile Include="Data\PetaPocoIntegrationTests.cs" />
+    <Compile Include="Services\Installer\XmlMergeTests.cs" />
     <Compile Include="TestSetup.cs" />
-    <Compile Include="Providers\Caching\DataCacheTests.cs" />
-    <Compile Include="Providers\Caching\MoqExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
@@ -161,6 +114,10 @@
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
       <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Tests.Data\DotNetNuke.Tests.Data.csproj">
+      <Project>{2595aade-d3e0-4205-b8af-109cb23f4223}</Project>
+      <Name>DotNetNuke.Tests.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj">
       <Project>{68368906-57dd-40d1-ac10-35211a17d617}</Project>
@@ -197,6 +154,40 @@
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\AddWithLocationTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\InsertAfterInLocationTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\InsertAttributeInLocationTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\InsertBeforeInLocationTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\RemoveAttributeFromLocationTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\RemoveFromLocationTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleAddMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleAddTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleInsertAfterMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleInsertAfterTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleInsertAttributeMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleInsertAttributeTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleInsertBeforeMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleInsertBeforeTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleRemoveAttributeMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleRemoveAttributeTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleRemoveMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleRemoveTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleUpdateInLocationTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleUpdateInLocationWithDistractingLocationsTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleUpdateMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleUpdateTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleUpdateWithKeyMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\SimpleUpdateWithKeyTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateAttributeInLocationTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateInFirstLocationWithDistractingLocationAndTargetPathTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateInLocationWithDistractingLocationAndTargetPathTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateInLocationWithTargetPathTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateWithDistractingLocationAndTargetPathTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateWithKeyInLocationTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateWithTargetPathMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateWithTargetPathTarget.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

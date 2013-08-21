@@ -143,6 +143,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://loca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Taxonomy", "DNN Platform\Tests\DotNetNuke.Tests.Taxonomy\DotNetNuke.Tests.Taxonomy.csproj", "{86019DD5-96F3-4748-B47C-E51D0E81F219}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -429,6 +431,12 @@ Global
 		{86019DD5-96F3-4748-B47C-E51D0E81F219}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86019DD5-96F3-4748-B47C-E51D0E81F219}.Release|Any CPU.Build.0 = Release|Any CPU
 		{86019DD5-96F3-4748-B47C-E51D0E81F219}.Release|x86.ActiveCfg = Release|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -489,5 +497,6 @@ Global
 		{86019DD5-96F3-4748-B47C-E51D0E81F219} = {88E649D7-1379-430F-B794-1F3B9B442C80}
 		{96FD101E-326A-4038-A081-A347061A6B77} = {98739F02-F34A-4427-9A17-C0509E7AAD75}
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
+		{6629A64D-58B9-48B9-B932-15AF193C2212} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
 	EndGlobalSection
 EndGlobal

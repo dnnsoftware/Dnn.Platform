@@ -28,9 +28,10 @@ using System.Xml;
 
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
+
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Core.Services.Installer
+namespace DotNetNuke.Tests.Integration.Services.Installer
 {
     [TestFixture]
     public class XmlMergeTests
@@ -83,7 +84,7 @@ namespace DotNetNuke.Tests.Core.Services.Installer
         private XmlDocument LoadTargetDoc(string testMethodName)
         {
             using (Stream targetStream =
-                _assembly.GetManifestResourceStream(string.Format("DotNetNuke.Tests.Core.Services.Installer.MergeFiles.{0}Target.xml",
+                _assembly.GetManifestResourceStream(string.Format("DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Target.xml",
                                                                   testMethodName)))
             {
                 Debug.Assert(targetStream != null,
@@ -97,7 +98,7 @@ namespace DotNetNuke.Tests.Core.Services.Installer
         private XmlMerge GetXmlMerge(string fileName)
         {
             using (Stream mergeStream =
-                _assembly.GetManifestResourceStream(string.Format("DotNetNuke.Tests.Core.Services.Installer.MergeFiles.{0}Merge.xml",
+                _assembly.GetManifestResourceStream(string.Format("DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Merge.xml",
                                                                   fileName)))
             {
                 Debug.Assert(mergeStream != null,

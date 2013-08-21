@@ -32,7 +32,6 @@ using DotNetNuke.Data;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Modules.HTMLEditorProvider;
 using DotNetNuke.Modules.NavigationProvider;
-using DotNetNuke.Providers.FiftyOneClientCapabilityProvider;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Profile;
@@ -121,7 +120,6 @@ namespace DotNetNuke.Tests.Utilities
             ComponentFactory.InstallComponents(new ProviderInstaller("htmlEditor", typeof(HtmlEditorProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
-            RegisterIfNotAlreadyRegistered<ClientCapabilityProvider, FiftyOneClientCapabilityProvider>("FiftyOneClientCapabilityProvider");
         }
 
         private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()

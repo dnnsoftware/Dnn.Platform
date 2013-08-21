@@ -84,7 +84,7 @@ namespace DotNetNuke.Tests.PreviewProfileManagement
 		{
 			_mockView.Raise(v => v.GetHighlightProfiles += null, EventArgs.Empty);
 
-			Assert.AreEqual(33, _mockView.Object.Model.HighlightProfiles.Count);
+			Assert.AreEqual(10, _mockView.Object.Model.HighlightProfiles.Count);
 		}
 
 		[Test]
