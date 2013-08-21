@@ -1,5 +1,6 @@
 <%@ Control language="C#" Inherits="DotNetNuke.Modules.XmlMerge.XmlMerge" CodeFile="XmlMerge.ascx.cs" AutoEventWireup="false" Explicit="True" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <div class="dnnForm dnnConfigManager dnnClear" id="dnnConfigManager">
     <h2 class="dnnFormSectionHead"><%=LocalizeString("Configuration")%></h2>
@@ -33,3 +34,13 @@
      </fieldset>       
 </div>
 <asp:Label ID="lblMessage" runat="server" CssClass="NormalRed" EnableViewState="False" />
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		jQuery('#<%=cmdSave.ClientID%>, #<%= cmdExecute.ClientID %>').dnnConfirm({
+					text: '<%= ConfirmText %>',
+					yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+					noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+					title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+				});
+	});
+</script>

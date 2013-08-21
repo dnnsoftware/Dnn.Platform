@@ -47,6 +47,19 @@ namespace DotNetNuke.Modules.XmlMerge
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (XmlMerge));
 
+	    protected string ConfirmText
+	    {
+		    get
+		    {
+				if (ddlConfig.SelectedValue.ToLowerInvariant() == "web.config")
+				{
+					return Localization.GetSafeJSString("SaveWarning", LocalResourceFile);
+				}
+
+				return Localization.GetSafeJSString("SaveConfirm", LocalResourceFile);
+		    }
+	    }
+
         #region Private Functions
 
         private static bool IsValidDocType(string contentType)
@@ -224,26 +237,14 @@ namespace DotNetNuke.Modules.XmlMerge
 
             if (ddlConfig.SelectedIndex <= 0)
             {
-                cmdSave.Attributes.Remove("onClick");
-                cmdExecute.Attributes.Remove("onClick");
                 cmdSave.Enabled = false;
                 cmdExecute.Enabled = false;
             }
             else
             {
                 cmdSave.Enabled = true;
-                if (ddlConfig.SelectedValue.ToLowerInvariant() == "web.config")
-                {
-                    ClientAPI.AddButtonConfirm(cmdSave, Localization.GetString("SaveWarning", LocalResourceFile));
-                    ClientAPI.AddButtonConfirm(cmdExecute, Localization.GetString("SaveWarning", LocalResourceFile));
-                }
-                else
-                {
-                    ClientAPI.AddButtonConfirm(cmdSave, Localization.GetString("SaveConfirm", LocalResourceFile));
-                    ClientAPI.AddButtonConfirm(cmdExecute, Localization.GetString("MergeConfirm", LocalResourceFile));
-                }
 
-                if (!String.IsNullOrEmpty( txtScript.Text.Trim()))
+                if (!String.IsNullOrEmpty(txtScript.Text.Trim()))
                 {
                     cmdExecute.Enabled = true;
                 }
@@ -256,6 +257,5 @@ namespace DotNetNuke.Modules.XmlMerge
         }
 
         #endregion
-
     }
 }

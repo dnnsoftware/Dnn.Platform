@@ -4049,6 +4049,19 @@
             $('input[type="text"], input[type="password"]').unbind('focus', inputFocusFix).bind('focus', inputFocusFix);
             $(':file').dnnFileInput();
         }, 200);
+    	//change the window confirm style to DNN style
+        $("*[onclick*='return confirm']").each(function() {
+	        var instance = $(this);
+	    	var isButton = this.nodeName.toLowerCase() == "img";
+	    	var script = /return confirm\((['"])([\s\S]*?)\1\)/g.exec(instance.attr("onclick"));
+	        if (script != null) {
+	        	var confirmContent = script[2];
+		        instance.attr("onclick", instance.attr("onclick").replace(script[0], "void(0)")).dnnConfirm({
+			        text: confirmContent,
+			        isButton: isButton
+		        });
+	        }
+        });
     };
     var saveRgDataDivScrollTop = function () {
         window.__rgDataDivScrollTopPersistArray = [];
