@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Users.Membership
 
         #region Private functions
 
-        private void AddPasswordHistory(string password, int retained)
+        private void AddPasswordHistory(int userId, string password, int retained)
         {
             HashAlgorithm ha = HashAlgorithm.Create();
             byte[] newSalt = GetRandomSaltValue();
@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Users.Membership
             byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
             string hashedPassword = Convert.ToBase64String(bhashedPassword);
 
-            _dataProvider.AddPasswordHistory(UserController.GetCurrentUserInfo().UserID, hashedPassword,
+            _dataProvider.AddPasswordHistory(userId, hashedPassword,
                 Convert.ToBase64String(newSalt), retained);
         }
 
@@ -70,14 +70,13 @@ namespace DotNetNuke.Entities.Users.Membership
         #endregion
 
         /// <summary>
-        /// returns the password history of the current user
+        /// returns the password history of the supplied user
         /// </summary>
         /// <returns>list of PasswordHistory objects</returns>
-        public List<PasswordHistory> GetPasswordHistory()
+        public List<PasswordHistory> GetPasswordHistory(int userId)
         {
             List<PasswordHistory> history =
-                CBO.FillCollection<PasswordHistory>(
-                    _dataProvider.GetPasswordHistory(UserController.GetCurrentUserInfo().UserID));
+                CBO.FillCollection<PasswordHistory>(_dataProvider.GetPasswordHistory(userId));
             return history;
         }
 
@@ -87,16 +86,16 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <param name="portalId">portalid - futureproofing against any setting become site level</param>
         /// <param name="newPassword">users new password suggestion</param>
         /// <returns>true if password is unique in users history, false otherwise</returns>
-        public bool IsPasswordInHistory(int portalId, string newPassword)
+        public bool IsPasswordInHistory(int userId, int portalId, string newPassword)
         {
             Requires.NotNullOrEmpty("newPassword", newPassword);
             bool isNewPassword = false;
             var settings = new MembershipPasswordSettings(portalId);
             if (settings.EnablePasswordHistory)
             {
-                if (IsPasswordPreviouslyUser(newPassword) == false)
+                if (IsPasswordPreviouslyUser(userId, newPassword) == false)
                 {
-                    AddPasswordHistory(newPassword, settings.NumberOfPasswordsStored);
+                    AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored);
                     isNewPassword = true;
                 }
             }
@@ -108,13 +107,13 @@ namespace DotNetNuke.Entities.Users.Membership
         /// </summary>
         /// <param name="password">users entered new password</param>
         /// <returns>true if previously used, false otherwise</returns>
-        public bool IsPasswordPreviouslyUser(string password)
+        public bool IsPasswordPreviouslyUser(int userId, string password)
         {
             //use default algorithm (SHA1CryptoServiceProvider )
             HashAlgorithm ha = HashAlgorithm.Create();
             bool foundMatch = false;
 
-            List<PasswordHistory> history = GetPasswordHistory();
+            List<PasswordHistory> history = GetPasswordHistory(userId);
             foreach (PasswordHistory ph in history)
             {
                 string oldEncodedPassword = ph.Password;
