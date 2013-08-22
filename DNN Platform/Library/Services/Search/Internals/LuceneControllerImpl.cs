@@ -267,7 +267,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (Logger.IsDebugEnabled)
             {
                 var sb = GetSearcResultExplanation(luceneQuery, topDocs.ScoreDocs, searcher);
-                Logger.Debug(sb);
+		Logger.Trace(sb);
             }
 
             //Page doesn't exist

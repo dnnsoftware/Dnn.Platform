@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     if (searchTypeId == _moduleSearchTypeId)
                     {
-                        foreach (var moduleDefId in searchQuery.ModuleDefIds)
+			foreach (var moduleDefId in searchQuery.ModuleDefIds.OrderBy(id => id))
                         {
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                         }
