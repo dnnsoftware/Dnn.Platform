@@ -79,6 +79,8 @@ DNN [Pp]latform/[Pp]roviders/*/*/*/[Bb]in/*
 DNN [Pp]latform/Syndication/[Bb]in/*
 
 
+[Ww]ebsite/*/[Dd]efault.aspx
+
 [Ww]ebsite/[Aa]pp_[Dd]ata
 
 [Ww]ebsite/[Bb]in
@@ -122,7 +124,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Pp]ortals/_default/[Dd]efault [Ww]ebsite*
 [Ww]ebsite/[Pp]ortals/_default/[Mm]obile [Ww]ebsite*
 [Ww]ebsite/[Pp]ortals/_default/[Uu]ser*
-[Ww]ebsite/[Pp]ortals/0/
+[Ww]ebsite/[Pp]ortals/[0-9]*/
 
 [Ww]ebsite/[Pp]roviders/[Dd]ata[Pp]roviders/*/*.resources
 [Ww]ebsite/[Pp]roviders/*/*/license.txt
