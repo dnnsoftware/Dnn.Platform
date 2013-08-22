@@ -1579,7 +1579,7 @@ namespace DotNetNuke.Security.Membership
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
-            string vanityUrl = HttpContext.Current.Server.HtmlEncode(user.VanityUrl);
+            string vanityUrl = HttpUtility.HtmlEncode(user.VanityUrl);
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
