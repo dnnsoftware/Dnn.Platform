@@ -20,11 +20,11 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Text;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -33,7 +33,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Social.Messaging.Exceptions;
 using DotNetNuke.Services.Social.Messaging.Internal;
@@ -47,7 +46,7 @@ using Moq;
 using NUnit.Framework;
 
 // ReSharper disable InconsistentNaming
-namespace DotNetNuke.Tests.Core.Controllers.Social
+namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
     [TestFixture]
     public class NotificationsControllerTests

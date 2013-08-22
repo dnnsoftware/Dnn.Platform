@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -35,7 +36,7 @@ using Moq;
 
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Core.Controllers
+namespace DotNetNuke.Tests.Core.Controllers.Portal
 {
     // ReSharper disable InconsistentNaming
     

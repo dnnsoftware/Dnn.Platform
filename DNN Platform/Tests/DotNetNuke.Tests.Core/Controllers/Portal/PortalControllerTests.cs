@@ -19,15 +19,17 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Portals.Internal;
+
 using Moq;
+
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Core.Controllers
+namespace DotNetNuke.Tests.Core.Controllers.Portal
 {
     [TestFixture]
     public class PortalControllerTests

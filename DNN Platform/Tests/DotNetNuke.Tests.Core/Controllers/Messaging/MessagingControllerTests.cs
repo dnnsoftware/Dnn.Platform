@@ -45,7 +45,7 @@ using Moq;
 using NUnit.Framework;
 
 // ReSharper disable InconsistentNaming
-namespace DotNetNuke.Tests.Core.Controllers.Social
+namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
     /// <summary>
     ///  Testing various aspects of MessagingController
