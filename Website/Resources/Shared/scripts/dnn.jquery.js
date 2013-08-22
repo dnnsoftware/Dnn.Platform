@@ -4052,7 +4052,7 @@
     	//change the window confirm style to DNN style
         $("*[onclick*='return confirm']").each(function() {
 	        var instance = $(this);
-	    	var isButton = this.nodeName.toLowerCase() == "img";
+	    	var isButton = this.nodeName.toLowerCase() == "img" || this.nodeName.toLowerCase() == "input";
 	    	var script = /return confirm\((['"])([\s\S]*?)\1\)/g.exec(instance.attr("onclick"));
 	        if (script != null) {
 	        	var confirmContent = script[2];

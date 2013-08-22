@@ -125,7 +125,6 @@ namespace DotNetNuke.Modules.Admin.Vendors
                 if (Page.IsPostBack == false)
                 {
                     ctlImage.FileFilter = Globals.glbImageFileTypes;
-                    ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteItem"));
 
                     var objBannerTypes = new BannerTypeController();
                     //Get the banner types from the database
