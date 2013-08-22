@@ -30,7 +30,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Modules.UrlManagement.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <IntermediateOutputPath>C:\Users\Charles\AppData\Local\Temp\vs1E1E.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,7 +40,6 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
     <DocumentationFile>bin\DotNetNuke.Modules.UrlManagement.XML</DocumentationFile>
-    <IntermediateOutputPath>C:\Users\Charles\AppData\Local\Temp\vs1E1E.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.Web.Client, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
