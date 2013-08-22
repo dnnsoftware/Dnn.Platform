@@ -1358,6 +1358,21 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, search.Results.Count);
         }
 
+
+        [Test]
+        public void SearchController_GetResult_TagSearch_Lowercase_Search_Returns_PropercaseTag_Single_Result()
+        {
+            //Arrange
+            AddStandardSearchDocs();
+
+            //Act
+            var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { TagNeutral.ToLower() } };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(1, search.Results.Count);
+        }
+
         [Test]
         public void SearchController_GetResult_TagSearch_Single_Tag_Returns_Two_Results()
         {

@@ -427,7 +427,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             foreach (var tag in searchDocument.Tags)
             {
-                var field = new Field(Constants.Tag, StripTagsNoAttributes(tag, true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                var field = new Field(Constants.Tag, StripTagsNoAttributes(tag.ToLower(), true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 if (_tagBoost > 0 && _tagBoost != Constants.StandardLuceneBoost) field.Boost = _tagBoost / 10f;
                 doc.Add(field);
             }
