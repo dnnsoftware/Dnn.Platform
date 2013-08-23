@@ -68,7 +68,9 @@
     <None Include="TestFiles\FriendlyUrl\PrimaryPortalAlias\TestFile.csv" />
     <None Include="TestFiles\FriendlyUrl\Regex\Settings.csv" />
     <None Include="TestFiles\FriendlyUrl\Regex\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\GeminiTests\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN3361_dic.csv" />
+    <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN3361.csv" />
+    <None Include="TestFiles\UrlRewrite\Jira_Tests\TestFile.csv" />
     <None Include="TestFiles\UrlRewrite\SecureRedirect\Settings.csv" />
     <None Include="TestFiles\UrlRewrite\SecureRedirect\TestFile.csv" />
     <None Include="TestFiles\UrlRewrite\PrimaryPortalAlias_Default\Settings.csv" />

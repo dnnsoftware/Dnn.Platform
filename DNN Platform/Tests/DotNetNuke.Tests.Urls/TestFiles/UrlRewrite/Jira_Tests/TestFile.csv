@@ -1,0 +1,2 @@
+﻿Test,			SettingsFile,	DictionaryFile,		Scheme,		Page Name,		Test Url,			Expected Url,					Status,
+DNN_3361,		DNN3361.csv,	DNN3361_dic.csv,	http://,	,				http://{alias},		/{defaultPage}?language=en-US,	200,								

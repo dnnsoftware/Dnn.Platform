@@ -123,6 +123,22 @@ namespace DotNetNuke.Tests.Urls
             return settings;
         }
 
+        internal static Dictionary<string, string> GetDictionary(string testType, string testName, string settingsFile)
+        {
+            var dictionary = new Dictionary<string, string>();
+
+            //Read Test Settings
+            TestUtil.ReadStream(String.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
+            {
+                string[] fields = line.Split(',');
+                string key = fields[0].Trim();
+                string value = fields[1].Trim();
+
+                dictionary.Add(key, value);
+            });
+            return dictionary;
+        }
+
         internal static IEnumerable FriendlyUrl_BaseTestCases
         {
             get
@@ -291,13 +307,13 @@ namespace DotNetNuke.Tests.Urls
             }
         }
 
-        internal static IEnumerable UrlRewrite_GeminiTests
+        internal static IEnumerable UrlRewrite_JiraTests
         {
             get
             {
                 var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "GeminiTests", testData);
+                GetTestsWithAliases("UrlRewrite", "Jira_Tests", testData);
 
                 return testData;
             }

@@ -663,12 +663,39 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [Test]
-        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_GeminiTests")]
-        public void AdvancedUrlRewriter_GeminiTests(Dictionary<string, string> testFields)
+        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_JiraTests")]
+        public void AdvancedUrlRewriter_JiraTests(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", "GeminiTests", testFields["SettingsFile"]);
+            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", "Jira_Tests", testFields["SettingsFile"]);
+            var dictionary = UrlTestFactoryClass.GetDictionary("UrlRewrite", "Jira_Tests", testFields["DictionaryFile"]);
+
+            int homeTabId = -1;
+            bool homeTabChanged = false;
+            foreach (var keyValuePair in dictionary)
+            {
+                if (keyValuePair.Key == "HomeTabId")
+                {
+                    homeTabId = UpdateHomeTab(Int32.Parse(keyValuePair.Value));
+                    homeTabChanged = true;
+                }
+            }
 
             ExecuteTest(settings, testFields, true);
+
+            if (homeTabChanged)
+            {
+                UpdateHomeTab(homeTabId);
+            }
+        }
+
+        private int UpdateHomeTab(int homeTabId)
+        {
+            var portalController = new PortalController();
+            var portalInfo = portalController.GetPortal(PortalId);
+            int oldHomeTabId = portalInfo.HomeTabId;
+            portalInfo.HomeTabId = homeTabId;
+
+            return oldHomeTabId;
         }
 
         #endregion

@@ -382,7 +382,15 @@ namespace DotNetNuke.Entities.Urls
                             }
                             else
                             {
-                                RewriterUtils.RewriteUrl(context, result.RewritePath);
+                                //if there is no TabId and we have the domain
+                                if (!result.RewritePath.ToLowerInvariant().Contains("tabId="))
+                                {
+                                    RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                                }
+                                else
+                                {
+                                    RewriterUtils.RewriteUrl(context, result.RewritePath);
+                                }
                             }
                         }
                         else

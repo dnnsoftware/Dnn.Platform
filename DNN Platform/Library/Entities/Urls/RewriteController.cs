@@ -169,7 +169,8 @@ namespace DotNetNuke.Entities.Urls
                         //DNNDEV-27291
                         if (reWritten == false)
                         {
-                            newUrl = "/" + DotNetNuke.Common.Globals.glbDefaultPage;
+                            //Need to determine if this is a child alias
+                            newUrl = "/" + Globals.glbDefaultPage;
                             reWritten = true;
                         }
                     }
@@ -318,7 +319,7 @@ namespace DotNetNuke.Entities.Urls
         {
             string cacheKey = string.Format(CacheController.VanityUrlLookupKey, portalId);
             var vanityUrlLookupDictionary = CBO.GetCachedObject<Dictionary<string, UserInfo>>(new CacheItemArgs(cacheKey, 20, CacheItemPriority.High, portalId), 
-                                                                        (c) => new Dictionary<string, UserInfo>());
+                                                                        c => new Dictionary<string, UserInfo>());
 
             if (!vanityUrlLookupDictionary.ContainsKey(vanityUrl))
             {
@@ -1489,8 +1490,7 @@ namespace DotNetNuke.Entities.Urls
                 var parmString = new StringBuilder();
                 bool valueField = false;
                 bool stripLoneParm = false;
-                int lastParmToProcessTo = 0;
-                int upperBound = urlParms.GetUpperBound(0);
+                int lastParmToProcessTo;
 
                 string userIdParm = null;
                 PortalInfo thisPortal = new PortalController().GetPortal(result.PortalId);
@@ -1529,7 +1529,6 @@ namespace DotNetNuke.Entities.Urls
                             temp.RemoveAt(pos2);
                             temp.RemoveAt(pos1);
                             urlParms = temp.ToArray();
-                            upperBound = urlParms.GetUpperBound(0);
                             //656 : don't allow forced lower case of the culture identifier - always convert the case to aa-AA to match the standard
                             string cultureId = langValues[1];
                             Match cultureMatch = Regex.Match(cultureId, "([a-z]{2})-([a-z]{2})", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);

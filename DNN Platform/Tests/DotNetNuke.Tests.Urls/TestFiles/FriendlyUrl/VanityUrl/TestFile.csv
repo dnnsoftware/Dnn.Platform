@@ -1,3 +1,4 @@
-﻿Test,				UserName,	VanityUrl,		Scheme,		Page Name,		Params,					Expected Url,	
-Vanity Url,			test,		testuser,		http://,	Activity Feed,	&UserId={userId},		http://{alias}/{vanityUrl}
-No Vanity Url,		test,		,				http://,	Activity Feed,	&UserId={userId},		http://{alias}/ActivityFeed/UserId/{userId}
+﻿Test,					UserName,	VanityUrl,	VanityUrlPrefix,	Scheme,		Page Name,		Params,					Expected Url,	
+No Vanity Url,			test,		,			,					http://,	Activity Feed,	&UserId={userId},		http://{alias}/ActivityFeed/UserId/{userId}
+Vanity Url Default,		test,		testuser,	,					http://,	Activity Feed,	&UserId={userId},		http://{alias}/users/{vanityUrl}
+Vanity Url members,		test,		testuser,	members,			http://,	Activity Feed,	&UserId={userId},		http://{alias}/members/{vanityUrl}

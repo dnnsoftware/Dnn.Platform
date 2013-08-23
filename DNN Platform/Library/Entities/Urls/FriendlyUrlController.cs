@@ -947,7 +947,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static bool IsMobileClient()
         {
-            return (HttpContext.Current.Request.Browser != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
+            return (HttpContext.Current.Request.Browser != null) && (ClientCapabilityProvider.Instance() != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
         }
 
         #region Internal Methods

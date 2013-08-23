@@ -442,6 +442,11 @@ namespace DotNetNuke.Tests.Urls
 
             var vanityUrl = testFields.GetValue("VanityUrl", String.Empty);
             var userName = testFields.GetValue("UserName", String.Empty);
+            var vanityUrlPrefix = testFields.GetValue("VanityUrlPrefix", String.Empty);
+            if (!String.IsNullOrEmpty(vanityUrlPrefix))
+            {
+                settings.VanityUrlPrefix = vanityUrlPrefix;
+            }
 
             if (!String.IsNullOrEmpty(userName))
             {
