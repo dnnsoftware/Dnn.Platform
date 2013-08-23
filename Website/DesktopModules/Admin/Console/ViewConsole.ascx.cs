@@ -340,6 +340,7 @@ namespace DesktopModules.Admin.Console
 			try
 			{
 				jQuery.RequestRegistration();
+
                 ClientResourceManager.RegisterScript(Page, "~/desktopmodules/admin/console/jquery.console.js");
 
 				DetailView.ItemDataBound += RepeaterItemDataBound;
