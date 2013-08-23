@@ -270,14 +270,20 @@ namespace DotNetNuke.Tests.Urls
 
             CreateSimulatedRequest(new Uri(testurl));
 
+            var request = HttpContext.Current.Request;
             var testHelper = new UrlTestHelper
                     {
                         HttpAliasFull = scheme + httpAlias + "/",
-                        Result = new UrlAction(scheme, scheme + httpAlias, Globals.ApplicationMapPath)
-                                    {
-                                        IsSecureConnection = HttpContext.Current.Request.IsSecureConnection,
-                                        RawUrl = HttpContext.Current.Request.RawUrl
-                                    },
+                        //Result = new UrlAction(scheme, scheme + httpAlias, Globals.ApplicationMapPath)
+                        //            {
+                        //                IsSecureConnection = HttpContext.Current.Request.IsSecureConnection,
+                        //                RawUrl = HttpContext.Current.Request.RawUrl
+                        //            },
+                        Result = new UrlAction(request)
+                                        {
+                                            IsSecureConnection = request.IsSecureConnection,
+                                            RawUrl = request.RawUrl
+                                        },
                         RequestUri = new Uri(testurl),
                         QueryStringCol = new NameValueCollection()
                     };
