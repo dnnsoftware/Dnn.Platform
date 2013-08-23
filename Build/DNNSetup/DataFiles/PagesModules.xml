@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages>
+  <page name="Community">
+    <modules>
+      <module desktopModule="HTML" title="Community"/>
+      <module desktopModule="HTML" title="Info"/>
+      <module desktopModule="HTML" title="Lorem Ipsum"/>
+    </modules>
+    <pages>
+      <page name="Wonder">
+        <modules>
+          <module desktopModule="HTML" title="Random"/>
+          <module desktopModule="HTML" title="Word"/>
+          <module desktopModule="HTML" title="Lorem Ipsum"/>
+        </modules>
+        <pages>
+          <page name="Level 3">
+            <modules>
+              <module desktopModule="HTML" title="Lorem Ipsum"/>
+            </modules>
+          </page>
+        </pages>
+      </page>
+      <page name="Telescope">
+        <modules>
+          <module desktopModule="HTML" title="Dark"/>
+          <module desktopModule="HTML" title="Matter"/>
+        </modules>
+      </page>
+    </pages>
+  </page>
+</pages>
