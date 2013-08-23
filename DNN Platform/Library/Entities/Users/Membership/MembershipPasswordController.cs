@@ -93,7 +93,7 @@ namespace DotNetNuke.Entities.Users.Membership
             var settings = new MembershipPasswordSettings(portalId);
             if (settings.EnablePasswordHistory)
             {
-                if (IsPasswordPreviouslyUser(userId, newPassword) == false)
+                if (IsPasswordPreviouslyUsed(userId, newPassword) == false)
                 {
                     AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored);
                     isNewPassword = true;
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Users.Membership
         /// </summary>
         /// <param name="password">users entered new password</param>
         /// <returns>true if previously used, false otherwise</returns>
-        public bool IsPasswordPreviouslyUser(int userId, string password)
+        public bool IsPasswordPreviouslyUsed(int userId, string password)
         {
             //use default algorithm (SHA1CryptoServiceProvider )
             HashAlgorithm ha = HashAlgorithm.Create();
