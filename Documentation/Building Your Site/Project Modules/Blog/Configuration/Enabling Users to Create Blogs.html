@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="8" MadCap:lastHeight="1839" MadCap:lastWidth="992">
+    <head>
+        
+    </head>
+    <body>
+        <h1>Enabling Users to Create Blogs</h1>
+        <p>How to enable users (including unauthenticated users if desired) and roles to create and manage their own blog.</p>
+        <ol start="1">
+            <li value="1">Go to the <b>New_Blog</b> module. </li>
+            <li value="2">
+                <MadCap:snippetText src="../../../../Resources/Snippets/Module Settings.flsnp" />
+            </li>
+            <li value="3">Select the <b>Permissions</b> tab.</li>
+            <li value="4">At <b>Permissions</b> select one of the following options:
+    <ul><li><b>Option One:</b>  Hide the New_Blog module from users who cannot create and manage blogs.
+        <ol><li><MadCap:snippetText src="../../../../Resources/Snippets/Uncheck.flsnp" />at <b>Inherit View permissions from Page</b>. </li><li>At <b>View</b>/<b>View Module</b>, select the roles/usernames that are authorized to create a blog. </li><li>At <b>Full Control</b>/<b>Edit Module</b>, select the roles/usernames that are authorized to create a blog.</li></ol></li></ul></li>
+        </ol>
+        <p>
+            <img alt="" src="../../../../Resources/Images/Modules/Blogs/Blog_Permissions_CE1.png" />
+            <br /><small> DNN Platform</small>
+            <br />
+            <img alt="" src="../../../../Resources/Images/Modules/Blogs/Blog_Permissions_PE1.png" />
+            <br /><small> Evoq Content</small>
+        </p>
+        <ol>
+            <ul>
+                <li><b>Option Two:</b> Display the New_Blog module to users who cannot create blogs or need to login to create/manage their blog. This displays the "You must be logged in and have  permission to create or edit a blog" to unauthenticated users.
+        <ol><li>At <b>Inherit View permissions from Page</b> <![CDATA[ ]]><MadCap:snippetText src="../../../../Resources/Snippets/Check.flsnp" /> to allow all users who can view this page to view this module, however only registered users can create their own blog.</li><li>At <b>Full Control</b>/<b>Edit Module</b>, select each role/username that is authorized to create a blog.</li></ol></li>
+            </ul>
+        </ol>
+        <p>
+            <img alt="" src="../../../../Resources/Images/Modules/Blogs/Blog_Permissions_CE2.png" />
+            <br /><small>Permissions in DNN Platform</small>
+            <br />
+            <img alt="" src="../../../../Resources/Images/Modules/Blogs/Blog_Permissions_PE2.PNG" />
+            <br /><small>Permissions in Evoq Content</small>
+        </p>
+        <ol start="5">
+            <li>
+                <MadCap:snippetText src="../../../../Resources/Snippets/Update.flsnp" /> This displays the <span style="text-decoration: underline;">Create My Blog</span> link on the New_Blog module.</li>
+        </ol>
+        <p>
+            <img alt="" src="../../../../Resources/Images/Modules/Blogs/Blog_CreateMyBlog.PNG" />
+            <br /><small>The Create My Blog link is enabled</small>
+        </p>
+        <p>
+            <MadCap:snippetText src="../../../../Resources/Snippets/Related.flsnp" />
+        </p>
+        <ul>
+            <li>
+                <MadCap:xref href="../../../Adding and Managing Modules/Module Settings/Permissions/Setting Module Permissions.html">See "Setting Module Permissions"</MadCap:xref>
+            </li>
+            <li>
+                <MadCap:xref href="Enabling Bloggers Blog Management Rights.html">See "Enabling Bloggers Blog Management Rights"</MadCap:xref>
+            </li>
+        </ul>
+    </body>
+</html>
