@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 using Lucene.Net.Documents;
@@ -88,6 +89,21 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        private string GetStringFromField(Document doc, SortField field)
+        {
+            return doc.GetField(field.Field) == null ? "" : doc.GetField(field.Field).StringValue;
+        }
+
+        private long GetLongFromField(Document doc, SortField field)
+        {
+            if (doc.GetField(field.Field) == null) return 0;
+
+            long data;
+            if (long.TryParse(doc.GetField(field.Field).StringValue, out data) && data >= 0) return data;
+            
+            return 0;
+        }
+
         private void PrepareScoreDocs()
         {
             int skippedSoFar;
@@ -95,23 +111,60 @@ namespace DotNetNuke.Services.Search.Internals
             var pageSize = _query.PageSize;
             var toSkip = _query.PageIndex <= 1 ? 0 : ((_query.PageIndex - 1) * pageSize);
             _scoreDocs = new List<ScoreDoc>(pageSize);
-            IEnumerable<ScoreDoc> tempDocs;
+            IEnumerable<ScoreDoc> tempDocs = new List<ScoreDoc>();
 
             _totalHits = _hitDocs.Count;
- 
+
+            var useRelenace = false;
             if (ReferenceEquals(Sort.RELEVANCE, _query.Sort))
             {
-                tempDocs = _hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
+                useRelenace = true;
             }
             else
             {
-                //HACK: order by document date descending based on date's "StringValue" as below
-                //      and we don't take into consideration all of the Sort fields; only the first
-                tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
-                    .OrderByDescending(rec => rec.Document.GetField(Constants.ModifiedTimeTag).StringValue)
-                    .ThenBy(rec => rec.Document.Boost)
-                    .Select(rec => rec.SDoc);
+                var fields = _query.Sort.GetSort();
+                if (fields == null || fields.Count() != 1)
+                {
+                    useRelenace = true;
+                }
+                else
+                {
+                    var field = fields[0];
+                    if (field.Type == 4 || field.Type == 6) //4 = int, 6 = long
+                    {
+                        if(field.Reverse)
+                            tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
+                                       .OrderByDescending(
+                                           rec => GetLongFromField(rec.Document, field))
+                                       .ThenBy(rec => rec.Document.Boost)
+                                       .Select(rec => rec.SDoc);
+                        else
+                            tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
+                                       .OrderBy(
+                                           rec => GetLongFromField(rec.Document, field))
+                                       .ThenBy(rec => rec.Document.Boost)
+                                       .Select(rec => rec.SDoc);
+                    }
+                    else
+                    {
+                        if (field.Reverse)
+                            tempDocs = _hitDocs.Select(d => new {SDoc = d, Document = _searcher.Doc(d.Doc)})
+                                           .OrderByDescending(
+                                           rec => GetStringFromField(rec.Document, field))
+                                           .ThenBy(rec => rec.Document.Boost)
+                                           .Select(rec => rec.SDoc);
+                        else
+                            tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
+                                       .OrderBy(
+                                       rec => GetStringFromField(rec.Document, field))
+                                       .ThenBy(rec => rec.Document.Boost)
+                                       .Select(rec => rec.SDoc);
+                    }
+                }
             }
+
+            if (useRelenace)
+                tempDocs = _hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
 
            foreach (var scoreDoc in tempDocs)
             {

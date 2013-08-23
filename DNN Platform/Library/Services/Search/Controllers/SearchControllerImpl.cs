@@ -87,6 +87,9 @@ namespace DotNetNuke.Services.Search.Controllers
             if((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(_moduleSearchTypeId)))
                 throw new ArgumentException("ModuleId based search must have SearchTypeId for a module only");
 
+            if(searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField)
+                Requires.NotNullOrEmpty("CustomSortField", searchQuery.CustomSortField);
+
             //TODO - Explore Slop factor for Phrase query
 
             var query = new BooleanQuery();
@@ -146,9 +149,27 @@ namespace DotNetNuke.Services.Search.Controllers
                 query.Add(localeQuery, Occur.MUST);
             }
 
-            var sort = Sort.RELEVANCE;
-            if (searchQuery.SortField == SortFields.LastModified)
-                sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortField.LONG, true));
+            var sort = Sort.RELEVANCE; //default sorting - relevance is always descending.
+            if (searchQuery.SortField != SortFields.Relevance)
+            {
+                var reverse = searchQuery.SortDirection != SortDirections.Ascending;
+
+                switch (searchQuery.SortField)
+                {
+                    case SortFields.LastModified:
+                        sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortField.LONG, reverse));
+                        break;
+                    case SortFields.Title:
+                        sort = new Sort(new SortField(Constants.TitleTag, SortField.STRING, reverse));
+                        break;
+                    case SortFields.CustomStringField:
+                        sort = new Sort(new SortField(searchQuery.CustomSortField, SortField.STRING, reverse));
+                        break;
+                    case SortFields.CustomNumericField:
+                        sort = new Sort(new SortField(searchQuery.CustomSortField, SortField.INT, reverse));
+                        break;
+                }
+            }
 
             var luceneQuery = new LuceneQuery
             {
