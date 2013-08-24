@@ -1,0 +1,6 @@
+C:\Git\Dnn.Platform\DNN Platform\Modules\HTML\bin\DotNetNuke.Modules.Html.XML
+C:\Git\Dnn.Platform\DNN Platform\Modules\HTML\bin\DotNetNuke.Modules.Html.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\HTML\bin\DotNetNuke.Modules.Html.pdb
+C:\Git\Dnn.Platform\DNN Platform\Modules\HTML\obj\Release\DotNetNuke.Modules.Html.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Modules\HTML\obj\Release\DotNetNuke.Modules.Html.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\HTML\obj\Release\DotNetNuke.Modules.Html.pdb

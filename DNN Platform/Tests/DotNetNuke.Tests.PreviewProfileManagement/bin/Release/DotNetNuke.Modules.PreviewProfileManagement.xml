@@ -1,0 +1,355 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.PreviewProfileManagement</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetNuke.Modules.PreviewProfileManagement.Components.PrimaryKeyEventArgs">
+            <summary>
+            Event args with a primary key.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Components.PrimaryKeyEventArgs.#ctor(System.Int32)">
+            <summary>
+            Default constructor for PrimaryKeyEventArgs.
+            </summary>
+            <param name="id">The primary key need to process.</param>
+        </member>
+        <member name="P:DotNetNuke.Modules.PreviewProfileManagement.Components.PrimaryKeyEventArgs.Id">
+            <summary>
+            The primary key need to process by caller.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Modules.PreviewProfileManagement.Components.ProfileEventArgs">
+            <summary>
+            Event args of profile instance.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Components.ProfileEventArgs.#ctor(DotNetNuke.Services.Mobile.IPreviewProfile)">
+            <summary>
+            Default constructor for ProfileEventArgs.
+            </summary>
+            <param name="profile">The profile need to process.</param>
+        </member>
+        <member name="P:DotNetNuke.Modules.PreviewProfileManagement.Components.ProfileEventArgs.Profile">
+            <summary>
+            The profile need to process by caller.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Modules.PreviewProfileManagement.Components.PreviewProfileManagementController">
+            <summary>
+            Business controller of device profile management.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Components.PreviewProfileManagementController.UpgradeModule(System.String)">
+            <summary>
+            IUpgradable.UpgradeModule.
+            </summary>
+            <param name="version">upgrade in version.</param>
+            <returns></returns>
+        </member>
+        <member name="T:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter">
+            <summary>
+            Presenter of profile management list view.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter.#ctor(DotNetNuke.Modules.PreviewProfileManagement.Views.IProfileManagerView)">
+            <summary>
+            ProfileManagerPresenter constructor.
+            </summary>
+            <param name="view">the profile manager view.</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter.#ctor(DotNetNuke.Modules.PreviewProfileManagement.Views.IProfileManagerView,DotNetNuke.Services.Mobile.IPreviewProfileController)">
+            <summary>
+             ProfileManagerPresenter constructor.
+            </summary>
+            <param name="view">the profile manager view.</param>
+            <param name="controller">The profile controller.</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter.GetEditProfile(System.Object,DotNetNuke.Modules.PreviewProfileManagement.Components.PrimaryKeyEventArgs)">
+            <summary>
+            Get a profile for edit.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter.GetProfiles(System.Object,System.EventArgs)">
+            <summary>
+            Get profile list.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter.GetHighlightProfiles(System.Object,System.EventArgs)">
+            <summary>
+            Get highlight profile list.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter.SaveProfile(System.Object,DotNetNuke.Modules.PreviewProfileManagement.Components.ProfileEventArgs)">
+            <summary>
+            Save profile.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter.DeleteProfile(System.Object,DotNetNuke.Modules.PreviewProfileManagement.Components.PrimaryKeyEventArgs)">
+            <summary>
+            Delete a profile.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter.SortProfiles(System.Int32,System.Int32)">
+            <summary>
+            Sort the profile list.
+            </summary>
+            <param name="moveId">the item which need to move.</param>
+            <param name="nextId">the item that move item will insert before it.</param>
+            <returns></returns>
+        </member>
+        <member name="P:DotNetNuke.Modules.PreviewProfileManagement.Presenters.ProfileManagerPresenter.HighlightDataPath">
+            <summary>
+            Highlight profiles data path.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Modules.PreviewProfileManagement.Views.IProfileManagerView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.IProfileManagerView.GetProfiles">
+            <summary>
+            Event for get profile data.
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.IProfileManagerView.GetHighlightProfiles">
+            <summary>
+            Event for get highlight profile data, this data will be used for auto complete the device name.
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.IProfileManagerView.SaveProfile">
+            <summary>
+            Event for save a profile.
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.IProfileManagerView.DeleteProfile">
+            <summary>
+            Event for delete a profile.
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.IProfileManagerView.GetEditProfile">
+            <summary>
+            Event for get a profile to edit.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.OnLoad(System.EventArgs)">
+            <summary>
+            OnLoad Event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.RaiseClientAPICallbackEvent(System.String)">
+            <summary>
+            IClientAPICallbackEventHandler.RaiseClientAPICallbackEvent
+            </summary>
+            <param name="eventArgument"></param>
+            <returns></returns>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.AddProfile">
+            <summary>
+            AddProfile control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.lblName">
+            <summary>
+            lblName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.cbName">
+            <summary>
+            cbName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.CustomValidator1">
+            <summary>
+            CustomValidator1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.lblWidth">
+            <summary>
+            lblWidth control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.txtWidth">
+            <summary>
+            txtWidth control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.CustomValidator2">
+            <summary>
+            CustomValidator2 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.lblHeight">
+            <summary>
+            lblHeight control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.txtHeight">
+            <summary>
+            txtHeight control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.CustomValidator3">
+            <summary>
+            CustomValidator3 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.lblUserAgent">
+            <summary>
+            lblUserAgent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.txtUserAgent">
+            <summary>
+            txtUserAgent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.CustomValidator4">
+            <summary>
+            CustomValidator4 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.btnSave">
+            <summary>
+            btnSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.valEditSummary">
+            <summary>
+            valEditSummary control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.ProfilesList">
+            <summary>
+            ProfilesList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.GetProfiles">
+            <summary>
+            Event for get profile data.
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.GetHighlightProfiles">
+            <summary>
+            Event for get highlight profile data, this data will be used for auto complete the device name.
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.SaveProfile">
+            <summary>
+            Event for save a profile.
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.DeleteProfile">
+            <summary>
+            Event for delete a profile.
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Modules.PreviewProfileManagement.Views.ProfileManagerView.GetEditProfile">
+            <summary>
+            Event for get a profile to edit.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Modules.PreviewProfileManagement.ViewModels.ProfileManagerViewModel">
+            <summary>
+            View model of profile management.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.PreviewProfileManagement.ViewModels.ProfileManagerViewModel.PreviewProfiles">
+            <summary>
+            Profiles list.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.PreviewProfileManagement.ViewModels.ProfileManagerViewModel.HighlightProfiles">
+            <summary>
+            Highlight profiles list.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.PreviewProfileManagement.ViewModels.ProfileManagerViewModel.EditProfile">
+            <summary>
+            Profile need to edit.
+            </summary>
+        </member>
+    </members>
+</doc>

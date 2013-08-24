@@ -1,0 +1,5 @@
+C:\Git\Dnn.Platform\DNN Platform\Externally Sourced\bin\Release\Provider.RadEditor.dll
+C:\Git\Dnn.Platform\DNN Platform\Externally Sourced\bin\Release\Provider.RadEditor.pdb
+C:\Git\Dnn.Platform\DNN Platform\Externally Sourced\obj\Release\Externally.Sourced.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Externally Sourced\obj\Release\Provider.RadEditor.dll
+C:\Git\Dnn.Platform\DNN Platform\Externally Sourced\obj\Release\Provider.RadEditor.pdb

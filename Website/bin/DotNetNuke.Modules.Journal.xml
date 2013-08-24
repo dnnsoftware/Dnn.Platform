@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.Journal</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetNuke.Modules.Journal.Components.FeatureController">
+            -----------------------------------------------------------------------------
+            <summary>
+            The Controller class for Journal
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Journal.Components.FeatureController.ExportModule(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+            ExportModule implements the IPortable ExportModule Interface
+            </summary>
+            <param name="ModuleID">The Id of the module to be exported</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Journal.Components.FeatureController.ImportModule(System.Int32,System.String,System.String,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+            ImportModule implements the IPortable ImportModule Interface
+            </summary>
+            <param name="ModuleID">The Id of the module to be imported</param>
+            <param name="Content">The content to be imported</param>
+            <param name="Version">The version of the module to be imported</param>
+            <param name="UserId">The Id of the user performing the import</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Journal.Components.FeatureController.GetSearchItems(DotNetNuke.Entities.Modules.ModuleInfo)">
+            -----------------------------------------------------------------------------
+            <summary>
+            GetSearchItems implements the ISearchable Interface
+            </summary>
+            <param name="ModInfo">The ModuleInfo for the module to be Indexed</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Journal.Components.FeatureController.UpgradeModule(System.String)">
+            -----------------------------------------------------------------------------
+            <summary>
+            UpgradeModule implements the IUpgradeable Interface
+            </summary>
+            <param name="Version">The current version of the module</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.MyFiles.fileUp">
+            <summary>
+            fileUp control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.MyFiles.btnUp">
+            <summary>
+            btnUp control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.MyFiles.litOut">
+            <summary>
+            litOut control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Modules.Journal.Edit">
+            <summary>
+            EditJournal class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+            -----------------------------------------------------------------------------
+            <summary>
+            The EditJournal class is used to manage content
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Journal.Edit.Page_Load(System.Object,System.EventArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+            Page_Load runs when the control is loaded
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Journal.Settings">
+            -----------------------------------------------------------------------------
+            <summary>
+            The Settings class manages Module Settings
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.Settings.chkEnableEditor">
+            <summary>
+            chkEnableEditor control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.Settings.chkAllowFiles">
+            <summary>
+            chkAllowFiles control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.Settings.chkAllowPhotos">
+            <summary>
+            chkAllowPhotos control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.Settings.drpDefaultPageSize">
+            <summary>
+            drpDefaultPageSize control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.Settings.drpMaxMessageLength">
+            <summary>
+            drpMaxMessageLength control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.Settings.chkJournalFilters">
+            <summary>
+            chkJournalFilters control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.Modules.Journal.Settings.LoadSettings">
+            -----------------------------------------------------------------------------
+            <summary>
+            LoadSettings loads the settings from the Database and displays them
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Journal.Settings.UpdateSettings">
+            -----------------------------------------------------------------------------
+            <summary>
+            UpdateSettings saves the modified settings to the Database
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Journal.View">
+            -----------------------------------------------------------------------------
+            <summary>
+            The ViewJournal class displays the content
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.View.ctlJournalList">
+            <summary>
+            ctlJournalList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Journal.View.litScripts">
+            <summary>
+            litScripts control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.Modules.Journal.View.Page_Load(System.Object,System.EventArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+            Page_Load runs when the control is loaded
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+    </members>
+</doc>

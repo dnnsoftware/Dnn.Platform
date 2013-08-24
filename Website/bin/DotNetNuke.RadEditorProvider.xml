@@ -1,0 +1,542 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.RadEditorProvider</name>
+    </assembly>
+    <members>
+        <member name="P:DotNetNuke.Providers.RadEditorProvider.EditorProvider.ControlID">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.RadEditorProvider.FileSystemValidation.ToVirtualPath(System.String)">
+            <summary>
+            Results in a virtual path to a folder or file
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:DotNetNuke.Providers.RadEditorProvider.FileSystemValidation.ToEndUserPath(System.String)">
+            <summary>
+            Results in the path displayed to the end user
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:DotNetNuke.Providers.RadEditorProvider.FileSystemValidation.ToDBPath(System.String)">
+            <summary>
+            Results in a path that can be used in database calls
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:DotNetNuke.Providers.RadEditorProvider.FileSystemValidation.Check_DiskSpace(System.String,System.Int64)">
+            <summary>
+            Validates disk space available
+            </summary>
+            <param name="virtualPathAndName">The system path. ie: C:\WebSites\DotNetNuke_Community\Portals\0\sample.gif</param>
+            <param name="contentLength">Content Length</param>
+            <returns>The error message or empty string</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:DotNetNuke.Providers.RadEditorProvider.FileSystemValidation.HomeDirectory">
+            <summary>
+            Gets the DotNetNuke Portal Directory Virtual path
+            </summary>
+            <value></value>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:DotNetNuke.Providers.RadEditorProvider.FileSystemValidation.EndUserHomeDirectory">
+            <summary>
+            Gets the DotNetNuke Portal Directory Root localized text to display to the end user
+            </summary>
+            <value></value>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:DotNetNuke.Providers.RadEditorProvider.FileSystemValidation.DBHomeDirectory">
+            <summary>
+            Gets the DotNetNuke Portal Directory Root as stored in the database
+            </summary>
+            <value></value>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:DotNetNuke.Providers.RadEditorProvider.TelerikFileBrowserProvider.#ctor(System.Web.HttpContext,System.String[],System.String[],System.String[],System.String[],System.String,System.String)">
+            <summary>
+            The current portal will be used for file access.
+            </summary>
+            <param name="context"></param>
+            <param name="searchPatterns"></param>
+            <param name="viewPaths"></param>
+            <param name="uploadPaths"></param>
+            <param name="deletePaths"></param>
+            <param name="selectedUrl"></param>
+            <param name="selectedItemTag"></param>
+            <remarks></remarks>
+        </member>
+        <member name="M:DotNetNuke.Providers.RadEditorProvider.UpgradeController.UpgradeModule(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="Version"></param>
+            <returns></returns>
+            <remarks>This is not localizing Page Name or description.</remarks>
+        </member>
+        <member name="T:DotNetNuke.Providers.RadEditorProvider.RenderTemplate">
+            <summary>
+            
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.RenderTemplate.Head1">
+            <summary>
+            Head1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.RenderTemplate.Content">
+            <summary>
+            Content control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Providers.RadEditorProvider.SaveTemplate">
+            <summary>
+            
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.Head1">
+            <summary>
+            Head1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.lblTitle">
+            <summary>
+            lblTitle control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.RadScriptBlock1">
+            <summary>
+            RadScriptBlock1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.form2">
+            <summary>
+            form2 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.msgSuccess">
+            <summary>
+            msgSuccess control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.msgError">
+            <summary>
+            msgError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.cmdClose">
+            <summary>
+            cmdClose control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.htmlText2">
+            <summary>
+            htmlText2 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.htmlText">
+            <summary>
+            htmlText control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.divInputArea">
+            <summary>
+            divInputArea control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.lblFolders">
+            <summary>
+            lblFolders control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.FolderList">
+            <summary>
+            FolderList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.lblFileName">
+            <summary>
+            lblFileName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.FileName">
+            <summary>
+            FileName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.Overwrite">
+            <summary>
+            Overwrite control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.lblOverwrite">
+            <summary>
+            lblOverwrite control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.cmdSave">
+            <summary>
+            cmdSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.SaveTemplate.cmdCancel">
+            <summary>
+            cmdCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Providers.RadEditorProvider.LinkClickUrlHandler">
+            <summary>
+            Returns a LinkClickUrl if provided a tabid and LinkUrl.
+            </summary>
+            <remarks>This uses the new BaseHttpHandler which encapsulates most common scenarios including the retrieval of AJAX request data.
+            See http://blog.theaccidentalgeek.com/post/2008/10/28/An-Updated-Abstract-Boilerplate-HttpHandler.aspx for more information on 
+            the BaseHttpHandler.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.dnnProviderConfig">
+            <summary>
+            dnnProviderConfig control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.pnlSelectProvider">
+            <summary>
+            pnlSelectProvider control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.lblSelectedProvider">
+            <summary>
+            lblSelectedProvider control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.editorState">
+            <summary>
+            editorState control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.editorList">
+            <summary>
+            editorList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.btnEnable">
+            <summary>
+            btnEnable control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.treeTools">
+            <summary>
+            treeTools control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.pnlTabContent">
+            <summary>
+            pnlTabContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.MessagePanel">
+            <summary>
+            MessagePanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.pnlEditor">
+            <summary>
+            pnlEditor control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.plhConfig">
+            <summary>
+            plhConfig control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.txtTools">
+            <summary>
+            txtTools control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.cmdUpdate">
+            <summary>
+            cmdUpdate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.cmdCopy">
+            <summary>
+            cmdCopy control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.cmdCancel">
+            <summary>
+            cmdCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.cmdDelete">
+            <summary>
+            cmdDelete control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.pnlForm">
+            <summary>
+            pnlForm control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.lblMode">
+            <summary>
+            lblMode control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.rblMode">
+            <summary>
+            rblMode control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.lblPortal">
+            <summary>
+            lblPortal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.chkPortal">
+            <summary>
+            chkPortal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.divTabs">
+            <summary>
+            divTabs control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.lblTabs">
+            <summary>
+            lblTabs control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.treePages">
+            <summary>
+            treePages control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.cmdCreate">
+            <summary>
+            cmdCreate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.BuildLabel(System.String)">
+            <summary>
+            This method will build a dnn property label (Same as used in the user profile edit area) that can be added to a control.
+            </summary>
+            <param name="resourceKey"></param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:DotNetNuke.Providers.RadEditorProvider.ProviderConfig.ModuleActions">
+            -----------------------------------------------------------------------------
+            <summary>
+            Registers the module actions required for interfacing with the portal framework
+            </summary>
+            <value></value>
+            <returns></returns>
+            <remarks></remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+    </members>
+</doc>

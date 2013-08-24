@@ -1,0 +1,6 @@
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNTreeNavigationProvider\bin\DotNetNuke.DNNTreeNavigationProvider.XML
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNTreeNavigationProvider\bin\DotNetNuke.DNNTreeNavigationProvider.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNTreeNavigationProvider\bin\DotNetNuke.DNNTreeNavigationProvider.pdb
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNTreeNavigationProvider\obj\Release\Provider.DNNTreeNavigationProvider.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNTreeNavigationProvider\obj\Release\DotNetNuke.DNNTreeNavigationProvider.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNTreeNavigationProvider\obj\Release\DotNetNuke.DNNTreeNavigationProvider.pdb

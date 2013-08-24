@@ -1,0 +1,6 @@
+C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Twitter\bin\DotNetNuke.Authentication.Twitter.XML
+C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Twitter\bin\DotNetNuke.Authentication.Twitter.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Twitter\bin\DotNetNuke.Authentication.Twitter.pdb
+C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Twitter\obj\Release\DotNetNuke.Authentication.Twitter.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Twitter\obj\Release\DotNetNuke.Authentication.Twitter.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Twitter\obj\Release\DotNetNuke.Authentication.Twitter.pdb

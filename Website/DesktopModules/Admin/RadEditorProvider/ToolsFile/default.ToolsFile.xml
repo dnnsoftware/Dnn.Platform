@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+
+    <modules>
+        <module name="RadEditorStatistics" dockingZone="Bottom"/>
+    </modules>
+
+    <tools name="MainToolbar">
+        <tool name="AjaxSpellCheck"/>
+        <tool name="FindAndReplace" shortcut="CTRL+F"/>
+        <tool name="PasteStrip"/>
+        <tool separator="true"/>
+        <tool name="Undo" shortcut="CTRL+Z"/>
+        <tool name="Redo" shortcut="CTRL+Y"/>
+    </tools>
+
+    <tools name="InsertToolbar" >
+        <EditorToolStrip Name="InsertOptions" PopupHeight="250px">
+            <EditorTool Name="ImageManager" />
+            <EditorTool Name="DocumentManager" />
+            <EditorTool Name="FlashManager" />
+            <EditorTool Name="MediaManager" />
+            <EditorTool Name="ImageMapDialog"/>
+        </EditorToolStrip>
+        <EditorToolStrip Name="TemplateOptions" PopupHeight="80px">
+            <EditorTool Name="SaveTemplate" />
+            <EditorTool Name="TemplateManager" />
+        </EditorToolStrip>
+        <tool separator="true"/>
+        <tool name="LinkManager" shortcut="CTRL+K"/>
+        <tool name="Unlink" shortcut="CTRL+SHIFT+K"/>
+        <tool name="InsertCustomLink" shortcut="CTRL+ALT+K"/>
+    </tools>
+
+    <tools name="DropdownToolbar" >
+        <tool name="InsertSymbol"/>
+        <tool name="InsertTable"/>
+      
+        <tool name="InsertParagraph" />
+     
+        <tool name="ToggleScreenMode" shortcut="F11"/>
+     
+        <tool name="InsertDate" />
+        <tool name="InsertTime" />
+    </tools>
+
+    <tools>
+        <tool name="Bold" shortcut="CTRL+B"/>
+        <tool name="Italic" shortcut="CTRL+I"/>
+        <tool name="Underline" shortcut="CTRL+U"/>
+        <tool name="StrikeThrough" />
+        <tool name="Superscript" />
+        <tool name="Subscript" />
+    </tools>
+    <tools>  
+        <tool name="Indent" />
+        <tool name="Outdent" />
+    </tools>
+    <tools> 
+        <tool name="InsertOrderedList" />
+        <tool name="InsertUnorderedList" />
+    </tools>
+    <tools>   
+        <tool name="ConvertToLower" />
+        <tool name="ConvertToUpper" />
+        <tool name="InsertHorizontalRule" />
+    </tools>
+    <tools>   
+        <tool name="ForeColor" />
+        <tool name="BackColor" />
+        <tool name="FontName" />
+        <tool name="FontSize" />
+    </tools>
+    <tools>
+        <tool name="JustifyLeft" />
+        <tool name="JustifyCenter" />
+        <tool name="JustifyRight" />
+        <tool name="JustifyFull" />        
+    </tools>
+    <tools>
+        <tool name="FormatBlock"/>
+        <tool separator="true"/>
+        <tool name="ApplyClass"/>
+        <tool name="FormatStripper"/>
+    </tools>
+
+    <paragraphs>
+        <paragraph name="&lt;P>Standard Paragraph&lt;/P&gt;" value="&lt;P&gt;" />
+        <paragraph name="&lt;H1>Heading 1&lt;/H1&gt;" value="&lt;H1&gt;" />
+        <paragraph name="&lt;H2>Heading 2&lt;/H2&gt;" value="&lt;H2&gt;" />
+        <paragraph name="&lt;H3>Heading 3&lt;/H3&gt;" value="&lt;H3&gt;" />
+        <paragraph name="&lt;P style='text-align:left'>Justify Left&lt;/P&gt;" value="&lt;P style='text-align:left'&gt;" />
+        <paragraph name="&lt;P style='text-align:right'>Justify Right&lt;/P&gt;" value="&lt;P style='text-align:right'&gt;" />
+        <paragraph name="&lt;P style='text-align:center'>Justify Center&lt;/P&gt;" value="&lt;P style='text-align:center'&gt;" />
+    </paragraphs>
+
+</root>

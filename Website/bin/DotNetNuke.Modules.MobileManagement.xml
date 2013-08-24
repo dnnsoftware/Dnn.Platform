@@ -1,0 +1,532 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.MobileManagement</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetNuke.Modules.MobileManagement.Presenters.SimpleSettingsPresenter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.MobileManagement.Presenters.SimpleSettingsPresenter.#ctor(DotNetNuke.Modules.MobileManagement.Views.ISimpleSettingsView)">
+            <summary>
+            
+            </summary>
+            <param name="view"></param>
+        </member>
+        <member name="T:DotNetNuke.Modules.MobileManagement.Presenters.RedirectionManagerPresenter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.MobileManagement.Presenters.RedirectionManagerPresenter.#ctor(DotNetNuke.Modules.MobileManagement.Views.IRedirectionManagerView)">
+            <summary>
+            presenter constructor with view
+            </summary>
+            <param name="view">the view.</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.MobileManagement.Presenters.RedirectionManagerPresenter.#ctor(DotNetNuke.Modules.MobileManagement.Views.IRedirectionManagerView,DotNetNuke.Services.Mobile.IRedirectionController)">
+            <summary>
+            presenter constructor with view and the business controller.
+            </summary>
+            <param name="view">the view.</param>
+            <param name="controller">the redirection business controller.</param>
+        </member>
+        <member name="T:DotNetNuke.Modules.MobileManagement.Presenters.RedirectionSettingsPresenter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.MobileManagement.Presenters.RedirectionSettingsPresenter.#ctor(DotNetNuke.Modules.MobileManagement.Views.IRedirectionSettingsView)">
+            <summary>
+            
+            </summary>
+            <param name="view"></param>
+        </member>
+        <member name="T:DotNetNuke.Modules.MobileManagement.Views.ISimpleSettingsView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Modules.MobileManagement.Views.IRedirectionManagerView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Modules.MobileManagement.Views.IRedirectionSettingsView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Modules.MobileManagement.RedirectionManagerView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionManagerView.optSimpleAdvanced">
+            <summary>
+            optSimpleAdvanced control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionManagerView.lnkAdd">
+            <summary>
+            lnkAdd control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionManagerView.dvRedirectionsGrid">
+            <summary>
+            dvRedirectionsGrid control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionManagerView.RedirectionsGrid">
+            <summary>
+            RedirectionsGrid control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.lblRedirectName">
+            <summary>
+            lblRedirectName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.txtRedirectName">
+            <summary>
+            txtRedirectName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.valTrackingId">
+            <summary>
+            valTrackingId control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.chkEnable">
+            <summary>
+            chkEnable control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.lblRedirect">
+            <summary>
+            lblRedirect control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.optRedirectSource">
+            <summary>
+            optRedirectSource control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.dvSourcePage">
+            <summary>
+            dvSourcePage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.cboSourcePage">
+            <summary>
+            cboSourcePage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.chkChildPages">
+            <summary>
+            chkChildPages control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.lblRedirectTarget">
+            <summary>
+            lblRedirectTarget control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.optRedirectTarget">
+            <summary>
+            optRedirectTarget control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.dvTargetPortal">
+            <summary>
+            dvTargetPortal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.cboPortal">
+            <summary>
+            cboPortal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.dvTargetPage">
+            <summary>
+            dvTargetPage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.cboTargetPage">
+            <summary>
+            cboTargetPage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.dvTargetUrl">
+            <summary>
+            dvTargetUrl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.lblTargetUrl">
+            <summary>
+            lblTargetUrl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.txtTargetUrl">
+            <summary>
+            txtTargetUrl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.lblRedirectType">
+            <summary>
+            lblRedirectType control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.optRedirectType">
+            <summary>
+            optRedirectType control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.dvOtherTypeSection">
+            <summary>
+            dvOtherTypeSection control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.dvCapabilityList">
+            <summary>
+            dvCapabilityList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.lblCapability">
+            <summary>
+            lblCapability control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.cboCapabilityName">
+            <summary>
+            cboCapabilityName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.lblCapabilityValue">
+            <summary>
+            lblCapabilityValue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.cboCapabilityValue">
+            <summary>
+            cboCapabilityValue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.imgAddCapabililty">
+            <summary>
+            imgAddCapabililty control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.dgCapabilityList">
+            <summary>
+            dgCapabilityList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.lnkSave">
+            <summary>
+            lnkSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.RedirectionSettingsView.lnkCancel">
+            <summary>
+            lnkCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.lblRedirectName">
+            <summary>
+            lblRedirectName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.txtRedirectName">
+            <summary>
+            txtRedirectName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.valTrackingId">
+            <summary>
+            valTrackingId control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.lblRedirect">
+            <summary>
+            lblRedirect control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.lblHomePage">
+            <summary>
+            lblHomePage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.cboSourcePage">
+            <summary>
+            cboSourcePage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.lblRedirectTarget">
+            <summary>
+            lblRedirectTarget control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.optRedirectTarget">
+            <summary>
+            optRedirectTarget control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.dvTargetPortal">
+            <summary>
+            dvTargetPortal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.cboPortal">
+            <summary>
+            cboPortal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.dvTargetPage">
+            <summary>
+            dvTargetPage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.cboTargetPage">
+            <summary>
+            cboTargetPage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.dvTargetUrl">
+            <summary>
+            dvTargetUrl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.lblTargetUrl">
+            <summary>
+            lblTargetUrl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.txtTargetUrl">
+            <summary>
+            txtTargetUrl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.lnkSave">
+            <summary>
+            lnkSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MobileManagement.SimpleSettingsView.lnkCancel">
+            <summary>
+            lnkCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

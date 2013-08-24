@@ -1,0 +1,7 @@
+C:\Git\Dnn.Platform\DNN Platform\Modules\PreviewProfileManagement\bin\DotNetNuke.Modules.PreviewProfileManagement.XML
+C:\Git\Dnn.Platform\DNN Platform\Modules\PreviewProfileManagement\bin\DotNetNuke.Modules.PreviewProfileManagement.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\PreviewProfileManagement\bin\DotNetNuke.Modules.PreviewProfileManagement.pdb
+C:\Git\Dnn.Platform\DNN Platform\Modules\PreviewProfileManagement\bin\DotNetNuke.WebUtility.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\PreviewProfileManagement\obj\Release\DotNetNuke.Modules.PreviewProfileManagement.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Modules\PreviewProfileManagement\obj\Release\DotNetNuke.Modules.PreviewProfileManagement.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\PreviewProfileManagement\obj\Release\DotNetNuke.Modules.PreviewProfileManagement.pdb

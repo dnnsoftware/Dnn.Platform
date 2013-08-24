@@ -1,0 +1,469 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.Groups</name>
+    </assembly>
+    <members>
+        <member name="M:DotNetNuke.Entities.Groups.Content.CreateContentItem(DotNetNuke.Security.Roles.RoleInfo,System.Int32)">
+            <summary>
+            This should only run after the Post exists in the data store. 
+            </summary>
+            <returns>The newly created ContentItemID from the data store.</returns>
+            <remarks>This is for the first question in the thread. Not for replies or items with ParentID > 0.</remarks>
+        </member>
+        <member name="M:DotNetNuke.Entities.Groups.Content.UpdateContentItem(DotNetNuke.Security.Roles.RoleInfo,System.Int32)">
+            <summary>
+            This is used to update the content in the ContentItems table. Should be called when a question is updated.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Entities.Groups.Content.DeleteContentItem(System.Int32)">
+            <summary>
+            This removes a content item associated with a question/thread from the data store. Should run every time an entire thread is deleted.
+            </summary>
+            <param name="contentItemID"></param>
+        </member>
+        <member name="M:DotNetNuke.Entities.Groups.Content.GetContentTypeID(System.String)">
+            <summary>
+            This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.
+            </summary>
+            <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
+        </member>
+        <member name="M:DotNetNuke.Entities.Groups.Content.CreateContentType(System.String)">
+            <summary>
+            Creates a Content Type (for taxonomy) in the data store.
+            </summary>
+            <returns>The primary key value of the new ContentType.</returns>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.txtGroupName">
+            <summary>
+            txtGroupName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.reqGroupName">
+            <summary>
+            reqGroupName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.valGroupName">
+            <summary>
+            valGroupName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.lblInvalidGroupName">
+            <summary>
+            lblInvalidGroupName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.txtDescription">
+            <summary>
+            txtDescription control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.inpFile">
+            <summary>
+            inpFile control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.rdAccessTypePublic">
+            <summary>
+            rdAccessTypePublic control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.chkMemberApproved">
+            <summary>
+            chkMemberApproved control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.rdAccessTypePrivate">
+            <summary>
+            rdAccessTypePrivate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.btnCreate">
+            <summary>
+            btnCreate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Create.btnCancel">
+            <summary>
+            btnCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.litGroupName">
+            <summary>
+            litGroupName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.txtGroupName">
+            <summary>
+            txtGroupName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.reqGroupName">
+            <summary>
+            reqGroupName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.valGroupName">
+            <summary>
+            valGroupName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.lblInvalidGroupName">
+            <summary>
+            lblInvalidGroupName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.txtDescription">
+            <summary>
+            txtDescription control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.imgGroup">
+            <summary>
+            imgGroup control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.inpFile">
+            <summary>
+            inpFile control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.rdAccessTypePublic">
+            <summary>
+            rdAccessTypePublic control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.chkMemberApproved">
+            <summary>
+            chkMemberApproved control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.rdAccessTypePrivate">
+            <summary>
+            rdAccessTypePrivate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.btnSave">
+            <summary>
+            btnSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupEdit.btnCancel">
+            <summary>
+            btnCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.GroupView.litOutput">
+            <summary>
+            litOutput control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.List.panelSearch">
+            <summary>
+            panelSearch control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.List.txtFilter">
+            <summary>
+            txtFilter control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.List.btnSearch">
+            <summary>
+            btnSearch control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.List.ctlGroupList">
+            <summary>
+            ctlGroupList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Loader.plhContent">
+            <summary>
+            plhContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Modules.Groups.ListSettings">
+            -----------------------------------------------------------------------------
+            <summary>
+            The Settings class manages Module Settings
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.chkUserGroups">
+            <summary>
+            chkUserGroups control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.drpRoleGroup">
+            <summary>
+            drpRoleGroup control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.drpViewMode">
+            <summary>
+            drpViewMode control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.drpGroupViewPage">
+            <summary>
+            drpGroupViewPage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.txtListTemplate">
+            <summary>
+            txtListTemplate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.txtViewTemplate">
+            <summary>
+            txtViewTemplate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.lstSortField">
+            <summary>
+            lstSortField control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.radSortDirection">
+            <summary>
+            radSortDirection control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.txtPageSize">
+            <summary>
+            txtPageSize control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.rangePageSize">
+            <summary>
+            rangePageSize control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.chkEnableSearch">
+            <summary>
+            chkEnableSearch control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.ListSettings.chkGroupModeration">
+            <summary>
+            chkGroupModeration control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.Modules.Groups.ListSettings.LoadSettings">
+            -----------------------------------------------------------------------------
+            <summary>
+            LoadSettings loads the settings from the Database and displays them
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Groups.ListSettings.UpdateSettings">
+            -----------------------------------------------------------------------------
+            <summary>
+            UpdateSettings saves the modified settings to the Database
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.Setup.btnGo">
+            <summary>
+            btnGo control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Modules.Groups.View">
+            -----------------------------------------------------------------------------
+            <summary>
+            The ViewSocialGroups class displays the content
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="F:DotNetNuke.Modules.Groups.View.plhContent">
+            <summary>
+            plhContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.Modules.Groups.View.Page_Load(System.Object,System.EventArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+            Page_Load runs when the control is loaded
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,246 @@
+/*------------------------------------------*/
+/* Getting Started classes -----------------*/
+/*------------------------------------------*/
+
+#GettingStartedTitle {
+    color: #333;
+    font-weight: lighter;
+}
+
+#GettingStartedHeader {
+    padding: 12px;
+    background-color: #e8f0fb; /*light blue*/
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#GettingStartedLeftPanel {
+    float: left;
+    width: 60%;
+    min-width: 580px;
+    padding: 20px;
+    margin-right: 10px;
+    background-color: #E8F0FB;
+}
+
+    #GettingStartedLeftPanel .SubHead {
+        padding-bottom: 10px;
+        border-bottom: none;
+    }
+
+    #GettingStartedLeftPanel > div {
+        float: left;
+        width: 50%;
+    }
+
+#GettingStartedRightPanel {
+    float: left;
+    width: 31%;
+}
+
+    #GettingStartedRightPanel .SubHead {
+        padding-bottom: 10px;
+        border-bottom: none;
+    }
+
+    #GettingStartedRightPanel li {
+        color: #999999;
+        list-style: disc outside none;
+    }
+
+#GettingStartedActions {
+    float: left;
+    width: 100%;
+}
+
+    #GettingStartedActions ul {
+        padding: 0;
+    }
+
+#GettingStartedLeftPanel a,
+#GettingStartedRightPanel a {
+    text-decoration: none;
+}
+
+.GettingStartedSeparator {
+    margin: 0px;
+}
+
+/* Slide */
+#GettingStartedLeftPanel .slides {
+    position: relative;
+    z-index: 9;
+    top: 0px;
+    left: 0px;
+    height: 365px;
+}
+
+#GettingStartedLeftPanel .slides_container {
+    display: none;
+    position: absolute;
+    width: 580px;
+    overflow: hidden;
+}
+
+    #GettingStartedLeftPanel .slides_container div {
+        display: block;
+        width: 580px;
+        height: 365px;
+    }
+
+#GettingStartedLeftPanel .slide div {
+    float: left;
+    display: inline;
+    width: 290px;
+}
+
+    #GettingStartedLeftPanel .slide div div {
+        float: left;
+        display: inline;
+        width: 220px;
+    }
+
+#GettingStartedLeftPanel .videolink {
+    position: absolute;
+    bottom: 5px;
+}
+
+/* Next/Prev buttons 
+    -------------------------------------*/
+#GettingStartedLeftPanel .slidePrevNext {
+    position: relative;
+    left: 235px;
+    bottom: -25px;
+}
+
+#GettingStartedLeftPanel .next, #GettingStartedLeftPanel .prev {
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 9px;
+    left: 12px;
+    padding: 0;
+    z-index: 12;
+}
+
+#GettingStartedLeftPanel .prev {
+}
+
+#GettingStartedLeftPanel .next {
+    left: 70px;
+}
+
+/* Page link */
+#GettingStartedLeftPanel .pagination {
+    position: absolute;
+    margin-left: 32px;
+    margin-top: -23px;
+}
+
+    #GettingStartedLeftPanel .pagination li {
+        float: left;
+        margin: 0 3px;
+        list-style: none;
+    }
+
+        #GettingStartedLeftPanel .pagination li a {
+            float: left;
+            display: block;
+            width: 9px;
+            height: 0;
+            padding-top: 8px;
+            background-image: url(../../images/pagination.png);
+            background-position: 0 0;
+            overflow: hidden;
+        }
+
+        #GettingStartedLeftPanel .pagination li.current a {
+            background-position: 0 -9px;
+        }
+
+/* Personalize Content */
+#GettingStartedLeftPanel .storeInfo {
+    display: inline;
+    height: 80px !important;
+}
+
+#GettingStartedLeftPanel .storeImage {
+    float: left;
+    display: inline;
+}
+
+#GettingStartedLeftPanel .visitStore {
+    float: right;
+    padding-right: 15px;
+    margin-top: -10px;
+}
+
+#GettingStartedLeftPanel .visitStoreLink {
+    font-weight: lighter;
+}
+
+#GettingStartedLeftPanel .storeSkins img {
+    width: 50px;
+    height: 50px;
+    border: none;
+    background: url(../../images/icon_skins.png) no-repeat;
+}
+
+#GettingStartedLeftPanel .storeModules img {
+    width: 50px;
+    height: 50px;
+    border: none;
+    background: url(../../images/icon_modules.png) no-repeat;
+}
+
+/* Personalize */
+#GettingStartedLeftPanel .personalizebreak {
+    width: 95%;
+}
+
+/* Sponsors */
+#Sponsors img {
+    width: 118px;
+    height: 58px;
+    margin: 5px 5px 10px 10px;
+    border: none;
+    background: url(../../images/Logos.jpg) no-repeat;
+}
+
+#Sponsors .aspnet img {
+    background-position: 0 0;
+}
+
+#Sponsors .maxasp img {
+    background-position: -118px 0;
+}
+
+#Sponsors .telerik img {
+    background-position: -236px 0;
+}
+
+#Sponsors .exacttarget img {
+    background-position: -354px 0;
+}
+
+#Sponsors .winlive img {
+    background-position: 0 -58px;
+}
+
+#Sponsors .redgate img {
+    background-position: -118px -58px;
+}
+
+#Sponsors .appliedi img {
+    background-position: -236px -58px;
+}
+
+#Sponsors .arrowdesign img {
+    background-position: -354px -58px;
+}
+
+#GettingStartedLeftPanel .sponsors {
+    width: 270px !important;
+    padding-left: 10px;
+}

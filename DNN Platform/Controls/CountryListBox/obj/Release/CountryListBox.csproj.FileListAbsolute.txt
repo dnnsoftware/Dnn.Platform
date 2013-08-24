@@ -1,0 +1,6 @@
+C:\Git\Dnn.Platform\DNN Platform\Controls\CountryListBox\bin\CountryListBox.xml
+C:\Git\Dnn.Platform\DNN Platform\Controls\CountryListBox\bin\CountryListBox.dll
+C:\Git\Dnn.Platform\DNN Platform\Controls\CountryListBox\bin\CountryListBox.pdb
+C:\Git\Dnn.Platform\DNN Platform\Controls\CountryListBox\obj\Release\CountryListBox.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Controls\CountryListBox\obj\Release\CountryListBox.dll
+C:\Git\Dnn.Platform\DNN Platform\Controls\CountryListBox\obj\Release\CountryListBox.pdb

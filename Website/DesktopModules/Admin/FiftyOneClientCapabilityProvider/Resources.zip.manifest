@@ -1,0 +1,40 @@
+﻿<dotnetnuke type="ResourceFile" version="5.0">
+  <files>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>Administration.ascx.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>SharedResources.resx</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>mobiledevicedet_16X16.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>mobiledevicedet_32X32.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>mobiledevicedet_48X48.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>PremiumOnly.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>World.png</name>
+    </file>
+    <file>
+      <path />
+      <name>Administration.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>module.css</name>
+    </file>
+  </files>
+</dotnetnuke>

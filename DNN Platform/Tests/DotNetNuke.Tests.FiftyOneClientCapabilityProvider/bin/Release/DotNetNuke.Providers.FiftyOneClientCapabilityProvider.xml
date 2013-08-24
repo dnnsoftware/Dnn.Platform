@@ -1,0 +1,384 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Providers.FiftyOneClientCapabilityProvider</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration">
+            <summary>
+            Administration control is used as the main control off the hosts
+            page to activate 51Degrees.mobi.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components.ModuleBase">
+            <summary>
+            Base class used by all user controls.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.IsPremium">
+            <summary>
+             Records if premium data is in use when the control is first loaded.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.OnInit(System.EventArgs)">
+            <summary>
+            Executes the page initialization event.
+            </summary>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.Activate">
+            <summary>
+            Activate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.LiteStats">
+            <summary>
+            LiteStats control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.purchaseBox">
+            <summary>
+            purchaseBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.PremiumStats">
+            <summary>
+            PremiumStats control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.PremiumUploadError">
+            <summary>
+            PremiumUploadError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.PremiumUploadSuccess">
+            <summary>
+            PremiumUploadSuccess control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.PremiumUpload">
+            <summary>
+            PremiumUpload control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.NoResultsMessage">
+            <summary>
+            NoResultsMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.SearchTextBox">
+            <summary>
+            SearchTextBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.RequiredFieldValidator1">
+            <summary>
+            RequiredFieldValidator1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.SearchButton">
+            <summary>
+            SearchButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.HardwareList">
+            <summary>
+            HardwareList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.SoftwareList">
+            <summary>
+            SoftwareList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.BrowserList">
+            <summary>
+            BrowserList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.ContentList">
+            <summary>
+            ContentList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration.DeviceExplorer">
+            <summary>
+            DeviceExplorer control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components.FeatureController">
+             -----------------------------------------------------------------------------
+            <summary>
+             The FeatureController class for the modules.
+             </summary>
+             <remarks>
+             </remarks>
+             <history>
+             </history>
+             -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components.FeatureController.UpgradeModule(System.String)">
+            <summary>
+            Handles upgrading the module and adding the module to the hosts menu.
+            </summary>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.DnnDeviceExplorer">
+            <summary>
+            Inherits from DeviceExplorer, overrides URL generation methods and UI building methods to add DNN specific functionality.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.DnnDeviceExplorer.GetNewUrl(System.String,System.String)">
+            <summary>
+            Revises current page URL with a specific key/value parameter.
+            </summary>
+            <param name="key">The key to be added to the querystring.</param>
+            <param name="value">The value to be added to the querystring.</param>
+            <returns>The fully qualified URL.</returns>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.DnnDeviceExplorer.GetNewUrl(System.Collections.Specialized.NameValueCollection,System.String,System.String)">
+            <summary>
+            Revises current page URL with a specific key/value parameter.
+            </summary>
+            <param name="parameters">The current query string parameters. Used for </param>
+            <param name="key">The key to be added to the querystring.</param>
+            <param name="value">The value to be added to the querystring.</param>
+            <returns>The fully qualified URL.</returns>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.DnnDeviceExplorer.AddLabel(System.Web.UI.WebControls.WebControl,System.String,System.String,System.Uri,System.String)">
+            <summary>
+            Builds a label (conditionally using the dnnTooltip) and adds it to the provided panel.
+            </summary>
+            <param name="panel">The panel to add label to.</param>
+            <param name="text">The text of the label.</param>
+            <param name="tooltip">The value of the tooltip.</param>
+            <param name="url">The URL to be included in the tooltip. Presence dictates that the tooltip a link.</param>
+            <param name="anchor">The name of the anchor.</param>
+        </member>
+        <member name="T:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Properties.Constants">
+            <summary>
+            A list of constants used to configure the package.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Properties.Constants.PackageName">
+            <summary>
+            The package name.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Properties.Constants.ModuleDefinitionName">
+            <summary>
+            The name of the module definition.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Properties.Constants.ModuleName">
+            <summary>
+            The name of the module.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Properties.Constants.ConfigIconFileLarge">
+            <summary>
+            Larger image used to indicate 51Degrees.mobi.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Properties.Constants.ConfigIconFileThumbNail">
+            <summary>
+            Thumb nail image used to indicate 51Degrees.mobi.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapability">
+            <summary>
+            51Degrees.mobi Implementation of IClientCapability
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapability.#ctor(FiftyOne.Foundation.Mobile.Detection.BaseDeviceInfo)">
+            <summary>
+            Constructs a new instance of ClientCapability.
+            See http://51degrees.mobi/Products/DeviceData/PropertyDictionary.aspx
+            for a full list of available properties.
+            All the properties used are non-lists and therefore the first
+            item contained in the values list contains the only available value.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapability.#ctor(System.Web.HttpBrowserCapabilities)">
+            <summary>
+            Constructs a new instance of ClientCapability.
+            See http://51degrees.mobi/Products/DeviceData/PropertyDictionary.aspx
+            for a full list of available properties.
+            All the properties used are non-lists and therefore the first
+            item contained in the values list contains the only available value.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapability.#ctor(System.Collections.Generic.SortedList{System.String,System.Collections.Generic.List{System.String}})">
+            <summary>
+            Constructs a new instance of ClientCapability.
+            See http://51degrees.mobi/Products/DeviceData/PropertyDictionary.aspx
+            for a full list of available properties.
+            All the properties used are non-lists and therefore the first
+            item contained in the values list contains the only available value.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapability.GetCapabilities(System.Collections.Generic.SortedList{System.String,System.Collections.Generic.List{System.String}})">
+            <summary>
+            Returns a dictionary of capability names and values as strings based on the object
+            keys and values held in the browser capabilities provided. The value string may
+            contains pipe (|) seperated lists of values.
+            </summary>
+            <param name="properties">A collection of device related capabilities.</param>
+            <returns>Device related capabilities with property names and values converted to strings.</returns>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapability.GetBoolValue(System.Collections.Generic.SortedList{System.String,System.Collections.Generic.List{System.String}},System.String)">
+            <summary>
+            Returns the property of the HttpBrowserCapabilities collection 
+            as an boolean.
+            </summary>
+            <param name="properties">A collection of device related capabilities.</param>
+            <param name="property">The name of the property to return as a boolean.</param>
+            <returns>The boolean value of the property, or false if the property is not found or it's value is not an boolean.</returns>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapability.GetIntValue(System.Collections.Generic.SortedList{System.String,System.Collections.Generic.List{System.String}},System.String)">
+            <summary>
+            Returns the property of the HttpBrowserCapabilities collection 
+            as an integer.
+            </summary>
+            <param name="properties">A collection of device related capabilities.</param>
+            <param name="property">The name of the property to return as a integer.</param>
+            <returns>The integer value of the property, or 0 if the property is not found or it's value is not an integer.</returns>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapability.GetStringValue(System.Collections.Generic.SortedList{System.String,System.Collections.Generic.List{System.String}},System.String)">
+            <summary>
+            Returns the property of the HttpBrowserCapabilities collection 
+            as a string.
+            </summary>
+            <param name="properties">A collection of device related properties.</param>
+            <param name="property">The name of the property to return as a string.</param>
+            <returns>The string value of the property, or null if the property is not found.</returns>
+        </member>
+        <member name="T:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapabilityProvider">
+            <summary>
+            51Degrees.mobi implementation of ClientCapabilityProvider
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapabilityProvider.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapabilityProvider.GetClientCapability(System.String)">
+            <summary>
+            Returns ClientCapability based on the user agent provided.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapabilityProvider.GetClientCapabilityById(System.String)">
+            <summary>
+            Returns ClientCapability based on device Id provided.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapabilityProvider.GetAllClientCapabilityValues">
+            <summary>
+            Returns available Capability Values for every Capability Name
+            </summary>
+            <returns>
+            Dictionary of Capability Name along with List of possible values of the Capability
+            </returns>
+            <example>Capability Name = mobile_browser, value = Safari, Andriod Webkit </example>
+        </member>
+        <member name="M:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapabilityProvider.GetAllClientCapabilities">
+            <summary>
+            Returns All available Client Capabilities present
+            </summary>
+            <returns>
+            List of IClientCapability present
+            </returns>        
+        </member>
+        <member name="P:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.FiftyOneClientCapabilityProvider.SupportsTabletDetection">
+            <summary>
+            Indicates whether tablet detection is supported in the available data set.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Properties.RetailerConstants">
+            <summary>
+            A list of constants to use with the purchase solution.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Properties.RetailerConstants.RETAILER_URL">
+            <summary>
+            The url to send purchasers to.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Properties.RetailerConstants.RETAILER_NAME">
+            <summary>
+            The name of the retailer.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components.SettingsBase">
+            <summary>
+            Base class used by all settings user controls.
+            </summary>
+        </member>
+    </members>
+</doc>

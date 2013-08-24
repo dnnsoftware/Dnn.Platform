@@ -1,0 +1,92 @@
+﻿<dotnetnuke type="ResourceFile" version="5.0">
+  <files>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>EditHtml.ascx.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>HtmlModule.ascx.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>MyWork.ascx.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>Settings.ascx.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>SharedResources.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>Workflow.ascx.resx</name>
+    </file>
+    <file>
+      <path />
+      <name>EditHtml.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>HtmlModule.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>MyWork.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>Settings.ascx</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>html.png</name>
+    </file>
+    <file>
+      <path />
+      <name>04.05.00.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>04.06.00.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>04.06.01.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>04.07.00.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>04.08.01.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>05.01.00.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>05.01.02.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>05.01.03.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>05.01.04.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>05.02.00.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>05.04.03.txt</name>
+    </file>
+  </files>
+</dotnetnuke>

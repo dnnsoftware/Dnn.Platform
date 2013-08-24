@@ -1,0 +1,377 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.Taxonomy</name>
+    </assembly>
+    <members>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditTermControl.nameFieldLabel">
+            <summary>
+            nameFieldLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditTermControl.nameTextBox">
+            <summary>
+            nameTextBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditTermControl.nameValidator">
+            <summary>
+            nameValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditTermControl.descriptionFieldLabel">
+            <summary>
+            descriptionFieldLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditTermControl.descriptionTextBox">
+            <summary>
+            descriptionTextBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditTermControl.divParentTerm">
+            <summary>
+            divParentTerm control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditTermControl.parentTermLabel">
+            <summary>
+            parentTermLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditTermControl.parentTermCombo">
+            <summary>
+            parentTermCombo control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.nameFieldLabel">
+            <summary>
+            nameFieldLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.nameLabel">
+            <summary>
+            nameLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.nameTextBox">
+            <summary>
+            nameTextBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.nameValidator">
+            <summary>
+            nameValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.descriptionFieldLabel">
+            <summary>
+            descriptionFieldLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.descriptionTextBox">
+            <summary>
+            descriptionTextBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.typeFieldLabel">
+            <summary>
+            typeFieldLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.typeList">
+            <summary>
+            typeList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.typeLabel">
+            <summary>
+            typeLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.divScope">
+            <summary>
+            divScope control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.scopeFieldLabel">
+            <summary>
+            scopeFieldLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.scopeList">
+            <summary>
+            scopeList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.Controls.EditVocabularyControl.scopeLabel">
+            <summary>
+            scopeLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.CreateVocabulary.editVocabularyControl">
+            <summary>
+            editVocabularyControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.CreateVocabulary.saveVocabulary">
+            <summary>
+            saveVocabulary control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.CreateVocabulary.cancelCreate">
+            <summary>
+            cancelCreate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.pnlVocabTerms">
+            <summary>
+            pnlVocabTerms control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.editVocabularyControl">
+            <summary>
+            editVocabularyControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.termsLabel">
+            <summary>
+            termsLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.termsList">
+            <summary>
+            termsList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.saveVocabulary">
+            <summary>
+            saveVocabulary control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.addTermButton">
+            <summary>
+            addTermButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.cancelEdit">
+            <summary>
+            cancelEdit control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.deleteVocabulary">
+            <summary>
+            deleteVocabulary control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.pnlTermEditor">
+            <summary>
+            pnlTermEditor control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.termLabel">
+            <summary>
+            termLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.editTermControl">
+            <summary>
+            editTermControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.saveTermButton">
+            <summary>
+            saveTermButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.cancelTermButton">
+            <summary>
+            cancelTermButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.EditVocabulary.deleteTermButton">
+            <summary>
+            deleteTermButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.VocabularyList.titleLabel">
+            <summary>
+            titleLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.VocabularyList.vocabulariesGrid">
+            <summary>
+            vocabulariesGrid control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Taxonomy.Views.VocabularyList.hlAddVocab">
+            <summary>
+            hlAddVocab control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

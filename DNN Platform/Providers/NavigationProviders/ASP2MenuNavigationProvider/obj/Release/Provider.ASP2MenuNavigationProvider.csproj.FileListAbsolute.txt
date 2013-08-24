@@ -1,0 +1,6 @@
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\ASP2MenuNavigationProvider\bin\DotNetNuke.ASP2MenuNavigationProvider.XML
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\ASP2MenuNavigationProvider\bin\DotNetNuke.ASP2MenuNavigationProvider.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\ASP2MenuNavigationProvider\bin\DotNetNuke.ASP2MenuNavigationProvider.pdb
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\ASP2MenuNavigationProvider\obj\Release\Provider.ASP2MenuNavigationProvider.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\ASP2MenuNavigationProvider\obj\Release\DotNetNuke.ASP2MenuNavigationProvider.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\ASP2MenuNavigationProvider\obj\Release\DotNetNuke.ASP2MenuNavigationProvider.pdb

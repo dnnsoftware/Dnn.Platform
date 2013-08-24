@@ -1,0 +1,10 @@
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\bin\DotNetNuke.Modules.Journal.XML
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\bin\DotNetNuke.Modules.Journal.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\bin\DotNetNuke.Modules.Journal.pdb
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\bin\Newtonsoft.Json.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\bin\System.Net.Http.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\bin\System.Net.Http.Formatting.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\bin\System.Web.Http.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\obj\Release\DotNetNuke.Modules.Journal.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\obj\Release\DotNetNuke.Modules.Journal.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Journal\obj\Release\DotNetNuke.Modules.Journal.pdb

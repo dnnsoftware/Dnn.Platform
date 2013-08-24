@@ -1,0 +1,6 @@
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNDropDownNavigationProvider\bin\DotNetNuke.DNNDropDownNavigationProvider.XML
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNDropDownNavigationProvider\bin\DotNetNuke.DNNDropDownNavigationProvider.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNDropDownNavigationProvider\bin\DotNetNuke.DNNDropDownNavigationProvider.pdb
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNDropDownNavigationProvider\obj\Release\Provider.DNNDropDownNavigationProvider.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNDropDownNavigationProvider\obj\Release\DotNetNuke.DNNDropDownNavigationProvider.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\DNNDropDownNavigationProvider\obj\Release\DotNetNuke.DNNDropDownNavigationProvider.pdb

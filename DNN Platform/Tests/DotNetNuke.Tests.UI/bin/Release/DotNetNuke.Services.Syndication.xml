@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Services.Syndication</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetNuke.Services.Syndication.OpmlOutline">
+            <summary>
+              Class for managing an OPML feed outline
+              <history>
+                Created     Nik Kalyani     3/1/2007
+              </history>
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.Opml">
+            <summary>
+              Class for managing an OPML feed
+              <history>
+                Created     Nik Kalyani     3/1/2007
+              </history>
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.OpmlDownloadManager">
+            <summary>
+              Helper class that provides memory and disk caching of the downloaded feeds
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.GenericRssChannel">
+            <summary>
+              Class to consume (or create) a channel in a late-bound way
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.RssChannelBase`2">
+            <summary>
+              Base class for RSS channel (for strongly-typed and late-bound channel types)
+            </summary>
+            <typeparam name = "RssItemType"></typeparam>
+            <typeparam name = "RssImageType"></typeparam>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.RssElementBase">
+            <summary>
+              The base class for all RSS elements (item, image, channel)
+              has collection of attributes
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.GenericRssElement">
+            <summary>
+              Late-bound RSS element (used for late bound item and image)
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.GenericRssHttpHandlerBase">
+            <summary>
+              Late-bound RSS HTTP Handler to publish RSS channel
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.RssHttpHandlerBase`3">
+            <summary>
+              Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it
+            </summary>
+            <typeparam name = "RssChannelType"></typeparam>
+            <typeparam name = "RssItemType"></typeparam>
+            <typeparam name = "RssImageType"></typeparam>
+        </member>
+        <member name="M:DotNetNuke.Services.Syndication.RssHttpHandlerBase`3.OnInit(System.EventArgs)">
+            <summary>
+              Triggers the Init event.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Services.Syndication.RssHttpHandlerBase`3.OnPreRender(System.EventArgs)">
+            <summary>
+              Triggers the PreRender event.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.RssChannelDom">
+            <summary>
+              Internal representation of parsed RSS channel
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.RssDataSource">
+            <summary>
+              RSS data source control implementation, including the designer
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.RssDownloadManager">
+            <summary>
+              Helper class that provides memory and disk caching of the downloaded feeds
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.RssElementCustomTypeDescriptor">
+            <summary>
+              Helper class to enable the data binding logic generate column names at runtime
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.RssHttpHandlerHelper">
+            <summary>
+              Helper class (for RssHtppHandler) to pack and unpack user name and channel to from/to query string
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Syndication.RssHyperLink">
+            <summary>
+              RssHyperLink control - works with RssHttpHandler
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Services.Syndication.RssXmlHelper.ParseChannelXml(System.Xml.XmlDocument)">
+            <summary>
+              Internal helper class for XML to RSS conversion (and for generating XML from RSS)
+            </summary>
+            <param name = "doc"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

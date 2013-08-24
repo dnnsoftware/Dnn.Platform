@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.HttpModules</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetNuke.HttpModules.Analytics.AnalyticsModule">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.HttpModules.Analytics
+            Project:    HttpModules
+            Module:     AnalyticsModule
+            -----------------------------------------------------------------------------
+            <summary>
+            This module contains functionality for injecting web analytics scripts into the page
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            	[cniknet]	05/03/2009	created
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.HttpModules.Config.AnalyticsEngineConfiguration">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.HttpModules.Analytics
+            Project:    HttpModules
+            Module:     AnalyticsEngineConfiguration
+            -----------------------------------------------------------------------------
+            <summary>
+            Class definition for AnalyticsEngineConfiguration which is used to create
+            an AnalyticsEngineCollection
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            	[cniknet]	05/03/2009	created
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.HttpModules.Compression.CompressionModule.Init(System.Web.HttpApplication)">
+            <summary>
+            Init the handler and fulfill <see cref="T:System.Web.IHttpModule"/>
+            </summary>
+            <remarks>
+            This implementation hooks the ReleaseRequestState and PreSendRequestHeaders events to
+            figure out as late as possible if we should install the filter.  Previous versions did
+            not do this as well.
+            </remarks>
+            <param name="context">The <see cref="T:System.Web.HttpApplication"/> this handler is working for.</param>
+        </member>
+        <member name="M:DotNetNuke.HttpModules.Compression.CompressionModule.Dispose">
+            <summary>
+            Implementation of <see cref="T:System.Web.IHttpModule"/>
+            </summary>
+            <remarks>
+            Currently empty.  Nothing to really do, as I have no member variables.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.HttpModules.Compression.Algorithms">
+            <summary>
+            The available compression algorithms to use with the HttpCompressionModule
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.HttpModules.Compression.Settings">
+            <summary>
+            This class encapsulates the settings for an HttpCompressionModule
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.HttpModules.Compression.Settings.GetSettings">
+            <summary>
+            Get the current settings from the xml config file
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.HttpModules.Compression.Settings.IsExcludedPath(System.String)">
+            <summary>
+            Looks for a given path in the list of paths excluded from compression
+            </summary>
+            <param name="relUrl">the relative url to check</param>
+            <returns>true if excluded, false if not</returns>
+        </member>
+        <member name="P:DotNetNuke.HttpModules.Compression.Settings.Default">
+            <summary>
+            The default settings.  Deflate + normal.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.HttpModules.Compression.Settings.PreferredAlgorithm">
+            <summary>
+            The preferred algorithm to use for compression
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.HttpModules.Compression.CompressingFilter">
+            <summary>
+            Base for any HttpFilter that performing compression
+            </summary>
+            <remarks>
+            When implementing this class, you need to implement a <see cref="T:DotNetNuke.HttpModules.Compression.HttpOutputFilter"/>
+            along with a <see cref="P:DotNetNuke.HttpModules.Compression.CompressingFilter.ContentEncoding"/>.  The latter corresponds to a 
+            content coding (see http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.5)
+            that your implementation will support.
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.HttpModules.Compression.CompressingFilter.#ctor(System.IO.Stream)">
+            <summary>
+            Protected constructor that sets up the underlying stream we're compressing into
+            </summary>
+            <param name="baseStream">The stream we're wrapping up</param>
+        </member>
+        <member name="M:DotNetNuke.HttpModules.Compression.CompressingFilter.WriteHeaders">
+            <summary>
+            Writes out the compression-related headers.  Subclasses should call this once before writing to the output stream.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.HttpModules.Compression.CompressingFilter.ContentEncoding">
+            <summary>
+            The name of the content-encoding that's being implemented
+            </summary>
+            <remarks>
+            See http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.5 for more
+            details on content codings.
+            </remarks>
+        </member>
+        <member name="P:DotNetNuke.HttpModules.Compression.CompressingFilter.HasWrittenHeaders">
+            <summary>
+            Keeps track of whether or not we're written the compression headers
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.HttpModules.Compression.DeflateFilter">
+            <summary>
+            Summary description for DeflateFilter.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.HttpModules.Compression.GZipFilter">
+            <summary>
+            This is a little filter to support HTTP compression using GZip
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.HttpModules.RequestFilter.RequestFilterModule.Dispose">
+            <summary>
+            Implementation of <see cref="T:System.Web.IHttpModule"/>
+            </summary>
+            <remarks>
+            Currently empty.  Nothing to really do, as I have no member variables.
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.HttpModules.RequestFilter.RequestFilterRule.#ctor(System.String,System.String,DotNetNuke.HttpModules.RequestFilter.RequestFilterOperatorType,DotNetNuke.HttpModules.RequestFilter.RequestFilterRuleType,System.String)">
+            <summary>
+            Initializes a new instance of the RequestFilterRule class.
+            </summary>
+            <param name="serverVariable"></param>
+            <param name="values"></param>
+            <param name="op"></param>
+            <param name="action"></param>
+            <param name="location"></param>
+        </member>
+        <member name="M:DotNetNuke.HttpModules.RequestFilter.RequestFilterRule.#ctor">
+            <summary>
+            Initializes a new instance of the RequestFilterRule class.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.HttpModules.RequestFilter.RequestFilterSettings.GetSettings">
+            <summary>
+            Get the current settings from the xml config file
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.UrlManagement</name>
+    </assembly>
+    <members>
+        <member name="F:DotNetNuke.Modules.UrlManagement.AdvancedUrlSetttings.UrlSettingsExtensionControl">
+            <summary>
+            UrlSettingsExtensionControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.AdvancedUrlSetttings.providersWarningLabel">
+            <summary>
+            providersWarningLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.AdvancedUrlSetttings.moduleProvidersLabel">
+            <summary>
+            moduleProvidersLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.AdvancedUrlSetttings.providersGrid">
+            <summary>
+            providersGrid control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.FriendlyUrls.basicUrlPanel">
+            <summary>
+            basicUrlPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.FriendlyUrls.plUseFriendlyUrls">
+            <summary>
+            plUseFriendlyUrls control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.FriendlyUrls.chkUseFriendlyUrls">
+            <summary>
+            chkUseFriendlyUrls control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.FriendlyUrls.friendlyUrlsRow">
+            <summary>
+            friendlyUrlsRow control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.FriendlyUrls.friendlyUrls">
+            <summary>
+            friendlyUrls control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Modules.UrlManagement.PortalAliases">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.PortalAliases.addAliasButton">
+            <summary>
+            addAliasButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.PortalAliases.portalAiasesGrid">
+            <summary>
+            portalAiasesGrid control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.PortalAliases.lblError">
+            <summary>
+            lblError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.ProviderSettings.providerSettingsPlaceHolder">
+            <summary>
+            providerSettingsPlaceHolder control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.ProviderSettings.cmdUpdate">
+            <summary>
+            cmdUpdate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.UrlManagement.ProviderSettings.cmdCancel">
+            <summary>
+            cmdCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

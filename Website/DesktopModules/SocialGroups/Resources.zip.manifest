@@ -1,0 +1,92 @@
+﻿<dotnetnuke type="ResourceFile" version="5.0">
+  <files>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>CreateSettings.ascx.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>Edit.ascx.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>ListSettings.ascx.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>SharedResources.resx</name>
+    </file>
+    <file>
+      <path>App_LocalResources/</path>
+      <name>View.ascx.resx</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>docs-icn.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>join-group-icn.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>member-icn.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>photo-icn.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>posts-icn.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>sample-group-profile.jpg</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>Social_Groups_16X16.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>Social_Groups_32X32.png</name>
+    </file>
+    <file>
+      <path />
+      <name>Create.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>GroupEdit.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>GroupView.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>List.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>ListSettings.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>Loader.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>Setup.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>View.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>module.css</name>
+    </file>
+  </files>
+</dotnetnuke>

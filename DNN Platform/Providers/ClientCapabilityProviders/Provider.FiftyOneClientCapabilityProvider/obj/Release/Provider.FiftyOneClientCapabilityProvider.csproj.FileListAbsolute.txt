@@ -1,0 +1,8 @@
+C:\Git\Dnn.Platform\DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.XML
+C:\Git\Dnn.Platform\DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.pdb
+C:\Git\Dnn.Platform\DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\bin\Providers\FiftyOne.Foundation.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\bin\Providers\FiftyOne.Foundation.pdb
+C:\Git\Dnn.Platform\DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\obj\Release\Provider.FiftyOneClientCapabilityProvider.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\obj\Release\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.dll
+C:\Git\Dnn.Platform\DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\obj\Release\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.pdb

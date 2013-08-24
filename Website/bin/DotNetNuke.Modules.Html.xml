@@ -1,0 +1,1485 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.Html</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetNuke.Security.Permissions.CompareWorkflowStatePermissions">
+            -----------------------------------------------------------------------------
+            Project	 : DotNetNuke
+            Namespace: DotNetNuke.Security.Permissions
+            Class	 : CompareWorkflowStatePermissions
+            -----------------------------------------------------------------------------
+            <summary>
+              CompareWorkflowStatePermissions provides the a custom IComparer implementation for 
+              WorkflowStatePermissionInfo objects
+            </summary>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.Components.DataProvider">
+            -----------------------------------------------------------------------------
+            <summary>
+              The DataProvider is an abstract class that provides the Data Access Layer for the HtmlText module
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.HtmlTextController">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Modules.Html
+            Project:    DotNetNuke
+            Class:      HtmlTextController
+            -----------------------------------------------------------------------------
+            <summary>
+              The HtmlTextController is the Controller class for managing HtmlText information the HtmlText module
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.CreateUserNotifications(DotNetNuke.Modules.Html.HtmlTextInfo)">
+            -----------------------------------------------------------------------------
+            <summary>
+              CreateUserNotifications creates HtmlTextUser records and optionally sends email notifications to participants in a Workflow
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="objHtmlText">An HtmlTextInfo object</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.DeleteHtmlText(System.Int32,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              DeleteHtmlText deletes an HtmlTextInfo object for the Module and Item
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "ModuleID">The ID of the Module</param>
+            <param name = "ItemID">The ID of the Item</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.FormatHtmlText(System.Int32,System.String,System.Collections.Hashtable)">
+            -----------------------------------------------------------------------------
+            <summary>
+              FormatHtmlText formats HtmlText content for display in the browser
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="moduleId">The ModuleID</param>
+            <param name = "content">The HtmlText Content</param>
+            <param name = "settings">A Hashtable of Module Settings</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.FormatHtmlText(System.Int32,System.String,System.Collections.Hashtable,DotNetNuke.Entities.Portals.PortalSettings)">
+            -----------------------------------------------------------------------------
+            <summary>
+              FormatHtmlText formats HtmlText content for display in the browser
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="moduleId">The ModuleID</param>
+            <param name = "content">The HtmlText Content</param>
+            <param name = "settings">A Hashtable of Module Settings</param>
+            <param name="portalSettings">The Portal Settings.</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.GetAllHtmlText(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetAllHtmlText gets a collection of HtmlTextInfo objects for the Module and Workflow
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "ModuleID">The ID of the Module</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.GetHtmlText(System.Int32,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetHtmlText gets the HtmlTextInfo object for the Module, Item, and Workflow
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "ModuleID">The ID of the Module</param>
+            <param name = "ItemID">The ID of the Item</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.GetTopHtmlText(System.Int32,System.Boolean,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetTopHtmlText gets the most recent HtmlTextInfo object for the Module, Workflow, and State
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "ModuleID">The ID of the Module</param>
+            <param name = "IsPublished">Whether the content has been published or not</param>
+            <param name="WorkflowID">The Workflow ID</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.GetWorkflow(System.Int32,System.Int32,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetWorkFlow retrieves the currently active Workflow for the Portal
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "ModuleId">The ID of the Module</param>
+            <param name="TabId">The Tab ID</param>
+            <param name = "PortalId">The ID of the Portal</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.UpdateHtmlText(DotNetNuke.Modules.Html.HtmlTextInfo,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              UpdateHtmlText creates a new HtmlTextInfo object or updates an existing HtmlTextInfo object
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "htmlContent">An HtmlTextInfo object</param>
+            <param name = "MaximumVersionHistory">The maximum number of versions to retain</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.UpdateWorkflow(System.Int32,System.String,System.Int32,System.Boolean)">
+            -----------------------------------------------------------------------------
+            <summary>
+              UpdateWorkFlow updates the currently active Workflow
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="WorkFlowType">The type of workflow (Module | Page | Site)</param>
+            <param name = "WorkflowID">The ID of the Workflow</param>
+            <param name="ObjectID">The ID of the object to apply the update to (depends on WorkFlowType)</param>
+            <param name="ReplaceExistingSettings">Should existing settings be overwritten?</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.GetMaximumVersionHistory(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetMaximumVersionHistory retrieves the maximum number of versions to store for a module
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "PortalID">The ID of the Portal</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.UpdateMaximumVersionHistory(System.Int32,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              UpdateWorkFlowID updates the currently active WorkflowID for the Portal
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "PortalID">The ID of the Portal</param>
+            <param name = "MaximumVersionHistory">The MaximumVersionHistory</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.ExportModule(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              ExportModule implements the IPortable ExportModule Interface
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "moduleId">The Id of the module to be exported</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextController.ImportModule(System.Int32,System.String,System.String,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              ImportModule implements the IPortable ImportModule Interface
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "ModuleID">The ID of the Module being imported</param>
+            <param name = "Content">The Content being imported</param>
+            <param name = "Version">The Version of the Module Content being imported</param>
+            <param name = "UserId">The UserID of the User importing the Content</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.HtmlTextInfo">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Modules.Html
+            Project:    DotNetNuke
+            Class:      HtmlTextInfo
+            -----------------------------------------------------------------------------
+            <summary>
+              Defines an instance of an HtmlText object
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.HtmlTextLogController">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Modules.Html
+            Project:    DotNetNuke
+            Class:      HtmlTextLogController
+            -----------------------------------------------------------------------------
+            <summary>
+              The HtmlTextLogController is the Controller class for managing Log History information the HtmlText module
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextLogController.GetHtmlTextLog(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetHtmlTextLog retrieves a collection of HtmlTextLogInfo objects for an Item
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "ItemID">The Id of the Item</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextLogController.AddHtmlTextLog(DotNetNuke.Modules.Html.HtmlTextLogInfo)">
+            -----------------------------------------------------------------------------
+            <summary>
+              AddHtmlTextLog creates a new HtmlTextLog for an Item
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "objHtmlTextLog">An HtmlTextLogInfo object</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.HtmlTextLogInfo">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Modules.Html
+            Project:    DotNetNuke
+            Class:      HtmlTextLogInfo
+            -----------------------------------------------------------------------------
+            <summary>
+              Defines an instance of an HtmlTextLog object
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.HtmlTextUserController">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Modules.Html
+            Project:    DotNetNuke
+            Class:      HtmlTextUserController
+            -----------------------------------------------------------------------------
+            <summary>
+              The HtmlTextUserController is the Controller class for managing User information the HtmlText module
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextUserController.GetHtmlTextUser(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetHtmlTextUser retrieves a collection of HtmlTextUserInfo objects for an Item
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "UserID">The Id of the User</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextUserController.AddHtmlTextUser(DotNetNuke.Modules.Html.HtmlTextUserInfo)">
+            -----------------------------------------------------------------------------
+            <summary>
+              AddHtmlTextUser creates a new HtmlTextUser for an Item
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "objHtmlTextUser">An HtmlTextUserInfo object</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlTextUserController.DeleteHtmlTextUsers">
+            -----------------------------------------------------------------------------
+            <summary>
+              DeleteHtmlTextUsers cleans up old HtmlTextUser records
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.HtmlTextUserInfo">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Modules.Html
+            Project:    DotNetNuke
+            Class:      HtmlTextUserInfo
+            -----------------------------------------------------------------------------
+            <summary>
+              Defines an instance of an HtmlTextUser object
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.WorkflowStateController">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Modules.Html
+            Project:    DotNetNuke
+            Class:      WorkflowStateController
+            -----------------------------------------------------------------------------
+            <summary>
+              The WorkflowStateController is the Controller class for managing workflows and states for the HtmlText module
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.WorkflowStateController.GetWorkflows(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetWorkFlows retrieves a collection of workflows for the portal
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "PortalID">The ID of the Portal</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.WorkflowStateController.GetWorkflowStates(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetWorkFlowStates retrieves a collection of WorkflowStateInfo objects for the Workflow from the cache
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "WorkflowID">The ID of the Workflow</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.WorkflowStateController.GetWorkflowStatesCallBack(DotNetNuke.Common.Utilities.CacheItemArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetWorkFlowStatesCallback retrieves a collection of WorkflowStateInfo objects for the Workflow from the database
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "cacheItemArgs">Arguments passed by the GetWorkflowStates method</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.WorkflowStateController.GetFirstWorkflowStateID(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetFirstWorkFlowStateID retrieves the first StateID for the Workflow
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "WorkflowID">The ID of the Workflow</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.WorkflowStateController.GetPreviousWorkflowStateID(System.Int32,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetPreviousWorkFlowStateID retrieves the previous StateID for the Workflow and State specified
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "WorkflowID">The ID of the Workflow</param>
+            <param name = "StateID">The ID of the State</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.WorkflowStateController.GetNextWorkflowStateID(System.Int32,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetNextWorkFlowStateID retrieves the next StateID for the Workflow and State specified
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "WorkflowID">The ID of the Workflow</param>
+            <param name = "StateID">The ID of the State</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.WorkflowStateController.GetLastWorkflowStateID(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetLastWorkFlowStateID retrieves the last StateID for the Workflow
+            </summary>
+            <remarks>
+            </remarks>
+            <param name = "WorkflowID">The ID of the Workflow</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.WorkflowStateInfo">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Modules.Html
+            Project:    DotNetNuke
+            Class:      WorkflowStateInfo
+            -----------------------------------------------------------------------------
+            <summary>
+              Defines an instance of a WorkflowState object
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Security.Permissions.WorkflowStatePermissionCollection">
+            -----------------------------------------------------------------------------
+            Project	 : DotNetNuke
+            Namespace: DotNetNuke.Security.Permissions
+            Class	 : WorkflowStatePermissionCollection
+            -----------------------------------------------------------------------------
+            <summary>
+              DesktopModulePermissionCollection provides the a custom collection for WorkflowStatePermissionInfo
+              objects
+            </summary>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Security.Permissions.WorkflowStatePermissionController">
+            -----------------------------------------------------------------------------
+            Project	 : DotNetNuke
+            Namespace: DotNetNuke.Security.Permissions
+            Class	 : WorkflowStatePermissionController
+            -----------------------------------------------------------------------------
+            <summary>
+              WorkflowStatePermissionController provides the Business Layer for DesktopModule Permissions
+            </summary>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Security.Permissions.WorkflowStatePermissionController.GetWorkflowStatePermissions">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetWorkflowStatePermissions gets a Dictionary of WorkflowStatePermissionCollections by 
+              WorkflowState.
+            </summary>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Security.Permissions.WorkflowStatePermissionController.GetWorkflowStatePermissionsCallBack(DotNetNuke.Common.Utilities.CacheItemArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetWorkflowStatePermissionsCallBack gets a Dictionary of WorkflowStatePermissionCollections by 
+              WorkflowState from the the Database.
+            </summary>
+            <param name = "cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Security.Permissions.WorkflowStatePermissionController.FillWorkflowStatePermissionDictionary(System.Data.IDataReader)">
+            -----------------------------------------------------------------------------
+            <summary>
+              FillWorkflowStatePermissionDictionary fills a Dictionary of WorkflowStatePermissions from a
+              dataReader
+            </summary>
+            <param name = "dr">The IDataReader</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Security.Permissions.WorkflowStatePermissionController.GetWorkflowStatePermissions(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+              GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection
+            </summary>
+            <param name = "StateID">The ID of the State</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Security.Permissions.WorkflowStatePermissionController.HasWorkflowStatePermission(DotNetNuke.Security.Permissions.WorkflowStatePermissionCollection,System.String)">
+            -----------------------------------------------------------------------------
+            <summary>
+              HasWorkflowStatePermission checks whether the current user has a specific WorkflowState Permission
+            </summary>
+            <param name = "objWorkflowStatePermissions">The Permissions for the WorkflowState</param>
+            <param name = "permissionKey">The Permission to check</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Security.Permissions.WorkflowStatePermissionInfo">
+            -----------------------------------------------------------------------------
+            Project	 : DotNetNuke
+            Namespace: DotNetNuke.Security.Permissions
+            Class	 : DesktopModulePermissionInfo
+            -----------------------------------------------------------------------------
+            <summary>
+              DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo 
+              Permissions
+            </summary>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Security.Permissions.WorkflowStatePermissionInfo.#ctor">
+            -----------------------------------------------------------------------------
+            <summary>
+              Constructs a new WorkflowStatePermissionInfo
+            </summary>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Security.Permissions.WorkflowStatePermissionInfo.#ctor(DotNetNuke.Security.Permissions.PermissionInfo)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Constructs a new WorkflowStatePermissionInfo
+            </summary>
+            <param name = "permission">A PermissionInfo object</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Security.Permissions.WorkflowStatePermissionInfo.Equals(System.Object)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Compares if two WorkflowStatePermissionInfo objects are equivalent/equal
+            </summary>
+            <param name = "obj">a WorkflowStatePermissionObject</param>
+            <returns>true if the permissions being passed represents the same permission
+              in the current object
+            </returns>
+            <remarks>
+              This function is needed to prevent adding duplicates to the WorkflowStatePermissionCollection.
+              WorkflowStatePermissionCollection.Contains will use this method to check if a given permission
+              is already included in the collection.
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Security.Permissions.WorkflowStatePermissionInfo.Fill(System.Data.IDataReader)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Fills a WorkflowStatePermissionInfo from a Data Reader
+            </summary>
+            <param name = "dr">The Data Reader to use</param>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Security.Permissions.WorkflowStatePermissionInfo.WorkflowStatePermissionID">
+            -----------------------------------------------------------------------------
+            <summary>
+              Gets and sets the WorkflowState Permission ID
+            </summary>
+            <returns>An Integer</returns>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Security.Permissions.WorkflowStatePermissionInfo.StateID">
+            -----------------------------------------------------------------------------
+            <summary>
+              Gets and sets the State ID
+            </summary>
+            <returns>An Integer</returns>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Security.Permissions.WorkflowStatePermissionInfo.KeyID">
+            -----------------------------------------------------------------------------
+            <summary>
+              Gets and sets the Key ID
+            </summary>
+            <returns>An Integer</returns>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.EditHtml">
+            <summary>
+              The EditHtml PortalModuleBase is used to manage Html
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.DisplayHistory(DotNetNuke.Modules.Html.HtmlTextInfo)">
+            <summary>
+              Displays the history of an html content item in a grid in the preview section.
+            </summary>
+            <param name = "htmlContent">Content of the HTML.</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.DisplayVersions">
+            <summary>
+              Displays the versions of the html content in the versions section
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.DisplayMasterLanguageContent">
+            <summary>
+              Displays the content of the master language if localized content is enabled.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.DisplayContent(DotNetNuke.Modules.Html.HtmlTextInfo)">
+            <summary>
+              Displays the html content in the preview section.
+            </summary>
+            <param name = "htmlContent">Content of the HTML.</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.DisplayPreview(DotNetNuke.Modules.Html.HtmlTextInfo)">
+            <summary>
+              Displays the content preview in the preview section
+            </summary>
+            <param name = "htmlContent">Content of the HTML.</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.DisplayPreview(System.String)">
+            <summary>
+              Displays the preview in the preview section
+            </summary>
+            <param name = "htmlContent">Content of the HTML.</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.DisplayLockedContent(DotNetNuke.Modules.Html.HtmlTextInfo,DotNetNuke.Modules.Html.HtmlTextInfo)">
+            <summary>
+              Displays the content but hide the editor if editing is locked from the current user
+            </summary>
+            <param name = "htmlContent">Content of the HTML.</param>
+            <param name = "lastPublishedContent">Last content of the published.</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.DisplayInitialContent(DotNetNuke.Modules.Html.WorkflowStateInfo)">
+            <summary>
+              Displays the initial content when a module is first added to the page.
+            </summary>
+            <param name = "firstState">The first state.</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.FormatContent(System.String)">
+            <summary>
+              Formats the content to make it html safe.
+            </summary>
+            <param name = "htmlContent">Content of the HTML.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.GetLocalizedString(System.String)">
+            <summary>
+              Gets the localized string from a resource file if it exists.
+            </summary>
+            <param name = "str">The STR.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.GetLatestHTMLContent">
+            <summary>
+              Gets the latest html content of the module
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.UserCanReview(DotNetNuke.Modules.Html.HtmlTextInfo)">
+            <summary>
+              Returns whether or not the user has review permissions to this module
+            </summary>
+            <param name = "htmlContent">Content of the HTML.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.EditHtml.GetLastPublishedVersion(System.Int32)">
+            <summary>
+              Gets the last published version of this module
+            </summary>
+            <param name = "publishedStateID">The published state ID.</param>
+            <returns></returns>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.ehmContent">
+            <summary>
+            ehmContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.placeMasterContent">
+            <summary>
+            placeMasterContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.txtContent">
+            <summary>
+            txtContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.divSubmittedContent">
+            <summary>
+            divSubmittedContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.Div3">
+            <summary>
+            Div3 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.litCurrentContentPreview">
+            <summary>
+            litCurrentContentPreview control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.divCurrentVersion">
+            <summary>
+            divCurrentVersion control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.plCurrentWorkVersion">
+            <summary>
+            plCurrentWorkVersion control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.lblCurrentVersion">
+            <summary>
+            lblCurrentVersion control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.plCurrentWorkflowInUse">
+            <summary>
+            plCurrentWorkflowInUse control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.lblCurrentWorkflowInUse">
+            <summary>
+            lblCurrentWorkflowInUse control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.divCurrentWorkflowState">
+            <summary>
+            divCurrentWorkflowState control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.plCurrentWorkflowState">
+            <summary>
+            plCurrentWorkflowState control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.lblCurrentWorkflowState">
+            <summary>
+            lblCurrentWorkflowState control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.divPublish">
+            <summary>
+            divPublish control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.plActionOnSave">
+            <summary>
+            plActionOnSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.chkPublish">
+            <summary>
+            chkPublish control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.cmdSave">
+            <summary>
+            cmdSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.cmdPreview">
+            <summary>
+            cmdPreview control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.divPreviewVersion">
+            <summary>
+            divPreviewVersion control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.plPreviewVersion">
+            <summary>
+            plPreviewVersion control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.lblPreviewVersion">
+            <summary>
+            lblPreviewVersion control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.divPreviewWorlflow">
+            <summary>
+            divPreviewWorlflow control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.plPreviewWorkflowInUse">
+            <summary>
+            plPreviewWorkflowInUse control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.lblPreviewWorkflowInUse">
+            <summary>
+            lblPreviewWorkflowInUse control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.divPreviewWorkflowState">
+            <summary>
+            divPreviewWorkflowState control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.plPreviewWorkflowState">
+            <summary>
+            plPreviewWorkflowState control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.lblPreviewWorkflowState">
+            <summary>
+            lblPreviewWorkflowState control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.Div1">
+            <summary>
+            Div1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.litPreview">
+            <summary>
+            litPreview control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.dnnSitePanelEditHTMLHistory">
+            <summary>
+            dnnSitePanelEditHTMLHistory control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.fsEditHtmlHistory">
+            <summary>
+            fsEditHtmlHistory control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.dgHistory">
+            <summary>
+            dgHistory control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.dnnVersions">
+            <summary>
+            dnnVersions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.plMaxVersions">
+            <summary>
+            plMaxVersions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.lblMaxVersions">
+            <summary>
+            lblMaxVersions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.dgVersions">
+            <summary>
+            dgVersions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.EditHtml.hlCancel">
+            <summary>
+            hlCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.HtmlModule">
+            -----------------------------------------------------------------------------
+            <summary>
+              The HtmlModule Class provides the UI for displaying the Html
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlModule.OnInit(System.EventArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Page_Init runs when the control is initialized
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlModule.OnLoad(System.EventArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Page_Load runs when the control is loaded
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlModule.lblContent_UpdateLabel(System.Object,DotNetNuke.UI.WebControls.DNNLabelEditEventArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+              lblContent_UpdateLabel allows for inline editing of content
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.HtmlModule.ModuleAction_Click(System.Object,DotNetNuke.Entities.Modules.Actions.ActionEventArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+              ModuleAction_Click handles all ModuleAction events raised from the action menu
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.lblContent">
+            <summary>
+            lblContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.editorDnnToobar">
+            <summary>
+            editorDnnToobar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbEdit">
+            <summary>
+            tbEdit control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbSave">
+            <summary>
+            tbSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbCancel">
+            <summary>
+            tbCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbBold">
+            <summary>
+            tbBold control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbItalic">
+            <summary>
+            tbItalic control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbUnderline">
+            <summary>
+            tbUnderline control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbJustifyLeft">
+            <summary>
+            tbJustifyLeft control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbJustifyCenter">
+            <summary>
+            tbJustifyCenter control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbJustifyRight">
+            <summary>
+            tbJustifyRight control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbOrderedList">
+            <summary>
+            tbOrderedList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbUnorderedList">
+            <summary>
+            tbUnorderedList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbOutdent">
+            <summary>
+            tbOutdent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbIndent">
+            <summary>
+            tbIndent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.HtmlModule.tbCreateLink">
+            <summary>
+            tbCreateLink control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="P:DotNetNuke.Modules.Html.HtmlModule.ModuleActions">
+            -----------------------------------------------------------------------------
+            <summary>
+              ModuleActions is an interface property that returns the module actions collection for the module
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.MyWork">
+            <summary>
+              MyWork allows a user to view any outstanding workflow items
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.MyWork.OnLoad(System.EventArgs)">
+            <summary>
+              Page_Load runs when the control is loaded
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.MyWork.dgTabs">
+            <summary>
+            dgTabs control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.MyWork.hlCancel">
+            <summary>
+            hlCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Modules.Html.Settings">
+            <summary>
+              The Settings ModuleSettingsBase is used to manage the 
+              settings for the HTML Module
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+              [leupold]	    08/12/2007	created
+            </history>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.Settings.LoadSettings">
+            <summary>
+              LoadSettings loads the settings from the Database and displays them
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            </history>
+        </member>
+        <member name="M:DotNetNuke.Modules.Html.Settings.UpdateSettings">
+            <summary>
+              UpdateSettings saves the modified settings to the Database
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.plReplaceTokens">
+            <summary>
+            plReplaceTokens control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.chkReplaceTokens">
+            <summary>
+            chkReplaceTokens control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.plDecorate">
+            <summary>
+            plDecorate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.cbDecorate">
+            <summary>
+            cbDecorate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.plSearchDescLength">
+            <summary>
+            plSearchDescLength control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.txtSearchDescLength">
+            <summary>
+            txtSearchDescLength control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.RegularExpressionValidator1">
+            <summary>
+            RegularExpressionValidator1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.plWorkflow">
+            <summary>
+            plWorkflow control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.cboWorkflow">
+            <summary>
+            cboWorkflow control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.lblDescription">
+            <summary>
+            lblDescription control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.divApplyTo">
+            <summary>
+            divApplyTo control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.plApplyTo">
+            <summary>
+            plApplyTo control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.rblApplyTo">
+            <summary>
+            rblApplyTo control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.Html.Settings.chkReplace">
+            <summary>
+            chkReplace control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

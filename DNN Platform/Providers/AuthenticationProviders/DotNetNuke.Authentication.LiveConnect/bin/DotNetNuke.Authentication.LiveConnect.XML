@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Authentication.LiveConnect</name>
+    </assembly>
+    <members>
+        <member name="F:DotNetNuke.Authentication.LiveConnect.Login.loginItem">
+            <summary>
+            loginItem control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Authentication.LiveConnect.Login.loginButton">
+            <summary>
+            loginButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Authentication.LiveConnect.Login.registerItem">
+            <summary>
+            registerItem control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Authentication.LiveConnect.Login.registerButton">
+            <summary>
+            registerButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

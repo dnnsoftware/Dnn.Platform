@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.ASP2MenuNavigationProvider</name>
+    </assembly>
+    <members>
+        <member name="M:DotNetNuke.NavigationControl.ASP2MenuNavigationProvider.Initialize">
+            <summary>
+            This method is called by the provider to allow for the control to default values and set up
+            event handlers
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:DotNetNuke.NavigationControl.ASP2MenuNavigationProvider.Bind(DotNetNuke.UI.WebControls.DNNNodeCollection)">
+            <summary>
+            Responsible for the populating of the underlying navigation control 
+            </summary>
+            <param name="objNodes">Node hierarchy used in control population</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:DotNetNuke.NavigationControl.ASP2MenuNavigationProvider.GetValuePath(DotNetNuke.UI.WebControls.DNNNode)">
+            <summary>
+            Loops through each of the nodes parents and concatenates the keys to derive its valuepath
+            </summary>
+            <param name="objNode">DNNNode object to obtain valuepath from</param>
+            <returns>ValuePath of node</returns>
+            <remarks>
+            the ASP.NET Menu creates a unique key based off of all the menuitem's parents, delimited by a string.
+            I wish there was a way around this, for we are already guaranteeing the uniqueness of the key since is it pulled from the
+            database.  
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.NavigationControl.ASP2MenuNavigationProvider.GetMenuItem(DotNetNuke.UI.WebControls.DNNNode)">
+            <summary>
+            Create a ASP.NET Menu item for a given DNNNode
+            </summary>
+            <param name="objNode">Node to create item off of</param>
+            <returns></returns>
+            <remarks>
+            Due to ValuePath needed for postback routine, there is a HACK to replace out the 
+            id with the valuepath if a JSFunciton is specified
+            </remarks>
+        </member>
+    </members>
+</doc>

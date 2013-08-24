@@ -1,0 +1,5 @@
+C:\Git\Dnn.Platform\DNN Platform\Components\ClientDependency\Source\bin\ClientDependency.Core.dll
+C:\Git\Dnn.Platform\DNN Platform\Components\ClientDependency\Source\bin\ClientDependency.Core.pdb
+C:\Git\Dnn.Platform\DNN Platform\Components\ClientDependency\Source\obj\Release\ClientDependency.Core.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Components\ClientDependency\Source\obj\Release\ClientDependency.Core.dll
+C:\Git\Dnn.Platform\DNN Platform\Components\ClientDependency\Source\obj\Release\ClientDependency.Core.pdb

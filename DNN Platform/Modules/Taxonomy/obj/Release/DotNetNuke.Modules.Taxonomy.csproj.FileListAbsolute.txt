@@ -1,0 +1,15 @@
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\DotNetNuke.Modules.Taxonomy.XML
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\DotNetNuke.Modules.Taxonomy.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\DotNetNuke.Modules.Taxonomy.pdb
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\DotNetNuke.Web.Client.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\System.Net.Http.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\System.Net.Http.Formatting.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\System.Web.Http.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\WebFormsMvp.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\DotNetNuke.Web.Client.pdb
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\DotNetNuke.Web.Client.xml
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\WebFormsMvp.pdb
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\bin\WebFormsMvp.xml
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\obj\Release\DotNetNuke.Modules.Taxonomy.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\obj\Release\DotNetNuke.Modules.Taxonomy.dll
+C:\Git\Dnn.Platform\DNN Platform\Modules\Taxonomy\obj\Release\DotNetNuke.Modules.Taxonomy.pdb

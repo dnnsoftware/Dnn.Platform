@@ -1,0 +1,14 @@
+﻿<div id="header">
+    @RenderSection("header")
+</div>
+@if (PageData["ShowList"] == true) {
+    <div id="list">
+        @RenderPage("_List.cshtml")
+    </div>
+}
+<div id="main">
+    @RenderBody()
+</div>
+<div id="footer">
+    &copy; 2011 DotNetNuke. All rights reserved.
+</div>

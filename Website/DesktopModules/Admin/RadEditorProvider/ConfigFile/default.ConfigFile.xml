@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <property name="Skin">Default</property>
+  <property name="AutoResizeHeight">False</property>
+  <property name="BorderWidth">0</property>
+  <property name="Height">500</property>
+  <property name="Width">680</property>
+  <property name="EditModes">All</property>
+  <property name="EnableResize">True</property>
+  <property name="Language">
+  </property>
+  <property name="ContentFilters">DefaultFilters</property>
+  <property name="CssFile">editor.css</property>
+  <property name="NewLineBr">False</property>
+  <property name="StripFormattingOptions">MSWordRemoveAll</property>
+  <property name="LinksUseRelativeUrls">True</property>
+  <property name="LinksType">Normal</property>
+  <property name="ShowPortalLinks">False</property>
+  <property name="ContentAreaMode">Iframe</property>
+  <property name="ToolbarMode">Default</property>
+  <property name="ToolsWidth">
+  </property>
+  <property name="DocumentsFilters">*.*</property>
+  <property name="DocumentsPath">/</property>
+  <property name="MaxDocumentSize">1024000</property>
+  <property name="ImagesPath">/</property>
+  <property name="MaxImageSize">1024000</property>
+  <property name="ImagesFilters">
+    <item>*.jpg</item>
+    <item>*.png</item>
+    <item>*.jpeg</item>
+    <item>*.bmp</item>
+    <item>*.gif</item>
+  </property>
+  <property name="FlashPath">/</property>
+  <property name="MaxFlashSize">1024000</property>
+  <property name="FlashFilters">
+    <item>*.swf</item>
+  </property>
+  <property name="MediaPath">/</property>
+  <property name="MaxMediaSize">1024000</property>
+  <property name="MediaFilters">
+    <item>*.avi</item>
+    <item>*.mpg</item>
+  </property>
+  <property name="SilverlightPath">/</property>
+  <property name="SilverlightFilters">*.*</property>
+  <property name="MaxSilverlightSize">1024000</property>
+  <property name="TemplatePath">/</property>
+  <property name="MaxTemplateSize">1024000</property>
+  <property name="TemplateFilters">
+    <item>*.html</item>
+    <item>*.htm</item>
+  </property>
+  <property name="OnClientCommandExecuting">
+  </property>
+  <property name="OnClientPasteHtml">
+  </property>
+  <property name="ScriptToLoad">
+  </property>
+  <property name="FileBrowserContentProviderTypeName">DotNetNuke.Providers.RadEditorProvider.TelerikFileBrowserProvider, DotNetNuke.RadEditorProvider</property>
+  <property name="SpellAllowAddCustom">
+  </property>
+  <property name="SpellCheckProvider">
+  </property>
+  <property name="SpellCustomDictionarySourceTypeName">
+  </property>
+  <property name="SpellCustomDictionarySuffix">
+  </property>
+  <property name="SpellDictionaryLanguage">
+  </property>
+  <property name="SpellDictionaryPath">
+  </property>
+  <property name="SpellEditDistance">
+  </property>
+  <property name="SpellFragmentIgnoreOptions">
+  </property>
+  <property name="SpellWordIgnoreOptions">
+  </property>
+</configuration>

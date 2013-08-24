@@ -1,0 +1,11 @@
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.XML
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.pdb
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\bin\ClientDependency.Core.dll
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\bin\DotNetNuke.Instrumentation.dll
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\bin\ClientDependency.Core.pdb
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\bin\DotNetNuke.Instrumentation.pdb
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\bin\DotNetNuke.Instrumentation.xml
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\obj\Release\DotNetNuke.Web.Client.csprojResolveAssemblyReference.cache
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\obj\Release\DotNetNuke.Web.Client.dll
+C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Web.Client\obj\Release\DotNetNuke.Web.Client.pdb

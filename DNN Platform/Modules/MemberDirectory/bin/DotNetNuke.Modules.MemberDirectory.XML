@@ -1,0 +1,429 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.MemberDirectory</name>
+    </assembly>
+    <members>
+        <member name="M:DotNetNuke.Modules.MemberDirectory.Services.Member.GetProfileProperty(System.String)">
+            <summary>
+            This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string
+            </summary>
+            <param name="propertyName">property name</param>
+            <returns>property value</returns>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.itemTemplateLabel">
+            <summary>
+            itemTemplateLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.itemTemplate">
+            <summary>
+            itemTemplate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.alternateItemTemplateLabel">
+            <summary>
+            alternateItemTemplateLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.alternateItemTemplate">
+            <summary>
+            alternateItemTemplate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.enablePopUpLabel">
+            <summary>
+            enablePopUpLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.enablePopUp">
+            <summary>
+            enablePopUp control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.popUpTemplateLabel">
+            <summary>
+            popUpTemplateLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.popUpTemplate">
+            <summary>
+            popUpTemplate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.filterBySelectorLabel">
+            <summary>
+            filterBySelectorLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.filterBySelector">
+            <summary>
+            filterBySelector control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.groupList">
+            <summary>
+            groupList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.relationShipList">
+            <summary>
+            relationShipList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.propertyList">
+            <summary>
+            propertyList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.propertyValue">
+            <summary>
+            propertyValue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.sortFieldListLabel">
+            <summary>
+            sortFieldListLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.sortFieldList">
+            <summary>
+            sortFieldList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.sortOrderListLabel">
+            <summary>
+            sortOrderListLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.sortOrderList">
+            <summary>
+            sortOrderList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.displaySearchLabel">
+            <summary>
+            displaySearchLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.displaySearchList">
+            <summary>
+            displaySearchList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.searchField1Label">
+            <summary>
+            searchField1Label control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.searchField1List">
+            <summary>
+            searchField1List control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.searchField2Label">
+            <summary>
+            searchField2Label control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.searchField2List">
+            <summary>
+            searchField2List control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.searchField3Label">
+            <summary>
+            searchField3Label control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.searchField3List">
+            <summary>
+            searchField3List control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.searchField4Label">
+            <summary>
+            searchField4Label control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.searchField4List">
+            <summary>
+            searchField4List control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.disablePagerLabel">
+            <summary>
+            disablePagerLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.disablePager">
+            <summary>
+            disablePager control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.pageSizeLabel">
+            <summary>
+            pageSizeLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.Settings.pageSize">
+            <summary>
+            pageSize control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.DnnJsInclude">
+            <summary>
+            DnnJsInclude control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.DnnJsInclude1">
+            <summary>
+            DnnJsInclude1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.DnnCssInclude1">
+            <summary>
+            DnnCssInclude1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.DnnJsInclude2">
+            <summary>
+            DnnJsInclude2 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.DnnCssInclude2">
+            <summary>
+            DnnCssInclude2 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.DnnCssInclude3">
+            <summary>
+            DnnCssInclude3 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.DnnJsInclude3">
+            <summary>
+            DnnJsInclude3 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.DnnCssInclude4">
+            <summary>
+            DnnCssInclude4 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.DnnJsInclude6">
+            <summary>
+            DnnJsInclude6 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.memberDirectory">
+            <summary>
+            memberDirectory control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.searchBar">
+            <summary>
+            searchBar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.advancedSearchBar">
+            <summary>
+            advancedSearchBar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.popUpPanel">
+            <summary>
+            popUpPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.MemberDirectory.View.loadMore">
+            <summary>
+            loadMore control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

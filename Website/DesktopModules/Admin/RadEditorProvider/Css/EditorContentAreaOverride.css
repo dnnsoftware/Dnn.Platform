@@ -1,0 +1,9 @@
+﻿body
+{
+    background-color: #FFF !important; 
+    background-image: none !important;
+}
+table td{
+    border: 1px dotted #bbb !important;
+    padding: 3px !important;
+}
