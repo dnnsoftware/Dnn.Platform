@@ -4,7 +4,7 @@
 // All Rights Reserved
 
 using System.Runtime.Serialization;
-using DotNetNuke.Subscriptions.Components.Entities;
+using DotNetNuke.Services.Subscriptions.Entities;
 
 namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities
 {
@@ -66,11 +66,11 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities
             {
                 switch (Frequency)
                 {
-                    case (int)DotNetNuke.Subscriptions.Components.Entities.Frequency.Hourly:
+					case (int)DotNetNuke.Services.Subscriptions.Entities.Frequency.Hourly:
                         return "Hourly";
-                    case (int)DotNetNuke.Subscriptions.Components.Entities.Frequency.Daily:
+					case (int)DotNetNuke.Services.Subscriptions.Entities.Frequency.Daily:
                         return "Daily";
-                    case (int)DotNetNuke.Subscriptions.Components.Entities.Frequency.Weekly:
+					case (int)DotNetNuke.Services.Subscriptions.Entities.Frequency.Weekly:
                         return "Weekly";
                     default:
                         return "Instant";

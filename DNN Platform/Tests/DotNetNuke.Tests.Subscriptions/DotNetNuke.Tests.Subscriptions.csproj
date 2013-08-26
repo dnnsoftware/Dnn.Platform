@@ -59,10 +59,6 @@
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Modules\Subscriptions\DotNetNuke.Modules.Subscriptions.csproj">
-      <Project>{ad1a58bb-fbf7-4212-bf69-f81a84652aca}</Project>
-      <Name>DotNetNuke.Modules.Subscriptions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj">
       <Project>{68368906-57dd-40d1-ac10-35211a17d617}</Project>
       <Name>DotNetNuke.Tests.Utilities</Name>

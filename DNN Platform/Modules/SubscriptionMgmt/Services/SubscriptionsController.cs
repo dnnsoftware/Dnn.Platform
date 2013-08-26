@@ -10,8 +10,8 @@ using System.Runtime.Serialization;
 using System.Web.Http;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Subscriptions.Components.Controllers;
-using DotNetNuke.Subscriptions.Components.Entities;
+using DotNetNuke.Services.Subscriptions.Controllers;
+using DotNetNuke.Services.Subscriptions.Entities;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Modules.SubscriptionsMgmt.Services

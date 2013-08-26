@@ -135,10 +135,6 @@
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Subscriptions\DotNetNuke.Modules.Subscriptions.csproj">
-      <Project>{ad1a58bb-fbf7-4212-bf69-f81a84652aca}</Project>
-      <Name>DotNetNuke.Modules.Subscriptions</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -154,7 +150,7 @@
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>SubscriptionMgmt</DNNFileName>
-    <PackageName>DNNCE_Subscriptions_Mgmt</PackageName>
+    <PackageName>DNNCE_SubscriptionsMgmt</PackageName>
     <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
     <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
     <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
