@@ -22,25 +22,16 @@
 using System;
 
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Web.Client;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
-namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint
+namespace DotNetNuke.Modules.DigitalAssets
 {
-    public class PropertiesTabContentControl : PortalModuleBase
+    public partial class SearchBoxControl : PortalModuleBase
     {
-        public delegate void ItemUpdatedHandler();
-
-        public event ItemUpdatedHandler OnItemUpdated;
-
-        public virtual void ItemUpdated()
+        protected override void OnInit(EventArgs e)
         {
-            if (OnItemUpdated != null)
-            {
-                OnItemUpdated();
-            }
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.SearchBox.js", FileOrder.Js.DefaultPriority + 10);
         }
-
-        public virtual void DataBindItem()
-        {            
-        }        
     }
 }

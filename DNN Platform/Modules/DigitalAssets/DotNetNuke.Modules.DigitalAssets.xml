@@ -1,0 +1,910 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.DigitalAssets</name>
+    </assembly>
+    <members>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetFolderMappings">
+            <summary>
+            Gets the list of the Folder Mappings
+            </summary>
+            <returns>The list of Folder Mappings</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetFolders(System.Int32)">
+            <summary>
+            Gets the list of subfolders for the specified folder.
+            </summary>
+            <param name="parentFolderId">The folderItemId of the folder to get the list of subfolders.</param>
+            <returns>The list of subfolders for the specified folder.</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetFile(System.Int32)">
+            <summary>
+            Gets a file entity by providing a file identifier.
+            </summary>
+            <param name="fileID">The identifier of the file.</param>
+            <returns>The fileItem entity.</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetFolder(System.Int32)">
+            <summary>
+            Gets a folder entity by providing a folder identifier.
+            </summary>
+            <param name="folderID">The identifier of the folder.</param>
+            <returns>The folderItem entity or null if the folder cannot be located.</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetRootFolder">
+            <summary>
+            Gets the root folder of the current Portal.
+            </summary>
+            <returns>The root folderItem entity.</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetFolderContent(System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Gets the files and folders contained in the specified folder.
+            </summary>
+            <param name="folderId">Folder Identifier</param>
+            <param name="startIndex">Start index to retrieve items</param>
+            <param name="numItems">Max Number of items</param>
+            <param name="sortExpression">The sort expression in a SQL format, e.g. FileName ASC</param>
+            <returns>The list of files and folders contained in the specified folder paginated</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.SearchFolderContent(System.Int32,System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Searches the files and folders contained in the specified folder.
+            </summary>
+            <param name="folderId">Folder Identifier</param>
+            <param name="pattern">The pattern to search for</param>
+            <param name="startIndex">Start index to retrieve items</param>
+            <param name="numItems">Max Number of items</param>
+            <param name="sortExpression">The sort expression in a SQL format, e.g. FileName ASC</param>
+            <returns>The list of files and folders contained in the specified folder paginated</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.SyncFolderContent(System.Int32,System.Boolean)">
+            <summary>
+            Synchronize a folder within the File System
+            </summary>
+            <param name="folderId">Reference to the folder is going to be synchronized</param>        
+            <param name="recursive">Indicates if subfolders are going to be synchronized</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.CreateFolder(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Gets a newly created folder.
+            </summary>
+            <param name="folderName">folderName is the name of the new folder</param>
+            <param name="folderParentID">The reference to the parent folder where the new folder will be create</param>
+            <param name="folderMappingID">folderMappingID is the mapping related with the new folder</param>
+            <param name="mappedPath">mappedPath used for the mapping to folder in remove provider</param>
+            <returns>The newly folder created under the specified parent folder</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.RenameFolder(System.Int32,System.String)">
+            <summary>
+            Renames a existing folder.
+            </summary>
+            <param name="folderID">Folder reference to rename</param>
+            <param name="newFolderName">The new name to set to the folder</param>
+            <returns>The final moved folder</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.DeleteItems(System.Collections.Generic.IEnumerable{DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models.ItemBaseViewModel})">
+            <summary>
+            Deletes a collection of items (folder and/or files)
+            </summary>
+            <param name="items">Items list</param>
+            <remarks>all the items belong at the same Folder</remarks>
+            <returns>The not deleted items list. The subfiles / subfolders for which the user has no permissions to delete</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.RenameFile(System.Int32,System.String)">
+            <summary>
+            Renames a existing file.
+            </summary>
+            <param name="fileID">File reference to rename</param>
+            <param name="newFileName">The new name to set to the file</param>
+            <returns>The final renamed file</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetFileContent(System.Int32,System.String@,System.String@)">
+            <summary>
+            Get the content of a file, ready to download
+            </summary>
+            <param name="fileId">File reference to the source file</param>
+            <param name="fileName">Returns the name of the file</param>
+            <param name="contentType">Returns the content type of the file</param>
+            <returns>The file content</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.CopyFile(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Copies a file to the destination folder
+            </summary>
+            <param name="fileId">File reference to the source file</param>
+            <param name="destinationFolderId">Folder reference to the destination folder</param>
+            <param name="overwrite">Overwrite destination if a file with the same name already exists</param>
+            <returns>The response object with the result of the action</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.MoveFile(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Moves a file to the destination folder
+            </summary>
+            <param name="fileId">File reference to the source file</param>
+            <param name="destinationFolderId">Folder reference to the destination folder</param>
+            <param name="overwrite">Overwrite destination if a file with the same name already exists</param>
+            <returns>The response object with the result of the action</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.MoveFolder(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Moves a Folder to the destination folder
+            </summary>
+            <param name="folderId">Folder reference to the source file</param>
+            <param name="destinationFolderId">Folder reference to the destination folder</param>
+            <param name="overwrite">Overwrite destination if a file with the same name already exists</param>
+            <returns>The response object with the result of the action</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.UnzipFile(System.Int32,System.Boolean)">
+            <summary>
+            Extracts the files and folders contained in the specified zip file to the specified folder.
+            </summary>
+            <param name="fileId">File reference to the source file</param>
+            <param name="overwrite">Overwrite destination if a file with the same name already exists</param>
+            <returns>The response object with the result of the action</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetInvalidChars">
+            <summary>
+            Returns all invalid chars for folder and file names
+            </summary>
+            <returns>A string that includes all invalid chars</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetInvalidCharsErrorText">
+            <summary>
+            Returns the error text when a name contains an invalid character
+            </summary>
+            <returns>The error text to show when a name contains an invalid character</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetUrl(System.Int32)">
+            <summary>
+            Get the URL of a file
+            </summary>
+            <param name="fileId">File reference to the source file</param>
+            <returns>The URL of the file</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetFolderPreviewInfo(DotNetNuke.Services.FileSystem.IFolderInfo)">
+            <summary>
+            Returns a fields set. These fields define the Folder preview info
+            </summary>
+            <param name="folder">The folder model</param>
+            <returns>The Preview info object</returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.GetFilePreviewInfo(DotNetNuke.Services.FileSystem.IFileInfo,DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models.ItemViewModel)">
+            <summary>
+            Returns a fields set. These fields define the File preview info
+            </summary>
+            <param name="file">The file</param>
+            <param name="item">The file model</param>
+            <returns>The Preview info object</returns>
+        </member>
+        <member name="P:DotNetNuke.Modules.DigitalAssets.Components.Controllers.IDigitalAssetsController.CurrentPortalId">
+            <summary>
+            Gets the current Portal Id
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Components.Controllers.DigitalAssetsController.DeleteFolder(DotNetNuke.Services.FileSystem.IFolderInfo,System.Collections.Generic.ICollection{DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models.ItemPathViewModel})">
+            <summary>
+            This method deletes a folder and his content (sub folder and files) in a recursive way.
+            </summary>
+            <param name="folder">Folder to delete</param>
+            <param name="notDeletedItems">The not deleted items list. The subfiles / subfolders for which the user has no permissions to delete</param>
+            <retur>True if the Folder has been deleted, otherwise returns false</retur>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.ScopeWrapper">
+            <summary>
+            ScopeWrapper control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileNameLabel">
+            <summary>
+            FileNameLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileNameInput">
+            <summary>
+            FileNameInput control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileNameValidator">
+            <summary>
+            FileNameValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileNameInvalidCharactersValidator">
+            <summary>
+            FileNameInvalidCharactersValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileAttributesContainer">
+            <summary>
+            FileAttributesContainer control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileAttributesLabel">
+            <summary>
+            FileAttributesLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileAttributeArchiveCheckBox">
+            <summary>
+            FileAttributeArchiveCheckBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileAttributeHiddenCheckBox">
+            <summary>
+            FileAttributeHiddenCheckBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileAttributeReadonlyCheckBox">
+            <summary>
+            FileAttributeReadonlyCheckBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileFieldsControl.FileAttributeSystemCheckBox">
+            <summary>
+            FileAttributeSystemCheckBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.PreviewFieldsControl.FieldsTable">
+            <summary>
+            FieldsTable control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.PreviewPanelControl.ScopeWrapper">
+            <summary>
+            ScopeWrapper control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.PreviewPanelControl.FieldsControl">
+            <summary>
+            FieldsControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.DescriptionLabel">
+            <summary>
+            DescriptionLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.SyncWarningPlaceHolder">
+            <summary>
+            SyncWarningPlaceHolder control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.SyncLabel">
+            <summary>
+            SyncLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.NameLabel">
+            <summary>
+            NameLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.NameTextbox">
+            <summary>
+            NameTextbox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.NameValidator">
+            <summary>
+            NameValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.FolderProviderLabel">
+            <summary>
+            FolderProviderLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.FolderProvidersComboBox">
+            <summary>
+            FolderProvidersComboBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.FolderProviderValidator">
+            <summary>
+            FolderProviderValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.ProviderSettingsPlaceHolder">
+            <summary>
+            ProviderSettingsPlaceHolder control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.UpdateButton">
+            <summary>
+            UpdateButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.EditFolderMapping.CancelHyperLink">
+            <summary>
+            CancelHyperLink control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileProperties.ScopeWrapper">
+            <summary>
+            ScopeWrapper control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileProperties.FolderContentPanel">
+            <summary>
+            FolderContentPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileProperties.Tabs">
+            <summary>
+            Tabs control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileProperties.GeneralTabLink">
+            <summary>
+            GeneralTabLink control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileProperties.TabsPanel">
+            <summary>
+            TabsPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileProperties.PreviewPanelContainer">
+            <summary>
+            PreviewPanelContainer control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileProperties.FileFieldsContainer">
+            <summary>
+            FileFieldsContainer control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileProperties.SaveButton">
+            <summary>
+            SaveButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FileProperties.CancelButton">
+            <summary>
+            CancelButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderMappings.DescriptionLabel">
+            <summary>
+            DescriptionLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderMappings.TableHeaderLabel">
+            <summary>
+            TableHeaderLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderMappings.MappingsGrid">
+            <summary>
+            MappingsGrid control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderMappings.NewMappingButton">
+            <summary>
+            NewMappingButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderMappings.CancelButton">
+            <summary>
+            CancelButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.ScopeWrapper">
+            <summary>
+            ScopeWrapper control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.FolderContentPanel">
+            <summary>
+            FolderContentPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.FolderInfoPreviewPanel">
+            <summary>
+            FolderInfoPreviewPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.FolderNameLabel">
+            <summary>
+            FolderNameLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.FolderNameInput">
+            <summary>
+            FolderNameInput control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.FolderNameValidator">
+            <summary>
+            FolderNameValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.FolderNameInvalidCharactersValidator">
+            <summary>
+            FolderNameInvalidCharactersValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.FolderTypeLabel">
+            <summary>
+            FolderTypeLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.FolderTypeLiteral">
+            <summary>
+            FolderTypeLiteral control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.FolderDynamicFieldsContainer">
+            <summary>
+            FolderDynamicFieldsContainer control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.PermissionsGrid">
+            <summary>
+            PermissionsGrid control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.SaveButton">
+            <summary>
+            SaveButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.FolderProperties.CancelButton">
+            <summary>
+            CancelButton control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Settings.LoadSettings">
+            -----------------------------------------------------------------------------
+            <summary>
+            LoadSettings loads the settings from the Database and displays them
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.DigitalAssets.Settings.UpdateSettings">
+            -----------------------------------------------------------------------------
+            <summary>
+            UpdateSettings saves the modified settings to the Database
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.Settings.DefaultFolderTypeLabel">
+            <summary>
+            DefaultFolderTypeLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.Settings.DefaultFolderTypeComboBox">
+            <summary>
+            DefaultFolderTypeComboBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.ScopeWrapper">
+            <summary>
+            ScopeWrapper control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.LeftPaneTabsControl">
+            <summary>
+            LeftPaneTabsControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.LeftPaneContents">
+            <summary>
+            LeftPaneContents control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.FolderTreeView">
+            <summary>
+            FolderTreeView control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.MainContextMenu">
+            <summary>
+            MainContextMenu control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.SearchBoxPanel">
+            <summary>
+            SearchBoxPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.MainToolBar">
+            <summary>
+            MainToolBar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.SelectionToolBar">
+            <summary>
+            SelectionToolBar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.FolderListView">
+            <summary>
+            FolderListView control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.Grid">
+            <summary>
+            Grid control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.GridMenu">
+            <summary>
+            GridMenu control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.EmptySpaceMenu">
+            <summary>
+            EmptySpaceMenu control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.ParentFolderLabel">
+            <summary>
+            ParentFolderLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.FolderNameLabel">
+            <summary>
+            FolderNameLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.FolderNameTextBox">
+            <summary>
+            FolderNameTextBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.FolderNameRequiredValidator">
+            <summary>
+            FolderNameRequiredValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.FolderNameRegExValidator">
+            <summary>
+            FolderNameRegExValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.FolderTypeLabel">
+            <summary>
+            FolderTypeLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.FolderTypeComboBox">
+            <summary>
+            FolderTypeComboBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.MappedPathLabel">
+            <summary>
+            MappedPathLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.MappedPathTextBox">
+            <summary>
+            MappedPathTextBox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.MappedPathRegExValidator">
+            <summary>
+            MappedPathRegExValidator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.DigitalAssets.View.DestinationTreeView">
+            <summary>
+            DestinationTreeView control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

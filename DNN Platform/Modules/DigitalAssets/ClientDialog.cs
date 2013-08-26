@@ -20,27 +20,16 @@
 #endregion
 
 using System;
+using System.Web.UI;
 
-using DotNetNuke.Entities.Modules;
-
-namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint
+namespace DotNetNuke.Modules.DigitalAssets
 {
-    public class PropertiesTabContentControl : PortalModuleBase
+    public static class ClientDialog
     {
-        public delegate void ItemUpdatedHandler();
-
-        public event ItemUpdatedHandler OnItemUpdated;
-
-        public virtual void ItemUpdated()
+        public static void CloseClientDialog(this Page page, bool refresh)
         {
-            if (OnItemUpdated != null)
-            {
-                OnItemUpdated();
-            }
+            var script = "parent.window.dnnModule.digitalAssets.closeDialog(" + (refresh ? "true" : "false") + ");";
+            page.ClientScript.RegisterClientScriptBlock(page.GetType(), "CloseDialogScript", script, true);
         }
-
-        public virtual void DataBindItem()
-        {            
-        }        
     }
 }

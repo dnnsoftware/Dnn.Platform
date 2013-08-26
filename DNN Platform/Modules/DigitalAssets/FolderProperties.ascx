@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditFolder.ascx.cs" Inherits="DotNetNuke.Modules.DigitalAssets.EditFolder" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FolderProperties.ascx.cs" Inherits="DotNetNuke.Modules.DigitalAssets.FolderProperties" %>
 <%@ Import Namespace="DotNetNuke.UI.Utilities" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
@@ -9,12 +9,12 @@
     <asp:Panel runat="server" ID="FolderContentPanel">
         <ul class="dnnAdminTabNav dnnClear">
             <li id="dnnModuleDigitalAssetsGeneralTab"><a href="#dnnModuleDigitalAssetsGeneral">
-			    <%=LocalizeString("GeneralTab")%></a>
-		    </li>
-		    <li id="dnnModuleDigitalAssetsPermissionsTab"><a href="#dnnModuleDigitalAssetsPermissions">
-			    <%=LocalizeString("PermissionsTab")%></a>
-		    </li>
-	    </ul>    
+                <%=LocalizeString("GeneralTab")%></a>
+            </li>
+            <li id="dnnModuleDigitalAssetsPermissionsTab"><a href="#dnnModuleDigitalAssetsPermissions">
+                <%=LocalizeString("PermissionsTab")%></a>
+            </li>
+        </ul>    
         <div class="dnnClear" id="dnnModuleDigitalAssetsPropertiesContent" >
             <div class="dnnClear" id="dnnModuleDigitalAssetsGeneral">
                 <div class="dnnModuleDigitalAssetsPreviewInfo" id="dnnModuleDigitalAssetsFolderPreview">                    
@@ -23,16 +23,16 @@
                 <div class="dnnModuleDigitalAssetsGeneralProperties dnnForm" id="dnnModuleDigitalAssetsFolderProperties">
                     <div class="dnnFormItem">
                         <dnn:Label ID="FolderNameLabel" ControlName="FolderNameInput" CssClass="dnnFormRequired" ResourceKey="FolderNameLabel" runat="server" Suffix=":" />
-		                <asp:TextBox type="text" ID="FolderNameInput" runat="server"/>
+                        <asp:TextBox type="text" ID="FolderNameInput" runat="server"/>
                         <asp:RequiredFieldValidator ID="FolderNameValidator" CssClass="dnnFormMessage dnnFormError"
                             runat="server" resourcekey="FolderNameRequired.ErrorMessage" Display="Dynamic" ControlToValidate="FolderNameInput" />
                         <asp:RegularExpressionValidator runat="server" Display="Dynamic" ControlToValidate="FolderNameInput" CssClass="dnnFormMessage dnnFormError" 
                             ID="FolderNameInvalidCharactersValidator"/>
-	                </div>
+                    </div>
                     <div class="dnnFormItem">
                         <dnn:Label ID="FolderTypeLabel" ControlName="FolderTypeLiteral" ResourceKey="FolderTypeLabel" runat="server" Suffix=":" />
-		                <asp:Label ID="FolderTypeLiteral" runat="server"/>
-	                </div>
+                        <asp:Label ID="FolderTypeLiteral" runat="server" CssClass="dnnModuleDigitalAssetsGeneralPropertiesSingleField"/>
+                    </div>
                     <asp:Panel runat="server" ID="FolderDynamicFieldsContainer"></asp:Panel>
                 </div>
             </div>
@@ -43,9 +43,9 @@
     </asp:Panel>
     <div id="dnnModuleDigitalAssetsButtonPane">
         <ul class="dnnActions dnnClear">
-	        <li>
-		        <asp:LinkButton ID="SaveButton" runat="server" class="dnnPrimaryAction dnnModuleDigitalAssetsSaveFolderPropertiesButton" resourcekey="SaveButton" /></li>
-	        <li>
+            <li>
+                <asp:LinkButton ID="SaveButton" runat="server" class="dnnPrimaryAction dnnModuleDigitalAssetsSaveFolderPropertiesButton" resourcekey="SaveButton" /></li>
+            <li>
                 <asp:LinkButton ID="CancelButton" CausesValidation="False" runat="server" class="dnnSecondaryAction" resourcekey="CancelButton" /></li>
         </ul>
     </div>

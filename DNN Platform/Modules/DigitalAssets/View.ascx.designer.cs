@@ -31,15 +31,6 @@ namespace DotNetNuke.Modules.DigitalAssets {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl LeftPaneTabsControl;
         
         /// <summary>
-        /// LeftPaneTabsFilesLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink LeftPaneTabsFilesLink;
-        
-        /// <summary>
         /// LeftPaneContents control.
         /// </summary>
         /// <remarks>
@@ -65,6 +56,15 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnTreeViewContextMenu MainContextMenu;
+        
+        /// <summary>
+        /// SearchBoxPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel SearchBoxPanel;
         
         /// <summary>
         /// MainToolBar control.

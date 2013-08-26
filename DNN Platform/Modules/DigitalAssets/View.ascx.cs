@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -45,7 +46,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 
 using Telerik.Web.UI;
-using System.Web;
 
 namespace DotNetNuke.Modules.DigitalAssets
 {
@@ -73,11 +73,11 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        protected long MaxUploadSize
+        protected int MaxUploadSize
         {
             get
             {
-                return Config.GetMaxUploadSize();
+                return (int)Config.GetMaxUploadSize();
             }
         }
 
@@ -272,6 +272,16 @@ namespace DotNetNuke.Modules.DigitalAssets
             });
         }
 
+        private void InitializeSearchBox()
+        {
+            var extension = epm.GetUserControlExtensionPointFirstByPriority("DigitalAssets", "SearchBoxExtensionPoint");
+            var searchControl = (PortalModuleBase) Page.LoadControl(extension.UserControlSrc);
+            searchControl.ModuleConfiguration = ModuleConfiguration;
+
+            searchControl.ID = searchControl.GetType().BaseType.Name;
+            SearchBoxPanel.Controls.Add(searchControl);
+        }
+
         private void InitializeGridContextMenu()
         {
             GridMenu.Items.AddRange(new[]
@@ -444,10 +454,9 @@ namespace DotNetNuke.Modules.DigitalAssets
                 ActiveView = Request["view"] ?? state["view"] ?? "gridview";
 
                 InitializeTreeViews();
+                InitializeSearchBox();
                 InitializeFolderType();
-
                 InitializeGridContextMenu();
-
                 InitializeEmptySpaceContextMenu();
 
                 FolderNameRegExValidator.ErrorMessage = controller.GetInvalidCharsErrorText();
@@ -471,6 +480,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 jQuery.RegisterFileUpload(Page);
 
                 ClientResourceManager.RegisterScript(Page, "~/js/dnn.modalpopup.js", FileOrder.Js.DnnModalPopup);
+                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FileUpload.js", FileOrder.Js.DefaultPriority);
                 ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssetsController.js", FileOrder.Js.DefaultPriority);
 
                 int i = 1;

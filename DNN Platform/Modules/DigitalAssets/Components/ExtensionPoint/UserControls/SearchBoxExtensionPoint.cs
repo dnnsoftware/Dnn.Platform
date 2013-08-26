@@ -20,27 +20,42 @@
 #endregion
 
 using System;
+using System.ComponentModel.Composition;
 
-using DotNetNuke.Entities.Modules;
+using DotNetNuke.ExtensionPoints;
 
-namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint
+namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.UserControls
 {
-    public class PropertiesTabContentControl : PortalModuleBase
+    [Export(typeof(IUserControlExtensionPoint))]
+    [ExportMetadata("Module", "DigitalAssets")]
+    [ExportMetadata("Name", "SearchBoxExtensionPoint")]
+    [ExportMetadata("Group", "View")]
+    [ExportMetadata("Priority", 2)]
+    public class SearchBoxExtensionPoint : IUserControlExtensionPoint
     {
-        public delegate void ItemUpdatedHandler();
-
-        public event ItemUpdatedHandler OnItemUpdated;
-
-        public virtual void ItemUpdated()
+        public string UserControlSrc
         {
-            if (OnItemUpdated != null)
-            {
-                OnItemUpdated();
-            }
+            get { return "~/DesktopModules/DigitalAssets/SearchBoxControl.ascx"; }
         }
 
-        public virtual void DataBindItem()
-        {            
-        }        
+        public string Text
+        {
+            get { return ""; }
+        }
+
+        public string Icon
+        {
+            get { return ""; }
+        }
+
+        public int Order
+        {
+            get { return 1; }
+        }
+
+        public bool Visible
+        {
+            get { return true; }
+        }
     }
 }

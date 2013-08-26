@@ -38,6 +38,8 @@ dnnModule.DigitalAssetsController.prototype = function () {
         },        
         onLoadFolder = function () {
         },
+        executeCommandOnSelectedItems = function (commandName, items) {
+        },
         gridOnRowDataBound = function (grid, item) {
         },
         extendResources = function (extendedResouces) {
@@ -55,6 +57,7 @@ dnnModule.DigitalAssetsController.prototype = function () {
         onLoadFolder: onLoadFolder,
         getHttpGETHeaders: getHttpGETHeaders,
         gridOnRowDataBound: gridOnRowDataBound,
-        extendResources: extendResources
+        extendResources: extendResources,
+        executeCommandOnSelectedItems: executeCommandOnSelectedItems
     };
 }();

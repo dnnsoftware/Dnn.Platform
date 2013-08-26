@@ -10,7 +10,7 @@
 namespace DotNetNuke.Modules.DigitalAssets {
     
     
-    public partial class EditFolder {
+    public partial class FolderProperties {
         
         /// <summary>
         /// ScopeWrapper control.
