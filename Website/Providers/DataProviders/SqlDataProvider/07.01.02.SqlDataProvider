@@ -752,7 +752,7 @@ GO
 --
 
 DECLARE @SubscriptionSchedulerType VARCHAR(1024)
-SET @SubscriptionSchedulerType = 'DotNetNuke.Subscriptions.Components.Tasks.SubscriptionTask, DotNetNuke.Subscriptions'
+SET @SubscriptionSchedulerType = 'DotNetNuke.Services.Subscriptions.Tasks.SubscriptionTask, DotNetNuke'
 
 IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Schedule] WHERE [TypeFullName] = @SubscriptionSchedulerType)
 BEGIN
@@ -772,7 +772,7 @@ BEGIN
 		 [Servers],
 		 [FriendlyName])
 	VALUES
-		('DotNetNuke.Subscriptions.Components.Tasks.SubscriptionTask, DotNetNuke.Subscriptions',
+		(@SubscriptionSchedulerType,
 		 1, 'm', -1, 'm', 10, '', 0, 1, '', null, 'Subscriptions')
 END
 GO
