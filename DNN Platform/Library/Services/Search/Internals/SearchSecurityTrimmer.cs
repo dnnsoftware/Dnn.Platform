@@ -130,34 +130,30 @@ namespace DotNetNuke.Services.Search.Internals
                 else
                 {
                     var field = fields[0];
-                    if (field.Type == 4 || field.Type == 6) //4 = int, 6 = long
+                    if (field.Type == SortField.INT || field.Type == SortField.LONG)
                     {
                         if(field.Reverse)
                             tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
-                                       .OrderByDescending(
-                                           rec => GetLongFromField(rec.Document, field))
-                                       .ThenBy(rec => rec.Document.Boost)
+                                       .OrderByDescending(rec => GetLongFromField(rec.Document, field))
+                                       .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                         else
                             tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
-                                       .OrderBy(
-                                           rec => GetLongFromField(rec.Document, field))
-                                       .ThenBy(rec => rec.Document.Boost)
+                                       .OrderBy(rec => GetLongFromField(rec.Document, field))
+                                       .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                     }
                     else
                     {
                         if (field.Reverse)
                             tempDocs = _hitDocs.Select(d => new {SDoc = d, Document = _searcher.Doc(d.Doc)})
-                                           .OrderByDescending(
-                                           rec => GetStringFromField(rec.Document, field))
-                                           .ThenBy(rec => rec.Document.Boost)
+                                           .OrderByDescending(rec => GetStringFromField(rec.Document, field))
+                                           .ThenByDescending(rec => rec.Document.Boost)
                                            .Select(rec => rec.SDoc);
                         else
                             tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
-                                       .OrderBy(
-                                       rec => GetStringFromField(rec.Document, field))
-                                       .ThenBy(rec => rec.Document.Boost)
+                                       .OrderBy(rec => GetStringFromField(rec.Document, field))
+                                       .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                     }
                 }
