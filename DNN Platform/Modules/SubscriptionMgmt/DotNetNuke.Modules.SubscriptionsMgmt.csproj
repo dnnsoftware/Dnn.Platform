@@ -56,7 +56,7 @@
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\System.Web.Http.dll</HintPath>
+      <HintPath>..\..\Components\WebAPI\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.XML" />
