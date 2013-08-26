@@ -105,9 +105,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string NumericKey2 = "numerickey2";
         private const int NumericValue1 = 77777;
         private const int NumericValue2 = 55555;
-        private const int NumericValue5000 = 5000;
-        private const int NumericValue6000 = 6000;
-        private const int NumericValue7000 = 7000;
+        private const int NumericValue50 = 50;
+        private const int NumericValue200 = 200;
+        private const int NumericValue1000 = 1000;
         private const string KeyWord1Name = "keyword1";
         private const string KeyWord1Value = "value1";
         private const string KeyWord2Name = "keyword2";
@@ -420,7 +420,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue5000 } },
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
             };
             var doc2 = new SearchDocument
             {
@@ -429,7 +429,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue6000 } },
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
             };
             var doc3 = new SearchDocument
             {
@@ -438,7 +438,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue7000 } },
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
             };
 
             var docs = new List<SearchDocument>() {doc1, doc2, doc3};
@@ -460,6 +460,26 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                                                                ModifiedTimeUtc = DateTime.UtcNow,
                                                                PortalId = PortalId12
                                                            }))
+            {
+                _internalSearchController.AddSearchDocument(doc);
+                count++;
+            }
+
+            return count;
+        }
+
+        private int AddDocumentsWithKeywords(IEnumerable<string> keywords, string title, int searchTypeId = OtherSearchTypeId)
+        {
+            var count = 0;
+            foreach (var doc in keywords.Select(keyword => new SearchDocument
+            {
+                Title = title,
+                UniqueKey = Guid.NewGuid().ToString(),
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, keyword } },
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12
+            }))
             {
                 _internalSearchController.AddSearchDocument(doc);
                 count++;
@@ -1651,7 +1671,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_GetResult_Sorty_By_Title_Ascending_Returns_Alphabetic_Ascending()
         {
-            var titles = new List<string> {"cat", "ant", "dog"};
+            var titles = new List<string> {"cat", "ant", "dog", "antelope", "zebra", "yellow", " "};
 
             var added = AddDocuments(titles, "animal");
 
@@ -1667,15 +1687,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual("ant", search.Results[0].Title);
-            Assert.AreEqual("cat", search.Results[1].Title);
-            Assert.AreEqual("dog", search.Results[2].Title);
-        }
+
+            var count = 0;
+            foreach (var title in titles.OrderBy(s => s))
+            {
+                Assert.AreEqual(title, search.Results[count++].Title);
+            }
+       }
 
         [Test]
         public void SearchController_GetResult_Sorty_By_Title_Descending_Returns_Alphabetic_Descending()
         {
-            var titles = new List<string> { "cat", "ant", "dog" };
+            var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
 
             var added = AddDocuments(titles, "animal");
 
@@ -1691,9 +1714,68 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual("dog", search.Results[0].Title);
-            Assert.AreEqual("cat", search.Results[1].Title);
-            Assert.AreEqual("ant", search.Results[2].Title);
+
+            var count = 0;
+            foreach (var title in titles.OrderByDescending(s => s))
+            {
+                Assert.AreEqual(title, search.Results[count++].Title);
+            }
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_Keyword_Ascending_Returns_Alphabetic_Ascending()
+        {
+            var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
+
+            var added = AddDocumentsWithKeywords(titles, "animal");
+
+            //Act
+            var query = new SearchQuery
+            {
+                KeyWords = "animal",
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                SortField = SortFields.Keyword,
+                SortDirection = SortDirections.Ascending,
+                CustomSortField = KeyWord1Name
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+
+            var count = 0;
+            foreach (var title in titles.OrderBy(s => s))
+            {
+                Assert.AreEqual(title, search.Results[count++].Keywords[KeyWord1Name]);
+            }
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_Keyword_Descending_Returns_Alphabetic_Descending()
+        {
+            var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
+
+            var added = AddDocumentsWithKeywords(titles, "animal");
+
+            //Act
+            var query = new SearchQuery
+            {
+                KeyWords = "animal",
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                SortField = SortFields.Keyword,
+                SortDirection = SortDirections.Descending,
+                CustomSortField = KeyWord1Name
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+
+            var count = 0;
+            foreach (var title in titles.OrderByDescending(s => s))
+            {
+                Assert.AreEqual(title, search.Results[count++].Keywords[KeyWord1Name]);
+            }
         }
 
         [Test]

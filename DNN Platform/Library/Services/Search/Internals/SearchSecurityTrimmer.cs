@@ -89,17 +89,19 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        private string GetStringFromField(Document doc, SortField field)
+        private string GetStringFromField(Document doc, SortField sortField)
         {
-            return doc.GetField(field.Field) == null ? "" : doc.GetField(field.Field).StringValue;
+            var field = doc.GetField(sortField.Field);
+            return field == null ? "" : field.StringValue;
         }
 
-        private long GetLongFromField(Document doc, SortField field)
+        private long GetLongFromField(Document doc, SortField sortField)
         {
-            if (doc.GetField(field.Field) == null) return 0;
+            var field = doc.GetField(sortField.Field);
+            if (field == null) return 0;
 
             long data;
-            if (long.TryParse(doc.GetField(field.Field).StringValue, out data) && data >= 0) return data;
+            if (long.TryParse(field.StringValue, out data) && data >= 0) return data;
             
             return 0;
         }
@@ -115,17 +117,17 @@ namespace DotNetNuke.Services.Search.Internals
 
             _totalHits = _hitDocs.Count;
 
-            var useRelenace = false;
+            var useRelevance = false;
             if (ReferenceEquals(Sort.RELEVANCE, _query.Sort))
             {
-                useRelenace = true;
+                useRelevance = true;
             }
             else
             {
                 var fields = _query.Sort.GetSort();
                 if (fields == null || fields.Count() != 1)
                 {
-                    useRelenace = true;
+                    useRelevance = true;
                 }
                 else
                 {
@@ -159,7 +161,7 @@ namespace DotNetNuke.Services.Search.Internals
                 }
             }
 
-            if (useRelenace)
+            if (useRelevance)
                 tempDocs = _hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
 
            foreach (var scoreDoc in tempDocs)

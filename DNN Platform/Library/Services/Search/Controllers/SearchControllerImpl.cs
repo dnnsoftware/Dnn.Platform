@@ -184,16 +184,19 @@ namespace DotNetNuke.Services.Search.Controllers
                         sort = new Sort(new SortField(Constants.Tag, SortField.STRING, reverse));
                         break;
                     case SortFields.NumericKey:
-                        sort = new Sort(new SortField(Constants.NumericKeyPrefixTag + query.CustomSortField, SortField.STRING, reverse));
+                        sort = new Sort(new SortField(Constants.NumericKeyPrefixTag + query.CustomSortField, SortField.INT, reverse));
                         break;
                     case SortFields.Keyword:
-                        sort = new Sort(new SortField(Constants.KeywordsPrefixTag + query.CustomSortField, SortField.INT, reverse));
+                        sort = new Sort(new SortField(Constants.KeywordsPrefixTag + query.CustomSortField, SortField.STRING, reverse));
                         break;
                     case SortFields.CustomStringField:
                         sort = new Sort(new SortField(query.CustomSortField, SortField.STRING, reverse));
                         break;
                     case SortFields.CustomNumericField:
                         sort = new Sort(new SortField(query.CustomSortField, SortField.INT, reverse));
+                        break;
+                    default:
+                        sort = Sort.RELEVANCE;
                         break;
                 }
             }
