@@ -1,8 +1,0 @@
-C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.xml
-C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll
-C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.pdb
-C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Instrumentation\obj\Release\DotNetNuke.Instrumentation.dll
-C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Instrumentation\obj\Release\DotNetNuke.Instrumentation.pdb
-C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Instrumentation\bin\DotNetNuke.Log4Net.dll
-C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Instrumentation\bin\DotNetNuke.Log4Net.pdb
-C:\Git\Dnn.Platform\DNN Platform\DotNetNuke.Instrumentation\bin\DotNetNuke.Log4Net.xml
