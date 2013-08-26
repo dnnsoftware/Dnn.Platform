@@ -116,6 +116,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Ii]nstall/[Cc]onfig
 [Ww]ebsite/[Ii]nstall/[Dd]ot[Nn]et[Nn]uke.install.config
 [Ww]ebsite/[Ii]nstall/installstat.log.resources.txt
+[Ww]ebsite/[Ii]nstall/upgradestat.log.resources.txt
 
 
 [Ww]ebsite/[Pp]ortals/_default/[Ll]ogs
