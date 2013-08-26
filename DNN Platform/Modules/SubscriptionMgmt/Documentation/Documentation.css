@@ -1,0 +1,82 @@
+
+Body, A
+{
+   font-family: Verdana, Arial, Helvetica, Sans Serif;
+   font-size: 10pt;
+   font-weight: normal;
+   color: black;
+}
+
+Body
+{
+    background-color: white;
+    margin-left:25px;
+}
+
+H1
+{
+	font-size: 2.0em;
+	font-weight: bold;
+	color: #75808A;
+	text-decoration: underline;
+}
+
+H2  {
+	font-size: 1.6em;
+    font-weight: bold;
+    color: #75808A;
+}
+
+H3  {
+    font-size:  1.4em;
+    font-weight:  bold;
+    color: #75808A;
+}
+
+H4  {
+    font-size:  1.2em;
+    font-weight: bold;
+    color: #75808A;
+}
+
+H5  {
+    font-size:  1.1em;
+    font-weight:    bold;
+    color: #75808A;
+}
+
+H6  {
+    font-size:  1.0em;
+    font-weight:    bold;
+    color: #75808A;
+}
+
+A:link  {
+    font-size:  1.0em;
+    text-decoration: underline;
+    color:  #0000cc;
+}
+
+A:visited   {
+    font-size:  1.0em;
+    text-decoration: underline;
+    color:  #0000cc;
+}
+
+A:active    {
+    font-size:  1.0em;
+    text-decoration: underline;
+    color:  #0000cc;
+}
+
+A:hover {
+    font-size:  1.0em;
+    text-decoration: underline;
+    color:  #cc0000;
+}
+
+HR {
+    color: dimgrey;
+    height:1pt;
+    text-align:left
+}
