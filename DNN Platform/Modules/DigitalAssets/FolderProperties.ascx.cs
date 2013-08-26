@@ -39,7 +39,7 @@ using DotNetNuke.Web.UI;
 
 namespace DotNetNuke.Modules.DigitalAssets
 {
-    public partial class EditFolder : PortalModuleBase
+    public partial class FolderProperties : PortalModuleBase
     {
         private readonly IDigitalAssetsController controller = (new Factory()).DigitalAssetsController;
         private FolderViewModel folderViewModel;
@@ -124,12 +124,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        private void CloseClientDialog(bool refresh)
-        {
-            var script = "parent.window.dnnModule.digitalAssets.closeDialog(" + (refresh ? "true" : "false") + ");";
-            Page.ClientScript.RegisterClientScriptBlock(GetType(), "CloseDialogScript", script, true);
-        }
-
         private void OnSaveClick(object sender, EventArgs e)
         {
             try
@@ -141,7 +135,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 SaveFolderProperties();
 
                 SavePermissions();
-                CloseClientDialog(true);
+                Page.CloseClientDialog(true);
             }
             catch (ThreadAbortException)
             {                
@@ -190,7 +184,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void OnCancelClick(object sender, EventArgs e)
         {
-            CloseClientDialog(false);
+            Page.CloseClientDialog(false);
         }
 
         protected override void OnLoad(EventArgs e)

@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models

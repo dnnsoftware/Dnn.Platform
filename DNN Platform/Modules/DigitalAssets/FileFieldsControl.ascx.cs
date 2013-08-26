@@ -20,20 +20,14 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
-using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Modules.DigitalAssets
@@ -57,10 +51,10 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private FileAttributes GetFileAttributesUpdated(FileAttributes? attributes)
         {
-            var result = (FileAttributeArchiveCheckBox.Checked) ? (attributes | FileAttributes.Archive) : (attributes & ~FileAttributes.Archive);
-            result = (FileAttributeHiddenCheckBox.Checked) ? (result | FileAttributes.Hidden) : (result & ~FileAttributes.Hidden);
-            result = (FileAttributeReadonlyCheckBox.Checked) ? (result | FileAttributes.ReadOnly) : (result & ~FileAttributes.ReadOnly);
-            result = (FileAttributeSystemCheckBox.Checked) ? (result | FileAttributes.System) : (result & ~FileAttributes.System);
+            var result = FileAttributeArchiveCheckBox.Checked ? (attributes | FileAttributes.Archive) : (attributes & ~FileAttributes.Archive);
+            result = FileAttributeHiddenCheckBox.Checked ? (result | FileAttributes.Hidden) : (result & ~FileAttributes.Hidden);
+            result = FileAttributeReadonlyCheckBox.Checked ? (result | FileAttributes.ReadOnly) : (result & ~FileAttributes.ReadOnly);
+            result = FileAttributeSystemCheckBox.Checked ? (result | FileAttributes.System) : (result & ~FileAttributes.System);
 
             return result.Value;
         }

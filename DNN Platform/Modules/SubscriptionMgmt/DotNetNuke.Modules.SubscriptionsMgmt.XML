@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.SubscriptionsMgmt</name>
+    </assembly>
+    <members>
+        <member name="M:DotNetNuke.Modules.SubscriptionsMgmt.Components.Controllers.BusinessController.UpgradeModule(System.String)">
+            <summary>Implements the IUpgradeable Interface</summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities.Subscriber.SubscriberId">
+            <summary>
+            The unique identifier
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities.Subscriber.UserId">
+            <summary>
+            The user the subscription is associated with
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities.Subscriber.PortalId">
+            <summary>
+            The site the subscription is associated with
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities.Subscriber.SubscriptionTypeId">
+            <summary>
+            The type of subscription.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities.Subscriber.Frequency">
+            <summary>
+            How often the user receives emails for the subscription
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities.Subscriber.ContentItemId">
+            <summary>
+            Content Item ID the subscription is referencing (if any)
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities.Subscriber.ObjectKey">
+            <summary>
+            Object key providing additional information on the subscription (if any)
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities.Subscriber.FriendlyName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Modules.SubscriptionsMgmt.Providers.Data.IDataProvider.GetUserContentSubscriptions(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userId"></param>
+            <param name="portalId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DotNetNuke.Modules.SubscriptionsMgmt.Services.SubscriptionsController.GetSubscriptions(System.Int32,System.Int32)">
+            <summary>
+            Perform a search on Scoring Activities registered in the system.
+            </summary>
+            <param name="searchText">Search filter text (if any)</param>
+            <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
+            <param name="pageSize">Number of records to return per page</param>
+            <param name="sortColumn">Column to sort on</param>
+            <param name="sortAscending">Sort ascending or descending</param>
+        </member>
+        <member name="M:DotNetNuke.Modules.SubscriptionsMgmt.Subscriptions.GetViewSettings">
+            <summary>
+            These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
+            values that are automatically retrieved by Social Library such as portalId and moduleId.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Modules.SubscriptionsMgmt.Subscriptions.ScopeWrapper">
+            <summary>
+            ScopeWrapper control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.SubscriptionsMgmt.Subscriptions.lblNotificationFreq">
+            <summary>
+            lblNotificationFreq control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:DotNetNuke.Modules.SubscriptionsMgmt.Subscriptions.lblMessageFreq">
+            <summary>
+            lblMessageFreq control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

@@ -33,7 +33,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint
 
         public virtual void ItemUpdated()
         {
-            OnItemUpdated();
+            if (OnItemUpdated != null)
+            {
+                OnItemUpdated();
+            }
         }
 
         public virtual void DataBindItem()

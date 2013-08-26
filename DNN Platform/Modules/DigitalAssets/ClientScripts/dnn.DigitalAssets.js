@@ -14,6 +14,30 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         setupDnnTabs();
         setupDnnMainMenuButtons();
+
+        fileUpload = new dnnModule.DigitalAssetsFileUpload($, sf, moduleSettings, resourcesSettings, refreshFolder, getCurrentFolderPath);
+    }
+
+    var fileUpload;
+
+    var searchPattern = "";
+    var searchProvider = null;
+    
+    function setSearchProvider(sp) {
+        searchProvider = sp;
+        searchProvider.onSearch(function (pattern) {
+            currentFolderId = getSelectedNode().get_value();
+            searchPattern = pattern;
+            loadFolderFirstPage(currentFolderId);
+        });
+    }
+    
+    function getSearchProvider() {
+        return searchProvider;
+    }
+    
+    function clearSearchPattern() {
+        searchPattern = "";
     }
 
     var gridViewMode = "gridview";
@@ -27,6 +51,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     var contentServiceUrl = '';
 
     var rootFolderId;
+    function getRootFolderId() {
+        return rootFolderId;
+    }
+
     var currentFolderId = -1;
     var currentFolder = null;
     var destinationMove;
@@ -46,7 +74,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     var refreshMenu;
     var isOnSyncMenuBtn;
     var isOnSyncMenu;
-    var searchPattern = "";
     var gridSelectUnselectAll;
 
     var currentTab = 0;
@@ -263,16 +290,21 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var leftPane = $("#dnnModuleDigitalAssetsLeftPane", "#" + controls.scopeWrapperId);
         var contentPane = $("#dnnModuleDigitalAssetsContentPane", "#" + controls.scopeWrapperId);
         var toggleButton = $("#DigitalAssetsToggleLeftPaneBtnId span", "#" + controls.scopeWrapperId);
-
+        var loadingPanel = $(".dnnModuleDigitalAssetsMainLoading", "#" + controls.scopeWrapperId);
+        var left;
+        
         if (!leftPane.is(":visible")) {
             toggleButton.css("background-image", "url(" + settings.toggleLeftPaneHideImageUrl + ")");
             leftPane.animate({ width: 'toggle' }, 500, treeViewRefreshScrollbars);
-            contentPane.animate({ 'margin-left': 220 }, 500, 'swing', moreItemsHint);
+            left = 220;
         } else {
             toggleButton.css("background-image", "url(" + settings.toggleLeftPaneShowImageUrl + ")");
             leftPane.animate({ width: 'toggle' }, 500);
-            contentPane.animate({ 'margin-left': 0 }, 500, 'swing', moreItemsHint);
+            left = 0;
         }
+        
+        contentPane.animate({ 'margin-left': left }, 500, 'swing', moreItemsHint);
+        loadingPanel.css({ 'left': left });
     }
 
     function moreItemsHint() {
@@ -301,6 +333,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             close: closeAction
         });
     }
+    
+    function getCurrentFolderId() {
+        return currentFolderId;
+    }
 
     function setCurrentFolder(folder) {
         currentFolder = folder;
@@ -326,7 +362,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
     function showPropertiesDialog(itemId, isFolder) {
         if (isFolder) {
-            showDialog('EditFolder', { folderId: itemId }, 950, 550);
+            showDialog('FolderProperties', { folderId: itemId }, 950, 550);
         } else {
             showDialog('FileProperties', { fileId: itemId }, 950, 550);
         }
@@ -539,6 +575,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     
     function refreshFolderAfterRecursiveSync() {
         internalRefreshNode(getCurrentNode(), true);
+        clearSearchPattern();
         loadFolderFirstPage(currentFolderId);
     }
 
@@ -569,10 +606,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             } else {
                 refreshFolder();
             }
-        }).fail(function (xhr, status, error) {
-            if (!isXhrHandled(xhr)) {
-                showAlertDialog(resources.loadFolderContentErrorTitle, getExceptionMessage(xhr));
-            }
+        }).fail(function (xhr) {
+            handledXhrError(xhr, resources.loadFolderContentErrorTitle);
         }).always(function () {
             enableLoadingPanel(false);
         });
@@ -590,6 +625,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var node = args.get_node();
         currentFolderId = node.get_value();
         controller.onLoadFolder();
+        clearSearchPattern();
         loadFolderFirstPage(currentFolderId);
     }
 
@@ -818,7 +854,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             dataItem.ThumbnailAvailable = data.ThumbnailAvailable;
             dataItem.ThumbnailUrl = data.ThumbnailUrl;
             finishRename(dataItem);
-        }).fail(function (xhr, status, error) {
+        }).fail(function (xhr) {
             if (!isXhrHandled(xhr)) {
                 onRenameItemError(input, dataItem.IsFolder, getExceptionMessage(xhr));
             }
@@ -981,10 +1017,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             } else {
                 updateSubFolders(node, data, isMainTree);
             }
-        }).fail(function (xhr, status, error) {
-            if (!isXhrHandled(xhr)) {
-                showAlertDialog(resources.loadSubFoldersErrorTitle, getExceptionMessage(xhr));
-            }
+        }).fail(function (xhr) {
+            handledXhrError(xhr, resources.loadSubFoldersErrorTitle);
         }).always(function () {
             if (isMainTree) {
                 enableLoadingPanel(false);
@@ -1252,21 +1286,19 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
-    function resetSearch(pattern) {
-        searchPattern = pattern;
-        $("#dnnModuleDigitalAssetsSearchBox input", "#" + controls.scopeWrapperId).val(searchPattern);
-    }
-
-    function internalResetGridComponents(folderId, pattern) {
+    function internalResetGridComponents() {
         toggleColumn('LastModifiedOnDate', true);
         toggleColumn('ParentFolder', false);        
         $('#' + controls.gridId + '>table>thead>tr>th:last', "#" + controls.scopeWrapperId).show().hide(); // FF workaround to hide the space of the last column
-        grid.clearSort();        
-        resetSearch(pattern);
+        grid.clearSort();
+        
+        if (searchProvider && (!searchPattern || searchPattern == '')) {
+            searchProvider.clearSearch();
+        }
     }
 
-    function loadFolderFirstPage(folderId, pattern) {
-        internalResetGridComponents(folderId, pattern);
+    function loadFolderFirstPage(folderId) {
+        internalResetGridComponents();
         grid.set_currentPageIndex(0);
         loadFolder(folderId, 0, grid.get_pageSize(), null);
     }
@@ -1287,9 +1319,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
     
-    function loadFolderCurrentPage(folderId, pattern) {
-        internalResetGridComponents(folderId, pattern);
+    function loadFolderCurrentPage(folderId) {
+        internalResetGridComponents();
         loadFolder(folderId, grid.get_currentPageIndex(), grid.get_pageSize(), null);
+    }
+    
+    function handledXhrError(xhr, message) {
+        if (!isXhrHandled(xhr)) {
+            showAlertDialog(message, getExceptionMessage(xhr));
+        }
     }
 
     function loadFolder(folderId, startIndex, numItems, sortExpression) {
@@ -1298,9 +1336,23 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             currentFolder = null;
             return;
         }
-
-        if (searchPattern && searchPattern != "") {
-            searchContent(searchPattern, startIndex, numItems, sortExpression);
+        
+        if (searchProvider && searchPattern && searchPattern != "") {
+            prepareForFilteredContent();
+            searchProvider.doSearch(folderId, searchPattern, startIndex, numItems, sortExpression,
+                function () {
+                    enableLoadingPanel(true);
+                },
+                function (data) {
+                    itemsDatabind(data, searchPattern);
+                },
+                function (xhr, status, error) {
+                     handledXhrError(xhr, resources.loadFolderContentErrorTitle);
+                },
+                function () {
+                    enableLoadingPanel(false);
+                }
+            );
             currentFolder = null;
             return;
         }
@@ -1324,10 +1376,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             currentFolder.IsFolder = true;
             checkCurrentFolderToolBarPermissions(data.Folder.Permissions);
             itemsDatabind(data);
-        }).fail(function (xhr, status, error) {
-            if (!isXhrHandled(xhr)) {
-                showAlertDialog(resources.loadFolderContentErrorTitle, getExceptionMessage(xhr));
-            }
+        }).fail(function (xhr) {
+            handledXhrError(xhr, resources.loadFolderContentErrorTitle);
         }).always(function () {
             enableLoadingPanel(false);            
             updateModuleState();            
@@ -1599,7 +1649,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
         textBox.focus();
     }
-
+    
     function clickOnItemName(event, dataItem) {
         event.preventDefault();
         event.stopPropagation();
@@ -1613,9 +1663,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 node.set_expanded(true);
             }
 
+            clearSearchPattern();
             loadFolderFirstPage(dataItem.ItemID);
         } else {            
-            self.window.open(getUrlAsync(dataItem.ItemID));
+            self.window.open(setTimeStamp(getUrlAsync(dataItem.ItemID)));
         }
     }
 
@@ -1632,10 +1683,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             beforeSend: servicesFramework.setModuleHeaders
         }).done(function(data) {
             url = data;
-        }).fail(function(xhr, status, error) {
-            if (!isXhrHandled(xhr)) {
-                showAlertDialog(resources.getUrlErrorTitle, getExceptionMessage(xhr));
-            }
+        }).fail(function (xhr) {
+            handledXhrError(xhr, resources.getUrlErrorTitle);
         }).always(function () {
             enableLoadingPanel(false);
         });
@@ -1654,34 +1703,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function highlightItemName(itemName) {
-        var pattern = searchPattern;
-        if (!searchPattern || pattern == "" || pattern.indexOf("?") != -1) {
-            return itemName;
-        }
-
-        if (pattern.lastIndexOf("*") == pattern.length - 1) {   // example*            
-            pattern = pattern.substring(0, pattern.length - 1);
-
-            if (pattern.lastIndexOf("*") == 0) { // *example* --> Highlight al occurrences
-                pattern = pattern.substring(1, pattern.length);
-
-                if (pattern.indexOf("*") == -1) {
-
-                    var matches = itemName.match(new RegExp(pattern, "i"));
-                    if (matches) {
-                        for (var i = 0; i < matches.length; i++) {
-                            itemName = itemName.replace(matches[i], "<font class='dnnModuleDigitalAssetsHighlight'>" + matches[i] + "</font>");
-                        }
-                    }
-                }
-
-                return itemName;
-            }
-        }
-
-        if (pattern.indexOf("*") == -1) {   // highlight the beginning                    
-            itemName = "<font class='dnnModuleDigitalAssetsHighlight'>" + itemName.substring(0, pattern.length) + "</font>" +
-                itemName.substring(pattern.length);
+        if (searchProvider) {
+            itemName = searchProvider.highlightItemName(searchPattern, itemName);
         }
 
         return itemName;
@@ -1695,7 +1718,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         var spanItemName = $("<span></span>");
         spanItemName.attr("id", rowId + "_ItemName");
-        spanItemName.html(highlightItemName(dataItem.ItemName));        
+        spanItemName.html(highlightItemName(dataItem.ItemName));
 
         var divItemName = $("<div></div>");
         divItemName.attr("id", rowId + "_ItemNameTemplate");
@@ -1784,6 +1807,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             $(menuSelector + " a.rmLink.singleItem").each(function () {
                 $(this).parent().hide();
             });
+        } else {
+            $(menuSelector + " a.rmLink.moreThanOneItem").each(function () {
+                $(this).parent().hide();
+            });
         }
 
         if (!areOnlyFilesSelected(items)) {
@@ -1852,6 +1879,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         if (items.length > 1) {
             $(".DigitalAssetsSelectionToolBar.singleItem", "#" + controls.scopeWrapperId).hide();
+        } else {
+            $(".DigitalAssetsSelectionToolBar.moreThanOneItem", "#" + controls.scopeWrapperId).hide();
         }
 
         if (!areOnlyFilesSelected(items)) {
@@ -1882,6 +1911,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 e.preventDefault();
                 currentFolderId = $(this).attr('data-folderid');
                 treeView.findNodeByValue(currentFolderId).select();
+                clearSearchPattern();
                 loadFolderFirstPage(currentFolderId);
             });
         return $("<li class='dnnModuleDigitalAssetsBreadcrumbLink' />").append(a);
@@ -1893,7 +1923,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         if (pattern && pattern != "") {
             ul.html(getBreadcrumbFolderItem(node));
-            ul.append($("<li />").text(resources.searchBreadcrumb.replace("[PATTERN]", pattern)));
+            ul.append($("<li />").text(resources.searchBreadcrumb));
         } else {
             ul.html($("<li />").text(node.get_text()).attr("title", node.get_text()));
         }
@@ -2171,7 +2201,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         createNewFolder(getCurrentNode());
     }
 
-    function getFolderPath(node) {
+    function getCurrentFolderPath() {
+        var node = getCurrentNode();
         var folderPath = "";
 
         while (node.get_value() != rootFolderId) {
@@ -2182,343 +2213,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return folderPath;
     }
 
-    function getCurrentFolderPath() {
-        return getFolderPath(getCurrentNode());
-    }
-
-    function supportAjaxUpload() {
-        var xhr = new XMLHttpRequest;
-        return !!(xhr && ('upload' in xhr) && ('onprogress' in xhr.upload));
-    }
-
-    function zipConfirmation($element, data) {
-
-        var dialogText = resources.zipConfirmationText.replace('[FILE]', data.files[0].name);
-
-        $("<div class='dnnDialog'></div>").html(dialogText).data(data).dialog({
-            modal: true,
-            autoOpen: true,
-            dialogClass: "dnnFormPopup",
-            width: 400,
-            height: 220,
-            resizable: false,
-            title: resources.uploadFilesTitle,
-            buttons:
-                [
-                    {
-                        id: "keepCompressed_button",
-                        text: resources.keepCompressedText,
-                        "class": "dnnSecondaryAction",
-                        click: function () {
-                            $element.attr("data-extract", "false");
-                            $(this).data().submit();
-                            $(this).dialog("close");
-                        }
-                    },
-                    {
-                        id: "expandFile_button",
-                        text: resources.expandFileText,
-                        "class": "dnnSecondaryAction",
-                        click: function () {
-                            $element.attr("data-extract", "true");
-                            $(this).data().submit();
-                            $(this).dialog("close");
-                        }
-                    }
-                ]
-        });
-    }
-
-    function doesBrowserSupportDragDrop() {
-        return ('draggable' in document.createElement('span'));
-    }
-
-    function disposeFileUpload() {
-        $('#dnnModuleDigitalAssetsUploadFileDialogInput').fileupload("destroy");
-        $('#dnnModuleDigitalAssetsUploadFileDialogInput').parent().remove();
-    }
-    
-    function initFileUpload() {
-
-        $('#dnnModuleDigitalAssetsUploadFileResultZone').empty();
-        $("#dnnModuleDigitalAssetsUploadFileExternalResultZone").hide();
-
-        if (!doesBrowserSupportDragDrop()) {
-            $("#dnnModuleDigitalAssetsUploadFileDropZone").remove();
-            $("#dnnModuleDigitalAssetsUploadFileDragDropInfo").remove();
-        }
-
-        var $closeDialog = $("#dnnModuleDigitalAssetsUploadFileDialogClose").unbind("click").click(function () {
-            $("#dnnModuleDigitalAssetsUploadFileModal").dialog('close');
-        });
-
-        var $inputFile = $("<input id='dnnModuleDigitalAssetsUploadFileDialogInput' type='file' name='postfile' multiple data-text='" + resources.chooseFileText + "' />");
-
-        $inputFile.insertBefore($closeDialog);
-        $inputFile.dnnFileInput(
-            {
-                buttonClass: 'dnnPrimaryAction',
-                showSelectedFileNameAsButtonText: false
-            });
-
-        var url = servicesFramework.getServiceRoot('internalservices') + 'fileupload/postfile';
-        if (!supportAjaxUpload()) {
-            var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
-            url += '?__RequestVerificationToken=' + antiForgeryToken;
-        }
-
-        var $dropZone = $('#dnnModuleDigitalAssetsUploadFileDropZone');
-
-        $inputFile.fileupload({
-            url: url,
-            beforeSend: servicesFramework.setModuleHeaders,
-            dropZone: $dropZone,
-            sequentialUpload: false,
-            progressInterval: 20,
-            add: function (e, data) {
-                if (!$("#dnnModuleDigitalAssetsUploadFileExternalResultZone").is(":visible")) {
-                    $("#dnnModuleDigitalAssetsUploadFileModal").dialog({ height: 580 });
-                    $("#dnnModuleDigitalAssetsUploadFileExternalResultZone").show().jScrollPane();
-                }
-
-                // Empty file upload does not be supported in IE10
-                if (data.files[0].size == 0 && $.browser.msie && $.browser.version == "10.0") {
-                    showErrorMessage(data.files[0].name, resources.fileUploadEmptyFileUploadIsNotSupported);
-                    return;
-                }
-
-                if (data.files[0].size > settings.maxFileUploadSize) {
-                    var message = resources.maxFileUploadSizeErrorText.replace("[MAXFILESIZE]", settings.maxFileUploadSizeHumanReadable);
-                    showErrorMessage(data.files[0].name, message);
-                    return;
-                }
-
-                data.submit();
-            },
-            submit: function (e, data) {
-
-                var overwrite = 'false';
-
-                var $element = getUploadFileResultZone(data.files[0].name);
-                if ($element.length == 0) {
-
-                    $element = getNewUploadFileResultZone(data.files[0].name);
-                    $("#dnnModuleDigitalAssetsUploadFileResultZone").append($element);
-
-                    $element.find('.dnnModuleDigitalAssetsUploadFileStatusIcon.uploading').click(function () {
-                        if (data.jqXHR) data.jqXHR.abort();
-                    });
-
-                    $("#dnnModuleDigitalAssetsUploadFileExternalResultZone").jScrollPane();
-                } else {
-                    $element.find('.dnnModuleDigitalAssetsUploadFileNotification').hide();
-                    $element.find('.dnnModuleDigitalAssetsUploadFileNotification').empty();
-                    initProgressBar($element);
-
-                    overwrite = $element.attr("data-fileoverwrite");
-                }
-
-                var extract = $element.attr("data-extract");
-                var extension = data.files[0].name.substring(data.files[0].name.lastIndexOf('.') + 1);
-                if (extension == 'zip' && extract == null) {
-                    zipConfirmation($element, data);
-                    return false;
-                }
-
-                data.formData = {
-                    folder: getCurrentFolderPath(),
-                    filter: '',
-                    overwrite: overwrite,
-                    isHostMenu: settings.isHostMenu,
-                    extract: extract
-                };
-
-                return true;
-            },
-            progress: function (e, data) {
-                var $element = getUploadFileResultZone(data.files[0].name);
-                
-                if (data.formData.extract == "true") {
-                    if ($element.find('.dnnModuleDigitalAssetsUploadingExtracting').length == 0) {
-                        $element.find('.dnnModuleDigitalAssetsUploadFileFileName')
-                            .append("<span class='dnnModuleDigitalAssetsUploadingExtracting'> - "
-                                + resources.uploadingExtracting + "</span>");
-                    }
-                    setProgressBarProgress($element);
-                    return;
-                }
-                
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                if (progress < 100) {
-                    setProgressBarProgress($element, progress);
-                }
-            },
-            done: function (e, data) {
-                var $element = getUploadFileResultZone(data.files[0].name);
-
-                var error = getFileUploadError(data);
-                if (error) {
-                    handleFileUploadError($element, error, data);
-                    return;
-                }
-
-                setProgressBarProgress($element, 100);
-                $element.attr("data-fileoverwrite", "false");
-            },
-            fail: function (e, data) {
-                var $element = getUploadFileResultZone(data.files[0].name);
-
-                if (data.errorThrown === 'abort') {
-                    setNotification($element, resources.fileUploadStoppedText);
-                    showFileNotification($element);
-                    return;
-                }
-
-                setNotification($element, "<span class='dnnModuleDigitalAssetsErrorMessage'>" + resources.fileUploadErrorOccurredText + "</span>");
-                showFileNotification($element);
-                return;
-            },
-            dragover: function () {
-                $dropZone.addClass("dragover");
-            },
-            drop: function () {
-                $dropZone.removeClass("dragover");
-            }
-        });
-
-        $dropZone.on('dragleave', function () {
-            $(this).removeClass("dragover");
-        });
-    }
-
-    function getFileUploadError(data) {
-        var error;
-        try {
-            if (!supportAjaxUpload()) {
-                error = JSON.parse($("pre", data.result).html());
-            } else {
-                error = JSON.parse(data.result);
-            }
-        } catch (e) {
-            return null;
-        }
-
-        if (!error.Message) return null;
-
-        return error;
-    }
-
-    function showErrorMessage(filename, message) {
-        var $element = getUploadFileResultZone(filename);
-        if ($element.length == 0) {
-            $element = getNewUploadFileResultZone(filename);
-            $("#dnnModuleDigitalAssetsUploadFileResultZone").append($element);
-            $("#dnnModuleDigitalAssetsUploadFileExternalResultZone").jScrollPane();
-        }
-        setNotification($element, "<span class='dnnModuleDigitalAssetsErrorMessage'>" + message + "</span>");
-        showFileNotification($element);
-    }
-
-    function handleFileUploadError($element, error, data) {
-
-        // File already Exists Scenario
-        if (error.AlreadyExists) {
-            var replaceButton = $('<a class="dnnModuleDigitalAssetsUploadFileReplaceFile dnnModuleDigitalAssetsUploadFileAction">' + resources.replaceText + '</a>')
-                .on('click', function () {
-                    $(this).closest('.dnnModuleDigitalAssetsUploadFileFile').attr("data-fileoverwrite", "true");
-                    $(this).data().uploadedBytes = 0;
-                    $(this).data().data = null;
-                    $(this).data().submit();
-                });
-
-            setNotification($element, resources.fileUploadAlreadyExistsText +
-                "<span class='dnnModuleDigitalAssetsUploadFileActions'><a class='dnnModuleDigitalAssetsUploadFileKeepFile dnnModuleDigitalAssetsUploadFileAction'>" +
-                resources.keepText + "</a></span>");
-
-            $element.find('.dnnModuleDigitalAssetsUploadFileActions').prepend(replaceButton.clone(true).data(data));
-
-            $element.find('.dnnModuleDigitalAssetsUploadFileNotification .dnnModuleDigitalAssetsUploadFileKeepFile').click(function () {
-                $element.find('.dnnModuleDigitalAssetsUploadFileActions').remove();
-                setNotification($element, resources.fileUploadStoppedText);
-            });
-
-        } else {
-            setNotification($element, "<span class='dnnModuleDigitalAssetsErrorMessage'>" + error.Message + "</span>");
-        }
-
-        showFileNotification($element);
-
-        $("#dnnModuleDigitalAssetsUploadFileExternalResultZone").jScrollPane();
-    }
-
-    function getNewUploadFileResultZone(id) {
-        return $("<div class='dnnModuleDigitalAssetsUploadFileFile' data-fileoverwrite='false' data-filename='" + id + "'>" +
-                "<span class='dnnModuleDigitalAssetsUploadFileFileName'>" + id + "</span>" +
-                "<div class='dnnModuleDigitalAssetsUploadFileProgress'>" +
-                "<div class='dnnModuleDigitalAssetsUploadFileProgressBar ui-progressbar'><div class='ui-progressbar-value' style='width: 0%;' /></div>" +
-                "<div class='dnnModuleDigitalAssetsUploadFileStatusIcon uploading'/></div>" +
-                "<div class='dnnModuleDigitalAssetsUploadFileNotification'/>");
-    }
-
-    function getUploadFileResultZone(id) {
-        return $("#dnnModuleDigitalAssetsUploadFileResultZone div[data-filename='" + id + "']");
-    }
-
-    function initProgressBar($element) {
-        $element.find('.dnnModuleDigitalAssetsUploadFileProgressBar>div').css('width', '0%');
-        $element.find('.dnnModuleDigitalAssetsUploadFileStatusIcon').removeClass('finished').addClass('uploading');
-        $element.find('.dnnModuleDigitalAssetsUploadFileProgress').show();
-    }
-
-    function setProgressBarProgress($element, progress) {
-        $element.find(".dnnModuleDigitalAssetsUploadFileProgress").show();
-        
-        if (!progress) {
-            $element.find('.dnnModuleDigitalAssetsUploadFileProgressBar').addClass('indeterminate-progress');
-            $element.find('.dnnModuleDigitalAssetsUploadFileProgressBar>div').css('width', '100%');
-            return;
-        }
-
-        if (progress < 100) {
-            $element.find(".dnnModuleDigitalAssetsUploadFileProgressBar>div").css('width', progress + '%');
-            return;
-        } 
-        
-        $element.find('.dnnModuleDigitalAssetsUploadFileStatusIcon').removeClass('uploading').addClass('finished');
-        $element.find('.dnnModuleDigitalAssetsUploadFileProgressBar.indeterminate-progress').removeClass('indeterminate-progress');
-        $element.find('.dnnModuleDigitalAssetsUploadingExtracting').remove();
-        $element.find('.dnnModuleDigitalAssetsUploadFileProgressBar>div').css('width', '100%');
-    }
-
-    function setNotification($element, content) {
-        var notification = $element.find('.dnnModuleDigitalAssetsUploadFileNotification');
-        notification.empty();
-        notification.html(content);
-    }
-
-    function showFileNotification($element) {
-
-        $element.find('.dnnModuleDigitalAssetsUploadFileNotification').show();
-        $element.find('.dnnModuleDigitalAssetsUploadFileProgressBar>div').css('width', '0%');
-        $element.find('.dnnModuleDigitalAssetsUploadFileProgress').hide();
-    }
-
     function uploadFiles() {
-        $("#dnnModuleDigitalAssetsUploadFileModal").dialog({
-            modal: true,
-            autoOpen: true,
-            dialogClass: "dnnFormPopup",
-            title: resources.uploadFilesTitle,
-            resizable: false,
-            width: 680,
-            height: 320,
-            close: function (event, ui) {
-                refreshFolder();
-                disposeFileUpload();
-            }
-        });
-
-        initFileUpload();
+        fileUpload.uploadFiles();
     }
 
     function deleteSelectedItems() {
@@ -2594,11 +2290,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                         }).done(function (data) {
                             onItemsDeleted(items, data, parentFolderId);
                             
-                        }).fail(function (xhr, status, error) {
-                            if (!isXhrHandled(xhr)) {
-                                showAlertDialog(resources.deleteItemsErrorTitle, getExceptionMessage(xhr));
-                            }
-                            
+                        }).fail(function (xhr) {
+                            handledXhrError(xhr, resources.deleteItemsErrorTitle);
                         }).always(function () {
                             enableLoadingPanel(false);                            
                         });
@@ -2648,7 +2341,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
 
         if (parentFolderId == currentFolderId) {
-            loadFolderFirstPage(currentFolderId, searchPattern);
+            loadFolderFirstPage(currentFolderId);
         }
     }
 
@@ -2761,10 +2454,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                     moveNode(itemId, destinationFolderId);
                 }
             }
-        }).fail(function (xhr, status, error) {
-            if (!isXhrHandled(xhr)) {
-                showAlertDialog(resources.moveError, getExceptionMessage(xhr));
-            }
+        }).fail(function (xhr) {
+            handledXhrError(xhr, resources.moveError);
         });
     };
 
@@ -2908,10 +2599,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             } else {
                 removeAlert(itemId);
             }
-        }).fail(function (xhr, status, error) {
-            if (!isXhrHandled(xhr)) {
-                showAlertDialog(resources.copyError, getExceptionMessage(xhr));
-            }
+        }).fail(function (xhr) {
+            handledXhrError(xhr, resources.copyError);
         });
     };
 
@@ -3009,7 +2698,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 fileId: fileId
             },
             beforeSend: servicesFramework.setModuleHeaders
-        }).done(function (data) {
+        }).done(function(data) {
             var url;
             if (data.indexOf("http://") == 0 || data.indexOf("https://") == 0) {
                 url = data;
@@ -3026,28 +2715,38 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 resizable: false,
                 title: resources.getUrlTitle,
                 buttons:
-                [
-                    {
-                        id: "close_button",
-                        text: resources.closeText,
-                        click: function () {
-                            $(this).dialog("close");
-                        },
-                        "class": "dnnSecondaryAction"
-                    }
-                ]
-            });        
-        }).fail(function (xhr, status, error) {
-            if (!isXhrHandled(xhr)) {
-                showAlertDialog(resources.getUrlErrorTitle, getExceptionMessage(xhr));
-            }
-        }).always(function () {
+                    [
+                        {
+                            id: "close_button",
+                            text: resources.closeText,
+                            click: function() {
+                                $(this).dialog("close");
+                            },
+                            "class": "dnnSecondaryAction"
+                        }
+                    ]
+            });
+        }).fail(function(xhr) {
+            handledXhrError(xhr, resources.getUrlErrorTitle);
         });
     }
     
+    function getTimeStamp() {
+        var timestamp = new Date();
+        timestamp = timestamp.getTime();
+        return "timestamp=" + timestamp;
+    }
+
+    function setTimeStamp(url) {
+        if (url.indexOf("?") == -1) {
+            return url + "?" + getTimeStamp();
+        }
+        return url + "&" + getTimeStamp();
+    }
+
     var $idown;
     function downloadUrl(url) {
-        url += "&forceDownload=true";
+        url += "&forceDownload=true";                
         if ($idown) {
             $idown.attr('src', url);
         } else {
@@ -3101,7 +2800,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             case "Properties":
                 showPropertiesDialog(grid.get_selectedItems()[0].get_dataItem().ItemID, grid.get_selectedItems()[0].get_dataItem().IsFolder);
                 break;
+                
+            default:
+                controller.executeCommandOnSelectedItems(args.get_item().get_value(), grid.get_selectedItems());
+                break;
         }
+    }
+    
+    function executeCommandOnSelectedItems(commandName) {
+        controller.executeCommandOnSelectedItems(commandName, grid.get_selectedItems());
     }
 
     function setView(view) {
@@ -3184,18 +2891,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         gridSelectUnselectAll.trigger("click");
     }
 
-    function search() {
-        var newPattern = $("#dnnModuleDigitalAssetsSearchBox input", "#" + controls.scopeWrapperId).val();
-        newPattern = $.trim(newPattern);
-        if (newPattern == searchPattern) {
-            return;
-        }
-
-        searchPattern = newPattern;
-
-        loadFolderFirstPage(currentFolderId, searchPattern);
-    }
-
     function toggleColumn(columnName, visible) {        
         var index = grid.getColumnByUniqueName(columnName).get_element().cellIndex;
         if (visible) {
@@ -3212,40 +2907,11 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         
         $('#dnnModuleDigitalAssetsMainToolbar .folderRequired', "#" + controls.scopeWrapperId).hide();
     }
-
-    function searchContent(pattern, startIndex, numItems, sortExpression) {
-        prepareForFilteredContent();
-        enableLoadingPanel(true);
-        $.ajax({
-            url: getContentServiceUrl() + "SearchFolderContent",
-            data: {
-                "folderId": currentFolderId,
-                "pattern": pattern,
-                "startIndex": startIndex,
-                "numItems": numItems,
-                "sortExpression": sortExpression
-            },
-            type: "POST",
-            beforeSend: servicesFramework.setModuleHeaders
-        }).done(function (data) {
-            itemsDatabind(data, pattern);
-        }).fail(function (xhr, status, error) {
-            if (!isXhrHandled(xhr)) {
-                showAlertDialog(resources.loadFolderContentErrorTitle, getExceptionMessage(xhr));
-            }
-        }).always(function () {
-            enableLoadingPanel(false);
-        });
-    }
-
+    
     function getController() {
         return controller;
     }
-
-    function getSearchPattern() {
-        return searchPattern;
-    }
-
+    
     function initDragAndDropGridSelection() {
         var items = grid.get_selectedItems();
         for (var i = 0; i < items.length; i++) {
@@ -3425,10 +3091,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             beforeSend: servicesFramework.setModuleHeaders
         }).done(function (data) {
             refreshFolder();
-        }).fail(function (xhr, status, error) {
-            if (!isXhrHandled(xhr)) {
-                showAlertDialog(resources.unzipFileErrorTitle, getExceptionMessage(xhr));
-            }
+        }).fail(function (xhr) {
+            handledXhrError(xhr, resources.unzipFileErrorTitle);
         }).always(function () {
             enableLoadingPanel(false);
         });
@@ -3437,15 +3101,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     $(function () {
         initDragAndDrop();
 
-        $("#dnnModuleDigitalAssetsSearchBox input", "#" + controls.scopeWrapperId).keypress(function (e) {
-            if (e.which == 13) {
-                e.preventDefault();
-                search();
-            }
-        }).blur(function () {
-            search();
-        });
-        
         $("#dnnModuleDigitalAssetsListContainer", "#" + controls.scopeWrapperId).mousedown(function (e) {
             if (e.button == 2 && $(e.target).hasClass('emptySpace')) {
                 emptySpaceContextMenu(e);
@@ -3504,8 +3159,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         prepareForFilteredContent: prepareForFilteredContent,
         itemsDatabind: itemsDatabind,
         enableLoadingPanel: enableLoadingPanel,
-        getSearchPattern: getSearchPattern,
-        resetSearch: resetSearch,
         refresFolderFromMenu: refresFolderFromMenu,
         syncFromMenu: syncFromMenu,
         onOpeningRefreshMenu: onOpeningRefreshMenu,
@@ -3515,7 +3168,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         showAlertDialog: showAlertDialog,
         isXhrHandled: isXhrHandled,
         getReducedItemName: getReducedItemName,
+        getCurrentFolderId: getCurrentFolderId,
         setCurrentFolder: setCurrentFolder,
-        folderTypeComboBoxOnSelectedIndexChanged: folderTypeComboBoxOnSelectedIndexChanged
+        folderTypeComboBoxOnSelectedIndexChanged: folderTypeComboBoxOnSelectedIndexChanged,
+        executeCommandOnSelectedItems: executeCommandOnSelectedItems,
+        setSearchProvider: setSearchProvider,
+        getSearchProvider: getSearchProvider,
+        getRootFolderId: getRootFolderId
     };
 }(jQuery, $find, $telerik, dnnModal);

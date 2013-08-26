@@ -18,8 +18,8 @@
         <dnnext:EditPageTabExtensionControl runat="server" Module="DigitalAssets" Group="LeftPaneTabs" TabControlId="LeftPaneTabsControl" PanelControlId="LeftPaneContents"></dnnext:EditPageTabExtensionControl>
         <div id="dnnModuleDigitalAssetsLeftPane">
             <ul class="dnnAdminTabNav dnnModuleDigitalAssetsTabNav buttonGroup" runat="server" id="LeftPaneTabsControl">
-                <li id="dnnModuleDigitalAssetsLeftPaneFilesTab">
-                    <asp:HyperLink href="#dnnModuleDigitalAssetsLeftPaneFilesTabContent"  runat="server" id="LeftPaneTabsFilesLink" resourcekey="LeftPaneFilesTab.Text"/>
+                <li>
+                    <asp:HyperLink href="#dnnModuleDigitalAssetsLeftPaneFilesTabContent" runat="server" resourcekey="LeftPaneFilesTab.Text"/>            
                 </li>
             </ul>
             <asp:Panel runat="server" ID="LeftPaneContents" CssClass="dnnModuleDigitalAssetsLeftPaneContents">
@@ -51,12 +51,7 @@
 
         <div id="dnnModuleDigitalAssetsContentPane">
                         
-            <span id="dnnModuleDigitalAssetsSearchBox">            
-                <input type="text" placeholder='<%=Localization.GetString("Search.Placeholder", LocalResourceFile)%>' />
-                <a href="#" title='<%=Localization.GetString("Search.Title", LocalResourceFile)%>' onclick="return false;">
-                    <%=Localization.GetString("Search.Title", LocalResourceFile)%>
-                </a>
-            </span>
+            <asp:Panel runat="server" ID="SearchBoxPanel" />                
             
             <div id="dnnModuleDigitalAssetsBreadcrumb">
                 <ul></ul>
@@ -132,7 +127,7 @@
                                 <span class="dnnModuleDigitalAssetsNoItems emptySpace"><%=Localization.GetString("NoItems", LocalResourceFile)%></span>
                                 <span class="dnnModuleDigitalAssetsNoItemsSearch emptySpace"><%=Localization.GetString("NoItemsSearch", LocalResourceFile)%></span>
                             </div>
-		                </NoRecordsTemplate>
+                        </NoRecordsTemplate>
                         <PagerStyle AlwaysVisible="true" PageButtonCount="6" CssClass="dnnModuleDigitalAssetsPagerStyle" Mode="NextPrevAndNumeric"/>
                     </MasterTableView>
                 </dnnweb:DnnGrid>            
@@ -160,22 +155,22 @@
             <fieldset>
                 <div class="dnnFormItem">
                     <dnnweb:Label ID="ParentFolderLabel" runat="server" ResourceKey="ParentFolder" Suffix=":" HelpKey="ParentFolder.Help" ControlName="FolderNameTextBox" />
-				    <span id="dnnModuleDigitalAssetsCreateFolderModalParent" class="dnnModuleDigitalAssetsCreateFolderModalNoEditableField"></span>                
+                    <span id="dnnModuleDigitalAssetsCreateFolderModalParent" class="dnnModuleDigitalAssetsCreateFolderModalNoEditableField"></span>                
                 </div>
                 <div class="dnnFormItem">
                     <dnnweb:Label ID="FolderNameLabel" runat="server" ResourceKey="FolderName" Suffix=":" HelpKey="FolderName.Help" ControlName="FolderNameTextBox" CssClass="dnnFormRequired" />
-				    <asp:TextBox ID="FolderNameTextBox" runat="server" />
-				    <asp:RequiredFieldValidator ID="FolderNameRequiredValidator" ValidationGroup="CreateFolder" CssClass="dnnFormMessage dnnFormError dnnModuleDigitalAssetsFolderNameValidator" EnableViewState="false" runat="server" resourcekey="FolderNameRequired.ErrorMessage" Display="Dynamic" ControlToValidate="FolderNameTextBox" />
+                    <asp:TextBox ID="FolderNameTextBox" runat="server" />
+                    <asp:RequiredFieldValidator ID="FolderNameRequiredValidator" ValidationGroup="CreateFolder" CssClass="dnnFormMessage dnnFormError dnnModuleDigitalAssetsFolderNameValidator" EnableViewState="false" runat="server" resourcekey="FolderNameRequired.ErrorMessage" Display="Dynamic" ControlToValidate="FolderNameTextBox" />
                     <asp:RegularExpressionValidator Width="222" ID="FolderNameRegExValidator" ValidationGroup="CreateFolder" CssClass="dnnFormMessage dnnFormError dnnModuleDigitalAssetsFolderNameIvalidCharsValidator" EnableViewState="false" runat="server" Display="Dynamic" ControlToValidate="FolderNameTextBox" />
                 </div>
                 <div class="dnnFormItem">
                     <dnnweb:Label ID="FolderTypeLabel" runat="server" ResourceKey="FolderType" Suffix=":" HelpKey="FolderType.Help" ControlName="FolderTypeComboBox" />
-				    <dnnweb:DnnComboBox id="FolderTypeComboBox" DataTextField="Name" DataValueField="Id" runat="server" OnClientSelectedIndexChanged="dnnModule.digitalAssets.folderTypeComboBoxOnSelectedIndexChanged"></dnnweb:DnnComboBox>
+                    <dnnweb:DnnComboBox id="FolderTypeComboBox" DataTextField="Name" DataValueField="Id" runat="server" OnClientSelectedIndexChanged="dnnModule.digitalAssets.folderTypeComboBoxOnSelectedIndexChanged"></dnnweb:DnnComboBox>
                     <span id="dnnModuleDigitalAssetsFolderTypeNoEditableLabel" class="dnnModuleDigitalAssetsCreateFolderModalNoEditableField"></span>
                 </div>
                 <div class="dnnFormItem" id="dnnModuleDigitalAssetsCreateFolderMappedPathFieldRow">                    
                     <dnnweb:Label ID="MappedPathLabel" runat="server" ResourceKey="MappedPath" Suffix=":" HelpKey="MappedPath.Help" ControlName="MappedPathTextBox" />
-				    <asp:TextBox ID="MappedPathTextBox" runat="server" />                    
+                    <asp:TextBox ID="MappedPathTextBox" runat="server" />                    
                     <asp:RegularExpressionValidator Width="222" ID="MappedPathRegExValidator" ValidationGroup="CreateFolder" 
                         CssClass="dnnFormMessage dnnFormError" EnableViewState="false" runat="server" Display="Dynamic" 
                         ControlToValidate="MappedPathTextBox" ValidationExpression="^(?!\s*[\\/]).*$" resourcekey="MappedPathRegExValidator.ErrorMessage"/>

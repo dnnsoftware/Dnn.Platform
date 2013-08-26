@@ -21,6 +21,8 @@
 
 using System;
 using System.Collections.Generic;
+
+using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
@@ -101,12 +103,16 @@ namespace DotNetNuke.Modules.DigitalAssets
                     MappingsGrid.Rebind();
                 }
             }
+            if (DotNetNukeContext.Current.Application.Name == "DNNCORP.CE")
+            {
+                NewMappingButton.Visible = false;
+            }
         }
 
         protected void MappingsGrid_OnItemCommand(object source, GridCommandEventArgs e)
         {
             if (e.CommandName == "Edit")
-            {                
+            {
                 Response.Redirect(Globals.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true", "ItemID=" + e.CommandArgument.ToString()));
             }
             else
@@ -150,7 +156,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             var deleteMessage = string.Format(Localization.GetString("DeleteConfirm", LocalResourceFile), folderMapping.MappingName);
             cmdDeleteMapping.OnClientClick = "return confirm(\"" + ClientAPI.GetSafeJSString(deleteMessage) + "\");";
         }
-     
+
         protected void MappingsGrid_OnNeedDataSource(object source, GridNeedDataSourceEventArgs e)
         {
             MappingsGrid.DataSource = FolderMappingsList;
