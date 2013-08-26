@@ -1,0 +1,70 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.Subscriptions" type="Library" version="07.01.02">
+      <friendlyName>Subscriptions</friendlyName>
+      <description>DotNetNuke Corporation Subscriptions API.</description>
+      <iconFile>~/Images/icon_extensions_32px.png</iconFile>
+      <owner>
+        <name>DotNetNuke Corporation</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>http://www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+        <license src="License.txt"></license>
+        <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+        <dependencies>
+            <dependency type="CoreVersion">07.01.00</dependency>
+        </dependencies>
+        <components>
+            <component type="Assembly">
+                <assemblies>
+                    <assembly>
+						<path>bin</path>
+                        <name>DotNetNuke.Modules.Subscriptions.dll</name>
+                    </assembly>
+                </assemblies>
+            </component>
+            <component type="Script">
+                <scripts>
+                    <basePath>DesktopModules\Subscriptions</basePath>
+                    <script type="Install">
+						<path>Providers\Data\SqlDataProvider</path>
+                        <name>01.00.00.SqlDataProvider</name>
+                        <version>01.00.00</version>
+                    </script>
+                    <script type="Install">
+						<path>Providers\Data\SqlDataProvider</path>
+                        <name>01.00.01.SqlDataProvider</name>
+                        <version>01.00.01</version>
+                    </script>
+                    <script type="Install">
+						<path>Providers\Data\SqlDataProvider</path>
+                        <name>01.01.00.SqlDataProvider</name>
+                        <version>01.01.00</version>
+                    </script>
+                    <script type="UnInstall">
+						<path>Providers\Data\SqlDataProvider</path>
+                        <name>Uninstall.SqlDataProvider</name>
+                    </script>
+                </scripts>
+            </component>
+            <component type="ResourceFile">
+                <resourceFiles>
+                    <basePath>DesktopModules/Subscriptions</basePath>
+                    <resourceFile>
+                        <name>Resources.zip</name>
+                    </resourceFile>
+                </resourceFiles>
+            </component>
+			<component type="Cleanup" version="07.01.02">
+					<files>
+                        <file>
+                            <path>bin</path>
+                            <name>DotNetNuke.Subscriptions.dll</name>
+                        </file>
+                    </files>
+				</component>
+        </components>
+    </package>
+</packages>
+</dotnetnuke>

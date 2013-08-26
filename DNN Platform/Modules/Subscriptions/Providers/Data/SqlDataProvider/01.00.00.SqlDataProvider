@@ -1,0 +1,513 @@
+﻿IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = '{objectQualifier}CoreMessaging_MessageRecipients' 
+           AND  COLUMN_NAME = 'SendToast')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients ADD
+            SendToast bit NOT NULL DEFAULT ((0))
+    END 
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Users') AND OBJECTPROPERTY(id, N'IsConstraint') = 1)
+	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber DROP CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Users
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Subscriptions_Type') AND OBJECTPROPERTY(id, N'IsConstraint') = 1)
+	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber DROP CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Subscriptions_Type
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Portals') AND OBJECTPROPERTY(id, N'IsConstraint') = 1)
+	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber DROP CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Portals
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Subscriber') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Type') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Subscriptions_Type
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}Subscriptions_Type]
+(
+	[SubscriptionTypeId] [int] IDENTITY(1,1) NOT NULL,
+	[SubscriptionName] [nvarchar](50) NOT NULL,
+	[FriendlyName] [nvarchar](50) NULL,
+	[DesktopModuleId] [int] NULL
+)
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Type
+		WITH NOCHECK
+ADD CONSTRAINT PK_{objectQualifier}Subscriptions_Type PRIMARY KEY CLUSTERED ( [SubscriptionTypeId] )
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}Subscriptions_Queue]
+(
+	[QueueId] [int] IDENTITY(1,1) NOT NULL,
+	[PortalId] [int] NOT NULL,
+	[SubscriptionTypeId] [int] NOT NULL,
+	[ContentItemId] [int] NULL,
+	[ObjectKey] [nvarchar](255) NULL,
+	[Subject] [nvarchar](400) NULL,
+	[Body] [nvarchar](max) NULL,
+	[Summary] [nvarchar](2000) NULL,
+	[CreatedOnDate] [datetime] NOT NULL
+)
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Queue
+		WITH NOCHECK
+ADD CONSTRAINT PK_{objectQualifier}Subscriptions_Queue PRIMARY KEY CLUSTERED ( [QueueId] )
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Queue
+ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Queue_{objectQualifier}Portals FOREIGN KEY ( [PortalId] ) REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) ON DELETE CASCADE
+		ON UPDATE CASCADE
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Queue
+ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Queue_{objectQualifier}Subscriptions_Type FOREIGN KEY ( [SubscriptionTypeId] ) REFERENCES {databaseOwner}{objectQualifier}Subscriptions_Type ( [SubscriptionTypeId] ) ON DELETE CASCADE
+		ON UPDATE CASCADE
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}Subscriptions_Subscriber]
+(
+	[SubscriberId] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [int] NOT NULL,
+	[PortalId] [int] NOT NULL,
+	[SubscriptionTypeId] [int] NOT NULL,
+	[Frequency] [int] NOT NULL,
+	[ContentItemId] [int] NULL,
+	[ObjectKey] [nvarchar](255) NULL,
+	[CreatedOnDate] [datetime] NOT NULL,
+	[LastSentOnDate] [datetime] NULL
+)
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+		WITH NOCHECK
+ADD CONSTRAINT PK_{objectQualifier}Subscriptions_Subscriber PRIMARY KEY CLUSTERED ( [SubscriberId] )
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Portals FOREIGN KEY ( [PortalId] ) REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) ON DELETE CASCADE
+		ON UPDATE CASCADE
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Subscriptions_Type FOREIGN KEY ( [SubscriptionTypeId] ) REFERENCES {databaseOwner}{objectQualifier}Subscriptions_Type ( [SubscriptionTypeId] ) ON DELETE CASCADE
+		ON UPDATE CASCADE
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Users FOREIGN KEY ( [UserId] ) REFERENCES {databaseOwner}{objectQualifier}Users ( [UserID] ) ON DELETE CASCADE
+		ON UPDATE CASCADE
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_Type_Add]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_Type_Add]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_Type_Add]
+	@SubscriptionName NVARCHAR(50) ,
+	@FriendlyName NVARCHAR(50) ,
+	@DesktopModuleId INT
+AS 
+	INSERT  {databaseOwner}{objectQualifier}Subscriptions_Type
+			( SubscriptionName ,
+			  FriendlyName ,
+			  DesktopModuleId
+			)
+	VALUES  ( @SubscriptionName ,
+			  @FriendlyName ,
+			  @DesktopModuleId 
+			)
+	SELECT  SCOPE_IDENTITY()
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_Type_GetAll]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_Type_GetAll]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_Type_GetAll]
+AS 
+	SELECT  *
+	FROM    {databaseOwner}{objectQualifier}Subscriptions_Type
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_Type_Delete]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_Type_Delete]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_Type_Delete]
+	@SubscriptionTypeId int
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}Subscriptions_Type] WHERE [SubscriptionTypeId] = @SubscriptionTypeId
+
+	IF @@ROWCOUNT <> 0
+		SELECT 0 AS [ResultStatus]
+	ELSE
+		SELECT -1 AS [ResultStatus]
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_GetSubscription]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetSubscription]
+	@SubscriberId int
+AS 
+BEGIN
+	SELECT
+	   [SubscriberId],
+	   [UserId],
+	   [PortalId],
+	   [SubscriptionTypeId],
+	   [Frequency],
+	   [ContentItemId],
+	   [ObjectKey],
+	   [CreatedOnDate],
+	   [LastSentOnDate]
+	FROM {databaseOwner}[{objectQualifier}Subscriptions_Subscriber] WHERE [SubscriberId] = @SubscriberId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_RemoveSubscription]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_RemoveSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_RemoveSubscription]
+	@SubscriberId int
+AS 
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}Subscriptions_Subscriber] WHERE [SubscriberId] = @SubscriberId
+
+	IF @@ROWCOUNT <> 0
+		SELECT 0 AS [ResultStatus]
+	ELSE
+		SELECT -1 AS [ResultStatus]
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_AddSubscription]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_AddSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_AddSubscription]
+	@SubscriberId int,
+	@UserId int,
+	@PortalId int,
+	@SubscriptionTypeId int,
+	@Frequency int,
+	@ContentItemId int,
+	@ObjectKey nvarchar(255)
+AS
+BEGIN
+	IF @SubscriberId IS NULL OR @SubscriberId < 0
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Subscriptions_Subscriber]
+			   ([UserId],
+				[PortalId],
+				[SubscriptionTypeId],
+				[Frequency],
+				[ContentItemId],
+				[ObjectKey],
+				[CreatedOnDate],
+				[LastSentOnDate])
+			VALUES
+			   (@UserId,
+				@PortalId,
+				@SubscriptionTypeId,
+				@Frequency,
+				@ContentItemId,
+				@ObjectKey,
+				getutcdate(),
+				getutcdate())
+
+		SELECT SCOPE_IDENTITY() AS [SubscriberId]
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Subscriptions_Subscriber]
+			SET
+				[UserId] = @UserId,
+				[PortalId] = @PortalId,
+				[SubscriptionTypeId] = @SubscriptionTypeId,
+				[Frequency] = @Frequency,
+				[ContentItemId] = @ContentItemId,
+				[ObjectKey] = @ObjectKey
+			WHERE [SubscriberId] = @SubscriberId
+
+		SELECT @SubscriberId AS [SubscriberId]
+	END
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_GetSubscribers]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetSubscribers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetSubscribers]
+	@PortalId int,
+	@Frequency int,
+	@QueueId int
+AS
+BEGIN
+	-- Look up the properties of the QueueItem.
+	DECLARE @SubscriptionTypeId INT
+	DECLARE @ContentItemId INT
+	DECLARE @ObjectKey NVARCHAR(255)
+
+	SELECT
+		@ContentItemId = ContentItemId,
+		@ObjectKey = ObjectKey,
+		@SubscriptionTypeId = SubscriptionTypeId
+	FROM
+		{databaseOwner}[{objectQualifier}Subscriptions_Queue]
+	WHERE
+		PortalId = @PortalId AND QueueId = @QueueId
+
+	SELECT
+	   [SubscriberId],
+	   [UserId],
+	   [PortalId],
+	   [SubscriptionTypeId],
+	   [Frequency],
+	   [ContentItemId],
+	   [ObjectKey],
+	   [CreatedOnDate],
+	   [LastSentOnDate]
+	FROM
+		{databaseOwner}[{objectQualifier}Subscriptions_Subscriber]
+	WHERE
+		[Frequency] = @Frequency
+		AND
+		{databaseOwner}[{objectQualifier}Subscriptions_IsSubscriptionMatch](@PortalId, [SubscriberId], @SubscriptionTypeId, @ContentItemId, @ObjectKey) = 1
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_GetAllSubscribers]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetAllSubscribers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetAllSubscribers]
+	@PortalId int
+AS
+BEGIN
+	SELECT
+	   [SubscriberId],
+	   [UserId],
+	   [PortalId],
+	   [SubscriptionTypeId],
+	   [Frequency],
+	   [ContentItemId],
+	   [ObjectKey],
+	   [CreatedOnDate],
+	   [LastSentOnDate]
+	FROM {databaseOwner}[{objectQualifier}Subscriptions_Subscriber]
+	WHERE [PortalId] = @PortalId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_GetLastTaskRun]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetLastTaskRun]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetLastTaskRun]
+	@PortalId int
+AS
+BEGIN
+	SELECT MAX([LastSentOnDate]) FROM {databaseOwner}[{objectQualifier}Subscriptions_Subscriber] WHERE [PortalId] = @PortalId
+END
+GO
+
+--
+-- Scheduled notification processing task
+--
+
+DECLARE @SubscriptionSchedulerType VARCHAR(1024)
+SET @SubscriptionSchedulerType = 'DotNetNuke.Subscriptions.Components.Tasks.SubscriptionTask, DotNetNuke.Subscriptions'
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Schedule] WHERE [TypeFullName] = @SubscriptionSchedulerType)
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}Schedule] WHERE [TypeFullName] = @SubscriptionSchedulerType
+
+	INSERT INTO {databaseOwner}[{objectQualifier}Schedule]
+		([TypeFullName],
+		 [TimeLapse],
+		 [TimeLapseMeasurement],
+		 [RetryTimeLapse],
+		 [RetryTimeLapseMeasurement],
+		 [RetainHistoryNum],
+		 [AttachToEvent],
+		 [CatchUpEnabled],
+		 [Enabled],
+		 [ObjectDependencies],
+		 [Servers],
+		 [FriendlyName])
+	VALUES
+		('DotNetNuke.Subscriptions.Components.Tasks.SubscriptionTask, DotNetNuke.Subscriptions',
+		 1, 'm', -1, 'm', 10, '', 0, 1, '', null, 'Subscriptions')
+END
+GO
+
+--
+-- Core Messaging Notification Type
+--
+
+DECLARE @NotificationTypeName VARCHAR(255)
+DECLARE @NotificationTypeDescription NVARCHAR(1024)
+
+SET @NotificationTypeName = 'DigestSubscription'
+SET @NotificationTypeDescription = 'Periodic notifications for Subscriptions to particular content'
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE [Name] = @NotificationTypeName)
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]
+		  ([Name],
+		   [Description],
+		   [TTL],
+		   [DesktopModuleID],
+		   [CreatedByUserID],
+		   [CreatedOnDate],
+		   [LastModifiedByUserID],
+		   [LastModifiedOnDate])
+	  VALUES
+		  (@NotificationTypeName,
+		   @NotificationTypeDescription,
+		   NULL,
+		   NULL,
+		   -1,
+		   getdate(),
+		   -1,
+		   getdate())
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_GetUserSubscriptions]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetUserSubscriptions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetUserSubscriptions]
+	@UserId INT ,
+	@PortalId INT
+AS 
+	BEGIN
+		SELECT  *
+		FROM    {databaseOwner}[{objectQualifier}Subscriptions_Subscriber]
+		WHERE   UserId = @UserId
+				AND PortalId = @PortalId
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_GetNextMessagesForDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetNextMessagesForDispatch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_GetNextMessagesForDispatch]
+	@SchedulerInstance UNIQUEIDENTIFIER ,
+	@BatchSize INT
+AS 
+	BEGIN
+		DECLARE @NotificationSubId INT = 1
+		DECLARE @MessageSubId INT = 2
+		
+		SET @NotificationSubId = ( SELECT   SubscriptionTypeId
+								   FROM     {databaseOwner}{objectQualifier}Subscriptions_Type
+								   WHERE    SubscriptionName = 'Notifications'
+								 )
+		SET @MessageSubId = ( SELECT    SubscriptionTypeId
+							  FROM      {databaseOwner}{objectQualifier}Subscriptions_Type
+							  WHERE     SubscriptionName = 'Messages'
+							);
+		
+		WITH    CTE
+				  AS ( SELECT TOP ( @BatchSize )
+								CMR.*
+					   FROM     {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients CMR
+								INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_Messages CM ON CMR.MessageID = CM.MessageID
+								LEFT JOIN {databaseOwner}{objectQualifier}Subscriptions_Subscriber SS ON CMR.UserID = SS.UserId
+					   WHERE    EmailSent = 0
+								AND SendToast = 0
+								AND [Read] = 0
+								AND Archived = 0
+								AND ( ( ( SubscriptionTypeId IS NULL
+										  AND NotificationTypeID > 0
+										)
+										OR ( SubscriptionTypeId = @NotificationSubId
+											 AND Frequency = 0
+										   )
+									  )
+									  OR ( SubscriptionTypeId = @MessageSubId
+										   AND Frequency = 0
+										 )
+									)
+								AND ( EmailSchedulerInstance IS NULL
+									  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+									)
+					   ORDER BY CMR.CreatedOnDate DESC ,
+								UserID
+					 )
+			UPDATE  CTE
+			SET     EmailSchedulerInstance = @SchedulerInstance
+	
+		SELECT TOP ( @BatchSize )
+				CMR.*
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients CMR
+				INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_Messages CM ON CMR.MessageID = CM.MessageID
+				LEFT JOIN {databaseOwner}{objectQualifier}Subscriptions_Subscriber SS ON CMR.UserID = SS.UserId
+		WHERE   EmailSent = 0
+				AND SendToast = 0
+				AND [Read] = 0
+				AND Archived = 0
+				AND ( ( ( SubscriptionTypeId IS NULL
+						  AND NotificationTypeID > 0
+						)
+						OR ( SubscriptionTypeId = @NotificationSubId
+							 AND Frequency = 0
+						   )
+					  )
+					  OR ( SubscriptionTypeId = @MessageSubId
+						   AND Frequency = 0
+						 )
+					)
+				AND EmailSchedulerInstance = @SchedulerInstance
+		ORDER BY CMR.CreatedOnDate DESC ,
+				UserID
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_UpdateScheduleItemSetting]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_UpdateScheduleItemSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Subscriptions_UpdateScheduleItemSetting]
+	@ScheduleID INT ,
+	@Key NVARCHAR(50) ,
+	@Value NVARCHAR(256)
+AS 
+	UPDATE  {databaseOwner}{objectQualifier}ScheduleItemSettings
+	SET     SettingValue = @Value
+	WHERE   ScheduleID = @ScheduleID
+			AND SettingName = @Key
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}Schedule]
+	SET Enabled = 0 
+	WHERE TypeFullName = 'DotNetNuke.Services.Social.Messaging.Scheduler.CoreMessagingScheduler, DotNetNuke'
+GO
+
+--- Add Default subscription types
+INSERT {databaseOwner}[{objectQualifier}Subscriptions_Type]
+	(SubscriptionName, FriendlyName)
+	VALUES
+	('Notifications', 'Notifications')
+GO
+ 
+ INSERT {databaseOwner}[{objectQualifier}Subscriptions_Type]
+	(SubscriptionName, FriendlyName)
+	VALUES
+	('Messages', 'Messages')
+GO

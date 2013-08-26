@@ -1,0 +1,66 @@
+﻿
+IF EXISTS (SELECT * FROM {databaseOwner}SYSOBJECTS WHERE id = object_id(N'{databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserSubs]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserSubs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserSubs]
+	@UserId INT ,
+	@PortalId INT ,
+	@PageIndex INT ,
+	@PageSize INT
+AS 
+	BEGIN
+		SELECT  SubscriberId ,
+				UserId ,
+				PortalId ,
+				S.SubscriptionTypeId ,
+				Frequency ,
+				S.ContentItemId ,
+				ObjectKey ,
+				T.FriendlyName ,
+				CIMD.MetaDataValue AS ContentTitle ,
+				( SELECT    COUNT(*)
+				  FROM      {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+				  WHERE     UserId = @UserId
+							AND PortalId = @PortalId
+							AND ContentItemId > 0
+				) AS TotalRecords
+		FROM    {databaseOwner}{objectQualifier}Subscriptions_Subscriber S
+				INNER JOIN {databaseOwner}[{objectQualifier}Subscriptions_Type] T ON S.SubscriptionTypeId = T.SubscriptionTypeId
+				INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON S.ContentItemId = CI.ContentItemID
+				LEFT OUTER JOIN {databaseOwner}[{objectQualifier}ContentItems_MetaData] CIMD ON CIMD.ContentItemID = S.ContentItemId
+															  AND CIMD.MetaDataID = ( SELECT
+															  MetaDataID
+															  FROM
+															  {databaseOwner}[{objectQualifier}MetaData]
+															  WHERE
+															  MetaDataName = 'Title'
+															  )
+		WHERE   UserId = @UserId
+				AND PortalId = @PortalId
+				AND S.ContentItemId > 0
+	END
+GO
+
+IF EXISTS (SELECT * FROM {databaseOwner}SYSOBJECTS WHERE id = object_id(N'{databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserInboxPref]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserInboxPref]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserInboxPref]
+    @UserId INT ,
+    @PortalId INT
+AS 
+    BEGIN
+        SELECT  S.* ,
+				T.FriendlyName ,
+				T.SubscriptionName
+        FROM    {databaseOwner}{objectQualifier}Subscriptions_Subscriber S
+                INNER JOIN {databaseOwner}{objectQualifier}Subscriptions_Type T ON S.SubscriptionTypeId = T.SubscriptionTypeId
+        WHERE   UserId = @UserId
+                AND PortalId = @PortalId
+                AND S.ContentItemId < 1
+                AND ( T.SubscriptionName = 'Notifications'
+                      OR T.SubscriptionName = 'Messages'
+                    )
+    END
+GO
