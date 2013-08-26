@@ -1562,7 +1562,6 @@
     <Compile Include="Common\Utilities\FileSystemPermissionVerifier.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\" />
     <Folder Include="Properties\" />
     <Folder Include="Services\Log\Logger\" />
   </ItemGroup>
