@@ -97,6 +97,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int LanguageIdItIt = 3;
         private const int LanguageIdEsEs = 4;
         private const int StandardAuthorId = 55;
+        private const int StandardGroupId = 1;
         private const string StandardAuthorDisplayName = "Standard User";
         private const int StandardTabId = 99;
         private const string StandardPermission = "!Translator (en-US);![4];[5];[6];Administrators;ContentEditorRole;";
@@ -1115,6 +1116,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Description = "Description",
                 Body = "Body",
                 AuthorUserId = StandardAuthorId,
+                GroupId = StandardGroupId,
                 Permissions = StandardPermission,
                 QueryString = StandardQueryString,
                 Tags = tags,
@@ -1177,6 +1179,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(null, search.Results[0].Description);
             Assert.AreEqual(null, search.Results[0].Body);
             Assert.AreEqual(0, search.Results[0].AuthorUserId);
+            Assert.AreEqual(0, search.Results[0].GroupId);
             Assert.AreEqual(modifiedDateTime.ToString(Constants.DateTimeFormat), search.Results[0].ModifiedTimeUtc.ToString(Constants.DateTimeFormat));
             Assert.AreEqual(null, search.Results[0].Permissions);
             Assert.AreEqual(null, search.Results[0].QueryString);

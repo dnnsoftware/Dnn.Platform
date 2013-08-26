@@ -59,6 +59,12 @@ namespace DotNetNuke.Services.Search.Entities
         public string Description { get; set; }
 
         /// <summary>
+        /// groupid for filtering searches in a multi-social group environment
+        /// </summary>
+        public int GroupId { get; set; }
+
+
+        /// <summary>
         ///Content's Body
         /// </summary>
         /// <remarks>

@@ -66,6 +66,11 @@ namespace DotNetNuke.Services.Search.Entities
         public int ModuleId { get; set; }
 
         /// <summary>
+        /// Module Id to restrict Search. Value > 0 is used only.
+        /// </summary>
+        public int GroupId { get; set; }
+
+        /// <summary>
         /// Tab Id to restrict Search. Value > 0 is used only.
         /// </summary>
         public int TabId { get; set; }
