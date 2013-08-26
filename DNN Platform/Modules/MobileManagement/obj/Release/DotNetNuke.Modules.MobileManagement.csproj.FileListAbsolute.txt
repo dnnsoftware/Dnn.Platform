@@ -1,6 +1,0 @@
-C:\Git\Dnn.Platform\DNN Platform\Modules\MobileManagement\bin\DotNetNuke.Modules.MobileManagement.XML
-C:\Git\Dnn.Platform\DNN Platform\Modules\MobileManagement\bin\DotNetNuke.Modules.MobileManagement.dll
-C:\Git\Dnn.Platform\DNN Platform\Modules\MobileManagement\bin\DotNetNuke.Modules.MobileManagement.pdb
-C:\Git\Dnn.Platform\DNN Platform\Modules\MobileManagement\obj\Release\DotNetNuke.Modules.MobileManagement.csprojResolveAssemblyReference.cache
-C:\Git\Dnn.Platform\DNN Platform\Modules\MobileManagement\obj\Release\DotNetNuke.Modules.MobileManagement.dll
-C:\Git\Dnn.Platform\DNN Platform\Modules\MobileManagement\obj\Release\DotNetNuke.Modules.MobileManagement.pdb

@@ -1,6 +1,0 @@
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.LiveConnect\bin\DotNetNuke.Authentication.LiveConnect.XML
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.LiveConnect\bin\DotNetNuke.Authentication.LiveConnect.dll
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.LiveConnect\bin\DotNetNuke.Authentication.LiveConnect.pdb
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.LiveConnect\obj\Release\DotNetNuke.Authentication.LiveConnect.csprojResolveAssemblyReference.cache
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.LiveConnect\obj\Release\DotNetNuke.Authentication.LiveConnect.dll
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.LiveConnect\obj\Release\DotNetNuke.Authentication.LiveConnect.pdb
