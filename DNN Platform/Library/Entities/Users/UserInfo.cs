@@ -525,7 +525,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------        
         public DateTime LocalTime()
         {
-            return LocalTime(SystemDateTime.GetCurrentTimeUtc());
+            return LocalTime(DateUtils.GetDatabaseTime());
         }
 
         /// -----------------------------------------------------------------------------

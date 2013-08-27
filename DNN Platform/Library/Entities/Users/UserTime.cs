@@ -23,6 +23,7 @@
 using System;
 using System.Web;
 
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.SystemDateTime;
 using DotNetNuke.Entities.Portals;
 
@@ -42,12 +43,12 @@ namespace DotNetNuke.Entities.Users
                 PortalSettings objSettings = PortalController.GetCurrentPortalSettings();
                 if (!context.Request.IsAuthenticated)
                 {
-                    return TimeZoneInfo.ConvertTime(SystemDateTime.GetCurrentTimeUtc(), TimeZoneInfo.Utc, objSettings.TimeZone);
+                    return TimeZoneInfo.ConvertTime(DateUtils.GetDatabaseTime(), TimeZoneInfo.Utc, objSettings.TimeZone);
                 }
                 else
                 {
                     UserInfo objUserInfo = UserController.GetCurrentUserInfo();
-                    return TimeZoneInfo.ConvertTime(SystemDateTime.GetCurrentTimeUtc(), TimeZoneInfo.Utc, objUserInfo.Profile.PreferredTimeZone);
+                    return TimeZoneInfo.ConvertTime(DateUtils.GetDatabaseTime(), TimeZoneInfo.Utc, objUserInfo.Profile.PreferredTimeZone);
                 }
             }
         }
@@ -96,11 +97,11 @@ namespace DotNetNuke.Entities.Users
             {
 				//Obtain PortalSettings from Current Context             
                 PortalSettings objSettings = PortalController.GetCurrentPortalSettings();
-                return TimeZoneInfo.ConvertTime(SystemDateTime.GetCurrentTimeUtc(), TimeZoneInfo.Utc, objSettings.TimeZone);
+                return TimeZoneInfo.ConvertTime(DateUtils.GetDatabaseTime(), TimeZoneInfo.Utc, objSettings.TimeZone);
             }
             else
             {
-                return TimeZoneInfo.ConvertTime(SystemDateTime.GetCurrentTimeUtc(), TimeZoneInfo.Utc, userInfo.Profile.PreferredTimeZone);
+                return TimeZoneInfo.ConvertTime(DateUtils.GetDatabaseTime(), TimeZoneInfo.Utc, userInfo.Profile.PreferredTimeZone);
             }
         }
 
