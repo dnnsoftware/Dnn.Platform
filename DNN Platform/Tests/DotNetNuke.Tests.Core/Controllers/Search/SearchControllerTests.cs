@@ -70,6 +70,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int IdeasModuleId = 301;
         private const int BlogsModuleId = 302;
         private const int AnswersModuleId = 303;
+        private const int RoleId731 = 731;
+        private const int RoleId532 = 532;
+        private const int RoleId0 = 0;
         private const string Tag0 = "tag0";
         private const string Tag1 = "tag1";
         private const string Tag2 = "tag2";
@@ -97,7 +100,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int LanguageIdItIt = 3;
         private const int LanguageIdEsEs = 4;
         private const int StandardAuthorId = 55;
-        private const int StandardGroupId = 66;
+        private const int StandardRoleId = 66;
         private const string StandardAuthorDisplayName = "Standard User";
         private const int StandardTabId = 99;
         private const string StandardPermission = "!Translator (en-US);![4];[5];[6];Administrators;ContentEditorRole;";
@@ -1116,7 +1119,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Description = "Description",
                 Body = "Body",
                 AuthorUserId = StandardAuthorId,
-                GroupId = StandardGroupId,
+                RoleId = StandardRoleId,
                 Permissions = StandardPermission,
                 QueryString = StandardQueryString,
                 Tags = tags,
@@ -1138,7 +1141,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual("Description", search.Results[0].Description);
             Assert.AreEqual("Body", search.Results[0].Body);
             Assert.AreEqual(StandardAuthorId, search.Results[0].AuthorUserId);
-            Assert.AreEqual(StandardGroupId, search.Results[0].GroupId);
+            Assert.AreEqual(StandardRoleId, search.Results[0].RoleId);
             Assert.AreEqual(modifiedDateTime.ToString(Constants.DateTimeFormat), search.Results[0].ModifiedTimeUtc.ToString(Constants.DateTimeFormat));
             Assert.AreEqual(StandardPermission, search.Results[0].Permissions);
             Assert.AreEqual(StandardQueryString, search.Results[0].QueryString);
@@ -1180,7 +1183,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(null, search.Results[0].Description);
             Assert.AreEqual(null, search.Results[0].Body);
             Assert.AreEqual(0, search.Results[0].AuthorUserId);
-            Assert.AreEqual(0, search.Results[0].GroupId);
+            Assert.AreEqual(0, search.Results[0].RoleId);
             Assert.AreEqual(modifiedDateTime.ToString(Constants.DateTimeFormat), search.Results[0].ModifiedTimeUtc.ToString(Constants.DateTimeFormat));
             Assert.AreEqual(null, search.Results[0].Permissions);
             Assert.AreEqual(null, search.Results[0].QueryString);
@@ -1964,6 +1967,69 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(0, result.Results.Count);
         }
 
+
+        #endregion
+
+        #region group id test
+
+        [Test]
+        public void SearchController_Search_For_GroupId_Zero_Ignores_GroupId()
+        {
+            //Arrange
+            const string keyword = "awesome";
+
+            var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId0 };
+            _internalSearchController.AddSearchDocument(doc1);
+            _internalSearchController.AddSearchDocument(doc2);
+
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId }, RoleId = 0};
+
+            //Act
+            var result = _searchController.SiteSearch(query);
+            Assert.AreEqual(2, result.TotalHits);
+        }
+
+        [Test]
+        public void SearchController_Search_For_GroupId_Returns_Records_With_GroupIds_Only()
+        {
+            //Arrange
+            const string keyword = "awesome";
+
+            var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId532 };
+            _internalSearchController.AddSearchDocument(doc1);
+            _internalSearchController.AddSearchDocument(doc2);
+
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId }, RoleId = RoleId731 };
+
+            //Act
+            var result = _searchController.SiteSearch(query);
+            Assert.AreEqual(1, result.TotalHits);
+            Assert.AreEqual(RoleId731, result.Results[0].RoleId);
+        }
+
+        [Test]
+        public void SearchController_Search_For_GroupId_Returns_Records_With_GroupIds_Only_Even_In_Multi_SearchTypeId()
+        {
+            //Arrange
+            const string keyword = "awesome";
+
+            var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId532 };
+            var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
+         
+            _internalSearchController.AddSearchDocument(doc1);
+            _internalSearchController.AddSearchDocument(doc2);
+            _internalSearchController.AddSearchDocument(doc3);
+
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId, ModuleSearchTypeId }, RoleId = RoleId731 };
+
+            //Act
+            var result = _searchController.SiteSearch(query);
+            Assert.AreEqual(1, result.TotalHits);
+            Assert.AreEqual(RoleId731, result.Results[0].RoleId);
+        }
 
         #endregion
 

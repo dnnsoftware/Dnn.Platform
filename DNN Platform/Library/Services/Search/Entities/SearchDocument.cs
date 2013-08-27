@@ -59,10 +59,10 @@ namespace DotNetNuke.Services.Search.Entities
         public string Description { get; set; }
 
         /// <summary>
-        /// groupid for filtering searches in a multi-social group environment
+        /// RoleId (GroupId) for additional filtering [Optional]
         /// </summary>
-        public int GroupId { get; set; }
-
+        /// <remarks> This property can be used while under Social Groups.</remarks>
+        public int RoleId { get; set; }
 
         /// <summary>
         ///Content's Body

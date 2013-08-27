@@ -131,6 +131,9 @@ namespace DotNetNuke.Services.Search.Controllers
                 query.Add(NumericRangeQuery.NewLongRange(Constants.ModifiedTimeTag, long.Parse(searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat)), long.Parse(searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat)), true, true), Occur.MUST);
             }
 
+            if(searchQuery.RoleId > 0)
+                query.Add(NumericRangeQuery.NewIntRange(Constants.RoleIdTag, searchQuery.RoleId, searchQuery.RoleId, true, true), Occur.MUST);  
+
             foreach (var tag in searchQuery.Tags)
             {
                 query.Add(new TermQuery(new Term(Constants.Tag, tag.ToLower())), Occur.MUST);
@@ -288,8 +291,8 @@ namespace DotNetNuke.Services.Search.Controllers
                     case Constants.AuthorIdTag:
                         if (int.TryParse(field.StringValue, out intField)) result.AuthorUserId = intField;
                         break;
-                    case Constants.GroupIdTag:
-                        if (int.TryParse(field.StringValue, out intField)) result.GroupId = intField;
+                    case Constants.RoleIdTag:
+                        if (int.TryParse(field.StringValue, out intField)) result.RoleId = intField;
                         break;
                     case Constants.AuthorNameTag:
                         result.AuthorName = field.StringValue;

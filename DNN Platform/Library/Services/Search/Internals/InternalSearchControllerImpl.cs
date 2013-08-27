@@ -436,7 +436,7 @@ namespace DotNetNuke.Services.Search.Internals
             AddIntField(doc, searchDocument.ModuleDefId, Constants.ModuleDefIdTag);
             AddIntField(doc, searchDocument.ModuleId, Constants.ModuleIdTag);
             AddIntField(doc, searchDocument.AuthorUserId, Constants.AuthorIdTag);
-            AddIntField(doc, searchDocument.GroupId, Constants.GroupIdTag);
+            AddIntField(doc, searchDocument.RoleId, Constants.RoleIdTag);
 
             if (searchDocument.AuthorUserId > 0)
             {
