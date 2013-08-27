@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.PreviewProfileManagement
 	[TestFixture]
 	public class ProfileManagerPresenterTests
 	{
-		#region "Private Properties"
+		#region Private Properties
 
 		private Mock<IProfileManagerView> _mockView;
 		private Mock<IPreviewProfileController> _mockController;
@@ -42,7 +42,7 @@ namespace DotNetNuke.Tests.PreviewProfileManagement
 
 		#endregion
 
-        #region "Set Up"
+        #region Set Up
 
         [SetUp]
 		public void Setup()
@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.PreviewProfileManagement
 
 		#endregion
 
-		#region "Test Methods"
+		#region Test Methods
 
 		[Test]
 		public void ProfileManagerPresenter_GetEditProfile()
@@ -101,7 +101,7 @@ namespace DotNetNuke.Tests.PreviewProfileManagement
 
 		#endregion
 
-		#region "Private Methods"
+		#region Private Methods
 
 		private IPreviewProfile GetProfileByIdCallback(int portalId, int id)
 		{
