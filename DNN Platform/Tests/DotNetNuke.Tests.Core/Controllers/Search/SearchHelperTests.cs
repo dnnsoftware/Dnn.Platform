@@ -22,6 +22,7 @@
 using System;
 using System.Linq;
 
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Services.Cache;
@@ -75,7 +76,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _dataProvider = MockComponentProvider.CreateDataProvider();
             SetupDataProvider();
             _searchHelper = new SearchHelperImpl();
-            
+            DataCache.ClearCache();
         }
 
         #endregion

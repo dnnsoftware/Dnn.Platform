@@ -84,6 +84,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [SetUp]
         public void SetUp()
         {
+
             ComponentFactory.Container = new SimpleContainer();
             _mockDataService = new Mock<IDataService>();
             _dataProvider = MockComponentProvider.CreateDataProvider();
@@ -107,6 +108,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             SetupUsers();
             SetupPortalSettingsWrapper();
             SetupCachingProvider();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            ComponentFactory.Container = null;
         }
 
         private void SetupDataProvider()
