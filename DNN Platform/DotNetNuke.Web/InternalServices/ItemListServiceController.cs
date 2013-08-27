@@ -62,7 +62,7 @@ namespace DotNetNuke.Web.InternalServices
             [DataMember(Name = "hasChildren")]
             public bool HasChildren { get; set; }
 
-            [DataMember(Name="selectable")]
+            [DataMember(Name = "selectable")]
             public bool Selectable { get; set; }
         }
 
@@ -366,12 +366,13 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            var pages = tabs.Select(tab => new ItemDto {
-                    Key = tab.TabID.ToString(CultureInfo.InvariantCulture), 
-                    Value = tab.LocalizedTabName, 
-                    HasChildren = tab.HasChildren,
-                    Selectable = true
-                });
+            var pages = tabs.Select(tab => new ItemDto
+            {
+                Key = tab.TabID.ToString(CultureInfo.InvariantCulture),
+                Value = tab.LocalizedTabName,
+                HasChildren = tab.HasChildren,
+                Selectable = true
+            });
 
             return ApplySort(pages, sortOrder);
         }
@@ -409,7 +410,7 @@ namespace DotNetNuke.Web.InternalServices
             if (portalId > -1)
             {
                 var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
-               
+
                 if (!includeHiddenTabs) allTabs = allTabs.Where(t => t.IsVisible).ToList();
                 tabs = allTabs.Where(tab => tab.PortalID == portalId && !tab.DisableLink && searchFunc(tab))
                     .OrderBy(tab => tab.TabOrder)
@@ -430,12 +431,12 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var pages = tabs.Select(tab => new ItemDto
-                {
-                    Key = tab.TabID.ToString(CultureInfo.InvariantCulture),
-                    Value = tab.LocalizedTabName,
-                    HasChildren = false,
-                    Selectable = true
-                });
+            {
+                Key = tab.TabID.ToString(CultureInfo.InvariantCulture),
+                Value = tab.LocalizedTabName,
+                HasChildren = false,
+                Selectable = true
+            });
 
             tree.Children = ApplySort(pages, sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             return tree;
@@ -674,13 +675,16 @@ namespace DotNetNuke.Web.InternalServices
                 return tree;
             }
 
-            var selfTree = new NTree<ItemDto> { Data = new ItemDto
+            var selfTree = new NTree<ItemDto>
+            {
+                Data = new ItemDto
                 {
-                    Key = page.TabID.ToString(CultureInfo.InvariantCulture), 
-                    Value = page.LocalizedTabName, 
+                    Key = page.TabID.ToString(CultureInfo.InvariantCulture),
+                    Value = page.LocalizedTabName,
                     HasChildren = page.HasChildren,
                     Selectable = true
-                } };
+                }
+            };
 
             var parentId = page.ParentId;
             var parentTab = parentId > 0 ? pages.SingleOrDefault(t => t.TabID == parentId) : null;
@@ -709,8 +713,8 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     Data = new ItemDto
                     {
-                        Key = parentId.ToString(CultureInfo.InvariantCulture), 
-                        Value = parentTab.LocalizedTabName, 
+                        Key = parentId.ToString(CultureInfo.InvariantCulture),
+                        Value = parentTab.LocalizedTabName,
                         HasChildren = true,
                         Selectable = true
                     },
@@ -769,12 +773,12 @@ namespace DotNetNuke.Web.InternalServices
         {
             var mygroup = GetMyPortalGroup();
             var portals = mygroup.Select(p => new ItemDto
-                {
-                    Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
-                    Value = p.PortalName,
-                    HasChildren = true,
-                    Selectable = false
-                }).ToList();
+            {
+                Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
+                Value = p.PortalName,
+                HasChildren = true,
+                Selectable = false
+            }).ToList();
             return ApplySort(portals, sortOrder);
         }
 
@@ -871,12 +875,12 @@ namespace DotNetNuke.Web.InternalServices
             var childrenFolders = GetFolderDescendants(parentFolder, searchText, permission);
 
             var folders = childrenFolders.Select(folder => new ItemDto
-                {
-                    Key = folder.FolderID.ToString(CultureInfo.InvariantCulture), 
-                    Value = folder.FolderName, 
-                    HasChildren = HasChildren(folder, permission),
-                    Selectable = true
-                });
+            {
+                Key = folder.FolderID.ToString(CultureInfo.InvariantCulture),
+                Value = folder.FolderName,
+                HasChildren = HasChildren(folder, permission),
+                Selectable = true
+            });
 
             return ApplySort(folders, sortOrder);
         }
@@ -899,12 +903,12 @@ namespace DotNetNuke.Web.InternalServices
 
             var allFolders = GetPortalFolders(portalId, searchText, permission);
             var folders = allFolders.Select(f => new ItemDto
-                {
-                    Key = f.FolderID.ToString(CultureInfo.InvariantCulture), 
-                    Value = f.FolderName, 
-                    HasChildren = false,
-                    Selectable = true
-                });
+            {
+                Key = f.FolderID.ToString(CultureInfo.InvariantCulture),
+                Value = f.FolderName,
+                HasChildren = false,
+                Selectable = true
+            });
             tree.Children = ApplySort(folders, sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             return tree;
         }
@@ -935,13 +939,16 @@ namespace DotNetNuke.Web.InternalServices
                 HasPermission(folder, permission.ToUpper());
             if (!hasPermission) return new NTree<ItemDto>();
 
-            var selfTree = new NTree<ItemDto> { Data = new ItemDto
+            var selfTree = new NTree<ItemDto>
+            {
+                Data = new ItemDto
                 {
-                    Key = folder.FolderID.ToString(CultureInfo.InvariantCulture), 
-                    Value = folder.FolderName, 
+                    Key = folder.FolderID.ToString(CultureInfo.InvariantCulture),
+                    Value = folder.FolderName,
                     HasChildren = HasChildren(folder, permission),
                     Selectable = true
-                } };
+                }
+            };
             var parentId = folder.ParentID;
             var parentFolder = parentId > 0 ? FolderManager.Instance.GetFolder(parentId) : null;
 
@@ -950,12 +957,12 @@ namespace DotNetNuke.Web.InternalServices
                 // load all sibling
                 var siblingFolders = GetFolderDescendants(parentFolder, string.Empty, permission)
                     .Select(folderInfo => new ItemDto
-                        {
-                            Key = folderInfo.FolderID.ToString(CultureInfo.InvariantCulture), 
-                            Value = folderInfo.FolderName, 
-                            HasChildren = HasChildren(folderInfo, permission),
-                            Selectable = true
-                        }).ToList();
+                    {
+                        Key = folderInfo.FolderID.ToString(CultureInfo.InvariantCulture),
+                        Value = folderInfo.FolderName,
+                        HasChildren = HasChildren(folderInfo, permission),
+                        Selectable = true
+                    }).ToList();
                 siblingFolders = ApplySort(siblingFolders, sortOrder).ToList();
 
                 var siblingFoldersTree = siblingFolders.Select(f => new NTree<ItemDto> { Data = f }).ToList();
@@ -973,13 +980,16 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-                selfTree = new NTree<ItemDto> { Data = new ItemDto
+                selfTree = new NTree<ItemDto>
+                {
+                    Data = new ItemDto
                     {
                         Key = parentId.ToString(CultureInfo.InvariantCulture),
                         Value = parentFolder.FolderName,
                         HasChildren = true,
                         Selectable = true
-                    }, Children = siblingFoldersTree
+                    },
+                    Children = siblingFoldersTree
                 };
 
                 parentId = parentFolder.ParentID;
@@ -1082,7 +1092,7 @@ namespace DotNetNuke.Web.InternalServices
                                where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
                                select portals.ToArray()).FirstOrDefault();
             return mygroup;
-        } 
+        }
 
         private bool IsPortalIdValid(int portalId)
         {

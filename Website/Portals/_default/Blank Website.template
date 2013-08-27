@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <portal version="5.0">
   <description>[PortalDescription.Text]</description>
   <settings sku="EE,PE,CE">
@@ -10,7 +10,7 @@
     <skinsrc>[G]Skins/Gravity/2-Col.ascx</skinsrc>
     <skinsrcadmin>[G]Skins/Gravity/2-Col.ascx</skinsrcadmin>
     <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
-    <containersrcadmin>[G]Containers/Gravity/Title_h2.ascx</containersrcadmin>   
+    <containersrcadmin>[G]Containers/Gravity/Title_h2.ascx</containersrcadmin>
     <enableskinwidgets>True</enableskinwidgets>
     <timezone>Pacific Standard Time</timezone>
   </settings>
@@ -329,17 +329,17 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-	<portalDesktopModule sku="EE,PE,CE">
-		<friendlyname>Account Registration</friendlyname>
-		<portalDesktopModulePermissions>
-			<portalDesktopModulePermission>
-				<permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-				<permissionkey>DEPLOY</permissionkey>
-				<allowaccess>true</allowaccess>
-				<rolename>Administrators</rolename>
-			</portalDesktopModulePermission>
-		</portalDesktopModulePermissions>
-	</portalDesktopModule>
+    <portalDesktopModule sku="EE,PE,CE">
+      <friendlyname>Account Registration</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
     <portalDesktopModule sku="EE,PE,CE">
       <friendlyname>Feed Explorer</friendlyname>
       <portalDesktopModulePermissions>
@@ -624,13 +624,16 @@
     <!-- Starter Pages -->
     <tab sku="CE,PE,EE">
       <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
-      <description></description>
+      <description>
+      </description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
       <visible>false</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -663,29 +666,35 @@
       <tabsettings>
         <tabsetting>
           <settingname>IncludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheDuration</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>ExcludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>MaxVaryByCount</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheProvider</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
-		<tabsetting>
+        <tabsetting>
           <settingname>CustomStylesheet</settingname>
           <settingvalue>GettingStarted.css</settingvalue>
         </tabsetting>
@@ -699,8 +708,10 @@
               <title>[Tab.GettingStarted.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>1200</cachetime>
@@ -725,8 +736,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <content type="DNNHTML" version="06.02.00">
-                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[
+              <content type="DNNHTML" version="06.02.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[
 &lt;p id=&quot;GettingStartedHeader&quot;&gt;
     [Tab.GettingStarted.Header.Module.Title.Text]
 &lt;/p&gt;
@@ -836,8 +846,7 @@
         &lt;li&gt; &lt;a href=&quot;javascript:GettingStartedNS.goTo(pageCurrentPortalAliasUrl);&quot; class=&quot;dnnSecondaryAction&quot; id=&quot;btnLetMeAtIn&quot;&gt;[Tab.GettingStarted.Actions.Module.Content.1.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
 &lt;/div&gt;                     
-]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>    
-              </content>
+]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
               <modulesettings>
                 <modulesetting>
                   <settingname>WorkflowID</settingname>
@@ -899,27 +908,33 @@
       <tabsettings>
         <tabsetting>
           <settingname>IncludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheDuration</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>ExcludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>MaxVaryByCount</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheProvider</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
       </tabsettings>
     </tab>
@@ -927,13 +942,16 @@
     <tab sku="EE,PE,CE">
       <containersrc />
       <cultureCode />
-      <description></description>
+      <description>
+      </description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
       <visible>false</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -1435,7 +1453,8 @@
     <tab sku="EE,PE,CE">
       <containersrc />
       <cultureCode />
-      <description></description>
+      <description>
+      </description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
@@ -1919,12 +1938,12 @@
                   <settingvalue>
                     &lt;div class="pBio"&gt;
                     &lt;h3 data-bind="text: AboutMeText"&gt;&lt;/h3&gt;
-					&lt;span data-bind=&quot;text: EmptyAboutMeText, visible: Biography().length==0&quot;&gt;&lt;/span&gt;
+					&lt;span data-bind="text: EmptyAboutMeText, visible: Biography().length==0"&gt;&lt;/span&gt;
                     &lt;p data-bind="html: Biography"&gt;&lt;/p&gt;
                     &lt;/div&gt;
                     &lt;div class="pAddress"&gt;
                     &lt;h3 data-bind="text: LocationText"&gt;&lt;/h3&gt;
-                    &lt;span data-bind=&quot;text: EmptyLocationText, visible: Street().length=0 &amp;&amp; Location().length==0 &amp;&amp; Country().length==0 &amp;&amp; PostalCode().length==0&quot;&gt;&lt;/span&gt;
+                    &lt;span data-bind="text: EmptyLocationText, visible: Street().length=0 &amp;&amp; Location().length==0 &amp;&amp; Country().length==0 &amp;&amp; PostalCode().length==0"&gt;&lt;/span&gt;
 					&lt;p&gt;&lt;span data-bind="text: Street()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Street().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
                     &lt;span data-bind="text: Location()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Location().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
                     &lt;span data-bind="text: Country()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Country().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
@@ -1933,7 +1952,7 @@
                     &lt;/div&gt;
                     &lt;div class="pContact"&gt;
                     &lt;h3 data-bind="text: GetInTouchText"&gt;&lt;/h3&gt;
-                    &lt;span data-bind=&quot;text: EmptyGetInTouchText, visible: Telephone().length==0 &amp;&amp; Email().length==0 &amp;&amp; Website().length==0 &amp;&amp; IM().length==0&quot;&gt;&lt;/span&gt;
+                    &lt;span data-bind="text: EmptyGetInTouchText, visible: Telephone().length==0 &amp;&amp; Email().length==0 &amp;&amp; Website().length==0 &amp;&amp; IM().length==0"&gt;&lt;/span&gt;
                     &lt;ul&gt;
                     &lt;li data-bind="visible: Telephone().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: TelephoneText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Telephone()"&gt;&lt;/span&gt;&lt;/li&gt;
                     &lt;li data-bind="visible: Email().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: EmailText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Email()"&gt;&lt;/span&gt;&lt;/li&gt;
@@ -1955,7 +1974,8 @@
     <tab sku="EE,PE,CE">
       <containersrc />
       <cultureCode />
-      <description></description>
+      <description>
+      </description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
@@ -2475,7 +2495,8 @@
     <tab sku="EE,PE,CE">
       <containersrc />
       <cultureCode />
-      <description></description>
+      <description>
+      </description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
@@ -2960,13 +2981,16 @@
     </tab>
     <tab sku="EE,PE,CE">
       <containersrc />
-      <description></description>
+      <description>
+      </description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
       <visible>false</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -2999,8 +3023,10 @@
               <title>Basic Features</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3041,7 +3067,7 @@
                   <settingname>ShowTooltip</settingname>
                   <settingvalue>True</settingvalue>
                 </modulesetting>
-				<modulesetting>
+                <modulesetting>
                   <settingname>OrderTabsByHierarchy</settingname>
                   <settingvalue>True</settingvalue>
                 </modulesetting>
@@ -3059,7 +3085,8 @@
                 </modulesetting>
                 <modulesetting>
                   <settingname>ConsoleWidth</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
               </modulesettings>
               <tabmodulesettings>
@@ -3082,8 +3109,10 @@
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3116,8 +3145,10 @@
               <title>[Tab.AdvancedSettings.ContentPane.Module.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3164,8 +3195,10 @@
       <iconfilelarge>~/Icons/Sigma/SiteSettings_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3199,8 +3232,10 @@
               <title>Site Settings</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3248,8 +3283,10 @@
       <iconfilelarge>~/Icons/Sigma/Tabs_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3283,8 +3320,10 @@
               <title>Page Management</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3332,8 +3371,10 @@
       <iconfilelarge>~/Icons/Sigma/Extensions_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3367,8 +3408,10 @@
               <title>Extensions</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3416,8 +3459,10 @@
       <iconfilelarge>~/Icons/Sigma/Languages_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3500,8 +3545,10 @@
       <iconfilelarge>~/Icons/Sigma/Skins_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3535,8 +3582,10 @@
               <title>Skin Editor</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3576,8 +3625,10 @@
               <title>Skin Designer</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3625,8 +3676,10 @@
       <iconfilelarge>~/Icons/Sigma/SecurityRoles_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3660,8 +3713,10 @@
               <title>Security Roles</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3709,8 +3764,10 @@
       <iconfilelarge>~/Icons/Sigma/Users_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3744,8 +3801,10 @@
               <title>User Accounts</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3793,8 +3852,10 @@
       <iconfilelarge>~/Icons/Sigma/Vendors_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3828,8 +3889,10 @@
               <title>Vendors</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3877,8 +3940,10 @@
       <iconfilelarge>~/Icons/Sigma/SiteLog_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3912,8 +3977,10 @@
               <title>Site Log</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -3961,8 +4028,10 @@
       <iconfilelarge>~/Icons/Sigma/BulkMail_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -3996,8 +4065,10 @@
               <title>Newsletters</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4045,8 +4116,10 @@
       <iconfilelarge>~/Icons/Sigma/Files_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4080,8 +4153,10 @@
               <title>File Management</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4119,7 +4194,7 @@
           </modules>
         </pane>
       </panes>
-    </tab>    
+    </tab>
     <tab sku="EE,PE,CE">
       <containersrc />
       <description>View, restore or permanently recycle pages and modules that have been deleted from the portal.</description>
@@ -4129,8 +4204,10 @@
       <iconfilelarge>~/Icons/Sigma/Trash_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4164,8 +4241,10 @@
               <title>Recycle Bin</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4213,8 +4292,10 @@
       <iconfilelarge>~/Icons/Sigma/ViewStats_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4248,8 +4329,10 @@
               <title>Log Viewer</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4297,8 +4380,10 @@
       <iconfilelarge>~/Icons/Sigma/Wizard_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4332,8 +4417,10 @@
               <title>Site Wizard</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4381,8 +4468,10 @@
       <iconfilelarge>~/Icons/Sigma/Tag_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4465,8 +4554,10 @@
       <iconfilelarge>~/Icons/Sigma/Sitemap_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4549,8 +4640,10 @@
       <iconfilelarge>~/Icons/Sigma/Lists_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4584,8 +4677,10 @@
               <title>Lists</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4633,15 +4728,18 @@
       <iconfilelarge>~/desktopmodules/MobileManagement/images/MobileManagement_Standard_32x32.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Site Redirection Management</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -4668,8 +4766,10 @@
               <title>Site Redirection Management</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4710,15 +4810,18 @@
       <iconfilelarge>~/desktopmodules/DevicePreviewManagement/images/DevicePreview_Standard_32X32.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Device Preview Management</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -4745,8 +4848,10 @@
               <title>Device Preview Management</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4788,8 +4893,10 @@
       <iconfilelarge>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4823,8 +4930,10 @@
               <title>Google Analytics Pro</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4865,13 +4974,16 @@
     </tab>
     <tab sku="EE,PE">
       <containersrc />
-      <description></description>
+      <description>
+      </description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
       <visible>false</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4910,8 +5022,10 @@
               <title>Search Results</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4946,8 +5060,10 @@
               <title>Results</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -4982,220 +5098,6 @@
       </panes>
     </tab>
     <!-- CE -->
-    <tab sku="CE">
-      <containersrc />
-      <description>Configure Site Google Analytics settings.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <iconfile>~/Icons/Sigma/GoogleAnalytics_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconfilelarge>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Google Analytics</name>
-      <title>Google Analytics</title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <moduleID>417</moduleID>
-              <title>Google Analytics</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod />
-              <alignment />
-              <color />
-              <border />
-              <iconfile>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconfile>
-              <visibility>Maximized</visibility>
-              <containersrc />
-              <displaytitle>true</displaytitle>
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>GoogleAnalytics</definition>
-              <moduledefinition>GoogleAnalytics</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-    </tab>
-    <tab sku="CE">
-      <containersrc />
-      <description></description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>false</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Search Results</name>
-      <title>Search Results</title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <moduleID>368</moduleID>
-              <title>Search Results</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod />
-              <alignment />
-              <color />
-              <border />
-              <iconfile />
-              <visibility>Maximized</visibility>
-              <containersrc />
-              <displaytitle>true</displaytitle>
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <modulesettings />
-              <tabmodulesettings />
-              <definition>SearchResults</definition>
-              <moduledefinition>Search Results</moduledefinition>
-            </module>
-            <module>
-              <moduleID>369</moduleID>
-              <title>Results</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod />
-              <alignment />
-              <color />
-              <border />
-              <iconfile />
-              <visibility>Maximized</visibility>
-              <containersrc />
-              <displaytitle>true</displaytitle>
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <modulesettings />
-              <tabmodulesettings />
-              <definition>ContentList</definition>
-              <moduledefinition>Content List</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-    </tab>
     <!-- EE -->
     <tab sku="EE">
       <containersrc />
@@ -5206,15 +5108,18 @@
       <iconfilelarge>~/desktopmodules/DNNCorp/ContentStaging/images/icon_staging_32px.gif</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Content Staging</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -5241,8 +5146,10 @@
               <title>Content Staging</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -5278,15 +5185,18 @@
       <iconfilelarge>~/Icons/Sigma/SharePoint_32x32.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>SharePoint Connector</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -5313,8 +5223,10 @@
               <title>SharePoint Connector</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -5355,15 +5267,18 @@
       <iconfilelarge>~/Icons/Sigma/Search_32x32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Search Admin</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -5389,8 +5304,10 @@
               <title>[Tab.SearchAdmin.ContentPane.Module.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>

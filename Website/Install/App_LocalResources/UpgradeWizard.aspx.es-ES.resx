@@ -16,7 +16,7 @@
     <value xml:space="preserve">Información de cuenta</value>
   </data>
   <data name="BestPractices.Text">
-    <value xml:space="preserve">Esta página le permite realizar una actualización de la aplicación DotNetNuke a una versión más reciente. Aplicar las actualizaciones de forma consistente es la mejor manera de garantizar la seguridad de su sistema, de los usuarios y de los documentos de la web. Antes de proceder con el proceso de actualización verifique que:
+    <value xml:space="preserve">Esta página le permite realizar una actualización de la aplicación a una versión más reciente. Aplicar las actualizaciones de forma consistente es la mejor manera de garantizar la seguridad de su sistema, de los usuarios y de los documentos de la web. Antes de proceder con el proceso de actualización verifique que:
 &lt;ul&gt;
 &lt;li&gt;ha realizado pruebas de actualización en un entorno de test
 &lt;li&gt;ha documentado las características de su instalación incluyendo la compatibilidad de los módulos que se utilizan en este sistema
@@ -27,7 +27,7 @@
     <value xml:space="preserve">Versión actual - {0}</value>
   </data>
   <data name="DatabaseUpgrade.Text">
-    <value xml:space="preserve">Actualizando base de datos</value>
+    <value xml:space="preserve">Actualizando base de datos </value>
   </data>
   <data name="Error.Text">
     <value xml:space="preserve">Error</value>
@@ -68,7 +68,7 @@
     <value xml:space="preserve">Minutos</value>
   </data>
   <data name="Title.Text">
-    <value xml:space="preserve">Actualización de DotNetNuke</value>
+    <value xml:space="preserve">Actualización</value>
   </data>
   <data name="Upgrade.Text">
     <value xml:space="preserve">Actualización</value>
@@ -86,7 +86,7 @@
     <value xml:space="preserve">Usuario administrador del sistema (superusuario):</value>
   </data>
   <data name="Version.Text">
-    <value xml:space="preserve">Actualización de DotNetNuke - Versión {0}</value>
+    <value xml:space="preserve">Actualización - Versión {0}</value>
   </data>
   <data name="ViewWebsite.Text">
     <value xml:space="preserve">Ver el sitio web</value>

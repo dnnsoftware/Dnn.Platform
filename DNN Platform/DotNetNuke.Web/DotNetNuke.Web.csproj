@@ -159,6 +159,7 @@
     <Compile Include="Api\UrlHelperExtensions.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
+    <Compile Include="Common\SearchQueryStringParser.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
     <Compile Include="InternalServices\ItemListServiceController.cs" />

@@ -14,39 +14,11 @@
     <containersrcadmin>[G]Containers/Gravity/Title_h2.ascx</containersrcadmin>
     <enableskinwidgets>True</enableskinwidgets>
     <enableautosave>True</enableautosave>
-    <timetoautosave>10</timetoautosave>      
+    <timetoautosave>10</timetoautosave>
     <timezone>Pacific Standard Time</timezone>
   </settings>
   <!-- Professional Settings -->
-  <settings sku="PE">
-    <logofile>Awesome-Cycles-Logo.png</logofile>
-    <footertext>[Setting.FooterText.Text]</footertext>
-    <userregistration>1</userregistration>
-    <banneradvertising>0</banneradvertising>
-    <defaultlanguage>[Setting.DefaultLanguage.Text]</defaultlanguage>
-    <skinsrc>[G]Skins/Gravity/2-Col.ascx</skinsrc>
-    <skinsrcadmin>[G]Skins/Gravity/2-Col.ascx</skinsrcadmin>
-    <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
-    <containersrcadmin>[G]Containers/Gravity/Title_h2.ascx</containersrcadmin>
-    <enableskinwidgets>True</enableskinwidgets>
-    <enableautosave>True</enableautosave>
-    <timetoautosave>10</timetoautosave>      
-    <timezone>Pacific Standard Time</timezone>
-  </settings>
   <!-- Community Settings -->
-  <settings sku="CE">
-    <logofile>Awesome-Cycles-Logo.png</logofile>
-    <footertext>[Setting.FooterText.Text]</footertext>
-    <userregistration>1</userregistration>
-    <banneradvertising>0</banneradvertising>
-    <defaultlanguage>[Setting.DefaultLanguage.Text]</defaultlanguage>
-    <skinsrc>[G]Skins/Gravity/2-Col.ascx</skinsrc>
-    <skinsrcadmin>[G]Skins/Gravity/2-Col.ascx</skinsrcadmin>
-    <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
-    <containersrcadmin>[G]Containers/Gravity/Title_h2.ascx</containersrcadmin>
-    <enableskinwidgets>True</enableskinwidgets>
-    <timezone>Pacific Standard Time</timezone>
-  </settings>
   <profiledefinitions>
     <profiledefinition>
       <propertycategory>Basic</propertycategory>
@@ -351,7 +323,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-  <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule sku="EE,PE,CE">
       <friendlyname>Account Registration</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -531,17 +503,6 @@
       </portalDesktopModulePermissions>
     </portalDesktopModule>
     <!-- CE -->
-    <portalDesktopModule sku="CE">
-      <friendlyname>Google Analytics</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
     <portalDesktopModule sku="EE,PE,CE">
       <friendlyname>Search Admin</friendlyname>
       <portalDesktopModulePermissions>
@@ -646,13 +607,16 @@
     <!-- Starter Pages -->
     <tab sku="CE,PE,EE">
       <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
-      <description></description>
+      <description>
+      </description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
       <visible>false</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -685,29 +649,35 @@
       <tabsettings>
         <tabsetting>
           <settingname>IncludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheDuration</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>ExcludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>MaxVaryByCount</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheProvider</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
-		<tabsetting>
+        <tabsetting>
           <settingname>CustomStylesheet</settingname>
           <settingvalue>GettingStarted.css</settingvalue>
         </tabsetting>
@@ -720,8 +690,10 @@
               <title>[Tab.GettingStarted.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>1200</cachetime>
@@ -746,8 +718,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <content type="DNNHTML" version="06.02.00">
-          <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[
+              <content type="DNNHTML" version="06.02.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[
 &lt;p id=&quot;GettingStartedHeader&quot;&gt;
     [Tab.GettingStarted.Header.Module.Title.Text]
 &lt;/p&gt;
@@ -857,8 +828,7 @@
         &lt;li&gt; &lt;a href=&quot;javascript:GettingStartedNS.goTo(pageCurrentPortalAliasUrl);&quot; class=&quot;dnnSecondaryAction&quot; id=&quot;btnLetMeAtIn&quot;&gt;[Tab.GettingStarted.Actions.Module.Content.1.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
 &lt;/div&gt;                     
-]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
-              </content>
+]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
               <modulesettings>
                 <modulesetting>
                   <settingname>WorkflowID</settingname>
@@ -884,20 +854,24 @@
     </tab>
     <tab sku="EE,PE,CE">
       <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
-      <description></description>
+      <description>
+      </description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc>[G]Skins/Gravity/Home.ascx</skinsrc>
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Home</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -922,27 +896,33 @@
       <tabsettings>
         <tabsetting>
           <settingname>IncludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheDuration</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>ExcludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>MaxVaryByCount</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheProvider</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
       </tabsettings>
       <tabtype>hometab</tabtype>
@@ -1638,27 +1618,33 @@
       <tabsettings>
         <tabsetting>
           <settingname>CacheDuration</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>ExcludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheProvider</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>IncludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>MaxVaryByCount</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
       </tabsettings>
       <panes>
@@ -2037,8 +2023,7 @@
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
-              <content type="DNNHTML" version="07.00.00">
-      <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div class=&quot;content_team&quot;&gt;
+              <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div class=&quot;content_team&quot;&gt;
 &lt;ul&gt;
     &lt;li&gt;
     &lt;div class=&quot;teampic&quot;&gt;&lt;img src=&quot;{{PortalRoot}}/Images/team_chris.png&quot; alt=&quot;[Tab.About.Contentpane.OurTeamModule.Content.0.Text]&quot; /&gt;&lt;/div&gt;
@@ -2184,27 +2169,33 @@
       <tabsettings>
         <tabsetting>
           <settingname>CacheDuration</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>ExcludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheProvider</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>IncludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>MaxVaryByCount</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
       </tabsettings>
       <panes>
@@ -2629,27 +2620,33 @@
       <tabsettings>
         <tabsetting>
           <settingname>CacheDuration</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>ExcludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheProvider</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>IncludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>MaxVaryByCount</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
       </tabsettings>
       <panes>
@@ -3036,8 +3033,7 @@
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
-              <content type="DNNHTML" version="07.00.00">
-          <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;ul class=&quot;footerConnect&quot;&gt;
+              <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;ul class=&quot;footerConnect&quot;&gt;
     &lt;li&gt;&lt;a href=&quot;http://www.twitter.com/DNNCorp&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_twitter.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;http://www.twitter.com/DNN&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_twitter_t.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;http://www.facebook.com/dotnetnuke&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_facebook.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
@@ -3171,27 +3167,33 @@
       <tabsettings>
         <tabsetting>
           <settingname>CacheDuration</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>ExcludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheProvider</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>IncludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>MaxVaryByCount</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
       </tabsettings>
       <parent>About Us</parent>
@@ -3683,27 +3685,33 @@
       <tabsettings>
         <tabsetting>
           <settingname>CacheDuration</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>ExcludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheProvider</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>IncludeVaryBy</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>MaxVaryByCount</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
-          <settingvalue></settingvalue>
+          <settingvalue>
+          </settingvalue>
         </tabsetting>
       </tabsettings>
       <tabtype>usertab</tabtype>
@@ -3934,7 +3942,8 @@
                 </modulesetting>
                 <modulesetting>
                   <settingname>FilterPropertyValue</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
               </modulesettings>
               <tabmodulesettings>
@@ -4000,7 +4009,8 @@
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>PopUpTemplate</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>DisablePaging</settingname>
@@ -4407,7 +4417,8 @@
                 </modulesetting>
                 <modulesetting>
                   <settingname>Journal_Filters</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
                 <modulesetting>
                   <settingname>Journal_AllowPhotos</settingname>
@@ -4712,7 +4723,8 @@
                 </modulesetting>
                 <modulesetting>
                   <settingname>FilterPropertyValue</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
               </modulesettings>
               <tabmodulesettings>
@@ -4758,7 +4770,8 @@
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>PopUpTemplate</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>AlternateItemTemplate</settingname>
@@ -4838,7 +4851,8 @@
                 </modulesetting>
                 <modulesetting>
                   <settingname>ConsoleWidth</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
                 <modulesetting>
                   <settingname>TabVisibility-ActivityFeed-MyProfile</settingname>
@@ -5499,7 +5513,8 @@
                 </modulesetting>
                 <modulesetting>
                   <settingname>FilterPropertyValue</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
               </modulesettings>
               <tabmodulesettings>
@@ -5545,7 +5560,8 @@
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>PopUpTemplate</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>AlternateItemTemplate</settingname>
@@ -5625,7 +5641,8 @@
                 </modulesetting>
                 <modulesetting>
                   <settingname>ConsoleWidth</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
                 <modulesetting>
                   <settingname>TabVisibility-ActivityFeed-MyProfile</settingname>
@@ -5789,7 +5806,8 @@
               <modulesettings>
                 <modulesetting>
                   <settingname>FilterPropertyValue</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
                 <modulesetting>
                   <settingname>FilterValue</settingname>
@@ -6285,7 +6303,8 @@
                 </modulesetting>
                 <modulesetting>
                   <settingname>FilterPropertyValue</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
               </modulesettings>
               <tabmodulesettings>
@@ -6331,7 +6350,8 @@
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>PopUpTemplate</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>AlternateItemTemplate</settingname>
@@ -6411,7 +6431,8 @@
                 </modulesetting>
                 <modulesetting>
                   <settingname>ConsoleWidth</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
                 <modulesetting>
                   <settingname>TabVisibility-ActivityFeed-MyProfile</settingname>
@@ -6843,7 +6864,8 @@
               <modulesettings>
                 <modulesetting>
                   <settingname>ConsoleWidth</settingname>
-                  <settingvalue></settingvalue>
+                  <settingvalue>
+                  </settingvalue>
                 </modulesetting>
                 <modulesetting>
                   <settingname>AllowSizeChange</settingname>
@@ -6857,7 +6879,7 @@
                   <settingname>ShowTooltip</settingname>
                   <settingvalue>True</settingvalue>
                 </modulesetting>
-				<modulesetting>
+                <modulesetting>
                   <settingname>OrderTabsByHierarchy</settingname>
                   <settingvalue>True</settingvalue>
                 </modulesetting>
@@ -6892,8 +6914,10 @@
       <iconfilelarge>~/Icons/Sigma/AdvancedSettings_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -6926,8 +6950,10 @@
               <title>[Tab.AdvancedSettings.ContentPane.Module.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -7963,7 +7989,7 @@
           </modules>
         </pane>
       </panes>
-    </tab>    
+    </tab>
     <tab sku="CE,PE,EE">
       <content>[Tab.RecycleBin.Content.Text]</content>
       <contentKey />
@@ -8775,93 +8801,6 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE">
-      <content>[Tab.GoogleAnalytics.Content.Text]</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>[Tab.GoogleAnalytics.Description.Text]</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <iconfile>~/Icons/Sigma/GoogleAnalytics_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconfilelarge>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Google Analytics</name>
-      <title>[Tab.GoogleAnalytics.Title.Text]</title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>[Tab.GoogleAnalytics.ContentPane.Module.Title.Text]</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>GoogleAnalytics</definition>
-              <moduledefinition>GoogleAnalytics</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-    </tab>
     <!-- EE, PE-->
     <tab sku="EE,PE">
       <containersrc />
@@ -8872,8 +8811,10 @@
       <iconfilelarge>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -8906,8 +8847,10 @@
               <title>[Tab.GoogleAnalyticsPro.ContentPane.Module.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -8956,15 +8899,18 @@
       <iconfilelarge>~/desktopmodules/DNNCorp/ContentStaging/images/icon_staging_32px.gif</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Content Staging</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -8990,8 +8936,10 @@
               <title>[Tab.ContentStaging.ContentPane.Module.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -9027,15 +8975,18 @@
       <iconfilelarge>~/Icons/Sigma/SharePoint_32x32.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>SharePoint Connector</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -9061,8 +9012,10 @@
               <title>[Tab.Sharepoint.ContentPane.Module.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -9141,7 +9094,7 @@
           <name>ContentPane</name>
           <modules>
             <module>
-             <alltabs>false</alltabs>
+              <alltabs>false</alltabs>
               <cachemethod>FileModuleCachingProvider</cachemethod>
               <cachetime>1200</cachetime>
               <displayprint>false</displayprint>
@@ -9163,9 +9116,7 @@
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
-              <content type="DNNHTML" version="07.00.00">
-                <![CDATA[&lt;htmltext&gt;&lt;content&gt;[Tab.404ErrorPage..Module.Content.Text]&lt;/content&gt;&lt;/htmltext&gt;]]>
-              </content>
+              <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;[Tab.404ErrorPage..Module.Content.Text]&lt;/content&gt;&lt;/htmltext&gt;]]></content>
               <modulesettings>
                 <modulesetting>
                   <settingname>WorkflowID</settingname>
@@ -9198,15 +9149,18 @@
       <iconfilelarge>~/Icons/Sigma/AdvancedUrlMngmt_32x32.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Advanced URL Management</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -9232,8 +9186,10 @@
               <title>[Tab.AdvUrlManagement.ContentPane.Module.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>
@@ -9274,15 +9230,18 @@
       <iconfilelarge>~/Icons/Sigma/Search_32x32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords></keywords>
-      <pageheadtext></pageheadtext>
+      <keywords>
+      </keywords>
+      <pageheadtext>
+      </pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Search Admin</name>
-      <title></title>
+      <title>
+      </title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -9308,8 +9267,10 @@
               <title>[Tab.SearchAdmin.ContentPane.Module.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <header></header>
-              <footer></footer>
+              <header>
+              </header>
+              <footer>
+              </footer>
               <startdate>0001-01-01T00:00:00</startdate>
               <enddate>0001-01-01T00:00:00</enddate>
               <cachetime>0</cachetime>

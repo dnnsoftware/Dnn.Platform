@@ -16,7 +16,7 @@
     <value xml:space="preserve">Información de cuenta de acceso</value>
   </data>
   <data name="AccountInfoIntro.Text">
-    <value xml:space="preserve">Introduzca la siguiente información para realizar la configuración de la instalación de DotNetNuke.</value>
+    <value xml:space="preserve">Introduzca la siguiente información para realizar la configuración de la instalación.</value>
   </data>
   <data name="AdminInfo.Text">
     <value xml:space="preserve">Información de administración</value>
@@ -160,7 +160,7 @@
     <value xml:space="preserve">Ha ocurrido un ERROR - {0}</value>
   </data>
   <data name="ExtensionsInstallation.Text">
-    <value xml:space="preserve">Instalación de extensiones</value>
+    <value xml:space="preserve">Instalación de extensiones </value>
   </data>
   <data name="FileAndFolderPermissionCheck.Text">
     <value xml:space="preserve">Verificación de permisos de archivo y carpeta</value>
@@ -178,28 +178,28 @@ Utilize el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
 &lt;p&gt;La cuenta IIS AppPool\DefaultAppPool tiene que tener permisos de Lectura, Escritura y Modificación en la carpeta raíz de la web.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Verificar de nuevo&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
   </data>
   <data name="FileAndFolderPermissionCheckTitle.Text">
-    <value xml:space="preserve">Verificando los permisos de archivo y carpeta</value>
+    <value xml:space="preserve">Verificando los permisos de archivo y carpeta </value>
   </data>
   <data name="FileCreateCheck.Text">
-    <value xml:space="preserve">Verificación de creación de archivos</value>
+    <value xml:space="preserve">Verificación de creación de archivos </value>
   </data>
   <data name="FileDeleteCheck.Text">
-    <value xml:space="preserve">Verificación de borrado de archivos</value>
+    <value xml:space="preserve">Verificación de borrado de archivos </value>
   </data>
   <data name="FolderCreateCheck.Text">
-    <value xml:space="preserve">Verificación de creación de carpetas</value>
+    <value xml:space="preserve">Verificación de creación de carpetas </value>
   </data>
   <data name="FolderDeleteCheck.Text">
-    <value xml:space="preserve">Verificación de borrado de carpetas</value>
+    <value xml:space="preserve">Verificación de borrado de carpetas </value>
   </data>
   <data name="HostWarning.Text">
-    <value xml:space="preserve">El nombre contiene carácteres no válidos (solo se permite a-Z, 0-9, - y . ).  Modifique el nombre que ha introducido.</value>
+    <value xml:space="preserve">El nombre contiene caracteres no válidos (solo se permite a-Z, 0-9, - y . ).  Modifique el nombre que ha introducido.</value>
   </data>
   <data name="IISVerificationFail.Text">
     <value xml:space="preserve">El grupo de aplicaciones de IIS tiene que ejecutarse en Modo Integrado</value>
   </data>
   <data name="InitHostSetting.Text">
-    <value xml:space="preserve">Inicializando configuración del sistema</value>
+    <value xml:space="preserve">Inicializando configuración del sistema </value>
   </data>
   <data name="InputErrorInvalidPassword.Text">
     <value xml:space="preserve">La contraseña entrada no cumple los requisitos mínimos de seguridad.</value>
@@ -217,10 +217,10 @@ Utilize el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
     <value xml:space="preserve">Finalizado</value>
   </data>
   <data name="InstallationIntroInfo.Text">
-    <value xml:space="preserve">DotNetNuke se está instalando. Gracias por su espera...</value>
+    <value xml:space="preserve">El sistema se está instalando. Gracias por su espera...</value>
   </data>
   <data name="InstallingDataBaseScriptStep.Text">
-    <value xml:space="preserve">Instalando el script de base de datos</value>
+    <value xml:space="preserve">Instalando el script de base de datos </value>
   </data>
   <data name="InstallingExtension.Text">
     <value xml:space="preserve">Instalando {0} - {1}</value>
@@ -229,19 +229,22 @@ Utilize el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
     <value xml:space="preserve">Instalando paquetes del tipo - {0}</value>
   </data>
   <data name="InstallingLanguagesTitle.Text">
-    <value xml:space="preserve">Instalando idiomas</value>
+    <value xml:space="preserve">Instalando idiomas </value>
   </data>
   <data name="InstallingMembershipDatabaseScriptStep.Text">
-    <value xml:space="preserve">Instalando scripts de base de datos de Membership</value>
+    <value xml:space="preserve">Instalando scripts de base de datos de Membership </value>
   </data>
   <data name="InstallTitle.Text">
-    <value xml:space="preserve">Instalación de DotNetNuke</value>
+    <value xml:space="preserve">Instalación</value>
+  </data>
+  <data name="InstallVersion.Text">
+    <value xml:space="preserve">Añadiendo versión de instalación</value>
   </data>
   <data name="IntroDetail.Text">
     <value xml:space="preserve">&lt;a class="videoLink" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Ver el vídeo de instalación&lt;/a&gt;</value>
   </data>
   <data name="InvalidQualifier.Text">
-    <value xml:space="preserve">El prefijo de objetos tiene que empezar con una letra y no puede tener más de 20 carácteres.</value>
+    <value xml:space="preserve">El prefijo de objetos tiene que empezar con una letra y no puede tener más de 20 caracteres.</value>
   </data>
   <data name="IsAbleToPerformDatabaseActions.Text">
     <value xml:space="preserve">El usuario de base de datos no tiene suficientes permisos para la instalación (dbo)</value>
@@ -301,7 +304,7 @@ Utilize el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
     <value xml:space="preserve">No hay registro de instalación</value>
   </data>
   <data name="PageTitle.Text">
-    <value xml:space="preserve">Instalación de DotNetNuke</value>
+    <value xml:space="preserve">Instalación</value>
   </data>
   <data name="Password.Help">
     <value xml:space="preserve">Indique la contraseña del superusuario.</value>
