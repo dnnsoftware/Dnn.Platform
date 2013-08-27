@@ -60,12 +60,7 @@ namespace DotNetNuke.Services.SystemDateTime
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetCurrentTimeUtc get current utc time from database
-        /// </summary>
-        /// <returns>DateTime in Utc</returns>
-        /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in DNN 7.1.2.  Replaced by DateUtils.GetDatabaseTime, which includes caching")]
         public static DateTime GetCurrentTimeUtc()
         {
             return Provider.GetDatabaseTimeUtc();
@@ -73,7 +68,7 @@ namespace DotNetNuke.Services.SystemDateTime
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetCurrentTimeUtc get current time from database
+        /// GetCurrentTime get current time from database
         /// </summary>
         /// <returns>DateTime</returns>
         /// -----------------------------------------------------------------------------
