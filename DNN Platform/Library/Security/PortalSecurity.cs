@@ -732,6 +732,23 @@ namespace DotNetNuke.Security
                 cookie1.Path = "/";
                 cookie1.Expires = DateTime.Now.AddYears(-30);
             }
+
+            //clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
+            var authCookies = HttpContext.Current.Request.Cookies.AllKeys;
+            foreach (var authCookie in authCookies)
+            {
+                if (authCookie.EndsWith("UserToken"))
+                {
+                    var auth = HttpContext.Current.Response.Cookies[authCookie];
+                    if (auth != null)
+                    {
+                        auth.Value = null;
+                        auth.Path = "/";
+                        auth.Expires = DateTime.Now.AddYears(-30);
+                    }
+                }
+            }
+           
         }
 
         ///-----------------------------------------------------------------------------
