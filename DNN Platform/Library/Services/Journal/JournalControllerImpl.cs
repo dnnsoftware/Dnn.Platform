@@ -620,7 +620,10 @@ namespace DotNetNuke.Services.Journal
         public IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId)
         {
             return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
-                                            new CacheItemArgs("JournalTypes", 20, CacheItemPriority.Normal, portalId), 
+                                            new CacheItemArgs(String.Format(DataCache.JournalTypesCacheKey, portalId), 
+                                                                DataCache.JournalTypesTimeOut, 
+                                                                DataCache.JournalTypesCachePriority, 
+                                                                portalId), 
                                             c => CBO.FillCollection<JournalTypeInfo>(_dataService.Journal_Types_List(portalId)));
         }
 
