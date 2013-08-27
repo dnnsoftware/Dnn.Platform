@@ -1,9 +1,0 @@
-C:\Git\Dnn.Platform\DNN Platform\Modules\MemberDirectory\bin\DotNetNuke.Modules.MemberDirectory.XML
-C:\Git\Dnn.Platform\DNN Platform\Modules\MemberDirectory\bin\DotNetNuke.Modules.MemberDirectory.dll
-C:\Git\Dnn.Platform\DNN Platform\Modules\MemberDirectory\bin\DotNetNuke.Modules.MemberDirectory.pdb
-C:\Git\Dnn.Platform\DNN Platform\Modules\MemberDirectory\bin\System.Net.Http.dll
-C:\Git\Dnn.Platform\DNN Platform\Modules\MemberDirectory\bin\System.Net.Http.Formatting.dll
-C:\Git\Dnn.Platform\DNN Platform\Modules\MemberDirectory\bin\System.Web.Http.dll
-C:\Git\Dnn.Platform\DNN Platform\Modules\MemberDirectory\obj\Release\DotNetNuke.Modules.MemberDirectory.csprojResolveAssemblyReference.cache
-C:\Git\Dnn.Platform\DNN Platform\Modules\MemberDirectory\obj\Release\DotNetNuke.Modules.MemberDirectory.dll
-C:\Git\Dnn.Platform\DNN Platform\Modules\MemberDirectory\obj\Release\DotNetNuke.Modules.MemberDirectory.pdb

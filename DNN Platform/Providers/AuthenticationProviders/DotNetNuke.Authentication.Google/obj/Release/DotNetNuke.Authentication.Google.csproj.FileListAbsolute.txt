@@ -1,6 +1,0 @@
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Google\bin\DotNetNuke.Authentication.Google.XML
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Google\bin\DotNetNuke.Authentication.Google.dll
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Google\bin\DotNetNuke.Authentication.Google.pdb
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Google\obj\Release\DotNetNuke.Authentication.Google.csprojResolveAssemblyReference.cache
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Google\obj\Release\DotNetNuke.Authentication.Google.dll
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Google\obj\Release\DotNetNuke.Authentication.Google.pdb

@@ -1,7 +1,0 @@
-C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\SolpartMenuNavigationProvider\bin\DotNetNuke.SolpartMenuNavigationProvider.XML
-C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\SolpartMenuNavigationProvider\bin\DotNetNuke.SolpartMenuNavigationProvider.dll
-C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\SolpartMenuNavigationProvider\bin\DotNetNuke.SolpartMenuNavigationProvider.pdb
-C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\SolpartMenuNavigationProvider\bin\SolpartWebControls.dll
-C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\SolpartMenuNavigationProvider\obj\Release\Provider.SolpartMenuNavigationProvider.csprojResolveAssemblyReference.cache
-C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\SolpartMenuNavigationProvider\obj\Release\DotNetNuke.SolpartMenuNavigationProvider.dll
-C:\Git\Dnn.Platform\DNN Platform\Providers\NavigationProviders\SolpartMenuNavigationProvider\obj\Release\DotNetNuke.SolpartMenuNavigationProvider.pdb

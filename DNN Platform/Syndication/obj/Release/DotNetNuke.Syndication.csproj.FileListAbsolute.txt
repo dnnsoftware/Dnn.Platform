@@ -1,9 +1,0 @@
-C:\Git\Dnn.Platform\DNN Platform\Syndication\bin\DotNetNuke.Services.Syndication.xml
-C:\Git\Dnn.Platform\DNN Platform\Syndication\bin\DotNetNuke.Services.Syndication.dll
-C:\Git\Dnn.Platform\DNN Platform\Syndication\bin\DotNetNuke.Services.Syndication.pdb
-C:\Git\Dnn.Platform\DNN Platform\Syndication\bin\DotNetNuke.Instrumentation.dll
-C:\Git\Dnn.Platform\DNN Platform\Syndication\bin\DotNetNuke.Instrumentation.pdb
-C:\Git\Dnn.Platform\DNN Platform\Syndication\bin\DotNetNuke.Instrumentation.xml
-C:\Git\Dnn.Platform\DNN Platform\Syndication\obj\Release\DotNetNuke.Syndication.csprojResolveAssemblyReference.cache
-C:\Git\Dnn.Platform\DNN Platform\Syndication\obj\Release\DotNetNuke.Services.Syndication.dll
-C:\Git\Dnn.Platform\DNN Platform\Syndication\obj\Release\DotNetNuke.Services.Syndication.pdb

@@ -1,6 +1,0 @@
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Facebook\bin\DotNetNuke.Authentication.Facebook.XML
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Facebook\bin\DotNetNuke.Authentication.Facebook.dll
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Facebook\bin\DotNetNuke.Authentication.Facebook.pdb
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Facebook\obj\Release\DotNetNuke.Authentication.Facebook.csprojResolveAssemblyReference.cache
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Facebook\obj\Release\DotNetNuke.Authentication.Facebook.dll
-C:\Git\Dnn.Platform\DNN Platform\Providers\AuthenticationProviders\DotNetNuke.Authentication.Facebook\obj\Release\DotNetNuke.Authentication.Facebook.pdb

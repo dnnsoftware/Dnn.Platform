@@ -3478,6 +3478,11 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
+	        return AddModuleToPage(page, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions, true, Globals.glbDefaultPane);
+        }
+
+		public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions, bool displayTitle, string paneName)
+        {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
             var moduleController = new ModuleController();
             ModuleInfo moduleInfo;
@@ -3505,13 +3510,14 @@ namespace DotNetNuke.Services.Upgrade
                                          TabID = page.TabID,
                                          ModuleOrder = -1,
                                          ModuleTitle = moduleTitle,
-                                         PaneName = Globals.glbDefaultPane,
+                                         PaneName = paneName,
                                          ModuleDefID = moduleDefId,
                                          CacheTime = 0,
                                          IconFile = moduleIconFile,
                                          AllTabs = false,
                                          Visibility = VisibilityState.None,
-                                         InheritViewPermissions = inheritPermissions
+                                         InheritViewPermissions = inheritPermissions,
+										 DisplayTitle = displayTitle
                                      };
 
                     try

@@ -288,6 +288,9 @@ namespace DotNetNuke.Services.Search.Controllers
                     case Constants.AuthorIdTag:
                         if (int.TryParse(field.StringValue, out intField)) result.AuthorUserId = intField;
                         break;
+                    case Constants.GroupIdTag:
+                        if (int.TryParse(field.StringValue, out intField)) result.GroupId = intField;
+                        break;
                     case Constants.AuthorNameTag:
                         result.AuthorName = field.StringValue;
                         break;
