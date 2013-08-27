@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 cmdAuthorize.Visible = !UserMembership.Approved;
                 cmdPassword.Visible = !UserMembership.UpdatePassword;
             }
-            if (UserController.GetCurrentUserInfo().IsSuperUser)
+            if (UserController.GetCurrentUserInfo().IsSuperUser && UserController.GetCurrentUserInfo().UserID!=User.UserID)
             {
                 cmdToggleSuperuser.Visible = true;
                
