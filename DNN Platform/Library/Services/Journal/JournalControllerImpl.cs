@@ -27,6 +27,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Caching;
 using System.Xml;
 
 using DotNetNuke.Common.Utilities;
@@ -618,7 +619,9 @@ namespace DotNetNuke.Services.Journal
 
         public IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId)
         {
-            return CBO.FillCollection<JournalTypeInfo>(_dataService.Journal_Types_List(portalId));
+            return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
+                                            new CacheItemArgs("JournalTypes", 20, CacheItemPriority.Normal, portalId), 
+                                            c => CBO.FillCollection<JournalTypeInfo>(_dataService.Journal_Types_List(portalId)));
         }
 
         #endregion
