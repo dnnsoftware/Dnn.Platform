@@ -82,13 +82,30 @@ namespace DotNetNuke.Tests.Urls
             testHelper.Response = HttpContext.Current.Response;
         }
 
-        private string ReplaceTokens(string url, string httpAlias, string defaultAlias, string tabName, string tabId, string portalId, string vanityUrl, string userId)
+        private string ReplaceTokens(Dictionary<string, string> testFields, string url, string tabId)
         {
+            var defaultAlias = testFields.GetValue("DefaultAlias", String.Empty);
+            var httpAlias = testFields.GetValue("Alias", String.Empty);
+            var tabName = testFields["Page Name"];
+            var vanityUrl = testFields.GetValue("VanityUrl", String.Empty);
+            var homeTabId = testFields.GetValue("HomeTabId", String.Empty);
+
+            var userName = testFields.GetValue("UserName", String.Empty);
+            string userId = String.Empty;
+            if (!String.IsNullOrEmpty(userName))
+            {
+                var user = UserController.GetUserByName(PortalId, userName);
+                if (user != null)
+                {
+                    userId = user.UserID.ToString();
+                }
+            }
+
             return url.Replace("{alias}", httpAlias)
                             .Replace("{usealias}", defaultAlias)
                             .Replace("{tabName}", tabName)
                             .Replace("{tabId}", tabId)
-                            .Replace("{portalId}", portalId)
+                            .Replace("{portalId}", PortalId.ToString())
                             .Replace("{vanityUrl}", vanityUrl)
                             .Replace("{userId}", userId)
                             .Replace("{defaultPage}", _defaultPage);
@@ -114,6 +131,7 @@ namespace DotNetNuke.Tests.Urls
             _sslEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", PortalId, false);
             _primaryAlias = null;
             _customLocale = null;
+            DataCache.ClearCache();
         }
 
         [TearDown]
@@ -240,33 +258,19 @@ namespace DotNetNuke.Tests.Urls
 
         private void ExecuteTestForTab(TabInfo tab, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
         {
-            var defaultAlias = testFields.GetValue("DefaultAlias", String.Empty);
             var httpAlias = testFields.GetValue("Alias", String.Empty);
-            var tabName = testFields["Page Name"];
             var scheme = testFields["Scheme"];
             var url = testFields["Test Url"];
             var result = testFields["Expected Url"];
             var expectedStatus = Int32.Parse(testFields["Status"]);
             var redirectUrl = testFields.GetValue("Final Url");
             var redirectReason = testFields.GetValue("RedirectReason");
-            var vanityUrl = testFields.GetValue("VanityUrl", String.Empty);
 
             var tabID = (tab == null) ? "-1" : tab.TabID.ToString();
 
-            var userName = testFields.GetValue("UserName", String.Empty);
-            string userId = String.Empty;
-            if (!String.IsNullOrEmpty(userName))
-            {
-                var user = UserController.GetUserByName(PortalId, userName);
-                if (user != null)
-                {
-                    userId = user.UserID.ToString();
-                }
-            }
-
-            var expectedResult = ReplaceTokens(result, httpAlias, defaultAlias, tabName, tabID, PortalId.ToString(), vanityUrl, userId);
-            var testurl = ReplaceTokens(url, httpAlias, defaultAlias, tabName, tabID, PortalId.ToString(), vanityUrl, userId);
-            var expectedRedirectUrl = ReplaceTokens(redirectUrl, httpAlias, defaultAlias, tabName, tabID, PortalId.ToString(), vanityUrl, userId);
+            var expectedResult = ReplaceTokens(testFields, result, tabID);
+            var testurl = ReplaceTokens(testFields, url, tabID);
+            var expectedRedirectUrl = ReplaceTokens(testFields, redirectUrl, tabID);
 
             CreateSimulatedRequest(new Uri(testurl));
 
@@ -274,11 +278,6 @@ namespace DotNetNuke.Tests.Urls
             var testHelper = new UrlTestHelper
                     {
                         HttpAliasFull = scheme + httpAlias + "/",
-                        //Result = new UrlAction(scheme, scheme + httpAlias, Globals.ApplicationMapPath)
-                        //            {
-                        //                IsSecureConnection = HttpContext.Current.Request.IsSecureConnection,
-                        //                RawUrl = HttpContext.Current.Request.RawUrl
-                        //            },
                         Result = new UrlAction(request)
                                         {
                                             IsSecureConnection = request.IsSecureConnection,
@@ -299,13 +298,13 @@ namespace DotNetNuke.Tests.Urls
                     //Test expected rewrite path
                     if (!String.IsNullOrEmpty(expectedResult))
                     {
-                        Assert.AreEqual(expectedResult, testHelper.Result.RewritePath);
+                        Assert.AreEqual(expectedResult, testHelper.Result.RewritePath.TrimStart('/'));
                     }
                     break;
                 case 301:
                 case 302:
                     //Test for final Url if redirected
-                    Assert.AreEqual(expectedRedirectUrl, testHelper.Result.FinalUrl);
+                    Assert.AreEqual(expectedRedirectUrl, testHelper.Result.FinalUrl.TrimStart('/'));
                     Assert.AreEqual(redirectReason, testHelper.Result.Reason.ToString(), "Redirect reason incorrect");
                     break;
             }
@@ -410,6 +409,23 @@ namespace DotNetNuke.Tests.Urls
             SetDefaultAlias(testFields);
 
             ExecuteTest(settings, testFields, true);
+        }
+
+        [Test]
+        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_DoNotRedirect")]
+        public void AdvancedUrlRewriter_DoNotRedirect(Dictionary<string, string> testFields)
+        {
+            var tabName = testFields["Page Name"];
+            var doNotRedirect = testFields["DoNotRedirect"];
+
+            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"]);
+
+            UpdateTabSetting(tabName, "DoNotRedirect", doNotRedirect);
+            settings.UseBaseFriendlyUrls = testFields["UseBaseFriendlyUrls"];
+
+            ExecuteTest(settings, testFields, true);
+
+            UpdateTabSetting(tabName, "DoNotRedirect", "False");
         }
 
         [Test]
@@ -672,26 +688,31 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_JiraTests")]
         public void AdvancedUrlRewriter_JiraTests(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", "Jira_Tests", testFields["SettingsFile"]);
-            var dictionary = UrlTestFactoryClass.GetDictionary("UrlRewrite", "Jira_Tests", testFields["DictionaryFile"]);
+            var testName = testFields.GetValue("Test", String.Empty);
+
+            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", "Jira_Tests", testName + ".csv");
+            var dictionary = UrlTestFactoryClass.GetDictionary("UrlRewrite", "Jira_Tests", testName + "_dic.csv");
 
             int homeTabId = -1;
-            bool homeTabChanged = false;
             foreach (var keyValuePair in dictionary)
             {
-                if (keyValuePair.Key == "HomeTabId")
+                switch (keyValuePair.Key)
                 {
-                    homeTabId = UpdateHomeTab(Int32.Parse(keyValuePair.Value));
-                    homeTabChanged = true;
+                    case "HomeTabId":
+                        homeTabId = UpdateHomeTab(Int32.Parse(keyValuePair.Value));
+                        break;
+                    default:
+                        break;
                 }
             }
 
             ExecuteTest(settings, testFields, true);
 
-            if (homeTabChanged)
+            if (homeTabId != -1)
             {
                 UpdateHomeTab(homeTabId);
             }
+
         }
 
         private int UpdateHomeTab(int homeTabId)
@@ -702,6 +723,14 @@ namespace DotNetNuke.Tests.Urls
             portalInfo.HomeTabId = homeTabId;
 
             return oldHomeTabId;
+        }
+
+        private void UpdateTabSetting(string tabName, string settingName, string settingValue)
+        {
+            var tc = new TabController();
+            var tab = tc.GetTabByName(tabName, PortalId);
+            tab.TabSettings[settingName] = settingValue;
+            tc.UpdateTab(tab);
         }
 
         #endregion

@@ -2762,9 +2762,9 @@ namespace DotNetNuke.Entities.Urls
             var tc = new TabController();
             tab = tc.GetTab(tabId, portalId, false);
             //don't redirect unless allowed, the tab is valid, and it's not an admin or super tab 
-            if (tab != null && tab.IsSuperTab == false)
+            if (tab != null && tab.IsSuperTab == false && !tab.DoNotRedirect)
             {
-                if (checkBaseUrls && !tab.DoNotRedirect)
+                if (checkBaseUrls)
                 {
                     //no redirect for friendly url purposes if the tab is in the 'base friendly urls' section
                     doRedirect = !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, true);
