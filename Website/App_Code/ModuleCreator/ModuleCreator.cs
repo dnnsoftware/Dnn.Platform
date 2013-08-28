@@ -41,50 +41,50 @@ namespace DotNetNuke.Modules.Admin.Modules
     public class ModuleCreatorController : IUpgradeable
     {
 
-           public string UpgradeModule(string Version) 
-           { 
-               //Fix icon and add "Development" to the DesktopModule taxonomy and associate it with this module
-               if (Version == "01.00.00")
-               {
-                   var vocabularyId = -1;
-                   var termId = -1;
-                   var objTermController = DotNetNuke.Entities.Content.Common.Util.GetTermController();
-	           var objTerms = objTermController.GetTermsByVocabulary("Module_Categories");
-                   foreach(Term term in objTerms) 
-                   {
-                       vocabularyId = term.VocabularyId;
-                       if (term.Name == "Development")
-                       {
-                           termId = term.TermId;
-                       }
-                   }
-                   if (termId == -1)
-                   {
-                       termId = objTermController.AddTerm(new Term(vocabularyId) { Name = "Development" });
-                   }
-                   var objTerm = objTermController.GetTerm(termId);
+        public string UpgradeModule(string Version)
+        {
+            //Fix icon and add "Development" to the DesktopModule taxonomy and associate it with this module
+            if (Version == "01.00.00")
+            {
+                var vocabularyId = -1;
+                var termId = -1;
+                var objTermController = Util.GetTermController();
+                var objTerms = objTermController.GetTermsByVocabulary("Module_Categories");
+                foreach (Term term in objTerms)
+                {
+                    vocabularyId = term.VocabularyId;
+                    if (term.Name == "Development")
+                    {
+                        termId = term.TermId;
+                    }
+                }
+                if (termId == -1)
+                {
+                    termId = objTermController.AddTerm(new Term(vocabularyId) { Name = "Development" });
+                }
+                var objTerm = objTermController.GetTerm(termId);
 
-                   var portalID = -1;
-                   Dictionary<string, string> HostSettings = HostController.Instance.GetSettingsDictionary();
-                   if (HostSettings.ContainsKey("HostPortalId"))
-                   {
-                       portalID = int.Parse(HostSettings["HostPortalId"]);
-                   }
-                   if (portalID != -1)
-                   {
-                       var objDesktopModule = DesktopModuleController.GetDesktopModuleByModuleName("DNNCorp.ModuleCreator", portalID);
-                       var objPackage = PackageController.GetPackage(objDesktopModule.PackageID);
-                       objPackage.IconFile = "~/DesktopModules/ModuleCreator/icon.png";
-                       PackageController.SavePackage(objPackage);
+                var portalId = -1;
+                Dictionary<string, string> hostSettings = HostController.Instance.GetSettingsDictionary();
+                if (hostSettings.ContainsKey("HostPortalId"))
+                {
+                    portalId = int.Parse(hostSettings["HostPortalId"]);
+                }
+                if (portalId != -1)
+                {
+                    var objDesktopModule = DesktopModuleController.GetDesktopModuleByModuleName("ModuleCreator", portalId);
+                    var objPackage = PackageController.GetPackage(objDesktopModule.PackageID);
+                    objPackage.IconFile = "~/DesktopModules/Admin/ModuleCreator/icon.png";
+                    PackageController.SavePackage(objPackage);
 
-                       var objContentController = DotNetNuke.Entities.Content.Common.Util.GetContentController();
-                       var objContent = objContentController.GetContentItem(objDesktopModule.ContentItemId);
-                       objTermController.AddTermToContent(objTerm, objContent);
-                   }
-               }
+                    var objContentController = Util.GetContentController();
+                    var objContent = objContentController.GetContentItem(objDesktopModule.ContentItemId);
+                    objTermController.AddTermToContent(objTerm, objContent);
+                }
+            }
 
-               return Version; 
-           }
+            return Version;
+        }
     }
 }
 

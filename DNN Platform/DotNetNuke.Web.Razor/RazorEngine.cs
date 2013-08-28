@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Razor
         protected string RazorScriptFile { get; set; }
         protected ModuleInstanceContext ModuleContext { get; set; }
         protected string LocalResourceFile { get; set; }
-        protected DotNetNukeWebPage Webpage { get; set; }
+        public DotNetNukeWebPage Webpage { get; set; }
 
         protected HttpContextBase HttpContext
         {

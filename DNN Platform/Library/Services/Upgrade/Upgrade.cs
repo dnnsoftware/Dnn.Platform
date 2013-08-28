@@ -2966,16 +2966,18 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion720()
         {
-            if (CoreModuleExists("Module Creator") == false)
-            { 
-                var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator"); 
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ModuleCreator/CreateModule.ascx", "", SecurityAccessLevel.Host, 0);
-            }
-            else
-            { //update the module controls 
+            DesktopModuleController.AddModuleCategory("Developer");
+            var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
+            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ModuleCreator/CreateModule.ascx", "~/DesktopModules/Admin/ModuleCreator/icon.png", SecurityAccessLevel.Host, 0);
+            foreach (var desktopModuleInfo in DesktopModuleController.GetDesktopModules(Null.NullInteger))
+            {
+                if (desktopModuleInfo.Value.ModuleName == "ModuleCreator")
+                {
+                    desktopModuleInfo.Value.Category = "Developer";
+                    DesktopModuleController.SaveDesktopModule(desktopModuleInfo.Value, false, false);
+                }
             }
         }
-
 
         private static ContentItem CreateFileContentItem()
         {

@@ -7,11 +7,11 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 
 <%-- Custom CSS Registration --%>
-<dnn:DnnCssInclude runat="server" FilePath="~/DesktopModules/ModuleCreator/Components/CodeEditor/lib/codemirror.css" />
+<dnn:DnnCssInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/lib/codemirror.css" />
 
 <%-- Custom JavaScript Registration --%>
-<dnn:dnnjsinclude runat="server" filepath="~/DesktopModules/ModuleCreator/Components/CodeEditor/lib/codemirror.js" priority="1" />
-<dnn:dnnjsinclude runat="server" filepath="~/DesktopModules/ModuleCreator/Components/CodeEditor/mode/clike/clike.js" priority="2" />
+<dnn:dnnjsinclude runat="server" filepath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/lib/codemirror.js" priority="1" />
+<dnn:dnnjsinclude runat="server" filepath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/mode/clike/clike.js" priority="2" />
 
 <script>
     jQuery(function ($) {
