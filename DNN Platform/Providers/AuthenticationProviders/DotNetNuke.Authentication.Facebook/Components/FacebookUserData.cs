@@ -37,11 +37,17 @@ namespace DotNetNuke.Authentication.Facebook.Components
     {
         #region Overrides
 
-        [DataMember(Name = "first_name")]
-        public new string FirstName { get; set; }
+        public override string FirstName
+        {
+            get { return FacebookFirstName; }
+            set { }
+        }
 
-        [DataMember(Name = "last_name")]
-        public new string LastName { get; set; }
+        public override string LastName
+        {
+            get { return FacebookLastName; }
+            set { }
+        }
 
         #endregion
 
@@ -50,5 +56,11 @@ namespace DotNetNuke.Authentication.Facebook.Components
 
         [DataMember(Name = "link")]
         public Uri Link { get; set; }
+
+        [DataMember(Name = "first_name")]
+        private string FacebookFirstName { get; set; }
+
+        [DataMember(Name = "last_name")]
+        private string FacebookLastName { get; set; }
     }
 }

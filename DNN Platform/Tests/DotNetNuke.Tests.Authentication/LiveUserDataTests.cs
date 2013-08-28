@@ -1,7 +1,6 @@
-#region Copyright
-
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
@@ -18,60 +17,37 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-
 #endregion
 
-#region Usings
-
-using System.Runtime.Serialization;
-
+using DotNetNuke.Authentication.LiveConnect.Components;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Authentication.OAuth;
 
-#endregion
+using NUnit.Framework;
 
-namespace DotNetNuke.Authentication.Twitter.Components
+namespace DotNetNuke.Tests.Content
 {
-    [DataContract]
-    public class TwitterUserData : UserData
+    [TestFixture]
+    public class LiveUserDataTests
     {
-        #region Overrides
+        private const string SampleUserJson = @"{
+  ""id"" : ""contact.c1678ab4000000000000000000000000"",
+  ""first_name"" : ""Frederick"",
+  ""last_name"" : ""Franklin"",
+  ""name"" : ""Fred the Dinosaur"",
+  ""gender"" : ""male"",
+  ""locale"" : ""en_US""
+} ";
 
-        public override string DisplayName
+        [Test]
+        public void LiveUserData_Populates_Inherited_Name_Properties_When_Deserialized()
         {
-            get { return ScreenName; }
-            set { }
+            // Act
+            UserData dukesUser = Json.Deserialize<LiveUserData>(SampleUserJson);
+
+            // Assert
+            Assert.AreEqual("Frederick", dukesUser.FirstName, "Should correctly pull first name from first_name field, not by parsing name");
+            Assert.AreEqual("Franklin", dukesUser.LastName, "Should correctly pull first name from last_name field, not by parsing name");
         }
-
-        public override string Locale
-        {
-            get { return LanguageCode; }
-            set { }
-        }
-
-        public override string ProfileImage
-        {
-            get { return ProfileImageUrl; }
-            set { }
-        }
-
-        public override string Website
-        {
-            get { return Url; }
-            set { }
-        }
-
-        #endregion
-
-        [DataMember(Name = "screen_name")]
-        private string ScreenName { get; set; }
-
-        [DataMember(Name = "lang")]
-        private string LanguageCode { get; set; }
-
-        [DataMember(Name = "profile_image_url")]
-        private string ProfileImageUrl { get; set; }
-
-        [DataMember(Name = "url")]
-        private string Url { get; set; }
     }
 }
