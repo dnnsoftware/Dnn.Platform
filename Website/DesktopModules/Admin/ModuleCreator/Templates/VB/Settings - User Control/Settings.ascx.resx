@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="plField.Text" xml:space="preserve">
+    <value>Field:</value>
+  </data>
+  <data name="plField.Help" xml:space="preserve">
+    <value>Field level help.</value>
+  </data>
+</root>

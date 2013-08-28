@@ -8,13 +8,6 @@
 /*****                                                  *****/
 /************************************************************/
 
-update {databaseOwner}{objectQualifier}ModuleControls 
-set   ControlSrc = 'DesktopModules/Admin/ModuleCreator/viewsource.ascx', 
-      ControlTitle = 'Develop Module',
-      SupportsPartialRendering = 0 
-where controlsrc = 'admin/Modules/viewsource.ascx'
-GO
-
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
