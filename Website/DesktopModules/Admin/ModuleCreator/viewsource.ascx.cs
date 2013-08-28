@@ -72,65 +72,65 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private void BindFiles(string controlSrc)
         {
-            string [] fileList; 
+            string[] fileList;
             cboFile.Items.Clear();
 
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
-            var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID,PortalId);
+            var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
 
-	    var modulePath = Server.MapPath("DesktopModules/" + objDesktopModule.FolderName + "/");
- 
+            var modulePath = Server.MapPath("DesktopModules/" + objDesktopModule.FolderName + "/");
+
             if (Directory.Exists(modulePath))
             {
-	        //iterate through files in desktopmodules folder
-   	        fileList = Directory.GetFiles(modulePath);
-    	        foreach(string filePath in fileList)
-    	        {
-                    switch(Path.GetExtension(filePath).ToLower())       
-                    {         
-                        case ".ascx":   
+                //iterate through files in desktopmodules folder
+                fileList = Directory.GetFiles(modulePath);
+                foreach (string filePath in fileList)
+                {
+                    switch (Path.GetExtension(filePath).ToLower())
+                    {
+                        case ".ascx":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            var resxPath = filePath.Replace(Path.GetFileName(filePath),"App_LocalResources\\" + Path.GetFileName(filePath)) + ".resx";
+                            var resxPath = filePath.Replace(Path.GetFileName(filePath), "App_LocalResources\\" + Path.GetFileName(filePath)) + ".resx";
                             if (File.Exists(resxPath))
                             {
-                                cboFile.Items.Add(new ListItem(Path.GetFileName(resxPath),resxPath));
+                                cboFile.Items.Add(new ListItem(Path.GetFileName(resxPath), resxPath));
                             }
                             break;
-                        case ".vb":   
+                        case ".vb":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".cs":   
+                        case ".cs":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".vbhtml":   
+                        case ".vbhtml":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".cshtml":   
+                        case ".cshtml":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".css":   
+                        case ".css":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".js":   
+                        case ".js":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".txt":   
+                        case ".txt":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".html":   
+                        case ".html":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".xml":   
+                        case ".xml":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".xslt":   
+                        case ".xslt":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".sql":   
+                        case ".sql":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".sqldataprovider":   
+                        case ".sqldataprovider":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
                     }
@@ -142,30 +142,30 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
 
 
-	    //iterate through files in app_code folder
+            //iterate through files in app_code folder
             modulePath = Globals.ApplicationMapPath + "\\App_Code\\" + objDesktopModule.FolderName.Replace("/", "\\") + "\\";
             if (Directory.Exists(modulePath))
-	    {
-  	        fileList = Directory.GetFiles(modulePath);
-    	        foreach(string filePath in fileList)
-    	        {
-                    switch(Path.GetExtension(filePath).ToLower())       
-                    {         
-                        case ".vb":   
+            {
+                fileList = Directory.GetFiles(modulePath);
+                foreach (string filePath in fileList)
+                {
+                    switch (Path.GetExtension(filePath).ToLower())
+                    {
+                        case ".vb":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
-                        case ".cs":   
+                        case ".cs":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
                             break;
                     }
                 }
-           }
+            }
 
-           // select file
-           if (cboFile.Items.FindByValue(Globals.ApplicationMapPath + "\\" + controlSrc.Replace("/","\\")) != null)
-           {
-               cboFile.Items.FindByValue(Globals.ApplicationMapPath + "\\" + controlSrc.Replace("/","\\")).Selected = true;
-           }
+            // select file
+            if (cboFile.Items.FindByValue(Globals.ApplicationMapPath + "\\" + controlSrc.Replace("/", "\\")) != null)
+            {
+                cboFile.Items.FindByValue(Globals.ApplicationMapPath + "\\" + controlSrc.Replace("/", "\\")).Selected = true;
+            }
 
         }
 
@@ -193,222 +193,225 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-		private void LoadLanguages()
-		{
-                    optLanguage.Items.Clear();
-		    var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates";
-   	            string [] folderList = Directory.GetDirectories(moduleTemplatePath);
-    		    foreach(string folderPath in folderList)
-    		    {
-		        optLanguage.Items.Add(new ListItem(Path.GetFileName(folderPath)));
-	            }
+        private void LoadLanguages()
+        {
+            optLanguage.Items.Clear();
+            var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates";
+            string[] folderList = Directory.GetDirectories(moduleTemplatePath);
+            foreach (string folderPath in folderList)
+            {
+                optLanguage.Items.Add(new ListItem(Path.GetFileName(folderPath)));
+            }
 
-                    var language = "";
-    	            foreach(ListItem objFile in cboFile.Items)
-    		    {
-                        if (objFile.Text.EndsWith(".vb"))
-                        {
-                            language = "VB";
-                        }
-                        if (objFile.Text.EndsWith(".cs"))
-                        {
-                            language = "C#";
-                        }
-		    }
-                    if (language == "")
-                    {
-                        optLanguage.SelectedIndex = 0;
-                    }
-                    else
-                    {
-                        optLanguage.Items.FindByValue(language).Selected = true;
-                    }
-		}
-
-	private void LoadModuleTemplates()
-	{
-                        cboTemplate.Items.Clear();
-			var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue;
-   			string [] folderList = Directory.GetDirectories(moduleTemplatePath);
-    			foreach(string folderPath in folderList)
-    			{
-				cboTemplate.Items.Add(new ListItem(Path.GetFileName(folderPath)));
-			}
-			cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
-	}
-
-		private void LoadReadMe()
-		{
-			var templatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedItem.Value;
-			if (File.Exists(templatePath + "\\readme.txt"))
-			{
-  			    var readMe = Null.NullString;
-            		    TextReader tr = new StreamReader(templatePath + "\\readme.txt");
-			    readMe = tr.ReadToEnd();
-            		    tr.Close();
-                            lblDescription.Text = readMe.Replace("\n","<br/>");
-                        }
-                        else
-                        {
-                            lblDescription.Text = "";
-                        }
-
-                        //Determine if Control Name is required
-                        var controlNameRequired = false;
-                        var controlName = "<Not Required>";
-   			string [] fileList = Directory.GetFiles(templatePath);
-    			foreach(string filePath in fileList)
-    			{
-			    if (Path.GetFileName(filePath).ToLower().IndexOf("template") > -1)
-                            {
-                                controlNameRequired = true;
-                                controlName = "Edit";
-                            }
-                            else
-                            {
-                                if (Path.GetFileName(filePath).EndsWith(".ascx"))
-                                {
-                                    controlName = Path.GetFileNameWithoutExtension(filePath);
-                                }
-                            }
-			}
-                        txtControl.Text = controlName; 
-                        txtControl.Enabled = controlNameRequired;
-                        if (txtControl.Enabled)
-                        {
-                            if (!cboTemplate.SelectedItem.Value.ToLower().StartsWith("module"))
-                            {
-                                var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
-                                var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
-                                var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID,PortalId);
-                                txtControl.Text = objDesktopModule.FriendlyName;
-                            }
-                        } 
-		}
-
-	private string CreateModuleControl()
-	{
-                        EventLogController objEventLog = new EventLogController();
-
-                        var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
-                        var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
-                        var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID,PortalId);
-                        var objPackage = PackageController.GetPackage(objDesktopModule.PackageID);
-
-			var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
-
-                        
-objEventLog.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
-
-
-			var controlName = Null.NullString;
-			var fileName = Null.NullString;
-			var modulePath = Null.NullString;
-			var sourceCode = Null.NullString;
-
-			//iterate through files in template folder
-   			string [] fileList = Directory.GetFiles(moduleTemplatePath);
-    			foreach(string filePath in fileList)
-    			{
-			        modulePath = Server.MapPath("DesktopModules/" + objDesktopModule.FolderName + "/");
-
-            			//open file
-            			TextReader tr = new StreamReader(filePath);
-				sourceCode = tr.ReadToEnd();
-            			tr.Close();
-
-                                //replace tokens
-				sourceCode = sourceCode.Replace("[OWNER]", objPackage.Owner.Replace(" ",""));
-				sourceCode = sourceCode.Replace("[MODULE]", objDesktopModule.FriendlyName.Replace(" ",""));
-				sourceCode = sourceCode.Replace("[CONTROL]", GetControl());
-				sourceCode = sourceCode.Replace("[YEAR]", DateTime.Now.Year.ToString());
-
-				//get filename 
-				fileName = Path.GetFileName(filePath);
-			 	fileName = fileName.Replace("template",GetControl());
-
-                                switch(Path.GetExtension(filePath).ToLower())       
-                                {         
-                                    case ".ascx":
-                                        controlName = fileName;   
-                                        break;
-                                    case ".vbhtml":   
-                                        controlName = fileName;   
-                                        break;
-                                    case ".cshtml":   
-                                        controlName = fileName;   
-                                        break;
-                                    case ".resx":   
-                                        modulePath = modulePath + "\\App_LocalResources\\";   
-                                        break;
-                                    case ".vb":  
-                                        if (filePath.ToLower().IndexOf(".ascx") == -1)
-                                        { 
-                                            modulePath = modulePath.Replace("DesktopModules","App_Code");   
-                                        }
-                                        break;
-                                    case ".cs":  
-                                        if (filePath.ToLower().IndexOf(".ascx") == -1)
-                                        { 
-                                            modulePath = modulePath.Replace("DesktopModules","App_Code");   
-                                        }
-                                        break;
-                                }
-
-				//check if folder exists
-                                if (!Directory.Exists(modulePath))
-	                        {
-                                    Directory.CreateDirectory(modulePath);
-                                }
-
-				//check if file already exists
-				if (!File.Exists(modulePath + fileName))
-				{
-					//create file
-            				TextWriter tw = new StreamWriter(modulePath + fileName);
-            				tw.WriteLine(sourceCode);
-            				tw.Close();
-                                        
-objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
-
-				}
-                        }
-
-			//Create module control
-                        if (controlName != Null.NullString)
-                        {
-                            try
-                            {
-			        objModuleControl = new ModuleControlInfo();
-			        objModuleControl.ModuleControlID = Null.NullInteger;
-			        objModuleControl.ModuleDefID = objModuleDefinition.ModuleDefID;
-			        objModuleControl.ControlKey = GetControl();
-			        objModuleControl.ControlSrc = "DesktopModules/" + objDesktopModule.FolderName + "/" + controlName;
-			        objModuleControl.ControlTitle = txtControl.Text;
-			        objModuleControl.ControlType = (SecurityAccessLevel) Enum.Parse(typeof (SecurityAccessLevel), cboType.SelectedItem.Value);
-			        objModuleControl.HelpURL = "";
-			        objModuleControl.IconFile = "";
-			        objModuleControl.ViewOrder = 0;
-			        objModuleControl.SupportsPartialRendering = true;
-			        objModuleControl.SupportsPopUps = true;
-			        ModuleControlController.AddModuleControl(objModuleControl);
-                                controlName = objModuleControl.ControlSrc;
-                            }
-                            catch
-                            {
-                                //Suppress error
-                            }
-                        }
-
-                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ControlCreated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
-
-                        return controlName;
-	}
-
-                private string GetControl()
+            var language = "";
+            foreach (ListItem objFile in cboFile.Items)
+            {
+                if (objFile.Text.EndsWith(".vb"))
                 {
-                    return txtControl.Text.Replace(" ","");
+                    language = "VB";
                 }
+                if (objFile.Text.EndsWith(".cs"))
+                {
+                    language = "C#";
+                }
+            }
+            if (language == "")
+            {
+                optLanguage.SelectedIndex = 0;
+            }
+            else
+            {
+                optLanguage.Items.FindByValue(language).Selected = true;
+            }
+        }
+
+        private void LoadModuleTemplates()
+        {
+            cboTemplate.Items.Clear();
+            var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue;
+            string[] folderList = Directory.GetDirectories(moduleTemplatePath);
+            foreach (string folderPath in folderList)
+            {
+                cboTemplate.Items.Add(new ListItem(Path.GetFileName(folderPath)));
+            }
+            cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
+        }
+
+        private void LoadReadMe()
+        {
+            var templatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedItem.Value;
+            if (File.Exists(templatePath + "\\readme.txt"))
+            {
+                var readMe = Null.NullString;
+                TextReader tr = new StreamReader(templatePath + "\\readme.txt");
+                readMe = tr.ReadToEnd();
+                tr.Close();
+                lblDescription.Text = readMe.Replace("\n", "<br/>");
+            }
+            else
+            {
+                lblDescription.Text = "";
+            }
+
+            //Determine if Control Name is required
+            var controlNameRequired = false;
+            var controlName = "<Not Required>";
+            string[] fileList = Directory.GetFiles(templatePath);
+            foreach (string filePath in fileList)
+            {
+                if (Path.GetFileName(filePath).ToLower().IndexOf("template") > -1)
+                {
+                    controlNameRequired = true;
+                    controlName = "Edit";
+                }
+                else
+                {
+                    if (Path.GetFileName(filePath).EndsWith(".ascx"))
+                    {
+                        controlName = Path.GetFileNameWithoutExtension(filePath);
+                    }
+                }
+            }
+            txtControl.Text = controlName;
+            txtControl.Enabled = controlNameRequired;
+            if (txtControl.Enabled)
+            {
+                if (!cboTemplate.SelectedItem.Value.ToLower().StartsWith("module"))
+                {
+                    var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
+                    var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
+                    var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
+                    txtControl.Text = objDesktopModule.FriendlyName;
+                }
+            }
+        }
+
+        private string CreateModuleControl()
+        {
+            EventLogController objEventLog = new EventLogController();
+
+            var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
+            var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
+            var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
+            var objPackage = PackageController.GetPackage(objDesktopModule.PackageID);
+
+            var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
+
+
+            objEventLog.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+
+
+            var controlName = Null.NullString;
+            var fileName = Null.NullString;
+            var modulePath = Null.NullString;
+            var sourceCode = Null.NullString;
+
+            //iterate through files in template folder
+            string[] fileList = Directory.GetFiles(moduleTemplatePath);
+            foreach (string filePath in fileList)
+            {
+                modulePath = Server.MapPath("DesktopModules/" + objDesktopModule.FolderName + "/");
+
+                //open file
+                TextReader tr = new StreamReader(filePath);
+                sourceCode = tr.ReadToEnd();
+                tr.Close();
+
+                //replace tokens
+                sourceCode = sourceCode.Replace("[OWNER]", objPackage.Owner.Replace(" ", ""));
+                sourceCode = sourceCode.Replace("[MODULE]", objDesktopModule.FriendlyName.Replace(" ", ""));
+                sourceCode = sourceCode.Replace("[CONTROL]", GetControl());
+                sourceCode = sourceCode.Replace("[YEAR]", DateTime.Now.Year.ToString());
+
+                //get filename 
+                fileName = Path.GetFileName(filePath);
+                fileName = fileName.Replace("template", GetControl());
+
+                switch (Path.GetExtension(filePath).ToLower())
+                {
+                    case ".ascx":
+                        controlName = fileName;
+                        break;
+                    case ".vbhtml":
+                        controlName = fileName;
+                        break;
+                    case ".cshtml":
+                        controlName = fileName;
+                        break;
+                    case ".resx":
+                        modulePath = modulePath + "\\App_LocalResources\\";
+                        break;
+                    case ".vb":
+                        if (filePath.ToLower().IndexOf(".ascx") == -1)
+                        {
+                            modulePath = modulePath.Replace("DesktopModules", "App_Code");
+                        }
+                        break;
+                    case ".cs":
+                        if (filePath.ToLower().IndexOf(".ascx") == -1)
+                        {
+                            modulePath = modulePath.Replace("DesktopModules", "App_Code");
+                        }
+                        break;
+                    case ".js":
+                        modulePath = modulePath + "\\js\\";
+                        break;
+                }
+
+                //check if folder exists
+                if (!Directory.Exists(modulePath))
+                {
+                    Directory.CreateDirectory(modulePath);
+                }
+
+                //check if file already exists
+                if (!File.Exists(modulePath + fileName))
+                {
+                    //create file
+                    TextWriter tw = new StreamWriter(modulePath + fileName);
+                    tw.WriteLine(sourceCode);
+                    tw.Close();
+
+                    objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+
+                }
+            }
+
+            //Create module control
+            if (controlName != Null.NullString)
+            {
+                try
+                {
+                    objModuleControl = new ModuleControlInfo();
+                    objModuleControl.ModuleControlID = Null.NullInteger;
+                    objModuleControl.ModuleDefID = objModuleDefinition.ModuleDefID;
+                    objModuleControl.ControlKey = GetControl();
+                    objModuleControl.ControlSrc = "DesktopModules/" + objDesktopModule.FolderName + "/" + controlName;
+                    objModuleControl.ControlTitle = txtControl.Text;
+                    objModuleControl.ControlType = (SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), cboType.SelectedItem.Value);
+                    objModuleControl.HelpURL = "";
+                    objModuleControl.IconFile = "";
+                    objModuleControl.ViewOrder = 0;
+                    objModuleControl.SupportsPartialRendering = true;
+                    objModuleControl.SupportsPopUps = true;
+                    ModuleControlController.AddModuleControl(objModuleControl);
+                    controlName = objModuleControl.ControlSrc;
+                }
+                catch
+                {
+                    //Suppress error
+                }
+            }
+
+            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ControlCreated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+
+            return controlName;
+        }
+
+        private string GetControl()
+        {
+            return txtControl.Text.Replace(" ", "");
+        }
 
 
         #endregion
@@ -420,7 +423,7 @@ objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, Ev
             base.OnLoad(e);
 
             cboFile.SelectedIndexChanged += OnFileIndexChanged;
-	    optLanguage.SelectedIndexChanged += OnLanguageSelectedIndexChanged;
+            optLanguage.SelectedIndexChanged += OnLanguageSelectedIndexChanged;
             cboTemplate.SelectedIndexChanged += cboTemplate_SelectedIndexChanged;
             cmdUpdate.Click += OnUpdateClick;
             cmdPackage.Click += OnPackageClick;
@@ -457,22 +460,22 @@ objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, Ev
                 LoadReadMe();
             }
 
-       }
+        }
 
         protected void OnFileIndexChanged(object sender, EventArgs e)
         {
             LoadFile();
         }
 
-	protected void OnLanguageSelectedIndexChanged(object sender, EventArgs e)
-	{
-		LoadModuleTemplates();
-	}
+        protected void OnLanguageSelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadModuleTemplates();
+        }
 
-	protected void cboTemplate_SelectedIndexChanged(object sender, EventArgs e)
-	{
-		LoadReadMe();
-	}
+        protected void cboTemplate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadReadMe();
+        }
 
         private void OnUpdateClick(object sender, EventArgs e)
         {
@@ -483,7 +486,7 @@ objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, Ev
         {
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
-            var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID,PortalId);
+            var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
             ModuleController objModules = new ModuleController();
             ModuleInfo objModule = objModules.GetModuleByDefinition(-1, "Extensions");
             Response.Redirect(Globals.NavigateURL(objModule.TabID, "PackageWriter", "rtab=" + TabId.ToString(), "packageId=" + objDesktopModule.PackageID.ToString(), "mid=" + objModule.ModuleID.ToString()) + "?popUp=true", true);
@@ -493,7 +496,7 @@ objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, Ev
         {
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
-            var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID,PortalId);
+            var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
             ModuleController objModules = new ModuleController();
             ModuleInfo objModule = objModules.GetModuleByDefinition(-1, "Extensions");
             Response.Redirect(Globals.NavigateURL(objModule.TabID, "Edit", "mid=" + objModule.ModuleID.ToString(), "PackageID=" + objDesktopModule.PackageID.ToString()) + "?popUp=true", true);

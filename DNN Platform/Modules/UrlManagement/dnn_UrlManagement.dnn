@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="UrlManagement" type="Library" version="07.01.02" isSystem="true">
+    <package name="UrlManagement" type="Library" version="07.02.00" isSystem="true">
       <friendlyName>Url Management</friendlyName>
       <description>DotNetNuke Corporation URL Management module</description>
       <iconFile>~/Icons/Sigma/AdvancedUrlMngmt_32x32.png</iconFile>

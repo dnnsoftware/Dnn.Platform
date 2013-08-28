@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="6.0">
 	<packages>
-		<package name="DotNetNuke.MobileManagement" type="Module" version="07.01.02" isSystem="true">
+		<package name="DotNetNuke.MobileManagement" type="Module" version="07.02.00" isSystem="true">
 			<friendlyName>Site Redirection Management</friendlyName>
 			<iconFile>Images/MobileManagement_Standard_32x32.png</iconFile>
 			<description>The Site Redirection Management module allows users to manage their website redirects.</description>

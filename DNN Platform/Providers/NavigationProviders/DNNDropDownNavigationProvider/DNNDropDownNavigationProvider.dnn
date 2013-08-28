@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.DNNDropDownNavigationProvider" type="Provider" version="07.01.02">
+        <package name="DotNetNuke.DNNDropDownNavigationProvider" type="Provider" version="07.02.00">
             <friendlyName>DotNetNuke DNN DropDown Navigation Provider</friendlyName>
             <description>DotNetNuke DNN DropDown Navigation Provider Project provides a navigation system based on the ASP.NET Drop Down control.</description>
             <dependencies/>

@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.SubscriptionsMgmt" type="Module" version="07.01.02">
+		<package name="DotNetNuke.SubscriptionsMgmt" type="Module" version="07.02.00">
 			<friendlyName>Subscription Management</friendlyName>
 			<description>DNN's Email Subscriptions Manager</description>
 			<iconFile>~/Images/icon_extensions_32px.png</iconFile>
@@ -68,7 +68,7 @@
 						<attributes>
 							<businessControllerClass>DotNetNuke.Modules.SubscriptionsMgmt.Components.Controllers.BusinessController</businessControllerClass>
 							<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-							<upgradeVersionsList>07.01.02</upgradeVersionsList>
+							<upgradeVersionsList>07.02.00</upgradeVersionsList>
 						</attributes>
 					</eventMessage>
 				</component>
@@ -96,7 +96,7 @@
 						</resourceFile>
 					</resourceFiles>
 				</component>
-				<component type="Cleanup" version="07.01.02">
+				<component type="Cleanup" version="07.02.00">
 					<files>
                         <file>
                             <path>bin</path>

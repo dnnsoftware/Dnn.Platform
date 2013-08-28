@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="{0}" type="Module" version="07.01.02" isSystem="true">
+    <package name="{0}" type="Module" version="07.02.00" isSystem="true">
       <friendlyName>{0}</friendlyName>
       <description>{1}</description>
       <owner>
