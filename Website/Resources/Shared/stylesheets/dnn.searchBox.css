@@ -14,15 +14,17 @@
 
     .dnnSearchBox > .dnnSearchBox_advanced_query {
         display: block;
-        position: absolute;
+	    float: left;
         color: #aaa;
         z-index: 10;
-        top: 6px;
+	    position: relative;
+        top: 0px;
         font-size: 12px;
         padding: 3px 20px 3px 8px;
         border: 1px solid #ccc;
         -webkit-border-radius: 3px;
         border-radius: 3px;
+	    background-color: #fff;
     }
 
      .dnnSearchBox > .dnnSearchBox_advanced_query b {
@@ -63,7 +65,7 @@
         background: none;
         vertical-align: top;
         margin: 4px 0 0 0;
-        z-index: 20;
+        z-index: 5;
     }
 
         .dnnSearchBox > a.dnnSearchBoxClearText.dnnShow{
@@ -89,7 +91,9 @@
 
     .dnnSearchBox > a.dnnSearchButton {
         display: block;
-        float: right;
+	    position: absolute;
+	    top: 4px;
+	    right: 0;
         width: 18px;
         height: 18px;
         background-image: url(../../../images/search/searchButton.png);
@@ -101,8 +105,9 @@
     }
 
     .dnnSearchBox > .dnnSearchBox_advanced {
-        float: right;
-        position: relative;
+	    position: absolute;
+	    top: 4px;
+	    right: 24px;
         margin: 0 0 0 10px;
     }
 

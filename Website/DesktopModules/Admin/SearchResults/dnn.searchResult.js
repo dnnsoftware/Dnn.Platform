@@ -290,9 +290,9 @@
                 width: wrapWidth - w - 165 - 8
             });
 
-            $('#dnnSearchResult_dnnSearchBox_input').next().css({
-                right: w + 150
-            });
+            //$('#dnnSearchResult_dnnSearchBox_input').next().css({
+            //    right: w + 150
+            //});
 
         } else {
             advancedTextCtrl.html('').hide();
