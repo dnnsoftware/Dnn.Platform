@@ -309,7 +309,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 								FileInfo savedFile = _fileController.GetFileById(Int32.Parse(fileID), dialogParams.PortalId);
 
 								linkTrackingInfo = _urlController.GetUrlTracking(dialogParams.PortalId, string.Format("fileID={0}", fileID), dialogParams.ModuleId);
-								dialogParams.LinkClickUrl = string.Format("{0}{1}{2}/{3}", GetDomain(), dialogParams.HomeDirectory, savedFile.Folder, savedFile.FileName).Replace("//", "/");
+								
 							}
                             else if (dialogParams.LinkUrl.ToLowerInvariant().Contains("linkclick.aspx"))
 							{
