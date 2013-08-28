@@ -18,13 +18,13 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 namespace [OWNER].[MODULE]
 {
 
-    [TableName("[OWNER]_[MODULE]s")]
-    [PrimaryKey("[MODULE]ID")]
+    [TableName("[OWNER]_[CONTROL]s")]
+    [PrimaryKey("[CONTROL]ID")]
     [Scope("ModuleID")]
-    [Cacheable("[MODULE]s", CacheItemPriority.Default, 20)]
-    public class [MODULE]Info
+    [Cacheable("[CONTROL]s", CacheItemPriority.Default, 20)]
+    public class [CONTROL]Info
     {
-        public int [MODULE]ID { get; set; }
+        public int [CONTROL]ID { get; set; }
         public int ModuleID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

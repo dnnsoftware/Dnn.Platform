@@ -16,7 +16,7 @@ using DotNetNuke.Entities.Modules;
 namespace [OWNER].[MODULE]
 {
 
-	public class [MODULE]Controller
+	public class [CONTROL]
 	{
 
 	}

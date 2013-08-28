@@ -356,6 +356,9 @@ namespace DotNetNuke.Modules.Admin.Modules
                     case ".js":
                         modulePath = modulePath + "\\js\\";
                         break;
+                    case ".css":
+                        modulePath = modulePath + "\\css\\";
+                        break;
                 }
 
                 //check if folder exists

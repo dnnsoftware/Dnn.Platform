@@ -156,3 +156,11 @@ Desktop.ini
 Website/DesktopModules/IdentitySwitcher/
 Website/DesktopModules/PhilipBeadle/Test1/_View.cshtml
 Website/DesktopModules/PhilipBeadle/Test1/readme.txt
+Website/App_Code/PhilipBeadle/Test/HelloWorldController.cs
+Website/App_Code/PhilipBeadle/Test/HelloWorldInfo.cs
+Website/App_Code/PhilipBeadle/Test/Test.cs
+Website/DesktopModules/PhilipBeadle/Test/01.00.00.sql
+Website/DesktopModules/PhilipBeadle/Test/_View.cshtml
+Website/DesktopModules/PhilipBeadle/Test/js/Test.js
+Website/DesktopModules/PhilipBeadle/Test/readme.txt
+Website/DesktopModules/PhilipBeadle/Test/uninstall.sql
