@@ -16,6 +16,12 @@
             <param name="assembly">The assembly to return the name for</param>
             <returns>The assembly short name</returns>
         </member>
+        <member name="T:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy">
+            <summary>
+            Combines multiple presenter discovery strategies into one. Strategies will be evaluated in the order
+            they are provided. The first strategy to provide a result wins.
+            </summary>
+        </member>
         <member name="T:WebFormsMvp.Binder.IPresenterDiscoveryStrategy">
             <summary>
             Defines that contract for classes that implement logic for finding relevant presenters given
@@ -26,9 +32,27 @@
             <summary>
             Gets the presenter bindings for passed views using the passed hosts.
             </summary>
-            <param name="hosts">The host objects.</param>
-            <param name="viewInstances">The views.</param>
-            <returns>The presenter bindings.</returns>
+            <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
+            <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy.#ctor(WebFormsMvp.Binder.IPresenterDiscoveryStrategy[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy"/> class.
+            </summary>
+            <param name="strategies">The strategies to be evaluated.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy.#ctor(System.Collections.Generic.IEnumerable{WebFormsMvp.Binder.IPresenterDiscoveryStrategy})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy"/> class.
+            </summary>
+            <param name="strategies">The strategies to be evaluated.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy.GetBindings(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{WebFormsMvp.IView})">
+            <summary>
+            Gets the presenter bindings for passed views using the passed hosts.
+            </summary>
+            <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
+            <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>
         </member>
         <member name="T:WebFormsMvp.Binder.ConventionBasedPresenterDiscoveryStrategy">
             <summary>
@@ -78,6 +102,19 @@
             Creates an adapter for the specified <see cref="T:System.Web.HttpContext"/> instance.
             </summary>
             <param name="httpContext">The instance to create an adapter for.</param>
+        </member>
+        <member name="T:WebFormsMvp.Binder.AttributeBasedPresenterDiscoveryStrategy">
+            <summary>
+            A strategy for discovery presenters based on [PresenterBinding] attributes being placed
+            on views and view hosts.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.AttributeBasedPresenterDiscoveryStrategy.GetBindings(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{WebFormsMvp.IView})">
+            <summary>
+            Gets the presenter bindings for passed views using the passed hosts.
+            </summary>
+            <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
+            <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>
         </member>
         <member name="T:WebFormsMvp.Binder.DefaultPresenterFactory">
             <summary>
