@@ -75,7 +75,6 @@ namespace DotNetNuke.Services.Journal
         void Journal_Comment_Delete(int journalId, int commentId);
 
         int Journal_Comment_Save(int journalId, int commentId, int userId, string comment, string xml);
-        int Journal_Comment_LargeComment_Save(int journalId, int commentId, int userId, string comment, string xml);
 
         IDataReader Journal_Comment_List(int journalId);
 
