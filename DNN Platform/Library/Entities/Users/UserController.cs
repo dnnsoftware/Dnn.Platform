@@ -653,12 +653,21 @@ namespace DotNetNuke.Entities.Users
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
-
+            //ensure valid GUID exists (covers case where password is randomly generated - has 24 hr validity as per other Admin user steps
+            var passwordExpiry = DateTime.Now.AddMinutes(1440);
+            var passwordGuid = Guid.NewGuid();
+            user.PasswordResetExpiration = passwordExpiry;
+            user.PasswordResetToken = passwordGuid;
+            
             //Create the User
             var createStatus = MembershipProvider.Instance().CreateUser(ref user);
 
             if (createStatus == UserCreateStatus.Success)
             {
+                //reapply guid/expiry (cleared when user is created)
+                user.PasswordResetExpiration = passwordExpiry;
+                user.PasswordResetToken = passwordGuid;
+                UpdateUser(user.PortalID, user);
                 var objEventLog = new EventLogController();
                 objEventLog.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_CREATED);
                 DataCache.ClearPortalCache(portalId, false);
