@@ -10,6 +10,8 @@
 
     NTree.prototype = {
 
+        constructor: NTree,
+
         addChildNode: function (node) {
             this.children.push(node);
             return this;
@@ -58,14 +60,11 @@
 
     };
 
-    NTree.equals = function (one, another) {
+    NTree.equals = function (one, another, nodeComparer) {
         if (one === another) {
             return true;
         }
-        if (one && another && one.data && another.data) {
-            return one.data.id === another.data.id;
-        }
-        return false;
+        return typeof nodeComparer === "function" && one && another && nodeComparer.call(this, one.data, another.data);
     };
 
     NTree.sort = function (root, comparer) {
@@ -110,7 +109,7 @@
         var index = 0;
         while (true) {
             while (node) {
-                if (callback && callback(node, stack)) {
+                if (typeof callback === "function" && callback.call(this, node, stack)) {
                     stack = [];
                     indexStack = [];
                     break;
@@ -142,35 +141,54 @@
         return true;
     };
 
+    NTree.getPath = function (root, predicate) {
+        var path = [];
+        var callback = function (traversedNode, stack) {
+            if (typeof predicate === "function" && predicate.call(this, traversedNode.data)) {
+                path = stack.slice(0); // clones array
+                path.push(traversedNode); // adds the current node
+                return true;
+            }
+            return false;
+        };
+        NTree.inOrderTraverse(root, callback);
+        return path;
+    };
+
     var Dictionary = this.Dictionary = function (elements) {
-        this.elements = elements || {};
+        this._elements = elements || {};
         this.hasSpecialProto = false; // has "__proto__" key
         this.specialProto = undefined; // "__proto__" element
     };
 
     Dictionary.prototype = {
 
+        constructor: Dictionary,
+
         has: function (key) {
             if (key === "__proto__") {
                 return this.hasSpecialProto;
             }
-            return {}.hasOwnProperty.call(this.elements, key);
+            return {}.hasOwnProperty.call(this._elements, key);
         },
 
         get: function (key) {
             if (key === "__proto__") {
                 return this.specialProto;
             }
-            return this.has(key) ? this.elements[key] : undefined;
+            return this.has(key) ? this._elements[key] : undefined;
         },
 
-        set: function(key, value) {
+        set: function (key, value) {
+            if (Object.isNullOrUndefined(key)) {
+                throw "InvalidArgumentException {" + key + "},{" + value + "}";
+            }
             if (key === "__proto__") {
                 this.hasSpecialProto = true;
                 this.specialProto = value;
             }
             else {
-                this.elements[key] = value;
+                this._elements[key] = value;
             }
         },
 
@@ -180,16 +198,24 @@
                 this.specialProto = undefined;
             }
             else {
-                delete this.elements[key];
+                delete this._elements[key];
             }
         },
 
-        clear: function(key) {
-            this.elements = [];
+        clear: function() {
+            this._elements = [];
+        },
+
+        keys: function() {
+            var names = Object.getOwnPropertyNames(this._elements);
+            if (this.hasSpecialProto) {
+                names.push("__proto__");
+            }
+            return names;
         },
 
         entries: function() {
-            return this.elements;
+            return this._elements;
         }
 
     };

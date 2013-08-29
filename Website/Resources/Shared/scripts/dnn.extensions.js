@@ -23,6 +23,18 @@ Object.IsArray = function (obj) {
     return false;
 };
 
+if (typeof Object.getOwnPropertyNames === "undefined") {
+    Object.getOwnPropertyNames = function(obj) {
+        var ownProperties = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                ownProperties.push(key);
+            }
+        }
+        return ownProperties;
+    };
+};
+
 if (typeof String.toCamel === "undefined") {
 	String.toCamel = function (text) {
 		return String.isNullOrEmpty(text) ? text : (text.charAt(0).toLowerCase() + text.substr(1));
@@ -59,7 +71,7 @@ String.prototype.append = function (stringToAppend, separator) {
 	if (String.isNullOrEmpty(stringToAppend)) {
 		return this.toString();
 	}
-	else if (String.isNullOrEmpty(this)) {
+	else if (String.isNullOrEmpty(this.toString())) {
 		return stringToAppend;
 	}
 	else {
@@ -171,3 +183,105 @@ dnn.singletonify = function(constructorFunc /*, args */) {
         };
     };
 };
+
+dnn.extend = function(child, parent) {
+    var tempConstructor = function() {};
+    tempConstructor.prototype = parent.prototype;
+    child.prototype = new tempConstructor();
+    child.prototype.constructor = child;
+    child.superclass = parent.prototype;
+};
+
+(function ($, window, document, undefined) {
+    "use strict";
+
+    var KeyValueConverter = this.KeyValueConverter = function () {
+    };
+
+    KeyValueConverter.arrayToDictionary = function (pairs, keyProp, valProp) {
+        var dictionary = new dnn.Dictionary();
+        if (pairs && pairs.length > 0) {
+            for (var i = 0, size = pairs.length; i < size; i++) {
+                dictionary.set(pairs[i][keyProp], pairs[i][valProp]);
+            }
+        }
+        return dictionary;
+    };
+
+    KeyValueConverter.dictionaryToArray = function (dictionary, keyProp, valProp) {
+        var pairs = [];
+        if (dictionary) {
+            for (var key in dictionary) {
+                var pair = {};
+                pair[keyProp] = key;
+                pair[valProp] = dictionary[key];
+                pairs.push(pair);
+            }
+        }
+        return pairs;
+    };
+
+    KeyValueConverter.getKeyValuePairByKey = function (pairs, key) {
+        if (!pairs) {
+            return null;
+        }
+        for (var i = 0, size = pairs.length; i < size; i++) {
+            if (pairs[i].key === key) {
+                return pairs[i];
+            }
+        }
+        return null;
+    };
+
+}).apply(dnn, [jQuery, window, document]);
+
+if (typeof Date.prototype.format === "undefined") {
+    Date.prototype.format = function(pattern) {
+        var hours = this.getHours();
+        var ttime = "AM";
+        if (pattern.indexOf("t") > -1 && hours > 12) {
+            hours = hours - 12;
+            ttime = "PM";
+        }
+
+        var o = {
+            "M+": this.getMonth() + 1, //month
+            "d+": this.getDate(), //day
+            "h+": hours, //hour
+            "m+": this.getMinutes(), //minute
+            "s+": this.getSeconds(), //second
+            "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+            "S": this.getMilliseconds(), //millisecond,
+            "t+": ttime
+        };
+
+        if (/(y+)/.test(pattern)) {
+            pattern = pattern.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(pattern)) {
+                pattern = pattern.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return pattern;
+    };
+}
+
+/* Compare the current date against another date.
+     *
+     * @param b  {Date} the other date
+     * @returns   -1 : if this < b
+     *             0 : if this === b
+     *             1 : if this > b
+     *            NaN : if a or b is an illegal date
+    */
+if (typeof Date.prototype.compare === "undefined") {
+    Date.prototype.compare = function (b) {
+        if (b.constructor !== Date) {
+            throw "invalid_date";
+        }
+        return (isFinite(this.valueOf()) && isFinite(b.valueOf()) ?
+                    (this > b) - (this < b) : NaN);
+    };
+}
+

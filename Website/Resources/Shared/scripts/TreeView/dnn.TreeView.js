@@ -102,7 +102,7 @@
         },
 
         _onRedraw: function (nodeContext) {
-            var e = $.Event('onredraw');
+            var e = $.Event('onredrawtree');
             this.$this.trigger(e, [nodeContext]);
         },
 
