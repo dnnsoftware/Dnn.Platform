@@ -225,6 +225,10 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority RolesCachePriority = CacheItemPriority.Default;
         public const int RolesCacheTimeOut = 20;
 
+        public const string RoleGroupsCacheKey = "RoleGroups:{0}";
+        public const CacheItemPriority RoleGroupsCachePriority = CacheItemPriority.Default;
+        public const int RoleGroupsCacheTimeOut = 20;
+
         public const string JournalTypesCacheKey = "JournalTypes:{0}";
         public const CacheItemPriority JournalTypesCachePriority = CacheItemPriority.Default;
         public const int JournalTypesTimeOut = 20;

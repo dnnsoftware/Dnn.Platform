@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Linq;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -351,6 +352,16 @@ namespace DotNetNuke.Security.Roles
 
         #region RoleGroup Methods
 
+        private void ClearRoleGroupCache(int portalId)
+        {
+            DataCache.ClearCache(GetRoleGroupsCacheKey(portalId));
+        }
+
+        private string GetRoleGroupsCacheKey(int portalId)
+        {
+            return String.Format(DataCache.RoleGroupsCacheKey, portalId);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateRoleGroup persists a RoleGroup to the Data Store
@@ -366,7 +377,11 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override int CreateRoleGroup(RoleGroupInfo roleGroup)
         {
-            return Convert.ToInt32(dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName, roleGroup.Description, UserController.GetCurrentUserInfo().UserID));
+            var roleGroupId = dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName,
+                                                        roleGroup.Description,
+                                                        UserController.GetCurrentUserInfo().UserID);
+            ClearRoleGroupCache(roleGroup.PortalID);
+            return roleGroupId;
         }
 
         /// -----------------------------------------------------------------------------
@@ -381,6 +396,7 @@ namespace DotNetNuke.Security.Roles
         public override void DeleteRoleGroup(RoleGroupInfo roleGroup)
         {
             dataProvider.DeleteRoleGroup(roleGroup.RoleGroupID);
+            ClearRoleGroupCache(roleGroup.PortalID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -396,12 +412,12 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
         {
-            return CBO.FillObject<RoleGroupInfo>(dataProvider.GetRoleGroup(portalId, roleGroupId));
+            return GetRoleGroupsInternal(portalId).SingleOrDefault(r => r.RoleGroupID == roleGroupId);
         }
 
-        public override RoleGroupInfo GetRoleGroupByName(int PortalID, string RoleGroupName)
+        public override RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
-            return CBO.FillObject<RoleGroupInfo>(dataProvider.GetRoleGroupByName(PortalID, RoleGroupName));
+            return GetRoleGroupsInternal(portalId).SingleOrDefault(r => r.RoleGroupName == roleGroupName);
         }
 
         /// -----------------------------------------------------------------------------
@@ -416,7 +432,17 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override ArrayList GetRoleGroups(int portalId)
         {
-            return CBO.FillCollection(dataProvider.GetRoleGroups(portalId), typeof(RoleGroupInfo));
+            return new ArrayList(GetRoleGroupsInternal(portalId).ToList());
+        }
+
+        private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)
+        {
+            var cacheArgs = new CacheItemArgs(GetRoleGroupsCacheKey(portalId), 
+                                                DataCache.RoleGroupsCacheTimeOut, 
+                                                DataCache.RoleGroupsCachePriority);
+
+            return CBO.GetCachedObject<IEnumerable<RoleGroupInfo>>(cacheArgs, c => 
+                                            CBO.FillCollection<RoleGroupInfo>(dataProvider.GetRoleGroups(portalId)));
         }
 
         /// -----------------------------------------------------------------------------
@@ -432,6 +458,7 @@ namespace DotNetNuke.Security.Roles
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {
             dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName, roleGroup.Description, UserController.GetCurrentUserInfo().UserID);
+            ClearRoleGroupCache(roleGroup.PortalID);
         }
 		
 
