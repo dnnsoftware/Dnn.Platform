@@ -4,7 +4,8 @@
 /*globals jQuery, window, Sys */
 (function ($, Sys) {
     function setUpProfile() {
-        $('.dnnButtonDropdown').dnnSettingDropdown();
+    	$('.dnnButtonDropdown').dnnSettingDropdown();
+	    $('#<%=ProfileProperties.ClientID%>').dnnPanels();
     }
 
     $(document).ready(function () {
