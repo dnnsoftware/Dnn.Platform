@@ -10,8 +10,9 @@
 <dnn:DnnCssInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/lib/codemirror.css" />
 
 <%-- Custom JavaScript Registration --%>
-<dnn:dnnjsinclude runat="server" filepath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/lib/codemirror.js" priority="1" />
-<dnn:dnnjsinclude runat="server" filepath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/mode/clike/clike.js" priority="2" />
+<dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/lib/codemirror.js" Priority="1" />
+<dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/mode/clike/clike.js" Priority="2" />
+<dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/js/ModuleCreator.js" Priority="2" />
 
 <script>
     jQuery(function ($) {
@@ -26,15 +27,16 @@
 <div id="viewSourceForm" class="dnnForm dnnViewSource dnnClear">
 
     <ul class="dnnAdminTabNav dnnClear">
-        <li><a href="#rbEdit">Edit Control</a></li>
-        <li><a href="#rbAdd">Add Control</a></li>
+        <li><a href="#rbEdit"><%=Localization.GetString("Edit.Text", LocalResourceFile)%></a></li>
+        <li><a href="#rbSnippet"><%=Localization.GetString("Snippet.Text", LocalResourceFile)%></a></li>
+        <li><a href="#rbAdd"><%=Localization.GetString("Add.Text", LocalResourceFile)%></a></li>
     </ul>
     <div class="rbEdit dnnClear" id="rbEdit">
         <fieldset>
 
-	    <div class="dnnFormItem">
+            <div class="dnnFormItem">
 
-                <dnn:Label id="plFile" runat="Server" />
+                <dnn:Label ID="plFile" runat="Server" />
 
                 <asp:DropDownList ID="cboFile" runat="server" AutoPostBack="true" />
 
@@ -42,7 +44,7 @@
 
             <div class="dnnFormItem">
 
-                <dnn:label id="plSource" controlname="txtSource" runat="server" />
+                <dnn:Label ID="plSource" ControlName="txtSource" runat="server" />
                 <asp:Label ID="lblPath" runat="server" />
             </div>
             <div>
@@ -54,13 +56,17 @@
 
         <ul class="dnnActions dnnClear">
 
-            <li><asp:LinkButton id="cmdUpdate" resourcekey="cmdUpdate" runat="server" cssclass="dnnPrimaryAction" /></li>
+            <li>
+                <asp:LinkButton ID="cmdUpdate" resourcekey="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" /></li>
 
-            <li><asp:LinkButton id="cmdConfigure" resourcekey="cmdConfigure" runat="server" cssclass="dnnSecondaryAction" causesvalidation="False" /></li>
+            <li>
+                <asp:LinkButton ID="cmdConfigure" resourcekey="cmdConfigure" runat="server" CssClass="dnnSecondaryAction" CausesValidation="False" /></li>
 
-            <li><asp:LinkButton id="cmdPackage" resourcekey="cmdPackage" runat="server" cssclass="dnnSecondaryAction" causesvalidation="False" /></li>
+            <li>
+                <asp:LinkButton ID="cmdPackage" resourcekey="cmdPackage" runat="server" CssClass="dnnSecondaryAction" CausesValidation="False" /></li>
 
-            <li><asp:HyperLink id="cmdCancel1" resourcekey="cmdCancel" runat="server" cssclass="dnnSecondaryAction" causesvalidation="False" /></li>
+            <li>
+                <asp:HyperLink ID="cmdCancel1" resourcekey="cmdCancel" runat="server" CssClass="dnnSecondaryAction" causesvalidation="False" /></li>
 
         </ul>
 
@@ -70,20 +76,20 @@
 
             <div class="dnnFormItem">
 
-                <dnn:label id="plLanguage" controlname="optLanguage" runat="server" />
+                <dnn:Label ID="plLanguage" ControlName="optLanguage" runat="server" />
 
-	        <asp:RadioButtonList ID="optLanguage" CssClass="dnnFormRadioButtons" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostback="True" />
+                <asp:RadioButtonList ID="optLanguage" CssClass="dnnFormRadioButtons" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" />
 
-            </div> 
+            </div>
             <div class="dnnFormItem">
 
-                <dnn:label id="plTemplate" controlname="cboTemplate" runat="server" />
+                <dnn:Label ID="plTemplate" ControlName="cboTemplate" runat="server" />
 
-                <asp:DropdownList ID="cboTemplate" runat="server" AutoPostback="True" />
-            </div> 
+                <asp:DropDownList ID="cboTemplate" runat="server" AutoPostBack="True" />
+            </div>
             <div class="dnnFormItem">
 
-                <dnn:label id="plControl" controlname="txtControl" runat="server" />
+                <dnn:Label ID="plControl" ControlName="txtControl" runat="server" />
 
                 <asp:TextBox ID="txtControl" runat="server" />
 
@@ -91,7 +97,7 @@
 
             <div class="dnnFormItem">
 
-                <dnn:label id="plType" controlname="cboType" runat="server" />
+                <dnn:Label ID="plType" ControlName="cboType" runat="server" />
 
                 <div class="dnnLeft">
                     <asp:RadioButtonList ID="cboType" CssClass="dnnFormRadioButtons" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
@@ -105,16 +111,30 @@
 
         <ul class="dnnActions dnnClear">
 
-            <li><asp:LinkButton id="cmdCreate" resourcekey="cmdCreate" runat="server" cssclass="dnnPrimaryAction" /></li>
+            <li>
+                <asp:LinkButton ID="cmdCreate" resourcekey="cmdCreate" runat="server" CssClass="dnnPrimaryAction" /></li>
 
-            <li><asp:HyperLink id="cmdCancel2" resourcekey="cmdCancel" runat="server" cssclass="dnnSecondaryAction" causesvalidation="False" /></li>
+            <li>
+                <asp:HyperLink ID="cmdCancel2" resourcekey="cmdCancel" runat="server" CssClass="dnnSecondaryAction" causesvalidation="False" /></li>
 
         </ul>
 
         <div class="dnnFormItem">
 
             <asp:Label ID="lblDescription" runat="server" />
-        </div> 
+        </div>
+    </div>
+    <div class="dnnClear" id="rbSnippet">
+        <fieldset legend="Snippets">
+
+            <div class="dnnFormItem">
+
+                <dnn:Label ID="lblSnippet" runat="Server" />
+
+                <asp:DropDownList ID="cboSnippets" runat="server" AutoPostBack="true" />
+                <asp:TextBox runat="server" ID="txtSnippet" TextMode="MultiLine"></asp:TextBox>
+            </div>
+        </fieldset>
     </div>
 </div>
 <script type="text/javascript">
@@ -140,6 +160,20 @@
         });
 
     });
+    function loadSnippets(data) {
+        alert(data);
+    }
 
-</script>            
+    var sf = $.ServicesFramework(369);
+    $.ajax({
+        type: "POST",
+        beforeSend: sf.setModuleHeaders,
+        url: sf.getServiceRoot("Admin/ModuleCreator") + "ModuleCreator/MyResponse"
+    }).done(function (data) {
+        loadSnippets(data);
+    }).fail(function (xhr, result, status) {
+        alert("Uh-oh, something broke: " + status);
+    });
+
+</script>
 
