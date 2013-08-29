@@ -2969,13 +2969,12 @@ namespace DotNetNuke.Services.Upgrade
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
             AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ModuleCreator/CreateModule.ascx", "~/DesktopModules/Admin/ModuleCreator/icon.png", SecurityAccessLevel.Host, 0);
-            foreach (var desktopModuleInfo in DesktopModuleController.GetDesktopModules(Null.NullInteger))
+            if (ModuleDefinitionController.GetModuleDefinitionByID(moduleDefId) != null)
             {
-                if (desktopModuleInfo.Value.ModuleName == "ModuleCreator")
-                {
-                    desktopModuleInfo.Value.Category = "Developer";
-                    DesktopModuleController.SaveDesktopModule(desktopModuleInfo.Value, false, false);
-                }
+                var desktopModuleId = ModuleDefinitionController.GetModuleDefinitionByID(moduleDefId).DesktopModuleID;
+                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
+                desktopModule.Category = "Developer";
+                DesktopModuleController.SaveDesktopModule(desktopModule, false, false);
             }
         }
 
