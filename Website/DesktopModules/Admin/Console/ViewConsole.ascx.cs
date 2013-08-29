@@ -380,15 +380,8 @@ namespace DesktopModules.Admin.Console
 					SettingsBreak.Visible = (IconSize.Visible && View.Visible);
 
 				    List<TabInfo> tempTabs = (IsHostTab())
-										? TabController.GetTabsBySortOrder(Null.NullInteger).OrderBy(t => t.LocalizedTabName).ToList()
-										: TabController.GetTabsBySortOrder(PortalId).OrderBy(t => t.LocalizedTabName).ToList();
-
-					//if OrderTabsByHierarchy set to true, we need reorder the tab list to move tabs which have child tabs to the end of list.
-					//so that the list display in UI can show tabs in same level in same area, and not break by child tabs.
-					if (OrderTabsByHierarchy)
-					{
-						tempTabs = tempTabs.OrderBy(t => t.Level).ThenBy(t => t.HasChildren).ToList();
-					}
+										? TabController.GetTabsBySortOrder(Null.NullInteger).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList()
+										: TabController.GetTabsBySortOrder(PortalId).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList();
 
 					_tabs = new List<TabInfo>();
 
@@ -418,6 +411,13 @@ namespace DesktopModules.Admin.Console
 							}
 							_tabs.Add(tab);  
 						}
+					}
+
+					//if OrderTabsByHierarchy set to true, we need reorder the tab list to move tabs which have child tabs to the end of list.
+					//so that the list display in UI can show tabs in same level in same area, and not break by child tabs.
+					if (OrderTabsByHierarchy)
+					{
+						_tabs = _tabs.OrderBy(t => t.HasChildren).ToList();
 					}
 
 				    int minLevel = -1;

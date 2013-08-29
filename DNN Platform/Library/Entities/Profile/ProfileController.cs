@@ -613,9 +613,10 @@ namespace DotNetNuke.Entities.Profile
         public static bool ValidateProfile(int portalId, UserProfile objProfile)
         {
             bool isValid = true;
+			var imageType = new ListController().GetListEntryInfo("DataType", "Image");
             foreach (ProfilePropertyDefinition propertyDefinition in objProfile.ProfileProperties)
             {
-                if (propertyDefinition.Required && string.IsNullOrEmpty(propertyDefinition.PropertyValue))
+				if (propertyDefinition.Required && string.IsNullOrEmpty(propertyDefinition.PropertyValue) && propertyDefinition.DataType != imageType.EntryID)
                 {
                     isValid = false;
                     break;
