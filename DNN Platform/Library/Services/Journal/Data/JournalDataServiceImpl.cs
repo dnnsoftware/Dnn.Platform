@@ -156,6 +156,12 @@ namespace DotNetNuke.Services.Journal
             return commentId;
         }
 
+        public int Journal_Comment_LargeComment_Save(int journalId, int commentId, int userId, string comment, string xml)
+        {
+            commentId = _provider.ExecuteScalar<int>("Journal_Comment_LargeComment_Save", journalId, commentId, userId, comment, xml);
+            return commentId;
+        }
+        
         public IDataReader Journal_Comment_List(int journalId)
         {
             return _provider.ExecuteReader("Journal_Comment_List", journalId);

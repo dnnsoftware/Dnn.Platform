@@ -388,11 +388,11 @@ namespace DotNetNuke.Modules.Journal
             try
             {
                 var ci = new CommentInfo { JournalId = postData.JournalId, Comment = HttpUtility.UrlDecode(postData.Comment) };
-                if (ci.Comment.Length > 2000)
-                {
-                    ci.Comment = ci.Comment.Substring(0, 1999);
-                    ci.Comment = Utilities.RemoveHTML(ci.Comment);
-                }
+                //if (ci.Comment.Length > 2000)
+                //{
+                //    ci.Comment = ci.Comment.Substring(0, 1999);
+                //    ci.Comment = Utilities.RemoveHTML(ci.Comment);
+                //}
                 ci.UserId = UserInfo.UserID;
                 JournalController.Instance.SaveComment(ci);
 
