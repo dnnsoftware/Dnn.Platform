@@ -532,6 +532,13 @@ namespace DotNetNuke.Entities.Users
             return retValue;
         }
 
+        public static bool ResetAndChangePassword(UserInfo user, string newPassword)
+        {
+           string resetPassword = ResetPassword(user, String.Empty);
+           return  ChangePassword(user,  resetPassword,  newPassword);
+           
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePasswordQuestionAndAnswer attempts to change the users password Question
