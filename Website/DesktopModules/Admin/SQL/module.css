@@ -1,0 +1,5 @@
+/* ===========   SQL Module Styling   =========== */
+.dnnSQLModule{width:100%;margin:2em auto;}
+.dnnFormItem.dnnResults{overflow:auto;height: 600px;}
+.dnnFormItem.dnnResults .RadGrid{margin-bottom:3em;}
+/* ===========   End SQL Module Styling   =========== */
