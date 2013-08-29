@@ -191,7 +191,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if (StateControl.TypedValue != null && StateControl.TypedValue.SelectedItem != null)
                 {
-                    return new ListItem() { Text = StateControl.TypedValue.SelectedItem.Value, Value = StateControl.TypedValue.SelectedItem.Key };
+                    return new ListItem { Text = StateControl.TypedValue.SelectedItem.Value, Value = StateControl.TypedValue.SelectedItem.Key };
                 }
                 return null;
             }
@@ -256,16 +256,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return (Options.FirstItem == null) ? null : new ListItem(Options.FirstItem.Value, Options.FirstItem.Key);
+                return (Options.ItemList.FirstItem == null) ? null : new ListItem(Options.ItemList.FirstItem.Value, Options.ItemList.FirstItem.Key);
             }
             set
             {
-                Options.FirstItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
+                Options.ItemList.FirstItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
                 UseUndefinedItem = false;
             }
         }
 
-        public DnnDropDownListServicesOptions Services
+        public ItemListServicesOptions Services
         {
             get
             {
@@ -360,10 +360,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.extensions.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/DropDownList/dnn.DataStructures.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.DataStructures.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/DropDownList/dnn.TreeView.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
         }
 
@@ -406,10 +407,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RegisterStartupScript()
         {
-            Options.ContainerId = ClientID;
             Options.SelectedItemSelector = ".selected-item";
             Options.InternalStateFieldId = StateControl.ClientID;
-            Options.ItemListSelector = ".dt-content";
             Options.ItemListContainerSelector = ".dt-container";
 
             if (SelectedItem == null && UseUndefinedItem)

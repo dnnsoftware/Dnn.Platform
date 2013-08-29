@@ -400,6 +400,8 @@
     <Compile Include="UI\WebControls\Extensions\ListControlExtensions.cs" />
     <Compile Include="UI\WebControls\Extensions\WebControlExtensions.cs" />
     <Compile Include="UI\WebControls\IDnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\ItemListOptions.cs" />
+    <Compile Include="UI\WebControls\ItemListServicesOptions.cs" />
     <Compile Include="UI\WebControls\PropertyEditorControls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditorControls\DateTimeEditControl.cs" />
     <Compile Include="UI\WebControls\RibbonBarToolInfo.cs" />
