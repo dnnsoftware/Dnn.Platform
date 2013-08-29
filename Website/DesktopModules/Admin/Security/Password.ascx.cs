@@ -170,15 +170,13 @@ namespace DotNetNuke.Modules.Admin.Users
 			
             //f Password retrieval is not supported then only the user can change
             //their password, an Admin must Reset
-            if (((!MembershipProviderConfig.PasswordRetrievalEnabled) && IsAdmin && (!IsUser)))
+            if ((IsAdmin && (!IsUser)))
             {
-                pnlChange.Visible = false;
-                cmdUpdate.Visible = false;
+                pnlChange.Visible = true;
             }
             else
             {
                 pnlChange.Visible = true;
-                cmdUpdate.Visible = true;
 				
 				//Set up Change Password
                 if (IsAdmin && !IsUser)
@@ -189,18 +187,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 else
                 {
                     lblChangeHelp.Text = Localization.GetString("UserChangeHelp", LocalResourceFile);
-                    if (Request.IsAuthenticated)
-                    {
-                        pnlChange.Visible = true;
-                        cmdUserReset.Visible = false;
-                        cmdUpdate.Visible = true;
-                    }
-                    else
-                    {
-                        pnlChange.Visible = false;
-                        cmdUserReset.Visible = true;
-                        cmdUpdate.Visible = false;
-                    }
+                   
                 }
             }
 			
@@ -209,12 +196,12 @@ namespace DotNetNuke.Modules.Admin.Users
             if (!MembershipProviderConfig.PasswordResetEnabled)
             {
                 pnlReset.Visible = false;
-                cmdReset.Visible = false;
+              
             }
             else
             {
                 pnlReset.Visible = true;
-                cmdReset.Visible = true;
+             
 				
 				//Set up Reset Password
                 if (IsAdmin && !IsUser)
@@ -222,7 +209,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (MembershipProviderConfig.RequiresQuestionAndAnswer)
                     {
                         pnlReset.Visible = false;
-                        cmdReset.Visible = false;
                     }
                     else
                     {
@@ -243,7 +229,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     else
                     {
                         pnlReset.Visible = false;
-                        cmdReset.Visible = false;
                     }
                 }
             }
@@ -252,12 +237,10 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && IsUser)
             {
                 pnlQA.Visible = true;
-                cmdUpdateQA.Visible = true;
             }
             else
             {
                 pnlQA.Visible = false;
-                cmdUpdateQA.Visible = false;
             }
         }
 
@@ -292,14 +275,12 @@ namespace DotNetNuke.Modules.Admin.Users
             //ClientAPI.RegisterKeyCapture(Parent, cmdUpdate.Controls[0], 13);
             //ClientAPI.RegisterKeyCapture(this, cmdUpdate.Controls[0], 13);
             cmdReset.Click += cmdReset_Click;
-            cmdUserReset.Click += cmdUserReset_Click;
             cmdUpdate.Click += cmdUpdate_Click;
             cmdUpdateQA.Click += cmdUpdateQA_Click;
 
 			if (MembershipProviderConfig.RequiresQuestionAndAnswer && User.UserID != UserController.GetCurrentUserInfo().UserID)
 			{
 				pnlChange.Visible = false;
-			    cmdUpdate.Visible = false;
 				CannotChangePasswordMessage.Visible = true;
 			}
            
@@ -553,7 +534,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             try
             {
-                OnPasswordUpdated(UserController.ChangePassword(User, txtOldPassword.Text, txtNewPassword.Text)
+                OnPasswordUpdated(UserController.ResetAndChangePassword(User, txtOldPassword.Text, txtNewPassword.Text)
                                       ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
                                       : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
             }

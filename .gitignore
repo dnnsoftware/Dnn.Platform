@@ -45,7 +45,6 @@ _ReSharper*
 # Others
 
 [Oo]bj
-sql
 TestResults
 *.Cache
 ClientBin
