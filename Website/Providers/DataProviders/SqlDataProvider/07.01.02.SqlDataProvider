@@ -467,7 +467,7 @@ BEGIN
 			WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root') = 1
 		END
 		
-		SET @cdataComment = '<![CDATA[{' + @Comment + ')}]]>'
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
 		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
 		SET CommentXML.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")'),
 			Comment = NULL,
@@ -479,7 +479,7 @@ ELSE
 BEGIN
 	IF (LEN(@Comment) < 2000)
 	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}dnn_Journal_Comments]
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal_Comments]
 			(JournalId, UserId, Comment, CommentXML, DateCreated, DateUpdated)
 			VALUES
 			(@JournalId, @UserId, @Comment, @CommentXML, GETUTCDATE(), GETUTCDATE())
@@ -509,7 +509,7 @@ BEGIN
 			WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root') = 1
 		END
 		
-		SET @cdataComment = '<![CDATA[{' + @Comment + ')}]]>'
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
 		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
 		SET CommentXML.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")'),
 			Comment = NULL
