@@ -143,7 +143,7 @@
         </div>
         <ul class="dnnActions dnnClear">
             <li>
-                <asp:Button ID="cmdSaveSnippet" resourcekey="cmdSave" runat="server" CssClass="dnnPrimaryAction" /></li>
+                <asp:LinkButton ID="cmdSaveSnippet" resourcekey="cmdSave" runat="server" CssClass="dnnPrimaryAction" /></li>
             <li>
                 <asp:LinkButton ID="cmdSaveAsSnippet" resourcekey="cmdSaveAs" runat="server" CssClass="dnnSecondaryAction" /></li>
             <li>
@@ -295,6 +295,10 @@
     }).fail(function (xhr, result, status) {
         alert("Uh-oh, something broke: " + status);
     });
+   
+    $("#<%=cmdSaveSnippet.ClientID%>").addClass("dnnDisabled");
+    $("#<%=cmdSaveAsSnippet.ClientID%>").addClass("dnnDisabled");
+    $("#<%=cmdDeleteSnippet.ClientID%>").addClass("dnnDisabled"); 
 
     function treeViewOnNodeClicking(sender, args) {
         var node = args.get_node();
