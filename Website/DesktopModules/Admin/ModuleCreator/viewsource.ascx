@@ -188,6 +188,7 @@
 
         function deleteSnippet(e, isTrigger) {
             e.preventDefault();
+            if ($(this).hasClass("dnnDisabled")) return;
             if (isTrigger) {
                 var tree = $find('<% =SnippetTree.ClientID %>');
                 var node = tree.get_selectedNode();
@@ -219,6 +220,7 @@
 
         function saveAsSnippet(e) {
             e.preventDefault();
+            if ($(this).hasClass("dnnDisabled")) return;
             var fileName = prompt("New snippet name:", "Event");
             save(fileName);
             var tree = $find('<% =SnippetTree.ClientID %>');
@@ -236,6 +238,7 @@
 
         function saveSnippet(e) {
             e.preventDefault();
+            if ($(this).hasClass("dnnDisabled")) return;
             var tree = $find('<% =SnippetTree.ClientID %>');
             var node = tree.get_selectedNode();
             save(node.get_text());
@@ -295,6 +298,10 @@
 
     function treeViewOnNodeClicking(sender, args) {
         var node = args.get_node();
+        
+        $("#<%=cmdSaveSnippet.ClientID%>").addClass("dnnDisabled");
+        $("#<%=cmdSaveAsSnippet.ClientID%>").addClass("dnnDisabled");
+        $("#<%=cmdDeleteSnippet.ClientID%>").addClass("dnnDisabled"); 
         if (node.get_level() == 0) {
             var sf = $.ServicesFramework(<% =ModuleId%>);
             $.ajax({
@@ -334,6 +341,9 @@
             var snippet = node.get_value();
             var snippetView = document.getElementById('<% =SnippetView.ClientID %>');
             snippetView.innerHTML = snippet;
+            $("#<%=cmdSaveSnippet.ClientID%>").removeClass("dnnDisabled");
+            $("#<%=cmdSaveAsSnippet.ClientID%>").removeClass("dnnDisabled");
+            $("#<%=cmdDeleteSnippet.ClientID%>").removeClass("dnnDisabled");
         }
     }
     function loadTemplates(parentNode, data) {
