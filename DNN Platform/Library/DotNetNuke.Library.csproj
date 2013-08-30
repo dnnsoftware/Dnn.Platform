@@ -399,12 +399,16 @@
     <Compile Include="ExtensionPoints\ToolBarButtonRenderer.cs" />
     <Compile Include="ExtensionPoints\ToolBarMenuButtonRenderer.cs" />
     <Compile Include="ExtensionPoints\UserControlExtensionControl.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\IJavaScriptLibraryController.cs" />
     <Compile Include="Framework\Internal\Reflection\AssemblyWrapper.cs" />
     <Compile Include="Framework\Internal\Reflection\IAssembly.cs" />
     <Compile Include="Framework\Internal\Reflection\IAssemblyLocator.cs" />
     <Compile Include="Framework\Internal\Reflection\ITypeLocator.cs" />
     <Compile Include="Framework\Internal\Reflection\TypeLocator.cs" />
     <Compile Include="Framework\IServiceFrameworkInternals.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScript.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibrary.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibraryController.cs" />
     <Compile Include="Framework\ServiceLocator.cs" />
     <Compile Include="ComponentModel\IComponentBuilder.cs" />
     <Compile Include="ComponentModel\IComponentInstaller.cs" />
@@ -475,6 +479,7 @@
     <Compile Include="Services\FileSystem\FileVersionController.cs" />
     <Compile Include="Services\FileSystem\FileVersionInfo.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
+    <Compile Include="Services\Installer\Installers\JavaScriptLibraryInstaller.cs" />
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />

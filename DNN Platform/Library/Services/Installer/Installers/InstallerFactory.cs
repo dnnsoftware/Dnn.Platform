@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class InstallerFactory
     {
-		#region "Public Shared Methods"
+		#region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>

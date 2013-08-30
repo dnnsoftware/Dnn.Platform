@@ -16,7 +16,7 @@ where controlsrc = 'admin/Modules/viewsource.ascx'
 GO
 
 /* Story DNN-3116: Add SendToast Column to Messaging Table. */
-/******************************/
+/************************************************************/
 
 IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
             WHERE TABLE_NAME = '{objectQualifier}CoreMessaging_MessageRecipients' 
@@ -106,6 +106,29 @@ SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] ON
 INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([SkinControlID], [PackageID], [ControlKey], [ControlSrc], [IconFile], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (@SkinControlID, @PackageID, N'Toast', N'Admin/Skins/Toast.ascx', NULL, NULL, 1, NULL, GETDATE(), NULL, GETDATE())
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] OFF
 GO
+
+/* Story DNN-3497: Add New Javascript Labrary Extension Type. */
+/**************************************************************/
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PackageTypes] WHERE [PackageType] = 'JavaScript_Library')
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes]
+			(
+			   [PackageType],
+			   [Description],
+			   [SecurityAccessLevel],
+			   [EditorControlSrc]
+			)
+		 VALUES
+			(
+				'JavaScript_Library',
+				'JavaScript Library',
+				'3',
+				NULL
+			)
+	END
+GO
+
 
 
 /************************************************************/
