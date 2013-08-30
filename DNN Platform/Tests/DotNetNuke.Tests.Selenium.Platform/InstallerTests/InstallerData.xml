@@ -1,0 +1,27 @@
+﻿<?xml version ="1.0" encoding ="utf-8"?>
+<Tests>
+
+  <settings
+    name = "Test1"
+    browser = "firefox"
+    baseURL = "ee712v3.dnndev.me"
+    InstallerLanguage = "en"
+    Template = "Default Template"
+    Language = "en"
+    DatabaseSetup = "Custom"
+    DatabaseType = "Default"
+    DatabaseServerName = ".\alpha"
+    DatabaseName = "ee712v1"
+    DatabaseFilename = ""
+    ObjectQualifier = ""
+    Security = "Integrated"
+    DatabaseUserName = ""
+    DatabasePassword = ""
+    RunDatabaseAsDatabaseOwner = "yes"
+    UserName = "host"
+    Password = "dnnhost"
+    WebsiteName = "My Website"
+
+/>
+
+</Tests>
