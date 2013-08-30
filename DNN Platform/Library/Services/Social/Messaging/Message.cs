@@ -112,6 +112,9 @@ namespace DotNetNuke.Services.Social.Messaging
         [XmlAttribute]
         public int SenderUserID { get; set; }
 
+		[XmlAttribute]
+		public bool SendToast { get; set; }
+
         /// <summary>
         /// A pretty printed string with the time since the message was created
         /// </summary>
@@ -159,6 +162,15 @@ namespace DotNetNuke.Services.Social.Messaging
             ConversationId = Null.SetNullInteger(dr["ConversationID"]);
             ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
             SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
+
+			var schema = dr.GetSchemaTable();
+			if (schema != null)
+			{
+				if (schema.Select("ColumnName = 'SendToast'").Length > 0)
+				{
+					SendToast = Null.SetNullBoolean(dr["SendToast"]);
+				}
+			}
             
             //add audit column data
             FillInternal(dr);

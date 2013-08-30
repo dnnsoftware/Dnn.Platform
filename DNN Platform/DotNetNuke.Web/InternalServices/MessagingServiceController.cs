@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -152,6 +153,14 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+		[HttpGet]
+		public HttpResponseMessage GetToasts()
+		{
+			var toasts = MessagingController.Instance.GetToasts(this.UserInfo);
+			IList<object> convertedObjects = toasts.Select(toast => ToExpandoObject(toast)).Cast<object>().ToList();
+			return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Toasts = convertedObjects.Take(3) });
+		}
+
         /// <summary>
         /// This class stores a single search result needed by jQuery Tokeninput
         /// </summary>
@@ -165,5 +174,28 @@ namespace DotNetNuke.Web.InternalServices
             // ReSharper restore NotAccessedField.Local
             // ReSharper restore InconsistentNaming
         }
+
+		private dynamic ToExpandoObject(Message message)
+		{
+			dynamic messageObj = new ExpandoObject();
+			messageObj.PortalID = message.PortalID;
+			messageObj.KeyID = message.KeyID;
+			messageObj.MessageID = message.MessageID;
+			messageObj.ConversationId = message.ConversationId;
+			messageObj.SenderUserID = message.SenderUserID;
+			messageObj.From = message.From;
+			messageObj.To = message.To;
+			messageObj.Subject = message.Subject;
+			messageObj.Body = message.Body;
+			messageObj.DisplayDate = message.DisplayDate;
+			messageObj.ReplyAllAllowed = message.ReplyAllAllowed;
+			//base entity properties
+			messageObj.CreatedByUserID = message.CreatedByUserID;
+			messageObj.CreatedOnDate = message.CreatedOnDate;
+			messageObj.LastModifiedByUserID = message.LastModifiedByUserID;
+			messageObj.LastModifiedOnDate = message.LastModifiedOnDate;
+
+			return messageObj;
+		}
     }
 }

@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Social.Notifications;
 
 namespace DotNetNuke.Services.Social.Messaging
 {
@@ -36,5 +37,36 @@ namespace DotNetNuke.Services.Social.Messaging
 
         #endregion        
 
+		#region Toast APIS
+
+		/// <summary>
+		/// Is there a Toast that needs to be sent for a Notification
+		/// </summary>
+		/// <param name="notificationId">The Notification Id </param>
+		/// <returns>True if Toast needs to be sent. False otherwise.</returns>
+		bool IsToastPending(int notificationId);
+
+		/// <summary>
+		/// Mark a Toast ready for sending
+		/// </summary>
+		/// <param name="notification">The notification Object </param>
+		/// <param name="userInfo">The Recipient User Info Object</param>
+		void MarkReadyForToast(Notification notification, UserInfo userInfo);
+
+		/// <summary>
+		/// Mark Toast being already sent
+		/// </summary>
+		/// <param name="notificationId">The notification Id </param>
+		/// <param name="userId">The Recipient User Id </param>
+		void MarkToastSent(int notificationId, int userId);
+
+		/// <summary>
+		/// Get a list of Toasts that have not been delivered yet.
+		/// </summary>
+		/// <param name="userInfo">UserInfo object</param>
+		/// <returns>List of Undelivered Toasts for the user specific to the portal</returns>
+		IList<Message> GetToasts(UserInfo userInfo);
+
+		#endregion
     }
 }

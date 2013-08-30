@@ -15,6 +15,98 @@ set   ControlSrc = 'DesktopModules/Admin/ModuleCreator/viewsource.ascx',
 where controlsrc = 'admin/Modules/viewsource.ascx'
 GO
 
+/* Story DNN-3116: Add SendToast Column to Messaging Table. */
+/******************************/
+
+IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = '{objectQualifier}CoreMessaging_MessageRecipients' 
+           AND  COLUMN_NAME = 'SendToast')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients ADD
+            SendToast bit NOT NULL DEFAULT ((0))
+    END 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Messaging_IsToastPending]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_IsToastPending]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_IsToastPending]	
+    @NotificationId int
+AS
+BEGIN
+    SELECT Sendtoast 
+    FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+    WHERE MessageId = @NotificationId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Messaging_MarkReadyForToast]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkReadyForToast]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkReadyForToast]	
+    @MessageId int,
+    @UserId int
+AS
+BEGIN	
+    UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+    SET Sendtoast = 1,
+    [LastModifiedOnDate] = GETDATE()
+    WHERE MessageId = @MessageId
+    AND UserId = @UserId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Messaging_MarkToastSent]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkToastSent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkToastSent]	
+    @MessageId int,
+	@UserId INT
+AS
+BEGIN	
+    UPDATE {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+    SET Sendtoast = 0,
+    [LastModifiedOnDate] = GETDATE()
+    WHERE MessageId = @MessageId
+	AND UserId = @UserId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Messaging_GetToasts]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetToasts]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetToasts]	
+    @UserId int,
+    @PortalId int
+AS
+BEGIN	
+    SELECT DISTINCT m.*
+    FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients mr 
+        INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_Messages m
+    ON mr.MessageID = m.MessageID	
+    WHERE mr.UserID = @UserID
+    AND   m.PortalID = @PortalID
+    AND   mr.SendToast = 1
+END
+GO
+
+DECLARE @PackageID INT, @SkinControlID INT
+SELECT @PackageID = MAX(PackageID) + 1 FROM {databaseOwner}[{objectQualifier}Packages]
+SELECT @SkinControlID = MAX(SkinControlID) + 1 FROM {databaseOwner}[{objectQualifier}SkinControls]
+
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Packages] ON
+INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PackageID], [PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (@PackageID, NULL, N'DotNetNuke.ToastSkinObject', N'Toast SkinObject', N'', N'SkinObject', N'07.02.00', N'', N'', N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', N'', 0, NULL, GETDATE(), NULL, GETDATE(), NULL, NULL)
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Packages] OFF
+
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] ON
+INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([SkinControlID], [PackageID], [ControlKey], [ControlSrc], [IconFile], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (@SkinControlID, @PackageID, N'Toast', N'Admin/Skins/Toast.ascx', NULL, NULL, 1, NULL, GETDATE(), NULL, GETDATE())
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] OFF
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

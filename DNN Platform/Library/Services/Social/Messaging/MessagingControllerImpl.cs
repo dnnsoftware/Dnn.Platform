@@ -35,6 +35,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Social.Messaging.Data;
 using DotNetNuke.Services.Social.Messaging.Exceptions;
 using DotNetNuke.Services.Social.Messaging.Internal;
+using DotNetNuke.Services.Social.Notifications;
 
 #endregion
 
@@ -268,5 +269,35 @@ namespace DotNetNuke.Services.Social.Messaging
         }
 
         #endregion
+
+		#region Toast APIS
+
+		public bool IsToastPending(int notificationId)
+		{
+			return _dataService.IsToastPending(notificationId);
+		}
+
+		public void MarkReadyForToast(Notification notification, UserInfo userInfo)
+		{
+			_dataService.MarkReadyForToast(notification.NotificationID, userInfo.UserID);
+		}
+
+		public void MarkToastSent(int notificationId, int userId)
+		{
+			_dataService.MarkToastSent(notificationId, userId);
+		}
+
+		public IList<Message> GetToasts(UserInfo userInfo)
+		{
+			var toasts = CBO.FillCollection<Message>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+
+			foreach (var message in toasts)
+			{
+				_dataService.MarkToastSent(message.MessageID, userInfo.UserID);
+			}
+
+			return toasts;
+		}
+		#endregion
     }
 }
