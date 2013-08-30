@@ -315,7 +315,7 @@
                 alert("Uh-oh, something broke: " + status);
             });
         }
-        if (node.get_level() == 1) {
+        if (node.get_level() == 1 && node.get_nodes().get_count() == 0) {
 
             var nodeName = node.get_text();
             var currentObject = node.get_parent();
@@ -337,7 +337,7 @@
                 alert("Uh-oh, something broke: " + status);
             });
         }
-        if (node.get_level() == 2) {
+        if (node.get_level() == 2 && node.get_nodes().get_count() == 0) {
             var snippet = node.get_value();
             var snippetView = document.getElementById('<% =SnippetView.ClientID %>');
             snippetView.innerHTML = snippet;
@@ -365,7 +365,6 @@
     function loadSnippets(parentNode, data) {
 
         var tree = $find('<% =SnippetTree.ClientID %>');
-
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
                 var node = new Telerik.Web.UI.RadTreeNode();
