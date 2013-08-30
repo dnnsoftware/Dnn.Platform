@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return result.Select(GetFolderViewModel);
         }
 
-        private IEnumerable<ItemViewModel> GetFiles(IFolderInfo folder, string orderingField, bool asc)
+        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, string orderingField, bool asc)
         {
             Requires.NotNull("folder", folder);
 
@@ -166,9 +166,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             // Set default sorting values
             var field = string.IsNullOrEmpty(orderingField) ? "FileName" : orderingField;
 
-            var result = ApplyOrder(FolderManager.Instance.GetFiles(folder, false, true).AsQueryable(), field, asc);
-
-            return result.Select(GetItemViewModel);
+            return ApplyOrder(FolderManager.Instance.GetFiles(folder, false, true).AsQueryable(), field, asc);            
         }
 
         /// <summary>
@@ -473,13 +471,30 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
 
             var sortProperties = GetSortProperties(sortExpression);
-            var content = GetFolders(folder, sortProperties.Column == "ItemName" ? "FolderName" : sortProperties.Column, sortProperties.Ascending).Select(GetItemViewModel).ToList();
-            content.AddRange(GetFiles(folder, sortProperties.Column == "ItemName" ? "FileName" : sortProperties.Column, sortProperties.Ascending));
+
+            var folders = GetFolders(folder, sortProperties.Column == "ItemName" ? "FolderName" : sortProperties.Column, sortProperties.Ascending).ToList();
+            var files = GetFiles(folder, sortProperties.Column == "ItemName" ? "FileName" : sortProperties.Column, sortProperties.Ascending).ToList();
+
+            IEnumerable<ItemViewModel> content;
+            if (startIndex + numItems <= folders.Count())
+            {
+                content = folders.Skip(startIndex).Take(numItems).Select(GetItemViewModel);
+            } 
+            else if (startIndex >= folders.Count())
+            {
+                content = files.Skip(startIndex - folders.Count).Take(numItems).Select(GetItemViewModel);
+            }
+            else
+            {
+                var numFiles = numItems - (folders.Count - startIndex);
+                content = folders.Skip(startIndex).Select(GetItemViewModel).Union(files.Take(numFiles).Select(GetItemViewModel));
+            }
+
             return new PageViewModel
                 {
                     Folder = GetFolderViewModel(folder),
-                    Items = content.Skip(startIndex).Take(numItems).ToList(),
-                    TotalCount = content.Count()
+                    Items = content.ToList(),
+                    TotalCount = folders.Count() + files.Count()
                 };
         }
 
