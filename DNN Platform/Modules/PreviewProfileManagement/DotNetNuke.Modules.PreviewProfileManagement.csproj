@@ -84,7 +84,6 @@
     <Compile Include="Presenters\ProfileManagerPresenter.cs" />
     <Compile Include="Views\ProfileManagerView.ascx.cs">
       <DependentUpon>ProfileManagerView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\ProfileManagerView.ascx.designer.cs">
       <DependentUpon>ProfileManagerView.ascx</DependentUpon>
@@ -147,9 +146,8 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
