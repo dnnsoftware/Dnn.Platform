@@ -164,3 +164,5 @@ Website/DesktopModules/PhilipBeadle/Test/_View.cshtml
 Website/DesktopModules/PhilipBeadle/Test/js/Test.js
 Website/DesktopModules/PhilipBeadle/Test/readme.txt
 Website/DesktopModules/PhilipBeadle/Test/uninstall.sql
+Website/App_Code/PhilipBeadle/
+Website/DesktopModules/PhilipBeadle/

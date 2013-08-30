@@ -201,4 +201,13 @@
   <data name="Snippet.Text" xml:space="preserve">
     <value>Code Snippets</value>
   </data>
+  <data name="cmdSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="cmdSaveAs.Text" xml:space="preserve">
+    <value>Save As</value>
+  </data>
+  <data name="DeleteSnippet.Text" xml:space="preserve">
+    <value>Delete Snippet?</value>
+  </data>
 </root>
