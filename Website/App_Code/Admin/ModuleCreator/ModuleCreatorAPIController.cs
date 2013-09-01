@@ -72,7 +72,7 @@ namespace DotNetNuke.ModuleCreator
                 readMe = tr.ReadToEnd();
                 tr.Close();
 
-                snippets.Add(new Snippet { Name = name, Content = readMe });
+                snippets.Add(new Snippet { Name = name.Replace(".txt", ""), Content = readMe });
             }
             return Request.CreateResponse(HttpStatusCode.OK, snippets);
         }
@@ -80,8 +80,7 @@ namespace DotNetNuke.ModuleCreator
         [HttpPost]
         public HttpResponseMessage SaveSnippet(Snippet snippet)
         {
-            var a = Globals.ApplicationMapPath + @"\DesktopModules\Admin\ModuleCreator\Templates\" + snippet.Name;
-            using (StreamWriter sw = File.CreateText(Globals.ApplicationMapPath + @"\DesktopModules\Admin\ModuleCreator\Templates\" + snippet.Name))
+            using (StreamWriter sw = File.CreateText(Globals.ApplicationMapPath + @"\DesktopModules\Admin\ModuleCreator\Templates\" + snippet.Name.Replace(".txt", "") + ".txt"))
             {
                 sw.Write(snippet.Content);
             }
@@ -91,7 +90,7 @@ namespace DotNetNuke.ModuleCreator
         [HttpPost]
         public HttpResponseMessage DeleteSnippet(Snippet snippet)
         {
-            var snippetFile = Globals.ApplicationMapPath + @"\DesktopModules\Admin\ModuleCreator\Templates\" + snippet.Name;
+            var snippetFile = Globals.ApplicationMapPath + @"\DesktopModules\Admin\ModuleCreator\Templates\" + snippet.Name.Replace(".txt", "") + ".txt";
             File.Delete(snippetFile);
             return Request.CreateResponse(HttpStatusCode.OK);
         }

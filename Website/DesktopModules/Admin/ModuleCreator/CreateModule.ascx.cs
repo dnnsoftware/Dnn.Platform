@@ -186,6 +186,9 @@ objEventLog.AddLog("Processing Template Folder", moduleTemplatePath, PortalSetti
                                             modulePath = modulePath.Replace("DesktopModules","App_Code");   
                                         }
                                         break;
+                                    case ".js":
+                                        modulePath = modulePath + "\\js\\";
+                                        break;
                                 }
 
 				//check if folder exists
