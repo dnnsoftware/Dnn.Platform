@@ -10,7 +10,7 @@ using System.Globalization;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Services.Subscriptions.Entities
+namespace DotNetNuke.Services.Subscriptions.Entities.Templates
 {
     public class SubscriptionTypeContent : IPropertyAccess
     {

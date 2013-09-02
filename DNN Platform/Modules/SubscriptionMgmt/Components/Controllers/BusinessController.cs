@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Controllers
 					// message += "Added Subscription Management module to Social module category. " + Environment.NewLine;
 
 					break;
-				case "07.01.02":
+				case "07.02.00":
 					AddModuleToMessageTab();
 					break;
 			}
@@ -48,8 +48,6 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Controllers
 		private void AddModuleToMessageTab()
 		{
 			var portalController = new PortalController();
-			var moduleController = new ModuleController();
-
 			var moduleDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Subscription Management");
 
 			if (moduleDef != null)
@@ -57,7 +55,6 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Controllers
 				foreach (PortalInfo portal in portalController.GetPortals())
 				{
 					//add the subscription manage module into message tab.
-
 					var messageTab = FindMessageTab(portal.PortalID);
 					if (messageTab != null)
 					{

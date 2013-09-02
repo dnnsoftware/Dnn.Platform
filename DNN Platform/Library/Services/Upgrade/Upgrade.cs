@@ -3491,58 +3491,65 @@ namespace DotNetNuke.Services.Upgrade
         ///  [cnurse]	11/16/2004	created
         ///</history>
         ///-----------------------------------------------------------------------------
-        public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
-        {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
-            var moduleController = new ModuleController();
-            ModuleInfo moduleInfo;
-            int moduleId = Null.NullInteger;
+		public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
+		{
+			return AddModuleToPage(page, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions, true, Globals.glbDefaultPane);
+		}
 
-            if ((page != null))
-            {
-                bool isDuplicate = false;
-                foreach (var kvp in moduleController.GetTabModules(page.TabID))
-                {
-                    moduleInfo = kvp.Value;
-                    if (moduleInfo.ModuleDefID == moduleDefId)
-                    {
-                        isDuplicate = true;
-                        moduleId = moduleInfo.ModuleID;
-                    }
-                }
+		public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions, bool displayTitle, string paneName)
+		{
+			DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
+			var moduleController = new ModuleController();
+			ModuleInfo moduleInfo;
+			int moduleId = Null.NullInteger;
 
-                if (!isDuplicate)
-                {
-                    moduleInfo = new ModuleInfo
-                                     {
-                                         ModuleID = Null.NullInteger,
-                                         PortalID = page.PortalID,
-                                         TabID = page.TabID,
-                                         ModuleOrder = -1,
-                                         ModuleTitle = moduleTitle,
-                                         PaneName = Globals.glbDefaultPane,
-                                         ModuleDefID = moduleDefId,
-                                         CacheTime = 0,
-                                         IconFile = moduleIconFile,
-                                         AllTabs = false,
-                                         Visibility = VisibilityState.None,
-                                         InheritViewPermissions = inheritPermissions
-                                     };
+			if ((page != null))
+			{
+				bool isDuplicate = false;
+				foreach (var kvp in moduleController.GetTabModules(page.TabID))
+				{
+					moduleInfo = kvp.Value;
+					if (moduleInfo.ModuleDefID == moduleDefId)
+					{
+						isDuplicate = true;
+						moduleId = moduleInfo.ModuleID;
+					}
+				}
 
-                    try
-                    {
-                        moduleId = moduleController.AddModule(moduleInfo);
-                    }
-                    catch (Exception exc)
-                    {
-                        Logger.Error(exc);
-                        DnnInstallLogger.InstallLogError(exc);
-                    }
-                }
-            }
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
-            return moduleId;
-        }
+				if (!isDuplicate)
+				{
+					moduleInfo = new ModuleInfo
+					{
+						ModuleID = Null.NullInteger,
+						PortalID = page.PortalID,
+						TabID = page.TabID,
+						ModuleOrder = -1,
+						ModuleTitle = moduleTitle,
+						PaneName = paneName,
+						ModuleDefID = moduleDefId,
+						CacheTime = 0,
+						IconFile = moduleIconFile,
+						AllTabs = false,
+						Visibility = VisibilityState.None,
+						InheritViewPermissions = inheritPermissions,
+						DisplayTitle = displayTitle
+					};
+
+					try
+					{
+						moduleId = moduleController.AddModule(moduleInfo);
+					}
+					catch (Exception exc)
+					{
+						Logger.Error(exc);
+						DnnInstallLogger.InstallLogError(exc);
+					}
+				}
+			}
+			DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
+			return moduleId;
+		}
+
 
         public static int AddModuleToPage(string tabPath, int portalId, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {

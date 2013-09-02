@@ -2975,6 +2975,52 @@
               <definition>DotNetNuke.Modules.CoreMessaging</definition>
               <moduledefinition>Message Center</moduledefinition>
             </module>
+			<module>
+              <contentKey />
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachetime>0</cachetime>
+              <color />
+              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>false</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile />
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>Subscription Management</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <cultureCode />
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>AllowIndex</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>SubscriptionsMgmt</definition>
+              <moduledefinition>Subscription Management</moduledefinition>
+            </module>
           </modules>
         </pane>
       </panes>

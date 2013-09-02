@@ -12,7 +12,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.Services.Subscriptions.Common;
 
-namespace DotNetNuke.Services.Subscriptions.Entities
+namespace DotNetNuke.Services.Subscriptions.Entities.Templates
 {
     public class SubscriberContent : IPropertyAccess
     {
