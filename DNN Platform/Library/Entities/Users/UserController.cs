@@ -506,7 +506,7 @@ namespace DotNetNuke.Entities.Users
                 return false;
             }
             var m = new MembershipPasswordController();
-            if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword))
+            if (!m.PasswordIsUniqueInHistory(user.UserID, user.PortalID, newPassword))
             {
                 return false;
             }
