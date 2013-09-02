@@ -86,7 +86,7 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <param name="portalId">portalid - futureproofing against any setting become site level</param>
         /// <param name="newPassword">users new password suggestion</param>
         /// <returns>true if password is in users history, false otherwise</returns>
-        public bool PasswordIsUniqueInHistory(int userId, int portalId, string newPassword)
+        public bool IsPasswordInHistory(int userId, int portalId, string newPassword)
         {
             Requires.NotNullOrEmpty("newPassword", newPassword);
             bool isPasswordUsed = false;
