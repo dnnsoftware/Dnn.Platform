@@ -63,7 +63,8 @@ namespace DotNetNuke.ModuleCreator
         public HttpResponseMessage GetSnippets(FolderDto folder)
         {
             var snippets = new List<Snippet>();
-            var snippetList = Directory.GetFiles(Globals.ApplicationMapPath + @"\DesktopModules\Admin\ModuleCreator\Templates\" + folder.Name + @"\Snippets");
+            var snippetsFolderName = Globals.ApplicationMapPath + @"\DesktopModules\Admin\ModuleCreator\Templates\" + folder.Name + @"\Snippets";
+            var snippetList = Directory.GetFiles(snippetsFolderName);
             foreach (string snippetPath in snippetList)
             {
                 var name = snippetPath.Substring(snippetPath.LastIndexOf(@"\") + 1);
@@ -73,6 +74,11 @@ namespace DotNetNuke.ModuleCreator
                 tr.Close();
 
                 snippets.Add(new Snippet { Name = name.Replace(".txt", ""), Content = readMe });
+            }
+            if (snippets.Count==0)
+            {
+                File.CreateText(snippetsFolderName + "\\default.txt");
+                snippets.Add(new Snippet { Name = "default", Content = "" });
             }
             return Request.CreateResponse(HttpStatusCode.OK, snippets);
         }

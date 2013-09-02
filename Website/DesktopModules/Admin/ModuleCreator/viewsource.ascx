@@ -215,8 +215,7 @@
                 tree.trackChanges();
                 node.get_parent().get_nodes().remove(node);
                 tree.commitChanges();
-                var snippetView = document.getElementById('<% =SnippetView.ClientID %>');
-                snippetView.innerHTML = '';
+                snippetEditor.setValue('');
             }
         }
 
@@ -345,9 +344,7 @@
         }
         if (node.get_level() == 2 && node.get_nodes().get_count() == 0) {
             var snippet = node.get_value();
-            var snippetView = document.getElementById('<% =SnippetView.ClientID %>');
             snippetEditor.setValue(snippet);
-            //snippetView.innerHTML = snippet;
             $("#<%=cmdSaveSnippet.ClientID%>").removeClass("dnnDisabled");
             $("#<%=cmdSaveAsSnippet.ClientID%>").removeClass("dnnDisabled");
             $("#<%=cmdDeleteSnippet.ClientID%>").removeClass("dnnDisabled");
