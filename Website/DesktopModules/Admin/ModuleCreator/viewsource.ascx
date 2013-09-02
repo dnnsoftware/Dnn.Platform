@@ -16,6 +16,7 @@
 <dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/js/ModuleCreator.js" Priority="2" />
 
 <script>
+    var snippetEditor;
     jQuery(function ($) {
         CodeMirror.fromTextArea($("textarea[id$='txtSource']")[0], {
             lineNumbers: true,
@@ -23,13 +24,14 @@
             mode: "text/x-csharp"
         });
 
-        //var snippetEditor = CodeMirror.fromTextArea($("textarea[id$='SnippetView']")[0], {
-        //    lineNumbers: true,
-        //    matchBrackets: true,
-        //    mode: "text/x-csharp"
-        //});
-
+        snippetEditor = CodeMirror.fromTextArea($("textarea[id$='SnippetView']")[0], {
+            height: "450px",
+            lineNumbers: true,
+            matchBrackets: true,
+            mode: "text/x-csharp"
+        });
     });
+    
 </script>
 
 <div id="viewSourceForm" class="dnnForm dnnViewSource dnnClear">
@@ -179,7 +181,7 @@
             yesText: yesText,
             noText: noText,
             title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteSnippet")) %>',
-        			    isButton: true
+            isButton: true
         });
 
         $("#<%=cmdSaveSnippet.ClientID%>").click(saveSnippet);
@@ -344,7 +346,8 @@
         if (node.get_level() == 2 && node.get_nodes().get_count() == 0) {
             var snippet = node.get_value();
             var snippetView = document.getElementById('<% =SnippetView.ClientID %>');
-            snippetView.innerHTML = snippet;
+            snippetEditor.setValue(snippet);
+            //snippetView.innerHTML = snippet;
             $("#<%=cmdSaveSnippet.ClientID%>").removeClass("dnnDisabled");
             $("#<%=cmdSaveAsSnippet.ClientID%>").removeClass("dnnDisabled");
             $("#<%=cmdDeleteSnippet.ClientID%>").removeClass("dnnDisabled");
