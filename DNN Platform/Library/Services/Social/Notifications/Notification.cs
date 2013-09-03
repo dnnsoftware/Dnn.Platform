@@ -146,6 +146,9 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlAttribute]
         public bool IncludeDismissAction { get; set; }
 
+		[XmlAttribute]
+		public bool SendToast { get; set; }
+
         /// <summary>
         /// Fill the object with data from database.
         /// </summary>
@@ -162,6 +165,15 @@ namespace DotNetNuke.Services.Social.Notifications
             SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
             ExpirationDate = Null.SetNullDateTime(dr["ExpirationDate"]);
             IncludeDismissAction = Null.SetNullBoolean(dr["IncludeDismissAction"]);
+
+			var schema = dr.GetSchemaTable();
+			if (schema != null)
+			{
+				if (schema.Select("ColumnName = 'SendToast'").Length > 0)
+				{
+					SendToast = Null.SetNullBoolean(dr["SendToast"]);
+				}
+			}
 
             //add audit column data
             FillInternal(dr);

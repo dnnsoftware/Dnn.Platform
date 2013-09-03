@@ -419,5 +419,35 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         #endregion
+
+		#region Toast APIS
+
+		public bool IsToastPending(int notificationId)
+		{
+			return _dataService.IsToastPending(notificationId);
+		}
+
+		public void MarkReadyForToast(Notification notification, UserInfo userInfo)
+		{
+			_dataService.MarkReadyForToast(notification.NotificationID, userInfo.UserID);
+		}
+
+		public void MarkToastSent(int notificationId, int userId)
+		{
+			_dataService.MarkToastSent(notificationId, userId);
+		}
+
+		public IList<Notification> GetToasts(UserInfo userInfo)
+		{
+			var toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+
+			foreach (var message in toasts)
+			{
+				_dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+			}
+
+			return toasts;
+		}
+		#endregion
     }
 }

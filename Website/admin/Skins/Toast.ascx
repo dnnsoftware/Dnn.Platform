@@ -9,7 +9,7 @@
         dnn.social.refreshUser = function () {
             $.ajax({
                 type: "GET",
-                url: sf.getServiceRoot('InternalServices') + 'MessagingService/' + 'GetToasts',
+                url: sf.getServiceRoot('InternalServices') + 'NotificationsService/' + 'GetToasts',
                 contentType: "application/json",
                 dataType: "json",
                 success: function (data) {
@@ -21,21 +21,6 @@
                         }
                         return;
                     }
-
-                    // Update MyStatus point level
-                    //if (typeof dnn !== 'undefined' &&
-                    //    typeof dnn.social !== 'undefined' &&
-                    //    typeof dnn.social.ipc !== 'undefined') {
-
-                    //    var event = {
-                    //        event: 'Refresh',
-                    //        notifications: data.UserSocialView.Notifications || 0,
-                    //        points: data.UserSocialView.ReputationPoints || 0,
-                    //        messages: data.UserSocialView.Messages || 0
-                    //    };
-
-                    //    dnn.social.ipc.post({}, 'DNNCorp/MyStatus', event);
-                    //}
 
                     var toastMessages = [];
 

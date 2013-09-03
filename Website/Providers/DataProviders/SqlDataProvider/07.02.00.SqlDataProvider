@@ -27,11 +27,11 @@ IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS
     END 
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Messaging_IsToastPending]') AND type in (N'P', N'PC'))
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_IsToastPending]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_IsToastPending]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsToastPending]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_IsToastPending]	
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsToastPending]	
     @NotificationId int
 AS
 BEGIN
@@ -41,11 +41,11 @@ BEGIN
 END
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Messaging_MarkReadyForToast]') AND type in (N'P', N'PC'))
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkReadyForToast]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_MarkReadyForToast]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_MarkReadyForToast]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkReadyForToast]	
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_MarkReadyForToast]	
     @MessageId int,
     @UserId int
 AS
@@ -58,11 +58,11 @@ BEGIN
 END
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Messaging_MarkToastSent]') AND type in (N'P', N'PC'))
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkToastSent]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_MarkToastSent]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_MarkToastSent]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkToastSent]	
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_MarkToastSent]	
     @MessageId int,
 	@UserId INT
 AS
@@ -75,11 +75,11 @@ BEGIN
 END
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Messaging_GetToasts]') AND type in (N'P', N'PC'))
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetToasts]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetToasts]	
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]	
     @UserId int,
     @PortalId int
 AS

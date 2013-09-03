@@ -55,5 +55,30 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         IDataReader GetNotificationByContext(int notificationTypeId, string context);
 
         #endregion
+
+		#region Toast
+
+		bool IsToastPending(int notificationId);
+
+		/// <summary>
+		/// Mark a Toast ready for sending
+		/// </summary>
+		/// <param name="notificationId">The notification Id </param>
+		/// <param name="userId">The Recipient User Id </param>
+		void MarkReadyForToast(int notificationId, int userId);
+
+		/// <summary>
+		/// Mark Toast being already sent
+		/// </summary>
+		/// <param name="notificationId">The notification Id </param>
+		/// <param name="userId">The Recipient User Id </param>
+		void MarkToastSent(int notificationId, int userId);
+
+		/// <summary>
+		/// Get a list of Toasts that have not been delivered yet.
+		/// </summary>
+		IDataReader GetToasts(int userId, int portalId);
+
+		#endregion
     }
 }
