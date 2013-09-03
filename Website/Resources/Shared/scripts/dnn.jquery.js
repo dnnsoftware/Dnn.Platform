@@ -4043,11 +4043,11 @@
             throttle = null;
         }
         throttle = setTimeout(function() {
-            $('input[type="checkbox"]').dnnCheckbox();
-            $('input[type="radio"]').dnnCheckbox({ cls: 'dnnRadiobutton' });
+            $('.dnnForm input[type="checkbox"]').dnnCheckbox();
+            $('.dnnForm input[type="radio"]').dnnCheckbox({ cls: 'dnnRadiobutton' });
             $('.dnnTooltip').dnnTooltip();
-            $('input[type="text"], input[type="password"]').unbind('focus', inputFocusFix).bind('focus', inputFocusFix);
-            $(':file').dnnFileInput();
+            $('.dnnForm input[type="text"], .dnnForm input[type="password"]').unbind('focus', inputFocusFix).bind('focus', inputFocusFix);
+            $('.dnnForm :file').dnnFileInput();
         }, 200);
     	//change the window confirm style to DNN style
         $("*[onclick*='return confirm']").each(function() {
