@@ -122,9 +122,9 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 
 [Ww]ebsite/[Pp]ortals/_default/[Ll]ogs
 [Ww]ebsite/[Pp]ortals/_default/[Mm]erged[Tt]emplate
-# [Ww]ebsite/[Pp]ortals/_default/[Bb]lank [Ww]ebsite*.*
-# [Ww]ebsite/[Pp]ortals/_default/[Dd]efault [Ww]ebsite*.*
-# [Ww]ebsite/[Pp]ortals/_default/[Mm]obile [Ww]ebsite*.*
+[Ww]ebsite/[Pp]ortals/_default/[Bb]lank [Ww]ebsite*.*
+[Ww]ebsite/[Pp]ortals/_default/[Dd]efault [Ww]ebsite*.*
+[Ww]ebsite/[Pp]ortals/_default/[Mm]obile [Ww]ebsite*.*
 
 [Ww]ebsite/[Pp]ortals/_default/[Uu]ser*
 [Ww]ebsite/[Pp]ortals/[0-9]*/
