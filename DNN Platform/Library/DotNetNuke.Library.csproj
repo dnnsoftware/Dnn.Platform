@@ -517,7 +517,6 @@
     <Compile Include="Services\Search\Entities\SearchQuery.cs" />
     <Compile Include="Services\Subscriptions\Common\ObjectKey.cs" />
     <Compile Include="Services\Subscriptions\Common\SubscriptionsException.cs" />
-    <Compile Include="Services\Subscriptions\Controllers\Internal\SubscriptionsCache.cs" />
     <Compile Include="Services\Subscriptions\Controllers\ISubscriptionController.cs" />
     <Compile Include="Services\Subscriptions\Controllers\ISubscriptionTypeController.cs" />
     <Compile Include="Services\Subscriptions\Controllers\SubscriptionController.cs" />

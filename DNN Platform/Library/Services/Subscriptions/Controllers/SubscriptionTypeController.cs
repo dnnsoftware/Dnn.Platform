@@ -41,6 +41,8 @@ namespace DotNetNuke.Services.Subscriptions.Controllers
 
         public SubscriptionTypeController(IDataService dataService)
         {
+            Requires.NotNull("dataService", dataService);
+
             _dataService = dataService;
         }
 

@@ -35,8 +35,6 @@ namespace DotNetNuke.Subscriptions.Tests
 
         private Mock<IDataService> _mockDataService;
 
-        private Mock<SubscriptionControllerImpl> _mockSubscriptionController;
-
         private Mock<DataProvider> _dataProvider;
         private Mock<CachingProvider> _cachingProvider;
 
@@ -52,8 +50,6 @@ namespace DotNetNuke.Subscriptions.Tests
             _mockDataService = new Mock<IDataService>();
             _dataProvider = MockComponentProvider.CreateDataProvider();
             _cachingProvider = MockComponentProvider.CreateDataCacheProvider();
-
-            _mockSubscriptionController = new Mock<SubscriptionControllerImpl>(_mockDataService.Object);
 
             DataService.RegisterInstance(_mockDataService.Object);
 
@@ -77,7 +73,7 @@ namespace DotNetNuke.Subscriptions.Tests
         [Test]
         public void SubscriptionControllerImpl_Constructor_Throws_On_Null_Input()
         {
-            Assert.Throws<ArgumentNullException>(() => new SubscriptionControllerImpl(null));
+            Assert.Throws<ArgumentNullException>(() => new SubscriptionController(null));
         }
 
         #endregion
@@ -103,7 +99,8 @@ namespace DotNetNuke.Subscriptions.Tests
                 .Verifiable();
 
             // Act
-            var subscriptionId = _mockSubscriptionController.Object.Subscribe(GetInstantSubscriber());
+            var controller = new SubscriptionController(_mockDataService.Object);
+            var subscriptionId = controller.Subscribe(GetInstantSubscriber());
 
             // Assert
             _mockDataService.Verify();
@@ -128,7 +125,8 @@ namespace DotNetNuke.Subscriptions.Tests
                 .Verifiable();
 
             // Act
-            var subscriptionId = _mockSubscriptionController.Object.Subscribe(GetDigestSubscriber());
+            var controller = new SubscriptionController(_mockDataService.Object);
+            var subscriptionId = controller.Subscribe(GetDigestSubscriber());
 
             // Assert
             _mockDataService.Verify();

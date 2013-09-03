@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Users;
@@ -41,12 +42,9 @@ namespace DotNetNuke.Services.Subscriptions.Controllers
 
         public SubscriptionController(IDataService dataService)
         {
-            _dataService = dataService;
+            Requires.NotNull("dataService", dataService);
 
-            if (_dataService == null)
-            {
-                throw new ArgumentNullException("dataService");
-            }
+            _dataService = dataService;
         }
 
         #endregion
