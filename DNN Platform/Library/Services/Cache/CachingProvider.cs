@@ -191,6 +191,7 @@ namespace DotNetNuke.Services.Cache
             RemoveCacheKey(DataCache.DesktopModulePermissionCacheKey, clearRuntime);
             RemoveCacheKey("GetRoles", clearRuntime);
             RemoveCacheKey("CompressionConfig", clearRuntime);
+            RemoveCacheKey(DataCache.SubscriptionTypesCacheKey, clearRuntime);
 
             //Clear "portal keys" for Host
             ClearFolderCacheInternal(-1, clearRuntime);

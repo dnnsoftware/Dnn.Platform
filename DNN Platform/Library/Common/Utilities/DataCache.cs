@@ -242,6 +242,10 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority NotificationTypeActionsPriority = CacheItemPriority.Default;
         public const int NotificationTypeActionsTimeOut = 20;
 
+        public const string SubscriptionTypesCacheKey = "SubscriptionTypes";
+        public const CacheItemPriority SubscriptionTypesCachePriority = CacheItemPriority.Default;
+        public const int SubscriptionTypesTimeOut = 20;
+
 
 		public const string PackagesCacheKey = "Packages_{0}";
 		public const CacheItemPriority PackagesCachePriority = CacheItemPriority.Default;

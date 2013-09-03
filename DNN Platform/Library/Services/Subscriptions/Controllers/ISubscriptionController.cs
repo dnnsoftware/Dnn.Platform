@@ -55,11 +55,5 @@ namespace DotNetNuke.Services.Subscriptions.Controllers
         List<Subscriber> GetContentItemSubscribers(int contentItemId, int portalId);
 
         List<Subscriber> GetNewContentSubscribers(int groupId, int moduleId, int portalId);
-
-        /// <summary>
-        /// Determine whether a user is subscribed to the specified type and content item.
-        /// </summary>
-        [Obsolete("As of Social 1.1, please use IsSubscribedToContentActivity instead (which returns a subscriberId instead of a true/false value).")]
-        bool IsSubscribed(UserInfo userInfo, SubscriptionType subscriptionType, ContentItem contentItem, string objectKey);
     }
 }

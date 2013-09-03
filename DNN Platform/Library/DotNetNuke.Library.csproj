@@ -521,9 +521,7 @@
     <Compile Include="Services\Subscriptions\Controllers\ISubscriptionController.cs" />
     <Compile Include="Services\Subscriptions\Controllers\ISubscriptionTypeController.cs" />
     <Compile Include="Services\Subscriptions\Controllers\SubscriptionController.cs" />
-    <Compile Include="Services\Subscriptions\Controllers\SubscriptionControllerImpl.cs" />
     <Compile Include="Services\Subscriptions\Controllers\SubscriptionTypeController.cs" />
-    <Compile Include="Services\Subscriptions\Controllers\SubscriptionTypeControllerImpl.cs" />
     <Compile Include="Services\Subscriptions\Data\DataService.cs" />
     <Compile Include="Services\Subscriptions\Data\IDataService.cs" />
     <Compile Include="Services\Subscriptions\Entities\Actions.cs" />
