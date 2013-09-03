@@ -1146,6 +1146,6 @@ The host-level settings are currently set as follows:
     <value>myVanityUrl</value>
   </data>
   <data name="VanityUrlPrefixHeader.Text" xml:space="preserve">
-    <value>Enter a prefix for Vanity Urls</value>
+    <value>Enter a prefix for Vanity URLs</value>
   </data>
 </root>
