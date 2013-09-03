@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.InternalServices
 		public HttpResponseMessage GetToasts()
 		{
 			var toasts = NotificationsController.Instance.GetToasts(this.UserInfo);
-			IList<object> convertedObjects = toasts.Select(toast => ToExpandoObject(toast)).Cast<object>().ToList();
+			IList<object> convertedObjects = toasts.Select(ToExpandoObject).ToList();
 			return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Toasts = convertedObjects.Take(3) });
 		}
 
