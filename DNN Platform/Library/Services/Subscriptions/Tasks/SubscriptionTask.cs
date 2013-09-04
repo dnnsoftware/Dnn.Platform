@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Caching;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -35,17 +36,17 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
         #region Private members
 
         private readonly IDataService _dataService;
-        private readonly PortalController _pController = new PortalController();
-        private readonly UserController _uController = new UserController();
+        private readonly UserController _userController = new UserController();
 
         private const string SettingLastHourlyRun = "SubscriptionsLastHourlyDigestRun";
         private const string SettingLastDailyRun = "SubscriptionsLastDailyDigestRun";
         private const string SettingLastWeeklyRun = "SubscriptionsLastWeeklyDigestRun";
         private const string SettingLastMonthlyRun = "SubscriptionsLastMonthlyDigestRun";
+	    private const int DefaultCacheTimeout = 20;
         
         private static int BatchSize
         {
-            get { return Convert.ToInt32(Host.MessageSchedulerBatchSize.ToString()); }
+            get { return Host.MessageSchedulerBatchSize; }
         }
 
         #endregion
@@ -258,8 +259,8 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
                                 var messageDetails = InternalMessagingController.Instance.GetMessage(singleMessage.MessageID);
                                 var ps = new PortalSettings(messageDetails.PortalID);
 
-                                var senderUser = _uController.GetUser(messageDetails.PortalID, singleMessage.UserID);
-                                var recipientUser = _uController.GetUser(messageDetails.PortalID, singleMessage.UserID);
+                                var senderUser = _userController.GetUser(messageDetails.PortalID, singleMessage.UserID);
+                                var recipientUser = _userController.GetUser(messageDetails.PortalID, singleMessage.UserID);
 
                                 SendDigest(messageRecipients, ps, senderUser, recipientUser);
                             }
@@ -312,7 +313,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
         {
             //TODO: check if host user can send to multiple portals...
             var messageDetails = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);
-            var author = _uController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
+            var author = _userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
 
             if (!SendEmail(messageDetails.PortalID))
             {
@@ -322,7 +323,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
             var ps = new PortalSettings(messageDetails.PortalID);
             var fromAddress = ps.Email;
-            var toAddress = _uController.GetUser(messageDetails.PortalID, messageRecipient.UserID).Email;
+            var toAddress = _userController.GetUser(messageDetails.PortalID, messageRecipient.UserID).Email;
             var sender = author.DisplayName;
 
             if (string.IsNullOrEmpty(sender))
@@ -330,19 +331,19 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
             var senderAddress = sender + "< " + fromAddress + ">";
 			var subject = string.Format(Localization.Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.Localization.GlobalResourceFile), ps.PortalName);
-			var template = Localization.Localization.GetString("Template_Email", "~/DesktopModules/DNNCorp/Subscriptions/App_LocalResources/SharedResources.resx", ps.PortalName);
+			var template = Localization.Localization.GetString("Template_Email", Localization.Localization.SharedResourceFile);
             var authorId = messageDetails.CreatedByUserID > 0 ? messageDetails.CreatedByUserID : author.UserID;
 
-			var detailTemplate = Localization.Localization.GetString("Template_Item", "~/DesktopModules/DNNCorp/Subscriptions/App_LocalResources/SharedResources.resx", ps.PortalName);
+			var detailTemplate = Localization.Localization.GetString("Template_Item", Localization.Localization.SharedResourceFile);
             detailTemplate = detailTemplate.Replace("[TITLE]", messageDetails.Subject);
             detailTemplate = detailTemplate.Replace("[CONTENT]", messageDetails.Body);
-            detailTemplate = detailTemplate.Replace("[PROFILEPICURL]", ProfilePicUrl(ps, authorId));
+            detailTemplate = detailTemplate.Replace("[PROFILEPICURL]", GetProfilePicUrl(ps, authorId));
 
-            template = template.Replace("[SITEURL]", PortalHomeUrl(ps));
-            template = template.Replace("[NOTIFICATIONURL]", NotificationUrl(ps, messageRecipient.UserID));
+            template = template.Replace("[SITEURL]", GetPortalHomeUrl(ps));
+            template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(ps, messageRecipient.UserID));
             template = template.Replace("[PORTALNAME]", ps.PortalName);
-            template = template.Replace("[LOGOURL]", PortalLogoUrl(ps));
-            template = template.Replace("[UNSUBSCRIBEURL]", SubscriptionsUrl(ps, author.UserID));
+            template = template.Replace("[LOGOURL]", GetPortalLogoUrl(ps));
+            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(ps, author.UserID));
             template = template.Replace("[MESSAGEBODY]", detailTemplate);
             template = template.Replace("href=\"/", "href=\"http://" + ps.DefaultPortalAlias + "/");
             template = template.Replace("src=\"/", "src=\"http://" + ps.DefaultPortalAlias + "/");
@@ -356,7 +357,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
         {
             var msgContent = "";
             var messageRecipients = messages as MessageRecipient[] ?? messages.ToArray();
-			var detailTemplate = Localization.Localization.GetString("Template_Item", "~/DesktopModules/DNNCorp/Subscriptions/App_LocalResources/SharedResources.resx", ps.PortalName);
+			var detailTemplate = Localization.Localization.GetString("Template_Item", Localization.Localization.SharedResourceFile);
 
             foreach (var message in messageRecipients)
             {
@@ -372,7 +373,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
                 itemTemplate = itemTemplate.Replace("[TITLE]", messageDetails.Subject);
                 itemTemplate = itemTemplate.Replace("[CONTENT]", messageDetails.Body);
-                itemTemplate = itemTemplate.Replace("[PROFILEPICURL]", ProfilePicUrl(ps, authorId));
+                itemTemplate = itemTemplate.Replace("[PROFILEPICURL]", GetProfilePicUrl(ps, authorId));
 
                 msgContent += itemTemplate;
             }
@@ -386,18 +387,18 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
             var senderAddress = sender + "< " + fromAddress + ">";
 			var subject = string.Format(Localization.Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.Localization.GlobalResourceFile), ps.PortalName);
-			var template = Localization.Localization.GetString("Template_Email", "~/DesktopModules/DNNCorp/Subscriptions/App_LocalResources/SharedResources.resx", ps.PortalName);
+			var template = Localization.Localization.GetString("Template_Email", Localization.Localization.SharedResourceFile);
             
-            template = template.Replace("[SITEURL]", PortalHomeUrl(ps));
-            template = template.Replace("[NOTIFICATIONURL]", NotificationUrl(ps, recipientUser.UserID));
+            template = template.Replace("[SITEURL]", GetPortalHomeUrl(ps));
+            template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(ps, recipientUser.UserID));
             template = template.Replace("[PORTALNAME]", ps.PortalName);
-            template = template.Replace("[LOGOURL]", PortalLogoUrl(ps));
-            template = template.Replace("[UNSUBSCRIBEURL]", SubscriptionsUrl(ps, recipientUser.UserID));           
+            template = template.Replace("[LOGOURL]", GetPortalLogoUrl(ps));
+            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(ps, recipientUser.UserID));           
             template = template.Replace("[MESSAGEBODY]", msgContent);
             template = template.Replace("href=\"/", "href=\"http://" + ps.DefaultPortalAlias + "/");
             template = template.Replace("src=\"/", "src=\"http://" + ps.DefaultPortalAlias + "/");
 
-            Services.Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, template);
+            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, template);
 
             foreach (var message in messageRecipients)
             {
@@ -405,18 +406,18 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
             }
         }
 
-        private static string PortalLogoUrl(PortalSettings sendingPortal)
+        private static string GetPortalLogoUrl(PortalSettings sendingPortal)
         {
             return "http://" + sendingPortal.DefaultPortalAlias + "/" + sendingPortal.HomeDirectory + "/" + sendingPortal.LogoFile;
         }
 
-        private static string PortalHomeUrl(PortalSettings sendingPortal)
+        private static string GetPortalHomeUrl(PortalSettings sendingPortal)
         {
 
             return "http://" + sendingPortal.DefaultPortalAlias;
         }
 
-        protected string SubscriptionsUrl(PortalSettings sendingPortal, int userId)
+        protected string GetSubscriptionsUrl(PortalSettings sendingPortal, int userId)
         {
             return "http://" + sendingPortal.DefaultPortalAlias + "/tabid/" + GetSubscriptionMgmtTab(sendingPortal) + "/userId/" + userId + "/" + Globals.glbDefaultPage;
         }
@@ -424,22 +425,15 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
         private static int GetSubscriptionMgmtTab(PortalSettings sendingPortal)
         {
             var cacheKey = string.Format("SubscriptionMgmtTab:{0}", sendingPortal.PortalId);
-            var messageTabId = DataCache.GetCache<int>(cacheKey);
-            if (messageTabId > 0)
-                return messageTabId;
+	        var cacheItemArgs = new CacheItemArgs(cacheKey, DefaultCacheTimeout, CacheItemPriority.Default, sendingPortal);
 
-            //Find the Message Tab
-            messageTabId = FindSubscriptionMgmtTab(sendingPortal);
-
-            //save in cache
-            //NOTE - This cache is not being cleared. There is no easy way to clear this, except Tools->Clear Cache
-            DataCache.SetCache(cacheKey, messageTabId, TimeSpan.FromMinutes(20));
-
-            return messageTabId;
+	        return CBO.GetCachedObject<int>(cacheItemArgs, GetSubscriptionMgmtTabCallback);
+            
         }
 
-        private static int FindSubscriptionMgmtTab(PortalSettings sendingPortal)
-        {
+		private static object GetSubscriptionMgmtTabCallback(CacheItemArgs cacheItemArgs)
+		{
+			var sendingPortal = cacheItemArgs.Params[0] as PortalSettings;
             var tabController = new TabController();
             var moduleController = new ModuleController();
 
@@ -464,13 +458,13 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
             return sendingPortal.UserTabId;
         }
 
-        private static string ProfilePicUrl(PortalSettings sendingPortal, int userId)
+        private static string GetProfilePicUrl(PortalSettings sendingPortal, int userId)
         {
             var url = "http://" + sendingPortal.DefaultPortalAlias + "/" + "profilepic.ashx?userId={0}&h={1}&w={2}";
             return string.Format(url, userId, 64, 64);
         }
 
-        private static string NotificationUrl(PortalSettings sendingPortal, int userId)
+        private static string GetNotificationUrl(PortalSettings sendingPortal, int userId)
         {
             var cacheKey = string.Format("MessageCenterTab:{0}", sendingPortal.PortalId);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
