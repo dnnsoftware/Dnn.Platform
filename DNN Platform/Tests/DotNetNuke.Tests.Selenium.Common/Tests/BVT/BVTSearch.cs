@@ -179,12 +179,8 @@ namespace DNNSelenium.Common.Tests.BVT
 			var hostSchedulePage = new HostSchedulePage(_driver);
 			hostSchedulePage.OpenUsingButtons(_baseUrl);
 
-			StringAssert.Contains("dnnCheckbox-checked",
-			                      hostSchedulePage.WaitForElement(
-				                      By.XPath("//tr[td[text() = '" + HostSchedulePage.SearchSiteCrawlerName +
-				                               "']]//span[input[contains(@id, 'ViewSchedule_dgSchedule')]]/span")).GetAttribute(
-					                               "class"),
-			                      "Site Crawler is not enabled");
+			Assert.IsTrue(hostSchedulePage.ElementPresent(By.XPath(HostSchedulePage.SearchCrawlerEnabled + " and @checked ='checked']")),
+				"Site Crawler is not enabled");
 		}
 
 	}
