@@ -588,13 +588,12 @@
     <Compile Include="Services\Social\Messaging\Scheduler\CoreMessagingScheduler.cs" />
     <Compile Include="Services\Social\Notifications\Notification.cs" />
     <Compile Include="Services\Social\Notifications\NotificationTypeAction.cs" />
-    <Compile Include="Services\Social\Messaging\MessagingController.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageThreadsView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageBoxView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageFileView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageThreadView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageConversationView.cs" />
-    <Compile Include="Services\Social\Messaging\MessagingControllerImpl.cs" />
+    <Compile Include="Services\Social\Messaging\MessagingController.cs" />
     <Compile Include="Services\Social\Messaging\Data\DataService.cs" />
     <Compile Include="Services\Social\Messaging\Data\IDataService.cs" />
     <Compile Include="Services\Social\Messaging\IMessagingController.cs" />
@@ -907,9 +906,8 @@
     <Compile Include="Services\Social\Notifications\Data\DataService.cs" />
     <Compile Include="Services\Social\Notifications\Data\IDataService.cs" />
     <Compile Include="Services\Social\Notifications\INotificationsController.cs" />
-    <Compile Include="Services\Social\Notifications\NotificationsControllerImpl.cs" />
-    <Compile Include="Services\Social\Notifications\NotificationType.cs" />
     <Compile Include="Services\Social\Notifications\NotificationsController.cs" />
+    <Compile Include="Services\Social\Notifications\NotificationType.cs" />
     <Compile Include="Services\SystemDateTime\SystemDateTime.cs" />
     <Compile Include="Services\EventQueue\Config\EventQueueConfiguration.cs" />
     <Compile Include="Services\EventQueue\Config\PublishedEvent.cs" />
