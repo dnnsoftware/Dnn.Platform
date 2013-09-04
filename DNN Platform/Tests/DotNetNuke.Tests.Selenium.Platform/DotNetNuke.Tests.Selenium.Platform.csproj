@@ -33,11 +33,11 @@
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Dnn.Evoq.Content\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\..\Dnn.Platform\Packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Dnn.Evoq.Content\packages\selenium-dotnet-2.35.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
+      <HintPath>..\..\..\..\Dnn.Platform\Packages\Selenium.WebDriver.2.31.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,15 +48,15 @@
     <Reference Include="System.Xml" />
     <Reference Include="ThoughtWorks.Selenium.Core, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Dnn.Evoq.Content\packages\selenium-dotnet-2.35.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
+      <HintPath>..\..\..\..\Dnn.Platform\Packages\Selenium.WebDriver.2.31.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Dnn.Evoq.Content\packages\selenium-dotnet-2.35.0\net40\WebDriver.dll</HintPath>
+      <HintPath>..\..\..\..\Dnn.Platform\Packages\Selenium.WebDriver.2.31.0\net40\WebDriver.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver.Support, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Dnn.Evoq.Content\packages\selenium-dotnet-2.35.0\net40\WebDriver.Support.dll</HintPath>
+      <HintPath>..\..\..\..\Dnn.Platform\Packages\Selenium.WebDriver.2.31.0\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetNuke.Tests.Selenium.Common\DotNetNuke.Tests.Selenium.Common.csproj">
-      <Project>{877C8F36-40DC-4F51-9FAD-309E311C94D4}</Project>
+      <Project>{877c8f36-40dc-4f51-9fad-309e311c94d4}</Project>
       <Name>DotNetNuke.Tests.Selenium.Common</Name>
     </ProjectReference>
   </ItemGroup>
