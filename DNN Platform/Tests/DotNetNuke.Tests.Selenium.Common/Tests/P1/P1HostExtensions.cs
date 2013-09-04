@@ -123,7 +123,7 @@ namespace DNNSelenium.Common.Tests.P1
 			hostExtensionsPage.AccordionOpen(By.XPath(ExtensionsPage.ModulesAccordion));
 
 			int itemNumber = hostExtensionsPage.FindElements(By.XPath(ExtensionsPage.ModulesExtensionsList)).Count;
-
+			
 			hostExtensionsPage.DeleteExtension(_hostExtensionNameToInstall);
 
 			hostExtensionsPage.OpenUsingButtons(_baseUrl);

@@ -16,11 +16,11 @@ namespace DNNSelenium.Common.CorePages
 		public static string InstallExtensionButton = "//a[contains(@id, '_Extensions_cmdInstall')]";
 
 		public static string ModulesAccordion = "//h2[@id='Panel-Modules']/a";
-		public static string ModulesExtensionsList = "//table[contains(@id, '_extensionsGrid_0')]//tr[contains(@class, 'dnnGridItem')]";
+		public static string ModulesExtensionsList = "//h2[@id='Panel-Modules']/following-sibling :: */table[contains(@id, '_extensionsGrid_0')]//tr[contains(@class, 'Item')]";
 		public static string CoreLanguagePacksAccordion = "//h2[@id='Panel-Core Language Packs']/a";
-		public static string CoreLanguagePacksList = "//table[contains(@id, '_extensionsGrid_3')]//tr[contains(@class, 'dnnGridItem')]";
+		public static string CoreLanguagePacksList = "//h2[@id='Panel-Core Language Packs']/following-sibling :: */table[contains(@id, '_extensionsGrid_3')]//tr[contains(@class, 'Item')]";
 		public static string ExtensionLanguagePacksAccordion = "//h2[@id='Panel-Extension Language Packs']/a";
-		public static string ExtensionLanguagePacksList = "//table[contains(@id, '_extensionsGrid_5')]//tr[contains(@class, 'dnnGridItem')]";
+		public static string ExtensionLanguagePacksList = "//h2[@id='Panel-Extension Language Packs']/following-sibling :: */table[contains(@id, '_extensionsGrid_5')]//tr[contains(@class, 'Item')]";
 
 		//Install Extension page
 		public static string UploadFileButton = "//input[contains(@id, '_Install_wizInstall_cmdBrowse')]";

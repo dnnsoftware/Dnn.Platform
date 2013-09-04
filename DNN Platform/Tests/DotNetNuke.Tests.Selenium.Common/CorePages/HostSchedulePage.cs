@@ -22,8 +22,13 @@ namespace DNNSelenium.Common.CorePages
 		}
 
 		public static string SearchUrlCrawlerName = "Search: Url Crawler";
+		public static string SearchUrlCrawlerEnabled = "//tr[td[text() = '" + SearchUrlCrawlerName + "']]//span/input[contains(@id, 'ViewSchedule_dgSchedule')";
+
 		public static string SearchFileCrawlerName = "Search: File Crawler";
+		public static string SearchFileCrawlerEnabled = "//tr[td[text() = '" + SearchFileCrawlerName + "']]//span/input[contains(@id, 'ViewSchedule_dgSchedule')";
+
 		public static string SearchSiteCrawlerName = "Search: Site Crawler";
+		public static string SearchCrawlerEnabled = "//tr[td[text() = '" + SearchSiteCrawlerName + "']]//span/input[contains(@id, 'ViewSchedule_dgSchedule')";
 
 		public void OpenUsingUrl(string baseUrl)
 		{
