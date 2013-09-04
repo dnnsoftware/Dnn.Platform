@@ -51,59 +51,6 @@ namespace DotNetNuke.Services.Subscriptions.Controllers
 
         #region Implementation of ISubscriptionController
 
-        public int Subscribe(Subscriber subscription)
-        {
-            try
-            {
-                var subscriptionId = _dataService.AddSubscription(
-                    subscription.SubscriberId,
-                    subscription.UserId,
-                    subscription.PortalId,
-                    subscription.SubscriptionTypeId,
-                    (int)subscription.Frequency,
-                    subscription.ContentItemId,
-                    subscription.ObjectKey,
-                    subscription.ModuleId,
-                    subscription.GroupId);
-
-                if (subscriptionId < 0)
-                {
-                    throw new SubscriptionsException("Unknown error");
-                }
-
-                return subscriptionId;
-            }
-            catch (Exception ex)
-            {
-                throw new SubscriptionsException(
-                    string.Format("Unable to add or update Subscription: {0}", ex.Message), ex);
-            }
-        }
-
-        public void Unsubscribe(SubscriptionDescription subscription)
-        {
-            try
-            {
-                var identity = CBO.FillObject<Subscriber>(_dataService.IsSubscribed(
-                    subscription.PortalId,
-                    subscription.UserId,
-                    subscription.SubscriptionTypeId,
-                    subscription.ContentItemId,
-                    subscription.ObjectKey,
-                    subscription.ModuleId,
-                    subscription.GroupId));
-
-                if (identity.SubscriberId >= 0)
-                {
-                    _dataService.Unsubscribe(identity.SubscriberId);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new SubscriptionsException(string.Format("Unable to unsubscribe: {0}", ex.Message), ex);
-            }
-        }
-
         public void DeleteSubscription(int subscriptionId)
         {
             try
@@ -114,6 +61,21 @@ namespace DotNetNuke.Services.Subscriptions.Controllers
             {
                 throw new SubscriptionsException(string.Format("Unable to unsubscribe: {0}", ex.Message), ex);
             }
+        }
+
+        public List<Subscriber> GetContentItemSubscribers(int contentItemId, int portalId)
+        {
+            return CBO.FillCollection<Subscriber>(_dataService.GetContentItemSubscribers(contentItemId, portalId));
+        }
+
+        public List<Subscriber> GetNewContentSubscribers(int groupId, int moduleId, int portalId)
+        {
+            return CBO.FillCollection<Subscriber>(_dataService.GetNewContentSubscribers(groupId, moduleId, portalId));
+        }
+
+        public List<Subscriber> GetUserSubscriptions(int userId, int portalId)
+        {
+            return CBO.FillCollection<Subscriber>(_dataService.GetUserSubscriptions(userId, portalId));
         }
 
         public Subscriber IsSubscribedToContentActivity(UserInfo userInfo, ContentItem contentItem, int subTypeId, string objectKey, int groupId)
@@ -166,34 +128,57 @@ namespace DotNetNuke.Services.Subscriptions.Controllers
             }
         }
 
-        public List<Subscriber> GetUserSubscriptions(int userId, int portalId)
+        public int Subscribe(Subscriber subscription)
         {
-            return CBO.FillCollection<Subscriber>(_dataService.GetUserSubscriptions(userId, portalId));
+            try
+            {
+                var subscriptionId = _dataService.AddSubscription(
+                    subscription.SubscriberId,
+                    subscription.UserId,
+                    subscription.PortalId,
+                    subscription.SubscriptionTypeId,
+                    (int)subscription.Frequency,
+                    subscription.ContentItemId,
+                    subscription.ObjectKey,
+                    subscription.ModuleId,
+                    subscription.GroupId);
+
+                if (subscriptionId < 0)
+                {
+                    throw new SubscriptionsException("Unknown error");
+                }
+
+                return subscriptionId;
+            }
+            catch (Exception ex)
+            {
+                throw new SubscriptionsException(
+                    string.Format("Unable to add or update Subscription: {0}", ex.Message), ex);
+            }
         }
 
-        public void UpdateScheduleItemSetting(int scheduleId, string key, string value)
+        public void Unsubscribe(Subscriber subscription)
         {
-            _dataService.UpdateScheduleItemSetting(scheduleId, key, value);
-        }
+            try
+            {
+                var identity = CBO.FillObject<Subscriber>(_dataService.IsSubscribed(
+                    subscription.PortalId,
+                    subscription.UserId,
+                    subscription.SubscriptionTypeId,
+                    subscription.ContentItemId,
+                    subscription.ObjectKey,
+                    subscription.ModuleId,
+                    subscription.GroupId));
 
-        public IList<MessageRecipient> GetNextMessagesForDispatch(Guid schedulerInstance, int batchSize)
-        {
-            return CBO.FillCollection<MessageRecipient>(_dataService.GetNextMessagesForDispatch(schedulerInstance, batchSize));
-        }
-
-        public IList<MessageRecipient> GetNextSubscribersForDispatch(Guid schedulerInstance, int frequency, int batchSize)
-        {
-            return CBO.FillCollection<MessageRecipient>(_dataService.GetNextSubscribersForDispatch(schedulerInstance, frequency, batchSize));
-        }
-
-        public List<Subscriber> GetContentItemSubscribers(int contentItemId, int portalId)
-        {
-            return CBO.FillCollection<Subscriber>(_dataService.GetContentItemSubscribers(contentItemId, portalId));
-        }
-
-        public List<Subscriber> GetNewContentSubscribers(int groupId, int moduleId, int portalId)
-        {
-            return CBO.FillCollection<Subscriber>(_dataService.GetNewContentSubscribers(groupId, moduleId, portalId));
+                if (identity.SubscriberId >= 0)
+                {
+                    _dataService.Unsubscribe(identity.SubscriberId);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new SubscriptionsException(string.Format("Unable to unsubscribe: {0}", ex.Message), ex);
+            }
         }
 
         #endregion
