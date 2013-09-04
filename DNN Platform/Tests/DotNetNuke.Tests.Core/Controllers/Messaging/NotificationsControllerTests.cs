@@ -59,8 +59,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private Mock<DotNetNuke.Services.Social.Messaging.Data.IDataService> _mockMessagingDataService;
         private Mock<IMessagingController> _mockMessagingController;
         private Mock<IInternalMessagingController> _mockInternalMessagingController;
-        private NotificationsControllerImpl _notificationsController;
-        private Mock<NotificationsControllerImpl> _mockNotificationsController;
+        private NotificationsController _notificationsController;
+        private Mock<NotificationsController> _mockNotificationsController;
         private Mock<DataProvider> _dataProvider;
         private Mock<CachingProvider> _cachingProvider;
         private DataTable _dtNotificationTypes;
@@ -84,8 +84,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _dataProvider = MockComponentProvider.CreateDataProvider();
             _cachingProvider = MockComponentProvider.CreateDataCacheProvider();
 
-            _notificationsController = new NotificationsControllerImpl(_mockDataService.Object, _mockMessagingDataService.Object);
-            _mockNotificationsController = new Mock<NotificationsControllerImpl> { CallBase = true };
+            _notificationsController = new NotificationsController(_mockDataService.Object, _mockMessagingDataService.Object);
+            _mockNotificationsController = new Mock<NotificationsController> { CallBase = true };
 
             _mockMessagingController = new Mock<IMessagingController>();
             MessagingController.SetTestableInstance(_mockMessagingController.Object);
