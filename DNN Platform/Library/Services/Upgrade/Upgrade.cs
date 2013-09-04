@@ -2976,6 +2976,17 @@ namespace DotNetNuke.Services.Upgrade
                 desktopModule.Category = "Developer";
                 DesktopModuleController.SaveDesktopModule(desktopModule, false, false);
             }
+
+            var typeController = new ContentTypeController();
+            var fileContentType = (from t in typeController.GetContentTypes() where t.ContentType == "File" select t).SingleOrDefault();
+
+            //only perform following for an existing installation upgrading
+            if (Globals.Status == Globals.UpgradeStatus.Upgrade)
+            {
+                UpdateFoldersForParentId();
+                ImportDocumentLibraryCategories();
+                ImportDocumentLibraryCategoryAssoc(fileContentType);
+            }
         }
 
         private static ContentItem CreateFileContentItem()
