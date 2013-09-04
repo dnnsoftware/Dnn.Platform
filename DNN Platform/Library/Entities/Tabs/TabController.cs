@@ -2208,7 +2208,7 @@ namespace DotNetNuke.Entities.Tabs
                 invalidType = "InvalidTabName";
                 valid = false;
             }
-            else if ((Regex.IsMatch(HtmlUtils.StripNonWord(tabName, false), "^AUX$|^CON$|^NUL$|^SITEMAP$|^LINKCLICK$|^KEEPALIVE$|^DEFAULT$|^ERRORPAGE$|^LOGIN$|^REGISTER$", RegexOptions.IgnoreCase)))
+            else if ((Regex.IsMatch(HtmlUtils.StripNonWord(tabName, false), "^AUX$|^CON$|^NUL$|^SITEMAP$|^LINKCLICK$|^KEEPALIVE$|^DEFAULT$|^ERRORPAGE$|^REGISTER$", RegexOptions.IgnoreCase)))
             {
                 invalidType = "InvalidTabName";
                 valid = false;
