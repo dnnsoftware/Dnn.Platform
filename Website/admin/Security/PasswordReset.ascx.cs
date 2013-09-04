@@ -21,7 +21,7 @@
 #region Usings
 
 using System;
-
+using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -96,10 +96,59 @@ namespace DotNetNuke.Modules.Admin.Security
                 LogSuccess();
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
                 UserController.UserLogin(PortalSettings.PortalId, txtUsername.Text, txtPassword.Text, "", "", "", ref loginStatus, false);
-                Response.Redirect("~/Default.aspx", true);
+                RedirectAfterLogin();
             }           
         }
-       
+
+        protected void RedirectAfterLogin()
+        {
+            var redirectURL = "";
+
+            var setting = GetSetting(PortalId, "Redirect_AfterLogin");
+
+            if (Convert.ToInt32(setting) == Null.NullInteger)
+            {
+                if (Request.QueryString["returnurl"] != null)
+                {
+                    //return to the url passed to signin
+                    redirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+                    //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+                    if (redirectURL.Contains("://"))
+                    {
+                        redirectURL = "";
+                    }
+                }
+                if (Request.Cookies["returnurl"] != null)
+                {
+                    //return to the url passed to signin
+                    redirectURL = HttpUtility.UrlDecode(Request.Cookies["returnurl"].Value);
+                    //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+                    if (redirectURL.Contains("://"))
+                    {
+                        redirectURL = "";
+                    }
+                }
+                if (String.IsNullOrEmpty(redirectURL))
+                {
+                    if (PortalSettings.LoginTabId != -1 && PortalSettings.HomeTabId != -1)
+                    {
+                        //redirect to portal home page specified
+                        redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
+                    }
+                    else
+                    {
+                        //redirect to current page 
+                        redirectURL = Globals.NavigateURL();
+                    }
+                }
+            }
+            else //redirect to after login page
+            {
+                redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+            }
+            Response.Redirect(redirectURL);
+        }
+
         private void LogSuccess()
         {
             LogResult(string.Empty);

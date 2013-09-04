@@ -16,7 +16,7 @@
     <value xml:space="preserve">Info Account</value>
   </data>
   <data name="BestPractices.Text">
-    <value xml:space="preserve">Si sta per aggiornare il tuo Sito Web a una versione più recente dell'applicazione DotNetNuke. Applicare gli aggiornamenti su base omogenea è il modo migliore per garantire che si sta proteggendo l'integrità del vostro investimento e la sicurezza degli utenti e risorse. Prima di procedere con il processo di aggiornamento automatizzato assicurarsi di:&lt;ul&gt;
+    <value xml:space="preserve">Si sta per aggiornare il tuo Sito Web a una versione più recente dell'applicazione. Applicare gli aggiornamenti su base omogenea è il modo migliore per garantire che si sta proteggendo l'integrità del vostro investimento e la sicurezza degli utenti e risorse. Prima di procedere con il processo di aggiornamento automatizzato assicurarsi di:&lt;ul&gt;
 &lt;li&gt;Aver pianificato un primo test di aggiornamento in un ambiente di TEST.&lt;li&gt;Aver documentato le caratteristiche della tua attuale installazione includendo tutti i moduli di terze parti installati.&lt;li&gt;Aver creato il backup del vostro ambiente necessario per ripristinare il tuo sito Web in caso di un errore imprevisto durante aggiornamento.&lt;/li&gt;&lt;/li&gt;&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="CurrentVersion.Text">
@@ -66,7 +66,7 @@
     <value xml:space="preserve">Minuti</value>
   </data>
   <data name="Title.Text">
-    <value xml:space="preserve">Aggiornamento DotNetNuke</value>
+    <value xml:space="preserve">Aggiornamento</value>
   </data>
   <data name="Upgrade.Text">
     <value xml:space="preserve">Aggiornamento</value>
@@ -84,7 +84,7 @@
     <value xml:space="preserve">Host (SuperUtente) Username:</value>
   </data>
   <data name="Version.Text">
-    <value xml:space="preserve">Aggiornamento DotNetNuke - Versione {0}</value>
+    <value xml:space="preserve">Aggiornamento - Versione {0}</value>
   </data>
   <data name="ViewWebsite.Text">
     <value xml:space="preserve">Vedi Sito Web</value>

@@ -862,6 +862,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (IsValid)
                 {
+                    User.Username = HttpUtility.HtmlEncode(User.Username);
                     CreateUser();
                 }
                 else

@@ -94,23 +94,23 @@ namespace DesktopModules.Admin.RecycleBin
 
                 if (tab == null)
                 {
-                    modulesListBox.Items.Add(new ListItem(module.ModuleTitle, module.TabID + "-" + module.ModuleID));
+                    modulesListBox.Items.Add(new ListItem(module.ModuleTitle + " - " + module.LastModifiedOnDate, module.TabID + "-" + module.ModuleID));
                 }
                 else if (tab.TabID == module.TabID)
                 {
-                    modulesListBox.Items.Add(new ListItem(tab.TabName + " - " + module.ModuleTitle, module.TabID + "-" + module.ModuleID));
+                    modulesListBox.Items.Add(new ListItem(tab.TabName + " - " + module.ModuleTitle + " - " + module.LastModifiedOnDate, module.TabID + "-" + module.ModuleID));
                 }
             }
 
-            tabsListBox.DataSource = DeletedTabs;
-            tabsListBox.DataBind();
+            foreach (var tab in DeletedTabs)
+            {
+                tabsListBox.Items.Add(new ListItem(tab.IndentedTabName + " - " + tab.LastModifiedOnDate, tab.TabID.ToString()));
+            }
 
             cmdRestoreTab.Enabled = (DeletedTabs.Count > 0);
             cmdDeleteTab.Enabled = (DeletedTabs.Count > 0);
-
             cmdRestoreModule.Enabled = (modulesListBox.Items.Count > 0);
             cmdDeleteModule.Enabled = (modulesListBox.Items.Count > 0);
-
             cmdEmpty.Enabled = DeletedTabs.Count > 0 || modulesListBox.Items.Count > 0;
 		}
 
@@ -163,7 +163,7 @@ namespace DesktopModules.Admin.RecycleBin
                                             .OrderBy(tab => tab.TabPath)
                                             .ToList();
 
-            DeletedModules = moduleController.GetModules(PortalId)
+            DeletedModules = moduleController.GetRecycleModules(PortalId)
                                                 .Cast<ModuleInfo>()
                                                 .Where(module => module.IsDeleted && (modeButtonList.SelectedValue == "ALL" || module.CultureCode == currentLocale.Code))
                                                 .ToList();

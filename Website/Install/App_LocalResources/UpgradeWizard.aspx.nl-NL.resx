@@ -16,7 +16,7 @@
     <value xml:space="preserve">Account Informatie</value>
   </data>
   <data name="BestPractices.Text">
-    <value xml:space="preserve">U staat op het punt om uw website te upgraden naar een recentere versie van de DotNetNuke applicatie. Het toepassen van upgrades op een consistente basis is de beste manier om ervoor te zorgen dat u de integriteit van uw investering en de veiligheid van uw gebruikers en bezittingen te garanderen. Voordat u verder gaat met de geautomatiseerde upgrade-proces moet u ervoor zorgen dat: &lt;ul&gt; &lt;li&gt; je hebt plannen gemaakt om dit proces eerste poging in een staging-omgeving &lt;li&gt; u uw huidige installatie kenmerken gedocumenteerd in onder meer het doen van onderzoek over de verenigbaarheid van een derde partij modules die u gebruikt &lt;li&gt; die u hebt gemaakt van de nodige back-ups van uw omgeving, zodat u in staat zal zijn om uw website te herstellen in het geval van een onverwachte upgrade mislukking. &lt;/ Ul&gt;</value>
+    <value xml:space="preserve">U staat op het punt om uw website te upgraden naar een recentere versie van de applicatie. Het toepassen van upgrades op een consistente basis is de beste manier om ervoor te zorgen dat u de integriteit van uw investering en de veiligheid van uw gebruikers en bezittingen te garanderen. Voordat u verder gaat met de geautomatiseerde upgrade-proces moet u ervoor zorgen dat: &lt;ul&gt; &lt;li&gt; je hebt plannen gemaakt om dit proces eerste poging in een staging-omgeving &lt;li&gt; u uw huidige installatie kenmerken gedocumenteerd in onder meer het doen van onderzoek over de verenigbaarheid van een derde partij modules die u gebruikt &lt;li&gt; die u hebt gemaakt van de nodige back-ups van uw omgeving, zodat u in staat zal zijn om uw website te herstellen in het geval van een onverwachte upgrade mislukking. &lt;/ Ul&gt;</value>
   </data>
   <data name="CurrentVersion.Text">
     <value xml:space="preserve">Huidige versie - {0}</value>
@@ -61,7 +61,7 @@
     <value xml:space="preserve">Minuten</value>
   </data>
   <data name="Title.Text">
-    <value xml:space="preserve">DotNetNuke upgrade</value>
+    <value xml:space="preserve">Upgrade</value>
   </data>
   <data name="Upgrade.Text">
     <value xml:space="preserve">upgrade</value>
@@ -79,7 +79,7 @@
     <value xml:space="preserve">Host (SuperUser) Gebruikersnaam:</value>
   </data>
   <data name="Version.Text">
-    <value xml:space="preserve">DotNetNuke Upgrade - versie {0}</value>
+    <value xml:space="preserve">Upgrade - versie {0}</value>
   </data>
   <data name="ViewWebsite.Text">
     <value xml:space="preserve">Website weergeven</value>

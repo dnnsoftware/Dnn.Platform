@@ -16,7 +16,7 @@
     <value xml:space="preserve">Entrez vos informations de compte</value>
   </data>
   <data name="AccountInfoIntro.Text">
-    <value xml:space="preserve">Pour procéder à l'installation de DotNetNuke, entrez les informations suivantes.</value>
+    <value xml:space="preserve">Pour procéder à l'installation, entrez les informations suivantes.</value>
   </data>
   <data name="AdminInfo.Text">
     <value xml:space="preserve">Informations d'ordre administrative</value>
@@ -109,7 +109,7 @@
     <value xml:space="preserve">Le type de sécurité utilisé pour votre base de données.</value>
   </data>
   <data name="DatabaseSecurity.Text">
-    <value xml:space="preserve">Securité</value>
+    <value xml:space="preserve">Sécurité</value>
   </data>
   <data name="DatabaseServer.Help">
     <value xml:space="preserve">Le nom de votre serveur de base de données.</value>
@@ -208,7 +208,7 @@
     <value xml:space="preserve">Accompli</value>
   </data>
   <data name="InstallationIntroInfo.Text">
-    <value xml:space="preserve">DotNetNuke est en cours d'installation. Merci pour votre patience...</value>
+    <value xml:space="preserve">Le produit est en cours d'installation. Merci pour votre patience...</value>
   </data>
   <data name="InstallingDataBaseScriptStep.Text">
     <value xml:space="preserve">Installation du script de base de données</value>
@@ -226,7 +226,10 @@
     <value xml:space="preserve">Installation des scripts de base de données liés au "Membership"</value>
   </data>
   <data name="InstallTitle.Text">
-    <value xml:space="preserve">Installation de DotNetNuke</value>
+    <value xml:space="preserve">Installation</value>
+  </data>
+  <data name="InstallVersion.Text">
+    <value xml:space="preserve">Ajout de la version lors de l'installation</value>
   </data>
   <data name="IntroDetail.Text">
     <value xml:space="preserve">&lt;a class="videoLink" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Voir le tutoriel vidéo dédié à l’installation&lt;/a&gt;</value>
@@ -292,7 +295,7 @@
     <value xml:space="preserve">Aucun journal d'Installation</value>
   </data>
   <data name="PageTitle.Text">
-    <value xml:space="preserve">Installation de DotNetNuke</value>
+    <value xml:space="preserve">Installation</value>
   </data>
   <data name="Password.Help">
     <value xml:space="preserve">Le mot de passe pour le compte de super utilisateur (hôte).</value>
