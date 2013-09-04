@@ -158,11 +158,13 @@ namespace DNNSelenium.Common.Tests.Smoke
 
 			ManageUsersPage manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
+			manageUsersPage.WaitForElement(By.XPath(ManageUsersPage.UsersTable));
 
 			int itemNumber = manageUsersPage.FindElements(By.XPath(ManageUsersPage.UsersList)).Count;
 
 			manageUsersPage.AddNewUser(_userName, "User Display Name", "user@Email.com", "pAssWrd90");
 
+			manageUsersPage.WaitForElement(By.XPath(ManageUsersPage.UsersTable));
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of elements in the list increased by 1");
 			Assert.That(manageUsersPage.FindElements(By.XPath(ManageUsersPage.UsersList)).Count, Is.EqualTo(itemNumber + 1),
 						"The User is not added correctly");
