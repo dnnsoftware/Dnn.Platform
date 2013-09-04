@@ -109,10 +109,8 @@ namespace DesktopModules.Admin.RecycleBin
 
             cmdRestoreTab.Enabled = (DeletedTabs.Count > 0);
             cmdDeleteTab.Enabled = (DeletedTabs.Count > 0);
-
             cmdRestoreModule.Enabled = (modulesListBox.Items.Count > 0);
             cmdDeleteModule.Enabled = (modulesListBox.Items.Count > 0);
-
             cmdEmpty.Enabled = DeletedTabs.Count > 0 || modulesListBox.Items.Count > 0;
 		}
 

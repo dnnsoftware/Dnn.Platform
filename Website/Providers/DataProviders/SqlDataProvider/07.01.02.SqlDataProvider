@@ -518,8 +518,62 @@ BEGIN
 	
 	SELECT @CommentId			
 END
+GO
 
 
+/*** DNN-2935: SI: Recycle Bin - Show Delete Date/Time ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModule]
+	@TabId      int,
+	@ModuleId   int,
+	@SoftDelete	bit
+AS
+IF @SoftDelete = 1
+	UPDATE {databaseOwner}{objectQualifier}TabModules
+		SET	IsDeleted = 1,
+			VersionGuid = newId(),
+			LastModifiedOnDate=GETDATE()
+	WHERE  TabId = @TabId
+		AND    ModuleId = @ModuleId
+ELSE
+	DELETE
+	FROM   {databaseOwner}{objectQualifier}TabModules 
+	WHERE  TabId = @TabId
+		AND    ModuleId = @ModuleId
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRecycleModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRecycleModules]
+
+	@PortalID int
+	
+AS
+SELECT  OwnerPortalID, PortalID, {objectQualifier}vw_Modules.TabID, {objectQualifier}vw_Modules.TabModuleID, 
+        {objectQualifier}vw_Modules.ModuleID, ModuleDefID, {objectQualifier}vw_Modules.ModuleOrder, {objectQualifier}vw_Modules.PaneName, {objectQualifier}vw_Modules.ModuleTitle, 
+        {objectQualifier}vw_Modules.CacheTime, {objectQualifier}vw_Modules.CacheMethod, {objectQualifier}vw_Modules.Alignment, {objectQualifier}vw_Modules.Color, {objectQualifier}vw_Modules.Border, 
+        {objectQualifier}vw_Modules.IconFile, AllTabs, {objectQualifier}vw_Modules.Visibility, {objectQualifier}vw_Modules.IsDeleted, {objectQualifier}vw_Modules.Header, 
+        {objectQualifier}vw_Modules.Footer, StartDate, EndDate, {objectQualifier}vw_Modules.ContainerSrc, {objectQualifier}vw_Modules.DisplayTitle, 
+        {objectQualifier}vw_Modules.DisplayPrint, {objectQualifier}vw_Modules.DisplaySyndicate, {objectQualifier}vw_Modules.IsWebSlice, {objectQualifier}vw_Modules.WebSliceTitle, 
+        {objectQualifier}vw_Modules.WebSliceExpiryDate, {objectQualifier}vw_Modules.WebSliceTTL, InheritViewPermissions, IsShareable, 
+        IsShareableViewOnly, DesktopModuleID, DefaultCacheTime, ModuleControlID, 
+        BusinessControllerClass, IsAdmin, SupportedFeatures, ContentItemID, 
+        [Content], ContentTypeID, ContentKey, Indexed, StateID, 
+        {objectQualifier}vw_Modules.CreatedByUserID, {objectQualifier}vw_Modules.CreatedOnDate, LastContentModifiedOnDate, {objectQualifier}vw_Modules.UniqueId, 
+        {objectQualifier}vw_Modules.VersionGuid, {objectQualifier}vw_Modules.DefaultLanguageGuid, {objectQualifier}vw_Modules.LocalizedVersionGuid, {objectQualifier}vw_Modules.CultureCode, 
+        {objectQualifier}TabModules.LastModifiedByUserID, {objectQualifier}TabModules.LastModifiedOnDate
+FROM    {objectQualifier}vw_Modules INNER JOIN
+        {objectQualifier}TabModules ON {objectQualifier}vw_Modules.TabModuleID = {objectQualifier}TabModules.TabModuleID
+WHERE  PortalId = @PortalID
+ORDER BY ModuleId
+
+Go
 
 
 
