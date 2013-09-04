@@ -16,7 +16,7 @@
     <value xml:space="preserve">Anmeldeinformationen</value>
   </data>
   <data name="AccountInfoIntro.Text">
-    <value xml:space="preserve">Um Ihre DotNetNuke-Installation zu einzurichten, geben Sie bitte die folgenden Informationen an.</value>
+    <value xml:space="preserve">Um Ihre Installation zu einzurichten, geben Sie bitte die folgenden Informationen an.</value>
   </data>
   <data name="AdminInfo.Text">
     <value xml:space="preserve">Administrative Angaben</value>
@@ -215,7 +215,7 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
     <value xml:space="preserve">abgeschlossen</value>
   </data>
   <data name="InstallationIntroInfo.Text">
-    <value xml:space="preserve">DotNetNuke wird installiert. Bitte haben Sie Geduld...</value>
+    <value xml:space="preserve">Das Produkt wird installiert. Bitte haben Sie Geduld...</value>
   </data>
   <data name="InstallingDataBaseScriptStep.Text">
     <value xml:space="preserve">Die Datenbank-Skripte werden verarbeitet </value>
@@ -233,7 +233,10 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
     <value xml:space="preserve">Die Datenbank-Skripte für den Membership-Provider werden ausgeführt.</value>
   </data>
   <data name="InstallTitle.Text">
-    <value xml:space="preserve">DotNetNuke-Installation</value>
+    <value xml:space="preserve">Installation</value>
+  </data>
+  <data name="InstallVersion.Text">
+    <value xml:space="preserve">füge Installationsversion hinzu</value>
   </data>
   <data name="IntroDetail.Text">
     <value xml:space="preserve">&lt;a class="dnnSecondaryAction" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Installations-Video&lt;/a&gt; (in engl. Sprache)</value>
@@ -299,7 +302,7 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
     <value xml:space="preserve">Es gibt kein Installationsprotokoll</value>
   </data>
   <data name="PageTitle.Text">
-    <value xml:space="preserve">DotNetNuke-Installation</value>
+    <value xml:space="preserve">Installation</value>
   </data>
   <data name="Password.Help">
     <value xml:space="preserve">Geben Sie hier das Kennwort für das Systemverwalterkonto an.</value>

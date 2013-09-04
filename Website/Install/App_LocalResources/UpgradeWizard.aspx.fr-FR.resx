@@ -16,10 +16,10 @@
     <value xml:space="preserve">Infos de compte</value>
   </data>
   <data name="BestPractices.Text">
-    <value xml:space="preserve">Vous vous apprêtez  à mettre à jour votre site dans une version plus récente de DotNetNuke. Avant de procéder à la mise à jour automatique vérifiez que :&lt;ul&gt;&lt;li&gt;vous allez effectuer cette mise à jour dans un environnement de test&lt;/li&gt;&lt;li&gt;vous avez documenté toutes les informations spécifiques  à votre installation et vérifié la compatibilité de cette mise à jour avec les modules tiers.&lt;/li&gt;&lt;li&gt;vous avez créé les sauvegardes nécessaires afin de pouvoir procéder à une restauration en cas d’erreur lors du processus de mise à jour&lt;/li&gt;&lt;/ul&gt;</value>
+    <value xml:space="preserve">Vous vous apprêtez à mettre à jour votre site dans une version plus récente de l'application. Avant de procéder à la mise à jour automatique vérifiez que :&lt;ul&gt;&lt;li&gt;vous allez effectuer cette mise à jour dans un environnement de test&lt;/li&gt;&lt;li&gt;vous avez documenté toutes les informations spécifiques à votre installation et vérifié la compatibilité de cette mise à jour avec les modules tiers.&lt;/li&gt;&lt;li&gt;vous avez créé les sauvegardes nécessaires afin de pouvoir procéder à une restauration en cas d’erreur lors du processus de mise à jour&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="CurrentVersion.Text">
-    <value xml:space="preserve">Verion actuelle - {0}</value>
+    <value xml:space="preserve">Version actuelle - {0}</value>
   </data>
   <data name="DatabaseUpgrade.Text">
     <value xml:space="preserve">Mise à jour de la base de données</value>
@@ -34,7 +34,7 @@
     <value xml:space="preserve">Mise à jour des extensions</value>
   </data>
   <data name="IntroDetail.Text">
-    <value xml:space="preserve">&lt;p&gt;Bienvenue dans l’assistant de mise à jour DotNetNuke&lt;/p&gt;&lt;p&gt;La première chose à faire est de sélectionner la langue à utiliser pour le processus de mise à jour/p&gt;</value>
+    <value xml:space="preserve">&lt;p&gt;Bienvenue dans l’assistant de mise à jour&lt;/p&gt;&lt;p&gt;La première chose à faire est de sélectionner la langue à utiliser pour le processus de mise à jour/p&gt;</value>
   </data>
   <data name="InvalidCredentials.Text">
     <value xml:space="preserve">Nom d'utilisateur et mot de passe non reconnus.</value>
@@ -61,7 +61,7 @@
     <value xml:space="preserve">Minutes</value>
   </data>
   <data name="Title.Text">
-    <value xml:space="preserve">Mise à jour DotNetNuke</value>
+    <value xml:space="preserve">Mise à jour</value>
   </data>
   <data name="Upgrade.Text">
     <value xml:space="preserve">Mise à jour</value>
@@ -79,7 +79,7 @@
     <value xml:space="preserve">Identifiant hôte (SuperUtilisateur) :</value>
   </data>
   <data name="Version.Text">
-    <value xml:space="preserve">Versino de la mise à jour - {0}</value>
+    <value xml:space="preserve">Version de la mise à jour - {0}</value>
   </data>
   <data name="ViewWebsite.Text">
     <value xml:space="preserve">Changer de site</value>

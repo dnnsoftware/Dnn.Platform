@@ -16,7 +16,7 @@
     <value xml:space="preserve">Vul uw Account informatie in</value>
   </data>
   <data name="AccountInfoIntro.Text">
-    <value xml:space="preserve">Vul de volgende informatie in om DotNetNuke te installeren.</value>
+    <value xml:space="preserve">Vul de volgende informatie in om uw omgeving te installeren.</value>
   </data>
   <data name="AdminInfo.Text">
     <value xml:space="preserve">Administratieve informatie</value>
@@ -217,7 +217,7 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
     <value xml:space="preserve">Klaar</value>
   </data>
   <data name="InstallationIntroInfo.Text">
-    <value xml:space="preserve">DotNetNuke wordt geïnstalleerd. Een ogenblik geduld alstublieft....</value>
+    <value xml:space="preserve">De applicatie wordt geïnstalleerd. Een ogenblik geduld alstublieft....</value>
   </data>
   <data name="InstallingDataBaseScriptStep.Text">
     <value xml:space="preserve">Installeren van Database Script</value>
@@ -235,7 +235,10 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
     <value xml:space="preserve">Installeren van Membership Database Script </value>
   </data>
   <data name="InstallTitle.Text">
-    <value xml:space="preserve">DotNetNuke Installatie</value>
+    <value xml:space="preserve">Installatie</value>
+  </data>
+  <data name="InstallVersion.Text">
+    <value xml:space="preserve">Installatieversie toevoegen</value>
   </data>
   <data name="IntroDetail.Text">
     <value xml:space="preserve">&lt;a class="videoLink" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Bekijk Installatie Video&lt;/a&gt;</value>
@@ -301,7 +304,7 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
     <value xml:space="preserve">Geen installatie log</value>
   </data>
   <data name="PageTitle.Text">
-    <value xml:space="preserve">DotNetNuke Installatie</value>
+    <value xml:space="preserve">Installatie</value>
   </data>
   <data name="Password.Help">
     <value xml:space="preserve">Het wachtwoord voor het SuperUser account.</value>
