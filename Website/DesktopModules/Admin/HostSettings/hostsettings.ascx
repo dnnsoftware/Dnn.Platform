@@ -5,6 +5,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="RequestFilters" Src="~/DesktopModules/Admin/HostSettings/RequestFilters.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="IPFilters" Src="~/DesktopModules/Admin/HostSettings/IPFilters.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="CrawlerSettings" Src="~/DesktopModules/DNNCorp/SearchCrawler/CrawlerSettings.ascx" %>
 <%@ Register TagPrefix="dnnext" Namespace="DotNetNuke.ExtensionPoints" Assembly="DotNetNuke" %>
 
 <div class="dnnForm dnnHostSettings dnnClear" id="dnnHostSettings">
@@ -521,9 +522,9 @@
                         <asp:LinkButton runat="server" ID="btnCompactSearchIndex" CssClass="dnnSecondaryAction" resourcekey="btnCompactSearchIndex" OnClick="CompactSearchIndex" CausesValidation="False" />
                         <asp:LinkButton runat="server" ID="btnHostSearchReindex" CssClass="dnnSecondaryAction" resourcekey="btnHostSearchReindex" OnClick="HostSearchReindex" CausesValidation="False" />
                     </div>
-                </div>
+                </div>                
             </fieldset>
-
+            <dnn:CrawlerSettings runat="server" ID="CrawlerSettings"></dnn:CrawlerSettings>
         </div>
     </div>
     <div id="otherSettings" class="ssOtherSettings dnnClear">
@@ -649,6 +650,7 @@
             </div>
         </div>
     </div>
+    
     <ul class="dnnActions dnnClear">
         <li>
             <asp:LinkButton ID="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdUpdate" /></li>
@@ -737,6 +739,18 @@
                 title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationTitle")) %>'
             });
 
+            // extensions
+            var moduleId = <%= ModuleContext.ModuleId %>;
+            if (dnn.searchAdmin && dnn.searchAdmin.extensions && dnn.searchAdmin.extensionsInitializeSettings) {
+                for (var k in dnn.searchAdmin.extensions) {
+                    var extensionSettings = dnn.searchAdmin.extensionsInitializeSettings[k];
+                    var extensionObject = dnn.searchAdmin.extensions[k];
+                    if (extensionSettings && typeof extensionObject.init == 'function') {
+                        extensionSettings.moduleId = moduleId;
+                        dnn.searchAdmin.extensions[k].init(extensionSettings);
+                    }
+                }
+            }
         }
 
         $(document).ready(function () {

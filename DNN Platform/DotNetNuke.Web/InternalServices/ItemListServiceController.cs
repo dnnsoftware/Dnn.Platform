@@ -29,7 +29,7 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Web.Http;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.DataStructures;
 using DotNetNuke.Entities.Portals;
@@ -841,6 +841,14 @@ namespace DotNetNuke.Web.InternalServices
             return GetFolderDescendantsInternal(portalId, id, sortOrder, searchText, permission);
         }
 
+        #region Private Methods
+        private int CurrentPortalId()
+        {
+            var IsHostMenu = Globals.IsHostTab(PortalSettings.Current.ActiveTab.TabID);            
+            return IsHostMenu ? Null.NullInteger : PortalSettings.Current.PortalId;
+        }
+        #endregion
+
         private IEnumerable<ItemDto> GetFolderDescendantsInternal(int portalId, int parentId, int sortOrder, string searchText, string permission)
         {
             if (portalId > -1)
@@ -849,7 +857,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                portalId = PortalSettings.PortalId;
+                portalId = CurrentPortalId();
             }
 
             var parentFolder = parentId > -1 ? FolderManager.Instance.GetFolder(parentId) : FolderManager.Instance.GetFolder(portalId, "");

@@ -466,7 +466,7 @@
             var options = {
                 validationTriggerSelector: '.dnnPrimaryAction2'
             };
-            $('#dnnSearchAdmin').dnnTabs(options).dnnPanels(options);
+            //$('#dnnSearchAdmin').dnnTabs(options).dnnPanels(options);
 
             // reset some vaule cause MS AJAX post back
             currentSynonymsGroupTagList = [],
