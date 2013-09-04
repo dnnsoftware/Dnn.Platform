@@ -118,7 +118,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
                             if (remainingBatchSize > 0)
                             {
-                                SubscriptionController.Instance.UpdateScheduleItemSetting(ScheduleHistoryItem.ScheduleID, SettingLastHourlyRun, currentRunDate.ToString());
+                                UpdateScheduleItemSetting(ScheduleHistoryItem.ScheduleID, SettingLastHourlyRun, currentRunDate.ToString());
                             }
                             
                             CompleteTask();
@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
                                 if (remainingBatchSize > 0)
                                 {
-                                    SubscriptionController.Instance.UpdateScheduleItemSetting(ScheduleHistoryItem.ScheduleID, SettingLastDailyRun, currentRunDate.ToString());
+                                    UpdateScheduleItemSetting(ScheduleHistoryItem.ScheduleID, SettingLastDailyRun, currentRunDate.ToString());
                                 }
 
                                 CompleteTask();
@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
             while (messageLeft)
             {
-                var batchMessages = SubscriptionController.Instance.GetNextMessagesForDispatch(schedulerInstance, BatchSize);
+                var batchMessages = GetNextMessagesForDispatch(schedulerInstance, BatchSize);
 
                 if (batchMessages != null && batchMessages.Count > 0)
                 {
@@ -242,7 +242,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
             while (messageLeft)
             {
-                var batchMessages = SubscriptionController.Instance.GetNextSubscribersForDispatch(schedulerInstance, Convert.ToInt32(frequency), BatchSize);
+                var batchMessages = GetNextSubscribersForDispatch(schedulerInstance, Convert.ToInt32(frequency), BatchSize);
 
                 if (batchMessages != null && batchMessages.Count > 0)
                 {
@@ -496,6 +496,21 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
             }
 
             return "http://" + sendingPortal.DefaultPortalAlias + "/tabid/" + messageTabId + "/userId/" + userId + "/" + Globals.glbDefaultPage + "#dnnCoreNotification";
+        }
+
+        private IList<MessageRecipient> GetNextMessagesForDispatch(Guid schedulerInstance, int batchSize)
+        {
+            return CBO.FillCollection<MessageRecipient>(_dataService.GetNextMessagesForDispatch(schedulerInstance, batchSize));
+        }
+
+        private IList<MessageRecipient> GetNextSubscribersForDispatch(Guid schedulerInstance, int frequency, int batchSize)
+        {
+            return CBO.FillCollection<MessageRecipient>(_dataService.GetNextSubscribersForDispatch(schedulerInstance, frequency, batchSize));
+        }
+
+        private void UpdateScheduleItemSetting(int scheduleId, string key, string value)
+        {
+            _dataService.UpdateScheduleItemSetting(scheduleId, key, value);
         }
 
         #endregion
