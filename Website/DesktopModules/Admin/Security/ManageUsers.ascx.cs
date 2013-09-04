@@ -385,6 +385,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 ctlUser.ShowUpdate = false;
                 CheckQuota();
             }
+            User.Username = HttpUtility.HtmlDecode(User.Username);
             ctlUser.User = User;
             ctlUser.DataBind();
 
@@ -613,6 +614,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (ctlUser.IsValid && (ctlProfile.IsValid))
             {
+                User.Username = HttpUtility.HtmlEncode(User.Username);
                 ctlUser.CreateUser();
             }
             else
