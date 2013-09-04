@@ -546,7 +546,7 @@ ELSE
 GO
 
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRecycleModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
   DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRecycleModules]
 GO
 
