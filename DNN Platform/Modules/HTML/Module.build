@@ -5,9 +5,7 @@
     <Extension>zip</Extension>
     <DNNFileName>dnn_HTML</DNNFileName>
     <PackageName>DNNCE_HTML</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\HTML</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>
