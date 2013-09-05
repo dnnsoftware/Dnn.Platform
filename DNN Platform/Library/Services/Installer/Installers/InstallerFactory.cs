@@ -113,6 +113,9 @@ namespace DotNetNuke.Services.Installer.Installers
                 case "Widget":
                     installer = new WidgetInstaller();
                     break;
+                case "JavaScript_Library":
+                    installer = new JavaScriptLibraryInstaller();
+                    break;
                 default:
                     //Installer type is defined in the List
                     var listController = new ListController();

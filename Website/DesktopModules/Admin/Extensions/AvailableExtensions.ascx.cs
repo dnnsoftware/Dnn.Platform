@@ -74,6 +74,10 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                 type = "AuthSystem";
                                 installPath = Globals.ApplicationMapPath + "\\Install\\AuthSystem";
                                 break;
+                            case "JavaScript_Library":
+                                type = "JavaScript_Library";
+                                installPath = Globals.ApplicationMapPath + "\\Install\\JavaScript Library";
+                                break;
                             case "Module":
                             case "Skin":
                             case "Container":

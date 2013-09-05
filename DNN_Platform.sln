@@ -149,6 +149,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{63
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn = DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn
 		DNN Platform\JavaScript Libraries\Knockout\knockout.js = DNN Platform\JavaScript Libraries\Knockout\knockout.js
+		DNN Platform\JavaScript Libraries\Knockout\license.txt = DNN Platform\JavaScript Libraries\Knockout\license.txt
+		DNN Platform\JavaScript Libraries\Knockout\releaseNotes.txt = DNN Platform\JavaScript Libraries\Knockout\releaseNotes.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.SubscriptionsMgmt", "DNN Platform\Modules\SubscriptionMgmt\DotNetNuke.Modules.SubscriptionsMgmt.csproj", "{253A562F-120A-47F8-A1F0-D63D476E4528}"

@@ -22,13 +22,13 @@
             <CDNPath>Supported</CDNPath>
           </javaScriptLibrary>
         </component>
-        <component type="File">
-          <files>
+        <component type="ResourceFile">
+          <resourceFiles>
             <basePath>Resources/Libraries/Knockout</basePath>
-            <file>
-              <name>Knockout.js</name>
-            </file>
-          </files>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
         </component>
       </components>
     </package>
