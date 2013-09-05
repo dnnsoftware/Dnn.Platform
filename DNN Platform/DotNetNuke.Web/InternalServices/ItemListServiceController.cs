@@ -151,6 +151,10 @@ namespace DotNetNuke.Web.InternalServices
         [HttpGet]
         public HttpResponseMessage SearchPages(string searchText, int sortOrder = 0, int portalId = -1)
         {
+            if (portalId == -1)
+            {
+                portalId = GetActivePortalId();
+            }
             var response = new
             {
                 Success = true,
@@ -857,7 +861,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                portalId = CurrentPortalId();
+                portalId = GetActivePortalId();
             }
 
             var parentFolder = parentId > -1 ? FolderManager.Instance.GetFolder(parentId) : FolderManager.Instance.GetFolder(portalId, "");
@@ -906,7 +910,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                portalId = PortalSettings.PortalId;
+                portalId = GetActivePortalId();
             }
 
             var allFolders = GetPortalFolders(portalId, searchText, permission);
@@ -1042,6 +1046,10 @@ namespace DotNetNuke.Web.InternalServices
 
         private IEnumerable<IFolderInfo> GetPortalFolders(int portalId, string searchText, string permission)
         {
+            if (portalId == -1)
+            {
+                portalId = GetActivePortalId();
+            }
             Func<IFolderInfo, bool> searchFunc;
             if (String.IsNullOrEmpty(searchText))
             {
