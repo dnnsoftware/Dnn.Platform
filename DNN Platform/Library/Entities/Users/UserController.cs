@@ -1403,6 +1403,24 @@ namespace DotNetNuke.Entities.Users
             return retValue;
         }
 
+        /// <summary>
+        /// reset and change password
+        /// used by admin/host users who do not need to supply an "old" password
+        /// </summary>
+        /// <param name="user">user being changed</param>
+        /// <param name="newPassword">new password</param>
+        /// <returns></returns>
+        public static bool ResetAndChangePassword(UserInfo user, string newPassword)
+        {
+            var portalSettings = PortalController.GetCurrentPortalSettings();
+            if (GetCurrentUserInfo().IsInRole(portalSettings.AdministratorRoleName))
+            {
+                string resetPassword = ResetPassword(user, String.Empty);
+                return ChangePassword(user, resetPassword, newPassword);
+            }
+            return false;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Resets the password for the specified user

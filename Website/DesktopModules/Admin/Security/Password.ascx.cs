@@ -168,15 +168,16 @@ namespace DotNetNuke.Modules.Admin.Users
                 lblExpires.Text = PasswordConfig.PasswordExpiry > 0 ? User.Membership.LastPasswordChangeDate.AddDays(PasswordConfig.PasswordExpiry).ToLongDateString() : Localization.GetString("NoExpiry", LocalResourceFile);
             }
 			
-            //f Password retrieval is not supported then only the user can change
-            //their password, an Admin must Reset
-            if ((IsAdmin && (!IsUser)))
+           if (((!MembershipProviderConfig.PasswordRetrievalEnabled) && IsAdmin && (!IsUser)))
             {
                 pnlChange.Visible = true;
+                cmdUpdate.Visible = true;
+                oldPasswordRow.Visible = false;
             }
             else
             {
                 pnlChange.Visible = true;
+                cmdUpdate.Visible = true;
 				
 				//Set up Change Password
                 if (IsAdmin && !IsUser)
@@ -187,7 +188,18 @@ namespace DotNetNuke.Modules.Admin.Users
                 else
                 {
                     lblChangeHelp.Text = Localization.GetString("UserChangeHelp", LocalResourceFile);
-                   
+                    if (Request.IsAuthenticated)
+                    {
+                        pnlChange.Visible = true;
+                        cmdUserReset.Visible = false;
+                        cmdUpdate.Visible = true;
+                    }
+                    else
+                    {
+                        pnlChange.Visible = false;
+                        cmdUserReset.Visible = true;
+                        cmdUpdate.Visible = false;
+                    }
                 }
             }
 			
@@ -196,12 +208,12 @@ namespace DotNetNuke.Modules.Admin.Users
             if (!MembershipProviderConfig.PasswordResetEnabled)
             {
                 pnlReset.Visible = false;
-              
+                cmdReset.Visible = false;
             }
             else
             {
                 pnlReset.Visible = true;
-             
+                cmdReset.Visible = true;
 				
 				//Set up Reset Password
                 if (IsAdmin && !IsUser)
@@ -209,6 +221,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (MembershipProviderConfig.RequiresQuestionAndAnswer)
                     {
                         pnlReset.Visible = false;
+                        cmdReset.Visible = false;
                     }
                     else
                     {
@@ -229,6 +242,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     else
                     {
                         pnlReset.Visible = false;
+                        cmdReset.Visible = false;
                     }
                 }
             }
@@ -237,10 +251,12 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && IsUser)
             {
                 pnlQA.Visible = true;
+                cmdUpdateQA.Visible = true;
             }
             else
             {
                 pnlQA.Visible = false;
+                cmdUpdateQA.Visible = false;
             }
         }
 
@@ -275,12 +291,14 @@ namespace DotNetNuke.Modules.Admin.Users
             //ClientAPI.RegisterKeyCapture(Parent, cmdUpdate.Controls[0], 13);
             //ClientAPI.RegisterKeyCapture(this, cmdUpdate.Controls[0], 13);
             cmdReset.Click += cmdReset_Click;
+            cmdUserReset.Click += cmdUserReset_Click;
             cmdUpdate.Click += cmdUpdate_Click;
             cmdUpdateQA.Click += cmdUpdateQA_Click;
 
 			if (MembershipProviderConfig.RequiresQuestionAndAnswer && User.UserID != UserController.GetCurrentUserInfo().UserID)
 			{
 				pnlChange.Visible = false;
+			    cmdUpdate.Visible = false;
 				CannotChangePasswordMessage.Visible = true;
 			}
            
@@ -532,30 +550,61 @@ namespace DotNetNuke.Modules.Admin.Users
                 OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordNotDifferent));
                 return;
             }
-            try
+            if (!IsAdmin)
             {
-                OnPasswordUpdated(UserController.ResetAndChangePassword(User, txtOldPassword.Text, txtNewPassword.Text)
-                                      ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
-                                      : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
-            }
-            catch (MembershipPasswordException exc)
-            {
-				//Password Answer missing
-                Logger.Error(exc);
+                try
+                {
+                    OnPasswordUpdated(UserController.ChangePassword(User, txtOldPassword.Text, txtNewPassword.Text)
+                                          ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
+                                          : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                }
+                catch (MembershipPasswordException exc)
+                {
+                    //Password Answer missing
+                    Logger.Error(exc);
 
-                OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
-            }
-			catch(ThreadAbortException)
-			{
-				//Do nothing we are not logging ThreadAbortxceptions caused by redirects    
-			}
-            catch (Exception exc)
-            {
-				//Fail
-                Logger.Error(exc);
+                    OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
+                }
+                catch (ThreadAbortException)
+                {
+                    //Do nothing we are not logging ThreadAbortxceptions caused by redirects    
+                }
+                catch (Exception exc)
+                {
+                    //Fail
+                    Logger.Error(exc);
 
-                OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                    OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                }
             }
+            else
+            {
+                try
+                {
+                    OnPasswordUpdated(UserController.ResetAndChangePassword(User, txtNewPassword.Text)
+                                          ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
+                                          : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                }
+                catch (MembershipPasswordException exc)
+                {
+                    //Password Answer missing
+                    Logger.Error(exc);
+
+                    OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
+                }
+                catch (ThreadAbortException)
+                {
+                    //Do nothing we are not logging ThreadAbortxceptions caused by redirects    
+                }
+                catch (Exception exc)
+                {
+                    //Fail
+                    Logger.Error(exc);
+
+                    OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                }
+            }
+           
         }
 
         /// -----------------------------------------------------------------------------
