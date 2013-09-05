@@ -130,6 +130,85 @@ IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PackageTypes] WHER
 GO
 
 /***** Fix bug DNN-3391: move subscription services into library. *****/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Type') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Subscriptions_Type]
+	(
+		[SubscriptionTypeId] [int] IDENTITY(1,1) NOT NULL,
+		[SubscriptionName] [nvarchar](50) NOT NULL,
+		[FriendlyName] [nvarchar](50) NULL,
+		[DesktopModuleId] [int] NULL
+	)
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Type
+			WITH NOCHECK
+	ADD CONSTRAINT PK_{objectQualifier}Subscriptions_Type PRIMARY KEY CLUSTERED ( [SubscriptionTypeId] )
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Queue') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Subscriptions_Queue]
+	(
+		[QueueId] [int] IDENTITY(1,1) NOT NULL,
+		[PortalId] [int] NOT NULL,
+		[SubscriptionTypeId] [int] NOT NULL,
+		[ContentItemId] [int] NULL,
+		[ObjectKey] [nvarchar](255) NULL,
+		[Subject] [nvarchar](400) NULL,
+		[Body] [nvarchar](max) NULL,
+		[Summary] [nvarchar](2000) NULL,
+		[CreatedOnDate] [datetime] NOT NULL
+	)
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Queue
+			WITH NOCHECK
+	ADD CONSTRAINT PK_{objectQualifier}Subscriptions_Queue PRIMARY KEY CLUSTERED ( [QueueId] )
+
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Queue
+ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Queue_{objectQualifier}Portals FOREIGN KEY ( [PortalId] ) REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) ON DELETE CASCADE
+		ON UPDATE CASCADE
+
+ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Queue
+ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Queue_{objectQualifier}Subscriptions_Type FOREIGN KEY ( [SubscriptionTypeId] ) REFERENCES {databaseOwner}{objectQualifier}Subscriptions_Type ( [SubscriptionTypeId] ) ON DELETE CASCADE
+		ON UPDATE CASCADE
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Subscriber') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Subscriptions_Subscriber]
+	(
+		[SubscriberId] [int] IDENTITY(1,1) NOT NULL,
+		[UserId] [int] NOT NULL,
+		[PortalId] [int] NOT NULL,
+		[SubscriptionTypeId] [int] NOT NULL,
+		[Frequency] [int] NOT NULL,
+		[ContentItemId] [int] NULL,
+		[ObjectKey] [nvarchar](255) NULL,
+		[CreatedOnDate] [datetime] NOT NULL,
+		[LastSentOnDate] [datetime] NULL
+	)
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+			WITH NOCHECK
+	ADD CONSTRAINT PK_{objectQualifier}Subscriptions_Subscriber PRIMARY KEY CLUSTERED ( [SubscriberId] )
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+	ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Portals FOREIGN KEY ( [PortalId] ) REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) ON DELETE CASCADE
+			ON UPDATE CASCADE
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+	ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Subscriptions_Type FOREIGN KEY ( [SubscriptionTypeId] ) REFERENCES {databaseOwner}{objectQualifier}Subscriptions_Type ( [SubscriptionTypeId] ) ON DELETE CASCADE
+			ON UPDATE CASCADE
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
+	ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Users FOREIGN KEY ( [UserId] ) REFERENCES {databaseOwner}{objectQualifier}Users ( [UserID] ) ON DELETE CASCADE
+			ON UPDATE CASCADE
+END
+GO
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Users') AND OBJECTPROPERTY(id, N'IsConstraint') = 1)
 	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber DROP CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Users
 GO
@@ -140,91 +219,6 @@ GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Portals') AND OBJECTPROPERTY(id, N'IsConstraint') = 1)
 	ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber DROP CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Portals
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Subscriber') AND OBJECTPROPERTY(id, N'IsTable') = 1)
-	DROP TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Type') AND OBJECTPROPERTY(id, N'IsTable') = 1)
-	DROP TABLE {databaseOwner}{objectQualifier}Subscriptions_Type
-GO
-
-CREATE TABLE {databaseOwner}[{objectQualifier}Subscriptions_Type]
-(
-	[SubscriptionTypeId] [int] IDENTITY(1,1) NOT NULL,
-	[SubscriptionName] [nvarchar](50) NOT NULL,
-	[FriendlyName] [nvarchar](50) NULL,
-	[DesktopModuleId] [int] NULL
-)
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Type
-		WITH NOCHECK
-ADD CONSTRAINT PK_{objectQualifier}Subscriptions_Type PRIMARY KEY CLUSTERED ( [SubscriptionTypeId] )
-GO
-
-CREATE TABLE {databaseOwner}[{objectQualifier}Subscriptions_Queue]
-(
-	[QueueId] [int] IDENTITY(1,1) NOT NULL,
-	[PortalId] [int] NOT NULL,
-	[SubscriptionTypeId] [int] NOT NULL,
-	[ContentItemId] [int] NULL,
-	[ObjectKey] [nvarchar](255) NULL,
-	[Subject] [nvarchar](400) NULL,
-	[Body] [nvarchar](max) NULL,
-	[Summary] [nvarchar](2000) NULL,
-	[CreatedOnDate] [datetime] NOT NULL
-)
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Queue
-		WITH NOCHECK
-ADD CONSTRAINT PK_{objectQualifier}Subscriptions_Queue PRIMARY KEY CLUSTERED ( [QueueId] )
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Queue
-ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Queue_{objectQualifier}Portals FOREIGN KEY ( [PortalId] ) REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) ON DELETE CASCADE
-		ON UPDATE CASCADE
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Queue
-ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Queue_{objectQualifier}Subscriptions_Type FOREIGN KEY ( [SubscriptionTypeId] ) REFERENCES {databaseOwner}{objectQualifier}Subscriptions_Type ( [SubscriptionTypeId] ) ON DELETE CASCADE
-		ON UPDATE CASCADE
-GO
-
-CREATE TABLE {databaseOwner}[{objectQualifier}Subscriptions_Subscriber]
-(
-	[SubscriberId] [int] IDENTITY(1,1) NOT NULL,
-	[UserId] [int] NOT NULL,
-	[PortalId] [int] NOT NULL,
-	[SubscriptionTypeId] [int] NOT NULL,
-	[Frequency] [int] NOT NULL,
-	[ContentItemId] [int] NULL,
-	[ObjectKey] [nvarchar](255) NULL,
-	[CreatedOnDate] [datetime] NOT NULL,
-	[LastSentOnDate] [datetime] NULL
-)
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
-		WITH NOCHECK
-ADD CONSTRAINT PK_{objectQualifier}Subscriptions_Subscriber PRIMARY KEY CLUSTERED ( [SubscriberId] )
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
-ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Portals FOREIGN KEY ( [PortalId] ) REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) ON DELETE CASCADE
-		ON UPDATE CASCADE
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
-ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Subscriptions_Type FOREIGN KEY ( [SubscriptionTypeId] ) REFERENCES {databaseOwner}{objectQualifier}Subscriptions_Type ( [SubscriptionTypeId] ) ON DELETE CASCADE
-		ON UPDATE CASCADE
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Subscriptions_Subscriber
-ADD CONSTRAINT FK_{objectQualifier}Subscriptions_Subscriber_{objectQualifier}Users FOREIGN KEY ( [UserId] ) REFERENCES {databaseOwner}{objectQualifier}Users ( [UserID] ) ON DELETE CASCADE
-		ON UPDATE CASCADE
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Subscriptions_Type_Add]') AND type in (N'P', N'PC'))
