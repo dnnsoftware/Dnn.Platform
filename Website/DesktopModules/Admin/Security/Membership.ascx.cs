@@ -23,6 +23,7 @@
 using System;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Mail;
@@ -251,7 +252,10 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     cmdToggleSuperuser.Text = Localization.GetString("PromoteToSuperUser", LocalResourceFile);
                 }
-
+                if (PortalController.GetPortalsByUser(User.UserID).Count == 0)
+                {
+                    cmdToggleSuperuser.Visible = false;
+                }
             }
             lastLockoutDate.Value = UserMembership.LastLockoutDate.Year > 2000 
                                         ? (object) UserMembership.LastLockoutDate 
