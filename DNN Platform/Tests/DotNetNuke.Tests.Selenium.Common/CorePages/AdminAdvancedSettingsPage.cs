@@ -23,6 +23,7 @@ namespace DNNSelenium.Common.CorePages
 		}
 
 		public static string LanguagePacksTab = "//a[@href = '#asLanguagePacks']";
+		public static string LanguagePackTable = "//table[contains(@id, '_AdvancedSettings_languagePacks')]";
 		public static string NextButtonStep = "//a[contains(@id, '_nextButtonStep')]";
 		public static string Return1Button = "//a[contains(@id, '_finishButtonStep')]";
 		public static string AcceptCheckBox = "//input[contains(@id, 'wizInstall_chkAcceptLicense')]";
@@ -52,6 +53,42 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");
 			SelectSubMenuOption(ControlPanelIDs.ControlPanelAdminOption, ControlPanelIDs.ControlPanelAdminAdvancedSettings, ControlPanelIDs.AdminAdvancedSettingsOption);
 		}
+
+		public string SetLanguageName(string language)
+		{
+			string option = null;
+
+			switch (language)
+			{
+				case "de":
+					{
+						option = "Deutsch (Deutschland)";
+						break;
+					}
+				case "es":
+					{
+						option = "Español (España, alfabetización internacional)";
+						break;
+					}
+				case "fr":
+					{
+						option = "français (France)";
+						break;
+					}
+				case "it":
+					{
+						option = "italiano (Italia)";
+						break;
+					}
+				case "nl":
+					{
+						option = "Nederlands (Nederland)";
+						break;
+					}
+			}
+
+			return option;
+		} 
 
 		public void DeployLanguagePack(string packName)
 		{

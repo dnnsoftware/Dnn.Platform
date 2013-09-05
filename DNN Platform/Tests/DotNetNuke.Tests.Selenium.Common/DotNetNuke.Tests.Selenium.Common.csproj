@@ -159,10 +159,12 @@
     <Compile Include="Tests\P1\P1AdminSiteSettings.cs" />
     <Compile Include="Tests\P1\P1FileUpload.cs" />
     <Compile Include="Tests\P1\P1HostExtensions.cs" />
+    <Compile Include="Tests\P1\P1Languages.cs" />
     <Compile Include="Tests\P1\P1Pages.cs" />
     <Compile Include="Tests\P1\P1Search.cs" />
     <Compile Include="Tests\P1\P1SecurityRoleGroups.cs" />
     <Compile Include="Tests\P1\P1SecurityRoles.cs" />
+    <Compile Include="Tests\P1\P1Taxonomy.cs" />
     <Compile Include="Tests\Smoke\SmokeTest.cs" />
     <Compile Include="Tests\Upgrade\UpgradeTests.cs" />
   </ItemGroup>

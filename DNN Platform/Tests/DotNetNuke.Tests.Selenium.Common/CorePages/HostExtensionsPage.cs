@@ -106,6 +106,32 @@ namespace DNNSelenium.Common.CorePages
 			ClickOnButton(By.XPath(Return2Button));
 		}
 
+		public void DeleteLanguagePack(string panelName, string packName)
+		{
+			IWebElement element = WaitForElement( By.XPath(
+				panelName + "/following-sibling :: *//tr[td/span[contains(text(), '" + SetLanguageName(packName) + "')]][last()]//a/img[contains(@src, 'Delete')]"));
+			ScrollIntoView(element, 100);
+			element.Click();
+
+			WaitForElement(By.XPath("//input[contains(@id, 'UnInstall_chkDelete')]")).ScrollIntoView();
+			WaitForElement(By.XPath("//input[@id = 'dnn_ctr_UnInstall_chkDelete']")).WaitTillEnabled(30);
+			WaitForElement(By.XPath("//input[@id = 'dnn_ctr_UnInstall_chkDelete']")).Info();
+			CheckBoxCheck(By.XPath("//input[@id = 'dnn_ctr_UnInstall_chkDelete']"));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Uninstall Package button :");
+			ClickOnButton(By.XPath(HostExtensionsPage.UnistallPackageButton));
+
+			ClickYesOnConfirmationBox();
+
+			//Thread.Sleep(1000);
+			WaitForElement(By.XPath(HostExtensionsPage.Return2Button));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Return button :");
+			ClickOnButton(By.XPath(HostExtensionsPage.Return2Button));
+
+			Thread.Sleep(3000);
+		}
+
 		public void CreateNewExtension(string extensionName, string friedlyName, string extensionType)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Create New Extension: ");

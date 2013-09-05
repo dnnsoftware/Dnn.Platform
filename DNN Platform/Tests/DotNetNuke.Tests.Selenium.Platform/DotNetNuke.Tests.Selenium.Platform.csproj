@@ -78,10 +78,12 @@
     <Compile Include="P1\P1AdminSiteSettings.cs" />
     <Compile Include="P1\P1FileUpload.cs" />
     <Compile Include="P1\P1HostExtensions.cs" />
+    <Compile Include="P1\P1Languages.cs" />
     <Compile Include="P1\P1Pages.cs" />
     <Compile Include="P1\P1Search.cs" />
     <Compile Include="P1\P1SecurityRoleGroups.cs" />
     <Compile Include="P1\P1SecurityRoles.cs" />
+    <Compile Include="P1\P1Taxonomy.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="UpgradeTests\UpgradeTests.cs" />
