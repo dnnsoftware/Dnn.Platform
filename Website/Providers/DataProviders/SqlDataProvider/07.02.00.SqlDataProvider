@@ -107,28 +107,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([SkinControlID], [Pa
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] OFF
 GO
 
-/* Story DNN-3497: Add New Javascript Labrary Extension Type. */
-/**************************************************************/
-
-IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PackageTypes] WHERE [PackageType] = 'JavaScript_Library')
-	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes]
-			(
-			   [PackageType],
-			   [Description],
-			   [SecurityAccessLevel],
-			   [EditorControlSrc]
-			)
-		 VALUES
-			(
-				'JavaScript_Library',
-				'JavaScript Library',
-				'3',
-				NULL
-			)
-	END
-GO
-
 /***** Fix bug DNN-3391: move subscription services into library. *****/
 IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Type') AND OBJECTPROPERTY(id, N'IsTable') = 1)
 BEGIN
@@ -866,6 +844,90 @@ AS
     END
 GO
 
+/* Story DNN-3497: Create a new Javascript Extension Type. */
+/***********************************************************/
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PackageTypes] WHERE [PackageType] = 'JavaScript_Library')
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes]
+			(
+			   [PackageType],
+			   [Description],
+			   [SecurityAccessLevel],
+			   [EditorControlSrc]
+			)
+		 VALUES
+			(
+				'JavaScript_Library',
+				'JavaScript Library',
+				'3',
+				NULL
+			)
+	END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Type') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries](
+			[JavaScriptLibraryID] [int] IDENTITY(1,1) NOT NULL,
+			[PackageID] [int] NOT NULL,
+			[LibraryName] [nvarchar](200) NOT NULL,
+			[Version] [nvarchar](10) NOT NULL,
+			[MinFileName] [nvarchar](100) NOT NULL,
+			[DebugFileName] [nvarchar](100) NOT NULL,
+			[CDNPath] [nvarchar](250) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}JavaScriptLIbraries] PRIMARY KEY CLUSTERED 
+			(
+				[JavaScriptLibraryID] ASC
+			)
+		)
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteJavaScriptLibrary]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteJavaScriptLibrary]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteJavaScriptLibrary]
+AS
+	@JavaScriptLibraryID INT
+AS
+	DELETE FROM {databaseOwner}[{objectQualifier}JavaScriptLibraries]
+	WHERE JavaScriptLibraryID = @JavaScriptLibraryID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetJavaScriptLibraries]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetJavaScriptLibraries]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetJavaScriptLibraries]
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}JavaScriptLibraries
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
+	@JavaScriptLibraryID INT,
+	@PackageID INT,
+	@LibraryName NVARCHAR(200),
+	@Version NVARCHAR(10),
+	@MinFileName NVARCHAR(100),
+	@DebugFileName NVARCHAR(100),
+	@CDNPath NVARCHAR(250)
+AS
+
+	UPDATE {databaseOwner}[{objectQualifier}JavaScriptLibraries]
+	   SET [PackageID] = @PackageID,
+			[LibraryName] = @LibraryName,
+			[Version] = @Version,
+			[MinFileName] = @MinFileName,
+			[DebugFileName] = @DebugFileName,
+			[CDNPath] = @CDNPath
+	 WHERE JavaScriptLibraryID = @JavaScriptLibraryID
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
