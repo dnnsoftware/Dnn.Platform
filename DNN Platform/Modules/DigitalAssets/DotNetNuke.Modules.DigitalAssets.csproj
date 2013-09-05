@@ -298,9 +298,6 @@
     <Content Include="App_LocalResources\FolderProperties.ascx.resx" />
     <Content Include="App_LocalResources\SearchBoxControl.ascx.resx" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_LocalResources\SharedResources.resx.bak" />
-  </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
