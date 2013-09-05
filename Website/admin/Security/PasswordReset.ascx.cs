@@ -83,6 +83,16 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void cmdChangePassword_Click(object sender, EventArgs e)
         {
+            //1. Check New Password and Confirm are the same
+            if (txtPassword.Text != txtConfirmPassword.Text)
+            {
+                resetMessages.Visible = true;
+                var failed = Localization.GetString("PasswordMismatch");
+                LogFailure(failed);
+                lblHelp.Text = failed;
+                return;
+            }
+
             if (UserController.ChangePasswordByToken(PortalSettings.PortalId, txtUsername.Text, txtPassword.Text, ResetToken) == false)
             {
                 resetMessages.Visible = true;
