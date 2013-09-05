@@ -172,7 +172,8 @@
     <value>&lt;div align="left"&gt;
         &lt;p&gt;&lt;b&gt;Re-Index&lt;/b&gt; deletes existing content from the Index Store and then re-indexes everything. &lt;br/&gt;
         Re-Indexing is done as part of search crawler(s) scheduled job. &lt;br/&gt;The search crawler(s) should be run manually under Host &gt; Schedule to re-index immediately. Re-indexing is done for the current site only.&lt;/p&gt;
-&lt;p&gt;&lt;b&gt;Caution&lt;/b&gt; - This should be done during non-peak hours as the process can be CPU intensive.&lt;/p&gt;</value>
+&lt;p&gt;&lt;b&gt;Caution&lt;/b&gt; - This should be done during non-peak hours as the process can be CPU intensive.&lt;/p&gt;
+&lt;/div&gt;</value>
   </data>
   <data name="ReIndexConfirmationCancel.Text" xml:space="preserve">
     <value>Cancel</value>
