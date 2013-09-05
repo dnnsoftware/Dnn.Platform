@@ -889,7 +889,6 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteJavaScriptLibrary]
-AS
 	@JavaScriptLibraryID INT
 AS
 	DELETE FROM {databaseOwner}[{objectQualifier}JavaScriptLibraries]
