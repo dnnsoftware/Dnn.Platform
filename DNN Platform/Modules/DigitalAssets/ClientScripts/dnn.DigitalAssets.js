@@ -1827,13 +1827,13 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             unzip.set_visible(false);
         }
 
+        controller.setupContextMenu(contextMenu, grid.get_selectedItems());
+
         var permissions = gridItem.get_dataItem().Permissions;
         checkPermissions(menuSelector, permissions, true, true);
-
+        
         contextMenu.show(event);
     }
-
-
 
     function gridOnRowContextMenu(sender, args) {
 
@@ -1900,6 +1900,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 $("#DigitalAssetsUnzipFileBtnId", "#" + controls.scopeWrapperId).hide();
             }
         }
+
+        var $selectionToolbar = $("#dnnModuleDigitalAssetsSelectionToolbar", "#" + controls.scopeWrapperId);
+        controller.updateSelectionToolBar($selectionToolbar, grid.get_selectedItems());
     }
 
     function getBreadcrumbFolderItem(node) {

@@ -42,6 +42,10 @@ dnnModule.DigitalAssetsController.prototype = function () {
         },
         gridOnRowDataBound = function (grid, item) {
         },
+        setupContextMenu = function (contextMenu, gridItems) {
+        },
+        updateSelectionToolBar = function (selectionToolbar, gridItems) {
+        },
         extendResources = function (extendedResouces) {
             $.extend(this.resources, extendedResouces);
         };
@@ -58,6 +62,8 @@ dnnModule.DigitalAssetsController.prototype = function () {
         getHttpGETHeaders: getHttpGETHeaders,
         gridOnRowDataBound: gridOnRowDataBound,
         extendResources: extendResources,
-        executeCommandOnSelectedItems: executeCommandOnSelectedItems
+        executeCommandOnSelectedItems: executeCommandOnSelectedItems,
+        setupContextMenu: setupContextMenu,
+        updateSelectionToolBar: updateSelectionToolBar
     };
 }();
