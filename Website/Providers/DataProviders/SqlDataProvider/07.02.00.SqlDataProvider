@@ -928,6 +928,15 @@ AS
 	 WHERE JavaScriptLibraryID = @JavaScriptLibraryID
 GO
 
+/** DNN-2995 - SI: Performance improvement in dbo.GetUsersByEmail **/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Users
+  ADD LowerEmail AS LOWER(Email) PERSISTED
+
+CREATE NONCLUSTERED INDEX IX_{databaseOwner}{objectQualifier}Users_LowerEmail ON {databaseOwner}{objectQualifier}Users(Email)
+
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
