@@ -76,9 +76,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                                         library.JavaScriptLibraryID,
                                                         library.PackageID,
                                                         library.LibrayName,
+                                                        library.Version.ToString(3),
                                                         library.MinFileName,
                                                         library.DebugFileName,
-                                                        library.LocalPath,
                                                         library.CDNPath);
             ClearCache();
         }

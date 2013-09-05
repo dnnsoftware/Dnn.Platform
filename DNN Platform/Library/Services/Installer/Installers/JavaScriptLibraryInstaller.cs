@@ -33,6 +33,26 @@ namespace DotNetNuke.Services.Installer.Installers
         private JavaScriptLibrary _library;
         private JavaScriptLibrary _installedLibrary;
 
+        #region Public Properties
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
+        public override string AllowableFiles
+        {
+            get
+            {
+                return "js";
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
         private void DeleteLibrary()
         {
             try
@@ -112,5 +132,8 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             DeleteLibrary();
         }
+
+        #endregion
+
     }
 }
