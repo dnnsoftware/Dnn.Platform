@@ -1999,9 +1999,7 @@ namespace DotNetNuke.Entities.Urls
                         //This is because the tabid in the query string should take precedence over the portal alias
                         //to handle parent.com/default.aspx?tabid=xx where xx lives in parent.com/child/ 
                         var tc = new TabController();
-#pragma warning disable 612,618
-                        TabInfo tab = tc.GetTab(result.TabId);
-#pragma warning restore 612,618
+                        var tab = tc.GetTab(result.TabId, Null.NullInteger, false);
                         //when result alias is null or result alias is different from tab-identified portalAlias
                         if (tab != null && (result.PortalAlias == null || tab.PortalID != result.PortalAlias.PortalID))
                         {

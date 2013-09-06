@@ -50,20 +50,12 @@ namespace DotNetNuke.Security.Roles
 
         public virtual bool CreateRole(RoleInfo role)
         {
-            #pragma warning disable 612,618
-
-            return CreateRole(-1, ref role);
-
-            #pragma warning restore 612,618
+            throw new NotImplementedException();
         }
 
         public virtual void DeleteRole(RoleInfo role)
         {
-            #pragma warning disable 612,618
-
-            DeleteRole(-1, ref role);
-
-            #pragma warning restore 612,618
+			throw new NotImplementedException();
         }
 
         public abstract ArrayList GetRoles(int portalId);
@@ -122,11 +114,7 @@ namespace DotNetNuke.Security.Roles
 
         public virtual IList<UserRoleInfo> GetUserRoles(UserInfo user, bool includePrivate)
         {
-#pragma warning disable 612,618
-            //The virtual implmenetations of GetUserRoles(UserInfo, bool) and GetUserRoles(int, int, bool)
-            //are recursive.  A concrete provider will override one of these methods and break the inifinite recursion
-            return GetUserRoles(user.PortalID, user.UserID, includePrivate).Cast<UserRoleInfo>().ToList();
-#pragma warning restore 612,618
+			throw new NotImplementedException();
         }
 
         #region Obsolete Methods

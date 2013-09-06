@@ -22,8 +22,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.UI.WebControls;
-
+using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.HttpModules.RequestFilter;
@@ -195,10 +196,19 @@ namespace DotNetNuke.Modules.Admin.Host
                 var configRules = new List<RequestFilterRule>();
 
                 //Deserialize into RewriterConfiguration
-#pragma warning disable 612,618
-                configRules = (List<RequestFilterRule>) XmlUtils.Deserialize(Convert.ToString(myState[1]), configRules.GetType());
-#pragma warning restore 612,618
-                Rules = configRules;
+				var xmlDocument = new XmlDocument();
+				xmlDocument.LoadXml(Convert.ToString(myState[1]));
+	            var nodesList = xmlDocument.SelectNodes("/ArrayOfRequestFilterRule/RequestFilterRule");
+	            if (nodesList != null)
+	            {
+		            foreach (XmlNode node in nodesList)
+		            {
+			            var rule = CBO.DeserializeObject<RequestFilterRule>(XmlReader.Create(new StringReader(node.OuterXml)));
+			            configRules.Add(rule);
+		            }
+	            }
+
+	            Rules = configRules;
             }
         }
 

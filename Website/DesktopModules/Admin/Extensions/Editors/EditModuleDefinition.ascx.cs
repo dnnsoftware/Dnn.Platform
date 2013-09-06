@@ -224,9 +224,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                     objDesktopModule.Permissions = "";
                     objDesktopModule.PackageID = package.PackageID;
 
-#pragma warning disable 612,618
-                    objDesktopModule.DesktopModuleID = objDesktopModules.AddDesktopModule(objDesktopModule);
-#pragma warning restore 612,618
+                    objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
 
                     //Add module to all portals
                     DesktopModuleController.AddDesktopModuleToPortals(objDesktopModule.DesktopModuleID);
