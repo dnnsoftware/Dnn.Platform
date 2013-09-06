@@ -2983,7 +2983,6 @@ namespace DotNetNuke.Services.Upgrade
             //only perform following for an existing installation upgrading
             if (Globals.Status == Globals.UpgradeStatus.Upgrade)
             {
-                UpdateFoldersForParentId();
                 ImportDocumentLibraryCategories();
                 ImportDocumentLibraryCategoryAssoc(fileContentType);
             }
