@@ -151,10 +151,6 @@ namespace DotNetNuke.Web.InternalServices
         [HttpGet]
         public HttpResponseMessage SearchPages(string searchText, int sortOrder = 0, int portalId = -1)
         {
-            if (portalId == -1)
-            {
-                portalId = GetActivePortalId();
-            }
             var response = new
             {
                 Success = true,
@@ -264,6 +260,10 @@ namespace DotNetNuke.Web.InternalServices
 
         private NTree<ItemDto> GetPagesInternal(int portalId, int sortOrder)
         {
+            if (portalId == -1)
+            {
+                portalId = GetActivePortalId();
+            }
             var tabs = GetPortalPages(portalId);
             var sortedTree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
             if (tabs == null)
@@ -844,14 +844,6 @@ namespace DotNetNuke.Web.InternalServices
             id = int.TryParse(parentId, out id) ? id : Null.NullInteger;
             return GetFolderDescendantsInternal(portalId, id, sortOrder, searchText, permission);
         }
-
-        #region Private Methods
-        private int CurrentPortalId()
-        {
-            var IsHostMenu = Globals.IsHostTab(PortalSettings.Current.ActiveTab.TabID);            
-            return IsHostMenu ? Null.NullInteger : PortalSettings.Current.PortalId;
-        }
-        #endregion
 
         private IEnumerable<ItemDto> GetFolderDescendantsInternal(int portalId, int parentId, int sortOrder, string searchText, string permission)
         {
