@@ -479,6 +479,7 @@
     <Compile Include="Services\FileSystem\FileVersionController.cs" />
     <Compile Include="Services\FileSystem\FileVersionInfo.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
+    <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptLibraryInstaller.cs" />
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />

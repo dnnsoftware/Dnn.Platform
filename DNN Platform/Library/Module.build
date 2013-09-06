@@ -62,7 +62,7 @@
   
   <Target Name="ReleasePackages" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Zip Files="@(KnockoutLibrary)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Knockout"
-         ZipFileName="$(WebsiteInstallPath)\JavaScript Library\Knockout.zip" />
+         ZipFileName="$(WebsiteInstallPath)\JavaScript Library\Knockout_2_2_1.zip" />
     <Copy SourceFiles="@(ExternalModulePackages)" DestinationFolder="$(WebsiteInstallPath)\Module"/>
   </Target>
 </Project>
