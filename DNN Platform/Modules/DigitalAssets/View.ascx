@@ -27,10 +27,9 @@
                     <div id="dnnModuleDigitalAssetsLeftPaneFilesTabContentScroll">
                         <dnnweb:DnnTreeView ID="FolderTreeView" runat="server" Skin="Vista" CssClass="dnnModuledigitalAssetsTreeView" 
                             OnClientNodeExpanding="dnnModule.digitalAssets.treeViewOnNodeExpanding" 
+                            OnClientNodeCollapsing="dnnModule.digitalAssets.treeViewOnNodeCollapsing"
                             OnClientNodeClicking="dnnModule.digitalAssets.treeViewOnNodeClicking" 
                             OnClientNodeAnimationEnd="dnnModule.digitalAssets.treeViewRefreshScrollbars"
-                            OnClientNodeCollapsed="dnnModule.digitalAssets.treeViewRefreshScrollbars"
-                            OnClientNodeExpanded="dnnModule.digitalAssets.treeViewRefreshScrollbars"
                             OnClientContextMenuItemClicking="dnnModule.digitalAssets.treeViewOnContextMenuItemClicking"
                             OnClientContextMenuShowing="dnnModule.digitalAssets.treeViewOnContextMenuShowing"
                             OnClientNodeEditing="dnnModule.digitalAssets.treeViewOnNodeEditing"
@@ -45,6 +44,7 @@
                             </ContextMenus>
                         </dnnweb:DnnTreeView>
                     </div>
+                    <ul id="dnnModuleDigitalAssetsLeftPaneActions"></ul>
                 </div>
             </asp:Panel>
         </div>

@@ -6,7 +6,6 @@
 }
 
 #dnnModuleDigitalAssetsLeftPane {
-    border-top: 1px solid #CCCCCC;
     position: absolute;
     width: 220px;
     min-height: 465px;
@@ -44,10 +43,31 @@
 }
 
 #dnnModuleDigitalAssetsLeftPaneFilesTabContentScroll {
-    padding-top: 10px;
-    width: 100%;
-    height: 100%;
+    padding-top: 10px;    
     outline: none;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 10px;
+    right: 0;    
+}
+
+#dnnModuleDigitalAssetsLeftPaneActions {
+    position: absolute;   
+    list-style: none outside none; 
+    color: #000000;
+    font: 12px/16px "Segoe UI",Arial,Helvetica,sans-serif;
+    margin-left: 0;
+}
+
+#dnnModuleDigitalAssetsLeftPaneActions li {
+    cursor: pointer;
+    line-height: 40px;
+}
+
+#dnnModuleDigitalAssetsLeftPaneActions li.selected {
+    color: #4E89E3;
+    font-weight: bold;
 }
 
 #dnnModuleDigitalAssetsContentPane {

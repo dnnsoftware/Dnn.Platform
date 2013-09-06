@@ -462,7 +462,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function treeViewOnNodeExpanding(sender, args) {
+        $("#dnnModuleDigitalAssetsLeftPaneActions", "#" + controls.scopeWrapperId).hide();
         internalOnNodeExpanding(args.get_node(), true);
+    }
+    
+    function treeViewOnNodeCollapsing() {
+        $("#dnnModuleDigitalAssetsLeftPaneActions", "#" + controls.scopeWrapperId).hide();
     }
 
     function internalOnNodeExpanding(node, isMainTree) {
@@ -1027,7 +1032,11 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function treeViewRefreshScrollbars() {
-        $("#dnnModuleDigitalAssetsLeftPaneFilesTabContentScroll").jScrollPane();
+        var $actions = $("#dnnModuleDigitalAssetsLeftPaneActions", "#" + controls.scopeWrapperId);
+        var $scroll = $("#dnnModuleDigitalAssetsLeftPaneFilesTabContentScroll", "#" + controls.scopeWrapperId);
+        $scroll.css({ bottom: $actions.outerHeight() }).jScrollPane();
+        var y = Math.min($scroll.find("div.jspPane").outerHeight(), $scroll.find("div.jspContainer").outerHeight());
+        $actions.fadeIn(200).css({ top: y });
     }
 
     function selectSubFolder(node, folderId) {
@@ -3120,6 +3129,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         destinationTreeViewOnNodeClicking: destinationTreeViewOnNodeClicking,
         destinationTreeViewOnLoad: destinationTreeViewOnLoad,
         treeViewOnNodeExpanding: treeViewOnNodeExpanding,
+        treeViewOnNodeCollapsing: treeViewOnNodeCollapsing,
         treeViewOnNodeClicking: treeViewOnNodeClicking,
         treeViewOnContextMenuItemClicking: treeViewOnContextMenuItemClicking,
         treeViewOnNodeEditing: treeViewOnNodeEditing,
