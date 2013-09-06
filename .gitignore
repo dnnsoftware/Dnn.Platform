@@ -146,6 +146,21 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Ss]ite[Uu]rls.config
 [Ww]ebsite/web.config
 
+# ignore all other language resx files
+*.de-DE.resx
+*.es-ES.resx
+*.fr-FR.resx
+*.it-IT.resx
+*.nl-NL.resx
+
+# but do track translations in the Install folder
+![Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.de-DE.resx
+![Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.es-ES.resx
+![Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.fr-FR.resx
+![Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.it-IT.resx
+![Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.nl-NL.resx
+
+
 ############
 ## Windows
 ############
