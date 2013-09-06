@@ -91,14 +91,16 @@ namespace DotNetNuke.UI.Skins.Controls
             if (PortalSettings.BannerAdvertising != 0 && Visible)
             {
                 int BannerType = 0;
-                //read bannertype from definition, if not use portalsetting
-                if (!string.IsNullOrEmpty(BannerTypeId))
+                if (AllowNullBannerType)
                 {
-                    BannerType = Int32.Parse(Convert.ToString(BannerTypeId));
+                    if (!string.IsNullOrEmpty(BannerTypeId))
+                    {
+                        BannerType = Int32.Parse(Convert.ToString(BannerTypeId));
+                    }
                 }
                 else
                 {
-                    if (AllowNullBannerType)
+                    if (string.IsNullOrEmpty(BannerTypeId))
                     {
                         BannerType = PortalController.GetPortalSettingAsInteger("BannerTypeId", PortalSettings.PortalId, 1);
                     }
