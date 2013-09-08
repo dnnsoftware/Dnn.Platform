@@ -15,12 +15,15 @@ namespace DNNSelenium.Common.CorePages
 		public static string ButtonsList = "//div[contains(@id, '_ModuleContent')]/ul[contains(@class, 'dnnActions')]/li/a";
 		public static string InstallExtensionButton = "//a[contains(@id, '_Extensions_cmdInstall')]";
 
-		public static string ModulesAccordion = "//h2[@id='Panel-Modules']/a";
-		public static string ModulesExtensionsList = "//h2[@id='Panel-Modules']/following-sibling :: */table[contains(@id, '_extensionsGrid_0')]//tr[contains(@class, 'Item')]";
-		public static string CoreLanguagePacksAccordion = "//h2[@id='Panel-Core Language Packs']/a";
-		public static string CoreLanguagePacksList = "//h2[@id='Panel-Core Language Packs']/following-sibling :: */table[contains(@id, '_extensionsGrid_3')]//tr[contains(@class, 'Item')]";
-		public static string ExtensionLanguagePacksAccordion = "//h2[@id='Panel-Extension Language Packs']/a";
-		public static string ExtensionLanguagePacksList = "//h2[@id='Panel-Extension Language Packs']/following-sibling :: */table[contains(@id, '_extensionsGrid_5')]//tr[contains(@class, 'Item')]";
+		public static string ModulesPanel = "//h2[@id='Panel-Modules']";
+		public static string ModulesAccordion = ModulesPanel + "/a";
+		public static string ModulesExtensionsList = ModulesPanel + "/following-sibling :: //tr[contains(@class, 'Item')]";
+		public static string CoreLanguagePacksPanel = "//h2[@id='Panel-Core Language Packs']";
+		public static string CoreLanguagePacksAccordion = CoreLanguagePacksPanel + "/a";
+		public static string CoreLanguagePacksList = CoreLanguagePacksPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";
+		public static string ExtensionLanguagePacksPanel = "//h2[@id='Panel-Extension Language Packs']";
+		public static string ExtensionLanguagePacksAccordion = ExtensionLanguagePacksPanel + "/a";
+		public static string ExtensionLanguagePacksList = ExtensionLanguagePacksPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";
 
 		//Install Extension page
 		public static string UploadFileButton = "//input[contains(@id, '_Install_wizInstall_cmdBrowse')]";
@@ -46,6 +49,42 @@ namespace DNNSelenium.Common.CorePages
 			ScrollIntoView(element, 200);
 			element.Click();
 		}
+
+		public string SetLanguageName(string language)
+		{
+			string option = null;
+
+			switch (language)
+			{
+				case "de":
+					{
+						option = "Deutsch (Deutschland)";
+						break;
+					}
+				case "es":
+					{
+						option = "Español (España, alfabetización internacional)";
+						break;
+					}
+				case "fr":
+					{
+						option = "français (France)";
+						break;
+					}
+				case "it":
+					{
+						option = "italiano (Italia)";
+						break;
+					}
+				case "nl":
+					{
+						option = "Nederlands (Nederland)";
+						break;
+					}
+			}
+
+			return option;
+		} 
 
 		public void InstallExtension(string fileToUpload)
 		{

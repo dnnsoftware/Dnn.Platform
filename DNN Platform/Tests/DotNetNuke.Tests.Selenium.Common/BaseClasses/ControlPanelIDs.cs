@@ -27,6 +27,8 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string SearchBox = "//input[contains(@id,'dnnSearch_txtSearch')]";
 		public static string SearchButton = "//a[contains(@id, 'dnnSearch_cmdSearch')]";
 
+		public static string LanguageIcon = "//span[contains(@class, 'Language')]";
+
 		public static string CopyrightNotice = "dnn_dnnCopyright_lblCopyright";
 		public static string CopyrightText = "Copyright 2013 by DNN Corp";
 

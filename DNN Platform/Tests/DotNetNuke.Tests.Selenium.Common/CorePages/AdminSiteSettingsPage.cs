@@ -57,11 +57,6 @@ namespace DNNSelenium.Common.CorePages
 			SelectSubMenuOption(ControlPanelIDs.ControlPanelAdminOption, ControlPanelIDs.ControlPanelAdminCommonSettings, ControlPanelIDs.AdminSiteSettingsOption);
 		}
 
-		public void OpenAdvancedSettingsTab()
-		{
-			WaitAndClick(By.XPath(AdvancedSettingsTab));
-		}
-
 		public void DisablePopups()
 		{
 			OpenTab(By.XPath(AdvancedSettingsTab));

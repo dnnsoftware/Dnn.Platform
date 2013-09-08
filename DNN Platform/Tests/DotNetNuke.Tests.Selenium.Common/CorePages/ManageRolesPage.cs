@@ -76,23 +76,12 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.Id(ControlPanelIDs.CopyrightNotice));
 		}
 
-		/*public void OpenBasicSettingsTab()
-		{
-			WaitAndClick(By.XPath(BasicSettingsFrameTab));
-		}*/
-
-		/*public void OpenAdvancedSettingsTab()
-		{
-			WaitAndClick(By.XPath(AdvancedSettingsFrameTab));
-		}*/
-
 		public void AddNewSecurityRole(string roleName)
 		{
 			WaitAndClick(By.XPath(AddNewRoleButton));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new Security Role:");
 
-			//OpenBasicSettingsTab();
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Basic Settings' Tab:");
 			OpenTab(By.XPath(BasicSettingsFrameTab));
 
@@ -109,7 +98,6 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new Public Security Role:");
 
-			//OpenBasicSettingsTab();
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Basic Settings' Tab:");
 			OpenTab(By.XPath(BasicSettingsFrameTab));
 
@@ -127,7 +115,6 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new Auto assigned Security Role:");
 
-			//OpenBasicSettingsTab();
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Basic Settings' Tab:");
 			OpenTab(By.XPath(BasicSettingsFrameTab));
 
@@ -145,13 +132,11 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new Security Role:");
 
-			//OpenBasicSettingsTab();
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Basic Settings' Tab:");
 			OpenTab(By.XPath(BasicSettingsFrameTab));
 
 			Type(By.XPath(RoleNameTextBox), roleName);
 
-			//OpenAdvancedSettingsTab();
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Advanced Settings' Tab:");
 			OpenTab(By.XPath(AdvancedSettingsFrameTab));
 
@@ -170,7 +155,6 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new Security Role:");
 
-			//OpenBasicSettingsTab();
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Basic Settings' Tab:");
 			OpenTab(By.XPath(BasicSettingsFrameTab));
 

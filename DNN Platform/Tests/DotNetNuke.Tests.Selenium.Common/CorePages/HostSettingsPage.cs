@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.BaseClasses.BasePages;
+using DNNSelenium.Common.Properties;
 using OpenQA.Selenium;
 
 namespace DNNSelenium.Common.CorePages
@@ -74,6 +76,11 @@ namespace DNNSelenium.Common.CorePages
 		public static string BasicSettingsTab = "//li[@aria-controls = 'basicSettings']/a";
 		public static string HostName = "//span[contains(@id, '_HostSettings_lblHostName')]";
 
+		public static string OtherSettingsTab = "//li[@aria-controls = 'otherSettings']/a";
+		public static string AllowContentLocalizationCheckBox = "//input[contains(@id, '_chkEnableContentLocalization')]";
+
+		public static string UpdateButton = "//a[contains(@id, '_HostSettings_cmdUpdate')]";
+
 		public void SetDictionary(string language)
 		{
 			_translate = DictSelector[language];
@@ -100,6 +107,16 @@ namespace DNNSelenium.Common.CorePages
 			SelectSubMenuOption(ControlPanelIDs.ControlPanelHostOption, ControlPanelIDs.ControlPanelHostCommonSettings, ControlPanelIDs.HostHostSettingsOption);
 		}
 
+		public void EnableContentLocalization()
+		{
+			OpenTab(By.XPath(OtherSettingsTab));
+
+			CheckBoxCheck(By.XPath(AllowContentLocalizationCheckBox));
+
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
+		}
 	}
 }
  

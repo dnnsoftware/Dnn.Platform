@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -110,6 +111,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipPromoteToSuperuser != null)
             {
                 MembershipPromoteToSuperuser(this, e);
+                Response.Redirect(Globals.NavigateURL(), true);
             }
         }
 
@@ -127,6 +129,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipDemoteFromSuperuser != null)
             {
                 MembershipDemoteFromSuperuser(this, e);
+                Response.Redirect(Globals.NavigateURL(), true);
             }
         }
 
