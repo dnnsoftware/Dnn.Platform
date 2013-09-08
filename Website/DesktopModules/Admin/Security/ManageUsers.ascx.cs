@@ -385,7 +385,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 ctlUser.ShowUpdate = false;
                 CheckQuota();
             }
-            User.Username = HttpUtility.HtmlDecode(User.Username);
             ctlUser.User = User;
             ctlUser.DataBind();
 

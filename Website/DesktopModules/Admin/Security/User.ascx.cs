@@ -421,8 +421,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 lastName.Visible = false;
             }
 
-            User.Username = HttpUtility.HtmlDecode(User.Username);
-            User.DisplayName = HttpUtility.HtmlDecode(User.DisplayName);
             userForm.DataSource = User;
 			if (!Page.IsPostBack)
 			{
@@ -595,7 +593,6 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
-            User.Username = HttpUtility.HtmlEncode(User.Username);
 
             if (AddUser)
             {
