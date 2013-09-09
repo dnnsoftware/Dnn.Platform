@@ -52,6 +52,9 @@ dnnModule.DigitalAssetsController.prototype = function () {
         },
         extendResources = function (extendedResouces) {
             $.extend(this.resources, extendedResouces);
+        },
+        getLeftPaneActions = function() {
+            return [];
         };
 
     return {
@@ -70,6 +73,7 @@ dnnModule.DigitalAssetsController.prototype = function () {
         setupGridContextMenuExtension: setupGridContextMenuExtension,
         setupTreeViewContextMenuExtension: setupTreeViewContextMenuExtension,
         updateSelectionToolBar: updateSelectionToolBar,
-        executeCommandOnSelectedNode: executeCommandOnSelectedNode
+        executeCommandOnSelectedNode: executeCommandOnSelectedNode,
+        getLeftPaneActions: getLeftPaneActions
     };
 }();
