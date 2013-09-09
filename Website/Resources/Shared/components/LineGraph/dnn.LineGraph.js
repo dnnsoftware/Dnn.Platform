@@ -60,7 +60,7 @@
             return data;
         },
 
-        draw: function (keyValuePairs) {
+        draw: function (keyValuePairs, scale) {
 
             // define dimensions of graph
             var chartWidth = this._size.width - this._margins.right - this._margins.left; // width
@@ -79,7 +79,7 @@
 
             // create a line function that can convert data[] into x and y points
             var lineFunction = d3.svg.line()
-                .interpolate("monotone") //("linear")  //.interpolate('interpolation');
+                .interpolate("linear") //("monotone") //  //.interpolate('interpolation');
                 .x(function (datum, i) { return xScale(datum.key); })
                 .y(function (datum) { return yScale(datum.value); });
 
@@ -99,7 +99,26 @@
 
             // create yAxis
             //var xAxis = d3.svg.axis().scale(xScale).ticks(d3.time.month, 1).tickFormat(d3.time.format('%a %d')).tickSize(-chartHeight).tickSubdivide(true);
-            var xAxis = d3.svg.axis().scale(xScale).ticks(5).tickSize(-chartHeight).tickSubdivide(false);
+            var xAxis = d3.svg.axis().scale(xScale).ticks(this._options.xTicks || 5);
+            var xScaleLabelFormat = "";
+            switch (scale) {
+                case "day":
+                    xScaleLabelFormat = "%b %e, %Y";
+                    break;
+                case "week":
+                    xScaleLabelFormat = "%a, %b %e, %Y";
+                    break;
+                case "month":
+                    xScaleLabelFormat = "%B %Y";
+                    break;
+                case "year":
+                    xScaleLabelFormat = "%b %Y";
+                    break;
+                default:
+                    xScaleLabelFormat = "%b %e, %Y";
+                    break;
+            }
+            xAxis.tickFormat(d3.time.format(xScaleLabelFormat));
 
             // Add the x-axis.
             graph.select(".x.axis")

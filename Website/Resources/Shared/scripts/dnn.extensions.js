@@ -154,6 +154,15 @@ dnn.Enum = function (keyValuePairs) {
     }
 };
 
+dnn.Enum.prototype.getEnumName = function(enumValue) {
+    for (var propertyName in this) {
+        if (Object.prototype.hasOwnProperty.call(this, propertyName) && enumValue === this[propertyName]) {
+            return propertyName;
+        }
+    }
+    return "";
+};
+
 dnn.SortOrder = new dnn.Enum([{ key: 0, value: "unspecified" }, { key: 1, value: "ascending" }, { key: 2, value: "descending" }]);
 
 dnn.executeFunctionByName = function(functionName, context /*, args */) {
