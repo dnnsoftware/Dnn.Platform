@@ -365,26 +365,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 };
         }
 
-        protected SortProperties GetSortProperties(string sortExpression)
-        {
-            var sortProperties = new SortProperties
-                                     {
-                    Column = "ItemName",
-                    Ascending = true
-                };
-            if (!string.IsNullOrEmpty(sortExpression))
-            {
-                var se = sortExpression.Split(' ');
-                if (se.Length == 2)
-                {
-                    sortProperties.Column = se[0];
-                    sortProperties.Ascending = se[1] == "ASC";
-                }
-            }
-
-            return sortProperties;
-        }
-
         private string ReplaceFolderName(string path, string folderName, string newFolderName)
         {
             string newPath = PathUtils.Instance.RemoveTrailingSlash(path);
@@ -446,7 +426,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 };
             }
 
-            var sortProperties = GetSortProperties(sortExpression);
+            var sortProperties = SortProperties.Parse(sortExpression);
             var content = GetFolders(folder, sortProperties.Column == "ItemName" ? "FolderName" : sortProperties.Column, sortProperties.Ascending).Select(GetItemViewModel).ToList();
             content.AddRange(GetFiles(folder, sortProperties.Column == "ItemName" ? "FileName" : sortProperties.Column, sortProperties.Ascending));
 
@@ -477,7 +457,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             var results = FolderManager.Instance.SearchFiles(folder, pattern, true).Select(GetItemViewModel);
 
-            var sortProperties = GetSortProperties(sortExpression);
+            var sortProperties = SortProperties.Parse(sortExpression);
             results = ApplyOrder(results.AsQueryable(), sortProperties.Column, sortProperties.Ascending);
 
             return new PageViewModel
