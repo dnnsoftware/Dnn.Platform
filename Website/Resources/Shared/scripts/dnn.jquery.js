@@ -575,7 +575,7 @@
 
             $ch.bind('disable', function () { ch.wrapperInner.addClass(settings.cls + '-disabled'); }).bind('enable', function () { ch.wrapperInner.removeClass(settings.cls + '-disabled'); });
             $ch.bind('check', function () { ch.wrapper.addClass(settings.cls + '-checked'); }).bind('uncheck', function () { ch.wrapper.removeClass(settings.cls + '-checked'); });
-	        $ch.bind('focus', function () { ch.wrapper.addClass(settings.cls + '-focus'); }).bind('blur', function () { ch.wrapper.removeClass(settings.cls + '-focus'); });
+	        $ch.bind('focus', function (e) { if(!e.isTrigger) ch.wrapper.addClass(settings.cls + '-focus'); }).bind('blur', function () { ch.wrapper.removeClass(settings.cls + '-focus'); });
 
             /* Applying checkbox state */
             if (ch.checked)

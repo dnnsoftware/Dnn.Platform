@@ -34,6 +34,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
@@ -248,11 +249,19 @@ namespace DotNetNuke.UI.WebControls
 
         #region Protected Methods
 
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
+			jQuery.RequestRegistration();
+		}
+
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
             Page.RegisterRequiresPostBack(this);
+			Page.ClientScript.RegisterClientScriptBlock(GetType(), "visibleChange", "$(document).ready(function(){$('.dnnFormVisibility').on('click', 'input[type=radio]', function(){$(this).parent().parent().find('ul').hide();$(this).parent().next('ul').show();});});", true);
         }
 
 		/// <summary>
@@ -323,8 +332,8 @@ namespace DotNetNuke.UI.WebControls
 
             RenderVisibility(writer, "3", UserVisibilityMode.FriendsAndGroups, Localization.GetString("FriendsGroups").Trim());
 
-            //Render UL for checjk Box List
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "none");
+            //Render UL for check Box List
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, Visibility.VisibilityMode == UserVisibilityMode.FriendsAndGroups ? "block" : "none");
             writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
 		    RenderRelationships(writer);
