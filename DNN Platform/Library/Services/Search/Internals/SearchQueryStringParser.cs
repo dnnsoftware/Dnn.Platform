@@ -22,14 +22,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DotNetNuke.Framework;
 
-namespace DotNetNuke.Web.Common
+namespace DotNetNuke.Services.Search.Internals
 {
     /// <summary>
     /// Class responsible to parse the Search Query String parameter
     /// </summary>
     public class SearchQueryStringParser
+                            : ServiceLocator<ISearchQueryStringParser, SearchQueryStringParser>
+                            , ISearchQueryStringParser
     {
+        protected override Func<ISearchQueryStringParser> GetFactory()
+        {
+            return () => new SearchQueryStringParser();
+        }
+
         private static readonly Regex TagRegex = new Regex(@"\[(.*?)\]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex DateRegex = new Regex(@"after:(\w+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -42,7 +50,7 @@ namespace DotNetNuke.Web.Common
         /// <param name="keywords">search keywords</param>
         /// <param name="outputKeywords">output keywords removing the tags</param>
         /// <returns>List of tags</returns>
-        public static List<string> GetTags(string keywords, out string outputKeywords)
+        public IList<string> GetTags(string keywords, out string outputKeywords)
         {
             var tags = new List<string>();
             if (string.IsNullOrEmpty(keywords))
@@ -73,7 +81,7 @@ namespace DotNetNuke.Web.Common
         /// <param name="keywords">search keywords</param>
         /// <param name="outputKeywords">output keywords removing the last modified date</param>
         /// <returns>Last Modified Date</returns>
-        public static DateTime GetLastModifiedDate(string keywords, out string outputKeywords)
+        public DateTime GetLastModifiedDate(string keywords, out string outputKeywords)
         {
             var m = DateRegex.Match(keywords);
             var date = "";
@@ -94,13 +102,13 @@ namespace DotNetNuke.Web.Common
                         result = DateTime.UtcNow.AddDays(-7);
                         break;
                     case "month":
-                        result = DateTime.UtcNow.AddDays(-30);
+                        result = DateTime.UtcNow.AddMonths(-1);
                         break;
                     case "quarter":
-                        result = DateTime.UtcNow.AddDays(-90);
+                        result = DateTime.UtcNow.AddMonths(-3);
                         break;
                     case "year":
-                        result = DateTime.UtcNow.AddDays(-365);
+                        result = DateTime.UtcNow.AddYears(-1);
                         break;
                 }
             }
@@ -115,7 +123,7 @@ namespace DotNetNuke.Web.Common
         /// <param name="keywords">search keywords</param>
         /// <param name="outputKeywords">output keywords removing the Search Type</param>
         /// <returns>List of Search Types</returns>
-        public static List<string> GetSearchTypeList(string keywords, out string outputKeywords)
+        public IList<string> GetSearchTypeList(string keywords, out string outputKeywords)
         {
             var m = TypeRegex.Match(keywords);
             var types = "";

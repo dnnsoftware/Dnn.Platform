@@ -40,7 +40,6 @@ using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Common;
 using DotNetNuke.Web.InternalServices.Views.Search;
 
 namespace DotNetNuke.Web.InternalServices
@@ -199,7 +198,7 @@ namespace DotNetNuke.Web.InternalServices
             return list;
         }
 
-        private List<SearchContentSource> GetSearchContentSources(List<string> typesList)
+        private IList<SearchContentSource> GetSearchContentSources(IList<string> typesList)
         {
             var sources = new List<SearchContentSource>();
             var list = InternalSearchController.Instance.GetSearchContentSourceList(PortalSettings.PortalId);
@@ -369,9 +368,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             string cleanedKeywords;
             keywords = (keywords ?? string.Empty).Trim();
-            var tags = SearchQueryStringParser.GetTags(keywords, out cleanedKeywords);
-            var beginModifiedTimeUtc = SearchQueryStringParser.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
-            var searchTypes = SearchQueryStringParser.GetSearchTypeList(keywords, out cleanedKeywords);
+            var tags = SearchQueryStringParser.Instance.GetTags(keywords, out cleanedKeywords);
+            var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
+            var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out cleanedKeywords);
 
             var contentSources = GetSearchContentSources(searchTypes);
             var settings = GetSearchModuleSettings();
@@ -438,9 +437,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             string cleanedKeywords;
             search = (search ?? string.Empty).Trim();
-            var tags = SearchQueryStringParser.GetTags(search, out cleanedKeywords);
-            var beginModifiedTimeUtc = SearchQueryStringParser.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
-            var searchTypes = SearchQueryStringParser.GetSearchTypeList(cleanedKeywords, out cleanedKeywords);
+            var tags = SearchQueryStringParser.Instance.GetTags(search, out cleanedKeywords);
+            var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
+            var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(cleanedKeywords, out cleanedKeywords);
 
             var contentSources = GetSearchContentSources(searchTypes);
             var settings = GetSearchModuleSettings();

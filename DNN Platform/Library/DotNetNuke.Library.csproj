@@ -491,6 +491,7 @@
     <Compile Include="Services\Search\Entities\SearchStopWords.cs" />
     <Compile Include="Services\Search\Entities\SynonymsGroup.cs" />
     <Compile Include="Services\Search\Internals\Constants.cs" />
+    <Compile Include="Services\Search\Internals\ISearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\SearchQueryAnalyzer.cs" />
     <Compile Include="Services\Search\Internals\ISearchHelper.cs" />
     <Compile Include="Services\Search\Internals\SearchContentSource.cs" />
@@ -498,6 +499,7 @@
     <Compile Include="Services\Search\Internals\SearchHelperImpl.cs" />
     <Compile Include="Services\Search\Internals\LuceneResult.cs" />
     <Compile Include="Services\Search\Internals\LuceneQuery.cs" />
+    <Compile Include="Services\Search\Internals\SearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\SearchSecurityTrimmer.cs" />
     <Compile Include="Services\Search\Internals\SearchStatistics.cs" />
     <Compile Include="Services\Search\Internals\SynonymAnalyzer.cs" />
