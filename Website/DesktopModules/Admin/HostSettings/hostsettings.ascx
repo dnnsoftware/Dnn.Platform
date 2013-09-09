@@ -5,7 +5,6 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="RequestFilters" Src="~/DesktopModules/Admin/HostSettings/RequestFilters.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="IPFilters" Src="~/DesktopModules/Admin/HostSettings/IPFilters.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="CrawlerSettings" Src="~/DesktopModules/DNNCorp/SearchCrawler/CrawlerSettings.ascx" %>
 <%@ Register TagPrefix="dnnext" Namespace="DotNetNuke.ExtensionPoints" Assembly="DotNetNuke" %>
 
 <div class="dnnForm dnnHostSettings dnnClear" id="dnnHostSettings">
@@ -524,7 +523,7 @@
                     </div>
                 </div>                
             </fieldset>
-            <dnn:CrawlerSettings runat="server" ID="CrawlerSettings"></dnn:CrawlerSettings>
+            <dnnext:EditPagePanelExtensionControl runat="server" ID="FileCrawlerSettingsExtensionControl" Module="HostSettings" Name="FileCrawlerSettingsExtensionPoint" />            
         </div>
     </div>
     <div id="otherSettings" class="ssOtherSettings dnnClear">

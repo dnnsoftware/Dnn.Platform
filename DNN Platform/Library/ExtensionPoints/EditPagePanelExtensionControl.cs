@@ -49,13 +49,19 @@ namespace DotNetNuke.ExtensionPoints
             if (!String.IsNullOrEmpty(Name))
             {
                 var extension = extensionPointManager.GetEditPagePanelExtensionPointFirstByPriority(Module, Name);
-                LoadControl(extension);
+                if (extension != null)
+                {
+                    LoadControl(extension);                    
+                }
             }
             else
             {
                 foreach (var extension in extensionPointManager.GetEditPagePanelExtensionPoints(Module, Group))
                 {
-                    LoadControl(extension);
+                    if (extension != null)
+                    {
+                        LoadControl(extension);                        
+                    }
                 }
             }
         }
