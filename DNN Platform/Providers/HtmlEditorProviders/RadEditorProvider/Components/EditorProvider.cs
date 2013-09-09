@@ -1026,6 +1026,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorModuleId", moduleid.ToString(), true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorTabId", tabId.ToString(), true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorPortalId", portalId.ToString(), true);
+                ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "sslEnabled", PortalSettings.SSLEnabled.ToString().ToLowerInvariant(), true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorHomeDirectory", PortalSettings.HomeDirectory, true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorPortalGuid", PortalSettings.GUID.ToString(), true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorEnableUrlLanguage", PortalSettings.EnableUrlLanguage.ToString(), true);
