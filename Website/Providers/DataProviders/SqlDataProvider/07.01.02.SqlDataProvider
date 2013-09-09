@@ -432,7 +432,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comment_Save]
 	@CommentId int,
 	@UserId int,
 	@Comment nvarchar(max),
-	@CommentXML xml
+	@CommentXML xml,
+	@DateUpdated datetime
 AS
 
 DECLARE @cxml xml
@@ -446,7 +447,7 @@ BEGIN
 		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
 		SET Comment = @Comment,
 			CommentXML = @CommentXML,
-			DateUpdated = GETUTCDATE()
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
 		WHERE JournalId = @JournalId AND CommentId = @CommentId
 	END
 	ELSE
@@ -471,7 +472,7 @@ BEGIN
 		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
 		SET CommentXML.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")'),
 			Comment = NULL,
-			DateUpdated = GETUTCDATE()
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
 		WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root/comment') = 1
 	END
 END
