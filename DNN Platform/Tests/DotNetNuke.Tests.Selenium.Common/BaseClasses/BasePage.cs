@@ -229,6 +229,12 @@ namespace DNNSelenium.Common.BaseClasses
 			FindElement(locator).Clear();
 		}
 
+		public void WaitAndClear(By locator)
+		{
+			Trace.WriteLine(BasePage.TraceLevelElement + "Wait and Clear the input field");
+			WaitForElement(locator).Clear();
+		}
+
 		public void Click(By locator)
 		{
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find and Click: '" + locator + "'");

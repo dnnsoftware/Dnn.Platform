@@ -95,7 +95,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addWebAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addWebAfter +
 					         " ']]//div/span[text() = '" + _pageName + " ']")),
 				"The page is not present in the list");
 		}
@@ -115,28 +115,28 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName1 + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addWebAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addWebAfter +
 					         " ']]//div/span[text() = '" + _pageName1 + " ']")),
 				"The page " + _pageName1 + " is not present in the list");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName2 + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addWebAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addWebAfter +
 					         " ']]//div/span[text() = '" + _pageName2 + " ']")),
 				"The page " + _pageName2 + " is not present in the list");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName3 + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _pageName2 + " ']]//div/span[text() = '" +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _pageName2 + " ']]//div/span[text() = '" +
 					         _pageName3 + " ']")),
 				"The page " + _pageName3 + " is not present in the list");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName4 + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _pageName2 + " ']]//div/span[text() = '" +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _pageName2 + " ']]//div/span[text() = '" +
 					         _pageName4 + " ']")),
 				"The page " + _pageName4 + " is not present in the list");
 		}
@@ -173,14 +173,14 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is NOT present in the old location");
 			Assert.IsFalse(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addWebAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addWebAfter +
 					         " ']]//div/span[text() = '" + _pageName + " ']")),
 				"The page " + _pageName + " is present in the list after Page '" + _addWebAfter + "'");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is present in the new location");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _moveAfterWebPage +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _moveAfterWebPage +
 					         " ']]//div/span[text() = '" + _pageName + " ']")),
 				"The page " + _pageName + " is not present in the list");
 		}
@@ -199,7 +199,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is  NOT present in the list");
 			Assert.IsFalse(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addWebAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addWebAfter +
 					         " ']]//div/span[text() = '" + _pageName + " ']")),
 				"The page " + _pageName + " is present in the list");
 		}
@@ -217,12 +217,12 @@ namespace DNNSelenium.Common.Tests.P1
 
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 			adminPageManagementPage.RadioButtonSelect(By.XPath(AdminPageManagementPage.HostPagesRadioButton));
-			adminPageManagementPage.WaitForElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = 'Host ']"));
+			adminPageManagementPage.WaitForElement(By.XPath(AdminPageManagementPage.PageList + "//span[text() = 'Host ']"));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addHostAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addHostAfter +
 					         " ']]//div/span[text() = '" + _pageName + " ']")),
 				"The page is not present in the list");
 		}
@@ -244,28 +244,28 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName1 + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addHostAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addHostAfter +
 					         " ']]//div/span[text() = '" + _pageName1 + " ']")),
 				"The page " + _pageName1 + " is not present in the list");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName2 + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addHostAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addHostAfter +
 					         " ']]//div/span[text() = '" + _pageName2 + " ']")),
 				"The page " + _pageName2 + " is not present in the list");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName3 + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _pageName2 + " ']]//div/span[text() = '" +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _pageName2 + " ']]//div/span[text() = '" +
 					         _pageName3 + " ']")),
 				"The page " + _pageName3 + " is not present in the list");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName4 + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _pageName2 + " ']]//div/span[text() = '" +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _pageName2 + " ']]//div/span[text() = '" +
 					         _pageName4 + " ']")),
 				"The page " + _pageName4 + " is not present in the list");
 		}
@@ -303,14 +303,14 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is NOT present in the old location");
 			Assert.IsFalse(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addHostAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addHostAfter +
 					         " ']]//div/span[text() = '" + _pageName + " ']")),
 				"The page " + _pageName + " is present in the list after Page '" + _addHostAfter + "'");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is present in the new location");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _moveAfterHostPage +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _moveAfterHostPage +
 					         " ']]//div/span[text() = '" + _pageName + " ']")),
 				"The page " + _pageName + " is not present in the list");
 		}
@@ -329,7 +329,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is  NOT present in the list");
 			Assert.IsFalse(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _addHostAfter +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _addHostAfter +
 					         " ']]//div/span[text() = '" + _pageName + " ']")),
 				"The page " + _pageName + " is present in the list");
 		}
@@ -360,7 +360,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _copiedPageName + "is present in the list");
 			Assert.IsTrue(
 				adminPageManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//li[div/span[text() = '" + _parentPageName +
+					By.XPath(AdminPageManagementPage.PageList + "//li[div/span[text() = '" + _parentPageName +
 					         " ']]//div/span[text() = '" + _copiedPageName + " ']")),
 				"The page is not present in the list");
 		}

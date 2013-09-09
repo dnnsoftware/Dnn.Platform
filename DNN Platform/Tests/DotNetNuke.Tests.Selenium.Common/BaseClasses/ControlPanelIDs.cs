@@ -6,8 +6,12 @@ using OpenQA.Selenium;
 
 namespace DNNSelenium.Common.BaseClasses
 {
-	public class ControlPanelIDs 
+	public class ControlPanelIDs
 	{
+		public static string CompanyLogo = "//a[img[@id = 'dnn_dnnLOGO_imgLogo']]";
+		public static string AwesomeCycles = "Awesome-Cycles-Logo.png";
+		public static string AnovaMobility = "logo_Anova.png";
+
 		public static string PageTitleID = "//span[contains(@id, 'dnnTITLE_titleLabel')]";
 		public static string PageHeaderID = "//span[@id= 'dnn_dnnBreadcrumb_lblBreadCrumb']/a[last()]";
 
@@ -18,7 +22,10 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public static string SocialRegisterLink = "//a[@id='dnn_userLogin_registerLink']";
 		public static string SocialLoginLink = "//a[@id='dnn_userLogin_loginLink']";
-		public static string SocialLogoutLink = "";
+		public static string SocialUserLink = "//a[@id = 'dnn_dnnUser_userNameLink']";
+
+		public static string SocialUserMenu = "//ul[@class = 'userMenu']";
+		public static string SocialLogoutLink = "//a[@id = 'dnn_userLogin_logoffLink']";
 
 		public static string MessageLink = "dnn_dnnUser_messageLink";
 		public static string NotificationLink = "dnn_dnnUser_notificationLink";
