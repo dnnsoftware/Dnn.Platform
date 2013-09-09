@@ -62,7 +62,10 @@
 
 #dnnModuleDigitalAssetsLeftPaneActions li {
     cursor: pointer;
-    line-height: 40px;
+    line-height: 40px; 
+    background-position: 3px center;
+    background-repeat: no-repeat;
+    padding-left: 22px;
 }
 
 #dnnModuleDigitalAssetsLeftPaneActions li.selected {
@@ -199,7 +202,6 @@
     padding: 1px;
     font-size: 12px;
     text-align: center;
-    min-height: 452px;
 }
 
 #dnnModuleDigitalAssetsListViewNoItems {

@@ -238,6 +238,26 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     function treeViewOnLoad(sender, eventArgs) {
         treeView = sender;
         initDroppableNode(treeView.get_nodes().getNode(0));
+        
+        var $ul = $("#dnnModuleDigitalAssetsLeftPaneActions", '#' + controls.scopeWrapperId);        
+        
+        var actions = controller.getLeftPaneActions($ul, treeView);
+        for (var i = 0, size = actions.length; i < size; i++) {
+            var $li = $("<li></li>")
+                .attr('id', actions[i].id)
+                .text(actions[i].text);
+            var actionMethod = actions[i].method;
+            $li.click(function () {
+                var node = treeView.get_selectedNode();
+                if (node) {
+                    node.unselect();
+                }
+
+                $(this).addClass('selected');
+                actionMethod();
+            });
+            $ul.append($li);
+        }
     }
 
     function destinationTreeViewOnLoad(sender, eventArgs) {
@@ -635,6 +655,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function treeViewOnNodeClicking(sender, args) {
+        $("#dnnModuleDigitalAssetsLeftPaneActions li", '#' + controls.scopeWrapperId).removeClass('selected');
+
         var node = args.get_node();
         currentFolderId = node.get_value();
         controller.onLoadFolder();
