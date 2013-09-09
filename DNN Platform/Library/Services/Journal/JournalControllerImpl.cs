@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -576,7 +577,7 @@ namespace DotNetNuke.Services.Journal
                 xml = comment.CommentXML.OuterXml;
             }
             
-            comment.CommentId = _dataService.Journal_Comment_Save(comment.JournalId, comment.CommentId, comment.UserId, comment.Comment, xml);
+            comment.CommentId = _dataService.Journal_Comment_Save(comment.JournalId, comment.CommentId, comment.UserId, comment.Comment, xml, Null.NullDate);
             
             var newComment = GetComment(comment.CommentId);
             comment.DateCreated = newComment.DateCreated;
