@@ -286,13 +286,15 @@ namespace DotNetNuke.Providers.RadEditorProvider
 					case "GetLinkInfo":
 						if (dialogParams.Track)
 						{
+                            link = link.Replace(@"\", @"/");
+
 							//this section is for when the user clicks ok in the dialog box, we actually create a record for the linkclick urls.
 							if (! (dialogParams.LinkUrl.ToLower().Contains("linkclick.aspx")))
 							{
 								dialogParams.LinkClickUrl = GetLinkClickURL(ref dialogParams, ref link);
 							}
 
-							_urlController.UpdateUrl(dialogParams.PortalId, link, GetURLType(DotNetNuke.Common.Globals.GetURLType(link)), dialogParams.TrackUser, true, dialogParams.ModuleId, false);
+							_urlController.UpdateUrl(dialogParams.PortalId, link, GetURLType(Globals.GetURLType(link)), dialogParams.TrackUser, true, dialogParams.ModuleId, false);
 
 						}
 						else
