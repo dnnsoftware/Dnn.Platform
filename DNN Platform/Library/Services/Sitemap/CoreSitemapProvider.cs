@@ -96,7 +96,11 @@ namespace DotNetNuke.Services.Sitemap
             var pageUrl = new SitemapUrl();
             pageUrl.Url = Globals.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
 
-            if (pageUrl.Url.ToLower().IndexOf(ps.PortalAlias.HTTPAlias.ToLower()) == -1)
+            string portalAlias = !String.IsNullOrEmpty(ps.DefaultPortalAlias)
+                                ? ps.DefaultPortalAlias
+                                : ps.PortalAlias.HTTPAlias;
+
+            if (pageUrl.Url.ToLower().IndexOf(portalAlias.ToLower(), StringComparison.Ordinal) == -1)
             {
                 // code to fix a bug in dnn5.1.2 for navigateurl
                 if ((HttpContext.Current != null))
@@ -106,9 +110,10 @@ namespace DotNetNuke.Services.Sitemap
                 else
                 {
                     // try to use the portalalias
-                    pageUrl.Url = Globals.AddHTTP(ps.PortalAlias.HTTPAlias.ToLower()) + pageUrl.Url;
+                    pageUrl.Url = Globals.AddHTTP(portalAlias.ToLower()) + pageUrl.Url;
                 }
             }
+
             pageUrl.Priority = GetPriority(objTab);
             pageUrl.LastModified = objTab.LastModifiedOnDate;
             var modCtrl = new ModuleController();

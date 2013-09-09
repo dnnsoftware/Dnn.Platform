@@ -204,24 +204,11 @@ namespace DesktopModules.Admin.Portals
             cboSearchEngine.DataSource = searchEngines;
             cboSearchEngine.DataBind();
 
-            var aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
-            if (PortalController.IsChildPortal(portal, Globals.GetAbsoluteServerPath(Request)))
-            {
-                txtSiteMap.Text = Globals.AddHTTP(Globals.GetDomainName(Request)) + @"/SiteMap.aspx?portalid=" + portal.PortalID;
-            }
-            else
-            {
-                if (aliases.Count > 0)
-                {
-                    //Get the first Alias
-                    var objPortalAliasInfo = (PortalAliasInfo)aliases[0];
-                    txtSiteMap.Text = Globals.AddHTTP(objPortalAliasInfo.HTTPAlias) + @"/SiteMap.aspx";
-                }
-                else
-                {
-                    txtSiteMap.Text = Globals.AddHTTP(Globals.GetDomainName(Request)) + @"/SiteMap.aspx";
-                }
-            }
+            string portalAlias = !String.IsNullOrEmpty(PortalSettings.DefaultPortalAlias) 
+                                ? PortalSettings.DefaultPortalAlias 
+                                : PortalSettings.PortalAlias.HTTPAlias;
+            txtSiteMap.Text = Globals.AddHTTP(portalAlias) + @"/SiteMap.aspx";
+
             optBanners.SelectedIndex = portal.BannerAdvertising;
             if (UserInfo.IsSuperUser)
             {
