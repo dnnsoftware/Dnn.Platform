@@ -379,6 +379,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     numSites.Text=String.Format(Localization.GetString("UpdateUserName", LocalResourceFile), portals.Count.ToString());
                     cboSites.Visible = true;
                     cboSites.DataSource = portals;
+                    cboSites.DataTextField = "PortalName";
                     cboSites.DataBind();
 
                     renameUserPortals.Visible = true;
