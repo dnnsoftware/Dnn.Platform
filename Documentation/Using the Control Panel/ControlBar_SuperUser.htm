@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="8" MadCap:lastHeight="4082" MadCap:lastWidth="1289">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="8" MadCap:lastHeight="4245" MadCap:lastWidth="1270">
     <head>
     </head>
     <body>
-        <h1>Overview of the ControlBar Control Panel</h1>
+        <h1>Overview of the ControlBar</h1>
         <p>The ControlBar Control Panel displays a single row of links with drop down menus across the very top of your web browser above your site. All of the links displayed on the left side  have an associated drop down menu. The Admin menu is displayed to Administrators and SuperUsers.<MadCap:conditionalText MadCap:conditions="Default.SuperUser Only"> The Host menu is displayed to SuperUsers only.</MadCap:conditionalText><span MadCap:conditions="Default.Exclude DNNContent"> Users must have Edit Page permissions granted to access the Modules and Pages menus.</span>  Finally, the ControlBar can optionally be displayed to Module Editors providing them with a visual reminder that they can edit the current page.</p>
         <p>The ControlBar as it is displayed to users with different editing permissions:</p>
         <p MadCap:conditions="Default.SuperUser Only">
@@ -50,7 +50,7 @@
             <br /><small>The Tools menu of the ControlBar as displayed to SuperUsers</small>
         </p>
         <ul>
-            <li><b>Upload&#160;File</b>:&#160;Opens the upload file interface of the Digital Asset Management module that is located on the Admin &gt;&#160;File Management page. <MadCap:snippetText src="../../Resources/Snippets/Permissions_AdminOnly.flsnp" /> <![CDATA[ ]]><MadCap:xref href="Admin Console/File Management/Folder Editor/Uploading Files.html">See "Uploading Files"</MadCap:xref></li>
+            <li><b>Upload&#160;File</b>:&#160;Opens the upload file interface of the Digital Asset Management module that is located on the Admin &gt;&#160;File Management page. <MadCap:snippetText src="../../Resources/Snippets/Permissions_AdminOnly.flsnp" /> <MadCap:xref href="Admin Console/File Management/Folder Editor/Uploading Files.html">See "Uploading Files"</MadCap:xref></li>
             <li MadCap:conditions="Default.SuperUser Only"><b>Clear&#160;Cache</b>: Select to clear the cache of all old files. <MadCap:snippetText src="../../Resources/Snippets/Permission SuperUser Only.flsnp" /></li>
             <li MadCap:conditions="Default.SuperUser Only"><b>Recycle&#160;Application&#160;Pool</b>: Select to restart the server and retrieve all new files. <MadCap:snippetText src="../../Resources/Snippets/Permission SuperUser Only.flsnp" /></li>
             <li MadCap:conditions="Default.SuperUser Only"><b>Switch&#160;Sites</b>: Select a new site to view by selecting a site from the list. <MadCap:snippetText src="../../Resources/Snippets/Permission SuperUser Only.flsnp" /></li>
@@ -61,7 +61,7 @@
             <br /><small>The Help menu of the ControlBar</small>
         </p>
         <ul>
-            <li><b>Online&#160;Help</b>:&#160;Opens the Help resource for this site as set by your Host. <MadCap:snippetText src="../../Resources/Snippets/Permissions_AdminOnly.flsnp" /> <![CDATA[ ]]><MadCap:xref href="Host Console/Host Settings/Other Settings/Setting the Online Help URL.html" MadCap:conditions="Default.Exclude DNNContent,Default.SuperUser Only"> See "Setting the Online Help URL"</MadCap:xref></li>
+            <li><b>Online&#160;Help</b>:&#160;Opens the Help resource for this site as set by your Host. <MadCap:snippetText src="../../Resources/Snippets/Permissions_AdminOnly.flsnp" /> <MadCap:xref href="Host Console/Host Settings/Other Settings/Setting the Online Help URL.html" MadCap:conditions="Default.Exclude DNNContent,Default.SuperUser Only"> See "Setting the Online Help URL"</MadCap:xref></li>
             <li><b>Getting&#160;Started</b>: Select to view the Getting Started with DNN page which contains links to resources including video tutorials, links to personalizing your site and more. This option is only displayed for new DNN&#160;installations. <MadCap:snippetText src="../../Resources/Snippets/Permissions_AdminOnly.flsnp" /></li>
         </ul>
         <h2>The&#160;Modules&#160;Menu</h2>
@@ -94,12 +94,12 @@
             <li><b>Page Settings</b>: Opens the Page Settings page for the current page. The Permissions tab is only display to user with Full Control. <span MadCap:conditions="Default.DNN Content Only">Users must be granted Manage Settings or&#160;Full&#160;Control permissions to the current page. </span><MadCap:xref href="../Building Your Site/Adding and Managing Pages/Editing Page Settings.html" MadCap:conditions="Default.Exclude DNNContent">See "Editing Page Settings"</MadCap:xref></li>
             <li><b>Page&#160;Appearance</b>: Opens the Page Settings page with the Appearance section of the Advanced Settings tab expanded. <span MadCap:conditions="Default.DNN Content Only">Users must be granted Manage Settings or&#160;Full&#160;Control permissions to the current page. </span><MadCap:xref href="../Building Your Site/Adding and Managing Pages/Page Settings/Advanced Settings for Existing Pages.html" MadCap:conditions="Default.Exclude DNNContent">See "Advanced Settings for Existing Pages"</MadCap:xref></li>
             <li><b>Page Localization</b>: Opens the Page Settings - Localization tab for the current page. This option is only displayed when content localization is enabled on the site. <span MadCap:conditions="Default.DNN Content Only">Users must be belong to a translator role. </span><MadCap:xref href="Admin Console/Languages/Module Editors/01 Enabling Localized Content.html" MadCap:conditions="Default.Exclude DNNContent">See "Enabling Localized Content"</MadCap:xref></li>
-            <li><b>Page&#160;Permissions</b>:&#160;Opens the Page Settings page for this page with the Permissions tab.  <span MadCap:conditions="Default.DNN Content Only">Users must be granted Manage Settings or&#160;Full&#160;Control permissions to the current page.</span> <![CDATA[ ]]><MadCap:xref href="../Building Your Site/Adding and Managing Pages/Page Settings/Setting Page Permissions.html" MadCap:conditions="Default.Exclude DNNContent">See "Setting Page Permissions"</MadCap:xref> <![CDATA[ ]]><MadCap:xref href="../../../Dnn.Evoq.Content/Documentation/Security/Page Permissions/Setting Page Permissions.html" MadCap:conditions="Default.DNN Content Only">See "Setting Page Permissions"</MadCap:xref></li>
+            <li><b>Page&#160;Permissions</b>:&#160;Opens the Page Settings page for this page with the Permissions tab.  <span MadCap:conditions="Default.DNN Content Only">Users must be granted Manage Settings or&#160;Full&#160;Control permissions to the current page.</span> <MadCap:xref href="../Building Your Site/Adding and Managing Pages/Page Settings/Setting Page Permissions.html" MadCap:conditions="Default.Exclude DNNContent">See "Setting Page Permissions"</MadCap:xref> <MadCap:xref href="../../../Dnn.Evoq.Content/Documentation/Security/Page Permissions/Setting Page Permissions.html" MadCap:conditions="Default.DNN Content Only">See "Setting Page Permissions"</MadCap:xref></li>
             <li><b>Export&#160;Page</b>: Link to export a page. <span MadCap:conditions="Default.DNN Content Only">Users must be granted Export or&#160;Full Control permissions to the current page.</span><MadCap:xref href="../Building Your Site/Adding and Managing Pages/Exporting a Page.html" MadCap:conditions="Default.Exclude DNNContent">See "Exporting a Page"</MadCap:xref></li>
-            <li><b>Delete&#160;Page</b>: Link to delete current page. This option is disabled if the current page is a special page, that is a page that has been set as either Home, User Profile, etc. <span MadCap:conditions="Default.DNN Content Only">Users must be granted Delete or&#160;Full&#160;Control permissions to the current page.</span> <![CDATA[ ]]><MadCap:xref href="../Building Your Site/Adding and Managing Pages/Deleting a Page.html" MadCap:conditions="Default.Exclude DNNContent">See "Deleting a Page"</MadCap:xref></li>
+            <li><b>Delete&#160;Page</b>: Link to delete current page. This option is disabled if the current page is a special page, that is a page that has been set as either Home, User Profile, etc. <span MadCap:conditions="Default.DNN Content Only">Users must be granted Delete or&#160;Full&#160;Control permissions to the current page.</span> <MadCap:xref href="../Building Your Site/Adding and Managing Pages/Deleting a Page.html" MadCap:conditions="Default.Exclude DNNContent">See "Deleting a Page"</MadCap:xref></li>
         </ul>
         <h2>The Users Menu</h2>
-        <p>The Users menu is restricted to <MadCap:snippetText src="../../Resources/Snippets/Permissions_AdminOnly.flsnp" /> <![CDATA[ ]]></p>
+        <p>The Users menu is restricted to <MadCap:snippetText src="../../Resources/Snippets/Permissions_AdminOnly.flsnp" /> </p>
         <p>
             <img src="../Resources/Images/ControlPanel/ControlBar/ControlBar_UsersMenu.png" />
         </p>
