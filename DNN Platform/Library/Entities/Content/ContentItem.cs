@@ -284,6 +284,8 @@ namespace DotNetNuke.Entities.Content
 
 		protected void Clone(ContentItem cloneItem, ContentItem originalItem)
 		{
+			CloneBaseProperties(cloneItem, originalItem);
+
 			cloneItem.ContentItemId = originalItem.ContentItemId;
 			cloneItem.Content = originalItem.Content;
 			cloneItem.ContentTypeId = originalItem.ContentTypeId;
