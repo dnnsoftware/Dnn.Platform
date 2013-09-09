@@ -40,9 +40,13 @@ dnnModule.DigitalAssetsController.prototype = function () {
         },
         executeCommandOnSelectedItems = function (commandName, items) {
         },
+        executeCommandOnSelectedNode = function (commandName, node) {
+        },
         gridOnRowDataBound = function (grid, item) {
         },
-        setupContextMenu = function (contextMenu, gridItems) {
+        setupGridContextMenuExtension = function (contextMenu, gridItems) {
+        },
+        setupTreeViewContextMenuExtension = function (contextMenu, node) {
         },
         updateSelectionToolBar = function (selectionToolbar, gridItems) {
         },
@@ -63,7 +67,9 @@ dnnModule.DigitalAssetsController.prototype = function () {
         gridOnRowDataBound: gridOnRowDataBound,
         extendResources: extendResources,
         executeCommandOnSelectedItems: executeCommandOnSelectedItems,
-        setupContextMenu: setupContextMenu,
-        updateSelectionToolBar: updateSelectionToolBar
+        setupGridContextMenuExtension: setupGridContextMenuExtension,
+        setupTreeViewContextMenuExtension: setupTreeViewContextMenuExtension,
+        updateSelectionToolBar: updateSelectionToolBar,
+        executeCommandOnSelectedNode: executeCommandOnSelectedNode
     };
 }();

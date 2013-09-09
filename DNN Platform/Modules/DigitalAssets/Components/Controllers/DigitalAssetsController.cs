@@ -238,22 +238,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return PathUtils.Instance.FormatFolderPath(oldFolderPath + newFolderName);
         }
 
-        private FolderViewModel GetFolderViewModel(IFolderInfo folder)
-        {
-            return new FolderViewModel
-            {
-                FolderID = folder.FolderID,
-                FolderMappingID = folder.FolderMappingID,
-                FolderName = folder.FolderName,
-                FolderPath = folder.FolderPath,
-                PortalID = folder.PortalID,
-                LastModifiedOnDate = GetDateTimeString(folder.LastModifiedOnDate),
-                IconUrl = GetFolderIconUrl(folder.PortalID, folder.FolderMappingID),
-                Permissions = GetPermissionViewModelCollection(folder),
-                HasChildren = folder.HasChildren
-            };
-        }
-
         private FolderMappingViewModel GetFolderMappingViewModel(FolderMappingInfo folderMapping)
         {
             return new FolderMappingViewModel
@@ -885,13 +869,29 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             };
         }
         
+        protected virtual FolderViewModel GetFolderViewModel(IFolderInfo folder)
+        {
+            return new FolderViewModel
+            {
+                FolderID = folder.FolderID,
+                FolderMappingID = folder.FolderMappingID,
+                FolderName = folder.FolderName,
+                FolderPath = folder.FolderPath,
+                PortalID = folder.PortalID,
+                LastModifiedOnDate = GetDateTimeString(folder.LastModifiedOnDate),
+                IconUrl = GetFolderIconUrl(folder.PortalID, folder.FolderMappingID),
+                Permissions = GetPermissionViewModelCollection(folder),
+                HasChildren = folder.HasChildren
+            };
+        }
+
         protected virtual ItemViewModel GetItemViewModel(IFolderInfo folder)
         {
             var parentFolderId = Null.NullInteger;
             var parentFolderPath = string.Empty;
 
             var parentFolder = FolderManager.Instance.GetFolder(folder.ParentID);
-            if(parentFolder != null)
+            if (parentFolder != null)
             {
                 parentFolderId = parentFolder.FolderID;
                 parentFolderPath = parentFolder.FolderPath;

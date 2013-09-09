@@ -488,9 +488,14 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
     function treeViewOnContextMenuShowing(sender, args) {
         var node = args.get_node();
-        var permissions = node.get_attributes().getAttribute("permissions");
         $(node.get_element()).addClass('selected');
-        checkPermissions("#" + controls.treeViewMenuId + "_detached", permissions, true, true);
+        var menuSelector = "#" + controls.treeViewMenuId + "_detached";
+        $(menuSelector + " li.rmItem").css("display", "");
+
+        controller.setupTreeViewContextMenuExtension(treeViewContextMenu, node);
+
+        var permissions = node.get_attributes().getAttribute("permissions");
+        checkPermissions(menuSelector, permissions, true, true);
     }
 
     function treeViewOnContextMenuItemClicking(sender, args) {
@@ -523,6 +528,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 break;
             case "Properties":
                 showPropertiesDialog(node.get_value(), true);
+                break;
+            default:
+                controller.executeCommandOnSelectedNode(menuItem.get_value(), node);
                 break;
         }
     }
@@ -1216,6 +1224,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             node.set_expandMode(Telerik.Web.UI.TreeNodeExpandMode.ClientSide);
         }
         node.get_attributes().setAttribute("permissions", item.Permissions);
+
+        for (var i = 0; i < item.Attributes.length; i++) {
+            var attribute = item.Attributes[i];
+            node.get_attributes().setAttribute(attribute.Key, attribute.Value);
+        }
+
         return node;
     }
     
@@ -1224,7 +1238,14 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         nodeCopyTo.set_value(nodeCopyFrom.get_value());
         nodeCopyTo.set_category(nodeCopyFrom.get_category());
         nodeCopyTo.set_imageUrl(nodeCopyFrom.get_imageUrl());
-        nodeCopyTo.get_attributes().setAttribute("permissions", nodeCopyFrom.get_attributes().getAttribute("permissions"));
+
+        // Copy attributes
+        var attributesCopyFrom = nodeCopyFrom.get_attributes();
+        for (var i = 0; i < attributesCopyFrom.get_count(); i++) {
+            var attributeKey = attributesCopyFrom._keys[i];
+            nodeCopyTo.get_attributes().setAttribute(attributeKey, attributesCopyFrom.getAttribute(attributeKey));
+        }
+
         nodeCopyTo.set_expandMode(nodeCopyFrom.get_expandMode());
         nodeCopyTo.set_expanded(nodeCopyFrom.get_expanded());
     }
@@ -1836,7 +1857,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             unzip.set_visible(false);
         }
 
-        controller.setupContextMenu(contextMenu, grid.get_selectedItems());
+        controller.setupGridContextMenuExtension(contextMenu, grid.get_selectedItems());
 
         var permissions = gridItem.get_dataItem().Permissions;
         checkPermissions(menuSelector, permissions, true, true);

@@ -36,6 +36,7 @@ using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Framework;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+using DotNetNuke.Modules.DigitalAssets.Services;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -51,10 +52,15 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class View : PortalModuleBase, IActionable
     {
-        private readonly IDigitalAssetsController controller = new DigitalAssetsController();
+        private readonly IDigitalAssetsController controller;
         private readonly ExtensionPointManager epm = new ExtensionPointManager();
 
         private FolderViewModel rootFolderViewModel;
+
+        public View()
+        {
+            controller = new Factory().DigitalAssetsController;
+        }
 
         #region Protected Properties
         protected string InvalidCharacters
@@ -170,7 +176,13 @@ namespace DotNetNuke.Modules.DigitalAssets
                     Category = folder.FolderMappingID.ToString(CultureInfo.InvariantCulture),                    
                 };
 
+                // Setup attributes
                 newNode.Attributes.Add("permissions", folder.Permissions.ToJson());
+                foreach (var attribute in folder.Attributes)
+                {
+                    newNode.Attributes.Add(attribute.Key, attribute.Value.ToJson());
+                }
+
                 node.Nodes.Add(newNode);
 
                 if (hasViewPermissions && folder.FolderName.Equals(nextFolderName, StringComparison.InvariantCultureIgnoreCase))
@@ -216,7 +228,13 @@ namespace DotNetNuke.Modules.DigitalAssets
                 rootNode.Selected = false;                    
             }
 
+            // Setup attributes
             rootNode.Attributes.Add("permissions", GetPermissionsForRootFolder(rootFolder.Permissions).ToJson());
+            foreach (var attribute in rootFolder.Attributes)
+            {
+                rootNode.Attributes.Add(attribute.Key, attribute.Value.ToJson());
+            }
+
             FolderTreeView.Nodes.Add(rootNode);
             DestinationTreeView.Nodes.Add(rootNode.Clone());
 
@@ -270,6 +288,18 @@ namespace DotNetNuke.Modules.DigitalAssets
                         ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
                     },
             });
+            
+            // Dnn Menu Item Extension Point
+            foreach (var menuItem in epm.GetMenuItemExtensionPoints("DigitalAssets", "TreeViewContextMenu"))
+            {
+                MainContextMenu.Items.Add(new DnnMenuItem
+                {
+                    Text = menuItem.Text,
+                    Value = menuItem.Value,
+                    CssClass = menuItem.CssClass,
+                    ImageUrl = menuItem.Icon
+                });
+            }
         }
 
         private void InitializeSearchBox()
