@@ -26,7 +26,14 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     function setSearchProvider(sp) {
         searchProvider = sp;
         searchProvider.onSearch(function (pattern) {
-            currentFolderId = getSelectedNode().get_value();
+            var node = getSelectedNode();
+            if (!node) {
+                node = treeView.findNodeByValue(getRootFolderId());
+                node.select();
+                $("#dnnModuleDigitalAssetsLeftPaneActions li", '#' + controls.scopeWrapperId).removeClass('selected');
+                controller.onLoadFolder();
+            }
+            currentFolderId = node.get_value();
             searchPattern = pattern;
             loadFolderFirstPage(currentFolderId);
         });
