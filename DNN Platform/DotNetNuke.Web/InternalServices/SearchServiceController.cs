@@ -554,6 +554,7 @@ namespace DotNetNuke.Web.InternalServices
                         SearchTypeIds = searchTypeIds,
                         ModuleDefIds = moduleDefids,
                         BeginModifiedTimeUtc = beginModifiedTimeUtc,
+                        EndModifiedTimeUtc = beginModifiedTimeUtc > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
                         PageIndex = pageIndex,
                         PageSize = pageSize,
                         SortField = (SortFields) sortOption,
