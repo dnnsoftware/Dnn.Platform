@@ -1341,7 +1341,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     function internalResetGridComponents() {
         toggleColumn('LastModifiedOnDate', true);
         toggleColumn('ParentFolder', false);        
-        $('#' + controls.gridId + '>table>thead>tr>th:last', "#" + controls.scopeWrapperId).show().hide(); // FF workaround to hide the space of the last column
+        $('#' + controls.gridId + '>table', "#" + controls.scopeWrapperId).hide().show(); // FF workaround to hide the space of the last column
         grid.clearSort();
         
         if (searchProvider && (!searchPattern || searchPattern == '')) {
@@ -1628,9 +1628,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var celltd = gridItem.get_cell("ItemName");
 
         //Show the text
-        if (celltd.firstChild.childNodes[1]) {
-            celltd.firstChild.childNodes[1].style.display = "";
-        }
+        $("div > span > span", celltd).show();
 
         //Hide the input
         $("#" + gridItem.get_id() + "_ItemNameEdit").remove();
@@ -1639,7 +1637,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     function showRowEdition(gridItem) {
         var celltd = gridItem.get_cell("ItemName");
 
-        $("div > span", celltd).hide();
+        $("div > span > span", celltd).hide();
 
         //Show the input
         var rowId = gridItem.get_id();
@@ -1776,12 +1774,16 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         divItemName.attr("id", rowId + "_ItemNameTemplate");
         divItemName.attr("title", dataItem.ItemName);
         divItemName.addClass("dnnModuleDigitalAssetItemNameTemplate");
-        divItemName.append(iconItem);
-        divItemName.append(spanItemName);
-        divItemName.click(function (event) {
+        
+        var span = $("<span></span>");
+        span.append(iconItem);
+        span.append(spanItemName);
+        span.click(function (event) {
             clickOnItemName(event, dataItem);
         });
 
+        divItemName.append(span);
+        
         return divItemName;
     }
 
@@ -2894,7 +2896,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var control = $("#dnnModuleDigitalAssetsListViewContainer", "#" + controls.scopeWrapperId);
 
         activeView(enabled, control, button, settings.listViewActiveImageUrl, settings.listViewInactiveImageUrl);
-        listViewInitialize()
+        listViewInitialize();
     }
 
     function activeGridView(enabled) {
@@ -2959,6 +2961,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         grid.clearSelectedItems();
         toggleColumn('LastModifiedOnDate', false);
         toggleColumn('ParentFolder', true);
+        $('#' + controls.gridId + '>table', "#" + controls.scopeWrapperId).hide().show(); // FF workaround to hide the space of the last column
         
         $('#dnnModuleDigitalAssetsMainToolbar .folderRequired', "#" + controls.scopeWrapperId).hide();
     }
