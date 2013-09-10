@@ -208,8 +208,7 @@
     padding-top: 2px;
 }
 
-span.dnnModuleDigitalAssetsNoItems, 
-span.dnnModuleDigitalAssetsNoItemsSearch {
+span.dnnModuleDigitalAssetsNoItems {
     color: #BBBBBB;
     text-align: center;
     text-decoration: none !important;

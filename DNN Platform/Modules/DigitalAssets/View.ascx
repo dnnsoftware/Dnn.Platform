@@ -73,8 +73,7 @@
                         <span class="dnnModuleDigitalAssetsListViewToolbarTitle"><%=Localization.GetString("SelectAll", LocalResourceFile)%></span>
                     </div>      
                     <div id="dnnModuleDigitalAssetsListViewNoItems" style="display: none;" class="emptySpace">
-                        <span class="dnnModuleDigitalAssetsNoItems emptySpace"><%=Localization.GetString("NoItems", LocalResourceFile)%></span>
-                        <span class="dnnModuleDigitalAssetsNoItemsSearch emptySpace"><%=Localization.GetString("NoItemsSearch", LocalResourceFile)%></span>          
+                        <span class="dnnModuleDigitalAssetsNoItems emptySpace"></span>
                     </div>
                     <dnnweb:DnnListView runat="server" Id="FolderListView">
                         <ClientSettings>
@@ -124,8 +123,7 @@
                         </Columns>
                         <NoRecordsTemplate>
                             <div id="dnnModuleDigitalAssetsGridViewNoItems" class="emptySpace">
-                                <span class="dnnModuleDigitalAssetsNoItems emptySpace"><%=Localization.GetString("NoItems", LocalResourceFile)%></span>
-                                <span class="dnnModuleDigitalAssetsNoItemsSearch emptySpace"><%=Localization.GetString("NoItemsSearch", LocalResourceFile)%></span>
+                                <span class="dnnModuleDigitalAssetsNoItems emptySpace"></span>
                             </div>
                         </NoRecordsTemplate>
                         <PagerStyle AlwaysVisible="true" PageButtonCount="6" CssClass="dnnModuleDigitalAssetsPagerStyle" Mode="NextPrevAndNumeric"/>
@@ -336,7 +334,9 @@
             pagerTextFormatOnePageOneItemText: '<%= ClientAPI.GetSafeJSString(LocalizeString("PagerTextFormatOnePageOneItem.Text")) %>',
             maxFileUploadSizeErrorText: '<%= ClientAPI.GetSafeJSString(LocalizeString("MaxFileUploadSizeError.Text")) %>',
             unzipFileErrorTitle: '<%= ClientAPI.GetSafeJSString(LocalizeString("UnzipFileErrorTitle.Text")) %>',
-            uploadingExtracting: '<%= ClientAPI.GetSafeJSString(LocalizeString("UploadingExtracting.Text")) %>'
+            uploadingExtracting: '<%= ClientAPI.GetSafeJSString(LocalizeString("UploadingExtracting.Text")) %>',
+            noItemsText: '<%=Localization.GetString("NoItems", LocalResourceFile)%>',
+            noItemsSearchText: '<%=Localization.GetString("NoItemsSearch", LocalResourceFile)%>'
         },
         new dnnModule.DigitalAssetsController($.ServicesFramework(<%=ModuleId %>), {})
     );

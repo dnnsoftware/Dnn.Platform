@@ -588,7 +588,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         if (node != null) {
             currentFolderId = node.get_value();
             loadSubFolders(node, isAfterRecursiveSych, true);
-            node.select();
             if (sender && sender == 'treeview') {
                 if (!node.get_expanded()) {
                     expandNode(node);
@@ -1395,7 +1394,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                     enableLoadingPanel(true);
                 },
                 function (data) {
-                    itemsDatabind(data, searchPattern);
+                    itemsDatabind(data, resources.noItemsSearchText);
                 },
                 function (xhr, status, error) {
                      handledXhrError(xhr, resources.loadFolderContentErrorTitle);
@@ -1426,7 +1425,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             currentFolder.ItemID = currentFolder.FolderID;
             currentFolder.IsFolder = true;
             checkCurrentFolderToolBarPermissions(data.Folder.Permissions);
-            itemsDatabind(data);
+            itemsDatabind(data, resources.noItemsText);
         }).fail(function (xhr) {
             handledXhrError(xhr, resources.loadFolderContentErrorTitle);
         }).always(function () {
@@ -1435,7 +1434,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         });
     }
 
-    function itemsDatabind(data, pattern) {
+    function itemsDatabind(data, noItemsText) {
         grid.set_virtualItemCount(data.TotalCount);
         grid.set_dataSource(data.Items);
         grid.dataBind();
@@ -1492,22 +1491,13 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         });
 
         updateSelectionToolBar();
-        updateBreadcrumb(pattern);
+        updateBreadcrumb();
 
         if (data.Items.length == 0) {
             $('#dnnModuleDigitalAssetsListViewNoItems', '#' + controls.scopeWrapperId).show();
-            $('#dnnModuleDigitalAssetsListView', '#' + controls.scopeWrapperId).hide();
-
-            if (searchPattern && searchPattern != "") {
-                $('.dnnModuleDigitalAssetsNoItems', '#' + controls.scopeWrapperId).hide();
-                $('.dnnModuleDigitalAssetsNoItemsSearch', '#' + controls.scopeWrapperId).show();
-            } else {
-                $('.dnnModuleDigitalAssetsNoItems', '#' + controls.scopeWrapperId).show();
-                $('.dnnModuleDigitalAssetsNoItemsSearch', '#' + controls.scopeWrapperId).hide();
-            }
+            $('span.dnnModuleDigitalAssetsNoItems', '#' + controls.scopeWrapperId).text(noItemsText);
         } else {
             $('#dnnModuleDigitalAssetsListViewNoItems', '#' + controls.scopeWrapperId).hide();
-            $('#dnnModuleDigitalAssetsListView', '#' + controls.scopeWrapperId).show();
         }
 
         treeViewRefreshScrollbars();
@@ -1994,11 +1984,11 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return $("<li class='dnnModuleDigitalAssetsBreadcrumbLink' />").append(a);
     }
 
-    function updateBreadcrumb(pattern) {
+    function updateBreadcrumb() {
         var node = treeView.findNodeByValue(currentFolderId);
         var ul = $('#dnnModuleDigitalAssetsBreadcrumb ul');
 
-        if (pattern && pattern != "") {
+        if (searchPattern && searchPattern != "") {
             ul.html(getBreadcrumbFolderItem(node));
             ul.append($("<li />").text(resources.searchBreadcrumb));
         } else {
@@ -2576,9 +2566,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var selectedNode = treeView.findNodeByValue(currentFolderId);
         if(selectedNode) {
             selectedNode.select();
-        	if (selectedNode.get_parent() != null && !selectedNode.get_parent().get_expanded()) {
-        		selectedNode.get_parent().expand();
-        	}
+            if (selectedNode.get_parent() != null && !selectedNode.get_parent().get_expanded()) {
+                selectedNode.get_parent().expand();
+            }
         }
         treeView.commitChanges();
     }
