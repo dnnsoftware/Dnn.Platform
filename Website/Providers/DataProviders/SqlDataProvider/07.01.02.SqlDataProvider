@@ -515,10 +515,10 @@ BEGIN
 		SET CommentXML.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")'),
 			Comment = NULL
 		WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root/comment') = 1
-	END
-	
-	SELECT @CommentId			
+	END		
 END
+SELECT @CommentId
+
 GO
 
 
