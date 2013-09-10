@@ -262,6 +262,7 @@ namespace DotNetNuke.Tests.Urls
         public void AdvancedUrlProvider_SpaceEncoding(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "SpaceEncoding");
+            settings.ReplaceSpaceWith = " ";
 
             string spaceEncoding = testFields.GetValue("SpaceEncoding");
 
