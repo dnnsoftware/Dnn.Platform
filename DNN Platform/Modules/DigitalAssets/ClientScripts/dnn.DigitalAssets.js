@@ -655,10 +655,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function treeViewOnNodeClicking(sender, args) {
-        $("#dnnModuleDigitalAssetsLeftPaneActions li", '#' + controls.scopeWrapperId).removeClass('selected');
-
         var node = args.get_node();
         currentFolderId = node.get_value();
+        $("#dnnModuleDigitalAssetsLeftPaneActions li", '#' + controls.scopeWrapperId).removeClass('selected');
         controller.onLoadFolder();
         clearSearchPattern();
         loadFolderFirstPage(currentFolderId);
@@ -1706,18 +1705,39 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         if (dataItem.IsFolder) {
             currentFolderId = dataItem.ItemID;
-
-            var node = getSelectedNode();
-            if (node.get_value() != dataItem.ItemID) {
-                internalOnNodeExpanding(node, true);
-                node.set_expanded(true);
-            }
-
+            var node = getExpandedNodeByPath(dataItem.ParentFolder);
+            selectSubFolder(node, dataItem.ItemID);
+            $("#dnnModuleDigitalAssetsLeftPaneActions li", '#' + controls.scopeWrapperId).removeClass('selected');            
+            controller.onLoadFolder();
             clearSearchPattern();
             loadFolderFirstPage(dataItem.ItemID);
         } else {            
             self.window.open(setTimeStamp(getUrlAsync(dataItem.ItemID)));
         }
+    }
+
+    function getExpandedNodeByPath(path) {
+        $("#dnnModuleDigitalAssetsLeftPaneActions", "#" + controls.scopeWrapperId).hide();
+        var node = treeView.get_nodes().getItem(0);
+        node.expand();
+        var p = path.split('/');
+        for (var i = 0; i < p.length; i++) {
+            var name = p[i];
+            if (name != '') {
+                var nodes = node.get_nodes();
+                for (var j = 0; j < nodes.get_count() ; j++) {
+                    var n = nodes.getItem(j);
+                    if (n.get_text() == name) {
+                        node = n;
+                        internalOnNodeExpanding(node, true);
+                        node.set_expanded(true);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return node;
     }
 
     function getUrlAsync(fileId) {
@@ -2957,13 +2977,17 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
     
-    function prepareForFilteredContent() {
+    function prepareForFilteredContent(hideSync) {
         grid.clearSelectedItems();
         toggleColumn('LastModifiedOnDate', false);
         toggleColumn('ParentFolder', true);
         $('#' + controls.gridId + '>table', "#" + controls.scopeWrapperId).hide().show(); // FF workaround to hide the space of the last column
         
         $('#dnnModuleDigitalAssetsMainToolbar .folderRequired', "#" + controls.scopeWrapperId).hide();
+        if (hideSync === true) {
+            $('#dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_menu', "#" + controls.scopeWrapperId)
+                .find('#Sync, #SyncRecursively').addClass("permission_denied");
+        }
     }
     
     function getController() {
