@@ -2030,6 +2030,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         var index = args.get_itemIndexHierarchical();
 
+        if (contextMenu._visible) {
+            contextMenu.hide();
+        }
+
         var selectCell = $(args.get_item().get_cell("Select"));
         selectCell.find("input[type='checkbox']").attr("checked", true);
         selectCell.find(".dnnCheckbox").addClass("dnnCheckbox-checked");
@@ -2059,6 +2063,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         //If some use case mark the row as continueEditing, don't cancel
         if (gridItem && !$(gridItem.get_element()).hasClass("continueEditing")) {
             cancelRenameInGrid(gridItem.get_id());
+        }
+
+        if (contextMenu._visible) {
+            contextMenu.hide();
         }
 
         var selectCell = $(args.get_item().get_cell("Select"));
