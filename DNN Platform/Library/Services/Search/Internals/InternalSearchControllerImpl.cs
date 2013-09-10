@@ -203,7 +203,6 @@ namespace DotNetNuke.Services.Search.Internals
         {
             Requires.NotNull("SearchDocument", searchDocument);
             Requires.NotNullOrEmpty("UniqueKey", searchDocument.UniqueKey);
-            Requires.NotNullOrEmpty("Title", searchDocument.Title);
             Requires.NotNegative("SearchTypeId", searchDocument.SearchTypeId);
             Requires.PropertyNotEqualTo("searchDocument", "SearchTypeId", searchDocument.SearchTypeId, 0);
             Requires.PropertyNotEqualTo("searchDocument", "ModifiedTimeUtc", searchDocument.ModifiedTimeUtc.ToString(CultureInfo.InvariantCulture), DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
