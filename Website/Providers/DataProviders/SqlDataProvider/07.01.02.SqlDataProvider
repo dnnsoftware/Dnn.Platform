@@ -592,7 +592,7 @@ FROM         {databaseOwner}{objectQualifier}UserPortals INNER JOIN
                       {databaseOwner}{objectQualifier}vw_Portals ON 
 					  {databaseOwner}{objectQualifier}UserPortals.PortalId = {databaseOwner}{objectQualifier}vw_Portals.PortalID
 WHERE     ({databaseOwner}{objectQualifier}UserPortals.UserId = @userID)
-		AND (databaseOwner}{objectQualifier}vw_Portals.DefaultLanguage = databaseOwner}{objectQualifier}vw_Portals.CultureCode)
+		AND ({databaseOwner}{objectQualifier}vw_Portals.DefaultLanguage = {databaseOwner}{objectQualifier}vw_Portals.CultureCode)
 
 
 GO
