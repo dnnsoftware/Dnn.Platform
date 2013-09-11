@@ -1,7 +1,5 @@
 <%@ Control Language="C#" %>
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI.Editor" TagPrefix="tools" %>
-<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI.Widgets" TagPrefix="widgets" %>
-<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI.Dialogs" TagPrefix="dialogs" %>
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%@ Register Assembly="DotNetNuke.RadEditorProvider" Namespace="DotNetNuke.Providers.RadEditorProvider" TagPrefix="provider" %>
 
@@ -36,8 +34,7 @@
 		return regexp.test(s);
 	}
 
-
-	function _PageOnSite_Change(obj) {
+    function _PageOnSite_Change(obj) {
 		if (obj) {
 			var linkTextTextBox = $get("LinkText");
 			var linkUrlTextBox = $get("LinkURL");
@@ -56,15 +53,13 @@
 		}
 	}
 
-
-
 	function GetLinkClickURL(linkUrl) {
 		// Data is provided in the DialogParams format
 		var linkClickURL = linkUrl;
-		var trackClicksCheckbox = $get("TrackLink")
-		var trackUserCheckbox = $get("TrackUser")
+	    var trackClicksCheckbox = $get("TrackLink");
+	    var trackUserCheckbox = $get("TrackUser");
 
-		if (linkClickURL != "http:///" && linkClickURL != "http://") {
+		if (linkClickURL != "http:///" && linkClickURL != "https://") {
 			
 			$.ajax({
 				type: 'POST',
@@ -193,7 +188,7 @@
 	            return;
 	        }
 
-	        var href = "http://"; //"link"
+	        var href = (_sslEnabled == "true") ? "https://" : "http://"; //"link"
 
 	        if (currentLink.href) {
 	            href = GetLinkClickURL(currentHref);
@@ -610,6 +605,7 @@
 	var _homeDirectory = parent.dnn.getVar('editorHomeDirectory');
 	var _portalGuid = parent.dnn.getVar('editorPortalGuid');
 	var _enableUrlLanguage = parent.dnn.getVar('editorEnableUrlLanguage');
+	var _sslEnabled = parent.dnn.getVar('sslEnabled');
 </script>
 
 <table cellpadding="0" cellspacing="0" class="reDialog LinkManager NoMarginDialog" style="width: 392px;">
@@ -923,7 +919,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="reLabelCell" style="vertical-algin: top; text-align: right; width: 90px;">
+							<td class="reLabelCell" style="vertical-align: top; text-align: right; width: 90px;">
 								&nbsp;
 							</td>
 							<td class="reControlCell">

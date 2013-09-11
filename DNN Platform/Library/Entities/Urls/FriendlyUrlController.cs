@@ -1137,6 +1137,12 @@ namespace DotNetNuke.Entities.Urls
                                     replacedUnwantedChars = true;
                                 }
                                 ch = replaceWith; //in list of replacment chars
+                                
+                                //If we still have a space ensure its encoded
+                                if (ch == " ")
+                                {
+                                    ch = options.SpaceEncoding;
+                                }
                             }
                         }
                     }

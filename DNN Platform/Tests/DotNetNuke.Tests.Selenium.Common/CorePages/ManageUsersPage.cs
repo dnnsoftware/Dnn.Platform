@@ -117,7 +117,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Edit the User:");
 
-			Click(By.XPath("//tr[td[contains(text(), '" + userName + "')]]/td/a[contains(@href, 'Edit')]"));
+			Click(By.XPath("//tr[td[text() = '" + userName + "']]/td/a[contains(@href, 'Edit')]"));
 		}
 
 		public void AuthorizeUser(string userName)

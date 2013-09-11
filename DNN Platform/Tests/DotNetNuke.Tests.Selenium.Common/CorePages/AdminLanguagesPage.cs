@@ -26,8 +26,8 @@ namespace DNNSelenium.Common.CorePages
 		public static string EnableLocalizedContent = "//a[contains(@id, '_languageEnabler_cmdEnableLocalizedContent')]";
 		public static string DisableLocalizedContent = "//a[contains(@id, '_languageEnabler_cmdDisableLocalization')]";
 		public static string EnableLocalizedContentUpdateButton = "//a[contains(@id, '_EnableLocalizedContent_updateButton')]";
-		public static string LocalizationTable =
-			"//table[contains(@id, 'languageEnabler_languagesGrid')]//th[5]/table[contains(@class, 'DnnGridNestedTable')]";
+		public static string LanguagesTable = "//table[contains(@id, 'languageEnabler_languagesGrid')]";
+		public static string LocalizationTable = LanguagesTable + "//th[5]/table[contains(@class, 'DnnGridNestedTable')]";
 
 		public void OpenUsingUrl(string baseUrl)
 		{
@@ -95,7 +95,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			OpenTab(By.XPath(LanguagesTab));
 
-			WaitForElement(By.XPath("//table[contains(@id, '_languageEnabler_languagesGrid')]//span[text() = '" + packName + "']"));
+			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']"));
 
 			CheckBoxCheck(By.XPath("//tr[td//span[text() = '" + packName + "']]/td/input"));
 
@@ -106,7 +106,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			OpenTab(By.XPath(LanguagesTab));
 
-			WaitForElement(By.XPath("//table[contains(@id, '_languageEnabler_languagesGrid')]//span[text() = '" + packName + "']"));
+			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']"));
 
 			CheckBoxUncheck(By.XPath("//tr[td//span[text() = '" + packName + "']]/td/input"));
 

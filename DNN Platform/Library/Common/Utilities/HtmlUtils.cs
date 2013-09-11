@@ -761,7 +761,7 @@ namespace DotNetNuke.Common.Utilities
                     searchAlias = string.Format("{0}/", portalAlias);
                 }
             	string protocol = PortalSettings.Current.SSLEnabled ? "https://" : "http://";
-                Regex exp = new Regex(string.Format("(href=&quot;){0}{1}(.*?&quot;)", protocol, searchAlias));
+                Regex exp = new Regex(string.Format("(href=&quot;){0}{1}(.*?&quot;)", protocol, searchAlias), RegexOptions.IgnoreCase);
 
                 if(portalAlias.Contains("/"))
                 {

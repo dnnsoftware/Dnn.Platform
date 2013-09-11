@@ -17,7 +17,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public static string ModulesPanel = "//h2[@id='Panel-Modules']";
 		public static string ModulesAccordion = ModulesPanel + "/a";
-		public static string ModulesExtensionsList = ModulesPanel + "/following-sibling :: //tr[contains(@class, 'Item')]";
+		public static string ModulesExtensionsList = ModulesPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";
 		public static string CoreLanguagePacksPanel = "//h2[@id='Panel-Core Language Packs']";
 		public static string CoreLanguagePacksAccordion = CoreLanguagePacksPanel + "/a";
 		public static string CoreLanguagePacksList = CoreLanguagePacksPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";

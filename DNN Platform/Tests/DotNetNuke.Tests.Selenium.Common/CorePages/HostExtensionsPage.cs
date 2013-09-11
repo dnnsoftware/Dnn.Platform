@@ -31,6 +31,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string UninstallExtensionButton = "//a[contains(@id, '_EditExtension_cmdDelete')]";
 		public static string UnistallPackageButton = "//a[contains(@id, '_cmdUninstall')]";
 		public static string Return2Button = "//a[contains(@id, '_UnInstall_cmdReturn2')]";
+		public static string DeleteCheckBox = "//input[@id = 'dnn_ctr_UnInstall_chkDelete']";
 
 		public static string ExtensionTypeArrow = "//a[contains(@id, '_cboExtensionType_Arrow')]";
 		public static string ExtensionTypeDropDown = "//div[contains(@id, '_wizNewExtension_cboExtensionType_DropDown')]";
@@ -113,10 +114,10 @@ namespace DNNSelenium.Common.CorePages
 			ScrollIntoView(element, 100);
 			element.Click();
 
-			WaitForElement(By.XPath("//input[contains(@id, 'UnInstall_chkDelete')]")).ScrollIntoView();
-			WaitForElement(By.XPath("//input[@id = 'dnn_ctr_UnInstall_chkDelete']")).WaitTillEnabled(30);
-			WaitForElement(By.XPath("//input[@id = 'dnn_ctr_UnInstall_chkDelete']")).Info();
-			CheckBoxCheck(By.XPath("//input[@id = 'dnn_ctr_UnInstall_chkDelete']"));
+			WaitForElement(By.XPath(DeleteCheckBox)).ScrollIntoView();
+			WaitForElement(By.XPath(DeleteCheckBox)).WaitTillEnabled(30);
+			WaitForElement(By.XPath(DeleteCheckBox)).Info();
+			CheckBoxCheck(By.XPath(DeleteCheckBox));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Uninstall Package button :");
 			ClickOnButton(By.XPath(HostExtensionsPage.UnistallPackageButton));

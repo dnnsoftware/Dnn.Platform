@@ -198,21 +198,22 @@ namespace DotNetNuke.Web.InternalServices
         private ModuleInfo GetSearchModule()
         {
             var arrModules = GetModulesByDefinition(PortalSettings.PortalId, "Search Results");
+	        ModuleInfo findModule = null;
             if (arrModules.Count > 1)
             {
-                return arrModules.Cast<ModuleInfo>().FirstOrDefault(searchModule => searchModule.CultureCode == PortalSettings.CultureCode);
+                findModule = arrModules.Cast<ModuleInfo>().FirstOrDefault(searchModule => searchModule.CultureCode == PortalSettings.CultureCode);
             }
 
-            if (arrModules.Count == 1)
-            {
-                return ((ModuleInfo)arrModules[0]);
-            }
-
-            return null;
+	        return findModule ?? (ModuleInfo) arrModules[0];
         }
 
         private Hashtable GetSearchModuleSettings()
         {
+			if (ActiveModule != null && ActiveModule.ModuleDefinition.FriendlyName == "Search Results")
+			{
+				return ActiveModule.ModuleSettings;
+			}
+
             var searchModule = GetSearchModule();
             return searchModule != null ? searchModule.ModuleSettings : null;
         }
@@ -554,6 +555,7 @@ namespace DotNetNuke.Web.InternalServices
                         SearchTypeIds = searchTypeIds,
                         ModuleDefIds = moduleDefids,
                         BeginModifiedTimeUtc = beginModifiedTimeUtc,
+                        EndModifiedTimeUtc = beginModifiedTimeUtc > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
                         PageIndex = pageIndex,
                         PageSize = pageSize,
                         SortField = (SortFields) sortOption,

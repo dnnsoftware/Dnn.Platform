@@ -56,7 +56,7 @@ namespace DNNSelenium.Common.Tests.BVT
 			driver.Quit();
 		}
 
-		//[TearDown]
+		[TearDown]
 		public void RunAfterBVTTests()
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "BVT Teardown");

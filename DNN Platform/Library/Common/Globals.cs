@@ -2769,31 +2769,19 @@ namespace DotNetNuke.Common
             {
                 return TabType.Normal;
             }
-            else
+            if (URL.ToLower().StartsWith("mailto:") == false && URL.IndexOf("://") == -1 && URL.StartsWith("~") == false && URL.StartsWith("\\\\") == false && URL.StartsWith("/") == false)
             {
-                if (URL.ToLower().StartsWith("mailto:") == false && URL.IndexOf("://") == -1 && URL.StartsWith("~") == false && URL.StartsWith("\\\\") == false && URL.StartsWith("/") == false)
+                if (Regex.IsMatch(URL, @"^\d+$"))
                 {
-                    if (Regex.IsMatch(URL, @"^\d+$"))
-                    {
-                        return TabType.Tab;
-                    }
-                    else
-                    {
-                        if (URL.ToLower().StartsWith("userid="))
-                        {
-                            return TabType.Member;
-                        }
-                        else
-                        {
-                            return TabType.File;
-                        }
-                    }
+                    return TabType.Tab;
                 }
-                else
+                if (URL.ToLower().StartsWith("userid="))
                 {
-                    return TabType.Url;
+                    return TabType.Member;
                 }
+                return TabType.File;
             }
+            return TabType.Url;
         }
 
         /// <summary>

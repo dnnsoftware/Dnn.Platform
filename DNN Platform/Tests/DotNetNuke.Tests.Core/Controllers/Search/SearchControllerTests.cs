@@ -1562,6 +1562,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.DoesNotThrow(() => _internalSearchController.AddSearchDocument(doc));
         }
 
+        [Test]
+        public void SearchController_Add_Does_Not_Throw_On_Empty_Title()
+        {
+            var doc = new SearchDocument
+            {
+                UniqueKey = Guid.NewGuid().ToString(),
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow
+            };
+
+            Assert.DoesNotThrow(() => _internalSearchController.AddSearchDocument(doc));
+        }
+
         #endregion
 
         #region IsActive Tests

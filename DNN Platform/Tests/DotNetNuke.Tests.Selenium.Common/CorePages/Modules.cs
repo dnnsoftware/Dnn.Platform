@@ -113,6 +113,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string ContentPaneID = "//div[@id = 'content']/div[1]";
 		public static string ContentPaneLowerID = "//div[contains(@id, 'dnn_contentPaneLower')]";
 		public static string LeftPaneID = "//div[contains(@id,'dnn_leftPane')]";
+		public static string RightPaneID = "//div[contains(@id,'dnn_rightPane')]";
 		public static string SideBarPaneID = "//div[contains(@id,'dnn_sidebarPane')]";
 		public static string FooterLeftOuterPaneID = "//div[contains(@id,'dnn_footerLeftOuterPane')]";
 		public static string FooterLeftPaneID = "//div[contains(@id, 'dnn_footerLeftPane')]";
@@ -164,8 +165,11 @@ namespace DNNSelenium.Common.CorePages
 		public static string ToFooterRightOuterPane = "//li[text() = 'To footerRightOuterPane']";
 
 		public static string ModuleSettingsTab = "//a[@href = '#msModuleSettings']";
+		public static string PageSettingsTab = "//a[@href = '#msPageSettings']";
 
 		public static string ModuleTitleTextBox = "//input[contains(@id, 'ModuleSettings_txtTitle')]";
+		public static string ModuleContainerArrow = "//a[contains(@id, '_moduleContainerCombo_Arrow')]";
+		public static string ModuleContainerDropDown = "//div[contains(@id, '_moduleContainerCombo_DropDown')]";
 
 		public static string UpdateButton = "//a[contains(@id, 'ModuleSettings_cmdUpdate')]";
 
@@ -322,17 +326,33 @@ namespace DNNSelenium.Common.CorePages
 			Thread.Sleep(1000);
 		}
 
-		public void EditModuleSettings(string moduleNumber, string moduleTitle)
+		public void ChangeModuleTitle(string moduleNumber, string moduleTitle)
 		{
-			Trace.WriteLine(BasePage.TraceLevelComposite + "Edit Module Settings:");
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Edit Module Settings: Change Module Title");
 
 			SelectFromSettingsMenu(moduleNumber, SettingsOption);
 
 			OpenTab(By.XPath(ModuleSettingsTab));
-			WaitForElement(By.XPath(ModuleTitleTextBox));
+			//WaitForElement(By.XPath(ModuleTitleTextBox));
 
-			Clear(By.XPath(ModuleTitleTextBox));
+			WaitAndClear(By.XPath(ModuleTitleTextBox));
 			Type(By.XPath(ModuleTitleTextBox), moduleTitle);
+
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(1000);
+		}
+
+		public void SetModuleContainer(string moduleNumber, string moduleContainer)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Edit Module Settings: Set Module Container");
+
+			SelectFromSettingsMenu(moduleNumber, SettingsOption);
+
+			OpenTab(By.XPath(PageSettingsTab));
+			WaitForElement(By.XPath(ModuleContainerArrow));
+
+			SlidingSelectByValue(By.XPath(ModuleContainerArrow), By.XPath(ModuleContainerDropDown), moduleContainer);
 
 			ClickOnButton(By.XPath(UpdateButton));
 

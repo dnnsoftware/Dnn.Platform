@@ -33,7 +33,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 		public void VerifyQuickSearch(BasePage currentPage)
 		{
-			currentPage.WaitAndType(By.XPath(ControlPanelIDs.SearchBox), "awesome");
+			currentPage.WaitAndType(By.XPath(ControlPanelIDs.SearchBox), "home");
 			currentPage.WaitForElement(By.XPath("//ul[@class = 'searchSkinObjectPreview']"), 60);
 
 			Assert.IsTrue(currentPage.ElementPresent(By.XPath("//li/a[@class = 'searchSkinObjectPreview_more']")),
@@ -46,16 +46,16 @@ namespace DNNSelenium.Common.Tests.BVT
 
 		public void VerifySearchResults(BasePage currentPage)
 		{
-			currentPage.WaitAndType(By.XPath(ControlPanelIDs.SearchBox), "awesome");
+			currentPage.WaitAndType(By.XPath(ControlPanelIDs.SearchBox), "home");
 			currentPage.Click(By.XPath(ControlPanelIDs.SearchButton));
 
 			var searchPage = new SearchPage(_driver);
 			searchPage.WaitForElement(By.XPath("//div[@class = 'dnnSearchResultContainer']"), 60);
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT Page Title for '" + searchPage.PageTitleLabel + "' page:");
-			StringAssert.Contains(searchPage.PageTitleLabel,
-			                      searchPage.WaitForElement(By.XPath(ControlPanelIDs.PageTitleID)).Text,
-			                      "The wrong page is opened or The title of " + searchPage.PageTitleLabel + " page is changed");
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT Page Title for '" + searchPage.PageHeaderLabel + "' page:");
+			StringAssert.Contains(searchPage.PageHeaderLabel.ToUpper(),
+								  searchPage.WaitForElement(By.XPath(ControlPanelIDs.PageHeaderID)).Text.ToUpper(),
+			                      "The wrong page is opened or The title of " + searchPage.PageHeaderLabel + " page is changed");
 
 			Assert.That(searchPage.FindElements(By.XPath(SearchPage.ResultsList)).Count, Is.AtLeast(1),
 			            "At least one item is displayed");

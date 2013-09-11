@@ -72,7 +72,7 @@ namespace DNNSelenium.Platform.BVT
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
 			string moduleNumber =
 				module.WaitForElement(By.XPath(Modules.LeftPaneID + Modules.HtmlModuleOnPage + "/a")).GetAttribute("name");
-			module.EditModuleSettings(moduleNumber, _moduleTitle);
+			module.ChangeModuleTitle(moduleNumber, _moduleTitle);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT a new Module Title is present on the page");
 			StringAssert.Contains(_moduleTitle.ToUpper(),

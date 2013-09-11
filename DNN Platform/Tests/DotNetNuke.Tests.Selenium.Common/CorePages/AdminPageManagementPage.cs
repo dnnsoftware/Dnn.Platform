@@ -23,6 +23,8 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Page Management"; }
 		}
 
+		public static string PageList = "//div[contains(@id, 'Tabs_ctlPages')]";
+
 		public static string WebsitePagesRadioButton = "//input[contains(@id, 'Tabs_rblMode_0')]";
 		public static string HostPagesRadioButton = "//input[contains(@id, 'Tabs_rblMode_1')]";
 		public static string ExpandAllLink = "//a[contains(@id, 'Tabs_cmdExpandTree')]";
