@@ -323,7 +323,15 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
             var ps = new PortalSettings(messageDetails.PortalID);
             var fromAddress = ps.Email;
-            var toAddress = _userController.GetUser(messageDetails.PortalID, messageRecipient.UserID).Email;
+            var toUser=_userController.GetUser(messageDetails.PortalID, messageRecipient.UserID);
+          
+            if (toUser==null || toUser.IsDeleted)
+            {
+                InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
+                return;
+            }
+            var toAddress = toUser.Email;
+
             var sender = author.DisplayName;
 
             if (string.IsNullOrEmpty(sender))
