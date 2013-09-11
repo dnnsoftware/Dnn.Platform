@@ -74,6 +74,7 @@
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\..\Components\WebAPI\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.DynamicData" />
@@ -96,10 +97,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\CoreMessagingBusinessController.cs" />
+    <Compile Include="Components\Subscriptions\Common\Constants.cs" />
+    <Compile Include="Components\Subscriptions\Controllers\ISubscriptionController.cs" />
+    <Compile Include="Components\Subscriptions\Controllers\SubscriptionController.cs" />
+    <Compile Include="Components\Subscriptions\Controllers\SubscriptionControllerImpl.cs" />
+    <Compile Include="Components\Subscriptions\Data\IDataProvider.cs" />
+    <Compile Include="Components\Subscriptions\Data\SqlDataProvider.cs" />
+    <Compile Include="Components\Subscriptions\Entities\Subscriber.cs" />
     <Compile Include="Services\FilesStatus.cs" />
     <Compile Include="Services\FileUploadController.cs" />
     <Compile Include="Services\MessagingServiceController.cs" />
     <Compile Include="Services\CoreMessagingRouteMapper.cs" />
+    <Compile Include="Services\SocialController.cs" />
+    <Compile Include="Services\SubscriptionsController.cs" />
+    <Compile Include="Subscriptions.ascx.cs">
+      <DependentUpon>Subscriptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Subscriptions.ascx.designer.cs">
+      <DependentUpon>Subscriptions.ascx</DependentUpon>
+    </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -117,19 +134,36 @@
     <None Include="CoreMessaging.dnn">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.02.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ie-messages.css" />
     <Content Include="Images\ajax-loader.gif" />
     <Content Include="Images\downArrow-hover.png" />
     <Content Include="Images\downArrow.png" />
+    <Content Include="Images\grid-sprite.png" />
     <Content Include="Images\icons.png" />
     <Content Include="Images\ie-backgrounds.png" />
     <Content Include="Images\list-Icon.png" />
     <Content Include="Images\page-Icon.png" />
     <Content Include="Images\paperClip.png" />
     <Content Include="Images\progress.gif" />
+    <Content Include="Images\reply.png" />
+    <Content Include="Images\right.png" />
     <Content Include="Scripts\CoreMessaging.js" />
+    <Content Include="Scripts\dnn.social.ComponentFactory.js" />
+    <Content Include="Scripts\dnn.social.ExceptionHandlerDialog.js" />
+    <Content Include="Scripts\dnn.social.LocalizationController.js" />
+    <Content Include="Scripts\dnn.social.Module.js" />
+    <Content Include="Scripts\dnn.social.PagingControl.js" />
+    <Content Include="Scripts\dnn.social.ServiceCaller.js" />
+    <Content Include="Scripts\dnn.social.Utilities.js" />
+    <Content Include="Scripts\dnn.subscriptions.SearchController.js" />
+    <Content Include="Scripts\dnn.subscriptions.SearchResult.js" />
+    <Content Include="Scripts\dnn.subscriptions.Subscriber.js" />
+    <Content Include="Scripts\dnn.subscriptions.Subscription.js" />
+    <Content Include="Subscriptions.ascx" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -142,7 +176,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="App_LocalResources\SharedResources.resx" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
       <Project>{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}</Project>
@@ -174,6 +210,9 @@
       <Name>DotNetNuke.Library</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Subscriptions.ascx.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

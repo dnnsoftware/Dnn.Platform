@@ -42,17 +42,17 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 			{
 				//SocialModule.RequestCommonCSS(Page);
 
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.social.ExceptionHandlerDialog.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.social.Module.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.social.ComponentFactory.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.social.ServiceCaller.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.social.PagingControl.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.social.LocalizationController.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.social.Utilities.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ExceptionHandlerDialog.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.Module.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ComponentFactory.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ServiceCaller.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.PagingControl.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.LocalizationController.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.Utilities.js");
 
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.subscriptions.Subscription.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.subscriptions.SearchController.js");
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/SubscriptionsMgmt/Scripts/dnn.subscriptions.SearchResult.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.subscriptions.Subscription.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.subscriptions.SearchController.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.subscriptions.SearchResult.js");
 
                 RequestClientScripts(Page, ModuleContext, "initSubscriptions", GetViewSettings(), Null.NullInteger);
 			}

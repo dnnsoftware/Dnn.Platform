@@ -70,6 +70,20 @@
             </file>
           </files>
         </component>
+		<component type="Script">
+		  <scripts>
+		    <basePath>DesktopModules\CoreMessaging</basePath>
+		    <script type="Install">
+			  <path>Providers\DataProviders\SqlDataProvider</path>
+			  <name>07.02.00.SqlDataProvider</name>
+			  <version>07.02.00</version>
+		    </script>
+		    <script type="UnInstall">
+			  <path>Providers\DataProviders\SqlDataProvider</path>
+			  <name>Uninstall.SqlDataProvider</name>
+		    </script>
+		  </scripts>
+		</component>
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/CoreMessaging</basePath>

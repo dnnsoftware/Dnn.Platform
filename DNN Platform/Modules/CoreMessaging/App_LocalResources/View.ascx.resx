@@ -366,4 +366,7 @@
   <data name="Upload.Text" xml:space="preserve">
     <value>Upload From Computer</value>
   </data>
+  <data name="Subscriptions.Text" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-﻿function CoreMessaging($, ko, settings, composeMessageOptions) {
+﻿function CoreMessaging($, ko, settings, composeMessageOptions, subscriptionOptions) {
     var profilePicHandler = settings.profilePicHandler;
     var serviceFramework = composeMessageOptions.servicesFramework;
     var baseServicepath = serviceFramework.getServiceRoot('CoreMessaging') + 'MessagingService/';
@@ -865,6 +865,8 @@
                 }
             });
         };
+	    
+		self.subscription = new dnn.subscriptions.Subscription($, ko, subscriptionOptions);
     }
 
     this.init = function (element) {

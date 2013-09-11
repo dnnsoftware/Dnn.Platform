@@ -427,19 +427,19 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
 
         protected string GetSubscriptionsUrl(PortalSettings sendingPortal, int userId)
         {
-            return "http://" + sendingPortal.DefaultPortalAlias + "/tabid/" + GetSubscriptionMgmtTab(sendingPortal) + "/userId/" + userId + "/" + Globals.glbDefaultPage;
+			return "http://" + sendingPortal.DefaultPortalAlias + "/tabid/" + GetMessageTab(sendingPortal) + "/userId/" + userId + "/" + Globals.glbDefaultPage;
         }
 
-        private static int GetSubscriptionMgmtTab(PortalSettings sendingPortal)
+        private static int GetMessageTab(PortalSettings sendingPortal)
         {
-            var cacheKey = string.Format("SubscriptionMgmtTab:{0}", sendingPortal.PortalId);
+            var cacheKey = string.Format("MessageTab:{0}", sendingPortal.PortalId);
 	        var cacheItemArgs = new CacheItemArgs(cacheKey, DefaultCacheTimeout, CacheItemPriority.Default, sendingPortal);
 
-	        return CBO.GetCachedObject<int>(cacheItemArgs, GetSubscriptionMgmtTabCallback);
+			return CBO.GetCachedObject<int>(cacheItemArgs, GetMessageTabCallback);
             
         }
 
-		private static object GetSubscriptionMgmtTabCallback(CacheItemArgs cacheItemArgs)
+		private static object GetMessageTabCallback(CacheItemArgs cacheItemArgs)
 		{
 			var sendingPortal = cacheItemArgs.Params[0] as PortalSettings;
             var tabController = new TabController();
@@ -454,7 +454,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
                     foreach (var kvp in moduleController.GetTabModules(tab.TabID))
                     {
                         var module = kvp.Value;
-                        if (module.DesktopModule.FriendlyName == "Subscription Management")
+						if (module.DesktopModule.FriendlyName == "Message Center")
                         {
                             return tab.TabID;
                         }

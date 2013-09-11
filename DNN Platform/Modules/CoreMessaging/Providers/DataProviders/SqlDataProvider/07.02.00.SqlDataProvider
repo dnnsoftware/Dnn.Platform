@@ -1,4 +1,5 @@
-﻿
+﻿DELETE {databaseOwner}[{objectQualifier}Subscriptions_Subscriber] WHERE ContentItemId < 1
+
 IF EXISTS (SELECT * FROM {databaseOwner}SYSOBJECTS WHERE id = object_id(N'{databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserSubs]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserSubs]
 GO
