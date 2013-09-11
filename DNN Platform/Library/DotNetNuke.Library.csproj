@@ -485,6 +485,7 @@
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
     <Compile Include="Services\Search\Controllers\ModuleResultController.cs" />
+    <Compile Include="Services\Search\Controllers\UserResultController.cs" />
     <Compile Include="Services\Search\Entities\SortDirections.cs" />
     <Compile Include="Services\Search\Entities\SearchResults.cs" />
     <Compile Include="Services\Search\Entities\SortFields.cs" />
@@ -518,6 +519,7 @@
     <Compile Include="Services\Search\Controllers\SearchController.cs" />
     <Compile Include="Services\Search\Controllers\SearchControllerImpl.cs" />
     <Compile Include="Services\Search\Entities\SearchQuery.cs" />
+    <Compile Include="Services\Search\UserIndexer.cs" />
     <Compile Include="Services\Subscriptions\Common\ObjectKey.cs" />
     <Compile Include="Services\Subscriptions\Common\SubscriptionsException.cs" />
     <Compile Include="Services\Subscriptions\Controllers\ISubscriptionController.cs" />

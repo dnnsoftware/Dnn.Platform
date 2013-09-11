@@ -937,6 +937,14 @@ CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner
 
 
 
+/** DNN 3133 Search User Profile Crawler **/
+INSERT INTO {databaseOwner}{objectQualifier}SearchTypes
+           ([SearchTypeName]
+           ,[SearchResultClass]
+           ,[IsPrivate])
+     VALUES
+           ('user', 'DotNetNuke.Services.Search.Controllers.UserResultController', 0)
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
