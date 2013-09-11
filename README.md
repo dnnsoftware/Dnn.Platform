@@ -1,4 +1,4 @@
-![DNN Platform At A Glance](https://raw.github.com/dnnsoftware/Dnn.Platform/master/dnnplatform.png)
+![DNN Platform At A Glance](dnnplatform.png)
 
 Project Description
 ==================
