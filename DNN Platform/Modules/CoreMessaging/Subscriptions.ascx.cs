@@ -16,7 +16,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
-using DotNetNuke.Modules.SubscriptionsMgmt.Components.Common;
+using DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Common;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Subscriptions.Controllers;
 using DotNetNuke.Services.Subscriptions.Entities;
@@ -24,12 +24,62 @@ using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using SubscriptionController = DotNetNuke.Modules.SubscriptionsMgmt.Components.Controllers.SubscriptionController;
+using SubscriptionController = DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Controllers.SubscriptionController;
 
 namespace DotNetNuke.Modules.SubscriptionsMgmt
 {
-	public partial class Subscriptions : PortalModuleBase
+	public partial class Subscriptions : UserControl
 	{
+		#region Public Properties
+		public ModuleInstanceContext ModuleContext { get; set; }
+
+		public ModuleInfo ModuleConfiguration
+		{
+			get
+			{
+				return ModuleContext.Configuration;
+			}
+			set
+			{
+				ModuleContext.Configuration = value;
+			}
+		}
+
+		public string LocalResourceFile { get; set; }
+
+		#endregion
+
+		#region Protected Methods
+
+		protected string LocalizeString(string key)
+		{
+			return Localization.GetString(key, LocalResourceFile);
+		}
+
+		#endregion
+
+		#region Public Methods
+
+		public string GetSettingsAsJson()
+		{
+			var settings = GetModuleSettings(ModuleContext.PortalSettings, ModuleConfiguration, Null.NullInteger);
+			var addtionalSettings = GetViewSettings();
+			foreach (DictionaryEntry entry in GetViewSettings())
+			{
+				if (settings.ContainsKey(entry.Key))
+				{
+					settings[entry.Key] = entry.Value;
+				}
+				else
+				{
+					settings.Add(entry.Key, entry.Value);
+				}
+			}
+			return settings.ToJson();
+		}
+
+		#endregion
+
 		#region Event Handlers
 
 		protected override void OnLoad(EventArgs e)
@@ -70,7 +120,7 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 		/// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
 		/// values that are automatically retrieved by Social Library such as portalId and moduleId.
 		/// </summary>
-		private object GetViewSettings()
+		private Hashtable GetViewSettings()
 		{
             var colInboxSubs = SubscriptionController.Instance.GetUserInboxSubscriptions(ModuleContext.PortalSettings.UserId, ModuleConfiguration.OwnerPortalID);
             var notifyFreq = 2;
@@ -96,16 +146,16 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
                 }
             }
 
-			return new
+			return new Hashtable
 			{
-				moduleScope = string.Format("#{0}", ScopeWrapper.ClientID),
-				pageSize = 25,
-                notifySubscriberId = notifySubId,
-                msgSubscriberId = msgSubId,
-                notifyFrequency = notifyFreq,
-                msgFrequency = msgFreq,
-                notifySubTypeId = GetSubscriptionType("Notifications").SubscriptionTypeId,
-                msgSubTypeId = GetSubscriptionType("Messages").SubscriptionTypeId
+				{"moduleScope", string.Format("#{0}", ScopeWrapper.ClientID)},
+				{"pageSize", 25},
+                {"notifySubscriberId", notifySubId},
+                {"msgSubscriberId", msgSubId},
+                {"notifyFrequency", notifyFreq},
+                {"msgFrequency", msgFreq},
+                {"notifySubTypeId", GetSubscriptionType("Notifications").SubscriptionTypeId},
+                {"msgSubTypeId", GetSubscriptionType("Messages").SubscriptionTypeId}
 			};
 		}
 
@@ -129,6 +179,8 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 
 		private void RequestClientScripts(Page page, ModuleInstanceContext modContext, string clientInitializer, object additionalSettings, int uniqueId)
 		{
+			return;
+
 			RequestClientScripts(page);
 
 			if (additionalSettings == null)
@@ -152,7 +204,7 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 				}
 			}
 
-			var jsonSettings = GetSettingsJson(modContext.PortalSettings, modContext.Configuration, uniqueId).ToJson();
+			var jsonSettings = GetModuleSettings(modContext.PortalSettings, modContext.Configuration, uniqueId).ToJson();
 			var jsonAdditionalSettings = additionalSettings.ToJson();
 
 			var script = new StringBuilder("<script type='text/javascript'>")
@@ -171,7 +223,7 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 			ClientAPI.RegisterStartUpScript(page, scriptKey, script.ToString());
 		}
 
-		public static object GetSettingsJson(PortalSettings portalSettings, ModuleInfo moduleInfo, int uniqueId)
+		private static Hashtable GetModuleSettings(PortalSettings portalSettings, ModuleInfo moduleInfo, int uniqueId)
 		{
 			var usePopup =
 				portalSettings.EnablePopUps &&
@@ -209,25 +261,25 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
             }
 #endif
 
-			return new
+			return new Hashtable
 			{
-				anonymous = PortalSettings.Current.UserId < 0,
-				currentUserId = PortalSettings.Current.UserId,
-				debug,
-				culture = CultureInfo.CurrentUICulture.Name,
-				showMissingKeys = Localization.ShowMissingKeys,
-				portalId = portalSettings.PortalId,
-				moduleId,
-				moduleSettings,
-				moduleTitle,
-				moduleRoot,
-				navigationKey,
-				sessionTimeout = Convert.ToInt32(GetSessionTimeout().TotalMinutes),
-				sharedResources = GetSharedResources(),
-				authorizationUrl = GetLoginUrl(portalSettings),
-				usePopup,
-				returnUrl = HttpContext.Current.Request.UrlReferrer,
-				uniqueId
+				{"anonymous", PortalSettings.Current.UserId < 0},
+				{"currentUserId", PortalSettings.Current.UserId},
+				{"debug", debug},
+				{"culture", CultureInfo.CurrentUICulture.Name},
+				{"showMissingKeys", Localization.ShowMissingKeys},
+				{"portalId", portalSettings.PortalId},
+				{"moduleId", moduleId},
+				{"moduleSettings", moduleSettings},
+				{"moduleTitle", moduleTitle},
+				{"moduleRoot", moduleRoot},
+				{"navigationKey", navigationKey},
+				{"sessionTimeout", Convert.ToInt32(GetSessionTimeout().TotalMinutes)},
+				{"sharedResources", GetSharedResources()},
+				{"authorizationUrl", GetLoginUrl(portalSettings)},
+				{"usePopup", usePopup},
+				{"returnUrl", HttpContext.Current.Request.UrlReferrer},
+				{"uniqueId", uniqueId}, 
 			};
 		}
 

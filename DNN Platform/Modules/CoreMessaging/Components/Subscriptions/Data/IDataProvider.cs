@@ -5,7 +5,7 @@
 
 using System.Data;
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt.Providers.Data
+namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Data
 {
     public interface IDataProvider
     {

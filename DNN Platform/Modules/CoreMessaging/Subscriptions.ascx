@@ -8,15 +8,15 @@
         <fieldset id="fsFrequency">
             <div class="dnnFormItem">
                 <dnn:label id="lblNotificationFreq" runat="server" controlname="ddlNotify" />
-                <select data-bind="options: $root.frequencyOptions, optionsValue: 'value', optionsText: 'text', value: $root.notifyFrequency" id="ddlNotify"></select>
+                <select data-bind="options: $root.subscription.frequencyOptions, optionsValue: 'value', optionsText: 'text', value: $root.subscription.notifyFrequency" id="ddlNotify"></select>
             </div>     
             <div class="dnnFormItem">
                 <dnn:label id="lblMessageFreq" runat="server" controlname="ddlMsg" />
-                <select data-bind="options: $root.frequencyOptions, optionsValue: 'value', optionsText: 'text', value: $root.msgFrequency" id="ddlMsg"></select>
+                <select data-bind="options: $root.subscription.frequencyOptions, optionsValue: 'value', optionsText: 'text', value: $root.subscription.msgFrequency" id="ddlMsg"></select>
             </div>
             <div class="dnnClear">
                 <ul class="dnnActions dnnLeft">
-                    <li><a href="#" class="dnnPrimaryAction" data-bind="click: save">Save</a></li>
+                    <li><a href="#" class="dnnPrimaryAction" data-bind="click: subscription.save">Save</a></li>
                 </ul>
             </div>
             <div class="dnnClear" style="display:none;" id="divUpdated">
@@ -25,7 +25,7 @@
         </fieldset>
         <h2 id="dnnSitePanel-ContentItem" class="dnnFormSectionHead"><a href=""><%=LocalizeString("ContentSubscriptions")%></a></h2>
         <fieldset>
-            <!-- ko with: $root.componentFactory.resolve('SearchController') -->
+            <!-- ko with: $root.subscription.componentFactory.resolve('SearchController') -->
             <table class="dnnTableDisplay fixed" id="subscription-table">
                 <colgroup>
                     <col class="activities-col-action-name"/>
@@ -44,7 +44,7 @@
                                 <%= LocalizeString("Showing") %>
                                 <span data-bind="text: totalResults"></span><%= "&#160;" + LocalizeString("Results") %>
                             </span>
-                            <ul class="dnnPagination" id="activitiesPages" data-bind="html: $root.pagingControl">
+                            <ul class="dnnPagination" id="activitiesPages" data-bind="html: $root.subscription.pagingControl">
                             </ul>
                         </td>
                     </tr>
@@ -56,8 +56,8 @@
                             <span data-bind="text: activity"></span>
                         </td>
                         <td>
-                            <a href="#" data-bind="click: $root['delete']">
-                                <img src='<%= ResolveUrl("~/DesktopModules/SubscriptionsMgmt/Images/reply.png") %>' alt="<%= Localization.GetString("Unsubscribe", LocalResourceFile) %>" title="<%= Localization.GetString("Unsubscribe", LocalResourceFile) %>"/>
+                            <a href="#" data-bind="click: $root.subscription['delete']">
+                                <img src='<%= ResolveUrl("~/DesktopModules/CoreMessaging/Images/reply.png") %>' alt="<%= Localization.GetString("Unsubscribe", LocalResourceFile) %>" title="<%= Localization.GetString("Unsubscribe", LocalResourceFile) %>"/>
                             </a>
                         </td>
                     </tr>
@@ -70,15 +70,7 @@
 </asp:Panel>
 </div>
 <script type="text/javascript">
-    function initSubscriptions(settings) {
-        $('#dnnSubscriptions').dnnPanels();
-
-        settings.moduleScope = $(settings.moduleScope)[0];
-
-        try {
-            ko.applyBindings(new dnn.subscriptions.Subscription($, ko, settings), settings.moduleScope);
-        } catch(ex) {
-            dnn.social.topLevelExceptionHandler(settings, ex);
-        }
-    }
+	$(document).ready(function() {
+		$('#dnnSubscriptions').dnnPanels();
+	});
 </script>

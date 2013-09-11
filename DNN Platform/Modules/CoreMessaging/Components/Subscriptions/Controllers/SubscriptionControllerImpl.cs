@@ -5,11 +5,10 @@
 
 using System.Collections.Generic;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities;
-using DotNetNuke.Modules.SubscriptionsMgmt.Providers.Data;
-using DotNetNuke.Modules.SubscriptionsMgmt.Providers.Data.SqlDataProvider;
+using DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Data;
+using DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Entities;
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Controllers
+namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Controllers
 {
     public class SubscriptionControllerImpl : ISubscriptionController
     {

@@ -6,7 +6,7 @@
 using System;
 using DotNetNuke.Framework;
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Controllers
+namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Controllers
 {
     public class SubscriptionController : ServiceLocator<ISubscriptionController, SubscriptionController>
     {

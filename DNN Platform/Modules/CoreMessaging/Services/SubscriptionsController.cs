@@ -14,7 +14,7 @@ using DotNetNuke.Services.Subscriptions.Controllers;
 using DotNetNuke.Services.Subscriptions.Entities;
 using DotNetNuke.Web.Api;
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt.Services
+namespace DotNetNuke.Modules.CoreMessaging.Services
 {
     public class SubscriptionsController : DnnApiController
     {
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt.Services
             {
                 int totalRecords = 0;
 
-                var results = Components.Controllers.SubscriptionController.Instance.GetUserContentSubscriptions(PortalSettings.UserId, ActiveModule.OwnerPortalID, pageIndex, pageSize);
+                var results = Components.Subscriptions.Controllers.SubscriptionController.Instance.GetUserContentSubscriptions(PortalSettings.UserId, ActiveModule.OwnerPortalID, pageIndex, pageSize);
 
                 if (results.Count > 0)
                 {
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt.Services
                     };
                 SubscriptionController.Instance.Subscribe(sub);
 
-                return Request.CreateResponse(HttpStatusCode.OK, Components.Controllers.SubscriptionController.Instance.GetUserInboxSubscriptions(PortalSettings.UserId, ActiveModule.OwnerPortalID));
+                return Request.CreateResponse(HttpStatusCode.OK, Components.Subscriptions.Controllers.SubscriptionController.Instance.GetUserInboxSubscriptions(PortalSettings.UserId, ActiveModule.OwnerPortalID));
             }
             catch (Exception ex)
             {

@@ -3,7 +3,7 @@
 // Copyright (c) 2002-2013 DotNetNuke Corporation
 // All rights reserved.
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Common
+namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Common
 {
     public class Constants
     {

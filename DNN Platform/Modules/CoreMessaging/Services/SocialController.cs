@@ -12,12 +12,11 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Modules.SubscriptionsMgmt.Components.Common;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt.Services
+namespace DotNetNuke.Modules.CoreMessaging.Services
 {
     [DnnAuthorize]
 	public class SocialController : DnnApiController

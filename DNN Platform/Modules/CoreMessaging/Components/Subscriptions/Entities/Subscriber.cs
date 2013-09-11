@@ -4,9 +4,8 @@
 // All Rights Reserved
 
 using System.Runtime.Serialization;
-using DotNetNuke.Services.Subscriptions.Entities;
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities
+namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Entities
 {
     [DataContract]
     public class Subscriber

@@ -6,7 +6,7 @@
 using System.Data;
 using DotNetNuke.Data;
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt.Providers.Data.SqlDataProvider
+namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Data
 {
     public class SqlDataProvider : IDataProvider
     {

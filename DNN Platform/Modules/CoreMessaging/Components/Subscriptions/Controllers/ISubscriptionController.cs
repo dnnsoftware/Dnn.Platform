@@ -4,9 +4,9 @@
 // All Rights Reserved
 
 using System.Collections.Generic;
-using DotNetNuke.Modules.SubscriptionsMgmt.Components.Entities;
+using DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Entities;
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt.Components.Controllers
+namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Controllers
 {
     public interface ISubscriptionController
     {
