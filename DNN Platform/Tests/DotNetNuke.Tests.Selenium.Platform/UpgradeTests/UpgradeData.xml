@@ -4,7 +4,7 @@
   <settings
     name = "Upgrade Test, Daily run"
     browser = "chrome"
-    baseURL = "ee710v2.dnndev.me"
+    baseURL = "UpgradeCETest.dnndev.me"
     
     UserName = "host"
     Password = "dnnhost"

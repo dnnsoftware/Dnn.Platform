@@ -576,7 +576,26 @@ ORDER BY ModuleId
 Go
 
 
+/* update GetPortalsByUser Procedure */
+/*************************************/
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalsByUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalsByUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalsByUser]
+	@userID		int 
+AS
+
+	SELECT     {databaseOwner}{objectQualifier}vw_Portals.*
+FROM         {databaseOwner}{objectQualifier}UserPortals INNER JOIN
+                      {databaseOwner}{objectQualifier}vw_Portals ON 
+					  {databaseOwner}{objectQualifier}UserPortals.PortalId = {databaseOwner}{objectQualifier}vw_Portals.PortalID
+WHERE     ({databaseOwner}{objectQualifier}UserPortals.UserId = @userID)
+		AND ({databaseOwner}{objectQualifier}vw_Portals.DefaultLanguage = {databaseOwner}{objectQualifier}vw_Portals.CultureCode)
+
+
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

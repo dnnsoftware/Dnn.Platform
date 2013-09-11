@@ -351,9 +351,9 @@ namespace DotNetNuke.Entities.Portals
                 foreach (var alias in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).Where(alias => alias.IsPrimary))
                 {
                     return alias.HTTPAlias;
-            }
+                }
                 return String.Empty;
-        }
+            }
         }
 
         public string DefaultPortalContainer

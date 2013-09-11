@@ -168,7 +168,7 @@ namespace DotNetNuke.Entities.Tabs
             var settings = PortalController.GetCurrentPortalSettings();
 
 
-            if (settings != null && tab.TabUrls.Count(u => u.HttpStatus == "200") == 0)
+            if (settings != null && tab.TabID != settings.HomeTabId && tab.TabUrls.Count(u => u.HttpStatus == "200") == 0)
             {
                 var domainRoot = Globals.AddHTTP(settings.PortalAlias.HTTPAlias);
 
