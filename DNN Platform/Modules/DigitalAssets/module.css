@@ -77,6 +77,10 @@
     margin-left: 220px;
 }
 
+#dnnModuleDigitalAssetsContentPane .dnnCheckbox-focus {
+    background-color: transparent;
+}
+
 .dnnModuleDigitalAssetsErrorMessage {
     color: red;    
 }
