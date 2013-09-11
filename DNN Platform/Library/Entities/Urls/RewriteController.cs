@@ -361,7 +361,7 @@ namespace DotNetNuke.Entities.Urls
 
                     string prefix = urlSegments[0];
 
-                    if (prefix == settings.VanityUrlPrefix && urlSegments.Length == 2)
+                    if (prefix == settings.VanityUrlPrefix && urlSegments.Length > 1)
                     {
                         string vanityUrl = urlSegments[1];
 
