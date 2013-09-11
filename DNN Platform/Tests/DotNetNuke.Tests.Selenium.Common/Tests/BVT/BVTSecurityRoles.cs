@@ -67,6 +67,7 @@ namespace DNNSelenium.Common.Tests.BVT
 			manageRolesPage.AddNewSecurityRole(_roleName);
 
 			manageRolesPage.OpenUsingControlPanel(_baseUrl);
+
 			manageRolesPage.WaitForElement(By.XPath(ManageRolesPage.SecurityRolesTable));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of elements in the list increased by 1");
@@ -89,6 +90,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			manageRolesPage.AddDescriptionToSecurityRole(_roleName, _roleDescription);
 
+			manageRolesPage.WaitForElement(By.XPath(ManageRolesPage.SecurityRolesTable));
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Security description is present in the list");
 			Assert.That(_roleDescription,
 			            Is.EqualTo(manageRolesPage.FindElement(By.XPath("//tr[td[text() = '" + _roleName + "']]/td[4]")).Text),
@@ -107,6 +109,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			manageRolesPage.DeleteSecurityRole(_roleName);
 
+			manageRolesPage.WaitForElement(By.XPath(ManageRolesPage.SecurityRolesTable));
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of elements in the list decreased by 1");
 			Assert.That(itemNumber - 1,
 			            Is.EqualTo(manageRolesPage.FindElements(By.XPath(ManageRolesPage.SecurityRolesList)).Count),

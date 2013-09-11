@@ -50,9 +50,10 @@ namespace DNNSelenium.Common.BaseClasses
 				case "chrome":
 					{
 						ChromeOptions chromeOptions = new ChromeOptions();
-						chromeOptions.AddArgument("--disable-keep-alive");
+						//chromeOptions.AddArgument("--disable-keep-alive");
 
-						driver = new ChromeDriver("Drivers", chromeOptions);
+						//driver = new ChromeDriver("Drivers", chromeOptions);
+						driver = new ChromeDriver("Drivers");
 						break;
 					}
 			}

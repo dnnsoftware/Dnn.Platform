@@ -82,26 +82,23 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Login using 'Login' link:");
 			LetMeOut();
 
-			switch (FindElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("scr").Substring(11))
+			string selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
+
+			Trace.WriteLine(BasePage.TraceLevelElement + selector);
+
+			if (selector.EndsWith(ControlPanelIDs.AwesomeCycles))
 			{
-				case "Awesome-Cycles-Logo.png":
-					{
-						FindElement(By.XPath(ControlPanelIDs.LoginLink)).Click();
-
-						break;
-					}
-				case "logo_Anova.png":
-					{
-						FindElement(By.XPath(ControlPanelIDs.SocialLoginLink)).Click();
-
-						break;
-					}
+				FindElement(By.XPath(ControlPanelIDs.LoginLink)).Click();
+			}
+			else
+			{
+				FindElement(By.XPath(ControlPanelIDs.SocialLoginLink)).Click();
 			}
 
 			//FindElement(By.XPath(ControlPanelIDs.LoginLink)).Click();
 
 			WaitAndSwitchToFrame(30);
-
+			Trace.WriteLine(BasePage.TraceLevelElement + "Click on : " + ControlPanelIDs.SocialUserLink + "]");
 			DoLoginUsingLoginLink(userName, password);
 
 			WaitAndSwitchToWindow(30);
@@ -137,31 +134,33 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Logout");
 
-			string selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("scr");
+			string selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
 
-			switch (selector)
+			Trace.WriteLine(BasePage.TraceLevelElement + selector);
+
+			if (selector.EndsWith(ControlPanelIDs.AwesomeCycles))
 			{
-				case "Awesome-Cycles-Logo.png":
-					{ 
-						WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 20).Info();
+				WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 20).Info();
 
-						Trace.WriteLine(BasePage.TraceLevelElement + "Click on button: " + ControlPanelIDs.LogoutLink + "]");
-						if (ElementPresent(By.XPath(ControlPanelIDs.LogoutLink)))
-						{
-							FindElement(By.XPath(ControlPanelIDs.LogoutLink)).Click();
-							WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 20).WaitTillVisible(20);
-						}
-						break;
-					}
-				case "logo_Anova.png":
-					{
-						WaitAndClick(By.XPath(ControlPanelIDs.SocialUserLink));
-						WaitAndClick(By.XPath(ControlPanelIDs.SocialLogoutLink));
-						WaitForElement(By.XPath(ControlPanelIDs.SocialLoginLink));
-			
-						break;
-					}
+				Trace.WriteLine(BasePage.TraceLevelElement + "Click on button: " + ControlPanelIDs.LogoutLink + "]");
+				if (ElementPresent(By.XPath(ControlPanelIDs.LogoutLink)))
+				{
+					FindElement(By.XPath(ControlPanelIDs.LogoutLink)).Click();
+					WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 20).WaitTillVisible(20);
+				}
 			}
+			else
+			{
+				if (ElementPresent(By.XPath(ControlPanelIDs.SocialUserLink)))
+				{
+					Trace.WriteLine(BasePage.TraceLevelElement + "Click on : " + ControlPanelIDs.SocialUserLink + "]");
+					WaitAndClick(By.XPath(ControlPanelIDs.SocialUserLink));
+					Trace.WriteLine(BasePage.TraceLevelElement + "Click on : " + ControlPanelIDs.SocialLogoutLink + "]");
+					WaitAndClick(By.XPath(ControlPanelIDs.SocialLogoutLink));
+					WaitForElement(By.XPath(ControlPanelIDs.SocialLoginLink));
+				}		
+			}
+			
 
 			/*WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 20).Info();
 
@@ -175,21 +174,17 @@ namespace DNNSelenium.Common.CorePages
 
 		public void DoRegisterUsingRegisterLink(string userName, string displayName, string emailAddress, string password)
 		{
+			string selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
 
-			switch (FindElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("scr").Substring(11))
+			Trace.WriteLine(BasePage.TraceLevelElement + selector);
+
+			if (selector.EndsWith(ControlPanelIDs.AwesomeCycles))
 			{
-				case "Awesome-Cycles-Logo.png":
-					{
-						WaitForElement(By.XPath(ControlPanelIDs.RegisterLink), 20).WaitTillVisible(20).Click();
-
-						break;
-					}
-				case "logo_Anova.png":
-					{
-						WaitForElement(By.XPath(ControlPanelIDs.SocialRegisterLink), 20).WaitTillVisible(20).Click();
-
-						break;
-					}
+				WaitForElement(By.XPath(ControlPanelIDs.RegisterLink), 20).WaitTillVisible(20).Click();
+			}
+			else
+			{
+				WaitForElement(By.XPath(ControlPanelIDs.SocialRegisterLink), 20).WaitTillVisible(20).Click();
 			}
 
 			//WaitForElement(By.XPath(ControlPanelIDs.RegisterLink), 20).WaitTillVisible(20).Click();

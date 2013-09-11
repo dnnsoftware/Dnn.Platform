@@ -8,7 +8,7 @@ namespace DNNSelenium.Common.BaseClasses
 {
 	public class ControlPanelIDs
 	{
-		public static string CompanyLogo = "//a[img[@id = 'dnn_dnnLOGO_imgLogo']]";
+		public static string CompanyLogo = "//a/img[@id = 'dnn_dnnLOGO_imgLogo']";
 		public static string AwesomeCycles = "Awesome-Cycles-Logo.png";
 		public static string AnovaMobility = "logo_Anova.png";
 
