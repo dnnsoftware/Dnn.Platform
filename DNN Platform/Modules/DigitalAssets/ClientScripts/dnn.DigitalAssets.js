@@ -1472,9 +1472,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         listView.set_dataSource(prepareListViewData(data));
         listView.dataBind();
-        $("#dnnModuleDigitalAssetsListView .dnnModuleDigitalAssetsListViewItem .dnnModuleDigitalAssetsListViewItemLinkName").bind("click", clickOnListViewItemNameLink);
-        $("#dnnModuleDigitalAssetsListView .dnnModuleDigitalAssetsListViewItem input[type='checkbox']")
-            .dnnCheckbox().bind('click', listViewSelectionCheckboxClick);
+        $("#dnnModuleDigitalAssetsListView .dnnModuleDigitalAssetsListViewItem .dnnModuleDigitalAssetsListViewItemLinkName").bind("click", clickOnListViewItemNameLink);        
         $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", '#' + controls.scopeWrapperId).unbind("click", listviewSelectAllOnClick).bind("click", listviewSelectAllOnClick);
         listViewInitialize();
 
@@ -1544,16 +1542,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return startName + "...." + endName;
     }
 
-    var listViewSelectionCheckboxClick = function (event) {
-        event.stopPropagation();
-        event.preventDefault();
-
-        var index = $(this).parent().attr("data-index");
-        toggleGridItemSelection(grid.get_dataItems()[index]);
-    };
-
-    var gridSelectionCheckboxClick = function (event) {
-        event.stopPropagation();
+    var gridSelectionCheckboxClick = function (event) {        
         event.preventDefault();
 
         var index = $(this).closest("tr").data("index");
@@ -2029,11 +2018,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     function gridOnRowSelected(sender, args) {
 
         var index = args.get_itemIndexHierarchical();
-
-        if (contextMenu._visible) {
-            contextMenu.hide();
-        }
-
+        
         var selectCell = $(args.get_item().get_cell("Select"));
         selectCell.find("input[type='checkbox']").attr("checked", true);
         selectCell.find(".dnnCheckbox").addClass("dnnCheckbox-checked");
@@ -2063,10 +2048,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         //If some use case mark the row as continueEditing, don't cancel
         if (gridItem && !$(gridItem.get_element()).hasClass("continueEditing")) {
             cancelRenameInGrid(gridItem.get_id());
-        }
-
-        if (contextMenu._visible) {
-            contextMenu.hide();
         }
 
         var selectCell = $(args.get_item().get_cell("Select"));
@@ -2959,7 +2940,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         if (dataItem) {
             var target = dataItem.get_element();
-            if (event.ctrlKey) {
+            if (event.target.tagName == "INPUT" && event.target.type == "checkbox") {                
+                toggleGridItemSelection(dataItem);
+            } else if (event.ctrlKey) {
                 triggerMouseClick(target, true, false, false);
             } else if (event.shiftKey) {
                 triggerMouseClick(target, false, false, true);
