@@ -152,13 +152,8 @@
     <Content Include="Images\reply.png" />
     <Content Include="Images\right.png" />
     <Content Include="Scripts\CoreMessaging.js" />
-    <Content Include="Scripts\dnn.social.ComponentFactory.js" />
-    <Content Include="Scripts\dnn.social.ExceptionHandlerDialog.js" />
     <Content Include="Scripts\dnn.social.LocalizationController.js" />
-    <Content Include="Scripts\dnn.social.Module.js" />
     <Content Include="Scripts\dnn.social.PagingControl.js" />
-    <Content Include="Scripts\dnn.social.ServiceCaller.js" />
-    <Content Include="Scripts\dnn.social.Utilities.js" />
     <Content Include="Scripts\dnn.subscriptions.SearchController.js" />
     <Content Include="Scripts\dnn.subscriptions.SearchResult.js" />
     <Content Include="Scripts\dnn.subscriptions.Subscriber.js" />
@@ -210,9 +205,6 @@
       <Name>DotNetNuke.Library</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_LocalResources\Subscriptions.ascx.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

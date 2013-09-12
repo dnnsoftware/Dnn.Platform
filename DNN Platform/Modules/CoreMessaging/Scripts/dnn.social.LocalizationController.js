@@ -9,12 +9,12 @@
     if (typeof dnn === 'undefined') dnn = {};
     if (typeof dnn.social === 'undefined') dnn.social = {};
 
-    dnn.social.LocalizationController = function LocalizationController ($, settings, social) {
+    dnn.social.LocalizationController = function ($, settings) {
         var that = this;
 
         this.showMissingKeys = settings.showMissingKeys || false;
 
-        this.service = social.getService('Social');
+        this.servicesFramework = $.ServicesFramework(settings.moduleId);
 
         // Actual table of localized strings and their values.    
         this.stringTable = {};
@@ -43,7 +43,7 @@
                 culture: settings.culture
             };
 
-            that.service.getsync('GetLocalizationTable', params, success, failure);
+            that.requestService('Social/GetLocalizationTable', 'get', params, success, failure);
 
             return worked;
         };
@@ -53,7 +53,7 @@
 
             if ((value || '').length == 0) {
                 if (that.showMissingKeys) {
-                    return '[L]{0}'.format(key);
+                    return '[L]{0}'.replace("{0}", key);
                 }
 
                 return key;
@@ -62,6 +62,20 @@
             return value;
         };
 
-        this.loadTable();
+	    this.requestService = function(path, type, data, success, failure) {
+		    $.ajax({
+			    type: type,
+			    url: that.servicesFramework.getServiceRoot('CoreMessaging') + path,
+			    beforeSend: that.servicesFramework.setModuleHeaders,
+			    data: data,
+			    cache: false
+		    }).done(function(response) {
+			    success.call(that, response);
+		    }).fail(function(xhr, status) {
+			    failure.call(that, xhr);
+		    });
+	    };
+	    
+		this.loadTable();
     };
 })(window.dnn);

@@ -10,7 +10,7 @@
     if (typeof dnn.social === 'undefined') dnn.social = {};
 
     /// <summary>Paging as in 'Page 1, 2, 3, ...'</summary>
-    dnn.social.PagingControl = function PagingControl ($, ko, settings, social, controllerName) {
+    dnn.social.PagingControl = function ($, ko, settings, controller) {
         var that = this;
 
         $.extend(this, dnn.social.PagingControl.DefaultSettings, settings);
@@ -20,9 +20,9 @@
 
         // Current page index (zero-based)
         this.page = ko.observable(settings.pageIndex || 0);
+	    this.localizationController = new dnn.social.LocalizationController($, settings);
 
         this.totalPages = function () {
-            var controller = social.getComponentFactory().resolve(controllerName);
             if (controller != null) {
                 var total;
                 
@@ -146,12 +146,7 @@
         };
 
         this.getString = function (key) {
-            var controller = social.getLocalizationController();
-            if (controller != null) {
-                return controller.getString(key);
-            }
-
-            return key;
+                return that.localizationController.getString(key);
         };
 
         // We need to register an object that is reachable from the global scope so that we can register clicks for the
@@ -159,16 +154,16 @@
         // by knockout; even if it were available, we don't want to force the module developer to use knockout just to
         // enable our paging control. We can use it ourselves though.)
         this.registerRootObject = function (uniqueId) {
-            var key = 'pagingController{0}'.format(uniqueId);
+            var key = 'pagingController' + uniqueId;
 
             if (typeof window[key] === 'undefined') {
                 window[key] = that;
             }
 
-            return 'window[\'{0}\']'.format(key);
+            return 'window[\'{0}\']'.replace("{0}", key);
         };
 
-        var root = that.registerRootObject('{0}_{1}_{2}'.format(settings.moduleId, controllerName, Math.random()));
+        var root = that.registerRootObject(settings.moduleId + '_subscription_' + Math.random());
 
         // The paging markup to go at the bottom of the search results.
         this.markup = function () {
@@ -178,7 +173,7 @@
 
                 var html = new String();
                 var currentPageIdx = currentPage + 1;
-                var pageDesc = that.getString('PageDescription').format(currentPageIdx, total);
+                var pageDesc = that.getString('PageDescription').replace("{0}", currentPageIdx).replace("{1}", total);
                 html += '<li class="pager-ul-desc">' + pageDesc + '</li>';
 
                 if (currentPageIdx > 1) {

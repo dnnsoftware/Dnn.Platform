@@ -63,7 +63,6 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 		public string GetSettingsAsJson()
 		{
 			var settings = GetModuleSettings(ModuleContext.PortalSettings, ModuleConfiguration, Null.NullInteger);
-			var addtionalSettings = GetViewSettings();
 			foreach (DictionaryEntry entry in GetViewSettings())
 			{
 				if (settings.ContainsKey(entry.Key))
@@ -92,13 +91,13 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 			{
 				//SocialModule.RequestCommonCSS(Page);
 
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ExceptionHandlerDialog.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.Module.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ComponentFactory.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ServiceCaller.js");
+				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ExceptionHandlerDialog.js");
+				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.Module.js");
+				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ComponentFactory.js");
+				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ServiceCaller.js");
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.PagingControl.js");
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.LocalizationController.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.Utilities.js");
+				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.Utilities.js");
 
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.subscriptions.Subscription.js");
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.subscriptions.SearchController.js");

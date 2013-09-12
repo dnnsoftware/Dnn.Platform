@@ -9,29 +9,35 @@
     if (typeof dnn === 'undefined') dnn = {};
     if (typeof dnn.subscriptions === 'undefined') dnn.subscriptions = {};
 
-    dnn.subscriptions.Subscription = function Subscription($, ko, settings) {
+    dnn.subscriptions.Subscription = function ($, ko, settings) {
         var that = this;
 
         $.extend(this, dnn.subscriptions.Subscription.defaultSettings, settings);
         $.extend(this, settings);
+	    
+		this.pageControl = new dnn.social.PagingControl($, ko, settings, that);
+        this.servicesFramework = $.ServicesFramework(settings.moduleId);
+        this.searchController = new dnn.subscriptions.SearchController($, ko, settings, that);
+        this.localizationController = new dnn.social.LocalizationController($, settings);
+	    
         
-        this.social = new dnn.social.Module(settings);
+        //this.social = new dnn.social.Module(settings);
 
-        this.componentFactory = this.social.getComponentFactory();
+        //this.componentFactory = this.social.getComponentFactory();
         
-        this.componentFactory.register(new dnn.subscriptions.SearchController($, ko, settings, this.social, that));
-        this.componentFactory.register(this.social.getPagingControl('SearchController'));
+        //this.componentFactory.register();
+        //this.componentFactory.register(this.social.getPagingControl('SearchController'));
 
         this.localizer = function () {
-            return that.social.getLocalizationController();
+            return that.localizationController;
         };
         
         this.pager = function () {
-            return that.componentFactory.resolve('PagingControl');
+            return that.pageControl;
         };
 
         this.searcher = function () {
-            return that.componentFactory.resolve('SearchController');
+            return that.searchController;
         };
         
         this.getString = function (key) {
@@ -76,12 +82,12 @@
                     localString = 'SingleResultCount';
                 }
 
-                return localizer.getString(localString).format(search.totalResults());
+                return localizer.getString(localString).replace("{0}", search.totalResults());
             });
         
         // Return a JSON document specifying the filter parameters.
         this.getSearchParameters = function () {
-            var pager = that.componentFactory.resolve('PagingControl');
+            var pager = that.pageControl;
             if (pager == null) {
                 return null;
             }
@@ -146,11 +152,11 @@
             };
 
             var failure = function (xhr, status) {
-                var localizer = that.social.getLocalizationController();
+                var localizer = that.localizationController;
 
                 $.dnnAlert({
                     title: localizer.getString('SubscribeFailureTitle'),
-                    text: localizer.getString('SubscribeFailure').format(status || that.getString('UnknownError'))
+                    text: localizer.getString('SubscribeFailure').replace("{0}", status || that.getString('UnknownError'))
                 });
 
                 finishSearch();
@@ -167,8 +173,7 @@
                 MsgSubscriptionTypeId: that.msgSubTypeId()
             };
 
-            this.service = that.social.getService('Subscriptions');
-            this.service.post('UpdateSystemSubscription', params, success, failure);
+            that.requestService('Subscriptions/UpdateSystemSubscription', 'post', params, success, failure);
         };
         
         this['delete'] = function (model) {
@@ -184,7 +189,7 @@
                 var localizer = that.social.getLocalizationController();
                 $.dnnAlert({
                     title: localizer.getString('SubscribeFailureTitle'),
-                    text: localizer.getString('SubscribeFailure').format(status || that.getString('UnknownError'))
+                    text: localizer.getString('SubscribeFailure').replace("{0}", status || that.getString('UnknownError'))
                 });
             };
 
@@ -193,9 +198,22 @@
                 SubscriberId: model.subscriberId
             };
 
-            this.service = that.social.getService('Subscriptions');
-            this.service.post('DeleteContentSubscription', params, success, failure);
+            that.requestService('Subscriptions/DeleteContentSubscription', 'post', params, success, failure);
         };
+	    
+		this.requestService = function(path, type, data, success, failure) {
+		    $.ajax({
+			    type: type,
+			    url: that.servicesFramework.getServiceRoot('CoreMessaging') + path,
+			    beforeSend: that.servicesFramework.setModuleHeaders,
+			    data: data,
+			    cache: false
+		    }).done(function(response) {
+			    success.call(that, response);
+		    }).fail(function(xhr, status) {
+			    failure.call(that, xhr);
+		    });
+	    };
     };
 
     dnn.subscriptions.Subscription.defaultSettings = {

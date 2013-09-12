@@ -25,7 +25,7 @@
         </fieldset>
         <h2 id="dnnSitePanel-ContentItem" class="dnnFormSectionHead"><a href=""><%=LocalizeString("ContentSubscriptions")%></a></h2>
         <fieldset>
-            <!-- ko with: $root.subscription.componentFactory.resolve('SearchController') -->
+            <!-- ko with: $root.subscription.searchController -->
             <table class="dnnTableDisplay fixed" id="subscription-table">
                 <colgroup>
                     <col class="activities-col-action-name"/>
