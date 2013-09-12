@@ -890,6 +890,8 @@ div.messageArea {
 
 .dnnTableDisplay {
     width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
 .activities-col-action-name {

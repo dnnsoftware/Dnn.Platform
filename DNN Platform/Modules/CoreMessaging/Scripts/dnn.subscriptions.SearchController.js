@@ -37,7 +37,7 @@
                 $.each(model.Results,
                     function (index, result) {
                         // $, ko, settings, root, social, model
-                        results.push(new dnn.subscriptions.SearchResult($, ko, settings, root, social, result));
+                        results.push(new dnn.subscriptions.SearchResult($, ko, settings, root, result));
                     });
 
                 that.results(results);
