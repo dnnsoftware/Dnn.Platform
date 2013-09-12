@@ -148,7 +148,7 @@
             // do this AFTER the axes above so that the line is above the tick-lines
             //graph.append("path").attr("d", line(data)).attr("class", "data_line");
 
-            var onMouseOverPointHandler = function() { d3.select(this).attr("r", function(d) { return 10; }); };
+            var onMouseOverPointHandler = function() { d3.select(this).attr("r", function(d) { return 8; }); };
             var onMouseOutPointHandler = function() { d3.select(this).attr("r", function(d) { return 4; }); };
 
             var points = graph.select(".chart-group").select(".point-group").selectAll(".point").data(data);
