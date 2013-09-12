@@ -621,6 +621,10 @@ AS
                                                 AND ObjectKey = @ObjectKey
                                        )
             END
+		ELSE
+			BEGIN
+				SELECT @SubscriberCount = 1
+			END   
 		      
         IF ( @SubscriberCount IS NULL
              OR @SubscriberCount < 1
