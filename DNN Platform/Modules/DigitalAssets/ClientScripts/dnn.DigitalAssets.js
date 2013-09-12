@@ -2223,6 +2223,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             }
 
             treeView.commitChanges();
+            treeViewRefreshScrollbars();
         }
 
         if (parentFolderId == currentFolderId) {
@@ -2352,7 +2353,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                             beforeSend: servicesFramework.setModuleHeaders
                         }).done(function (data) {
                             onItemsDeleted(items, data, parentFolderId);
-                            
                         }).fail(function (xhr) {
                             handledXhrError(xhr, resources.deleteItemsErrorTitle);
                         }).always(function () {
@@ -2393,6 +2393,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
                         parentNode.get_nodes().remove(deletedNode);
                         treeView.commitChanges();
+                        treeViewRefreshScrollbars();
                     }
                 }
             }
@@ -2567,6 +2568,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             }
         }
         treeView.commitChanges();
+        treeViewRefreshScrollbars();
     }
 
     function resetDestinationTreeView() {
