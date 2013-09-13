@@ -2986,6 +2986,9 @@ namespace DotNetNuke.Services.Upgrade
                 ImportDocumentLibraryCategories();
                 ImportDocumentLibraryCategoryAssoc(fileContentType);
             }
+            
+            //fixes issue introduced by eventlog's being defined in upgrade.cs
+            PortalController.EnsureRequiredEventLogTypesExist();
         }
 
         private static ContentItem CreateFileContentItem()
