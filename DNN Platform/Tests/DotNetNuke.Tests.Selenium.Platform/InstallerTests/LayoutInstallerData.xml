@@ -16,7 +16,7 @@
     DatabaseServerName = "(local)"
     DatabaseName = "InstallerCETest2"
     DatabaseFilename = ""
-    ObjectQualifier = ""
+    ObjectQualifier = "dnn_"
     Security = "Integrated"
     DatabaseUserName = ""
     DatabasePassword = ""
