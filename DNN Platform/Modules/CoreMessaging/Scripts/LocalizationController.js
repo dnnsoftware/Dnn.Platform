@@ -3,13 +3,9 @@
 // Copyright (c) 2002-2013 DotNetNuke Corporation
 // All rights reserved.
 
-(function (dnn) {
-    'use strict';
+(function ($) {
 
-    if (typeof dnn === 'undefined') dnn = {};
-    if (typeof dnn.social === 'undefined') dnn.social = {};
-
-    dnn.social.LocalizationController = function ($, settings) {
+    window.LocalizationController = function (settings, root) {
         var that = this;
 
         this.showMissingKeys = settings.showMissingKeys || false;
@@ -43,7 +39,7 @@
                 culture: settings.culture
             };
 
-            that.requestService('Social/GetLocalizationTable', 'get', params, success, failure);
+            root.requestService('Subscriptions/GetLocalizationTable', 'get', params, success, failure);
 
             return worked;
         };
@@ -61,21 +57,7 @@
 
             return value;
         };
-
-	    this.requestService = function(path, type, data, success, failure) {
-		    $.ajax({
-			    type: type,
-			    url: that.servicesFramework.getServiceRoot('CoreMessaging') + path,
-			    beforeSend: that.servicesFramework.setModuleHeaders,
-			    data: data,
-			    cache: false
-		    }).done(function(response) {
-			    success.call(that, response);
-		    }).fail(function(xhr, status) {
-			    failure.call(that, xhr);
-		    });
-	    };
 	    
 		this.loadTable();
     };
-})(window.dnn);
+})(window.jQuery);

@@ -71,6 +71,15 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
+	    public bool ShowSubscriptionTab
+	    {
+		    get
+		    {
+			    return !Settings.ContainsKey("ShowSubscriptionTab") ||
+			           Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
+		    }
+	    }
+
         #endregion
 
         #region Event Handlers
@@ -108,6 +117,7 @@ namespace DotNetNuke.Modules.CoreMessaging
 
 	        subscriptionControl.ModuleContext = ModuleContext;
 	        subscriptionControl.LocalResourceFile = LocalResourceFile;
+	        subscriptionControl.Visible = ShowSubscriptionTab;
         }
 
         #endregion

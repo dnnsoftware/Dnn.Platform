@@ -89,21 +89,11 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 
 			if (Request.IsAuthenticated)
 			{
-				//SocialModule.RequestCommonCSS(Page);
-
-				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ExceptionHandlerDialog.js");
-				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.Module.js");
-				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ComponentFactory.js");
-				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.ServiceCaller.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.PagingControl.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.LocalizationController.js");
-				//ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.social.Utilities.js");
-
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.subscriptions.Subscription.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.subscriptions.SearchController.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/dnn.subscriptions.SearchResult.js");
-
-                RequestClientScripts(Page, ModuleContext, "initSubscriptions", GetViewSettings(), Null.NullInteger);
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/PagingControl.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SearchController.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SearchResult.js");
+				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
 			}
 			else
 			{
@@ -162,65 +152,6 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
         {
             return SubscriptionTypeController.Instance.GetTypeByName(-1, subscriptionType);
         }
-
-		private void RequestClientScripts(Page page)
-		{
-			jQuery.RequestRegistration();
-			jQuery.RequestUIRegistration();
-			jQuery.RequestDnnPluginsRegistration();
-
-			const FileOrder.Js order = FileOrder.Js.jQuery;
-
-			ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/knockout.js", order);
-			ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/jquery.history.js", order);
-			ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/json2.js", order);
-		}
-
-		private void RequestClientScripts(Page page, ModuleInstanceContext modContext, string clientInitializer, object additionalSettings, int uniqueId)
-		{
-			return;
-
-			RequestClientScripts(page);
-
-			if (additionalSettings == null)
-			{
-				additionalSettings = new object();
-			}
-
-			// If there are multiple familial modules on the page, or multiple instances of the same module,
-			// we can get into a bad scenario where the init code doesn't run or food hadn't been made up,
-			// she would basically just disappear. Later in life she became more attentive etc.eee
-			foreach (var attemptId in new[] { modContext.TabModuleId, modContext.ModuleId, Rng.Next() })
-			{
-				var v = string.Format("social_init_{0}", attemptId);
-
-				if (string.IsNullOrEmpty(ClientAPI.GetClientVariable(page, v)))
-				{
-					ClientAPI.RegisterClientVariable(page, v, "true", true);
-
-					uniqueId = attemptId;
-					break;
-				}
-			}
-
-			var jsonSettings = GetModuleSettings(modContext.PortalSettings, modContext.Configuration, uniqueId).ToJson();
-			var jsonAdditionalSettings = additionalSettings.ToJson();
-
-			var script = new StringBuilder("<script type='text/javascript'>")
-				.AppendLine("jQuery(function() {")
-				.AppendLine(" 'use strict';")
-				.AppendLine(string.Format(" var settings_{0} = {1};", uniqueId, jsonSettings))
-				.AppendLine(string.Format(" jQuery.extend(settings_{0}, {1});", uniqueId, jsonAdditionalSettings))
-				.AppendLine(string.Format(" if (typeof({0}) === 'function') {{", clientInitializer))
-				.AppendLine(string.Format("  {0}.call(window, settings_{1});", clientInitializer, uniqueId))
-				.AppendLine("  }")
-				.AppendLine("});")
-				.AppendLine("</script>");
-
-			var scriptKey = string.Format("social_init_module_{0}_{1}", uniqueId, clientInitializer);
-
-			ClientAPI.RegisterStartUpScript(page, scriptKey, script.ToString());
-		}
 
 		private static Hashtable GetModuleSettings(PortalSettings portalSettings, ModuleInfo moduleInfo, int uniqueId)
 		{

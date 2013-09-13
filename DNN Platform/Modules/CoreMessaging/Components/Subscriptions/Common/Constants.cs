@@ -7,7 +7,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Common
 {
     public class Constants
     {
-        public const string DesktopModuleFriendlyName = "Subscription Management";
+		public const string DesktopModuleFriendlyName = "Message Center";
 
         #region Settings
 
@@ -16,7 +16,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Common
         public const int DefaultPageSize = 25;
 
 		public const string SharedResources =
-			"~/DesktopModules/DNNCorp/SocialLibrary/App_LocalResources/SharedResources.resx";
+			"~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
 
         #endregion
     }

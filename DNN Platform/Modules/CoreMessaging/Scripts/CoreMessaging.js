@@ -866,7 +866,7 @@
             });
         };
 	    
-		self.subscription = new dnn.subscriptions.Subscription($, ko, subscriptionOptions);
+		self.subscription = new Subscription(ko, subscriptionOptions);
     }
 
     this.init = function (element) {

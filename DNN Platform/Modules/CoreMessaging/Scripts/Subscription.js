@@ -3,30 +3,31 @@
 // by DotNetNuke Corporation
 // All Rights Reserved
 
-(function (dnn) {
-    'use strict';
-
-    if (typeof dnn === 'undefined') dnn = {};
-    if (typeof dnn.subscriptions === 'undefined') dnn.subscriptions = {};
-
-    dnn.subscriptions.Subscription = function ($, ko, settings) {
+(function ($) {
+    window.Subscription = function Subscription (ko, settings) {
         var that = this;
 
-        $.extend(this, dnn.subscriptions.Subscription.defaultSettings, settings);
+        $.extend(this, Subscription.defaultSettings, settings);
         $.extend(this, settings);
 	    
-		this.pageControl = new dnn.social.PagingControl($, ko, settings, that);
-        this.servicesFramework = $.ServicesFramework(settings.moduleId);
-        this.searchController = new dnn.subscriptions.SearchController($, ko, settings, that);
-        this.localizationController = new dnn.social.LocalizationController($, settings);
+		this.requestService = function(path, type, data, success, failure) {
+		    $.ajax({
+			    type: type,
+			    url: that.servicesFramework.getServiceRoot('CoreMessaging') + path,
+			    beforeSend: that.servicesFramework.setModuleHeaders,
+			    data: data,
+			    cache: false
+		    }).done(function(response) {
+			    success.call(that, response);
+		    }).fail(function(xhr, status) {
+			    failure.call(that, xhr);
+		    });
+	    };
 	    
-        
-        //this.social = new dnn.social.Module(settings);
-
-        //this.componentFactory = this.social.getComponentFactory();
-        
-        //this.componentFactory.register();
-        //this.componentFactory.register(this.social.getPagingControl('SearchController'));
+        this.servicesFramework = $.ServicesFramework(settings.moduleId);
+	    this.pageControl = new PagingControl(ko, settings, that);
+        this.searchController = new SearchController(ko, settings, that);
+        this.localizationController = new LocalizationController(settings, that);
 
         this.localizer = function () {
             return that.localizationController;
@@ -141,10 +142,17 @@
             };
 
             var success = function (model) {
-                that.notificationFrequency = ko.observable(model.notifyFreq);
-                that.messageFrequency = ko.observable(model.msgFreq);
-                that.notifySubId = ko.observable(model.notifySubscriberId);
-                that.msgSubId = ko.observable(model.msgSubscriberId);
+            	for (var index in model) {
+            		var ac = model[index];
+		            switch(ac.subscriberId) {
+		            	case that.msgSubId():
+		            		that.messageFrequency = ac.frequency;
+		            		break;
+		            	case that.notifySubId():
+		            		that.notificationFrequency = ac.frequency;
+		            		break;
+		            }
+	            }
 
                 $('#divUpdated').show();
                 $("#divUpdated").delay(1800).hide(400);
@@ -186,7 +194,7 @@
             };
 
             var failure = function (xhr, status) {
-                var localizer = that.social.getLocalizationController();
+                var localizer = that.localizationController;
                 $.dnnAlert({
                     title: localizer.getString('SubscribeFailureTitle'),
                     text: localizer.getString('SubscribeFailure').replace("{0}", status || that.getString('UnknownError'))
@@ -200,23 +208,9 @@
 
             that.requestService('Subscriptions/DeleteContentSubscription', 'post', params, success, failure);
         };
-	    
-		this.requestService = function(path, type, data, success, failure) {
-		    $.ajax({
-			    type: type,
-			    url: that.servicesFramework.getServiceRoot('CoreMessaging') + path,
-			    beforeSend: that.servicesFramework.setModuleHeaders,
-			    data: data,
-			    cache: false
-		    }).done(function(response) {
-			    success.call(that, response);
-		    }).fail(function(xhr, status) {
-			    failure.call(that, xhr);
-		    });
-	    };
     };
 
-    dnn.subscriptions.Subscription.defaultSettings = {
+    Subscription.defaultSettings = {
         moduleId: -1,
         portalId: 0,
         pageSize: 25,
@@ -227,4 +221,4 @@
         NotifySubTypeId: 1,
         MsgSubTypeId: 2
     };
-})(window.dnn);
+})(window.jQuery);

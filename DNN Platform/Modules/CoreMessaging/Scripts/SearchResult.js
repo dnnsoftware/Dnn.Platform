@@ -3,13 +3,8 @@
 // by DotNetNuke Corporation
 // All Rights Reserved
 
-(function (dnn) {
-    'use strict';
-
-    if (typeof dnn === 'undefined') dnn = {};
-    if (typeof dnn.subscriptions === 'undefined') dnn.subscriptions = {};
-
-    dnn.subscriptions.SearchResult = function ($, ko, settings, root, model) {
+(function ($) {
+    window.SearchResult = function (ko, settings, model, root) {
     	var that = this;
 
 	    var komodel = function(mo) {
@@ -27,7 +22,7 @@
 
 						    $.each(value,
 							    function(index, element) {
-								    list.push(dnn.social.komo(element));
+								    list.push(komodel(element));
 							    });
 
 						    obj[k] = ko.observableArray(list);
@@ -81,8 +76,5 @@
 	    };
 
         $.extend(this, komodel(model));
-        
-        //var localizer = social.getLocalizationController();
-        //this.service = social.getService('Subscriptions');
     };
 })(window.dnn);

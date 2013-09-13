@@ -3,36 +3,31 @@
 // Copyright (c) 2002-2013 DotNetNuke Corporation
 // All rights reserved.
 
-(function (dnn) {
-    'use strict';
-
-    if (typeof dnn === 'undefined') dnn = {};
-    if (typeof dnn.social === 'undefined') dnn.social = {};
-
+(function ($) {
     /// <summary>Paging as in 'Page 1, 2, 3, ...'</summary>
-    dnn.social.PagingControl = function ($, ko, settings, controller) {
+    window.PagingControl = function PagingControl (ko, settings, root) {
         var that = this;
 
-        $.extend(this, dnn.social.PagingControl.DefaultSettings, settings);
+        $.extend(this, PagingControl.DefaultSettings, settings);
 
         // Start of "visible set" of pages which can be shifted by clicking the ellipses
         this.setStart = ko.observable(0);
 
         // Current page index (zero-based)
         this.page = ko.observable(settings.pageIndex || 0);
-	    this.localizationController = new dnn.social.LocalizationController($, settings);
+	    this.localizationController = root.localizationController;
 
         this.totalPages = function () {
-            if (controller != null) {
+            if (root != null) {
                 var total;
                 
-                switch (typeof controller.totalResults) {
+                switch (typeof root.totalResults) {
                     case 'function':
-                        total = controller.totalResults();
+                        total = root.totalResults();
                         break;
                     case 'undefined':
                     default:
-                        total = controller.totalResults;
+                        total = root.totalResults;
                         break;
                 }
 
@@ -163,7 +158,7 @@
             return 'window[\'{0}\']'.replace("{0}", key);
         };
 
-        var root = that.registerRootObject(settings.moduleId + '_subscription_' + Math.random());
+        var rootObj = that.registerRootObject(settings.moduleId + '_subscription_' + Math.random());
 
         // The paging markup to go at the bottom of the search results.
         this.markup = function () {
@@ -177,7 +172,7 @@
                 html += '<li class="pager-ul-desc">' + pageDesc + '</li>';
 
                 if (currentPageIdx > 1) {
-                    html += '<li><a href="javascript:void(0)" onclick="return ' + root + '.first()">1</a></li>';
+                    html += '<li><a href="javascript:void(0)" onclick="return ' + rootObj + '.first()">1</a></li>';
                 }
                 else {
                     html += '<li><span class="disabled">1</span></li>';
@@ -188,7 +183,7 @@
                 if (set.length > 0) {
 
                     if (set[0] > 2) {
-                        html += '<li><a href="javascript:void(0)" onclick="' + root + '.shiftSetLeft()">&hellip;</a></li>';
+                        html += '<li><a href="javascript:void(0)" onclick="' + rootObj + '.shiftSetLeft()">&hellip;</a></li>';
                     }
 
                     for (var i = 0; i < set.length; i++) {
@@ -196,17 +191,17 @@
                             html += '<li class="current"><span>' + currentPageIdx + '</span></li>';
                         }
                         else {
-                            html += '<li><a href="javascript:void(0)" onclick="' + root + '.setPage(' + (set[i] - 1) + ')">' + set[i] + '</a></li>';
+                            html += '<li><a href="javascript:void(0)" onclick="' + rootObj + '.setPage(' + (set[i] - 1) + ')">' + set[i] + '</a></li>';
                         }
                     }
 
                     if (set[set.length - 1] < total - 1) {
-                        html += '<li><a href="javascript:void(0)" onclick="' + root + '.shiftSetRight()">&hellip;</a></li>';
+                        html += '<li><a href="javascript:void(0)" onclick="' + rootObj + '.shiftSetRight()">&hellip;</a></li>';
                     }
                 }
 
                 if (currentPageIdx < total) {
-                    html += '<li class="pager-ul-last"><a href="javascript:void(0)" onclick="' + root + '.last()">' + total + '</a></li>';
+                    html += '<li class="pager-ul-last"><a href="javascript:void(0)" onclick="' + rootObj + '.last()">' + total + '</a></li>';
                 }
                 else {
                     html += '<li class="pager-ul-last"><span class="disabled">' + total + '</span></li>';
@@ -226,9 +221,17 @@
             that.page(page);
 
             // Get the current state but change the page value.
-            social.getHistory().setNavigationProperty('page', page || 0);
+            that.setNavigationProperty('page', page || 0);
 
             return true;
+        };
+	    
+		this.setNavigationProperty = function (property, value) {
+            var state = window.History.getState();
+
+            state.data[property] = value.toString();
+
+            that.history.pushState(state.data, null, that.getUrl(state.data));
         };
 
         this.page.subscribe(
@@ -243,8 +246,8 @@
             });
     };
 
-    dnn.social.PagingControl.DefaultSettings = {
+    PagingControl.DefaultSettings = {
         pageSetSize: 5,
         pageSize: 10
     };
-})(window.dnn);
+})(window.jQuery);

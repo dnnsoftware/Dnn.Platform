@@ -108,7 +108,6 @@
     <Compile Include="Services\FileUploadController.cs" />
     <Compile Include="Services\MessagingServiceController.cs" />
     <Compile Include="Services\CoreMessagingRouteMapper.cs" />
-    <Compile Include="Services\SocialController.cs" />
     <Compile Include="Services\SubscriptionsController.cs" />
     <Compile Include="Subscriptions.ascx.cs">
       <DependentUpon>Subscriptions.ascx</DependentUpon>
@@ -152,12 +151,11 @@
     <Content Include="Images\reply.png" />
     <Content Include="Images\right.png" />
     <Content Include="Scripts\CoreMessaging.js" />
-    <Content Include="Scripts\dnn.social.LocalizationController.js" />
-    <Content Include="Scripts\dnn.social.PagingControl.js" />
-    <Content Include="Scripts\dnn.subscriptions.SearchController.js" />
-    <Content Include="Scripts\dnn.subscriptions.SearchResult.js" />
-    <Content Include="Scripts\dnn.subscriptions.Subscriber.js" />
-    <Content Include="Scripts\dnn.subscriptions.Subscription.js" />
+    <Content Include="Scripts\LocalizationController.js" />
+    <Content Include="Scripts\PagingControl.js" />
+    <Content Include="Scripts\SearchController.js" />
+    <Content Include="Scripts\SearchResult.js" />
+    <Content Include="Scripts\Subscription.js" />
     <Content Include="Subscriptions.ascx" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>

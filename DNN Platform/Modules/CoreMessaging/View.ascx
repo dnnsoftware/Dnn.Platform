@@ -21,7 +21,10 @@
         <ul class="dnnAdminTabNav">
             <li><a href="#dnnCoreMessaging" data-bind="click: loadMessagesTab, attr: { title: TotalNewThreads() + '<%=LocalizeString("NewUnreadMessages") %>    '}"><span data-bind="    text: TotalNewThreads, visible: TotalNewThreads() > 0"></span><%=LocalizeString("Messages") %></a></li>
             <li><a href="#dnnCoreNotification" data-bind="click: loadNotificationsTab, attr: {title: TotalNotifications() + '<%=LocalizeString("TotalNotifications") %>    '}"><span data-bind="    text: TotalNotifications, visible: TotalNotifications() > 0"></span><%=LocalizeString("Notifications") %></a></li>
-            <li><a href="#dnnSubscriptions"><%=LocalizeString("Subscriptions") %></a></li>
+            <% if (ShowSubscriptionTab)
+               { %>
+			<li><a href="#dnnSubscriptions"><%= LocalizeString("Subscriptions") %></a></li>
+			<% } %>
         </ul>
         <!-- start core messaging -->
         <div class="coreMessaging" id="dnnCoreMessaging">
