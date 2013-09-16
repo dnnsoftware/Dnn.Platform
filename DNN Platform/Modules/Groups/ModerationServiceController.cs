@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.Groups
                             requireApproval = Convert.ToBoolean(_roleInfo.Settings["ReviewMembers"]);
 
 
-                        if (_roleInfo.IsPublic && !requireApproval)
+                        if ((_roleInfo.IsPublic || UserInfo.IsInRole(PortalSettings.AdministratorRoleName)) && !requireApproval)
                         {
                             roleController.AddUserRole(PortalSettings.PortalId, UserInfo.UserID, _roleInfo.RoleID, Null.NullDate);
                             roleController.UpdateRole(_roleInfo);
