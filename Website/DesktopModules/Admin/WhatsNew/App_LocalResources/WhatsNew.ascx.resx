@@ -2588,4 +2588,61 @@ corrected with each release. &lt;/p&gt;
     &lt;li&gt;None&lt;/li&gt;
 &lt;/ul&gt;</value>
   </data>
+  <data name="WhatsNew.07.01.02" xml:space="preserve">
+    <value>&lt;h3 class="SubSubHead"&gt;Major Highlights&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Added the ability to manage the Vanity URL prefix&lt;/li&gt;
+
+  &lt;li&gt;Added the ability to filter members in the member directory by role&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where the user could inadvertently click the login button multiple times&lt;/li&gt;
+
+  &lt;li&gt;Fixed issues where core classes could not be used in out of process cache provider&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where profile visibility submenu was not displayed correctly&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where the member directory was broken when Convert URL to lowercase setting was enabled&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where password checker didn’t work with unicode resource strings&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where ExecuteDataSet had a breaking change in DNN 7.0&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where Super User could not change personal profile URL&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where installing site with blank template caused error&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where upgrades failed when the ProfessionalPreview module is not installed&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where social media auth providers are not properly filling in profile properties&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where admin only content was not visible to Super User&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where user gets an access denied error after password reset&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where client resource manager failed to minify files&lt;/li&gt;
+
+  &lt;li&gt;Fixed issue where search didn’t work after adding search results to alternate page&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 class="SubSubHead"&gt;Security Fixes&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;None &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 class="SubSubHead"&gt;Updated Modules/Providers&lt;/h3&gt;
+
+&lt;h4 class="SubSubHead"&gt;Modules&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;None &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 class="SubSubHead"&gt;Providers&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;None &lt;/li&gt;
+&lt;/ul&gt;</value>
+  </data>
 </root>
