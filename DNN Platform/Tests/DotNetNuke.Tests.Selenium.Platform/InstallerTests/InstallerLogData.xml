@@ -3,7 +3,7 @@
 
   <settings
     name = "Test3"
-    browser = "chrome"
+    browser = "firefox"
     baseURL = "InstallerCETest3.lvh.me"
     InstallerLanguage = "en"
     Template = "Default Template"
@@ -13,7 +13,7 @@
     DatabaseServerName = "(local)"
     DatabaseName = "InstallerCETest3"
     DatabaseFilename = ""
-    ObjectQualifier = ""
+    ObjectQualifier = "dnn_"
     Security = "Integrated"
     DatabaseUserName = ""
     DatabasePassword = ""

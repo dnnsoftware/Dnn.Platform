@@ -2,7 +2,7 @@
 
 <Tests>
 
-  <settings name="BVT" browser="chrome" baseURL="ceBVTTrunk.lvh.me" InstallerLanguage="en" UserName="host"
+  <settings name="BVT" browser="firefox" baseURL="ceBVTTrunk.lvh.me" InstallerLanguage="en" UserName="host"
             Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
             DatabaseType="" DatabaseServerName="(local)" DatabaseName="ceBVTTrunk" DatabaseFilename="" ObjectQualifier="dnn_" Security=""
             DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" />

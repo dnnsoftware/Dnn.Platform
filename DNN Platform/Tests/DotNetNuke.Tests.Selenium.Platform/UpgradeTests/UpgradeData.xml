@@ -3,7 +3,7 @@
 
   <settings
     name = "Upgrade Test, Daily run"
-    browser = "chrome"
+    browser = "firefox"
     baseURL = "UpgradeCETest.dnndev.me"
     
     UserName = "host"

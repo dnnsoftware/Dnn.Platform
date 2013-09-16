@@ -310,7 +310,7 @@ namespace DotNetNuke.Entities.Urls
                                     //doesn't incorporate the parent path, then leave it alone
                                     childTabPath = childTabPath.Replace(profilePagePath, "");
                                     childTabPath = childTabPath.Replace("//", "/");
-                                    remainingPath += FriendlyUrlController.EnsureLeadingChar("/", childTabPath);
+                                    urlName += FriendlyUrlController.EnsureLeadingChar("/", childTabPath);
                                 }
                             }
                         }

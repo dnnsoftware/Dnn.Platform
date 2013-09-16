@@ -538,10 +538,13 @@
                             <Items>
                                 <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem6" runat="server" DataField="Security_RequireValidProfile" />
                                 <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem7" runat="server" DataField="Security_CaptchaRegister" />
-                                <dnn:DnnFormPagesItem ID="DnnFormPagesItem1" runat="server" DataField="Redirect_AfterRegistration" />
                             </Items>
                         </dnn:dnnformeditor>
                     </fieldset>
+                    <div class="dnnFormItem">
+                        <dnn:label id="RedirectAfterRegistrationLabel" runat="server" controlname="cboHomeTabId" ResourceKey="Redirect_AfterRegistration"/>
+                        <dnn:DnnPageDropDownList ID="RedirectAfterRegistration" runat="server" />
+                    </div>
                 </div>
             </fieldset>
             <h2 id="dnnSitePanel-Login" class="dnnFormSectionHead">
@@ -555,11 +558,17 @@
                                 <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem8" runat="server" DataField="Security_CaptchaLogin" />
                                 <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem9" runat="server" DataField="Security_RequireValidProfileAtLogin" />
                                 <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem10" runat="server" DataField="Security_CaptchaRetrivePassword" />
-                                <dnn:DnnFormPagesItem ID="DnnFormPagesItem2" runat="server" DataField="Redirect_AfterLogin" />
-                                <dnn:DnnFormPagesItem ID="DnnFormPagesItem3" runat="server" DataField="Redirect_AfterLogout" />
                             </Items>
                         </dnn:dnnformeditor>
                     </fieldset>
+                    <div class="dnnFormItem">
+                        <dnn:label id="RedirectAfterLoginLabel" runat="server" controlname="cboHomeTabId" ResourceKey="Redirect_AfterLogin"/>
+                        <dnn:DnnPageDropDownList ID="RedirectAfterLogin" runat="server" />
+                    </div>
+                    <div class="dnnFormItem">
+                        <dnn:label id="RedirectAfterLogoutLabel" runat="server" controlname="cboHomeTabId" ResourceKey="Redirect_AfterLogout"/>
+                        <dnn:DnnPageDropDownList ID="RedirectAfterLogout" runat="server" />
+                    </div>
                 </div>
             </fieldset>
             <h2 id="dnnSitePanel-Profile" class="dnnFormSectionHead">

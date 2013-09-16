@@ -30,7 +30,7 @@ using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-using DotNetNuke.Common;
+using DotNetNuke.Collections;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -330,73 +330,79 @@ namespace DesktopModules.Admin.Portals
 
         private void BindPortal(int portalId, string activeLanguage)
         {
-            //Ensure localization
-            DataProvider.Instance().EnsureLocalizationExists(portalId, activeLanguage);
-
             var portalController = new PortalController();
             var portal = portalController.GetPortal(portalId, activeLanguage);
 
-            BindDetails(portal);
-
-            BindMarketing(portal);
-
-            ctlLogo.FilePath = portal.LogoFile;
-            ctlLogo.FileFilter = Globals.glbImageFileTypes;
-            ctlBackground.FilePath = portal.BackgroundFile;
-            ctlBackground.FileFilter = Globals.glbImageFileTypes;
-            ctlFavIcon.FilePath = new FavIcon(portal.PortalID).GetSettingPath();
-            chkSkinWidgestEnabled.Checked = PortalController.GetPortalSettingAsBoolean("EnableSkinWidgets", portalId, true);
-
-            BindSkins(portal);
-
-            BindPages(portal, activeLanguage);
-
-            lblHomeDirectory.Text = portal.HomeDirectory;
-
-            optUserRegistration.SelectedIndex = portal.UserRegistration;
-			chkEnableRegisterNotification.Checked = PortalController.GetPortalSettingAsBoolean("EnableRegisterNotification", portalId, true);
-
-            BindPaymentProcessor(portal);
-
-            BindUsability(portal);
-
-            BindMessaging(portal);
-
-            var roleController = new RoleController();
-            cboAdministratorId.DataSource = roleController.GetUserRoles(portalId, null, portal.AdministratorRoleName);
-            cboAdministratorId.DataBind(portal.AdministratorId.ToString());
-
-            //PortalSettings for portal being edited
-            var portalSettings = new PortalSettings(portal);
-
-	        chkHideLoginControl.Checked = portalSettings.HideLoginControl;
-
-            cboTimeZone.DataBind(portalSettings.TimeZone.Id);
-
-
-            if (UserInfo.IsSuperUser)
+            if (Page.IsPostBack == false)
             {
-                BindAliases(portal);
+                //Ensure localization
+                DataProvider.Instance().EnsureLocalizationExists(portalId, activeLanguage);
 
-                BindSSLSettings(portal);
 
-                BindHostSettings(portal);
-              
+                BindDetails(portal);
+
+                BindMarketing(portal);
+
+                ctlLogo.FilePath = portal.LogoFile;
+                ctlLogo.FileFilter = Globals.glbImageFileTypes;
+                ctlBackground.FilePath = portal.BackgroundFile;
+                ctlBackground.FileFilter = Globals.glbImageFileTypes;
+                ctlFavIcon.FilePath = new FavIcon(portal.PortalID).GetSettingPath();
+                chkSkinWidgestEnabled.Checked = PortalController.GetPortalSettingAsBoolean("EnableSkinWidgets", portalId, true);
+
+                BindSkins(portal);
+
+                BindPages(portal, activeLanguage);
+
+                lblHomeDirectory.Text = portal.HomeDirectory;
+
+                optUserRegistration.SelectedIndex = portal.UserRegistration;
+                chkEnableRegisterNotification.Checked = PortalController.GetPortalSettingAsBoolean("EnableRegisterNotification", portalId, true);
+
+                BindPaymentProcessor(portal);
+
+                BindUsability(portal);
+
+                BindMessaging(portal);
+
+                var roleController = new RoleController();
+                cboAdministratorId.DataSource = roleController.GetUserRoles(portalId, null, portal.AdministratorRoleName);
+                cboAdministratorId.DataBind(portal.AdministratorId.ToString());
+
+                //PortalSettings for portal being edited
+                var portalSettings = new PortalSettings(portal);
+
+                chkHideLoginControl.Checked = portalSettings.HideLoginControl;
+
+                cboTimeZone.DataBind(portalSettings.TimeZone.Id);
+
+
+                if (UserInfo.IsSuperUser)
+                {
+                    BindAliases(portal);
+
+                    BindSSLSettings(portal);
+
+                    BindHostSettings(portal);
+
+                }
+
+                BindUrlSettings(portal);
+
+                SiteSettingAdvancedSettingExtensionControl.BindAction(portalId, TabId, ModuleId);
+                SiteSettingsTabExtensionControl.BindAction(portalId, TabId, ModuleId);
+
+                LoadStyleSheet(portal);
+
+                ctlAudit.Entity = portal;
+
+                var overrideDefaultSettings = Boolean.Parse(PortalController.GetPortalSetting(ClientResourceSettings.OverrideDefaultSettingsKey, portalId, "false"));
+                chkOverrideDefaultSettings.Checked = overrideDefaultSettings;
+                BindClientResourceManagementUi(portal.PortalID, overrideDefaultSettings);
+                ManageMinificationUi();
             }
-            
-            BindUrlSettings(portal);
 
-            SiteSettingAdvancedSettingExtensionControl.BindAction(portalId, TabId, ModuleId);
-            SiteSettingsTabExtensionControl.BindAction(portalId, TabId, ModuleId);
-
-            LoadStyleSheet(portal);
-
-            ctlAudit.Entity = portal;
-
-            var overrideDefaultSettings = Boolean.Parse(PortalController.GetPortalSetting(ClientResourceSettings.OverrideDefaultSettingsKey, portalId, "false"));
-            chkOverrideDefaultSettings.Checked = overrideDefaultSettings;
-            BindClientResourceManagementUi(portal.PortalID, overrideDefaultSettings);
-            ManageMinificationUi();
+            BindUserAccountSettings(portal, activeLanguage);
         }
 
         private void BindClientResourceManagementUi(int portalId, bool overrideDefaultSettings)
@@ -509,16 +515,16 @@ namespace DesktopModules.Admin.Portals
             optControlPanelSecurity.Select(PortalController.GetPortalSetting("ControlPanelSecurity", portal.PortalID, "MODULE"), false);
         }
 
-        private void BindUserAccountSettings(int portalId)
+        private void BindUserAccountSettings(PortalInfo portal, string activeLanguage)
         {
             if (!Page.IsPostBack)
             {
-                var settings = UserController.GetUserSettings(portalId);
+                var settings = UserController.GetUserSettings(portal.PortalID);
 
                 basicRegistrationSettings.DataSource = settings;
                 basicRegistrationSettings.DataBind();
 
-                var setting = PortalController.GetPortalSettingAsInteger("Registration_RegistrationFormType", portalId, 0);
+                var setting = PortalController.GetPortalSettingAsInteger("Registration_RegistrationFormType", portal.PortalID, 0);
                 registrationFormType.Select(setting.ToString(CultureInfo.InvariantCulture));
 
                 standardRegistrationSettings.DataSource = settings;
@@ -527,7 +533,7 @@ namespace DesktopModules.Admin.Portals
                 validationRegistrationSettings.DataSource = settings;
                 validationRegistrationSettings.DataBind();
 
-                var customRegistrationFields = PortalController.GetPortalSetting("Registration_RegistrationFields", portalId, String.Empty);
+                var customRegistrationFields = PortalController.GetPortalSetting("Registration_RegistrationFields", portal.PortalID, String.Empty);
 
                 CustomRegistrationFields = BuildCustomRegistrationFields(customRegistrationFields);
 
@@ -536,6 +542,26 @@ namespace DesktopModules.Admin.Portals
 
                 otherRegistrationSettings.DataSource = settings;
                 otherRegistrationSettings.DataBind();
+
+                //Set up special page lists
+                List<TabInfo> listTabs = TabController.GetPortalTabs(TabController.GetTabsBySortOrder(portal.PortalID, activeLanguage, true),
+                                                                     Null.NullInteger,
+                                                                     true,
+                                                                     "<" + Localization.GetString("None_Specified") + ">",
+                                                                     true,
+                                                                     false,
+                                                                     false,
+                                                                     false,
+                                                                     false);
+
+                var tabs = listTabs.Where(t => t.DisableLink == false).ToList();
+
+                var redirectTab = settings.GetValueOrDefault<int>("Redirect_AfterRegistration", -1);
+                if (redirectTab > 0)
+                {
+                    RedirectAfterRegistration.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
+                }
+                RedirectAfterRegistration.PortalId = portal.PortalID;
 
                 RequiresUniqueEmailLabel.Text = MembershipProviderConfig.RequiresUniqueEmail.ToString(CultureInfo.InvariantCulture);
                 PasswordFormatLabel.Text = MembershipProviderConfig.PasswordFormat.ToString();
@@ -551,7 +577,21 @@ namespace DesktopModules.Admin.Portals
                 loginSettings.DataSource = settings;
                 loginSettings.DataBind();
 
-                var urlSettings = new FriendlyUrlSettings(portalId);
+                redirectTab = settings.GetValueOrDefault<int>("Redirect_AfterLogin", -1);
+                if (redirectTab > 0)
+                {
+                    RedirectAfterLogin.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
+                }
+                RedirectAfterLogin.PortalId = portal.PortalID;
+
+                redirectTab = settings.GetValueOrDefault<int>("Redirect_AfterLogout", -1);
+                if (redirectTab > 0)
+                {
+                    RedirectAfterLogout.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
+                }
+                RedirectAfterLogout.PortalId = portal.PortalID;
+
+                var urlSettings = new FriendlyUrlSettings(portal.PortalID);
                 VanityUrlAlias.Text = String.Format("{0}/", PortalSettings.PortalAlias.HTTPAlias);
                 vanilyUrlPrefixTextBox.Text = urlSettings.VanityUrlPrefix;
                 VanityUrlExample.Text = String.Format("/{0}", LocalizeString("VanityUrlExample"));
@@ -766,6 +806,9 @@ namespace DesktopModules.Admin.Portals
             cboHomeTabId.UndefinedItem = undefinedItem;
             cboRegisterTabId.UndefinedItem = undefinedItem;
             cboUserTabId.UndefinedItem = undefinedItem;
+            RedirectAfterLogin.UndefinedItem = undefinedItem;
+            RedirectAfterRegistration.UndefinedItem = undefinedItem;
+            RedirectAfterLogout.UndefinedItem = undefinedItem;
         }
 
         private void EnableCompositeFilesChanged(object sender, EventArgs e)
@@ -839,13 +882,7 @@ namespace DesktopModules.Admin.Portals
                 
                 BindDesktopModules();
                 
-                //If this is the first visit to the page, populate the site data
-                if (Page.IsPostBack == false)
-                {
-                    BindPortal(_portalId, SelectedCultureCode);
-                }
-
-                BindUserAccountSettings(_portalId);
+                BindPortal(_portalId, SelectedCultureCode);
 
                 if (UserInfo.IsSuperUser)
                 {
@@ -1266,11 +1303,23 @@ namespace DesktopModules.Admin.Portals
                     {
                         PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                     }
+                    var redirectTabId = !String.IsNullOrEmpty(RedirectAfterRegistration.SelectedItem.Value) ?
+                                        RedirectAfterRegistration.SelectedItem.Value
+                                        : "-1";
+                    PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterRegistration", redirectTabId);
 
                     foreach (DnnFormItemBase item in loginSettings.Items)
                     {
                         PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                     }
+                    redirectTabId = !String.IsNullOrEmpty(RedirectAfterLogin.SelectedItem.Value) ?
+                                        RedirectAfterLogin.SelectedItem.Value
+                                        : "-1";
+                    PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogin", redirectTabId);
+                    redirectTabId = !String.IsNullOrEmpty(RedirectAfterLogout.SelectedItem.Value) ?
+                                        RedirectAfterLogout.SelectedItem.Value
+                                        : "-1";
+                    PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogout", redirectTabId);
 
                     PortalController.UpdatePortalSetting(_portalId, FriendlyUrlSettings.VanityUrlPrefixSetting, vanilyUrlPrefixTextBox.Text, false);
                     foreach (DnnFormItemBase item in profileSettings.Items)
