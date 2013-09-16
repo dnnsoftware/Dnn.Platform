@@ -32,6 +32,7 @@ namespace DotNetNuke.Services.Search.Controllers
     /// BaseResult to be implemented by the different Crawlers to provide Permission and Url Services 
     /// </summary>
     /// <remarks>The abstract methods in this Class will be called by Search Result engine for every Hit found in Search Index.</remarks>
+    [Serializable]
     public abstract class BaseResultController
     {
         #region Abstract
