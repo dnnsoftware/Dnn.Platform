@@ -30,7 +30,7 @@ using DotNetNuke.Data;
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     public class JavaScriptLibraryController 
-                    : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>
+                        : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>
                         , IJavaScriptLibraryController
     {
         string cacheKey = "JavaScriptLibraries";
@@ -58,7 +58,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return GetLibraries().SingleOrDefault(predicate);
         }
 
-        IEnumerable<JavaScriptLibrary> IJavaScriptLibraryController.GetLibraries(Func<JavaScriptLibrary, bool> predicate)
+        public IEnumerable<JavaScriptLibrary> GetLibraries(Func<JavaScriptLibrary, bool> predicate)
         {
             return GetLibraries().Where(predicate);
         }

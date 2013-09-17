@@ -26,6 +26,7 @@ using System.Xml.Serialization;
 
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
+    [Serializable]
     public class JavaScriptLibrary : IXmlSerializable
     {
         public int JavaScriptLibraryID { get; set; }

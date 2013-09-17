@@ -870,7 +870,7 @@ IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PackageTypes] WHER
 	END
 GO
 
-IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Subscriptions_Type') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}JavaScriptLibraries') AND OBJECTPROPERTY(id, N'IsTable') = 1)
 	BEGIN
 		CREATE TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries](
 			[JavaScriptLibraryID] [int] IDENTITY(1,1) NOT NULL,
@@ -922,26 +922,54 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
 	@CDNPath NVARCHAR(250)
 AS
 
-	UPDATE {databaseOwner}[{objectQualifier}JavaScriptLibraries]
-	   SET [PackageID] = @PackageID,
-			[LibraryName] = @LibraryName,
-			[Version] = @Version,
-			[MinFileName] = @MinFileName,
-			[DebugFileName] = @DebugFileName,
-			[CDNPath] = @CDNPath
-	 WHERE JavaScriptLibraryID = @JavaScriptLibraryID
+	IF EXISTS (SELECT JavaScriptLibraryID FROM {objectQualifier}JavaScriptLibraries WHERE JavaScriptLibraryID = @JavaScriptLibraryID)
+		BEGIN
+			UPDATE {databaseOwner}[{objectQualifier}JavaScriptLibraries]
+			   SET [PackageID] = @PackageID,
+					[LibraryName] = @LibraryName,
+					[Version] = @Version,
+					[MinFileName] = @MinFileName,
+					[DebugFileName] = @DebugFileName,
+					[CDNPath] = @CDNPath
+			 WHERE JavaScriptLibraryID = @JavaScriptLibraryID
+	 	END
+	ELSE
+		BEGIN
+			INSERT INTO {databaseOwner}[{objectQualifier}JavaScriptLibraries] (
+				[PackageID],
+				[LibraryName],
+				[Version],
+				[MinFileName],
+				[DebugFileName],
+				[CDNPath]
+			)
+			VALUES (
+				@PackageID,
+				@LibraryName,
+				@Version,
+				@MinFileName,
+				@DebugFileName,
+				@CDNPath
+			)
+			SET @JavaScriptLibraryID = (SELECT @@IDENTITY)
+		END
+		
+	SELECT @JavaScriptLibraryID
 GO
 
 /** DNN-2995 - SI: Performance improvement in dbo.GetUsersByEmail **/
+/*******************************************************************/
 
 ALTER TABLE {databaseOwner}{objectQualifier}Users
   ADD LowerEmail AS LOWER(Email) PERSISTED
 
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}{objectQualifier}Users(Email)
 
-
+GO
 
 /** DNN 3133 Search User Profile Crawler **/
+/******************************************/
+
 INSERT INTO {databaseOwner}{objectQualifier}SearchTypes
            ([SearchTypeName]
            ,[SearchResultClass]
@@ -949,6 +977,7 @@ INSERT INTO {databaseOwner}{objectQualifier}SearchTypes
      VALUES
            ('user', 'DotNetNuke.Services.Search.Controllers.UserResultController', 0)
 GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
