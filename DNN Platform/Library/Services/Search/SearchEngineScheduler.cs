@@ -23,7 +23,7 @@
 using System;
 using System.Data.SqlTypes;
 using System.Linq;
-
+using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Scheduling;
@@ -97,7 +97,10 @@ namespace DotNetNuke.Services.Search
                 ScheduleHistoryItem.Succeeded = false;
                 ScheduleHistoryItem.AddLogNote("<br/>EXCEPTION: " + ex.Message);
                 Errored(ref ex);
-                Exceptions.Exceptions.LogException(ex);
+                if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
+                {
+                    Exceptions.Exceptions.LogException(ex);
+                }
             }
         }
     }
