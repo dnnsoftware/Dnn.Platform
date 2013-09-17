@@ -399,7 +399,7 @@ namespace DotNetNuke.Modules.Journal
                 var ji = JournalController.Instance.GetJournalItem(ActiveModule.OwnerPortalID, UserInfo.UserID, postData.JournalId);
                 var jp = new JournalParser(PortalSettings, ActiveModule.ModuleID, ji.ProfileId, -1, UserInfo);
 
-                return Request.CreateResponse(HttpStatusCode.OK, jp.GetCommentRow(ci), "text/html");
+                return Request.CreateResponse(HttpStatusCode.OK, jp.GetCommentRow(ji, ci), "text/html");
             }
             catch (Exception exc)
             {
