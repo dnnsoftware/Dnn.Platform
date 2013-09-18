@@ -730,6 +730,7 @@ We are pleased to advise that you have been added as a Registered User to [Porta
 Portal Website Address: [Portal:URL]
 Username: [User:UserName]
 
+If you do not know, or cannot remember, your password, please go to http://[Portal:URL]/default.aspx?ctl=PasswordReset&amp;resetToken=[Membership:PasswordResetToken] to reset it.
 Thank you, we appreciate your support...
 
 [Portal:PortalName]

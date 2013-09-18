@@ -1,0 +1,31 @@
+﻿<?xml version ="1.0" encoding ="utf-8"?>
+
+<Tests>
+
+  <!--community edition / english / -->
+
+<settings
+    name = "Test2"
+    browser = "firefox"
+    baseURL = "InstallerCETest2.lvh.me"
+    InstallerLanguage = "en"
+    Template = "Default Template"
+    Language = "en"
+    DatabaseSetup = "Custom"
+    DatabaseType = "Default"
+    DatabaseServerName = "(local)"
+    DatabaseName = "InstallerCETest2"
+    DatabaseFilename = ""
+    ObjectQualifier = "dnn_"
+    Security = "Integrated"
+    DatabaseUserName = ""
+    DatabasePassword = ""
+    RunDatabaseAsDatabaseOwner = "yes"
+    UserName = "host"
+    Password = "dnnhost"
+    WebsiteName = "My Website"
+
+/>
+
+
+</Tests>

@@ -121,6 +121,8 @@ namespace DotNetNuke.Services.FileSystem
             }
             if (!String.IsNullOrEmpty(URL))
             {
+                URL = URL.Replace(@"\", @"/");
+
                 //update clicks, this must be done first, because the url tracker works with unmodified urls, like tabid, fileid etc
                 var objUrls = new UrlController();
                 objUrls.UpdateUrlTracking(_portalSettings.PortalId, URL, ModuleId, -1);

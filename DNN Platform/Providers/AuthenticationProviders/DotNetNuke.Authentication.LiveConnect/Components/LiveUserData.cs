@@ -36,17 +36,27 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
     {
         #region Overrides
 
-        [DataMember(Name = "first_name")]
-        public new string FirstName { get; set; }
+        public override string FirstName
+        {
+            get { return LiveFirstName; }
+            set { }
+        }
 
-        [DataMember(Name = "last_name")]
-        public new string LastName { get; set; }
+        public override string LastName
+        {
+            get { return LiveLastName; }
+            set { }
+        }
 
         #endregion
 
         [DataMember(Name = "link")]
         public Uri Link { get; set; }
+
+        [DataMember(Name = "first_name")]
+        private string LiveFirstName { get; set; }
+
+        [DataMember(Name = "last_name")]
+        private string LiveLastName { get; set; }
     }
-
-
 }

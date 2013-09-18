@@ -283,6 +283,18 @@ namespace DotNetNuke.Tests.Urls
             }
         }
 
+        internal static IEnumerable UrlRewrite_DoNotRedirect
+        {
+            get
+            {
+                var testData = new ArrayList();
+
+                GetTestsWithAliases("UrlRewrite", "DoNotRedirect", testData);
+
+                return testData;
+            }
+        }
+
         internal static IEnumerable UrlRewrite_ForceLowerCaseTestCases
         {
             get
@@ -391,7 +403,6 @@ namespace DotNetNuke.Tests.Urls
                 return testData;
             }
         }
-
 
         internal static IEnumerable UrlRewrite_VanityUrlTestCases
         {

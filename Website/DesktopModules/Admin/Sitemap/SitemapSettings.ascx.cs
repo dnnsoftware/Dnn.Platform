@@ -198,14 +198,10 @@ namespace DotNetNuke.Modules.Admin.Sitemap
                 {
                     LoadConfiguration();
 
-                    if (IsChildPortal(PortalSettings, Context))
-                    {
-                        lnkSiteMapUrl.Text = Globals.AddHTTP(Globals.GetDomainName(Request)) + @"/SiteMap.aspx?portalid=" + PortalId;
-                    }
-                    else
-                    {
-                        lnkSiteMapUrl.Text = Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias) + @"/SiteMap.aspx";
-                    }
+                    string portalAlias = !String.IsNullOrEmpty(PortalSettings.DefaultPortalAlias)
+                                        ? PortalSettings.DefaultPortalAlias
+                                        : PortalSettings.PortalAlias.HTTPAlias;
+                    lnkSiteMapUrl.Text = Globals.AddHTTP(portalAlias) + @"/SiteMap.aspx";
 
                     lnkSiteMapUrl.NavigateUrl = lnkSiteMapUrl.Text;
 

@@ -213,7 +213,7 @@ small {
     font-size: 80%;
 }
 
-/* Set text size in moodules*/
+/* Set text size in modules*/
 .Normal,
 .NormalDisabled,
 .NormalDeleted {
@@ -1879,7 +1879,7 @@ div.dnnTagsInput > div > input.dnnTagsInvalid {
     list-style-type: none;
 }
 
-    .dnnButtonDropdown-ul > li {
+    .dnnButtonDropdown-ul > li, .dnnButtonDropdown-ul > ul > li {
         padding: 8px;
         border-bottom: 1px solid #c9c9c9;
         color: #333;
@@ -1888,6 +1888,8 @@ div.dnnTagsInput > div > input.dnnTagsInvalid {
         list-style: none;
         margin: 0;
     }
+	.dnnButtonDropdown-ul > ul{ margin: 0;}
+	.dnnButtonDropdown-ul > ul > li{ padding-left: 16px;}
 
         .dnnButtonDropdown-ul > li:last-child {
             border-bottom: none !important;

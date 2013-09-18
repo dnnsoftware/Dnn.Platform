@@ -36,18 +36,42 @@ namespace DotNetNuke.Authentication.Twitter.Components
     {
         #region Overrides
 
-        [DataMember(Name = "screen_name")]
-        public new string DisplayName { get; set; }
+        public override string DisplayName
+        {
+            get { return ScreenName; }
+            set { }
+        }
 
-        [DataMember(Name = "lang")]
-        public new string Locale { get; set; }
+        public override string Locale
+        {
+            get { return LanguageCode; }
+            set { }
+        }
 
-        [DataMember(Name = "profile_image_url")]
-        public new string ProfileImage { get; set; }
+        public override string ProfileImage
+        {
+            get { return ProfileImageUrl; }
+            set { }
+        }
 
-        [DataMember(Name = "url")]
-        public new string Website { get; set; }
+        public override string Website
+        {
+            get { return Url; }
+            set { }
+        }
 
         #endregion
+
+        [DataMember(Name = "screen_name")]
+        private string ScreenName { get; set; }
+
+        [DataMember(Name = "lang")]
+        private string LanguageCode { get; set; }
+
+        [DataMember(Name = "profile_image_url")]
+        private string ProfileImageUrl { get; set; }
+
+        [DataMember(Name = "url")]
+        private string Url { get; set; }
     }
 }

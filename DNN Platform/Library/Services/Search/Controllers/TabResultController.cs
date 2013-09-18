@@ -35,6 +35,7 @@ namespace DotNetNuke.Services.Search.Controllers
     /// Search Result Controller for Tab Indexer
     /// </summary>
     /// <remarks></remarks>
+    [Serializable]
     public class TabResultController : BaseResultController
     {
         #region Abstract Class Implmentation

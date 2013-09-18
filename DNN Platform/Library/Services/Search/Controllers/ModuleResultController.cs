@@ -44,6 +44,7 @@ namespace DotNetNuke.Services.Search.Controllers
     /// Search Result Controller for Module Crawler
     /// </summary>
     /// <remarks></remarks>
+    [Serializable]
     public class ModuleResultController : BaseResultController
     {
         #region Abstract Class Implmentation

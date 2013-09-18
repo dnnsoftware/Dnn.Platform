@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tests>
+
+  <settings
+    name = "Upgrade Test, Daily run"
+    browser = "firefox"
+    baseURL = "UpgradeCETest.dnndev.me"
+    
+    UserName = "host"
+    Password = "dnnhost"
+/>
+
+</Tests>
+

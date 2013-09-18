@@ -21,8 +21,10 @@
 #region Usings
 
 using System;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Mail;
@@ -109,6 +111,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipPromoteToSuperuser != null)
             {
                 MembershipPromoteToSuperuser(this, e);
+                Response.Redirect(Globals.NavigateURL(), true);
             }
         }
 
@@ -126,6 +129,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipDemoteFromSuperuser != null)
             {
                 MembershipDemoteFromSuperuser(this, e);
+                Response.Redirect(Globals.NavigateURL(), true);
             }
         }
 
@@ -239,7 +243,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 cmdAuthorize.Visible = !UserMembership.Approved;
                 cmdPassword.Visible = !UserMembership.UpdatePassword;
             }
-            if (UserController.GetCurrentUserInfo().IsSuperUser)
+            if (UserController.GetCurrentUserInfo().IsSuperUser && UserController.GetCurrentUserInfo().UserID!=User.UserID)
             {
                 cmdToggleSuperuser.Visible = true;
                
@@ -251,7 +255,10 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     cmdToggleSuperuser.Text = Localization.GetString("PromoteToSuperUser", LocalResourceFile);
                 }
-
+                if (PortalController.GetPortalsByUser(User.UserID).Count == 0)
+                {
+                    cmdToggleSuperuser.Visible = false;
+                }
             }
             lastLockoutDate.Value = UserMembership.LastLockoutDate.Year > 2000 
                                         ? (object) UserMembership.LastLockoutDate 

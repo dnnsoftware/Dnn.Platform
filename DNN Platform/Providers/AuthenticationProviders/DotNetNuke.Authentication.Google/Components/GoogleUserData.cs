@@ -36,15 +36,33 @@ namespace DotNetNuke.Authentication.Google.Components
     {
         #region Overrides
 
-        [DataMember(Name = "given_name")]
-        public new string FirstName { get; set; }
+        public override string FirstName
+        {
+            get { return GivenName; }
+            set { }
+        }
 
-        [DataMember(Name = "family_name")]
-        public new string LastName { get; set; }
+        public override string LastName
+        {
+            get { return FamilyName; }
+            set { }
+        }
 
-        [DataMember(Name = "picture")]
-        public new string ProfileImage { get; set; }
+        public override string ProfileImage
+        {
+            get { return Picture; }
+            set { }
+        }
 
         #endregion
+
+        [DataMember(Name = "given_name")]
+        private string GivenName { get; set; }
+
+        [DataMember(Name = "family_name")]
+        private string FamilyName { get; set; }
+
+        [DataMember(Name = "picture")]
+        private string Picture { get; set; }
     }
 }

@@ -99,7 +99,7 @@
             var url = "";
             var userId = self.UserId();
             if (userId != undefined) {
-                url = profileUrl.replace(profileUrlUserToken, self.UserId().toString());
+                url = profileUrl.replace(new RegExp(profileUrlUserToken, "gi"), self.UserId().toString());
             }
             return url;
         }, this);

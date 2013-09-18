@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("Download", LocalResourceFile),
                         Value = "Download",
-                        CssClass = "permission_READ permission_BROWSE onlyFiles",
+                        CssClass = "permission_READ permission_BROWSE",
                         ImageUrl = IconController.IconURL("FileDownload", "16x16", "Black")
                     },    
                 new DnnMenuItem

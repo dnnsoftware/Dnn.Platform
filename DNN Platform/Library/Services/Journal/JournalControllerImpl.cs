@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -588,19 +589,15 @@ namespace DotNetNuke.Services.Journal
             //TODO: enable once the profanity filter is working properly.
             //objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
 
-            if (comment.Comment != null && comment.Comment.Length > 2000)
-            {
-                comment.Comment = comment.Comment.Substring(0, 1999);
-            }
             string xml = null;
             if (comment.CommentXML != null)
             {
                 xml = comment.CommentXML.OuterXml;
             }
-
-            comment.CommentId = _dataService.Journal_Comment_Save(comment.JournalId, comment.CommentId, comment.UserId,
-                                                                  comment.Comment, xml);
-            CommentInfo newComment = GetComment(comment.CommentId);
+            
+            comment.CommentId = _dataService.Journal_Comment_Save(comment.JournalId, comment.CommentId, comment.UserId, comment.Comment, xml, Null.NullDate);
+            
+            var newComment = GetComment(comment.CommentId);
             comment.DateCreated = newComment.DateCreated;
             comment.DateUpdated = newComment.DateUpdated;
         }

@@ -361,7 +361,7 @@ namespace DotNetNuke.Entities.Urls
 
                     string prefix = urlSegments[0];
 
-                    if (prefix == settings.VanityUrlPrefix && urlSegments.Length == 2)
+                    if (prefix == settings.VanityUrlPrefix && urlSegments.Length > 1)
                     {
                         string vanityUrl = urlSegments[1];
 
@@ -819,11 +819,11 @@ namespace DotNetNuke.Entities.Urls
                             bool found = false;
                             if (querystringCol.Count > 0)
                             {
-                                found = CheckTabPath(tabKeyVal + "?" + querystringCol.ToString().Split('&')[0].ToLowerInvariant(), result, settings, tabDict, ref newUrl);
+                                found = CheckTabPath(tabKeyVal.Replace(" ", settings.SpaceEncodingValue) + "?" + querystringCol.ToString().Split('&')[0].ToLowerInvariant(), result, settings, tabDict, ref newUrl);
                             }
                             if (!found)
                             {
-                                found = CheckTabPath(tabKeyVal, result, settings, tabDict, ref newUrl);
+                                found = CheckTabPath(tabKeyVal.Replace(" ", settings.SpaceEncodingValue), result, settings, tabDict, ref newUrl);
                             }
 
                             bool isSiteRootMatch = false;

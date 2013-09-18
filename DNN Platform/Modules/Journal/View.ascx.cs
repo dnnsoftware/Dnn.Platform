@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.Journal {
             if (!String.IsNullOrEmpty(Request.QueryString["userId"])) 
             {
                 ctlJournalList.ProfileId = Convert.ToInt32(Request.QueryString["userId"]);
-                if (!UserInfo.IsSuperUser)
+                if (!UserInfo.IsSuperUser && ctlJournalList.ProfileId != UserId)
                 {
                     ShowEditor = ShowEditor && AreFriends(UserController.GetUserById(PortalId, ctlJournalList.ProfileId), UserInfo);                    
                 }

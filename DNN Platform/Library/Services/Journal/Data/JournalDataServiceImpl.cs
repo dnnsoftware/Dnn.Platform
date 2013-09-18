@@ -150,12 +150,12 @@ namespace DotNetNuke.Services.Journal
             _provider.ExecuteNonQuery("Journal_Comment_Delete", journalId, commentId);
         }
 
-        public int Journal_Comment_Save(int journalId, int commentId, int userId, string comment, string xml)
+        public int Journal_Comment_Save(int journalId, int commentId, int userId, string comment, string xml, DateTime dateUpdated)
         {
-            commentId = _provider.ExecuteScalar<int>("Journal_Comment_Save", journalId, commentId, userId, comment, xml);
+            commentId = _provider.ExecuteScalar<int>("Journal_Comment_Save", journalId, commentId, userId, comment, xml, DataProvider.Instance().GetNull(dateUpdated));
             return commentId;
         }
-
+       
         public IDataReader Journal_Comment_List(int journalId)
         {
             return _provider.ExecuteReader("Journal_Comment_List", journalId);

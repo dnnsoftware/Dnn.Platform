@@ -391,9 +391,21 @@ namespace DotNetNuke.Security.Roles
                         Status = RoleStatus.Approved;
                         break;
                 }
-
-                UserCount = Null.SetNullInteger(dr["UserCount"]);
-                IsSystemRole = Null.SetNullBoolean(dr["IsSystemRole"]);
+                //check for values only relevant to UserRoles
+                var schema = dr.GetSchemaTable();
+                if (schema != null)
+                {
+                    if (schema.Select("ColumnName = 'UserCount'").Length > 0)
+                    {
+                        UserCount = Null.SetNullInteger(dr["UserCount"]);
+                    }
+                    if (schema.Select("ColumnName = 'IsSystemRole'").Length > 0)
+                    {
+                        IsSystemRole = Null.SetNullBoolean(dr["IsSystemRole"]);
+                    }
+                }
+                
+               
             }
             catch (IndexOutOfRangeException)
             {

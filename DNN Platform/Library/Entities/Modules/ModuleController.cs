@@ -1572,6 +1572,21 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// get all Module objects of a portal
+        /// </summary>
+        /// <param name="portalID">ID of the portal</param>
+        /// <returns>ArrayList of ModuleInfo objects</returns>
+        /// <history>
+        ///    [sleupold]   2007-09-24 commented
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public ArrayList GetRecycleModules(int portalID)
+        {
+            return CBO.FillCollection(dataProvider.GetRecycleModules(portalID), typeof(ModuleInfo));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Get ModuleInfo object of first module instance with a given friendly name of the module definition
         /// </summary>
         /// <param name="portalId">ID of the portal, where to look for the module</param>

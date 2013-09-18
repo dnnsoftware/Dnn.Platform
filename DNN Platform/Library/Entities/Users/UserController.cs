@@ -532,6 +532,16 @@ namespace DotNetNuke.Entities.Users
             return retValue;
         }
 
+        public static bool ResetAndChangePassword(UserInfo user, string oldPassword, string newPassword)
+        {
+            if (System.Web.Security.Membership.ValidateUser(user.Username, oldPassword))
+            {
+                string resetPassword = ResetPassword(user, String.Empty);
+                return ChangePassword(user, resetPassword, newPassword);
+            }
+            return false;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePasswordQuestionAndAnswer attempts to change the users password Question
@@ -643,12 +653,21 @@ namespace DotNetNuke.Entities.Users
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
-
+            //ensure valid GUID exists (covers case where password is randomly generated - has 24 hr validity as per other Admin user steps
+            var passwordExpiry = DateTime.Now.AddMinutes(1440);
+            var passwordGuid = Guid.NewGuid();
+            user.PasswordResetExpiration = passwordExpiry;
+            user.PasswordResetToken = passwordGuid;
+            
             //Create the User
             var createStatus = MembershipProvider.Instance().CreateUser(ref user);
 
             if (createStatus == UserCreateStatus.Success)
             {
+                //reapply guid/expiry (cleared when user is created)
+                user.PasswordResetExpiration = passwordExpiry;
+                user.PasswordResetToken = passwordGuid;
+                UpdateUser(user.PortalID, user);
                 var objEventLog = new EventLogController();
                 objEventLog.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_CREATED);
                 DataCache.ClearPortalCache(portalId, false);
@@ -1382,6 +1401,24 @@ namespace DotNetNuke.Entities.Users
             FixMemberPortalId(user, portalId);
 
             return retValue;
+        }
+
+        /// <summary>
+        /// reset and change password
+        /// used by admin/host users who do not need to supply an "old" password
+        /// </summary>
+        /// <param name="user">user being changed</param>
+        /// <param name="newPassword">new password</param>
+        /// <returns></returns>
+        public static bool ResetAndChangePassword(UserInfo user, string newPassword)
+        {
+            var portalSettings = PortalController.GetCurrentPortalSettings();
+            if (GetCurrentUserInfo().IsInRole(portalSettings.AdministratorRoleName))
+            {
+                string resetPassword = ResetPassword(user, String.Empty);
+                return ChangePassword(user, resetPassword, newPassword);
+            }
+            return false;
         }
 
         /// -----------------------------------------------------------------------------

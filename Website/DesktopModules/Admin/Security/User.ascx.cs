@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
@@ -378,6 +379,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     numSites.Text=String.Format(Localization.GetString("UpdateUserName", LocalResourceFile), portals.Count.ToString());
                     cboSites.Visible = true;
                     cboSites.DataSource = portals;
+                    cboSites.DataTextField = "PortalName";
                     cboSites.DataBind();
 
                     renameUserPortals.Visible = true;
@@ -419,7 +421,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 firstName.Visible = false;
                 lastName.Visible = false;
             }
-
 
             userForm.DataSource = User;
 			if (!Page.IsPostBack)
@@ -593,6 +594,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (AddUser)
             {
                 if (IsValid)
@@ -617,7 +619,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         //either update the username or update the user details
                         if (CanUpdateUsername())
                         {
-                            UserController.ChangeUsername(User.UserID, renameUserName.Value.ToString());
+                            UserController.ChangeUsername(User.UserID, HttpUtility.HtmlEncode(renameUserName.Value.ToString()));
                         }
 
                         UserController.UpdateUser(UserPortalID, User);

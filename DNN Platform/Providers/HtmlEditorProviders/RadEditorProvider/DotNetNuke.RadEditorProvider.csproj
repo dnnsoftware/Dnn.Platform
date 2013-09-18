@@ -187,7 +187,9 @@
     <Content Include="LinkClickUrlHandler.ashx" />
     <None Include="DotNetNuke.RadEditorProvider.dnn" />
     <None Include="RadSpell\en-US.tdf" />
-    <Content Include="Dialogs\LinkManager.ascx" />
+    <Content Include="Dialogs\LinkManager.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="module.css" />
     <Content Include="ReleaseNotes.txt" />
     <Content Include="SpellCheckHandler.ashx" />

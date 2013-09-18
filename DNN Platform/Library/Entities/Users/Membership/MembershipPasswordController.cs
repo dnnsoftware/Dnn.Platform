@@ -85,21 +85,21 @@ namespace DotNetNuke.Entities.Users.Membership
         /// </summary>
         /// <param name="portalId">portalid - futureproofing against any setting become site level</param>
         /// <param name="newPassword">users new password suggestion</param>
-        /// <returns>true if password is unique in users history, false otherwise</returns>
-        public bool PasswordIsUniqueInHistory(int userId, int portalId, string newPassword)
+        /// <returns>true if password has not been used in users history, false otherwise</returns>
+        public bool IsPasswordInHistory(int userId, int portalId, string newPassword)
         {
             Requires.NotNullOrEmpty("newPassword", newPassword);
-            bool isNewPassword = false;
+            bool isPreviouslyUsed = true;
             var settings = new MembershipPasswordSettings(portalId);
             if (settings.EnablePasswordHistory)
             {
-                if (IsPasswordPreviouslyUser(userId, newPassword) == false)
+                if (IsPasswordPreviouslyUsed(userId, newPassword) == false)
                 {
                     AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored);
-                    isNewPassword = true;
+                    isPreviouslyUsed = false;
                 }
             }
-            return isNewPassword;
+            return isPreviouslyUsed;
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Users.Membership
         /// </summary>
         /// <param name="password">users entered new password</param>
         /// <returns>true if previously used, false otherwise</returns>
-        public bool IsPasswordPreviouslyUser(int userId, string password)
+        public bool IsPasswordPreviouslyUsed(int userId, string password)
         {
             //use default algorithm (SHA1CryptoServiceProvider )
             HashAlgorithm ha = HashAlgorithm.Create();

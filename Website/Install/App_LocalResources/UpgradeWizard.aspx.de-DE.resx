@@ -16,7 +16,7 @@
     <value xml:space="preserve">Benutzerkonto</value>
   </data>
   <data name="BestPractices.Text">
-    <value xml:space="preserve">Sie sind dabei, Ihre Website auf die Verwendung einer aktuelleren Version von DotNetNuke anzupassen. Durch regelmäßige Aktualisierungen stellen Sie die Sicherheit und Leistungsfähigkeit der Anwendung sicher. Bevor Sie fortfahren, sollten Sie folgende Vorbereitungen ausgeführt haben: 
+    <value xml:space="preserve">Sie sind dabei, Ihre Website auf die Verwendung einer aktuelleren Version der Plattform anzupassen. Durch regelmäßige Aktualisierungen stellen Sie die Sicherheit und Leistungsfähigkeit der Anwendung sicher. Bevor Sie fortfahren, sollten Sie folgende Vorbereitungen ausgeführt haben: 
 Sie wenden Aktualisierungen zuerst auf eine Kopie Ihrer Website (und Datenbank) an.&lt;ul&gt;
 &lt;li&gt;Sie haben die Einstellungen Ihrer bestehenden Website dokumentiert.&lt;/li&gt;
 &lt;li&gt;Sie haben für alle Erweiterungen von Drittanbietern geprüft, ob diese mit der neuen Version kompatibel sind und ggf. aktualisierte Versionen installiert.&lt;/li&gt;
@@ -67,7 +67,7 @@ Sie wenden Aktualisierungen zuerst auf eine Kopie Ihrer Website (und Datenbank) 
     <value xml:space="preserve">Minuten</value>
   </data>
   <data name="Title.Text">
-    <value xml:space="preserve">DotNetNuke Update</value>
+    <value xml:space="preserve">Update</value>
   </data>
   <data name="Upgrade.Text">
     <value xml:space="preserve">Aktualisieren</value>
@@ -85,7 +85,7 @@ Sie wenden Aktualisierungen zuerst auf eine Kopie Ihrer Website (und Datenbank) 
     <value xml:space="preserve">Anmeldename des Systemverwalters:</value>
   </data>
   <data name="Version.Text">
-    <value xml:space="preserve">DotNetNuke Update - Version {0}</value>
+    <value xml:space="preserve">Update - Version {0}</value>
   </data>
   <data name="ViewWebsite.Text">
     <value xml:space="preserve">Website anzeigen</value>

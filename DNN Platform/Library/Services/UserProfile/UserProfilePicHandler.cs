@@ -116,9 +116,17 @@ namespace DotNetNuke.Services.UserProfile
 
             if (!File.Exists(sizedPhoto))
             {
-                //need to create the photo
-                File.Copy(fileInfo.FullName, sizedPhoto);
-                sizedPhoto = ImageUtils.CreateImage(sizedPhoto, height, width);
+                try
+                {
+                    //need to create the photo
+                    File.Copy(fileInfo.FullName, sizedPhoto);
+                    sizedPhoto = ImageUtils.CreateImage(sizedPhoto, height, width);
+                }
+                catch (Exception)
+                {
+                    //do nothing - stops exception when 2 requests on one page compete to copy large file
+                }
+               
             }
 
             switch (ext)

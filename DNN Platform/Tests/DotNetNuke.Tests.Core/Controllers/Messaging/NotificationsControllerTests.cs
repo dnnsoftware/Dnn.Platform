@@ -108,6 +108,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _dataProvider.Setup(d => d.GetProviderPath()).Returns("");
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            ComponentFactory.Container = null;
+            MessagingController.ClearInstance();
+            TestablePortalController.ClearInstance();
+            InternalMessagingController.ClearInstance();
+        }
+
         #endregion
 
         #region CreateNotificationType

@@ -158,6 +158,14 @@ namespace DotNetNuke.Entities
             LastModifiedOnDate = Null.SetNullDateTime(dr["LastModifiedOnDate"]);
         }
 
+		protected void CloneBaseProperties(BaseEntityInfo clonedItem, BaseEntityInfo originalItem)
+		{
+			clonedItem.CreatedByUserID = originalItem.CreatedByUserID;
+			clonedItem.CreatedOnDate = originalItem.CreatedOnDate;
+			clonedItem.LastModifiedByUserID = originalItem.LastModifiedByUserID;
+			clonedItem.LastModifiedOnDate = originalItem.LastModifiedOnDate;
+		}
+
         /// <summary>
         /// method used by cbo to fill readonly properties ignored by HydrateObject reflection
         /// </summary>

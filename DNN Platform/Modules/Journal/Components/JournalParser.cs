@@ -300,7 +300,27 @@ namespace DotNetNuke.Modules.Journal.Components
             sb.Append("<p>");
             string userUrl = Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] { "userId=" + comment.UserId });
             sb.AppendFormat("<a href=\"{1}\">{0}</a>", comment.DisplayName, userUrl);
-            sb.Append(comment.Comment.Replace("\n","<br />"));
+            
+            if (comment.CommentXML != null && comment.CommentXML.SelectSingleNode("/root/comment") != null)
+            {
+                string text;
+                var regex = new Regex(@"\<\!\[CDATA\[(?<text>[^\]]*)\]\]\>");
+                if (regex.IsMatch(comment.CommentXML.SelectSingleNode("/root/comment").InnerText))
+                {
+                    var match = regex.Match(comment.CommentXML.SelectSingleNode("/root/comment").InnerText);
+                    text = match.Groups["text"].Value;                
+                }
+                else
+                {
+                    text = comment.CommentXML.SelectSingleNode("/root/comment").InnerText;
+                }
+                sb.Append(text.Replace("\n", "<br />"));
+            }
+            else
+            {
+                sb.Append(comment.Comment.Replace("\n", "<br />"));
+            }           
+
             var timeFrame = DateUtils.CalculateDateForDisplay(comment.DateCreated);
             comment.DateCreated = CurrentUser.LocalTime(comment.DateCreated);
             sb.AppendFormat("<abbr title=\"{0}\">{1}</abbr>", comment.DateCreated, timeFrame);

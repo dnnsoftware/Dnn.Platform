@@ -1,47 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="4" MadCap:lastHeight="1675" MadCap:lastWidth="1477">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="4" MadCap:lastHeight="636" MadCap:lastWidth="1676">
     <head>
-        
     </head>
     <body>
-        <h1>Configuring Google Analytics/Google Analytics Pro</h1>
-        <p>How to configure either the Google Analytics or the Google Analytics Pro module. <MadCap:snippetText src="../../../../Resources/Snippets/Pro Edition.flsnp" /></p>
+        <h1>Configuring Google Analytics</h1>
+        <p>How to configure either the Google Analytics module. </p>
         <p>
-            <MadCap:snippetText src="../../../../Resources/Snippets/Prerequisite.flsnp" />You must have an existing Google Analytics account. Visit the Google Analytics website at <a href="http://www.google.com/analytics" target="_blank">http://www.google.com/analytics</a> and click the <strong>Create an Account</strong> button.</p>
-        <h2>Configuring Google Analytics</h2>
+            <MadCap:snippetText src="../../../../../../Resources/Snippets/Prerequisite.flsnp" />You must have an existing Google Analytics account. Visit the Google Analytics website at <a href="http://www.google.com/analytics" target="_blank">http://www.google.com/analytics</a> and click the <strong>Create an Account</strong> button.</p>
         <ol>
-            <li>Navigate to Admin &gt; Advanced Settings &gt; <img alt="" src="../../../../Resources/Images/Icons/GoogleAnalytics_16X16_Standard.png" /><strong> Google Analytics Pro</strong> - OR - Go to a <strong>Google Analytics Pro</strong> module.</li>
+            <li>Navigate to Admin &gt; Advanced Settings &gt; <img alt="" src="../../../../Resources/Images/Icons/GoogleAnalytics_16X16_Standard.png" /><strong> Google Analytics</strong> - OR - Go to a <strong>Google Analytics</strong> module.</li>
             <li>In the <b>Tracking ID</b> text box, enter the website tracking ID that you obtained from the welcome message sent by Google when you signed up for an account.</li>
             <li><b>Optional. </b>In the <b>URL Parameter</b> text box, enter the JavaScript code fragment that will be passed as a parameter to the page tracker. This is used to customize the value tracked in Google Analytics instead of the default location.</li>
             <li>
-                <MadCap:snippetText src="../../../../Resources/Snippets/Update.flsnp" />
+                <MadCap:snippetText src="../../../../../../Resources/Snippets/Update.flsnp" />
             </li>
         </ol>
         <p>
             <img alt="" width="668" height="301" src="../../../../Resources/Images/Admin/GoogleAnalytics/GoogleAnalytics_Config.png" />
         </p>
-        <h2>Configuring Google Analytics Pro</h2>
-        <ol>
-            <li>Login to your Google Analytics account.</li>
-            <li>Go to <a href="https://www.google.com/analytics/web/provision?et=&amp;hl=en&amp;authuser=#provision/SignUp/">https://www.google.com/analytics/web/provision?et=&amp;hl=en&amp;authuser=#provision/SignUp/</a> after logon.</li>
-            <li>Click the <b>Advanced Segments</b> button.</li>
-            <li>Go to you DNN site.</li>
-            <li>Navigate to Admin &gt; <b><img alt="" src="../../../../Resources/Images/Icons/GoogleAnalytics_16X16_Standard.png" /> Google Analytics Pro</b> - OR - Go to a <b>Google Analytics Pro</b> module.</li>
-            <li>In the <b>Tracking ID</b> text box, enter the website tracking ID that you obtained from the welcome message sent by Google when you signed up for an account.</li>
-            <li>At <strong>Enable</strong>, check <img alt="" src="../../../../Resources/Images/icons/check.png" /> the check box to enable Google Analytics Pro - OR - Uncheck <img alt="" src="../../../../Resources/Images/Icons/unchecked.png" /> the check box to disable Google Analytic Pro.
-    </li>
-            <li>Expand the <strong>Advanced Parameters</strong> section.</li>
-            <li><b>Optional. </b>In the <b>URL Parameter</b> text box, enter the JavaScript code fragment that will be passed as a parameter to the page tracker. This is used to customize the value tracked in Google Analytics instead of the default location.
-    A list of the available parameters is included below this tutorial.   
-    </li>
-            <li><strong>Optional.</strong> In the <strong>Domain Name</strong> text box, enter the domain name of this site to aggregate visits to multiple subdomains in a single profile as if they were a single site. Example: entering ".sample-domain.com" (notice the leading ".") allows you to track dogs.sample-domain.com and cats.sample-domain.com as a single entity.
-    </li>
-            <li>Click the <span style="text-decoration: underline;">Update</span> link to enable Google Analytics Pro and start collecting statistics.</li>
-        </ol>
-        <p>
-            <img alt="" src="../../../../Resources/Images/Admin/GoogleAnalytics/GoogleAnalyticsPro_Config.PNG" />
-        </p>
-        <p>Here is the list of variables that can be added to the Advanced Parameters section in the URL Parameter field <br />_setCustomVar(index, name, value, opt_scope)<br /><br /><strong>index</strong> (required): The slot for the custom variable, it can range from 1-5 for standard accounts or 1-50 for Premium accounts.</p>
-        <p><strong>name</strong> (required): The name for the custom variable, a string that identifies the custom variable and appears in the top-level Custom Variables report of the Analytics reports. For example, if you are using a slot to track gender, the name would be 'Gender'.<br /><br /><strong>value</strong> (required): The value for the custom variable, it appears in the table list of the UI for a selected variable name. Typically, you will have two or more values for a given name. Using the 'Gender' example above, the values would be either 'Male' or 'Female'.<br /><br /><strong>opt_scope</strong> (optional): The scope for the custom variable. As described above, the scope defines the level of user engagement with the site. It is a number whose possible values are 1 (visitor-level), 2 (session-level), or 3 (page-level). When left undefined, the custom variable scope defaults to page-level interaction.</p>
     </body>
 </html>

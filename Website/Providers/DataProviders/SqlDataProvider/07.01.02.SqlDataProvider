@@ -421,6 +421,182 @@ UPDATE {databaseOwner}[{objectQualifier}Lists] SET Text = 'DotNetNuke.Web.UI.Web
 	WHERE ListName = 'DataType' AND Value = 'DateTime'
 GO
 
+
+/***** Fix DNN-3474 SI: blog comments are truncated *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Comment_Save]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comment_Save]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comment_Save]
+	@JournalId int,
+	@CommentId int,
+	@UserId int,
+	@Comment nvarchar(max),
+	@CommentXML xml,
+	@DateUpdated datetime
+AS
+
+DECLARE @cxml xml
+DECLARE @xml xml
+DECLARE @cdataComment nvarchar(max)
+
+IF EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE JournalId = @JournalId AND CommentId = @CommentId)
+BEGIN
+	IF (LEN(@Comment) < 2000)
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+		SET Comment = @Comment,
+			CommentXML = @CommentXML,
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
+		WHERE JournalId = @JournalId AND CommentId = @CommentId
+	END
+	ELSE
+	BEGIN		
+		SET @cxml = (SELECT CommentXML FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE CommentId = @CommentId AND JournalId = @JournalId)
+		IF @cxml IS NULL 
+		BEGIN
+			SET @xml = '<root></root>';
+			UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+			SET CommentXML = @xml
+			WHERE JournalId = @JournalId AND CommentId = @CommentId
+		END
+
+		IF NOT EXISTS(SELECT CommentId FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE JournalId = @JournalId AND CommentId = @CommentID AND CommentXML.exist('/root/comment') = 1)
+		BEGIN
+			UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+			SET CommentXML.modify('insert <comment>NULL</comment> as last into (/root)[1]') 
+			WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root') = 1
+		END
+		
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
+		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+		SET CommentXML.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")'),
+			Comment = NULL,
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
+		WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root/comment') = 1
+	END
+END
+ELSE
+BEGIN
+	IF (LEN(@Comment) < 2000)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal_Comments]
+			(JournalId, UserId, Comment, CommentXML, DateCreated, DateUpdated)
+			VALUES
+			(@JournalId, @UserId, @Comment, @CommentXML, GETUTCDATE(), GETUTCDATE())
+		SET @CommentId = SCOPE_IDENTITY()
+	END
+	ELSE
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal_Comments]
+			(JournalId, UserId, Comment, CommentXML, DateCreated, DateUpdated)
+			VALUES
+			(@JournalId, @UserId, NULL, NULL, GETUTCDATE(), GETUTCDATE())
+		SET @CommentId = SCOPE_IDENTITY()		
+		
+		SET @cxml = (SELECT CommentXML FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE CommentId = @CommentId AND JournalId = @JournalId)
+		IF @cxml IS NULL 
+		BEGIN			
+			SET @xml = '<root></root>';
+			UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+			SET CommentXML = @xml
+			WHERE JournalId = @JournalId AND CommentId = @CommentId
+		END
+
+		IF NOT EXISTS(SELECT CommentId FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE JournalId = @JournalId AND CommentId = @CommentID AND CommentXML.exist('/root/comment') = 1)
+		BEGIN
+			UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+			SET CommentXML.modify('insert <comment>NULL</comment> as last into (/root)[1]') 
+			WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root') = 1
+		END
+		
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
+		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+		SET CommentXML.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")'),
+			Comment = NULL
+		WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root/comment') = 1
+	END		
+END
+SELECT @CommentId
+
+GO
+
+
+/*** DNN-2935: SI: Recycle Bin - Show Delete Date/Time ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModule]
+	@TabId      int,
+	@ModuleId   int,
+	@SoftDelete	bit
+AS
+IF @SoftDelete = 1
+	UPDATE {databaseOwner}{objectQualifier}TabModules
+		SET	IsDeleted = 1,
+			VersionGuid = newId(),
+			LastModifiedOnDate=GETDATE()
+	WHERE  TabId = @TabId
+		AND    ModuleId = @ModuleId
+ELSE
+	DELETE
+	FROM   {databaseOwner}{objectQualifier}TabModules 
+	WHERE  TabId = @TabId
+		AND    ModuleId = @ModuleId
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRecycleModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRecycleModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRecycleModules]
+
+	@PortalID int
+	
+AS
+SELECT  OwnerPortalID, PortalID, {objectQualifier}vw_Modules.TabID, {objectQualifier}vw_Modules.TabModuleID, 
+        {objectQualifier}vw_Modules.ModuleID, ModuleDefID, {objectQualifier}vw_Modules.ModuleOrder, {objectQualifier}vw_Modules.PaneName, {objectQualifier}vw_Modules.ModuleTitle, 
+        {objectQualifier}vw_Modules.CacheTime, {objectQualifier}vw_Modules.CacheMethod, {objectQualifier}vw_Modules.Alignment, {objectQualifier}vw_Modules.Color, {objectQualifier}vw_Modules.Border, 
+        {objectQualifier}vw_Modules.IconFile, AllTabs, {objectQualifier}vw_Modules.Visibility, {objectQualifier}vw_Modules.IsDeleted, {objectQualifier}vw_Modules.Header, 
+        {objectQualifier}vw_Modules.Footer, StartDate, EndDate, {objectQualifier}vw_Modules.ContainerSrc, {objectQualifier}vw_Modules.DisplayTitle, 
+        {objectQualifier}vw_Modules.DisplayPrint, {objectQualifier}vw_Modules.DisplaySyndicate, {objectQualifier}vw_Modules.IsWebSlice, {objectQualifier}vw_Modules.WebSliceTitle, 
+        {objectQualifier}vw_Modules.WebSliceExpiryDate, {objectQualifier}vw_Modules.WebSliceTTL, InheritViewPermissions, IsShareable, 
+        IsShareableViewOnly, DesktopModuleID, DefaultCacheTime, ModuleControlID, 
+        BusinessControllerClass, IsAdmin, SupportedFeatures, ContentItemID, 
+        [Content], ContentTypeID, ContentKey, Indexed, StateID, 
+        {objectQualifier}vw_Modules.CreatedByUserID, {objectQualifier}vw_Modules.CreatedOnDate, LastContentModifiedOnDate, {objectQualifier}vw_Modules.UniqueId, 
+        {objectQualifier}vw_Modules.VersionGuid, {objectQualifier}vw_Modules.DefaultLanguageGuid, {objectQualifier}vw_Modules.LocalizedVersionGuid, {objectQualifier}vw_Modules.CultureCode, 
+        {objectQualifier}TabModules.LastModifiedByUserID, {objectQualifier}TabModules.LastModifiedOnDate
+FROM    {objectQualifier}vw_Modules INNER JOIN
+        {objectQualifier}TabModules ON {objectQualifier}vw_Modules.TabModuleID = {objectQualifier}TabModules.TabModuleID
+WHERE  PortalId = @PortalID
+ORDER BY ModuleId
+
+Go
+
+
+/* update GetPortalsByUser Procedure */
+/*************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalsByUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalsByUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalsByUser]
+	@userID		int 
+AS
+
+	SELECT     {databaseOwner}{objectQualifier}vw_Portals.*
+FROM         {databaseOwner}{objectQualifier}UserPortals INNER JOIN
+                      {databaseOwner}{objectQualifier}vw_Portals ON 
+					  {databaseOwner}{objectQualifier}UserPortals.PortalId = {databaseOwner}{objectQualifier}vw_Portals.PortalID
+WHERE     ({databaseOwner}{objectQualifier}UserPortals.UserId = @userID)
+		AND ({databaseOwner}{objectQualifier}vw_Portals.DefaultLanguage = {databaseOwner}{objectQualifier}vw_Portals.CultureCode)
+
+
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

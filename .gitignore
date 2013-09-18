@@ -33,6 +33,9 @@
 *.dotCover
 *.ldf
 
+# git merge artifacts
+*.orig
+
 ## TODO: If you have NuGet Package Restore enabled, uncomment this
 #packages/
 

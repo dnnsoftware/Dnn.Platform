@@ -168,12 +168,11 @@ namespace DotNetNuke.Modules.Admin.Users
                 lblExpires.Text = PasswordConfig.PasswordExpiry > 0 ? User.Membership.LastPasswordChangeDate.AddDays(PasswordConfig.PasswordExpiry).ToLongDateString() : Localization.GetString("NoExpiry", LocalResourceFile);
             }
 			
-            //f Password retrieval is not supported then only the user can change
-            //their password, an Admin must Reset
-            if (((!MembershipProviderConfig.PasswordRetrievalEnabled) && IsAdmin && (!IsUser)))
+           if (((!MembershipProviderConfig.PasswordRetrievalEnabled) && IsAdmin && (!IsUser)))
             {
-                pnlChange.Visible = false;
-                cmdUpdate.Visible = false;
+                pnlChange.Visible = true;
+                cmdUpdate.Visible = true;
+                oldPasswordRow.Visible = false;
             }
             else
             {
@@ -551,30 +550,61 @@ namespace DotNetNuke.Modules.Admin.Users
                 OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordNotDifferent));
                 return;
             }
-            try
+            if (!IsAdmin)
             {
-                OnPasswordUpdated(UserController.ChangePassword(User, txtOldPassword.Text, txtNewPassword.Text)
-                                      ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
-                                      : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
-            }
-            catch (MembershipPasswordException exc)
-            {
-				//Password Answer missing
-                Logger.Error(exc);
+                try
+                {
+                    OnPasswordUpdated(UserController.ChangePassword(User, txtOldPassword.Text, txtNewPassword.Text)
+                                          ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
+                                          : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                }
+                catch (MembershipPasswordException exc)
+                {
+                    //Password Answer missing
+                    Logger.Error(exc);
 
-                OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
-            }
-			catch(ThreadAbortException)
-			{
-				//Do nothing we are not logging ThreadAbortxceptions caused by redirects    
-			}
-            catch (Exception exc)
-            {
-				//Fail
-                Logger.Error(exc);
+                    OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
+                }
+                catch (ThreadAbortException)
+                {
+                    //Do nothing we are not logging ThreadAbortxceptions caused by redirects    
+                }
+                catch (Exception exc)
+                {
+                    //Fail
+                    Logger.Error(exc);
 
-                OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                    OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                }
             }
+            else
+            {
+                try
+                {
+                    OnPasswordUpdated(UserController.ResetAndChangePassword(User, txtNewPassword.Text)
+                                          ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
+                                          : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                }
+                catch (MembershipPasswordException exc)
+                {
+                    //Password Answer missing
+                    Logger.Error(exc);
+
+                    OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
+                }
+                catch (ThreadAbortException)
+                {
+                    //Do nothing we are not logging ThreadAbortxceptions caused by redirects    
+                }
+                catch (Exception exc)
+                {
+                    //Fail
+                    Logger.Error(exc);
+
+                    OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                }
+            }
+           
         }
 
         /// -----------------------------------------------------------------------------

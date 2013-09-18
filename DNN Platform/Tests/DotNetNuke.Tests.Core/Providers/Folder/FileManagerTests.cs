@@ -415,58 +415,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _fileManager.CopyFile(_fileInfo.Object, _folderInfo.Object);
         }
 
-        [Test]
-        [Ignore]
-        public void CopyFile_Calls_FolderProvider_CopyFile_And_DataProvider_AddFile()
-        {
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _fileInfo.Setup(fi => fi.Size).Returns(Constants.FOLDER_ValidFileSize);
-            _fileInfo.Setup(fi => fi.Folder).Returns(Constants.FOLDER_ValidFolderRelativePath);
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_OtherValidFolderRelativePath);
-
-            _folderPermissionController.Setup(fpc => fpc.CanAddFolder(_folderInfo.Object)).Returns(true);
-            _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFileSize)).Returns(true);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFolder.Setup(mf => mf.CopyFile(Constants.FOLDER_ValidFolderRelativePath, Constants.FOLDER_ValidFileName, Constants.FOLDER_OtherValidFolderRelativePath, folderMapping)).Verifiable();
-
-            _mockFileManager.Setup(mfm => mfm.GetCurrentUserID()).Returns(Constants.USER_ValidId);
-            _mockFileManager.Setup(mfm => mfm.CopyContentItem(It.IsAny<int>())).Returns(Constants.CONTENT_ValidContentItemId);
-
-            _mockData.Setup(md => md.AddFile(
-                            It.IsAny<int>(),
-                            It.IsAny<Guid>(),
-                            It.IsAny<Guid>(),
-                            Constants.FOLDER_ValidFileName,
-                            It.IsAny<string>(),
-                            Constants.FOLDER_ValidFileSize,
-                            It.IsAny<int>(),
-                            It.IsAny<int>(),
-                            It.IsAny<string>(),
-                            Constants.FOLDER_OtherValidFolderRelativePath,
-                            It.IsAny<int>(),
-                            Constants.USER_ValidId,
-                            It.IsAny<string>(),
-                            It.IsAny<DateTime>(),
-                            It.IsAny<string>(),
-                            It.IsAny<DateTime>(),
-                            It.IsAny<DateTime>(),
-                            It.IsAny<bool>(),
-                            It.IsAny<int>())).Verifiable();
-
-            _mockFileManager.Object.CopyFile(_fileInfo.Object, _folderInfo.Object);
-
-            _mockFolder.Verify();
-            _mockData.Verify();
-        }
-
         #endregion
 
         #region DeleteFile

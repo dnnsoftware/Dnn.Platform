@@ -65,7 +65,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     if (GetUrl(PortalID, Url) == null)
                     {
-                        DataProvider.Instance().AddUrl(PortalID, Url);
+                        DataProvider.Instance().AddUrl(PortalID, Url.Replace(@"\", @"/"));
                     }
                 }
                 UrlTrackingInfo objURLTracking = GetUrlTracking(PortalID, Url, ModuleID);

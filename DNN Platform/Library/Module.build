@@ -7,6 +7,7 @@
     <WebsiteConfigPath>$(WebsitePath)\Config</WebsiteConfigPath>
     <WebsiteInstallPath>$(WebsitePath)\Install</WebsiteInstallPath>
     <WebsiteHostPortalPath>$(WebsitePath)\Portals\_default</WebsiteHostPortalPath>
+    <WebsiteRadSpellPath>$(WebsitePath)\App_Data\RadSpell</WebsiteRadSpellPath>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\MSBuild.Community.Tasks.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="GetFiles;DebugProject;ReleasePackages">
@@ -16,11 +17,13 @@
     <ItemGroup>
       <Templates Include="..\Library\Templates\*.*" />
       <Database Include="..\Website\App_Data\Database.mdf" />
+      <RadSpell Include="..\Website\App_Data\RadSpell\*.tdf" />
       <ConfigFiles Include="..\Website\Config\*.*" />
       <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
       <ConfigMergeFiles Include="..\Website\Install\Config\*.*" />
       <WebConfig Include="$(WebsitePath)\we*.config" />
       <WebsiteDatabase Include="$(WebsiteAppDataPath)\Data*ase.mdf" />
+      <WebsiteRadSpell Include="$(WebsiteRadSpellPath)\*.tdf" />
       <WebsiteTemplates Include="$(WebsiteHostPortalPath)\Default Website*.*" />
       <WebsiteConfig Include="$(WebsiteConfigPath)\*.config" />
       <WebsiteCleanup Include="$(WebsiteCleanupPath)\0*.txt" />
@@ -48,6 +51,7 @@
     <Copy SourceFiles="..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll" DestinationFolder="$(WebsiteBinPath)" />
 
     <Copy SourceFiles="@(Database)" DestinationFolder="$(WebsiteAppDataPath)" Condition="'@(WebsiteDatabase)' == ''" />
+    <Copy SourceFiles="@(RadSpell)" DestinationFolder="$(WebsiteRadSpellPath)" Condition="'@(WebsiteRadSpell)' == ''" />
     <Copy SourceFiles="@(Templates)" DestinationFolder="$(WebsiteHostPortalPath)" Condition="'@(WebsiteTemplates)' == ''"/>
     <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsiteConfigPath)" Condition="'@(WebsiteConfig)' == ''"/>
     <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteInstallPath)\Cleanup" Condition="'@(WebsiteCleanup)' == ''" />

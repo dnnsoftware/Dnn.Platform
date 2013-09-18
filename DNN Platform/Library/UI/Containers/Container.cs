@@ -602,7 +602,7 @@ namespace DotNetNuke.UI.Containers
         /// registered ModuleActionEventListener delegate.
         /// 
         /// Note: with the refactoring of this to the Container, this could be handled at the container level.
-        /// However, for legacy purposes this is left this way, as many moodules would have registered their
+        /// However, for legacy purposes this is left this way, as many modules would have registered their
         /// listeners on the Container directly, rather than through the helper method in PortalModuleBase.</remarks>
         /// <history>
         /// 	[cnurse]	07/04/2005	Documented

@@ -98,6 +98,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             _mockPortalTemplateIO = new Mock<IPortalTemplateIO>();
             PortalTemplateIO.SetTestableInstance(_mockPortalTemplateIO.Object);
         }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PortalTemplateIO.ClearInstance();
+        }
         
         [Test]
         public void NoTemplatesReturnsEmptyList()

@@ -2810,6 +2810,9 @@ namespace DotNetNuke.Services.Upgrade
 
             int advancedFeaturesTabID = TabController.GetTabByTabPath(Null.NullInteger, "//Host//ProfessionalFeatures", Null.NullString);
 
+			int moduleDefID = AddModuleDefinition("ProfessionalPreview", "", "ProfessionalPreview", false, true);
+			AddModuleControl(moduleDefID, "", "", "DesktopModules/Admin/ProfessionalPreview/ProfessionalPreview.ascx", "~/images/icon_profeatures_16px.png", SecurityAccessLevel.Host, 0);
+
             //Add Pages under Advanced Features Tab
             AddProfessionalPreviewPage(advancedFeaturesTabID,
                         "//Host//ProfessionalFeatures//AdvancedUrlManagement",

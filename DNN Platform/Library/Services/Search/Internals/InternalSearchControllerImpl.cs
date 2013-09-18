@@ -203,7 +203,6 @@ namespace DotNetNuke.Services.Search.Internals
         {
             Requires.NotNull("SearchDocument", searchDocument);
             Requires.NotNullOrEmpty("UniqueKey", searchDocument.UniqueKey);
-            Requires.NotNullOrEmpty("Title", searchDocument.Title);
             Requires.NotNegative("SearchTypeId", searchDocument.SearchTypeId);
             Requires.PropertyNotEqualTo("searchDocument", "SearchTypeId", searchDocument.SearchTypeId, 0);
             Requires.PropertyNotEqualTo("searchDocument", "ModifiedTimeUtc", searchDocument.ModifiedTimeUtc.ToString(CultureInfo.InvariantCulture), DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
@@ -436,6 +435,7 @@ namespace DotNetNuke.Services.Search.Internals
             AddIntField(doc, searchDocument.ModuleDefId, Constants.ModuleDefIdTag);
             AddIntField(doc, searchDocument.ModuleId, Constants.ModuleIdTag);
             AddIntField(doc, searchDocument.AuthorUserId, Constants.AuthorIdTag);
+            AddIntField(doc, searchDocument.RoleId, Constants.RoleIdTag);
 
             if (searchDocument.AuthorUserId > 0)
             {

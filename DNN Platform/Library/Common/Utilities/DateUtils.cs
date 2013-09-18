@@ -1,5 +1,6 @@
 ﻿using System;
 
+using DotNetNuke.Data;
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Common.Utilities
@@ -14,12 +15,12 @@ namespace DotNetNuke.Common.Utilities
 
         private static TimeSpan _drift = TimeSpan.MinValue;
 
-        private static DateTime GetDatabaseTime()
+        public static DateTime GetDatabaseTime()
         {
             if (DateTime.UtcNow >= _lastUpdate + TimeSpan.FromMinutes(5))
             {
                 _lastUpdate = DateTime.UtcNow;
-                _drift = DateTime.UtcNow - Services.SystemDateTime.SystemDateTime.GetCurrentTimeUtc();
+                _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
             }
 
             return DateTime.UtcNow + _drift;

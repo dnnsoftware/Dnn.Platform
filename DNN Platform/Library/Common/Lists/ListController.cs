@@ -144,13 +144,18 @@ namespace DotNetNuke.Common.Lists
 
         public void DeleteList(string ListName, string ParentKey)
         {
-            ListInfo list = GetListInfo(ListName, ParentKey);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("ListName", ListName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
-            DataProvider.Instance().DeleteList(ListName, ParentKey);
-            if (list != null)
-                ClearCache(list.PortalID);
+            DeleteList(ListName, ParentKey, Null.NullInteger);
         }
+
+		public void DeleteList(string ListName, string ParentKey, int portalId)
+		{
+			ListInfo list = GetListInfo(ListName, ParentKey, portalId);
+			var objEventLog = new EventLogController();
+			objEventLog.AddLog("ListName", ListName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
+			DataProvider.Instance().DeleteList(ListName, ParentKey);
+			if (list != null)
+				ClearCache(list.PortalID);
+		}
 
         public void DeleteList(ListInfo list, bool includeChildren)
         {
@@ -175,7 +180,7 @@ namespace DotNetNuke.Common.Lists
             //Delete items in reverse order so deeper descendants are removed before their parents
             for (int i = lists.Count - 1; i >= 0; i += -1)
             {
-                DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey);
+				DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey, lists.Values[i].PortalID);
             }
         }
 

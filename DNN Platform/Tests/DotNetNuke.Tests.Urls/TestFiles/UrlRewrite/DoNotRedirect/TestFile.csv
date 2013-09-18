@@ -1,0 +1,5 @@
+﻿Test,					DoNotRedirect,		UseBaseFriendlyUrls,	Scheme,		Page Name,		Test Url,										Expected Url,						Status,		Final Url,						RedirectReason
+Default,				False,				False,					http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId},		{defaultPage}?TabId={tabId},		301,		http://{alias}/About-Us,		Unfriendly_Url_2
+DoNotRedirect,			True,				False,					http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId},		{defaultPage}?TabId={tabId},		200
+UseBaseFriendlyUrls,	False,				/AboutUs;,				http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId},		{defaultPage}?TabId={tabId},		200
+Both,					True,				/AboutUs;,				http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId},		{defaultPage}?TabId={tabId},		200

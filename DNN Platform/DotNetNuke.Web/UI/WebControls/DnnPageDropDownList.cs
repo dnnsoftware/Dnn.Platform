@@ -37,9 +37,23 @@ namespace DotNetNuke.Web.UI.WebControls
             if (InternalPortalId.HasValue)
             {
                 Services.Parameters.Add("PortalId", InternalPortalId.Value.ToString(CultureInfo.InvariantCulture));
-            }
+			}
+
+			Services.Parameters.Add("includeDisabled", IncludeDisabledTabs.ToString().ToLowerInvariant());
+			Services.Parameters.Add("includeAllTypes", IncludeAllTabTypes.ToString().ToLowerInvariant());
+
             base.OnPreRender(e);
         }
+
+		/// <summary>
+		/// Whether include pages which are disabled.
+		/// </summary>
+		public bool IncludeDisabledTabs { get; set; }
+
+		/// <summary>
+		/// Whether include pages which tab type is not normal.
+		/// </summary>
+		public bool IncludeAllTabTypes { get; set; }
 
         public int PortalId
         {

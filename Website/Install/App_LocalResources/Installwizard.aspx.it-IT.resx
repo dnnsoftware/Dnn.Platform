@@ -16,7 +16,7 @@
     <value xml:space="preserve">Inserire le Informazioni dell'Account</value>
   </data>
   <data name="AccountInfoIntro.Text">
-    <value xml:space="preserve">Per configurare Installazione DotNetNuke, inserire le seguenti informazioni.</value>
+    <value xml:space="preserve">Per configurare l'installazione, inserire le seguenti informazioni.</value>
   </data>
   <data name="AdminInfo.Text">
     <value xml:space="preserve">Informazioni Amministrative</value>
@@ -61,7 +61,7 @@
     <value xml:space="preserve">Nome del file di database.</value>
   </data>
   <data name="DatabaseFilename.Required">
-    <value xml:space="preserve">Nome File Dayabase obbligatorio</value>
+    <value xml:space="preserve">Nome File Database obbligatorio</value>
   </data>
   <data name="DatabaseFilename.Text">
     <value xml:space="preserve">Nome File</value>
@@ -208,7 +208,7 @@
     <value xml:space="preserve">Fatto</value>
   </data>
   <data name="InstallationIntroInfo.Text">
-    <value xml:space="preserve">DotNetNuke si sta installando. Grazie per la vostra pazienza ...</value>
+    <value xml:space="preserve">Il prodotto si sta installando. Grazie per la vostra pazienza ...</value>
   </data>
   <data name="InstallingDataBaseScriptStep.Text">
     <value xml:space="preserve">Installazione degli Script Database</value>
@@ -226,7 +226,10 @@
     <value xml:space="preserve">Installazione degli script di Database</value>
   </data>
   <data name="InstallTitle.Text">
-    <value xml:space="preserve">Installazione DotNetNuke</value>
+    <value xml:space="preserve">Installazione</value>
+  </data>
+  <data name="InstallVersion.Text">
+    <value xml:space="preserve">Aggiungi InstallVersion</value>
   </data>
   <data name="IntroDetail.Text">
     <value xml:space="preserve">&lt;a class="videoLink" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Vedi Video Installazione&lt;/a&gt;</value>
@@ -292,7 +295,7 @@
     <value xml:space="preserve">Nessuna installazione Log</value>
   </data>
   <data name="PageTitle.Text">
-    <value xml:space="preserve">Installazione DotNetNuke</value>
+    <value xml:space="preserve">Installazione</value>
   </data>
   <data name="Password.Help">
     <value xml:space="preserve">La password per l'account super user.</value>
