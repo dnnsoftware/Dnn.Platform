@@ -38,7 +38,7 @@
       <HintPath>..\..\Components\SharpZipLib\bin\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>..\..\..\packages\Moq.4.1.1308.2321\lib\net40\Moq.dll</HintPath>
+      <HintPath>..\..\..\packages\Moq.4.1.1309.1617\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -83,6 +83,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
