@@ -203,8 +203,11 @@ namespace DotNetNuke.Services.FileSystem
 
             if (folderPath == newFolderPath) return;
 
-            var sourceFolder = new FolderInfo { FolderPath = folderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID };
-            var destinationFolder = new FolderInfo { FolderPath = newFolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID };
+            var sourceFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
+			var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
+
+			Requires.NotNull("sourceFolder", sourceFolder);
+			Requires.NotNull("destinationFolder", destinationFolder);
 
             using (var fileContent = GetFileStream(sourceFolder, fileName))
             {
