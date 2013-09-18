@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Moq</id>
-    <version>4.1.1308.2321</version>
+    <version>4.1.1309.1617</version>
     <title>Moq: an enjoyable mocking library</title>
     <authors>Daniel Cazzulino</authors>
     <owners>Daniel Cazzulino</owners>
