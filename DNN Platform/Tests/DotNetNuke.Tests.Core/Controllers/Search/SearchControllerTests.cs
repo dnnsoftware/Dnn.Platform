@@ -504,6 +504,34 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     }).ToList());
         }
 
+        private void AddFoldersAndFiles()
+        {
+            var allFiles = new Dictionary<string, string>
+                               {
+                                { "Awesome-Cycles-Logo.png", "Images/" },
+                                { "Banner1.jpg", "Images/" },
+                                { "Banner2.jpg", "Images/" },
+                                { "bike-powered.png", "Images/DNN/" },
+                                { "Spacer.gif", "Images/DNN/" }
+                               };
+
+
+            foreach (var file in allFiles)
+            {
+                var doc = new SearchDocument
+                    {
+                        Title = file.Key,
+                        UniqueKey = Guid.NewGuid().ToString(),
+                        SearchTypeId = OtherSearchTypeId,
+                        ModifiedTimeUtc = DateTime.UtcNow,
+                        Keywords = new Dictionary<string, string>{ { "folderName", file.Value.ToLower() } }
+                    };
+                _internalSearchController.AddSearchDocument(doc);
+            }
+
+            _internalSearchController.Commit();
+        }
+
         private SearchResults SearchForKeyword(string keyword, int searchTypeId = OtherSearchTypeId)
         {
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId } };
@@ -2257,6 +2285,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, result.TotalHits);
             Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
         }
+        #endregion
+
+        #region folder scope search tests
+
+        [Test]
+        public void SearchController_Full_FileNameTest_With_WildCard1()
+        {
+            //Arrange
+            AddFoldersAndFiles();
+            
+            //Act
+            var result1 = SearchForKeyword("kw-folderName:Images/*");
+            var result2 = SearchForKeyword("kw-folderName:Images/DNN/*");
+            var result3 = SearchForKeywordWithWildCard("kw-folderName:Images/* AND spacer");
+
+            //Assert
+            Assert.AreEqual(5, result1.TotalHits);
+            Assert.AreEqual(2, result2.TotalHits);
+            Assert.AreEqual(1, result3.TotalHits);
+        }
+
         #endregion
 
         #region EmailAddress Tests
