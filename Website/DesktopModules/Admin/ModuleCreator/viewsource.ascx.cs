@@ -310,7 +310,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
-            var objPackage = PackageController.GetPackage(objDesktopModule.PackageID);
+            var objPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID ==objDesktopModule.PackageID);
 
             var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
 

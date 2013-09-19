@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 if (_Package == null && PackageID > Null.NullInteger)
                 {
-                    _Package = PackageController.GetPackage(PackageID);
+                    _Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
                 }
                 return _Package;
             }

@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Localization
         /// </returns>
         public bool CanDeleteLanguage(int languageId)
         {
-            return PackageController.GetPackagesByType("CoreLanguagePack")
+            return PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "CoreLanguagePack")
                         .Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID))
                         .All(languagePack => languagePack.LanguageID != languageId);
         }

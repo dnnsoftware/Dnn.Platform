@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 		/// <param name="userId">The Recipient User Id </param>
 		public void MarkReadyForToast(int notificationId, int userId)
 		{
-			_provider.ExecuteScalar(GetFullyQualifiedName("MarkReadyForToast"), notificationId, userId);
+			_provider.ExecuteNonQuery(GetFullyQualifiedName("MarkReadyForToast"), notificationId, userId);
 		}
 
 		/// <summary>
@@ -166,7 +166,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 		/// <param name="userId">The Recipient User Id </param>
 		public void MarkToastSent(int notificationId, int userId)
 		{
-			_provider.ExecuteScalar(GetFullyQualifiedName("MarkToastSent"), notificationId, userId);
+            _provider.ExecuteNonQuery(GetFullyQualifiedName("MarkToastSent"), notificationId, userId);
 		}
 
 		public IDataReader GetToasts(int userId, int portalId)

@@ -137,7 +137,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components
             switch (version)
             {
                 case "06.01.05":
-                    PackageInfo package = PackageController.GetPackageByName(Constants.PackageName);
+                    PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == Constants.PackageName);
                     IDictionary<int, TabInfo> moduleTabs = new TabController().GetTabsByPackageID(-1, package.PackageID, false);
 
                     if (moduleTabs.Count > 0)
@@ -154,7 +154,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components
 
         private void RemoveWurflProvider()
         {
-            var package = PackageController.GetPackageByName("DotNetNuke.WURFLClientCapabilityProvider");
+            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name =="DotNetNuke.WURFLClientCapabilityProvider");
             if(package != null)
             {
                 var installer = new Installer(package, Globals.ApplicationMapPath);

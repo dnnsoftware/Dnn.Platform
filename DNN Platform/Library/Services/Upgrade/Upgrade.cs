@@ -321,7 +321,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 package.Version = new Version(1, 0, 0);
 
-                package.PackageID = PackageController.AddPackage(package, false);
+                PackageController.Instance.SaveExtensionPackage(package);
 
                 string moduleName = desktopModuleName.Replace(" ", "");
                 desktopModule = new DesktopModuleInfo
@@ -710,9 +710,9 @@ namespace DotNetNuke.Services.Upgrade
                 var package = new PackageInfo { Name = packageName, FriendlyName = string.Concat(controlKey, "SkinObject"), PackageType = "SkinObject", Version = new Version(1, 0, 0) };
                 LegacyUtil.ParsePackageName(package);
 
-                int packageId = PackageController.AddPackage(package, false);
+                PackageController.Instance.SaveExtensionPackage(package);
 
-                skinControl = new SkinControlInfo { PackageID = packageId, ControlKey = controlKey, ControlSrc = controlSrc, SupportsPartialRendering = false };
+                skinControl = new SkinControlInfo { PackageID = package.PackageID, ControlKey = controlKey, ControlSrc = controlSrc, SupportsPartialRendering = false };
 
                 SkinControlController.SaveSkinControl(skinControl);
             }
@@ -721,100 +721,100 @@ namespace DotNetNuke.Services.Upgrade
         private static void AddDefaultModuleIcons()
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddDefaultModuleIcons");
-            var pkg = PackageController.GetPackageByName("DotNetNuke.Google Analytics");
+            var pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Google Analytics");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/Analytics";
                 pkg.IconFile = "~/DesktopModules/Admin/Analytics/analytics.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.Configuration Manager");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Configuration Manager");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/XmlMerge";
                 pkg.IconFile = "~/DesktopModules/Admin/XmlMerge/xmlMerge.png";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.Console");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Console");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/Console";
                 pkg.IconFile = "~/DesktopModules/Admin/Console/console.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.ContentList");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.ContentList");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/ContentList";
                 pkg.IconFile = "~/DesktopModules/Admin/ContentList/contentList.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.Dashboard");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Dashboard");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/Dashboard";
                 pkg.IconFile = "~/DesktopModules/Admin/Dashboard/dashboard.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.Languages");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Languages");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/Languages";
                 pkg.IconFile = "~/DesktopModules/Admin/Languages/languages.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.Marketplace");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Marketplace");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/Marketplace";
                 pkg.IconFile = "~/DesktopModules/Admin/Marketplace/marketplace.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.Sitemap");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Sitemap");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/Sitemap";
                 pkg.IconFile = "~/DesktopModules/Admin/Sitemap/sitemap.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.Skin Designer");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Skin Designer");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/SkinDesigner";
                 pkg.IconFile = "~/DesktopModules/Admin/SkinDesigner/skinDesigner.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.Skins");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Skins");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/Skins";
                 pkg.IconFile = "~/DesktopModules/Admin/Skins/skins.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.ViewProfile");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.ViewProfile");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/ViewProfile";
                 pkg.IconFile = "~/DesktopModules/Admin/ViewProfile/viewProfile.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            pkg = PackageController.GetPackageByName("DotNetNuke.ProfessionalPreview");
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.ProfessionalPreview");
             if (pkg != null)
             {
                 pkg.FolderName = "DesktopModules/Admin/ProfessionalPreview";
                 pkg.IconFile = "~/DesktopModules/Admin/ProfessionalPreview/professionalPreview.gif";
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
             }
         }
 
@@ -1291,7 +1291,7 @@ namespace DotNetNuke.Services.Upgrade
                 desktopModuleController.DeleteDesktopModule(desktopModuleId);
 
                 //Delete the Package
-                PackageController.DeletePackage(desktopModule.PackageID);
+                PackageController.Instance.DeleteExtensionPackage(PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID));
             }
         }
 
@@ -1808,7 +1808,7 @@ namespace DotNetNuke.Services.Upgrade
             Localization.Localization.SaveLanguage(defaultLanguage);
 
             //Ensure that there is a Default Authorization System
-            var package = PackageController.GetPackageByName("DefaultAuthentication");
+            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DefaultAuthentication");
             if (package == null)
             {
                 package = new PackageInfo
@@ -1826,7 +1826,7 @@ namespace DotNetNuke.Services.Upgrade
                                   ReleaseNotes = "There are no release notes for this version.",
                                   IsSystemPackage = true
                               };
-                PackageController.SavePackage(package);
+                PackageController.Instance.SaveExtensionPackage(package);
 
                 //Add Authentication System
                 var authSystem = AuthenticationController.GetAuthenticationServiceByType("DNN") ?? new AuthenticationInfo();
@@ -2408,12 +2408,12 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion601()
         {
             //List module needs to be available to Portals also
-            var pkg = PackageController.GetPackageByName("DotNetNuke.Lists");
+            var pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Lists");
             if (pkg != null)
             {
                 //List package is no longer a system package
                 pkg.IsSystemPackage = false;
-                PackageController.UpdatePackage(pkg);
+                PackageController.Instance.SaveExtensionPackage(pkg);
 
                 //List desktop module is no longer premium or admin module
                 var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(pkg.PackageID);
@@ -2516,11 +2516,11 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             //update DotNetNuke.Portals' friend name to 'Sites'.
-            var portalPackage = PackageController.GetPackageByName("DotNetNuke.Portals");
+            var portalPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Portals");
             if (portalPackage != null)
             {
                 portalPackage.FriendlyName = "Sites";
-                PackageController.SavePackage(portalPackage);
+                PackageController.Instance.SaveExtensionPackage(portalPackage);
             }
 
             //add mobile preview control
@@ -2530,70 +2530,70 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion612()
         {
             //update DotNetNuke.Portals' friend name to 'Sites'.
-            var portalPackage = PackageController.GetPackageByName("DotNetNuke.Portals");
+            var portalPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Portals");
             if (portalPackage != null)
             {
                 portalPackage.FriendlyName = "Site Management";
                 portalPackage.Description =
                     "The Super User can manage the various parent and child sites within the install instance. This module allows you to add a new site, modify an existing site, and delete a site.";
-                PackageController.SavePackage(portalPackage);
+                PackageController.Instance.SaveExtensionPackage(portalPackage);
             }
 
             //update 'Portal' to 'Sites' in package description.
-            portalPackage = PackageController.GetPackageByName("DotNetNuke.Tabs");
+            portalPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Tabs");
             if (portalPackage != null)
             {
                 portalPackage.Description =
                     "Administrators can manage the Pages within the site. This module allows you to create a new page, modify an existing page, delete pages, change the page order, and change the hierarchical page level.";
-                PackageController.SavePackage(portalPackage);
+                PackageController.Instance.SaveExtensionPackage(portalPackage);
             }
 
-            portalPackage = PackageController.GetPackageByName("DotNetNuke.Vendors");
+            portalPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Vendors");
             if (portalPackage != null)
             {
                 portalPackage.Description =
                     "Administrators can manage the Vendors and Banners associated to the site. This module allows you to add a new vendor, modify an existing vendor, and delete a vendor.";
-                PackageController.SavePackage(portalPackage);
+                PackageController.Instance.SaveExtensionPackage(portalPackage);
             }
 
-            portalPackage = PackageController.GetPackageByName("DotNetNuke.SiteLog");
+            portalPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.SiteLog");
             if (portalPackage != null)
             {
                 portalPackage.Description =
                     "Administrators can view the details of visitors using their site. There are a variety of reports available to display information regarding site usage, membership, and volumes.";
-                PackageController.SavePackage(portalPackage);
+                PackageController.Instance.SaveExtensionPackage(portalPackage);
             }
 
-            portalPackage = PackageController.GetPackageByName("DotNetNuke.SiteWizard");
+            portalPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.SiteWizard");
             if (portalPackage != null)
             {
                 portalPackage.Description =
                     "The Administrator can use this user-friendly wizard to set up the common features of the site.";
-                PackageController.SavePackage(portalPackage);
+                PackageController.Instance.SaveExtensionPackage(portalPackage);
             }
 
-            portalPackage = PackageController.GetPackageByName("DotNetNuke.Security");
+            portalPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Security");
             if (portalPackage != null)
             {
                 portalPackage.Description =
                     "Administrators can manage the security roles defined for their site. The module allows you to add new security roles, modify existing security roles, delete security roles, and manage the users assigned to security roles.";
-                PackageController.SavePackage(portalPackage);
+                PackageController.Instance.SaveExtensionPackage(portalPackage);
             }
 
-            portalPackage = PackageController.GetPackageByName("DotNetNuke.LogViewer");
+            portalPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.LogViewer");
             if (portalPackage != null)
             {
                 portalPackage.Description =
                     "Allows you to view log entries for site events.";
-                PackageController.SavePackage(portalPackage);
+                PackageController.Instance.SaveExtensionPackage(portalPackage);
             }
 
-            portalPackage = PackageController.GetPackageByName("DotNetNuke.Google Analytics");
+            portalPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Google Analytics");
             if (portalPackage != null)
             {
                 portalPackage.Description =
                     "Configure Site Google Analytics settings.";
-                PackageController.SavePackage(portalPackage);
+                PackageController.Instance.SaveExtensionPackage(portalPackage);
             }
         }
 
@@ -3096,7 +3096,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UninstallPackage(string packageName)
         {
-            var searchInput = PackageController.GetPackageByName(packageName);
+            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName);
             if (searchInput != null)
             {
                 var searchInputInstaller = new Installer.Installer(searchInput, Globals.ApplicationMapPath);

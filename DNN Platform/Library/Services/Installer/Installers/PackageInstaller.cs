@@ -342,7 +342,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
 				
                 //Save Package
-                PackageController.SavePackage(Package);
+                PackageController.Instance.SaveExtensionPackage(Package);
 
                 //Iterate through all the Components
                 for (int index = 0; index <= _componentInstallers.Count - 1; index++)
@@ -416,7 +416,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 			
             //Attempt to get the Package from the Data Store (see if its installed)
-            _installedPackage = PackageController.GetPackageByName(Package.PortalID, Package.Name);
+            _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name);
 
             //Get IsSystem
             Package.IsSystemPackage = bool.Parse(Util.ReadAttribute(manifestNav, "isSystem", false, Log, "", bool.FalseString));
@@ -568,12 +568,12 @@ namespace DotNetNuke.Services.Installer.Installers
             if (_installedPackage == null)
             {
 				//No Previously Installed Package - Delete newly added Package
-                PackageController.DeletePackage(Package);
+                PackageController.Instance.DeleteExtensionPackage(Package);
             }
             else
             {
 				//Previously Installed Package - Rollback to Previously Installed
-                PackageController.SavePackage(_installedPackage);
+                PackageController.Instance.SaveExtensionPackage(_installedPackage);
             }
         }
 
@@ -611,7 +611,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 			
             //Remove the Package information from the Data Store
-            PackageController.DeletePackage(Package);
+            PackageController.Instance.DeleteExtensionPackage(Package);
         }
 		
 		#endregion

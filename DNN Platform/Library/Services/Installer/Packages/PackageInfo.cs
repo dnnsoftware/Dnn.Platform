@@ -105,6 +105,12 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the name (path) of the folder where the package is installed
+        /// </summary>
+        /// <value>A string</value>
+        /// -----------------------------------------------------------------------------
         public string FolderName { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -115,6 +121,12 @@ namespace DotNetNuke.Services.Installer.Packages
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the url for the icon for the package
+        /// </summary>
+        /// <value>A string</value>
+        /// -----------------------------------------------------------------------------
         public string IconFile { get; set; }
 
         /// -----------------------------------------------------------------------------

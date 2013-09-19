@@ -504,7 +504,7 @@ namespace DotNetNuke.Web.InternalServices
         private string GetDeskTopModuleImage(int moduleId)
         {
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-            var packages = PackageController.GetPackages(PortalSettings.Current.PortalId);
+            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl =
                     (from pkgs in packages
@@ -521,7 +521,7 @@ namespace DotNetNuke.Web.InternalServices
             var tabModules = new ModuleController().GetTabModules(tabId);
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
             var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
-            var packages = PackageController.GetPackages(PortalSettings.Current.PortalId);
+            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl = (from pkgs in packages
                                join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
