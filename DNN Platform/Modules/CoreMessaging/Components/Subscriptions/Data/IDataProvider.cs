@@ -14,6 +14,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Data
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="portalId"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         IDataReader GetUserContentSubscriptions(int userId, int portalId, int pageIndex, int pageSize);
 

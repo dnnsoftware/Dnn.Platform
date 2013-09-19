@@ -42,11 +42,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 		/// <summary>
         /// Perform a search on Scoring Activities registered in the system.
         /// </summary>
-        /// <param name="searchText">Search filter text (if any)</param>
         /// <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
         /// <param name="pageSize">Number of records to return per page</param>
-        /// <param name="sortColumn">Column to sort on</param>
-        /// <param name="sortAscending">Sort ascending or descending</param>
         [HttpGet]
         [DnnAuthorize]
         [ValidateAntiForgeryToken]
