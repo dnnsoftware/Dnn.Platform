@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Web.Api;
@@ -64,9 +65,15 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 return false;
             }
 
-            var canView = (@group.SecurityMode == SecurityMode.SecurityRole)
+            var canView = (group.SecurityMode == SecurityMode.SecurityRole)
                                ? (PortalSettings.UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
-                               : (PortalSettings.UserInfo.IsInRole(@group.RoleName));
+                               : (PortalSettings.UserInfo.IsInRole(group.RoleName));
+
+			//if current user can view the group page and group is public, then should be able to view members.
+			if (!canView)
+			{
+				canView = ModulePermissionController.CanViewModule(ActiveModule) && group.IsPublic;
+			}
             return canView;
         }
 
