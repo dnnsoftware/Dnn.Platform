@@ -875,13 +875,6 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static int CountLegacyFiles()
-        {
-            return DataProvider.Instance().CountLegacyFiles();
-        }
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CoreModuleExists determines whether a Core Module exists on the system
