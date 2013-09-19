@@ -181,6 +181,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="App_LocalResources\View.ascx.resx" />
+    <Content Include="Module.build" />
     <None Include="SocialGroups.dnn">
       <SubType>Designer</SubType>
     </None>
@@ -253,49 +254,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>SocialGroups</DNNFileName>
-    <PackageName>DNNCE_SocialGroups</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-    </ItemGroup>
-    <ItemGroup>
-      <Images Include="Images/*.*" />
-    </ItemGroup>
-    <ItemGroup>
-      <JsFiles Include="scripts/*.*" />
-    </ItemGroup>
-    <ItemGroup>
-      <Views Include="*.ascx" />
-    </ItemGroup>
-    <ItemGroup>
-      <ResourceFiles Include="App_LocalResources\*.resx" />
-    </ItemGroup>
-    <ItemGroup>
-      <CssFiles Include="*.css" />
-    </ItemGroup>
-    <ItemGroup>
-      <Resources Include="@(ResourceFiles);@(Images);@(JsFiles);@(Views);@(CssFiles);@(TextFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Copy SourceFiles="@(Views)" DestinationFolder="$(WebsitePath)\DesktopModules\SocialGroups" />
-    <Copy SourceFiles="@(CssFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\SocialGroups" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\SocialGroups" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\SocialGroups\App_LocalResources" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>
