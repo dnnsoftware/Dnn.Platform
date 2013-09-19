@@ -104,7 +104,9 @@ namespace DesktopModules.Admin.RecycleBin
 
             foreach (var tab in DeletedTabs)
             {
-                tabsListBox.Items.Add(new ListItem(tab.IndentedTabName + " - " + tab.LastModifiedOnDate, tab.TabID.ToString()));
+	            var item = new ListItem(tab.IndentedTabName + " - " + tab.LastModifiedOnDate, tab.TabID.ToString());
+				item.Attributes.Add("ParentId", tab.ParentId.ToString());
+				tabsListBox.Items.Add(item);
             }
 
             cmdRestoreTab.Enabled = (DeletedTabs.Count > 0);
