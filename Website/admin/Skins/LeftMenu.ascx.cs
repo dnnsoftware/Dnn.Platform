@@ -45,49 +45,12 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class LeftMenu : SkinObjectBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (LeftMenu));
-		#region "Private Variables"
+
+        #region "Private Variables"
 
         private ArrayList AuthPages;
-		
-		//variables and structures
         private Queue PagesQueue;
-        private bool _EnableAdminMenus = true;
-        private bool _EnablePageIcons = true;
-        private bool _EnableToolTips = true;
-        private bool _EnableUserMenus = true;
-        private String _ItemClickedCssClass = string.Empty;
-
-		//panel item properties
-        private String _ItemCssClass = string.Empty;
-        private String _ItemDisabledCssClass = string.Empty;
-        private String _ItemExpandedCssClass = string.Empty;
-        private String _ItemFocusedCssClass = string.Empty;
-        private Unit _ItemHeight = Unit.Empty;
-        private String _ItemHoveredImageUrl = string.Empty;
-        private String _ItemImageUrl = string.Empty;
-        private Unit _ItemWidth = Unit.Empty;
-        private int _MaxItemNumber = 20;
-        private int _MaxLevel = -1;
-        private int _MaxLevelNumber = 10;
-        private string _PagesToExclude = string.Empty;
         private RadPanelBar _RadPanel1;
-		
-		//panel ROOT item properties
-        private String _RootItemClickedCssClass = string.Empty;
-        private String _RootItemCssClass = string.Empty;
-        private String _RootItemDisabledCssClass = string.Empty;
-        private String _RootItemExpandedCssClass = string.Empty;
-        private String _RootItemFocusedCssClass = string.Empty;
-        private Unit _RootItemHeight = Unit.Empty;
-        private String _RootItemHoveredImageUrl = string.Empty;
-        private String _RootItemImageUrl = string.Empty;
-        private Unit _RootItemWidth = Unit.Empty;
-        private string _ShowOnlyCurrent = string.Empty;
-        
-		//other properties
-		private bool _ShowPath = true;
-        private string _Skin = string.Empty;
-        private String _Style = string.Empty;
         private ArrayList arrayShowPath;
         private string dnnSkinPath;
         private string dnnSkinSrc;
@@ -108,7 +71,41 @@ namespace DotNetNuke.UI.Skins.Controls
 
 		#endregion
 
-		#region "Public Properties"
+        public LeftMenu()
+        {
+            Style = string.Empty;
+            ShowPath = true;
+            EnableAdminMenus = true;
+            EnableUserMenus = true;
+            EnablePageIcons = true;
+            ShowOnlyCurrent = string.Empty;
+            MaxLevel = -1;
+            MaxItemNumber = 20;
+            MaxLevelNumber = 10;
+            EnableToolTips = true;
+            RootItemFocusedCssClass = string.Empty;
+            RootItemClickedCssClass = string.Empty;
+            RootItemImageUrl = string.Empty;
+            RootItemHoveredImageUrl = string.Empty;
+            RootItemHeight = Unit.Empty;
+            RootItemWidth = Unit.Empty;
+            RootItemExpandedCssClass = string.Empty;
+            RootItemDisabledCssClass = string.Empty;
+            RootItemCssClass = string.Empty;
+            ItemWidth = Unit.Empty;
+            ItemHeight = Unit.Empty;
+            ItemHoveredImageUrl = string.Empty;
+            ItemImageUrl = string.Empty;
+            ItemClickedCssClass = string.Empty;
+            ItemFocusedCssClass = string.Empty;
+            ItemExpandedCssClass = string.Empty;
+            ItemDisabledCssClass = string.Empty;
+            ItemCssClass = string.Empty;
+            PagesToExclude = string.Empty;
+            Skin = string.Empty;
+        }
+
+		#region Public Properties
 
         public bool AllowCollapseAllItems
         {
@@ -122,51 +119,15 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        public AnimationType ExpandAnimationType
+        public Boolean CausesValidation
         {
             get
             {
-                return RadPanel1.ExpandAnimation.Type;
+                return RadPanel1.CausesValidation;
             }
             set
             {
-                RadPanel1.ExpandAnimation.Type = value;
-            }
-        }
-
-        public int ExpandAnimationDuration
-        {
-            get
-            {
-                return RadPanel1.ExpandAnimation.Duration;
-            }
-            set
-            {
-                RadPanel1.ExpandAnimation.Duration = value;
-            }
-        }
-
-        public int ExpandDelay
-        {
-            get
-            {
-                return RadPanel1.ExpandDelay;
-            }
-            set
-            {
-                RadPanel1.ExpandDelay = value;
-            }
-        }
-
-        public AnimationType CollapseAnimationType
-        {
-            get
-            {
-                return RadPanel1.CollapseAnimation.Type;
-            }
-            set
-            {
-                RadPanel1.CollapseAnimation.Type = value;
+                RadPanel1.CausesValidation = value;
             }
         }
 
@@ -182,6 +143,18 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        public AnimationType CollapseAnimationType
+        {
+            get
+            {
+                return RadPanel1.CollapseAnimation.Type;
+            }
+            set
+            {
+                RadPanel1.CollapseAnimation.Type = value;
+            }
+        }
+
         public int CollapseDelay
         {
             get
@@ -194,6 +167,78 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        public string CookieName
+        {
+            get
+            {
+                return RadPanel1.CookieName;
+            }
+            set
+            {
+                RadPanel1.CookieName = value;
+            }
+        }
+
+        public String CssClass
+        {
+            get
+            {
+                return RadPanel1.CssClass;
+            }
+            set
+            {
+                RadPanel1.CssClass = value;
+            }
+        }
+
+        public string Dir
+        {
+            get
+            {
+                return RadPanel1.Attributes["dir"];
+            }
+            set
+            {
+                RadPanel1.Attributes["dir"] = value;
+            }
+        }
+
+        public int ExpandAnimationDuration
+        {
+            get
+            {
+                return RadPanel1.ExpandAnimation.Duration;
+            }
+            set
+            {
+                RadPanel1.ExpandAnimation.Duration = value;
+            }
+        }
+
+        public AnimationType ExpandAnimationType
+        {
+            get
+            {
+                return RadPanel1.ExpandAnimation.Type;
+            }
+            set
+            {
+                RadPanel1.ExpandAnimation.Type = value;
+            }
+        }
+
+        public int ExpandDelay
+        {
+            get
+            {
+                return RadPanel1.ExpandDelay;
+            }
+            set
+            {
+                RadPanel1.ExpandDelay = value;
+            }
+        }
+
         public PanelBarExpandMode ExpandMode
         {
             get
@@ -203,30 +248,6 @@ namespace DotNetNuke.UI.Skins.Controls
             set
             {
                 RadPanel1.ExpandMode = value;
-            }
-        }
-
-        public String Skin
-        {
-            get
-            {
-                return _Skin;
-            }
-            set
-            {
-                _Skin = value;
-            }
-        }
-
-        public bool EnableEmbeddedSkins
-        {
-            get
-            {
-                return RadPanel1.EnableEmbeddedSkins;
-            }
-            set
-            {
-                RadPanel1.EnableEmbeddedSkins = value;
             }
         }
 
@@ -254,159 +275,15 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        public string Dir
+        public bool EnableEmbeddedSkins
         {
             get
             {
-                return RadPanel1.Attributes["dir"];
+                return RadPanel1.EnableEmbeddedSkins;
             }
             set
             {
-                RadPanel1.Attributes["dir"] = value;
-            }
-        }
-
-        public Boolean CausesValidation
-        {
-            get
-            {
-                return RadPanel1.CausesValidation;
-            }
-            set
-            {
-                RadPanel1.CausesValidation = value;
-            }
-        }
-
-        public String OnClientContextMenu
-        {
-            get
-            {
-                return RadPanel1.OnClientContextMenu;
-            }
-            set
-            {
-                RadPanel1.OnClientContextMenu = value;
-            }
-        }
-
-        public String OnClientMouseOver
-        {
-            get
-            {
-                return RadPanel1.OnClientMouseOver;
-            }
-            set
-            {
-                RadPanel1.OnClientMouseOver = value;
-            }
-        }
-
-        public String OnClientMouseOut
-        {
-            get
-            {
-                return RadPanel1.OnClientMouseOut;
-            }
-            set
-            {
-                RadPanel1.OnClientMouseOut = value;
-            }
-        }
-
-        public String OnClientItemFocus
-        {
-            get
-            {
-                return RadPanel1.OnClientItemFocus;
-            }
-            set
-            {
-                RadPanel1.OnClientItemFocus = value;
-            }
-        }
-
-        public String OnClientItemBlur
-        {
-            get
-            {
-                return RadPanel1.OnClientItemBlur;
-            }
-            set
-            {
-                RadPanel1.OnClientItemBlur = value;
-            }
-        }
-
-        public String OnClientItemClicking
-        {
-            get
-            {
-                return RadPanel1.OnClientItemClicking;
-            }
-            set
-            {
-                RadPanel1.OnClientItemClicking = value;
-            }
-        }
-
-        public String OnClientItemClicked
-        {
-            get
-            {
-                return RadPanel1.OnClientItemClicked;
-            }
-            set
-            {
-                RadPanel1.OnClientItemClicked = value;
-            }
-        }
-
-        public String OnClientItemExpand
-        {
-            get
-            {
-                return RadPanel1.OnClientItemExpand;
-            }
-            set
-            {
-                RadPanel1.OnClientItemExpand = value;
-            }
-        }
-
-        public String OnClientItemCollapse
-        {
-            get
-            {
-                return RadPanel1.OnClientItemCollapse;
-            }
-            set
-            {
-                RadPanel1.OnClientItemCollapse = value;
-            }
-        }
-
-        public String OnClientLoad
-        {
-            get
-            {
-                return RadPanel1.OnClientLoad;
-            }
-            set
-            {
-                RadPanel1.OnClientLoad = value;
-            }
-        }
-
-        public String CssClass
-        {
-            get
-            {
-                return RadPanel1.CssClass;
-            }
-            set
-            {
-                RadPanel1.CssClass = value;
+                RadPanel1.EnableEmbeddedSkins = value;
             }
         }
 
@@ -422,15 +299,123 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        public Unit Width
+        public String OnClientContextMenu
         {
             get
             {
-                return RadPanel1.Width;
+                return RadPanel1.OnClientContextMenu;
             }
             set
             {
-                RadPanel1.Width = value;
+                RadPanel1.OnClientContextMenu = value;
+            }
+        }
+
+        public String OnClientItemBlur
+        {
+            get
+            {
+                return RadPanel1.OnClientItemBlur;
+            }
+            set
+            {
+                RadPanel1.OnClientItemBlur = value;
+            }
+        }
+
+        public String OnClientItemClicked
+        {
+            get
+            {
+                return RadPanel1.OnClientItemClicked;
+            }
+            set
+            {
+                RadPanel1.OnClientItemClicked = value;
+            }
+        }
+
+        public String OnClientItemClicking
+        {
+            get
+            {
+                return RadPanel1.OnClientItemClicking;
+            }
+            set
+            {
+                RadPanel1.OnClientItemClicking = value;
+            }
+        }
+
+        public String OnClientItemCollapse
+        {
+            get
+            {
+                return RadPanel1.OnClientItemCollapse;
+            }
+            set
+            {
+                RadPanel1.OnClientItemCollapse = value;
+            }
+        }
+
+        public String OnClientItemExpand
+        {
+            get
+            {
+                return RadPanel1.OnClientItemExpand;
+            }
+            set
+            {
+                RadPanel1.OnClientItemExpand = value;
+            }
+        }
+
+        public String OnClientItemFocus
+        {
+            get
+            {
+                return RadPanel1.OnClientItemFocus;
+            }
+            set
+            {
+                RadPanel1.OnClientItemFocus = value;
+            }
+        }
+
+        public String OnClientLoad
+        {
+            get
+            {
+                return RadPanel1.OnClientLoad;
+            }
+            set
+            {
+                RadPanel1.OnClientLoad = value;
+            }
+        }
+
+        public String OnClientMouseOut
+        {
+            get
+            {
+                return RadPanel1.OnClientMouseOut;
+            }
+            set
+            {
+                RadPanel1.OnClientMouseOut = value;
+            }
+        }
+
+        public String OnClientMouseOver
+        {
+            get
+            {
+                return RadPanel1.OnClientMouseOver;
+            }
+            set
+            {
+                RadPanel1.OnClientMouseOver = value;
             }
         }
 
@@ -446,389 +431,105 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        public string CookieName
+        public Unit Width
         {
             get
             {
-                return RadPanel1.CookieName;
+                return RadPanel1.Width;
             }
             set
             {
-                RadPanel1.CookieName = value;
+                RadPanel1.Width = value;
             }
         }
 
-        public string PagesToExclude
-        {
-            get
-            {
-                return _PagesToExclude;
-            }
-            set
-            {
-                _PagesToExclude = value;
-            }
-        }
+        #endregion
 
-        public String ItemCssClass
-        {
-            get
-            {
-                return _ItemCssClass;
-            }
-            set
-            {
-                _ItemCssClass = value;
-            }
-        }
+        #region Automatic Properties
 
-        public String ItemDisabledCssClass
-        {
-            get
-            {
-                return _ItemDisabledCssClass;
-            }
-            set
-            {
-                _ItemDisabledCssClass = value;
-            }
-        }
+        public bool CopyChildItemLink { get; set; }
 
-        public String ItemExpandedCssClass
-        {
-            get
-            {
-                return _ItemExpandedCssClass;
-            }
-            set
-            {
-                _ItemExpandedCssClass = value;
-            }
-        }
+        public bool EnableAdminMenus { get; set; }
 
-        public String ItemFocusedCssClass
-        {
-            get
-            {
-                return _ItemFocusedCssClass;
-            }
-            set
-            {
-                _ItemFocusedCssClass = value;
-            }
-        }
+        public bool EnableItemCss { get; set; }
 
-        public String ItemClickedCssClass
-        {
-            get
-            {
-                return _ItemClickedCssClass;
-            }
-            set
-            {
-                _ItemClickedCssClass = value;
-            }
-        }
+        public bool EnableItemId { get; set; }
 
-        public String ItemImageUrl
-        {
-            get
-            {
-                return _ItemImageUrl;
-            }
-            set
-            {
-                _ItemImageUrl = value;
-            }
-        }
+        public bool EnableLevelCss { get; set; }
 
-        public String ItemHoveredImageUrl
-        {
-            get
-            {
-                return _ItemHoveredImageUrl;
-            }
-            set
-            {
-                _ItemHoveredImageUrl = value;
-            }
-        }
+        public bool EnablePageIcons { get; set; }
 
-        public Unit ItemHeight
-        {
-            get
-            {
-                return _ItemHeight;
-            }
-            set
-            {
-                _ItemHeight = value;
-            }
-        }
+        public bool EnableRootItemCss { get; set; }
 
-        public Unit ItemWidth
-        {
-            get
-            {
-                return _ItemWidth;
-            }
-            set
-            {
-                _ItemWidth = value;
-            }
-        }
+        public bool EnableToolTips { get; set; }
 
-        public String RootItemCssClass
-        {
-            get
-            {
-                return _RootItemCssClass;
-            }
-            set
-            {
-                _RootItemCssClass = value;
-            }
-        }
+        public bool EnableUserMenus { get; set; }
 
-        public String RootItemDisabledCssClass
-        {
-            get
-            {
-                return _RootItemDisabledCssClass;
-            }
-            set
-            {
-                _RootItemDisabledCssClass = value;
-            }
-        }
+        public bool ImagesOnlyPanel { get; set; }
 
-        public String RootItemExpandedCssClass
-        {
-            get
-            {
-                return _RootItemExpandedCssClass;
-            }
-            set
-            {
-                _RootItemExpandedCssClass = value;
-            }
-        }
+        public string ItemClickedCssClass { get; set; }
 
-        public String RootItemFocusedCssClass
-        {
-            get
-            {
-                return _RootItemFocusedCssClass;
-            }
-            set
-            {
-                _RootItemFocusedCssClass = value;
-            }
-        }
+        public string ItemCssClass { get; set; }
 
-        public String RootItemClickedCssClass
-        {
-            get
-            {
-                return _RootItemClickedCssClass;
-            }
-            set
-            {
-                _RootItemClickedCssClass = value;
-            }
-        }
+        public string ItemDisabledCssClass { get; set; }
 
-        public String RootItemImageUrl
-        {
-            get
-            {
-                return _RootItemImageUrl;
-            }
-            set
-            {
-                _RootItemImageUrl = value;
-            }
-        }
+        public string ItemExpandedCssClass { get; set; }
 
-        public String RootItemHoveredImageUrl
-        {
-            get
-            {
-                return _RootItemHoveredImageUrl;
-            }
-            set
-            {
-                _RootItemHoveredImageUrl = value;
-            }
-        }
+        public string ItemFocusedCssClass { get; set; }
 
-        public Unit RootItemHeight
-        {
-            get
-            {
-                return _RootItemHeight;
-            }
-            set
-            {
-                _RootItemHeight = value;
-            }
-        }
+        public Unit ItemHeight { get; set; }
 
-        public Unit RootItemWidth
-        {
-            get
-            {
-                return _RootItemWidth;
-            }
-            set
-            {
-                _RootItemWidth = value;
-            }
-        }
+        public string ItemHoveredImageUrl { get; set; }
+
+        public string ItemImageUrl { get; set; }
+
+        public Unit ItemWidth { get; set; }
+
+        public int MaxItemNumber { get; set; }
+
+        public int MaxLevel { get; set; }
+
+        public int MaxLevelNumber { get; set; }
+
+        public string PagesToExclude { get; set; }
+
+        public string RootItemClickedCssClass { get; set; }
+
+        public string RootItemCssClass { get; set; }
+
+        public string RootItemDisabledCssClass { get; set; }
+
+        public string RootItemExpandedCssClass { get; set; }
+
+        public string RootItemFocusedCssClass { get; set; }
+
+        public Unit RootItemHeight { get; set; }
+
+        public string RootItemHoveredImageUrl { get; set; }
+
+        public string RootItemImageUrl { get; set; }
+
+        public Unit RootItemWidth { get; set; }
 
         public string SelectedPathHeaderItemCss { get; set; }
+
+        public string SelectedPathHeaderItemImage { get; set; }
 
         public string SelectedPathItemCss { get; set; }
 
         public string SelectedPathItemImage { get; set; }
 
-        public string SelectedPathHeaderItemImage { get; set; }
+        public string ShowOnlyCurrent { get; set; }
 
-        public bool EnableToolTips
-        {
-            get
-            {
-                return _EnableToolTips;
-            }
-            set
-            {
-                _EnableToolTips = value;
-            }
-        }
+        public bool ShowPath { get; set; }
 
-        public bool ImagesOnlyPanel { get; set; }
+        public string Skin { get; set; }
 
-        public bool EnableLevelCss { get; set; }
+        public string Style { get; set; }
 
-        public bool EnableItemCss { get; set; }
-
-        public bool EnableRootItemCss { get; set; }
-
-        public int MaxLevelNumber
-        {
-            get
-            {
-                return _MaxLevelNumber;
-            }
-            set
-            {
-                _MaxLevelNumber = value;
-            }
-        }
-
-        public int MaxItemNumber
-        {
-            get
-            {
-                return _MaxItemNumber;
-            }
-            set
-            {
-                _MaxItemNumber = value;
-            }
-        }
-
-        public int MaxLevel
-        {
-            get
-            {
-                return _MaxLevel;
-            }
-            set
-            {
-                _MaxLevel = value;
-            }
-        }
-
-        public string ShowOnlyCurrent
-        {
-            get
-            {
-                return _ShowOnlyCurrent;
-            }
-            set
-            {
-                _ShowOnlyCurrent = value;
-            }
-        }
-
-        public bool EnableItemId { get; set; }
-
-        public bool EnablePageIcons
-        {
-            get
-            {
-                return _EnablePageIcons;
-            }
-            set
-            {
-                _EnablePageIcons = value;
-            }
-        }
-
-        public bool EnableUserMenus
-        {
-            get
-            {
-                return _EnableUserMenus;
-            }
-            set
-            {
-                _EnableUserMenus = value;
-            }
-        }
-
-        public bool EnableAdminMenus
-        {
-            get
-            {
-                return _EnableAdminMenus;
-            }
-            set
-            {
-                _EnableAdminMenus = value;
-            }
-        }
-
-        public bool CopyChildItemLink { get; set; }
-
-        public Boolean ShowPath
-        {
-            get
-            {
-                return _ShowPath;
-            }
-            set
-            {
-                _ShowPath = value;
-            }
-        }
-
-        public String Style
-        {
-            get
-            {
-                return _Style;
-            }
-            set
-            {
-                _Style = value;
-            }
-        }
+        #endregion
 		
-		#endregion
-		
-		#region "Event Handlers"
+		#region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -899,7 +600,7 @@ namespace DotNetNuke.UI.Skins.Controls
 		
 		#endregion
 		
-		#region "Private Helper Functions"
+		#region Private Helper Functions
 
         private void ApplySkin()
         {
