@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if ((_packageTypes == null))
                 {
                     _packageTypes = new Dictionary<string, PackageType>();
-                    foreach (PackageType packageType in PackageController.GetPackageTypes())
+                    foreach (PackageType packageType in PackageController.Instance.GetExtensionPackageTypes())
                     {
                         _packageTypes[packageType.PackageType] = packageType;
                     }

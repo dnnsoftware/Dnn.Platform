@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            List<PackageType> packageTypes = PackageController.GetPackageTypes();
+            IList<PackageType> packageTypes = PackageController.Instance.GetExtensionPackageTypes();
 
             //Render the Select Tag
             ControlStyle.AddAttributesToRender(writer);

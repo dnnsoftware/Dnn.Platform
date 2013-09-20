@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System;
@@ -213,16 +214,22 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
+        public PackageType GetExtensionPackageType(Func<PackageType, bool> predicate)
+        {
+            return GetExtensionPackageTypes().SingleOrDefault(predicate);
+        }
+
+        public IList<PackageType> GetExtensionPackageTypes()
+        {
+            return CBO.GetCachedObject<List<PackageType>>(new CacheItemArgs(DataCache.PackageTypesCacheKey, 
+                                                                            DataCache.PackageTypesCacheTimeout, 
+                                                                            DataCache.PackageTypesCachePriority),
+                                                            c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
+        }
+
         #endregion
 
-        #region Deprecated Methods
-
-        [Obsolete("Deprecated in DNN 7.2, Replaced by SaveExtensionPackage(PackageInfo package)")]
-        public static int AddPackage(PackageInfo package, bool includeDetail)
-        {
-            Instance.SaveExtensionPackage(package);
-            return package.PackageID;
-        }
+        #region Static Helper Methods
 
         public static bool CanDeletePackage(PackageInfo package, PortalSettings portalSettings)
         {
@@ -234,8 +241,8 @@ namespace DotNetNuke.Services.Installer.Packages
                     //Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
                     string strRootSkin = package.PackageType == "Skin" ? SkinController.RootSkin : SkinController.RootContainer;
                     SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
-                    string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger 
-                                                            ? Path.Combine(Globals.HostMapPath, strRootSkin) 
+                    string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger
+                                                            ? Path.Combine(Globals.HostMapPath, strRootSkin)
                                                             : Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
 
                     bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
@@ -267,6 +274,22 @@ namespace DotNetNuke.Services.Installer.Packages
             return bCanDelete;
         }
 
+        public static IDictionary<int, PackageInfo> GetModulePackagesInUse(int portalID, bool forHost)
+        {
+            return CBO.FillDictionary<int, PackageInfo>("PackageID", provider.GetModulePackagesInUse(portalID, forHost));
+        }
+
+        #endregion
+
+        #region Deprecated Methods
+
+        [Obsolete("Deprecated in DNN 7.2, Replaced by SaveExtensionPackage(PackageInfo package)")]
+        public static int AddPackage(PackageInfo package, bool includeDetail)
+        {
+            Instance.SaveExtensionPackage(package);
+            return package.PackageID;
+        }
+
         [Obsolete("Deprecated in DNN 7.2, Replaced by DeleteExtensionPackage(PackageInfo package)")]
         public static void DeletePackage(PackageInfo package)
         {
@@ -279,67 +302,64 @@ namespace DotNetNuke.Services.Installer.Packages
             Instance.DeleteExtensionPackage(Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageID));
         }
 
-        public static IDictionary<int, PackageInfo> GetModulePackagesInUse(int portalID, bool forHost)
-        {
-            return CBO.FillDictionary<int, PackageInfo>("PackageID", provider.GetModulePackagesInUse(portalID, forHost));
-        }
-
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetPackage(int portalId, Func<PackageInfo, bool> predicate)")]
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)")]
         public static PackageInfo GetPackage(int packageID)
         {
 	        return Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageID);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetPackage(int portalId, Func<PackageInfo, bool> predicate)")]
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)")]
         public static PackageInfo GetPackage(int packageID, bool ignoreCache)
         {
             return Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageID);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetPackage(int portalId, Func<PackageInfo, bool> predicate)")]
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)")]
         public static PackageInfo GetPackageByName(string name)
         {
             return Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == name);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetPackage(int portalId, Func<PackageInfo, bool> predicate)")]
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)")]
         public static PackageInfo GetPackageByName(int portalId, string name)
         {
             return Instance.GetExtensionPackage(portalId, p => p.Name == name);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetPackages(int portalId, Func<PackageInfo, bool> predicate)")]
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)")]
         public static List<PackageInfo> GetPackages()
         {
             return Instance.GetExtensionPackages(Null.NullInteger).ToList();
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetPackages(int portalId, Func<PackageInfo, bool> predicate)")]
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)")]
         public static List<PackageInfo> GetPackages(int portalId)
         {
             return Instance.GetExtensionPackages(portalId).ToList();
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetPackages(int portalId, Func<PackageInfo, bool> predicate)")]
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)")]
         public static List<PackageInfo> GetPackagesByType(string type)
         {
             return Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == type).ToList();
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetPackages(int portalId, Func<PackageInfo, bool> predicate)")]
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)")]
         public static List<PackageInfo> GetPackagesByType(int portalId, string type)
         {
             return Instance.GetExtensionPackages(portalId, p => p.PackageType == type).ToList();
         }
 
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackageType(Func<PackageType, bool> predicate)")]
         public static PackageType GetPackageType(string type)
         {
-            return CBO.FillObject<PackageType>(provider.GetPackageType(type));
+            return Instance.GetExtensionPackageType(t => t.PackageType == type);
         }
 
+        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackageTypes()")]
         public static List<PackageType> GetPackageTypes()
         {
-            return CBO.FillCollection<PackageType>(provider.GetPackageTypes());
+            return Instance.GetExtensionPackageTypes().ToList();
         }
 
         [Obsolete("Deprecated in DNN 7.2, Replaced by SaveExtensionPackage(PackageInfo package)")]

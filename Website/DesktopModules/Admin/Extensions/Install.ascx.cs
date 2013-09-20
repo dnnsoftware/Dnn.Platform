@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     {
                         pType = Request.QueryString["ptype"];
                     }
-                    _PackageType = PackageController.GetPackageType(pType);
+                    _PackageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == pType);
                 }
                 return _PackageType;
             }

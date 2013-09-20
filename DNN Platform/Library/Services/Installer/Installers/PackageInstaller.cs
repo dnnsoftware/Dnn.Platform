@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
-            PackageType type = PackageController.GetPackageType(Package.PackageType);
+            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
             if (type == null)
             {
                 //This package type not registered
@@ -414,9 +414,6 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 return;
             }
-			
-            //Attempt to get the Package from the Data Store (see if its installed)
-            _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name);
 
             //Get IsSystem
             Package.IsSystemPackage = bool.Parse(Util.ReadAttribute(manifestNav, "isSystem", false, Log, "", bool.FalseString));
@@ -428,6 +425,20 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 return;
             }
+
+            //Attempt to get the Package from the Data Store (see if its installed)
+            var packageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
+
+            if (packageType.SupportsSideBySideInstallation)
+            {
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name && p.Version == Package.Version);                
+            }
+            else
+            {
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name);
+            }
+
+
             Log.AddInfo(Util.DNN_ReadingPackage + " - " + Package.PackageType + " - " + Package.Name);
             Package.FriendlyName = Util.ReadElement(manifestNav, "friendlyName", Package.Name);
             Package.Description = Util.ReadElement(manifestNav, "description");

@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 {
                     if (Package != null)
                     {
-                        PackageType _PackageType = PackageController.GetPackageType(Package.PackageType);
+                        PackageType _PackageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
                         if ((_PackageType != null) && (!string.IsNullOrEmpty(_PackageType.EditorControlSrc)))
                         {
                             _Control = ControlUtilities.LoadControl<Control>(this, _PackageType.EditorControlSrc);
@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         private void BindExtensionTypes()
         {
-            cboExtensionType.DataSource = PackageController.GetPackageTypes();
+            cboExtensionType.DataSource = PackageController.Instance.GetExtensionPackageTypes();
             cboExtensionType.DataBind();
         }
 

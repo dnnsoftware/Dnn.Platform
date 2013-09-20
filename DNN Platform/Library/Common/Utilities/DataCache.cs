@@ -246,10 +246,13 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority SubscriptionTypesCachePriority = CacheItemPriority.Default;
         public const int SubscriptionTypesTimeOut = 20;
 
-
 		public const string PackagesCacheKey = "Packages_{0}";
 		public const CacheItemPriority PackagesCachePriority = CacheItemPriority.Default;
 		public const int PackagesCacheTimeout = 20;
+
+        public const string PackageTypesCacheKey = "PackagesTypes";
+        public const CacheItemPriority PackageTypesCachePriority = CacheItemPriority.AboveNormal;
+        public const int PackageTypesCacheTimeout = 20;
 
         private static string _CachePersistenceEnabled = "";
 

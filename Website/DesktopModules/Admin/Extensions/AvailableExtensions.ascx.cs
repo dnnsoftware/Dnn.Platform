@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if ((_packageTypes == null))
                 {
                     _packageTypes = new Dictionary<string, string>();
-                    foreach (PackageType packageType in PackageController.GetPackageTypes())
+                    foreach (PackageType packageType in PackageController.Instance.GetExtensionPackageTypes())
                     {
                         string installPath;
                         string type;
