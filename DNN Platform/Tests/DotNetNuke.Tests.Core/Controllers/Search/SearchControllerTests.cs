@@ -74,6 +74,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int RoleId532 = 532;
         private const int RoleId0 = 0;
         private const string Tag0 = "tag0";
+        private const string Tag0WithSpace = "tag0 hello";
         private const string Tag1 = "tag1";
         private const string Tag2 = "tag2";
         private const string Tag3 = "tag3";
@@ -383,7 +384,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private IEnumerable<SearchDocument> GetStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
             var searchDocs = new List<SearchDocument> {
-                new SearchDocument { Tags = new List<string> { Tag0, Tag1, TagOldest }, Title = Line1 },
+                new SearchDocument { Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
                 new SearchDocument { Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2 },
                 new SearchDocument { Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
                 new SearchDocument { Tags = new List<string> { Tag3, Tag4, TagLatest }, Title = Line4, CultureCode = CultureEnCa },
@@ -506,34 +507,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                         SearchTypeId = searchTypeId,
                         ModifiedTimeUtc = now.AddSeconds(i++)
                     }).ToList());
-        }
-
-        private void AddFoldersAndFiles()
-        {
-            var allFiles = new Dictionary<string, string>
-                               {
-                                { "Awesome-Cycles-Logo.png", "Images/" },
-                                { "Banner1.jpg", "Images/" },
-                                { "Banner2.jpg", "Images/" },
-                                { "bike-powered.png", "Images/DNN/" },
-                                { "Spacer.gif", "Images/DNN/" }
-                               };
-
-
-            foreach (var file in allFiles)
-            {
-                var doc = new SearchDocument
-                    {
-                        Title = file.Key,
-                        UniqueKey = Guid.NewGuid().ToString(),
-                        SearchTypeId = OtherSearchTypeId,
-                        ModifiedTimeUtc = DateTime.UtcNow,
-                        Keywords = new Dictionary<string, string>{ { "folderName", file.Value.ToLower() } }
-                    };
-                _internalSearchController.AddSearchDocument(doc);
-            }
-
-            _internalSearchController.Commit();
         }
 
         private SearchResults SearchForKeyword(string keyword, int searchTypeId = OtherSearchTypeId)
@@ -1473,6 +1446,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, search.Results.Count);
         }
 
+        [Test]
+        public void SearchController_GetResult_TagSearch_Single_Tag_With_Space_Returns_Single_Result()
+        {
+            //Arrange
+            AddStandardSearchDocs();
+
+            //Act
+            var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { Tag0WithSpace } };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(1, search.Results.Count);
+        }
+
 
         [Test]
         public void SearchController_GetResult_TagSearch_Lowercase_Search_Returns_PropercaseTag_Single_Result()
@@ -2309,8 +2296,41 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         #region folder scope search tests
 
+        private void AddFoldersAndFiles()
+        {
+            var allFiles = new Dictionary<string, string>
+                               {
+                                { "Awesome-Cycles-Logo.png", "Images/" },
+                                { "Banner1.jpg", "Images/" },
+                                { "Banner2.jpg", "Images/" },
+                                { "bike-powered.png", "Images/DNN/" },
+                                { "Spacer.gif", "Images/DNN/" },
+                                { "monday.png", "My<Images/" },
+                                { "tuesday.jpg", "My<Images/" },
+                                { "wednesday.jpg", "My<Images/" },
+                                { "thursday.png", "My<Images/My<DNN/" },
+                                { "friday.gif", "My<Images/My<DNN/" }
+                               };
+
+
+            foreach (var file in allFiles)
+            {
+                var doc = new SearchDocument
+                {
+                    Title = file.Key,
+                    UniqueKey = Guid.NewGuid().ToString(),
+                    SearchTypeId = OtherSearchTypeId,
+                    ModifiedTimeUtc = DateTime.UtcNow,
+                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLower() } }
+                };
+                _internalSearchController.AddSearchDocument(doc);
+            }
+
+            _internalSearchController.Commit();
+        }
+
         [Test]
-        public void SearchController_Full_FileNameTest_With_WildCard1()
+        public void SearchController_Scope_By_FolderName()
         {
             //Arrange
             AddFoldersAndFiles();
@@ -2324,6 +2344,26 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(5, result1.TotalHits);
             Assert.AreEqual(2, result2.TotalHits);
             Assert.AreEqual(1, result3.TotalHits);
+        }
+
+        [Test]
+        public void SearchController_Scope_By_FolderName_With_Spaces()
+        {
+            //Arrange
+            AddFoldersAndFiles();
+
+            //Act - Space is replaced by <
+            var query1 = new SearchQuery {KeyWords = "kw-folderName:Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = false };
+            var query2 = new SearchQuery { KeyWords = "kw-folderName:my<Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
+            var query3 = new SearchQuery { KeyWords = "kw-folderName:my<Images/my<dnn/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
+            var result1 = _searchController.SiteSearch(query1);
+            var result2 = _searchController.SiteSearch(query2);
+            var result3 = _searchController.SiteSearch(query3);
+
+            //Assert
+            Assert.AreEqual(5, result1.TotalHits);
+            Assert.AreEqual(5, result2.TotalHits);
+            Assert.AreEqual(2, result3.TotalHits);
         }
 
         #endregion
