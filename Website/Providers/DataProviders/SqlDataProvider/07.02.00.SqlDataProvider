@@ -957,13 +957,43 @@ AS
 	SELECT @JavaScriptLibraryID
 GO
 
+/** DNN-3498 - Support side by side INstallation **/
+/**************************************************/
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}PackageTypes ' AND COLUMN_NAME = 'SupportsSideBySideInstallation')
+	BEGIN
+		ALTER TABLE {databaseOwner}[{objectQualifier}PackageTypes] 
+			ADD SupportsSideBySideInstallation bit NOT NULL
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}PackageTypes]  
+			ADD  CONSTRAINT [DF_{objectQualifier}PackageTypes_SupportsSideBySideInstallation]  
+					DEFAULT ((0)) FOR [SupportsSideBySideInstallation]
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageTypes]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageTypes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPackageTypes]
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}PackageTypes
+GO
+
+
+
 /** DNN-2995 - SI: Performance improvement in dbo.GetUsersByEmail **/
 /*******************************************************************/
 
-ALTER TABLE {databaseOwner}{objectQualifier}Users
-  ADD LowerEmail AS LOWER(Email) PERSISTED
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}Users ' AND COLUMN_NAME = 'LowerEmail')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Users
+		  ADD LowerEmail AS LOWER(Email) PERSISTED
 
-CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}{objectQualifier}Users(Email)
+		CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}{objectQualifier}Users(Email)
+	END
+GO
+
 
 GO
 
