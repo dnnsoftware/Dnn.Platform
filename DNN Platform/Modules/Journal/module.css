@@ -242,3 +242,38 @@ div#journalOptionArea div.journal_localFileShare .dnnInputFileWrapper {
     display: inline-block;
     margin: 15px 0 0 -10px;
 }
+/* Search Suggest */
+ul.ui-autocomplete, 
+ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
+	ul.ui-autocomplete{
+		display:none;
+		position:absolute;top:46px;left:0;
+		width:auto;
+		border:1px solid #ccc; background:#fff;
+		z-index:5;
+		
+		/*CSS3*/
+		-moz-border-radius-bottomright: 3px;
+		-moz-border-radius-bottomleft:	3px;
+		-webkit-border-radius: 			0px 0px 3px 3px;
+		border-radius: 					0px 0px 3px 3px; 
+		
+		-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+		-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
+		box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+	}
+	ul.ui-autocomplete li{display:block;clear:both;overflow:hidden}
+	ul.ui-autocomplete li a{
+		display:block;
+		padding:10px;
+		border-bottom:1px #e8e8e8 solid;
+		clear:both;overflow:hidden
+	}
+	ul.ui-autocomplete li a:hover{
+		background:#FEFDDE;
+		cursor:pointer
+	}
+	ul.ui-autocomplete .ui-menu-item a img{ width: 24px;height: 24px;}
+	ul.ui-autocomplete .ui-menu-item a span.dn{ font-weight: bold;color: #000;margin: 0 4px;}
+	ul.ui-autocomplete .ui-menu-item a span.un{ color: #ccc;margin: 0 4px;}
+.ui-helper-hidden-accessible { display:none; }

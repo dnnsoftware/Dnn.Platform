@@ -19,13 +19,18 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Journal.Components;
 using DotNetNuke.Security;
@@ -105,6 +110,20 @@ namespace DotNetNuke.Modules.Journal
                 ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoScripting);
                 ji.Summary = Utilities.RemoveHTML(ji.Summary);
                 ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoMarkup);
+
+				//parse the mentions context in post data
+				var matches = Regex.Matches(ji.Summary, "@([\\S]+)");
+				foreach (Match match in matches)
+				{
+					var username = match.Groups[1].Value;
+					var user = UserController.GetUserByName(PortalSettings.PortalId, username);
+					if (user != null)
+					{
+						var userLink = string.Format("<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>", Globals.UserProfileURL(user.UserID),
+													 match.Value);
+						ji.Summary = Regex.Replace(ji.Summary, match.Value + "(\\s)|" + match.Value + "($)", userLink + "$1");
+					}
+				}
 
                 if (ji.Summary.Length > 2000)
                 {
@@ -434,5 +453,53 @@ namespace DotNetNuke.Modules.Journal
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+		[HttpGet]
+		public HttpResponseMessage GetSuggestions(string displayName)
+		{
+			try
+			{
+				int totalRecords = 0;
+				var usersByDisplayname = UserController.GetUsersByDisplayName(PortalSettings.PortalId, displayName.Trim() + "%", 0, 5, ref totalRecords, false, false).Cast<UserInfo>().ToList();
+				var usersByUsername = UserController.GetUsersByUserName(PortalSettings.PortalId, displayName.Trim() + "%", 0, 5, ref totalRecords, false, false).Cast<UserInfo>().ToList();
+				var findedUsers = new ArrayList();
+				
+				foreach (var user in usersByDisplayname)
+				{
+					findedUsers.Add(
+						new
+							{
+								displayName = user.DisplayName,
+								username = user.Username,
+								userId = user.UserID,
+								avatar = user.Profile.PhotoURL,
+								key = displayName
+							});
+				}
+
+				foreach (var user in usersByUsername)
+				{
+					if (!usersByDisplayname.Any(u => u.Username == user.Username))
+					{
+						findedUsers.Add(
+							new
+							{
+								displayName = user.DisplayName,
+								username = user.Username,
+								userId = user.UserID,
+								avatar = user.Profile.PhotoURL,
+								key = displayName
+							});
+					}
+				}
+
+				return Request.CreateResponse(HttpStatusCode.OK, findedUsers.Cast<object>().Take(5));
+			}
+			catch (Exception exc)
+			{
+				Logger.Error(exc);
+				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+			}
+		}
     }
 }

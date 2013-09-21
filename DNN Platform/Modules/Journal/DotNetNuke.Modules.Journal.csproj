@@ -187,6 +187,7 @@
     <Content Include="Scripts\journal.js" />
     <Content Include="Scripts\journalcomments.js" />
     <Content Include="Scripts\journaleditor.js" />
+    <Content Include="Scripts\mentionsInput.js" />
     <Content Include="Settings.ascx" />
     <Content Include="View.ascx" />
   </ItemGroup>
