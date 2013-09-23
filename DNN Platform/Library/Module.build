@@ -28,7 +28,10 @@
       <WebsiteConfig Include="$(WebsiteConfigPath)\*.config" />
       <WebsiteCleanup Include="$(WebsiteCleanupPath)\0*.txt" />
       <WebsiteConfigMerge Include="$(WebsiteConfigMergePath)\*.config" />
-      <KnockoutLibrary Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Knockout\*.*" />
+      <Knockout Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Knockout\*.*" />
+      <jQuery Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQuery\*.*" />
+      <jQueryUI Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI\*.*" />
+      <jQueryMigrate Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate\*.*" />
       <ExternalModulePackages Include="$(MSBuildProjectDirectory)\..\Externally Sourced\Modules\*.*" />
     </ItemGroup>
   </Target>
@@ -65,8 +68,18 @@
   </Target>
   
   <Target Name="ReleasePackages" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Zip Files="@(KnockoutLibrary)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Knockout"
-         ZipFileName="$(WebsiteInstallPath)\JavaScript Library\Knockout_2_2_1.zip" />
+    <Zip Files="@(Knockout)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Knockout"
+         ZipFileName="$(WebsiteInstallPath)\JavaScript Library\Knockout.zip" />
+
+    <Zip Files="@(jQuery)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQuery"
+         ZipFileName="$(WebsiteInstallPath)\JavaScript Library\jQuery.zip" />
+    
+    <Zip Files="@(jQueryUI)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI"
+         ZipFileName="$(WebsiteInstallPath)\JavaScript Library\jQueryUI.zip" />
+
+    <Zip Files="@(jQueryMigrate)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate"
+     ZipFileName="$(WebsiteInstallPath)\JavaScript Library\jQueryMigrate.zip" />
+
     <Copy SourceFiles="@(ExternalModulePackages)" DestinationFolder="$(WebsiteInstallPath)\Module"/>
   </Target>
 </Project>

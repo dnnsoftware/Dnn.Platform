@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="jQueryUI" type="JavaScript_Library" version="01.10.03">
+    <package name="jQuery-UI" type="JavaScript_Library" version="01.10.03">
       <friendlyName>jQueryUI JavaScript Library</friendlyName>
       <description>jQueryUI is a JavaScript library that is used to extend jQuery to provide UI widgets.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
@@ -16,20 +16,20 @@
       <components>
         <component type="JavaScript_Library">
           <javaScriptLibrary>
-            <librayName>jQueryUI</librayName>
-            <minFileName>jQuery-ui.min.js</minFileName>
-            <debugFileName>jQuery-ui.js</debugFileName>
-            <CDNPath>Supported</CDNPath>
+            <librayName>jQuery-UI</librayName>
+            <minFileName>jquery-ui.min.js</minFileName>
+            <debugFileName>jquery-ui.js</debugFileName>
+            <CDNPath>http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">
           <jsfiles>
-            <libraryFolderName>jQueryUI</libraryFolderName>
+            <libraryFolderName>jQuery-UI</libraryFolderName>
             <jsfile>
-              <name>jQuery-ui.js</name>
+              <name>jquery-ui.js</name>
             </jsfile>
             <jsfile>
-              <name>jQuery-ui.min.js</name>
+              <name>jquery-ui.min.js</name>
             </jsfile>
           </jsfiles>
         </component>
