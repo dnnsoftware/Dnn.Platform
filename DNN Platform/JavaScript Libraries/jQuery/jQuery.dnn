@@ -1,8 +1,8 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Knockout" type="JavaScript_Library" version="02.02.01">
-      <friendlyName>Knockout JavaScript Library</friendlyName>
-      <description>Knockout is an MVVM library that is used for client side databinding.</description>
+    <package name="jQuery" type="JavaScript_Library" version="01.09.01">
+      <friendlyName>jQuery JavaScript Library</friendlyName>
+      <description>jQuery is a JavaScript library that is used to manipulate the Document Object Model (DOM).</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
       <owner>
         <name>DotNetNuke Corporation</name>
@@ -10,31 +10,37 @@
         <url>http://www.dotnetnuke.com</url>
         <email>support@dotnetnuke.com</email>
       </owner>
-      <license src="Knockout (MIT).txt" />
+      <license src="jQuery (MIT).txt" />
       <releaseNotes src="releaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <components>
         <component type="JavaScript_Library">
           <javaScriptLibrary>
-            <librayName>Knockout</librayName>
-            <minFileName>Knockout.js</minFileName>
-            <debugFileName>Knockout.js</debugFileName>
+            <librayName>jQuery</librayName>
+            <minFileName>jQuery.min.js</minFileName>
+            <debugFileName>jQuery.js</debugFileName>
             <CDNPath>Supported</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">
           <jsfiles>
-            <libraryFolderName>Knockout</libraryFolderName>
+            <libraryFolderName>jQuery</libraryFolderName>
             <jsfile>
-              <name>Knockout.js</name>
+              <name>jQuery.js</name>
+            </jsfile>
+            <jsfile>
+              <name>jQuery.min.js</name>
+            </jsfile>
+            <jsfile>
+              <name>jQuery.min.map</name>
             </jsfile>
           </jsfiles>
         </component>
         <component type="File">
+          <basePath>Licenses</basePath>
           <files>
-            <basePath>Licenses</basePath>
             <file>
-              <name>Knockout (MIT).txt</name>
+              <name>jQuery (MIT).txt</name>
             </file>
           </files>
         </component>
