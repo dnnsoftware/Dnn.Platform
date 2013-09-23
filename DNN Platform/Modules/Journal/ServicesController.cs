@@ -31,6 +31,7 @@ using System.Web.Http;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Journal.Components;
 using DotNetNuke.Security;
@@ -117,11 +118,18 @@ namespace DotNetNuke.Modules.Journal
 				{
 					var username = match.Groups[1].Value;
 					var user = UserController.GetUserByName(PortalSettings.PortalId, username);
+					
 					if (user != null)
 					{
-						var userLink = string.Format("<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>", Globals.UserProfileURL(user.UserID),
-													 match.Value);
-						ji.Summary = Regex.Replace(ji.Summary, match.Value + "(\\s)|" + match.Value + "($)", userLink + "$1");
+						var relationship = RelationshipController.Instance.GetFollowerRelationship(UserInfo, user) ??
+						                   RelationshipController.Instance.GetFriendRelationship(UserInfo, user);
+						if (relationship != null && relationship.Status == RelationshipStatus.Accepted)
+						{
+							var userLink = string.Format("<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>",
+							                             Globals.UserProfileURL(user.UserID),
+							                             match.Value);
+							ji.Summary = Regex.Replace(ji.Summary, match.Value + "(\\s)|" + match.Value + "($)", userLink + "$1");
+						}
 					}
 				}
 
@@ -455,41 +463,35 @@ namespace DotNetNuke.Modules.Journal
         }
 
 		[HttpGet]
-		public HttpResponseMessage GetSuggestions(string displayName)
+		[DnnAuthorize(DenyRoles = "Unverified Users")]
+		public HttpResponseMessage GetSuggestions(string keyword)
 		{
 			try
 			{
-				int totalRecords = 0;
-				var usersByDisplayname = UserController.GetUsersByDisplayName(PortalSettings.PortalId, displayName.Trim() + "%", 0, 5, ref totalRecords, false, false).Cast<UserInfo>().ToList();
-				var usersByUsername = UserController.GetUsersByUserName(PortalSettings.PortalId, displayName.Trim() + "%", 0, 5, ref totalRecords, false, false).Cast<UserInfo>().ToList();
 				var findedUsers = new ArrayList();
-				
-				foreach (var user in usersByDisplayname)
+				var relations = RelationshipController.Instance.GetUserRelationships(UserInfo);
+				foreach (var ur in relations)
 				{
-					findedUsers.Add(
-						new
-							{
-								displayName = user.DisplayName,
-								username = user.Username,
-								userId = user.UserID,
-								avatar = user.Profile.PhotoURL,
-								key = displayName
-							});
-				}
-
-				foreach (var user in usersByUsername)
-				{
-					if (!usersByDisplayname.Any(u => u.Username == user.Username))
+					var targetUserId = ur.UserId == UserInfo.UserID ? ur.RelatedUserId : ur.UserId;
+					var targetUser = UserController.GetUserById(PortalSettings.PortalId, targetUserId);
+					var relationship = RelationshipController.Instance.GetRelationship(ur.RelationshipId);
+					if (ur.Status == RelationshipStatus.Accepted && targetUser != null
+						&& ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.UserId == UserInfo.UserID)
+								|| relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends
+							)
+						&& (targetUser.DisplayName.ToLowerInvariant().Contains(keyword.ToLowerInvariant()) 
+								|| targetUser.Username.ToLowerInvariant().Contains(keyword.ToLowerInvariant())
+							)
+						)
 					{
-						findedUsers.Add(
-							new
-							{
-								displayName = user.DisplayName,
-								username = user.Username,
-								userId = user.UserID,
-								avatar = user.Profile.PhotoURL,
-								key = displayName
-							});
+						findedUsers.Add(new
+							                {
+												displayName = targetUser.DisplayName,
+												username = targetUser.Username,
+												userId = targetUser.UserID,
+												avatar = targetUser.Profile.PhotoURL,
+												key = keyword
+							                });
 					}
 				}
 

@@ -1,6 +1,8 @@
 ﻿(function($) {
 	$.fn.mentionsInput = function(options) {
 		var $this = this;
+		if ($this.length == 0)
+			return;
 		options = $.extend({}, $.fn.mentionsInput.defaultOptions, options);
 		var serviceFramework = options.servicesFramework;
 		var baseServicepath = serviceFramework.getServiceRoot('Journal') + 'Services/';
@@ -59,7 +61,7 @@
 						url: baseServicepath + "GetSuggestions",
 						beforeSend: serviceFramework.setModuleHeaders,
 						data: {
-							displayName: content
+							keyword: content
 						}
 					}).done(function(data) {
 						response(data);

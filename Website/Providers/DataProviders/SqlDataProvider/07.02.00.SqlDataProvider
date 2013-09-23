@@ -854,11 +854,7 @@ GO
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}PackageTypes ' AND COLUMN_NAME = 'SupportsSideBySideInstallation')
 	BEGIN
 		ALTER TABLE {databaseOwner}[{objectQualifier}PackageTypes] 
-			ADD SupportsSideBySideInstallation bit NOT NULL
-
-		ALTER TABLE {databaseOwner}[{objectQualifier}PackageTypes]  
-			ADD  CONSTRAINT [DF_{objectQualifier}PackageTypes_SupportsSideBySideInstallation]  
-					DEFAULT ((0)) FOR [SupportsSideBySideInstallation]
+			ADD SupportsSideBySideInstallation bit NOT NULL DEFAULT(0)
 	END
 GO
 
