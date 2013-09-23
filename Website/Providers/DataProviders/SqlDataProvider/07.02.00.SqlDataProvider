@@ -1020,6 +1020,281 @@ INSERT INTO {databaseOwner}{objectQualifier}SearchTypes
            ('user', 'DotNetNuke.Services.Search.Controllers.UserResultController', 0)
 GO
 
+/***** Fix bug DNN-3691: change file size type to long. *****/
+ALTER TABLE {databaseOwner}{objectQualifier}Files ALTER COLUMN Size BIGINT
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddFile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+	@PortalId   int,
+	@UniqueId   uniqueidentifier,
+	@VersionGuid  uniqueidentifier,
+	@FileName   nvarchar(246),
+	@Extension   nvarchar(100),
+	@Size    bigint,
+	@Width    int,
+	@Height    int,
+	@ContentType  nvarchar(200),
+	@Folder    nvarchar(246),
+	@FolderID   int,
+	@CreatedByUserID   int,
+	@Hash     varchar(40),
+	@LastModificationTime	datetime, 
+	@Title					nvarchar(256),
+	@EnablePublishPeriod	bit,
+	@StartDate				datetime,
+	@EndDate				datetime,
+	@ContentItemID			int
+AS
+BEGIN
+	DECLARE @FileID int
+
+	UPDATE {databaseOwner}[{objectQualifier}Files]
+	SET
+		/* retrieves FileId from table */
+		@FileID = FileId,
+		FileName = @FileName,
+		VersionGuid = @VersionGuid,
+		Extension = @Extension,
+		Size = @Size,
+		Width = @Width,
+		Height = @Height,
+		ContentType = @ContentType,
+		FolderID = @FolderID,
+		LastModifiedByUserID = @CreatedByUserID,
+		LastModifiedOnDate = getdate(),
+		SHA1Hash = @Hash,
+		LastModificationTime = @LastModificationTime, 
+		Title = @Title,
+		EnablePublishPeriod = @EnablePublishPeriod,
+		StartDate = @StartDate,
+		EndDate = @EndDate,
+		ContentItemID = @ContentItemID
+	WHERE
+		FolderID = @FolderID AND FileName = @FileName
+
+	IF @@ROWCOUNT = 0
+	BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Files] (
+		PortalId,
+		UniqueId,
+		VersionGuid,
+		FileName,
+		Extension,
+		Size,
+		Width,
+		Height,
+		ContentType,
+		FolderID,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		SHA1Hash,
+		LastModificationTime, 
+		Title,
+		EnablePublishPeriod,
+		StartDate,
+		EndDate,
+		ContentItemID
+	)
+	VALUES (
+		@PortalId,
+		@UniqueId,
+		@VersionGuid,
+		@FileName,
+		@Extension,
+		@Size,
+		@Width,
+		@Height,
+		@ContentType,
+		@FolderID,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@Hash,
+		@LastModificationTime, 
+		@Title,
+		@EnablePublishPeriod,
+		@StartDate,
+		@EndDate,
+		@ContentItemID
+	)
+
+	SELECT @FileID = SCOPE_IDENTITY()
+	END
+
+	SELECT @FileID
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+    @FileId					int,
+    @VersionGuid			uniqueidentifier,	
+    @FileName				nvarchar(246),
+    @Extension				nvarchar(100),
+    @Size					bigint,
+    @Width					int,
+    @Height					int,
+    @ContentType			nvarchar(200),	
+    @Folder					nvarchar(246),
+    @FolderID				int,
+	@LastModifiedByUserID  	int,
+	@Hash					varchar(40),
+	@LastModificationTime	datetime,
+	@Title					nvarchar(256),
+	@EnablePublishPeriod	bit,
+	@StartDate				datetime,
+	@EndDate				datetime,	
+	@ContentItemID			int
+AS
+    UPDATE {databaseOwner}{objectQualifier}Files
+        SET    FileName = @FileName,
+               VersionGuid = @VersionGuid,
+               Extension = @Extension,
+               Size = @Size,
+               Width = @Width,
+               Height = @Height,
+               ContentType = @ContentType,
+               FolderID = @FolderID,
+               LastModifiedByUserID = @LastModifiedByUserID,
+               LastModifiedOnDate = getdate(),
+			   SHA1Hash = @Hash,
+			   LastModificationTime = @LastModificationTime,
+			   Title = @Title,
+			   EnablePublishPeriod = @EnablePublishPeriod,
+			   StartDate = @StartDate,
+			   EndDate = @EndDate,
+			   ContentItemID = @ContentItemID
+    WHERE  FileId = @FileId
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddFileVersion]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE  {databaseOwner}[{objectQualifier}AddFileVersion] 
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFileVersion] 
+	@FileId					int,
+	@UniqueId				uniqueidentifier,
+	@VersionGuid			uniqueidentifier,
+	@FileName				nvarchar(246),
+	@Extension				nvarchar(100),
+	@Size					bigint,
+	@Width					int,
+	@Height					int,
+	@ContentType			nvarchar(200),
+	@Folder					nvarchar(246),
+	@FolderID				int,
+	@UserID					int,
+	@Hash					varchar(40),
+	@LastModificationTime	datetime, 
+	@Title					nvarchar(256),
+	@EnablePublishPeriod	bit,
+	@StartDate				datetime,
+	@EndDate				datetime,
+	@ContentItemID			int,
+	@IsPublished			bit,
+	@Content				image = NULL
+AS
+BEGIN
+
+	DECLARE @Version INT
+
+	--	Calculate the new version = Max(Files.PublishedVersion, FileVersions.Versions) + 1
+	SELECT @Version = MAX([Version]) + 1
+	FROM (SELECT [Version]
+			FROM {databaseOwner}[{objectQualifier}FileVersions]
+			WHERE FileId = @FileId
+			UNION
+			SELECT PublishedVersion [Version]
+			FROM {databaseOwner}{objectQualifier}Files
+			WHERE FileId = @FileId) v
+
+	IF  @IsPublished = 1
+		BEGIN
+			INSERT {databaseOwner}[{objectQualifier}FileVersions]
+						([FileId]
+						,[Version]
+						,[FileName]
+						,[Extension]
+						,[Size]
+						,[Width]
+						,[Height]
+						,[ContentType]
+						,[Content]
+						,[CreatedByUserID]
+						,[CreatedOnDate]
+						,[LastModifiedByUserID]
+						,[LastModifiedOnDate]
+						,[SHA1Hash])
+			SELECT		[FileId]
+						,[PublishedVersion]  [Version]				
+						,CONVERT(nvarchar, [FileId]) + '_' + CONVERT(nvarchar, [PublishedVersion]) +'.v.resources' 
+						,[Extension]
+						,[Size]
+						,[Width]
+						,[Height]
+						,[ContentType]
+						,[Content]
+						,[CreatedByUserID]
+						,[CreatedOnDate]
+						,[LastModifiedByUserID]
+						,[LastModifiedOnDate]
+						,[SHA1Hash]					
+			FROM {objectQualifier}Files
+			WHERE FileId = @FileId
+
+			-- Change PublishedVersion
+			UPDATE {databaseOwner}[{objectQualifier}Files]
+			SET	 [PublishedVersion] = @Version
+			WHERE FileId = @FileId
+		END
+	ELSE
+		BEGIN
+			INSERT {databaseOwner}[{objectQualifier}FileVersions]
+							([FileId]
+							,[Version]
+							,[FileName]
+							,[Extension]
+							,[Size]
+							,[Width]
+							,[Height]
+							,[ContentType]
+							,[Content]
+							,[CreatedByUserID]
+							,[CreatedOnDate]
+							,[LastModifiedByUserID]
+							,[LastModifiedOnDate]
+							,[SHA1Hash])
+			VALUES (@FileId
+					,@Version
+					,CONVERT(nvarchar, @FileId) + '_' + CONVERT(nvarchar, @Version) +'.v.resources'
+					,@Extension
+					,@Size
+					,@Width
+					,@Height
+					,@ContentType
+					,@Content
+					,@UserID
+					,GETDATE()
+					,@UserID
+					,GETDATE()
+					,@Hash)
+		END
+
+	SELECT @Version
+END
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

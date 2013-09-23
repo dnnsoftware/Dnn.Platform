@@ -297,7 +297,7 @@ namespace DotNetNuke.Services.FileSystem
             objFile.PortalId = portalId;
             objFile.FileName = fileName;
             objFile.Extension = extension;
-            objFile.Size = Convert.ToInt32(size);
+            objFile.Size = Convert.ToInt64(size);
             objFile.Width = width;
             objFile.Height = height;
             objFile.ContentType = contentType;
@@ -322,7 +322,7 @@ namespace DotNetNuke.Services.FileSystem
             objFile.PortalId = portalId;
             objFile.FileName = fileName;
             objFile.Extension = extension;
-            objFile.Size = Convert.ToInt32(size);
+			objFile.Size = Convert.ToInt64(size);
             objFile.Width = width;
             objFile.Height = height;
             objFile.ContentType = ContentType;
@@ -421,7 +421,7 @@ namespace DotNetNuke.Services.FileSystem
 
             objFile.FileName = FileName;
             objFile.Extension = Extension;
-            objFile.Size = Convert.ToInt32(Size);
+			objFile.Size = Convert.ToInt64(Size);
             objFile.Width = Width;
             objFile.Height = Height;
             objFile.ContentType = ContentType;
@@ -444,7 +444,7 @@ namespace DotNetNuke.Services.FileSystem
 
             objFile.FileName = FileName;
             objFile.Extension = Extension;
-            objFile.Size = Convert.ToInt32(Size);
+			objFile.Size = Convert.ToInt64(Size);
             objFile.Width = Width;
             objFile.Height = Height;
             objFile.ContentType = ContentType;
@@ -465,7 +465,7 @@ namespace DotNetNuke.Services.FileSystem
 
             objFile.FileName = FileName;
             objFile.Extension = Extension;
-            objFile.Size = Convert.ToInt32(Size);
+			objFile.Size = Convert.ToInt64(Size);
             objFile.Width = Width;
             objFile.Height = Height;
             objFile.ContentType = ContentType;
@@ -490,7 +490,7 @@ namespace DotNetNuke.Services.FileSystem
             objFile.PortalId = PortalId;
             objFile.FileName = FileName;
             objFile.Extension = Extension;
-            objFile.Size = Convert.ToInt32(Size);
+			objFile.Size = Convert.ToInt64(Size);
             objFile.Width = Width;
             objFile.Height = Height;
             objFile.ContentType = ContentType;
@@ -516,7 +516,7 @@ namespace DotNetNuke.Services.FileSystem
 
             objFile.FileName = FileName;
             objFile.Extension = Extension;
-            objFile.Size = Convert.ToInt32(Size);
+			objFile.Size = Convert.ToInt64(Size);
             objFile.Width = Width;
             objFile.Height = Height;
             objFile.ContentType = ContentType;

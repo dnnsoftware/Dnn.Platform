@@ -161,7 +161,7 @@ namespace DotNetNuke.Web.InternalServices
             return acceptedExtensions.Contains(extension);
         }
 
-        private static string GetFileSize(int sizeInBytes)
+        private static string GetFileSize(long sizeInBytes)
         {
             var size = sizeInBytes / 1024;
             var biggerThanAMegabyte = size > 1024;
