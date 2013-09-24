@@ -476,8 +476,10 @@
     <Compile Include="Services\FileSystem\Exceptions\InvalidMetadataValuesException.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\FileSystem\EventArgs\FileChangedEventArgs.cs" />
     <Compile Include="Services\FileSystem\FileVersionController.cs" />
     <Compile Include="Services\FileSystem\FileVersionInfo.cs" />
+    <Compile Include="Services\FileSystem\IFileEventsHandler.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptLibraryInstaller.cs" />

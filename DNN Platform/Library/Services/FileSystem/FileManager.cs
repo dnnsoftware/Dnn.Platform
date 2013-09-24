@@ -18,9 +18,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -40,8 +41,9 @@ using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Instrumentation;
-
+using DotNetNuke.Services.FileSystem.EventArgs;
 using ICSharpCode.SharpZipLib.Zip;
 
 namespace DotNetNuke.Services.FileSystem
@@ -52,6 +54,13 @@ namespace DotNetNuke.Services.FileSystem
     public class FileManager : ComponentBase<IFileManager, FileManager>, IFileManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
+
+        #region Private Events
+        [ImportMany]
+        private IEnumerable<Lazy<IFileEventsHandler, IExtensionPointData>> eventsHandlers = new List<Lazy<IFileEventsHandler, IExtensionPointData>>();
+
+        private event EventHandler<FileChangedEventArgs> FileDeleted;
+        #endregion
 
         #region Properties
 
@@ -109,15 +118,13 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Constructor
-
         internal FileManager()
         {
+            RegisterEventsHandlers();
         }
-
         #endregion
 
         #region Private Methods
-
         private void AddFileToFolderProvider(Stream fileContent, string fileName, IFolderInfo destinationFolder, FolderProvider provider)
         {
             try
@@ -154,6 +161,31 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
+
+        private void RegisterEventsHandlers()
+        {
+            // Dynamic registration of all EventsHandlers
+            ExtensionPointManager.ComposeParts(this);
+
+            foreach (var eventsHandler in eventsHandlers)
+            {
+                FileDeleted += eventsHandler.Value.FileManager_FileDeleted;
+            }
+        }
+
+        #region On File Events
+        private void OnFileDeleted(IFileInfo fileInfo, int userId)
+        {
+            if (FileDeleted != null)
+            {
+                FileDeleted(this, new FileChangedEventArgs
+                    {
+                        FileInfo = fileInfo,
+                        UserId = userId
+                    });
+            }
+        }
+        #endregion
 
         #endregion
 
@@ -530,6 +562,9 @@ namespace DotNetNuke.Services.FileSystem
 
             DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);
             DeleteContentItem(file.ContentItemID);
+
+            // Notify File Delete Event
+            OnFileDeleted(file, GetCurrentUserID());
         }
 
         /// <summary>
@@ -1336,7 +1371,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
-            
+
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
             if (folderProvider.FileExists(folder, file.FileName))
@@ -1428,7 +1463,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal void EnsureZipFolder(string fileName, IFolderInfo destinationFolder)
-        {            
+        {
             var folderManager = FolderManager.Instance;
 
             var folderMappingController = FolderMappingController.Instance;
@@ -1469,7 +1504,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
             }
         }
-        
+
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual Stream GetAutoDeleteFileStream(string filePath)
         {
