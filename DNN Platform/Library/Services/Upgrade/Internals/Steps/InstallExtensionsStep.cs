@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             Percentage = 0;
             Status = StepStatus.Running;
 
-            var extensions = new string[] { "Module", "Skin", "Container", "Language", "Provider", "AuthSystem", "Package" };
+            var extensions = new string[] { "Module", "Skin", "Container", "JavaScriptLibrary", "Language", "Provider", "AuthSystem", "Package" };
             var percentForEachStep = 100 / extensions.Length;
             var counter = 0;
 

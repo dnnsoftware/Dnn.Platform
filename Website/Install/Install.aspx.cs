@@ -259,6 +259,7 @@ namespace DotNetNuke.Services.Install
                     Upgrade.Upgrade.InstallPackages("Module", true);
                     Upgrade.Upgrade.InstallPackages("Skin", true);
                     Upgrade.Upgrade.InstallPackages("Container", true);
+                    Upgrade.Upgrade.InstallPackages("JavaScriptLibrary", true);
                     Upgrade.Upgrade.InstallPackages("Language", true);
                     Upgrade.Upgrade.InstallPackages("Provider", true);
                     Upgrade.Upgrade.InstallPackages("AuthSystem", true);

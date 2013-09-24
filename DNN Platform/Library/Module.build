@@ -32,6 +32,7 @@
       <jQuery Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQuery\*.*" />
       <jQueryUI Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI\*.*" />
       <jQueryMigrate Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate\*.*" />
+      <KnockoutMapping Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping\*.*" />
       <ExternalModulePackages Include="$(MSBuildProjectDirectory)\..\Externally Sourced\Modules\*.*" />
     </ItemGroup>
   </Target>
@@ -69,16 +70,19 @@
   
   <Target Name="ReleasePackages" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Zip Files="@(Knockout)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Knockout"
-         ZipFileName="$(WebsiteInstallPath)\JavaScript Library\Knockout.zip" />
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\Knockout.zip" />
 
     <Zip Files="@(jQuery)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQuery"
-         ZipFileName="$(WebsiteInstallPath)\JavaScript Library\jQuery.zip" />
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\jQuery.zip" />
     
     <Zip Files="@(jQueryUI)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI"
-         ZipFileName="$(WebsiteInstallPath)\JavaScript Library\jQueryUI.zip" />
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\jQueryUI.zip" />
 
     <Zip Files="@(jQueryMigrate)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate"
-     ZipFileName="$(WebsiteInstallPath)\JavaScript Library\jQueryMigrate.zip" />
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\jQueryMigrate.zip" />
+
+    <Zip Files="@(KnockoutMapping)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping"
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\KnockoutMapping.zip" />
 
     <Copy SourceFiles="@(ExternalModulePackages)" DestinationFolder="$(WebsiteInstallPath)\Module"/>
   </Target>
