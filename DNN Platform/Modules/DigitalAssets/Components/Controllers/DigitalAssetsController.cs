@@ -260,7 +260,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         private Field GetFolderSizeField(IFolderInfo folder)
         {
             var field = new Field(DefaultMetadataNames.Size);
-            var size = FolderManager.Instance.GetFiles(folder, true, false).Sum(f => f.Size);
+            var size = FolderManager.Instance.GetFiles(folder, true, false).Sum(f => (long)f.Size);
             field.DisplayName = LocalizationHelper.GetString("Field" + field.Name + ".DisplayName");
             field.Type = size.GetType();
             field.Value = size;
