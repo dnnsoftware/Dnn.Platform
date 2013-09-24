@@ -165,8 +165,8 @@ namespace DotNetNuke.Modules.Admin.SQL
                         }
                         else
                         {
-                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                         errorRow.Visible = true;
+                            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            errorRow.Visible = true;
                             txtError.Text = strError;
                         }
                     }
@@ -193,7 +193,6 @@ namespace DotNetNuke.Modules.Admin.SQL
                             }
                             else
                             {
-
                                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                             }
                         }
