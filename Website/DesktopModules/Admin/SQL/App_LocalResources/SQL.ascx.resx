@@ -168,4 +168,10 @@
   <data name="runasLabel.Help" xml:space="preserve">
     <value>Select if the SQL statement does not return a value and only acts on the database to make changes</value>
   </data>
+  <data name="errorLabel.Help" xml:space="preserve">
+    <value>This is the error returned by SQL server after executing your SQL script.</value>
+  </data>
+  <data name="errorLabel.Text" xml:space="preserve">
+    <value>Error Details:</value>
+  </data>
 </root>
