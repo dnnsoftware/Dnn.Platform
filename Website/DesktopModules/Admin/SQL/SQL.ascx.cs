@@ -82,6 +82,7 @@ namespace DotNetNuke.Modules.Admin.SQL
             cmdExecute.Click += OnExecuteClick;
             cmdUpload.Click += OnUploadClick;
             ResultsRepeater.ItemDataBound += ResultsRepeater_ItemDataBound;
+            errorRow.Visible = false;
 
             try
             {
@@ -164,7 +165,9 @@ namespace DotNetNuke.Modules.Admin.SQL
                         }
                         else
                         {
-                            UI.Skins.Skin.AddModuleMessage(this, strError, ModuleMessage.ModuleMessageType.RedError);
+                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                         errorRow.Visible = true;
+                            txtError.Text = strError;
                         }
                     }
                     else
