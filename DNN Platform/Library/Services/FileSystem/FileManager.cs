@@ -316,7 +316,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     // Retrieve Metadata
-                    file.Size = fileContent.Length;
+                    file.Size = (int)fileContent.Length;
                     file.SHA1Hash = GetHash(fileContent);
                     fileContent.Position = 0;
 
@@ -386,7 +386,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 else
                 {
-                    file.Size = folderProvider.GetFileSize(file);
+                    file.Size = (int)folderProvider.GetFileSize(file);
                 }
 
                 if (folderWorkflow == null || !fileExists)
@@ -1104,7 +1104,7 @@ namespace DotNetNuke.Services.FileSystem
                 if (folderMapping != null)
                 {
                     var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
-                    file.Size = folderProvider.GetFileSize(file);
+                    file.Size = (int)folderProvider.GetFileSize(file);
                     file.LastModificationTime = folderProvider.GetLastModificationTime(file);
                 }
             }

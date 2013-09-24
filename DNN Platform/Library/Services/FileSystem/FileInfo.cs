@@ -71,18 +71,18 @@ namespace DotNetNuke.Services.FileSystem
             VersionGuid = Guid.NewGuid();
         }
 
-		public FileInfo(int portalId, string filename, string extension, long filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached)
+        public FileInfo(int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached)
             : this(portalId, filename, extension, filesize, width, height, contentType, folder, folderId, storageLocation, cached, Null.NullString)
         {
         }
 
-		public FileInfo(int portalId, string filename, string extension, long filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached,
+        public FileInfo(int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached,
                         string hash)
             : this(Guid.NewGuid(), Guid.NewGuid(), portalId, filename, extension, filesize, width, height, contentType, folder, folderId, storageLocation, cached, hash)
         {
         }
 
-        public FileInfo(Guid uniqueId, Guid versionGuid, int portalId, string filename, string extension, long filesize, int width, int height, string contentType, string folder, int folderId,
+        public FileInfo(Guid uniqueId, Guid versionGuid, int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId,
                         int storageLocation, bool cached, string hash)
         {
             UniqueId = uniqueId;
@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         [XmlElement("size")]
-        public long Size { get; set; }
+        public int Size { get; set; }
 
         [XmlElement("storagelocation")]
         public int StorageLocation { get; set; }
