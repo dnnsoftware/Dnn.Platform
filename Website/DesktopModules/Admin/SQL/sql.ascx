@@ -20,6 +20,10 @@
             <dnn:Label ID="runasLabel" runat="server" ControlName="chkRunAsScript" />
             <asp:CheckBox ID="chkRunAsScript" runat="server" />
         </div>
+        <div class="dnnFormItem" runat="server" id="errorRow">
+            <dnn:Label ID="errorLabel" runat="server" ControlName="txtError" />
+            <asp:TextBox ID="txtError" runat="server" TextMode="MultiLine" Columns="75" Rows="15" EnableViewState="False" Wrap="False" />
+        </div>
     </fieldset>
     <ul class="dnnActions dnnClear">
     	<li><asp:LinkButton id="cmdExecute" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdExecute" /></li>
