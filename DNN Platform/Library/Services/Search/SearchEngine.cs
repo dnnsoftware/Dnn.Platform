@@ -73,6 +73,7 @@ namespace DotNetNuke.Services.Search
         {
             var tabIndexer = new TabIndexer();
             var moduleIndexer = new ModuleIndexer();
+            var userIndexer = new UserIndexer();
             IndexedSearchDocumentCount = 0;
             Results = new Dictionary<string, int>();
 
@@ -105,6 +106,13 @@ namespace DotNetNuke.Services.Search
 
             //Both SearchModuleBase and ISearchable module content count
             Results.Add("Modules (Content)", searchDocuments.Count() + searchItems.Count);
+
+            //Index User data
+            searchDocs = GetSearchDocuments(userIndexer, startDate);
+            searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
+            StoreSearchDocuments(searchDocuments);
+            IndexedSearchDocumentCount += searchDocuments.Count();
+            Results.Add("Users", searchDocuments.Count());
         }
 
         internal bool CompactSearchIndexIfNeeded(ScheduleHistoryItem scheduleItem)

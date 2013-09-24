@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 
@@ -37,6 +38,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 
@@ -73,7 +75,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         #region Private Methods
 
-        private string ExportModule(int moduleID, string fileName, string folder)
+        private string ExportModule(int moduleID, string fileName, IFolderInfo folder)
         {
             var strMessage = "";
             if (Module != null)
@@ -98,18 +100,14 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                                 //First check the Portal limits will not be exceeded (this is approximate)
                                 var objPortalController = new PortalController();
-                                var strFile = PortalSettings.HomeDirectoryMapPath + folder + fileName;
+                                var strFile = PortalSettings.HomeDirectoryMapPath + folder.FolderPath + fileName;
                                 if (objPortalController.HasSpaceAvailable(PortalId, content.Length))
                                 {
-									//save the file
-                                    var objStream = File.CreateText(strFile);
-                                    objStream.WriteLine(content);
-                                    objStream.Close();
-
                                     //add file to Files table
-#pragma warning disable 612,618
-                                    FileSystemUtils.AddFile(fileName, PortalId, folder, PortalSettings.HomeDirectoryMapPath, "application/octet-stream");
-#pragma warning restore 612,618
+									using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content)))
+									{
+										FileManager.Instance.AddFile(folder, fileName, fileContent, true, true, "application/octet-stream");
+									}
                                 }
                                 else
                                 {
@@ -210,7 +208,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     if (folder != null)
                     {
                         var strFile = "content." + CleanName(Module.DesktopModule.ModuleName) + "." + CleanName(txtFile.Text) + ".xml";
-                        var strMessage = ExportModule(ModuleId, strFile, folder.FolderPath);
+                        var strMessage = ExportModule(ModuleId, strFile, folder);
                         if (String.IsNullOrEmpty(strMessage))
                         {
                             Response.Redirect(Globals.NavigateURL(), true);

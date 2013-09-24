@@ -465,7 +465,6 @@ namespace DotNetNuke.Services.Localization
 
         private static void AddLanguageHttpAlias(int portalId, Locale locale)
         {
-            string message = "";
             if (Config.GetFriendlyUrlProvider() == "advanced")
             {
                 // create new HTTPAlias for language

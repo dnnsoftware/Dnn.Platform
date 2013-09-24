@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 {
 					//Get all the packages but only bind to combo if not a language package
                     var packages = new List<PackageInfo>();
-                    foreach (PackageInfo package in PackageController.GetPackages())
+                    foreach (PackageInfo package in PackageController.Instance.GetExtensionPackages(Null.NullInteger))
                     {
                         if (package.PackageType != "CoreLanguagePack" && package.PackageType != "ExtensionLanguagePack")
                         {

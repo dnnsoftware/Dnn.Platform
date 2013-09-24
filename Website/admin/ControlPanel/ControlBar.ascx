@@ -160,11 +160,12 @@
                         <% if (UserController.GetCurrentUserInfo().IsSuperUser)
                            {%>
 						<li class="separator"></li>
+                        <li><a href="javascript:void(0)" id="controlBar_CreateModule">
+                            <%= GetString("Tool.CreateModule.Text") %></a> </li>
                         <li><a href='<%= GetTabURL("Extensions", true) %>#moreExtensions'>
                             <%= GetString("Tool.FindModules.Text") %></a> </li>
-                        <%   }
-                        %>
-                    </ul>
+                         <%   }%>
+                   </ul>
                 </li>
                <% } %>
                

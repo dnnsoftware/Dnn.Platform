@@ -737,7 +737,7 @@ namespace DotNetNuke.Security.Membership
             MembershipUser aspnetUser = GetMembershipUser(user);
            
             var m = new MembershipPasswordController();
-            if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword))
+            if (!m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword))
             {
                 return false;
             }

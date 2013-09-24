@@ -1,0 +1,20 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+update {databaseOwner}{objectQualifier}modulecontrols 
+set   ControlSrc = 'admin/Modules/viewsource.ascx', 
+      ControlTitle = 'View Source',
+      SupportsPartialRendering = 1 
+where controlsrc = 'DesktopModules/ModuleCreator/viewsource.ascx'
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

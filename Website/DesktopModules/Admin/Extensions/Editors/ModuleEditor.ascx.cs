@@ -394,7 +394,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         public override void UpdatePackage()
         {
             bool bUpdateSupportedFeatures = Null.NullBoolean;
-            PackageInfo _Package = PackageController.GetPackage(PackageID);
+            PackageInfo _Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
 
             //Update module settings
             if (desktopModuleForm.IsValid)

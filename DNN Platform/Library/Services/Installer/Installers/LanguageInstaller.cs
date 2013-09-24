@@ -23,6 +23,7 @@
 using System;
 using System.Xml.XPath;
 
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
@@ -180,7 +181,7 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 string packageName = Util.ReadElement(nav, "package");
-                PackageInfo package = PackageController.GetPackageByName(packageName);
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName);
                 if (package != null)
                 {
                     LanguagePack.DependentPackageID = package.PackageID;

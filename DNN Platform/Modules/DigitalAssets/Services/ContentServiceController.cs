@@ -25,8 +25,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;

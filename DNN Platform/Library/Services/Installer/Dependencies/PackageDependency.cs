@@ -22,6 +22,7 @@
 
 using System.Xml.XPath;
 
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Installer.Packages;
 
 #endregion
@@ -57,7 +58,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
                 bool _IsValid = true;
 
                 //Get Package from DataStore
-                PackageInfo package = PackageController.GetPackageByName(PackageName);
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.Name == PackageName);
                 if (package == null)
                 {
                     _IsValid = false;

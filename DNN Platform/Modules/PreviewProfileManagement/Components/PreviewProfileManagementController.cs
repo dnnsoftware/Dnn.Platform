@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.PreviewProfileManagement.Components
                 }
             }
 
-            var package = PackageController.GetPackageByName("DotNetNuke.Professional.PreviewProfileManagement");
+            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Professional.PreviewProfileManagement");
             if (package != null)
             {
                 var installer = new Installer(package, Globals.ApplicationMapPath);

@@ -60,6 +60,10 @@
 .dnnLogItemHeader:hover{background-color:  #e8f1fa; }
 .dnnLogItemHeader > div {color:#666; }
 .dnnLogItemHeaderDate > div { padding: 0 !important;}
+.dnnLogItemHeader span.block {
+	display: inline-block;
+	padding: 0 4px;
+}
 .dnnLogItemDetail{border: 1px solid #ccc;padding:1em 1.5em;background:#fff;}
 	.dnnLogItemDetail p{margin:0 0 .2em 0;padding:0;}
 	

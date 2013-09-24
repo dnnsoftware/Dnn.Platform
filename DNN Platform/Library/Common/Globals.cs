@@ -3921,19 +3921,17 @@ namespace DotNetNuke.Common
         [Obsolete("This method has been deprecated.")]
         public static void AddFile(string strFileName, string strExtension, string FolderPath, string strContentType, int Length, int imageWidth, int imageHeight)
         {
-#pragma warning disable 612,618
             // Obtain PortalSettings from Current Context
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
-            int PortalId = FileSystemUtils.GetFolderPortalId(_portalSettings);
+            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            int portalId = IsHostTab(portalSettings.ActiveTab.TabID) ? Null.NullInteger : portalSettings.PortalId;
             var objFiles = new FileController();
             var objFolders = new FolderController();
-            FolderInfo objFolder = objFolders.GetFolder(PortalId, FolderPath, false);
+			FolderInfo objFolder = objFolders.GetFolder(portalId, FolderPath, false);
             if ((objFolder != null))
             {
-                var objFile = new FileInfo(PortalId, strFileName, strExtension, Length, imageWidth, imageHeight, strContentType, FolderPath, objFolder.FolderID, objFolder.StorageLocation, true);
+				var objFile = new FileInfo(portalId, strFileName, strExtension, Length, imageWidth, imageHeight, strContentType, FolderPath, objFolder.FolderID, objFolder.StorageLocation, true);
                 objFiles.AddFile(objFile);
             }
-#pragma warning restore 612,618
         }
 
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.Config.GetConnectionString")]

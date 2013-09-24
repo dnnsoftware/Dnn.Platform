@@ -103,11 +103,11 @@ namespace DotNetNuke.Modules.Admin.Languages
                     CreateModulePackage(desktopModule, false);
                 }
             }
-            foreach (PackageInfo provider in PackageController.GetPackagesByType("Provider"))
+            foreach (PackageInfo provider in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType =="Provider"))
             {
                 CreateProviderPackage(provider, false);
             }
-            foreach (PackageInfo authSystem in PackageController.GetPackagesByType("Auth_System"))
+            foreach (PackageInfo authSystem in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType =="Auth_System"))
             {
                 CreateAuthSystemPackage(authSystem, false);
             }
@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.Admin.Languages
 
         private void CreateModulePackage(DesktopModuleInfo desktopModule, bool createZip)
         {
-            PackageInfo modulePackage = PackageController.GetPackage(desktopModule.PackageID);
+            PackageInfo modulePackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID);
 
             var Package = new PackageInfo();
             Package.Name = modulePackage.Name;
@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     rowitems.Visible = true;
                     lstItems.Items.Clear();
                     lstItems.ClearSelection();
-                    foreach (PackageInfo objPackage in PackageController.GetPackagesByType("Provider"))
+                    foreach (PackageInfo objPackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Provider"))
                     {
                         if (Null.IsNull(objPackage.Version))
                         {
@@ -305,7 +305,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     rowitems.Visible = true;
                     lstItems.Items.Clear();
                     lstItems.ClearSelection();
-                    foreach (PackageInfo objPackage in PackageController.GetPackagesByType("Auth_System"))
+                    foreach (PackageInfo objPackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType =="Auth_System"))
                     {
                         if (Null.IsNull(objPackage.Version))
                         {
@@ -356,7 +356,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                             if (providerItem.Selected)
                             {
 								//Get the Provider
-                                PackageInfo provider = PackageController.GetPackage(int.Parse(providerItem.Value));
+                                PackageInfo provider = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == int.Parse(providerItem.Value));
                                 CreateProviderPackage(provider, true);
                             }
                         }
@@ -368,7 +368,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                             if (authItem.Selected)
                             {
 								//Get the AuthSystem
-                                PackageInfo authSystem = PackageController.GetPackage(int.Parse(authItem.Value));
+                                PackageInfo authSystem = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID ==int.Parse(authItem.Value));
                                 CreateAuthSystemPackage(authSystem, true);
                             }
                         }

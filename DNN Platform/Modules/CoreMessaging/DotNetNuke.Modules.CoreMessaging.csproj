@@ -15,7 +15,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
@@ -74,6 +74,7 @@
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\..\Components\WebAPI\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.DynamicData" />
@@ -96,10 +97,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\CoreMessagingBusinessController.cs" />
+    <Compile Include="Components\Subscriptions\Common\Constants.cs" />
+    <Compile Include="Components\Subscriptions\Controllers\ISubscriptionController.cs" />
+    <Compile Include="Components\Subscriptions\Controllers\SubscriptionController.cs" />
+    <Compile Include="Components\Subscriptions\Controllers\SubscriptionControllerImpl.cs" />
+    <Compile Include="Components\Subscriptions\Data\IDataProvider.cs" />
+    <Compile Include="Components\Subscriptions\Data\SqlDataProvider.cs" />
+    <Compile Include="Components\Subscriptions\Entities\Subscriber.cs" />
     <Compile Include="Services\FilesStatus.cs" />
     <Compile Include="Services\FileUploadController.cs" />
     <Compile Include="Services\MessagingServiceController.cs" />
     <Compile Include="Services\CoreMessagingRouteMapper.cs" />
+    <Compile Include="Services\SubscriptionsController.cs" />
+    <Compile Include="Subscriptions.ascx.cs">
+      <DependentUpon>Subscriptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Subscriptions.ascx.designer.cs">
+      <DependentUpon>Subscriptions.ascx</DependentUpon>
+    </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -117,19 +133,31 @@
     <None Include="CoreMessaging.dnn">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.02.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
+    <Content Include="Module.build" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ie-messages.css" />
     <Content Include="Images\ajax-loader.gif" />
     <Content Include="Images\downArrow-hover.png" />
     <Content Include="Images\downArrow.png" />
+    <Content Include="Images\grid-sprite.png" />
     <Content Include="Images\icons.png" />
     <Content Include="Images\ie-backgrounds.png" />
     <Content Include="Images\list-Icon.png" />
     <Content Include="Images\page-Icon.png" />
     <Content Include="Images\paperClip.png" />
     <Content Include="Images\progress.gif" />
+    <Content Include="Images\reply.png" />
+    <Content Include="Images\right.png" />
     <Content Include="Scripts\CoreMessaging.js" />
+    <Content Include="Scripts\LocalizationController.js" />
+    <Content Include="Scripts\PagingControl.js" />
+    <Content Include="Scripts\SearchController.js" />
+    <Content Include="Scripts\SearchResult.js" />
+    <Content Include="Scripts\Subscription.js" />
+    <Content Include="Subscriptions.ascx" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -142,7 +170,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="App_LocalResources\SharedResources.resx" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
       <Project>{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}</Project>
@@ -193,51 +223,12 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>CoreMessaging</DNNFileName>
-    <PackageName>DNNCE_CoreMessaging</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-      <SourceFiles Include="*.ascx; *.asmx;*.js;*.css; *.ashx" />
-      <ResourceFiles Include="App_LocalResources\*.resx" />
-      <JsFiles Include="scripts/*.*" />
-      <ConfigFiles Include="*.config" />
-      <Images Include="Images/*.*" />
-      <Resources Include="@(ResourceFiles);@(SourceFiles);@(Images);@(ConfigFiles);@(TextFiles);@(JsFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CreateItem Include="*.ascx">
-      <Output TaskParameter="Include" ItemName="MySourceFiles" />
-    </CreateItem>
-    <CreateItem Include="App_LocalResources\*.resx">
-      <Output TaskParameter="Include" ItemName="MyLocalResourceFilesFiles" />
-    </CreateItem>
-    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\CoreMessaging" />
-    <Copy SourceFiles="@(Images)" DestinationFolder="$(WebsitePath)\DesktopModules\CoreMessaging\Images" />
-    <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\CoreMessaging\Scripts" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\CoreMessaging\App_LocalResources" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>

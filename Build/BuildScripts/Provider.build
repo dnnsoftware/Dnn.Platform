@@ -1,0 +1,28 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
+  </Target>
+  <Target Name="GetFiles">
+    <ItemGroup>
+      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
+      <SourceFiles Include="*.css;*.htm;*.xsl;*.png;*.gif" />
+      <RootConfig Include="*eb.config" />
+      <RootViews Include="*.ascx;*.asmx;*.ashx;*.aspx" />
+      <ResourceFiles Include="App_LocalResources/*.resx" />
+      <Documents Include="Documentation/*.*" />
+      <Resources Include="@(ResourceFiles);@(RootViews);@(TextFiles);@(SourceFiles);@(RootConfig);@(Documents)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="CopyBin">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/bin$(Providers)/$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/bin$(Providers)/$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/bin$(Providers)/$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
+  </Target>
+  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(ProviderFolderName)" />
+    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(ProviderFolderName)" />
+    <Copy SourceFiles="@(RootViews)" DestinationFolder="$(ProviderFolderName)" />
+    <Copy SourceFiles="@(RootConfig)" DestinationFolder="$(ProviderFolderName)" />
+    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ProviderFolderName)\App_LocalResources" />
+    <Copy SourceFiles="@(Documents)" DestinationFolder="$(ProviderFolderName)\Documents" />
+  </Target>
+</Project>

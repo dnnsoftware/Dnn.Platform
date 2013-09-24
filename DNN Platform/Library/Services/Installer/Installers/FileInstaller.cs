@@ -46,7 +46,6 @@ namespace DotNetNuke.Services.Installer.Installers
 		#region Private Members
 		
         private readonly List<InstallFile> _Files = new List<InstallFile>();
-        private string _BasePath;
         private bool _DeleteFiles = Null.NullBoolean;
 
 		#endregion
@@ -63,13 +62,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// 	[cnurse]	07/25/2007  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        protected string BasePath
-        {
-            get
-            {
-                return _BasePath;
-            }
-        }
+        protected string BasePath { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -511,7 +504,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 XPathNavigator baseNav = rootNav.SelectSingleNode("basePath");
                 if (baseNav != null)
                 {
-                    _BasePath = baseNav.Value;
+                    BasePath = baseNav.Value;
                 }
                 ReadCustomManifest(rootNav);
                 foreach (XPathNavigator nav in rootNav.Select(ItemNodeName))

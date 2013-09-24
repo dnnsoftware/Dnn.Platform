@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.ASP2MenuNavigationProvider" type="Provider" version="07.01.02">
+        <package name="DotNetNuke.ASP2MenuNavigationProvider" type="Provider" version="07.02.00">
             <friendlyName>DotNetNuke ASP2 Menu Navigation Provider</friendlyName>
             <description>DotNetNuke ASP2 Menu Navigation Provider Project provides a navigation system based on the menu included in ASp.NET v2.</description>
             <dependencies/>

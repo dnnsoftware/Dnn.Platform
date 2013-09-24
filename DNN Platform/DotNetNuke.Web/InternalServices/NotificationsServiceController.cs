@@ -22,6 +22,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -62,5 +65,20 @@ namespace DotNetNuke.Web.InternalServices
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+
+		[HttpGet]
+		public HttpResponseMessage GetToasts()
+		{
+			var toasts = NotificationsController.Instance.GetToasts(this.UserInfo);
+			IList<object> convertedObjects = toasts.Select(ToExpandoObject).ToList();
+			return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Toasts = convertedObjects.Take(3) });
+		}
+
+		private object ToExpandoObject(Notification notification)
+		{
+			return new {Subject = notification.Subject, Body = notification.Body};
+		}
+
     }
 }

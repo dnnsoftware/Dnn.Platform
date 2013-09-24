@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Installer
                 package.Manifest = skinWriter.WriteManifest(true);
 
                 //Save Package
-                PackageController.SavePackage(package);
+                PackageController.Instance.SaveExtensionPackage(package);
 
                 //Update Skin Package with new PackageID
                 skin.PackageID = package.PackageID;
@@ -287,13 +287,15 @@ namespace DotNetNuke.Services.Installer
                         if (language.Code != Localization.Localization.SystemLocale)
                         {
                             //Create a Package
-                            var package = new PackageInfo(new InstallerInfo());
-                            package.Name = language.Text;
-                            package.FriendlyName = language.Text;
-                            package.Description = Null.NullString;
-                            package.Version = new Version(1, 0, 0);
-                            package.PackageType = "CoreLanguagePack";
-                            package.License = Util.PACKAGE_NoLicense;
+                            var package = new PackageInfo(new InstallerInfo())
+                                {
+                                    Name = language.Text,
+                                    FriendlyName = language.Text,
+                                    Description = Null.NullString,
+                                    Version = new Version(1, 0, 0),
+                                    PackageType = "CoreLanguagePack",
+                                    License = Util.PACKAGE_NoLicense
+                                };
 
                             //Create a LanguagePackWriter
                             var packageWriter = new LanguagePackWriter(language, package);
@@ -302,12 +304,14 @@ namespace DotNetNuke.Services.Installer
                             package.Manifest = packageWriter.WriteManifest(true);
 
                             //Save Package
-                            PackageController.SavePackage(package);
+                            PackageController.Instance.SaveExtensionPackage(package);
 
-                            var languagePack = new LanguagePackInfo();
-                            languagePack.LanguageID = language.LanguageId;
-                            languagePack.PackageID = package.PackageID;
-                            languagePack.DependentPackageID = -2;
+                            var languagePack = new LanguagePackInfo
+                                {
+                                    LanguageID = language.LanguageId,
+                                    PackageID = package.PackageID,
+                                    DependentPackageID = -2
+                                };
                             LanguagePackController.SaveLanguagePack(languagePack);
                         }
                     }
@@ -422,7 +426,7 @@ namespace DotNetNuke.Services.Installer
                 }
 
                 //Save Package
-                PackageController.SavePackage(package);
+                PackageController.Instance.SaveExtensionPackage(package);
 
                 //Update Desktop Module with new PackageID
                 desktopModule.PackageID = package.PackageID;
@@ -472,7 +476,7 @@ namespace DotNetNuke.Services.Installer
                         package.Manifest = skinControlWriter.WriteManifest(true);
 
                         //Save Package
-                        PackageController.SavePackage(package);
+                        PackageController.Instance.SaveExtensionPackage(package);
 
                         //Update SkinControl with new PackageID
                         skinControl.PackageID = package.PackageID;

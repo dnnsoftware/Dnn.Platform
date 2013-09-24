@@ -24,13 +24,16 @@ using System;
 using System.IO;
 using System.Web;
 using System.Web.UI;
+
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.UI.Modules;
 
 #endregion
 
 namespace DotNetNuke.Web.Razor
 {
-    public class RazorHostControl : ModuleControlBase
+    public class RazorHostControl : ModuleControlBase, IActionable
     {
         private readonly string _razorScriptFile;
 
@@ -44,17 +47,43 @@ namespace DotNetNuke.Web.Razor
             get { return _razorScriptFile; }
         }
 
+	    private RazorEngine _engine;
+	    private  RazorEngine Engine
+	    {
+		    get
+		    {
+				if (_engine == null)
+			    {
+					_engine = new RazorEngine(RazorScriptFile, ModuleContext, LocalResourceFile);
+			    }
+
+			    return _engine;
+		    }
+	    }
+
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
             if (!(string.IsNullOrEmpty(RazorScriptFile)))
             {
-                var razorEngine = new RazorEngine(RazorScriptFile, ModuleContext, LocalResourceFile);
                 var writer = new StringWriter();
-                razorEngine.Render(writer);
+				Engine.Render(writer);
                 Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(writer.ToString())));
             }
         }
-    }
+
+		public Entities.Modules.Actions.ModuleActionCollection ModuleActions
+		{
+			get
+			{
+				if (Engine.Webpage is IActionable)
+				{
+					return (Engine.Webpage as IActionable).ModuleActions;
+				}
+
+				return new ModuleActionCollection();
+			}
+		}
+	}
 }

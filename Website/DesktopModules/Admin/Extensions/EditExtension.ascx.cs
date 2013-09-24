@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             get
             {
-                return _package ?? (_package = PackageID == Null.NullInteger ? new PackageInfo() : PackageController.GetPackage(PackageID, true));
+                return _package ?? (_package = PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID));
             }
         }
 
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 {
                     if (Package != null)
                     {
-                        var pkgType = PackageController.GetPackageType(Package.PackageType);
+                        var pkgType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
                         if ((pkgType != null) && (!string.IsNullOrEmpty(pkgType.EditorControlSrc)))
                         {
                             _control = ControlUtilities.LoadControl<Control>(this, pkgType.EditorControlSrc);
@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 {
                     var pkgIconFile = Util.ParsePackageIconFileName(package);
                     package.IconFile = (pkgIconFile.Trim().Length > 0)? Util.ParsePackageIconFile(package) : null;
-                    PackageController.UpdatePackage(package);
+                    PackageController.Instance.SaveExtensionPackage(package);
                 }
                 if (displayMessage)
                 {

@@ -59,8 +59,9 @@
     <Reference Include="DotNetNuke.Log4Net">
       <HintPath>..\..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
     </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\..\..\packages\Moq.4.1.1308.2321\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.1.1309.1617, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Moq.4.1.1309.1617\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>

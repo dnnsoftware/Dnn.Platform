@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     {
                         pType = Request.QueryString["ptype"];
                     }
-                    _PackageType = PackageController.GetPackageType(pType);
+                    _PackageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == pType);
                 }
                 return _PackageType;
             }
@@ -449,6 +449,9 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 case "CoreLanguagePack":
                 case "ExtensionLanguagePack":
                     installFolder = "Language";
+                    break;
+                case "JavaScript_Library":
+                    installFolder = "JavaScript Library";
                     break;
                 case "Module":
                 case "Skin":

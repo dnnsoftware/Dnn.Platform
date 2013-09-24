@@ -164,12 +164,6 @@ namespace DotNetNuke.Modules.DigitalAssets
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        private void CloseClientDialog(bool refresh)
-        {
-            var script = "parent.window.dnnModule.digitalAssets.closeDialog(" + (refresh ? "true" : "false") + ");";
-            Page.ClientScript.RegisterClientScriptBlock(GetType(), "CloseDialogScript", script, true);
-        }
         
         private void OnItemUpdated()
         {
@@ -190,7 +184,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             try
             {
                 SaveFileProperties();
-                CloseClientDialog(true);
+                Page.CloseClientDialog(true);
             }
             catch (ThreadAbortException) { }
             catch (DotNetNukeException dnnex)
@@ -206,7 +200,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void OnCancelClick(object sender, EventArgs e)
         {
-            CloseClientDialog(false);
+            Page.CloseClientDialog(false);
         }
 
         private void SaveFileProperties()

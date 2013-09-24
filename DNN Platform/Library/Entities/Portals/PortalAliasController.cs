@@ -55,9 +55,7 @@ namespace DotNetNuke.Entities.Portals
 
         private static object GetPortalAliasLookupCallBack(CacheItemArgs cacheItemArgs)
         {
-#pragma warning disable 612,618
-            return new PortalAliasController().GetPortalAliases();
-#pragma warning restore 612,618
+	        return TestablePortalAliasController.Instance.GetPortalAliases();
         }
 
         private static bool ValidateAlias(string portalAlias, bool ischild, bool isDomain)

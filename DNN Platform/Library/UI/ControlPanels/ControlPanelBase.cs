@@ -181,7 +181,7 @@ namespace DotNetNuke.UI.ControlPanels
 		
 		#region Protected Methods
 
-        protected bool IsModuleAdmin()
+        protected internal static bool IsModuleAdmin()
         {
             bool _IsModuleAdmin = Null.NullBoolean;
             foreach (ModuleInfo objModule in TabController.CurrentPage.Modules)
@@ -196,10 +196,10 @@ namespace DotNetNuke.UI.ControlPanels
                     }
                 }
             }
-            return PortalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
+            return PortalController.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
         }
 
-        protected bool IsPageAdmin()
+        protected internal static bool IsPageAdmin()
         {
             bool _IsPageAdmin = Null.NullBoolean;
             if (TabPermissionController.CanAddContentToPage() || TabPermissionController.CanAddPage() || TabPermissionController.CanAdminPage() || TabPermissionController.CanCopyPage() ||

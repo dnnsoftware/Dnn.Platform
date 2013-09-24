@@ -132,7 +132,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private void BindPortalDesktopModuleImages()
         {
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-            var packages = PackageController.GetPackages(PortalSettings.Current.PortalId);
+            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             foreach (RadComboBoxItem item in _moduleCombo.Items)
             {
@@ -151,7 +151,7 @@ namespace DotNetNuke.Web.UI.WebControls
             var tabModules = new ModuleController().GetTabModules(tabID);
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
             var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
-            var packages = PackageController.GetPackages(PortalSettings.Current.PortalId);
+            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             foreach (RadComboBoxItem item in _moduleCombo.Items)
             {

@@ -222,6 +222,27 @@ namespace DotNetNuke.Services.FileSystem
             var compatibleTypes = new[] { "StandardFolderProvider", "SecureFolderProvider", "DatabaseFolderProvider" };
             return compatibleTypes.Contains(folderMappingInfo.FolderProviderType);
         }
+
+		private int FindFolderMappingId(MergedTreeItem item, int portalId)
+		{
+			if (item.ExistsInFolderMapping)
+			{
+				return item.FolderMappingID;
+			}
+
+			if (item.FolderPath.IndexOf('/') != item.FolderPath.LastIndexOf('/'))
+			{
+				var parentPath = item.FolderPath.Substring(0, item.FolderPath.TrimEnd('/').LastIndexOf('/') + 1);
+				var folder = GetFolder(portalId, parentPath);
+				if (folder != null)
+				{
+					return folder.FolderMappingID;
+				}
+			}
+
+			return FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID;
+		}
+
         #endregion
 
         #region Public Methods
@@ -1668,14 +1689,8 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (!item.ExistsInDatabase)
                 {
-                    if (!item.ExistsInFolderMapping)
-                    {
-                        CreateFolderInDatabase(portalId, item.FolderPath, FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID);
-                    }
-                    else
-                    {
-                        CreateFolderInDatabase(portalId, item.FolderPath, item.FolderMappingID);
-                    }
+	                var folderMappingId = FindFolderMappingId(item, portalId);
+                    CreateFolderInDatabase(portalId, item.FolderPath, folderMappingId);
                 }
             }
             else

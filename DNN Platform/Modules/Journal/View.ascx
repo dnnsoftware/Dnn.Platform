@@ -184,14 +184,9 @@
         opts.previewSelector = '#linkArea';
         opts.servicesFramework = $.ServicesFramework(<%=ModuleId %>);
 
-        $('body').previewify(opts);
+    	$('body').previewify(opts);
 
-      
-      
-     
-       
-       
-
+	    $("#journalContent").mentionsInput({servicesFramework: $.ServicesFramework(<%=ModuleContext.ModuleId %>)});
     });
   
     function buildLikes(data,journalId){

@@ -19,13 +19,19 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Journal.Components;
 using DotNetNuke.Security;
@@ -105,6 +111,27 @@ namespace DotNetNuke.Modules.Journal
                 ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoScripting);
                 ji.Summary = Utilities.RemoveHTML(ji.Summary);
                 ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoMarkup);
+
+				//parse the mentions context in post data
+				var matches = Regex.Matches(ji.Summary, "@([\\S]+)");
+				foreach (Match match in matches)
+				{
+					var username = match.Groups[1].Value;
+					var user = UserController.GetUserByName(PortalSettings.PortalId, username);
+					
+					if (user != null)
+					{
+						var relationship = RelationshipController.Instance.GetFollowerRelationship(UserInfo, user) ??
+						                   RelationshipController.Instance.GetFriendRelationship(UserInfo, user);
+						if (relationship != null && relationship.Status == RelationshipStatus.Accepted)
+						{
+							var userLink = string.Format("<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>",
+							                             Globals.UserProfileURL(user.UserID),
+							                             match.Value);
+							ji.Summary = Regex.Replace(ji.Summary, match.Value + "(\\s)|" + match.Value + "($)", userLink + "$1");
+						}
+					}
+				}
 
                 if (ji.Summary.Length > 2000)
                 {
@@ -394,7 +421,7 @@ namespace DotNetNuke.Modules.Journal
                 var ji = JournalController.Instance.GetJournalItem(ActiveModule.OwnerPortalID, UserInfo.UserID, postData.JournalId);
                 var jp = new JournalParser(PortalSettings, ActiveModule.ModuleID, ji.ProfileId, -1, UserInfo);
 
-                return Request.CreateResponse(HttpStatusCode.OK, jp.GetCommentRow(ci), "text/html");
+                return Request.CreateResponse(HttpStatusCode.OK, jp.GetCommentRow(ji, ci), "text/html");
             }
             catch (Exception exc)
             {
@@ -434,5 +461,47 @@ namespace DotNetNuke.Modules.Journal
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+		[HttpGet]
+		[DnnAuthorize(DenyRoles = "Unverified Users")]
+		public HttpResponseMessage GetSuggestions(string keyword)
+		{
+			try
+			{
+				var findedUsers = new ArrayList();
+				var relations = RelationshipController.Instance.GetUserRelationships(UserInfo);
+				foreach (var ur in relations)
+				{
+					var targetUserId = ur.UserId == UserInfo.UserID ? ur.RelatedUserId : ur.UserId;
+					var targetUser = UserController.GetUserById(PortalSettings.PortalId, targetUserId);
+					var relationship = RelationshipController.Instance.GetRelationship(ur.RelationshipId);
+					if (ur.Status == RelationshipStatus.Accepted && targetUser != null
+						&& ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.UserId == UserInfo.UserID)
+								|| relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends
+							)
+						&& (targetUser.DisplayName.ToLowerInvariant().Contains(keyword.ToLowerInvariant()) 
+								|| targetUser.Username.ToLowerInvariant().Contains(keyword.ToLowerInvariant())
+							)
+						)
+					{
+						findedUsers.Add(new
+							                {
+												displayName = targetUser.DisplayName,
+												username = targetUser.Username,
+												userId = targetUser.UserID,
+												avatar = targetUser.Profile.PhotoURL,
+												key = keyword
+							                });
+					}
+				}
+
+				return Request.CreateResponse(HttpStatusCode.OK, findedUsers.Cast<object>().Take(5));
+			}
+			catch (Exception exc)
+			{
+				Logger.Error(exc);
+				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+			}
+		}
     }
 }

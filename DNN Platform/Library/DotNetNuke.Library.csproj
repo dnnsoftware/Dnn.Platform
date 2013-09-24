@@ -399,12 +399,16 @@
     <Compile Include="ExtensionPoints\ToolBarButtonRenderer.cs" />
     <Compile Include="ExtensionPoints\ToolBarMenuButtonRenderer.cs" />
     <Compile Include="ExtensionPoints\UserControlExtensionControl.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\IJavaScriptLibraryController.cs" />
     <Compile Include="Framework\Internal\Reflection\AssemblyWrapper.cs" />
     <Compile Include="Framework\Internal\Reflection\IAssembly.cs" />
     <Compile Include="Framework\Internal\Reflection\IAssemblyLocator.cs" />
     <Compile Include="Framework\Internal\Reflection\ITypeLocator.cs" />
     <Compile Include="Framework\Internal\Reflection\TypeLocator.cs" />
     <Compile Include="Framework\IServiceFrameworkInternals.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScript.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibrary.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibraryController.cs" />
     <Compile Include="Framework\ServiceLocator.cs" />
     <Compile Include="ComponentModel\IComponentBuilder.cs" />
     <Compile Include="ComponentModel\IComponentInstaller.cs" />
@@ -475,15 +479,21 @@
     <Compile Include="Services\FileSystem\FileVersionController.cs" />
     <Compile Include="Services\FileSystem\FileVersionInfo.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
+    <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
+    <Compile Include="Services\Installer\Installers\JavaScriptLibraryInstaller.cs" />
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
+    <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
     <Compile Include="Services\Search\Controllers\ModuleResultController.cs" />
+    <Compile Include="Services\Search\Controllers\UserResultController.cs" />
+    <Compile Include="Services\Search\Entities\SortDirections.cs" />
     <Compile Include="Services\Search\Entities\SearchResults.cs" />
     <Compile Include="Services\Search\Entities\SortFields.cs" />
     <Compile Include="Services\Search\Entities\SearchStopWords.cs" />
     <Compile Include="Services\Search\Entities\SynonymsGroup.cs" />
     <Compile Include="Services\Search\Internals\Constants.cs" />
+    <Compile Include="Services\Search\Internals\ISearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\SearchQueryAnalyzer.cs" />
     <Compile Include="Services\Search\Internals\ISearchHelper.cs" />
     <Compile Include="Services\Search\Internals\SearchContentSource.cs" />
@@ -491,6 +501,7 @@
     <Compile Include="Services\Search\Internals\SearchHelperImpl.cs" />
     <Compile Include="Services\Search\Internals\LuceneResult.cs" />
     <Compile Include="Services\Search\Internals\LuceneQuery.cs" />
+    <Compile Include="Services\Search\Internals\SearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\SearchSecurityTrimmer.cs" />
     <Compile Include="Services\Search\Internals\SearchStatistics.cs" />
     <Compile Include="Services\Search\Internals\SynonymAnalyzer.cs" />
@@ -509,6 +520,19 @@
     <Compile Include="Services\Search\Controllers\SearchController.cs" />
     <Compile Include="Services\Search\Controllers\SearchControllerImpl.cs" />
     <Compile Include="Services\Search\Entities\SearchQuery.cs" />
+    <Compile Include="Services\Search\UserIndexer.cs" />
+    <Compile Include="Services\Subscriptions\Common\ObjectKey.cs" />
+    <Compile Include="Services\Subscriptions\Common\SubscriptionsException.cs" />
+    <Compile Include="Services\Subscriptions\Controllers\ISubscriptionController.cs" />
+    <Compile Include="Services\Subscriptions\Controllers\ISubscriptionTypeController.cs" />
+    <Compile Include="Services\Subscriptions\Controllers\SubscriptionController.cs" />
+    <Compile Include="Services\Subscriptions\Controllers\SubscriptionTypeController.cs" />
+    <Compile Include="Services\Subscriptions\Data\DataService.cs" />
+    <Compile Include="Services\Subscriptions\Data\IDataService.cs" />
+    <Compile Include="Services\Subscriptions\Entities\Frequency.cs" />
+    <Compile Include="Services\Subscriptions\Entities\Subscriber.cs" />
+    <Compile Include="Services\Subscriptions\Entities\SubscriptionType.cs" />
+    <Compile Include="Services\Subscriptions\Tasks\SubscriptionTask.cs" />
     <Compile Include="Services\Upgrade\DnnInstallLogger.cs" />
     <Compile Include="Services\Upgrade\Internals\IInstallController.cs" />
     <Compile Include="Services\Upgrade\Internals\InstallConfiguration\ConnectionConfig.cs" />
@@ -570,13 +594,12 @@
     <Compile Include="Services\Social\Messaging\Scheduler\CoreMessagingScheduler.cs" />
     <Compile Include="Services\Social\Notifications\Notification.cs" />
     <Compile Include="Services\Social\Notifications\NotificationTypeAction.cs" />
-    <Compile Include="Services\Social\Messaging\MessagingController.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageThreadsView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageBoxView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageFileView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageThreadView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageConversationView.cs" />
-    <Compile Include="Services\Social\Messaging\MessagingControllerImpl.cs" />
+    <Compile Include="Services\Social\Messaging\MessagingController.cs" />
     <Compile Include="Services\Social\Messaging\Data\DataService.cs" />
     <Compile Include="Services\Social\Messaging\Data\IDataService.cs" />
     <Compile Include="Services\Social\Messaging\IMessagingController.cs" />
@@ -889,9 +912,8 @@
     <Compile Include="Services\Social\Notifications\Data\DataService.cs" />
     <Compile Include="Services\Social\Notifications\Data\IDataService.cs" />
     <Compile Include="Services\Social\Notifications\INotificationsController.cs" />
-    <Compile Include="Services\Social\Notifications\NotificationsControllerImpl.cs" />
-    <Compile Include="Services\Social\Notifications\NotificationType.cs" />
     <Compile Include="Services\Social\Notifications\NotificationsController.cs" />
+    <Compile Include="Services\Social\Notifications\NotificationType.cs" />
     <Compile Include="Services\SystemDateTime\SystemDateTime.cs" />
     <Compile Include="Services\EventQueue\Config\EventQueueConfiguration.cs" />
     <Compile Include="Services\EventQueue\Config\PublishedEvent.cs" />
@@ -1561,7 +1583,6 @@
     <Compile Include="Common\Utilities\FileSystemPermissionVerifier.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\" />
     <Folder Include="Properties\" />
     <Folder Include="Services\Log\Logger\" />
   </ItemGroup>

@@ -30,6 +30,18 @@
 			}
 			return checked;
 		});
+		
+		$("div.wordwrap").each(function() {
+			var content = $(this).html();
+			content = content.replace(/[\w\.]+/g, function (word) {
+				if (word.length <= 50 || word.indexOf(".") == -1) {
+					return word;
+				}
+				return "<span class=\"block\" title=\"" + word + "\">" + word.substr(0, 10) + "..." + word.substr(word.length - 10, 10) + "</span>";
+			});
+			$(this).html(content);
+		});
+
 	}
 	$(document).ready(function () {
 		setUpDnnLogViewer();

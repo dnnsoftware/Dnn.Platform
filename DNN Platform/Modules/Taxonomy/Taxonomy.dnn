@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.Taxonomy" type="Module" version="07.01.02" isSystem="true">
+		<package name="DotNetNuke.Taxonomy" type="Module" version="07.02.00" isSystem="true">
 			<friendlyName>Taxonomy Manager</friendlyName>
 			<description>Administrators can manage the Taxonomy for their site.</description>
 			<iconFile>~/Icons/Sigma/Tag_32X32_Standard.png</iconFile>

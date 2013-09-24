@@ -129,6 +129,9 @@ namespace DotNetNuke.Services.Installer
         public static string LANGUAGE_PortalsEnabled = GetLocalizedString("LANGUAGE_PortalsEnabled");
         public static string LANGUAGE_Registered = GetLocalizedString("LANGUAGE_Registered");
         public static string LANGUAGE_UnRegistered = GetLocalizedString("LANGUAGE_UnRegistered");
+        public static string LIBRARY_ReadSuccess = GetLocalizedString("LIBRARY_ReadSuccess");
+        public static string LIBRARY_Registered = GetLocalizedString("LIBRARY_Registered");
+        public static string LIBRARY_UnRegistered = GetLocalizedString("LIBRARY_UnRegistered");
         public static string MODULE_ControlKeyMissing = GetLocalizedString("MODULE_ControlKeyMissing");
         public static string MODULE_ControlTypeMissing = GetLocalizedString("MODULE_ControlTypeMissing");
         public static string MODULE_FriendlyNameMissing = GetLocalizedString("MODULE_FriendlyNameMissing");

@@ -1090,7 +1090,7 @@
     <value>Search Index Path:</value>
   </data>
   <data name="SearchIndex.Text" xml:space="preserve">
-    <value>Search</value>
+    <value>Search Settings</value>
   </data>
   <data name="btnCompactSearchIndex.Text" xml:space="preserve">
     <value>Compact Index</value>

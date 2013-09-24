@@ -26,7 +26,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using Newtonsoft.Json;
 
 #endregion
 
@@ -108,8 +107,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnPreRender(e);
 
             var options = new DnnPaswordStrengthOptions();
-            var optionsAsJsonString = JsonConvert.SerializeObject(options);
-            
+            var optionsAsJsonString = Json.Serialize(options);
             var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
                 TextBoxCssClass, optionsAsJsonString, Environment.NewLine);
 

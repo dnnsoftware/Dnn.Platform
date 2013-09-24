@@ -47,6 +47,7 @@
     <DebugType>pdbonly</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.WebControls, Version=2.0.107.0, Culture=neutral, processorArchitecture=MSIL">

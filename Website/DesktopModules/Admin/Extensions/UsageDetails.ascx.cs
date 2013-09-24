@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     }
                     else
                     {
-                        _Package = PackageController.GetPackage(PackageID);
+                        _Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
                     }
                 }
                 return _Package;

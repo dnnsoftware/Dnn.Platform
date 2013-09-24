@@ -203,7 +203,7 @@ namespace DotNetNuke.Entities.Modules
                 var controller = new DesktopModuleController();
                 controller.DeleteDesktopModule(desktopModule.DesktopModuleID);
                 //Delete the Package
-                PackageController.DeletePackage(desktopModule.PackageID);
+                PackageController.Instance.DeleteExtensionPackage(PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID));
             }
         }
 

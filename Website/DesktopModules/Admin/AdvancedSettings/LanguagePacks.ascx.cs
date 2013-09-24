@@ -176,7 +176,7 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
 
                 if (languages != null)
                 {
-	                var installedPackages = PackageController.GetPackagesByType("CoreLanguagePack");
+	                var installedPackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "CoreLanguagePack");
 	                var installedLanguages = installedPackages.Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID)).ToList();
 	                foreach (XmlNode language in languages)
                     {

@@ -47,31 +47,69 @@
 
 <script type="text/javascript">
 	(function ($, Sys) {
-		var setUpRecycleBin = function () {
+		var setUpRecycleBin = function() {
 			$('#dnnRecycleBin').dnnTabs();
 
 			var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>';
 			var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
 			var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
 			$('#<%= cmdEmpty.ClientID %>').dnnConfirm({
-			    text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteAll")) %>',
+				text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteAll")) %>',
 				yesText: yesText,
 				noText: noText,
 				title: titleText
 			});
 			$('#<%= cmdDeleteTab.ClientID %>').dnnConfirm({
-			    text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteTab")) %>',
+				text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteTab")) %>',
 				yesText: yesText,
 				noText: noText,
 				title: titleText
 			});
 			$('#<%= cmdDeleteModule.ClientID %>').dnnConfirm({
-			    text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteModule")) %>',
+				text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteModule")) %>',
 				yesText: yesText,
 				noText: noText,
 				title: titleText
 			});
-		}
+
+			var restoreTab = $('#<%= cmdRestoreTab.ClientID %>');
+			var tabListbox = $('#<%=tabsListBox.ClientID%>')[0];
+			restoreTab.click(function (e) {
+				if (tabListbox.value.length == 0) {
+					$.dnnAlert({
+						text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NoTabSelected")) %>'
+					});
+					e.preventDefault();
+					e.stopImmediatePropagation();
+				}
+			}).dnnConfirm({
+				text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("RestoreTab")) %>',
+				yesText: yesText,
+				noText: noText,
+				title: titleText,
+				callbackTrue: function () {
+					selectChildPages(tabListbox);
+					window.location.href = restoreTab.attr("href");
+				},
+				callbackFalse: function() {
+					window.location.href = restoreTab.attr("href");
+				}
+			});
+		};
+
+		var selectChildPages = function(tabListbox, parentId) {
+			for (var i = 0; i < tabListbox.options.length; i++) {
+				var option = tabListbox.options[i];
+				if (typeof parentId != "undefined") {
+					if (option.getAttribute("ParentId") == parentId) {
+						option.selected = true;
+						selectChildPages(tabListbox, option.value);
+					}
+				} else if (option.selected) {
+					selectChildPages(tabListbox, option.value);
+				}
+			}
+		};
 
 		$(document).ready(function () {
 			setUpRecycleBin();

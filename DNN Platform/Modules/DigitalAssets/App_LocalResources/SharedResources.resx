@@ -330,4 +330,7 @@
   <data name="FolderDoesNotExists.Error" xml:space="preserve">
     <value>The folder does not exist</value>
   </data>
+  <data name="FileDoesNotExists.Error" xml:space="preserve">
+    <value>The file does not exist</value>
+  </data>
 </root>

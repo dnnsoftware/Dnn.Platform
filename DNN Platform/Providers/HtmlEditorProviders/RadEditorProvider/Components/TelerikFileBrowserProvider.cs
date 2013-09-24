@@ -908,14 +908,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 				try
 				{
 					img = System.Drawing.Image.FromStream(fileStream);
-					if (fileStream.Length > int.MaxValue)
-					{
-						fileInfo.Size = int.MaxValue;
-					}
-					else
-					{
-						fileInfo.Size = int.Parse(fileStream.Length.ToString());
-					}
+					fileInfo.Size = fileStream.Length;
 					fileInfo.Width = img.Width;
 					fileInfo.Height = img.Height;
 				}

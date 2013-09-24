@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DigitalAssetsManagement" type="Module" version="07.01.02" isSystem="true">
+    <package name="DigitalAssetsManagement" type="Module" version="07.02.00" isSystem="true">
       <friendlyName>Digital Asset Management</friendlyName>
       <description>DotNetNuke Corporation Digital Asset Management module</description>
       <iconFile>Images/Files_32x32_Standard.png</iconFile>
@@ -51,8 +51,8 @@
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                     <moduleControl>
-                        <controlKey>EditFolder</controlKey>
-                        <controlSrc>DesktopModules/DigitalAssets/EditFolder.ascx</controlSrc>
+                        <controlKey>FolderProperties</controlKey>
+                        <controlSrc>DesktopModules/DigitalAssets/FolderProperties.ascx</controlSrc>
                         <supportsPartialRendering>False</supportsPartialRendering>
                         <controlTitle>Folder Info</controlTitle>
                         <controlType>View</controlType>
@@ -128,8 +128,8 @@
                       <sourceFileName>Settings.ascx</sourceFileName>
                   </file>
                   <file>
-                      <name>EditFolder.ascx</name>
-                      <sourceFileName>EditFolder.ascx</sourceFileName>
+                      <name>FolderProperties.ascx</name>
+                      <sourceFileName>FolderProperties.ascx</sourceFileName>
                   </file>
                   <file>
                       <name>FileProperties.ascx</name>

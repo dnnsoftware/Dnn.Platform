@@ -87,6 +87,10 @@ namespace DotNetNuke.Services.Search.Controllers
             if((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(_moduleSearchTypeId)))
                 throw new ArgumentException("ModuleId based search must have SearchTypeId for a module only");
 
+            if(searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
+                || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
+                Requires.NotNullOrEmpty("CustomSortField", searchQuery.CustomSortField);
+
             //TODO - Explore Slop factor for Phrase query
 
             var query = new BooleanQuery();
@@ -149,14 +153,12 @@ namespace DotNetNuke.Services.Search.Controllers
                 query.Add(localeQuery, Occur.MUST);
             }
 
-            var sort = Sort.RELEVANCE;
-            if (searchQuery.SortField == SortFields.LastModified)
-                sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortField.LONG, true));
+
 
             var luceneQuery = new LuceneQuery
             {
                 Query = query,
-                Sort = sort,
+                Sort = GetSort(searchQuery),
                 PageIndex = searchQuery.PageIndex,
                 PageSize = searchQuery.PageSize,
                 TitleSnippetLength = searchQuery.TitleSnippetLength,
@@ -164,6 +166,45 @@ namespace DotNetNuke.Services.Search.Controllers
             };
 
             return GetSecurityTrimmedResults(searchQuery, luceneQuery);
+        }
+
+        private Sort GetSort(SearchQuery query)
+        {
+            var sort = Sort.RELEVANCE; //default sorting - relevance is always descending.
+            if (query.SortField != SortFields.Relevance)
+            {
+                var reverse = query.SortDirection != SortDirections.Ascending;
+
+                switch (query.SortField)
+                {
+                    case SortFields.LastModified:
+                        sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortField.LONG, reverse));
+                        break;
+                    case SortFields.Title:
+                        sort = new Sort(new SortField(Constants.TitleTag, SortField.STRING, reverse));
+                        break;
+                    case SortFields.Tag:
+                        sort = new Sort(new SortField(Constants.Tag, SortField.STRING, reverse));
+                        break;
+                    case SortFields.NumericKey:
+                        sort = new Sort(new SortField(Constants.NumericKeyPrefixTag + query.CustomSortField, SortField.INT, reverse));
+                        break;
+                    case SortFields.Keyword:
+                        sort = new Sort(new SortField(Constants.KeywordsPrefixTag + query.CustomSortField, SortField.STRING, reverse));
+                        break;
+                    case SortFields.CustomStringField:
+                        sort = new Sort(new SortField(query.CustomSortField, SortField.STRING, reverse));
+                        break;
+                    case SortFields.CustomNumericField:
+                        sort = new Sort(new SortField(query.CustomSortField, SortField.INT, reverse));
+                        break;
+                    default:
+                        sort = Sort.RELEVANCE;
+                        break;
+                }
+            }
+
+            return sort;
         }
 
         private void ApplySearchTypeIdFilter(BooleanQuery query, SearchQuery searchQuery)

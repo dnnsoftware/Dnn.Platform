@@ -867,7 +867,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("jQueryDebug", chkJQueryDebugVersion.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("jQueryHosted", chkJQueryUseHosted.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("jQueryUrl", txtJQueryHostedUrl.Text.Trim(), false);
-                    HostController.Instance.Update("jQueryMigrateUrl", txtJQueryMigrateHostedUrl.Text.Trim(), false);
+					HostController.Instance.Update("jQueryMigrateUrl", txtJQueryMigrateHostedUrl.Text.Trim(), false);
                     HostController.Instance.Update("jQueryUIUrl", txtJQueryUIHostedUrl.Text.Trim(), false);
 					HostController.Instance.Update("EnableMsAjaxCDN", chkMsAjaxCdn.Checked ? "Y" : "N", false);
 					HostController.Instance.Update("EnableTelerikCDN", chkTelerikCdn.Checked ? "Y" : "N", false);

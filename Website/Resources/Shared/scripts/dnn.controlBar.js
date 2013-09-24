@@ -672,7 +672,15 @@ dnn.controlBar.init = function (settings) {
         return false;
     });
 
-    $('#controlBar_AddNewModule').click(function () {
+    $('#controlBar_AddNewModule').click(addModule);
+    $('#controlBar_CreateModule').click(addCreateModule);
+
+    function addCreateModule() {
+        $find(settings.categoryComboId).findItemByValue("Developer").select();
+        addModule();
+    }
+
+    function addModule () {
         if (currentUserMode !== 'EDIT') {
             var service = dnn.controlBar.getService();
             var serviceUrl = dnn.controlBar.getServiceUrl(service);
@@ -711,8 +719,7 @@ dnn.controlBar.init = function (settings) {
         $('#ControlBar_Action_Menu').addClass('onActionMenu');
         $('#ControlBar_ModuleListMessage_NewModule').hide();
         return false;
-    });
-
+    }
     $('#controlBar_AddExistingModule').click(function () {
         if (currentUserMode !== 'EDIT') {
             var service = dnn.controlBar.getService();

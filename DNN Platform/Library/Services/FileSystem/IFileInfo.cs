@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.FileSystem
         int PortalId { get; set; }
         string RelativePath { get; }
         string SHA1Hash { get; set; }
-        int Size { get; set; }
+        long Size { get; set; }
         int StorageLocation { get; set; }
         Guid UniqueId { get; set; }
         Guid VersionGuid { get; set; }

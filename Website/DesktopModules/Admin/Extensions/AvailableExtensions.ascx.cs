@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if ((_packageTypes == null))
                 {
                     _packageTypes = new Dictionary<string, string>();
-                    foreach (PackageType packageType in PackageController.GetPackageTypes())
+                    foreach (PackageType packageType in PackageController.Instance.GetExtensionPackageTypes())
                     {
                         string installPath;
                         string type;
@@ -73,6 +73,10 @@ namespace DotNetNuke.Modules.Admin.Extensions
                             case "Auth_System":
                                 type = "AuthSystem";
                                 installPath = Globals.ApplicationMapPath + "\\Install\\AuthSystem";
+                                break;
+                            case "JavaScript_Library":
+                                type = "JavaScript_Library";
+                                installPath = Globals.ApplicationMapPath + "\\Install\\JavaScript Library";
                                 break;
                             case "Module":
                             case "Skin":
