@@ -114,9 +114,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JavaScript Libraries", "Jav
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{6308FA00-5E1A-4924-98C1-4B4010AD2BEB}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt = DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt
+		DNN Platform\JavaScript Libraries\Knockout\knockout-min.js = DNN Platform\JavaScript Libraries\Knockout\knockout-min.js
 		DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn = DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn
 		DNN Platform\JavaScript Libraries\Knockout\knockout.js = DNN Platform\JavaScript Libraries\Knockout\knockout.js
-		DNN Platform\JavaScript Libraries\Knockout\license.txt = DNN Platform\JavaScript Libraries\Knockout\license.txt
 		DNN Platform\JavaScript Libraries\Knockout\releaseNotes.txt = DNN Platform\JavaScript Libraries\Knockout\releaseNotes.txt
 	EndProjectSection
 EndProject
@@ -125,6 +126,34 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scri
 		DNN_Platform.build = DNN_Platform.build
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
 		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery", "jQuery", "{4E0EBB54-3987-461C-85C5-9281AC49C72B}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQuery\jQuery (MIT).txt = DNN Platform\JavaScript Libraries\jQuery\jQuery (MIT).txt
+		DNN Platform\JavaScript Libraries\jQuery\jQuery.dnn = DNN Platform\JavaScript Libraries\jQuery\jQuery.dnn
+		DNN Platform\JavaScript Libraries\jQuery\jquery.js = DNN Platform\JavaScript Libraries\jQuery\jquery.js
+		DNN Platform\JavaScript Libraries\jQuery\jquery.min.js = DNN Platform\JavaScript Libraries\jQuery\jquery.min.js
+		DNN Platform\JavaScript Libraries\jQuery\jquery.min.map = DNN Platform\JavaScript Libraries\jQuery\jquery.min.map
+		DNN Platform\JavaScript Libraries\jQuery\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQuery\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryUI", "jQueryUI", "{6040AAC4-8533-4EBF-8918-2173B5400415}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt = DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt
+		DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js = DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js
+		DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.min.js = DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.min.js
+		DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn = DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn
+		DNN Platform\JavaScript Libraries\jQueryUI\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQueryUI\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryMigrate", "jQueryMigrate", "{2D3D39C2-142A-4382-9EF1-2AC14ACAAAE0}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQueryMigrate\jQuery (MIT).txt = DNN Platform\JavaScript Libraries\jQueryMigrate\jQuery (MIT).txt
+		DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.js = DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.js
+		DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.min.js = DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.min.js
+		DNN Platform\JavaScript Libraries\jQueryMigrate\jQueryMigrate.dnn = DNN Platform\JavaScript Libraries\jQueryMigrate\jQueryMigrate.dnn
+		DNN Platform\JavaScript Libraries\jQueryMigrate\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQueryMigrate\releaseNotes.txt
 	EndProjectSection
 EndProject
 Global
@@ -482,5 +511,8 @@ Global
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
 		{6629A64D-58B9-48B9-B932-15AF193C2212} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
 		{6308FA00-5E1A-4924-98C1-4B4010AD2BEB} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{4E0EBB54-3987-461C-85C5-9281AC49C72B} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{6040AAC4-8533-4EBF-8918-2173B5400415} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{2D3D39C2-142A-4382-9EF1-2AC14ACAAAE0} = {886DB964-63D4-4841-81D1-5A7360C98230}
 	EndGlobalSection
 EndGlobal
