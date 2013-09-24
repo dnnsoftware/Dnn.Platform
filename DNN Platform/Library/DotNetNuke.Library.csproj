@@ -472,6 +472,7 @@
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileRenamedEventArgs.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileLockedException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidMetadataValuesException.cs">
       <SubType>Code</SubType>
@@ -523,6 +524,7 @@
     <Compile Include="Services\Search\Controllers\SearchControllerImpl.cs" />
     <Compile Include="Services\Search\Entities\SearchQuery.cs" />
     <Compile Include="Services\Search\UserIndexer.cs" />
+    <Compile Include="Services\Social\Messaging\Frequency.cs" />
     <Compile Include="Services\Subscriptions\Common\ObjectKey.cs" />
     <Compile Include="Services\Subscriptions\Common\SubscriptionsException.cs" />
     <Compile Include="Services\Subscriptions\Controllers\ISubscriptionController.cs" />

@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
                         if (DateTime.Now.AddHours(-1) >= lastHourlyRun)
                         {
                             var currentRunDate = DateTime.Now;
-                            remainingBatchSize = HandleDigest(schedulerInstance, Frequency.Hourly, remainingBatchSize);
+                            remainingBatchSize = HandleDigest(schedulerInstance, Entities.Frequency.Hourly, remainingBatchSize);
 
                             if (remainingBatchSize > 0)
                             {
@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
                             if (DateTime.Now.AddDays(-1) >= lastDailyRun)
                             {
                                 var currentRunDate = DateTime.Now;
-                                remainingBatchSize = HandleDigest(schedulerInstance, Frequency.Daily, remainingBatchSize);
+                                remainingBatchSize = HandleDigest(schedulerInstance, Entities.Frequency.Daily, remainingBatchSize);
 
                                 if (remainingBatchSize > 0)
                                 {
@@ -231,7 +231,7 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
             return 0;
         }
 
-        public int HandleDigest(Guid schedulerInstance, Frequency frequency, int remainingBatchSize)
+        public int HandleDigest(Guid schedulerInstance, Entities.Frequency frequency, int remainingBatchSize)
         {
             var messagesSent = 0;
             // get subscribers based on frequency, utilize remaining batch size as part of count of users to return (note, if multiple subscriptions have the same frequency they will be combined into 1 email)
@@ -287,17 +287,17 @@ namespace DotNetNuke.Services.Subscriptions.Tasks
             return remainingBatchSize;
         }
 
-        private static TimeSpan GetFrequencyTimeSpan(Frequency frequency)
+        private static TimeSpan GetFrequencyTimeSpan(Entities.Frequency frequency)
         {
             switch (frequency)
             {
-                case Frequency.Instant:
+                case Entities.Frequency.Instant:
                     return TimeSpan.FromMinutes(1d);
-                case Frequency.Hourly:
+                case Entities.Frequency.Hourly:
                     return TimeSpan.FromHours(1d);
-                case Frequency.Daily:
+                case Entities.Frequency.Daily:
                     return TimeSpan.FromDays(1d);
-                case Frequency.Weekly:
+                case Entities.Frequency.Weekly:
                     return TimeSpan.FromDays(7d);
                 default:
                     throw new ArgumentOutOfRangeException("frequency");

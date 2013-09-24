@@ -19,14 +19,20 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using DotNetNuke.Services.FileSystem.EventArgs;
+using System;
+using System.Runtime.Serialization;
 
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Services.Social.Messaging
 {
-    public interface IFileEventsHandler
+    [DataContract]
+    [Flags]
+    public enum Frequency
     {
-        void FileManager_FileDeleted(object sender, FileChangedEventArgs args);
-
-        void FileManager_FileRenamed(object sender, FileRenamedEventArgs args);
+        [EnumMember] Never = -1,
+        [EnumMember] Instant = 0,
+        [EnumMember] Daily = 1,
+        [EnumMember] Hourly = 2,
+        [EnumMember] Weekly = 3,
+        [EnumMember] Monthly = 4
     }
 }
