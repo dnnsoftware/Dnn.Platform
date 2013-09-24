@@ -56,10 +56,8 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
         #region Private Events
-        [ImportMany]
-        private IEnumerable<Lazy<IFileEventsHandler, IExtensionPointData>> eventsHandlers = new List<Lazy<IFileEventsHandler, IExtensionPointData>>();
-
         private event EventHandler<FileChangedEventArgs> FileDeleted;
+        private event EventHandler<FileRenamedEventArgs> FileRenamed; 
         #endregion
 
         #region Properties
@@ -120,7 +118,7 @@ namespace DotNetNuke.Services.FileSystem
         #region Constructor
         internal FileManager()
         {
-            RegisterEventsHandlers();
+            
         }
         #endregion
 
@@ -162,17 +160,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void RegisterEventsHandlers()
-        {
-            // Dynamic registration of all EventsHandlers
-            ExtensionPointManager.ComposeParts(this);
-
-            foreach (var eventsHandler in eventsHandlers)
-            {
-                FileDeleted += eventsHandler.Value.FileManager_FileDeleted;
-            }
-        }
-
         #region On File Events
         private void OnFileDeleted(IFileInfo fileInfo, int userId)
         {
@@ -183,6 +170,19 @@ namespace DotNetNuke.Services.FileSystem
                         FileInfo = fileInfo,
                         UserId = userId
                     });
+            }
+        }
+
+        private void OnFileRenamed(IFileInfo fileInfo, string oldFileName, int userId)
+        {
+            if (FileRenamed != null)
+            {
+                FileRenamed(this, new FileRenamedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId,
+                    OldFileName = oldFileName
+                });
             }
         }
         #endregion
@@ -964,12 +964,18 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FolderProviderException(Localization.Localization.GetExceptionMessage("RenameFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been renamed."), ex);
             }
 
+            var oldfileName = file.FileName;
             file.FileName = newFileName;
             if (Path.HasExtension(newFileName))
             {
                 file.Extension = Path.GetExtension(newFileName).Replace(".", "");
             }
-            return UpdateFile(file);
+            var renamedFile = UpdateFile(file);
+
+            // Notify File Renamed event
+            OnFileRenamed(renamedFile, oldfileName, GetCurrentUserID());
+
+            return renamedFile;
         }
 
         /// <summary>

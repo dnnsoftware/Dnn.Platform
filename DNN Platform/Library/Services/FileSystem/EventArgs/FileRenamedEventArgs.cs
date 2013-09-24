@@ -19,14 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using DotNetNuke.Services.FileSystem.EventArgs;
-
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Services.FileSystem.EventArgs
 {
-    public interface IFileEventsHandler
+    public class FileRenamedEventArgs : FileChangedEventArgs
     {
-        void FileManager_FileDeleted(object sender, FileChangedEventArgs args);
-
-        void FileManager_FileRenamed(object sender, FileRenamedEventArgs args);
+        public string OldFileName { get; set; }
     }
 }
