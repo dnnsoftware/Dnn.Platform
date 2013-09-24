@@ -284,6 +284,11 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             return _provider.ExecuteReader("CoreMessaging_GetNextMessagesForDispatch", schedulerInstance,batchSize);
         }
 
+        public IDataReader GetNextSubscribersForDispatch(int frequecy, Guid schedulerInstance, int batchSize)
+        {
+            return _provider.ExecuteReader("CoreMessaging_GetNextSubscribersForDispatch", frequecy, schedulerInstance, batchSize);
+        }
+
         public void MarkMessageAsDispatched(int messageId,int recipientId)
         {
             _provider.ExecuteNonQuery("CoreMessaging_MarkMessageAsDispatched", messageId, recipientId);

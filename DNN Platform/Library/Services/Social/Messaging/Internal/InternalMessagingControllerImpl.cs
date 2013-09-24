@@ -431,6 +431,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return CBO.FillCollection<MessageRecipient>(_dataService.GetNextMessagesForDispatch(schedulerInstance, batchSize));
         }
 
+        public IList<MessageRecipient> GetNextSubscribersForDispatch(Frequency frequency, Guid schedulerInstance, int batchSize)
+        {
+            return CBO.FillCollection<MessageRecipient>(_dataService.GetNextSubscribersForDispatch(Convert.ToInt32(frequency), schedulerInstance, batchSize));            
+        }
+
+
         public virtual void MarkMessageAsDispatched(int messageId, int recipientId)
         {
             _dataService.MarkMessageAsDispatched(messageId, recipientId);

@@ -369,31 +369,31 @@ GO
 -- Scheduled notification processing task
 --
 
-DECLARE @SubscriptionSchedulerType VARCHAR(1024)
-SET @SubscriptionSchedulerType = 'DotNetNuke.Services.Subscriptions.Tasks.SubscriptionTask, DotNetNuke'
+-- DECLARE @SubscriptionSchedulerType VARCHAR(1024)
+-- SET @SubscriptionSchedulerType = 'DotNetNuke.Services.Subscriptions.Tasks.SubscriptionTask, DotNetNuke'
 
-IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Schedule] WHERE [TypeFullName] = @SubscriptionSchedulerType)
-BEGIN
-	DELETE FROM {databaseOwner}[{objectQualifier}Schedule] WHERE [TypeFullName] = @SubscriptionSchedulerType
+-- IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Schedule] WHERE [TypeFullName] = @SubscriptionSchedulerType)
+-- BEGIN
+-- 	DELETE FROM {databaseOwner}[{objectQualifier}Schedule] WHERE [TypeFullName] = @SubscriptionSchedulerType
 
-	INSERT INTO {databaseOwner}[{objectQualifier}Schedule]
-		([TypeFullName],
-		 [TimeLapse],
-		 [TimeLapseMeasurement],
-		 [RetryTimeLapse],
-		 [RetryTimeLapseMeasurement],
-		 [RetainHistoryNum],
-		 [AttachToEvent],
-		 [CatchUpEnabled],
-		 [Enabled],
-		 [ObjectDependencies],
-		 [Servers],
-		 [FriendlyName])
-	VALUES
-		(@SubscriptionSchedulerType,
-		 1, 'm', -1, 'm', 10, '', 0, 1, '', null, 'Subscriptions')
-END
-GO
+-- 	INSERT INTO {databaseOwner}[{objectQualifier}Schedule]
+-- 		([TypeFullName],
+-- 		 [TimeLapse],
+-- 		 [TimeLapseMeasurement],
+-- 		 [RetryTimeLapse],
+-- 		 [RetryTimeLapseMeasurement],
+-- 		 [RetainHistoryNum],
+-- 		 [AttachToEvent],
+-- 		 [CatchUpEnabled],
+-- 		 [Enabled],
+-- 		 [ObjectDependencies],
+-- 		 [Servers],
+-- 		 [FriendlyName])
+-- 	VALUES
+-- 		(@SubscriptionSchedulerType,
+-- 		 1, 'm', -1, 'm', 10, '', 0, 1, '', null, 'Subscriptions')
+-- END
+-- GO
 
 --
 -- Core Messaging Notification Type
@@ -459,10 +459,10 @@ AS
 			AND SettingName = @Key
 GO
 
-UPDATE {databaseOwner}[{objectQualifier}Schedule]
-	SET Enabled = 0 
-	WHERE TypeFullName = 'DotNetNuke.Services.Social.Messaging.Scheduler.CoreMessagingScheduler, DotNetNuke'
-GO
+--UPDATE {databaseOwner}[{objectQualifier}Schedule]
+--	SET Enabled = 0 
+--	WHERE TypeFullName = 'DotNetNuke.Services.Social.Messaging.Scheduler.CoreMessagingScheduler, DotNetNuke'
+--GO
 
 --- Add Default subscription types
 INSERT {databaseOwner}[{objectQualifier}Subscriptions_Type]
@@ -846,6 +846,125 @@ AS
         ORDER BY UserID ,
                 CMM.CreatedOnDate DESC                      
     END
+GO
+
+/** Core Messaging digest notifications **/
+/*****************************************/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
+	@SchedulerInstance UNIQUEIDENTIFIER ,
+	@BatchSize INT
+AS 
+	BEGIN
+		UPDATE  dbo.CoreMessaging_MessageRecipients
+		SET     EmailSchedulerInstance = @SchedulerInstance
+		WHERE   RecipientID IN (
+				SELECT TOP ( @BatchSize )
+						RecipientID 
+				FROM    dbo.vw_Subscriptions VS
+				WHERE   EmailSent = 0
+						AND SendToast = 0
+						AND [Read] = 0
+						AND Archived = 0
+						AND ( NotificationTypeID IS NULL
+							  AND ISNULL(MessageFrequency, 0) = 0
+							)
+						OR ( NotificationTypeID > 0
+							 AND ISNULL(NotifyFrequency, 2) = 0
+						   )
+						AND ( ( EmailSchedulerInstance IS NULL
+								AND EmailSentDate IS NULL
+							  )
+							  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+							)
+				ORDER BY VS.CreatedOnDate DESC ,
+						UserID )
+
+		SELECT  *
+		FROM    dbo.CoreMessaging_MessageRecipients CMR
+				INNER JOIN dbo.CoreMessaging_Messages CMM ON CMR.MessageID = CMM.MessageID
+		WHERE   EmailSent = 0
+				AND EmailSentDate IS NULL
+				AND SendToast = 0
+				AND [Read] = 0
+				AND Archived = 0
+				AND ( EmailSchedulerInstance = @SchedulerInstance )
+		ORDER BY UserID ,
+				CMM.CreatedOnDate DESC	
+	END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]
+	@Frequency INT ,
+	@SchedulerInstance UNIQUEIDENTIFIER ,
+	@BatchSize INT
+AS 
+	BEGIN
+		UPDATE  dbo.CoreMessaging_MessageRecipients
+		SET     EmailSchedulerInstance = @SchedulerInstance
+		WHERE   RecipientID IN (
+				SELECT 
+						RecipientID
+				FROM    dbo.vw_Subscriptions VS
+				WHERE UserID IN (
+							SELECT TOP ( @BatchSize  )
+									UserID
+							FROM    dbo.vw_Subscriptions VS
+							WHERE   EmailSent = 0
+									AND SendToast = 0
+									AND [Read] = 0
+									AND Archived = 0
+									AND ( NotificationTypeID IS NULL
+										  AND ISNULL(MessageFrequency, 0) = @Frequency
+										)
+									OR ( NotificationTypeID > 0
+										 AND ISNULL(NotifyFrequency, 2) = @Frequency
+									   )
+									AND ( ( EmailSchedulerInstance IS NULL
+											AND EmailSentDate IS NULL
+										  )
+										  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+										)        
+							GROUP BY UserID
+							ORDER BY UserID      
+						)  
+						AND EmailSent = 0
+						AND SendToast = 0
+						AND [Read] = 0
+						AND Archived = 0
+						AND ( NotificationTypeID IS NULL
+							  AND ISNULL(MessageFrequency, 0) = @Frequency
+							)
+						OR ( NotificationTypeID > 0
+							 AND ISNULL(NotifyFrequency, 2) = @Frequency
+						   )
+						AND ( ( EmailSchedulerInstance IS NULL
+								AND EmailSentDate IS NULL
+							  )
+							  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+							))
+
+		SELECT  *
+		FROM    dbo.CoreMessaging_MessageRecipients CMR
+				INNER JOIN dbo.CoreMessaging_Messages CMM ON CMR.MessageID = CMM.MessageID
+		WHERE   EmailSent = 0
+				AND EmailSentDate IS NULL
+				AND SendToast = 0
+				AND [Read] = 0
+				AND Archived = 0
+				AND ( EmailSchedulerInstance = @SchedulerInstance )
+		ORDER BY UserID ,
+				CMM.CreatedOnDate DESC                      
+	END
+
 GO
 
 /** DNN-3498 - Support side by side INstallation **/
