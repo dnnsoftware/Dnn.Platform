@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="6" MadCap:lastHeight="1227" MadCap:lastWidth="1314">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="6" MadCap:lastHeight="1050" MadCap:lastWidth="1372">
     <head>
-        
     </head>
     <body>
         <h1>Setting DNN Active Directory Authentication</h1>
@@ -9,16 +8,16 @@
         <ol>
             <li value="1">Navigate to Admin &gt; Advanced Settings &gt; <img src="../../../../Resources/Images/Icons/Extensions_16x16_Standard.png" /><b> Extensions</b> - OR - Go to an Extensions module.</li>
             <li value="2">Expand the<b> Authentication System</b> section.</li>
-            <li value="3">Click the <b>Edit</b> <![CDATA[ ]]><img alt="" src="../../../../Resources/Images/Icons/Edit_16X16_Standard.png" /> button beside <b>DNN_ActiveDirectoryAuthentication</b>.</li>
+            <li value="3">Click the <b>Edit</b> <img alt="" src="../../../../Resources/Images/Icons/Edit_16X16_Standard.png" /> button beside <b>DNN_ActiveDirectoryAuthentication</b>.</li>
             <li value="4">Go to the <b>Authentication Settings</b> section.</li>
             <li value="5">At<b> Enabled?</b>, select from these options:
-    <ul><li value="1"><MadCap:snippetText src="../../../../../../Resources/Snippets/Check.flsnp" />to enable this authentication. </li><li value="2"><MadCap:snippetText src="../../../../../../Resources/Snippets/Uncheck.flsnp" />to disable. Skip to Step 9. </li></ul></li>
+    <ul><li value="1">Mark <img src="../../../../Resources/Images/Icons/check.png" style="vertical-align: bottom;" />&#160;the check box to enable this authentication. </li><li value="2">Unmark <img src="../../../../Resources/Images/Icons/uncheck.png" style="visibility: visible;mso-wrap-style: square;width: 13px;height: 13px;vertical-align: bottom;" />&#160;the check box&#160;to disable. Skip to Step 9. </li></ul></li>
             <li value="6">At <b>Hide Login Controls?</b>, select from these options:
-    <ul><li value="1"><MadCap:snippetText src="../../../../../../Resources/Snippets/Check.flsnp" />to hide the Windows Login button on the Login screen. </li><li value="2"><MadCap:snippetText src="../../../../../../Resources/Snippets/Uncheck.flsnp" />to display the Windows Login button on the Login screen.</li></ul></li>
+    <ul><li value="1">Mark <img src="../../../../Resources/Images/Icons/check.png" style="vertical-align: bottom;" />&#160;the check box to hide the Windows Login button on the Login screen. </li><li value="2">Unmark <img src="../../../../Resources/Images/Icons/uncheck.png" style="visibility: visible;mso-wrap-style: square;width: 13px;height: 13px;vertical-align: bottom;" />&#160;the check box&#160;to display the Windows Login button on the Login screen.</li></ul></li>
             <li value="7">At <b>Synchronize Role?</b>, select from these options:
-    <ul><li value="1"><MadCap:snippetText src="../../../../../../Resources/Snippets/Check.flsnp" />to synchronize the user's role with the Windows Active Directory security group each time user logs on. </li><li value="2"><MadCap:snippetText src="../../../../../../Resources/Snippets/Uncheck.flsnp" />to disable.                    </li></ul></li>
+    <ul><li value="1">Mark <img src="../../../../Resources/Images/Icons/check.png" style="vertical-align: bottom;" />&#160;the check box to synchronize the user's role with the Windows Active Directory security group each time user logs on. </li><li value="2">Unmark <img src="../../../../Resources/Images/Icons/uncheck.png" style="visibility: visible;mso-wrap-style: square;width: 13px;height: 13px;vertical-align: bottom;" />&#160;the check box&#160;to disable.                    </li></ul></li>
             <li value="8">At <b>Do Not Automatically Create Users?</b> select from these options:
-    <ul><li value="1"><MadCap:snippetText src="../../../../../../Resources/Snippets/Check.flsnp" />to prevent Active Directory users from log into the DNN site until an account is created.</li><li value="2"><MadCap:snippetText src="../../../../../../Resources/Snippets/Uncheck.flsnp" />to disable.                    </li></ul></li>
+    <ul><li value="1">Mark <img src="../../../../Resources/Images/Icons/check.png" style="vertical-align: bottom;" />&#160;the check box to prevent Active Directory users from log into the DNN site until an account is created.</li><li value="2">Unmark <img src="../../../../Resources/Images/Icons/uncheck.png" style="visibility: visible;mso-wrap-style: square;width: 13px;height: 13px;vertical-align: bottom;" />&#160;the check box&#160;to disable.                    </li></ul></li>
             <li value="9">At<b> Provider</b>, select the Authentication provider for this site. E.g. <span class="RadEWrongWord" id="RadESpellError_2">ADSIAuthenticationProvider</span></li>
             <li value="10"> At<b> Authentication Type</b>, select the Authentication type for this site. Note: Delegation is recommenced.</li>
             <li value="11">In the <b>Root Domain</b> text box, enter your Root Domain in the format <samp><span class="RadEWrongWord" id="RadESpellError_3">yourdomain</span>.com</samp> or <samp>DC=<span class="RadEWrongWord" id="RadESpellError_4">yourdomain</span>,DC=com</samp>. Leave this value blank if you want to obtain Active Directory objects from root forest. <b>Optionally</b>, you can explicitly define the Organizational Unit (OU) you want to authenticate your users against. Once you define the Organizational Unit, the authentication will verify against all users belonging to the Organizational Unit, as well as the users of Sub-Units belonging to it.  The lowest level of Organization Unit you wish to validate against must be listed first. (E.g. "OU=Admin Users,OU=All Users,DC=yourdomain,DC=com" – which will only validate Admin Users as authenticated.)</li>
@@ -28,7 +27,7 @@
             <li value="15"><b>Optional. </b>In the <b>Email Domain </b><span>text box, enter the Email Domain to be used for user email when your network doesn't have Windows Active Directory. Note: It is recommended that you leave this field blank.</span></li>
             <li value="16"><b>Optional. </b>In the <b>Default Domain </b><span>text box, enter the default domain to enable users to login with just their <span class="RadEWrongWord" id="RadESpellError_5">username</span> instead of DOMAIN\Username.</span></li>
             <li value="17"><b>Optional. </b>In the <b>Auto-login IP Address (Optional) </b><span>text box, enter the IP string, address, or range separated by semicolons that you want to automatically log in (E.g.: 192.168.0.1-192 - 192.168.0.100 for any IP in that range, 192.168.0.50 for only that IP.). An example string could look like 192.168.0.100;192.168.0.1-192.168.0.100.</span></li>
-            <li value="18">Click the <span style="text-decoration: underline;">Update Authentication Settings</span> link.</li>
+            <li value="18">Click the <b>Update Authentication Settings</b> button.</li>
         </ol>
     </body>
 </html>
