@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Caching;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -35,7 +34,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     {
         private void ClearCache()
         {
-	    DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
+	        DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
         }
 
         protected override Func<IJavaScriptLibraryController> GetFactory()
