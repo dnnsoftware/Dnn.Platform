@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -41,7 +40,6 @@ using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.FileSystem.EventArgs;
 using ICSharpCode.SharpZipLib.Zip;
@@ -54,10 +52,13 @@ namespace DotNetNuke.Services.FileSystem
     public class FileManager : ComponentBase<IFileManager, FileManager>, IFileManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
-
+        
         #region Private Events
         private event EventHandler<FileChangedEventArgs> FileDeleted;
-        private event EventHandler<FileRenamedEventArgs> FileRenamed; 
+        private event EventHandler<FileRenamedEventArgs> FileRenamed;
+        private event EventHandler<FileMovedEventArgs> FileMoved;
+        private event EventHandler<FileChangedEventArgs> FileOverwritten;
+        private event EventHandler<FileChangedEventArgs> FileAdded; 
         #endregion
 
         #region Properties
@@ -118,7 +119,7 @@ namespace DotNetNuke.Services.FileSystem
         #region Constructor
         internal FileManager()
         {
-            
+            RegisterEventHandlers();
         }
         #endregion
 
@@ -160,6 +161,18 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        private void RegisterEventHandlers()
+        {
+            foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
+            {
+                FileDeleted += value.FileManager_FileDeleted;
+                FileRenamed += value.FileManager_FileRenamed;
+                FileMoved += value.FileManager_FileMoved;
+                FileAdded += value.FileManager_FileAdded;
+                FileOverwritten += value.FileManager_FileOverwritten;
+            }
+        }
+
         #region On File Events
         private void OnFileDeleted(IFileInfo fileInfo, int userId)
         {
@@ -182,6 +195,43 @@ namespace DotNetNuke.Services.FileSystem
                     FileInfo = fileInfo,
                     UserId = userId,
                     OldFileName = oldFileName
+                });
+            }
+        }
+
+        private void OnFileMoved(IFileInfo fileInfo, string oldFilePath, int userId)
+        {
+            if (FileMoved != null)
+            {
+                FileMoved(this, new FileMovedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId,
+                    OldFilePath = oldFilePath
+                });
+            }
+        }
+
+        private void OnFileOverwritten(IFileInfo fileInfo, int userId)
+        {
+            if (FileOverwritten != null)
+            {
+                FileOverwritten(this, new FileChangedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId
+                });
+            }
+        }
+
+        private void OnFileAdded(IFileInfo fileInfo, int userId)
+        {
+            if (FileAdded != null)
+            {
+                FileAdded(this, new FileChangedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId
                 });
             }
         }
@@ -447,7 +497,19 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 DataCache.RemoveCache("GetFileById" + file.FileId);
-                return GetFile(file.FileId);
+                var addedFile = GetFile(file.FileId);
+
+                // Notify file event
+                if (fileExists)
+                {
+                    OnFileOverwritten(addedFile, createdByUserID);
+                }
+                else
+                {
+                    OnFileAdded(addedFile, createdByUserID);
+                }
+
+                return addedFile;
             }
             finally
             {
@@ -519,7 +581,12 @@ namespace DotNetNuke.Services.FileSystem
                     file.EnablePublishPeriod,
                     contentItemID);
 
-                return GetFile(fileId, true);
+                var copiedFile = GetFile(fileId, true);
+
+                // Notify added file event
+                OnFileAdded(copiedFile, GetCurrentUserID());
+
+                return copiedFile;
             }
 
             using (var fileContent = GetFileContent(file))
@@ -917,9 +984,14 @@ namespace DotNetNuke.Services.FileSystem
                 FileVersionController.Instance.DeleteAllUnpublishedVersions(file, true);
             }
 
+            var oldFilePath = file.Folder;
             file.FolderId = destinationFolder.FolderID;
             file.Folder = destinationFolder.FolderPath;
             file = UpdateFile(file);
+
+            // Notify File Moved event
+            OnFileMoved(file, oldFilePath, GetCurrentUserID());
+
             return file;
         }
 

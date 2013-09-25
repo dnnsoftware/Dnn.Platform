@@ -64,6 +64,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IPathUtils> _pathUtils;
         private Mock<IFileVersionController> _fileVersionController;
         private Mock<IContentWorkflowController> _contentWorkflowController;
+        private Mock<IFileEventsHandlerContainer> _fileEventsHandlerContainer;
 
         #endregion
 
@@ -82,12 +83,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _folderMappingController = new Mock<IFolderMappingController>();
             _fileVersionController = new Mock<IFileVersionController>();
             _contentWorkflowController = new Mock<IContentWorkflowController>();
+            _fileEventsHandlerContainer = new Mock<IFileEventsHandlerContainer>();
             _globals = new Mock<IGlobals>();
             _cbo = new Mock<ICBO>();
             _pathUtils = new Mock<IPathUtils>();
-
-            _fileManager = new FileManager();
-
+            
             FolderManager.RegisterInstance(_folderManager.Object);
             FolderPermissionControllerWrapper.RegisterInstance(_folderPermissionController.Object);
             PortalControllerWrapper.RegisterInstance(_portalController.Object);
@@ -97,10 +97,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             PathUtils.RegisterInstance(_pathUtils.Object);
             FileVersionController.RegisterInstance(_fileVersionController.Object);
             ContentWorkflowController.RegisterInstance(_contentWorkflowController.Object);
+            FileEventsHandlerContainer.RegisterInstance(_fileEventsHandlerContainer.Object);
             _mockFileManager = new Mock<FileManager> { CallBase = true };
 
             _folderInfo = new Mock<IFolderInfo>();
             _fileInfo = new Mock<IFileInfo>();
+
+            _fileManager = new FileManager();
         }
 
         [TearDown]

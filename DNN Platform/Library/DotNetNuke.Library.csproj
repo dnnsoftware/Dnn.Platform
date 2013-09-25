@@ -473,15 +473,19 @@
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FolderChangedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileMovedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileRenamedEventArgs.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileLockedException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidMetadataValuesException.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\FileSystem\EventArgs\FileChangedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\FileEventHandlersContainer.cs" />
     <Compile Include="Services\FileSystem\FileVersionController.cs" />
     <Compile Include="Services\FileSystem\FileVersionInfo.cs" />
-    <Compile Include="Services\FileSystem\IFileEventsHandler.cs" />
+    <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
+    <Compile Include="Services\FileSystem\IFileEventHandlersContainer.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptLibraryInstaller.cs" />

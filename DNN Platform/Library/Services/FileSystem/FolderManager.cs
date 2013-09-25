@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,6 +38,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Log.EventLog;
 
@@ -50,6 +52,13 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderManager));
 
         private const string DefaultUsersFoldersPath = "Users";
+        
+        #region Private Events
+        private event EventHandler<FolderChangedEventArgs> FolderDeleted;
+        private event EventHandler<FolderChangedEventArgs> FolderAdded;
+        private event EventHandler<FileMovedEventArgs> FolderMoved;
+        private event EventHandler<FileChangedEventArgs> FolderRenamed;
+        #endregion
 
         #region Constructor
 
@@ -243,6 +252,32 @@ namespace DotNetNuke.Services.FileSystem
 			return FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID;
 		}
 
+        #region On Folder Events
+        private void OnFolderDeleted(IFolderInfo folderInfo, int userId)
+        {
+            if (FolderDeleted != null)
+            {
+                FolderDeleted(this, new FolderChangedEventArgs
+                {
+                    FolderInfo = folderInfo,
+                    UserId = userId
+                });
+            }
+        }
+
+        private void OnFolderAdded(IFolderInfo folderInfo, int userId)
+        {
+            if (FolderAdded != null)
+            {
+                FolderAdded(this, new FolderChangedEventArgs
+                {
+                    FolderInfo = folderInfo,
+                    UserId = userId
+                });
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Public Methods
@@ -310,7 +345,12 @@ namespace DotNetNuke.Services.FileSystem
             CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(folderMapping.PortalID, folderPath));
             var folderId = CreateFolderInDatabase(folderMapping.PortalID, folderPath, folderMapping.FolderMappingID, mappedPath);
 
-            return GetFolder(folderId);
+            var folder = GetFolder(folderId);
+
+            // Notify add folder event
+            OnFolderAdded(folder, GetCurrentUserId());
+
+            return folder;
         }
 
         /// <summary>
@@ -363,6 +403,9 @@ namespace DotNetNuke.Services.FileSystem
                 DirectoryWrapper.Instance.Delete(folder.PhysicalPath, false);
             }
             DeleteFolder(folder.PortalID, folder.FolderPath);
+
+            // Notify folder deleted event
+            OnFolderDeleted(folder, GetCurrentUserId());
         }
 
         /// <summary>
