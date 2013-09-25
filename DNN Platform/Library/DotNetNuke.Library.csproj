@@ -410,6 +410,7 @@
     <Compile Include="Framework\JavaScriptLibraries\JavaScript.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibrary.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibraryController.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\ScriptLocation.cs" />
     <Compile Include="Framework\ServiceLocator.cs" />
     <Compile Include="ComponentModel\IComponentBuilder.cs" />
     <Compile Include="ComponentModel\IComponentInstaller.cs" />
