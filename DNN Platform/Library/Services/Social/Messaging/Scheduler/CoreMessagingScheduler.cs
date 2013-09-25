@@ -65,46 +65,17 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             try
             {
                 var schedulerInstance = Guid.NewGuid();
-                ScheduleHistoryItem.AddLogNote("MessagingScheduler DoWork Starting " + schedulerInstance);
+                ScheduleHistoryItem.AddLogNote("Messaging Scheduler DoWork Starting " + schedulerInstance);
 
                 if (string.IsNullOrEmpty(Host.SMTPServer))
                 {
-                    ScheduleHistoryItem.AddLogNote("No SMTP Servers have been configured for this host. Terminating task.");
+                    ScheduleHistoryItem.AddLogNote("<br>No SMTP Servers have been configured for this host. Terminating task.");
                     ScheduleHistoryItem.Succeeded = true;
                 }
                 else
                 {
                     Progressing();
-                    //var messageLeft = true;
-                    //var messagesSent = 0;
-
-                    //while (messageLeft)
-                    //{
-                    //    var batchMessages = InternalMessagingController.Instance.GetNextMessagesForDispatch(schedulerInstance, Host.MessageSchedulerBatchSize);
-
-                    //    if (batchMessages != null && batchMessages.Count > 0)
-                    //    {
-                    //        try
-                    //        {
-                    //            foreach (var messageRecipient in batchMessages)
-                    //            {
-                    //                SendMessage(messageRecipient);
-                    //                messagesSent = messagesSent + 1;
-                    //            }
-
-                    //        }
-                    //        catch (Exception e)
-                    //        {
-                    //            Errored(ref e);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        messageLeft = false;
-                    //    }
-                    //}
-
-                    //ScheduleHistoryItem.AddLogNote(string.Format("Message Scheduler '{0}' sent a total of {1} message(s)", schedulerInstance, messagesSent));
+                   
                     var instantMessages = HandleInstantMessages(schedulerInstance);
                     var remainingMessages = Host.MessageSchedulerBatchSize - instantMessages;
                     if (remainingMessages > 0)
@@ -117,7 +88,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             catch (Exception ex)
             {
                 ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote("MessagingScheduler Failed: " + ex);
+                ScheduleHistoryItem.AddLogNote("<br>Messaging Scheduler Failed: " + ex);
                 Errored(ref ex);
             }
         }
@@ -162,7 +133,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         {
             var messagesSent = 0;
             // get subscribers based on frequency, utilize remaining batch size as part of count of users to return (note, if multiple subscriptions have the same frequency they will be combined into 1 email)
-            ScheduleHistoryItem.AddLogNote("Suscriptions Starting Digest " + schedulerInstance + ".  ");
+            ScheduleHistoryItem.AddLogNote("<br>Messaging Schedule Starting Digest '" + schedulerInstance + "'.  ");
             
             var messageLeft = true;
 
@@ -193,7 +164,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                             messagesSent = messagesSent + 1;
                         }
                         // at this point we have sent all digest notifications for this batch
-                        ScheduleHistoryItem.AddLogNote(".  Sent " + messagesSent + " digest subscription emails for this batch.  ");
+                        ScheduleHistoryItem.AddLogNote("Sent " + messagesSent + " digest subscription emails for this batch.  ");
                         return messagesSent;
                     }
                     catch (Exception e)
@@ -207,7 +178,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 }
             }
 
-            ScheduleHistoryItem.AddLogNote(".  Sent " + messagesSent + " " + frequency + " digest subscription emails.  ");
+            ScheduleHistoryItem.AddLogNote("Sent " + messagesSent + " " + frequency + " digest subscription emails.  ");
             
             return messagesSent;
         }
@@ -323,7 +294,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 }
             }
 
-            ScheduleHistoryItem.AddLogNote(string.Format("Message Scheduler '{0}' sent a total of {1} message(s)", schedulerInstance, messagesSent));
+            ScheduleHistoryItem.AddLogNote(string.Format("<br>Messaging Scheduler '{0}' sent a total of {1} message(s)", schedulerInstance, messagesSent));
             return messagesSent;
         }
 

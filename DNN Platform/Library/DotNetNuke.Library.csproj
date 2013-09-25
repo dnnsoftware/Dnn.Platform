@@ -541,7 +541,6 @@
     <Compile Include="Services\Subscriptions\Entities\Frequency.cs" />
     <Compile Include="Services\Subscriptions\Entities\Subscriber.cs" />
     <Compile Include="Services\Subscriptions\Entities\SubscriptionType.cs" />
-    <Compile Include="Services\Subscriptions\Tasks\SubscriptionTask.cs" />
     <Compile Include="Services\Upgrade\DnnInstallLogger.cs" />
     <Compile Include="Services\Upgrade\Internals\IInstallController.cs" />
     <Compile Include="Services\Upgrade\Internals\InstallConfiguration\ConnectionConfig.cs" />

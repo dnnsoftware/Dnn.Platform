@@ -75,21 +75,6 @@ namespace DotNetNuke.Services.Subscriptions.Data
             return _provider.ExecuteReader("Subscriptions_GetUserSubscriptions", userId, portalId);
         }
 
-        public void UpdateScheduleItemSetting(int scheduleId, string key, string value)
-        {
-            _provider.ExecuteNonQuery("Subscriptions_UpdateScheduleItemSetting", scheduleId, key, value);
-        }
-
-        public IDataReader GetNextMessagesForDispatch(Guid schedulerInstance, int batchSize)
-        {
-            return _provider.ExecuteReader("Subscriptions_GetNextMessagesForDispatch", schedulerInstance, batchSize);
-        }
-
-        public IDataReader GetNextSubscribersForDispatch(Guid schedulerInstance, int frequency, int batchSize)
-        {
-            return _provider.ExecuteReader("Subscriptions_GetNextSubscribersForDispatch", frequency, schedulerInstance, batchSize);
-        }
-
         public IDataReader GetContentItemSubscribers(int contentItemId, int portalId)
         {
             return _provider.ExecuteReader("Subscriptions_GetContentItemSubscribers", contentItemId, portalId);
@@ -117,32 +102,6 @@ namespace DotNetNuke.Services.Subscriptions.Data
             }
 
             return date;
-        }
-
-        public DateTime? GetLastRunDate(int portalId)
-        {
-            IDataReader reader = null;
-
-            try
-            {
-                reader = _provider.ExecuteReader("Subscriptions_GetLastTaskRun", portalId);
-                
-                if (reader.Read())
-                {
-                    if (reader.IsDBNull(0))
-                    {
-                        return null;
-                    }
-
-                    return reader.GetDateTime(0);
-                }
-            }
-            finally
-            {
-                reader.Close();
-            }
-
-            return null;
         }
 
         #endregion

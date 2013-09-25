@@ -90,12 +90,6 @@ namespace DotNetNuke.Services.Subscriptions.Data
         /// <returns></returns>
         IDataReader GetUserSubscriptions(int userId, int portalId);
 
-        void UpdateScheduleItemSetting(int scheduleId, string key, string value);
-
-        IDataReader GetNextMessagesForDispatch(Guid schedulerInstance, int batchSize);
-
-        IDataReader GetNextSubscribersForDispatch(Guid schedulerInstance, int frequency, int batchSize);
-
         IDataReader GetContentItemSubscribers(int contentItemId, int portalId);
 
         IDataReader GetNewContentSubscribers(int groupId, int moduleId, int portalId);
@@ -103,11 +97,6 @@ namespace DotNetNuke.Services.Subscriptions.Data
         #endregion
 
         #region Task
-
-        /// <summary>
-        /// Get the last time a scheduled Subscription task ran on the specified Portal ID, <paramref name="portalId"/>
-        /// </summary>
-        DateTime? GetLastRunDate(int portalId);
 
         #endregion
     }
