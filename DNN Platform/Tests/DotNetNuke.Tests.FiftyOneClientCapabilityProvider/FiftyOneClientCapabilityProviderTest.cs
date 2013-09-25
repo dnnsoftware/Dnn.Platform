@@ -19,9 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
-using System.IO;
 using System.Linq;
-using System.Web.Hosting;
+
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Providers.FiftyOneClientCapabilityProvider;
 using DotNetNuke.Tests.Utilities.Mocks;
@@ -59,14 +58,7 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
 			dataProvider.Setup(d => d.GetProviderPath()).Returns("");
 			MockComponentProvider.CreateDataCacheProvider();
 			MockComponentProvider.CreateEventLogController();
-
-            //create the bin folder
-            var folderPath = HostingEnvironment.ApplicationPhysicalPath + "bin";
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-        }
+		}
 
         [TearDown]
         public void TearDown()
