@@ -987,6 +987,251 @@ INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [Log
 GO
 
 
+/** Subscription **/
+/******************/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]
+	(
+		[SubscriptionTypeId] [int] IDENTITY(1,1) NOT NULL,
+		[SubscriptionName] [nvarchar](50) NOT NULL,
+		[FriendlyName] [nvarchar](50) NOT NULL,
+		[DesktopModuleId] [int] NULL,
+		CONSTRAINT [PK_{objectQualifier}CoreMessaging_SubscriptionTypes] PRIMARY KEY CLUSTERED 
+			(
+				[SubscriptionTypeId]
+			)
+	)
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}CoreMessaging_Subscriptions') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	(
+		[SubscriptionId] [int] IDENTITY(1,1) NOT NULL,
+		[UserId] [int] NOT NULL,
+		[PortalId] [int] NULL,
+		[SubscriptionTypeId] [int] NOT NULL,
+		[ObjectKey] [nvarchar](255) NULL,
+		[CreatedOnDate] [datetime] NOT NULL,
+		[ModuleId] [int] NULL,
+		[TabId] [int] NULL,
+		CONSTRAINT [PK_{objectQualifier}CoreMessaging_Subscriptions] PRIMARY KEY CLUSTERED 
+			(
+				[SubscriptionId]
+			)
+	)
+
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+	ADD CONSTRAINT FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Portals FOREIGN KEY ( [PortalId] ) 
+		REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+	ADD CONSTRAINT FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Subscriptions_Type FOREIGN KEY ( [SubscriptionTypeId] ) 
+		REFERENCES {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes ( [SubscriptionTypeId] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+	ADD CONSTRAINT FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Users FOREIGN KEY ( [UserId] ) REFERENCES {databaseOwner}{objectQualifier}Users ( [UserID] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+				
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+	ADD CONSTRAINT FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Modules FOREIGN KEY ( [ModuleId] ) REFERENCES {databaseOwner}{objectQualifier}Modules ( [ModuleId] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]
+	@SubscriptionName NVARCHAR(50) ,
+	@FriendlyName NVARCHAR(50) ,
+	@DesktopModuleId INT
+AS 
+	INSERT  {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes
+			( SubscriptionName ,
+			  FriendlyName ,
+			  DesktopModuleId
+			)
+	VALUES  ( @SubscriptionName ,
+			  @FriendlyName ,
+			  @DesktopModuleId 
+			)
+	SELECT  SCOPE_IDENTITY()
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptionTypes]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptionTypes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptionTypes]
+AS 
+	SELECT  *
+	FROM    {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscriptionType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscriptionType]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscriptionType]
+	@SubscriptionTypeId int
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] WHERE [SubscriptionTypeId] = @SubscriptionTypeId
+
+	IF @@ROWCOUNT <> 0
+		SELECT 0 AS [ResultStatus]
+	ELSE
+		SELECT -1 AS [ResultStatus]
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscription]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscription]
+	@SubscriptionId int
+AS 
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions] WHERE [SubscriptionId] = @SubscriptionId
+
+	IF @@ROWCOUNT <> 0
+		SELECT 0 AS [ResultStatus]
+	ELSE
+		SELECT -1 AS [ResultStatus]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptions]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptions]
+	@PortalId int
+AS
+BEGIN
+	SELECT
+	   [SubscriptionId],
+	   [UserId],
+	   [PortalId],
+	   [SubscriptionTypeId],
+	   [ObjectKey],
+	   [CreatedOnDate],
+	   [ModuleId],
+	   [TabId]
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	WHERE [PortalId] = @PortalId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+	@SubscriptionId INT ,
+	@UserId INT ,
+	@PortalId INT ,
+	@SubscriptionTypeId INT ,
+	@ObjectKey NVARCHAR(255) ,
+	@ModuleId INT ,
+	@TabId INT
+AS 
+	BEGIN
+        DECLARE @SubscriptionCount INT = 0   
+        IF ( @SubscriptionId IS NULL
+             OR @SubscriptionId < 1
+           ) 
+            BEGIN
+                SET @SubscriptionCount = (SELECT SubscriptionId
+                                         FROM   {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+                                         WHERE  UserId = @UserId
+                                                AND PortalId = @PortalId
+                                                AND SubscriptionTypeId = @SubscriptionTypeId
+                                                AND ObjectKey = @ObjectKey
+                                                AND ModuleId = @ModuleId
+												AND TabId = @TabId
+										)
+            END
+		ELSE
+			BEGIN
+				SELECT @SubscriptionCount = 1
+			END   
+		      
+        IF ( @SubscriptionCount IS NULL
+             OR @SubscriptionCount < 1
+           ) 
+			BEGIN
+				INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+						( UserId ,
+						  PortalId ,
+						  SubscriptionTypeId ,
+						  ObjectKey ,
+						  CreatedOnDate ,
+						  ModuleId ,
+						  TabId
+						)
+				VALUES  ( @UserId ,
+						  @PortalId ,
+						  @SubscriptionTypeId ,
+						  @ObjectKey ,
+						  GETUTCDATE() ,
+						  @ModuleId ,
+						  @TabId
+						)
+
+				SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
+			END
+		ELSE 
+			BEGIN
+				UPDATE  {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+				SET     UserId = @UserId,
+						PortalId = @PortalId,
+						SubscriptionTypeId = @SubscriptionTypeId,
+						ObjectKey = @ObjectKey,
+						ModuleId = @ModuleId,
+						TabId = @TabId
+				WHERE   SubscriptionId = @SubscriptionId
+
+				SELECT  @SubscriptionId AS [SubscriptionId]
+			END
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+	@PortalId INT ,
+	@UserId INT ,
+	@SubscriptionTypeId INT ,
+	@ObjectKey NVARCHAR(255) ,
+	@ModuleId INT ,
+	@TabId INT
+AS 
+	BEGIN
+		SELECT  *
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		WHERE   UserId = @UserId
+				AND PortalId = @PortalId
+				AND SubscriptionTypeId = @SubscriptionTypeID
+				AND ObjectKey = @ObjectKey
+				AND ModuleId = @ModuleId
+				AND TabID = @TabId
+	END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
