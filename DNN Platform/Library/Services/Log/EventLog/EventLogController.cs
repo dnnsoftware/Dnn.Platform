@@ -126,6 +126,7 @@ namespace DotNetNuke.Services.Log.EventLog
             LANGUAGE_CREATED,
             LANGUAGE_UPDATED,
             LANGUAGE_DELETED,
+            LIBRARY_UPDATED,
             SKINPACKAGE_CREATED,
             SKINPACKAGE_UPDATED,
             SKINPACKAGE_DELETED,

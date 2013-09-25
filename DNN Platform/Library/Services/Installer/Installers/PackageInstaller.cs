@@ -27,6 +27,7 @@ using System.Xml.XPath;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Installer.Dependencies;
 using DotNetNuke.Services.Installer.Packages;
 
@@ -48,6 +49,7 @@ namespace DotNetNuke.Services.Installer.Installers
 	
         private readonly SortedList<int, ComponentInstallerBase> _componentInstallers = new SortedList<int, ComponentInstallerBase>();
         private PackageInfo _installedPackage;
+        private EventMessage _eventMessage;
 		
 		#endregion
 
@@ -289,6 +291,56 @@ namespace DotNetNuke.Services.Installer.Installers
             return result;
         }
 
+        private void ReadEventMessageNode(XPathNavigator manifestNav)
+        {
+            XPathNavigator eventMessageNav = manifestNav.SelectSingleNode("eventMessage");
+            if (eventMessageNav != null)
+            {
+                _eventMessage = new EventMessage();
+                _eventMessage.Priority = MessagePriority.High;
+                _eventMessage.ExpirationDate = DateTime.Now.AddYears(-1);
+                _eventMessage.SentDate = DateTime.Now;
+                _eventMessage.Body = "";
+                _eventMessage.ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing);
+                _eventMessage.ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing);
+                foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
+                {
+                    var attribName = attributeNav.Name;
+                    var attribValue = attributeNav.Value;
+                    if (attribName == "upgradeVersionsList")
+                    {
+                        if (!String.IsNullOrEmpty(attribValue))
+                        {
+                            string[] upgradeVersions = attribValue.Split(',');
+                            attribValue = ""; foreach (string version in upgradeVersions)
+                            {
+                                Version upgradeVersion = null;
+                                try
+                                {
+                                    upgradeVersion = new Version(version);
+                                }
+                                catch (FormatException)
+                                {
+                                    Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
+                                }
+
+                                if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion && Globals.Status == Globals.UpgradeStatus.Upgrade) //To allow when upgrading to an upper version
+                                {
+                                    attribValue += version + ",";
+                                }
+                                else if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install || Globals.Status == Globals.UpgradeStatus.None)) //To allow when fresh installing or installresources
+                                {
+                                    attribValue += version + ",";                                    
+                                }
+                            }
+                            attribValue = attribValue.TrimEnd(',');
+                        }
+                    }
+                   _eventMessage.Attributes.Add(attribName, attribValue);
+                }
+            }
+        }
+
 		#endregion
 
 	    #region Public Methods
@@ -311,6 +363,13 @@ namespace DotNetNuke.Services.Installer.Installers
                     compInstaller.Commit();
                 }
             }
+
+            //Add Event Message
+            if (_eventMessage != null && !String.IsNullOrEmpty(_eventMessage.Attributes["UpgradeVersionsList"]))
+            {
+                EventQueueController.SendMessage(_eventMessage, "Application_Start");
+            }
+
             if (Log.Valid)
             {
                 Log.AddInfo(Util.INSTALL_Committed);
@@ -464,6 +523,9 @@ namespace DotNetNuke.Services.Installer.Installers
                 case "Skin":
                     foldernameNav = manifestNav.SelectSingleNode("components/component/skinFiles");
                     if (foldernameNav != null) Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
+                    break;
+                case "Library":
+                    ReadEventMessageNode(manifestNav);
                     break;
                 default:
                     break;

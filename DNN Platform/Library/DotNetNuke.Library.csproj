@@ -259,6 +259,7 @@
     <Compile Include="Entities\IPFilter\IIPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterInfo.cs" />
+    <Compile Include="Entities\Libraries\EventMessageProcessor.cs" />
     <Compile Include="Entities\Modules\IShareable.cs" />
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />

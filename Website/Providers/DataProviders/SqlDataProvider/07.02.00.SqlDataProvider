@@ -1135,6 +1135,14 @@ INSERT INTO {databaseOwner}{objectQualifier}SearchTypes
            ('user', 'DotNetNuke.Services.Search.Controllers.UserResultController', 0)
 GO
 
+/***** Fix bug DNN-3702: Add log type LIBRARY_UPDATED *****/
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'LIBRARY_UPDATED', N'LIBRARY_UPDATED', N'', N'DotNetNuke.Logging.EventLogType', N'ItemUpdated')
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'LIBRARY_UPDATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
