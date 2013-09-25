@@ -254,9 +254,9 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority PackageTypesCachePriority = CacheItemPriority.AboveNormal;
         public const int PackageTypesCacheTimeout = 20;
 
-	public const string JavaScriptLibrariesCacheKey = "JavaScriptLibraries";
-	public const CacheItemPriority JavaScriptLibrariesCachePriority = CacheItemPriority.AboveNormal;
-	public const int JavaScriptLibrariesCacheTimeout = 20;
+	    public const string JavaScriptLibrariesCacheKey = "JavaScriptLibraries";
+	    public const CacheItemPriority JavaScriptLibrariesCachePriority = CacheItemPriority.AboveNormal;
+	    public const int JavaScriptLibrariesCacheTimeout = 20;
 
         private static string _CachePersistenceEnabled = "";
 
