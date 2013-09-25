@@ -39,7 +39,6 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class TermsSelector : DnnComboBox, IClientAPICallbackEventHandler
     {
-        public event EventHandler DataSourceChanged;
         public TermsSelector()
         {
             IncludeSystemVocabularies = false;
