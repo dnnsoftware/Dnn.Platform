@@ -1,4 +1,4 @@
-MIT License
+JOE License
 
 Copyright (c) 2011 John Resig, http://jquery.com/
 
