@@ -28,7 +28,6 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Xml;
@@ -787,23 +786,13 @@ namespace DotNetNuke.Entities.Tabs
             string doctypeConfig = string.Empty;
             if (!string.IsNullOrEmpty(SkinSrc))
             {
-                string packageFileName = HttpContext.Current.Server.MapPath(Regex.Replace(SkinSrc, @"([^/]+$)", "skin.doctype.xml", RegexOptions.CultureInvariant));
-                string skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
-                if (File.Exists(packageFileName) || File.Exists(skinFileName))
+                string fileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
+                if (File.Exists(fileName))
                 {
                     try
                     {
                         var xmlSkinDocType = new XmlDocument();
-                        if (File.Exists(skinFileName))
-                        {
-                            // default to the skinname.doctype.xml to allow the individual skin to override the skin package
-                            xmlSkinDocType.Load(skinFileName);
-                        }
-                        else
-                        {
-                            // use the skin.doctype.xml file
-                            xmlSkinDocType.Load(packageFileName);
-                        }
+                        xmlSkinDocType.Load(fileName);
                         string strDocType = xmlSkinDocType.FirstChild.InnerText;
                         doctypeConfig = strDocType;
                     }
