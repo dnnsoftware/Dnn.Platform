@@ -17,8 +17,7 @@
         <component type="JavaScript_Library">
           <javaScriptLibrary>
             <librayName>Knockout</librayName>
-            <minFileName>knockout-min.js</minFileName>
-            <debugFileName>knockout.js</debugFileName>
+            <fileName>knockout.js</fileName>
             <CDNPath>http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js</CDNPath>
           </javaScriptLibrary>
         </component>
@@ -27,9 +26,6 @@
             <libraryFolderName>Knockout</libraryFolderName>
             <jsfile>
               <name>knockout.js</name>
-            </jsfile>
-            <jsfile>
-              <name>knockout-min.js</name>
             </jsfile>
           </jsfiles>
         </component>

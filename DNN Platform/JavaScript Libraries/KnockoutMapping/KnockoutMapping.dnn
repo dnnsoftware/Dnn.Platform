@@ -18,8 +18,7 @@
         <component type="JavaScript_Library">
           <javaScriptLibrary>
             <librayName>Knockout.Mapping</librayName>
-            <minFileName>knockout.mapping-min.js</minFileName>
-            <debugFileName>knockout.mapping.js</debugFileName>
+            <fileName>knockout.mapping.js</fileName>
             <CDNPath></CDNPath>
           </javaScriptLibrary>
         </component>
@@ -28,9 +27,6 @@
             <libraryFolderName>Knockout.Mapping</libraryFolderName>
             <jsfile>
               <name>knockout.mapping.js</name>
-            </jsfile>
-            <jsfile>
-              <name>knockout.mapping-min.js</name>
             </jsfile>
           </jsfiles>
         </component>

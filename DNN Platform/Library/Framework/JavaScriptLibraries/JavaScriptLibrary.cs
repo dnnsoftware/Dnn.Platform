@@ -33,9 +33,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         public int PackageID { get; set; }
         public string LibrayName { get; set; }
         public Version Version { get; set; }
-        public string MinFileName { get; set; }
-        public string DebugFileName { get; set; }
-        public string LocalPath { get; set; }
+        public string ObjectName { get; set; }
+        public string FileName { get; set; }
+        public ScriptLocation PreferredScriptLocation { get; set; }
         public string CDNPath { get; set; }
 
         #region IXmlSerializable Implementation
@@ -72,14 +72,26 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         case "librayName":
                             LibrayName = reader.ReadElementContentAsString();
                             break;
-                        case "minFileName":
-                            MinFileName = reader.ReadElementContentAsString();
+                        case "objectName":
+                            ObjectName = reader.ReadElementContentAsString();
                             break;
-                        case "debugFileName":
-                            DebugFileName = reader.ReadElementContentAsString();
+                        case "fileName":
+                            FileName = reader.ReadElementContentAsString();
                             break;
-                        case "localPath":
-                            LocalPath = reader.ReadElementContentAsString();
+                        case "preferredScriptLocation":
+                            var location = reader.ReadElementContentAsString();
+                            switch (location)
+                            {
+                                case "BodyTop":
+                                    PreferredScriptLocation = ScriptLocation.BodyTop;
+                                    break;
+                                case "BodyBottom":
+                                    PreferredScriptLocation = ScriptLocation.BodyBottom;
+                                    break;
+                                default:
+                                    PreferredScriptLocation = ScriptLocation.PageHead;
+                                    break;
+                            }
                             break;
                         case "CDNPath":
                             CDNPath = reader.ReadElementContentAsString();
@@ -105,9 +117,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
             //write out properties
             writer.WriteElementString("librayName", LibrayName);
-            writer.WriteElementString("minFileName", MinFileName);
-            writer.WriteElementString("debugFileName", DebugFileName);
-            writer.WriteElementString("localPath", LocalPath);
+            writer.WriteElementString("fileName", FileName);
+            writer.WriteElementString("objectName", ObjectName);
+            writer.WriteElementString("preferredScriptLocation", PreferredScriptLocation.ToString());
             writer.WriteElementString("CDNPath", CDNPath);
 
             //Write end of main element

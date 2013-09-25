@@ -17,8 +17,7 @@
         <component type="JavaScript_Library">
           <javaScriptLibrary>
             <librayName>jQuery-Migrate</librayName>
-            <minFileName>jquery-migrate.min.js</minFileName>
-            <debugFileName>jquery-migrate.js</debugFileName>
+            <fileName>jquery-migrate.js</fileName>
             <CDNPath>http://code.jquery.com/jquery-migrate-1.2.1.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
@@ -27,9 +26,6 @@
             <libraryFolderName>jQuery-Migrate</libraryFolderName>
             <jsfile>
               <name>jquery-migrate.js</name>
-            </jsfile>
-            <jsfile>
-              <name>jquery-migrate.min.js</name>
             </jsfile>
           </jsfiles>
         </component>

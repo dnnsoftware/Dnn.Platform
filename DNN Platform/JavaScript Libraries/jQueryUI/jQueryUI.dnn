@@ -17,8 +17,7 @@
         <component type="JavaScript_Library">
           <javaScriptLibrary>
             <librayName>jQuery-UI</librayName>
-            <minFileName>jquery-ui.min.js</minFileName>
-            <debugFileName>jquery-ui.js</debugFileName>
+            <fileName>jquery-ui.js</fileName>
             <CDNPath>http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
@@ -27,9 +26,6 @@
             <libraryFolderName>jQuery-UI</libraryFolderName>
             <jsfile>
               <name>jquery-ui.js</name>
-            </jsfile>
-            <jsfile>
-              <name>jquery-ui.min.js</name>
             </jsfile>
           </jsfiles>
         </component>

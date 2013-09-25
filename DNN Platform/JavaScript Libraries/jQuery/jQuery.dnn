@@ -17,8 +17,7 @@
         <component type="JavaScript_Library">
           <javaScriptLibrary>
             <librayName>jQuery</librayName>
-            <minFileName>jquery.min.js</minFileName>
-            <debugFileName>jquery.js</debugFileName>
+            <fileName>jquery.js</fileName>
             <CDNPath>http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
@@ -27,9 +26,6 @@
             <libraryFolderName>jQuery</libraryFolderName>
             <jsfile>
               <name>jquery.js</name>
-            </jsfile>
-            <jsfile>
-              <name>jquery.min.js</name>
             </jsfile>
             <jsfile>
               <name>jquery.min.map</name>

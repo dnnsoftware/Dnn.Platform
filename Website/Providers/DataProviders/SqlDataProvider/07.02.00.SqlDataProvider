@@ -868,8 +868,9 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
 			[PackageID] [int] NOT NULL,
 			[LibraryName] [nvarchar](200) NOT NULL,
 			[Version] [nvarchar](10) NOT NULL,
-			[MinFileName] [nvarchar](100) NOT NULL,
-			[DebugFileName] [nvarchar](100) NOT NULL,
+			[FileName] [nvarchar](100) NOT NULL,
+			[ObjectName] [nvarchar](100) NOT NULL,
+			[PreferredScriptLocation] [int] NOT NULL,
 			[CDNPath] [nvarchar](250) NOT NULL,
 			CONSTRAINT [PK_{objectQualifier}JavaScriptLIbraries] PRIMARY KEY CLUSTERED 
 			(
@@ -908,8 +909,9 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
 	@PackageID INT,
 	@LibraryName NVARCHAR(200),
 	@Version NVARCHAR(10),
-	@MinFileName NVARCHAR(100),
-	@DebugFileName NVARCHAR(100),
+	@FileName NVARCHAR(100),
+	@ObjectName NVARCHAR(100),
+	@PreferredScriptLocation int,
 	@CDNPath NVARCHAR(250)
 AS
 
@@ -919,8 +921,9 @@ AS
 			   SET [PackageID] = @PackageID,
 					[LibraryName] = @LibraryName,
 					[Version] = @Version,
-					[MinFileName] = @MinFileName,
-					[DebugFileName] = @DebugFileName,
+					[FileName] = @FileName,
+					[ObjectName] = @ObjectName,
+					[PreferredScriptLocation] = @PreferredScriptLocation,
 					[CDNPath] = @CDNPath
 			 WHERE JavaScriptLibraryID = @JavaScriptLibraryID
 	 	END
@@ -930,16 +933,18 @@ AS
 				[PackageID],
 				[LibraryName],
 				[Version],
-				[MinFileName],
-				[DebugFileName],
+				[FileName],
+				[ObjectName],
+				[PreferredScriptLocation],
 				[CDNPath]
 			)
 			VALUES (
 				@PackageID,
 				@LibraryName,
 				@Version,
-				@MinFileName,
-				@DebugFileName,
+				@FileName,
+				@ObjectName,
+				@PreferredScriptLocation,
 				@CDNPath
 			)
 			SET @JavaScriptLibraryID = (SELECT @@IDENTITY)
