@@ -59,8 +59,24 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         /// <param name="tabId">Tab Id</param>
         /// <returns>Suscription Id</returns>
         int AddSubscription(int userId, int portalId, int subscriptionTypeId, string objectKey, string description, int moduleId, int tabId);
-        
-        IDataReader GetAllSubscriptions(int portalId);
+
+        /// <summary>
+        /// Returns the User Subscriptions
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="portalId">Portal Id</param>
+        /// <param name="subscriptionTypeId">Subscription Type Id</param>
+        /// <returns>Collection of Subscriptions</returns>
+        IDataReader GetSubscriptionsByUser(int userId, int portalId, int subscriptionTypeId);
+
+        /// <summary>
+        /// Returns the Content Subscriptions
+        /// </summary>
+        /// <param name="portalId">Portal Id</param>
+        /// <param name="subscriptionTypeId">Subscription Type Id</param>
+        /// <param name="objectKey">Object Key</param>
+        /// <returns>Collection of Subscriptions</returns>
+        IDataReader GetSubscriptionsByContent(int portalId, int subscriptionTypeId, string objectKey);
         
         /// <summary>
         /// Checks if the user is subscribed to an ObjectKey

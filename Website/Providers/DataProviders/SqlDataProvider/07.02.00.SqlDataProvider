@@ -1206,17 +1206,41 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptions]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptions]
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptions]
-	@PortalId int
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+	@PortalId int,
+	@UserId int,
+	@SubscriptionTypeID int,
 AS
 BEGIN
 	SELECT *
 	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
-	WHERE [PortalId] = @PortalId
+	WHERE 
+			PortalId = @PortalId
+		AND UserId = @UserId
+		AND (@SubscriptionTypeID Is NULL OR SubscriptionTypeID = @SubscriptionTypeID)
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+	@PortalId int,
+	@SubscriptionTypeID int,
+	@ObjectKey NVARCHAR(255),
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	WHERE 
+			PortalId = @PortalId
+		AND SubscriptionTypeID = @SubscriptionTypeID
+		AND ObjectKey = @ObjectKey
 END
 GO
 
@@ -1279,7 +1303,7 @@ AS
 				AND SubscriptionTypeId = @SubscriptionTypeID
 				AND ObjectKey = @ObjectKey
 				AND ModuleId = @ModuleId
-				AND TabID = @TabId
+				AND abID = @TabId
 	END
 GO
 
