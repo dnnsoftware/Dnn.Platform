@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         {
             var messagesSent = 0;
             // get subscribers based on frequency, utilize remaining batch size as part of count of users to return (note, if multiple subscriptions have the same frequency they will be combined into 1 email)
-            ScheduleHistoryItem.AddLogNote("<br>Messaging Schedule Starting Digest '" + schedulerInstance + "'.  ");
+            ScheduleHistoryItem.AddLogNote("<br>Messaging Scheduler Starting Digest '" + schedulerInstance + "'.  ");
             
             var messageLeft = true;
 
