@@ -1171,7 +1171,6 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
-	@SubscriptionId INT ,
 	@UserId INT ,
 	@PortalId INT ,
 	@SubscriptionTypeId INT ,
@@ -1181,67 +1180,28 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
 	@TabId INT
 AS 
 	BEGIN
-        DECLARE @SubscriptionCount INT = 0   
-        IF ( @SubscriptionId IS NULL
-             OR @SubscriptionId < 1
-           ) 
-            BEGIN
-                SET @SubscriptionCount = (SELECT SubscriptionId
-                                         FROM   {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
-                                         WHERE  UserId = @UserId
-                                                AND PortalId = @PortalId
-                                                AND SubscriptionTypeId = @SubscriptionTypeId
-                                                AND ObjectKey = @ObjectKey
-												AND Description = @Description
-                                                AND ModuleId = @ModuleId
-												AND TabId = @TabId
-										)
-            END
-		ELSE
-			BEGIN
-				SELECT @SubscriptionCount = 1
-			END   
-		      
-        IF ( @SubscriptionCount IS NULL
-             OR @SubscriptionCount < 1
-           ) 
-			BEGIN
-				INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
-						( UserId ,
-						  PortalId ,
-						  SubscriptionTypeId ,
-						  ObjectKey ,
-						  Description,
-						  CreatedOnDate ,
-						  ModuleId ,
-						  TabId
-						)
-				VALUES  ( @UserId ,
-						  @PortalId ,
-						  @SubscriptionTypeId ,
-						  @ObjectKey ,
-						  @Description,
-						  GETUTCDATE() ,
-						  @ModuleId ,
-						  @TabId
-						)
+		INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+				( UserId ,
+					PortalId ,
+					SubscriptionTypeId ,
+					ObjectKey ,
+					Description,
+					CreatedOnDate ,
+					ModuleId ,
+					TabId
+				)
+		VALUES  ( @UserId ,
+					@PortalId ,
+					@SubscriptionTypeId ,
+					@ObjectKey ,
+					@Description,
+					GETUTCDATE() ,
+					@ModuleId ,
+					@TabId
+				)
 
-				SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
-			END
-		ELSE 
-			BEGIN
-				UPDATE  {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
-				SET     UserId = @UserId,
-						PortalId = @PortalId,
-						SubscriptionTypeId = @SubscriptionTypeId,
-						ObjectKey = @ObjectKey,
-						Description = @Description,
-						ModuleId = @ModuleId,
-						TabId = @TabId
-				WHERE   SubscriptionId = @SubscriptionId
-
-				SELECT  @SubscriptionId AS [SubscriptionId]
-			END
+		SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
+			
 	END
 GO
 

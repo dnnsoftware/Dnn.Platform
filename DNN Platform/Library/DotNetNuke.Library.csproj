@@ -531,6 +531,8 @@
     <Compile Include="Services\Search\Entities\SearchQuery.cs" />
     <Compile Include="Services\Search\UserIndexer.cs" />
     <Compile Include="Services\Social\Messaging\Frequency.cs" />
+    <Compile Include="Services\Social\Subscriptions\Data\DataService.cs" />
+    <Compile Include="Services\Social\Subscriptions\Data\IDataService.cs" />
     <Compile Include="Services\Subscriptions\Common\ObjectKey.cs" />
     <Compile Include="Services\Subscriptions\Common\SubscriptionsException.cs" />
     <Compile Include="Services\Subscriptions\Controllers\ISubscriptionController.cs" />
