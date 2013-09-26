@@ -536,9 +536,13 @@
     <Compile Include="Services\Social\Messaging\Frequency.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\DataService.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\IDataService.cs" />
-    <Compile Include="Services\Social\Subscriptions\Entities\Subscriptions.cs" />
+    <Compile Include="Services\Social\Subscriptions\Entities\Subscription.cs" />
     <Compile Include="Services\Social\Subscriptions\Entities\SubscriptionType.cs" />
+    <Compile Include="Services\Social\Subscriptions\ISubscriptionController.cs" />
+    <Compile Include="Services\Social\Subscriptions\ISubscriptionSecurityController.cs" />
     <Compile Include="Services\Social\Subscriptions\ISubscriptionTypeController.cs" />
+    <Compile Include="Services\Social\Subscriptions\SubscriptionController.cs" />
+    <Compile Include="Services\Social\Subscriptions\SubscriptionSecurityController.cs" />
     <Compile Include="Services\Social\Subscriptions\SubscriptionTypeController.cs" />
     <Compile Include="Services\Social\Messaging\IUserPreferencesController.cs" />
     <Compile Include="Services\Social\Messaging\UserPreference.cs" />
