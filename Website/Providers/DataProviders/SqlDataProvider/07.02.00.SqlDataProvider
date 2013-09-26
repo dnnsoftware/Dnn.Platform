@@ -834,6 +834,25 @@ AS
 	SELECT @JavaScriptLibraryID
 GO
 
+/** DNN-3493 - Build a dependency graph of extensions **/
+/*******************************************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PackageDependencies') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}PackageDependencies](
+			[PackageDependencyID] [int] IDENTITY(1,1) NOT NULL,
+			[PackageID] [int] NOT NULL,
+			[PackageName] [nvarchar](128) NOT NULL,
+			[Version] [nvarchar](50) NOT NULL,
+			 CONSTRAINT [PK_{objectQualifier}PackageDependencies] PRIMARY KEY CLUSTERED
+			(
+				[PackageDependencyID] ASC
+			)
+		)
+	END
+GO
+
+
 /** DNN-2995 - SI: Performance improvement in dbo.GetUsersByEmail **/
 /*******************************************************************/
 
