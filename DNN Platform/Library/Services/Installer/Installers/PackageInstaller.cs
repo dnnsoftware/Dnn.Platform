@@ -601,17 +601,16 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 			
             //Parse the Dependencies
-            IDependency dependency = null;
             foreach (XPathNavigator dependencyNav in manifestNav.CreateNavigator().Select("dependencies/dependency"))
             {
-                dependency = DependencyFactory.GetDependency(dependencyNav);
+		IDependency dependency = DependencyFactory.GetDependency(dependencyNav);
                 if (!dependency.IsValid)
                 {
                     Log.AddFailure(dependency.ErrorMessage);
                     return;
                 }
             }
-			
+
             //Read Components
             ReadComponents(manifestNav);
         }
