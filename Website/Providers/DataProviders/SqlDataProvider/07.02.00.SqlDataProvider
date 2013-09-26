@@ -1293,7 +1293,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetUserPreferenc
 AS 
 BEGIN
 	SELECT PortalId, UserId, MessagesEmailFrequency, NotificationsEmailFrequency
-	FROM {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences
+	FROM {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences UP
 	WHERE	UP.PortalId = @PortalId
 		AND
 			UP.UserId = @UserId	
