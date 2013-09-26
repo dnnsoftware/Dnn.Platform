@@ -115,7 +115,10 @@
     <Compile Include="ComponentModel\Helpers\Service2Impl.cs" />
     <Compile Include="ComponentModel\SimpleContainerTests.cs" />
     <Compile Include="Controllers\ConfigurationSettingsComparer.cs" />
+    <Compile Include="Controllers\Messaging\Builders\SubscriptionBuilder.cs" />
     <Compile Include="Controllers\Messaging\Builders\SubscriptionTypeBuilder.cs" />
+    <Compile Include="Controllers\Messaging\Mocks\MockHelper.cs" />
+    <Compile Include="Controllers\Messaging\SubscriptionControllerTests.cs" />
     <Compile Include="Controllers\Messaging\SubscriptionTypeControllerTests.cs" />
     <Compile Include="Controllers\Portal\PortalControllerTests.cs" />
     <Compile Include="Controllers\Portal\PortalGroupControllerTests.cs" />
