@@ -862,7 +862,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
 	@PackageName NVARCHAR(128),
 	@Version NVARCHAR(10)
 AS
-	IF EXISTS (SELECT PackageDependencyID FROM {objectQualifier}PackageDependencies WHERE PackageDependencyID = @PackageDependencyID)
+	IF EXISTS (SELECT PackageDependencyID FROM {objectQualifier}PackageDependencies WHERE PackageName = @PackageName AND Version = @Version)
 		BEGIN
 			UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
 			   SET [PackageID] = @PackageID,

@@ -95,10 +95,11 @@ namespace DotNetNuke.Services.Installer.Packages
                                                 package.FolderName,
                                                 package.IconFile);
 
-	    foreach (var dependency in package.Dependencies)
-	    {
-		SavePackageDependency(dependency);
-	    }
+	        foreach (var dependency in package.Dependencies)
+	        {
+	            dependency.PackageId = package.PackageID;
+		        SavePackageDependency(dependency);
+	        }
 
             AddLog(package, EventLogController.EventLogType.PACKAGE_CREATED);
 
@@ -108,7 +109,6 @@ namespace DotNetNuke.Services.Installer.Packages
         private static void ClearCache(int portalId)
         {
             DataCache.ClearPackagesCache(portalId);
-            
         }
 
         private static void DeletePackageInternal(PackageInfo package)
@@ -144,21 +144,21 @@ namespace DotNetNuke.Services.Installer.Packages
                                    package.FolderName,
                                    package.IconFile);
 
-	    foreach (var dependency in package.Dependencies)
-	    {
-		SavePackageDependency(dependency);
-	    }
+	        foreach (var dependency in package.Dependencies)
+	        {
+		        SavePackageDependency(dependency);
+	        }
 
             AddLog(package, EventLogController.EventLogType.PACKAGE_UPDATED);
 
             ClearCache(package.PortalID);
         }
 
-	private static void SavePackageDependency(PackageDependencyInfo dependency)
-	{
-	    dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
-					   dependency.Version.ToString());
-	}
+	    private static void SavePackageDependency(PackageDependencyInfo dependency)
+	    {
+	        dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
+					       dependency.Version.ToString());
+	    }
 
         #endregion
 

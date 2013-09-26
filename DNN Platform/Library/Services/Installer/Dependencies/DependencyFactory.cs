@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// -----------------------------------------------------------------------------
     public class DependencyFactory
     {
-		#region Public Shared Methods
+        #region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -59,9 +59,9 @@ namespace DotNetNuke.Services.Installer.Dependencies
                 case "package":
                     dependency = new PackageDependency();
                     break;
-		case "managedPackage":
-		    dependency = new ManagedPackageDependency();
-		    break;
+                case "managedpackage":
+                    dependency = new ManagedPackageDependency();
+                    break;
                 case "permission":
                     dependency = new PermissionsDependency();
                     break;
@@ -74,14 +74,14 @@ namespace DotNetNuke.Services.Installer.Dependencies
                     ListEntryInfo entry = listController.GetListEntryInfo("Dependency", dependencyType);
                     if (entry != null && !string.IsNullOrEmpty(entry.Text))
                     {
-						//The class for the Installer is specified in the Text property
-                        dependency = (DependencyBase) Reflection.CreateObject(entry.Text, "Dependency_" + entry.Value);
+                        //The class for the Installer is specified in the Text property
+                        dependency = (DependencyBase)Reflection.CreateObject(entry.Text, "Dependency_" + entry.Value);
                     }
                     break;
             }
             if (dependency == null)
             {
-				//Could not create dependency, show generic error message
+                //Could not create dependency, show generic error message
                 dependency = new InvalidDependency(Util.INSTALL_Dependencies);
             }
             //Read Manifest
@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
             return dependency;
         }
-		
-		#endregion
+
+        #endregion
     }
 }
