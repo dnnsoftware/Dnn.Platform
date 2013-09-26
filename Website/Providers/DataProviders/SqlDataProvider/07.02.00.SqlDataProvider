@@ -1229,6 +1229,49 @@ AS
 	END
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}[CoreMessaging_GetUserPreference]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}[CoreMessaging_GetUserPreference]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}[CoreMessaging_GetUserPreference]
+	@PortalId INT ,	
+	@UserId INT
+AS 
+BEGIN
+	SELECT PortalId, UserId, MessagesEmailFrequency, NotificationsEmailFrequency
+	FROM {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences UP
+	WHERE	UP.PortalId = @PortalId
+		AND
+			UP.UserId = @UserId	
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}[CoreMessaging_SetUserPreference]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}[CoreMessaging_SetUserPreference]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}[CoreMessaging_SetUserPreference]
+	@PortalId INT ,	
+	@UserId INT,
+	@MessagesEmailFrequency INT,
+	@NotificationsEmailFrequency INT
+AS 
+BEGIN	
+	UPDATE {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences
+	SET MessagesEmailFrequency = @MessagesEmailFrequency
+		,NotificationsEmailFrequency = @NotificationsEmailFrequency
+	WHERE PortalId = @PortalId
+	AND UserId = @UserId
+
+	IF @@ROWCOUNT = 0 BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences (PortalId, UserId, MessagesEmailFrequency, NotificationsEmailFrequency)
+		VALUES (@PortalId, @UserId, @MessagesEmailFrequency, @NotificationsEmailFrequency)
+	END	
+END
+
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
