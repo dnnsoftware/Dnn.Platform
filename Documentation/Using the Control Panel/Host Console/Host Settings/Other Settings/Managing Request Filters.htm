@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="6" MadCap:lastHeight="3717" MadCap:lastWidth="845">
+    <head>
+    </head>
+    <body>
+        <h1>Managing Request Filters</h1>
+        <p>Each rule element in the request filter defines a simple matching expression and the action to take if a match is found. You can define as many rules as needed. This provides a flexible "or" operation where any one rule can cause the request to be blocked.</p>
+        <p style="font-weight: bold;">Rule Attributes:</p>
+        <ul>
+            <li><b>servervar</b>: This is the name of a Server variable from the Request.ServerVar hash table. See: http://www.w3schools.com/asp/coll_servervariables.asp</li>
+            <li><b>operator</b>: Defines the operation that determines whether an actual match exists. Valid values: Regex, Equal, NotEqual
+    <ul><li><b>Regex</b>: Uses the regular expression specified in the value attribute to determine a match.</li><li><b>Equal</b>: Performs a search of the value list to determine if the value of the specified server variable is in the value list.</li><li><b>NotEqual</b>: Performs a search of the value list to determine if the value of the specified server variable does not exist in the value list.</li></ul></li>
+            <li><b>value</b>: Defines the value of the servervar that triggers the rule. For a regex rule, the value should be a regular expression that used as a matching expression.
+    If this is not a regex operation, then value can be a semicolon delimited list of values. For example it could include a list of IP addresses that should be blocked.
+    <ul><li><b>action</b>: Defines the action to take if a match occurs. Valid values: NotFound, Redirect, PermanentRedirect.</li><li><b>NotFound</b>: Returns a 404 status code and stops all further response processing.</li><li><b>Redirect</b>: Performs a standard redirect to the URL specified in the location attribute.</li><li><b>PermanentRedirect</b>: Performs a permanent redirect (status code 301) to the URL specified in the location attribute.</li></ul></li>
+            <li><b>location</b>: The URL where the request will be redirected. This can be left blank for the 'NotFound' action.
+    </li>
+        </ul>
+        <p style="font-weight: bold;">Recovering from Errors:</p>
+        <ul>
+            <li>It is possible to lock yourself out of the web site if you incorrectly configure a rule. For example if you intend to prevent an IP address from accessing the site, you might want to create a rule like the one below:&lt; rule servervar="REMOTE_ADDR" values="205.196.10.2" operator="Equal" action="Redirect" location="<code>http://www.awesomecycles.biz"</code>"</li>
+            <li>If you inadvertently selected the 'NotEqual' operator you would actually lock out everyone except the specified IP. To recover from this error, you must edit the DotNetNuke.config file to correct the rule, or edit the web.config to remove the request filter from the HTTPModules section.
+    </li>
+        </ul>
+        <p style="font-weight: bold;">Installation/Upgrade:</p>
+        <ul>
+            <li>The appropriate HTTPModule entry has been added to the Development.config and Release.config files and will be available for use automatically when installing a new DotNetNuke site. However, the Host Administrator will still need to enable the feature and on the "Host Settings" page before they can create any rules and use the feature. If the DotNetNuke.config file does not exist in the root directory, then it will be automatically created from the template provided in the Config directory.</li>
+            <li>Users who are upgrading from a previous DotNetNuke version will need to add the following entry to the HTTPModules section of their web.config file.</li>
+        </ul>
+        <h1>Enabling/Disabling Request Filter Settings</h1>
+        <p>How to enable or disable the request filter settings.</p>
+        <ol>
+            <li>Navigate to  Host &gt; <b><img alt="Host Settings" src="../../../../Resources/Images/Icons/Hostsettings_16X16_Standard.png" /> Host Settings</b>.</li>
+            <li>Select the <b>Other Settings</b>  tab.</li>
+            <li>At <b>Enable Request Filters?</b>, select from the following options:
+    <ul><li>Mark <img src="../../../../Resources/Images/Icons/check.png" style="vertical-align: bottom;" />&#160;the check box to enable request filters. This displays any existing request filters and enables new rules to be added.</li><li>Unmark <img src="../../../../Resources/Images/Icons/uncheck.png" style="visibility: visible;mso-wrap-style: square;width: 13px;height: 13px;vertical-align: bottom;" />&#160;the check box to disable request filters.</li></ul></li>
+        </ol>
+        <p>
+            <img alt="" src="../../../../Resources/Images/Host/HostSettings/HostSettings_OtherSettings_RequestFilterEnable.png" />
+        </p>
+        <ol>
+            <li value="4">Click the <b>Update</b> button.</li>
+        </ol>
+        <h1>Adding a Request Filter</h1>
+        <p>How to add a request filter to your DotNetNuke installation. Note: The following warning message displays when you choose to add a request filter:   WARNING: Adding an incorrect request filter rule may prevent you or your customers from being able to access your DotNetNuke website, and may require you to manually edit the DotNetNuke.config file to remove the incorrectly configured rule.</p>
+        <ol>
+            <li>Navigate to  Host &gt; <b><img alt="Host Settings" src="../../../../Resources/Images/Icons/Hostsettings_16X16_Standard.png" /> Host Settings</b>.</li>
+            <li>Select the <b>Other Settings</b>  tab.</li>
+            <li>At <b>Enable Request Filters?</b>, <MadCap:snippetText src="../../../../../../Resources/Snippets/Check.flsnp" />.</li>
+            <li>Click the <span style="text-decoration: underline;">Add New Rule</span> link.</li>
+            <li>In the <b>Server Variable</b> text box, enter the Server Variable to use when filtering incoming requests. A complete list of valid Server Variables can be viewed by clicking on the <span style="text-decoration: underline;">MSDN</span> link located to the left of this field.</li>
+            <li>At <b>Operation</b>, select the operator to use when comparing the incoming request against the specified server variable and value list from these options: <b>Equal</b>, <b>NotEqual</b>, or <b>Regex</b>.</li>
+            <li>In the <b>Match Value</b> text box, enter the value of the servervar that triggers the rule. For a regex rule, the value should be a regular expression that used as a matching expression. If this is not a regex operation, then value can be a semicolon delimited list of values.</li>
+            <li>At <b>Action</b>, select the action to perform if the incoming request matches this rule from these options: <b>Redirect</b>, <b>PermanentRedirect</b>, or <b>NotFound</b>.</li>
+            <li>In the <b>Location</b> text box, enter the URL to redirect the user if the incoming request matches this rule. This value is only used for Redirect and PermanentRedirect actions.</li>
+        </ol>
+        <p>
+            <img alt="Adding a request filter" src="../../../../Resources/Images/Host/HostSettings/HostSettings_OtherSettings_RequestFilterAdd1.png" />
+        </p>
+        <ol>
+            <li value="10">Click the <b>Save</b><img alt="Save" src="../../../../Resources/Images/Icons/save.gif" /> button. This displays the newly saved rule.</li>
+        </ol>
+        <p>
+            <img alt="Adding a request filter" src="../../../../Resources/Images/Host/HostSettings/HostSettings_OtherSettings_RequestFilterAdd2.png" />
+        </p>
+        <ol>
+            <li value="11">Repeat Steps 4-10 to add additional rules.</li>
+        </ol>
+        <h1>Editing a Request Filter</h1>
+        <p>How to edit a request filter that has been added to your DotNetNuke installation.</p>
+        <ol>
+            <li>Navigate to  Host &gt; <b><img alt="Host Settings" src="../../../../Resources/Images/Icons/Hostsettings_16X16_Standard.png"></img> Host Settings</b>.</li>
+            <li>Select the <b>Other Settings</b>  tab.</li>
+            <li>At <b>Enable Request Filters?</b>, <MadCap:snippetText src="../../../../../../Resources/Snippets/Check.flsnp"></MadCap:snippetText>.</li>
+            <li>Click the <b>Edit </b><img alt="" src="../../../../Resources/Images/Icons/Edit_16X16_Standard.png"></img> button beside the filter to be edited.</li>
+            <li value="5">Edit one or more fields as required. </li>
+            <li>Click the <b>Save</b> button.</li>
+        </ol>
+        <h1>Deleting a Request Filter</h1>
+        <p>How to permanently delete a request filter that has been added to this DNN installation.</p>
+        <ol>
+            <li>Navigate to  Host &gt; <b><img alt="Host Settings" src="../../../../Resources/Images/Icons/Hostsettings_16X16_Standard.png"></img> Host Settings</b>.</li>
+            <li>Select the <b>Other Settings</b>  tab.</li>
+            <li>At <b>Enable Request Filters?</b>,  <MadCap:snippetText src="../../../../../../Resources/Snippets/Check.flsnp"></MadCap:snippetText>.</li>
+            <li>Click the <b>Delete</b><img alt="Delete" src="../../../../Resources/Images/Icons/Delete_16X16_Standard.png"></img> button beside the filter to be deleted. This displays the message "Are You Sure You Wish To Delete This Item?" </li>
+            <li value="5">Click the <b>Yes</b> button to confirm.</li>
+        </ol>
+    </body>
+</html>
