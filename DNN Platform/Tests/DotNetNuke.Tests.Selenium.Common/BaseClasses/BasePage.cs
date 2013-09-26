@@ -201,6 +201,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public IWebElement FindElement(By locator)
 		{
 			Trace.WriteLine(TraceLevelLow + "Looking for element: '" + locator + "'");
+			Trace.WriteLine(TraceLevelLow + _driver.FindElement(locator).Info());
 			return _driver.FindElement(locator);
 		}
 
@@ -260,14 +261,14 @@ namespace DNNSelenium.Common.BaseClasses
 			WaitForElementNotPresent(By.Id("iPopUp"), timeOutSeconds);
 			_driver.SwitchTo().DefaultContent();
 
-			WaitForElement(By.Id(ControlPanelIDs.CopyrightNotice), timeOutSeconds).WaitTillEnabled();
+			WaitForElement(By.Id(ControlPanelIDs.CopyrightNotice), timeOutSeconds);
 		}
 
 		public void ClickCloseButtonOnFrame(int timeOutSeconds)
 		{
 			Trace.WriteLine(BasePage.TraceLevelElement + "Click on 'Close' button on frame and switch to window");
 			_driver.SwitchTo().DefaultContent();
-			FindElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//a[@role='button'] ")).WaitTillVisible().Click();
+			FindElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//span")).WaitTillVisible().Click();
 			WaitForElement(By.Id(ControlPanelIDs.CopyrightNotice), timeOutSeconds).WaitTillVisible();
 		}
 
@@ -275,7 +276,7 @@ namespace DNNSelenium.Common.BaseClasses
 		{
 			WaitForElement(By.XPath("//div[@aria-describedby = 'iPopUp']"), 60);
 
-			string _title = WaitForElement(By.XPath("//div[contains(@style, 'display: block')]//span[contains(@class, 'dialog-title')]"), 20).Text;
+			string _title = WaitForElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//span[contains(@class, '-dialog-title')]"), 30).Text;
 
 			Trace.WriteLine(BasePage.TraceLevelElement + "The current frame title is: '" + _title + "'");
 
@@ -503,7 +504,7 @@ namespace DNNSelenium.Common.BaseClasses
 	{
 		public static bool ElementPresent (this IWebDriver driver, By locator)
 		{
-			Trace.WriteLine(BasePage.TraceLevelLow + "Looking for elements: " );
+			Trace.WriteLine(BasePage.TraceLevelLow + "Looking for element: " );
 			return driver.FindElements(locator).Count > 0;
 		}
 	}

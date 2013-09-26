@@ -54,6 +54,12 @@ namespace DNNSelenium.Common.Tests.BVT
 			manageUsersPage.AddNewUser(_userName, _userDisplayName, "user10@mail.com", "pAssword10");
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
+
 		[Test]
 		public void Test001_AddSecurityRole()
 		{

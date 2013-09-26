@@ -29,6 +29,12 @@ namespace DNNSelenium.Common.Tests.P1
 			OpenMainPageAndLoginAsHost();
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
+
 		public void VerifyQuickSearch(BasePage currentPage)
 		{
 			currentPage.WaitAndType(By.XPath(ControlPanelIDs.SearchBox), "awesome");
@@ -267,11 +273,10 @@ namespace DNNSelenium.Common.Tests.P1
 			var hostSchedulePage = new HostSchedulePage(_driver);
 			hostSchedulePage.OpenUsingButtons(_baseUrl);
 
-			StringAssert.Contains("dnnCheckbox-checked",
-			                      hostSchedulePage.WaitForElement(
-				                      By.XPath("//tr[td[text() = '" + HostSchedulePage.SearchSiteCrawlerName +
-				                               "']]//span[input[contains(@id, 'ViewSchedule_dgSchedule')]]/span")).GetAttribute(
-					                               "class"),
+			Assert.That(hostSchedulePage.WaitForElement(
+				                    By.XPath("//tr[td[text() = '" + HostSchedulePage.SearchSiteCrawlerName +
+				                               "']]//span/input[contains(@id, 'ViewSchedule_dgSchedule')]")).GetAttribute("checked"), 
+									Is.EqualTo("true"),
 			                      "Site Crawler is not enabled");
 		}
 

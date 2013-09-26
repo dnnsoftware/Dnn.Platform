@@ -276,6 +276,7 @@ namespace DNNSelenium.Common.Tests.Installer
 						Trace.WriteLine("Assert current Template: Mobile: ");
 						Assert.AreEqual(3, installerPage.FindElements(By.XPath("//ol[@class='mobileInstruction']/li")).Count(),
 								"This is not a Mobile page or The mobile instructions are not present on the page or The number of mobile instructions steps are incorrect");
+
 						break;
 					}
 				case "Blank Template":

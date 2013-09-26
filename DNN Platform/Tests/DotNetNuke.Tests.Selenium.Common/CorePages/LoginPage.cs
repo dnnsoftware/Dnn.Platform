@@ -82,23 +82,31 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Login using 'Login' link:");
 			LetMeOut();
 
-			string selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
+			string selector = null;
+
+			if (ElementPresent(By.XPath(ControlPanelIDs.CompanyLogo)))
+			{
+				selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
+
+			}
 
 			Trace.WriteLine(BasePage.TraceLevelElement + selector);
 
-			if (selector.EndsWith(ControlPanelIDs.AwesomeCycles))
+			if (selector == null || selector.EndsWith(ControlPanelIDs.AwesomeCycles))
 			{
+				Trace.WriteLine(BasePage.TraceLevelElement + "Click on : " + ControlPanelIDs.LoginLink + "]");
 				FindElement(By.XPath(ControlPanelIDs.LoginLink)).Click();
 			}
 			else
 			{
+				Trace.WriteLine(BasePage.TraceLevelElement + "Click on : " + ControlPanelIDs.SocialUserLink + "]");
 				FindElement(By.XPath(ControlPanelIDs.SocialLoginLink)).Click();
-			}
+			} 
 
-			//FindElement(By.XPath(ControlPanelIDs.LoginLink)).Click();
+			/*FindElement(By.XPath(ControlPanelIDs.LoginLink)).Click();*/
 
 			WaitAndSwitchToFrame(30);
-			Trace.WriteLine(BasePage.TraceLevelElement + "Click on : " + ControlPanelIDs.SocialUserLink + "]");
+			
 			DoLoginUsingLoginLink(userName, password);
 
 			WaitAndSwitchToWindow(30);
@@ -134,11 +142,16 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Logout");
 
-			string selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
+			string selector = null;
 
+			if (ElementPresent(By.XPath(ControlPanelIDs.CompanyLogo)))
+			{
+				selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
+			}
+			
 			Trace.WriteLine(BasePage.TraceLevelElement + selector);
 
-			if (selector.EndsWith(ControlPanelIDs.AwesomeCycles))
+			if (selector == null || selector.EndsWith(ControlPanelIDs.AwesomeCycles))
 			{
 				WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 20).Info();
 
@@ -160,7 +173,6 @@ namespace DNNSelenium.Common.CorePages
 					WaitForElement(By.XPath(ControlPanelIDs.SocialLoginLink));
 				}		
 			}
-			
 
 			/*WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 20).Info();
 
@@ -174,11 +186,17 @@ namespace DNNSelenium.Common.CorePages
 
 		public void DoRegisterUsingRegisterLink(string userName, string displayName, string emailAddress, string password)
 		{
-			string selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
+			string selector = null;
 
+			if (ElementPresent(By.XPath(ControlPanelIDs.CompanyLogo)))
+			{
+				selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
+				
+			}
+			
 			Trace.WriteLine(BasePage.TraceLevelElement + selector);
 
-			if (selector.EndsWith(ControlPanelIDs.AwesomeCycles))
+			if (selector == null || selector.EndsWith(ControlPanelIDs.AwesomeCycles))
 			{
 				WaitForElement(By.XPath(ControlPanelIDs.RegisterLink), 20).WaitTillVisible(20).Click();
 			}
@@ -187,7 +205,7 @@ namespace DNNSelenium.Common.CorePages
 				WaitForElement(By.XPath(ControlPanelIDs.SocialRegisterLink), 20).WaitTillVisible(20).Click();
 			}
 
-			//WaitForElement(By.XPath(ControlPanelIDs.RegisterLink), 20).WaitTillVisible(20).Click();
+			/*WaitForElement(By.XPath(ControlPanelIDs.RegisterLink), 20).WaitTillVisible(20).Click();*/
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Register a User:");
 

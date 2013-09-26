@@ -38,6 +38,12 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'" + testName + "'");
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
+
 		[Test]
 		public void Test001_VerifyNoneRegistration()
 		{

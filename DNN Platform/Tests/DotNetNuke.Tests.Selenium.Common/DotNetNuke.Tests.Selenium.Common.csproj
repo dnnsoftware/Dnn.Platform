@@ -35,9 +35,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Selenium.WebDriverBackedSelenium, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Selenium.WebDriverBackedSelenium, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,17 +48,20 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="ThoughtWorks.Selenium.Core, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ThoughtWorks.Selenium.Core, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebDriver, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\WebDriver.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver.Support, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebDriver.Support, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\WebDriver.Support.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -136,7 +140,7 @@
     <Compile Include="DemoPages\AboutUsPage.cs" />
     <Compile Include="DemoPages\GettingStartedPage.cs" />
     <Compile Include="DemoPages\HomePage.cs" />
-    <Compile Include="DemoPages\OurProduct.cs" />
+    <Compile Include="DemoPages\OurProducts.cs" />
     <Compile Include="DemoPages\ContactUsPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -160,6 +164,7 @@
     <Compile Include="Tests\P1\P1FileUpload.cs" />
     <Compile Include="Tests\P1\P1HostExtensions.cs" />
     <Compile Include="Tests\P1\P1Languages.cs" />
+    <Compile Include="Tests\P1\P1Modules.cs" />
     <Compile Include="Tests\P1\P1Pages.cs" />
     <Compile Include="Tests\P1\P1Search.cs" />
     <Compile Include="Tests\P1\P1SecurityRoleGroups.cs" />

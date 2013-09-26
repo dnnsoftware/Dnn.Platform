@@ -46,6 +46,12 @@ namespace DNNSelenium.Common.Tests.BVT
 			OpenMainPageAndLoginAsHost();
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
+
 		[Test]
 		public void Test001_AddSuperUser()
 		{
@@ -59,6 +65,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			hostSuperUserAccountsPage.AddNewUser(_superUserName, _superUserDisplayName, _superUserEmail, _superUserPassword);
 
+			hostSuperUserAccountsPage.WaitForElement(By.XPath(HostSuperUserAccountsPage.SuperUsersTable));
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of elements in the list increased by 1");
 			Assert.That(hostSuperUserAccountsPage.FindElements(By.XPath(HostSuperUserAccountsPage.SuperUsersList)).Count,
 			            Is.EqualTo(itemNumber + 1),
@@ -103,6 +110,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			hostSuperUserAccountsPage.DeleteUser(_superUserName);
 
+			hostSuperUserAccountsPage.WaitForElement(By.XPath(HostSuperUserAccountsPage.SuperUsersTable));
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of elements in the list is not changed");
 			Assert.That(hostSuperUserAccountsPage.FindElements(By.XPath(HostSuperUserAccountsPage.SuperUsersList)).Count,
 			            Is.EqualTo(itemNumber),
@@ -127,6 +135,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			hostSuperUserAccountsPage.RemoveDeletedUser(_superUserName);
 
+			hostSuperUserAccountsPage.WaitForElement(By.XPath(HostSuperUserAccountsPage.SuperUsersTable));
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of elements in the list decreased by 1");
 			Assert.That(hostSuperUserAccountsPage.FindElements(By.XPath(HostSuperUserAccountsPage.SuperUsersList)).Count,
 			            Is.EqualTo(itemNumber - 1),

@@ -10,17 +10,29 @@ namespace DNNSelenium.Common.DemoPages
 
 		public static string HomePageUrl = "/Default.aspx";
 
+		public static string HomeLink = "//div[@id ='nav']//a[text() = 'Home']";
+
 		public override string PageTitleLabel
 		{
 			get { return ""; }
 		}
 
-		public static string PageHeader = "";
+		public override string PageHeaderLabel
+		{
+			get { return ""; }
+		}
 
 		public void OpenUsingUrl(string baseUrl)
 		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Main' page:");
+			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Home' page:");
 			GoToUrl(baseUrl + HomePageUrl);
+		}
+
+		public void OpenUsingLink(string baseUrl)
+		{
+			GoToUrl(baseUrl);
+			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Home' page:");
+			Click(By.XPath(HomeLink));
 		}
 	}
 }

@@ -124,7 +124,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Mobile Template", "Vorlage für mobile Geräte"},
 																{"Blank Template", "leere Vorlage"},
 																{"WelcomeScreenTitle", "Willkommen in Ihrer neuen Website"},
-																{"PageTitle", "DotNetNuke-Installation"},
+																{"PageTitle", "Installation"},
 																{"InstallationLog", "Es gibt kein Installationsprotokoll"},
 															};
 
@@ -134,7 +134,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Mobile Template", "Plantilla móvil"},
 																{"Blank Template", "Plantilla en blanco"},
 																{"WelcomeScreenTitle", "Bienvenido a su sitio web"},
-																{"PageTitle", "Instalación de DotNetNuke"},
+																{"PageTitle", "Instalación"},
 																{"InstallationLog", "No hay registro de instalación"},
 															};
 
@@ -144,7 +144,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Mobile Template", "Modèle pour mobile"},
 																{"Blank Template", "Modèle vierge"},
 																{"WelcomeScreenTitle", "Bienvenue dans votre installation"},
-																{"PageTitle", "Installation de DotNetNuke"},
+																{"PageTitle", "Installation"},
 																{"InstallationLog", "Aucun journal d'Installation"},
 															};
 
@@ -154,7 +154,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Mobile Template", "Template Mobile"},
 																{"Blank Template", "Template Vuoto"},
 																{"WelcomeScreenTitle", "Benvenuto nella nuova installazione"},
-																{"PageTitle", "Installazione DotNetNuke"},
+																{"PageTitle", "Installazione"},
 																{"InstallationLog", "Nessuna installazione Log"},
 															};
 
@@ -164,7 +164,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Mobile Template", "Mobiele website"},
 																{"Blank Template", "Lege website"},
 																{"WelcomeScreenTitle", "Welkom bij uw installatie"},
-																{"PageTitle", "DotNetNuke Installatie"},
+																{"PageTitle", "Installatie"},
 																{"InstallationLog", "Geen installatie log"},
 															};
 
@@ -197,7 +197,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 		public void ClickOnContinueButton()
 		{
 			Trace.WriteLine(BasePage.TraceLevelElement + "Click on 'Continue' button 'id: " + ContinueButton + "'");
-			FindElement(By.Id(ContinueButton)).WaitTillEnabled().Click();
+			FindElement(By.Id(ContinueButton)).WaitTillEnabled(30).Click();
 		}
 
 		public void WaitForInstallationProcessToFinish()
@@ -280,7 +280,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				{
 					RadioButtonSelect(By.Id(DatabaseSetupTypeSqlServer));
 
-					WaitForElement(By.Id(DatabaseServer));
+					WaitForElement(By.Id(DatabaseServer)).WaitTillVisible();
 					Clear(By.Id(DatabaseServer));
 					Type(By.Id(DatabaseServer), databaseServerName);
 					Clear(By.Id(DatabaseName));
@@ -300,6 +300,10 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				}
 				else
 				{
+					WaitForElement(By.Id(DatabaseSetupTypeSqlExpress));
+					RadioButtonSelect(By.Id(DatabaseSetupTypeSqlExpress));
+
+					WaitForElement(By.Id(DatabaseServer)).WaitTillVisible();
 					Clear(By.Id(DatabaseServer));
 					Type(By.Id(DatabaseServer), databaseServerName);
 

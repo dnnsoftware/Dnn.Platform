@@ -116,7 +116,8 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitForElement(By.XPath(DeleteCheckBox)).ScrollIntoView();
 			WaitForElement(By.XPath(DeleteCheckBox)).WaitTillEnabled(30);
-			WaitForElement(By.XPath(DeleteCheckBox)).Info();
+			//WaitForElement(By.XPath(DeleteCheckBox)).Info();
+			Thread.Sleep(100);
 			CheckBoxCheck(By.XPath(DeleteCheckBox));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Uninstall Package button :");

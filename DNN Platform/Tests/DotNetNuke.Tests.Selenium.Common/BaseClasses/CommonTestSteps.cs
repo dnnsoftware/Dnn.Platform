@@ -22,7 +22,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public BasePage OpenPage(string assyName, string pageClassName, string openMethod)
 		{
-			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Navigation To " + pageClassName + "'");
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Navigation To " + pageClassName + "'");
 
 			string fullAssyName = DNNSeleniumPrefix + assyName;
 			Type pageClassType = Type.GetType(fullAssyName + "." + pageClassName + ", " + fullAssyName);
@@ -43,7 +43,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public BaseOutsidePage OpenOutsidePage(string assyName, string pageClassName, string openMethod)
 		{
-			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Navigation To " + pageClassName + "'");
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Navigation To " + pageClassName + "'");
 
 			string fullAssyName = DNNSeleniumPrefix + assyName;
 			Type pageClassType = Type.GetType(fullAssyName + "." + pageClassName + ", " + fullAssyName);
@@ -76,6 +76,8 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public void CreateAdminAndLoginAsAdmin(string userName, string displayName, string email, string password)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Admin User and Login as Admin user'");
+
 			ManageUsersPage manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 			manageUsersPage.AddNewUser(userName, displayName, email, password);
@@ -87,6 +89,26 @@ namespace DNNSelenium.Common.BaseClasses
 
 			LoginPage loginPage = new LoginPage(_driver);
 			loginPage.LoginUsingLoginLink(userName, password);
+		}
+
+		public void VerifyLogs()
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Verify Logs on Host Settings page: '");
+
+			var loginPage = new LoginPage(_driver);
+			loginPage.LoginAsHost(_baseUrl);
+
+			HostSettingsPage hostSettingsPage = new HostSettingsPage(_driver);
+			hostSettingsPage.SetDictionary("en");
+			hostSettingsPage.OpenUsingUrl(_baseUrl);
+
+			hostSettingsPage.WaitAndClick(By.XPath(HostSettingsPage.LogsTab));
+			SlidingSelect.SelectByValue(_driver, By.XPath("//a[contains(@id, '" + HostSettingsPage.LogFilesDropDownArrow + "')]"),
+													By.XPath(HostSettingsPage.LogFilesDropDownList),
+													HostSettingsPage.OptionOne,
+													SlidingSelect.SelectByValueType.Contains);
+			hostSettingsPage.WaitForElement(By.XPath(HostSettingsPage.LogContent), 30);
+			Utilities.SoftAssert(() => StringAssert.DoesNotContain("error", hostSettingsPage.FindElement(By.XPath(HostSettingsPage.LogContent)).Text.ToLower(), "ERROR in the Log"));
 		}
 
 	}

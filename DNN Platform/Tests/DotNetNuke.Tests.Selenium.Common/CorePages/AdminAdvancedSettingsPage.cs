@@ -110,7 +110,7 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(ReviewLicenseScreenTitle));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Accept CheckBox: ");
-			WaitForElement(By.XPath(AcceptCheckBox)).WaitTillEnabled(30);
+			WaitForElement(By.XPath(AcceptCheckBox)).ScrollIntoView().WaitTillEnabled(30);
 			WaitForElement(By.XPath(AcceptCheckBox)).Info();
 			CheckBoxCheck(By.XPath(AcceptCheckBox));
 

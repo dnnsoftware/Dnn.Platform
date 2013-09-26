@@ -8,11 +8,16 @@ namespace DNNSelenium.Common.DemoPages
 	{
 		public OurProductsPage(IWebDriver driver) : base(driver) { }
 
-		public static string OurProductsUrl = "/OurProducts";
+		public static string OurProductsUrl = "/Our-Products";
 
-		public static string OurProductsLink = "//div[@id ='nav']//a[contains(@href, 'OurProducts')]";
+		public static string OurProductsLink = "//div[@id ='nav']//a[contains(@href, 'Our-Products')]";
 
 		public override string PageTitleLabel
+		{
+			get { return "Our Products"; }
+		}
+
+		public override string PageHeaderLabel
 		{
 			get { return "Our Products"; }
 		}

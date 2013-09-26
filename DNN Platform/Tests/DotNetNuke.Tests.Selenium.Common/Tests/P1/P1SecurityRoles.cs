@@ -48,6 +48,12 @@ namespace DNNSelenium.Common.Tests.P1
 			OpenMainPageAndLoginAsHost();
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
+
 		[Test]
 		public void Test001_AddSecurityRoleWithFees()
 		{

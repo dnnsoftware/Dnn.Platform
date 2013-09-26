@@ -31,6 +31,12 @@ namespace DNNSelenium.Common.Tests.BVT
 			OpenMainPageAndLoginAsHost();
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
+
 		public void VerifyQuickSearch(BasePage currentPage)
 		{
 			currentPage.WaitAndType(By.XPath(ControlPanelIDs.SearchBox), "home");

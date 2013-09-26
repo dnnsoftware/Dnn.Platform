@@ -39,6 +39,12 @@ namespace DNNSelenium.Common.Tests.P1
 			CreateAdminAndLoginAsAdmin("Admin", "Admin", "admin@mail.com", "dnnadmin");
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
+
 		[Test]
 		public void Test001_EditAdminExtension()
 		{

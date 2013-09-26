@@ -39,8 +39,22 @@ namespace DNNSelenium.Common.CorePages
 		{
 			GoToUrl(baseUrl);
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open '" + PageTitleLabel + "' page:");
-			WaitAndClick(By.XPath(ControlPanelIDs.RegisterLink));
-			WaitAndClick(By.XPath(UserAccountPage.MyAccountButton));
+
+			string selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
+
+			Trace.WriteLine(BasePage.TraceLevelElement + selector);
+
+			if (selector.EndsWith(ControlPanelIDs.AwesomeCycles))
+			{
+				WaitAndClick(By.XPath(ControlPanelIDs.RegisterLink));
+				WaitAndClick(By.XPath(UserAccountPage.MyAccountButton));
+			}
+			else
+			{
+				WaitAndClick(By.XPath(ControlPanelIDs.SocialUserLink));
+				WaitAndClick(By.XPath(ControlPanelIDs.SocialEditProfile));
+			}
+			
 		}
 
 		public void AddCity(string city)

@@ -26,6 +26,9 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public static string SocialUserMenu = "//ul[@class = 'userMenu']";
 		public static string SocialLogoutLink = "//a[@id = 'dnn_userLogin_logoffLink']";
+		public static string SocialMyProfileLink = "//a[@id = 'dnn_userLogin_viewProfileLink']";
+		public static string SocialEditProfile = "//a[@id = 'dnn_userLogin_editProfileLink']";
+		public static string SocialEditAccount = "//a[@id = 'dnn_userLogin_accountLink']";
 
 		public static string MessageLink = "dnn_dnnUser_messageLink";
 		public static string NotificationLink = "dnn_dnnUser_notificationLink";

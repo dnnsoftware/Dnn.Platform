@@ -127,7 +127,7 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.Id(IntroVideo), 60).WaitTillVisible(60);
 			WaitForElement(By.Id(WhatIsNew), 60).WaitTillVisible(60);
 
-			WaitForElement(By.Id(LetMeAtIn), 60).WaitTillEnabled().Click();
+			WaitForElement(By.Id(LetMeAtIn), 60).ScrollIntoView().WaitTillEnabled().Click();
 
 			WaitAndSwitchToWindow(60);
 
@@ -135,6 +135,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public void SetWebSiteLanguage(string language)
 		{
+			Trace.WriteLine(BasePage.TraceLevelPage + "Set Website Language:");
 			SlidingSelectByValue(By.Id(LanguageArrow), By.XPath(LanguageDropdown), SetLanguageOptionName(language));
 		}
 	}

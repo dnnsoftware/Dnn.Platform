@@ -41,5 +41,11 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			OpenMainPageAndLoginAsHost();
 		}
+
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
 	}
 }

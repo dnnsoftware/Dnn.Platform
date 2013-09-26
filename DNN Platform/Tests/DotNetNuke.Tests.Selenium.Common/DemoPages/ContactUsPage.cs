@@ -8,11 +8,16 @@ namespace DNNSelenium.Common.DemoPages
 	{
 		public ContactUsPage(IWebDriver driver) : base(driver) { }
 
-		public static string ContactUsUrl = "/ContactUs";
+		public static string ContactUsUrl = "/Contact-Us";
 
-		public static string ContactUsLink = "//div[@id ='nav']//a[contains(@href, 'ContactUs')]";
+		public static string ContactUsLink = "//div[@id ='nav']//a[contains(@href, 'Contact-Us')]";
 
 		public override string PageTitleLabel
+		{
+			get { return "Visit Us"; }
+		}
+
+		public override string PageHeaderLabel
 		{
 			get { return "Contact Us"; }
 		}

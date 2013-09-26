@@ -48,6 +48,12 @@ namespace DNNSelenium.Common.Tests.P1
 			manageRolesPage.AddNewSecurityRoleGroup(_assignedRoleGroupName);
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
+
 		[Test]
 		public void Test001_AddSecurityRoleGroup()
 		{

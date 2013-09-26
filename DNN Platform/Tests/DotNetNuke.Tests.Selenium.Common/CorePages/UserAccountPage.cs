@@ -17,7 +17,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public override string PageHeaderLabel
 		{
-			get { return "Activity Feed"; }
+			get { return ""; }
 		}
 
 		public static string EditProfileButton = "//div[@class='UserProfileControls']/ul/li/a[contains(text(), 'Edit Profile')]";

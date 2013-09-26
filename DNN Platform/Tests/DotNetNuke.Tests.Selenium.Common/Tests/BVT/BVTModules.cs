@@ -46,5 +46,10 @@ namespace DNNSelenium.Common.Tests.BVT
 			blankPage.AddNewPage(_pageName);
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
 	}
 }

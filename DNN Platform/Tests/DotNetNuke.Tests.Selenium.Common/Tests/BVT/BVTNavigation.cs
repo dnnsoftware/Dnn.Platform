@@ -33,6 +33,12 @@ namespace DNNSelenium.Common.Tests.BVT
 			OpenMainPageAndLoginAsHost();
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs();
+		}
+
 		public void VerifyStandardPageLayout(BasePage currentPage)
 		{
 			StringAssert.Contains(currentPage.PageTitleLabel.ToUpper(),
@@ -240,6 +246,16 @@ namespace DNNSelenium.Common.Tests.BVT
 		[TestCase("Common", "CorePages.UserAccountPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.UserAccountPage", "OpenUsingLink")]
 		[TestCase("Common", "CorePages.ManageUserProfilePage", "OpenUsingLink")]
+		[TestCase("Common", "DemoPages.AboutUsPage", "OpenUsingLink")]
+		[TestCase("Common", "DemoPages.AboutUsPage", "OpenUsingUrl")]
+		[TestCase("Common", "DemoPages.ContactUsPage", "OpenUsingLink")]
+		[TestCase("Common", "DemoPages.ContactUsPage", "OpenUsingUrl")]
+		[TestCase("Common", "DemoPages.HomePage", "OpenUsingLink")]
+		[TestCase("Common", "DemoPages.HomePage", "OpenUsingUrl")]
+		[TestCase("Common", "DemoPages.OurProductsPage", "OpenUsingLink")]
+		[TestCase("Common", "DemoPages.OurProductsPage", "OpenUsingUrl")]
+		//[TestCase("Common", "DemoPages.GettingStartedPage", "OpenUsingControlPanel")]
+		//[TestCase("Common", "DemoPages.GettingStartedPage", "OpenUsingUrl")]
 		public void NavigationToPage(string assyName, string pageClassName, string openMethod)
 		{
 			VerifyStandardPageLayout(OpenPage(assyName, pageClassName, openMethod));
@@ -297,16 +313,6 @@ namespace DNNSelenium.Common.Tests.BVT
 				                            "Copyright notice is not present or contains wrong text message"));
 
 			loginPage.DoLoginUsingLoginLink("host", "dnnhost");
-		}
-
-		[Test]
-		public void NavigationToMainPage()
-		{
-			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Navigation To Main Page'");
-
-			var mainPage = new MainPage(_driver);
-			mainPage.OpenUsingUrl(_baseUrl);
-			VerifyStandardPageLayout(mainPage);
 		}
 
 	}
