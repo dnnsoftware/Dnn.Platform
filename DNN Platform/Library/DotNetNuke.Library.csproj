@@ -533,6 +533,10 @@
     <Compile Include="Services\Social\Messaging\Frequency.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\DataService.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\IDataService.cs" />
+    <Compile Include="Services\Social\Subscriptions\Entities\Subscriptions.cs" />
+    <Compile Include="Services\Social\Subscriptions\Entities\SubscriptionType.cs" />
+    <Compile Include="Services\Social\Subscriptions\ISubscriptionTypeController.cs" />
+    <Compile Include="Services\Social\Subscriptions\SubscriptionTypeController.cs" />
     <Compile Include="Services\Subscriptions\Common\ObjectKey.cs" />
     <Compile Include="Services\Subscriptions\Common\SubscriptionsException.cs" />
     <Compile Include="Services\Subscriptions\Controllers\ISubscriptionController.cs" />
