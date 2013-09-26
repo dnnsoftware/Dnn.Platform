@@ -115,6 +115,8 @@
     <Compile Include="ComponentModel\Helpers\Service2Impl.cs" />
     <Compile Include="ComponentModel\SimpleContainerTests.cs" />
     <Compile Include="Controllers\ConfigurationSettingsComparer.cs" />
+    <Compile Include="Controllers\Messaging\Builders\SubscriptionTypeBuilder.cs" />
+    <Compile Include="Controllers\Messaging\SubscriptionTypeControllerTests.cs" />
     <Compile Include="Controllers\Portal\PortalControllerTests.cs" />
     <Compile Include="Controllers\Portal\PortalGroupControllerTests.cs" />
     <Compile Include="Controllers\Host\HostControllerTest.cs" />
