@@ -687,125 +687,6 @@ AS
 	END
 GO
 
-/** Core Messaging digest notifications **/
-/*****************************************/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
-	@SchedulerInstance UNIQUEIDENTIFIER ,
-	@BatchSize INT
-AS 
-	BEGIN
-		UPDATE  dbo.CoreMessaging_MessageRecipients
-		SET     EmailSchedulerInstance = @SchedulerInstance
-		WHERE   RecipientID IN (
-				SELECT TOP ( @BatchSize )
-						RecipientID 
-				FROM    dbo.vw_Subscriptions VS
-				WHERE   EmailSent = 0
-						AND SendToast = 0
-						AND [Read] = 0
-						AND Archived = 0
-						AND ( NotificationTypeID IS NULL
-							  AND ISNULL(MessageFrequency, 0) = 0
-							)
-						OR ( NotificationTypeID > 0
-							 AND ISNULL(NotifyFrequency, 2) = 0
-						   )
-						AND ( ( EmailSchedulerInstance IS NULL
-								AND EmailSentDate IS NULL
-							  )
-							  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
-							)
-				ORDER BY VS.CreatedOnDate DESC ,
-						UserID )
-
-		SELECT  *
-		FROM    dbo.CoreMessaging_MessageRecipients CMR
-				INNER JOIN dbo.CoreMessaging_Messages CMM ON CMR.MessageID = CMM.MessageID
-		WHERE   EmailSent = 0
-				AND EmailSentDate IS NULL
-				AND SendToast = 0
-				AND [Read] = 0
-				AND Archived = 0
-				AND ( EmailSchedulerInstance = @SchedulerInstance )
-		ORDER BY UserID ,
-				CMM.CreatedOnDate DESC	
-	END
-
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]
-	@Frequency INT ,
-	@SchedulerInstance UNIQUEIDENTIFIER ,
-	@BatchSize INT
-AS 
-	BEGIN
-		UPDATE  dbo.CoreMessaging_MessageRecipients
-		SET     EmailSchedulerInstance = @SchedulerInstance
-		WHERE   RecipientID IN (
-				SELECT 
-						RecipientID
-				FROM    dbo.vw_Subscriptions VS
-				WHERE UserID IN (
-							SELECT TOP ( @BatchSize  )
-									UserID
-							FROM    dbo.vw_Subscriptions VS
-							WHERE   EmailSent = 0
-									AND SendToast = 0
-									AND [Read] = 0
-									AND Archived = 0
-									AND ( NotificationTypeID IS NULL
-										  AND ISNULL(MessageFrequency, 0) = @Frequency
-										)
-									OR ( NotificationTypeID > 0
-										 AND ISNULL(NotifyFrequency, 2) = @Frequency
-									   )
-									AND ( ( EmailSchedulerInstance IS NULL
-											AND EmailSentDate IS NULL
-										  )
-										  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
-										)        
-							GROUP BY UserID
-							ORDER BY UserID      
-						)  
-						AND EmailSent = 0
-						AND SendToast = 0
-						AND [Read] = 0
-						AND Archived = 0
-						AND ( NotificationTypeID IS NULL
-							  AND ISNULL(MessageFrequency, 0) = @Frequency
-							)
-						OR ( NotificationTypeID > 0
-							 AND ISNULL(NotifyFrequency, 2) = @Frequency
-						   )
-						AND ( ( EmailSchedulerInstance IS NULL
-								AND EmailSentDate IS NULL
-							  )
-							  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
-							))
-
-		SELECT  *
-		FROM    dbo.CoreMessaging_MessageRecipients CMR
-				INNER JOIN dbo.CoreMessaging_Messages CMM ON CMR.MessageID = CMM.MessageID
-		WHERE   EmailSent = 0
-				AND EmailSentDate IS NULL
-				AND SendToast = 0
-				AND [Read] = 0
-				AND Archived = 0
-				AND ( EmailSchedulerInstance = @SchedulerInstance )
-		ORDER BY UserID ,
-				CMM.CreatedOnDate DESC                      
-	END
-
-GO
-
 /** DNN-3498 - Support side by side INstallation **/
 /**************************************************/
 
@@ -986,6 +867,164 @@ GO
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'LIBRARY_UPDATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 GO
 
+/** CONTENT-1801 - Subscription > Remove Schedule Subscription and use instead Messaging Dispach **/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}CoreMessaging_UserPreferences') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}CoreMessaging_UserPreferences]
+	(
+		[UserPreferenceId] [int] IDENTITY(1,1) NOT NULL,		
+		[PortalId] [int] NOT NULL,
+		[UserId] [int] NOT NULL,
+		[MessagesEmailFrequency] [int] NOT NULL,
+		[NotificationsEmailFrequency] [int] NOT NULL,
+	)
+
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences
+			WITH NOCHECK
+	ADD CONSTRAINT PK_{objectQualifier}CoreMessaging_UserPreferences PRIMARY KEY CLUSTERED ( [UserPreferenceId] )
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}vw_MessagesForDispatch') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}{objectQualifier}vw_MessagesForDispatch
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_MessagesForDispatch]
+AS
+	SELECT CMR.RecipientID
+	,CMR.MessageID
+	,CMR.UserID
+	,CMR.[Read]
+	,CMR.Archived
+	,CMR.EmailSent
+	,CMR.EmailSentDate
+	,CMR.EmailSchedulerInstance
+	,CMR.CreatedByUserID
+	,CMR.CreatedOnDate
+	,CMR.LastModifiedByUserID
+	,CMR.LastModifiedOnDate
+	,CMR.SendToast
+	,CM.NotificationTypeID	
+    ,CASE 
+		WHEN CM.NotificationTypeID IS NULL		
+		THEN				
+			ISNULL ((SELECT UP.[MessagesEmailFrequency] AS Expr1
+					FROM          {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences UP
+					WHERE      (UP.UserId = CMR.UserID) AND (UP.PortalId = CM.PortalID)), 0)
+		ELSE			
+			ISNULL ((SELECT UP.[NotificationsEmailFrequency] AS Expr1
+					FROM          {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences UP
+					WHERE      (UP.UserId = CMR.UserID) AND (UP.PortalId = CM.PortalID)), 2)
+	END EmailFrequency
+FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients AS CMR 
+	INNER JOIN
+    {databaseOwner}{objectQualifier}CoreMessaging_Messages AS CM 
+		ON CMR.MessageID = CM.MessageID
+GO
+
+/** Core Messaging digest notifications **/
+/*****************************************/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
+	@SchedulerInstance UNIQUEIDENTIFIER ,
+	@BatchSize INT
+AS 
+	BEGIN
+		UPDATE  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+		SET     EmailSchedulerInstance = @SchedulerInstance
+		WHERE   RecipientID IN (
+				SELECT TOP ( @BatchSize )
+						RecipientID 
+				FROM    {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] MFD
+				WHERE   EmailSent = 0
+						AND SendToast = 0
+						AND [Read] = 0
+						AND Archived = 0
+						AND EmailFrequency = 0
+						AND ( ( EmailSchedulerInstance IS NULL
+								AND EmailSentDate IS NULL
+							  )
+							  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+							)
+				ORDER BY MFD.CreatedOnDate DESC ,
+						UserID )
+
+		SELECT  *
+		FROM    {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] CMR
+				INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] CMM ON CMR.MessageID = CMM.MessageID
+		WHERE   EmailSent = 0
+				AND EmailSentDate IS NULL
+				AND SendToast = 0
+				AND [Read] = 0
+				AND Archived = 0
+				AND ( EmailSchedulerInstance = @SchedulerInstance )
+		ORDER BY UserID ,
+				CMM.CreatedOnDate DESC	
+	END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]
+	@Frequency INT ,
+	@SchedulerInstance UNIQUEIDENTIFIER ,
+	@BatchSize INT
+AS 
+	BEGIN
+		UPDATE  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+		SET     EmailSchedulerInstance = @SchedulerInstance
+		WHERE   RecipientID IN (
+				SELECT 
+						RecipientID
+				FROM    {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] MFD
+				WHERE UserID IN (
+							SELECT TOP ( @BatchSize  )
+									UserID
+							FROM    {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] MFD
+							WHERE   EmailSent = 0
+									AND SendToast = 0
+									AND [Read] = 0
+									AND Archived = 0
+									AND EmailFrequency = @Frequency
+									AND ( ( EmailSchedulerInstance IS NULL
+											AND EmailSentDate IS NULL
+										  )
+										  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+										)        
+							GROUP BY UserID
+							ORDER BY UserID      
+						)  
+						AND EmailSent = 0
+						AND SendToast = 0
+						AND [Read] = 0
+						AND Archived = 0
+						AND EmailFrequency = @Frequency
+						AND ( ( EmailSchedulerInstance IS NULL
+								AND EmailSentDate IS NULL
+							  )
+							  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+							))
+
+		SELECT  *
+		FROM    {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] CMR
+				INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] CMM ON CMR.MessageID = CMM.MessageID
+		WHERE   EmailSent = 0
+				AND EmailSentDate IS NULL
+				AND SendToast = 0
+				AND [Read] = 0
+				AND Archived = 0
+				AND ( EmailSchedulerInstance = @SchedulerInstance )
+		ORDER BY UserID ,
+				CMM.CreatedOnDate DESC                      
+	END
+
+GO
 
 /** Subscription **/
 /******************/
