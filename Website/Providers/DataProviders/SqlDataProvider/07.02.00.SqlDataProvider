@@ -1014,6 +1014,7 @@ BEGIN
 		[PortalId] [int] NULL,
 		[SubscriptionTypeId] [int] NOT NULL,
 		[ObjectKey] [nvarchar](255) NULL,
+		[Description] [nvarchar] (255) NOT NULL,
 		[CreatedOnDate] [datetime] NOT NULL,
 		[ModuleId] [int] NULL,
 		[TabId] [int] NULL,
@@ -1120,15 +1121,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscripti
 	@PortalId int
 AS
 BEGIN
-	SELECT
-	   [SubscriptionId],
-	   [UserId],
-	   [PortalId],
-	   [SubscriptionTypeId],
-	   [ObjectKey],
-	   [CreatedOnDate],
-	   [ModuleId],
-	   [TabId]
+	SELECT *
 	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
 	WHERE [PortalId] = @PortalId
 END
@@ -1144,6 +1137,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
 	@PortalId INT ,
 	@SubscriptionTypeId INT ,
 	@ObjectKey NVARCHAR(255) ,
+	@Description NVARCHAR(255),
 	@ModuleId INT ,
 	@TabId INT
 AS 
@@ -1159,6 +1153,7 @@ AS
                                                 AND PortalId = @PortalId
                                                 AND SubscriptionTypeId = @SubscriptionTypeId
                                                 AND ObjectKey = @ObjectKey
+												AND Description = @Description
                                                 AND ModuleId = @ModuleId
 												AND TabId = @TabId
 										)
@@ -1177,6 +1172,7 @@ AS
 						  PortalId ,
 						  SubscriptionTypeId ,
 						  ObjectKey ,
+						  Description,
 						  CreatedOnDate ,
 						  ModuleId ,
 						  TabId
@@ -1185,6 +1181,7 @@ AS
 						  @PortalId ,
 						  @SubscriptionTypeId ,
 						  @ObjectKey ,
+						  @Description,
 						  GETUTCDATE() ,
 						  @ModuleId ,
 						  @TabId
@@ -1199,6 +1196,7 @@ AS
 						PortalId = @PortalId,
 						SubscriptionTypeId = @SubscriptionTypeId,
 						ObjectKey = @ObjectKey,
+						Description = @Description,
 						ModuleId = @ModuleId,
 						TabId = @TabId
 				WHERE   SubscriptionId = @SubscriptionId
