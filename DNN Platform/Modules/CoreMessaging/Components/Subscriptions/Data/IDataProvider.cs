@@ -19,6 +19,5 @@ namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Data
         /// <returns></returns>
         IDataReader GetUserContentSubscriptions(int userId, int portalId, int pageIndex, int pageSize);
 
-        IDataReader GetUserInboxSubscriptions(int userId, int portalId);
     }
 }

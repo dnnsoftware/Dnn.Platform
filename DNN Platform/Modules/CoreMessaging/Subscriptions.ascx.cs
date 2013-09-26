@@ -15,9 +15,11 @@ using System.Web.UI;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Common;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Subscriptions.Controllers;
 using DotNetNuke.Services.Subscriptions.Entities;
 using DotNetNuke.UI.Modules;
@@ -110,41 +112,18 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 		/// values that are automatically retrieved by Social Library such as portalId and moduleId.
 		/// </summary>
 		private Hashtable GetViewSettings()
-		{
-            var colInboxSubs = SubscriptionController.Instance.GetUserInboxSubscriptions(ModuleContext.PortalSettings.UserId, ModuleConfiguration.OwnerPortalID);
+		{            
+		    var userPreference = new UserPreferencesController().GetUserPreference(
+                                                                    UserController.GetUserById(ModuleConfiguration.OwnerPortalID, ModuleContext.PortalSettings.UserId));
             var notifyFreq = 2;
             var msgFreq = 0;
-            var notifySubId = -1;
-            var msgSubId = -1;
-
-            if (colInboxSubs.Count > 0)
-            {
-                foreach (var i in colInboxSubs)
-                {
-                    switch (i.FriendlyName)
-                    {
-                        case "Notifications":
-                            notifyFreq = i.Frequency;
-                            notifySubId = i.SubscriberId;
-                            break;
-                        case "Messages":
-                            msgFreq = i.Frequency;
-                            msgSubId = i.SubscriberId;
-                            break;
-                    }
-                }
-            }
-
+            
 			return new Hashtable
 			{
 				{"moduleScope", string.Format("#{0}", ScopeWrapper.ClientID)},
 				{"pageSize", 25},
-                {"notifySubscriberId", notifySubId},
-                {"msgSubscriberId", msgSubId},
-                {"notifyFrequency", notifyFreq},
-                {"msgFrequency", msgFreq},
-                {"notifySubTypeId", GetSubscriptionType("Notifications").SubscriptionTypeId},
-                {"msgSubTypeId", GetSubscriptionType("Messages").SubscriptionTypeId}
+                {"notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency: notifyFreq},
+                {"msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency: msgFreq}                
 			};
 		}
 

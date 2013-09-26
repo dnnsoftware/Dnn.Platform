@@ -37,12 +37,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Controllers
         public List<Subscriber> GetUserContentSubscriptions(int userId, int portalId, int pageIndex, int pageSize)
         {
             return CBO.FillCollection<Subscriber>(_dataProvider.GetUserContentSubscriptions(userId, portalId, pageIndex, pageSize));
-        }
-
-        public List<Subscriber> GetUserInboxSubscriptions(int userId, int portalId)
-        {
-            return CBO.FillCollection<Subscriber>(_dataProvider.GetUserInboxSubscriptions(userId, portalId));
-        }
+        }      
 
         #endregion
     }

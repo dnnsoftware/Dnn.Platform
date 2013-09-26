@@ -60,10 +60,6 @@
         
         this.notifyFrequency = ko.observable(settings.notifyFrequency);
         this.msgFrequency = ko.observable(settings.msgFrequency);
-        this.notifySubId = ko.observable(settings.notifySubscriberId);
-        this.msgSubId = ko.observable(settings.msgSubscriberId);
-        this.notifySubTypeId = ko.observable(settings.notifySubTypeId);
-        this.msgSubTypeId = ko.observable(settings.msgSubTypeId);
         
         this.totalResults = ko.dependentObservable(
             function () {
@@ -142,17 +138,9 @@
             };
 
             var success = function (model) {
-            	for (var index in model) {
-            		var ac = model[index];
-		            switch(ac.subscriberId) {
-		            	case that.msgSubId():
-		            		that.messageFrequency = ac.frequency;
-		            		break;
-		            	case that.notifySubId():
-		            		that.notificationFrequency = ac.frequency;
-		            		break;
-		            }
-	            }
+            	
+                that.messageFrequency = model.messagesEmailFrequency;
+                that.notificationFrequency = model.notificationsEmailFrequency;
 
                 $('#divUpdated').show();
                 $("#divUpdated").delay(1800).hide(400);
@@ -172,13 +160,9 @@
 
             startSearch();
 
-            var params = {
-                NotifySubscriberId: that.notifySubId(),
-                MsgSubscriberId: that.msgSubId(),
+            var params = {                
                 NotifyFreq: $('#ddlNotify').val(),
-                MsgFreq: $('#ddlMsg').val(),
-                NotiySubscriptionTypeId: that.notifySubTypeId(),
-                MsgSubscriptionTypeId: that.msgSubTypeId()
+                MsgFreq: $('#ddlMsg').val() //,                
             };
 
             that.requestService('Subscriptions/UpdateSystemSubscription', 'post', params, success, failure);
@@ -214,11 +198,7 @@
         moduleId: -1,
         portalId: 0,
         pageSize: 25,
-        notifySubscriberId: -1,
-        msgSubscriberId: -1,
-        notifyFrequency: 0,
-        msgFrequency: 1,
-        NotifySubTypeId: 1,
-        MsgSubTypeId: 2
+        notifyFrequency: 2,
+        msgFrequency: 0        
     };
 })(window.jQuery);

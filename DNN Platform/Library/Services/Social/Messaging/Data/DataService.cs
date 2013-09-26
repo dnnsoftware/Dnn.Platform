@@ -303,8 +303,6 @@ namespace DotNetNuke.Services.Social.Messaging.Data
 
         #region User Preferences
 
-        //TODO Create SPROC for User Preferences
-
         public IDataReader GetUserPreference(int portalId, int userId)
         {
             return _provider.ExecuteReader("CoreMessaging_GetUserPreference", portalId, userId);

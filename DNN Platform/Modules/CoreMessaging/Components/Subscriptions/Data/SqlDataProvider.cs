@@ -33,11 +33,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Data
         public IDataReader GetUserContentSubscriptions(int userId, int portalId, int pageIndex, int pageSize)
         {
             return _dataProvider.ExecuteReader("SubscriptionMgmt_GetUserSubs", userId, portalId, pageIndex, pageSize);
-        }
-
-        public IDataReader GetUserInboxSubscriptions(int userId, int portalId)
-        {
-            return _dataProvider.ExecuteReader("SubscriptionMgmt_GetUserInboxPref", userId, portalId);
-        }
+        }     
     }
 }

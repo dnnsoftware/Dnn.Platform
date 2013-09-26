@@ -17,6 +17,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Common;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Subscriptions.Controllers;
 using DotNetNuke.Services.Subscriptions.Entities;
 using DotNetNuke.Web.Api;
@@ -76,36 +77,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         public HttpResponseMessage UpdateSystemSubscription(InboxSubs post)
         {
             try
-            {
-                var sub = new Subscriber
+            {               
+                var userPreferencesController = new UserPreferencesController();
+                var userPreference = new UserPreference
                     {
-                        SubscriptionTypeId = post.NotiySubscriptionTypeId,
-                        UserId = UserInfo.UserID,
                         PortalId = UserInfo.PortalID,
-                        Frequency = (Frequency) post.NotifyFreq,
-                        SubscriberId = post.NotifySubscriberId,
-                        GroupId = Null.NullInteger,
-                        ObjectKey = Null.NullString,
-                        ModuleId = Null.NullInteger,
-                        ContentItemId = Null.NullInteger
-                    };
-                SubscriptionController.Instance.Subscribe(sub);
-
-                sub = new Subscriber
-                    {
-                        SubscriptionTypeId = post.MsgSubscriptionTypeId,
                         UserId = UserInfo.UserID,
-                        PortalId = UserInfo.PortalID,
-                        Frequency = (Frequency) post.MsgFreq,
-                        SubscriberId = post.MsgSubscriberId,
-                        GroupId = Null.NullInteger,
-                        ObjectKey = Null.NullString,
-                        ModuleId = Null.NullInteger,
-                        ContentItemId = Null.NullInteger
+                        MessagesEmailFrequency = (DotNetNuke.Services.Social.Messaging.Frequency) post.MsgFreq,
+                        NotificationsEmailFrequency = (DotNetNuke.Services.Social.Messaging.Frequency) post.NotifyFreq
                     };
-                SubscriptionController.Instance.Subscribe(sub);
-
-                return Request.CreateResponse(HttpStatusCode.OK, Components.Subscriptions.Controllers.SubscriptionController.Instance.GetUserInboxSubscriptions(PortalSettings.UserId, ActiveModule.OwnerPortalID));
+                userPreferencesController.SetUserPreference(userPreference);
+                
+                return Request.CreateResponse(HttpStatusCode.OK, userPreferencesController.GetUserPreference(UserInfo));
             }
             catch (Exception ex)
             {
@@ -174,23 +157,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
 		public class InboxSubs
         {
-            [DataMember(Name = "notifySubscriberId")]
-            public int NotifySubscriberId { get; set; }
-
-            [DataMember(Name = "msgSubscriberId")]
-            public int MsgSubscriberId { get; set; }
-
             [DataMember(Name = "notifyFreq")]
             public int NotifyFreq { get; set; }
 
             [DataMember(Name = "msgFreq")]
             public int MsgFreq { get; set; }
-
-            [DataMember(Name = "NotifySubscriptionTypeId")]
-            public int NotiySubscriptionTypeId { get; set; }
-
-            [DataMember(Name = "MsgSubscriptionTypeId")]
-            public int MsgSubscriptionTypeId { get; set; }
+            
 		}
 
 		#endregion

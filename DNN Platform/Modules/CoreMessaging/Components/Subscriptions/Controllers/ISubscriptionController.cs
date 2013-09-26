@@ -10,7 +10,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Controllers
 {
     public interface ISubscriptionController
     {
-        List<Subscriber> GetUserContentSubscriptions(int userId, int portalId, int pageIndex, int pageSize);
-        List<Subscriber> GetUserInboxSubscriptions(int userId, int portalId);
+        List<Subscriber> GetUserContentSubscriptions(int userId, int portalId, int pageIndex, int pageSize);        
     }
 }
