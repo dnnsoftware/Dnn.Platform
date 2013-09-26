@@ -36,23 +36,16 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	09/02/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DependencyFactory
     {
-		#region "Public Shared Methods"
+		#region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetDependency method instantiates (and returns) the relevant Dependency
         /// </summary>
         /// <param name="dependencyNav">The manifest (XPathNavigator) for the dependency</param>
-        /// <history>
-        /// 	[cnurse]	09/02/2007  created
-        ///     [bdukes]    03/04/2009  added case-insensitivity to type attribute, added InvalidDependency for dependencies that can't be created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static IDependency GetDependency(XPathNavigator dependencyNav)
         {
@@ -66,6 +59,9 @@ namespace DotNetNuke.Services.Installer.Dependencies
                 case "package":
                     dependency = new PackageDependency();
                     break;
+		case "managedPackage":
+		    dependency = new ManagedPackageDependency();
+		    break;
                 case "permission":
                     dependency = new PermissionsDependency();
                     break;

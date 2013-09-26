@@ -603,11 +603,20 @@ namespace DotNetNuke.Services.Installer.Installers
             //Parse the Dependencies
             foreach (XPathNavigator dependencyNav in manifestNav.CreateNavigator().Select("dependencies/dependency"))
             {
-		IDependency dependency = DependencyFactory.GetDependency(dependencyNav);
-                if (!dependency.IsValid)
+			var dependency = DependencyFactory.GetDependency(dependencyNav);
+		var packageDependecy = dependency as IManagedPackageDependency;
+
+		if (packageDependecy == null)
+		{
+		    if (!dependency.IsValid)
+		    {
+			Log.AddFailure(dependency.ErrorMessage);
+			return;
+		    }
+		}
+		else
                 {
-                    Log.AddFailure(dependency.ErrorMessage);
-                    return;
+		    Package.Dependencies.Add(packageDependecy.PackageDependency);
                 }
             }
 

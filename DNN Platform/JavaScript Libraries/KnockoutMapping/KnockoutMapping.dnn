@@ -14,6 +14,9 @@
       <license src="Knockout Mapping (MIT).txt" />
       <releaseNotes src="releaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
+      <depenedencies>
+	<dependency type="managedPackage" version="2.2.1">Knockout</dependency>
+      </depenedencies>
       <components>
         <component type="JavaScript_Library">
           <javaScriptLibrary>

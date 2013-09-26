@@ -488,10 +488,13 @@
     <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlersContainer.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
+    <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
+    <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptLibraryInstaller.cs" />
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
+    <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
     <Compile Include="Services\Search\Controllers\ModuleResultController.cs" />

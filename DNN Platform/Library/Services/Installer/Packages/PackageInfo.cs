@@ -64,7 +64,10 @@ namespace DotNetNuke.Services.Installer.Packages
             Version = new Version(0, 0, 0);
             IsValid = true;
             InstalledVersion = new Version(0, 0, 0);
+	    Dependencies = new List<PackageDependencyInfo>();
         }
+
+	public IList<PackageDependencyInfo> Dependencies { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

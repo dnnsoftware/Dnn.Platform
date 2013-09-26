@@ -95,6 +95,11 @@ namespace DotNetNuke.Services.Installer.Packages
                                                 package.FolderName,
                                                 package.IconFile);
 
+	    foreach (var dependency in package.Dependencies)
+	    {
+		SavePackageDependency(dependency);
+	    }
+
             AddLog(package, EventLogController.EventLogType.PACKAGE_CREATED);
 
             ClearCache(package.PortalID);
@@ -139,10 +144,22 @@ namespace DotNetNuke.Services.Installer.Packages
                                    package.FolderName,
                                    package.IconFile);
 
+	    foreach (var dependency in package.Dependencies)
+	    {
+		SavePackageDependency(dependency);
+	    }
+
             AddLog(package, EventLogController.EventLogType.PACKAGE_UPDATED);
 
             ClearCache(package.PortalID);
         }
+
+	private static void SavePackageDependency(PackageDependencyInfo dependency)
+	{
+	    dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
+					   dependency.Version.ToString());
+	}
+
         #endregion
 
         #region IPackageController Implementation
