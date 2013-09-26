@@ -94,5 +94,12 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         void MarkMessageAsSent(int messageId, int recipientId);
 
         #endregion
+
+        #region User Preferences
+
+        IDataReader GetUserPreference(int portalId, int userId);
+        void SetUserPreference(int portalId, int userId, int messagesEmailFrequency, int notificationsEmailFrequency);
+
+        #endregion
     }
 }

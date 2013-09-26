@@ -300,5 +300,21 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         }
 
         #endregion
+
+        #region User Preferences
+
+        //TODO Create SPROC for User Preferences
+
+        public IDataReader GetUserPreference(int portalId, int userId)
+        {
+            return _provider.ExecuteReader("CoreMessaging_GetUserPreference", portalId, userId);
+        }
+
+        public void SetUserPreference(int portalId, int userId, int messagesEmailFrequency, int notificationsEmailFrequency)
+        {
+            _provider.ExecuteNonQuery("CoreMessaging_SetUserPreference", portalId, userId, messagesEmailFrequency, notificationsEmailFrequency);
+        }
+
+        #endregion
     }
 }
