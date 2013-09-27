@@ -19,28 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using DotNetNuke.Services.FileSystem.EventArgs;
-
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Services.FileSystem.EventArgs
 {
-    public interface IFileEventHandlers
+    public class FolderAddedEventArgs : FolderChangedEventArgs
     {
-        void FileManager_FileDeleted(object sender, FileChangedEventArgs args);
-
-        void FileManager_FileRenamed(object sender, FileRenamedEventArgs args);
-
-        void FileManager_FileMoved(object sender, FileMovedEventArgs args);
-
-        void FileManager_FileAdded(object sender, FileAddedEventArgs args);
-
-        void FileManager_FileOverwritten(object sender, FileChangedEventArgs args);
-
-        void FolderManager_FolderAdded(object sender, FolderAddedEventArgs args);
-
-        void FolderManager_FolderMoved(object sender, FolderMovedEventArgs args);
-
-        void FolderManager_FolderRenamed(object sender, FolderRenamedEventArgs args);
-
-        void FolderManager_FolderDeleted(object sender, FolderChangedEventArgs args);
+        public IFolderInfo ParentFolderInfo { get; set; }
     }
 }

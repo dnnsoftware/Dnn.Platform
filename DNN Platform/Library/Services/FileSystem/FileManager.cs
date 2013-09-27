@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.FileSystem
         private event EventHandler<FileRenamedEventArgs> FileRenamed;
         private event EventHandler<FileMovedEventArgs> FileMoved;
         private event EventHandler<FileChangedEventArgs> FileOverwritten;
-        private event EventHandler<FileChangedEventArgs> FileAdded; 
+        private event EventHandler<FileAddedEventArgs> FileAdded; 
         #endregion
 
         #region Properties
@@ -224,14 +224,15 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void OnFileAdded(IFileInfo fileInfo, int userId)
+        private void OnFileAdded(IFileInfo fileInfo, IFolderInfo folderInfo, int userId)
         {
             if (FileAdded != null)
             {
-                FileAdded(this, new FileChangedEventArgs
+                FileAdded(this, new FileAddedEventArgs
                 {
                     FileInfo = fileInfo,
-                    UserId = userId
+                    UserId = userId,
+                    FolderInfo = folderInfo
                 });
             }
         }
@@ -506,7 +507,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 else
                 {
-                    OnFileAdded(addedFile, createdByUserID);
+                    OnFileAdded(addedFile, folder, createdByUserID);
                 }
 
                 return addedFile;
@@ -584,7 +585,7 @@ namespace DotNetNuke.Services.FileSystem
                 var copiedFile = GetFile(fileId, true);
 
                 // Notify added file event
-                OnFileAdded(copiedFile, GetCurrentUserID());
+                OnFileAdded(copiedFile, destinationFolder, GetCurrentUserID());
 
                 return copiedFile;
             }
