@@ -244,6 +244,11 @@ namespace DotNetNuke.Services.Installer.Packages
                                                             c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
         }
 
+        public IList<PackageDependencyInfo> GetPackageDependencies(int packageId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Static Helper Methods

@@ -42,6 +42,8 @@ namespace DotNetNuke.Services.Installer.Packages
     [Serializable]
     public class PackageInfo : BaseEntityInfo
     {
+        private IList<PackageDependencyInfo> _dependencies;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new InstallPackage instance as defined by the
@@ -64,11 +66,18 @@ namespace DotNetNuke.Services.Installer.Packages
             Version = new Version(0, 0, 0);
             IsValid = true;
             InstalledVersion = new Version(0, 0, 0);
-    	    Dependencies = new List<PackageDependencyInfo>();
         }
 
         [XmlIgnore]
-        public IList<PackageDependencyInfo> Dependencies { get; private set; }
+        public IList<PackageDependencyInfo> Dependencies 
+        { 
+            get
+            {
+                return _dependencies ?? (_dependencies = (PackageID == -1) 
+                                        ? new List<PackageDependencyInfo>() 
+                                        : PackageController.Instance.GetPackageDependencies(PackageID));
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
