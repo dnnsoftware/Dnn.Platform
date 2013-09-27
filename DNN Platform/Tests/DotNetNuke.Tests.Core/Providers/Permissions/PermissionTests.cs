@@ -91,9 +91,12 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
         [Test]
         public void ModulePermissionController_HasModuleAccess_SecurityLevelView_Is_False_For_User_Without_View_Role()
         {
-            CreateUser(false, new List<string>() { "SomeRoleName" });
-            var module = new ModuleInfo();
-            Assert.IsFalse(ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Host, "", module));
+            CreateUser(false, new List<string>() { "RoleWithoutViewPermission" });
+            var modulePermissionCollection = new ModulePermissionCollection();
+            AddModulePermission(modulePermissionCollection, "View", Convert.ToInt32(SetupPortalSettings().AdministratorRoleId));
+            var module = new ModuleInfo {InheritViewPermissions = false, ModulePermissions = modulePermissionCollection};
+
+            Assert.IsFalse(ModulePermissionController.HasModuleAccess(SecurityAccessLevel.View, "", module));
         }
 
         private static PortalSettings SetupPortalSettings()
@@ -121,5 +124,14 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             HttpContextSource.RegisterInstance(httpContextBase);
             HttpContext.Current.Items["UserInfo"] = user;
         }
+
+        private static void AddModulePermission(ModulePermissionCollection permissions, string key, int roleId)
+        {
+            var permissionController = new PermissionController();
+            var permission = (PermissionInfo)permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", key)[0];
+            var modulePermission = new ModulePermissionInfo { PermissionID = permission.PermissionID, RoleID = roleId, AllowAccess = true };
+            permissions.Add(modulePermission);
+        }
+
     }
 }
