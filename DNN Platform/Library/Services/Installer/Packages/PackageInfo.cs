@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Installer.Packages
             {
                 return _dependencies ?? (_dependencies = (PackageID == -1) 
                                         ? new List<PackageDependencyInfo>() 
-                                        : PackageController.Instance.GetPackageDependencies(PackageID));
+                                        : PackageController.Instance.GetPackageDependencies(p => p.PackageId == PackageID));
             }
         }
 
