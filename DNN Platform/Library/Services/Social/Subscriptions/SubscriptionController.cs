@@ -50,8 +50,8 @@ namespace DotNetNuke.Services.Social.Subscriptions
         public IEnumerable<Subscription> GetUserSubscriptions(int userId, int portalId, int subscriptionTypeId = -1)
         {
             var subscriptions = CBO.FillCollection<Subscription>(dataService.GetSubscriptionsByUser(
-                userId,
                 portalId,
+                userId,
                 subscriptionTypeId));
 
             return subscriptions.Where(s => subscriptionSecurityController.HasPermission(s));
@@ -70,8 +70,8 @@ namespace DotNetNuke.Services.Social.Subscriptions
         public bool IsSubscribed(int userId, int portalId, int subscriptionTypeId, string objectKey, int moduleId = -1, int tabId = -1)
         {
             var subscription = CBO.FillObject<Subscription>(dataService.IsSubscribed(
-                userId,
                 portalId,
+                userId,
                 subscriptionTypeId,
                 objectKey,
                 moduleId,
@@ -103,8 +103,8 @@ namespace DotNetNuke.Services.Social.Subscriptions
             Requires.NotNull("subscription", subscription);
 
             var subscriptionToDelete = CBO.FillObject<Subscription>(dataService.IsSubscribed(
-                subscription.UserId,
                 subscription.PortalId,
+                subscription.UserId,
                 subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 subscription.ModuleId,

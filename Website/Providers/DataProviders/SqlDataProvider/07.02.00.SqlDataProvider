@@ -1219,9 +1219,9 @@ BEGIN
 	SELECT *
 	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
 	WHERE 
-			PortalId = @PortalId
-		AND UserId = @UserId
-		AND (@SubscriptionTypeID Is NULL OR SubscriptionTypeID = @SubscriptionTypeID)
+			ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
+			AND UserId = @UserId
+			AND (@SubscriptionTypeID IS NULL OR SubscriptionTypeID = @SubscriptionTypeID)
 END
 GO
 
@@ -1238,7 +1238,7 @@ BEGIN
 	SELECT *
 	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
 	WHERE 
-			PortalId = @PortalId
+			ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
 		AND SubscriptionTypeID = @SubscriptionTypeID
 		AND ObjectKey = @ObjectKey
 END
@@ -1258,28 +1258,55 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
 	@TabId INT
 AS 
 	BEGIN
-		INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
-				( UserId ,
-					PortalId ,
-					SubscriptionTypeId ,
-					ObjectKey ,
-					Description,
-					CreatedOnDate ,
-					ModuleId ,
-					TabId
-				)
-		VALUES  ( @UserId ,
-					@PortalId ,
-					@SubscriptionTypeId ,
-					@ObjectKey ,
-					@Description,
-					GETUTCDATE() ,
-					@ModuleId ,
-					@TabId
-				)
+        DECLARE @SubscriptionId INT = NULL   
+        
+        SELECT  TOP 1 @SubscriptionId = SubscriptionId
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		WHERE   UserId = @UserId
+				AND ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
+				AND SubscriptionTypeId = @SubscriptionTypeID
+				AND ObjectKey = @ObjectKey
+				AND ISNULL(@ModuleId, -1) = ISNULL(ModuleId, -1)				
+				AND ISNULL(@TabId, -1) = ISNULL(TabId, -1)
+		      
+        IF (@SubscriptionId IS NULL) 
+			BEGIN
+				INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+						( UserId ,
+							PortalId ,
+							SubscriptionTypeId ,
+							ObjectKey ,
+							Description,
+							CreatedOnDate ,
+							ModuleId ,
+							TabId
+						)
+				VALUES  ( @UserId ,
+							@PortalId ,
+							@SubscriptionTypeId ,
+							@ObjectKey ,
+							@Description,
+							GETUTCDATE() ,
+							@ModuleId ,
+							@TabId
+						)
 
-		SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
-			
+				SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
+			END
+		ELSE 
+			BEGIN
+				UPDATE  {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+				SET     UserId = @UserId ,
+						PortalId = @PortalId ,
+						SubscriptionTypeId = @SubscriptionTypeId ,
+						ObjectKey = @ObjectKey ,
+						Description = @Description ,
+						ModuleId = @ModuleId ,
+						TabId = @TabId
+				WHERE   SubscriptionId = @SubscriptionId
+
+				SELECT  @SubscriptionId AS [SubscriptionId]
+			END
 	END
 GO
 
@@ -1296,14 +1323,14 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
 	@TabId INT
 AS 
 	BEGIN
-		SELECT  *
+		SELECT  TOP 1 *
 		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
 		WHERE   UserId = @UserId
-				AND PortalId = @PortalId
+				AND ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
 				AND SubscriptionTypeId = @SubscriptionTypeID
 				AND ObjectKey = @ObjectKey
-				AND ModuleId = @ModuleId
-				AND TabID = @TabId
+				AND ISNULL(@ModuleId, -1) = ISNULL(ModuleId, -1)				
+				AND ISNULL(@TabId, -1) = ISNULL(TabId, -1)
 	END
 GO
 

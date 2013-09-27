@@ -63,11 +63,11 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         /// <summary>
         /// Returns the User Subscriptions
         /// </summary>
-        /// <param name="userId">User Id</param>
         /// <param name="portalId">Portal Id</param>
+        /// <param name="userId">User Id</param>
         /// <param name="subscriptionTypeId">Subscription Type Id</param>
         /// <returns>Collection of Subscriptions</returns>
-        IDataReader GetSubscriptionsByUser(int userId, int portalId, int subscriptionTypeId);
+        IDataReader GetSubscriptionsByUser(int portalId, int userId, int subscriptionTypeId);
 
         /// <summary>
         /// Returns the Content Subscriptions

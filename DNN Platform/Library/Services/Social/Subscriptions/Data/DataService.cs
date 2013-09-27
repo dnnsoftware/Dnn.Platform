@@ -73,9 +73,9 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
                 provider.GetNull(tabId));
         }
 
-        public IDataReader GetSubscriptionsByUser(int userId, int portalId, int subscriptionTypeId)
+        public IDataReader GetSubscriptionsByUser(int portalId, int userId, int subscriptionTypeId)
         {
-            return provider.ExecuteReader("CoreMessaging_GetSubscriptionsByUser", userId, provider.GetNull(portalId), provider.GetNull(subscriptionTypeId));
+            return provider.ExecuteReader("CoreMessaging_GetSubscriptionsByUser", provider.GetNull(portalId), userId, provider.GetNull(subscriptionTypeId));
         }
 
         public IDataReader GetSubscriptionsByContent(int portalId, int subscriptionTypeId, string objectKey)
