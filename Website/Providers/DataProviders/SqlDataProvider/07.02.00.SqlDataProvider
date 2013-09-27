@@ -1213,7 +1213,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
 	@PortalId int,
 	@UserId int,
-	@SubscriptionTypeID int,
+	@SubscriptionTypeID int
 AS
 BEGIN
 	SELECT *
@@ -1232,7 +1232,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
 	@PortalId int,
 	@SubscriptionTypeID int,
-	@ObjectKey NVARCHAR(255),
+	@ObjectKey NVARCHAR(255)
 AS
 BEGIN
 	SELECT *
@@ -1303,7 +1303,7 @@ AS
 				AND SubscriptionTypeId = @SubscriptionTypeID
 				AND ObjectKey = @ObjectKey
 				AND ModuleId = @ModuleId
-				AND abID = @TabId
+				AND TabID = @TabId
 	END
 GO
 

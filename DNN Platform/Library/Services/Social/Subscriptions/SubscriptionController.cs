@@ -98,11 +98,21 @@ namespace DotNetNuke.Services.Social.Subscriptions
                                                subscription.TabId);
         }
 
-        public void DeleteSubscription(int subscriptionId)
+        public void DeleteSubscription(Subscription subscription)
         {
-            Requires.NotNegative("subscriptionId", subscriptionId);
+            Requires.NotNull("subscription", subscription);
 
-            dataService.DeleteSubscription(subscriptionId);
+            var subscriptionToDelete = CBO.FillObject<Subscription>(dataService.IsSubscribed(
+                subscription.UserId,
+                subscription.PortalId,
+                subscription.SubscriptionTypeId,
+                subscription.ObjectKey,
+                subscription.ModuleId,
+                subscription.TabId));
+
+            if (subscriptionToDelete == null) return;
+
+            dataService.DeleteSubscription(subscriptionToDelete.SubscriptionId);
         }
         #endregion
     }

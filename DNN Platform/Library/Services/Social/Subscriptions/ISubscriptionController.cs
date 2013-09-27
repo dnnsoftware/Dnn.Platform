@@ -64,10 +64,10 @@ namespace DotNetNuke.Services.Social.Subscriptions
         int AddSubscription(Subscription subscription);
 
         /// <summary>
-        ///  Delete a Subscription
+        ///  Deletes a Subscription
         /// </summary>
-        /// <param name="subscriptionId">Subscription Id</param>
-        void DeleteSubscription(int subscriptionId);
+        /// <param name="subscription">Subscription</param>
+        void DeleteSubscription(Subscription subscription);
 
     }
 }

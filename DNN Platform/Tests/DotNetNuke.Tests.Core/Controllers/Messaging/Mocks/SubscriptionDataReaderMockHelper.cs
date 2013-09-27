@@ -26,7 +26,7 @@ using DotNetNuke.Services.Social.Subscriptions.Entities;
 
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
 {
-    internal class MockHelper
+    internal class SubscriptionDataReaderMockHelper
     {
         internal static IDataReader CreateEmptySubscriptionReader()
         {
