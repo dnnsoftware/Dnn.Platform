@@ -33,8 +33,8 @@
           </jsfiles>
         </component>
         <component type="File">
-          <basePath>Licenses</basePath>
           <files>
+            <basePath>Licenses</basePath>
             <file>
               <name>jQuery UI (MIT).txt</name>
             </file>
