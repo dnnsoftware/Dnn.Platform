@@ -757,11 +757,11 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
 			(
 				[JavaScriptLibraryID] ASC
 			)
-
-			ALTER TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries]  WITH CHECK 
-				ADD CONSTRAINT [FK_{objectQualifier}JavaScriptLibraries{objectQualifier}Packages] FOREIGN KEY([PackageID])
-					REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE
 		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries]  WITH CHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}JavaScriptLibraries{objectQualifier}Packages] FOREIGN KEY([PackageID])
+				REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE
 	END
 GO
 
