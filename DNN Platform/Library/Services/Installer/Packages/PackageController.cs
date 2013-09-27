@@ -111,6 +111,11 @@ namespace DotNetNuke.Services.Installer.Packages
             DataCache.ClearPackagesCache(portalId);
         }
 
+        private static void ClearDependenciesCache()
+        {
+            DataCache.RemoveCache(DataCache.PackageDependenciesCacheKey);            
+        }
+
         private static void DeletePackageInternal(PackageInfo package)
         {
             provider.DeletePackage(package.PackageID);
@@ -122,6 +127,14 @@ namespace DotNetNuke.Services.Installer.Packages
             }
             ClearCache(Null.NullInteger);
             
+        }
+
+        private static IEnumerable<PackageDependencyInfo> GetPackageDependencies()
+        {
+            return CBO.GetCachedObject<List<PackageDependencyInfo>>(new CacheItemArgs(DataCache.PackageDependenciesCacheKey, 
+                                                                            DataCache.PackagesCacheTimeout, 
+                                                                            DataCache.PackagesCachePriority),
+                                                c => CBO.FillCollection<PackageDependencyInfo>(provider.GetPackageDependencies()));
         }
 
         private static void UpdatePackageInternal(PackageInfo package)
@@ -158,6 +171,8 @@ namespace DotNetNuke.Services.Installer.Packages
 	    {
 	        dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
 					       dependency.Version.ToString());
+            
+            ClearDependenciesCache();
 	    }
 
         #endregion
@@ -244,9 +259,9 @@ namespace DotNetNuke.Services.Installer.Packages
                                                             c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
         }
 
-        public IList<PackageDependencyInfo> GetPackageDependencies(int packageId)
+        public IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate)
         {
-            throw new NotImplementedException();
+            return GetPackageDependencies().Where(predicate).ToList();
         }
 
         #endregion

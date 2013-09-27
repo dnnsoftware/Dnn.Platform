@@ -757,6 +757,10 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
 			(
 				[JavaScriptLibraryID] ASC
 			)
+
+			ALTER TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries]  WITH CHECK 
+				ADD CONSTRAINT [FK_{objectQualifier}JavaScriptLibraries{objectQualifier}Packages] FOREIGN KEY([PackageID])
+					REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE
 		)
 	END
 GO
@@ -837,6 +841,22 @@ GO
 /** DNN-3493 - Build a dependency graph of extensions **/
 /*******************************************************/
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageByName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageByName]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackage]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackage]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackagesByType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackagesByType]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageType]
+GO
+
 IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PackageDependencies') AND OBJECTPROPERTY(id, N'IsTable') = 1)
 	BEGIN
 		CREATE TABLE {databaseOwner}[{objectQualifier}PackageDependencies](
@@ -849,7 +869,21 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
 				[PackageDependencyID] ASC
 			)
 		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}PackageDependencies]  WITH CHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}PackageDependencies_{objectQualifier}Packages] FOREIGN KEY([PackageID]) 
+				REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE
+
 	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageDependencies]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageDependencies]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPackageDependencies]
+AS
+	SELECT * FROM {databaseOwner}[{objectQualifier}PackageDependencies] 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SavePackageDependency]') AND type in (N'P', N'PC'))

@@ -91,6 +91,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// </summary>
         /// <param name="packageId">The Id of the package</param>
         /// <returns>A List of PackageDependencyInfo objects</returns>
-        IList<PackageDependencyInfo> GetPackageDependencies(int packageId);
+        IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate);
     }
 }
