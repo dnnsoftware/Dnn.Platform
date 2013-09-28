@@ -174,7 +174,8 @@ namespace DotNetNuke.Modules.Admin.SQL
                     {
                         try
                         {
-                            var dr = DataProvider.Instance().ExecuteSQLTemp(connectionstring, txtQuery.Text);
+                            string errorMessage;
+                            var dr = DataProvider.Instance().ExecuteSQLTemp(connectionstring, txtQuery.Text, out errorMessage);
                             if (dr != null)
                             {
                                 var tables = new List<DataTable>();
@@ -194,11 +195,15 @@ namespace DotNetNuke.Modules.Admin.SQL
                             else
                             {
                                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                                errorRow.Visible = true;
+                                txtError.Text = errorMessage;
                             }
                         }
                         catch (SqlException sqlException)
                         {
-                            UI.Skins.Skin.AddModuleMessage(this, sqlException.Message, ModuleMessage.ModuleMessageType.RedError);
+                            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            errorRow.Visible = true;
+                            txtError.Text = sqlException.Message;
                             return;
                         }
                     }
