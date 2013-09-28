@@ -153,18 +153,24 @@ namespace DotNetNuke.Data
 
         private IDataReader ExecuteSQLInternal(string connectionString, string sql)
         {
+            string errorMessage;
+            return ExecuteSQLInternal(connectionString, sql, out errorMessage);
+        }
+        private IDataReader ExecuteSQLInternal(string connectionString, string sql, out string errorMessage)
+        {
             try
             {
                 sql = DataUtil.ReplaceTokens(sql);
+                errorMessage = "";
                 return PetaPocoHelper.ExecuteReader(connectionString, CommandType.Text, sql);
             }
-            catch
+            catch (Exception ex)
             {
                 //error in SQL query
+                errorMessage = ex.Message;
                 return null;
             }
         }
-
         private string GetConnectionStringUserID()
         {
             string DBUser = "public";
@@ -380,7 +386,12 @@ namespace DotNetNuke.Data
 
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
         {
-            return ExecuteSQLInternal(connectionString, sql);
+            string errorMessage;
+            return ExecuteSQLTemp(connectionString, sql, out errorMessage);
+        }
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
+        {
+            return ExecuteSQLInternal(connectionString, sql, out errorMessage);
         }
 
 
