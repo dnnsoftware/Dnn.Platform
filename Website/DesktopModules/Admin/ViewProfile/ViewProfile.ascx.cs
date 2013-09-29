@@ -168,9 +168,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 StringBuilder sb = new StringBuilder();
                 bool propertyNotFound = false;
 
-			    var dataType = new ListController().GetListEntryInfo("DataType", "RichText");
-
-
                 foreach (ProfilePropertyDefinition property in ProfileUser.Profile.ProfileProperties)
                 {
                     string value = propertyAccess.GetProperty(property.PropertyName,
@@ -185,12 +182,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     sb.Append("self['" + clientName + "'] = ko.observable(");
                     sb.Append("\"");
                     value = Localization.GetSafeJSString(Server.HtmlDecode(value));
-
-                    if(property.DataType == dataType.EntryID)
-                    {
-                        value = value.Replace("\r", string.Empty).Replace("\n", string.Empty);
-                    }
-
+                    value = value.Replace("\r", string.Empty).Replace("\n",  " ");
                     sb.Append(value + "\"" + ");");
                     sb.Append('\n');
                     sb.Append("self['" + clientName + "Text'] = '");

@@ -24,17 +24,27 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.ExtensionPoints;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Services.FileSystem
 {
     internal class FileEventHandlersContainer : ComponentBase<IFileEventHandlersContainer, FileEventHandlersContainer>, IFileEventHandlersContainer
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileEventHandlersContainer));
+
         [ImportMany]
         private IEnumerable<Lazy<IFileEventHandlers>> eventsHandlers = new List<Lazy<IFileEventHandlers>>();
         
         public FileEventHandlersContainer()
         {
-            ExtensionPointManager.ComposeParts(this);
+            try
+            {
+                ExtensionPointManager.ComposeParts(this);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex);
+            }
         }
 
         public IEnumerable<Lazy<IFileEventHandlers>> FileEventsHandlers

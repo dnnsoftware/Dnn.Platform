@@ -85,5 +85,12 @@ namespace DotNetNuke.Services.Installer.Packages
         /// </summary>
         /// <returns>A list of package types</returns>
         IList<PackageType> GetExtensionPackageTypes();
+
+        /// <summary>
+        /// Get the dependencies for a package
+        /// </summary>
+        /// <param name="packageId">The Id of the package</param>
+        /// <returns>A List of PackageDependencyInfo objects</returns>
+        IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate);
     }
 }

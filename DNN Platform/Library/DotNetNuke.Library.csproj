@@ -474,9 +474,13 @@
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FolderAddedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileAddedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FolderRenamedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderChangedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileMovedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileRenamedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FolderMovedEventArgs.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileLockedException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidMetadataValuesException.cs">
       <SubType>Code</SubType>
@@ -536,9 +540,13 @@
     <Compile Include="Services\Social\Messaging\Frequency.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\DataService.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\IDataService.cs" />
-    <Compile Include="Services\Social\Subscriptions\Entities\Subscriptions.cs" />
+    <Compile Include="Services\Social\Subscriptions\Entities\Subscription.cs" />
     <Compile Include="Services\Social\Subscriptions\Entities\SubscriptionType.cs" />
+    <Compile Include="Services\Social\Subscriptions\ISubscriptionController.cs" />
+    <Compile Include="Services\Social\Subscriptions\ISubscriptionSecurityController.cs" />
     <Compile Include="Services\Social\Subscriptions\ISubscriptionTypeController.cs" />
+    <Compile Include="Services\Social\Subscriptions\SubscriptionController.cs" />
+    <Compile Include="Services\Social\Subscriptions\SubscriptionSecurityController.cs" />
     <Compile Include="Services\Social\Subscriptions\SubscriptionTypeController.cs" />
     <Compile Include="Services\Social\Messaging\IUserPreferencesController.cs" />
     <Compile Include="Services\Social\Messaging\UserPreference.cs" />

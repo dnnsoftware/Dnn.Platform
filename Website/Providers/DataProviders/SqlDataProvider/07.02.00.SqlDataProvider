@@ -758,6 +758,10 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
 				[JavaScriptLibraryID] ASC
 			)
 		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries]  WITH CHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}JavaScriptLibraries{objectQualifier}Packages] FOREIGN KEY([PackageID])
+				REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE
 	END
 GO
 
@@ -837,6 +841,22 @@ GO
 /** DNN-3493 - Build a dependency graph of extensions **/
 /*******************************************************/
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageByName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageByName]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackage]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackage]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackagesByType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackagesByType]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageType]
+GO
+
 IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PackageDependencies') AND OBJECTPROPERTY(id, N'IsTable') = 1)
 	BEGIN
 		CREATE TABLE {databaseOwner}[{objectQualifier}PackageDependencies](
@@ -849,7 +869,21 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
 				[PackageDependencyID] ASC
 			)
 		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}PackageDependencies]  WITH CHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}PackageDependencies_{objectQualifier}Packages] FOREIGN KEY([PackageID]) 
+				REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE
+
 	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageDependencies]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageDependencies]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPackageDependencies]
+AS
+	SELECT * FROM {databaseOwner}[{objectQualifier}PackageDependencies] 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SavePackageDependency]') AND type in (N'P', N'PC'))
@@ -862,7 +896,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
 	@PackageName NVARCHAR(128),
 	@Version NVARCHAR(10)
 AS
-	IF EXISTS (SELECT PackageDependencyID FROM {objectQualifier}PackageDependencies WHERE PackageDependencyID = @PackageDependencyID)
+	IF EXISTS (SELECT PackageDependencyID FROM {objectQualifier}PackageDependencies WHERE PackageName = @PackageName AND Version = @Version)
 		BEGIN
 			UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
 			   SET [PackageID] = @PackageID,
@@ -1206,17 +1240,41 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptions]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptions]
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptions]
-	@PortalId int
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+	@PortalId int,
+	@UserId int,
+	@SubscriptionTypeID int
 AS
 BEGIN
 	SELECT *
 	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
-	WHERE [PortalId] = @PortalId
+	WHERE 
+			ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
+			AND UserId = @UserId
+			AND (@SubscriptionTypeID IS NULL OR SubscriptionTypeID = @SubscriptionTypeID)
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+	@PortalId int,
+	@SubscriptionTypeID int,
+	@ObjectKey NVARCHAR(255)
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	WHERE 
+			ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
+		AND SubscriptionTypeID = @SubscriptionTypeID
+		AND ObjectKey = @ObjectKey
 END
 GO
 
@@ -1234,28 +1292,55 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
 	@TabId INT
 AS 
 	BEGIN
-		INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
-				( UserId ,
-					PortalId ,
-					SubscriptionTypeId ,
-					ObjectKey ,
-					Description,
-					CreatedOnDate ,
-					ModuleId ,
-					TabId
-				)
-		VALUES  ( @UserId ,
-					@PortalId ,
-					@SubscriptionTypeId ,
-					@ObjectKey ,
-					@Description,
-					GETUTCDATE() ,
-					@ModuleId ,
-					@TabId
-				)
+        DECLARE @SubscriptionId INT = NULL   
+        
+        SELECT  TOP 1 @SubscriptionId = SubscriptionId
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		WHERE   UserId = @UserId
+				AND ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
+				AND SubscriptionTypeId = @SubscriptionTypeID
+				AND ObjectKey = @ObjectKey
+				AND ISNULL(@ModuleId, -1) = ISNULL(ModuleId, -1)				
+				AND ISNULL(@TabId, -1) = ISNULL(TabId, -1)
+		      
+        IF (@SubscriptionId IS NULL) 
+			BEGIN
+				INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+						( UserId ,
+							PortalId ,
+							SubscriptionTypeId ,
+							ObjectKey ,
+							Description,
+							CreatedOnDate ,
+							ModuleId ,
+							TabId
+						)
+				VALUES  ( @UserId ,
+							@PortalId ,
+							@SubscriptionTypeId ,
+							@ObjectKey ,
+							@Description,
+							GETUTCDATE() ,
+							@ModuleId ,
+							@TabId
+						)
 
-		SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
-			
+				SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
+			END
+		ELSE 
+			BEGIN
+				UPDATE  {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+				SET     UserId = @UserId ,
+						PortalId = @PortalId ,
+						SubscriptionTypeId = @SubscriptionTypeId ,
+						ObjectKey = @ObjectKey ,
+						Description = @Description ,
+						ModuleId = @ModuleId ,
+						TabId = @TabId
+				WHERE   SubscriptionId = @SubscriptionId
+
+				SELECT  @SubscriptionId AS [SubscriptionId]
+			END
 	END
 GO
 
@@ -1272,22 +1357,22 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
 	@TabId INT
 AS 
 	BEGIN
-		SELECT  *
+		SELECT  TOP 1 *
 		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
 		WHERE   UserId = @UserId
-				AND PortalId = @PortalId
+				AND ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
 				AND SubscriptionTypeId = @SubscriptionTypeID
 				AND ObjectKey = @ObjectKey
-				AND ModuleId = @ModuleId
-				AND TabID = @TabId
+				AND ISNULL(@ModuleId, -1) = ISNULL(ModuleId, -1)				
+				AND ISNULL(@TabId, -1) = ISNULL(TabId, -1)
 	END
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}[CoreMessaging_GetUserPreference]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}{objectQualifier}[CoreMessaging_GetUserPreference]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetUserPreference]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetUserPreference]
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}[CoreMessaging_GetUserPreference]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetUserPreference]
 	@PortalId INT ,	
 	@UserId INT
 AS 
@@ -1301,11 +1386,11 @@ END
 
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}[CoreMessaging_SetUserPreference]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}{objectQualifier}[CoreMessaging_SetUserPreference]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_SetUserPreference]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_SetUserPreference]
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}[CoreMessaging_SetUserPreference]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_SetUserPreference]
 	@PortalId INT ,	
 	@UserId INT,
 	@MessagesEmailFrequency INT,
@@ -1326,8 +1411,8 @@ END
 
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}[SubscriptionMgmt_GetUserInboxPref]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}{objectQualifier}[SubscriptionMgmt_GetUserInboxPref]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserInboxPref]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SubscriptionMgmt_GetUserInboxPref]
 GO
 
 

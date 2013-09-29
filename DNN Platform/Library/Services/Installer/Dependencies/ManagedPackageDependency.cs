@@ -30,43 +30,43 @@ namespace DotNetNuke.Services.Installer.Dependencies
     public class ManagedPackageDependency : DependencyBase, IManagedPackageDependency
     {
 
-	public override string ErrorMessage
-	{
-	    get
-	    {
-		return Util.INSTALL_Package + " - " + PackageDependency.PackageName;
-	    }
-	}
+        public override string ErrorMessage
+        {
+            get
+            {
+                return Util.INSTALL_Package + " - " + PackageDependency.PackageName;
+            }
+        }
 
-	public override bool IsValid
-	{
-	    get
-	    {
-		bool _IsValid = true;
+        public override bool IsValid
+        {
+            get
+            {
+                bool _IsValid = true;
 
-		//Get Package from DataStore
-		PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.Name == PackageDependency.PackageName);
-		if (package == null)
-		{
-		    _IsValid = false;
-		}
-		return _IsValid;
-	    }
-	}
+                //Get Package from DataStore
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.Name == PackageDependency.PackageName);
+                if (package == null)
+                {
+                    _IsValid = false;
+                }
+                return _IsValid;
+            }
+        }
 
-	public override void ReadManifest(XPathNavigator dependencyNav)
-	{
-	    PackageDependency = new PackageDependencyInfo
-		{
-		    PackageName = dependencyNav.Value,
-		    Version = new Version(Util.ReadAttribute(dependencyNav, "version"))
-		};
-	}
+        public override void ReadManifest(XPathNavigator dependencyNav)
+        {
+            PackageDependency = new PackageDependencyInfo
+            {
+                PackageName = dependencyNav.Value,
+                Version = new Version(Util.ReadAttribute(dependencyNav, "version"))
+            };
+        }
 
-	#region IManagedPackageDependency Implementation
+        #region IManagedPackageDependency Implementation
 
-	public PackageDependencyInfo PackageDependency { get; set; }
+        public PackageDependencyInfo PackageDependency { get; set; }
 
-	#endregion
+        #endregion
     }
 }

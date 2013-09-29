@@ -19,50 +19,17 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
+using DotNetNuke.Services.Social.Subscriptions.Entities;
 
-namespace DotNetNuke.Services.Social.Subscriptions.Entities
+namespace DotNetNuke.Services.Social.Subscriptions
 {
-    public class Subscriptions
+    public interface ISubscriptionSecurityController
     {
         /// <summary>
-        /// The subscription identifier
+        /// Check if the User has permission on the Subscription
         /// </summary>
-        public int SubscriptionId { get; set; }
-
-        /// <summary>
-        /// The user the subscription is associated with
-        /// </summary>
-        public int UserId { get; set; }
-
-        /// <summary>
-        /// The site the subscription is associated with
-        /// </summary>
-        public int PortalId { get; set; }
-
-        /// <summary>
-        /// The type of subscription.
-        /// </summary>
-        public int SubscriptionTypeId { get; set; }
-        
-        /// <summary>
-        /// Object key that represent the content which user is subscribed to
-        /// </summary>
-        public string ObjectKey { get; set; }
-
-        /// <summary>
-        /// The date the user subscribed
-        /// </summary>
-        public DateTime CreatedOnDate { get; set; }
-        
-        /// <summary>
-        /// Associates the subscription with an instance of a module
-        /// </summary>
-        public int ModuleId { get; set; }
-
-        /// <summary>
-        /// Associates the subscription with a tab 
-        /// </summary>
-        public int TabId { get; set; }
+        /// <param name="subscription">Subscription</param>
+        /// <returns>True if user has permission, false otherwise</returns>
+        bool HasPermission(Subscription subscription);
     }
 }

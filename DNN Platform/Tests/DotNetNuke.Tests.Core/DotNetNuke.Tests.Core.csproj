@@ -115,7 +115,10 @@
     <Compile Include="ComponentModel\Helpers\Service2Impl.cs" />
     <Compile Include="ComponentModel\SimpleContainerTests.cs" />
     <Compile Include="Controllers\ConfigurationSettingsComparer.cs" />
+    <Compile Include="Controllers\Messaging\Builders\SubscriptionBuilder.cs" />
     <Compile Include="Controllers\Messaging\Builders\SubscriptionTypeBuilder.cs" />
+    <Compile Include="Controllers\Messaging\Mocks\SubscriptionDataReaderMockHelper.cs" />
+    <Compile Include="Controllers\Messaging\SubscriptionControllerTests.cs" />
     <Compile Include="Controllers\Messaging\SubscriptionTypeControllerTests.cs" />
     <Compile Include="Controllers\Portal\PortalControllerTests.cs" />
     <Compile Include="Controllers\Portal\PortalGroupControllerTests.cs" />
@@ -138,6 +141,7 @@
     <Compile Include="Providers\Folder\SecureFolderProviderTests.cs" />
     <Compile Include="Providers\Folder\StandardFolderProviderTests.cs" />
     <Compile Include="EscapedStringTest.cs" />
+    <Compile Include="Providers\Permissions\PermissionTests.cs" />
     <Compile Include="RetryableActionTests.cs" />
     <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />

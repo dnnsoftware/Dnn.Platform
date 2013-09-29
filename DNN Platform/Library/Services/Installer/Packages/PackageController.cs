@@ -95,10 +95,11 @@ namespace DotNetNuke.Services.Installer.Packages
                                                 package.FolderName,
                                                 package.IconFile);
 
-	    foreach (var dependency in package.Dependencies)
-	    {
-		SavePackageDependency(dependency);
-	    }
+	        foreach (var dependency in package.Dependencies)
+	        {
+	            dependency.PackageId = package.PackageID;
+		        SavePackageDependency(dependency);
+	        }
 
             AddLog(package, EventLogController.EventLogType.PACKAGE_CREATED);
 
@@ -108,7 +109,11 @@ namespace DotNetNuke.Services.Installer.Packages
         private static void ClearCache(int portalId)
         {
             DataCache.ClearPackagesCache(portalId);
-            
+        }
+
+        private static void ClearDependenciesCache()
+        {
+            DataCache.RemoveCache(DataCache.PackageDependenciesCacheKey);            
         }
 
         private static void DeletePackageInternal(PackageInfo package)
@@ -122,6 +127,14 @@ namespace DotNetNuke.Services.Installer.Packages
             }
             ClearCache(Null.NullInteger);
             
+        }
+
+        private static IEnumerable<PackageDependencyInfo> GetPackageDependencies()
+        {
+            return CBO.GetCachedObject<List<PackageDependencyInfo>>(new CacheItemArgs(DataCache.PackageDependenciesCacheKey, 
+                                                                            DataCache.PackagesCacheTimeout, 
+                                                                            DataCache.PackagesCachePriority),
+                                                c => CBO.FillCollection<PackageDependencyInfo>(provider.GetPackageDependencies()));
         }
 
         private static void UpdatePackageInternal(PackageInfo package)
@@ -144,21 +157,23 @@ namespace DotNetNuke.Services.Installer.Packages
                                    package.FolderName,
                                    package.IconFile);
 
-	    foreach (var dependency in package.Dependencies)
-	    {
-		SavePackageDependency(dependency);
-	    }
+	        foreach (var dependency in package.Dependencies)
+	        {
+		        SavePackageDependency(dependency);
+	        }
 
             AddLog(package, EventLogController.EventLogType.PACKAGE_UPDATED);
 
             ClearCache(package.PortalID);
         }
 
-	private static void SavePackageDependency(PackageDependencyInfo dependency)
-	{
-	    dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
-					   dependency.Version.ToString());
-	}
+	    private static void SavePackageDependency(PackageDependencyInfo dependency)
+	    {
+	        dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
+					       dependency.Version.ToString());
+            
+            ClearDependenciesCache();
+	    }
 
         #endregion
 
@@ -242,6 +257,11 @@ namespace DotNetNuke.Services.Installer.Packages
                                                                             DataCache.PackageTypesCacheTimeout, 
                                                                             DataCache.PackageTypesCachePriority),
                                                             c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
+        }
+
+        public IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate)
+        {
+            return GetPackageDependencies().Where(predicate).ToList();
         }
 
         #endregion

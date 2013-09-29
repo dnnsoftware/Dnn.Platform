@@ -25,7 +25,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Social.Subscriptions;
 using DotNetNuke.Services.Social.Subscriptions.Data;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
 using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
