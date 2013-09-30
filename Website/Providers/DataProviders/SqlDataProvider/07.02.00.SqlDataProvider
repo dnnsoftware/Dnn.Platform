@@ -736,7 +736,7 @@ IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PackageTypes] WHER
 				'JavaScript_Library',
 				'JavaScript Library',
 				'3',
-				NULL,
+				'DesktopModules/Admin/Extensions/Editors/JavaScriptLibraryEditor.ascx',
 				1
 			)
 	END
