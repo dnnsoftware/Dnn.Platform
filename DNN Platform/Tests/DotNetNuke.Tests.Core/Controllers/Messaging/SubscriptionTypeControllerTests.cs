@@ -20,12 +20,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Social.Subscriptions;
 using DotNetNuke.Services.Social.Subscriptions.Data;
 using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
+using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
@@ -56,13 +58,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         #region GetSubscriptionTypes method tests
         [Test]
-        [Ignore] //TODO: remove ignore when stub caching provider issue has been figure out
+        [Ignore]
         public void GetSubscriptionTypes_ShouldCallDataService_WhenNoError()
         {
             // Arrange
             mockDataService
                 .Setup(ds => ds.GetAllSubscriptionTypes())
-                .Returns(new DataTable().CreateDataReader())
+                .Returns(SubscriptionTypeDataReaderMockHelper.CreateEmptySubscriptionTypeReader())
                 .Verifiable();
             
             //Act
@@ -82,11 +84,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         #region GetSubscriptionType method tests
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubscriptionType_ShouldThrowArgumentNullException_WhenPredicateIsNull()
         {
-            //Act
-            subscriptionTypeController.GetSubscriptionType(null);
+            //Act, Assert
+            Assert.Throws<ArgumentNullException>(() => subscriptionTypeController.GetSubscriptionType(null));
         }
         #endregion
 

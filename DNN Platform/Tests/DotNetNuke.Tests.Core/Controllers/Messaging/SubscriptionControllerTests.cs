@@ -20,11 +20,13 @@
 #endregion
 
 using System;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Social.Subscriptions;
 using DotNetNuke.Services.Social.Subscriptions.Data;
 using DotNetNuke.Services.Social.Subscriptions.Entities;
 using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
 using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
+using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
 
@@ -35,6 +37,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     {
         private Mock<IDataService> mockDataService;
         private Mock<ISubscriptionSecurityController> subscriptionSecurityController;
+        private Mock<CachingProvider> mockCacheProvider;
 
         private SubscriptionController subscriptionController;
 
@@ -43,6 +46,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             // Setup Mocks and Stub
             mockDataService = new Mock<IDataService>();
+            mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
             subscriptionSecurityController = new Mock<ISubscriptionSecurityController>();
 
             DataService.SetTestableInstance(mockDataService.Object);
@@ -57,6 +61,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             DataService.ClearInstance();
             SubscriptionSecurityController.ClearInstance();
+            MockComponentProvider.ResetContainer();
         }
 
         #region IsSubscribed method tests
@@ -68,8 +73,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Build();
 
             mockDataService.Setup(ds => ds.IsSubscribed(
-                subscription.UserId,
                 subscription.PortalId,
+                subscription.UserId,
                 subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 It.IsAny<int>(),
@@ -87,7 +92,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [Ignore]
         public void IsSubscribed_ShouldReturnFalse_WhenUserDoesNotHavePermissionOnTheSubscription()
         {
             // Arrange
@@ -97,8 +101,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var subscriptionCollection = new[] {subscription};
 
             mockDataService.Setup(ds => ds.IsSubscribed(
-                subscription.UserId,
                 subscription.PortalId,
+                subscription.UserId,
                 subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 It.IsAny<int>(),
@@ -119,7 +123,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [Ignore]
         public void IsSubscribed_ShouldReturnTrue_WhenUserHasPermissionOnTheSubscription()
         {
             // Arrange
@@ -129,8 +132,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var subscriptionCollection = new[] { subscription };
 
             mockDataService.Setup(ds => ds.IsSubscribed(
-                subscription.UserId,
                 subscription.PortalId,
+                subscription.UserId,
                 subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 It.IsAny<int>(),
@@ -158,8 +161,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Build();
 
             mockDataService.Setup(ds => ds.IsSubscribed(
-                subscription.UserId,
                 subscription.PortalId,
+                subscription.UserId,
                 subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 subscription.ModuleId,
@@ -174,8 +177,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             // Assert
             mockDataService.Verify(ds => ds.IsSubscribed(
-                subscription.UserId,
                 subscription.PortalId,
+                subscription.UserId,
                 subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 subscription.ModuleId,
@@ -292,7 +295,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [Ignore]
         public void DeleteSubscriptionType_ShouldCallDeleteSubscriptionDataService_WhenSubscriptionExists()
         {
             // Arrange
@@ -300,8 +302,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Build();
 
             mockDataService.Setup(ds => ds.IsSubscribed(
-                subscription.UserId,
                 subscription.PortalId,
+                subscription.UserId,
                 subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 It.IsAny<int>(),
@@ -324,8 +326,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Build();
 
             mockDataService.Setup(ds => ds.IsSubscribed(
-                subscription.UserId,
                 subscription.PortalId,
+                subscription.UserId,
                 subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 It.IsAny<int>(),
