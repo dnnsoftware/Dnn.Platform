@@ -271,43 +271,68 @@ namespace DotNetNuke.Services.Installer.Packages
         public static bool CanDeletePackage(PackageInfo package, PortalSettings portalSettings)
         {
             bool bCanDelete = true;
-            switch (package.PackageType)
-            {
-                case "Skin":
-                case "Container":
-                    //Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
-                    string strRootSkin = package.PackageType == "Skin" ? SkinController.RootSkin : SkinController.RootContainer;
-                    SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
-                    string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger
-                                                            ? Path.Combine(Globals.HostMapPath, strRootSkin)
-                                                            : Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
 
-                    bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
-                    break;
-                case "Provider":
-                    //Check if the provider is the default provider
-                    XmlDocument configDoc = Config.Load();
-                    string providerName = package.Name;
-                    if (providerName.IndexOf(".", StringComparison.Ordinal) > Null.NullInteger)
+            var dependencies = Instance.GetPackageDependencies(d => d.PackageName == package.Name && d.Version <= package.Version);
+            if (dependencies.Count > 0)
+            {
+                //There is at least one package dependent on this package.
+                foreach (var dependency in dependencies)
+                {
+                    var dep = dependency;
+
+                    //Check if there is an alternative package
+                    var packages = Instance.GetExtensionPackages(package.PortalID,
+                                                                 p => p.Name == dep.PackageName
+                                                                        && p.Version >= dep.Version
+                                                                        && p.PackageID != package.PackageID);
+                    if (packages.Count == 0)
                     {
-                        providerName = providerName.Substring(providerName.IndexOf(".", StringComparison.Ordinal) + 1);
+                        bCanDelete = false;
                     }
-                    switch (providerName)
-                    {
-                        case "SchedulingProvider":
-                            providerName = "DNNScheduler";
-                            break;
-                        case "SearchIndexProvider":
-                            providerName = "ModuleIndexProvider";
-                            break;
-                        case "SearchProvider":
-                            providerName = "SearchDataStoreProvider";
-                            break;
-                    }
-                    XPathNavigator providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*[@defaultProvider='" + providerName + "']");
-                    bCanDelete = (providerNavigator == null);
-                    break;
+                }
             }
+
+            if (bCanDelete)
+            {
+                switch (package.PackageType)
+                {
+                    case "Skin":
+                    case "Container":
+                        //Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
+                        string strRootSkin = package.PackageType == "Skin" ? SkinController.RootSkin : SkinController.RootContainer;
+                        SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
+                        string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger
+                                                                ? Path.Combine(Globals.HostMapPath, strRootSkin)
+                                                                : Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+
+                        bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
+                        break;
+                    case "Provider":
+                        //Check if the provider is the default provider
+                        XmlDocument configDoc = Config.Load();
+                        string providerName = package.Name;
+                        if (providerName.IndexOf(".", StringComparison.Ordinal) > Null.NullInteger)
+                        {
+                            providerName = providerName.Substring(providerName.IndexOf(".", StringComparison.Ordinal) + 1);
+                        }
+                        switch (providerName)
+                        {
+                            case "SchedulingProvider":
+                                providerName = "DNNScheduler";
+                                break;
+                            case "SearchIndexProvider":
+                                providerName = "ModuleIndexProvider";
+                                break;
+                            case "SearchProvider":
+                                providerName = "SearchDataStoreProvider";
+                                break;
+                        }
+                        XPathNavigator providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*[@defaultProvider='" + providerName + "']");
+                        bCanDelete = (providerNavigator == null);
+                        break;
+                }
+            }
+
             return bCanDelete;
         }
 

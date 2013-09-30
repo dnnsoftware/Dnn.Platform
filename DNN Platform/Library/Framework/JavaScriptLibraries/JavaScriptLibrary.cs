@@ -94,7 +94,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     {
                         case "javaScriptLibrary":
                             break;
-                        case "librayName":
+                        case "libraryName":
                             LibraryName = reader.ReadElementContentAsString();
                             break;
                         case "objectName":
@@ -141,7 +141,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             writer.WriteStartElement("javaScriptLibrary");
 
             //write out properties
-            writer.WriteElementString("librayName", LibraryName);
+            writer.WriteElementString("libraryName", LibraryName);
             writer.WriteElementString("fileName", FileName);
             writer.WriteElementString("objectName", ObjectName);
             writer.WriteElementString("preferredScriptLocation", PreferredScriptLocation.ToString());

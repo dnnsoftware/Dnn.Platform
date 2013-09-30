@@ -20,8 +20,9 @@
       <components>
         <component type="JavaScript_Library">
           <javaScriptLibrary>
-            <librayName>Knockout.Mapping</librayName>
+            <libraryName>Knockout.Mapping</libraryName>
             <fileName>knockout.mapping.js</fileName>
+            <preferredScriptLocation>BodyBottom</preferredScriptLocation>
             <CDNPath></CDNPath>
           </javaScriptLibrary>
         </component>

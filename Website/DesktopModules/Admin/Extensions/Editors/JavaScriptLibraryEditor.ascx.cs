@@ -19,11 +19,39 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Installer.Packages;
 
 namespace DotNetNuke.Modules.Admin.Extensions
 {
     public partial class JavaScriptLibraryEditor : PackageEditorBase
     {
+        private JavaScriptLibrary _javaScriptLibrary;
+
+        protected override string EditorID
+        {
+            get
+            {
+                return "JavaScriptLibraryEditor";
+            }
+        }
+
+        public JavaScriptLibrary JavaScriptLibrary
+        {
+            get 
+            {
+                return _javaScriptLibrary ?? (_javaScriptLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == PackageID));
+            }
+        }
+
+        public override void Initialize()
+        {
+            LibraryName.Text = JavaScriptLibrary.LibraryName;
+            Version.Text = JavaScriptLibrary.Version.ToString();
+            ObjectName.Text = JavaScriptLibrary.ObjectName;
+            CDN.Text = JavaScriptLibrary.CDNPath;
+            FileName.Text = JavaScriptLibrary.FileName;
+            Location.Text = LocalizeString(JavaScriptLibrary.PreferredScriptLocation.ToString());
+        }
     }
 }
