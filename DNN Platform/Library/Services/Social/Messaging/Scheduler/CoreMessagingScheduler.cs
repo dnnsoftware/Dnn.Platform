@@ -18,8 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
+#region Usings
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -32,18 +32,15 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Social.Messaging.Internal;
-
 #endregion
 
 namespace DotNetNuke.Services.Social.Messaging.Scheduler
 {
     public class CoreMessagingScheduler : SchedulerClient
     {
-        private readonly PortalController _pController = new PortalController();
-        private readonly UserController _uController = new UserController();
+        private readonly UserController userController = new UserController();
 
         private const string SettingLastHourlyRun = "CoreMessagingLastHourlyDigestRun";
         private const string SettingLastDailyRun = "CoreMessagingLastDailyDigestRun";
@@ -139,7 +136,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             while (messageLeft)
             {
-                var batchMessages = InternalMessagingController.Instance.GetNextSubscribersForDispatch(frequency, schedulerInstance, remainingMessages);
+                var batchMessages = InternalMessagingController.Instance.GetNextMessagesForDigestDispatch(frequency, schedulerInstance, remainingMessages);
 
                 if (batchMessages != null && batchMessages.Count > 0)
                 {
@@ -156,8 +153,8 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                                 var messageDetails = InternalMessagingController.Instance.GetMessage(singleMessage.MessageID);
                                 var ps = new PortalSettings(messageDetails.PortalID);
 
-                                var senderUser = _uController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
-                                var recipientUser = _uController.GetUser(messageDetails.PortalID, singleMessage.UserID);
+                                var senderUser = userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
+                                var recipientUser = userController.GetUser(messageDetails.PortalID, singleMessage.UserID);
 
                                 SendDigest(messageRecipients, ps, senderUser, recipientUser);
                             }
@@ -270,7 +267,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             while (messageLeft)
             {
-                var batchMessages = InternalMessagingController.Instance.GetNextMessagesForDispatch(schedulerInstance, Host.MessageSchedulerBatchSize);
+                var batchMessages = InternalMessagingController.Instance.GetNextMessagesForInstantDispatch(schedulerInstance, Host.MessageSchedulerBatchSize);
 
                 if (batchMessages != null && batchMessages.Count > 0)
                 {
@@ -302,7 +299,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         {
             //todo: check if host user can send to multiple portals...
             var messageDetails = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);
-            var author = _uController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
+            var author = userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
 
             if (!SendEmail(messageDetails.PortalID))
             {
@@ -312,7 +309,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             var ps = new PortalSettings(messageDetails.PortalID);
             var fromAddress = ps.Email;
-            var toUser = _uController.GetUser(messageDetails.PortalID, messageRecipient.UserID);
+            var toUser = userController.GetUser(messageDetails.PortalID, messageRecipient.UserID);
 
             if (toUser == null || toUser.IsDeleted)
             {

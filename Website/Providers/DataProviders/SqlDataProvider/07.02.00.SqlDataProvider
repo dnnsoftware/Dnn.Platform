@@ -1010,13 +1010,13 @@ FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients AS CMR
 		ON CMR.MessageID = CM.MessageID
 GO
 
-/** Core Messaging digest notifications **/
+/** Core Messaging instant and digest notifications **/
 /*****************************************/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForInstantDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForInstantDispatch]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForInstantDispatch]
 	@SchedulerInstance UNIQUEIDENTIFIER ,
 	@BatchSize INT
 AS 
@@ -1055,11 +1055,11 @@ AS
 
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextSubscribersForDispatch]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]
 	@Frequency INT ,
 	@SchedulerInstance UNIQUEIDENTIFIER ,
 	@BatchSize INT

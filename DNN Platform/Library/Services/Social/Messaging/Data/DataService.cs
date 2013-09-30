@@ -279,14 +279,14 @@ namespace DotNetNuke.Services.Social.Messaging.Data
 
         #region Queued email API's
 
-        public IDataReader GetNextMessagesForDispatch(Guid schedulerInstance,int batchSize)
+        public IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetNextMessagesForDispatch", schedulerInstance,batchSize);
+            return _provider.ExecuteReader("CoreMessaging_GetNextMessagesForInstantDispatch", schedulerInstance,batchSize);
         }
 
-        public IDataReader GetNextSubscribersForDispatch(int frequecy, Guid schedulerInstance, int batchSize)
+        public IDataReader GetNextMessagesForDigestDispatch(int frequecy, Guid schedulerInstance, int batchSize)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetNextSubscribersForDispatch", frequecy, schedulerInstance, batchSize);
+            return _provider.ExecuteReader("CoreMessaging_GetNextMessagesForDigestDispatch", frequecy, schedulerInstance, batchSize);
         }
 
         public void MarkMessageAsDispatched(int messageId,int recipientId)

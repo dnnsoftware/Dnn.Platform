@@ -88,8 +88,8 @@ namespace DotNetNuke.Services.Social.Messaging.Data
 
         #region Queued email API's
 
-        IDataReader GetNextMessagesForDispatch(Guid schedulerInstance, int batchSize);
-        IDataReader GetNextSubscribersForDispatch(int frequecy, Guid schedulerInstance, int batchSize);
+        IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
+        IDataReader GetNextMessagesForDigestDispatch(int frequecy, Guid schedulerInstance, int batchSize);
         void MarkMessageAsDispatched(int messageId,int recipientId);
         void MarkMessageAsSent(int messageId, int recipientId);
 
