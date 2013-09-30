@@ -44,22 +44,40 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         #region IJavaScriptController Implementation
 
+        /// <summary>
+        /// delete the library reference from the database
+        /// </summary>
+        /// <param name="library">library to be deleted</param>
         public void DeleteLibrary(JavaScriptLibrary library)
         {
             DataProvider.Instance().ExecuteNonQuery("DeleteJavaScriptLibrary", library.JavaScriptLibraryID);
             ClearCache();
         }
 
+        /// <summary>
+        /// return a library reference
+        /// </summary>
+        /// <param name="predicate">predicate to match to return the library e.g. libraryname=</param>
+        /// <returns>instance of JavaScriptLibrary</returns>
         public JavaScriptLibrary GetLibrary(Func<JavaScriptLibrary, bool> predicate)
         {
             return GetLibraries().SingleOrDefault(predicate);
         }
 
+        /// <summary>
+        /// return collection of library references
+        /// </summary>
+        /// <param name="predicate">predicate to match to return the library collection e.g. libraryname=</param>
+        /// <returns>collection of library references</returns>
         public IEnumerable<JavaScriptLibrary> GetLibraries(Func<JavaScriptLibrary, bool> predicate)
         {
             return GetLibraries().Where(predicate);
         }
 
+        /// <summary>
+        /// return all registered libraries
+        /// </summary>
+        /// <returns>collection of library references</returns>
         public IEnumerable<JavaScriptLibrary> GetLibraries()
         {
 	    return CBO.GetCachedObject<IEnumerable<JavaScriptLibrary>>(new CacheItemArgs(DataCache.JavaScriptLibrariesCacheKey,
@@ -68,6 +86,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                  c => CBO.FillCollection<JavaScriptLibrary>(DataProvider.Instance().ExecuteReader("GetJavaScriptLibraries")));
         }
 
+        /// <summary>
+        /// save a library to the database
+        /// </summary>
+        /// <param name="library">library to be saved</param>
         public void SaveLibrary(JavaScriptLibrary library)
         {
             library.JavaScriptLibraryID = DataProvider.Instance().ExecuteScalar<int>("SaveJavaScriptLibrary", 
