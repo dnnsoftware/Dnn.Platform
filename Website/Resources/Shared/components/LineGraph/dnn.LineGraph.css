@@ -2,39 +2,39 @@
  * Line Graph stylization (SVG)
  */
 
-svg path {
+svg.time-line-graph .chart-group path {
 	stroke: #4682B4;
 	stroke-width: 2px;
 	fill: none;
     /*shape-rendering: crispEdges;*/
 }
 
-svg .axis {
+svg.time-line-graph .axis {
 	shape-rendering: crispEdges;
 }
 
-svg .x.axis line {
+svg.time-line-graph .x.axis line {
 	stroke: #D3D3D3;
 	stroke-opacity: 0;
 }
 
-svg .x.axis .minor {
+svg.time-line-graph .x.axis .minor {
 	stroke-opacity: .5;
 	stroke-opacity: 0;
 }
 
-svg .x.axis path {
+svg.time-line-graph .x.axis path {
 	display: none;
 }
 
-svg .y.axis line {
+svg.time-line-graph .y.axis line {
 	fill: none;
 	opacity: 0.5;
 	stroke-opacity: .5;
 	stroke: #000;
 }
 
-svg .y.axis path {
+svg.time-line-graph .y.axis path {
 	fill: none;
 	opacity: 0.5;
 	stroke-opacity: .5;
@@ -42,16 +42,16 @@ svg .y.axis path {
 	stroke-width: 1px;
 }
 
-svg .x .major line {
+svg.time-line-graph .x .major line {
 	fill: none;
 }
 
-svg text {
+svg.time-line-graph text {
     font-family: arial;
     font-size: 10px;
 }
 
-svg .point-group circle {
+svg.time-line-graph .point-group circle {
     stroke: #4682B4;
     stroke-width: 2px;
     fill: #fff;

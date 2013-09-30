@@ -112,6 +112,12 @@ if (typeof Array.prototype.insertAt !== "function") {
     };
 }
 
+if (typeof Array.prototype.peek !== "function") {
+    Array.prototype.peek = function () {
+        return this[this.length - 1];
+    };
+}
+
 if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(searchElement /*, fromIndex */) {
         if (this == null) {
@@ -294,3 +300,11 @@ if (typeof Date.prototype.compare === "undefined") {
     };
 }
 
+//Returns true if it is a DOM element
+if (typeof Object.isElement === "undefined") {
+    Object.isElement = function (o) {
+        return typeof HTMLElement === "object" ?
+                o instanceof HTMLElement : //DOM2
+                o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string";
+    };
+}

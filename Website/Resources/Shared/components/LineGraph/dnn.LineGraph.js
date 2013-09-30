@@ -23,7 +23,7 @@
     //
     // TimeLineGraph
     //
-    var TimeLineGraph = this.TimeGraph = function (element, options) {
+    var TimeLineGraph = this.TimeLineGraph = function (element, options) {
         this.element = element;
         this._options = options;
         this.init();
@@ -42,8 +42,11 @@
             this.$element = $(this.element);
 
             this._margins = this._options.margins; // { top: 30, right: 20, bottom: 30, left: 20 };
-            this._size = this._options.size; // { width: 940, height: 300 };
 
+            var containerWidth = this._options.size ? this._options.size.width : this.$element.width();
+            var containerHeight = this._options.size ? this._options.size.height : this.$element.height() || containerWidth;
+
+            this._size = { height: containerHeight, width: containerWidth };
         },
 
         _removeOverlappingPoints: function (data, maxNumberOfPoints) {
@@ -85,8 +88,13 @@
 
             var graph = d3.select(this.element).selectAll("svg").data([data]);
 
-            var container = graph.enter().append("svg").classed(this._options.graphClass, true)
+            var container = graph.enter()
+                .append("svg")
+                .classed(this._options.graphClass, true)
+                .attr("viewBox", "0 0 " + this._size.width + " " + this._size.height)
+                .attr("preserveAspectRatio", "xMidYMid")
                 .append("g").classed("container-group", true);
+
             container.append("g").classed("x axis", true);
             container.append("g").classed("y axis", true);
             container.append("g").classed("chart-group", true);
@@ -94,7 +102,7 @@
             container.select(".chart-group").append("g").classed("line-group", true);
             container.select(".chart-group").append("g").classed("point-group", true);
 
-            graph.transition().attr({ width: this._size.width, height: this._size.height });
+            //graph.transition().attr({ width: this._size.width, height: this._size.height });
             graph.select(".container-group").attr({ transform: "translate(" + this._margins.left + "," + this._margins.top + ")" });
 
             // create yAxis
@@ -168,14 +176,15 @@
 
             points.exit().transition().attr("r", 0).remove();
 
+            graph.exit().remove();
+
         }
 
     };
 
     TimeLineGraph._defaults = {
         ease: "bounce",
-        graphClass: "graph",
-        size: { width: 940, height: 300 },
+        graphClass: "time-line-graph",
         margins: { top: 30, right: 20, bottom: 30, left: 20 }
     };
 
@@ -302,8 +311,7 @@
     LineGraph._defaults = {
         ease: "bounce",
         graphClass: "graph",
-        size: { width: 940, height: 300 },
-        margins: { top: 30, right: 20, bottom: 30, left: 20 }
+        margins: { top: 0, right: 100, bottom: 0, left: 100 }
     };
 
     LineGraph.defaults = function (settings) {
