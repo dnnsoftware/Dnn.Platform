@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Installer.Packages;
 
@@ -52,6 +54,13 @@ namespace DotNetNuke.Modules.Admin.Extensions
             CDN.Text = JavaScriptLibrary.CDNPath;
             FileName.Text = JavaScriptLibrary.FileName;
             Location.Text = LocalizeString(JavaScriptLibrary.PreferredScriptLocation.ToString());
+            CustomCDN.Text = HostController.Instance.GetString("CustomCDN_" + JavaScriptLibrary.LibraryName);
+        }
+
+        public override void UpdatePackage()
+        {
+            base.UpdatePackage();
+            HostController.Instance.Update("CustomCDN_" + JavaScriptLibrary.LibraryName, CustomCDN.Text, true);
         }
     }
 }

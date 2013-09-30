@@ -27,4 +27,8 @@
         <dnn:Label ID="CDNLabel" runat="server" ControlName="CDN" />
         <asp:Label ID="CDN" runat="server"></asp:Label>
     </div>
+    <div class="dnnFormItem">
+        <dnn:Label ID="CustomCDNLabel" runat="server" ControlName="CustomCDN" />
+        <asp:TextBox ID="CustomCDN" runat="server"></asp:TextBox>
+    </div>
 </fieldset>

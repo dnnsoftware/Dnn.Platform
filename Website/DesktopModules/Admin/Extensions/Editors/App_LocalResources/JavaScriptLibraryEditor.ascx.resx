@@ -129,6 +129,12 @@
   <data name="CDNLabel.Text" xml:space="preserve">
     <value>Default CDN:</value>
   </data>
+  <data name="CustomCDNLabel.Help" xml:space="preserve">
+    <value>The url to a custom CDN location for this library which will be used instead of the default CDN</value>
+  </data>
+  <data name="CustomCDNLabel.Text" xml:space="preserve">
+    <value>Custom CDN:</value>
+  </data>
   <data name="FileNameLabel.Help" xml:space="preserve">
     <value>The filename of the javascript file.</value>
   </data>

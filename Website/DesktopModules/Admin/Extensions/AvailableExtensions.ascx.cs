@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                 break;
                             case "JavaScript_Library":
                                 type = "JavaScript_Library";
-                                installPath = Globals.ApplicationMapPath + "\\Install\\JavaScript Library";
+                                installPath = Globals.ApplicationMapPath + "\\Install\\JavaScriptLibrary";
                                 break;
                             case "Module":
                             case "Skin":
