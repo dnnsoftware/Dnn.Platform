@@ -68,6 +68,11 @@
             // define dimensions of graph
             var chartWidth = this._size.width - this._margins.right - this._margins.left; // width
             var chartHeight = this._size.height - this._margins.top - this._margins.bottom; // height
+
+            if (chartWidth < 0 || chartHeight < 0) {
+                throw new Error("wrong dimension");
+            }
+
             var data = keyValuePairs || [];
 
             var maxNumberOfPoints = Math.floor(chartWidth / 10);
@@ -123,10 +128,12 @@
                     xScaleLabelFormat = "%b %Y";
                     break;
                 default:
-                    xScaleLabelFormat = "%b %e, %Y";
+                    xScaleLabelFormat = "";
                     break;
             }
-            xAxis.tickFormat(d3.time.format(xScaleLabelFormat));
+            if (xScaleLabelFormat) {
+                xAxis.tickFormat(d3.time.format(xScaleLabelFormat));
+            }
 
             // Add the x-axis.
             graph.select(".x.axis")
