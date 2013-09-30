@@ -84,6 +84,11 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
     }
 }
