@@ -886,9 +886,6 @@ namespace DotNetNuke.Entities.Tabs
                 PermanentRedirect = PermanentRedirect
             };
 
-
-
-
             if (BreadCrumbs != null)
             {
                 clonedTab.BreadCrumbs = new ArrayList();
