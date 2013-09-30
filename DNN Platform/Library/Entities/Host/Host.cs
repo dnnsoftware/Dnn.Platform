@@ -87,6 +87,16 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        /// <summary>
+        /// gets whether or not CDN has been enabled for all registered javascript libraries
+        /// </summary>
+        public static bool CdnEnabled
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("CDNEnabled", false);
+            }
+        }
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether the Upgrade Indicator is enabled

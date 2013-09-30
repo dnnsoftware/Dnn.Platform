@@ -73,7 +73,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             library.JavaScriptLibraryID = DataProvider.Instance().ExecuteScalar<int>("SaveJavaScriptLibrary", 
                                                         library.JavaScriptLibraryID,
                                                         library.PackageID,
-                                                        library.LibrayName,
+                                                        library.LibraryName,
                                                         library.Version.ToString(3),
                                                         library.FileName,
                                                         library.ObjectName,

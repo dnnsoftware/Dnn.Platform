@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     JavaScriptLibraryController.Instance.DeleteLibrary(library);
 
-                    Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibrayName));
+                    Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
                 }
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 //Attempt to get the JavaScript Library
-                _installedLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibrayName == _library.LibrayName);
+                _installedLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == _library.LibraryName);
 
                 if (_installedLibrary != null)
                 {
@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 JavaScriptLibraryController.Instance.SaveLibrary(_library);
 
                 Completed = true;
-                Log.AddInfo(string.Format(Util.LIBRARY_Registered, _library.LibrayName));
+                Log.AddInfo(string.Format(Util.LIBRARY_Registered, _library.LibraryName));
             }
             catch (Exception ex)
             {

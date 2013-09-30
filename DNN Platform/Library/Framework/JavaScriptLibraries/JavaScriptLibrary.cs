@@ -31,7 +31,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     {
         public int JavaScriptLibraryID { get; set; }
         public int PackageID { get; set; }
-        public string LibrayName { get; set; }
+        public string LibraryName { get; set; }
         public Version Version { get; set; }
         public string ObjectName { get; set; }
         public string FileName { get; set; }
@@ -70,7 +70,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         case "javaScriptLibrary":
                             break;
                         case "librayName":
-                            LibrayName = reader.ReadElementContentAsString();
+                            LibraryName = reader.ReadElementContentAsString();
                             break;
                         case "objectName":
                             ObjectName = reader.ReadElementContentAsString();
@@ -116,7 +116,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             writer.WriteStartElement("javaScriptLibrary");
 
             //write out properties
-            writer.WriteElementString("librayName", LibrayName);
+            writer.WriteElementString("librayName", LibraryName);
             writer.WriteElementString("fileName", FileName);
             writer.WriteElementString("objectName", ObjectName);
             writer.WriteElementString("preferredScriptLocation", PreferredScriptLocation.ToString());
