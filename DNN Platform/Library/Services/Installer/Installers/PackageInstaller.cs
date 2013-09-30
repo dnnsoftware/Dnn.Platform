@@ -479,8 +479,15 @@ namespace DotNetNuke.Services.Installer.Installers
 
             //Get Version
             string strVersion = Util.ReadAttribute(manifestNav, "version", Log, Util.EXCEPTION_VersionMissing);
-            ValidateVersion(strVersion);
-            if (!IsValid)
+            if (string.IsNullOrEmpty(strVersion))
+            {
+                IsValid = false;
+            }
+            if (IsValid)
+            {
+                Package.Version = new Version(strVersion);
+            }
+            else
             {
                 return;
             }
@@ -497,6 +504,22 @@ namespace DotNetNuke.Services.Installer.Installers
                 _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name);
             }
 
+            if (_installedPackage != null)
+            {
+                Package.InstalledVersion = _installedPackage.Version;
+                Package.InstallerInfo.PackageID = _installedPackage.PackageID;
+
+                if (Package.InstalledVersion > Package.Version)
+                {
+                    Log.AddFailure(Util.INSTALL_Version + " - " + Package.InstalledVersion.ToString(3));
+                    IsValid = false;
+                }
+                else if (Package.InstalledVersion == Package.Version)
+                {
+                    Package.InstallerInfo.Installed = true;
+                    Package.InstallerInfo.PortalID = _installedPackage.PortalID;
+                }
+            }
 
             Log.AddInfo(Util.DNN_ReadingPackage + " - " + Package.PackageType + " - " + Package.Name);
             Package.FriendlyName = Util.ReadElement(manifestNav, "friendlyName", Package.Name);
