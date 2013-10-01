@@ -247,6 +247,7 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; }; //var dnn = dnn |
         _resize: function (eventObject) {
             var currentPosition = this._getMousePosition(eventObject);
             var offsetX = currentPosition.x - this._initialPosition.x;
+            //offsetX = this.options.rl ? -offsetX : offsetX;
             var offsetY = currentPosition.y - this._initialPosition.y;
             var newSize = { width: this._initialSize.width + offsetX, height: this._initialSize.height + offsetY };
             this._setSize(newSize);
