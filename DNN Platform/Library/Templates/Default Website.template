@@ -477,17 +477,6 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
-      <friendlyname>RadEditor Manager</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
     <!-- EE, PE-->
     <!-- CE -->
     <portalDesktopModule sku="CE">

@@ -2963,10 +2963,16 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion720()
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName("51Degrees.mobi", Null.NullInteger);
-            DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+            if (desktopModule != null)
+            {
+                DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+            }
 
             desktopModule = DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.RadEditorProvider", Null.NullInteger);
-            DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+            if (desktopModule != null)
+            {
+                DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+            }
 
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
