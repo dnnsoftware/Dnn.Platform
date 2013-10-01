@@ -4,20 +4,20 @@
 <div class="dnnForm dnnSQLModule dnnClear" id="dnnSQLModule">
     <fieldset>
         <div class="dnnFormItem">
-            <dnn:Label ID="scriptLabel" runat="server" ControlName="txtQuery" CssClass="dnnFormRequired" />
-            <asp:RequiredFieldValidator ID="valText" runat="server" CssClass="dnnFormMessage dnnFormError" resourcekey="NoScript" ControlToValidate="txtQuery" ValidationGroup="Script"></asp:RequiredFieldValidator>
-        </div>
-        <div class="dnnClear">
-            <asp:TextBox ID="txtQuery" runat="server" TextMode="MultiLine" Rows="10" Width="100%" ValidationGroup="Script" />
+            <dnn:Label ID="lblSavedQuery" runat="server" ControlName="ddlSavedQuery" />
+            <asp:DropDownList ID="ddlSavedQuery" runat="server" DataTextField="Name" DataValueField="QueryId" AutoPostBack="true"></asp:DropDownList>
+            <asp:LinkButton ID="lnkDelete" resourcekey="lnkDelete" runat="server" CssClass="dnnSecondaryAction" Visible="false" />
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="plConnection" runat="server" ControlName="ddlConnection" />
             <asp:DropDownList ID="ddlConnection" runat="server"></asp:DropDownList>
         </div>
         <div class="dnnFormItem">
-            <dnn:Label ID="lblSavedQuery" runat="server" ControlName="ddlSavedQuery" />
-            <asp:DropDownList ID="ddlSavedQuery" runat="server" DataTextField="Name" DataValueField="QueryId" AutoPostBack="true"></asp:DropDownList>
-            <asp:LinkButton ID="lnkDelete" resourcekey="lnkDelete" runat="server" CssClass="dnnSecondaryAction" Visible="false" />
+            <dnn:Label ID="scriptLabel" runat="server" ControlName="txtQuery" CssClass="dnnFormRequired" />
+            <asp:RequiredFieldValidator ID="valText" runat="server" CssClass="dnnFormMessage dnnFormError" resourcekey="NoScript" ControlToValidate="txtQuery" ValidationGroup="Script"></asp:RequiredFieldValidator>
+        </div>
+        <div class="dnnClear">
+            <asp:TextBox ID="txtQuery" runat="server" TextMode="MultiLine" Rows="10" Width="100%" ValidationGroup="Script" />
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="plSqlScript" runat="server" ControlName="uplSqlScript" />
@@ -42,7 +42,7 @@
     <asp:Repeater ID="rptResults" runat="server" EnableViewState="False">
         <ItemTemplate>
             <div class="dnnFormItem dnnResults">
-                <img class="imgCopy" runat="server" src="~/images/copy.gif" title='<%#LocalizeString("CopyToClipboard") %>' alt='<%#LocalizeString("CopyToClipboard") %>'  />
+                <img class="imgCopy" runat="server" src="~/images/copy.gif" title='<%#LocalizeString("CopyToClipboard") %>' alt='<%#LocalizeString("CopyToClipboard") %>' />
                 <asp:GridView ID="grdResults" runat="server" AutoGenerateColumns="true" CssClass="dnnGrid">
                     <HeaderStyle CssClass="dnnGridHeader" />
                     <RowStyle CssClass="dnnGridItem" />
@@ -70,7 +70,7 @@
         $('#<%=lnkSaveQuery.ClientID%>').bind("click", function () {
             var active = $('#<%=ddlSavedQuery.ClientID%> option:selected').text();
             if ($('#<%=ddlSavedQuery.ClientID%>').val() == "")
-                    active = "";
+                active = "";
             $('#<%=txtName.ClientID%>').val(active);
             $("#dialog-save").dialog('open');
             return false;
