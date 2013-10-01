@@ -159,7 +159,8 @@ namespace DotNetNuke.Services.Installer.Packages
 
 	        foreach (var dependency in package.Dependencies)
 	        {
-		        SavePackageDependency(dependency);
+                dependency.PackageId = package.PackageID;
+                SavePackageDependency(dependency);
 	        }
 
             AddLog(package, EventLogController.EventLogType.PACKAGE_UPDATED);

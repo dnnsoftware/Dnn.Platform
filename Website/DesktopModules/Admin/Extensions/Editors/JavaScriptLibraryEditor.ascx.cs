@@ -19,6 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
+
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -38,6 +42,27 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
+        protected string FormatVersion(object version)
+        {
+            var retValue = Null.NullString;
+            var package = version as PackageInfo;
+            if (package != null)
+            {
+                retValue = package.Version.ToString(3);
+            }
+            else
+            {
+                var dependency = version as PackageDependencyInfo;
+                if (dependency != null)
+                {
+                    retValue = dependency.Version.ToString(3);
+                }
+            }
+
+            return retValue;
+        }
+
+
         public JavaScriptLibrary JavaScriptLibrary
         {
             get 
@@ -55,6 +80,26 @@ namespace DotNetNuke.Modules.Admin.Extensions
             FileName.Text = JavaScriptLibrary.FileName;
             Location.Text = LocalizeString(JavaScriptLibrary.PreferredScriptLocation.ToString());
             CustomCDN.Text = HostController.Instance.GetString("CustomCDN_" + JavaScriptLibrary.LibraryName);
+
+            if (Package.Dependencies.Count > 0)
+            {
+                DependOnPackages.DataSource = Package.Dependencies;
+                DependOnPackages.DataBind();
+            }
+
+            var usedBy = PackageController.Instance.GetPackageDependencies(d => d.PackageName == Package.Name && d.Version <= Package.Version).Select(d => d.PackageId);
+
+            var usedByPackages = from p in PackageController.Instance.GetExtensionPackages(Package.PortalID)
+                                 where usedBy.Contains(p.PackageID)
+                                 select p;
+
+
+
+            if (usedByPackages.Any())
+            {
+                UsedByPackages.DataSource = usedByPackages;
+                UsedByPackages.DataBind();
+            }
         }
 
         public override void UpdatePackage()

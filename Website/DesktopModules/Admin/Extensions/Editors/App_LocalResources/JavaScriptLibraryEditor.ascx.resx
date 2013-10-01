@@ -135,6 +135,12 @@
   <data name="CustomCDNLabel.Text" xml:space="preserve">
     <value>Custom CDN:</value>
   </data>
+  <data name="DependOnPackagesLabel.Help" xml:space="preserve">
+    <value>Displays a list of all the packages that this package depends on.</value>
+  </data>
+  <data name="DependOnPackagesLabel.Text" xml:space="preserve">
+    <value>Depends On:</value>
+  </data>
   <data name="FileNameLabel.Help" xml:space="preserve">
     <value>The filename of the javascript file.</value>
   </data>
@@ -164,6 +170,12 @@
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>JavaScript Library Settings</value>
+  </data>
+  <data name="UsedByPackagesLabel.Help" xml:space="preserve">
+    <value>Displays a list of all the packages that use this package.</value>
+  </data>
+  <data name="UsedByPackagesLabel.Text" xml:space="preserve">
+    <value>Used By:</value>
   </data>
   <data name="VersionLabel.Help" xml:space="preserve">
     <value>The version of the JavaScript Library.</value>
