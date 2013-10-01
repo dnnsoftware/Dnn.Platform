@@ -167,10 +167,11 @@ namespace DotNetNuke.Data
             catch (Exception ex)
             {
                 //error in SQL query
-                errorMessage = ex.Message;
+                errorMessage = ex + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
                 return null;
             }
         }
+
         private string GetConnectionStringUserID()
         {
             string DBUser = "public";
