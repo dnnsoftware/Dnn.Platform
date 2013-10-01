@@ -142,11 +142,11 @@
                 <fieldset>
                     <div class="dnnFormItem">
                         <dnn:label id="plSplashTabId" runat="server" controlname="cboSplashTabId" ResourceKey="plSplashTabId" />
-                        <dnn:DnnPageDropDownList ID="cboSplashTabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cboSplashTabId" runat="server" IncludeDisabledTabs="True" />
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plHomeTabId" runat="server" controlname="cboHomeTabId" />
-                        <dnn:DnnPageDropDownList ID="cboHomeTabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cboHomeTabId" runat="server"  IncludeDisabledTabs="True"/>
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plLoginTabId" runat="server" controlname="cboLoginTabId" />
@@ -154,11 +154,11 @@
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plRegisterTabId" runat="server" controlname="cboRegisterTabId" />
-                        <dnn:DnnPageDropDownList ID="cboRegisterTabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cboRegisterTabId" runat="server"  IncludeDisabledTabs="True"/>
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plUserTabId" runat="server" controlname="cboUserTabId" />
-                        <dnn:DnnPageDropDownList ID="cboUserTabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cboUserTabId" runat="server"  IncludeDisabledTabs="True"/>
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plSearchTabId" runat="server" controlname="cboSearchTabId" />

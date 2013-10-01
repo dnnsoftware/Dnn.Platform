@@ -253,38 +253,36 @@ namespace DesktopModules.Admin.Portals
                                                                  true,
                                                                  "<" + Localization.GetString("None_Specified") + ">",
                                                                  true,
-                                                                 false,
+                                                                 true,
                                                                  false,
                                                                  false,
                                                                  false);
 
-            var tabs = listTabs.Where(t => t.DisableLink == false).ToList();
-
             if (portal.SplashTabId > 0)
             {
-                cboSplashTabId.SelectedPage = tabs.SingleOrDefault(t => t.TabID == portal.SplashTabId);
+                cboSplashTabId.SelectedPage = listTabs.SingleOrDefault(t => t.TabID == portal.SplashTabId);
             }
 
             cboSplashTabId.PortalId = portal.PortalID;
 
             if (portal.HomeTabId > 0)
             {
-                cboHomeTabId.SelectedPage = tabs.SingleOrDefault(t => t.TabID == portal.HomeTabId);
+                cboHomeTabId.SelectedPage = listTabs.SingleOrDefault(t => t.TabID == portal.HomeTabId);
             }
 
             cboHomeTabId.PortalId = portal.PortalID;
 
-            cboLoginTabId.DataSource = tabs.Where(t => (t.TabID > 0 && Globals.ValidateLoginTabID(t.TabID)) || t.TabID == Null.NullInteger).ToList();
+            cboLoginTabId.DataSource = listTabs.Where(t => (t.TabID > 0 && Globals.ValidateLoginTabID(t.TabID)) || t.TabID == Null.NullInteger).ToList();
             cboLoginTabId.DataBind(portal.LoginTabId.ToString(CultureInfo.InvariantCulture));
 
             if (portal.RegisterTabId > 0)
             {
-                cboRegisterTabId.SelectedPage = tabs.SingleOrDefault(t => t.TabID == portal.RegisterTabId);
+                cboRegisterTabId.SelectedPage = listTabs.SingleOrDefault(t => t.TabID == portal.RegisterTabId);
             }
 
             cboRegisterTabId.PortalId = portal.PortalID;
 
-            cboSearchTabId.DataSource = tabs.Where(t => (t.TabID > 0 && Globals.ValidateModuleInTab(t.TabID, "Search Results")) || t.TabID == Null.NullInteger).ToList();
+            cboSearchTabId.DataSource = listTabs.Where(t => (t.TabID > 0 && Globals.ValidateModuleInTab(t.TabID, "Search Results")) || t.TabID == Null.NullInteger).ToList();
             cboSearchTabId.DataBind(portal.SearchTabId.ToString(CultureInfo.InvariantCulture));
 
             pagesExtensionPoint.BindAction(portal.PortalID, -1, -1);
