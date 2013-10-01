@@ -988,6 +988,7 @@ namespace DotNetNuke.Services.FileSystem
             var oldFilePath = file.Folder;
             file.FolderId = destinationFolder.FolderID;
             file.Folder = destinationFolder.FolderPath;
+            file.FolderMappingID = destinationFolder.FolderMappingID;
             file = UpdateFile(file);
 
             // Notify File Moved event
