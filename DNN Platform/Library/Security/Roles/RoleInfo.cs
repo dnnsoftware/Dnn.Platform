@@ -524,9 +524,6 @@ namespace DotNetNuke.Security.Roles
         /// <summary>
         /// Gets an XmlSchema for the RoleInfo
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -538,12 +535,12 @@ namespace DotNetNuke.Security.Roles
         /// Reads a RoleInfo from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	03/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
+            //Set status to approved by default
+            Status = RoleStatus.Approved;
+
             while (reader.Read())
             {
                 if (reader.NodeType == XmlNodeType.EndElement)
