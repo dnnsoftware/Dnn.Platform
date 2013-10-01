@@ -557,7 +557,10 @@ namespace DotNetNuke.Entities.Urls
                 }
                 logValue.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
                 logValue.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString());
-                logValue.AddProperty("Item added to cache", "Custom Alias Tabs added to cache.  Key:" + CustomAliasTabsKey + " Items: " + customAliasTabs.Count.ToString());
+                using (customAliasTabs.GetReadLock())
+                {
+                    logValue.AddProperty("Item added to cache", "Custom Alias Tabs added to cache.  Key:" + CustomAliasTabsKey + " Items: " + customAliasTabs.Count.ToString());
+                }
                 elc.AddLog(logValue);
             }
         }
