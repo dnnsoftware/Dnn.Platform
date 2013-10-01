@@ -1416,6 +1416,30 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 GO
 
 
+/** DNN-3191 Enhancements to the SQL Module	**/
+/*********************************************/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SQLQueries') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}{objectQualifier}SQLQueries(
+		[QueryId] [int] IDENTITY(1,1) NOT NULL,
+		[Name] [nvarchar](200) NOT NULL,
+		[Query] [nvarchar](max) NOT NULL,
+		[ConnectionStringName] [nvarchar](50) NOT NULL,
+		[CreatedByUserId] [int] NOT NULL,
+		[CreatedOnDate] [datetime] NOT NULL,
+		[LastModifiedByUserId] [int] NOT NULL,
+		[LastModifiedOnDate] [datetime] NOT NULL,
+		 CONSTRAINT [PK_dnn_SavedQueries] PRIMARY KEY CLUSTERED 
+		(
+			[QueryId] ASC
+		)
+	)
+END
+
+GO
+
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
