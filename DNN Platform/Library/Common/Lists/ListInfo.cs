@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System;
@@ -32,39 +33,22 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class ListInfo : BaseEntityInfo
     {
-        private int mDefinitionID = Null.NullInteger;
-        private bool mEnableSortOrder = Null.NullBoolean;
-        private int mEntryCount;
-        private bool mIsPopulated = Null.NullBoolean;
-        private int mLevel;
-        private string mName = Null.NullString;
-        private string mParent = Null.NullString;
-        private int mParentID;
-        private string mParentKey = Null.NullString;
-        private string mParentList = Null.NullString;
-        private int mPortalID = Null.NullInteger;
-        private bool mSystemList = Null.NullBoolean;
+        public ListInfo() : this(String.Empty) { }
 
         public ListInfo(string Name)
         {
-            mName = Name;
+            SystemList = Null.NullBoolean;
+            EnableSortOrder = Null.NullBoolean;
+            IsPopulated = Null.NullBoolean;
+            ParentList = Null.NullString;
+            Parent = Null.NullString;
+            ParentKey = Null.NullString;
+            PortalID = Null.NullInteger;
+            DefinitionID = Null.NullInteger;
+            this.Name = Name;
         }
 
-        public ListInfo()
-        {
-        }
-
-        public string Name
-        {
-            get
-            {
-                return mName;
-            }
-            set
-            {
-                mName = value;
-            }
-        }
+        public int DefinitionID { get; set; }
 
         public string DisplayName
         {
@@ -79,29 +63,11 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        public int Level
-        {
-            get
-            {
-                return mLevel;
-            }
-            set
-            {
-                mLevel = value;
-            }
-        }
+        public bool EnableSortOrder { get; set; }
 
-        public int DefinitionID
-        {
-            get
-            {
-                return mDefinitionID;
-            }
-            set
-            {
-                mDefinitionID = value;
-            }
-        }
+        public int EntryCount { get; set; }
+
+        public bool IsPopulated { get; set; }
 
         public string Key
         {
@@ -116,112 +82,20 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        public int EntryCount
-        {
-            get
-            {
-                return mEntryCount;
-            }
-            set
-            {
-                mEntryCount = value;
-            }
-        }
+        public int Level { get; set; }
 
-        public int PortalID
-        {
-            get
-            {
-                return mPortalID;
-            }
-            set
-            {
-                mPortalID = value;
-            }
-        }
+        public string Name { get; set; }
 
-        public int ParentID
-        {
-            get
-            {
-                return mParentID;
-            }
-            set
-            {
-                mParentID = value;
-            }
-        }
+        public string Parent { get; set; }
 
-        public string ParentKey
-        {
-            get
-            {
-                return mParentKey;
-            }
-            set
-            {
-                mParentKey = value;
-            }
-        }
+        public int ParentID { get; set; }
 
-        public string Parent
-        {
-            get
-            {
-                return mParent;
-            }
-            set
-            {
-                mParent = value;
-            }
-        }
+        public string ParentKey { get; set; }
 
-        public string ParentList
-        {
-            get
-            {
-                return mParentList;
-            }
-            set
-            {
-                mParentList = value;
-            }
-        }
+        public string ParentList { get; set; }
 
-        public bool IsPopulated
-        {
-            get
-            {
-                return mIsPopulated;
-            }
-            set
-            {
-                mIsPopulated = value;
-            }
-        }
+        public int PortalID { get; set; }
 
-        public bool EnableSortOrder
-        {
-            get
-            {
-                return mEnableSortOrder;
-            }
-            set
-            {
-                mEnableSortOrder = value;
-            }
-        }
-
-        public bool SystemList
-        {
-            get
-            {
-                return mSystemList;
-            }
-            set
-            {
-                mSystemList = value;
-            }
-        }
+        public bool SystemList { get; set; }
     }
 }
