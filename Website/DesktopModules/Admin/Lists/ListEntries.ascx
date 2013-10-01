@@ -57,11 +57,11 @@
         </div>
         <div  id="rowSelectList" runat="server" class="dnnFormItem">
             <dnn:Label ID="plSelectList" runat="server" ControlName="ddlSelectList "/>
-            <dnn:DnnComboBox ID="ddlSelectList" AutoPostBack="true" runat="Server" Enabled="false" />
+            <dnn:DnnComboBox ID="ddlSelectList" AutoPostBack="true" runat="Server" Enabled="false" CausesValidation="False" />
         </div>
         <div  id="rowSelectParent" runat="server" class="dnnFormItem">
             <dnn:Label ID="plSelectParent" runat="server" ControlName="ddlSelectParent" />
-            <dnn:DnnComboBox ID="ddlSelectParent" AutoPostBack="true" runat="Server" Enabled="false" />
+            <dnn:DnnComboBox ID="ddlSelectParent" AutoPostBack="true" runat="Server" Enabled="false" CausesValidation="False" />
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="plEntryText" runat="server" ControlName="txtEntryText" CssClass="dnnFormRequired" />
