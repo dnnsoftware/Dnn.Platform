@@ -501,11 +501,12 @@ namespace DotNetNuke.Services.FileSystem
                 var addedFile = GetFile(file.FileId);
 
                 // Notify file event
-                if (fileExists)
+                if (fileExists && folderWorkflow == null)
                 {
                     OnFileOverwritten(addedFile, createdByUserID);
                 }
-                else
+
+                if(!fileExists)
                 {
                     OnFileAdded(addedFile, folder, createdByUserID);
                 }
