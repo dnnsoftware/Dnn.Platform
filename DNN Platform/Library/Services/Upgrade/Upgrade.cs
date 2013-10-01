@@ -2962,13 +2962,19 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion720()
         {
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName("51Degrees.mobi", Null.NullInteger);
+            DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+
+            desktopModule = DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.RadEditorProvider", Null.NullInteger);
+            DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
             AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ModuleCreator/CreateModule.ascx", "~/DesktopModules/Admin/ModuleCreator/icon.png", SecurityAccessLevel.Host, 0);
             if (ModuleDefinitionController.GetModuleDefinitionByID(moduleDefId) != null)
             {
                 var desktopModuleId = ModuleDefinitionController.GetModuleDefinitionByID(moduleDefId).DesktopModuleID;
-                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
+                desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
                 desktopModule.Category = "Developer";
                 DesktopModuleController.SaveDesktopModule(desktopModule, false, false);
             }
@@ -2985,6 +2991,9 @@ namespace DotNetNuke.Services.Upgrade
             
             //fixes issue introduced by eventlog's being defined in upgrade.cs
             PortalController.EnsureRequiredEventLogTypesExist();
+
+
+
         }
 
         private static ContentItem CreateFileContentItem()
