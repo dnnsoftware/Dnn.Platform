@@ -916,7 +916,7 @@
     <value>There was an error incrementing the Client Resource version.</value>
   </data>
   <data name="DebugEnabled.Text" xml:space="preserve">
-    <value>Debug mode is currently enabled at the application level (this is specified in the web.config file). This means that files will not be combined, even if file combining is enabled here or at the host level.</value>
+    <value>Debug mode is currently enabled at the application level (this is specified in the web.config file). This means that files will not be combined, even if file combining is enabled here or at the site level.</value>
   </data>
   <data name="DebugEnabled.Title" xml:space="preserve">
     <value>Important note regarding application debug mode</value>
