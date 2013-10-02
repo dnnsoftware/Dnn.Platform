@@ -1,5 +1,6 @@
 /* ===========   SQL Module Styling   =========== */
 .dnnSQLModule{width:100%;margin:2em auto;}
+#results {margin-top: 30px;}
 .dnnResults{width: 100%;overflow:auto;margin-bottom:20px;}
 #dialog-save .dnnFormItem {margin-top: 70px;}
 #dialog-save .dnnFormItem span.dnnFormMessage.dnnFormError{bottom: 65%;}

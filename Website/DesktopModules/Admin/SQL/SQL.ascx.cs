@@ -177,9 +177,22 @@ namespace DotNetNuke.Modules.Admin.SQL
             {
                 if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
                 {
-                    var gvResults = (GridView)e.Item.FindControl("grdResults");
-                    gvResults.DataSource = e.Item.DataItem;
-                    gvResults.DataBind();
+                    var grResults = (DataGrid)e.Item.FindControl("grResults");
+                    var toolbar = (HtmlControl)e.Item.FindControl("toolbar");
+                    var lblRows = (Label)e.Item.FindControl("lblRows");
+
+                    grResults.DataSource = e.Item.DataItem;
+                    grResults.DataBind();
+
+                    if (grResults.Items.Count == 0)
+                    {
+                        lblRows.Text = LocalizeString("NoDataReturned");
+                        toolbar.Visible = false;
+                    }
+                    else
+                    {
+                        lblRows.Text = string.Format(LocalizeString("NumRowsReturned"), grResults.Items.Count);
+                    }
                 }
             }
             catch (Exception exc)
