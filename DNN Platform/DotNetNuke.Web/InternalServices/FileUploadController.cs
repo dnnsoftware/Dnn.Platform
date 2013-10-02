@@ -30,6 +30,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 using DotNetNuke.Common;
@@ -116,6 +117,7 @@ namespace DotNetNuke.Web.InternalServices
 
             // local references for use in closure
             var portalSettings = PortalSettings;
+            var currentHttpContext = HttpContext.Current;
             var userInfo = UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
                 .ContinueWith(o =>
@@ -128,6 +130,8 @@ namespace DotNetNuke.Web.InternalServices
                         bool extract = false;
                         Stream stream = null;
                         string returnFilename = string.Empty;
+
+                        HttpContext.Current = currentHttpContext;
 
                         foreach (var item in provider.Contents)
                         {
