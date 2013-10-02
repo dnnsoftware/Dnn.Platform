@@ -612,6 +612,10 @@
                     <asp:CheckBox ID="chkEnableContentLocalization" runat="server" />
                 </div>
                 <div class="dnnFormItem">
+                    <dnn:label id="plDebugMode" controlname="chkDebugMode" runat="server" />
+                    <asp:CheckBox ID="chkDebugMode" runat="server" />
+                </div>
+                <div class="dnnFormItem">
                     <dnn:label id="plAsyncTimeout" controlname="txtAsyncTimeout" runat="server" />
                     <asp:TextBox ID="txtAsyncTimeout" runat="server" MaxLength="4" />
                     <asp:Label runat="server" resourcekey="Seconds" />
