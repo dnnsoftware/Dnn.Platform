@@ -216,11 +216,11 @@
   <data name="CopyToClipboard.Text" xml:space="preserve">
     <value>Copy to Clipboard</value>
   </data>
-  <data name="lblNoData.Text" xml:space="preserve">
-    <value>Your query returned no data.</value>
-  </data>
   <data name="CopiedToClipboard.Text" xml:space="preserve">
     <value>The result was copied to the clipboard.</value>
+  </data>
+  <data name="NumRowsReturned.Text" xml:space="preserve">
+    <value>{0} rows returned</value>
   </data>
   <data name="ResultTitle.Text" xml:space="preserve">
     <value>ResultSet #</value>

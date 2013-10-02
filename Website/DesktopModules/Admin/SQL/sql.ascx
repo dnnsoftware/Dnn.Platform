@@ -46,15 +46,17 @@
         <asp:Repeater ID="rptResults" runat="server" EnableViewState="False">
             <ItemTemplate>
                 <div class="dnnResults" id='result_<%#Container.ItemIndex +1 %>'>
-                    <img class="imgCopy" runat="server" src="~/images/copy.gif" title='<%#LocalizeString("CopyToClipboard") %>' alt='<%#LocalizeString("CopyToClipboard") %>' />
-                    <asp:GridView ID="grdResults" runat="server" AutoGenerateColumns="true" CssClass="dnnGrid">
-                        <HeaderStyle CssClass="dnnGridHeader" />
-                        <RowStyle CssClass="dnnGridItem" />
-                        <AlternatingRowStyle CssClass="dnnGridAltItem" />
-                        <EmptyDataTemplate>
-                            <asp:Label ID="lblNoData" runat="server" resourcekey="lblNoData"></asp:Label>
-                        </EmptyDataTemplate>
-                    </asp:GridView>
+                    <asp:Label ID="lblRows" runat="server" CssClass="NormalBold"></asp:Label>
+                    <div id="toolbar" runat="server">
+                        <asp:Image ID="imgCopy" runat="server" CssClass="imgCopy" ImageUrl="~/images/copy.gif" ToolTip='<%#LocalizeString("CopyToClipboard") %>' AlternateText='<%#LocalizeString("CopyToClipboard") %>' />
+                    </div>
+                    <div>
+                        <asp:DataGrid ID="grResults" runat="server" AutoGenerateColumns="true" CssClass="dnnGrid">
+                            <HeaderStyle CssClass="dnnGridHeader" />
+                            <ItemStyle CssClass="dnnGridItem" />
+                            <AlternatingItemStyle CssClass="dnnGridAltItem" />
+                        </asp:DataGrid>
+                    </div>
                 </div>
             </ItemTemplate>
         </asp:Repeater>
@@ -96,13 +98,11 @@
             title: '<%=LocalizeString("SaveDialogTitle")%>'
         }).parent().appendTo(jQuery('form:first'));;
 
-//        
-//        $('img.imgCopy').zclip({
-//            path: '<%=GetClipboardPath()%>',
-//            copy: function () { return $(this).siblings('div').html(); },
-//            afterCopy: function () { dnnAlert('<%=Localization.GetSafeJSString(LocalizeString("cmdCancel"))%>'); }
-//        });
-    
+        $('img.imgCopy').zclip({
+            path: '<%=GetClipboardPath()%>',
+            copy: function () { return $(this).parent().siblings('div').html(); },
+            afterCopy: function () { $.dnnAlert({ text: '<%=Localization.GetSafeJSString(LocalizeString("CopiedToClipboard"))%>' }); }
+        });
 
         $('#results').dnnTabs();
     });
