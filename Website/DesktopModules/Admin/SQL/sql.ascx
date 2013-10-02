@@ -39,21 +39,27 @@
         <li>
             <asp:LinkButton ID="lnkSaveQuery" runat="server" CssClass="dnnSecondaryAction" resourcekey="lnkSaveQuery" ValidationGroup="Script" /></li>
     </ul>
-    <asp:Repeater ID="rptResults" runat="server" EnableViewState="False">
-        <ItemTemplate>
-            <div class="dnnFormItem dnnResults">
-                <img class="imgCopy" runat="server" src="~/images/copy.gif" title='<%#LocalizeString("CopyToClipboard") %>' alt='<%#LocalizeString("CopyToClipboard") %>' />
-                <asp:GridView ID="grdResults" runat="server" AutoGenerateColumns="true" CssClass="dnnGrid">
-                    <HeaderStyle CssClass="dnnGridHeader" />
-                    <RowStyle CssClass="dnnGridItem" />
-                    <AlternatingRowStyle CssClass="dnnGridAltItem" />
-                    <EmptyDataTemplate>
-                        <asp:Label ID="lblNoData" runat="server" resourcekey="lblNoData"></asp:Label>
-                    </EmptyDataTemplate>
-                </asp:GridView>
-            </div>
-        </ItemTemplate>
-    </asp:Repeater>
+    <div id="results">
+        <ul class="dnnAdminTabNav">
+            <asp:PlaceHolder ID="plTabs" runat="server"></asp:PlaceHolder>
+        </ul>
+        <asp:Repeater ID="rptResults" runat="server" EnableViewState="False">
+            <ItemTemplate>
+                <div class="dnnResults" id='result_<%#Container.ItemIndex +1 %>'>
+                    <img class="imgCopy" runat="server" src="~/images/copy.gif" title='<%#LocalizeString("CopyToClipboard") %>' alt='<%#LocalizeString("CopyToClipboard") %>' />
+                    <asp:GridView ID="grdResults" runat="server" AutoGenerateColumns="true" CssClass="dnnGrid">
+                        <HeaderStyle CssClass="dnnGridHeader" />
+                        <RowStyle CssClass="dnnGridItem" />
+                        <AlternatingRowStyle CssClass="dnnGridAltItem" />
+                        <EmptyDataTemplate>
+                            <asp:Label ID="lblNoData" runat="server" resourcekey="lblNoData"></asp:Label>
+                        </EmptyDataTemplate>
+                    </asp:GridView>
+                </div>
+            </ItemTemplate>
+        </asp:Repeater>
+    </div>
+
     <div id="dialog-save" class="dnnDialog">
         <div class="dnnFormItem">
             <dnn:Label ID="lblName" runat="server" ControlName="txtName" CssClass="dnnFormRequired" />
@@ -90,10 +96,14 @@
             title: '<%=LocalizeString("SaveDialogTitle")%>'
         }).parent().appendTo(jQuery('form:first'));;
 
-        $('img.imgCopy').zclip({
-            path: '<%=GetClipboardPath()%>',
-            copy: function () { return $(this).siblings('div').html(); }
-        });
+//        
+//        $('img.imgCopy').zclip({
+//            path: '<%=GetClipboardPath()%>',
+//            copy: function () { return $(this).siblings('div').html(); },
+//            afterCopy: function () { dnnAlert('<%=Localization.GetSafeJSString(LocalizeString("cmdCancel"))%>'); }
+//        });
+    
 
+        $('#results').dnnTabs();
     });
 </script>

@@ -219,4 +219,10 @@
   <data name="lblNoData.Text" xml:space="preserve">
     <value>Your query returned no data.</value>
   </data>
+  <data name="CopiedToClipboard.Text" xml:space="preserve">
+    <value>The result was copied to the clipboard.</value>
+  </data>
+  <data name="ResultTitle.Text" xml:space="preserve">
+    <value>ResultSet #</value>
+  </data>
 </root>
