@@ -338,7 +338,7 @@
         // search box
         dnn.searchResult.searchInput = $('#dnnSearchResult_dnnSearchBox').dnnSearchBox({
             id: 'dnnSearchResult_dnnSearchBox',
-            filterText: dnn.searchResult.defaultSettings.advancedText,
+            advancedText: dnn.searchResult.defaultSettings.advancedText,
             showAdvanced: true,
             advancedId: 'dnnSearchResultAdvancedForm',
             enablePreview: false,
