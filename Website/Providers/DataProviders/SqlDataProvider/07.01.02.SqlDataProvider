@@ -552,29 +552,70 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRecycleModules]
-
 	@PortalID int
-	
 AS
-SELECT  OwnerPortalID, PortalID, {objectQualifier}vw_Modules.TabID, {objectQualifier}vw_Modules.TabModuleID, 
-        {objectQualifier}vw_Modules.ModuleID, ModuleDefID, {objectQualifier}vw_Modules.ModuleOrder, {objectQualifier}vw_Modules.PaneName, {objectQualifier}vw_Modules.ModuleTitle, 
-        {objectQualifier}vw_Modules.CacheTime, {objectQualifier}vw_Modules.CacheMethod, {objectQualifier}vw_Modules.Alignment, {objectQualifier}vw_Modules.Color, {objectQualifier}vw_Modules.Border, 
-        {objectQualifier}vw_Modules.IconFile, AllTabs, {objectQualifier}vw_Modules.Visibility, {objectQualifier}vw_Modules.IsDeleted, {objectQualifier}vw_Modules.Header, 
-        {objectQualifier}vw_Modules.Footer, StartDate, EndDate, {objectQualifier}vw_Modules.ContainerSrc, {objectQualifier}vw_Modules.DisplayTitle, 
-        {objectQualifier}vw_Modules.DisplayPrint, {objectQualifier}vw_Modules.DisplaySyndicate, {objectQualifier}vw_Modules.IsWebSlice, {objectQualifier}vw_Modules.WebSliceTitle, 
-        {objectQualifier}vw_Modules.WebSliceExpiryDate, {objectQualifier}vw_Modules.WebSliceTTL, InheritViewPermissions, IsShareable, 
-        IsShareableViewOnly, DesktopModuleID, DefaultCacheTime, ModuleControlID, 
-        BusinessControllerClass, IsAdmin, SupportedFeatures, ContentItemID, 
-        [Content], ContentTypeID, ContentKey, Indexed, StateID, 
-        {objectQualifier}vw_Modules.CreatedByUserID, {objectQualifier}vw_Modules.CreatedOnDate, LastContentModifiedOnDate, {objectQualifier}vw_Modules.UniqueId, 
-        {objectQualifier}vw_Modules.VersionGuid, {objectQualifier}vw_Modules.DefaultLanguageGuid, {objectQualifier}vw_Modules.LocalizedVersionGuid, {objectQualifier}vw_Modules.CultureCode, 
-        {objectQualifier}TabModules.LastModifiedByUserID, {objectQualifier}TabModules.LastModifiedOnDate
-FROM    {objectQualifier}vw_Modules INNER JOIN
-        {objectQualifier}TabModules ON {objectQualifier}vw_Modules.TabModuleID = {objectQualifier}TabModules.TabModuleID
-WHERE  PortalId = @PortalID
-ORDER BY ModuleId
+	SELECT  
+		M.OwnerPortalID, 
+		M.PortalID, 
+		M.TabID, 
+		M.TabModuleID, 
+		M.ModuleID, 
+		M.ModuleDefID, 
+		M.ModuleOrder, 
+		M.PaneName, 
+		M.ModuleTitle, 
+		M.CacheTime, 
+		M.CacheMethod, 
+		M.Alignment, 
+		M.Color, 
+		M.Border, 
+		M.IconFile, 
+		M.AllTabs, 
+		M.Visibility, 
+		M.IsDeleted, 
+		M.Header, 
+		M.Footer, 
+		M.StartDate, 
+		M.EndDate, 
+		M.ContainerSrc, 
+		M.DisplayTitle, 
+		M.DisplayPrint, 
+		M.DisplaySyndicate, 
+		M.IsWebSlice, 
+		M.WebSliceTitle, 
+		M.WebSliceExpiryDate, 
+		M.WebSliceTTL, 
+		M.InheritViewPermissions, 
+		M.IsShareable, 
+		M.IsShareableViewOnly, 
+		M.DesktopModuleID, 
+		M.DefaultCacheTime, 
+		M.ModuleControlID, 
+		M.BusinessControllerClass, 
+		M.IsAdmin, 
+		M.SupportedFeatures, 
+		M.ContentItemID, 
+		M.[Content], 
+		M.ContentTypeID, 
+		M.ContentKey, 
+		M.Indexed, 
+		M.StateID, 
+		M.CreatedByUserID, 
+		M.CreatedOnDate, 
+		M.LastContentModifiedOnDate, 
+		M.UniqueId, 
+		M.VersionGuid, 
+		M.DefaultLanguageGuid, 
+		M.LocalizedVersionGuid, 
+		M.CultureCode, 
+		TM.LastModifiedByUserID, 
+		TM.LastModifiedOnDate
+	FROM    {objectQualifier}vw_Modules AS M INNER JOIN
+			{objectQualifier}TabModules AS TM ON M.TabModuleID = TM.TabModuleID
+	WHERE  M.PortalId = @PortalID
+	ORDER BY M.ModuleId
 
-Go
+GO
 
 
 /* update GetPortalsByUser Procedure */
