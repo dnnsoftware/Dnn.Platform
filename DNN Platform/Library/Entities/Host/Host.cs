@@ -444,6 +444,24 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Gets whether the installation runs in debug mode. This property can be used
+        ///   by the framework and extensions alike to write more verbose logs/onscreen
+        ///   information, etc. It is set in the host settings page.
+        /// </summary>
+        /// <history>
+        ///   [pdonker]  10/02/2013   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool DebugMode
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("DebugMode", false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Gets whether a css class based on the Module Name is automatically rendered
         /// </summary>
         /// <remarks>
