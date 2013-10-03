@@ -6,40 +6,40 @@
         <div class="dnnFormItem">
             <dnn:Label ID="lblSavedQuery" runat="server" ControlName="ddlSavedQuery" />
             <asp:DropDownList ID="ddlSavedQuery" runat="server" DataTextField="Name" DataValueField="QueryId" AutoPostBack="true"></asp:DropDownList>
-            <asp:LinkButton ID="lnkDelete" resourcekey="lnkDelete" runat="server" CssClass="dnnSecondaryAction" Visible="false" />
+            <asp:ImageButton ID="btDelete" resourcekey="btDelete" runat="server" Visible="false" ImageUrl="~/icons/sigma/Delete_16X16_Standard.png" />
+            <div class="dnnRight">
+                <asp:FileUpload ID="uplSqlScript" runat="server" />
+                <asp:LinkButton ID="cmdUpload" resourcekey="cmdUpload" EnableViewState="False" runat="server" CssClass="dnnSecondaryAction" />
+            </div>
         </div>
+        <hr />
         <div class="dnnFormItem">
             <dnn:Label ID="plConnection" runat="server" ControlName="ddlConnection" />
             <asp:DropDownList ID="ddlConnection" runat="server"></asp:DropDownList>
+            <div class="dnnRight">
+                <asp:ImageButton ID="btSave" resourcekey="btSaveQuery" runat="server" ImageUrl="~/icons/sigma/Save_16X16_Standard.png" ValidationGroup="Script" />
+            </div>
         </div>
         <div class="dnnFormItem">
-            <dnn:Label ID="scriptLabel" runat="server" ControlName="txtQuery" CssClass="dnnFormRequired" />
             <asp:RequiredFieldValidator ID="valText" runat="server" CssClass="dnnFormMessage dnnFormError" resourcekey="NoScript" ControlToValidate="txtQuery" ValidationGroup="Script"></asp:RequiredFieldValidator>
         </div>
-        <div class="dnnClear">
+        <div>
             <asp:TextBox ID="txtQuery" runat="server" TextMode="MultiLine" Rows="10" Width="100%" ValidationGroup="Script" />
-        </div>
-        <div class="dnnFormItem">
-            <dnn:Label ID="plSqlScript" runat="server" ControlName="uplSqlScript" />
-            <asp:FileUpload ID="uplSqlScript" runat="server" />
-            <asp:LinkButton ID="cmdUpload" resourcekey="cmdUpload" EnableViewState="False" runat="server" CssClass="dnnSecondaryAction" />
-        </div>
-        <div runat="server" id="errorRow" visible="false" enableviewstate="false">
-            <div class="dnnFormItem">
-                <dnn:Label ID="errorLabel" runat="server" ControlName="txtError" />
-            </div>
-            <div class="dnnClear">
-                <asp:TextBox ID="txtError" runat="server" TextMode="MultiLine" Width="100%" Rows="10" EnableViewState="False" Wrap="False" ReadOnly="true" />
-            </div>
         </div>
     </fieldset>
     <ul class="dnnActions dnnClear">
         <li>
             <asp:LinkButton ID="cmdExecute" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdExecute" ValidationGroup="Script" /></li>
-        <li>
-            <asp:LinkButton ID="lnkSaveQuery" runat="server" CssClass="dnnSecondaryAction" resourcekey="lnkSaveQuery" ValidationGroup="Script" /></li>
     </ul>
-    <div id="results">
+    <asp:Panel ID="pnlError" runat="server" Visible="false">
+        <div class="dnnFormItem">
+            <dnn:Label ID="errorLabel" runat="server" ControlName="txtError" />
+        </div>
+        <div class="dnnClear">
+            <asp:TextBox ID="txtError" runat="server" TextMode="MultiLine" Width="100%" Rows="10" EnableViewState="False" Wrap="False" ReadOnly="true" />
+        </div>
+    </asp:Panel>
+    <asp:Panel ID="pnlResults" runat="server" Visible="false">
         <ul class="dnnAdminTabNav">
             <asp:PlaceHolder ID="plTabs" runat="server"></asp:PlaceHolder>
         </ul>
@@ -47,20 +47,12 @@
             <ItemTemplate>
                 <div class="dnnResults" id='result_<%#Container.ItemIndex +1 %>'>
                     <asp:Label ID="lblRows" runat="server" CssClass="NormalBold"></asp:Label>
-                    <div id="toolbar" runat="server">
-                        <asp:Image ID="imgCopy" runat="server" CssClass="imgCopy" ImageUrl="~/images/copy.gif" ToolTip='<%#LocalizeString("CopyToClipboard") %>' AlternateText='<%#LocalizeString("CopyToClipboard") %>' />
-                    </div>
-                    <div>
-                        <asp:DataGrid ID="grResults" runat="server" AutoGenerateColumns="true" CssClass="dnnGrid">
-                            <HeaderStyle CssClass="dnnGridHeader" />
-                            <ItemStyle CssClass="dnnGridItem" />
-                            <AlternatingItemStyle CssClass="dnnGridAltItem" />
-                        </asp:DataGrid>
-                    </div>
+                    <asp:GridView ID="gvResults" runat="server" AutoGenerateColumns="true">
+                    </asp:GridView>
                 </div>
             </ItemTemplate>
         </asp:Repeater>
-    </div>
+    </asp:Panel>
 
     <div id="dialog-save" class="dnnDialog">
         <div class="dnnFormItem">
@@ -75,7 +67,10 @@
 
 <script>
     $(function () {
-        $('#<%=lnkSaveQuery.ClientID%>').bind("click", function () {
+        $('#<%=btSave.ClientID%>').bind("click", function () {
+            if ($('#<%=txtQuery.ClientID%>').val() == "")
+                return false;
+
             var active = $('#<%=ddlSavedQuery.ClientID%> option:selected').text();
             if ($('#<%=ddlSavedQuery.ClientID%>').val() == "")
                 active = "";
@@ -91,19 +86,56 @@
         $("#dialog-save").dialog({
             modal: true,
             autoOpen: false,
-            resizable: false,
+            resizable: true,
             dialogClass: 'dnnFormPopup dnnClear',
             width: 400,
             height: 250,
             title: '<%=LocalizeString("SaveDialogTitle")%>'
         }).parent().appendTo(jQuery('form:first'));;
 
-        $('img.imgCopy').zclip({
-            path: '<%=GetClipboardPath()%>',
-            copy: function () { return $(this).parent().siblings('div').html(); },
-            afterCopy: function () { $.dnnAlert({ text: '<%=Localization.GetSafeJSString(LocalizeString("CopiedToClipboard"))%>' }); }
+        $('.dnnResults table').each(function (index, element) {
+            var query = $(this).attr("title");
+            var oTable = $(this).dataTable(
+            {
+                "sScrollX": "100%",
+                "sPaginationType": "full_numbers",
+                "aLengthMenu": [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "<%=LocalizeString("AllRows")%>"]
+                ],
+                "iDisplayLength": -1,
+                "sDom": 'T<"clear">lfrtip',
+                "oTableTools": {
+                    "sSwfPath": "/dnn_platform/desktopmodules/admin/sql/plugins/datatables/swf/copy_csv_xls_pdf.swf",
+                    "aButtons": [
+                        {
+                            "sExtends": "copy",
+                            "sButtonText": "<img src='/dnn_platform/icons/sigma/CheckList_16X16_Gray.png'/>"
+                        },
+                        {
+                            "sExtends": "csv",
+                            "sTitle": query,
+                            "sButtonText": "<img src='/dnn_platform/icons/sigma/FileDownload_16x16_Black.png'/>"
+                        },
+                        {
+                            "sExtends": "xls",
+                            "sTitle": query,
+                            "sButtonText": "<img src='/dnn_platform/icons/sigma/ExtXlsx_16X16_Standard.png'/>"
+                        },
+                        {
+                            "sExtends": "pdf",
+                            "sTitle": query,
+                            "sPdfOrientation": "landscape",
+                            "sButtonText": "<img src='/dnn_platform/icons/sigma/ExtPdf_16X16_Standard.png'/>"
+                        }
+                    ]
+                }
+            });
+            //new FixedHeader(oTable);
+            new FixedColumns(oTable);
         });
 
-        $('#results').dnnTabs();
+        $('#<%=pnlResults.ClientID%>').dnnTabs();
+
     });
 </script>
