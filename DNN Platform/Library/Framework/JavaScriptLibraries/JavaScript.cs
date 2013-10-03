@@ -168,6 +168,33 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
             JavaScriptLibrary jsl = GetJavascriptLibrary(js);
             ClientResourceManager.RegisterScript(page, GetScriptLocation(jsl), jsl.PackageID + 500, GetScriptPath(jsl));
+
+            if (Host.CdnEnabled)
+            {
+                string pagePortion;
+                switch (jsl.PreferredScriptLocation)
+                {
+                    case ScriptLocation.PageHead:
+
+                        pagePortion = "ClientDependencyHeadJs";
+                        break;
+                    case ScriptLocation.BodyBottom:
+                        pagePortion = "ClientResourcesFormBottom";
+                        break;
+                    case ScriptLocation.BodyTop:
+                        pagePortion = "BodySCRIPTS";
+                        break;
+                    default:
+                        pagePortion = "BodySCRIPTS";
+                        break;
+                }
+                Control scriptloader = page.FindControl(pagePortion);
+                var fallback = new DnnJsIncludeFallback(jsl.ObjectName, jsl.FileName);
+                if (scriptloader != null)
+                {
+                    scriptloader.Controls.Add(fallback);
+                }
+            }
         }
     }
 }

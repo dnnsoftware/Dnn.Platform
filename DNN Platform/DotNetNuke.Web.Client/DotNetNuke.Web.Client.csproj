@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DnnJsIncludeFallback.cs" />
     <Compile Include="FileOrder.cs" />
     <Compile Include="Controls\ClientResourceInclude.cs" />
     <Compile Include="Controls\ClientResourceLoader.cs" />
