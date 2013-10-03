@@ -47,7 +47,7 @@
 
             this._numberOfNodes = 0;
 
-            var $tree = this.$element.find(this.options.treeContainerCss);
+            var $tree = this.$element.find("." + this.options.treeContainerCss);
             this._tree = new dnn.TreeView($tree[0], { showRoot: true });
 
             var onRedrawTreeHandler = $.proxy(this._onRedrawTree, this);
@@ -266,7 +266,7 @@
         textCss: "text",
         searchOnCss: "searchOn",
         firstItemCss: "first-item",
-        treeContainerCss: ".dt-tree",
+        treeContainerCss: "dt-tree",
         scroll: true
     };
 
@@ -300,30 +300,28 @@
             this.options = $.extend({}, SortableTreeView.defaults(), this.options);
 
             this.$this = $(this);
-            this.$element = $(this.element);
 
-            this._$itemListHeaderElement = this.$element.find(this.options.headerCss);
-            this._$clearButton = this._$itemListHeaderElement.find(this.options.clearButtonCss);
+            this.$element = this.element ? $(this.element) : this._createLayout();
+
+            this._$itemListHeaderElement = this.$element.find("." + this.options.headerCss);
+            this._$clearButton = this._$itemListHeaderElement.find("." + this.options.clearButtonCss);
             this._$clearButton.on("click.drop-down-list", $.proxy(this._onClearClick, this));
-            this._$searchButton = this._$itemListHeaderElement.find(this.options.searchButtonCss);
+            this._$searchButton = this._$itemListHeaderElement.find("." + this.options.searchButtonCss);
             this._$searchButton.on("click.drop-down-list", $.proxy(this._onSearchClick, this));
             var onSortHandler = $.proxy(this._onSortClick, this);
-            this._$searchContainer = this._$itemListHeaderElement.find(this.options.searchContainer);
-            this._$searchInput = this._$itemListHeaderElement.find(this.options.searchInputCss).onEnter(onSortHandler).on("keyup.drop-down-list", $.proxy(this._displayClearButton, this));
+            this._$searchContainer = this._$itemListHeaderElement.find("." + this.options.searchContainerCss);
+            this._$searchInput = this._$itemListHeaderElement.find("." + this.options.searchInputCss).onEnter(onSortHandler).on("keyup.drop-down-list", $.proxy(this._displayClearButton, this));
             this._displayClearButton();
-            this._$sortButton = this._$itemListHeaderElement.find(this.options.sortButtonCss);
+            this._$sortButton = this._$itemListHeaderElement.find("." + this.options.sortButtonCss);
             this._$sortButton.on("click.drop-down-list", onSortHandler);
-            this._itemListHeaderHeight = this._$itemListHeaderElement.outerHeight(true);
 
-            this._$itemListFooterElement = this.$element.find(this.options.footerCss);
-            this._$resultValue = this._$itemListFooterElement.find(this.options.resultElementCss).children(":first");
-            this._itemListFooterHeight = this._$itemListFooterElement.outerHeight(true);
-            this._$resizerElement = this._$itemListFooterElement.find(this.options.resizerElementCss);
+            this._$itemListFooterElement = this.$element.find("." + this.options.footerCss);
+            this._$resultValue = this._$itemListFooterElement.find("." + this.options.resultElementCss).children(":first");
+            this._$resizerElement = this._$itemListFooterElement.find("." + this.options.resizerElementCss);
             this._resizer = new dnn.Resizer(this._$resizerElement[0], { container: this.$element });
             $(this._resizer).bind("resized", $.proxy(this._onResize, this));
 
-            this._$itemListContentElement = this.$element.find(this.options.contentCss);
-            this._$itemListContentElement.height(this.$element.height() - this._itemListHeaderHeight - this._itemListFooterHeight);
+            this._$itemListContentElement = this.$element.find("." + this.options.contentCss);
 
             this._onLoadTreeHandler = $.proxy(this._onLoadTree, this);
 
@@ -338,14 +336,31 @@
             $dynamicTree.on("onselectnode", $.proxy(this._onSelectNode, this));
             $dynamicTree.on("onchangenode", $.proxy(this._onChangeNode, this));
 
-            this._sortOrder = dnn.SortOrder.unspecified;
+            this._sortOrder(dnn.SortOrder.unspecified);
 
+        },
+
+        _createLayout: function () {
+            var layout = $("<div class='" + this.options.containerCss + "'/>")
+                    .append($("<div class='" + this.options.headerCss + "'/>")
+                        .append($("<a href='javascript:void(0);' class='" + this.options.sortButtonCss + "'><span>" + this.options.sortAscendingButtonTitle + "</span></a>"))
+                        .append($("<div class='" + this.options.searchContainerCss + "'/>")
+                            .append($("<div class='" + this.options.searchInputContainerCss + "'/>")
+                                .append($("<input type='text' placeholder='" + this.options.searchInputPlaceHolder + "' maxlength='200' autocomplete='off' class='" + this.options.searchInputCss + "'>")))
+                            .append($("<a href='javascript:void(0);' title='" + this.options.clearButtonTooltip + "' style='display:none;' class='" + this.options.clearButtonCss + "'/>"))
+                            .append($("<a href='javascript:void(0);' title='" + this.options.searchButtonTooltip + "' class='" + this.options.searchButtonCss + "'/>"))))
+                    .append($("<div class='" + this.options.contentCss + "'/>")
+                        .append($("<div class='" + this.options.treeContainerCss + "'/>")))
+                    .append($("<div class='" + this.options.footerCss + "'/>")
+                        .append($("<span class='" + this.options.resultElementCss + "'><b></b> " + this.options.resultsText + "</span>"))
+                        .append($("<div class='" + this.options.resizerElementCss + "'/>")));
+            return layout;
         },
 
         _onExpandNode: function(eventObject, nodeContext) {
             var onLoadChildNodesHandler = $.proxy(this._onLoadChildren, this, nodeContext);
             var searchText = this._searchInput();
-            this.controller.getChildren(nodeContext.data.id, this._sortOrder, searchText, onLoadChildNodesHandler);
+            this.controller.getChildren(nodeContext.data.id, this._sortOrder(), searchText, onLoadChildNodesHandler);
         },
 
         _onCollapseNode: function (eventObject, nodeContext) {
@@ -414,6 +429,10 @@
         },
 
         show: function () {
+            this._itemListHeaderHeight = this._$itemListHeaderElement.outerHeight(true);
+            this._itemListFooterHeight = this._$itemListFooterElement.outerHeight(true);
+            this._$itemListContentElement.height(this.$element.height() - this._itemListHeaderHeight - this._itemListFooterHeight);
+
             this._showTree(this._selectedNodeId);
         },
 
@@ -438,10 +457,10 @@
             this._loading(true);
             if (selectedItemId && (!this._firstNode || (this._firstNode && this._firstNode.data.id !== selectedItemId))) {
                 this._searchInput("");
-                this.controller.getTreeWithItem(selectedItemId, this._sortOrder, this._onLoadTreeHandler);
+                this.controller.getTreeWithItem(selectedItemId, this._sortOrder(), this._onLoadTreeHandler);
             }
             else {
-                this.controller.getTree(this._sortOrder, this._onLoadTreeHandler);
+                this.controller.getTree(this._sortOrder(), this._onLoadTreeHandler);
             }
             this._$searchContainer.removeClass(this.options.searchOnCss);
             this._searchHasBeenApplied = false;
@@ -460,30 +479,46 @@
             var searchText = this._searchInput();
             if (searchText) {
                 this._$searchContainer.addClass(this.options.searchOnCss);
-                this.controller.search(searchText, this._sortOrder, this._onLoadTreeHandler);
+                this.controller.search(searchText, this._sortOrder(), this._onLoadTreeHandler);
                 this._searchHasBeenApplied = true;
             }
             else {
                 this._$searchContainer.removeClass(this.options.searchOnCss);
-                this.controller.getTree(this._sortOrder, this._onLoadTreeHandler);
+                this.controller.getTree(this._sortOrder(), this._onLoadTreeHandler);
                 this._searchHasBeenApplied = false;
             }
         },
 
-        _sort: function() {
-            this._loading(true);
-            if (this._sortOrder === dnn.SortOrder.unspecified) {
-                this._sortOrder = dnn.SortOrder.ascending;
-                this._$sortButton.addClass("asc").prop("title", this.options.sortDescendingButtonTooltip);
+        _sortOrder: function (order) {
+            if (typeof order === "undefined") {
+                return this._sortOrderValue;
             }
-            else if (this._sortOrder === dnn.SortOrder.ascending) {
-                this._sortOrder = dnn.SortOrder.descending;
+            if (order === dnn.SortOrder.ascending) {
+                this._$sortButton.removeClass("desc").addClass("asc").prop("title", this.options.sortDescendingButtonTooltip);
+            }
+            else if (order === dnn.SortOrder.descending) {
                 this._$sortButton.removeClass("asc").addClass("desc").prop("title", this.options.unsortedOrderButtonTooltip);
             }
-            else {
-                this._sortOrder = dnn.SortOrder.unspecified;
-                this._$sortButton.removeClass("desc").prop("title", this.options.sortAscendingButtonTooltip);
+            else { // order === dnn.SortOrder.unspecified
+                this._$sortButton.removeClass("desc").removeClass("asc").prop("title", this.options.sortAscendingButtonTooltip);
             }
+            return this._sortOrderValue = order;
+        },
+
+        _getNextSortOrder: function() {
+            var order = this._sortOrder();
+            if (order === dnn.SortOrder.unspecified) {
+                return dnn.SortOrder.ascending;
+            }
+            if (order === dnn.SortOrder.ascending) {
+                return dnn.SortOrder.descending;
+            }
+            return dnn.SortOrder.unspecified;
+        },
+
+        _sort: function () {
+            this._loading(true);
+            this._sortOrder(this._getNextSortOrder());
             var searchText = "";
             if (this._searchHasBeenApplied) {
                 searchText = this._searchInput();
@@ -492,23 +527,26 @@
                     this._searchHasBeenApplied = false;
                 }
             }
-            this.controller.sortTree(this._sortOrder, this._dynamicTree.rootNode(), searchText, this._onLoadTreeHandler);
+            this.controller.sortTree(this._sortOrder(), this._dynamicTree.rootNode(), searchText, this._onLoadTreeHandler);
         }
 
     };
 
     SortableTreeView._defaults = {
         searchOnCss: "searchOn",
-        headerCss: ".dt-header",
-        footerCss: ".dt-footer",
-        contentCss: ".dt-content",
-        clearButtonCss: ".clear-button",
-        searchButtonCss: ".search-button",
-        searchContainer: ".search-container",
-        searchInputCss: ".search-input",
-        sortButtonCss: ".sort-button",
-        resultElementCss: ".result",
-        resizerElementCss: ".resizer",
+        containerCss: "dt-container",
+        headerCss: "dt-header",
+        footerCss: "dt-footer",
+        contentCss: "dt-content",
+        treeContainerCss: "dt-tree",
+        clearButtonCss: "clear-button",
+        searchButtonCss: "search-button",
+        searchContainerCss: "search-container",
+        searchInputContainerCss: "search-input-container",
+        searchInputCss: "search-input",
+        sortButtonCss: "sort-button",
+        resultElementCss: "result",
+        resizerElementCss: "resizer",
         loadingCss: "loading-items"
     };
 

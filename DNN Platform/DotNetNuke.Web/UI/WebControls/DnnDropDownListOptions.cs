@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -8,14 +7,11 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnDropDownListOptions
     {
 
-        [DataMember(Name = "selectedItemSelector")]
-        public string SelectedItemSelector;
+        [DataMember(Name = "selectedItemCss")]
+        public string SelectedItemCss;
 
         [DataMember(Name = "internalStateFieldId")]
         public string InternalStateFieldId;
-
-        [DataMember(Name = "itemListContainerSelector")]
-        public string ItemListContainerSelector;
 
         [DataMember(Name = "disabled")]
         public bool Disabled = false;

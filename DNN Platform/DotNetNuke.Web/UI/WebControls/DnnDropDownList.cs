@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -105,7 +104,7 @@ namespace DotNetNuke.Web.UI.WebControls
             _selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
             selectedItemPanel.Controls.Add(_selectedValue);
             Controls.Add(selectedItemPanel);
-
+/*
             var dropDownListPanel = new Panel { CssClass = "dt-container" };
             var header = new Panel { CssClass = "dt-header" };
 
@@ -164,7 +163,7 @@ namespace DotNetNuke.Web.UI.WebControls
             dropDownListPanel.Controls.Add(footer);
 
             Controls.Add(dropDownListPanel);
-
+*/
             _stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
             _stateControl.ValueChanged += (sender, args) => OnSelectionChanged(EventArgs.Empty);
             Controls.Add(_stateControl);
@@ -407,9 +406,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RegisterStartupScript()
         {
-            Options.SelectedItemSelector = ".selected-item";
+            Options.SelectedItemCss = "selected-item";
             Options.InternalStateFieldId = StateControl.ClientID;
-            Options.ItemListContainerSelector = ".dt-container";
 
             if (SelectedItem == null && UseUndefinedItem)
             {

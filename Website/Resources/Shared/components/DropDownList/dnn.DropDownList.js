@@ -40,14 +40,9 @@
             this.$this = $(this);
             this.$element = $(this.element);
 
-            this._$selectedItemContainer = this.$element.find(this.options.selectedItemSelector);
+            this._$selectedItemContainer = this.$element.find("." + this.options.selectedItemCss);
             this._$selectedItemCaption = this._$selectedItemContainer.find(".selected-value");
 
-            var stateElementId = this.options.internalStateFieldId;
-            if (stateElementId) {
-                this._stateElement = document.getElementById(stateElementId);
-            }
-            this._$itemListContainer = this.$element.find(this.options.itemListContainerSelector);
             this._onItemListShowHandler = $.proxy(this._onItemListShow, this);
             this._onItemListHideHandler = $.proxy(this._onItemListHide, this);
             this._onSelectedItemCaptionClickHandler = $.proxy(this._onSelectedItemCaptionClick, this);
@@ -56,6 +51,8 @@
 
             this._$selectedItemCaption.on("click", this._onSelectedItemCaptionClickHandler);
 
+            this._state = new StateField(this.options.initialState, this.options.internalStateFieldId);
+
             this.disabled(this.options.disabled);
 
         },
@@ -63,11 +60,11 @@
         selectedItem: function (item) {
             if (typeof item === "undefined") {
                 // getter:
-                var state = this._internalState();
+                var state = this._state.val();
                 return state ? state.selectedItem : null;
             }
             // setter:
-            this._internalState({ selectedItem: item });
+            this._state.val({ selectedItem: item });
             this._setSelectedItemCaption(item);
             if (this._treeView) {
                 this._treeView.selectedId(item ? item.key : null);
@@ -98,80 +95,67 @@
             this._$selectedItemCaption.text(caption || this.options.selectItemDefaultText);
         },
 
+        treeView: function () {
+            if (!this._treeView) {
+                this._treeView = this._createTreeView();
+                // append treeView layout to DOM before calling show
+                this.$element[0].appendChild((this._$treeViewLayout = this._treeView.$element)[0]);
+                this._treeView.show();
+            }
+            return this._treeView;
+        },
+
         _onItemListShow: function () {
             this._$selectedItemCaption.addClass("opened");
             $(document).on("click." + this.element.id, this._onDocumentClickHandler);
-            if (!this._treeView) {
-                this._treeView = this._createTreeView();
-                var item = this.selectedItem();
-                this._treeView.selectedId(item ? item.key : null);
-                this._treeView.show();
-            }
         },
 
         _onItemListHide: function () {
             this._$selectedItemCaption.removeClass("opened");
             $(document).off("click." + this.element.id, this._onDocumentClickHandler);
+            this._$treeViewLayout && dnn.removeElement(this._$treeViewLayout[0]);
+            this._$treeViewLayout = null;
         },
 
         _onSelectedItemCaptionClick: function (eventObject) {
             if (this._disabled) {
                 return;
             }
-            if (this._$itemListContainer.is(':visible')) {
-                this._$itemListContainer.slideUp('fast', this._onItemListHideHandler);
+            if (!this._$treeViewLayout) {
+                this.$element[0].appendChild((this._$treeViewLayout = this.treeView().$element)[0]);
+            }
+            if (this._$treeViewLayout.is(':visible')) {
+                this._$treeViewLayout.slideUp('fast', this._onItemListHideHandler);
             }
             else {
-                this._$itemListContainer.slideDown('fast', this._onItemListShowHandler);
+                this._$treeViewLayout.slideDown('fast', this._onItemListShowHandler);
             }
         },
 
         _closeItemList: function () {
-            if (this._$itemListContainer.is(':visible')) {
-                this._$itemListContainer.slideUp('fast', this._onItemListHideHandler);
+            if (this._$treeViewLayout && this._$treeViewLayout.is(':visible')) {
+                this._$treeViewLayout.slideUp('fast', this._onItemListHideHandler);
             }
-        },
-
-        _internalState: function (stateObject) {
-            if (typeof stateObject === "undefined") {
-                // getter:
-                if (typeof this._state === "undefined") {
-                    try {
-                        this._state = (this._stateElement && this._stateElement.value) ?
-                            JSON.parse(this._stateElement.value) : null;
-                    }
-                    catch (ex) {
-                    }
-                }
-                return this._state;
-            }
-            else {
-                // setter:
-                if (this._stateElement) {
-                    var stateAsJson = stateObject ? JSON.stringify(stateObject) : "";
-                    this._stateElement.value = stateAsJson;
-                }
-                this._state = stateObject;
-            }
-            return this._state;
         },
 
         _onDocumentClick: function (eventObject) {
             // clicked outside of the dropdown list
             // when click on the element, the onMouseClick handler is executed
             var clickedElement = eventObject.target;
-            if (this._$itemListContainer && !$.inContainer(this.$element, clickedElement)) {
+            if (!$.inContainer(this.$element, clickedElement)) {
                 this._closeItemList();
             }
         },
 
         _createTreeView: function () {
             var controller = new dnn.DynamicTreeViewController(this.options.services);
-            var treeView = new dnn.SortableTreeView(this._$itemListContainer[0], this.options.itemList, controller);
+            var treeView = new dnn.SortableTreeView(null, this.options.itemList, controller);
             var onChangeNodeHandler = $.proxy(this._onChangeNode, this);
             $(treeView).on("onchangenode", onChangeNodeHandler);
             var onSelectNodeHandler = $.proxy(this._onSelectNode, this);
             $(treeView).on("onselectnode", onSelectNodeHandler);
+            var item = this.selectedItem();
+            treeView.selectedId(item ? item.key : null);
             return treeView;
         },
 
@@ -204,6 +188,42 @@
             $.extend(DropDownList._defaults, settings);
         }
         return DropDownList._defaults;
+    };
+
+    var StateField = this.StateField = function (initialState, stateElementId) {
+        if (stateElementId) {
+            this._stateElement = document.getElementById(stateElementId);
+        }
+        this.val(initialState);
+    };
+
+    StateField.prototype = {
+        constructor: StateField,
+
+        val: function (stateObject) {
+            if (typeof stateObject === "undefined") {
+                // getter:
+                if (typeof this._state === "undefined") {
+                    try {
+                        this._state = (this._stateElement && this._stateElement.value) ?
+                            JSON.parse(this._stateElement.value) : null;
+                    }
+                    catch (ex) {
+                    }
+                }
+                return this._state;
+            }
+            else {
+                // setter:
+                if (this._stateElement) {
+                    var stateAsJson = stateObject ? JSON.stringify(stateObject) : "";
+                    this._stateElement.value = stateAsJson;
+                }
+                this._state = stateObject;
+            }
+            return this._state;
+        }
+
     };
 
 }).apply(dnn, [jQuery, window, document]);

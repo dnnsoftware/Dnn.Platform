@@ -34,7 +34,7 @@
             this.serviceFramework = $.dnnSF();
 
             this.$this = $(this);
-            this.$element = $(this.element);
+            this.$element = this.element ? $(this.element) : this._defaultLayout();
             this._$buttonGroup = this.$element.find(".dnnFileUploadHead  ul.dnnButtonGroup");
             this._$uploadResultPanel = this.$element.find('.dnnFileUploadExternalResultZone');
             this._$dialogCloseBtn = this.$element.find('.dnnFileUploadDialogClose');
@@ -74,7 +74,15 @@
 
             this._initUploadFileFromLocal();
         },
-        
+
+
+        _defaultLayout: function() {
+            var dialog = $("<div id='fu-dialog' tabindex='-1' class='dnnFileUploadControl' role='dialog'/>")
+                .append($("<p class='dnnFileUploadFileInfo'/>")
+                    .append($("<span>Use one of the methods below to upload files</span>")));
+            return dialog;
+        },
+
         _initUploadFileFromLocal: function () {
             var self = this;
             this._$inputFileControl.fileupload({

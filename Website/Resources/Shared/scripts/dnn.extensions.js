@@ -308,3 +308,9 @@ if (typeof Object.isElement === "undefined") {
                 o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string";
     };
 }
+
+dnn.removeElement = function (element) {
+    if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+    }
+};
