@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.Admin.SQL
 
             cmdExecute.Click += OnExecuteClick;
             cmdUpload.Click += OnUploadClick;
-            lnkDelete.Click += lnkDelete_Click;
+            btDelete.Click += btDelete_Click;
             lnkSave.Click += lnkSave_Click;
             rptResults.ItemDataBound += rptResults_ItemDataBound;
             ddlSavedQuery.SelectedIndexChanged += ddlSavedQuery_SelectedIndexChanged;
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.Admin.SQL
                     LoadSavedQueries();
 
                     cmdExecute.ToolTip = Localization.GetString("cmdExecute.ToolTip", LocalResourceFile);
-                    DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(lnkDelete, LocalizeString("DeleteItem"));
+                    DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(btDelete, LocalizeString("DeleteItem"));
                 }
             }
             catch (Exception exc)
@@ -104,6 +104,8 @@ namespace DotNetNuke.Modules.Admin.SQL
                 {
                     return;
                 }
+                pnlResults.Visible = false;
+                pnlError.Visible = false;
 
                 var connectionstring = Config.GetConnectionString(ddlConnection.SelectedValue);
 
@@ -112,12 +114,13 @@ namespace DotNetNuke.Modules.Admin.SQL
                     var strError = DataProvider.Instance().ExecuteScript(connectionstring, txtQuery.Text);
                     if (strError == Null.NullString)
                     {
+                        pnlResults.Visible = true;
                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                     }
                     else
                     {
                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                        errorRow.Visible = true;
+                        pnlError.Visible = true;
                         txtError.Text = strError;
                     }
                 }
@@ -146,19 +149,20 @@ namespace DotNetNuke.Modules.Admin.SQL
                             rptResults.DataSource = tables;
                             rptResults.DataBind();
 
+                            pnlResults.Visible = true;
                             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                         }
                         else
                         {
                             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                            errorRow.Visible = true;
+                            pnlError.Visible = true;
                             txtError.Text = errorMessage;
                         }
                     }
                     catch (SqlException sqlException)
                     {
                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                        errorRow.Visible = true;
+                        pnlError.Visible = true;
                         txtError.Text = sqlException.Message;
                         return;
                     }
@@ -177,21 +181,24 @@ namespace DotNetNuke.Modules.Admin.SQL
             {
                 if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
                 {
-                    var grResults = (DataGrid)e.Item.FindControl("grResults");
+                    var gvResults = (GridView)e.Item.FindControl("gvResults");
                     var toolbar = (HtmlControl)e.Item.FindControl("toolbar");
                     var lblRows = (Label)e.Item.FindControl("lblRows");
 
-                    grResults.DataSource = e.Item.DataItem;
-                    grResults.DataBind();
+                    gvResults.DataSource = e.Item.DataItem;
+                    gvResults.DataBind();
+                    gvResults.ToolTip = "Query " + (e.Item.ItemIndex + 1).ToString();
+                    
 
-                    if (grResults.Items.Count == 0)
+                    if (gvResults.Rows.Count == 0)
                     {
                         lblRows.Text = LocalizeString("NoDataReturned");
                         toolbar.Visible = false;
                     }
                     else
                     {
-                        lblRows.Text = string.Format(LocalizeString("NumRowsReturned"), grResults.Items.Count);
+                        gvResults.PreRender += gvResults_PreRender;
+                        lblRows.Text = string.Format(LocalizeString("NumRowsReturned"), gvResults.Rows.Count);
                     }
                 }
             }
@@ -201,12 +208,18 @@ namespace DotNetNuke.Modules.Admin.SQL
             }
         }
 
+        void gvResults_PreRender(object sender, EventArgs e)
+        {
+            GridView gvResults = (GridView)sender;
+            gvResults.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
+
         private void ddlSavedQuery_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlSavedQuery.SelectedValue == "")
             {
                 txtQuery.Text = "";
-                lnkDelete.Visible = false;
+                btDelete.Visible = false;
                 ddlConnection.SelectedValue = "SiteSqlServer";
             }
             else
@@ -216,7 +229,7 @@ namespace DotNetNuke.Modules.Admin.SQL
                 if (query != null)
                 {
                     txtQuery.Text = query.Query;
-                    lnkDelete.Visible = true;
+                    btDelete.Visible = true;
                     if (ddlConnection.Items.FindByValue(query.ConnectionStringName) != null)
                     {
                         ddlConnection.SelectedValue = query.ConnectionStringName;
@@ -257,7 +270,7 @@ namespace DotNetNuke.Modules.Admin.SQL
                 }
                 LoadSavedQueries();
                 ddlSavedQuery.SelectedValue = query.QueryId.ToString();
-                lnkDelete.Visible = true;
+                btDelete.Visible = true;
 
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("Saved"), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
@@ -267,7 +280,7 @@ namespace DotNetNuke.Modules.Admin.SQL
             }
         }
 
-        private void lnkDelete_Click(object sender, EventArgs e)
+        private void btDelete_Click(object sender, EventArgs e)
         {
             try
             {
@@ -339,7 +352,7 @@ namespace DotNetNuke.Modules.Admin.SQL
             ddlSavedQuery.DataBind();
 
             ddlSavedQuery.Items.Insert(0, new ListItem(LocalizeString("NewQuery"), ""));
-            lnkDelete.Visible = false;
+            btDelete.Visible = false;
 
         }
 
@@ -352,7 +365,11 @@ namespace DotNetNuke.Modules.Admin.SQL
 
         private void LoadPlugins()
         {
-            Page.ClientScript.RegisterClientScriptInclude("clipboard", this.TemplateSourceDirectory + "/plugins/clipboard/jquery.zclip.min.js");
+            Page.ClientScript.RegisterClientScriptInclude("datatables", this.TemplateSourceDirectory + "/plugins/datatables/js/jquery.dataTables.min.js");
+            Page.ClientScript.RegisterClientScriptInclude("fixedheader", this.TemplateSourceDirectory + "/plugins/datatables/js/FixedHeader.min.js");
+            Page.ClientScript.RegisterClientScriptInclude("fixedcolumn", this.TemplateSourceDirectory + "/plugins/datatables/js/FixedColumns.min.js");
+            Page.ClientScript.RegisterClientScriptInclude("tabletools", this.TemplateSourceDirectory + "/plugins/datatables/js/TableTools.min.js");
+            Page.ClientScript.RegisterClientScriptInclude("zclip", this.TemplateSourceDirectory + "/plugins/datatables/js/ZeroClipboard.js");
         }
 
         protected string GetClipboardPath()
