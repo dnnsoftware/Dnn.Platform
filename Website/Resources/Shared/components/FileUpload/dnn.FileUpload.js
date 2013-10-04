@@ -34,7 +34,8 @@
             this.serviceFramework = $.dnnSF();
 
             this.$this = $(this);
-            this.$element = this.element ? $(this.element) : this._defaultLayout();
+            this.$element = this.element ? $(this.element) : this._createLayout();
+
             this._$buttonGroup = this.$element.find(".dnnFileUploadHead  ul.dnnButtonGroup");
             this._$uploadResultPanel = this.$element.find('.dnnFileUploadExternalResultZone');
             this._$dialogCloseBtn = this.$element.find('.dnnFileUploadDialogClose');
@@ -236,29 +237,8 @@
             fileResultZone.find('.dnnFileUploadFileProgressBar.indeterminate-progress').removeClass('indeterminate-progress');
             fileResultZone.find('.dnnFileUploadExtracting').remove();
             fileResultZone.find('.dnnFileUploadFileProgressBar > div').css('width', '100%');
-        },
-
-        _internalState: function (stateObject) {
-            if (typeof stateObject === "undefined") {
-                if (typeof this._state === "undefined") {
-                    try {
-                        this._state = (this._stateElement && this._stateElement.value) ?
-                            JSON.parse(this._stateElement.value) : null;
-                    }
-                    catch (ex) {
-                    }
-                }
-                return this._state;
-            }
-            else {
-                if (this._stateElement) {
-                    var stateAsJson = stateObject ? JSON.stringify(stateObject) : "";
-                    this._stateElement.value = stateAsJson;
-                }
-                this._state = stateObject;
-            }
-            return this._state;
         }
+
     };
 
     FileUpload._defaults = {};

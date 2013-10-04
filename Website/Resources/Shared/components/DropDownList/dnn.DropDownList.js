@@ -39,10 +39,11 @@
             this.options = $.extend({}, DropDownList.defaults(), this.options);
 
             this.$this = $(this);
-            this.$element = $(this.element);
+
+            this.$element = this.element ? $(this.element) : this._createLayout();
 
             this._$selectedItemContainer = this.$element.find("." + this.options.selectedItemCss);
-            this._$selectedItemCaption = this._$selectedItemContainer.find(".selected-value");
+            this._$selectedItemCaption = this._$selectedItemContainer.find("." + this.options.selectedValueCss);
 
             this._onOpenItemListHandler = $.proxy(this._onOpenItemList, this);
             this._onCloseItemListHandler = $.proxy(this._onCloseItemList, this);
@@ -54,8 +55,18 @@
 
             this._state = new StateField(this.options.initialState, this.options.internalStateFieldId);
 
+            this._setSelectedItemCaption(this._state.val().selectedItem);
+
             this.disabled(this.options.disabled);
 
+            this._id = dnn.guid();
+        },
+
+        _createLayout: function () {
+            var layout = $("<div class='" + this.options.containerCss + "'/>")
+                    .append($("<div class='" + this.options.selectedItemCss + "'/>")
+                        .append($("<a href='javascript:void(0);' class='" + this.options.selectedValueCss + "'/>")));
+            return layout;
         },
 
         selectedItem: function (item) {
@@ -97,13 +108,13 @@
         },
 
         _onOpenItemList: function () {
-            this._$selectedItemCaption.addClass("opened");
-            $(document).on("click." + this.element.id, this._onDocumentClickHandler);
+            this._$selectedItemCaption.addClass(this.options.openedItemListCss);
+            $(document).on("click." + this._id, this._onDocumentClickHandler);
         },
 
         _onCloseItemList: function () {
-            this._$selectedItemCaption.removeClass("opened");
-            $(document).off("click." + this.element.id, this._onDocumentClickHandler);
+            this._$selectedItemCaption.removeClass(this.options.openedItemListCss);
+            $(document).off("click." + this._id, this._onDocumentClickHandler);
             dnn.removeElement(this._$treeViewLayout[0]);
         },
 
@@ -115,13 +126,13 @@
                 showTreeView = true;
             }
             // append treeView layout to DOM before calling show
-            if (!this._$treeViewLayout[0].parentElement) {
+            if (!$.inContainer(this.$element, this._$treeViewLayout[0])) {
                 this.$element[0].appendChild(this._$treeViewLayout[0]);
             }
             if (showTreeView) {
                 this._treeView.show();
             }
-            this._$treeViewLayout.slideDown('fast', this._onOpenItemListHandler);
+            this._$treeViewLayout.slideDown(this.options.openItemListSpeed, this._onOpenItemListHandler);
         },
 
         _isItemListOpen: function() {
@@ -129,7 +140,7 @@
         },
 
         _closeItemList: function () {
-           this._$treeViewLayout.slideUp('fast', this._onCloseItemListHandler);
+            this._$treeViewLayout.slideUp(this.options.closeItemListSpeed, this._onCloseItemListHandler);
         },
 
         _onSelectedItemCaptionClick: function (eventObject) {
@@ -152,9 +163,8 @@
             var controller = this._controller ? this._controller : new dnn.DynamicTreeViewController(this.options.services);
             var treeView = new dnn.SortableTreeView(null, this.options.itemList, controller);
             var onChangeNodeHandler = $.proxy(this._onChangeNode, this);
-            $(treeView).on("onchangenode", onChangeNodeHandler);
             var onSelectNodeHandler = $.proxy(this._onSelectNode, this);
-            $(treeView).on("onselectnode", onSelectNodeHandler);
+            $(treeView).on("onchangenode", onChangeNodeHandler).on("onselectnode", onSelectNodeHandler);
             var item = this.selectedItem();
             treeView.selectedId(item ? item.key : null);
             return treeView;
@@ -176,13 +186,19 @@
             if (typeof this.options.onSelectionChangedBackScript === "function") {
                 this.options.onSelectionChangedBackScript.apply(this);
             }
-            var e = $.Event('onchangenode');
-            this.$this.trigger(e, [item]);
+            this.$this.trigger($.Event("onchangenode"), [item]);
         }
 
     };
 
-    DropDownList._defaults = {};
+    DropDownList._defaults = {
+        containerCss: "dnnDropDownList",
+        selectedItemCss: "selected-item",
+        selectedValueCss: "selected-value",
+        openedItemListCss: "opened",
+        openItemListSpeed: "fast",
+        closeItemListSpeed: "fast"
+    };
 
     DropDownList.defaults = function (settings) {
         if (typeof settings !== "undefined") {

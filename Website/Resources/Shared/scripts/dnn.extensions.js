@@ -314,3 +314,15 @@ dnn.removeElement = function (element) {
         element.parentNode.removeChild(element);
     }
 };
+
+/*
+ * Generates a GUID string, according to RFC4122 standards.
+ * @returns {String} The generated GUID like "af8a8416-6e18-a307-bd9c-f2c947bbb3aa"
+ */
+dnn.guid = (function() {
+    var partOf8 = function (dashed) {
+        var part = (Math.random().toString(16) + "000000000").substr(2, 8);
+        return dashed ? "-" + part.substr(0, 4) + "-" + part.substr(4, 4) : part;
+    };
+    return function () { return partOf8(false) + partOf8(true) + partOf8(true) + partOf8(false); };
+})();

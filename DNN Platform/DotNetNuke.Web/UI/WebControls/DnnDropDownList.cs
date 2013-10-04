@@ -104,7 +104,16 @@ namespace DotNetNuke.Web.UI.WebControls
             _selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
             selectedItemPanel.Controls.Add(_selectedValue);
             Controls.Add(selectedItemPanel);
+
+            _stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
+            _stateControl.ValueChanged += (sender, args) => OnSelectionChanged(EventArgs.Empty);
+            Controls.Add(_stateControl);
+
+        }
+
 /*
+        private Control CreateItemListLayout()
+        {
             var dropDownListPanel = new Panel { CssClass = "dt-container" };
             var header = new Panel { CssClass = "dt-header" };
 
@@ -162,13 +171,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
             dropDownListPanel.Controls.Add(footer);
 
-            Controls.Add(dropDownListPanel);
-*/
-            _stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
-            _stateControl.ValueChanged += (sender, args) => OnSelectionChanged(EventArgs.Empty);
-            Controls.Add(_stateControl);
-
+            return dropDownListPanel;
         }
+*/
 
         protected override void OnInit(EventArgs e)
         {
