@@ -55,7 +55,8 @@
 
             this._state = new StateField(this.options.initialState, this.options.internalStateFieldId);
 
-            this._setSelectedItemCaption(this._state.val().selectedItem);
+            var stateValue = this._state.val();
+            this._setSelectedItemCaption(stateValue ? stateValue.selectedItem : null);
 
             this.disabled(this.options.disabled);
 
