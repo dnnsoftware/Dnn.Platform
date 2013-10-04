@@ -555,17 +555,6 @@
     <Compile Include="Services\Social\Messaging\IUserPreferencesController.cs" />
     <Compile Include="Services\Social\Messaging\UserPreference.cs" />
     <Compile Include="Services\Social\Messaging\UserPreferencesController.cs" />
-    <Compile Include="Services\Subscriptions\Common\ObjectKey.cs" />
-    <Compile Include="Services\Subscriptions\Common\SubscriptionsException.cs" />
-    <Compile Include="Services\Subscriptions\Controllers\ISubscriptionController.cs" />
-    <Compile Include="Services\Subscriptions\Controllers\ISubscriptionTypeController.cs" />
-    <Compile Include="Services\Subscriptions\Controllers\SubscriptionController.cs" />
-    <Compile Include="Services\Subscriptions\Controllers\SubscriptionTypeController.cs" />
-    <Compile Include="Services\Subscriptions\Data\DataService.cs" />
-    <Compile Include="Services\Subscriptions\Data\IDataService.cs" />
-    <Compile Include="Services\Subscriptions\Entities\Frequency.cs" />
-    <Compile Include="Services\Subscriptions\Entities\Subscriber.cs" />
-    <Compile Include="Services\Subscriptions\Entities\SubscriptionType.cs" />
     <Compile Include="Services\Upgrade\DnnInstallLogger.cs" />
     <Compile Include="Services\Upgrade\Internals\IInstallController.cs" />
     <Compile Include="Services\Upgrade\Internals\InstallConfiguration\ConnectionConfig.cs" />

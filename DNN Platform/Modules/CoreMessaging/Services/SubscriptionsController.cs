@@ -1,7 +1,23 @@
-﻿// DotNetNuke® - http://www.dotnetnuke.com
-//
-// Copyright (c) 2002-2013 DotNetNuke Corporation
-// All rights reserved.
+﻿#region Copyright
+// 
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2013
+// by DotNetNuke Corporation
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+#endregion
 
 using System;
 using System.Collections.Generic;
@@ -10,28 +26,26 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.Serialization;
 using System.Web.Http;
 using System.Xml;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Common;
 using DotNetNuke.Modules.CoreMessaging.ViewModels;
+using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Messaging;
-//using DotNetNuke.Services.Subscriptions.Controllers;
-//using DotNetNuke.Services.Subscriptions.Entities;
 using DotNetNuke.Services.Social.Subscriptions;
 using DotNetNuke.Services.Social.Subscriptions.Entities;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Modules.CoreMessaging.Services
 {
+    [DnnAuthorize]
     public class SubscriptionsController : DnnApiController
     {
-        #region Private Properties
+        private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
 
+        #region Private Properties
         private string LocalizationFolder
 		{
 			get
@@ -39,7 +53,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 return string.Format("~/DesktopModules/{0}/App_LocalResources/", DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", PortalSettings.PortalId).FolderName);
 			}
 		}
-
         #endregion
 
 		#region Public APIs
@@ -50,18 +63,17 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
         /// <param name="pageSize">Number of records to return per page</param>
         [HttpGet]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize) //TODO Add sortExpression parameter
         {
             try
             {
-                var subscriptions = SubscriptionController.Instance.GetUserSubscriptions(PortalSettings.UserId, PortalSettings.PortalId);
+                var subscriptions = SubscriptionController.Instance.GetUserSubscriptions(PortalSettings.UserId, PortalSettings.PortalId).ToArray();
                 var response = new
                     {
                         Success = true,
                         Results = subscriptions.Select(GetSubscriptionviewModel).ToList(),
-                        TotalResults = subscriptions == null ? 0 : subscriptions.Count()
+                        TotalResults = subscriptions.Count()
                     };
                 return Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -72,22 +84,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        private SubscriptionViewModel GetSubscriptionviewModel(Subscription subscription)
-        {
-            return new SubscriptionViewModel
-                {
-                    SubscripitionId = subscription.SubscriptionId,
-                    Description = subscription.Description,
-                    SubscriptionType =
-                        SubscriptionTypeController.Instance.GetSubscriptionType(
-                            t => t.SubscriptionTypeId == subscription.SubscriptionTypeId).FriendlyName
-                };
-        }
-
         [HttpPost]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateSystemSubscription(InboxSubs post)
+        public HttpResponseMessage UpdateSystemSubscription(InboxSubscriptionViewModel post)
         {
             try
             {               
@@ -111,14 +110,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         }
 
         [HttpPost]
-        [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage DeleteContentSubscription(Subscription sub)
+        public HttpResponseMessage DeleteContentSubscription(Subscription subscription)
         {
             try
             {
                 //TODO Check received object
-                SubscriptionController.Instance.DeleteSubscription(sub);
+                SubscriptionController.Instance.DeleteSubscription(subscription);
 
                 return Request.CreateResponse(HttpStatusCode.OK, "unsubscribed");
             }
@@ -151,7 +149,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 					dictionary.Add(kvp.Key, kvp.Value);
 				}
 
-				foreach (var kvp in GetLocalizationValues(Constants.SharedResources, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
+				foreach (var kvp in GetLocalizationValues(SharedResources, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
 				{
 					dictionary.Add(kvp.Key, kvp.Value);
 				}
@@ -165,24 +163,20 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
 			}
 		}
-
         #endregion
 
-		#region Internal classes
-
-		public class InboxSubs
+		#region Private Statics Methods
+        private static SubscriptionViewModel GetSubscriptionviewModel(Subscription subscription)
         {
-            [DataMember(Name = "notifyFreq")]
-            public int NotifyFreq { get; set; }
-
-            [DataMember(Name = "msgFreq")]
-            public int MsgFreq { get; set; }
-            
-		}
-
-		#endregion
-
-		#region Private Methods
+            return new SubscriptionViewModel
+            {
+                SubscripitionId = subscription.SubscriptionId,
+                Description = subscription.Description,
+                SubscriptionType =
+                    SubscriptionTypeController.Instance.GetSubscriptionType(
+                        t => t.SubscriptionTypeId == subscription.SubscriptionTypeId).FriendlyName
+            };
+        }
 
 		private static bool IsLanguageSpecific(string fileName)
 		{
@@ -274,7 +268,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
 			return null;
 		}
-
 		#endregion
 	}
 }

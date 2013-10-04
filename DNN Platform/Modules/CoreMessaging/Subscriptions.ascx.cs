@@ -1,14 +1,29 @@
-﻿// DotNetNuke® - http://www.dotnetnuke.com
+﻿#region Copyright
+// 
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2013
 // by DotNetNuke Corporation
-// All Rights Reserved
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+#endregion
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
@@ -17,21 +32,17 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Common;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Subscriptions.Controllers;
-using DotNetNuke.Services.Subscriptions.Entities;
 using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using SubscriptionController = DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Controllers.SubscriptionController;
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt
+namespace DotNetNuke.Modules.CoreMessaging
 {
 	public partial class Subscriptions : UserControl
-	{
+    {
+        private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
+
 		#region Public Properties
 		public ModuleInstanceContext ModuleContext { get; set; }
 
@@ -124,11 +135,6 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
                 {"msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency: msgFreq}                
 			};
 		}
-
-        private static SubscriptionType GetSubscriptionType(string subscriptionType)
-        {
-            return SubscriptionTypeController.Instance.GetTypeByName(-1, subscriptionType);
-        }
 
 		private static Hashtable GetModuleSettings(PortalSettings portalSettings, ModuleInfo moduleInfo, int uniqueId)
 		{
@@ -234,8 +240,8 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 		{
 			return new Dictionary<string, string>
                 {
-                    {"ExceptionTitle", Localization.GetString("ExceptionTitle", Constants.SharedResources)},
-                    {"ExceptionMessage", Localization.GetString("ExceptionMessage", Constants.SharedResources)}
+                    {"ExceptionTitle", Localization.GetString("ExceptionTitle", SharedResources)},
+                    {"ExceptionMessage", Localization.GetString("ExceptionMessage", SharedResources)}
                 };
 		}
 

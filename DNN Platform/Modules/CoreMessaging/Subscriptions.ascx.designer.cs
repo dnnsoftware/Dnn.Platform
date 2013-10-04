@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.SubscriptionsMgmt {
+namespace DotNetNuke.Modules.CoreMessaging {
     
     
     public partial class Subscriptions {
