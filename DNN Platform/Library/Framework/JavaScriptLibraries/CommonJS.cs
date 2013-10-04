@@ -1,4 +1,5 @@
 ﻿#region Copyright
+
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2013
@@ -17,19 +18,40 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     /// <summary>
-    /// enum to list common javascript libraries
+    ///     this class contains a number of constants that map to javascript library LibraryName's
+    ///     done as a series of constants as enums do not allow hyphens or periods
     /// </summary>
-    public enum CommonJS
+    public static class CommonJs
     {
-    //    jQuery,
-    //    jQuery-Migrate,
-    //    jQuery-UI,
-    //Knockout,
-    //Knockout.Mapping
+        /// <summary>
+        ///     jquery LibraryName
+        /// </summary>
+        public const string jQuery = "jQuery";
+
+        /// <summary>
+        ///     jquery migrate LibraryName
+        /// </summary>
+        public const string jQueryMigrate = "jQuery-Migrate";
+
+        /// <summary>
+        ///     jqueryUI LibraryName
+        /// </summary>
+        public const string jQueryUI = "jQuery-UI";
+
+        /// <summary>
+        ///     knockout LibraryName
+        /// </summary>
+        public const string Knockout = "Knockout";
+
+        /// <summary>
+        ///     knockout mapping LibraryName
+        /// </summary>
+        public const string KnockoutMapping = "Knockout.Mapping";
     }
 }
