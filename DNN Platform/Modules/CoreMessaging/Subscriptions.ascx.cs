@@ -104,6 +104,7 @@ namespace DotNetNuke.Modules.CoreMessaging
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SearchController.js");
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SearchResult.js");
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
+                ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/CoreMessaging/subscriptions.css");
 			}
 			else
 			{

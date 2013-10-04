@@ -123,6 +123,7 @@
     <Content Include="Scripts\SearchResult.js" />
     <Content Include="Scripts\Subscription.js" />
     <Content Include="Subscriptions.ascx" />
+    <Content Include="subscriptions.css" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

@@ -1,0 +1,20 @@
+﻿#subscription-table thead > tr > th > span.sortable {
+    cursor: pointer;
+    float: left;
+}
+
+#subscription-table thead > tr > th span.sortArrow {
+    box-shadow: none;
+    display: inline-block;
+    float: right;
+    height: 16px;
+    width: 15px;
+}
+
+#subscription-table thead > tr > th span.sortAsc {
+    background: url("../../../images/dnnSpinnerUpArrow.png") no-repeat scroll center center transparent;
+}
+
+#subscription-table thead > tr > th span.sortDesc {
+    background: url("../../../images/dnnSpinnerDownArrow.png") no-repeat scroll center center transparent;    
+ }

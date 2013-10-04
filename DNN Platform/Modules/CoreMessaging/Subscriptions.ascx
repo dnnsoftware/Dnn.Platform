@@ -5,8 +5,7 @@
 <asp:Panel runat="server" ID="ScopeWrapper" CssClass="dnnClear">
     <div class="activities-list-container dnnForm">        
         <h2 id="dnnSitePanel-ContentItem" class="dnnFormSectionHead"><a href=""><%=LocalizeString("ManageSubscriptions")%></a></h2>
-        <fieldset>
-            <!-- ko with: $root.searchController -->
+        <fieldset data-bind=" with: $root.searchController">
             <table class="dnnTableDisplay fixed" id="subscription-table">
                 <colgroup>
                     <col class="activities-col-action-name"/>
@@ -15,14 +14,22 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th class="activities-col-action-name"><span><%= LocalizeString("SubscriptionType") %></span></th>
-                        <th class="activities-col-subscribed-description"><span><%= LocalizeString("SubscribedDescription") %></span></th>
-                        <th class="activities-col-points"><span><%= LocalizeString("Action") %></span></th>
+                        <th class="activities-col-action-name">
+                            <span class="sortable" data-bind="click: sortBySubscriptionType"><%= LocalizeString("SubscriptionType") %></span>
+                            <span class="sortArrow" data-bind="click: sortBySubscriptionType, css: sortCssSubscriptionType"></span>
+                        </th>
+                        <th class="activities-col-subscribed-description">
+                            <span class="sortable" data-bind="click: sortByDescription"><%= LocalizeString("SubscribedDescription") %></span>
+                            <span class="sortArrow" data-bind="click: sortByDescription, css: sortCssDescription"></span>
+                        </th>
+                        <th class="activities-col-points">
+                            <span><%= LocalizeString("Action") %></span>
+                        </th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="3">
                             <span class="dnnResults">
                                 <%= LocalizeString("Showing") %>
                                 <span data-bind="text: totalResults"></span><%= "&#160;" + LocalizeString("Results") %>
@@ -32,10 +39,9 @@
                         </td>
                     </tr>
                 </tfoot>
-                <tbody>
-                    <!-- ko foreach: results -->
+                <tbody data-bind="foreach: results">
                     <tr>
-                        <td>
+                        <td> 
                             <span data-bind="text: subscriptionType"></span>
                         </td>
                         <td>
@@ -47,10 +53,8 @@
                             </a>
                         </td>
                     </tr>
-                    <!-- /ko -->
                 </tbody>
             </table>
-            <!-- /ko -->
         </fieldset>
         <h2 id="dnnSitePanel-Subscriptions" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("EmailDeliverySchedule")%></a></h2>
         <fieldset id="fsFrequency">
@@ -75,7 +79,7 @@
 </asp:Panel>
 </div>
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('#dnnSubscriptions').dnnPanels();
-	});
+    $(document).ready(function() {
+        $('#dnnSubscriptions').dnnPanels();
+    });
 </script>

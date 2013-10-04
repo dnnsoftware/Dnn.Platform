@@ -30,7 +30,6 @@ using System.Web.Http;
 using System.Xml;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.CoreMessaging.ViewModels;
-using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Messaging;
@@ -57,24 +56,58 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
 		#region Public APIs
 
-		/// <summary>
+	    /// <summary>
         /// Perform a search on Scoring Activities registered in the system.
         /// </summary>
         /// <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
         /// <param name="pageSize">Number of records to return per page</param>
+        /// <param name="sortExpression">The sort expression in the form [Description|SubscriptionType] [Asc|Desc]</param>
+        /// <returns>The sorted and paged list of subscriptions</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize) //TODO Add sortExpression parameter
+        public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize, string sortExpression)
         {
             try
             {
-                var subscriptions = SubscriptionController.Instance.GetUserSubscriptions(PortalSettings.UserId, PortalSettings.PortalId).ToArray();
+                var subscriptions = from s in SubscriptionController.Instance.GetUserSubscriptions(PortalSettings.UserId, PortalSettings.PortalId)
+                                    select GetSubscriptionViewModel(s);
+
+                List<SubscriptionViewModel> sortedList;
+                if (string.IsNullOrEmpty(sortExpression))
+                {
+                    sortedList = subscriptions.ToList();
+                }
+                else
+                {
+                    var sort = sortExpression.Split(' ');
+                    var desc = sort.Length == 2 && sort[1] == "desc";
+                    switch (sort[0])
+                    {
+                        case "Description":
+                            sortedList = desc
+                                ? subscriptions.OrderByDescending(s => s.Description).ToList()
+                                : subscriptions.OrderBy(s => s.Description).ToList();
+                            break;
+
+                        case "SubscriptionType":
+                            sortedList = desc
+                                ? subscriptions.OrderByDescending(s => s.SubscriptionType).ToList()
+                                : subscriptions.OrderBy(s => s.SubscriptionType).ToList();
+                            break;
+
+                        default:
+                            sortedList = subscriptions.ToList();
+                            break;
+                    }
+                }
+
                 var response = new
                     {
                         Success = true,
-                        Results = subscriptions.Select(GetSubscriptionviewModel).ToList(),
-                        TotalResults = subscriptions.Count()
+                        Results = sortedList.Skip(pageIndex * pageSize).Take(pageSize).ToList(),
+                        TotalResults = sortedList.Count()
                     };
+
                 return Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception ex)
@@ -170,7 +203,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         #endregion
 
 		#region Private Statics Methods
-        private static SubscriptionViewModel GetSubscriptionviewModel(Subscription subscription)
+        private static SubscriptionViewModel GetSubscriptionViewModel(Subscription subscription)
         {
             return new SubscriptionViewModel
             {

@@ -83,19 +83,6 @@
                 return search.totalResults();
             });
         
-        // Return a JSON document specifying the filter parameters.
-        this.getSearchParameters = function () {
-            var pager = that.pageControl;
-            if (pager == null) {
-                return null;
-            }
-            
-            return {
-                pageIndex: pager.page(),
-                pageSize: pager.pageSize || 25
-            };
-        };
-
         this.pagingControl = ko.dependentObservable(
             function () {
                 var controller = that.pager();
