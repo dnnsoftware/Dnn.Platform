@@ -400,6 +400,8 @@
     <Compile Include="ExtensionPoints\ToolBarButtonRenderer.cs" />
     <Compile Include="ExtensionPoints\ToolBarMenuButtonRenderer.cs" />
     <Compile Include="ExtensionPoints\UserControlExtensionControl.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\CommonJS.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\SpecificVersion.cs" />
     <Compile Include="Framework\JavaScriptLibraries\IJavaScriptLibraryController.cs" />
     <Compile Include="Framework\Internal\Reflection\AssemblyWrapper.cs" />
     <Compile Include="Framework\Internal\Reflection\IAssembly.cs" />

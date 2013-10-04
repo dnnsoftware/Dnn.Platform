@@ -24,6 +24,9 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using DotNetNuke.Entities.Host;
@@ -38,7 +41,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     public class JavaScript
     {
-        private const string ScriptPreix = "JSL";
+        private const string ScriptPreix = "JSL.";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (JavaScript));
 
         #region Private Properties
@@ -85,9 +88,27 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="jsname">the library name</param>
         public static void RequestRegistration(String jsname)
         {
-            HttpContext.Current.Items[ScriptPreix + jsname] = true;
+            HttpContext.Current.Items[ScriptPreix + "." + jsname] = true;
         }
 
+        /// <summary>
+        ///     adds a request for a script into the page items collection
+        /// </summary>
+        /// <param name="jsname">the library name</param>
+        public static void RequestRegistration(String jsname,String version)
+        {
+            HttpContext.Current.Items[ScriptPreix + "." + jsname + "." + version] = true;
+        }
+
+
+        /// <summary>
+        ///     adds a request for a script into the page items collection
+        /// </summary>
+        /// <param name="jsname">the library name</param>
+        public static void RequestRegistration(String jsname, String version,SpecificVersion specific)
+        {
+            HttpContext.Current.Items[ScriptPreix + "." + jsname + "." + version + "." + specific.ToString()] = true;
+        }
 
         /// <summary>
         ///     method is called once per page event cycle and will
@@ -96,21 +117,39 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="page">reference to the current page</param>
         public static void Register(Page page)
         {
-            foreach (object item in HttpContext.Current.Items)
+            var scripts = GetScriptVersions();
+            foreach (string item in scripts)
             {
-                if (item.ToString().StartsWith(ScriptPreix))
-                {
-                    string register = item.ToString().Substring(3);
-                    if (register != "DnnJQueryPlugins")
+                if (item != "DnnJQueryPlugins")
                     {
-                        RegisterScript(page, register, true);
+                        RegisterScript(page, item, true);
                     }
                     else
                     {
-                        RegisterScript(page, register);
-                    }
-                }
+                        RegisterScript(page, item);
+                    }               
             }
+        }
+
+        private static IEnumerable<string> GetScriptVersions()
+        {
+            var orderedScripts= (from object item in HttpContext.Current.Items where item.ToString().StartsWith(ScriptPreix) select item.ToString().Substring(3)).ToList();
+            orderedScripts.Sort();
+
+            var duplicateExists = orderedScripts.GroupBy(n => n).Any(g => g.Count() > 1);
+            //are there any duplicates?
+            if (!duplicateExists)
+            {
+                return orderedScripts;}
+            
+            //TODO:check logic for major/minor and apply
+            var filteredScripts = new List<string>();
+            for (int i = 0; i < orderedScripts.Count; i++)
+            {
+                filteredScripts.Add(orderedScripts[i]);
+            }
+            
+            return null;
         }
 
         #endregion
