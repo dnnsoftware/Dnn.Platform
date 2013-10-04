@@ -1205,25 +1205,31 @@
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
-              <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div class=&quot;left content_adstyleOne&quot;&gt;
+              <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div class=&quot;row-fluid&quot;&gt;
+&lt;div class=&quot;span5&quot;&gt;
+&lt;div class=&quot;content_adstyleOne&quot;&gt;
 &lt;img src=&quot;{{PortalRoot}}/Images/Home-Ad1.jpg&quot; alt=&quot;[Tab.Home.ContentpaneLower.Module.Content.0.Text]&quot; /&gt;
 &lt;div class=&quot;adContent&quot;&gt;
 &lt;h2&gt;[Tab.Home.ContentpaneLower.Module.Content.0.Text]&lt;/h2&gt;
 &lt;span&gt;[Tab.Home.ContentpaneLower.Module.Content.1.Text]&lt;/span&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;right content_adstyleTwo&quot;&gt;
+&lt;/div&gt;
+&lt;div class=&quot;span7&quot;&gt;
+&lt;div class=&quot;content_adstyleTwo&quot;&gt;
 &lt;img src=&quot;{{PortalRoot}}/Images/Home-Ad2.png&quot; alt=&quot;[Tab.Home.ContentpaneLower.Module.Content.2.Text]&quot; /&gt;
 &lt;div class=&quot;adContent&quot;&gt;
 &lt;h2&gt;[Tab.Home.ContentpaneLower.Module.Content.2.Text]&lt;/h2&gt;
 &lt;span&gt;[Tab.Home.ContentpaneLower.Module.Content.3.Text]&lt;/span&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;right content_adstyleTwo&quot;&gt;
+&lt;div class=&quot;content_adstyleTwo&quot;&gt;
 &lt;img src=&quot;{{PortalRoot}}/Images/Home-Ad3.png&quot; alt=&quot;[Tab.Home.ContentpaneLower.Module.Content.4.Text]&quot; /&gt;
 &lt;div class=&quot;adContent&quot;&gt;
 &lt;h2&gt;[Tab.Home.ContentpaneLower.Module.Content.4.Text]&lt;/h2&gt;
 &lt;span&gt;[Tab.Home.ContentpaneLower.Module.Content.5.Text]&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
               <modulesettings>
@@ -1281,22 +1287,23 @@
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
-              <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div id=&quot;container&quot;&gt;
-&lt;div id=&quot;example&quot;&gt;
-&lt;div id=&quot;slides&quot;&gt;
-&lt;div class=&quot;slides_container&quot;&gt;
-&lt;a title=&quot;banner 1&quot; href=&quot;#&quot;&gt;&lt;img width=&quot;980&quot; height=&quot;380&quot; alt=&quot;Slide 1&quot; src=&quot;{{PortalRoot}}/Images/Banner1.jpg&quot; /&gt;&lt;/a&gt;
-&lt;a title=&quot;banner 2&quot; href=&quot;#&quot;&gt;&lt;img width=&quot;980&quot; height=&quot;380&quot; alt=&quot;Slide 2&quot; src=&quot;{{PortalRoot}}/Images/Banner2.jpg&quot; /&gt;&lt;/a&gt;
-&lt;a title=&quot;banner 3&quot; href=&quot;#&quot;&gt;&lt;img width=&quot;980&quot; height=&quot;380&quot; alt=&quot;Slide 3&quot; src=&quot;{{PortalRoot}}/Images/Banner3.jpg&quot; /&gt;&lt;/a&gt;
-&lt;a title=&quot;banner 4&quot; href=&quot;#&quot;&gt;&lt;img width=&quot;980&quot; height=&quot;380&quot; alt=&quot;Slide 4&quot; src=&quot;{{PortalRoot}}/Images/Banner4.jpg&quot; /&gt;&lt;/a&gt;
+              <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div class=&quot;carousel slide&quot; id=&quot;myCarousel&quot;&gt;
+&lt;ol class=&quot;carousel-indicators&quot;&gt;
+    &lt;li data-slide-to=&quot;0&quot; class=&quot;active&quot; data-target=&quot;#myCarousel&quot;&gt; &lt;/li&gt;
+    &lt;li data-slide-to=&quot;1&quot; data-target=&quot;#myCarousel&quot;&gt; &lt;/li&gt;
+    &lt;li data-slide-to=&quot;2&quot; data-target=&quot;#myCarousel&quot;&gt; &lt;/li&gt;
+    &lt;li data-slide-to=&quot;3&quot; data-target=&quot;#myCarousel&quot;&gt; &lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- Carousel items --&gt;
+&lt;div class=&quot;carousel-inner&quot;&gt;
+&lt;div class=&quot;item active&quot;&gt;&lt;a title=&quot;banner 1&quot; href=&quot;#&quot;&gt;&lt;img alt=&quot;Slide 1&quot; src=&quot;{{PortalRoot}}/Images/Banner1.jpg&quot; /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;div class=&quot;item&quot;&gt;&lt;a title=&quot;banner 2&quot; href=&quot;#&quot;&gt;&lt;img alt=&quot;Slide 2&quot; src=&quot;{{PortalRoot}}/Images/Banner2.jpg&quot; /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;div class=&quot;item&quot;&gt;&lt;a title=&quot;banner 3&quot; href=&quot;#&quot;&gt;&lt;img alt=&quot;Slide 3&quot; src=&quot;{{PortalRoot}}/Images/Banner3.jpg&quot; /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;div class=&quot;item&quot;&gt;&lt;a title=&quot;banner 4&quot; href=&quot;#&quot;&gt;&lt;img alt=&quot;Slide 4&quot; src=&quot;{{PortalRoot}}/Images/Banner4.jpg&quot; /&gt;&lt;/a&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;pagination_wrap&quot;&gt;
-&lt;a class=&quot;prev&quot; href=&quot;#&quot;&gt;&#160;&lt;/a&gt;
-&lt;a class=&quot;next&quot; href=&quot;#&quot;&gt;&#160;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;clear&quot;&gt;&lt;/div&gt;
+&lt;!-- Carousel nav --&gt;
+&lt;a data-slide=&quot;prev&quot; href=&quot;#myCarousel&quot; class=&quot;carousel-control left&quot;&gt;&amp;lsaquo;&lt;/a&gt;
+&lt;a data-slide=&quot;next&quot; href=&quot;#myCarousel&quot; class=&quot;carousel-control right&quot;&gt;&amp;rsaquo;&lt;/a&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
               <modulesettings>
                 <modulesetting>
