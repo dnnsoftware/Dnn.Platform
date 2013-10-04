@@ -103,6 +103,7 @@ namespace DotNetNuke.Web.InternalServices
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
+        [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         public Task<HttpResponseMessage> PostFile()
         {
