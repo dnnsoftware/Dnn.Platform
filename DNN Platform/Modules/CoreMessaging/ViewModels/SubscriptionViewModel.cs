@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.CoreMessaging.ViewModels
 {
     public class SubscriptionViewModel
     {
-        public int SubscripitionId;
+        public int SubscriptionId;
         public string Description;
         public string SubscriptionType;
     }

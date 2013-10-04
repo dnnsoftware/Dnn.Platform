@@ -186,9 +186,8 @@
                 });
             };
 
-            var params = {
-                SubscriptionTypeId: model.subscriptionTypeId,
-                SubscriberId: model.subscriberId
+            var params = {                
+                SubscriptionId: model.subscriptionId()
             };
 
             that.requestService('Subscriptions/DeleteContentSubscription', 'post', params, success, failure);

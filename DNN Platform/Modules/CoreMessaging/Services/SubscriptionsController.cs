@@ -84,6 +84,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
+
+        private SubscriptionViewModel GetSubscriptionviewModel(Subscription subscription)
+        {
+            return new SubscriptionViewModel
+                {
+                    SubscriptionId = subscription.SubscriptionId,
+                    Description = subscription.Description,
+                    SubscriptionType =
+                        SubscriptionTypeController.Instance.GetSubscriptionType(
+                            t => t.SubscriptionTypeId == subscription.SubscriptionTypeId).FriendlyName
+                };
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateSystemSubscription(InboxSubscriptionViewModel post)
@@ -115,8 +128,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                //TODO Check received object
-                SubscriptionController.Instance.DeleteSubscription(subscription);
+                var sub = SubscriptionController.Instance.GetUserSubscriptions(PortalSettings.UserId, PortalSettings.PortalId)
+                                          .SingleOrDefault(s => s.SubscriptionId == subscription.SubscriptionId);
+                if (sub != null)
+                {
+                    SubscriptionController.Instance.DeleteSubscription(sub);                    
+                }
 
                 return Request.CreateResponse(HttpStatusCode.OK, "unsubscribed");
             }
