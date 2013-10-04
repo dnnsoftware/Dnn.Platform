@@ -20,9 +20,10 @@
     //
     // DropDownList
     //
-    var DropDownList = this.DropDownList = function (element, options) {
+    var DropDownList = this.DropDownList = function (element, options, controller) {
         this.element = element;
         this.options = options;
+        this._controller = controller;
 
         this.init();
     };
@@ -43,8 +44,8 @@
             this._$selectedItemContainer = this.$element.find("." + this.options.selectedItemCss);
             this._$selectedItemCaption = this._$selectedItemContainer.find(".selected-value");
 
-            this._onItemListShowHandler = $.proxy(this._onItemListShow, this);
-            this._onItemListHideHandler = $.proxy(this._onItemListHide, this);
+            this._onOpenItemListHandler = $.proxy(this._onOpenItemList, this);
+            this._onCloseItemListHandler = $.proxy(this._onCloseItemList, this);
             this._onSelectedItemCaptionClickHandler = $.proxy(this._onSelectedItemCaptionClick, this);
 
             this._onDocumentClickHandler = $.proxy(this._onDocumentClick, this);
@@ -95,60 +96,60 @@
             this._$selectedItemCaption.text(caption || this.options.selectItemDefaultText);
         },
 
-        treeView: function () {
-            if (!this._treeView) {
-                this._treeView = this._createTreeView();
-                // append treeView layout to DOM before calling show
-                this.$element[0].appendChild((this._$treeViewLayout = this._treeView.$element)[0]);
-                this._treeView.show();
-            }
-            return this._treeView;
-        },
-
-        _onItemListShow: function () {
+        _onOpenItemList: function () {
             this._$selectedItemCaption.addClass("opened");
             $(document).on("click." + this.element.id, this._onDocumentClickHandler);
         },
 
-        _onItemListHide: function () {
+        _onCloseItemList: function () {
             this._$selectedItemCaption.removeClass("opened");
             $(document).off("click." + this.element.id, this._onDocumentClickHandler);
-            this._$treeViewLayout && dnn.removeElement(this._$treeViewLayout[0]);
-            this._$treeViewLayout = null;
+            dnn.removeElement(this._$treeViewLayout[0]);
+        },
+
+        _openItemList: function () {
+            var showTreeView = false;
+            if (!this._treeView) {
+                this._treeView = this._createTreeView();
+                this._$treeViewLayout = this._treeView.$element;
+                showTreeView = true;
+            }
+            // append treeView layout to DOM before calling show
+            if (!this._$treeViewLayout[0].parentElement) {
+                this.$element[0].appendChild(this._$treeViewLayout[0]);
+            }
+            if (showTreeView) {
+                this._treeView.show();
+            }
+            this._$treeViewLayout.slideDown('fast', this._onOpenItemListHandler);
+        },
+
+        _isItemListOpen: function() {
+            return this._$treeViewLayout && this._$treeViewLayout.is(':visible');
+        },
+
+        _closeItemList: function () {
+           this._$treeViewLayout.slideUp('fast', this._onCloseItemListHandler);
         },
 
         _onSelectedItemCaptionClick: function (eventObject) {
             if (this._disabled) {
                 return;
             }
-            if (!this._$treeViewLayout) {
-                this.$element[0].appendChild((this._$treeViewLayout = this.treeView().$element)[0]);
-            }
-            if (this._$treeViewLayout.is(':visible')) {
-                this._$treeViewLayout.slideUp('fast', this._onItemListHideHandler);
-            }
-            else {
-                this._$treeViewLayout.slideDown('fast', this._onItemListShowHandler);
-            }
-        },
-
-        _closeItemList: function () {
-            if (this._$treeViewLayout && this._$treeViewLayout.is(':visible')) {
-                this._$treeViewLayout.slideUp('fast', this._onItemListHideHandler);
-            }
+            this._isItemListOpen() ? this._closeItemList() : this._openItemList();
         },
 
         _onDocumentClick: function (eventObject) {
             // clicked outside of the dropdown list
             // when click on the element, the onMouseClick handler is executed
             var clickedElement = eventObject.target;
-            if (!$.inContainer(this.$element, clickedElement)) {
+            if (!$.inContainer(this.$element, clickedElement) && this._isItemListOpen()) {
                 this._closeItemList();
             }
         },
 
         _createTreeView: function () {
-            var controller = new dnn.DynamicTreeViewController(this.options.services);
+            var controller = this._controller ? this._controller : new dnn.DynamicTreeViewController(this.options.services);
             var treeView = new dnn.SortableTreeView(null, this.options.itemList, controller);
             var onChangeNodeHandler = $.proxy(this._onChangeNode, this);
             $(treeView).on("onchangenode", onChangeNodeHandler);
