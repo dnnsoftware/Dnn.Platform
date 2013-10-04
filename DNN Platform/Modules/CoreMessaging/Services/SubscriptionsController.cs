@@ -84,19 +84,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-
-        private SubscriptionViewModel GetSubscriptionviewModel(Subscription subscription)
-        {
-            return new SubscriptionViewModel
-                {
-                    SubscriptionId = subscription.SubscriptionId,
-                    Description = subscription.Description,
-                    SubscriptionType =
-                        SubscriptionTypeController.Instance.GetSubscriptionType(
-                            t => t.SubscriptionTypeId == subscription.SubscriptionTypeId).FriendlyName
-                };
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateSystemSubscription(InboxSubscriptionViewModel post)
@@ -187,7 +174,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             return new SubscriptionViewModel
             {
-                SubscripitionId = subscription.SubscriptionId,
+                SubscriptionId = subscription.SubscriptionId,
                 Description = subscription.Description,
                 SubscriptionType =
                     SubscriptionTypeController.Instance.GetSubscriptionType(
