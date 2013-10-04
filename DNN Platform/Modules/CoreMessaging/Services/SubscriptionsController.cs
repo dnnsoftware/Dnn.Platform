@@ -141,9 +141,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 				}
 
 				var dictionary = new Dictionary<string, string>();
-                
-				//var resourcesPath = string.Format(LocalizationFolder, ActiveModule.DesktopModule.FolderName);
-			    var resourcesPath = LocalizationFolder; // string.Format(LocalizationFolder, DesktopModuleFolderName);
+                				
+			    var resourcesPath = LocalizationFolder;
 				var files =
 					Directory.GetFiles(System.Web.HttpContext.Current.Server.MapPath(resourcesPath)).Select(x => new FileInfo(x).Name).Where(f => !IsLanguageSpecific(f)).ToList();
 
