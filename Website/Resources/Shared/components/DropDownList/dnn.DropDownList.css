@@ -241,6 +241,7 @@
 /* in form style */
 .dnnFormItem .dnnDropDownList {
     width: 47%;
+    max-width: 443px;
     margin-bottom: 18px;
 }
 
