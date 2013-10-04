@@ -15,7 +15,7 @@
 
         // Current page index (zero-based)
         this.page = ko.observable(settings.pageIndex || 0);
-	    this.localizationController = root.localizationController;
+        this.localizationController = root.localizer();
 
         this.totalPages = function () {
             if (root != null) {

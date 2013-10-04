@@ -127,6 +127,7 @@
     <Compile Include="ViewModels\NotificationActionViewModel.cs" />
     <Compile Include="ViewModels\NotificationsViewModel.cs" />
     <Compile Include="ViewModels\NotificationViewModel.cs" />
+    <Compile Include="ViewModels\SubscriptionViewModel.cs" />
     <Compile Include="ViewModels\TotalsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

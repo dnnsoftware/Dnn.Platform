@@ -4,7 +4,7 @@
 // All Rights Reserved
 
 (function ($) {
-    window.Subscription = function Subscription (ko, settings) {
+    window.Subscription = function Subscription (ko, settings, bindingElement) {
         var that = this;
 
         $.extend(this, Subscription.defaultSettings, settings);
@@ -25,8 +25,8 @@
 	    };
 	    
         this.servicesFramework = $.ServicesFramework(settings.moduleId);
-	    this.pageControl = new PagingControl(ko, settings, that);
         this.searchController = new SearchController(ko, settings, that);
+        this.pageControl = new PagingControl(ko, settings, this.searchController);        
         this.localizationController = new LocalizationController(settings, that);
 
         this.localizer = function () {
@@ -73,13 +73,14 @@
                     return null;
                 }
 
-                var localString = 'ResultCount';
+                //var localString = 'ResultCount';
 
-                if (search.totalResults() == 1) {
-                    localString = 'SingleResultCount';
-                }
+                //if (search.totalResults() == 1) {
+                //    localString = 'SingleResultCount';
+                //}
 
-                return localizer.getString(localString).replace("{0}", search.totalResults());
+                //return localizer.getString(localString).replace("{0}", search.totalResults());
+                return search.totalResults();
             });
         
         // Return a JSON document specifying the filter parameters.
@@ -192,6 +193,8 @@
 
             that.requestService('Subscriptions/DeleteContentSubscription', 'post', params, success, failure);
         };
+        
+        ko.applyBindings(this, document.getElementById(bindingElement));
     };
 
     Subscription.defaultSettings = {

@@ -37,10 +37,7 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 
 		public ModuleInfo ModuleConfiguration
 		{
-			get
-			{
-				return ModuleContext.Configuration;
-			}
+			get { return ModuleContext != null ? ModuleContext.Configuration : null; }
 			set
 			{
 				ModuleContext.Configuration = value;
@@ -64,7 +61,7 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 
 		public string GetSettingsAsJson()
 		{
-			var settings = GetModuleSettings(ModuleContext.PortalSettings, ModuleConfiguration, Null.NullInteger);
+			var settings = GetModuleSettings(PortalSettings.Current, ModuleConfiguration, Null.NullInteger);
 			foreach (DictionaryEntry entry in GetViewSettings())
 			{
 				if (settings.ContainsKey(entry.Key))
@@ -112,9 +109,10 @@ namespace DotNetNuke.Modules.SubscriptionsMgmt
 		/// values that are automatically retrieved by Social Library such as portalId and moduleId.
 		/// </summary>
 		private Hashtable GetViewSettings()
-		{            
+		{
+		    var portalSettings = PortalSettings.Current;
 		    var userPreference = new UserPreferencesController().GetUserPreference(
-                                                                    UserController.GetUserById(ModuleConfiguration.OwnerPortalID, ModuleContext.PortalSettings.UserId));
+                                                                    UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId));
             var notifyFreq = 2;
             var msgFreq = 0;
             

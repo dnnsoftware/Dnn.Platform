@@ -77,4 +77,4 @@
 
         $.extend(this, komodel(model));
     };
-})(window.dnn);
+})(window.jQuery);

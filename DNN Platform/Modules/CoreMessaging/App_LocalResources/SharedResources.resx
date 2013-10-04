@@ -174,4 +174,10 @@
   <data name="Weekly.Text" xml:space="preserve">
     <value>Weekly</value>
   </data>
+  <data name="ResultCount.Text" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="SingleResultCount.Text" xml:space="preserve">
+    <value>{0}</value>
+  </data>
 </root>

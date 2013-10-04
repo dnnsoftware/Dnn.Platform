@@ -375,8 +375,8 @@
   <data name="Activity.Text" xml:space="preserve">
     <value>Activity</value>
   </data>
-  <data name="ContentSubscriptions.Text" xml:space="preserve">
-    <value>Manage Content Subscriptions</value>
+  <data name="ManageSubscriptions.Text" xml:space="preserve">
+    <value>Manage Subscriptions</value>
   </data>
   <data name="Frequency.Text" xml:space="preserve">
     <value>Frequency</value>
@@ -393,8 +393,8 @@
   <data name="lblNotificationFreq.Text" xml:space="preserve">
     <value>Notification Frequency:</value>
   </data>
-  <data name="NotificationMessaging.Text" xml:space="preserve">
-    <value>Email Notifications &amp; Messages</value>
+  <data name="EmailDeliverySchedule.Text" xml:space="preserve">
+    <value>Email Delivery Schedule</value>
   </data>
   <data name="PrefSaved.Text" xml:space="preserve">
     <value>Your preferences have been updated</value>
@@ -407,5 +407,8 @@
   </data>
   <data name="Unsubscribe.Text" xml:space="preserve">
     <value>Unsubscribe</value>
+  </data>
+  <data name="SubscribedDescription.Text" xml:space="preserve">
+    <value>Subscribed Description</value>
   </data>
 </root>

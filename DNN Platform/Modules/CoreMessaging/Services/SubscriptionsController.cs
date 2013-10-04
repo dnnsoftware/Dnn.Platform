@@ -14,29 +14,33 @@ using System.Runtime.Serialization;
 using System.Web.Http;
 using System.Xml;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.CoreMessaging.Components.Subscriptions.Common;
+using DotNetNuke.Modules.CoreMessaging.ViewModels;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Subscriptions.Controllers;
-using DotNetNuke.Services.Subscriptions.Entities;
+//using DotNetNuke.Services.Subscriptions.Controllers;
+//using DotNetNuke.Services.Subscriptions.Entities;
+using DotNetNuke.Services.Social.Subscriptions;
+using DotNetNuke.Services.Social.Subscriptions.Entities;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Modules.CoreMessaging.Services
 {
     public class SubscriptionsController : DnnApiController
-	{
-		#region Private Properties
+    {
+        #region Private Properties
 
-		private string LocalizationFolder
+        private string LocalizationFolder
 		{
 			get
 			{
-				return string.Format("~/DesktopModules/{0}/App_LocalResources/", ActiveModule.DesktopModule.FolderName);
+                return string.Format("~/DesktopModules/{0}/App_LocalResources/", DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", PortalSettings.PortalId).FolderName);
 			}
 		}
 
-		#endregion
+        #endregion
 
 		#region Public APIs
 
@@ -48,20 +52,17 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         [HttpGet]
         [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize)
+        public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize) //TODO Add sortExpression parameter
         {
             try
             {
-                int totalRecords = 0;
-
-                var results = Components.Subscriptions.Controllers.SubscriptionController.Instance.GetUserContentSubscriptions(PortalSettings.UserId, ActiveModule.OwnerPortalID, pageIndex, pageSize);
-
-                if (results.Count > 0)
-                {
-                    totalRecords = results[0].TotalRecords;
-                }
-                var response = new { Success= true, Results = results, TotalResults = totalRecords };
-
+                var subscriptions = SubscriptionController.Instance.GetUserSubscriptions(PortalSettings.UserId, PortalSettings.PortalId);
+                var response = new
+                    {
+                        Success = true,
+                        Results = subscriptions.Select(GetSubscriptionviewModel).ToList(),
+                        TotalResults = subscriptions == null ? 0 : subscriptions.Count()
+                    };
                 return Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception ex)
@@ -69,6 +70,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 Exceptions.LogException(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        private SubscriptionViewModel GetSubscriptionviewModel(Subscription subscription)
+        {
+            return new SubscriptionViewModel
+                {
+                    SubscripitionId = subscription.SubscriptionId,
+                    Description = subscription.Description,
+                    SubscriptionType =
+                        SubscriptionTypeController.Instance.GetSubscriptionType(
+                            t => t.SubscriptionTypeId == subscription.SubscriptionTypeId).FriendlyName
+                };
         }
 
         [HttpPost]
@@ -83,8 +96,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     {
                         PortalId = UserInfo.PortalID,
                         UserId = UserInfo.UserID,
-                        MessagesEmailFrequency = (DotNetNuke.Services.Social.Messaging.Frequency) post.MsgFreq,
-                        NotificationsEmailFrequency = (DotNetNuke.Services.Social.Messaging.Frequency) post.NotifyFreq
+                        MessagesEmailFrequency = (Frequency) post.MsgFreq,
+                        NotificationsEmailFrequency = (Frequency) post.NotifyFreq
                     };
                 userPreferencesController.SetUserPreference(userPreference);
                 
@@ -100,11 +113,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         [HttpPost]
         [DnnAuthorize]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage DeleteContentSubscription(Subscriber sub)
+        public HttpResponseMessage DeleteContentSubscription(Subscription sub)
         {
             try
             {
-                SubscriptionController.Instance.DeleteSubscription(sub.SubscriberId);
+                //TODO Check received object
+                SubscriptionController.Instance.DeleteSubscription(sub);
 
                 return Request.CreateResponse(HttpStatusCode.OK, "unsubscribed");
             }
@@ -127,7 +141,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 				}
 
 				var dictionary = new Dictionary<string, string>();
-				var resourcesPath = string.Format(LocalizationFolder, ActiveModule.DesktopModule.FolderName);
+                
+				//var resourcesPath = string.Format(LocalizationFolder, ActiveModule.DesktopModule.FolderName);
+			    var resourcesPath = LocalizationFolder; // string.Format(LocalizationFolder, DesktopModuleFolderName);
 				var files =
 					Directory.GetFiles(System.Web.HttpContext.Current.Server.MapPath(resourcesPath)).Select(x => new FileInfo(x).Name).Where(f => !IsLanguageSpecific(f)).ToList();
 

@@ -895,7 +895,11 @@ div.messageArea {
 }
 
 .activities-col-action-name {
-    width: 60%;
+    width: 20%;
+}
+
+.activities-col-subscribed-description {
+    width: 40%;   
 }
 
 .activities-col-module {
@@ -903,7 +907,7 @@ div.messageArea {
 }
 
 .activities-col-points {
-    width: 150px;
+    width: 50px;
 }
 
 #dnnActivities .dnnTableFilter {

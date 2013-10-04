@@ -114,10 +114,6 @@ namespace DotNetNuke.Modules.CoreMessaging
             AddIe7StyleSheet();
 
             base.OnInit(e);
-
-	        subscriptionControl.ModuleContext = ModuleContext;
-	        subscriptionControl.LocalResourceFile = LocalResourceFile;
-	        subscriptionControl.Visible = ShowSubscriptionTab;
         }
 
         #endregion
