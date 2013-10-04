@@ -63,6 +63,7 @@ using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.EventQueue.Config;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer;
+using DotNetNuke.Services.Installer.Dependencies;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
@@ -74,6 +75,8 @@ using DotNetNuke.Services.Upgrade.InternalController.Steps;
 using DotNetNuke.Services.Upgrade.Internals;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
 using DotNetNuke.UI.Internals;
+
+using ICSharpCode.SharpZipLib.Zip;
 
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using ModuleInfo = DotNetNuke.Entities.Modules.ModuleInfo;
@@ -97,6 +100,7 @@ namespace DotNetNuke.Services.Upgrade
     public class Upgrade
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Upgrade));
+
         #region Private Shared Field
 
         private static DateTime _startTime;
@@ -4669,6 +4673,77 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
             return success;
+        }
+
+        /// <summary>
+        /// Gets a ist of installable extensions sorted to ensure dependencies are installed first
+        /// </summary>
+        /// <returns></returns>
+        public static IDictionary<string, PackageInfo> GetInstallPackages()
+        {
+            var packageTypes = new string[] { "Module", "Skin", "Container", "JavaScriptLibrary", "Language", "Provider", "AuthSystem", "Package" };
+            var invalidPackages = new List<string>();
+
+            var packages = new Dictionary<string, PackageInfo>();
+
+            foreach (string packageType in packageTypes)
+            {
+                var installPackagePath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
+                if (Directory.Exists(installPackagePath))
+                {
+                    var files = Directory.GetFiles(installPackagePath);
+                    if (files.Length > 0)
+                    {
+                        foreach (string file in files)
+                        {
+                            if (Path.GetExtension(file.ToLower()) == ".zip")
+                            {
+                                PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
+                                //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Parsing - " + file.Replace(installPackagePath + @"\", "") + "<br/>");
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Add packages with no dependency requirements
+            var sortedPackages = packages.Where(p => p.Value.Dependencies.Count == 0).ToDictionary(p => p.Key, p => p.Value);
+
+            int prevDependentCount = -1;
+
+            var dependentPackages = packages.Where(p => p.Value.Dependencies.Count > 0).ToDictionary(p=> p.Key, p => p.Value);
+            int dependentCount = dependentPackages.Count;
+            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Start - Parsing Dependencies<br/>");
+            while (dependentCount != prevDependentCount)
+            {
+                prevDependentCount = dependentCount;
+                var addedPackages = new List<string>();
+                foreach (var package in dependentPackages)
+                {
+                    //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Parsing - " + package.Value.Name + "<br/>");
+                    foreach (var dependency in package.Value.Dependencies)
+                    {
+                        if (sortedPackages.Count(p => p.Value.Name == dependency.PackageName && p.Value.Version >= dependency.Version) > 0)
+                        {
+                            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Dependency Resolved - " + package.Value.Name + "<br/>");
+                            sortedPackages.Add(package.Key, package.Value);
+                            addedPackages.Add(package.Key);
+                        }
+                    }
+                }
+                foreach (var packageKey in addedPackages)
+                {
+                    dependentPackages.Remove(packageKey);
+                }
+                dependentCount = dependentPackages.Count;
+            }
+            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "End - Parsing Dependencies<br/>");
+
+            //foreach (var package in sortedPackages)
+            //{
+            //    HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Installing - " + package.Key + "<br/>");
+            //}
+            return sortedPackages;
         }
 
         public static void InstallPackages(string packageType, bool writeFeedback)
