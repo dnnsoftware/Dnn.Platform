@@ -8,11 +8,11 @@
 <%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 
 <%-- Custom CSS Registration --%>
-<dnn:DnnCssInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/lib/codemirror.css" />
+<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.css" />
 
 <%-- Custom JavaScript Registration --%>
-<dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/lib/codemirror.js" Priority="1" />
-<dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/Components/CodeEditor/mode/clike/clike.js" Priority="2" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.js" Priority="1" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/clike/clike.js" Priority="2" />
 <dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/js/ModuleCreator.js" Priority="2" />
 
 <script>
