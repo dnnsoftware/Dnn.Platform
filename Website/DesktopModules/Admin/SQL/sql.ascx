@@ -1,6 +1,15 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.SQL.SQL" CodeFile="SQL.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+
+<%-- Custom CSS Registration --%>
+<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.css" />
+<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/theme/dnn-sql.css" />
+
+<%-- Custom JavaScript Registration --%>
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.js" Priority="1" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/sql/sql.js" Priority="2" />
 <div class="dnnForm dnnSQLModule dnnClear" id="dnnSQLModule">
     <fieldset>
         <div class="dnnFormItem">
@@ -154,6 +163,15 @@
         });
 
         $('#<%=pnlResults.ClientID%>').dnnTabs();
+
+        var editor = CodeMirror.fromTextArea($("textarea[id$='txtQuery']")[0], {
+            lineNumbers: true,
+            matchBrackets: true,
+            lineWrapping: true,
+            indentWithTabs: true,
+            theme: 'dnn-sql light',
+            mode: 'text/x-sql'
+        });
 
     });
 </script>
