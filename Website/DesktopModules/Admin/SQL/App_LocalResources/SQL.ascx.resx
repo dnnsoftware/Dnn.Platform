@@ -216,7 +216,7 @@
   <data name="CopyToClipboard.Text" xml:space="preserve">
     <value>Copy to Clipboard</value>
   </data>
-  <data name="CopiedToClipboard.Text" xml:space="preserve">
+  <data name="CopyText.Text" xml:space="preserve">
     <value>The result was copied to the clipboard.</value>
   </data>
   <data name="NumRowsReturned.Text" xml:space="preserve">
@@ -227,5 +227,29 @@
   </data>
   <data name="AllRows.Text" xml:space="preserve">
     <value>All</value>
+  </data>
+  <data name="CopyButtonAlt.Text" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
+  <data name="CSVButtonAlt.Text" xml:space="preserve">
+    <value>Export to CSV</value>
+  </data>
+  <data name="PDFButtonAlt.Text" xml:space="preserve">
+    <value>Export to PDF</value>
+  </data>
+  <data name="Placeholder.Text" xml:space="preserve">
+    <value>Entery your quey script here..</value>
+  </data>
+  <data name="PopupButtonAlt.Text" xml:space="preserve">
+    <value>Open in new popup</value>
+  </data>
+  <data name="XLSButtonAlt.Text" xml:space="preserve">
+    <value>Export to Excel</value>
+  </data>
+  <data name="CopyTitle.Text" xml:space="preserve">
+    <value>SQL Query Result</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>

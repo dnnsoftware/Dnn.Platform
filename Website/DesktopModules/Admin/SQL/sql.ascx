@@ -88,8 +88,8 @@
             autoOpen: false,
             resizable: true,
             dialogClass: 'dnnFormPopup dnnClear',
-            width: 400,
-            height: 250,
+            width: 420,
+            height: 280,
             title: '<%=LocalizeString("SaveDialogTitle")%>'
         }).parent().appendTo(jQuery('form:first'));;
 
@@ -110,29 +110,47 @@
                     "aButtons": [
                         {
                             "sExtends": "copy",
-                            "sButtonText": "<img src='/dnn_platform/icons/sigma/CheckList_16X16_Gray.png'/>"
+                            "sToolTip": "<%=LocalizeString("CopyButtonAlt")%>",
+                            "sButtonText": "<img src='/dnn_platform/icons/sigma/CheckList_16X16_Gray.png'/>",
+                            "fnComplete": function (nButton, oConfig, oFlash, sFlash) {
+                                $.dnnAlert({
+                                    title: "<%=LocalizeString("CopyTitle")%>",
+                                    text: "<%=LocalizeString("CopyText")%>"
+                                });
+                            }
                         },
                         {
                             "sExtends": "csv",
+                            "sToolTip": "<%=LocalizeString("CSVButtonAlt")%>",
                             "sTitle": query,
                             "sButtonText": "<img src='/dnn_platform/icons/sigma/FileDownload_16x16_Black.png'/>"
                         },
                         {
                             "sExtends": "xls",
+                            "sToolTip": "<%=LocalizeString("XLSButtonAlt")%>",
                             "sTitle": query,
                             "sButtonText": "<img src='/dnn_platform/icons/sigma/ExtXlsx_16X16_Standard.png'/>"
                         },
                         {
                             "sExtends": "pdf",
+                            "sToolTip": "<%=LocalizeString("PDFButtonAlt")%>",
                             "sTitle": query,
                             "sPdfOrientation": "landscape",
                             "sButtonText": "<img src='/dnn_platform/icons/sigma/ExtPdf_16X16_Standard.png'/>"
+                        },
+                        {
+                            "sExtends": "text",
+                            "sToolTip": "<%=LocalizeString("PopupButtonAlt")%>",
+                            "sButtonText": "<img src='/dnn_platform/icons/sigma/UploadFiles_16x16_Gray.png'/>",
+                            "fnClick": function (nButton, oConfig, oFlash) {
+                                alert('open popup');
+                            }
                         }
                     ]
                 }
             });
-            //new FixedHeader(oTable);
-            new FixedColumns(oTable);
+            //new FixedHeader(oTable); 
+            //new FixedColumns(oTable);
         });
 
         $('#<%=pnlResults.ClientID%>').dnnTabs();
