@@ -79,6 +79,8 @@ namespace DotNetNuke.Modules.Admin.SQL
             rptResults.ItemDataBound += rptResults_ItemDataBound;
             ddlSavedQuery.SelectedIndexChanged += ddlSavedQuery_SelectedIndexChanged;
 
+            txtQuery.Attributes.Add("placeholder", Localization.GetSafeJSString(LocalizeString("Placeholder")));
+
             try
             {
                 if (!Page.IsPostBack)
@@ -182,7 +184,6 @@ namespace DotNetNuke.Modules.Admin.SQL
                 if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
                 {
                     var gvResults = (GridView)e.Item.FindControl("gvResults");
-                    var toolbar = (HtmlControl)e.Item.FindControl("toolbar");
                     var lblRows = (Label)e.Item.FindControl("lblRows");
 
                     gvResults.DataSource = e.Item.DataItem;
@@ -193,7 +194,6 @@ namespace DotNetNuke.Modules.Admin.SQL
                     if (gvResults.Rows.Count == 0)
                     {
                         lblRows.Text = LocalizeString("NoDataReturned");
-                        toolbar.Visible = false;
                     }
                     else
                     {
