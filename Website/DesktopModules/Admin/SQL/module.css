@@ -1,6 +1,42 @@
 /* ===========   SQL Module Styling   =========== */
-.dnnSQLModule{width:100%;margin:2em auto;}
-.dnnFormItem.dnnResults{overflow:auto;margin-bottom:20px;}
-#dialog-save .dnnFormItem {margin-top: 70px;}
-#dialog-save .dnnFormItem span.dnnFormMessage.dnnFormError{bottom: 65%;}
+@import url("plugins/datatables/css/jquery.dataTables.css");
+@import url("plugins/datatables/css/TableTools.css");
+.dnnSQLModule {
+    width: 100%;
+    margin: 2em auto;
+}
+
+    .dnnSQLModule .dnnLabel {
+        width: 100px;
+    }
+
+    .dnnSQLModule hr {
+        clear: both;
+        height: 0;
+        border: solid #c0c0c0;
+        border-width: 1px 0 0;
+        margin:0 0 10px 0;
+    }
+
+.dnnFormItem select {
+    width: 300px;
+}
+
+#results {
+    margin-top: 30px;
+}
+
+.dnnResults {
+    width: 100%;
+    /*overflow: auto;
+    margin-bottom: 20px;*/
+}
+
+#dialog-save .dnnFormItem {
+    margin-top: 70px;
+}
+
+    #dialog-save .dnnFormItem span.dnnFormMessage.dnnFormError {
+        bottom: 65%;
+    }
 /* ===========   End SQL Module Styling   =========== */

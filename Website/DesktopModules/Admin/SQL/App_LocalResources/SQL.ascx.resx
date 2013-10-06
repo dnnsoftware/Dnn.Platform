@@ -175,18 +175,18 @@
     <value>The query has been successfully deleted.</value>
   </data>
   <data name="lblSavedQuery.Help" xml:space="preserve">
-    <value>Select a presaved query. You can run it as is or modify before executing it</value>
+    <value>You can select a saved query and run or modify and save it again. Or you can select to create a new query.</value>
   </data>
   <data name="lblSavedQuery.Text" xml:space="preserve">
-    <value>Saved Query:</value>
+    <value>Queries:</value>
   </data>
-  <data name="lnkDelete.Text" xml:space="preserve">
+  <data name="btDelete.Text" xml:space="preserve">
     <value>Delete Query</value>
   </data>
   <data name="lnkLoad.Text" xml:space="preserve">
     <value>Load Query</value>
   </data>
-  <data name="lnkSaveQuery.Text" xml:space="preserve">
+  <data name="btSaveQuery.Text" xml:space="preserve">
     <value>Save Query</value>
   </data>
   <data name="NewQuery.Text" xml:space="preserve">
@@ -216,7 +216,40 @@
   <data name="CopyToClipboard.Text" xml:space="preserve">
     <value>Copy to Clipboard</value>
   </data>
-  <data name="lblNoData.Text" xml:space="preserve">
-    <value>Your query returned no data.</value>
+  <data name="CopyText.Text" xml:space="preserve">
+    <value>The result was copied to the clipboard.</value>
+  </data>
+  <data name="NumRowsReturned.Text" xml:space="preserve">
+    <value>{0} rows returned</value>
+  </data>
+  <data name="ResultTitle.Text" xml:space="preserve">
+    <value>Query</value>
+  </data>
+  <data name="AllRows.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="CopyButtonAlt.Text" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
+  <data name="CSVButtonAlt.Text" xml:space="preserve">
+    <value>Export to CSV</value>
+  </data>
+  <data name="PDFButtonAlt.Text" xml:space="preserve">
+    <value>Export to PDF</value>
+  </data>
+  <data name="Placeholder.Text" xml:space="preserve">
+    <value>Entery your quey script here..</value>
+  </data>
+  <data name="PopupButtonAlt.Text" xml:space="preserve">
+    <value>Open in new popup</value>
+  </data>
+  <data name="XLSButtonAlt.Text" xml:space="preserve">
+    <value>Export to Excel</value>
+  </data>
+  <data name="CopyTitle.Text" xml:space="preserve">
+    <value>SQL Query Result</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>
