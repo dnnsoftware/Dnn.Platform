@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.UI.WebControls
             EnableViewState = false;
         }
 
-        #region "Public Properties"
+        #region Public Properties
 
 		public int PortalId { get; set; }
 
@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        #region "Protected Methods"
+        #region Protected Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -121,7 +121,10 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-			Attributes.Add("SelectedTerms", String.Join(",", Terms.Select(t => t.TermId.ToString()).ToArray()));
+            if (Terms != null)
+            {
+                Attributes.Add("SelectedTerms", String.Join(",", Terms.Select(t => t.TermId.ToString()).ToArray()));
+            }
 			Attributes.Add("IncludeSystemVocabularies", IncludeSystemVocabularies.ToString().ToLowerInvariant());
 			Attributes.Add("IncludeTags", IncludeTags.ToString().ToLowerInvariant());
 			Attributes.Add("PortalId", PortalId.ToString());
@@ -129,7 +132,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        #region "Private Template Class"
+        #region Private Template Class
 
         public class TreeViewTemplate : ITemplate
 		{
@@ -166,7 +169,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-		#region "IClientAPICallbackEventHandler Implementation"
+		#region IClientAPICallbackEventHandler Implementation
 
 		public string RaiseClientAPICallbackEvent(string eventArgument)
 		{
@@ -182,7 +185,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
 		#endregion
 
-		#region "Private Methods"
+		#region Private Methods
 
 		private ArrayList GetTerms()
 		{
