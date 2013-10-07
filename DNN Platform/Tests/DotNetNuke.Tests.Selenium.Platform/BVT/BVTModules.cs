@@ -28,7 +28,9 @@ namespace DNNSelenium.Platform.BVT
 			var module = new Modules(_driver);
 			module.OpenModulePanelUsingControlPanel();
 
-			module.AddNewModuleUsingDragAndDrop(Modules.CommonModulesDescription["HtmlModule"].IdWhenOnBanner, "LeftPane");
+			module.AddNewModuleUsingMenu(Modules.CommonModulesDescription["HtmlModule"].IdWhenOnBanner,
+			                             Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage, "LeftPane");
+			;
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Module location: " + Modules.LocationDescription["LeftPane"].IdWhenOnPage +
 							Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage);
