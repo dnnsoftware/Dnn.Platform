@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -224,7 +225,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				{
 					if (!String.IsNullOrEmpty(User.Profile.PreferredLocale) && User.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name)
 					{
-						redirectURL = UrlUtils.ReplaceQSParam(redirectURL, "language", User.Profile.PreferredLocale);
+                        redirectURL = ReplaceLanguage(redirectURL, CultureInfo.CurrentCulture.Name, User.Profile.PreferredLocale);
 					}
 				}
 				
@@ -245,6 +246,29 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				return redirectURL;
 			}
 		}
+
+
+        /// <summary>
+        /// Replaces the original language with user language
+        /// </summary>
+        /// <param name="Url"></param>
+        /// <param name="originalLanguage"></param>
+        /// <param name="newLanguage"></param>
+        /// <returns></returns>
+        private string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
+        {
+            string returnValue;
+            if (Host.UseFriendlyUrls)
+            {
+                returnValue = Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase);
+            }
+            else
+            {
+                returnValue = Regex.Replace(Url, "(.*)(&|\\?)(language=)([^&\\?]+)(.*)", "$1$2$3" + newLanguage + "$5", RegexOptions.IgnoreCase);
+            }
+            return returnValue;
+        }
+
 
         /// <summary>
         /// Gets and sets a flag that determines whether a permanent auth cookie should be created
