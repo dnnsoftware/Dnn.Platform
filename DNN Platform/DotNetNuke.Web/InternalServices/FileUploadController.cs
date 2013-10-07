@@ -29,6 +29,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -118,9 +119,9 @@ namespace DotNetNuke.Web.InternalServices
 
             // local references for use in closure
             var portalSettings = PortalSettings;
-            var currentHttpContext = HttpContext.Current;
+            var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = UserInfo;
-            var task = request.Content.ReadAsMultipartAsync(provider)
+            var task = request.Content.ReadAsMultipartAsync(provider)            
                 .ContinueWith(o =>
                     {
                         string folder = string.Empty;
@@ -172,8 +173,16 @@ namespace DotNetNuke.Web.InternalServices
                         var alreadyExists = false;
                         if (!string.IsNullOrEmpty(fileName) && stream != null)
                         {
-                            // everything ready
-                            returnFilename = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
+                            // Everything ready
+                            
+                            // The SynchronizationContext keeps the main thread context. Send method is synchronous
+                            currentSynchronizationContext.Send(
+                                delegate
+                                    {
+                                        returnFilename = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
+                                    },null
+                                );
+                            
                         }
 
                         if (string.IsNullOrEmpty(returnFilename))
@@ -184,7 +193,7 @@ namespace DotNetNuke.Web.InternalServices
                              */
                             var mediaTypeFormatter = new JsonMediaTypeFormatter();
                             mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
-                            
+
                             return Request.CreateResponse(
                                 HttpStatusCode.OK,
                                 new
@@ -196,13 +205,14 @@ namespace DotNetNuke.Web.InternalServices
 
                         var root = AppDomain.CurrentDomain.BaseDirectory;
                         returnFilename = returnFilename.Replace(root, "~/");
-                        returnFilename = System.Web.VirtualPathUtility.ToAbsolute(returnFilename);
+                        returnFilename = VirtualPathUtility.ToAbsolute(returnFilename);
 
                         return new HttpResponseMessage
                         {
                             StatusCode = HttpStatusCode.OK,
                             Content = new StringContent(returnFilename)
                         };
+
                     });
 
             return task; 
