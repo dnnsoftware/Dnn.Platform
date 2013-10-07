@@ -53,6 +53,13 @@ namespace DNNSelenium.Common.Tests.BVT
 						"//div[contains(@id, 'dnnSkinMessage') and contains(@class, 'dnnFormValidationSummary')]")),
 				"The error message is present on the current page");
 
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the error popup is not present");
+			Assert.IsFalse(
+				currentPage.ElementPresent(
+					By.XPath(
+						"//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//span[contains(text(), 'Error')]")),
+				"The error popup is present on the current page");
+
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT The Message Link or Message Link bubble-help is present");
 			Utilities.SoftAssert(
 				() => Assert.IsNotEmpty(currentPage.FindElement(By.Id(CorePacket.TheInstance.MessageLink)).GetAttribute("title"),
