@@ -4737,6 +4737,13 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 dependentCount = dependentPackages.Count;
             }
+
+            //Add any packages whose dependency cannot be resolved
+            foreach (var package in dependentPackages)
+            {
+                sortedPackages.Add(package.Key, package.Value);
+            }
+
             //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "End - Parsing Dependencies<br/>");
 
             //foreach (var package in sortedPackages)

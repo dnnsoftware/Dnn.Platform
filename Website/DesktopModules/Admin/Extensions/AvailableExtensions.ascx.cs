@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         private void BindGrid(string installPath, DataGrid grid)
         {
-            var packages = new List<PackageInfo>();
+            var packages = new Dictionary<string, PackageInfo>();
             var invalidPackages = new List<string>();
 
             foreach (string file in Directory.GetFiles(installPath))
@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PackageErrors.Text", LocalResourceFile) + pkgErrorsMsg, ModuleMessage.ModuleMessageType.RedError);
             }
 
-            grid.DataSource = packages;
+            grid.DataSource = packages.Values;
             grid.DataBind();
         }
 

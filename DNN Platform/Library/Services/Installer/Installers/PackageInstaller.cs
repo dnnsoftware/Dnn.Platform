@@ -629,17 +629,15 @@ namespace DotNetNuke.Services.Installer.Installers
 			    var dependency = DependencyFactory.GetDependency(dependencyNav);
 		        var packageDependecy = dependency as IManagedPackageDependency;
 
-		        if (packageDependecy == null)
-		        {
-		            if (!dependency.IsValid)
-		            {
-			            Log.AddFailure(dependency.ErrorMessage);
-			            return;
-		            }
-		        }
-		        else
+                if (packageDependecy != null)
                 {
-    		        Package.Dependencies.Add(packageDependecy.PackageDependency);
+                    Package.Dependencies.Add(packageDependecy.PackageDependency);
+                }
+
+                if (!dependency.IsValid)
+                {
+                    Log.AddFailure(dependency.ErrorMessage);
+                    return;
                 }
             }
 
