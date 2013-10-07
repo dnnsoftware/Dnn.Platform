@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             ScheduleHistoryItem = objScheduleHistoryItem;
         }
            
-        private bool SendEmail(int portalId)
+        private static bool IsSendEmailEnable(int portalId)
         {
             return PortalController.GetPortalSetting("MessagingSendEmail", portalId, "YES") == "YES";
         }
@@ -151,12 +151,12 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                             if (singleMessage != null)
                             {
                                 var messageDetails = InternalMessagingController.Instance.GetMessage(singleMessage.MessageID);
-                                var ps = new PortalSettings(messageDetails.PortalID);
+                                var portalSettings = new PortalSettings(messageDetails.PortalID);
 
                                 var senderUser = userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
                                 var recipientUser = userController.GetUser(messageDetails.PortalID, singleMessage.UserID);
 
-                                SendDigest(messageRecipients, ps, senderUser, recipientUser);
+                                SendDigest(messageRecipients, portalSettings, senderUser, recipientUser);
                             }
                             messagesSent = messagesSent + 1;
                         }
@@ -180,54 +180,86 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return messagesSent;
         }
 
-        private void SendDigest(IEnumerable<MessageRecipient> messages, PortalSettings ps, UserInfo senderUser, UserInfo recipientUser)
+        private void SendDigest(IEnumerable<MessageRecipient> messages, PortalSettings portalSettings, UserInfo senderUser, UserInfo recipientUser)
         {
-            var msgContent = "";
             var messageRecipients = messages as MessageRecipient[] ?? messages.ToArray();
-            var detailTemplate = Localization.Localization.GetString("Template_Item", Localization.Localization.SharedResourceFile);
 
-            foreach (var message in messageRecipients)
+            if (!IsUserAbleToReceiveAnEmail(recipientUser))
             {
-                var messageDetails = InternalMessagingController.Instance.GetMessage(message.MessageID);
-                if (!SendEmail(messageDetails.PortalID))
-                {
-                    InternalMessagingController.Instance.MarkMessageAsSent(messageDetails.MessageID, message.RecipientID);
-                    return;
-                }
-
-                var itemTemplate = detailTemplate;
-                var authorId = message.CreatedByUserID > 0 ? message.CreatedByUserID : senderUser.UserID;
-
-                itemTemplate = itemTemplate.Replace("[TITLE]", messageDetails.Subject);
-                itemTemplate = itemTemplate.Replace("[CONTENT]", messageDetails.Body);
-                itemTemplate = itemTemplate.Replace("[PROFILEPICURL]", GetProfilePicUrl(ps, authorId));
-
-                msgContent += itemTemplate;
+                MarkMessagesAsDispatched(messageRecipients);
+                return;
             }
 
-            var fromAddress = ps.Email;
+            if (!IsSendEmailEnable(portalSettings.PortalId))
+            {
+                MarkMessagesAsDispatched(messageRecipients);
+                return;
+            }
+
+            var defaultLanguage = recipientUser.Profile.PreferredLocale;
+
+            var emailSubjectTemplate = GetEmailSubjectTemplate(defaultLanguage);
+            var emailBodyTemplate = GetEmailBodyTemplate(defaultLanguage);
+            var emailBodyItemTemplate = GetEmailBodyItemTemplate(defaultLanguage);
+
+            var emailBodyItemContent = messageRecipients.Aggregate(string.Empty, 
+                (current, message) => current + GetEmailItemContent(portalSettings, message, emailBodyItemTemplate));
+
+            var fromAddress = portalSettings.Email;
             var toAddress = recipientUser.Email;
-            var sender = senderUser.DisplayName;
 
-            if (string.IsNullOrEmpty(sender))
-                sender = ps.PortalName;
+            var senderName = GetSenderName(senderUser.DisplayName, portalSettings.PortalName);
+            var senderAddress = GetSenderAddress(senderName, fromAddress);
 
-            var senderAddress = sender + "< " + fromAddress + ">";
-            var subject = string.Format(Localization.Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.Localization.GlobalResourceFile), ps.PortalName);
-            var template = Localization.Localization.GetString("Template_Email", Localization.Localization.SharedResourceFile);
+            var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
+            var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, recipientUser);
 
-            template = template.Replace("[SITEURL]", GetPortalHomeUrl(ps));
-            template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(ps, recipientUser.UserID));
-            template = template.Replace("[PORTALNAME]", ps.PortalName);
-            template = template.Replace("[LOGOURL]", GetPortalLogoUrl(ps));
-            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(ps, recipientUser.UserID));
-            template = template.Replace("[MESSAGEBODY]", msgContent);
-            template = template.Replace("href=\"/", "href=\"http://" + ps.DefaultPortalAlias + "/");
-            template = template.Replace("src=\"/", "src=\"http://" + ps.DefaultPortalAlias + "/");
+            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);
 
-            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, template);
+            MarkMessagesAsDispatched(messageRecipients);
+        }
 
-            foreach (var message in messageRecipients)
+        private static bool IsUserAbleToReceiveAnEmail(UserInfo recipientUser)
+        {
+            return recipientUser != null && !recipientUser.IsDeleted;
+        }
+
+        private static string GetSenderAddress(string sender, string fromAddress)
+        {
+            return string.Format("{0} < {1} >", sender, fromAddress);
+        }
+
+        private static string GetEmailBody(string template, string messageBody, PortalSettings portalSettings, UserInfo recipientUser)
+        {
+            template = template.Replace("[SITEURL]", GetPortalHomeUrl(portalSettings));
+            template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(portalSettings, recipientUser.UserID));
+            template = template.Replace("[PORTALNAME]", portalSettings.PortalName);
+            template = template.Replace("[LOGOURL]", GetPortalLogoUrl(portalSettings));
+            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(portalSettings, recipientUser.UserID));
+            template = template.Replace("[MESSAGEBODY]", messageBody);
+            template = template.Replace("href=\"/", "href=\"http://" + portalSettings.DefaultPortalAlias + "/");
+            template = template.Replace("src=\"/", "src=\"http://" + portalSettings.DefaultPortalAlias + "/");
+
+            return template;
+        }
+
+        private static string GetEmailItemContent(PortalSettings portalSettings, MessageRecipient message, string itemTemplate)
+        {
+            var messageDetails = InternalMessagingController.Instance.GetMessage(message.MessageID);
+
+            var authorId = message.CreatedByUserID > 0 ? message.CreatedByUserID : messageDetails.SenderUserID;
+
+            var emailItemContent = itemTemplate;
+            emailItemContent = emailItemContent.Replace("[TITLE]", messageDetails.Subject);
+            emailItemContent = emailItemContent.Replace("[CONTENT]", messageDetails.Body);
+            emailItemContent = emailItemContent.Replace("[PROFILEPICURL]", GetProfilePicUrl(portalSettings, authorId));
+
+            return emailItemContent;
+        }
+
+        private static void MarkMessagesAsDispatched(IEnumerable<MessageRecipient> messages)
+        {
+            foreach (var message in messages)
             {
                 InternalMessagingController.Instance.MarkMessageAsDispatched(message.MessageID, message.RecipientID);
             }
@@ -299,51 +331,63 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         {
             //todo: check if host user can send to multiple portals...
             var messageDetails = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);
-            var author = userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
 
-            if (!SendEmail(messageDetails.PortalID))
+            var toUser = userController.GetUser(messageDetails.PortalID, messageRecipient.UserID);
+            if (!IsUserAbleToReceiveAnEmail(toUser))
+            {
+                InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
+                return;
+            }
+
+            if (!IsSendEmailEnable(messageDetails.PortalID))
             {
                 InternalMessagingController.Instance.MarkMessageAsSent(messageRecipient.MessageID, messageRecipient.RecipientID);
                 return;
             }
 
-            var ps = new PortalSettings(messageDetails.PortalID);
-            var fromAddress = ps.Email;
-            var toUser = userController.GetUser(messageDetails.PortalID, messageRecipient.UserID);
+            var defaultLanguage = toUser.Profile.PreferredLocale;
 
-            if (toUser == null || toUser.IsDeleted)
-            {
-                InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
-                return;
-            }
+            var emailSubjectTemplate = GetEmailSubjectTemplate(defaultLanguage);
+            var emailBodyTemplate = GetEmailBodyTemplate(defaultLanguage);
+            var emailBodyItemTemplate =  GetEmailBodyItemTemplate(defaultLanguage);
+            
+            var author = userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
+            var portalSettings = new PortalSettings(messageDetails.PortalID);
+            var fromAddress = portalSettings.Email;
+
             var toAddress = toUser.Email;
 
-            var sender = author.DisplayName;
+            var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
+            var senderAddress = GetSenderAddress(senderName, fromAddress);
 
-            if (string.IsNullOrEmpty(sender))
-                sender = ps.PortalName;
+            var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
 
-            var senderAddress = sender + "< " + fromAddress + ">";
-            var subject = string.Format(Localization.Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.Localization.GlobalResourceFile), ps.PortalName);
-            var template = Localization.Localization.GetString("Template_Email", Localization.Localization.SharedResourceFile);
-            var authorId = messageDetails.CreatedByUserID > 0 ? messageDetails.CreatedByUserID : author.UserID;
+            var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
+            var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
 
-            var detailTemplate = Localization.Localization.GetString("Template_Item", Localization.Localization.SharedResourceFile);
-            detailTemplate = detailTemplate.Replace("[TITLE]", messageDetails.Subject);
-            detailTemplate = detailTemplate.Replace("[CONTENT]", messageDetails.Body);
-            detailTemplate = detailTemplate.Replace("[PROFILEPICURL]", GetProfilePicUrl(ps, authorId));
-
-            template = template.Replace("[SITEURL]", GetPortalHomeUrl(ps));
-            template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(ps, messageRecipient.UserID));
-            template = template.Replace("[PORTALNAME]", ps.PortalName);
-            template = template.Replace("[LOGOURL]", GetPortalLogoUrl(ps));
-            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(ps, author.UserID));
-            template = template.Replace("[MESSAGEBODY]", detailTemplate);
-            template = template.Replace("href=\"/", "href=\"http://" + ps.DefaultPortalAlias + "/");
-            template = template.Replace("src=\"/", "src=\"http://" + ps.DefaultPortalAlias + "/");
-
-            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, template);            
+            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);          
+  
             InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
+        }
+
+        private static string GetEmailBodyItemTemplate(string language)
+        {
+            return Localization.Localization.GetString("EMAIL_MESSAGING_DISPATCH_ITEM", Localization.Localization.GlobalResourceFile, language);
+        }
+
+        private static string GetEmailBodyTemplate(string language)
+        {
+            return Localization.Localization.GetString("EMAIL_MESSAGING_DISPATCH_BODY", Localization.Localization.GlobalResourceFile, language);
+        }
+
+        private static string GetEmailSubjectTemplate(string language)
+        {
+            return Localization.Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.Localization.GlobalResourceFile, language);
+        }
+
+        private static string GetSenderName(string displayName, string portalName)
+        {
+            return string.IsNullOrEmpty(displayName) ? portalName : displayName;
         }
 
         private static string GetProfilePicUrl(PortalSettings sendingPortal, int userId)
@@ -397,7 +441,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return "http://" + sendingPortal.DefaultPortalAlias;
         }
 
-        private string GetSubscriptionsUrl(PortalSettings sendingPortal, int userId)
+        private static string GetSubscriptionsUrl(PortalSettings sendingPortal, int userId)
         {
             return "http://" + sendingPortal.DefaultPortalAlias + "/tabid/" + GetMessageTab(sendingPortal) + "/userId/" + userId + "/" + Globals.glbDefaultPage;
         }
