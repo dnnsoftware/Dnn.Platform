@@ -451,7 +451,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     installFolder = "Language";
                     break;
                 case "JavaScript_Library":
-                    installFolder = "JavaScript Library";
+                    installFolder = "JavaScriptLibrary";
                     break;
                 case "Module":
                 case "Skin":
