@@ -144,20 +144,14 @@
   <data name="Of.Text" xml:space="preserve">
     <value>of</value>
   </data>
-  <data name="Previous.Text" xml:space="preserve">
-    <value>Previous</value>
-  </data>
-  <data name="Results.Text" xml:space="preserve">
-    <value>results</value>
+  <data name="Prev.Text" xml:space="preserve">
+    <value>Prev</value>
   </data>
   <data name="Search.Text" xml:space="preserve">
     <value>Search</value>
   </data>
   <data name="Searching.Text" xml:space="preserve">
     <value>Searching...</value>
-  </data>
-  <data name="Showing.Text" xml:space="preserve">
-    <value>Showing</value>
   </data>
   <data name="Dialy.Text" xml:space="preserve">
     <value>Daily</value>
@@ -179,5 +173,14 @@
   </data>
   <data name="SingleResultCount.Text" xml:space="preserve">
     <value>{0}</value>
+  </data>
+  <data name="Items.Text" xml:space="preserve">
+    <value>[ITEMS] items</value>
+  </data>
+  <data name="ItemsOnPage.Text" xml:space="preserve">
+    <value>[ITEMS] items on [PAGES] pages</value>
+  </data>
+  <data name="OneItem.Text" xml:space="preserve">
+    <value>1 item</value>
   </data>
 </root>

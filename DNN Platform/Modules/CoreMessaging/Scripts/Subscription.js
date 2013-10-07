@@ -26,7 +26,6 @@
 	    
         this.servicesFramework = $.ServicesFramework(settings.moduleId);
         this.searchController = new SearchController(ko, settings, that);
-        this.pageControl = new PagingControl(ko, settings, this.searchController);        
         this.localizationController = new LocalizationController(settings, that);
 
         this.localizer = function () {
@@ -61,54 +60,6 @@
         this.notifyFrequency = ko.observable(settings.notifyFrequency);
         this.msgFrequency = ko.observable(settings.msgFrequency);
         
-        this.totalResults = ko.dependentObservable(
-            function () {
-                var localizer = that.localizer();
-                if (localizer == null) {
-                    return null;
-                }
-
-                var search = that.searcher();
-                if (search == null) {
-                    return null;
-                }
-
-                //var localString = 'ResultCount';
-
-                //if (search.totalResults() == 1) {
-                //    localString = 'SingleResultCount';
-                //}
-
-                //return localizer.getString(localString).replace("{0}", search.totalResults());
-                return search.totalResults();
-            });
-        
-        this.pagingControl = ko.dependentObservable(
-            function () {
-                var controller = that.pager();
-                if (controller != null) {
-                    return controller.markup();
-                }
-            });
-
-        this.prev = function () {
-            var controller = that.pager();
-            if (controller != null) {
-                if (that.prevClass() !== 'disabled') {
-                    controller.previous();
-                }
-            }
-        };
-
-        this.next = function () {
-            var controller = that.pager();
-            if (controller != null) {
-                if (that.nextClass() !== 'disabled') {
-                    controller.next();
-                }
-            }
-        };
-
         this.refresh = function () {
             var controller = that.searcher();
             if (controller != null) {

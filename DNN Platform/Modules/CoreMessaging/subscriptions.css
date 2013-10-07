@@ -16,5 +16,31 @@
 }
 
 #subscription-table thead > tr > th span.sortDesc {
-    background: url("../../../images/dnnSpinnerDownArrow.png") no-repeat scroll center center transparent;    
- }
+    background: url("../../../images/dnnSpinnerDownArrow.png") no-repeat scroll center center transparent;
+}
+
+.subscriptions-pager {
+    float: left;
+}
+
+.subscriptions-pager .disabled {
+    color: lightgrey;
+}
+
+.subscriptions-pager .currentPage {
+    font-weight: bold;
+}
+
+.subscriptions-pager ul {
+    display: inline;
+    list-style: none outside none;
+    margin: 0;
+}
+
+.subscriptions-pager ul li {
+    display: inline;
+}
+
+.subscriptions-count {
+    float: right
+}

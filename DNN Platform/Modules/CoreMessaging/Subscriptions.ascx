@@ -30,12 +30,19 @@
                 <tfoot>
                     <tr>
                         <td colspan="3">
-                            <span class="dnnResults">
-                                <%= LocalizeString("Showing") %>
-                                <span data-bind="text: totalResults"></span><%= "&#160;" + LocalizeString("Results") %>
-                            </span>
-                            <ul class="dnnPagination" id="activitiesPages" data-bind="html: $root.pagingControl">
-                            </ul>
+                            
+                            <div class="subscriptions-pager" data-bind="if: pages().length > 1">
+                                <a href="#" data-bind="click: function () { changePage(0) }, css: { disabled: currentPage() == 0 }"><%=LocalizeString("First")%></a>
+                                <a href="#" data-bind="click: function () { changePage(currentPage() - 1) }, css: { disabled: currentPage() == 0 }"><%=LocalizeString("Prev")%></a>
+                                <ul data-bind="foreach: pages">
+                                    <li><a href="#" data-bind="click: function () { $parent.changePage($data - 1) }, text: $data, css: { currentPage: $data - 1 == $parent.currentPage() }"></a></li>
+                                </ul>
+                                <a href="#" data-bind="click: function () { changePage(currentPage() + 1) }, css: { disabled: currentPage() == lastPage() - 1 }"><%=LocalizeString("Next")%></a>
+                                <a href="#" data-bind="click: function () { changePage(lastPage() - 1) }, css: { disabled: currentPage() == lastPage() - 1 }"><%=LocalizeString("Last")%></a>
+                            </div>
+                            
+                            <div class="subscriptions-count" data-bind="visible: totalCount() > 0, text: totalItemsText"></div>
+
                         </td>
                     </tr>
                 </tfoot>

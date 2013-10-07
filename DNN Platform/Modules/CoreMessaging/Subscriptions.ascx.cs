@@ -99,10 +99,8 @@ namespace DotNetNuke.Modules.CoreMessaging
 
 			if (Request.IsAuthenticated)
 			{
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/PagingControl.js");
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SearchController.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SearchResult.js");
 				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
                 ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/CoreMessaging/subscriptions.css");
 			}

@@ -9,9 +9,7 @@
 
 	    this.servicesFramework = root.servicesFramework;
         this.results = ko.observableArray([]);
-        
-        this.totalResults = ko.observable(0);
-        
+                
         this.localizer = function () {
 	        return root.localizationController;
         };
@@ -26,16 +24,8 @@
             };
 
             var success = function (model) {
-                // Load the new results into our results array all at once to avoid flicker.
-                var results = [];
-
-                $.each(model.Results,
-                    function (index, result) {
-                        results.push(new SearchResult(ko, settings, result, root));
-                    });
-
-                self.results(results);
-                self.totalResults(model.TotalResults || 0);
+                self.results(model.Results);
+                self.totalCount(model.TotalResults || 0);
 
                 finishSearch();
             };
@@ -57,8 +47,8 @@
             startSearch();
 
             var searchParameters = {
-                pageIndex: 0,
-                pageSize: 10,
+                pageIndex: self.currentPage(),
+                pageSize: self.pageSize(),
                 sortExpression: self.sortedByColumnName() + ' ' + self.sortedByOrder()
             };
 
@@ -108,6 +98,51 @@
         
         this.sortCssSubscriptionType = ko.computed(function () {
             return self.sortCss('SubscriptionType');
+        });
+        
+        self.totalCount = ko.observable(0);
+
+        self.pageSize = ko.observable(10);
+
+        self.currentPage = ko.observable(0);
+
+        self.pageSlide = ko.observable(2);
+        
+        self.lastPage = ko.computed(function () {
+            return Math.ceil(self.totalCount() / self.pageSize());
+        });
+        
+        this.pages = ko.computed(function () {
+            var pageCount = self.lastPage();
+            var pageFrom = Math.max(1, self.currentPage() - self.pageSlide());
+            var pageTo = Math.min(pageCount, self.currentPage() + self.pageSlide());
+            pageFrom = Math.max(1, Math.min(pageTo - 2 * self.pageSlide(), pageFrom));
+            pageTo = Math.min(pageCount, Math.max(pageFrom + 2 * self.pageSlide(), pageTo));
+
+            var result = [];
+            for (var i = pageFrom; i <= pageTo; i++) {
+                result.push(i);
+            }
+
+            return result;
+        });
+        
+        self.changePage = function (page) {
+            self.currentPage(page);
+            self.search();
+        };
+        
+        self.totalItemsText = ko.computed(function () {
+            if (self.totalCount() == 1) {
+                return  "One item"; 
+            } else if (self.totalCount() < self.pageSize()) {
+                return "[ITEMS] items" 
+                    .replace('[ITEMS]', self.totalCount());
+            } else {
+                return "[ITEMS] items on [PAGES] pages" 
+                    .replace('[ITEMS]', self.totalCount())
+                    .replace('[PAGES]', Math.ceil(self.totalCount() / self.pageSize()));
+            }
         });
         
         // Wait for other components to finish registration
