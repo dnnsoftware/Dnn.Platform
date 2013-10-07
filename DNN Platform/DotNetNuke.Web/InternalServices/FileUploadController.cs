@@ -132,8 +132,6 @@ namespace DotNetNuke.Web.InternalServices
                         Stream stream = null;
                         string returnFilename = string.Empty;
 
-                        HttpContext.Current = currentHttpContext;
-
                         foreach (var item in provider.Contents)
                         {
                             var name = item.Headers.ContentDisposition.Name;
