@@ -589,7 +589,9 @@ namespace DesktopModules.Admin.Portals
                 }
                 RedirectAfterLogout.PortalId = portal.PortalID;
 
-                var urlSettings = new FriendlyUrlSettings(portal.PortalID);
+                //This needs to be kept explicit to avoid naming conflicts ewith iFinity
+                var urlSettings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(portal.PortalID);
+
                 VanityUrlAlias.Text = String.Format("{0}/", PortalSettings.PortalAlias.HTTPAlias);
                 vanilyUrlPrefixTextBox.Text = urlSettings.VanityUrlPrefix;
                 VanityUrlExample.Text = String.Format("/{0}", LocalizeString("VanityUrlExample"));
