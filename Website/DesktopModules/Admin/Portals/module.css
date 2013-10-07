@@ -224,3 +224,7 @@ a[id$='IncrementCrmVersionButton']{
 #dnnSiteSettings .dnnUserVanityUrl {
     width: 25%;
 }
+
+#ssStylesheetEditor .editor {
+    margin-bottom: 2em;
+}

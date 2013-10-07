@@ -12,6 +12,14 @@
 <dnn:DnnJsInclude id="DnnJsInclude1" runat="server" filepath="~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js" priority="103" />
 <dnn:DnnCssInclude id="DnnCssInclude1" runat="server" filepath="~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css" />
 
+<%-- Custom CodeMirror CSS Registration --%>
+<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.css" />
+
+<%-- Custom CodeMirror JavaScript Registration --%>
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.js" Priority="104" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/css/css.js" Priority="105" />
+
+
 <div class="dnnForm dnnSiteSettings dnnClear" id="dnnSiteSettings">
     <dnnext:EditPageTabExtensionControl runat="server"  ID="SiteSettingsTabExtensionControl" 
             Module="SiteSettings" Group="SiteSettingsTabExtensions"
@@ -606,8 +614,10 @@
         <div class="ssStylesheetEditor dnnClear" id="ssStylesheetEditor">
             <div class="ssseContent dnnClear">
                 <fieldset>
-                    <asp:TextBox ID="txtStyleSheet" runat="server" Rows="30" TextMode="MultiLine" Wrap="False"
-                        Columns="100" />
+                    <div class="editor">
+                        <asp:TextBox ID="txtStyleSheet" runat="server" Rows="30" TextMode="MultiLine" Wrap="False"
+                            Columns="100" />
+                    </div>
                     <ul class="dnnActions dnnClear">
                         <li>
                             <asp:LinkButton ID="cmdSave" CssClass="dnnPrimaryAction" runat="server" resourcekey="SaveStyleSheet"
@@ -744,9 +754,18 @@
             prePopulate: <% = CustomRegistrationFields %>
         });         
         
+
     }
 
     $(document).ready(function () {
+        var styleSheetEditor = CodeMirror.fromTextArea($("textarea[id$='txtStyleSheet']")[0], {
+            lineNumbers: true,
+            matchBrackets: true,
+            lineWrapping: true,
+            indentWithTabs: true,
+            mode: 'text/css'
+        });
+
         setupDnnSiteSettings();
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
             setupDnnSiteSettings();
