@@ -260,13 +260,13 @@ namespace DNNSelenium.Common.Tests.Installer
 
 						//default template; look for menu options, 4 options should be present
 						Trace.WriteLine("Assert current Template: Default: ");
-						Assert.AreEqual(4, installerPage.FindElements(By.XPath("//ul[@id='dnn_pnav']/li")).Count(),
+						Assert.AreEqual(4, installerPage.FindElements(By.XPath("//ul[@class ='nav nav-pills']/li")).Count(),
 										"This is not a Default page or The number of options are incorrect");
 
 						loginPage.LoginUsingUrl(baseUrl, username, password);
 						//default template; look for menu options, 4 options should be present
 						Trace.WriteLine("Assert current Template: Default: ");
-						Assert.AreEqual(4, installerPage.FindElements(By.XPath("//ul[@id='dnn_pnav']/li")).Count(),
+						Assert.AreEqual(4, installerPage.FindElements(By.XPath("//ul[@class = 'nav nav-pills']/li")).Count(),
 										"This is not a Default page or The number of options are incorrect");
 
 						break;
