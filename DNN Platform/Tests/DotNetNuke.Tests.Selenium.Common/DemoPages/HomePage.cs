@@ -10,7 +10,7 @@ namespace DNNSelenium.Common.DemoPages
 
 		public static string HomePageUrl = "/Default.aspx";
 
-		public static string HomeLink = "//div[@id ='nav']//a[text() = 'Home']";
+		public static string HomeLink = "//div[@class ='navbar']//a[text() = 'Home']";
 
 		public override string PageTitleLabel
 		{

@@ -10,7 +10,7 @@ namespace DNNSelenium.Common.DemoPages
 
 		public static string ContactUsUrl = "/Contact-Us";
 
-		public static string ContactUsLink = "//div[@id ='nav']//a[contains(@href, 'Contact-Us')]";
+		public static string ContactUsLink = "//div[@class ='navbar']//a[contains(@href, 'Contact-Us')]";
 
 		public override string PageTitleLabel
 		{

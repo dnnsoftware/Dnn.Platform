@@ -10,7 +10,7 @@ namespace DNNSelenium.Common.DemoPages
 
 		public static string OurProductsUrl = "/Our-Products";
 
-		public static string OurProductsLink = "//div[@id ='nav']//a[contains(@href, 'Our-Products')]";
+		public static string OurProductsLink = "//div[@class ='navbar']//a[contains(@href, 'Our-Products')]";
 
 		public override string PageTitleLabel
 		{
