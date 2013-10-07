@@ -59,8 +59,6 @@
 
         <li><asp:linkbutton id="cmdCreate" resourcekey="cmdCreate" runat="server" cssclass="dnnPrimaryAction"/></li>
 
-        <li><asp:hyperlink id="cmdDocumentation" resourcekey="cmdDocumentation" runat="server" cssclass="dnnSecondaryAction" target="_new"/></li>
-
     </ul>
     <div class="dnnFormItem">
 

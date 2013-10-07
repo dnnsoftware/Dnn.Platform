@@ -418,7 +418,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 if (!Page.IsPostBack)
                 {
-                    cmdDocumentation.NavigateUrl = ModulePath + "/ModuleCreator.docx";
                     Dictionary<string, string> HostSettings = HostController.Instance.GetSettingsDictionary();
                     if (HostSettings.ContainsKey("Owner"))
                     {
