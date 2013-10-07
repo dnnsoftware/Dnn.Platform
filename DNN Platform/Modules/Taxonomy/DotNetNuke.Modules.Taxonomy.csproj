@@ -145,6 +145,7 @@
     <Compile Include="IVocabularyListView.cs" />
     <Compile Include="Services\ServicesController.cs" />
     <Compile Include="Services\ServicesRouteMapper.cs" />
+    <Compile Include="Validators\VocabularyNameValidator.cs" />
     <Compile Include="VocabularyList.ascx.cs">
       <DependentUpon>VocabularyList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
