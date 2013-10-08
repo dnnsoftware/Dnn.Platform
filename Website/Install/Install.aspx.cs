@@ -59,7 +59,8 @@ namespace DotNetNuke.Services.Install
     public partial class Install : Page
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
-        #region "Private Methods"
+        
+        #region Private Methods
 
         private void ExecuteScripts()
         {

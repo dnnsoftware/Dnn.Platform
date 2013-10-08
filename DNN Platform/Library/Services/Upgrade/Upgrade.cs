@@ -4492,13 +4492,11 @@ namespace DotNetNuke.Services.Upgrade
                 ExecuteScripts(strProviderPath);
 
                 //Install optional resources if present
-                InstallPackages("Module", true);
-                InstallPackages("Skin", true);
-                InstallPackages("Container", true);
-                InstallPackages("Language", true);
-                InstallPackages("Provider", true);
-                InstallPackages("AuthSystem", true);
-                InstallPackages("Package", true);
+                var packages = GetInstallPackages();
+                foreach (var package in packages)
+                {
+                    InstallPackage(package.Key, package.Value.PackageType, true);
+                }
 
                 //Set Status to None
                 Globals.SetStatus(Globals.UpgradeStatus.None);
