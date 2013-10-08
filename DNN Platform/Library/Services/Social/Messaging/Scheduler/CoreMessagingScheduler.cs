@@ -439,9 +439,17 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         private static string GetPortalLogoUrl(PortalSettings portalSettings)
         {
             return string.Format("http://{0}/{1}/{2}",
-                portalSettings.DefaultPortalAlias,
+                GetDomainName(portalSettings),
                 portalSettings.HomeDirectory,
                 portalSettings.LogoFile);
+        }
+
+        private static string GetDomainName(PortalSettings portalSettings)
+        {
+            var portalAlias = portalSettings.DefaultPortalAlias;
+            return portalAlias.IndexOf("/", StringComparison.InvariantCulture) != -1 ?
+                        portalAlias.Substring(0, portalAlias.IndexOf("/", StringComparison.InvariantCulture)) :
+                        portalAlias;
         }
 
         private static string GetPortalHomeUrl(PortalSettings portalSettings)
