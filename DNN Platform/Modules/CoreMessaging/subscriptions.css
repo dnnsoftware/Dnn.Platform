@@ -23,6 +23,7 @@
 
 #subscription-table tfoot {
     background-color: #E9E9E9;
+    color: gray;
 }
 
 #subscription-table thead > tr > th > span.sortable {
@@ -80,5 +81,4 @@
 .subscriptions-count {
     float: right;
     line-height: 40px;
-    color:gray;
 }

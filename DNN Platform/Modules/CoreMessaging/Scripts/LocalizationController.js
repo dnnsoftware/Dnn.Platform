@@ -38,8 +38,15 @@
             var params = {
                 culture: settings.culture
             };
-
-            root.requestService('Subscriptions/GetLocalizationTable', 'get', params, success, failure);
+            
+            $.ajax({
+                type: 'get',
+                url: root.servicesFramework.getServiceRoot('CoreMessaging') + 'Subscriptions/GetLocalizationTable',
+                beforeSend: root.servicesFramework.setModuleHeaders,
+                data: params,
+                cache: false,
+                async: false
+            }).done(success).fail(failure);
 
             return worked;
         };

@@ -102,7 +102,7 @@
         
         self.totalCount = ko.observable(0);
 
-        self.pageSize = ko.observable(10);
+        self.pageSize = ko.observable('10');
 
         self.currentPage = ko.observable(0);
 
