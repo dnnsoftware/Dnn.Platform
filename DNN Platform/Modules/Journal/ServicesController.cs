@@ -113,10 +113,10 @@ namespace DotNetNuke.Modules.Journal
                 ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoMarkup);
 
 				//parse the mentions context in post data
-				var matches = Regex.Matches(ji.Summary, "@([\\S]+)");
+				var matches = Regex.Matches(ji.Summary, "@([\\S\\t]+)");
 				foreach (Match match in matches)
 				{
-					var username = match.Groups[1].Value;
+					var username = match.Groups[1].Value.Replace("\t", " ");
 					var user = UserController.GetUserByName(PortalSettings.PortalId, username);
 					
 					if (user != null)
@@ -127,8 +127,8 @@ namespace DotNetNuke.Modules.Journal
 						{
 							var userLink = string.Format("<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>",
 							                             Globals.UserProfileURL(user.UserID),
-							                             match.Value);
-							ji.Summary = Regex.Replace(ji.Summary, match.Value + "(\\s)|" + match.Value + "($)", userLink + "$1");
+							                             "@" + user.Username);
+							ji.Summary = Regex.Replace(ji.Summary, match.Value + "( )|" + match.Value + "($)", userLink + "$1");
 						}
 					}
 				}
@@ -468,6 +468,7 @@ namespace DotNetNuke.Modules.Journal
 		{
 			try
 			{
+			    keyword = keyword.Replace("\t", " ");
 				var findedUsers = new ArrayList();
 				var relations = RelationshipController.Instance.GetUserRelationships(UserInfo);
 				foreach (var ur in relations)
@@ -487,7 +488,7 @@ namespace DotNetNuke.Modules.Journal
 						findedUsers.Add(new
 							                {
 												displayName = targetUser.DisplayName,
-												username = targetUser.Username,
+												username = targetUser.Username.Replace(" ", "\t"),
 												userId = targetUser.UserID,
 												avatar = targetUser.Profile.PhotoURL,
 												key = keyword
