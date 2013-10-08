@@ -4,6 +4,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
     color: #333;
+    line-height: 18px;
 }
 
 /* DNN Body */
@@ -87,11 +88,13 @@ h6, h6 .Head {
 a, a:link, a:visited, a:active {
     color: #3B96B6;
     text-decoration: none;
+    outline: 0;
 }
 
     a:hover {
         color: #D00;
         text-decoration: none;
+        outline: 0;
     }
 
 /* DNN Specific Selectors 
