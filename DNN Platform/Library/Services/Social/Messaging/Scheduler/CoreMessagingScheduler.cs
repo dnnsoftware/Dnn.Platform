@@ -390,23 +390,25 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return string.IsNullOrEmpty(displayName) ? portalName : displayName;
         }
 
-        private static string GetProfilePicUrl(PortalSettings sendingPortal, int userId)
+        private static string GetProfilePicUrl(PortalSettings portalSettings, int userId)
         {
-            var url = "http://" + sendingPortal.DefaultPortalAlias + "/" + "profilepic.ashx?userId={0}&h={1}&w={2}";
-            return string.Format(url, userId, 64, 64);
+            return string.Format("http://{0}/profilepic.ashx?userId={1}&h={2}&w={3}", 
+                portalSettings.DefaultPortalAlias, 
+                userId, 
+                64, 64);
         }
 
-        private static string GetNotificationUrl(PortalSettings sendingPortal, int userId)
+        private static string GetNotificationUrl(PortalSettings portalSettings, int userId)
         {
-            var cacheKey = string.Format("MessageCenterTab:{0}", sendingPortal.PortalId);
+            var cacheKey = string.Format("MessageCenterTab:{0}", portalSettings.PortalId);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId <= 0)
             {
                 var tabController = new TabController();
                 var moduleController = new ModuleController();
 
-                messageTabId = sendingPortal.UserTabId;
-                var profileTab = tabController.GetTab(sendingPortal.UserTabId, sendingPortal.PortalId, false);
+                messageTabId = portalSettings.UserTabId;
+                var profileTab = tabController.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
                 if (profileTab != null)
                 {
                     var childTabs = tabController.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
@@ -427,23 +429,32 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 DataCache.SetCache(cacheKey, messageTabId, TimeSpan.FromMinutes(20));
             }
 
-            return "http://" + sendingPortal.DefaultPortalAlias + "/tabid/" + messageTabId + "/userId/" + userId + "/" + Globals.glbDefaultPage + "#dnnCoreNotification";
+            return string.Format("http://{0}/tabid/{1}/userId/{2}/{3}#dnnCoreNotification",
+                portalSettings.DefaultPortalAlias,
+                messageTabId,
+                userId,
+                Globals.glbDefaultPage);
         }
 
-        private static string GetPortalLogoUrl(PortalSettings sendingPortal)
+        private static string GetPortalLogoUrl(PortalSettings portalSettings)
         {
-            return "http://" + sendingPortal.DefaultPortalAlias + "/" + sendingPortal.HomeDirectory + "/" + sendingPortal.LogoFile;
+            return string.Format("http://{0}/{1}/{2}",
+                portalSettings.DefaultPortalAlias,
+                portalSettings.HomeDirectory,
+                portalSettings.LogoFile);
         }
 
-        private static string GetPortalHomeUrl(PortalSettings sendingPortal)
+        private static string GetPortalHomeUrl(PortalSettings portalSettings)
         {
-
-            return "http://" + sendingPortal.DefaultPortalAlias;
+            return string.Format("http://{0}", portalSettings.DefaultPortalAlias);
         }
 
-        private static string GetSubscriptionsUrl(PortalSettings sendingPortal, int userId)
+        private static string GetSubscriptionsUrl(PortalSettings portalSettings, int userId)
         {
-            return "http://" + sendingPortal.DefaultPortalAlias + "/tabid/" + GetMessageTab(sendingPortal) + "/userId/" + userId + "/" + Globals.glbDefaultPage;
+            return string.Format("http://{0}/tabid/{1}/ctl/Profile/userId/{2}/pageno/3",
+                portalSettings.DefaultPortalAlias,
+                GetMessageTab(portalSettings),
+                userId);
         }
 
         private static int GetMessageTab(PortalSettings sendingPortal)
@@ -453,16 +464,15 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var cacheItemArgs = new CacheItemArgs(cacheKey, 30, CacheItemPriority.Default, sendingPortal);
 
             return CBO.GetCachedObject<int>(cacheItemArgs, GetMessageTabCallback);
-
         }
 
         private static object GetMessageTabCallback(CacheItemArgs cacheItemArgs)
         {
-            var sendingPortal = cacheItemArgs.Params[0] as PortalSettings;
+            var portalSettings = cacheItemArgs.Params[0] as PortalSettings;
             var tabController = new TabController();
             var moduleController = new ModuleController();
 
-            var profileTab = tabController.GetTab(sendingPortal.UserTabId, sendingPortal.PortalId, false);
+            var profileTab = tabController.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
             if (profileTab != null)
             {
                 var childTabs = tabController.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
@@ -480,7 +490,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             }
 
             //default to User Profile Page
-            return sendingPortal.UserTabId;
+            return portalSettings.UserTabId;
         }
     }
 }
