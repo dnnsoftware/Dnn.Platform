@@ -24,7 +24,9 @@
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -90,7 +92,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="jsname">the library name</param>
         public static void RequestRegistration(String jsname)
         {
-            HttpContext.Current.Items[ScriptPreix + "." + jsname] = true;
+            HttpContext.Current.Items[ScriptPreix + jsname] = true;
         }
 
         /// <summary>
@@ -102,11 +104,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version == version);
             if (library != null)
             {
-                HttpContext.Current.Items[ScriptPreix + "." + library.LibraryName] = true;
+                HttpContext.Current.Items[ScriptPreix + library.LibraryName] = true;
             }
             else
             {
-                HttpContext.Current.Items[ScriptPreix + "." + jsname] = true;
+                HttpContext.Current.Items[ScriptPreix + jsname] = true;
             }
         }
 
@@ -122,14 +124,14 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             switch (specific)
             {
                 case SpecificVersion.Latest:
-                    HttpContext.Current.Items[ScriptPreix + "." + jsname] = true;
+                    HttpContext.Current.Items[ScriptPreix  + jsname] = true;
                     isProcessed = true;
                     break;
                 case SpecificVersion.LatestMajor:
                     library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version.Major >= version.Major);
                     if (library != null)
                     {
-                        HttpContext.Current.Items[ScriptPreix + "." + library.LibraryName] = true;
+                        HttpContext.Current.Items[ScriptPreix + library.LibraryName] = true;
                     }
                     isProcessed = true;
                     break;
@@ -137,14 +139,14 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                      library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version.Minor >= version.Minor);
                     if (library != null)
                     {
-                        HttpContext.Current.Items[ScriptPreix + "." + library.LibraryName] = true;
+                        HttpContext.Current.Items[ScriptPreix + library.LibraryName] = true;
                     }
                     isProcessed = true;
                     break;
             }
             if (isProcessed == false)
             {
-                HttpContext.Current.Items[ScriptPreix + "." + jsname] = true;
+                HttpContext.Current.Items[ScriptPreix + jsname] = true;
             }
         }
 
@@ -158,7 +160,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             var scripts = GetScriptVersions();
             foreach (string item in scripts)
             {
-                if (item != "DnnJQueryPlugins")
+                if (item == "DnnJQueryPlugins")
                     {
                         RegisterScript(page, item, true);
                     }
@@ -171,8 +173,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static IEnumerable<string> GetScriptVersions()
         {
-            var orderedScripts= (from object item in HttpContext.Current.Items where item.ToString().StartsWith(ScriptPreix) select item.ToString().Substring(3)).ToList();
+            var orderedScripts = (from object item in HttpContext.Current.Items.Keys where item.ToString().StartsWith(ScriptPreix) select item.ToString().Substring(4)).ToList();
             orderedScripts.Sort();
+            var finalScripts = orderedScripts.ToList();
             foreach (var orderedScript in orderedScripts)
             {
                 //find dependencies
@@ -185,17 +188,16 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     {
                         foreach (var dependency in package.Dependencies)
                         {
-                            if (HttpContext.Current.Items[ScriptPreix + "." + dependency.PackageName]!=null)
+                            if (HttpContext.Current.Items[ScriptPreix + "." + dependency.PackageName]==null)
                             {
-                                orderedScripts.Add(ScriptPreix + "." + dependency.PackageName);
+                               finalScripts.Add(dependency.PackageName);
                             }
-                            
                         }
                     }
                 }
                 
             }
-            return orderedScripts;
+            return finalScripts;
         }
 
         #endregion
@@ -226,7 +228,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 return js.CDNPath;
                 }
             }
-            return HttpContext.Current.Server.MapPath("~/Resources/libraries/" + js.LibraryName + "/" + js.FileName);
+            return ("~/Resources/libraries/" + js.LibraryName + "/" + js.FileName);
         }
 
         private static string GetScriptLocation(JavaScriptLibrary js)
@@ -256,7 +258,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 }
             }
             JavaScriptLibrary jsl = GetJavascriptLibrary(js);
-            ClientResourceManager.RegisterScript(page, GetScriptLocation(jsl), jsl.PackageID + 500, GetScriptPath(jsl));
+            ClientResourceManager.RegisterScript(page, GetScriptPath(jsl), jsl.PackageID + 500, GetScriptLocation(jsl));
 
             if (Host.CdnEnabled && !String.IsNullOrEmpty(jsl.ObjectName))
             {
