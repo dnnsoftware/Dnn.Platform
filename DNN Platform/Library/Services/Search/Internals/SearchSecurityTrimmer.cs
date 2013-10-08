@@ -112,7 +112,6 @@ namespace DotNetNuke.Services.Search.Internals
             var collectedSoFar = skippedSoFar = 0;
             var pageSize = _query.PageSize;
             var toSkip = _query.PageIndex <= 1 ? 0 : ((_query.PageIndex - 1) * pageSize);
-            _scoreDocs = new List<ScoreDoc>();
             IEnumerable<ScoreDoc> tempDocs = new List<ScoreDoc>();
 
             _totalHits = _hitDocs.Count;
@@ -163,6 +162,9 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (useRelevance)
                 tempDocs = _hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
+
+            var scoreDocSize = Math.Min(tempDocs.Count(), pageSize);
+            _scoreDocs = new List<ScoreDoc>(scoreDocSize);
 
            foreach (var scoreDoc in tempDocs)
             {
