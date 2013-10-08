@@ -390,6 +390,10 @@
                         <asp:TextBox ID="txtTelerikSecureUrl" runat="server" MaxLength="256" />
                     </div>
                 </div>
+                  <div class="dnnFormItem">
+                    <dnn:label id="plEnableCDN" controlname="chkEnableCDN" runat="server" />
+                    <asp:CheckBox ID="chkEnableCDN" runat="server" />
+                </div>
             </fieldset>
             <h2 id="Panel-ClientResourceManagement" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("ClientResourceManagement")%></a></h2>
             <fieldset>

@@ -192,6 +192,7 @@ namespace DotNetNuke.Modules.Admin.Host
 			chkTelerikCdn.Checked = Entities.Host.Host.EnableTelerikCdn;
 			txtTelerikBasicUrl.Text = Entities.Host.Host.TelerikCdnBasicUrl;
 			txtTelerikSecureUrl.Text = Entities.Host.Host.TelerikCdnSecureUrl;
+		    chkEnableCDN.Checked = Entities.Host.Host.CdnEnabled;
 		}
 
         private void BindPerformance()
@@ -873,6 +874,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("jQueryUIUrl", txtJQueryUIHostedUrl.Text.Trim(), false);
 					HostController.Instance.Update("EnableMsAjaxCDN", chkMsAjaxCdn.Checked ? "Y" : "N", false);
 					HostController.Instance.Update("EnableTelerikCDN", chkTelerikCdn.Checked ? "Y" : "N", false);
+                    HostController.Instance.Update("CDNEnabled", chkEnableCDN.Checked ? "Y" : "N", false);
 					HostController.Instance.Update("TelerikCDNBasicUrl", txtTelerikBasicUrl.Text, false);
 					HostController.Instance.Update("TelerikCDNSecureUrl", txtTelerikSecureUrl.Text, false);
 					HostController.Instance.Update("AsyncTimeout", txtAsyncTimeout.Text, false);

@@ -792,6 +792,12 @@
   <data name="plJQueryVersion.Text" xml:space="preserve">
     <value>Installed jQuery Version:</value>
   </data>
+  <data name="plEnableCDN.Help" xml:space="preserve">
+    <value>If checked, then the associated URL will be used for javascript libraries.  If unchecked then local copies of the file will be used.</value>
+  </data>
+  <data name="plEnableCDN.Text" xml:space="preserve">
+    <value>Use javascript libraries CDN?</value>
+  </data>
   <data name="HostEmail.Error" xml:space="preserve">
     <value>Email Address is invalid</value>
   </data>

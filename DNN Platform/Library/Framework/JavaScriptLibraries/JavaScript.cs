@@ -29,8 +29,10 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Globals = DotNetNuke.Common.Globals;
@@ -95,9 +97,17 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         ///     adds a request for a script into the page items collection
         /// </summary>
         /// <param name="jsname">the library name</param>
-        public static void RequestRegistration(String jsname,String version)
+        public static void RequestRegistration(String jsname,Version version)
         {
-            HttpContext.Current.Items[ScriptPreix + "." + jsname + "." + version] = true;
+            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version == version);
+            if (library != null)
+            {
+                HttpContext.Current.Items[ScriptPreix + "." + library.LibraryName] = true;
+            }
+            else
+            {
+                HttpContext.Current.Items[ScriptPreix + "." + jsname] = true;
+            }
         }
 
 
@@ -105,9 +115,37 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         ///     adds a request for a script into the page items collection
         /// </summary>
         /// <param name="jsname">the library name</param>
-        public static void RequestRegistration(String jsname, String version,SpecificVersion specific)
+        public static void RequestRegistration(String jsname, Version version, SpecificVersion specific)
         {
-            HttpContext.Current.Items[ScriptPreix + "." + jsname + "." + version + "." + specific.ToString()] = true;
+            JavaScriptLibrary library;
+            bool isProcessed = false;
+            switch (specific)
+            {
+                case SpecificVersion.Latest:
+                    HttpContext.Current.Items[ScriptPreix + "." + jsname] = true;
+                    isProcessed = true;
+                    break;
+                case SpecificVersion.LatestMajor:
+                    library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version.Major >= version.Major);
+                    if (library != null)
+                    {
+                        HttpContext.Current.Items[ScriptPreix + "." + library.LibraryName] = true;
+                    }
+                    isProcessed = true;
+                    break;
+                case SpecificVersion.LatestMinor:
+                     library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version.Minor >= version.Minor);
+                    if (library != null)
+                    {
+                        HttpContext.Current.Items[ScriptPreix + "." + library.LibraryName] = true;
+                    }
+                    isProcessed = true;
+                    break;
+            }
+            if (isProcessed == false)
+            {
+                HttpContext.Current.Items[ScriptPreix + "." + jsname] = true;
+            }
         }
 
         /// <summary>
@@ -135,21 +173,29 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         {
             var orderedScripts= (from object item in HttpContext.Current.Items where item.ToString().StartsWith(ScriptPreix) select item.ToString().Substring(3)).ToList();
             orderedScripts.Sort();
-
-            var duplicateExists = orderedScripts.GroupBy(n => n).Any(g => g.Count() > 1);
-            //are there any duplicates?
-            if (!duplicateExists)
+            foreach (var orderedScript in orderedScripts)
             {
-                return orderedScripts;}
-            
-            //TODO:check logic for major/minor and apply
-            var filteredScripts = new List<string>();
-            for (int i = 0; i < orderedScripts.Count; i++)
-            {
-                filteredScripts.Add(orderedScripts[i]);
+                //find dependencies
+               
+                JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == orderedScript);
+                if (library != null)
+                {
+                    var package=PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == library.PackageID);
+                    if (package.Dependencies.Count > 0)
+                    {
+                        foreach (var dependency in package.Dependencies)
+                        {
+                            if (HttpContext.Current.Items[ScriptPreix + "." + dependency.PackageName]!=null)
+                            {
+                                orderedScripts.Add(ScriptPreix + "." + dependency.PackageName);
+                            }
+                            
+                        }
+                    }
+                }
+                
             }
-            
-            return null;
+            return orderedScripts;
         }
 
         #endregion
@@ -174,9 +220,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         {
             if (Host.CdnEnabled)
             {
+                //cdn enabled but jsl does not have one defined
+                if (!String.IsNullOrEmpty(js.CDNPath))
+                {
                 return js.CDNPath;
+                }
             }
-            return js.FileName;
+            return HttpContext.Current.Server.MapPath("~/Resources/libraries/" + js.LibraryName + "/" + js.FileName);
         }
 
         private static string GetScriptLocation(JavaScriptLibrary js)
@@ -208,7 +258,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             JavaScriptLibrary jsl = GetJavascriptLibrary(js);
             ClientResourceManager.RegisterScript(page, GetScriptLocation(jsl), jsl.PackageID + 500, GetScriptPath(jsl));
 
-            if (Host.CdnEnabled)
+            if (Host.CdnEnabled && !String.IsNullOrEmpty(jsl.ObjectName))
             {
                 string pagePortion;
                 switch (jsl.PreferredScriptLocation)

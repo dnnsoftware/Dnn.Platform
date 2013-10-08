@@ -97,6 +97,8 @@ namespace DotNetNuke.Entities.Host
                 return HostController.Instance.GetBoolean("CDNEnabled", false);
             }
         }
+
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether the Upgrade Indicator is enabled
