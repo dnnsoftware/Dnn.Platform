@@ -1372,7 +1372,7 @@ Please do not reply to this email.</value>
             font-size:0.9em;
             color:#999;
         }
-        .headerContent {background-color:#333;}
+        .headerContent {background-color:#bbb;}
         .headerContent a{display:block;}
         .headerContent img{ margin-bottom:0;}
 
