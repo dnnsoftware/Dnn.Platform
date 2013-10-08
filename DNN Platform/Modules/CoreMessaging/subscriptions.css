@@ -46,8 +46,17 @@
     background: url("../../../images/dnnSpinnerDownArrow.png") no-repeat scroll center center transparent;
 }
 
+.subscriptions-page-size,
 .subscriptions-pager {
     float: left;
+    line-height: 40px;
+    margin-right: 10px;
+}
+
+.subscriptions-page-size select {
+    width: 60px;
+    vertical-align: inherit;
+    margin-bottom: 0;
 }
 
 .subscriptions-pager .disabled {
@@ -70,5 +79,6 @@
 
 .subscriptions-count {
     float: right;
+    line-height: 40px;
     color:gray;
 }

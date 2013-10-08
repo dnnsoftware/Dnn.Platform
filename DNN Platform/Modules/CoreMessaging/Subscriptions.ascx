@@ -37,7 +37,16 @@
                         <tfoot>
                             <tr>
                                 <td colspan="3">
-                            
+      
+                                    <div class="subscriptions-page-size">
+                                        <%= LocalizeString("ItemsPerPage") %>
+                                        <select data-bind="value: pageSize, change: changePage(0)">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>                                        
+                                        </select>
+                                    </div>
+                                                          
                                     <div class="subscriptions-pager" data-bind="if: pages().length > 1">
                                         <a href="#" data-bind="click: function () { changePage(0) }, css: { disabled: currentPage() == 0 }"><%=LocalizeString("First")%></a>
                                         <a href="#" data-bind="click: function () { changePage(currentPage() - 1) }, css: { disabled: currentPage() == 0 }"><%=LocalizeString("Prev")%></a>

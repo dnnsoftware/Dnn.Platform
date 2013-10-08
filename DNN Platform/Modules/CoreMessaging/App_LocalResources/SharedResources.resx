@@ -195,4 +195,7 @@
   <data name="Yes.Text" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="ItemsPerPage.Text" xml:space="preserve">
+    <value>Items per page:</value>
+  </data>
 </root>
