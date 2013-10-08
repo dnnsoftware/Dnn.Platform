@@ -25,21 +25,13 @@
 	    };
 	    
         this.servicesFramework = $.ServicesFramework(settings.moduleId);
-        this.searchController = new SearchController(ko, settings, that);
         this.localizationController = new LocalizationController(settings, that);
+        this.subscriptionsViewModel = new SubscriptionsViewModel(ko, settings, that);
 
         this.localizer = function () {
             return that.localizationController;
         };
-        
-        this.pager = function () {
-            return that.pageControl;
-        };
 
-        this.searcher = function () {
-            return that.searchController;
-        };
-        
         this.getString = function (key) {
             var localizer = that.localizer();
             if (localizer != null) {
@@ -60,13 +52,6 @@
         this.notifyFrequency = ko.observable(settings.notifyFrequency);
         this.msgFrequency = ko.observable(settings.msgFrequency);
         
-        this.refresh = function () {
-            var controller = that.searcher();
-            if (controller != null) {
-                controller.load();
-            }
-        };
-
         this.save = function() {
             var startSearch = function () {
                 $('#fsFrequency', settings.moduleScope).addClass('searching');
@@ -101,35 +86,64 @@
 
             var params = {                
                 NotifyFreq: $('#ddlNotify').val(),
-                MsgFreq: $('#ddlMsg').val() //,                
+                MsgFreq: $('#ddlMsg').val()
             };
 
             that.requestService('Subscriptions/UpdateSystemSubscription', 'post', params, success, failure);
         };
         
         this['delete'] = function (model) {
+            var localizer = that.localizationController;
+            
             var success = function () {
-                $('#divUpdated').show();
-                
-                var searcher = that.searcher();
-                searcher.search();
-                $("#divUpdated").delay(1800).hide(400);
+                $('#divUnsubscribed').show();                
+                that.subscriptionsViewModel.search();
+                $("#divUnsubscribed").delay(1800).hide(400);
             };
 
             var failure = function (xhr, status) {
-                var localizer = that.localizationController;
                 $.dnnAlert({
                     title: localizer.getString('SubscribeFailureTitle'),
                     text: localizer.getString('SubscribeFailure').replace("{0}", status || that.getString('UnknownError'))
                 });
             };
+            
+            $("<div class='dnnDialog'></div>").html(localizer.getString('UnsubscribeConfirm'))
+                .dialog({
+                    modal: true,
+                    autoOpen: true,
+                    dialogClass: "dnnFormPopup",
+                    width: 400,
+                    height: 200,
+                    resizable: false,
+                    title: localizer.getString('UnsubscribeConfirmTitle'),
+                    buttons:
+                        [
+                            {
+                                id: "ok_button",
+                                text: localizer.getString('Yes'),
+                                "class": "dnnPrimaryAction",
+                                click: function () {
 
-            var params = {                
-                SubscriptionId: model.subscriptionId()
+                                    var params = {                
+                                        SubscriptionId: model.subscriptionId
+                                    };
+
+                                    that.requestService('Subscriptions/DeleteContentSubscription', 'post', params, success, failure);
+                                    $(this).dialog("close");
+                                }
+                            },
+                            {
+                                id: "no_button",
+                                text: localizer.getString('No'),
+                                click: function () {
+                                    $(this).dialog("close");
+                                },
+                                "class": "dnnSecondaryAction"
+                            }
+                        ]
+                });
             };
-
-            that.requestService('Subscriptions/DeleteContentSubscription', 'post', params, success, failure);
-        };
         
         ko.applyBindings(this, document.getElementById(bindingElement));
     };

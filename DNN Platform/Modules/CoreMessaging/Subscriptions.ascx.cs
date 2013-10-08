@@ -39,133 +39,134 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.CoreMessaging
 {
-	public partial class Subscriptions : UserControl
+    public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
 
-		#region Public Properties
-		public ModuleInstanceContext ModuleContext { get; set; }
+        #region Public Properties
+        public ModuleInstanceContext ModuleContext { get; set; }
 
-		public ModuleInfo ModuleConfiguration
-		{
-			get { return ModuleContext != null ? ModuleContext.Configuration : null; }
-			set
-			{
-				ModuleContext.Configuration = value;
-			}
-		}
+        public ModuleInfo ModuleConfiguration
+        {
+            get { return ModuleContext != null ? ModuleContext.Configuration : null; }
+            set
+            {
+                ModuleContext.Configuration = value;
+            }
+        }
 
-		public string LocalResourceFile { get; set; }
+        public string LocalResourceFile { get; set; }
 
-		#endregion
+        #endregion
 
-		#region Protected Methods
+        #region Protected Methods
 
-		protected string LocalizeString(string key)
-		{
-			return Localization.GetString(key, LocalResourceFile);
-		}
+        protected string LocalizeString(string key)
+        {
+            return Localization.GetString(key, LocalResourceFile);
+        }
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
-		public string GetSettingsAsJson()
-		{
-			var settings = GetModuleSettings(PortalSettings.Current, ModuleConfiguration, Null.NullInteger);
-			foreach (DictionaryEntry entry in GetViewSettings())
-			{
-				if (settings.ContainsKey(entry.Key))
-				{
-					settings[entry.Key] = entry.Value;
-				}
-				else
-				{
-					settings.Add(entry.Key, entry.Value);
-				}
-			}
-			return settings.ToJson();
-		}
+        public string GetSettingsAsJson()
+        {
+            var settings = GetModuleSettings(PortalSettings.Current, ModuleConfiguration, Null.NullInteger);
+            foreach (DictionaryEntry entry in GetViewSettings())
+            {
+                if (settings.ContainsKey(entry.Key))
+                {
+                    settings[entry.Key] = entry.Value;
+                }
+                else
+                {
+                    settings.Add(entry.Key, entry.Value);
+                }
+            }
 
-		#endregion
+            return settings.ToJson();
+        }
 
-		#region Event Handlers
+        #endregion
 
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        #region Event Handlers
 
-			ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
-			if (Request.IsAuthenticated)
-			{
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SearchController.js");
-				ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
+            if (Request.IsAuthenticated)
+            {
+                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
+                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SubscriptionsViewModel.js");
+                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
                 ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/CoreMessaging/subscriptions.css");
-			}
-			else
-			{
-				Response.Redirect("AccessDenied", false);
-			}
-		}
+            }
+            else
+            {
+                Response.Redirect("AccessDenied", false);
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Private methods
+        #region Private methods
 
-		/// <summary>
-		/// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
-		/// values that are automatically retrieved by Social Library such as portalId and moduleId.
-		/// </summary>
-		private Hashtable GetViewSettings()
-		{
-		    var portalSettings = PortalSettings.Current;
-		    var userPreference = new UserPreferencesController().GetUserPreference(
+        /// <summary>
+        /// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
+        /// values that are automatically retrieved by Social Library such as portalId and moduleId.
+        /// </summary>
+        private Hashtable GetViewSettings()
+        {
+            var portalSettings = PortalSettings.Current;
+            var userPreference = new UserPreferencesController().GetUserPreference(
                                                                     UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId));
-            var notifyFreq = 2;
-            var msgFreq = 0;
+            const int NotifyFreq = 2;
+            const int MsgFreq = 0;
             
-			return new Hashtable
-			{
-				{"moduleScope", string.Format("#{0}", ScopeWrapper.ClientID)},
-				{"pageSize", 25},
-                {"notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency: notifyFreq},
-                {"msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency: msgFreq}                
-			};
-		}
+            return new Hashtable
+                   {
+                       { "moduleScope", string.Format("#{0}", ScopeWrapper.ClientID) },
+                       { "pageSize", 25 },
+                       { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : NotifyFreq },
+                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : MsgFreq }                
+                   };
+        }
 
-		private static Hashtable GetModuleSettings(PortalSettings portalSettings, ModuleInfo moduleInfo, int uniqueId)
-		{
-			var usePopup =
-				portalSettings.EnablePopUps &&
-				portalSettings.LoginTabId == Null.NullInteger &&
-				!HasSocialAuthenticationEnabled();
+        private static Hashtable GetModuleSettings(PortalSettings portalSettings, ModuleInfo moduleInfo, int uniqueId)
+        {
+            var usePopup =
+                portalSettings.EnablePopUps &&
+                portalSettings.LoginTabId == Null.NullInteger &&
+                !HasSocialAuthenticationEnabled();
 
-			var navigationKey =
-				moduleInfo != null &&
-				moduleInfo.DesktopModule != null
-					? GetHistoryNavigationKey(moduleInfo.DesktopModule.FriendlyName)
-					: null;
+            var navigationKey =
+                moduleInfo != null &&
+                moduleInfo.DesktopModule != null
+                    ? GetHistoryNavigationKey(moduleInfo.DesktopModule.FriendlyName)
+                    : null;
 
-			var moduleRoot =
-				moduleInfo != null &&
-				moduleInfo.DesktopModule != null
-					? moduleInfo.DesktopModule.FolderName
-					: null;
+            var moduleRoot =
+                moduleInfo != null &&
+                moduleInfo.DesktopModule != null
+                    ? moduleInfo.DesktopModule.FolderName
+                    : null;
 
-			var moduleTitle = moduleInfo != null
-				? moduleInfo.ModuleTitle
-				: null;
+            var moduleTitle = moduleInfo != null
+                ? moduleInfo.ModuleTitle
+                : null;
 
-			var moduleId = moduleInfo != null ? moduleInfo.ModuleID : Null.NullInteger;
+            var moduleId = moduleInfo != null ? moduleInfo.ModuleID : Null.NullInteger;
 
-			var moduleSettings = moduleInfo != null ? moduleInfo.ModuleSettings : new Hashtable();
+            var moduleSettings = moduleInfo != null ? moduleInfo.ModuleSettings : new Hashtable();
 
-			var debug = false;
+            var debug = false;
 
 #if DEBUG
-			debug = true;
+            debug = true;
 #else
             if (HttpContext.Current != null)
             {
@@ -173,97 +174,95 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
 #endif
 
-			return new Hashtable
-			{
-				{"anonymous", PortalSettings.Current.UserId < 0},
-				{"currentUserId", PortalSettings.Current.UserId},
-				{"debug", debug},
-				{"culture", CultureInfo.CurrentUICulture.Name},
-				{"showMissingKeys", Localization.ShowMissingKeys},
-				{"portalId", portalSettings.PortalId},
-				{"moduleId", moduleId},
-				{"moduleSettings", moduleSettings},
-				{"moduleTitle", moduleTitle},
-				{"moduleRoot", moduleRoot},
-				{"navigationKey", navigationKey},
-				{"sessionTimeout", Convert.ToInt32(GetSessionTimeout().TotalMinutes)},
-				{"sharedResources", GetSharedResources()},
-				{"authorizationUrl", GetLoginUrl(portalSettings)},
-				{"usePopup", usePopup},
-				{"returnUrl", HttpContext.Current.Request.UrlReferrer},
-				{"uniqueId", uniqueId}, 
-			};
-		}
+            return new Hashtable
+                   {
+                       { "anonymous", PortalSettings.Current.UserId < 0 },
+                       { "currentUserId", PortalSettings.Current.UserId },
+                       { "debug", debug },
+                       { "culture", CultureInfo.CurrentUICulture.Name },
+                       { "showMissingKeys", Localization.ShowMissingKeys },
+                       { "portalId", portalSettings.PortalId },
+                       { "moduleId", moduleId },
+                       { "moduleSettings", moduleSettings },
+                       { "moduleTitle", moduleTitle },
+                       { "moduleRoot", moduleRoot },
+                       { "navigationKey", navigationKey },
+                       { "sessionTimeout", Convert.ToInt32(GetSessionTimeout().TotalMinutes) },
+                       { "sharedResources", GetSharedResources() },
+                       { "authorizationUrl", GetLoginUrl(portalSettings) },
+                       { "usePopup", usePopup },
+                       { "returnUrl", HttpContext.Current.Request.UrlReferrer },
+                       { "uniqueId", uniqueId },
+                    };
+        }
 
-		private static bool HasSocialAuthenticationEnabled()
-		{
-			return (from a in DotNetNuke.Services.Authentication.AuthenticationController.GetEnabledAuthenticationServices()
-					let enabled = (a.AuthenticationType == "Facebook"
-									 || a.AuthenticationType == "Google"
-									 || a.AuthenticationType == "Live"
-									 || a.AuthenticationType == "Twitter")
-								  ? PortalController.GetPortalSettingAsBoolean(a.AuthenticationType + "_Enabled", PortalSettings.Current.PortalId, false)
-								  : !string.IsNullOrEmpty(a.LoginControlSrc) //&& (LoadControl("~/" + a.LoginControlSrc) as AuthenticationLoginBase).Enabled
-					where a.AuthenticationType != "DNN" && enabled
-					select a).Any();
-		}
+        private static bool HasSocialAuthenticationEnabled()
+        {
+            return (from a in DotNetNuke.Services.Authentication.AuthenticationController.GetEnabledAuthenticationServices()
+                    let enabled = (a.AuthenticationType == "Facebook"
+                                     || a.AuthenticationType == "Google"
+                                     || a.AuthenticationType == "Live"
+                                     || a.AuthenticationType == "Twitter")
+                                  ? PortalController.GetPortalSettingAsBoolean(a.AuthenticationType + "_Enabled", PortalSettings.Current.PortalId, false)
+                                  : !string.IsNullOrEmpty(a.LoginControlSrc)
+                    where a.AuthenticationType != "DNN" && enabled
+                    select a).Any();
+        }
 
-		private static string GetHistoryNavigationKey(string moduleName)
-		{
-			return HttpContext.Current.Server.HtmlEncode(moduleName.ToLowerInvariant().Replace(" ", string.Empty));
-		}
+        private static string GetHistoryNavigationKey(string moduleName)
+        {
+            return HttpContext.Current.Server.HtmlEncode(moduleName.ToLowerInvariant().Replace(" ", string.Empty));
+        }
 
-		private static TimeSpan GetSessionTimeout()
-		{
-			try
-			{
-				var sessionSection =
-					WebConfigurationManager.GetSection("system.web/sessionState") as SessionStateSection;
+        private static TimeSpan GetSessionTimeout()
+        {
+            try
+            {
+                var sessionSection =
+                    WebConfigurationManager.GetSection("system.web/sessionState") as SessionStateSection;
 
-				if (sessionSection != null)
-				{
-					return sessionSection.Timeout;
-				}
-			}
-			catch
-			{
-				// FIXME(cbond): The default configuration doesn't actually let us see this data
-				// FIXME(cbond): It's too annoying seeing this fill the Event Log, we need to add the permission to web.config
-				// Exceptions.LogException(ex);
-			}
-
-			return TimeSpan.FromMinutes(25);
-		}
-
-		private static IDictionary<string, string> GetSharedResources()
-		{
-			return new Dictionary<string, string>
+                if (sessionSection != null)
                 {
-                    {"ExceptionTitle", Localization.GetString("ExceptionTitle", SharedResources)},
-                    {"ExceptionMessage", Localization.GetString("ExceptionMessage", SharedResources)}
+                    return sessionSection.Timeout;
+                }
+            }
+            catch
+            {
+                // FIXME(cbond): The default configuration doesn't actually let us see this data
+                // FIXME(cbond): It's too annoying seeing this fill the Event Log, we need to add the permission to web.config
+                // Exceptions.LogException(ex);
+            }
+
+            return TimeSpan.FromMinutes(25);
+        }
+
+        private static IDictionary<string, string> GetSharedResources()
+        {
+            return new Dictionary<string, string>
+                {
+                    { "ExceptionTitle", Localization.GetString("ExceptionTitle", SharedResources) },
+                    { "ExceptionMessage", Localization.GetString("ExceptionMessage", SharedResources) }
                 };
-		}
+        }
 
-		private static readonly Random Rng = new Random(DateTime.Now.Millisecond);
+        private static string GetLoginUrl(PortalSettings portalSettings)
+        {
+            var returnUrl = HttpContext.Current.Request.RawUrl;
 
-		private static string GetLoginUrl(PortalSettings portalSettings)
-		{
-			var returnUrl = HttpContext.Current.Request.RawUrl;
+            if (portalSettings.UserId < 1)
+            {
+                var indexOf = returnUrl.IndexOf("?returnurl=", StringComparison.InvariantCultureIgnoreCase);
+                if (indexOf >= 0)
+                {
+                    returnUrl = returnUrl.Substring(0, indexOf);
+                }
 
-			if (portalSettings.UserId < 1)
-			{
-				var indexOf = returnUrl.IndexOf("?returnurl=", StringComparison.InvariantCultureIgnoreCase);
-				if (indexOf >= 0)
-				{
-					returnUrl = returnUrl.Substring(0, indexOf);
-				}
+                returnUrl = Common.Globals.LoginURL(HttpUtility.UrlEncode(returnUrl), true);
+            }
 
-				returnUrl = Common.Globals.LoginURL(HttpUtility.UrlEncode(returnUrl), true);
-			}
+            return returnUrl;
+        }
 
-			return returnUrl;
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -4,10 +4,10 @@
 // All Rights Reserved
 
 (function ($) {
-    window.SearchController = function (ko, settings, root) {
+    window.SubscriptionsViewModel = function (ko, settings, root) {
         var self = this;
 
-	    this.servicesFramework = root.servicesFramework;
+        this.isLoading = ko.observable(false);
         this.results = ko.observableArray([]);
                 
         this.localizer = function () {
@@ -16,11 +16,11 @@
         
         this.search = function () {
             var startSearch = function () {
-                $('.filter-content', settings.moduleScope).addClass('searching');
+                self.isLoading(true);
             };
 
             var finishSearch = function () {
-                $('.filter-content', settings.moduleScope).removeClass('searching');
+                self.isLoading(false);
             };
 
             var success = function (model) {
@@ -134,12 +134,12 @@
         
         self.totalItemsText = ko.computed(function () {
             if (self.totalCount() == 1) {
-                return  "One item"; 
+                return self.localizer().getString('OneItem');
             } else if (self.totalCount() < self.pageSize()) {
-                return "[ITEMS] items" 
+                return self.localizer().getString('Items')
                     .replace('[ITEMS]', self.totalCount());
             } else {
-                return "[ITEMS] items on [PAGES] pages" 
+                return self.localizer().getString('ItemsOnPage')
                     .replace('[ITEMS]', self.totalCount())
                     .replace('[PAGES]', Math.ceil(self.totalCount() / self.pageSize()));
             }

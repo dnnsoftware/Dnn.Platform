@@ -183,4 +183,16 @@
   <data name="OneItem.Text" xml:space="preserve">
     <value>1 item</value>
   </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="UnsubscribeConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to unsubscribe?</value>
+  </data>
+  <data name="UnsubscribeConfirmTitle.Text" xml:space="preserve">
+    <value>Unsubscribe</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
 </root>

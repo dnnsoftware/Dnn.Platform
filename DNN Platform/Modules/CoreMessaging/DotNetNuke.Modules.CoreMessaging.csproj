@@ -118,7 +118,7 @@
     <Content Include="Images\right.png" />
     <Content Include="Scripts\CoreMessaging.js" />
     <Content Include="Scripts\LocalizationController.js" />
-    <Content Include="Scripts\SearchController.js" />
+    <Content Include="Scripts\SubscriptionsViewModel.js" />
     <Content Include="Scripts\Subscription.js" />
     <Content Include="Subscriptions.ascx" />
     <Content Include="subscriptions.css" />

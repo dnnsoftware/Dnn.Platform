@@ -5,24 +5,27 @@
 <asp:Panel runat="server" ID="ScopeWrapper" CssClass="dnnClear">
     <div class="activities-list-container dnnForm">        
         <h2 id="dnnSitePanel-ContentItem" class="dnnFormSectionHead"><a href=""><%=LocalizeString("ManageSubscriptions")%></a></h2>
-        <fieldset data-bind=" with: $root.searchController">
+        <fieldset data-bind=" with: $root.subscriptionsViewModel">
+            
+            <div class="loading-panel" data-bind="visible: isLoading"></div>
+
             <table class="dnnTableDisplay fixed" id="subscription-table">
                 <colgroup>
-                    <col class="activities-col-action-name"/>
-                    <col class="activities-col-subscribed-description"/>
-                    <col class="activities-col-points"/>
+                    <col class="subscriptions-col-subscribed-description"/>
+                    <col class="subscriptions-col-subscription-type"/>                    
+                    <col class="subscriptions-col-action"/>
                 </colgroup>
                 <thead>
-                    <tr>
-                        <th class="activities-col-action-name">
-                            <span class="sortable" data-bind="click: sortBySubscriptionType"><%= LocalizeString("SubscriptionType") %></span>
-                            <span class="sortArrow" data-bind="click: sortBySubscriptionType, css: sortCssSubscriptionType"></span>
-                        </th>
-                        <th class="activities-col-subscribed-description">
+                    <tr class="dnnGridHeader">
+                        <th class="subscriptions-col-subscribed-description">
                             <span class="sortable" data-bind="click: sortByDescription"><%= LocalizeString("SubscribedDescription") %></span>
                             <span class="sortArrow" data-bind="click: sortByDescription, css: sortCssDescription"></span>
                         </th>
-                        <th class="activities-col-points">
+                        <th class="subscriptions-col-subscription-type">
+                            <span class="sortable" data-bind="click: sortBySubscriptionType"><%= LocalizeString("SubscriptionType") %></span>
+                            <span class="sortArrow" data-bind="click: sortBySubscriptionType, css: sortCssSubscriptionType"></span>
+                        </th>
+                        <th class="subscriptions-col-action">
                             <span><%= LocalizeString("Action") %></span>
                         </th>
                     </tr>
@@ -48,11 +51,11 @@
                 </tfoot>
                 <tbody data-bind="foreach: results">
                     <tr>
-                        <td> 
-                            <span data-bind="text: subscriptionType"></span>
-                        </td>
                         <td>
                             <span data-bind="text: description"></span>
+                        </td>                        
+                        <td> 
+                            <span data-bind="text: subscriptionType"></span>
                         </td>
                         <td>
                             <a href="#" data-bind="click: $root['delete']">
@@ -62,6 +65,9 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="dnnClear" style="display:none;" id="divUnsubscribed">
+                <div class="dnnFormMessage dnnFormSuccess"><span><%= Localization.GetString("Unsubscribed", LocalResourceFile) %></span></div>
+            </div>
         </fieldset>
         <h2 id="dnnSitePanel-Subscriptions" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("EmailDeliverySchedule")%></a></h2>
         <fieldset id="fsFrequency">

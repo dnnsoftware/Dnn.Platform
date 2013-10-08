@@ -869,21 +869,6 @@ div.messageArea {
   margin-top: 16px;
 }
 
-#dnnActivities .dnnTableFilter .filter-content {
-    margin-right: 50px;
-}
-#dnnActivities .dnnTableFilter .filter-content, #dnnActivities .dnnTableFilter .filter-module {
-    min-width: 200px;
-    width: 200px;
-}
-
-#dnnActivities .dnnTableFilter label.filter {
-    font-weight: bold;
-    margin-right: 20px;
-    margin-top: 12px;
-    vertical-align: top;
-}
-
 .fixed {
     table-layout: fixed;
 }
@@ -892,60 +877,6 @@ div.messageArea {
     width: 100%;
 	border-collapse: collapse;
 	border-spacing: 0;
-}
-
-.activities-col-action-name {
-    width: 20%;
-}
-
-.activities-col-subscribed-description {
-    width: 40%;   
-}
-
-.activities-col-module {
-    width: 40%
-}
-
-.activities-col-points {
-    width: 50px;
-}
-
-#dnnActivities .dnnTableFilter {
-    margin-bottom: 0;
-    padding: 0;
-}
-
-#dnnActivities .dnnTableDisplay th a {
-    background: url('Images/grid-sprite.png') no-repeat 100% 10px;
-}
-
-#dnnActivities .dnnTableDisplay th a.asc {
-    background-position: 100% -28px;
-}
-
-#dnnActivities .dnnTableDisplay th a.desc {
-    background-position: 100% -8px;
-}
-
-#dnnActivities .dnnTableDisplay td em {
-    font-style: normal;
-    font-weight: bold;
-}
-
-#dnnActivities .dnnFilterSet {
-    padding: 15px 15px 15px 10px;
-}
-
-#dnnActivities .dnnResults {
-    margin-top: 0;
-}
-
-#dnnActivities .dnnPagination li {
-    margin: 0;
-}
-
-#dnnActivities .dnnTableDisplay tfoot tr td {
-    padding: 8px 9px;
 }
 
 .number-cell {
