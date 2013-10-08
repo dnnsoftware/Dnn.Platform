@@ -409,7 +409,7 @@
     <value>Unsubscribe</value>
   </data>
   <data name="SubscribedDescription.Text" xml:space="preserve">
-    <value>Subscribed Description</value>
+    <value>Item</value>
   </data>
   <data name="Unsubscribed.Text" xml:space="preserve">
     <value>You have been successfully unsubscribed</value>
