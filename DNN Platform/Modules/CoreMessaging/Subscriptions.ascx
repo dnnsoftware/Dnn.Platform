@@ -7,66 +7,73 @@
         <h2 id="dnnSitePanel-ContentItem" class="dnnFormSectionHead"><a href=""><%=LocalizeString("ManageSubscriptions")%></a></h2>
         <fieldset data-bind=" with: $root.subscriptionsViewModel">
             
-            <div class="loading-panel" data-bind="visible: isLoading"></div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblSubscriptions" runat="server" />
+                
+                <div class="subscription-table-container">
+                    <div class="loading-panel" data-bind="visible: isLoading"></div>
 
-            <table class="dnnTableDisplay fixed" id="subscription-table">
-                <colgroup>
-                    <col class="subscriptions-col-subscribed-description"/>
-                    <col class="subscriptions-col-subscription-type"/>                    
-                    <col class="subscriptions-col-action"/>
-                </colgroup>
-                <thead>
-                    <tr class="dnnGridHeader">
-                        <th class="subscriptions-col-subscribed-description">
-                            <span class="sortable" data-bind="click: sortByDescription"><%= LocalizeString("SubscribedDescription") %></span>
-                            <span class="sortArrow" data-bind="click: sortByDescription, css: sortCssDescription"></span>
-                        </th>
-                        <th class="subscriptions-col-subscription-type">
-                            <span class="sortable" data-bind="click: sortBySubscriptionType"><%= LocalizeString("SubscriptionType") %></span>
-                            <span class="sortArrow" data-bind="click: sortBySubscriptionType, css: sortCssSubscriptionType"></span>
-                        </th>
-                        <th class="subscriptions-col-action">
-                            <span><%= LocalizeString("Action") %></span>
-                        </th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">
+                    <table class="dnnTableDisplay fixed" id="subscription-table">
+                        <colgroup>
+                            <col class="subscriptions-col-subscribed-description"/>
+                            <col class="subscriptions-col-subscription-type"/>                    
+                            <col class="subscriptions-col-action"/>
+                        </colgroup>
+                        <thead>
+                            <tr class="dnnGridHeader">
+                                <th class="subscriptions-col-subscribed-description">
+                                    <span class="sortable" data-bind="click: sortByDescription"><%= LocalizeString("SubscribedDescription") %></span>
+                                    <span class="sortArrow" data-bind="click: sortByDescription, css: sortCssDescription"></span>
+                                </th>
+                                <th class="subscriptions-col-subscription-type">
+                                    <span class="sortable" data-bind="click: sortBySubscriptionType"><%= LocalizeString("SubscriptionType") %></span>
+                                    <span class="sortArrow" data-bind="click: sortBySubscriptionType, css: sortCssSubscriptionType"></span>
+                                </th>
+                                <th class="subscriptions-col-action">
+                                    <span><%= LocalizeString("Action") %></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">
                             
-                            <div class="subscriptions-pager" data-bind="if: pages().length > 1">
-                                <a href="#" data-bind="click: function () { changePage(0) }, css: { disabled: currentPage() == 0 }"><%=LocalizeString("First")%></a>
-                                <a href="#" data-bind="click: function () { changePage(currentPage() - 1) }, css: { disabled: currentPage() == 0 }"><%=LocalizeString("Prev")%></a>
-                                <ul data-bind="foreach: pages">
-                                    <li><a href="#" data-bind="click: function () { $parent.changePage($data - 1) }, text: $data, css: { currentPage: $data - 1 == $parent.currentPage() }"></a></li>
-                                </ul>
-                                <a href="#" data-bind="click: function () { changePage(currentPage() + 1) }, css: { disabled: currentPage() == lastPage() - 1 }"><%=LocalizeString("Next")%></a>
-                                <a href="#" data-bind="click: function () { changePage(lastPage() - 1) }, css: { disabled: currentPage() == lastPage() - 1 }"><%=LocalizeString("Last")%></a>
-                            </div>
+                                    <div class="subscriptions-pager" data-bind="if: pages().length > 1">
+                                        <a href="#" data-bind="click: function () { changePage(0) }, css: { disabled: currentPage() == 0 }"><%=LocalizeString("First")%></a>
+                                        <a href="#" data-bind="click: function () { changePage(currentPage() - 1) }, css: { disabled: currentPage() == 0 }"><%=LocalizeString("Prev")%></a>
+                                        <ul data-bind="foreach: pages">
+                                            <li><a href="#" data-bind="click: function () { $parent.changePage($data - 1) }, text: $data, css: { currentPage: $data - 1 == $parent.currentPage() }"></a></li>
+                                        </ul>
+                                        <a href="#" data-bind="click: function () { changePage(currentPage() + 1) }, css: { disabled: currentPage() == lastPage() - 1 }"><%=LocalizeString("Next")%></a>
+                                        <a href="#" data-bind="click: function () { changePage(lastPage() - 1) }, css: { disabled: currentPage() == lastPage() - 1 }"><%=LocalizeString("Last")%></a>
+                                    </div>
                             
-                            <div class="subscriptions-count" data-bind="visible: totalCount() > 0, text: totalItemsText"></div>
+                                    <div class="subscriptions-count" data-bind="visible: totalCount() > 0, text: totalItemsText"></div>
 
-                        </td>
-                    </tr>
-                </tfoot>
-                <tbody data-bind="foreach: results">
-                    <tr>
-                        <td>
-                            <span data-bind="text: description"></span>
-                        </td>                        
-                        <td> 
-                            <span data-bind="text: subscriptionType"></span>
-                        </td>
-                        <td>
-                            <a href="#" data-bind="click: $root['delete']">
-                                <img src='<%= ResolveUrl("~/DesktopModules/CoreMessaging/Images/reply.png") %>' alt="<%= Localization.GetString("Unsubscribe", LocalResourceFile) %>" title="<%= Localization.GetString("Unsubscribe", LocalResourceFile) %>"/>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="dnnClear" style="display:none;" id="divUnsubscribed">
-                <div class="dnnFormMessage dnnFormSuccess"><span><%= Localization.GetString("Unsubscribed", LocalResourceFile) %></span></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        <tbody data-bind="foreach: results">
+                            <tr>
+                                <td>
+                                    <span data-bind="text: description"></span>
+                                </td>                        
+                                <td> 
+                                    <span data-bind="text: subscriptionType"></span>
+                                </td>
+                                <td>
+                                    <a href="#" data-bind="click: $root['delete']">
+                                        <img src='<%= ResolveUrl("~/DesktopModules/CoreMessaging/Images/reply.png") %>' alt="<%= Localization.GetString("Unsubscribe", LocalResourceFile) %>" title="<%= Localization.GetString("Unsubscribe", LocalResourceFile) %>"/>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>                    
+                </div>
+                
+                <div class="dnnClear" style="display:none;" id="divUnsubscribed">
+                    <div class="dnnFormMessage dnnFormSuccess"><span><%= Localization.GetString("Unsubscribed", LocalResourceFile) %></span></div>
+                </div>
             </div>
         </fieldset>
         <h2 id="dnnSitePanel-Subscriptions" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("EmailDeliverySchedule")%></a></h2>

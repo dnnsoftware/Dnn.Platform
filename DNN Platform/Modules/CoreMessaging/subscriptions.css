@@ -1,4 +1,10 @@
-﻿.loading-panel {
+﻿.subscription-table-container {    
+    display: inline-block;
+    position: relative;
+    background-color: white;
+}
+
+.loading-panel {
     background: url("../../../Images/loading.gif") no-repeat scroll center center #FFFFFF;
     bottom: 0;
     left: 0;
@@ -10,9 +16,13 @@
 }
 
 #subscription-table {
-    width: 100%;
     border-spacing: 0;
     border-collapse: collapse;
+    margin-bottom: 0;
+}
+
+#subscription-table tfoot {
+    background-color: #E9E9E9;
 }
 
 #subscription-table thead > tr > th > span.sortable {
@@ -41,7 +51,7 @@
 }
 
 .subscriptions-pager .disabled {
-    color: lightgrey;
+    color: gray;
 }
 
 .subscriptions-pager .currentPage {
@@ -59,5 +69,6 @@
 }
 
 .subscriptions-count {
-    float: right
+    float: right;
+    color:gray;
 }

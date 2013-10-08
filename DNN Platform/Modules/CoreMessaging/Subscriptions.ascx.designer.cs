@@ -22,6 +22,15 @@ namespace DotNetNuke.Modules.CoreMessaging {
         protected global::System.Web.UI.WebControls.Panel ScopeWrapper;
         
         /// <summary>
+        /// lblSubscriptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl lblSubscriptions;
+        
+        /// <summary>
         /// lblNotificationFreq control.
         /// </summary>
         /// <remarks>
