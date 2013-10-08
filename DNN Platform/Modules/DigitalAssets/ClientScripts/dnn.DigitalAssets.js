@@ -2896,6 +2896,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             $(".dnnModuleDigitalAssetsThumbnail > img", "#" + controls.scopeWrapperId).each(function () {
                 $(this).attr('src', $(this).attr('data-src'));
             });
+            
+            $('#dnnModuleDigitalAssetsListViewContainer input[type="checkbox"]', "#" + controls.scopeWrapperId).dnnCheckbox();
         }
     }
 
