@@ -20,8 +20,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Data;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Social.Subscriptions;

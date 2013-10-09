@@ -117,10 +117,14 @@
     <Compile Include="Controllers\ConfigurationSettingsComparer.cs" />
     <Compile Include="Controllers\Messaging\Builders\SubscriptionBuilder.cs" />
     <Compile Include="Controllers\Messaging\Builders\SubscriptionTypeBuilder.cs" />
+    <Compile Include="Controllers\Messaging\Builders\UserPreferenceBuilder.cs" />
+    <Compile Include="Controllers\Messaging\Mocks\UserPreferenceDataReaderMockHelper.cs" />
     <Compile Include="Controllers\Messaging\Mocks\SubscriptionDataReaderMockHelper.cs" />
     <Compile Include="Controllers\Messaging\Mocks\SubscriptionTypeDataReaderMockHelper.cs" />
+    <Compile Include="Controllers\Messaging\Helpers\SetupCachingProviderHelper.cs" />
     <Compile Include="Controllers\Messaging\SubscriptionControllerTests.cs" />
     <Compile Include="Controllers\Messaging\SubscriptionTypeControllerTests.cs" />
+    <Compile Include="Controllers\Messaging\UserPreferencesControllerTests.cs" />
     <Compile Include="Controllers\Portal\PortalControllerTests.cs" />
     <Compile Include="Controllers\Portal\PortalGroupControllerTests.cs" />
     <Compile Include="Controllers\Host\HostControllerTest.cs" />
