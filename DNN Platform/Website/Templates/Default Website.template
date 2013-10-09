@@ -1,10 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <portal version="5.0">
   <description>[PortalDescription.Text]</description>
-  <!-- Enterprise Settings -->
-  <!-- Professional Settings -->
-  <!-- Community Settings -->
-  <settings sku="CE">
+  <settings>
     <logofile>Awesome-Cycles-Logo.png</logofile>
     <footertext>[Setting.FooterText.Text]</footertext>
     <userregistration>1</userregistration>
@@ -188,8 +185,7 @@
     </profiledefinition>
   </profiledefinitions>
   <portalDesktopModules>
-    <!-- EE, PE, CE -->
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Pages</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -200,7 +196,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Vendors</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -211,7 +207,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Banners</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -222,7 +218,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Lists</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -233,7 +229,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>File Manager</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -244,7 +240,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Site Log</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -255,7 +251,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Newletters</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -266,7 +262,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Recycle Bin</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -277,7 +273,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Log Viewer</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -288,7 +284,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Search Results</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -299,7 +295,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Site Wizard</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -310,7 +306,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Account Login</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -321,7 +317,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Account Registration</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -332,7 +328,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Feed Explorer</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -343,11 +339,11 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Extensions</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Solutions</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -358,15 +354,15 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>WhatsNew</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Dashboard</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Languages</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -377,7 +373,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Skins</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -388,7 +384,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Console</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -399,11 +395,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
-      <friendlyname>Marketplace</friendlyname>
-      <portalDesktopModulePermissions />
-    </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>View Profile</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -414,7 +406,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Sitemap</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -425,11 +417,11 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>ContentList</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Configuration Manager</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -440,11 +432,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
-      <friendlyname>Professional Preview</friendlyname>
-      <portalDesktopModulePermissions />
-    </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>DDR Menu</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -455,7 +443,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>HTML</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -466,7 +454,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Taxonomy Manager</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -477,9 +465,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <!-- EE, PE-->
-    <!-- CE -->
-    <portalDesktopModule sku="CE">
+    <portalDesktopModule>
       <friendlyname>Google Analytics</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -490,7 +476,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Search Admin</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -591,8 +577,7 @@
     </rolegroup>
   </rolegroups>
   <tabs>
-    <!-- Starter Pages -->
-    <tab sku="CE,PE,EE">
+    <tab >
       <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
       <description>
       </description>
@@ -839,7 +824,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
       <description>
       </description>
@@ -1569,7 +1554,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.About.Content.Text]</content>
       <contentKey />
       <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
@@ -2120,7 +2105,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.Products.Content.Text]</content>
       <contentKey />
       <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
@@ -2571,7 +2556,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.ContactUs.Content.Text]</content>
       <contentKey />
       <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
@@ -3118,7 +3103,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.StyleGuide.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -3635,8 +3620,7 @@
         </pane>
       </panes>
     </tab>
-    <!-- Social Pages -->
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.ActivityFeed.Content.Text]</content>
       <contentKey />
       <containersrc>[G]Containers/Gravity/Title_h3.ascx</containersrc>
@@ -4436,7 +4420,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.MyProfile.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -5226,7 +5210,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.MyFriends.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -6016,7 +6000,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.MyMessages.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -6778,8 +6762,7 @@
         </pane>
       </panes>
     </tab>
-    <!-- Admin Pages -->
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.PortalAdministration.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -6899,7 +6882,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>[Tab.AdvancedSettings.Description.Text]</description>
       <disabled>false</disabled>
@@ -6986,7 +6969,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.SiteSettings.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7073,7 +7056,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.PageManagement.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7160,7 +7143,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.Extensions.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7247,7 +7230,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.Languages.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7334,7 +7317,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.Skins.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7462,7 +7445,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.SecurityRoles.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7549,7 +7532,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.UserAccounts.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7636,7 +7619,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.Vendors.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7723,7 +7706,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.SiteLog.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7810,7 +7793,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.Newsletters.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7897,7 +7880,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.DigitalAssetsManagement.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -7984,7 +7967,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.RecycleBin.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8071,7 +8054,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.LogViewer.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8158,7 +8141,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.SiteWizard.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8245,7 +8228,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.Taxonomy.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8332,7 +8315,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.SiteMapSettings.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8419,7 +8402,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.Lists.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8506,7 +8489,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.SiteRedirection.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8581,7 +8564,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.DevicePreview.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8661,8 +8644,7 @@
         </pane>
       </panes>
     </tab>
-    <!-- CE -->
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.SearchResultsCE.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8795,7 +8777,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE">
+    <tab>
       <content>[Tab.GoogleAnalytics.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8882,9 +8864,7 @@
         </pane>
       </panes>
     </tab>
-    <!-- EE, PE-->
-    <!-- EE -->
-    <tab sku="CE,PE,EE">
+    <tab >
       <content>[Tab.404ErrorPage.Content.Text]</content>
       <contentKey />
       <containersrc />
@@ -8977,7 +8957,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE,PE,EE">
+    <tab >
       <containersrc />
       <description>[Tab.SearchAdmin.Description.Text]</description>
       <disabled>false</disabled>

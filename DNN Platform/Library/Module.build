@@ -15,7 +15,7 @@
   
   <Target Name="GetFiles">
     <ItemGroup>
-      <Templates Include="..\Library\Templates\*.*" />
+      <Templates Include="..\Website\Templates\*.*" />
       <Database Include="..\Website\App_Data\Database.mdf" />
       <RadSpell Include="..\Website\App_Data\RadSpell\*.tdf" />
       <ConfigFiles Include="..\Website\Config\*.*" />

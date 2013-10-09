@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <portal version="5.0">
   <description>[PortalDescription.Text]</description>
-  <settings sku="EE,PE,CE">
+  <settings>
     <logofile>Logo.png</logofile>
     <footertext>[Setting.FooterText.Text]</footertext>
     <userregistration>1</userregistration>
@@ -185,8 +185,7 @@
     </profiledefinition>
   </profiledefinitions>
   <portalDesktopModules>
-    <!-- EE, PE, CE -->
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Pages</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -197,7 +196,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Vendors</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -208,7 +207,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Banners</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -219,7 +218,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Lists</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -230,7 +229,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>File Manager</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -241,7 +240,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Site Log</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -252,7 +251,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Newletters</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -263,7 +262,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Recycle Bin</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -274,7 +273,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Log Viewer</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -285,7 +284,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Search Input</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -296,7 +295,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Search Results</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -307,7 +306,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Site Wizard</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -318,7 +317,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Account Login</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -329,7 +328,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Account Registration</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -340,7 +339,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Feed Explorer</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -351,11 +350,11 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Extensions</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Solutions</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -366,15 +365,15 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>WhatsNew</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Dashboard</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Languages</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -385,7 +384,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Skins</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -396,7 +395,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Console</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -407,11 +406,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
-      <friendlyname>Marketplace</friendlyname>
-      <portalDesktopModulePermissions />
-    </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>View Profile</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -422,7 +417,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Sitemap</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -433,11 +428,11 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>ContentList</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Configuration Manager</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -448,11 +443,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
-      <friendlyname>Professional Preview</friendlyname>
-      <portalDesktopModulePermissions />
-    </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>DDR Menu</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -463,7 +454,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>HTML</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -474,7 +465,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Taxonomy Manager</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -485,8 +476,6 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <!-- EE, PE-->
-    <!-- CE -->
     <portalDesktopModule>
       <friendlyname>Google Analytics</friendlyname>
       <portalDesktopModulePermissions>
@@ -498,7 +487,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule sku="EE,PE,CE">
+    <portalDesktopModule>
       <friendlyname>Search Admin</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -599,8 +588,7 @@
     </rolegroup>
   </rolegroups>
   <tabs>
-    <!-- Starter Pages -->
-    <tab sku="CE,PE,EE">
+    <tab >
       <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
       <description>
       </description>
@@ -848,7 +836,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <description>[Tab.Home.Description.Text]</description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
@@ -916,8 +904,7 @@
         </tabsetting>
       </tabsettings>
     </tab>
-    <!-- EE, PE, CE -->
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <cultureCode />
       <description>
@@ -1428,7 +1415,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <cultureCode />
       <description>
@@ -1949,7 +1936,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <cultureCode />
       <description>
@@ -2470,7 +2457,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <cultureCode />
       <description>
@@ -2957,7 +2944,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>
       </description>
@@ -3080,7 +3067,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>[Tab.AdvancedSettings.Description.Text]</description>
       <disabled>false</disabled>
@@ -3164,7 +3151,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Manage configuration settings for the portal.</description>
       <disabled>false</disabled>
@@ -3252,7 +3239,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Manage pages within the site.</description>
       <disabled>false</disabled>
@@ -3340,7 +3327,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Install, add, modify and delete extensions, such as modules, skins and language packs.</description>
       <disabled>false</disabled>
@@ -3428,7 +3415,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Manage Language Resources.</description>
       <disabled>false</disabled>
@@ -3514,7 +3501,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Manage Skin Resources.</description>
       <disabled>false</disabled>
@@ -3645,7 +3632,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Manage security roles for the portal.</description>
       <disabled>false</disabled>
@@ -3733,7 +3720,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Manage user accounts for the portal.</description>
       <disabled>false</disabled>
@@ -3821,7 +3808,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Manage vendor accounts, banner advertising and affiliate referrals within the portal.</description>
       <disabled>false</disabled>
@@ -3909,7 +3896,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>View statistical reports on site activity for the portal.</description>
       <disabled>false</disabled>
@@ -3997,7 +3984,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Send email messages to users, security roles and specific email addresses.</description>
       <disabled>false</disabled>
@@ -4085,7 +4072,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>[Tab.DigitalAssetsManagement.Content.Text]</description>
       <disabled>false</disabled>
@@ -4173,7 +4160,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>View, restore or permanently recycle pages and modules that have been deleted from the portal.</description>
       <disabled>false</disabled>
@@ -4261,7 +4248,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</description>
       <disabled>false</disabled>
@@ -4349,7 +4336,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Configure portal settings, page design and apply a site template using a step-by-step wizard.</description>
       <disabled>false</disabled>
@@ -4437,7 +4424,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Manage the Taxonomy for your Site.</description>
       <disabled>false</disabled>
@@ -4523,7 +4510,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Configure the sitemap for submission to common search engines.</description>
       <disabled>false</disabled>
@@ -4609,7 +4596,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Manage common lists</description>
       <disabled>false</disabled>
@@ -4697,7 +4684,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Site Redirection Management.</description>
       <disabled>false</disabled>
@@ -4779,7 +4766,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="EE,PE,CE">
+    <tab>
       <containersrc />
       <description>Device Preview Management.</description>
       <disabled>false</disabled>
@@ -4861,9 +4848,7 @@
         </pane>
       </panes>
     </tab>
-    <!-- EE, PE-->
-    <!-- CE -->
-    <tab sku="CE">
+    <tab >
       <containersrc />
       <description>Configure Site Google Analytics settings.</description>
       <disabled>false</disabled>
@@ -4951,7 +4936,7 @@
         </pane>
       </panes>
     </tab>
-    <tab sku="CE">
+    <tab >
       <containersrc />
       <description>
       </description>
@@ -5088,8 +5073,7 @@
         </pane>
       </panes>
     </tab>
-    <!-- EE -->
-    <tab sku="CE,PE,EE">
+    <tab >
       <containersrc />
       <description>Search Admin</description>
       <disabled>false</disabled>

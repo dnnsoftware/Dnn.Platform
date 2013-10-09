@@ -499,161 +499,6 @@ namespace DotNetNuke.Services.Upgrade
             permissions.Add(tabPermission);
         }
 
-        private static void AddProfessionalPreviewPage(int parentId, string tabPath, string moduleFriendlyName, string tabName, string tabDescription, string smallIcon, string largeIcon)
-        {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddProfessionalPreviewPage:" + parentId);
-            var tabController = new TabController();
-            TabInfo hostTab;
-
-            //Get web servers module
-            ModuleDefinitionInfo moduleDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(moduleFriendlyName);
-
-            //Add Pages under Professional Features Tab
-            int tabId = TabController.GetTabByTabPath(Null.NullInteger, tabPath, Null.NullString);
-            if (tabId == Null.NullInteger)
-            {
-                //Add host page
-                hostTab = AddHostPage(tabName, tabDescription, smallIcon, largeIcon, true);
-                hostTab.ParentId = parentId;
-                tabController.UpdateTab(hostTab);
-
-                //Add module to page
-                AddModuleToPage(hostTab, moduleDef.ModuleDefID, tabName, largeIcon, true);
-            }
-        }
-
-        private static void AddLinkedProfessionalPreviewPage(int parentId, string tabPath, string url, string tabName, string tabDescription, string smallIcon, string largeIcon)
-        {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddLinkedProfessionalPreviewPage:" + parentId);
-            var tabController = new TabController();
-            TabInfo newTab;
-
-            if (TabController.GetTabByTabPath(Null.NullInteger, tabPath, Null.NullString) == Null.NullInteger)
-            {
-                newTab = AddHostPage(tabName, tabDescription, smallIcon, largeIcon, true);
-                newTab.ParentId = parentId;
-                newTab.Url = url;
-                tabController.UpdateTab(newTab);
-            }
-        }
-
-        private static void AddProfessionalPreviewPages()
-        {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddProfessionalPreviewPages:");
-            var tabController = new TabController();
-            TabInfo newTab;
-
-            //Add new Professional Preview module
-            int moduleDefID = AddModuleDefinition("ProfessionalPreview", "", "ProfessionalPreview", false, true);
-            AddModuleControl(moduleDefID, "", "", "DesktopModules/Admin/ProfessionalPreview/ProfessionalPreview.ascx", "~/images/icon_profeatures_16px.png", SecurityAccessLevel.Host, 0);
-
-            //Add Advanced Features - hidden tab
-            int advancedFeaturesTabID = TabController.GetTabByTabPath(Null.NullInteger, "//Host//ProfessionalFeatures", Null.NullString);
-            if (advancedFeaturesTabID == Null.NullInteger)
-            {
-                newTab = AddHostPage("Professional Features", "", "~/images/icon_profeatures_16px.gif", "", true);
-                newTab.DisableLink = true;
-                tabController.UpdateTab(newTab);
-                advancedFeaturesTabID = newTab.TabID;
-            }
-
-            //Add Pages under Advanced Features Tab
-            AddProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//ManageWebServers",
-                        "ProfessionalPreview",
-                        "Manage Web Servers",
-                        "Manage web servers in a web farm.",
-                        "~/images/icon_webservers_16px.gif",
-                        "~/images/icon_webservers_32px.gif");
-
-            AddProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//HealthMonitoring",
-                        "ProfessionalPreview",
-                        "Health Monitoring",
-                        "Monitor health of your DotNetNuke web site.",
-                        "~/images/icon_health_16px.gif",
-                        "~/images/icon_health_32px.gif");
-
-            AddProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//ApplicationIntegrity",
-                        "ProfessionalPreview",
-                        "Application Integrity",
-                        "View files that are different than the core framework version.",
-                        "~/images/icon_appintegrity_16px.gif",
-                        "~/images/icon_appintegrity_32px.gif");
-
-            AddLinkedProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//KnowledgeBase",
-                        "http://customers.dotnetnuke.com/KB/root.aspx",
-                        "Knowledge Base",
-                        "Comprehensive Knowledge Base that provides guidance for DotNetNuke administrative tasks and answers to common technical questions.",
-                        "~/images/icon_kb_16px.gif",
-                        "~/images/icon_kb_32px.gif");
-
-            AddLinkedProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//SoftwareAndDocumentation",
-                        "http://www.dotnetnuke.com/Resources/Manuals/tabid/1667/Default.aspx",
-                        "Software and Documentation",
-                        "Download upgrades, subscribed products and additional documentation for professional edition customers.",
-                        "~/images/icon_software_16px.gif",
-                        "~/images/icon_software_32px.gif");
-
-            AddLinkedProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//TechnicalSupport",
-                        "http://customers.dotnetnuke.com",
-                        "Technical Support",
-                        "Visit the technical support home page to find the latest support news, knowledge base articles and more.",
-                        "~/images/icon_support_16px.gif",
-                        "~/images/icon_support_32px.gif");
-
-            AddLinkedProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//MySupportTickets",
-                        "http://customers.dotnetnuke.com/Main/frmTickets.aspx",
-                        "My Support Tickets",
-                        "The Support Ticket system will allow you to email support questions to our staff. A staff member will promptly reply to your request and progress will be tracked using the ticket. You can 'Start a new Ticket' and view your existing tickets here.",
-                        "~/images/icon_mytickets_16px.gif",
-                        "~/images/icon_mytickets_32px.gif");
-
-            AddProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//ActivateyourLicense",
-                        "ProfessionalPreview",
-                        "Activate Your License",
-                        "Activate your DotNetNuke Professional licenses. Activating your license will ensure that you continue to receive the benefits provided to our customers.",
-                        "~/images/icon_activatelicense_16px.gif",
-                        "~/images/icon_activatelicense_32px.gif");
-
-            AddLinkedProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//LicenseManagement",
-                        "http://www.dotnetnuke.com/tabid/1205/Default.aspx",
-                        "License Management",
-                        "Manage licenses for your subscribed products.",
-                        "~/images/icon_licensemgmt_16px.gif",
-                        "~/images/icon_licensemgmt_32px.gif");
-
-            AddProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//SearchCrawlerAdmin",
-                        "ProfessionalPreview",
-                        "SearchCrawler Admin",
-                        "Administration of Search Crawler attributes..",
-                        "~/images/SearchCrawler_16px.gif",
-                        "~/images/SearchCrawler_32px.gif");
-
-            AddProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//SecurityCenter",
-                        "ProfessionalPreview",
-                        "Security Center",
-                        "Displays Security Bulletins for this instance of DotNetNuke.",
-                        "~/images/icon_securityroles_16px.gif",
-                        "~/images/icon_securityroles_32px.gif");
-
-            AddProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//UserSwitcher",
-                        "ProfessionalPreview",
-                        "User Switcher",
-                        "Switch to another user's identity.",
-                        "~/images/icon_usersSwitcher_16px.gif",
-                        "~/images/icon_usersSwitcher_32px.gif");
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -2392,7 +2237,6 @@ namespace DotNetNuke.Services.Upgrade
 
             moduleDefId = GetModuleDefinition("Languages", "Languages");
             AddModuleControl(moduleDefId, "EnableContent", "Enable Localized Content", "DesktopModules/Admin/Languages/EnableLocalizedContent.ascx", "", SecurityAccessLevel.Host, 0, null, false);
-            AddProfessionalPreviewPages();
 
             AddDefaultModuleIcons();
 
@@ -2805,20 +2649,6 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
 
-            int advancedFeaturesTabID = TabController.GetTabByTabPath(Null.NullInteger, "//Host//ProfessionalFeatures", Null.NullString);
-
-			int moduleDefID = AddModuleDefinition("ProfessionalPreview", "", "ProfessionalPreview", false, true);
-			AddModuleControl(moduleDefID, "", "", "DesktopModules/Admin/ProfessionalPreview/ProfessionalPreview.ascx", "~/images/icon_profeatures_16px.png", SecurityAccessLevel.Host, 0);
-
-            //Add Pages under Advanced Features Tab
-            AddProfessionalPreviewPage(advancedFeaturesTabID,
-                        "//Host//ProfessionalFeatures//AdvancedUrlManagement",
-                        "ProfessionalPreview",
-                        "Advanced URL Management",
-                        "Manage web servers in a web farm.",
-                        "~/Icons/Sigma/AdvancedUrlMngmt_16x16.png",
-                        "~/Icons/Sigma/AdvancedUrlMngmt_32x32.png");
-
             // Add File Content Type
             var typeController = new ContentTypeController();
             var contentTypeFile = (from t in typeController.GetContentTypes() where t.ContentType == "File" select t).SingleOrDefault();
@@ -3002,8 +2832,17 @@ namespace DotNetNuke.Services.Upgrade
             //fixes issue introduced by eventlog's being defined in upgrade.cs
             PortalController.EnsureRequiredEventLogTypesExist();
 
-
-
+            //Remove Professional Features pages from CE
+            int advancedFeaturesTabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host//ProfessionalFeatures", Null.NullString);
+            var tabController = new TabController();
+            if (DotNetNukeContext.Current.Application.Name == "DNN.CE")
+            {
+                foreach (var tab in TabController.GetTabsByParent(advancedFeaturesTabId, Null.NullInteger))
+                {
+                    tabController.DeleteTab(tab.TabID, Null.NullInteger);
+                }
+                tabController.DeleteTab(advancedFeaturesTabId, Null.NullInteger);
+            }
         }
 
         private static ContentItem CreateFileContentItem()
