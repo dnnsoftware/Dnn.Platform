@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             // Arrange
             mockDataService
-                .Setup(ds => ds.GetAllSubscriptionTypes())
+                .Setup(ds => ds.GetSubscriptionTypes())
                 .Returns(SubscriptionTypeDataReaderMockHelper.CreateEmptySubscriptionTypeReader())
                 .Verifiable();
             
@@ -69,7 +69,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             subscriptionTypeController.GetSubscriptionTypes();
 
             //Assert
-            mockDataService.Verify(ds => ds.GetAllSubscriptionTypes(), Times.Once());
+            mockDataService.Verify(ds => ds.GetSubscriptionTypes(), Times.Once());
         }
 
         [Test]

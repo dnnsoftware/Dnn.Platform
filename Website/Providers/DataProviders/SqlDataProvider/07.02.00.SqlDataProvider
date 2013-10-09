@@ -625,11 +625,11 @@ AS
 	SELECT  SCOPE_IDENTITY()
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptionTypes]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptionTypes]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionTypes]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionTypes]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetAllSubscriptionTypes]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionTypes]
 AS 
 	SELECT  *
 	FROM    {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes

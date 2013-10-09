@@ -48,9 +48,9 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
             return provider.ExecuteScalar<int>("CoreMessaging_AddSubscriptionType", subscriptionName, friendlyName, desktopModuleId);
         }
 
-        public IDataReader GetAllSubscriptionTypes()
+        public IDataReader GetSubscriptionTypes()
         {
-            return provider.ExecuteReader("CoreMessaging_GetAllSubscriptionTypes");
+            return provider.ExecuteReader("CoreMessaging_GetSubscriptionTypes");
         }
 
         public bool DeleteSubscriptionType(int subscriptionTypeId)

@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         /// Returns all the Subscription Types
         /// </summary>
         /// <returns>Subscription types</returns>
-        IDataReader GetAllSubscriptionTypes();
+        IDataReader GetSubscriptionTypes();
         
         /// <summary>
         /// Deletes a Subscription Type

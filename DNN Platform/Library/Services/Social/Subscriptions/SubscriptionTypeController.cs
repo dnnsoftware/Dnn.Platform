@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
                                              DataCache.SubscriptionTypesCachePriority);
 
             return CBO.GetCachedObject<IEnumerable<SubscriptionType>>(cacheArgs,
-                                                c => CBO.FillCollection<SubscriptionType>(dataService.GetAllSubscriptionTypes()));
+                                                c => CBO.FillCollection<SubscriptionType>(dataService.GetSubscriptionTypes()));
         }
 
         public IEnumerable<SubscriptionType> GetSubscriptionTypes(Func<SubscriptionType, bool> predicate)
