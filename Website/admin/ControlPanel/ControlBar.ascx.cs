@@ -949,7 +949,15 @@ namespace DotNetNuke.UI.ControlPanels
             var hosts = TabController.GetTabsByParent(hostTab, -1);
 
             var professionalTab = tabController.GetTabByName("Professional Features", -1);
-            var professionalTabs = TabController.GetTabsByParent(professionalTab.TabID, -1);
+            List<TabInfo> professionalTabs;
+            if (professionalTab != null)
+            {
+                professionalTabs = TabController.GetTabsByParent(professionalTab.TabID, -1);
+            }
+            else
+            {
+                professionalTabs = new List<TabInfo>();
+            }
 
             _hostTabs = new List<TabInfo>();
             _hostTabs.AddRange(hosts);
