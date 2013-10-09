@@ -2835,7 +2835,7 @@ namespace DotNetNuke.Services.Upgrade
             //Remove Professional Features pages from CE
             int advancedFeaturesTabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host//ProfessionalFeatures", Null.NullString);
             var tabController = new TabController();
-            if (DotNetNukeContext.Current.Application.Name == "DNN.CE")
+            if (DotNetNukeContext.Current.Application.Name == "DNNCORP.CE")
             {
                 foreach (var tab in TabController.GetTabsByParent(advancedFeaturesTabId, Null.NullInteger))
                 {
