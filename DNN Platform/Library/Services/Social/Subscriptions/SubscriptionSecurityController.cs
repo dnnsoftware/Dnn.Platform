@@ -30,6 +30,9 @@ using DotNetNuke.Services.Social.Subscriptions.Entities;
 
 namespace DotNetNuke.Services.Social.Subscriptions
 {
+    /// <summary>
+    /// This controller provides permission info about the User Subscription.
+    /// </summary>
     public class SubscriptionSecurityController : ServiceLocator<ISubscriptionSecurityController, SubscriptionSecurityController>, ISubscriptionSecurityController
     {
         protected override Func<ISubscriptionSecurityController> GetFactory()
@@ -39,27 +42,50 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
         public bool HasPermission(Subscription subscription)
         {
-            var userInfo = new UserController().GetUser(subscription.PortalId, subscription.UserId);
+            var userInfo = GetUserFromSubscription(subscription);
 
-            // Check Module user Permission
-            var moduleInfo = new ModuleController().GetModule(subscription.ModuleId);
+            var moduleInfo = GetModuleFromSubscription(subscription);
             if (moduleInfo != null)
             {
-                var portalSettings = new PortalSettings(moduleInfo.PortalID);
-
-                return PortalSecurity.IsInRoles(userInfo, portalSettings, moduleInfo.ModulePermissions.ToString("VIEW"));
+                return HasUserModuleViewPermission(userInfo, moduleInfo);
             }
 
-            // Check Tab user Permission
-            var tabInfo = new TabController().GetTab(subscription.TabId, subscription.PortalId, false);
+            var tabInfo = GetTabFromSubscription(subscription);
             if (tabInfo != null)
             {
-                var portalSettings = new PortalSettings(tabInfo.PortalID);
-
-                return PortalSecurity.IsInRoles(userInfo, portalSettings, tabInfo.TabPermissions.ToString("VIEW"));
+                return HasUserTabViewPermission(userInfo, tabInfo);
             }
 
             return true;
         }
+
+        #region Private Static Methods
+        private static bool HasUserModuleViewPermission(UserInfo userInfo, ModuleInfo moduleInfo)
+        {
+            var portalSettings = new PortalSettings(moduleInfo.PortalID);
+            return PortalSecurity.IsInRoles(userInfo, portalSettings, moduleInfo.ModulePermissions.ToString("VIEW"));
+        }
+
+        private static bool HasUserTabViewPermission(UserInfo userInfo, TabInfo tabInfo)
+        {
+            var portalSettings = new PortalSettings(tabInfo.PortalID);
+            return PortalSecurity.IsInRoles(userInfo, portalSettings, tabInfo.TabPermissions.ToString("VIEW"));
+        }
+
+        private static TabInfo GetTabFromSubscription(Subscription subscription)
+        {
+            return new TabController().GetTab(subscription.TabId, subscription.PortalId, false);
+        }
+
+        private static ModuleInfo GetModuleFromSubscription(Subscription subscription)
+        {
+            return new ModuleController().GetModule(subscription.ModuleId);
+        }
+
+        private static UserInfo GetUserFromSubscription(Subscription subscription)
+        {
+            return new UserController().GetUser(subscription.PortalId, subscription.UserId);
+        }
+        #endregion
     }
 }

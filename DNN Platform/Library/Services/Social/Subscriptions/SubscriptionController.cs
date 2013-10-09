@@ -30,6 +30,9 @@ using DotNetNuke.Services.Social.Subscriptions.Entities;
 
 namespace DotNetNuke.Services.Social.Subscriptions
 {
+    /// <summary>
+    /// This controller is responsible to manage the user subscriptions.
+    /// </summary>
     public class SubscriptionController : ServiceLocator<ISubscriptionController, SubscriptionController>, ISubscriptionController
     {
         private readonly IDataService dataService;

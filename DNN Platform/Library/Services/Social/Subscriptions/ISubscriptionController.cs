@@ -24,10 +24,13 @@ using DotNetNuke.Services.Social.Subscriptions.Entities;
 
 namespace DotNetNuke.Services.Social.Subscriptions
 {
+    /// <summary>
+    /// This controller is responsible to manage the user subscriptions
+    /// </summary>
     public interface ISubscriptionController
     {
         /// <summary>
-        /// Returns the User Subscriptions
+        /// Returns the User Subscriptions.
         /// </summary>
         /// <param name="userId">User Id</param>
         /// <param name="portalId">Portal Id</param>
@@ -36,7 +39,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
         IEnumerable<Subscription> GetUserSubscriptions(int userId, int portalId, int subscriptionTypeId = -1);
         
         /// <summary>
-        /// Returns the Content Subscriptions
+        /// Returns the Content Subscriptions.
         /// </summary>
         /// <param name="portalId">Portal Id</param>
         /// <param name="subscriptionTypeId">Subscription Type Id</param>
@@ -45,7 +48,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
         IEnumerable<Subscription> GetContentSubscriptions(int portalId, int subscriptionTypeId, string objectKey);
 
         /// <summary>
-        /// Returns true if a user is subscribed to a Content
+        /// Returns true if a user is subscribed to a Content.
         /// </summary>
         /// <param name="userId">User Id</param>
         /// <param name="portalId">Portal Id</param>
@@ -57,14 +60,14 @@ namespace DotNetNuke.Services.Social.Subscriptions
         bool IsSubscribed(int userId, int portalId, int subscriptionTypeId, string objectKey, int moduleId = -1, int tabId = -1);
         
         /// <summary>
-        /// Adds a new Subscription
+        /// Adds a new Subscription.
         /// </summary>
         /// <param name="subscription">Subscription</param>
         /// <returns>Subsription Id</returns>
         int AddSubscription(Subscription subscription);
 
         /// <summary>
-        ///  Deletes a Subscription
+        ///  Deletes a Subscription.
         /// </summary>
         /// <param name="subscription">Subscription</param>
         void DeleteSubscription(Subscription subscription);

@@ -23,20 +23,24 @@ using System;
 
 namespace DotNetNuke.Services.Social.Subscriptions.Entities
 {
+    /// <summary>
+    /// This class represents a Subscription instance.
+    /// </summary>
+    [Serializable]
     public class Subscription
     {
         /// <summary>
-        /// The subscription identifier
+        /// The subscription identifier.
         /// </summary>
         public int SubscriptionId { get; set; }
 
         /// <summary>
-        /// The user the subscription is associated with
+        /// The user the subscription is associated with.
         /// </summary>
         public int UserId { get; set; }
 
         /// <summary>
-        /// The site the subscription is associated with
+        /// The site the subscription is associated with.
         /// </summary>
         public int PortalId { get; set; }
 
@@ -46,27 +50,32 @@ namespace DotNetNuke.Services.Social.Subscriptions.Entities
         public int SubscriptionTypeId { get; set; }
         
         /// <summary>
-        /// Object key that represent the content which user is subscribed to
+        /// Object key that represent the content which user is subscribed to.
+        /// The format of the ObjectKey is up to the consumer. (i.e.: blog:12, where 12 represents the post identifier).
         /// </summary>
         public string ObjectKey { get; set; }
 
         /// <summary>
-        /// Description of the content which user is subscribed to
+        /// Description of the content which user is subscribed to.
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// The date the user subscribed
+        /// The date the user subscribed.
         /// </summary>
         public DateTime CreatedOnDate { get; set; }
         
         /// <summary>
-        /// Associates the subscription with an instance of a module
+        /// Associates the subscription with an instance of a module.
+        /// If set it uses to apply to Security Trimming. 
+        /// If the user does not have view permission on that module the Subscription won't be retrieved by the SubscriptionController.
         /// </summary>
         public int ModuleId { get; set; }
 
         /// <summary>
-        /// Associates the subscription with a tab 
+        /// Associates the subscription with a tab. 
+        /// If set it uses to apply to Security Trimming. 
+        /// If the user does not have view permission on that tab the Subscription won't be retrieved by the SubscriptionController.
         /// </summary>
         public int TabId { get; set; }
     }
