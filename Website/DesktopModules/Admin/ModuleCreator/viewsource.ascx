@@ -23,13 +23,6 @@
             matchBrackets: true,
             mode: "text/x-csharp"
         });
-
-        snippetEditor = CodeMirror.fromTextArea($("textarea[id$='SnippetView']")[0], {
-            height: "450px",
-            lineNumbers: true,
-            matchBrackets: true,
-            mode: "text/x-csharp"
-        });
     });
     
 </script>
@@ -38,7 +31,6 @@
 
     <ul class="dnnAdminTabNav dnnClear">
         <li><a href="#rbEdit"><%=Localization.GetString("Edit.Text", LocalResourceFile)%></a></li>
-        <li><a href="#rbSnippet"><%=Localization.GetString("Snippet.Text", LocalResourceFile)%></a></li>
         <li><a href="#rbAdd"><%=Localization.GetString("Add.Text", LocalResourceFile)%></a></li>
     </ul>
     <div class="rbEdit dnnClear" id="rbEdit">
@@ -134,24 +126,6 @@
             <asp:Label ID="lblDescription" runat="server" />
         </div>
     </div>
-    <div class="dnnClear" id="rbSnippet">
-        <div class="snippetTree">
-            <dnnweb:DnnTreeView ID="SnippetTree" runat="server" Skin="Vista" CssClass="dnnModuledigitalAssetsTreeView"
-                OnClientNodeClicking="treeViewOnNodeClicking">
-            </dnnweb:DnnTreeView>
-        </div>
-        <div>
-            <asp:TextBox runat="server" ID="SnippetView" TextMode="MultiLine" Width="80%" Rows="24"></asp:TextBox>
-        </div>
-        <ul class="dnnActions dnnClear">
-            <li>
-                <asp:LinkButton ID="cmdSaveSnippet" resourcekey="cmdSave" runat="server" CssClass="dnnPrimaryAction" /></li>
-            <li>
-                <asp:LinkButton ID="cmdSaveAsSnippet" resourcekey="cmdSaveAs" runat="server" CssClass="dnnSecondaryAction" /></li>
-            <li>
-                <asp:LinkButton ID="cmdDeleteSnippet" resourcekey="cmdDelete" runat="server" CssClass="dnnSecondaryAction" CausesValidation="False" /></li>
-        </ul>
-    </div>
 </div>
 <script type="text/javascript">
 
@@ -174,213 +148,6 @@
             setupModule();
 
         });
-        var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>';
-        var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
-        $('#<%= cmdDeleteSnippet.ClientID %>').dnnConfirm({
-            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteSnippet")) %>',
-            yesText: yesText,
-            noText: noText,
-            title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteSnippet")) %>',
-            isButton: true
-        });
-
-        $("#<%=cmdSaveSnippet.ClientID%>").click(saveSnippet);
-        $("#<%=cmdSaveAsSnippet.ClientID%>").click(saveAsSnippet);
-        $("#<%=cmdDeleteSnippet.ClientID%>").click(deleteSnippet);
-
-        function deleteSnippet(e, isTrigger) {
-            e.preventDefault();
-            if ($(this).hasClass("dnnDisabled")) return;
-            if (isTrigger) {
-                var tree = $find('<% =SnippetTree.ClientID %>');
-                var node = tree.get_selectedNode();
-                var nodeName = 'Snippets\\' + node.get_text();
-                var currentObject = node;
-                currentObject = currentObject.get_parent();
-                while (currentObject != null) {
-                    if (currentObject.get_parent() != null) {
-                        nodeName = currentObject.get_text() + "\\" + nodeName;
-                    }
-                    currentObject = currentObject.get_parent();
-                }
-                $.ajax({
-                    type: "POST",
-                    beforeSend: sf.setModuleHeaders,
-                    data: { Name: nodeName, Content:'' },
-                    url: sf.getServiceRoot("Admin/ModuleCreator") + "ModuleCreator/DeleteSnippet"
-                }).done(function () {
-                }).fail(function (xhr, result, status) {
-                    alert("Uh-oh, something broke: " + status);
-                });
-                tree.trackChanges();
-                node.get_parent().get_nodes().remove(node);
-                tree.commitChanges();
-                snippetEditor.setValue('');
-            }
-        }
-
-        function saveAsSnippet(e) {
-            e.preventDefault();
-            if ($(this).hasClass("dnnDisabled")) return;
-            var fileName = prompt("New snippet name:", "Event");
-            save(fileName);
-            var tree = $find('<% =SnippetTree.ClientID %>');
-            var node = tree.get_selectedNode();
-            var parent = node.get_parent();
-            var newNode = new Telerik.Web.UI.RadTreeNode();
-            newNode.set_text(fileName);
-            var snippetView = document.getElementById('<% =SnippetView.ClientID %>');
-            newNode.set_value(snippetView.value);
-            tree.trackChanges();
-            parent.get_nodes().add(newNode);
-            newNode.select();
-            tree.commitChanges();
-        }
-
-        function saveSnippet(e) {
-            e.preventDefault();
-            if ($(this).hasClass("dnnDisabled")) return;
-            var tree = $find('<% =SnippetTree.ClientID %>');
-            var node = tree.get_selectedNode();
-            save(node.get_text());
-        }
-
-        function save(fileName) {
-            var tree = $find('<% =SnippetTree.ClientID %>');
-            var node = tree.get_selectedNode();
-            var currentObject = node;
-            var nodeName = 'Snippets\\' + fileName;
-            currentObject = currentObject.get_parent();
-            while (currentObject != null) {
-                if (currentObject.get_parent() != null) {
-                    nodeName = currentObject.get_text() + "\\" + nodeName;
-                }
-                currentObject = currentObject.get_parent();
-            }
-            var sf = $.ServicesFramework(<% =ModuleId%>);
-            var snippetView = document.getElementById('<% =SnippetView.ClientID %>');
-            $.ajax({
-                type: "POST",
-                beforeSend: sf.setModuleHeaders,
-                data: { Name: nodeName, Content: snippetView.value },
-                url: sf.getServiceRoot("Admin/ModuleCreator") + "ModuleCreator/SaveSnippet"
-            }).done(function () {
-            }).fail(function (xhr, result, status) {
-                alert("Uh-oh, something broke: " + status);
-            });
-        }
     });
-    function loadLanguages(data) {
-
-        var tree = $find('<% =SnippetTree.ClientID %>');
-
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                var node = new Telerik.Web.UI.RadTreeNode();
-                node.set_text(data[key].Name);
-                tree.trackChanges();
-                tree.get_nodes().add(node);
-                tree.commitChanges();
-            }
-        }
-    }
-
-    var sf = $.ServicesFramework(<% =ModuleId%>);
-    $.ajax({
-        type: "POST",
-        beforeSend: sf.setModuleHeaders,
-        data: '',
-        url: sf.getServiceRoot("Admin/ModuleCreator") + "ModuleCreator/GetLanguages"
-    }).done(function (data) {
-        loadLanguages(data);
-    }).fail(function (xhr, result, status) {
-        alert("Uh-oh, something broke: " + status);
-    });
-   
-    $("#<%=cmdSaveSnippet.ClientID%>").addClass("dnnDisabled");
-    $("#<%=cmdSaveAsSnippet.ClientID%>").addClass("dnnDisabled");
-    $("#<%=cmdDeleteSnippet.ClientID%>").addClass("dnnDisabled"); 
-
-    function treeViewOnNodeClicking(sender, args) {
-        var node = args.get_node();
-        
-        $("#<%=cmdSaveSnippet.ClientID%>").addClass("dnnDisabled");
-        $("#<%=cmdSaveAsSnippet.ClientID%>").addClass("dnnDisabled");
-        $("#<%=cmdDeleteSnippet.ClientID%>").addClass("dnnDisabled"); 
-        if (node.get_level() == 0) {
-            var sf = $.ServicesFramework(<% =ModuleId%>);
-            $.ajax({
-                type: "POST",
-                beforeSend: sf.setModuleHeaders,
-                data: { Name: node.get_text() },
-                url: sf.getServiceRoot("Admin/ModuleCreator") + "ModuleCreator/GetTemplates"
-            }).done(function (data) {
-                loadTemplates(node, data);
-            }).fail(function (xhr, result, status) {
-                alert("Uh-oh, something broke: " + status);
-            });
-        }
-        if (node.get_level() == 1 && node.get_nodes().get_count() == 0) {
-
-            var nodeName = node.get_text();
-            var currentObject = node.get_parent();
-            while (currentObject != null) {
-                if (currentObject.get_parent() != null) {
-                    nodeName = currentObject.get_text() + "/" + nodeName;
-                }
-                currentObject = currentObject.get_parent();
-            }
-            var sf = $.ServicesFramework(<% =ModuleId%>);
-            $.ajax({
-                type: "POST",
-                beforeSend: sf.setModuleHeaders,
-                data: { Name: nodeName },
-                url: sf.getServiceRoot("Admin/ModuleCreator") + "ModuleCreator/GetSnippets"
-            }).done(function (data) {
-                loadSnippets(node, data);
-            }).fail(function (xhr, result, status) {
-                alert("Uh-oh, something broke: " + status);
-            });
-        }
-        if (node.get_level() == 2 && node.get_nodes().get_count() == 0) {
-            var snippet = node.get_value();
-            snippetEditor.setValue(snippet);
-            $("#<%=cmdSaveSnippet.ClientID%>").removeClass("dnnDisabled");
-            $("#<%=cmdSaveAsSnippet.ClientID%>").removeClass("dnnDisabled");
-            $("#<%=cmdDeleteSnippet.ClientID%>").removeClass("dnnDisabled");
-        }
-    }
-    function loadTemplates(parentNode, data) {
-
-        var tree = $find('<% =SnippetTree.ClientID %>');
-
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                var node = new Telerik.Web.UI.RadTreeNode();
-                node.set_text(data[key].Name);
-                tree.trackChanges();
-                parentNode.get_nodes().add(node);
-                tree.commitChanges();
-            }
-        }
-        parentNode.expand();
-    }
-
-    function loadSnippets(parentNode, data) {
-
-        var tree = $find('<% =SnippetTree.ClientID %>');
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                var node = new Telerik.Web.UI.RadTreeNode();
-                node.set_text(data[key].Name);
-                node.set_value(data[key].Content);
-                tree.trackChanges();
-                parentNode.get_nodes().add(node);
-                tree.commitChanges();
-            }
-        }
-        parentNode.expand();
-    }
-
 </script>
 
