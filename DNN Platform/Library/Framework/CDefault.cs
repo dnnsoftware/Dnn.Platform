@@ -25,6 +25,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Caching;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -33,7 +34,11 @@ using System.Web.UI.HtmlControls;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using Globals = DotNetNuke.Common.Globals;
 
@@ -65,6 +70,39 @@ namespace DotNetNuke.Framework
         public string KeyWords = "";
         public new string Title = "";
 
+        #region Private Members
+
+        private int GettingStartedTabId
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsInteger("GettingStartedTabId", PortalSettings.PortalId, -1);
+            }
+        }
+
+        private string GettingStartedTitle
+        {
+            get
+            {
+                var tabcontroller = new TabController();
+                var tab = tabcontroller.GetTab(GettingStartedTabId, PortalSettings.PortalId, false);
+                return tab.Title;
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private bool IsPage(int tabId)
+        {
+            bool result = false;
+            result = (PortalSettings.ActiveTab.TabID == tabId);
+            return result;
+        }
+
+        #endregion
+
         protected override void RegisterAjaxScript()
         {
             if (Page.Form != null)
@@ -80,9 +118,6 @@ namespace DotNetNuke.Framework
         /// <param name="objControl">Control to scroll to</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	3/30/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ScrollToControl(Control objControl)
         {
@@ -93,6 +128,150 @@ namespace DotNetNuke.Framework
                 DNNClientAPI.SetScrollTop(Page);
             }
         }
+
+        protected string CurrentPortalAliasUrl
+        {
+            get
+            {
+                //This statement throws an exception when PortalSettings.PortalAlias.HTTPAlias is a child alias
+                //return HttpContext.Current.Request.Url.AbsoluteUri.Substring(0, HttpContext.Current.Request.Url.AbsoluteUri.ToLower().IndexOf(PortalSettings.PortalAlias.HTTPAlias)) + PortalSettings.PortalAlias.HTTPAlias;
+                return Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias);
+            }
+        }
+
+        protected string CurrentDomainUrl
+        {
+            get
+            {
+                return Globals.AddHTTP(Globals.GetDomainName(Request));
+            }
+        }
+
+        protected void ManageGettingStarted()
+        {
+            //add js of Getting Started Page
+            if (GettingStartedTabId > -1 && IsPage(GettingStartedTabId) && Request["ctl"] == null)
+            {
+                var scriptManager = ScriptManager.GetCurrent(Page);
+                if (scriptManager == null)
+                {
+                    scriptManager = new ScriptManager();
+                    Page.Form.Controls.AddAt(0, scriptManager);
+
+                }
+
+                scriptManager.EnablePageMethods = true;
+
+                var gettingStartedFilePath = HttpContext.Current.IsDebuggingEnabled
+                                        ? "~/js/Debug/dnn.gettingstarted.js"
+                                        : "~/js/dnn.gettingstarted.js";
+
+                ClientResourceManager.RegisterScript(this, gettingStartedFilePath);
+                Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentPortalAliasUrl", "var pageCurrentPortalAliasUrl = '" + CurrentPortalAliasUrl + "';", true);
+                Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentDomainUrl", "var pageCurrentDomainUrl = '" + CurrentDomainUrl + "';", true);
+                Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentPortalId", "var pageCurrentPortalId = " + PortalSettings.PortalId + ";", true);
+                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "GettingStartedPageTitle", "var gettingStartedPageTitle = '" + GettingStartedTitle + "';", true);
+            }
+
+            if (ShowGettingStartedPage)
+            {
+                DNNClientAPI.ShowModalPage(Page, GettingStartedPageUrl);
+                Services.Upgrade.Upgrade.DeleteInstallerFiles();
+            }
+            else if (Request.Cookies["AdvSettingsPopup"] != null && Request.Cookies["AdvSettingsPopup"].Value == "true" && !HttpContext.Current.Request.Url.AbsoluteUri.ToLower().Contains("popup"))
+            {
+                DNNClientAPI.ShowModalPage(Page, AdvancedSettingsPageUrl);
+            }
+
+            
+        }
+
+        protected string GettingStartedPageUrl
+        {
+            get
+            {
+                string result = "";
+                var tabcontroller = new TabController();
+                var tab = tabcontroller.GetTab(GettingStartedTabId, PortalSettings.PortalId, false);
+                var modulecontroller = new ModuleController();
+                var modules = modulecontroller.GetTabModules(tab.TabID).Values;
+
+                if (modules.Count > 0)
+                {
+                    PortalModuleBase pmb = new PortalModuleBase();
+                    result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
+                }
+                else
+                {
+                    result = Globals.NavigateURL(tab.TabID);
+                }
+
+                return result;
+            }
+        }
+
+        protected string AdvancedSettingsPageUrl
+        {
+            get
+            {
+                string result = "";
+                var tabcontroller = new TabController();
+                var tab = tabcontroller.GetTabByName("Advanced Settings", PortalSettings.PortalId); //tabcontroller.GetTab(GettingStartedTabId, PortalSettings.PortalId, false);
+                var modulecontroller = new ModuleController();
+                var modules = modulecontroller.GetTabModules(tab.TabID).Values;
+
+                if (modules.Count > 0)
+                {
+                    PortalModuleBase pmb = new PortalModuleBase();
+                    result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
+                }
+                else
+                {
+                    result = Globals.NavigateURL(tab.TabID);
+                }
+
+                return result;
+            }
+        }
+
+        protected bool ShowGettingStartedPage
+        {
+            get
+            {
+                var result = false;
+                if (GettingStartedTabId > -1)
+                {
+                    if (!IsPage(GettingStartedTabId))
+                    {
+                        string pageShown = PortalController.GetPortalSetting("GettingStartedPageShown", PortalSettings.PortalId, Boolean.FalseString);
+                        if (!string.Equals(pageShown, Boolean.TrueString))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+                return result;
+            }
+
+        }
+
+        #region WebMethods
+
+        [System.Web.Services.WebMethod]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static bool SetGettingStartedPageAsShown(int portailId)
+        {
+            string pageShown = PortalController.GetPortalSetting("GettingStartedPageShown", portailId, Boolean.FalseString);
+            if (!string.Equals(pageShown, Boolean.TrueString))
+            {
+                PortalController.UpdatePortalSetting(portailId, "GettingStartedPageShown", Boolean.TrueString);
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region Obsolete Methods
 
         [Obsolete("Deprecated in DotNetNuke 6.0.  Replaced by RegisterStyleSheet")]
         public void AddStyleSheet(string id, string href, bool isFirst)
@@ -106,5 +285,6 @@ namespace DotNetNuke.Framework
             RegisterStyleSheet(this, href, false);
         }
 
+        #endregion
     }
 }
