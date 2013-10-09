@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Social.Subscriptions.Data;
 using DotNetNuke.Services.Social.Subscriptions.Entities;
@@ -50,11 +51,11 @@ namespace DotNetNuke.Services.Social.Subscriptions
         }
 
         #region Implemented Methods
-        public IEnumerable<Subscription> GetUserSubscriptions(int userId, int portalId, int subscriptionTypeId = -1)
+        public IEnumerable<Subscription> GetUserSubscriptions(UserInfo user, int portalId, int subscriptionTypeId = -1)
         {
             var subscriptions = CBO.FillCollection<Subscription>(dataService.GetSubscriptionsByUser(
                 portalId,
-                userId,
+                user.UserID,
                 subscriptionTypeId));
 
             return subscriptions.Where(s => subscriptionSecurityController.HasPermission(s));
@@ -70,29 +71,27 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return subscriptions.Where(s => subscriptionSecurityController.HasPermission(s));
         }
 
-        public bool IsSubscribed(int userId, int portalId, int subscriptionTypeId, string objectKey, int moduleId = -1, int tabId = -1)
+        public bool IsSubscribed(Subscription subscription)
         {
-            var subscription = CBO.FillObject<Subscription>(dataService.IsSubscribed(
-                portalId,
-                userId,
-                subscriptionTypeId,
-                objectKey,
-                moduleId,
-                tabId));
+            var fetchedSubscription = CBO.FillObject<Subscription>(dataService.IsSubscribed(
+                subscription.PortalId,
+                subscription.UserId,
+                subscription.SubscriptionTypeId,
+                subscription.ObjectKey,
+                subscription.ModuleId,
+                subscription.TabId));
 
-            if (subscription == null) return false;
-
-            return subscriptionSecurityController.HasPermission(subscription);
+            return fetchedSubscription != null && subscriptionSecurityController.HasPermission(fetchedSubscription);
         }
 
-        public int AddSubscription(Subscription subscription)
+        public void AddSubscription(Subscription subscription)
         {
             Requires.NotNull("subscription", subscription);
             Requires.NotNegative("subscription.UserId", subscription.UserId);
             Requires.NotNegative("subscription.SubscriptionTypeId", subscription.SubscriptionTypeId);
             Requires.NotNull("subscription.ObjectKey", subscription.ObjectKey);
 
-            return dataService.AddSubscription(subscription.UserId,
+            subscription.SubscriptionId = dataService.AddSubscription(subscription.UserId,
                                                subscription.PortalId,
                                                subscription.SubscriptionTypeId,
                                                subscription.ObjectKey,

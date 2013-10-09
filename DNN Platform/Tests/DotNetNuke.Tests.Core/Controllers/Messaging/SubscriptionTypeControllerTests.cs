@@ -98,21 +98,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        public void AddSubscriptionType_ShouldCallDataService_WhenValidSubscriptionType()
+        public void AddSubscriptionType_ShouldFilledUpTheSubscriptionTypeIdPropertyOfTheInputSubscriptionTypeEntity_WhenNoError()
         {
             // Arrange
-            mockDataService
-                .Setup(ds => ds.AddSubscriptionType(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
-                .Returns(1)
-                .Verifiable();
-
+            const int expectedSubscriptionTypeId = 12;
             var subscriptionType = new SubscriptionTypeBuilder().Build();
+
+            mockDataService
+                .Setup(ds => ds.AddSubscriptionType(
+                    subscriptionType.SubscriptionName, 
+                    subscriptionType.FriendlyName, 
+                    subscriptionType.DesktopModuleId))
+                .Returns(expectedSubscriptionTypeId);
 
             //Act
             subscriptionTypeController.AddSubscriptionType(subscriptionType);
 
             //Assert
-            mockDataService.Verify(ds => ds.AddSubscriptionType(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Once());
+            Assert.AreEqual(expectedSubscriptionTypeId, subscriptionType.SubscriptionTypeId);
         }
 
         [Test]
@@ -134,40 +137,52 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         #region DeleteSubscriptionType method tests
         [Test]
-        public void DeleteSubscriptionType_ShouldThrowArgumentException_WhenSubscriptionTypeIdIsNegative()
+        public void DeleteSubscriptionType_ShouldThrowArgumentOutOfRangeException_WhenSubscriptionTypeIdIsNegative()
         {
-            //Act, Arrange
-            Assert.Throws<ArgumentOutOfRangeException>(() => subscriptionTypeController.DeleteSubscriptionType(-1));
+            // Arrange
+            var subscriptionType = new SubscriptionTypeBuilder()
+                .WithSubscriptionTypeId(-1)
+                .Build();
+
+            // Act, Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => subscriptionTypeController.DeleteSubscriptionType(subscriptionType));
+        }
+
+        [Test]
+        public void DeleteSubscriptionType_ShouldThrowNullArgumentException_WhenSubscriptionTypeIsNull()
+        {
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => subscriptionTypeController.DeleteSubscriptionType(null));
         }
 
         [Test]
         public void DeleteSubscriptionType_ShouldCallDataService_WhenNoError()
         {
-            // Arrange
-            const int subscriptionTypeId = 1;
+            // Arrange 
+            var subscriptionType = new SubscriptionTypeBuilder().Build();
 
             mockDataService
-                .Setup(ds => ds.DeleteSubscriptionType(subscriptionTypeId))
+                .Setup(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId))
                 .Verifiable();
             
             //Act
-            subscriptionTypeController.DeleteSubscriptionType(subscriptionTypeId);
+            subscriptionTypeController.DeleteSubscriptionType(subscriptionType);
 
             //Assert
-            mockDataService.Verify(ds => ds.DeleteSubscriptionType(subscriptionTypeId), Times.Once());
+            mockDataService.Verify(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId), Times.Once());
         }
 
         [Test]
         public void DeleteSubscriptionType_ShouldCleanCache_WhenNoError()
         {
             // Arrange
-            const int subscriptionTypeId = 1;
+            var subscriptionType = new SubscriptionTypeBuilder().Build();
 
-            mockDataService.Setup(ds => ds.DeleteSubscriptionType(subscriptionTypeId));
+            mockDataService.Setup(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId));
             mockCacheProvider.Setup(cp => cp.Remove(SubscriptionTypesCacheKey)).Verifiable();
             
             //Act
-            subscriptionTypeController.DeleteSubscriptionType(subscriptionTypeId);
+            subscriptionTypeController.DeleteSubscriptionType(subscriptionType);
 
             //Assert
             mockCacheProvider.Verify(cp => cp.Remove(SubscriptionTypesCacheKey), Times.Once());

@@ -32,10 +32,10 @@ namespace DotNetNuke.Services.Social.Subscriptions
     {
         /// <summary>
         /// Creates a new Subscription Type.
+        /// If the operation succeed the SubscriptionTypeId property of the Subscription entity will be filled up.
         /// </summary>
         /// <param name="subscriptionType">Subscription Type</param>
-        /// <returns>Subscription type Id</returns>
-        int AddSubscriptionType(SubscriptionType subscriptionType);
+        void AddSubscriptionType(SubscriptionType subscriptionType);
 
         /// <summary>
         /// Retrieves a Single Subscription Type that match the where predicate.
@@ -60,8 +60,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
         /// <summary>
         /// Deletes a Subscription Type from the system.
         /// </summary>
-        /// <param name="subscriptionTypeId">Subscription Type Id</param>
-        /// <returns>true if subscription has been deleted, false otherwise</returns>
-        bool DeleteSubscriptionType(int subscriptionTypeId);
+        /// <param name="subscriptionType">Subscription Type</param>
+        void DeleteSubscriptionType(SubscriptionType subscriptionType);
     }
 }

@@ -48,18 +48,16 @@ namespace DotNetNuke.Services.Social.Subscriptions
         }
 
         #region Implemented Methods
-        public int AddSubscriptionType(SubscriptionType subscriptionType)
+        public void AddSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
 
-            var subscriptionTypeId = dataService.AddSubscriptionType(
+            subscriptionType.SubscriptionTypeId = dataService.AddSubscriptionType(
                 subscriptionType.SubscriptionName,
                 subscriptionType.FriendlyName,
                 subscriptionType.DesktopModuleId);
 
             CleanCache();
-
-            return subscriptionTypeId;
         }
 
         public SubscriptionType GetSubscriptionType(Func<SubscriptionType, bool> predicate)
@@ -86,15 +84,13 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return GetSubscriptionTypes().Where(predicate);
         }
 
-        public bool DeleteSubscriptionType(int subscriptionTypeId)
+        public void DeleteSubscriptionType(SubscriptionType subscriptionType)
         {
-            Requires.NotNegative("subscriptionTypeId", subscriptionTypeId);
+            Requires.NotNull("subscriptionType", subscriptionType);
+            Requires.NotNegative("subscriptionType.SubscriptionTypeId", subscriptionType.SubscriptionTypeId);
 
-            var result = dataService.DeleteSubscriptionType(subscriptionTypeId);
-
+            dataService.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId);
             CleanCache();
-
-            return result;
         }
         #endregion
 

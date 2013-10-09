@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var subscriptions = from s in SubscriptionController.Instance.GetUserSubscriptions(PortalSettings.UserId, PortalSettings.PortalId)
+                var subscriptions = from s in SubscriptionController.Instance.GetUserSubscriptions(UserInfo, PortalSettings.PortalId)
                                     select GetSubscriptionViewModel(s);
 
                 List<SubscriptionViewModel> sortedList;
@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var sub = SubscriptionController.Instance.GetUserSubscriptions(PortalSettings.UserId, PortalSettings.PortalId)
+                var sub = SubscriptionController.Instance.GetUserSubscriptions(UserInfo, PortalSettings.PortalId)
                                           .SingleOrDefault(s => s.SubscriptionId == subscription.SubscriptionId);
                 if (sub != null)
                 {

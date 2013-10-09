@@ -20,6 +20,7 @@
 #endregion
 
 using System.Collections.Generic;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Social.Subscriptions.Entities;
 
 namespace DotNetNuke.Services.Social.Subscriptions
@@ -32,11 +33,11 @@ namespace DotNetNuke.Services.Social.Subscriptions
         /// <summary>
         /// Returns the User Subscriptions.
         /// </summary>
-        /// <param name="userId">User Id</param>
+        /// <param name="user">User Info</param>
         /// <param name="portalId">Portal Id</param>
         /// <param name="subscriptionTypeId">Subscription Type Id</param>
         /// <returns>Collection of subscriptions</returns>
-        IEnumerable<Subscription> GetUserSubscriptions(int userId, int portalId, int subscriptionTypeId = -1);
+        IEnumerable<Subscription> GetUserSubscriptions(UserInfo user, int portalId, int subscriptionTypeId = -1);
         
         /// <summary>
         /// Returns the Content Subscriptions.
@@ -50,21 +51,16 @@ namespace DotNetNuke.Services.Social.Subscriptions
         /// <summary>
         /// Returns true if a user is subscribed to a Content.
         /// </summary>
-        /// <param name="userId">User Id</param>
-        /// <param name="portalId">Portal Id</param>
-        /// <param name="subscriptionTypeId">Subscription Type Id</param>
-        /// <param name="objectKey">Object Key</param>
-        /// <param name="moduleId">Module Id</param>
-        /// <param name="tabId">Tab Id</param>
+        /// <param name="subscription">Subscription</param>
         /// <returns>True if the user is subscribed to the content, false otherwise</returns>
-        bool IsSubscribed(int userId, int portalId, int subscriptionTypeId, string objectKey, int moduleId = -1, int tabId = -1);
+        bool IsSubscribed(Subscription subscription);
         
         /// <summary>
         /// Adds a new Subscription.
+        /// If the operation succeed the SubscriptionId property of the Subscription entity will be filled up.
         /// </summary>
         /// <param name="subscription">Subscription</param>
-        /// <returns>Subsription Id</returns>
-        int AddSubscription(Subscription subscription);
+        void AddSubscription(Subscription subscription);
 
         /// <summary>
         ///  Deletes a Subscription.

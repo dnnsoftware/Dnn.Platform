@@ -81,11 +81,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 It.IsAny<int>())).Returns(SubscriptionDataReaderMockHelper.CreateEmptySubscriptionReader());
             
             //Act
-            var isSubscribed = subscriptionController.IsSubscribed(
-                subscription.UserId,
-                subscription.PortalId,
-                subscription.SubscriptionTypeId,
-                subscription.ObjectKey);
+            var isSubscribed = subscriptionController.IsSubscribed(subscription);
 
             // Assert
             Assert.AreEqual(false, isSubscribed);
@@ -112,11 +108,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Setup(ssc => ssc.HasPermission(It.IsAny<Subscription>())).Returns(false);
 
             //Act
-            var isSubscribed = subscriptionController.IsSubscribed(
-                subscription.UserId, 
-                subscription.PortalId,
-                subscription.SubscriptionTypeId,
-                subscription.ObjectKey);
+            var isSubscribed = subscriptionController.IsSubscribed(subscription);
 
             // Assert
             Assert.AreEqual(false, isSubscribed);
@@ -143,11 +135,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Setup(ssc => ssc.HasPermission(It.IsAny<Subscription>())).Returns(true);
 
             //Act
-            var isSubscribed = subscriptionController.IsSubscribed(
-                subscription.UserId,
-                subscription.PortalId,
-                subscription.SubscriptionTypeId,
-                subscription.ObjectKey);
+            var isSubscribed = subscriptionController.IsSubscribed(subscription);
 
             // Assert
             Assert.AreEqual(true, isSubscribed);
@@ -169,11 +157,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 subscription.TabId)).Returns(SubscriptionDataReaderMockHelper.CreateEmptySubscriptionReader()).Verifiable();
 
             //Act
-            subscriptionController.IsSubscribed(
-                subscription.UserId,
-                subscription.PortalId,
-                subscription.SubscriptionTypeId,
-                subscription.ObjectKey);
+            subscriptionController.IsSubscribed(subscription);
 
             // Assert
             mockDataService.Verify(ds => ds.IsSubscribed(
@@ -261,10 +245,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        public void AddSubscription_ShouldReturnsTheSubscriptionId_WhenNoError()
+        public void AddSubscription_ShouldFilledUpTheSubscriptionIdPropertyOfTheInputSubscriptionEntity_WhenNoError()
         {
             // Arrange
-            const int expectedSubscriptionId = 1;
+            const int expectedSubscriptionId = 12;
 
             var subscription = new SubscriptionBuilder()
                 .Build();
@@ -279,10 +263,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 subscription.TabId)).Returns(expectedSubscriptionId);
 
             //Act
-            var actualSubscriptionId = subscriptionController.AddSubscription(subscription);
+            subscriptionController.AddSubscription(subscription);
 
             // Assert
-           Assert.AreEqual(expectedSubscriptionId, actualSubscriptionId);
+            Assert.AreEqual(expectedSubscriptionId, subscription.SubscriptionId);
         }
         #endregion
 
