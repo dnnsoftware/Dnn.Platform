@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using DotNetNuke.Common;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Instrumentation;
@@ -34,12 +35,16 @@ namespace DotNetNuke.Services.FileSystem
 
         [ImportMany]
         private IEnumerable<Lazy<IFileEventHandlers>> eventsHandlers = new List<Lazy<IFileEventHandlers>>();
-        
+
         public FileEventHandlersContainer()
         {
             try
             {
-                ExtensionPointManager.ComposeParts(this);
+                if (GetCurrentStatus() != Globals.UpgradeStatus.None)
+                {
+                    return;
+                }
+                ExtensionPointManager.ComposeParts(this);             
             }
             catch (Exception ex)
             {
@@ -52,6 +57,18 @@ namespace DotNetNuke.Services.FileSystem
             get
             {
                 return eventsHandlers;
+            }
+        }
+
+        private Globals.UpgradeStatus GetCurrentStatus()
+        {
+            try
+            {
+                return Globals.Status;
+            }
+            catch (NullReferenceException)
+            {
+                return Globals.UpgradeStatus.Unknown;
             }
         }
     }
