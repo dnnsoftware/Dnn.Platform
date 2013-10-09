@@ -32,31 +32,20 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Modules
+namespace DesktopModules.Admin.ModuleCreator
 {
 
-    /// <summary>
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// <history>
-    /// </history>
     public partial class CreateModule : PortalModuleBase
     {
 
@@ -367,20 +356,20 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
                     else
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TemplateProblem.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TemplateProblem.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
                         return false;
                     }
                 }
                 else
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("AlreadyExists.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("AlreadyExists.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
                     return false;
                 }
             }
             catch (Exception exc)
             {
                 Exceptions.LogException(exc);
-                UI.Skins.Skin.AddModuleMessage(this, exc.ToString(), ModuleMessage.ModuleMessageType.RedError);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, exc.ToString(), ModuleMessage.ModuleMessageType.RedError);
                 return false;
             }
         }
@@ -389,13 +378,6 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         #region Event Handlers
 
-        /// <summary>
-        /// Page_Init runs when the control is initialised
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// </history>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -405,12 +387,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             cmdCreate.Click += cmdCreate_Click;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// </history>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -430,8 +406,8 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("SuperUser.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-                cmdCreate.Visible = false;
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("SuperUser.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                createForm.Visible = false;
             }
         }
 
@@ -459,7 +435,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 }
                 else
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InputValidation.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InputValidation.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
                 }
             }
         }
