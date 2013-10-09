@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.CorePages;
@@ -15,6 +16,9 @@ namespace DNNSelenium.Common.Tests.P1
 		private string _vocabularyDescription;
 		private string _vocabularyType;
 		private string _vocabularyScope;
+        private string _appScopeVocabularyName;
+	    private string _childSiteName;
+        private string _websiteScopeVocabularyName;
 
 		protected abstract string DataFileLocation { get; }
 
@@ -29,8 +33,11 @@ namespace DNNSelenium.Common.Tests.P1
 			string testName = testSettings.Attribute("name").Value;
 			_vocabularyName = testSettings.Attribute("vocabularyName").Value;
 			_vocabularyDescription = testSettings.Attribute("vocabularyDescription").Value;
-			_vocabularyType = testSettings.Attribute("vocabularyType").Value;
+		    _vocabularyType = testSettings.Attribute("vocabularyType").Value;
 			_vocabularyScope = testSettings.Attribute("vocabularyScope").Value;
+            _appScopeVocabularyName = testSettings.Attribute("appScopeVocabularyName").Value;
+		    _childSiteName = testSettings.Attribute("childSiteName").Value;
+            _websiteScopeVocabularyName = testSettings.Attribute("websiteScopeVocabularyName").Value;
 
 			_driver = StartBrowser(settings.Attribute("browser").Value);
 			_baseUrl = settings.Attribute("baseURL").Value;
@@ -39,6 +46,22 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+
+            //create a child site
+            HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
+            hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
+            hostSiteMgmtPage.AddNewChildSite(_baseUrl, _childSiteName, "Child Site");
+            //navigate to child site
+            hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
+            hostSiteMgmtPage.NavigateToChildSite(_baseUrl, _childSiteName);
+            //close welcome screen on child site
+            var installerPage = new InstallerPage(_driver);
+            installerPage.WelcomeScreen();
+            //disable popups on child site
+            var adminSiteSettingsPage = new AdminSiteSettingsPage(_driver);
+            adminSiteSettingsPage.OpenUsingButtons(_baseUrl);
+            adminSiteSettingsPage.DisablePopups();
+
 		}
 
 		[TestFixtureTearDown]
@@ -107,5 +130,62 @@ namespace DNNSelenium.Common.Tests.P1
 			Assert.IsFalse(adminTaxonomyPage.ElementPresent(By.XPath("//tr[td[text() = '" + _vocabularyName + "']]")),
 						   "The Vocabulary is not deleted correctly");
 		}
+
+	    [Test]
+	    public void Test004_Host_VocabularyWithApplicationScopeShouldBeAvailableOnChildSite()
+            //Testcase trace: Test-671
+	    {
+	        Trace.WriteLine(BasePage.RunningTestKeyWord + "'Host: Add Vocabulary with Application scope - it should be available on child site'");
+
+            //Open 'Taxonomy' page
+            AdminTaxonomyPage adminTaxonomyPage = new AdminTaxonomyPage(_driver);
+			adminTaxonomyPage.OpenUsingButtons(_baseUrl);
+
+            // Click on 'Create New Vocabulary' button and Add a Vocabulary Name and Scope=Application and Click on 'Create Vocabulary' button
+            adminTaxonomyPage.AddNewVocabulary(_appScopeVocabularyName, "simple", "application");
+
+            //Assert the Vocabulary's scope is Application
+            Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Vocabulary is present and its scope is Application");
+            Assert.That(adminTaxonomyPage.WaitForElement(By.XPath("//tr[td[text() = '" + _appScopeVocabularyName + "']]/td[5]")).Text, Is.EqualTo("Application"),
+                        "The Vocabulary scope is not 'Application'");
+
+            //Navigate to Child site using its url and Open 'Taxonomy' page
+            var childadminTaxonomyPage = new AdminTaxonomyPage(_driver);
+            childadminTaxonomyPage.OpenUsingButtons(_baseUrl + "/" + _childSiteName);
+
+            //Assert the new vocabulary exists and Assert the new vocabulary's scope is Application
+            Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Vocabulary is present in child site and its scope is Application");
+            Assert.That(adminTaxonomyPage.WaitForElement(By.XPath("//tr[td[text() = '" + _appScopeVocabularyName + "']]/td[5]")).Text, Is.EqualTo("Application"),
+                        "The Vocabulary is not present or its scope is not 'Application'");
+	    }
+
+	    [Test]
+        public void Test005_Host_VocabularyWithWebsiteScopeShouldNotBeAvailableOnChildSite()
+            //Testcase trace: Test-672
+        {
+            Trace.WriteLine(BasePage.RunningTestKeyWord + "'Host: Add Vocabulary with Website scope - it should not be available on child site'");
+
+            //Open 'Taxonomy' page
+            AdminTaxonomyPage adminTaxonomyPage = new AdminTaxonomyPage(_driver);
+            adminTaxonomyPage.OpenUsingButtons(_baseUrl);
+
+            // Click on 'Create New Vocabulary' button and Add a Vocabulary Name and Scope=Application and Click on 'Create Vocabulary' button
+            adminTaxonomyPage.AddNewVocabulary(_websiteScopeVocabularyName, "simple", "website");
+
+            //Assert the Vocabulary's scope is Website
+            Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Vocabulary is present and its scope is Website");
+            Assert.That(adminTaxonomyPage.WaitForElement(By.XPath("//tr[td[text() = '" + _websiteScopeVocabularyName + "']]/td[5]")).Text, Is.EqualTo("Website"),
+                        "The Vocabulary scope is not 'Website'");
+
+            //Navigate to Child site using its url and Open 'Taxonomy' page
+            var childadminTaxonomyPage = new AdminTaxonomyPage(_driver);
+            childadminTaxonomyPage.OpenUsingButtons(_baseUrl + "/" + _childSiteName);
+
+            //Assert the new vocabulary exists and Assert the new vocabulary's scope is Application
+            Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Vocabulary is NOT present");
+            Assert.IsFalse(adminTaxonomyPage.ElementPresent(By.XPath("//tr[td[text() = '" + _websiteScopeVocabularyName + "']]")), 
+                "The Vocabulary with Webiste scope is present on child site");
+        }
+
 	}
 }
