@@ -2843,6 +2843,13 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 tabController.DeleteTab(advancedFeaturesTabId, Null.NullInteger);
             }
+
+            //Remove Whats New
+            int whatsNewTabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host//WhatsNew", Null.NullString);
+            tabController.DeleteTab(whatsNewTabId, Null.NullInteger);
+
+            //Remove WhatsNew module
+            DesktopModuleController.DeleteDesktopModule("WhatsNew");
         }
 
         private static ContentItem CreateFileContentItem()

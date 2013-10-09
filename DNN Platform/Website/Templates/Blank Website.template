@@ -366,10 +366,6 @@
       </portalDesktopModulePermissions>
     </portalDesktopModule>
     <portalDesktopModule>
-      <friendlyname>WhatsNew</friendlyname>
-      <portalDesktopModulePermissions />
-    </portalDesktopModule>
-    <portalDesktopModule>
       <friendlyname>Dashboard</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>
