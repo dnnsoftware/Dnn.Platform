@@ -676,6 +676,26 @@ dnn.controlBar.init = function (settings) {
     $('#controlBar_CreateModule').click(addCreateModule);
 
     function addCreateModule() {
+        if (currentUserMode !== 'EDIT') {
+            var service = dnn.controlBar.getService();
+            var serviceUrl = dnn.controlBar.getServiceUrl(service);
+            $.ajax({
+                url: serviceUrl + 'ToggleUserMode',
+                type: 'POST',
+                data: { UserMode: 'EDIT' },
+                beforeSend: service.setModuleHeaders,
+                success: function () {
+                    dnn.dom.setCookie('ControlBarInit', 'CreateModule');
+                    window.location.href = window.location.href.split('#')[0];
+                },
+                error: function (xhr) {
+                    dnn.controlBar.responseError(xhr);
+                }
+            });
+
+            return false;
+        }
+
         $find(settings.categoryComboId).findItemByValue("Developer").select();
         addModule();
     }
@@ -1065,11 +1085,15 @@ dnn.controlBar.init = function (settings) {
                 setTimeout(function () {
                     $('#controlBar_AddNewModule').click();
                 }, 500);
-
                 break;
             case 'AddExistingModule':
                 setTimeout(function () {
                     $('#controlBar_AddExistingModule').click();
+                }, 500);
+                break;
+            case 'CreateModule':
+                setTimeout(function () {
+                    $('#controlBar_CreateModule').click();
                 }, 500);
                 break;
         }
