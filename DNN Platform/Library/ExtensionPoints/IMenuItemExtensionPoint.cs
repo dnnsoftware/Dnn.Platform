@@ -19,14 +19,12 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
 namespace DotNetNuke.ExtensionPoints
 {
     public interface IMenuItemExtensionPoint : IExtensionPoint
     {
         string Value { get; }
+
         string CssClass { get; }
-        bool EnabledOnHost { get; }
     }
 }

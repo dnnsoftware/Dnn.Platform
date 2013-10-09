@@ -24,6 +24,9 @@ using System.ComponentModel;
 using System.Text;
 using System.Web.UI;
 
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
+
 namespace DotNetNuke.ExtensionPoints
 {
     [DefaultProperty("Text")]
@@ -39,19 +42,21 @@ namespace DotNetNuke.ExtensionPoints
             var extensionPointManager = new ExtensionPointManager();
 
             var str = new StringBuilder();
+            
+            var isHostMenu = Globals.IsHostTab(PortalController.GetCurrentPortalSettings().ActiveTab.TabID);
 
-            foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(Module, Group))
+            foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(Module, Group, isHostMenu))
             {
                 if (extension is IToolBarMenuButtonExtensionPoint)
                 {
                     btnRenderer = new ToolBarMenuButtonRenderer();
                     str.AppendFormat(btnRenderer.GetOutput(extension));
-                } else 
+                } 
+                else 
                 {
                     btnRenderer = new ToolBarButtonRenderer();
                     str.AppendFormat(btnRenderer.GetOutput(extension));
-                }
-                
+                }                
             }
 
             content = str.ToString();

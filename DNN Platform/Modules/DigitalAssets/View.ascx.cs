@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             Grid.MasterTableView.PagerStyle.LastPageToolTip = LocalizeString("PagerLastPage.ToolTip");
             Grid.MasterTableView.PagerStyle.PageSizeLabelText = LocalizeString("PagerPageSize.Text");
 
-            foreach (var columnExtension in epm.GetGridColumnExtensionPoints("DigitalAssets", "GridColumns"))
+            foreach (var columnExtension in epm.GetGridColumnExtensionPoints("DigitalAssets", "GridColumns", IsHostMenu))
             {
                 var column = new DnnGridBoundColumn
                                  {
@@ -155,7 +155,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                                  };
                 column.HeaderStyle.Width = columnExtension.HeaderStyleWidth;
 
-                Grid.Columns.AddAt(columnExtension.ColumnAt, column);
+                var index = Math.Min(columnExtension.ColumnAt, Grid.Columns.Count - 1);
+                Grid.Columns.AddAt(index, column);
             }
         }
 
@@ -290,7 +291,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             });
             
             // Dnn Menu Item Extension Point
-            foreach (var menuItem in epm.GetMenuItemExtensionPoints("DigitalAssets", "TreeViewContextMenu"))
+            foreach (var menuItem in epm.GetMenuItemExtensionPoints("DigitalAssets", "TreeViewContextMenu", IsHostMenu))
             {
                 MainContextMenu.Items.Add(new DnnMenuItem
                 {
@@ -305,7 +306,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         private void InitializeSearchBox()
         {
             var extension = epm.GetUserControlExtensionPointFirstByPriority("DigitalAssets", "SearchBoxExtensionPoint");
-            var searchControl = (PortalModuleBase) Page.LoadControl(extension.UserControlSrc);
+            var searchControl = (PortalModuleBase)Page.LoadControl(extension.UserControlSrc);
             searchControl.ModuleConfiguration = ModuleConfiguration;
 
             searchControl.ID = searchControl.GetType().BaseType.Name;
@@ -375,7 +376,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 });
 
             // Dnn Menu Item Extension Point
-            foreach (var menuItem in epm.GetMenuItemExtensionPoints("DigitalAssets", "GridContextMenu"))
+            foreach (var menuItem in epm.GetMenuItemExtensionPoints("DigitalAssets", "GridContextMenu", IsHostMenu))
             {
                 GridMenu.Items.Add(new DnnMenuItem
                                        {
@@ -539,12 +540,9 @@ namespace DotNetNuke.Modules.DigitalAssets
                 {
                     actions.Add(GetNextActionID(), Localization.GetString("ManageFolderTypes", LocalResourceFile), "", "", "../DesktopModules/DigitalAssets/Images/manageFolderTypes.png", EditUrl("FolderMappings"), false, SecurityAccessLevel.Edit, true, false);
 
-                    foreach (var item in epm.GetMenuItemExtensionPoints("DigitalAssets", "ModuleActions"))
+                    foreach (var item in epm.GetMenuItemExtensionPoints("DigitalAssets", "ModuleActions", IsHostMenu))
                     {
-                        if (!IsHostMenu || item.EnabledOnHost)
-                        {
-                            actions.Add(GetNextActionID(), item.Text, "", "", item.Icon, EditUrl(item.Value), false, SecurityAccessLevel.Edit, true, false);
-                        }
+                        actions.Add(GetNextActionID(), item.Text, "", "", item.Icon, EditUrl(item.Value), false, SecurityAccessLevel.Edit, true, false);
                     }
                 }
                 else
