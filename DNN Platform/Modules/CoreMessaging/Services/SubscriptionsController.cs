@@ -64,7 +64,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="sortExpression">The sort expression in the form [Description|SubscriptionType] [Asc|Desc]</param>
         /// <returns>The sorted and paged list of subscriptions</returns>
         [HttpGet]
-        [ValidateAntiForgeryToken]
         public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize, string sortExpression)
         {
             try
