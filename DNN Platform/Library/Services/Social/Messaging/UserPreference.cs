@@ -19,22 +19,34 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Runtime.Serialization;
+using System;
 
 namespace DotNetNuke.Services.Social.Messaging
 {
+    /// <summary>
+    /// Represents the  Messaging User Preference
+    /// </summary>
+    [Serializable]
     public class UserPreference
     {
-        [DataMember]
+        /// <summary>
+        /// Portal where the preference are applied
+        /// </summary>
         public int PortalId { get; set; }
 
-        [DataMember]
+        /// <summary>
+        /// User Identifier
+        /// </summary>
         public int UserId { get; set; }
 
-        [DataMember]
+        /// <summary>
+        /// The Email Delivery Frequency used for Messages
+        /// </summary>
         public Frequency MessagesEmailFrequency { get; set; }
 
-        [DataMember]
+        /// <summary>
+        /// The Email Delivery Frequency used for Notifications
+        /// </summary>
         public Frequency NotificationsEmailFrequency { get; set; }
     }
 }

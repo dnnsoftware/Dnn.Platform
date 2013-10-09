@@ -122,17 +122,19 @@ namespace DotNetNuke.Modules.CoreMessaging
         private Hashtable GetViewSettings()
         {
             var portalSettings = PortalSettings.Current;
-            var userPreference = new UserPreferencesController().GetUserPreference(
-                                                                    UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId));
-            const int NotifyFreq = 2;
-            const int MsgFreq = 0;
+            var userPreferenceController = UserPreferencesController.Instance;
+            var user = UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId);
+            var userPreference = userPreferenceController.GetUserPreference(user);
+
+            const int notifyFrequency = 2;
+            const int messageFrequency = 0;
             
             return new Hashtable
                    {
                        { "moduleScope", string.Format("#{0}", ScopeWrapper.ClientID) },
                        { "pageSize", 25 },
-                       { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : NotifyFreq },
-                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : MsgFreq }                
+                       { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
+                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency }                
                    };
         }
 

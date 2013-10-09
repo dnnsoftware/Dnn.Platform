@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {               
-                var userPreferencesController = new UserPreferencesController();
+                var userPreferencesController = UserPreferencesController.Instance;
                 var userPreference = new UserPreference
                     {
                         PortalId = UserInfo.PortalID,
