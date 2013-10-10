@@ -450,11 +450,8 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                         Sys.Application.add_load(f);
                     }", true);
-            }
 
-            var script = string.Format("showradAlertFromServer('{0}');", message);
-            if (pageObject != null)
-            {
+                var script = string.Format("showradAlertFromServer('{0}');", message);
                 ScriptManager.RegisterStartupScript(pageObject, pageObject.GetType(), "KEY", script, true);
             }
         }

@@ -791,12 +791,12 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			{
 				string fileName = Path.GetFileName(virtualPathAndName);
                 if (string.IsNullOrEmpty(fileName))
-                    Logger.DebugFormat("filename is empty, callstack: {0}", new StackTrace().ToString());
+                    Logger.DebugFormat("filename is empty, call stack: {0}", new StackTrace().ToString());
 
-    		    var s = Path.GetExtension(fileName);
-			    if (s != null)
+    		    var rawExtension = Path.GetExtension(fileName);
+			    if (rawExtension != null)
 			    {
-			        string extension = s.Replace(".", "").ToLowerInvariant();
+			        string extension = rawExtension.Replace(".", "").ToLowerInvariant();
 			        string validExtensions = Entities.Host.Host.FileExtensions.ToLowerInvariant();
 
 			        if (fileName != null && (string.IsNullOrEmpty(extension) || ("," + validExtensions + ",").IndexOf("," + extension + ",", StringComparison.Ordinal) == -1 || Regex.IsMatch(fileName, @"\..+;")))
@@ -828,8 +828,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		{
 			try
 			{
-				string fileName = Path.GetFileName(virtualPathAndName);
-				PortalController portalCtrl = new PortalController();
+				var portalCtrl = new PortalController(); 
 				if (! (portalCtrl.HasSpaceAvailable(PortalController.GetCurrentPortalSettings().PortalId, contentLength)))
 				{
 					return string.Format(Localization.GetString("DiskSpaceExceeded"), ToEndUserPath(virtualPathAndName));
@@ -1016,8 +1015,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		private string GetPermissionErrorText()
 		{
 			return GetString("ErrorCodes." + ErrorCodes.General_PermissionDenied);
-			//message text is weird in this scenario
-			//Return String.Format(Localization.Localization.GetString("InsufficientFolderPermission"), path)
 		}
 
 #endregion
