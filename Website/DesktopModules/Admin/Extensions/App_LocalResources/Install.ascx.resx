@@ -270,4 +270,10 @@
   <data name="AzureCompactWarning.Text" xml:space="preserve">
     <value>WARNING: You have selected to install the package without SqlAzure Compatible Verification.</value>
   </data>
+  <data name="NoAzureCompactHelp.Text" xml:space="preserve">
+    <value>This site uses Windows Azure SQL Database for database storage, and the package you are currently installing has been verified by the owner to be incompatible with Windows Azure SQL Database. Please click 'Cancel' to end the installation process.</value>
+  </data>
+  <data name="NoAzureCompactMessage.Text" xml:space="preserve">
+    <value>This package is not compatible with the Windows Azure SQL Database.</value>
+  </data>
 </root>

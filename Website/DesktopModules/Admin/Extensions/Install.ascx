@@ -64,7 +64,7 @@
                     <asp:CheckBox ID="chkIgnoreWhiteList" runat="server" resourcekey="IgnoreWhiteList" TextAlign="Left" AutoPostBack="true" />
                 </asp:Panel>
 				<asp:Panel ID="pnlAzureCompact" runat = "server" Visible="false">
-                    <p><asp:Label ID="lblAzureCompact" runat="server" resourcekey="AzureCompactHelp" /></p>
+                    <p><asp:Label ID="lblAzureCompact" runat="server" /></p>
                     <p><strong><asp:CheckBox ID="chkAzureCompact" runat="server" resourcekey="AzureCompact" TextAlign="Left" AutoPostBack="true" /></strong></p>
                 </asp:Panel>
                 <asp:PlaceHolder ID="phLoadLogs" runat="server" />
