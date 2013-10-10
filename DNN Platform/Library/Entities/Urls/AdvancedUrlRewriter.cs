@@ -2555,7 +2555,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 rewritePathOnly = result.RewritePath;
                                 var pos = rewritePathOnly.IndexOf("default.aspx", StringComparison.OrdinalIgnoreCase);
-                                if (pos > -1)
+                                if (pos > Null.NullInteger)
                                 {
                                     rewritePathOnly = rewritePathOnly.Substring(pos);
                                 }
@@ -2566,8 +2566,9 @@ namespace DotNetNuke.Entities.Urls
                             }
 
                             //remove the http alias from the path 
-                            int pathAliasEnd = rewritePathOnly.IndexOf(result.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase);
-                            if (pathAliasEnd > -1)
+                            var pathAliasEnd = rewritePathOnly.IndexOf(result.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase);
+                            var queryStringIndex = rewritePathOnly.IndexOf("?", StringComparison.InvariantCultureIgnoreCase);
+                            if (pathAliasEnd > Null.NullInteger && (queryStringIndex == Null.NullInteger || pathAliasEnd < queryStringIndex))
                             {
                                 rewritePathOnly = rewritePathOnly.Substring(pathAliasEnd + result.PortalAlias.HTTPAlias.Length);
                             }
@@ -2577,7 +2578,7 @@ namespace DotNetNuke.Entities.Urls
                             string requestedUrl = fullUrl;
                             int requestedUrlAliasEnd = requestedUrl.IndexOf(result.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase) 
                                                         + (result.PortalAlias.HTTPAlias + "/").Length;
-                            if (requestedUrlAliasEnd > -1)
+                            if (requestedUrlAliasEnd > Null.NullInteger)
                             {
                                 //818 : when a site root is used for a custom page Url, then check for max length within bounds
                                 if ((requestedUrl.Length - requestedUrlAliasEnd) >= 12 && requestedUrl.Substring(requestedUrlAliasEnd).ToLower() == "default.aspx")
