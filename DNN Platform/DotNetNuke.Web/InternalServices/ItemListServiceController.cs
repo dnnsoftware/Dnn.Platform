@@ -875,7 +875,7 @@ namespace DotNetNuke.Web.InternalServices
             if (parentId < 1) return new List<ItemDto> { new ItemDto
                 {
                     Key = parentFolder.FolderID.ToString(CultureInfo.InvariantCulture), 
-                    Value = SharedConstants.RootFolder, 
+                    Value = portalId == -1 ? SharedConstants.HostRootFolder : SharedConstants.RootFolder,
                     HasChildren = HasChildren(parentFolder, permission),
                     Selectable = true
                 } };

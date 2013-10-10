@@ -1758,6 +1758,9 @@
   <data name="RootFolder.Name" xml:space="preserve">
     <value>Site Root</value>
   </data>
+  <data name="HostRootFolder.Name" xml:space="preserve">
+    <value>Host Root</value>
+  </data>
   <data name="LIBRARY_ReadSuccess.Text" xml:space="preserve">
     <value>Parsed Library Manaifest Successfully</value>
   </data>
