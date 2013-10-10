@@ -31,6 +31,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -205,7 +206,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 lstEntries.Mode = "ListEntries";
                 lstEntries.SelectedKey = PropertyDefinition.PropertyName;
-                lstEntries.ListPortalID = UsersPortalId;
+                lstEntries.ListPortalID = PortalController.GetEffectivePortalId(UsersPortalId);
                 lstEntries.ShowDelete = false;
                 lstEntries.DataBind();
             }

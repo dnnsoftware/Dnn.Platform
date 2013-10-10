@@ -194,7 +194,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return PortalSettings.Current.PortalId;
+                return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
             }
         }
 
