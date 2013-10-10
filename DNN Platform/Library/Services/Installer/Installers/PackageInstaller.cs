@@ -547,12 +547,11 @@ namespace DotNetNuke.Services.Installer.Installers
                     foldernameNav = manifestNav.SelectSingleNode("components/component/skinFiles");
                     if (foldernameNav != null) Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
                     break;
-                case "Library":
-                    ReadEventMessageNode(manifestNav);
-                    break;
                 default:
                     break;
             }
+
+            ReadEventMessageNode(manifestNav);
 
             //Get Icon
             XPathNavigator iconFileNav = manifestNav.SelectSingleNode("iconFile");
