@@ -67,6 +67,12 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
+        protected string ReturnUrl
+        {
+            get { return (string)ViewState["ReturnUrl"]; }
+            set { ViewState["ReturnUrl"] = value; }
+        }
+
         public string Mode
         {
             get
@@ -271,6 +277,12 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                           };
 
             BindData();
+
+            if (!IsPostBack)
+            {
+                ReturnUrl = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Globals.NavigateURL();
+            }
+
         }
 
         /// -----------------------------------------------------------------------------
@@ -289,7 +301,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         protected void OnCancelClick(object sender, EventArgs e)
         {
-            Response.Redirect(Globals.NavigateURL());
+            Response.Redirect(ReturnUrl);
         }
 
         protected void OnDeleteClick(object sender, EventArgs e)
