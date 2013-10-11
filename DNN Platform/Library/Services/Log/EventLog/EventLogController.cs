@@ -173,7 +173,8 @@ namespace DotNetNuke.Services.Log.EventLog
             PAGE_NOT_FOUND_404,
             TABURL_CREATED,
             TABURL_UPDATED,
-            TABURL_DELETED
+            TABURL_DELETED,
+            SCRIPT_COLLISION
         }
 
         #endregion

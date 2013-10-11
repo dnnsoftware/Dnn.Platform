@@ -36,6 +36,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -276,14 +277,14 @@ namespace DotNetNuke.Framework
             //Modules can override the standard behavior by including their own script on the page.
             //The module must register the script with the "jQuery" key and should notify user
             //of potential version conflicts with core jQuery support.
-            if (jQuery.IsRequested)
-            {
-                jQuery.RegisterJQuery(Page);
-            }
-            if (jQuery.IsUIRequested)
-            {
-                jQuery.RegisterJQueryUI(Page);
-            }
+            //if (jQuery.IsRequested)
+            //{
+            //    jQuery.RegisterJQuery(Page);
+            //}
+            //if (jQuery.IsUIRequested)
+            //{
+            //    jQuery.RegisterJQueryUI(Page);
+            //}
             if (jQuery.AreDnnPluginsRequested)
             {
                 jQuery.RegisterDnnJQueryPlugins(Page);
@@ -292,6 +293,8 @@ namespace DotNetNuke.Framework
             {
                 jQuery.RegisterHoverIntent(Page);
             }
+
+            JavaScript.Register(Page);
 
             if(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
