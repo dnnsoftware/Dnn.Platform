@@ -170,7 +170,12 @@
             lineWrapping: true,
             indentWithTabs: true,
             theme: 'dnn-sql light',
-            mode: 'text/x-sql'
+            mode: 'text/x-sql'            
+        });
+
+        editor.on("blur", function (cm) {
+            cm.save();
+            return true;
         });
 
     });
