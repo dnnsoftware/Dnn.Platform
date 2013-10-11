@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Languages"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "LanguagesModule"; }
+		}
+
 		public static string LanguagesTab = "//a[@href = '#Languages']";
 		public static string EnableLocalizedContent = "//a[contains(@id, '_languageEnabler_cmdEnableLocalizedContent')]";
 		public static string DisableLocalizedContent = "//a[contains(@id, '_languageEnabler_cmdDisableLocalization')]";

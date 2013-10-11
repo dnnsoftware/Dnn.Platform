@@ -32,6 +32,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public virtual string PageHeaderLabel { get { return "Override me!!!";  } }
 		public virtual string PageTitleLabel { get { return "Override me!!!"; } }
+		public virtual string PreLoadedModule { get { return "Override me!!!"; } }
 
 		public void GoToUrl (string url)
 		{
@@ -51,7 +52,7 @@ namespace DNNSelenium.Common.BaseClasses
 			return localized;
 		}
 
-		public void SetPageToEditMode(string pageName)
+		public void SetPageToEditMode()
 		{
 			if (ElementPresent(By.XPath(ControlPanelIDs.EditThisPageButton)))
 			{
@@ -201,7 +202,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public IWebElement FindElement(By locator)
 		{
 			Trace.WriteLine(TraceLevelLow + "Looking for element: '" + locator + "'");
-			Trace.WriteLine(TraceLevelLow + _driver.FindElement(locator).Info());
+			//Trace.WriteLine(TraceLevelLow + _driver.FindElement(locator).Info());
 			return _driver.FindElement(locator);
 		}
 
@@ -376,6 +377,8 @@ namespace DNNSelenium.Common.BaseClasses
 			{
 				Trace.WriteLine(BasePage.TraceLevelElement + "The HTTP request to the remote WebDriver server for URL timed out");
 			}
+
+			Thread.Sleep(1000);
 		}
 
 		public void OpenTab(By tabName)

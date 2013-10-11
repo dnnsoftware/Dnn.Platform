@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Vendors"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "VendorsModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");

@@ -24,6 +24,12 @@ namespace DNNSelenium.Common.CorePages
 		public static string ExtensionLanguagePacksPanel = "//h2[@id='Panel-Extension Language Packs']";
 		public static string ExtensionLanguagePacksAccordion = ExtensionLanguagePacksPanel + "/a";
 		public static string ExtensionLanguagePacksList = ExtensionLanguagePacksPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";
+		public static string AuthenticationSystemsPanel = "//h2[@id='Panel-Authentication Systems']";
+		public static string AuthenticationSystemsAccordion = AuthenticationSystemsPanel + "/a";
+		public static string AuthenticationSystemsList = AuthenticationSystemsPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";
+		public static string ProvidersPanel = "//h2[@id='Panel-Providers']";
+		public static string ProvidersAccordion = ProvidersPanel + "/a";
+		public static string ProvidersList = ProvidersPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";
 
 		//Install Extension page
 		public static string UploadFileButton = "//input[contains(@id, '_Install_wizInstall_cmdBrowse')]";

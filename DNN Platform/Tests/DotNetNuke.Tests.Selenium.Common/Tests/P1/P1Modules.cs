@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.CorePages;
@@ -48,7 +50,7 @@ namespace DNNSelenium.Common.Tests.P1
 			while (pageNumber < 77)
 			{
 				blankPage.OpenUsingUrl(_baseUrl, "Home/Page" + pageNumber);
-				blankPage.SetPageToEditMode("Home/Page" + pageNumber);
+				blankPage.SetPageToEditMode();
 
 				string moduleNumber =
 						module.WaitForElement(By.XPath(Modules.LocationDescription["ContentPane"].IdWhenOnPage +
@@ -177,7 +179,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenUsingUrl(_baseUrl, pageName);
 
-			blankPage.SetPageToEditMode(pageName);
+			blankPage.SetPageToEditMode();
 			string moduleNumber = blankPage.WaitForElement(By.XPath(moduleNameOnPage + "/a")).GetAttribute("name");
 			module.MoveModuleUsingMenu(moduleNumber, moduleNameOnPage, newLocation);
 
@@ -196,7 +198,7 @@ namespace DNNSelenium.Common.Tests.P1
 			string contentPaneOnPage = Modules.LocationDescription["ContentPane"].IdWhenOnPage;
 
 			var module = new Modules(_driver);
-			module.SetPageToEditMode(pageName);
+			module.SetPageToEditMode();
 			
 			string moduleNumber1 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][1]/a")).GetAttribute("name");
 			string moduleNumber2 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][2]/a")).GetAttribute("name");
@@ -225,7 +227,7 @@ namespace DNNSelenium.Common.Tests.P1
 			string contentPaneOnPage = Modules.LocationDescription["ContentPane"].IdWhenOnPage;
 
 			var module = new Modules(_driver);
-			module.SetPageToEditMode(pageName);
+			module.SetPageToEditMode();
 			string moduleNumber1 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][1]/a")).GetAttribute("name");
 			string moduleNumber2 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][2]/a")).GetAttribute("name");
 			string moduleNumber3 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][3]/a")).GetAttribute("name");
@@ -253,7 +255,7 @@ namespace DNNSelenium.Common.Tests.P1
 			string contentPaneOnPage = Modules.LocationDescription["ContentPane"].IdWhenOnPage;
 
 			var module = new Modules(_driver);
-			module.SetPageToEditMode(pageName);
+			module.SetPageToEditMode();
 			string moduleNumber1 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][1]/a")).GetAttribute("name");
 			string moduleNumber2 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][2]/a")).GetAttribute("name");
 			string moduleNumber3 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][3]/a")).GetAttribute("name");
@@ -281,7 +283,7 @@ namespace DNNSelenium.Common.Tests.P1
 			string contentPaneOnPage = Modules.LocationDescription["ContentPane"].IdWhenOnPage;
 
 			var module = new Modules(_driver);
-			module.SetPageToEditMode(pageName);
+			module.SetPageToEditMode();
 			string moduleNumber1 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][1]/a")).GetAttribute("name");
 			string moduleNumber2 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][2]/a")).GetAttribute("name");
 			string moduleNumber3 = blankPage.WaitForElement(By.XPath(contentPaneOnPage + "/div[contains(@class, 'DnnModule')][3]/a")).GetAttribute("name");
@@ -338,7 +340,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenUsingUrl(_baseUrl, pageName);
 
-			blankPage.SetPageToEditMode(pageName);
+			blankPage.SetPageToEditMode();
 			string moduleNumber = blankPage.WaitForElement(By.XPath(moduleNameOnPage + "/a")).GetAttribute("name");
 			module.MoveModuleUsingDragAndDrop(moduleNumber, locationOnPage);
 
@@ -430,13 +432,31 @@ namespace DNNSelenium.Common.Tests.P1
 				"Module is not found");
 		}
 
-		public void EditContentOfExistingModuleWithoutCopy(Dictionary<string, Modules.ModuleIDs> modulesDescription, string pageName, string moduleContent)
+		public void GetHTMLModule(string assyName, string moduleClassName, string moduleNumber, string moduleContent)
+		{
+			string fullAssyName = "DNNSelenium." + assyName;
+			Type moduleClassType = Type.GetType(fullAssyName + "." + moduleClassName + ", " + fullAssyName);
+			object module = Activator.CreateInstance(moduleClassType, new object[] { _driver });
+
+			MethodInfo miOpen = moduleClassType.GetMethod("AddContentToHTMLModule");
+			if (miOpen != null)
+			{
+				miOpen.Invoke(module, new object[] { moduleNumber, moduleContent });
+			}
+			else
+			{
+				Trace.WriteLine(BasePage.RunningTestKeyWord + "ERROR: cannot call " + "AddContentToHTMLModule" + "for class " + moduleClassName);
+			}
+
+		}
+
+		public void EditContentOfExistingModuleWithoutCopy(string assyName, string moduleClassName, Dictionary<string, Modules.ModuleIDs> modulesDescription, string pageName, string moduleContent)
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Edit content to HTML Module'");
 
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenUsingUrl(_baseUrl, pageName);
-			blankPage.SetPageToEditMode(pageName);
+			blankPage.SetPageToEditMode();
 
 			string moduleNameOnPage = modulesDescription["ContactUsModule"].IdWhenOnPage;
 			string locationOnPage = Modules.LocationDescription["ContentPane"].IdWhenOnPage;
@@ -446,7 +466,8 @@ namespace DNNSelenium.Common.Tests.P1
 			string moduleNumber =
 				module.WaitForElement(By.XPath(locationOnPage + moduleNameOnPage + "/a")).GetAttribute("name");
 
-			module.AddContentToHTMLModule(moduleNumber, moduleContent);
+			//module.AddContentToHTMLModule(moduleNumber, moduleContent);
+			GetHTMLModule (assyName, moduleClassName, moduleNumber, moduleContent);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the module Content is present on the page");
 			Assert.That(moduleContent,
@@ -497,7 +518,7 @@ namespace DNNSelenium.Common.Tests.P1
 				"Module is not found");
 		}
 
-		public void EditContentOfExistingModuleWithCopy(Dictionary<string, Modules.ModuleIDs> modulesDescription, string pageName, string moduleContent)
+		public void EditContentOfExistingModuleWithCopy(string assyName, string moduleClassName, Dictionary<string, Modules.ModuleIDs> modulesDescription, string pageName, string moduleContent)
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Edit content to HTML Module'");
 
@@ -515,13 +536,13 @@ namespace DNNSelenium.Common.Tests.P1
 
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenUsingUrl(_baseUrl, pageName);
-			blankPage.SetPageToEditMode(pageName);
+			blankPage.SetPageToEditMode();
 
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
 			string moduleNumberOnNewPage =
 				module.WaitForElement(By.XPath(locationOnPage + moduleNameOnPage + "/a")).GetAttribute("name");
 
-			module.AddContentToHTMLModule(moduleNumberOnNewPage, moduleContent);
+			GetHTMLModule(assyName, moduleClassName, moduleNumberOnNewPage, moduleContent);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the module Content is present on the page");
 			Assert.That(moduleContent,
@@ -541,5 +562,66 @@ namespace DNNSelenium.Common.Tests.P1
 		
 		}
 
+		[TestCase("Common", "CorePages.AdminAdvancedSettingsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminDevicePreviewManagementPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminEventViewerPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminExtensionsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminFileManagementPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminLanguagesPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminListsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminNewslettersPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminPageManagementPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminRecycleBinPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminSearchAdminPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminSearchEnginePage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminSecurityRolesPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminSiteLogPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminSiteRedirectionManagementPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminSiteSettingsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminSiteWizardPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminSkinsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminTaxonomyPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminUserAccountsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.AdminVendorsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostConfigurationManagerPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostDashboardPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostDeviceDetectionManagementPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostFileManagementPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostExtensionsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostHtmlEditorManagerPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostListsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostSchedulePage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostSiteManagementPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostSqlPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostSuperUserAccountsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostVendorsPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.ManageRolesPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.ManageUsersPage", "OpenUsingControlPanel")]
+		public void Test0015_UpdateModuleSettings(string assyName, string pageClassName, string openMethod)
+		{
+			UpdateModuleSettings(assyName, pageClassName, openMethod, Modules.CommonModulesDescription);
+		}
+
+		public void UpdateModuleSettings(string assyName, string pageClassName, string openMethod, Dictionary<string, Modules.ModuleIDs> modulesDescription)
+		{
+			BasePage currentPage = OpenPage(assyName, pageClassName, openMethod);
+
+			currentPage.SetPageToEditMode();
+
+			var module = new Modules(_driver);
+
+			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
+			string moduleNumber =
+				module.WaitForElement(By.XPath(Modules.LocationDescription["ContentPane"].IdWhenOnPage +
+												modulesDescription[currentPage.PreLoadedModule].IdWhenOnPage + "/a")).GetAttribute("name");
+			module.ChangeModuleTitle(moduleNumber, "Module Updated Name");
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT a new Module Title is present on the page");
+			StringAssert.Contains("Module Updated Name".ToUpper(),
+								  currentPage.WaitForElement(
+									  By.XPath(modulesDescription[currentPage.PreLoadedModule].IdWhenOnPage + "//span[contains(@id, '_dnnTITLE_titleLabel')]")).Text.ToUpper(),
+								  "The new Module Title is not saved correctly");
+		}
 	}
 }

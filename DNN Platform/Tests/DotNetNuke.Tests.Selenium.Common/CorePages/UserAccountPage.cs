@@ -20,6 +20,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
+
 		public static string EditProfileButton = "//div[@class='UserProfileControls']/ul/li/a[contains(text(), 'Edit Profile')]";
 		public static string MyAccountButton = "//div[@class='UserProfileControls']/ul/li/a[contains(text(), 'My Account')]";
 

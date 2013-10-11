@@ -18,6 +18,11 @@ namespace DNNSelenium.Common.CorePages
 		{
 			get { return "Activity Feed"; }
 		}
+
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
 		
 		public static string ManageAccountTab = "//div[@id='dnnEditUser']//a[contains(@href, 'dnnUserDetails')]";
 		public static string ManageProfileTab = "//div[@id='dnnEditUser']//a[contains(@href, 'dnnProfileDetails')]";

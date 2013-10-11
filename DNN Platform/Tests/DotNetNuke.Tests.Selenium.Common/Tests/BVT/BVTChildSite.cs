@@ -40,12 +40,14 @@ namespace DNNSelenium.Common.Tests.BVT
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+
+			_logContent = LogContent();
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs();
+			VerifyLogs(_logContent);
 		}
 
 		[Test]
@@ -118,7 +120,7 @@ namespace DNNSelenium.Common.Tests.BVT
 			            "The website name is not correct");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT current window Url");
-			Assert.That(installerPage.CurrentWindowUrl(), Is.EqualTo("http://" + _baseUrl + "/" + _siteAlias),
+			Assert.That(installerPage.CurrentWindowUrl(), Is.StringStarting("http://" + _baseUrl + "/" + _siteAlias),
 			            "The website URL is not correct");
 		}
 

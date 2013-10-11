@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "File Management"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "DigitalAssetManagementModule"; }
+		}
+
 		public static string FileSearchBox = "//span[@id = 'dnnModuleDigitalAssetsSearchBox']/input";
 		public static string FileSearchIcon = "//span[@id = 'dnnModuleDigitalAssetsSearchBox']/a";
 

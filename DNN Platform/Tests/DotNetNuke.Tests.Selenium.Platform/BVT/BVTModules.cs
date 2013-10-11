@@ -30,7 +30,6 @@ namespace DNNSelenium.Platform.BVT
 
 			module.AddNewModuleUsingMenu(Modules.CommonModulesDescription["HtmlModule"].IdWhenOnBanner,
 			                             Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage, "LeftPane");
-			;
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Module location: " + Modules.LocationDescription["LeftPane"].IdWhenOnPage +
 							Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage);

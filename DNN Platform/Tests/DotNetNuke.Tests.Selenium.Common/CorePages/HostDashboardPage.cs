@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Dashboard"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "DashboardModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Host '" + PageTitleLabel + "' page:");

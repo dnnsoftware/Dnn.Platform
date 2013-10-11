@@ -2,7 +2,7 @@
 
 <Tests>
 
-  <settings name="P1 CheckList" browser="chrome" baseURL="www.dnn712plat347auto00.com" InstallerLanguage="en" UserName="host"
+  <settings name="P1 CheckList" browser="chrome" baseURL="ce720v1.dnndev.me" InstallerLanguage="en" UserName="host"
             Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
             DatabaseType="" DatabaseServerName="" DatabaseName="" DatabaseFilename="" ObjectQualifier="" Security=""
             DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" />
@@ -35,8 +35,7 @@
 
   <adminExtensions name="P1 Admin Extensions" adminExtensionToEdit="Banners" />
 
-  <taxonomy name="P1 Taxonomy" vocabularyName = "Vocabulary P1" vocabularyDescription = "Vocabulary description, P1" vocabularyType = "simple" vocabularyScope = "application"
-            appScopeVocabularyName = "Vocabulary P1 AppScope Test" websiteScopeVocabularyName = "Vocabulary P1 WebsiteScope Test" childSiteName="thechildsite" />
+  <taxonomy name="P1 Taxonomy" vocabularyName = "Vocabulary P1" vocabularyDescription = "Vocabulary description, P1" vocabularyType = "simple" vocabularyScope = "application"/>
 
   <siteSettings name="Verify User Registration" userWithPublicRegistration="User With Public Registration"
                 userWithVerifiedRegistration="User With Verified Registration"
@@ -48,4 +47,7 @@
               folderName="Images" />
 
   <languages name="P1 Languages" languagePackToDeploy="it" />
+
+  <modules name = "P1 Modules" dictionary = "Content"/>
+  
 </Tests>

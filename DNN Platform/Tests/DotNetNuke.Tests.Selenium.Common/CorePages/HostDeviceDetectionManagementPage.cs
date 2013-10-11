@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Device Detection"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "DeviceDetectionModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Host '" + PageTitleLabel + "' page:");

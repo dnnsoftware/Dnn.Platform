@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Newsletters"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "NewslettersModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");

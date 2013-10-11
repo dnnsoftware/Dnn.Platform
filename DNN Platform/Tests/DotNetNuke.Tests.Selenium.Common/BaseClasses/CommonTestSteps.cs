@@ -18,7 +18,8 @@ namespace DNNSelenium.Common.BaseClasses
 		protected IWebDriver _driver = null;
 		protected string _baseUrl = null;
 
-		private const string DNNSeleniumPrefix = "DNNSelenium.";
+		public const string DNNSeleniumPrefix = "DNNSelenium.";
+		public string _logContent;
 
 		public BasePage OpenPage(string assyName, string pageClassName, string openMethod)
 		{
@@ -39,30 +40,6 @@ namespace DNNSelenium.Common.BaseClasses
 			}
 
 			return (BasePage)navToPage;
-		}
-
-		public BaseOutsidePage OpenOutsidePage(string assyName, string pageClassName, string openMethod)
-		{
-			Trace.WriteLine(BasePage.TraceLevelComposite + "'Navigation To " + pageClassName + "'");
-
-			string fullAssyName = DNNSeleniumPrefix + assyName;
-			Type pageClassType = Type.GetType(fullAssyName + "." + pageClassName + ", " + fullAssyName);
-			object navToPage = Activator.CreateInstance(pageClassType, new object[] { _driver });
-
-			var hostPage = new HostBasePage(_driver);
-			Type myType = hostPage.GetType();
-
-			MethodInfo miOpen = myType.GetMethod(openMethod);
-			if (miOpen != null)
-			{
-				miOpen.Invoke(hostPage, new object[] { _baseUrl });
-			}
-			else
-			{
-				Trace.WriteLine(BasePage.RunningTestKeyWord + "ERROR: cannot call " + openMethod + "for class " + pageClassName);
-			}
-
-			return (BaseOutsidePage)navToPage;
 		}
 
 		public void OpenMainPageAndLoginAsHost()
@@ -91,13 +68,8 @@ namespace DNNSelenium.Common.BaseClasses
 			loginPage.LoginUsingLoginLink(userName, password);
 		}
 
-		public void VerifyLogs()
+		public string LogContent()
 		{
-			Trace.WriteLine(BasePage.TraceLevelComposite + "'Verify Logs on Host Settings page: '");
-
-			var loginPage = new LoginPage(_driver);
-			loginPage.LoginAsHost(_baseUrl);
-
 			HostSettingsPage hostSettingsPage = new HostSettingsPage(_driver);
 			hostSettingsPage.SetDictionary("en");
 			hostSettingsPage.OpenUsingUrl(_baseUrl);
@@ -108,7 +80,19 @@ namespace DNNSelenium.Common.BaseClasses
 													HostSettingsPage.OptionOne,
 													SlidingSelect.SelectByValueType.Contains);
 			hostSettingsPage.WaitForElement(By.XPath(HostSettingsPage.LogContent), 30);
-			Utilities.SoftAssert(() => StringAssert.DoesNotContain("error", hostSettingsPage.FindElement(By.XPath(HostSettingsPage.LogContent)).Text.ToLower(), "ERROR in the Log"));
+
+			return hostSettingsPage.FindElement(By.XPath(HostSettingsPage.LogContent)).Text.ToLower();
+		}
+
+		public void VerifyLogs(string logContentBeforeTests)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Verify Logs on Host Settings page: '");
+
+			var loginPage = new LoginPage(_driver);
+			loginPage.LoginAsHost(_baseUrl);
+
+			string logContentAfterTests = LogContent();
+			StringAssert.AreEqualIgnoringCase(logContentAfterTests, logContentBeforeTests, "ERROR in the Log");
 		}
 
 	}

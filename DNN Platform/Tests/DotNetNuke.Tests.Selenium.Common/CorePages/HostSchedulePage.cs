@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Schedule"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SchedulerModule"; }
+		}
+
 		public static string SearchUrlCrawlerName = "Search: Url Crawler";
 		public static string SearchUrlCrawlerEnabled = "//tr[td[text() = '" + SearchUrlCrawlerName + "']]//span/input[contains(@id, 'ViewSchedule_dgSchedule')";
 

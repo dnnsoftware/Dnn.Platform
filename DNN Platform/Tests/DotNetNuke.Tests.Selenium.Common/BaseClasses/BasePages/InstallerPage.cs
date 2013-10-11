@@ -24,6 +24,11 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 			get { return "Log Viewer"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
+
 		public static string AccountInfoTab = "accountInfo";
 		public static string InstallInfoTab = "installInfo";
 		public static string WebInfoTab = "webInfo";

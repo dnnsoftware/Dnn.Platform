@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
+
 		public static string ChooseFileButton = "//input[contains(@id, '_WebUpload_cmdBrowse')]";
 		public static string UploadFileButton = "//a[contains(@id, '_WebUpload_cmdAdd')]";
 		public static string FolderDropDown = "//div[contains(@id, '_WebUpload_ddlFolders')]";

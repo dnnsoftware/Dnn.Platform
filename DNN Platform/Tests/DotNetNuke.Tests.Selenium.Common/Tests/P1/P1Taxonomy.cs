@@ -61,13 +61,14 @@ namespace DNNSelenium.Common.Tests.P1
             var adminSiteSettingsPage = new AdminSiteSettingsPage(_driver);
             adminSiteSettingsPage.OpenUsingButtons(_baseUrl);
             adminSiteSettingsPage.DisablePopups();
-
+			
+			_logContent = LogContent();
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs();
+			VerifyLogs(_logContent);
 		}
 
 		[Test]

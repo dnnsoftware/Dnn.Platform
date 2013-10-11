@@ -37,6 +37,9 @@
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium">
       <HintPath>..\..\..\Packages\Selenium.WebDriver.2.35.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
+    <Reference Include="Selenium.WebDriverBackedSelenium, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +56,17 @@
     </Reference>
     <Reference Include="WebDriver.Support">
       <HintPath>..\..\..\Packages\Selenium.WebDriver.2.35.0\net40\WebDriver.Support.dll</HintPath>
+    <Reference Include="ThoughtWorks.Selenium.Core, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver.Support, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +97,15 @@
     <Compile Include="P1\P1Taxonomy.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SetUpFixture.cs" />
+    <Compile Include="UpgradeTests\BVTChildSite.cs" />
+    <Compile Include="UpgradeTests\BVTModules.cs" />
+    <Compile Include="UpgradeTests\BVTNavigation.cs" />
+    <Compile Include="UpgradeTests\BVTPages.cs" />
+    <Compile Include="UpgradeTests\BVTSecurityRoles.cs" />
+    <Compile Include="UpgradeTests\BVTSetup.cs" />
+    <Compile Include="UpgradeTests\BVTSuperUsers.cs" />
+    <Compile Include="UpgradeTests\BVTUsers.cs" />
+    <Compile Include="UpgradeTests\BVTZLogs.cs" />
     <Compile Include="UpgradeTests\UpgradeTests.cs" />
     <Compile Include="SmokeTest\SmokeTest.cs" />
     <Compile Include="InstallerTests\InstallerTests.cs" />
@@ -142,7 +165,13 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="UpgradeTests\UpgradeData.xml" />
+    <Content Include="UpgradeTests\BVTData.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpgradeTests\UpgradeData.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetNuke.Tests.Selenium.Common\DotNetNuke.Tests.Selenium.Common.csproj">

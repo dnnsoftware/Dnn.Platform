@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Event Viewer"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "LogViewerModule"; }
+		}
+
 		public static string TypeDropDownArrow = "LogViewer_ddlLogType_Arrow";
 		public static string TypeDropDownList = "//div[contains(@id, 'LogViewer_ddlLogType_DropDown')]";
 

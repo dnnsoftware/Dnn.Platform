@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Security Roles"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SecurityRolesModule"; }
+		}
+
 		//Roles ID's
 		public static string SecurityRolesTable = "//div[contains(@id, '_Roles_grdRoles')]";
 		public static string SecurityRolesList = "//tr[contains(@id, 'Roles_grdRoles')]";

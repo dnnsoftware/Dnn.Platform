@@ -4,7 +4,7 @@
   <settings
     name = "Upgrade Test, Daily run"
     browser = "firefox"
-    baseURL = "UpgradeCETest.dnndev.me"
+    baseURL = "ce700v3.dnndev.me"
     
     UserName = "host"
     Password = "dnnhost"

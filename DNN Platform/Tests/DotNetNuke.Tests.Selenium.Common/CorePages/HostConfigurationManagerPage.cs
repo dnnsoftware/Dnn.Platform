@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Configuration Manager"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "ConfigurationManagerModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Host '" + PageTitleLabel + "' page:");

@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Advanced Configuration Settings"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "AdvancedSettingsModule"; }
+		}
+
 		public static string LanguagePacksTab = "//a[@href = '#asLanguagePacks']";
 		public static string LanguagePackTable = "//table[contains(@id, '_AdvancedSettings_languagePacks')]";
 		public static string NextButtonStep = "//a[contains(@id, '_nextButtonStep')]";
@@ -32,6 +37,12 @@ namespace DNNSelenium.Common.CorePages
 		public static string ReleaseNotesScreenTitle = "//h2/span[text() = 'Release Notes']";
 		public static string ReviewLicenseScreenTitle = "//h2/span[text() = 'Review License']";
 		public static string PackageReportScreenTitle = "//h2/span[text() = 'Package Installation Report']";
+
+		public static string ProvidersTab = "//a[@href = '#asProviders']";
+		public static string ProvidersTable = "//table[contains(@id, '_AdvancedSettings_providersGrid')]";
+
+		public static string AuthenticationSystemsTab = "//a[@href = '#asAuthenticationSystems']";
+		public static string AuthenticationSystemsTable = "//table[contains(@id, '_AdvancedSettings_authSystemsGrid')]";
 
 		public void OpenUsingUrl(string baseUrl)
 		{
@@ -95,7 +106,75 @@ namespace DNNSelenium.Common.CorePages
 			OpenTab(By.XPath(LanguagePacksTab));
 
 			WaitForElement(
-				By.XPath("//table[contains(@id, '_AdvancedSettings_languagePacks')]//tr[td/span[contains(text(), '" + packName + "')]]/td/a")).Click();
+				By.XPath(LanguagePackTable + "//tr[td/span[contains(text(), '" + packName + "')]]/td/a")).Click();
+
+			WaitForElement(By.XPath(PackageInfoScreenTitle));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Next Button: ");
+			WaitForElement(By.XPath(NextButtonStep), 60).Click();
+
+			WaitForElement(By.XPath(ReleaseNotesScreenTitle));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Next Button: ");
+			WaitForElement(By.XPath(NextButtonStep), 60).Click();
+
+			WaitForElement(By.XPath(ReviewLicenseScreenTitle));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Accept CheckBox: ");
+			WaitForElement(By.XPath(AcceptCheckBox)).ScrollIntoView().WaitTillEnabled(30);
+			WaitForElement(By.XPath(AcceptCheckBox)).Info();
+			CheckBoxCheck(By.XPath(AcceptCheckBox));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Next Button: ");
+			WaitForElement(By.XPath(NextButtonStep), 60).Click();
+
+			WaitForElement(By.XPath(PackageReportScreenTitle));
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Return Button: ");
+			WaitForElement(By.XPath(Return1Button), 60).Click();
+
+			Thread.Sleep(1000);
+		}
+
+		public void InstallProvider(string providerName)
+		{			
+			OpenTab(By.XPath(ProvidersTab));
+
+			WaitForElement(
+				By.XPath(ProvidersTable + "//tr[td/span[contains(text(), '" + providerName + "')]]/td/a")).Click();
+
+			WaitForElement(By.XPath(PackageInfoScreenTitle));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Next Button: ");
+			WaitForElement(By.XPath(NextButtonStep), 60).Click();
+
+			WaitForElement(By.XPath(ReleaseNotesScreenTitle));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Next Button: ");
+			WaitForElement(By.XPath(NextButtonStep), 60).Click();
+
+			WaitForElement(By.XPath(ReviewLicenseScreenTitle));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Accept CheckBox: ");
+			WaitForElement(By.XPath(AcceptCheckBox)).ScrollIntoView().WaitTillEnabled(30);
+			WaitForElement(By.XPath(AcceptCheckBox)).Info();
+			CheckBoxCheck(By.XPath(AcceptCheckBox));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Next Button: ");
+			WaitForElement(By.XPath(NextButtonStep), 60).Click();
+
+			WaitForElement(By.XPath(PackageReportScreenTitle));
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Return Button: ");
+			WaitForElement(By.XPath(Return1Button), 60).Click();
+
+			Thread.Sleep(1000);
+		}
+
+		public void InstallAuthenticationSystem(string authSystemName)
+		{
+			OpenTab(By.XPath(AuthenticationSystemsTab));
+
+			WaitForElement(
+				By.XPath(AuthenticationSystemsTable + "//tr[td/span[contains(text(), '" + authSystemName + "')]]/td/a")).Click();
 
 			WaitForElement(By.XPath(PackageInfoScreenTitle));
 

@@ -82,6 +82,7 @@ namespace DNNSelenium.Common.Tests.Upgrade
 		}
 
 		protected abstract string DataFileLocation { get; }
+
 		public IEnumerable UpgradeData
 		{
 			get { return GetTestData(DataFileLocation); }
