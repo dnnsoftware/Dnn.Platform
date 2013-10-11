@@ -866,8 +866,10 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else
                 {
-                    AddLocalizedModuleMessage(UserController.GetUserCreateStatus(CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
-                    userForm.DataBind();
+                    if (CreateStatus != UserCreateStatus.AddUser)
+                    {
+                        AddLocalizedModuleMessage(UserController.GetUserCreateStatus(CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
+                    }
                 }
             }
         }
