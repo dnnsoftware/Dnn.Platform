@@ -35,12 +35,13 @@
 
         _createChildrenNodeElement: function (childrenContext, isRoot) {
             if (!childrenContext || childrenContext.length === 0) {
+                //return $childrenNodeElement;
                 return $([]);
             }
             var childContext;
             var $childNodeElement;
-
             var $childrenNodeElement = $("<ul/>");
+
             $childrenNodeElement.addClass(this.options.nodeListCss);
             if (isRoot) {
                 $childrenNodeElement.addClass(this.options.rootCss);
@@ -68,7 +69,7 @@
 
         collapseTree: function (onComplete) {
             var self = this;
-            if (this._$treeElement) {
+            if (this._$treeElement && this._$treeElement.length) {
                 this._$treeElement.slideUp({
                     duration: 0,
                     complete: function() {
