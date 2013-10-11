@@ -35,7 +35,6 @@
 
         _createChildrenNodeElement: function (childrenContext, isRoot) {
             if (!childrenContext || childrenContext.length === 0) {
-                //return $childrenNodeElement;
                 return $([]);
             }
             var childContext;
