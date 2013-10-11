@@ -457,7 +457,6 @@ AS
 						RecipientID 
 				FROM    {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] MFD
 				WHERE   EmailSent = 0
-						AND SendToast = 0
 						AND [Read] = 0
 						AND Archived = 0
 						AND EmailFrequency = 0
@@ -474,7 +473,6 @@ AS
 				INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] CMM ON CMR.MessageID = CMM.MessageID
 		WHERE   EmailSent = 0
 				AND EmailSentDate IS NULL
-				AND SendToast = 0
 				AND [Read] = 0
 				AND Archived = 0
 				AND ( EmailSchedulerInstance = @SchedulerInstance )
@@ -505,7 +503,6 @@ AS
 									UserID
 							FROM    {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] MFD
 							WHERE   EmailSent = 0
-									AND SendToast = 0
 									AND [Read] = 0
 									AND Archived = 0
 									AND EmailFrequency = @Frequency
@@ -518,7 +515,6 @@ AS
 							ORDER BY UserID      
 						)  
 						AND EmailSent = 0
-						AND SendToast = 0
 						AND [Read] = 0
 						AND Archived = 0
 						AND EmailFrequency = @Frequency
@@ -533,7 +529,6 @@ AS
 				INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] CMM ON CMR.MessageID = CMM.MessageID
 		WHERE   EmailSent = 0
 				AND EmailSentDate IS NULL
-				AND SendToast = 0
 				AND [Read] = 0
 				AND Archived = 0
 				AND ( EmailSchedulerInstance = @SchedulerInstance )
