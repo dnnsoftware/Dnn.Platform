@@ -259,6 +259,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
             JavaScriptLibrary jsl = GetJavascriptLibrary(js);
             ClientResourceManager.RegisterScript(page, GetScriptPath(jsl), jsl.PackageID + 500, GetScriptLocation(jsl));
+            
+            //workaround to support IE specific script unti we move to IE version that no longer requires this
+            if (jsl.LibraryName ==CommonJs.jQueryFileUpload)
+            {
+                ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");  
+            }
 
             if (Host.CdnEnabled && !String.IsNullOrEmpty(jsl.ObjectName))
             {

@@ -53,5 +53,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         ///     knockout mapping LibraryName
         /// </summary>
         public const string KnockoutMapping = "Knockout.Mapping";
+
+        /// <summary>
+        ///     knockout mapping LibraryName
+        /// </summary>
+        public const string jQueryFileUpload = "jQuery.Fileupload";
+        
     }
 }
