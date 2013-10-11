@@ -22,6 +22,7 @@
 
 using System;
 using System.Globalization;
+using System.Threading;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -100,10 +101,17 @@ namespace DotNetNuke.UI.Modules
                             (ModuleContext.PortalSettings.ActiveTab.TabID == ModuleContext.PortalSettings.UserTabId 
                                 || ModuleContext.PortalSettings.ActiveTab.ParentId == ModuleContext.PortalSettings.UserTabId))
             {
-                //Clicked on breadcrumb - don't know which user
-                Response.Redirect(Request.IsAuthenticated
-                                      ? Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID,"", "UserId="+ ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
-                                      : GetRedirectUrl(), true);
+                try
+                {
+                    //Clicked on breadcrumb - don't know which user
+                    Response.Redirect(Request.IsAuthenticated
+                                          ? Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                                          : GetRedirectUrl(), true);
+                }
+                catch (ThreadAbortException ex)
+                {
+                    Thread.ResetAbort();
+                }
             }
 
             base.OnInit(e);
