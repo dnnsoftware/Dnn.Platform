@@ -239,10 +239,11 @@ namespace DotNetNuke.Web.InternalServices
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder                
-                var effectivePortalId = isHostMenu ? -1 : PortalController.GetEffectivePortalId(portalSettings.PortalId);
-                var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
+                IFolderInfo folderInfo;
                 if (folder.ToLowerInvariant().StartsWith("users/") && folder.EndsWith(string.Format("/{0}/", userInfo.UserID)))
                 {
+                    var effectivePortalId = isHostMenu ? -1 : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                    folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                     // Make sure the user folder exists
                     if (folderInfo == null)
                     {
@@ -251,6 +252,11 @@ namespace DotNetNuke.Web.InternalServices
                         userInfo.PortalID = effectivePortalId;
                         folderInfo = ((FolderManager)folderManager).AddUserFolder(userInfo);
                     }
+                }
+                else
+                {
+                    var portalId = isHostMenu ? -1 : portalSettings.PortalId;
+                    folderInfo = folderManager.GetFolder(portalId, folder);
                 }
 
                 if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE")) 
