@@ -33,10 +33,12 @@ using System.Web.UI.HtmlControls;
 //using DotNetNuke.UI.Utilities;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -157,7 +159,6 @@ namespace DotNetNuke.Framework
                 {
                     scriptManager = new ScriptManager();
                     Page.Form.Controls.AddAt(0, scriptManager);
-
                 }
 
                 scriptManager.EnablePageMethods = true;
@@ -171,19 +172,24 @@ namespace DotNetNuke.Framework
                 Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentDomainUrl", "var pageCurrentDomainUrl = '" + CurrentDomainUrl + "';", true);
                 Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentPortalId", "var pageCurrentPortalId = " + PortalSettings.PortalId + ";", true);
                 Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "GettingStartedPageTitle", "var gettingStartedPageTitle = '" + GettingStartedTitle + "';", true);
+
+                //stop the Ge
+                Personalization.SetProfile("GettingStarted", "Display", false);
             }
 
             if (ShowGettingStartedPage)
             {
                 DNNClientAPI.ShowModalPage(Page, GettingStartedPageUrl);
-                Services.Upgrade.Upgrade.DeleteInstallerFiles();
             }
-            else if (Request.Cookies["AdvSettingsPopup"] != null && Request.Cookies["AdvSettingsPopup"].Value == "true" && !HttpContext.Current.Request.Url.AbsoluteUri.ToLower().Contains("popup"))
-            {
-                DNNClientAPI.ShowModalPage(Page, AdvancedSettingsPageUrl);
-            }
+        }
 
-            
+        protected void ManageInstallerFiles()
+        {
+            if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
+            {
+                Services.Upgrade.Upgrade.DeleteInstallerFiles();
+                HostController.Instance.Update("InstallerFilesRemoved", "True", true);
+            }
         }
 
         protected string GettingStartedPageUrl
@@ -241,18 +247,13 @@ namespace DotNetNuke.Framework
                 var result = false;
                 if (GettingStartedTabId > -1)
                 {
-                    if (!IsPage(GettingStartedTabId))
+                    if (!IsPage(GettingStartedTabId) && PortalSettings.UserInfo.IsSuperUser && Host.EnableGettingStartedPage)
                     {
-                        string pageShown = PortalController.GetPortalSetting("GettingStartedPageShown", PortalSettings.PortalId, Boolean.FalseString);
-                        if (!string.Equals(pageShown, Boolean.TrueString))
-                        {
-                            result = true;
-                        }
+                        result = Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Display"));
                     }
                 }
                 return result;
             }
-
         }
 
         #region WebMethods

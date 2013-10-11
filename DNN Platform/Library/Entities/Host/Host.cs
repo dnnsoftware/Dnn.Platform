@@ -488,15 +488,28 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EnableFileAutoSync
         {
             get
             {
                 return HostController.Instance.GetBoolean("EnableFileAutoSync", false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether The Getting Started Page is Enabled
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to True
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static bool EnableGettingStartedPage
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableGettingStartedPage", true);
             }
         }
 

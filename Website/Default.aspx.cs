@@ -155,7 +155,6 @@ namespace DotNetNuke.Framework
                 return HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
             }
         }
-
         
         #endregion
 
@@ -776,6 +775,8 @@ namespace DotNetNuke.Framework
             base.OnLoad(e);
 
             ManageGettingStarted();
+
+            ManageInstallerFiles();
 
             if (!String.IsNullOrEmpty(ScrollTop.Value))
             {

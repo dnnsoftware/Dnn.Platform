@@ -33,6 +33,7 @@
     <DemoSignup>N</DemoSignup>
     <DisplayBetaNotice>Y</DisplayBetaNotice>
     <EnableFileAutoSync>Y</EnableFileAutoSync>
+    <EnableGettingStartedPage>True</EnableGettingStartedPage>
     <EnableContentLocalization>N</EnableContentLocalization>
     <EnableModuleOnLineHelp>Y</EnableModuleOnLineHelp>
     <EnableRequestFilters>N</EnableRequestFilters>
