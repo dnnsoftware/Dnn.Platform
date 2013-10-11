@@ -34,7 +34,15 @@
             this.serviceFramework = $.dnnSF();
 
             this.$this = $(this);
-            this.$element = this.element ? $(this.element) : this._createLayout();
+
+
+            var $parent = $(this.element).parent();
+            $parent.empty();
+            this.$element = this._createLayout();
+            $parent.append(this.$element);
+
+
+            //this.$element = this.element ? $(this.element) : this._createLayout();
 
             this._$buttonGroup = this.$element.find(".dnnFileUploadHead  ul.dnnButtonGroup");
             this._$uploadResultPanel = this.$element.find('.dnnFileUploadExternalResultZone');
@@ -76,11 +84,77 @@
             this._initUploadFileFromLocal();
         },
 
+        _createLayout: function () {
 
-        _defaultLayout: function() {
-            var dialog = $("<div id='fu-dialog' tabindex='-1' class='dnnFileUploadControl' role='dialog'/>")
+            var checkBoxId = dnn.uid("fu_");
+
+            var folderPickerOptions = {
+                itemList: {
+                    clearButtonTooltip: "Clear",
+                    firstItem: null,
+                    loadingResultText: "...Loading Results",
+                    resultsText: "Results",
+                    searchButtonTooltip: "Search",
+                    searchInputPlaceHolder: "Search...",
+                    selectedItemCollapseTooltip: "Click to collapse",
+                    selectedItemExpandTooltip: "Click to expand",
+                    sortAscendingButtonTitle: "A-Z",
+                    sortAscendingButtonTooltip: "Sort in ascending order",
+                    sortDescendingButtonTooltip: "Sort in descending order",
+                    unsortedOrderButtonTooltip: "Remove sorting"
+                },
+                onSelectionChanged: [],
+                selectItemDefaultText: "Select A Folder",
+                selectedItemCss: "selected-item",
+                services: {
+                    getNodeDescendantsMethod: "ItemListService/GetFolderDescendants",
+                    getTreeMethod: "ItemListService/GetFolders",
+                    getTreeWithNodeMethod: "ItemListService/GetTreePathForFolder",
+                    parameters: [],
+                    rootId: "Root",
+                    searchTreeMethod: "ItemListService/SearchFolders",
+                    serviceRoot: "InternalServices",
+                    sortTreeMethod: "ItemListService/SortFolders"
+                }
+            };
+
+            this._folderPicker = new dnn.DropDownList(null, folderPickerOptions);
+            var dialog = $("<div id='fu-dialog' tabindex='-1' class='fu-container' role='dialog'/>")
                 .append($("<p class='dnnFileUploadFileInfo'/>")
-                    .append($("<span>Use one of the methods below to upload files</span>")));
+                    .append($("<span>Use one of the methods below to upload files</span>")))
+                .append($("<div class='dnnFileUploadPanel'/>")
+                    .append($("<div class='dnnFileUploadHead'/>")
+                        .append($("<div class='dnnLeft'/>")
+                            .append($("<ul class='dnnButtonGroup'/>")
+                                .append($("<li class='active'/>")
+                                    .append($("<a href='javascript:void(0);'>Upload File</a>")))
+                                .append($("<li/>")
+                                    .append($("<a href='javascript:void(0);'>From Web</a>"))))
+                            .append($("<span/>")
+                                .append($("<input type='checkbox' id='" + checkBoxId + "' class='normalCheckbox'/>"))
+                                .append($("<label for='" + checkBoxId + "' class='dnnFileUploadDecompressZipInfo'>Decompress Zip Files</label>"))))
+                        .append($("<div class='fu-folder-picker-container dnnRight'/>")
+                            .append($("<label>Upload To:</label>"))
+                            .append(this._folderPicker.$element.addClass("dnnLeftComboBox")))
+                        .append($("<div class='dnnClear'/>")))
+
+                    .append($("<div class='dnnFileUploadFromLocal dnnFileUploadContainer'/>")
+                        .append($("<div class='dnnFileUploadDropZone'/>")
+                            .append($("<div class='dnnDropFileMessage'/>"))))
+
+                    .append($("<div style='display: none' class='dnnFileUploadFromWeb dnnFileUploadContainer'/>")
+                        .append($("<table class='dnnFileUploadWebInput'/>")
+                            .append($("<tbody/>")
+                                .append($("<tr/>")
+                                    .append($("<td/>")
+                                        .append($("<div class='txtWrapper'/>")
+                                            .append($("<input type='text'/>"))))
+                                    .append($("<td/>")
+                                        .append($("<a href='javascript:void(0);' class='dnnSecondaryAction'>Load</a>")))))))
+
+                    .append($("<div style='display: none' class='dnnFileUploadExternalResultZone'/>")
+                        .append($("<div class='dnnFileUploadResultZone'/>"))));
+
             return dialog;
         },
 
@@ -92,15 +166,14 @@
                 dropZone: this._$dropFileZone,
                 sequentialUpload: false,
                 progressInterval: 20,
-                add: function(e, data) {
+                add: function (e, data) {
                     if (!self._$uploadResultPanel.is(':visible')) {
                         self._$uploadResultPanel.show().jScrollPane();
                     }
-                    
                     //TODO: do some check
                     data.submit();
                 },
-                submit: function(e, data) {
+                submit: function (e, data) {
                     var fileResultZone = self._getUploadFileResultZone(data.files[0].name);
                     if (!fileResultZone.length) {
                         fileResultZone = self._getNewUploadFileResultZone(data.files[0].name);
@@ -137,7 +210,6 @@
                         }
                         return;
                     }
-
                     var progress = parseInt(data.loaded / data.total * 100, 10);
                     if (progress < 100) {
                         self._setProgressBar(fileResultZone, progress);
@@ -170,8 +242,7 @@
         },
         
         _getSelectedFolder: function() {
-            var folderPicker = dnn[this.options.folderPickerClientId];
-            var selectedPathArray = folderPicker.selectedPath();
+            var selectedPathArray = this._folderPicker.selectedPath();
             var selectedPath = '';
             if (selectedPathArray.length > 1) {
                 for (var i = 1; i < selectedPathArray.length; i++) {

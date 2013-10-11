@@ -1,32 +1,41 @@
-﻿.dnnFileUploadControl {
+﻿.fu-container {
     width: 100%;
     padding: 15px;
     background: #fff;
+    width: 780px;
 }
 
-.dnnFileUploadControl p.dnnFileUploadFileInfo {
+.fu-container p.dnnFileUploadFileInfo {
     margin: 0;
 }
 
-.dnnFileUploadControl .dnnFileUploadFooter span.dnnInputFileWrapper {
+.fu-container .dnnFileUploadFooter span.dnnInputFileWrapper {
     display: block;
 }
 
-.dnnFileUploadControl .dnnFileUploadPanel {
+.fu-container .dnnFileUploadPanel {
     background: #eaeaea;
     padding: 10px;
     margin: 15px 0 0 0;
 }
 
-.dnnFileUploadControl .dnnFileUploadHead {
-    margin: 0 0 10px 0;    
+.fu-container .dnnDropDownList .dt-container {
+    right: 0;
 }
 
-.dnnFileUploadControl .dnnFileUploadHead  ul.dnnButtonGroup > li:first-child {
+.fu-container .dnnFileUploadHead {
+    margin: 0 0 10px 0;
+}
+
+.fu-container .dnnFileUploadHead ul.dnnButtonGroup > li:first-child {
     border-left: none;
 }
 
-.dnnFileUploadControl .dnnFileUploadHead  ul.dnnButtonGroup > li.active {
+.fu-container .dnnFileUploadHead ul.dnnButtonGroup {
+    float: left;
+}
+
+.fu-container .dnnFileUploadHead ul.dnnButtonGroup > li.active {
     border-color: #999;
     background: #c6c6c6; /* Old browsers */
     background: -moz-linear-gradient(top, #c6c6c6 0%, #f3f3f3 100%); /* FF3.6+ */
@@ -39,41 +48,37 @@
     box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.4);
 }
 
-.dnnFileUploadControl .dnnFileUploadHead  ul.dnnButtonGroup > li > a {
+.fu-container .dnnFileUploadHead ul.dnnButtonGroup > li > a {
     padding: 7px 12px 6px 12px;
 }
 
-.dnnFileUploadControl .dnnFileUploadHead > .dnnLeft > span {
-    display: inline-block;
-    vertical-align: top;
-    margin-top: 9px; 
-
+.fu-container .dnnFileUploadHead > .dnnLeft > span {
+    float: left;
+    margin: 0 0 0 10px;
+    line-height: 36px;
 }
 
-.dnnFileUploadControl .dnnFileUploadHead > .dnnLeft > span > input[type="checkbox"] {
-    display: inline-block;
-    margin-top: 3px;
-    vertical-align: top;
-
+.fu-container .dnnFileUploadHead > .dnnLeft > span > input[type="checkbox"] {
+    vertical-align: -2px;
 }
-.dnnFileUploadControl .dnnFileUploadHead > .dnnLeft > span > label.dnnFileUploadDecompressZipInfo {
-    display: inline-block;
-    margin-left: 4px;
+.fu-container .dnnFileUploadHead > .dnnLeft > span > label.dnnFileUploadDecompressZipInfo {
     font-weight: bold;
+    margin: 0 0 0 6px;
 }
 
-.dnnFileUploadControl .dnnFileUploadHead > .dnnRight > span {
-    display: inline-block;
-    margin-top: 9px;
-    vertical-align: top;
+.fu-container .dnnFileUploadHead > .dnnRight > label {
     font-weight: bold;
+    line-height: 36px;
+    float: left;
+    margin: 0 6px 0 0;
 }
 
-.dnnFileUploadControl .dnnFileUploadHead > .dnnRight > .dnnDropDownList {
-    width: 150px;
+.fu-container .dnnFileUploadHead > .dnnRight > .dnnDropDownList {
+    width: 200px;
+    float: left;
 }
 
-.dnnFileUploadControl .dnnFileUploadFromLocal {
+.fu-container .dnnFileUploadFromLocal {
     background-color: #E8F0FB;
     border-color: #CED4E0;
     border-radius: 4px 4px 4px 4px;
@@ -82,7 +87,7 @@
     padding: 20px;    
 }
 
-.dnnFileUploadControl .dnnFileUploadFromLocal .dnnFileUploadDropZone {
+.fu-container .dnnFileUploadFromLocal .dnnFileUploadDropZone {
     background-image: url("Images/dropZone.png");
     background-position: center 10px;
     background-repeat: no-repeat;
@@ -95,11 +100,11 @@
     transition: box-shadow 200ms ease-in-out 0s;
 }
 
-.dnnFileUploadControl .dnnFileUploadFromLocal .dnnFileUploadDropZone.dragover {
+.fu-container .dnnFileUploadFromLocal .dnnFileUploadDropZone.dragover {
     box-shadow: 0 0 13px 8px rgba(0, 0, 0, 0.1) inset;    
 }
 
-.dnnFileUploadControl .dnnFileUploadFromLocal .dnnFileUploadDropZone .dnnDropFileMessage {
+.fu-container .dnnFileUploadFromLocal .dnnFileUploadDropZone .dnnDropFileMessage {
     bottom: 8px;
     font-size: 11px;
     position: absolute;
@@ -107,46 +112,46 @@
     width: 100%;
 }
 
-.dnnFileUploadControl .dnnFileUploadFromLocal .dnnFileUploadDropZone .dnnDropFileMessage span.dnnInputFileWrapper {
+.fu-container .dnnFileUploadFromLocal .dnnFileUploadDropZone .dnnDropFileMessage span.dnnInputFileWrapper {
     float: none !important;
 }
 
-.dnnFileUploadControl .dnnFileUploadFromWeb .dnnFileUploadWebInput{
+.fu-container .dnnFileUploadFromWeb .dnnFileUploadWebInput{
     width: 100%;
 }
 
-.dnnFileUploadControl .dnnFileUploadFromWeb .dnnFileUploadWebInput {
+.fu-container .dnnFileUploadFromWeb .dnnFileUploadWebInput {
     width: 100%;
 }
 
-.dnnFileUploadControl .dnnFileUploadFromWeb .dnnFileUploadWebInput td:first-child {
+.fu-container .dnnFileUploadFromWeb .dnnFileUploadWebInput td:first-child {
     width: 100%;
 }
-.dnnFileUploadControl .dnnFileUploadFromWeb .dnnFileUploadWebInput .txtWrapper {
+.fu-container .dnnFileUploadFromWeb .dnnFileUploadWebInput .txtWrapper {
     overflow: hidden;
     width: 100%;
 }
 
-.dnnFileUploadControl .dnnFileUploadFromWeb .dnnFileUploadWebInput .txtWrapper input {
+.fu-container .dnnFileUploadFromWeb .dnnFileUploadWebInput .txtWrapper input {
     width: 96%;
     margin: 0;
 }
 
-.dnnFileUploadControl .dnnFileUploadFromWeb a.dnnSecondaryAction {
+.fu-container .dnnFileUploadFromWeb a.dnnSecondaryAction {
     display: block;
     margin: 0;
 }
 
-.dnnFileUploadControl .dnnFileUploadExternalResultZone {
+.fu-container .dnnFileUploadExternalResultZone {
     margin-top: 20px;
     height: 240px;
 }
 
-.dnnFileUploadControl .dnnFileUploadResultZone .dnnFileUploadFile {
+.fu-container .dnnFileUploadResultZone .dnnFileUploadFile {
     margin-top: 10px;
 }
 
-.dnnFileUploadControl .dnnFileUploadResultZone .dnnFileUploadFileProgress {
+.fu-container .dnnFileUploadResultZone .dnnFileUploadFileProgress {
     border: 1px solid #B6BAC2;
     border-radius: 5px;
     padding: 2px 4px;
@@ -160,14 +165,14 @@
     box-shadow: 0 1px white;
 }
 
-.dnnFileUploadControl .dnnFileUploadResultZone .dnnFileUploadFileName
+.fu-container .dnnFileUploadResultZone .dnnFileUploadFileName
 {
     color: #777;
     font-style: italic;
     padding: 0 0 5px 0;
 }
 
-.dnnFileUploadControl .dnnFileUploadResultZone .dnnFileUploadFileProgressBar {
+.fu-container .dnnFileUploadResultZone .dnnFileUploadFileProgressBar {
     border: 1px solid #B6BAC2;
     border-radius: 4px;
     box-shadow: 0 1px white, 0 2px 3px #999999 inset;
@@ -177,16 +182,16 @@
     display: inline-block;    
 }
 
-.dnnFileUploadControl .dnnFileUploadResultZone .dnnFileUploadFileProgressBar .indeterminate-progress {
+.fu-container .dnnFileUploadResultZone .dnnFileUploadFileProgressBar .indeterminate-progress {
     background-color: #3FBDFF;
 }
 
-.dnnFileUploadControl .dnnFileUploadResultZone .dnnFileUploadFileProgressBar .indeterminate-progress > div.ui-progressbar-value {
+.fu-container .dnnFileUploadResultZone .dnnFileUploadFileProgressBar .indeterminate-progress > div.ui-progressbar-value {
     background-image: url("images/indeterminate.gif");
     opacity: 0.15;
 }
 
-.dnnFileUploadControl .dnnFileUploadResultZone .dnnFileUploadFileStatusIcon {
+.fu-container .dnnFileUploadResultZone .dnnFileUploadFileStatusIcon {
     display: inline-block;
     height: 16px;
     width: 16px;
@@ -194,16 +199,16 @@
     margin: 4px 6px 0 0;
 }
 
-.dnnFileUploadControl .dnnFileUploadResultZone .dnnFileUploadFileStatusIcon.uploading {
+.fu-container .dnnFileUploadResultZone .dnnFileUploadFileStatusIcon.uploading {
     background-image: url("../../../../icons/sigma/Cancel_16x16_Standard.png");
     cursor: pointer;
 }
 
-.dnnFileUploadControl .dnnFileUploadResultZone .dnnFileUploadFileStatusIcon.finished {
+.fu-container .dnnFileUploadResultZone .dnnFileUploadFileStatusIcon.finished {
     background-image: url("../../../../icons/sigma/Checked_16x16_Standard(dark).png");
 }
 
-.dnnFileUploadControl .dnnFileUploadFooter {
+.fu-container .dnnFileUploadFooter {
     border-top: 1px solid #C0C0C0;
     margin-top: 15px;
     padding-top: 15px;
