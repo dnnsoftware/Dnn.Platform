@@ -241,7 +241,7 @@
     <value>Compose Message</value>
   </data>
   <data name="To.Text" xml:space="preserve">
-    <value>Send to1</value>
+    <value>Send to</value>
   </data>
   <data name="Upload.Text" xml:space="preserve">
     <value>Upload From Computer</value>
