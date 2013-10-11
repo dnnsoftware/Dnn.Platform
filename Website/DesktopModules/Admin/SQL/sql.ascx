@@ -146,7 +146,7 @@
                             "sTitle": query,
                             "sPdfOrientation": "landscape",
                             "sButtonText": "<img src='/dnn_platform/icons/sigma/ExtPdf_16X16_Standard.png'/>"
-                        },
+                        }<%--,
                         {
                             "sExtends": "text",
                             "sToolTip": "<%=LocalizeString("PopupButtonAlt")%>",
@@ -154,7 +154,7 @@
                             "fnClick": function (nButton, oConfig, oFlash) {
                                 alert('open popup');
                             }
-                        }
+                        }--%>
                     ]
                 }
             });
