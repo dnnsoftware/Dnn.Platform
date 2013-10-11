@@ -411,17 +411,17 @@ namespace DotNetNuke.Framework
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
         public static void RegisterJQuery(Page page)
         {
-            //ClientResourceManager.RegisterScript(page, GetJQueryScriptReference(), FileOrder.Js.jQuery, "DnnPageHeaderProvider");
-            //ClientResourceManager.RegisterScript(page, GetJQueryMigrateScriptReference(), FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+            ClientResourceManager.RegisterScript(page, GetJQueryScriptReference(), FileOrder.Js.jQuery, "DnnPageHeaderProvider");
+            ClientResourceManager.RegisterScript(page, GetJQueryMigrateScriptReference(), FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
+          //  JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
         public static void RegisterJQueryUI(Page page)
         {
-            //RegisterJQuery(page);
-            //ClientResourceManager.RegisterScript(page, GetJQueryUIScriptReference(), FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            RegisterJQuery(page);
+            ClientResourceManager.RegisterScript(page, GetJQueryUIScriptReference(), FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
+            //JavaScript.RequestRegistration(CommonJs.jQueryUI);
         }
 
         public static void RegisterDnnJQueryPlugins(Page page)

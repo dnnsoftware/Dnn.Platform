@@ -1782,4 +1782,7 @@
   <data name="Weekly.Text" xml:space="preserve">
     <value>Weekly</value>
   </data>
+  <data name="ScriptCollision.Text" xml:space="preserve">
+    <value>Requests for two or more different versions of JavaScript libraries were made for this page. The details have been logged to the event log.</value>
+  </data>
 </root>

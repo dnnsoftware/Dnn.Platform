@@ -37,7 +37,9 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Globals = DotNetNuke.Common.Globals;
@@ -168,6 +170,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         public static void Register(Page page)
         {
             var scripts = GetScriptVersions();
+            var finalScripts = GetFinalScripts(scripts);
             foreach (string item in scripts)
             {
                 var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString() == item);
@@ -180,6 +183,41 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         RegisterScript(page, library.LibraryName);
                     }               
             }
+        }
+
+        private static object GetFinalScripts(IEnumerable<string> scripts)
+        {
+            var finalScripts=new List<JavaScriptLibrary>();
+            foreach (var item in scripts)
+            {
+                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString() == item);
+                var commonLibrary = finalScripts.Find(lib => lib.LibraryName == library.LibraryName);
+                //determine previous registration for same JSL
+                if (commonLibrary.Version > library.Version)
+                {
+                    //skip new library & log
+                    //need to log an event
+                    var objEventLog = new EventLogController();
+                    objEventLog.AddLog("Javascript Libraries - post depedencies", commonLibrary.Version.ToString() + " : " + library.Version.ToString(),
+                        PortalController.GetCurrentPortalSettings(),
+                        UserController.GetCurrentUserInfo().UserID,
+                        EventLogController.EventLogType.SCRIPT_COLLISION);
+                    var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile);
+                    var page = HttpContext.Current.Handler as Page;
+                    if (page != null)
+                    {
+                        UI.Skins.Skin.AddPageMessage(page, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
+                    }
+                }
+                else
+                {
+                    finalScripts.Remove(commonLibrary);
+                    finalScripts.Add(library);
+                }
+                
+                
+            }
+            return finalScripts;
         }
 
         private static IEnumerable<string> GetScriptVersions()
@@ -195,7 +233,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 if (library != null)
                 {
                     var package=PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == library.PackageID);
-                    if (package.Dependencies.Count > 0)
+                    if (package.Dependencies.Any())
                     {
                         foreach (var dependency in package.Dependencies)
                         {
@@ -226,11 +264,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private static JavaScriptLibrary GetHighestVersionLibrary(String jsname)
         {
             IEnumerable<JavaScriptLibrary> librarys = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname).OrderByDescending(l => l.Version);
-            if (librarys.Count() > 1)
+            if (librarys.Any())
             {
                 //need to log an event
                 var objEventLog = new EventLogController();
-                objEventLog.AddLog("Javascript Libraries",
+                objEventLog.AddLog("Javascript Libraries - request",
                     librarys.ToString(),
                     PortalController.GetCurrentPortalSettings(),
                     UserController.GetCurrentUserInfo().UserID,
