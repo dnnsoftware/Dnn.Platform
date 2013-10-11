@@ -236,6 +236,15 @@ namespace DotNetNuke.Services.Social.Notifications
                     recipient,
                     UserController.GetCurrentUserInfo().UserID);
             }
+
+            //if sendToast is true, then mark all recipients' as ready for toast.
+            if (notification.SendToast)
+            {
+                foreach (var messageRecipient in InternalMessagingController.Instance.GetMessageRecipients(notification.NotificationID))
+                {
+                    MarkReadyForToast(notification, messageRecipient.UserID);
+                }
+            }
         }
 
         public void CreateNotificationType(NotificationType notificationType)
@@ -368,8 +377,13 @@ namespace DotNetNuke.Services.Social.Notifications
 
 		public void MarkReadyForToast(Notification notification, UserInfo userInfo)
 		{
-			_dataService.MarkReadyForToast(notification.NotificationID, userInfo.UserID);
+			MarkReadyForToast(notification, userInfo.UserID);
 		}
+
+        public void MarkReadyForToast(Notification notification, int userId)
+        {
+            _dataService.MarkReadyForToast(notification.NotificationID, userId);
+        }
 
 		public void MarkToastSent(int notificationId, int userId)
 		{

@@ -41,8 +41,14 @@ namespace DotNetNuke.Services.Social.Notifications
     [Serializable]
     public class Notification : BaseEntityInfo, IHydratable
     {
+        #region Private Properties
+
         private int _notificationID = -1;
         private string _displayDate;
+
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
         /// NotificationID - The primary key
@@ -149,6 +155,19 @@ namespace DotNetNuke.Services.Social.Notifications
 		[XmlAttribute]
 		public bool SendToast { get; set; }
 
+        #endregion
+
+        #region Constructors
+
+        public Notification()
+        {
+            SendToast = true;
+        }
+
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
         /// Fill the object with data from database.
         /// </summary>
@@ -173,10 +192,16 @@ namespace DotNetNuke.Services.Social.Notifications
 				{
 					SendToast = Null.SetNullBoolean(dr["SendToast"]);
 				}
+				else
+				{
+                    SendToast = false;
+				}
 			}
 
             //add audit column data
             FillInternal(dr);
         }
+
+        #endregion
     }
 }
