@@ -311,7 +311,7 @@
         //console.log(jid);
         var data = {};
         data.JournalId = jid;
-        journalPost('SoftDelete',data,journalRemove,jid)
+        journalPost('SoftDelete', data, journalRemove, jid);
     };
     function journalRemove(data, jid) {
         $('#jid-' + jid).slideUp(function(){

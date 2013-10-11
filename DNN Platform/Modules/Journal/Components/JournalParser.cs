@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.Journal.Components
 				string tmp = tokenReplace.ReplaceJournalItemTokens(rowTemplate);
                 tmp = tmp.Replace("<br>", "<br />");
                 sb.Append("<div class=\"journalrow\" id=\"jid-" + ji.JournalId + "\">");
-                if (isAdmin || CurrentUser.UserID == ji.UserId) {
+                if (isAdmin || CurrentUser.UserID == ji.UserId || (ProfileId > Null.NullInteger && CurrentUser.UserID == ProfileId)) {
                     sb.Append("<div class=\"minidel\" onclick=\"journalDelete(this);\"></div>");
                 }
 				sb.Append(tmp);

@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.Journal
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
                 }
 
-                if (ji.UserId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                if (ji.UserId == UserInfo.UserID || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
                 {
                     jc.DeleteJournalItem(PortalSettings.PortalId, UserInfo.UserID, postData.JournalId);
                     return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.Journal
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
                 }
 
-                if (ji.UserId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                if (ji.UserId == UserInfo.UserID || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
                 {
                     jc.SoftDeleteJournalItem(PortalSettings.PortalId, UserInfo.UserID, postData.JournalId);
                     return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
@@ -447,7 +447,15 @@ namespace DotNetNuke.Modules.Journal
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "delete failed");
                 }
-                if (ci.UserId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+
+                var ji = JournalController.Instance.GetJournalItem(ActiveModule.OwnerPortalID, UserInfo.UserID, postData.JournalId);
+
+                if (ji == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
+                }
+
+                if (ci.UserId == UserInfo.UserID || ji.UserId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
                 {
                     JournalController.Instance.DeleteComment(postData.JournalId, postData.CommentId);
                     return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
