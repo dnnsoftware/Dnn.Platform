@@ -60,6 +60,7 @@
         // initial setup for toast
         if (checkLogin()) {
             dnn.toast.toastTimer = setTimeout(dnn.toast.refreshUser, 30000);
+            dnn.toast.refreshUser();
         }
     });
 
