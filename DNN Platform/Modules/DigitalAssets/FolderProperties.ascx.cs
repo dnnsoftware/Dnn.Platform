@@ -96,6 +96,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 CancelButton.Click += OnCancelClick;
                 SaveButton.Click += OnSaveClick;
                 PrepareFolderPreviewInfo();
+                cmdCopyPerm.Click += cmdCopyPerm_Click;
 
                 var mef = new ExtensionPointManager();
                 var folderFieldsExtension = mef.GetUserControlExtensionPointFirstByPriority("DigitalAssets", "FolderFieldsControlExtensionPoint");
@@ -185,6 +186,20 @@ namespace DotNetNuke.Modules.DigitalAssets
         private void OnCancelClick(object sender, EventArgs e)
         {
             Page.CloseClientDialog(false);
+        }
+
+        private void cmdCopyPerm_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FolderPermissionController.CopyPermissionsToSubfolders(Folder, PermissionsGrid.Permissions);
+                UI.Skins.Skin.AddModuleMessage(this, LocalizeString("PermissionsCopied"), ModuleMessage.ModuleMessageType.GreenSuccess);
+            }
+            catch (Exception ex)
+            {
+                UI.Skins.Skin.AddModuleMessage(this, LocalizeString("PermissionCopyError"), ModuleMessage.ModuleMessageType.RedError);
+                Exceptions.ProcessModuleLoadException(this, ex);
+            }
         }
 
         protected override void OnLoad(EventArgs e)
