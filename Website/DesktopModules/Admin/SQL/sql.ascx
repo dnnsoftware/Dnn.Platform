@@ -115,12 +115,12 @@
                 "iDisplayLength": -1,
                 "sDom": 'T<"clear">lfrtip',
                 "oTableTools": {
-                    "sSwfPath": "/dnn_platform/desktopmodules/admin/sql/plugins/datatables/swf/copy_csv_xls_pdf.swf",
+                    "sSwfPath": '<%=ResolveUrl("~/desktopmodules/admin/sql/plugins/datatables/swf/copy_csv_xls_pdf.swf") %>',
                     "aButtons": [
                         {
                             "sExtends": "copy",
                             "sToolTip": "<%=LocalizeString("CopyButtonAlt")%>",
-                            "sButtonText": "<img src='/dnn_platform/icons/sigma/CheckList_16X16_Gray.png'/>",
+                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/CheckList_16X16_Gray.png") %>'/>",
                             "fnComplete": function (nButton, oConfig, oFlash, sFlash) {
                                 $.dnnAlert({
                                     title: "<%=LocalizeString("CopyTitle")%>",
@@ -132,20 +132,20 @@
                             "sExtends": "csv",
                             "sToolTip": "<%=LocalizeString("CSVButtonAlt")%>",
                             "sTitle": query,
-                            "sButtonText": "<img src='/dnn_platform/icons/sigma/FileDownload_16x16_Black.png'/>"
+                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/FileDownload_16x16_Black.png") %>'/>"
                         },
                         {
                             "sExtends": "xls",
                             "sToolTip": "<%=LocalizeString("XLSButtonAlt")%>",
                             "sTitle": query,
-                            "sButtonText": "<img src='/dnn_platform/icons/sigma/ExtXlsx_16X16_Standard.png'/>"
+                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/ExtXlsx_16X16_Standard.png") %>'/>"
                         },
                         {
                             "sExtends": "pdf",
                             "sToolTip": "<%=LocalizeString("PDFButtonAlt")%>",
                             "sTitle": query,
                             "sPdfOrientation": "landscape",
-                            "sButtonText": "<img src='/dnn_platform/icons/sigma/ExtPdf_16X16_Standard.png'/>"
+                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/ExtPdf_16X16_Standard.png") %>'/>"
                         }<%--,
                         {
                             "sExtends": "text",
