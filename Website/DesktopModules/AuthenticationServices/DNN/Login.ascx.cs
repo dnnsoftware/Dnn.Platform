@@ -163,12 +163,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         UserController.VerifyUser(verificationCode.Replace(".", "+").Replace("-", "/").Replace("_", "="));
 
+                        var redirectTabId = Convert.ToInt32(GetSetting(PortalId, "Redirect_AfterRegistration"));
+
 	                    if (Request.IsAuthenticated)
 	                    {
-							Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
+                            Response.Redirect(Globals.NavigateURL(redirectTabId > 0 ? redirectTabId : PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
 	                    }
 	                    else
 	                    {
+                            if (redirectTabId > 0)
+                            {
+                                var redirectUrl = Globals.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
+                                redirectUrl = redirectUrl.Replace(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias), string.Empty);
+                                Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl));
+                            }
+
 		                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("VerificationSuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
 	                    }
                     }
