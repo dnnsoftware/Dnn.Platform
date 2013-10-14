@@ -909,6 +909,10 @@ AS
 
 GO
 
+/***** Fix issue CONTENT-1926: removed obsolete CoreMessaging_GetNextMessagesForDispatch Stored Procedure *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
