@@ -49,35 +49,27 @@ namespace DotNetNuke.Services.Search.Controllers
             {
                 return false;
             }
-            if (UserController.GetCurrentUserInfo().IsSuperUser || UserController.GetCurrentUserInfo().IsInRole("Administrators"))
+
+            if (searchResult.UniqueKey.Contains("AdminOnly"))
             {
-                if (searchResult.UniqueKey.Contains("AdminOnly"))
-                {
-                    return true;
-                }
+                return UserController.GetCurrentUserInfo().IsSuperUser || UserController.GetCurrentUserInfo().IsInRole("Administrators");
+            }
+            
+            if (searchResult.UniqueKey.Contains("FriendsAndGroups"))
+            {
+                return userInSearchResult.Social.Friend != null;
             }
 
-            if (userInSearchResult.Social.Friend != null)
+            if (searchResult.UniqueKey.Contains("MembersOnly"))
             {
-                if (searchResult.UniqueKey.Contains("FriendsAndGroups"))
-                {
-                    return true;
-                }
+                return UserController.GetCurrentUserInfo().UserID != Null.NullInteger;
             }
-            if (UserController.GetCurrentUserInfo().UserID != Null.NullInteger)
+
+            if (searchResult.UniqueKey.Contains("AllUsers"))
             {
-                if (searchResult.UniqueKey.Contains("MembersOnly"))
-                {
-                    return true;
-                }
+                return true;
             }
-            if (UserController.GetCurrentUserInfo().UserID == Null.NullInteger)
-            {
-                if (searchResult.UniqueKey.Contains("AllUsers"))
-                {
-                    return true;
-                }
-            }
+
             return false;
         }
 
