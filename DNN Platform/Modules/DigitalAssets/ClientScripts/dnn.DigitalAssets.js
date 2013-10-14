@@ -2273,8 +2273,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             folderPath = node.get_text() + '/' + folderPath;
             node = node.get_parent();
         }
-
-        return folderPath;
+        
+        return settings.rootFolderPath + folderPath;
     }
 
     function uploadFiles() {

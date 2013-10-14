@@ -260,10 +260,11 @@
             isHostMenu: <%= IsHostMenu ? "true" : "false" %>,
             maxFileUploadSize: <%= MaxUploadSize.ToString(CultureInfo.InvariantCulture) %>,
             maxFileUploadSizeHumanReadable: '<%= string.Format(new FileSizeFormatProvider(), "{0:fs}", MaxUploadSize) %>',
-            defaultFolderTypeId: '<%= Settings.Contains("DefaultFolderTypeId") ? Settings["DefaultFolderTypeId"].ToString() : "" %>',
+            defaultFolderTypeId: '<%= DefaultFolderTypeId %>',
             pageSize: '<%= PageSize %>', 
             view: '<%= ActiveView %>',
-            userId: '<%= UserId %>'
+            userId: '<%= UserId %>',
+            rootFolderPath: '<%= RootFolderViewModel.FolderPath %>'
         },
         // Resources
         {

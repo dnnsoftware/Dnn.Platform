@@ -61,27 +61,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
         }
 
-        private static string CurrentRootFolderPath
-        {
-            get
-            {
-                return IsHostMenu ? Globals.HostMapPath : PortalSettings.Current.HomeDirectoryMapPath;
-            }
-        }
-
-        private static string RootFolderPath
-        {
-            get
-            {
-                return MaskPath(CurrentRootFolderPath);
-            }
-        }
-
-        private static string MaskPath(string strOrigPath)
-        {
-            return strOrigPath.Replace(PathUtils.Instance.RemoveTrailingSlash(CurrentRootFolderPath), "0").Replace("/", "\\");
-        }
-
         protected static IOrderedQueryable<T> ApplyOrder<T>(IQueryable<T> source, string propertyName, bool asc)
         {
             var methodName = asc ? "OrderBy" : "OrderByDescending";
@@ -466,10 +445,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public FolderViewModel GetRootFolder()
         {
-            var folder = GetFolderViewModel(FolderManager.Instance.GetFolder(CurrentPortalId, ""));
-            folder.FolderName = LocalizationHelper.GetString("RootFolder.Text");
-            folder.FolderPath = RootFolderPath;
-            return folder;
+            return GetFolderViewModel(FolderManager.Instance.GetFolder(CurrentPortalId, ""));
         }
 
         public FolderViewModel CreateFolder(string folderName, int folderParentID, int folderMappingID, string mappedPath)
@@ -842,11 +818,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         
         protected virtual FolderViewModel GetFolderViewModel(IFolderInfo folder)
         {
+            var folderName = string.IsNullOrEmpty(folder.FolderName)
+                ? LocalizationHelper.GetString("RootFolder.Text")
+                : folder.FolderName;
+
             return new FolderViewModel
             {
                 FolderID = folder.FolderID,
                 FolderMappingID = folder.FolderMappingID,
-                FolderName = folder.FolderName,
+                FolderName = folderName,
                 FolderPath = folder.FolderPath,
                 PortalID = folder.PortalID,
                 LastModifiedOnDate = GetDateTimeString(folder.LastModifiedOnDate),

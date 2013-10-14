@@ -52,6 +52,8 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class View : PortalModuleBase, IActionable
     {
+        private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
+
         private readonly IDigitalAssetsController controller;
         private readonly ExtensionPointManager epm = new ExtensionPointManager();
 
@@ -105,6 +107,15 @@ namespace DotNetNuke.Modules.DigitalAssets
                         FolderMappingController.Instance.GetFolderMapping(controller.CurrentPortalId, "Secure").FolderMappingID.ToString(CultureInfo.InvariantCulture),
                         FolderMappingController.Instance.GetFolderMapping(controller.CurrentPortalId, "Database").FolderMappingID.ToString(CultureInfo.InvariantCulture)
                     };
+            }
+        }
+
+        protected string DefaultFolderTypeId
+        {
+            get
+            {
+                var defaultFolderTypeId = SettingsRepository.GetDefaultFolderTypeId(ModuleId);
+                return defaultFolderTypeId.HasValue ? defaultFolderTypeId.ToString() : "";
             }
         }
 
@@ -455,7 +466,13 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                return rootFolderViewModel ?? (rootFolderViewModel = controller.GetRootFolder());
+                if (rootFolderViewModel == null)
+                {
+                    var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
+                    this.rootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder();
+                }
+
+                return rootFolderViewModel;
             }
         }
 

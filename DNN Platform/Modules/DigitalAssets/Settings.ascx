@@ -5,7 +5,13 @@
 <h2 id="dnnSitePanel-BasicSettings" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("BasicSettings")%></a></h2>
 <fieldset>
     <div class="dnnFormItem">
-        <dnnweb:Label ID="DefaultFolderTypeLabel" runat="server" ResourceKey="DefaultFolderType" Suffix=":" HelpKey="DefaultFolderType.Help" ControlName="DefaultFolderTypeComboBox" />
+        <dnnweb:Label ID="DefaultFolderTypeLabel" runat="server" ResourceKey="DefaultFolderType" Suffix=":" ControlName="DefaultFolderTypeComboBox" />
 		<dnnweb:DnnComboBox id="DefaultFolderTypeComboBox" DataTextField="MappingName" DataValueField="FolderMappingID" runat="server" CssClass="dnnFixedSizeComboBox" />
     </div>
+    
+    <div class="dnnFormItem">
+        <dnnweb:Label ID="RootFolderLabel" runat="server" ResourceKey="RootFolder" Suffix=":" ControlName="RootFolderDropDownList" />
+        <dnnweb:DnnFolderDropDownList ID="RootFolderDropDownList" runat="server" /><br/>
+    </div>
+
 </fieldset>
