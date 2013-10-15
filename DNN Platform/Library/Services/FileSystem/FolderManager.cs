@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.FileSystem
         
         #region Private Events
         private event EventHandler<FolderDeletedEventArgs> FolderDeleted;
-        private event EventHandler<FolderAddedEventArgs> FolderAdded;
+        private event EventHandler<FolderChangedEventArgs> FolderAdded;
         private event EventHandler<FolderMovedEventArgs> FolderMoved;
         private event EventHandler<FolderRenamedEventArgs> FolderRenamed;
         private event EventHandler<FileDeletedEventArgs> FileDeleted;
@@ -297,7 +297,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (FolderDeleted != null)
             {
-                FolderDeleted(this, new FolderDeletedEventArgs()
+                FolderDeleted(this, new FolderDeletedEventArgs
                 {
                     FolderInfo = folderInfo,
                     UserId = userId,
@@ -306,15 +306,14 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void OnFolderAdded(IFolderInfo folderInfo, IFolderInfo parentFolderInfo, int userId)
+        private void OnFolderAdded(IFolderInfo folderInfo, int userId)
         {
             if (FolderAdded != null)
             {
-                FolderAdded(this, new FolderAddedEventArgs
+                FolderAdded(this, new FolderChangedEventArgs
                 {
                     FolderInfo = folderInfo,
-                    UserId = userId,
-                    ParentFolderInfo = parentFolderInfo
+                    UserId = userId
                 });
             }
         }
@@ -323,7 +322,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (FileDeleted != null)
             {
-                FileDeleted(this, new FileDeletedEventArgs()
+                FileDeleted(this, new FileDeletedEventArgs
                 {
                     FileInfo = fileInfo,
                     UserId = userId,
@@ -403,7 +402,7 @@ namespace DotNetNuke.Services.FileSystem
             var folder = GetFolder(folderId);
 
             // Notify add folder event
-            OnFolderAdded(folder, parentFolder, GetCurrentUserId());
+            OnFolderAdded(folder, GetCurrentUserId());
 
             return folder;
         }

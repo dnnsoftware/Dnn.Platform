@@ -480,7 +480,6 @@
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderDeletedEventArgs.cs" />
-    <Compile Include="Services\FileSystem\EventArgs\FolderAddedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileAddedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderRenamedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderChangedEventArgs.cs" />

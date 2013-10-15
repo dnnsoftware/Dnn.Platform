@@ -169,7 +169,7 @@ namespace DotNetNuke.Services.FileSystem
                 FileDeleted += value.FileDeleted;
                 FileRenamed += value.FileRenamed;
                 FileMoved += value.FileMoved;
-                FileAdded += value.FileManager_FileAdded;
+                FileAdded += value.FileAdded;
                 FileOverwritten += value.FileOverwritten;
             }
         }
@@ -179,7 +179,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (FileDeleted != null)
             {
-                FileDeleted(this, new FileDeletedEventArgs()
+                FileDeleted(this, new FileDeletedEventArgs
                     {
                         FileInfo = fileInfo,
                         UserId = userId,

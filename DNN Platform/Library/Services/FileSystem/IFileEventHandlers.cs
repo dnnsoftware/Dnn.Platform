@@ -31,11 +31,11 @@ namespace DotNetNuke.Services.FileSystem
 
         void FileMoved(object sender, FileMovedEventArgs args);
 
-        void FileManager_FileAdded(object sender, FileAddedEventArgs args);
+        void FileAdded(object sender, FileAddedEventArgs args);
 
         void FileOverwritten(object sender, FileChangedEventArgs args);
 
-        void FolderAdded(object sender, FolderAddedEventArgs args);
+        void FolderAdded(object sender, FolderChangedEventArgs args);
 
         void FolderMoved(object sender, FolderMovedEventArgs args);
 
