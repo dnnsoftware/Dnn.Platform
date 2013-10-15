@@ -175,41 +175,18 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// <retur>True if the Folder has been deleted, otherwise returns false</retur>
         private bool DeleteFolder(IFolderInfo folder, ICollection<ItemPathViewModel> notDeletedItems)
         {
-            if (folder == null) return true;
-
-            if (HasPermission(folder, "DELETE"))
+            var notDeletedSubfolders = new List<IFolderInfo>();
+            FolderManager.Instance.DeleteFolder(folder, notDeletedSubfolders);
+            if (!notDeletedSubfolders.Any())
             {
-                var folderManager = FolderManager.Instance;
-
-                var subfolders = folderManager.GetFolders(folder);
-
-                var allSubFoldersHasBeenDeleted = true;
-
-                foreach (var subfolder in subfolders)
-                {
-                    if (!DeleteFolder(subfolder, notDeletedItems))
-                    {
-                        allSubFoldersHasBeenDeleted = false;
-                    }
-                }
-
-                var files = folderManager.GetFiles(folder, false, true);
-
-                var fileManager = FileManager.Instance;
-                foreach (var file in files)
-                {
-                    fileManager.DeleteFile(file);
-                }
-
-                if (allSubFoldersHasBeenDeleted)
-                {
-                    folderManager.DeleteFolder(folder.FolderID);
-                    return true;
-                }
+                return false;
             }
-
-            notDeletedItems.Add(GetItemPathViewModel(folder));
-            return false;
+            
+            foreach (var notDeletedSubfolder in notDeletedSubfolders)
+            {
+                notDeletedItems.Add(GetItemPathViewModel(notDeletedSubfolder));
+            }
+            return true;
         }
 
         private IEnumerable<PermissionViewModel> GetPermissionViewModelCollection(IFolderInfo folder)

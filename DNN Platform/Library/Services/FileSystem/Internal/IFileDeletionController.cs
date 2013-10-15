@@ -18,29 +18,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-
-using DotNetNuke.Services.FileSystem.EventArgs;
-
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Services.FileSystem.Internal
 {
-    public interface IFileEventHandlers
+    public interface IFileDeletionController
     {
-        void FileDeleted(object sender, FileDeletedEventArgs args);
-
-        void FileRenamed(object sender, FileRenamedEventArgs args);
-
-        void FileMoved(object sender, FileMovedEventArgs args);
-
-        void FileManager_FileAdded(object sender, FileAddedEventArgs args);
-
-        void FileOverwritten(object sender, FileChangedEventArgs args);
-
-        void FolderAdded(object sender, FolderAddedEventArgs args);
-
-        void FolderMoved(object sender, FolderMovedEventArgs args);
-
-        void FolderRenamed(object sender, FolderRenamedEventArgs args);
-
-        void FolderDeleted(object sender, FolderDeletedEventArgs args);
-    }
+        void DeleteFile(IFileInfo file);
+        void DeleteFileData(IFileInfo file);
+    }    
 }

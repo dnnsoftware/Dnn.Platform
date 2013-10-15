@@ -42,6 +42,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.FileSystem.EventArgs;
+using DotNetNuke.Services.FileSystem.Internal;
 using ICSharpCode.SharpZipLib.Zip;
 
 namespace DotNetNuke.Services.FileSystem
@@ -54,7 +55,7 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
         
         #region Private Events
-        private event EventHandler<FileChangedEventArgs> FileDeleted;
+        private event EventHandler<FileDeletedEventArgs> FileDeleted;
         private event EventHandler<FileRenamedEventArgs> FileRenamed;
         private event EventHandler<FileMovedEventArgs> FileMoved;
         private event EventHandler<FileChangedEventArgs> FileOverwritten;
@@ -165,11 +166,11 @@ namespace DotNetNuke.Services.FileSystem
         {
             foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
             {
-                FileDeleted += value.FileManager_FileDeleted;
-                FileRenamed += value.FileManager_FileRenamed;
-                FileMoved += value.FileManager_FileMoved;
+                FileDeleted += value.FileDeleted;
+                FileRenamed += value.FileRenamed;
+                FileMoved += value.FileMoved;
                 FileAdded += value.FileManager_FileAdded;
-                FileOverwritten += value.FileManager_FileOverwritten;
+                FileOverwritten += value.FileOverwritten;
             }
         }
 
@@ -178,10 +179,11 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (FileDeleted != null)
             {
-                FileDeleted(this, new FileChangedEventArgs
+                FileDeleted(this, new FileDeletedEventArgs()
                     {
                         FileInfo = fileInfo,
-                        UserId = userId
+                        UserId = userId,
+                        IsCascadeDeleting = false
                     });
             }
         }
@@ -486,9 +488,8 @@ namespace DotNetNuke.Services.FileSystem
                     Logger.Error(ex);
 
                     if (!folderProvider.FileExists(folder, file.FileName))
-                    {
-                        DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);
-                        DeleteContentItem(file.ContentItemID);
+                    {                     
+                        FileDeletionController.Instance.DeleteFileData(file);
                     }
 
                     throw new FolderProviderException(
@@ -605,22 +606,10 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public virtual void DeleteFile(IFileInfo file)
         {
-
             Requires.NotNull("file", file);
-
-            var lockReason = "";
-            if (IsFileLocked(file, out lockReason))
-            {
-                throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
-            }
-
-            FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
-
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-
             try
             {
-                FolderProvider.Instance(folderMapping.FolderProviderType).DeleteFile(file);
+                FileDeletionController.Instance.DeleteFile(file);
             }
             catch (Exception ex)
             {
@@ -628,9 +617,6 @@ namespace DotNetNuke.Services.FileSystem
 
                 throw new FolderProviderException(Localization.Localization.GetExceptionMessage("DeleteFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been deleted."), ex);
             }
-
-            DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);
-            DeleteContentItem(file.ContentItemID);
 
             // Notify File Delete Event
             OnFileDeleted(file, GetCurrentUserID());
@@ -1286,12 +1272,12 @@ namespace DotNetNuke.Services.FileSystem
             return objContent;
         }
 
-        internal virtual void DeleteContentItem(int contentItemId)
-        {
-            if (contentItemId == Null.NullInteger) return;
+        //internal virtual void DeleteContentItem(int contentItemId)
+        //{
+        //    if (contentItemId == Null.NullInteger) return;
 
-            Util.GetContentController().DeleteContentItem(contentItemId);
-        }
+        //    Util.GetContentController().DeleteContentItem(contentItemId);
+        //}
 
         #endregion
 

@@ -2373,7 +2373,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             
             if (item.IsFolder) {
                 var hasBeenDeleted = true;
-                for (var j = 0; j < itemsNotDeleted.length; i++) {
+                for (var j = 0; j < itemsNotDeleted.length; j++) {
                     if(item.ItemId == itemsNotDeleted[j].ItemId) {
                         hasBeenDeleted = false;
                         break;

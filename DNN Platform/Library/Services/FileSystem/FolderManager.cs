@@ -54,10 +54,11 @@ namespace DotNetNuke.Services.FileSystem
         private const string DefaultUsersFoldersPath = "Users";
         
         #region Private Events
-        private event EventHandler<FolderChangedEventArgs> FolderDeleted;
+        private event EventHandler<FolderDeletedEventArgs> FolderDeleted;
         private event EventHandler<FolderAddedEventArgs> FolderAdded;
         private event EventHandler<FolderMovedEventArgs> FolderMoved;
         private event EventHandler<FolderRenamedEventArgs> FolderRenamed;
+        private event EventHandler<FileDeletedEventArgs> FileDeleted;
         #endregion
 
         #region Constructor
@@ -87,10 +88,11 @@ namespace DotNetNuke.Services.FileSystem
         {
             foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
             {
-                FolderDeleted += value.FolderManager_FolderDeleted;
-                FolderRenamed += value.FolderManager_FolderRenamed;
-                FolderMoved += value.FolderManager_FolderMoved;
-                FolderAdded += value.FolderManager_FolderAdded;
+                FolderDeleted += value.FolderDeleted;
+                FolderRenamed += value.FolderRenamed;
+                FolderMoved += value.FolderMoved;
+                FolderAdded += value.FolderAdded;
+                FileDeleted += value.FileDeleted;
             }
         }
 
@@ -291,14 +293,15 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void OnFolderDeleted(IFolderInfo folderInfo, int userId)
+        private void OnFolderDeleted(IFolderInfo folderInfo, int userId, bool isCascadeDeleting)
         {
             if (FolderDeleted != null)
             {
-                FolderDeleted(this, new FolderChangedEventArgs
+                FolderDeleted(this, new FolderDeletedEventArgs()
                 {
                     FolderInfo = folderInfo,
-                    UserId = userId
+                    UserId = userId,
+                    IsCascadeDeletng = isCascadeDeleting
                 });
             }
         }
@@ -312,6 +315,19 @@ namespace DotNetNuke.Services.FileSystem
                     FolderInfo = folderInfo,
                     UserId = userId,
                     ParentFolderInfo = parentFolderInfo
+                });
+            }
+        }
+
+        private void OnFileDeleted(IFileInfo fileInfo, int userId, bool isCascadeDeleting)
+        {
+            if (FileDeleted != null)
+            {
+                FileDeleted(this, new FileDeletedEventArgs()
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId,
+                    IsCascadeDeleting = isCascadeDeleting
                 });
             }
         }
@@ -422,6 +438,11 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public virtual void DeleteFolder(IFolderInfo folder)
         {
+            DeleteFolderInternal(folder, false);
+        }
+
+        private void DeleteFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
+        {
             Requires.NotNull("folder", folder);
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
@@ -434,7 +455,10 @@ namespace DotNetNuke.Services.FileSystem
             {
                 Logger.Error(ex);
 
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("DeleteFolderUnderlyingSystemError", "The underlying system threw an exception. The folder has not been deleted."), ex);
+                throw new FolderProviderException(
+                    Localization.Localization.GetExceptionMessage("DeleteFolderUnderlyingSystemError",
+                                                                  "The underlying system threw an exception. The folder has not been deleted."),
+                    ex);
             }
 
             if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
@@ -444,7 +468,7 @@ namespace DotNetNuke.Services.FileSystem
             DeleteFolder(folder.PortalID, folder.FolderPath);
 
             // Notify folder deleted event
-            OnFolderDeleted(folder, GetCurrentUserId());
+            OnFolderDeleted(folder, GetCurrentUserId(), isCascadeDeleting);
         }
 
         /// <summary>
@@ -456,6 +480,59 @@ namespace DotNetNuke.Services.FileSystem
             var folder = GetFolder(folderId);
 
             DeleteFolder(folder);
+        }
+
+        /// <summary>
+        /// Deletes the specified folder and all its content
+        /// </summary>
+        /// <param name="folder">The folder to delete</param>
+        /// <param name="notDeletedSubfolders">A collection with all not deleted subfolders after processiong the action</param>
+        /// <returns></returns>
+        public void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders)
+        {
+            DeleteFolderRecursive(folder, notDeletedSubfolders);
+        }
+
+        /// <summary>
+        /// Deletes the specified folder and all its content
+        /// </summary>
+        /// <param name="folder">The folder to delete</param>
+        /// <param name="notDeletedSubfolders">A collection with all not deleted subfolders after processiong the action</param>
+        /// <returns></returns>
+        private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders)
+        {
+            if (folder == null) return true;
+
+            if (PortalSettings.Current.UserInfo.IsSuperUser || FolderPermissionController.HasFolderPermission(folder.FolderPermissions, "DELETE"))
+            {
+                var subfolders = GetFolders(folder);
+
+                var allSubFoldersHasBeenDeleted = true;
+
+                foreach (var subfolder in subfolders)
+                {
+                    if (!DeleteFolderRecursive(subfolder, notDeletedSubfolders))
+                    {
+                        allSubFoldersHasBeenDeleted = false;
+                    }
+                }
+
+                var files = GetFiles(folder, false, true);
+                foreach (var file in files)
+                {                    
+                    FileDeletionController.Instance.DeleteFile(file);
+                    OnFileDeleted(file, GetCurrentUserId(), true);
+                }
+
+                if (allSubFoldersHasBeenDeleted)
+                {
+                    DeleteFolderInternal(folder, true);
+                    return true;
+                }
+            }
+
+            notDeletedSubfolders.Add(folder);
+            return false;
         }
 
         /// <summary>

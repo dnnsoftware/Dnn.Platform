@@ -266,7 +266,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
             {
-                FileChanged += value.FileManager_FileOverwritten;
+                FileChanged += value.FileOverwritten;
             }
         }
 
