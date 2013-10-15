@@ -21,10 +21,8 @@
 
 namespace DotNetNuke.Services.FileSystem.EventArgs
 {
-    public class FolderDeletedEventArgs : System.EventArgs
+    public class FolderDeletedEventArgs : FolderChangedEventArgs
     {
-        public IFolderInfo FolderInfo { get; set; }
-        public int UserId { get; set; }
         public bool IsCascadeDeletng { get; set; }
     }
 }

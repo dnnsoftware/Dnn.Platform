@@ -24,18 +24,33 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Services.FileSystem.Internal
 {
     public class FileDeletionController : ServiceLocator< IFileDeletionController, FileDeletionController>, IFileDeletionController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileDeletionController));
         public void DeleteFile(IFileInfo file)
         {
-            FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
+            string lockReason;
+            if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
+            {
+                throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
+            }
 
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            FolderProvider.Instance(folderMapping.FolderProviderType).DeleteFile(file);
-            
+            FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
+            try
+            {
+                var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
+                FolderProvider.Instance(folderMapping.FolderProviderType).DeleteFile(file);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("DeleteFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been deleted."), ex);
+            }
+
             DeleteFileData(file);
         }
 

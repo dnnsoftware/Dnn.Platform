@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 
@@ -65,6 +66,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IFileVersionController> _fileVersionController;
         private Mock<IContentWorkflowController> _contentWorkflowController;
         private Mock<IFileEventHandlersContainer> _fileEventHandlersContainer;
+        private Mock<IFileLockingController> _mockFileLockingController;
 
         #endregion
 
@@ -87,6 +89,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _globals = new Mock<IGlobals>();
             _cbo = new Mock<ICBO>();
             _pathUtils = new Mock<IPathUtils>();
+            _mockFileLockingController = new Mock<IFileLockingController>();
             
             FolderManager.RegisterInstance(_folderManager.Object);
             FolderPermissionControllerWrapper.RegisterInstance(_folderPermissionController.Object);
@@ -104,11 +107,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _fileInfo = new Mock<IFileInfo>();
 
             _fileManager = new FileManager();
+
+            FileLockingController.SetTestableInstance(_mockFileLockingController.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
+            FileLockingController.ClearInstance();
             MockComponentProvider.ResetContainer();
         }
 
@@ -445,7 +451,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFolder.Setup(mf => mf.DeleteFile(_fileInfo.Object)).Verifiable();
 
             string someString;
-            _mockFileManager.Setup(mfm => mfm.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
+            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
 
             _mockFileManager.Object.DeleteFile(_fileInfo.Object);
 
@@ -472,7 +478,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
             string someString;
-            _mockFileManager.Setup(mfm => mfm.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
+            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
 
             _mockFolder.Setup(mf => mf.DeleteFile(_fileInfo.Object)).Throws<Exception>();
 
@@ -798,7 +804,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _mockFileManager.Setup(mfm => mfm.GetFileContent(_fileInfo.Object)).Returns(fileContent);
             string someString;
-            _mockFileManager.Setup(mfm => mfm.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
+            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
             _mockFileManager.Setup(mfm => mfm.MoveVersions(_fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
 
             _mockFolder.Setup(mf => mf.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent)).Verifiable();
@@ -838,7 +844,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _mockFileManager.Setup(mfm => mfm.GetFileContent(_fileInfo.Object)).Returns(fileContent);
             string someString;
-            _mockFileManager.Setup(mfm => mfm.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
+            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
             _mockFileManager.Setup(mfm => mfm.MoveVersions(_fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
             _mockFileManager.Object.MoveFile(_fileInfo.Object, _folderInfo.Object);
 
@@ -866,7 +872,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _mockFileManager.Setup(mfm => mfm.GetFileContent(_fileInfo.Object)).Returns(fileContent);
             string someString;
-            _mockFileManager.Setup(mfm => mfm.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
+            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
             _mockFileManager.Setup(mfm => mfm.MoveVersions(_fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
 
             var existingFile = new FileInfo();

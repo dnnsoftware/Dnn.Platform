@@ -19,10 +19,11 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace DotNetNuke.Services.FileSystem.EventArgs
+namespace DotNetNuke.Services.FileSystem.Internal
 {
-    public class FileDeletedEventArgs : FileChangedEventArgs
+    public interface IFileLockingController
     {
-        public bool IsCascadeDeleting { get; set; }
+        bool IsFileLocked(IFileInfo file, out string lockReasonKey);
+        bool IsFileOutOfPublishPeriod(IFileInfo file, int portalId, int userId);
     }
 }

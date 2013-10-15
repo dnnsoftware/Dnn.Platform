@@ -266,6 +266,42 @@ namespace DotNetNuke.Services.FileSystem
 			return FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID;
 		}
 
+        private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders, bool isRecursiveDeletionFolder)
+        {
+            if (folder == null) return true;
+
+            if (PortalSettings.Current.UserInfo.IsSuperUser || FolderPermissionController.HasFolderPermission(folder.FolderPermissions, "DELETE"))
+            {
+                var subfolders = GetFolders(folder);
+
+                var allSubFoldersHasBeenDeleted = true;
+
+                foreach (var subfolder in subfolders)
+                {
+                    if (!DeleteFolderRecursive(subfolder, notDeletedSubfolders, false))
+                    {
+                        allSubFoldersHasBeenDeleted = false;
+                    }
+                }
+
+                var files = GetFiles(folder, false, true);
+                foreach (var file in files)
+                {
+                    FileDeletionController.Instance.DeleteFile(file);
+                    OnFileDeleted(file, GetCurrentUserId(), true);
+                }
+
+                if (allSubFoldersHasBeenDeleted)
+                {
+                    DeleteFolderInternal(folder, !isRecursiveDeletionFolder);
+                    return true;
+                }
+            }
+
+            notDeletedSubfolders.Add(folder);
+            return false;
+        }
+
         #region On Folder Events
         private void OnFolderMoved(IFolderInfo folderInfo, int userId, string oldFolderPath)
         {
@@ -489,52 +525,10 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns></returns>
         public void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders)
         {
-            DeleteFolderRecursive(folder, notDeletedSubfolders);
+            DeleteFolderRecursive(folder, notDeletedSubfolders, true);
         }
 
-        /// <summary>
-        /// Deletes the specified folder and all its content
-        /// </summary>
-        /// <param name="folder">The folder to delete</param>
-        /// <param name="notDeletedSubfolders">A collection with all not deleted subfolders after processiong the action</param>
-        /// <returns></returns>
-        private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders)
-        {
-            if (folder == null) return true;
-
-            if (PortalSettings.Current.UserInfo.IsSuperUser || FolderPermissionController.HasFolderPermission(folder.FolderPermissions, "DELETE"))
-            {
-                var subfolders = GetFolders(folder);
-
-                var allSubFoldersHasBeenDeleted = true;
-
-                foreach (var subfolder in subfolders)
-                {
-                    if (!DeleteFolderRecursive(subfolder, notDeletedSubfolders))
-                    {
-                        allSubFoldersHasBeenDeleted = false;
-                    }
-                }
-
-                var files = GetFiles(folder, false, true);
-                foreach (var file in files)
-                {                    
-                    FileDeletionController.Instance.DeleteFile(file);
-                    OnFileDeleted(file, GetCurrentUserId(), true);
-                }
-
-                if (allSubFoldersHasBeenDeleted)
-                {
-                    DeleteFolderInternal(folder, true);
-                    return true;
-                }
-            }
-
-            notDeletedSubfolders.Add(folder);
-            return false;
-        }
-
-        /// <summary>
+       /// <summary>
         /// Checks the existence of the specified folder in the specified portal.
         /// </summary>
         /// <param name="portalId">The portal where to check the existence of the folder.</param>

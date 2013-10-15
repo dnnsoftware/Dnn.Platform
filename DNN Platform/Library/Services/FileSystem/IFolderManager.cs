@@ -87,8 +87,8 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Delete the specified folder and all its content
         /// </summary>
-        /// <param name="folder" The folder to delete></param>
-        /// <param name="notDeletedSubfolders">A colelction with all not deleted subfolders</param>
+        /// <param name="folder"> The folder to delete></param>
+        /// <param name="notDeletedSubfolders">A collection with all not deleted subfolders</param>
         void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders);
 
         /// <summary>

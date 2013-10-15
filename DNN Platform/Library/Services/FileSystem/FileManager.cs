@@ -404,7 +404,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     //Publish Period
-                    if (fileExists && IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserID))
+                    if (fileExists && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserID))
                     {
                         throw new FileLockedException(
                                         Localization.Localization.GetExceptionMessage("FileLockedOutOfPublishPeriodError",
@@ -607,17 +607,8 @@ namespace DotNetNuke.Services.FileSystem
         public virtual void DeleteFile(IFileInfo file)
         {
             Requires.NotNull("file", file);
-            try
-            {
-                FileDeletionController.Instance.DeleteFile(file);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("DeleteFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been deleted."), ex);
-            }
-
+            FileDeletionController.Instance.DeleteFile(file);
+            
             // Notify File Delete Event
             OnFileDeleted(file, GetCurrentUserID());
         }
@@ -923,7 +914,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             var lockReason = "";
-            if (IsFileLocked(file, out lockReason))
+            if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
             {
                 throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
             }
@@ -1270,72 +1261,6 @@ namespace DotNetNuke.Services.FileSystem
             objContent.ContentItemId = Util.GetContentController().AddContentItem(objContent);
 
             return objContent;
-        }
-
-        //internal virtual void DeleteContentItem(int contentItemId)
-        //{
-        //    if (contentItemId == Null.NullInteger) return;
-
-        //    Util.GetContentController().DeleteContentItem(contentItemId);
-        //}
-
-        #endregion
-
-        #region File Locked
-        /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        internal virtual bool IsFileLocked(IFileInfo file, out string lockReasonKey)
-        {
-            lockReasonKey = "";
-
-            var allowedUser = IsHostAdminUser(file.PortalId, UserController.GetCurrentUserInfo().UserID);
-            if (allowedUser)
-            {
-                return false;
-            }
-
-            if (file.ContentItemID != Null.NullInteger)
-            {
-                var workflowCompleted = ContentWorkflowController.Instance.IsWorkflowCompleted(file.ContentItemID);
-                if (!workflowCompleted)
-                {
-                    lockReasonKey = "FileLockedRunningWorkflowError";
-                    return true;
-                }
-            }
-
-            var outOfPublishPeriod = IsFileOutOfPublishPeriod(file);
-            if (outOfPublishPeriod)
-            {
-                lockReasonKey = "FileLockedOutOfPublishPeriodError";
-                return true;
-            }
-
-            return false;
-        }
-
-        internal virtual bool IsFileOutOfPublishPeriod(IFileInfo file, int portalId, int userId)
-        {
-            if (IsHostAdminUser(portalId, userId))
-            {
-                return false;
-            }
-            return IsFileOutOfPublishPeriod(file);
-        }
-
-        internal virtual bool IsFileOutOfPublishPeriod(IFileInfo file)
-        {
-            //Publish Period locks
-            return (file.EnablePublishPeriod && (file.StartDate > DateTime.Today || (file.EndDate < DateTime.Today && file.EndDate != Null.NullDate)));
-        }
-
-        internal virtual bool IsHostAdminUser(int portalId, int userId)
-        {
-            if (userId == Null.NullInteger)
-            {
-                return false;
-            }
-            var user = UserController.GetUserById(portalId, userId);
-            return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(new PortalSettings(portalId).AdministratorRoleName);
         }
 
         #endregion
