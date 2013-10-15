@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.Admin.Languages
     /// -----------------------------------------------------------------------------
     public partial class LanguageEditor : PortalModuleBase, IActionable
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (LanguageEditor));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguageEditor));
         #region Private Enums
 
         /// -----------------------------------------------------------------------------
@@ -237,8 +237,8 @@ namespace DotNetNuke.Modules.Admin.Languages
                     else
                     {
                         // Update default value
-                        var p = (Pair) EditTable[key];
-                        p.Second = ((Pair) DefaultTable[key]).First;
+                        var p = (Pair)EditTable[key];
+                        p.Second = ((Pair)DefaultTable[key]).First;
                         EditTable[key] = p;
                     }
                 }
@@ -709,9 +709,9 @@ namespace DotNetNuke.Modules.Admin.Languages
                 {
                     if ((di.ItemType == GridItemType.Item || di.ItemType == GridItemType.AlternatingItem))
                     {
-                        var resourceKey = (Label) di.FindControl("resourceKey");
-                        var txtValue = (TextBox) di.FindControl("txtValue");
-                        var txtDefault = (TextBox) di.FindControl("txtDefault");
+                        var resourceKey = (Label)di.FindControl("resourceKey");
+                        var txtValue = (TextBox)di.FindControl("txtValue");
+                        var txtDefault = (TextBox)di.FindControl("txtDefault");
 
                         node = resDoc.SelectSingleNode(GetResourceKeyXPath(resourceKey.Text) + "/value");
 
@@ -942,7 +942,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             foreach (string folder in Directory.GetDirectories(path))
             {
                 var folderInfo = new DirectoryInfo(folder);
-                var node = new RadTreeNode {Value = folderInfo.FullName, Text = folderInfo.Name, ExpandMode = TreeNodeExpandMode.ServerSideCallBack};
+                var node = new RadTreeNode { Value = folderInfo.FullName, Text = folderInfo.Name, ExpandMode = TreeNodeExpandMode.ServerSideCallBack };
 
                 if (HasLocalResources(folderInfo.FullName))
                 {
@@ -959,15 +959,18 @@ namespace DotNetNuke.Modules.Admin.Languages
             {
                 return true;
             }
+
+            bool hasResources = false;
             foreach (string folder in Directory.GetDirectories(path))
             {
                 if ((File.GetAttributes(folder) & FileAttributes.ReparsePoint) != FileAttributes.ReparsePoint)
                 {
                     folderInfo = new DirectoryInfo(folder);
-                    return HasLocalResources(folderInfo.FullName);
+                    hasResources = hasResources || HasLocalResources(folderInfo.FullName);
                 }
             }
-            return folderInfo.GetFiles("*.resx").Length > 0;
+            return hasResources || folderInfo.GetFiles("*.resx").Length > 0;
+
         }
 
         private void GetResxFiles(string path, RadTreeNodeEventArgs e)
@@ -981,7 +984,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 {
                     continue;
                 }
-                var node = new RadTreeNode {Value = fileInfo.FullName, Text = fileInfo.Name.Replace(".resx", "")};
+                var node = new RadTreeNode { Value = fileInfo.FullName, Text = fileInfo.Name.Replace(".resx", "") };
                 e.Node.Nodes.Add(node);
             }
         }
@@ -993,13 +996,13 @@ namespace DotNetNuke.Modules.Admin.Languages
                 if (e.Item.ItemType == GridItemType.AlternatingItem || e.Item.ItemType == GridItemType.Item)
                 {
                     HyperLink c = null;
-                    c = (HyperLink) e.Item.FindControl("lnkEdit");
+                    c = (HyperLink)e.Item.FindControl("lnkEdit");
                     if ((c != null))
                     {
                         ClientAPI.AddButtonConfirm(c, Localization.GetString("SaveWarning", LocalResourceFile));
                     }
 
-                    var p = (Pair) ((DictionaryEntry) e.Item.DataItem).Value;
+                    var p = (Pair)((DictionaryEntry)e.Item.DataItem).Value;
 
                     var t = (TextBox)e.Item.FindControl("txtValue");
                     var d = (TextBox)e.Item.FindControl("txtDefault");
@@ -1015,7 +1018,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     }
                     if (length > 30)
                     {
-                        int height = 18*(length/30);
+                        int height = 18 * (length / 30);
                         if (height > 108)
                         {
                             height = 108;
