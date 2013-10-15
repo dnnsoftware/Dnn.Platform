@@ -479,6 +479,7 @@
     $.fn.dnnCheckbox = function (options) {
         var settings = {
             cls: 'dnnCheckbox'  /* checkbox  */
+            , labelClass: 'dnnBoxLabel'
         };
         settings = $.extend(settings, options || {});
         
@@ -538,7 +539,7 @@
             }
             
             if (label) {
-                label.css('display', 'inline-block');
+                label.addClass(settings.labelClass);
                 if (!parentLabel) {
                     label.click(function (e) {
                         $ch.triggerHandler('focus');

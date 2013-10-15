@@ -1392,6 +1392,7 @@ a.pinHelp {
 .dnnCheckbox-focus {
 	background-color: #e3e3e5;
 }
+.dnnBoxLabel{ display: inline-block;}
 /* normal checkbox fix */
 .dnnFormItem input[type="checkbox"].normalCheckBox {
     display: inline-block;
