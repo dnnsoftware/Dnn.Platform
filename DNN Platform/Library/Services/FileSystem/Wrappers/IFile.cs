@@ -31,6 +31,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         FileAttributes GetAttributes(string path);
         DateTime GetLastWriteTime(string path);
         void Move(string sourceFileName, string destFileName);
+        void Copy(string sourceFileName, string destinationFileName, bool overwrite);
         Stream OpenRead(string path);
         byte[] ReadAllBytes(string path);
         void SetAttributes(string path, FileAttributes fileAttributes);
