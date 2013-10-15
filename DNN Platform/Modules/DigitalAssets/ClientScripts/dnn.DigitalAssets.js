@@ -1441,7 +1441,20 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         });
     }
 
+    function getParentFolderName(parentFolder) {
+        if (parentFolder.indexOf(settings.rootFolderPath) == 0) {
+            parentFolder = parentFolder.substring(settings.rootFolderPath.length);
+        }
+        
+        return treeView.get_nodes().getNode(0).get_text() + '/' + parentFolder;
+    }
+
     function itemsDatabind(data, noItemsText) {
+        
+        for (var i = 0; i < data.Items.length; i++) {
+            data.Items[i].ParentFolder = getParentFolderName(data.Items[i].ParentFolder);
+        }
+
         grid.set_virtualItemCount(data.TotalCount);
         grid.set_dataSource(data.Items);
         grid.dataBind();
