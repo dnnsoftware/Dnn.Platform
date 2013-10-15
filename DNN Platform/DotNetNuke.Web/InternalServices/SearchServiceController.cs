@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Caching;
 using System.Web.Http;
 
@@ -36,6 +37,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
@@ -406,6 +408,21 @@ namespace DotNetNuke.Web.InternalServices
 
                     foreach (var preview in previews)
                     {
+                        //if the document type is user, then try to add user pic into preview's custom attributes.
+                        if (preview.DocumentTypeName == "user")
+                        {
+                            var match = Regex.Match(preview.DocumentUrl, "userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase);
+                            if (match.Success)
+                            {
+                                var userid = Convert.ToInt32(match.Groups[2].Value);
+                                var user = UserController.GetUserById(PortalSettings.PortalId, userid);
+                                if (user != null)
+                                {
+                                    preview.Attributes.Add("Avatar", user.Profile.PhotoURL);
+                                }
+                            }
+                        }
+
                         var groupedResult = results.SingleOrDefault(g => g.DocumentTypeName == preview.DocumentTypeName);
                         if (groupedResult != null)
                         {
@@ -414,7 +431,8 @@ namespace DotNetNuke.Web.InternalServices
                             {
                                 Title = preview.Title,
                                 Snippet = preview.Snippet,
-                                DocumentUrl = preview.DocumentUrl
+                                DocumentUrl = preview.DocumentUrl,
+                                Attributes = preview.Attributes
                             });
                         }
                         else

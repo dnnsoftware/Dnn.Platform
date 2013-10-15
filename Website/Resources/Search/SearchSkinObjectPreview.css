@@ -58,6 +58,14 @@ ul.searchSkinObjectPreview li {
         ul.searchSkinObjectPreview > li > span {
         }
 
+        ul.searchSkinObjectPreview > li > span img.userpic {
+            width: 32px;
+            height: 32px;
+            display: block;
+            float: left;
+            margin-right: 4px;
+        }
+
             ul.searchSkinObjectPreview > li > span > b {
                 font-weight: bold;
                 color: #000;
