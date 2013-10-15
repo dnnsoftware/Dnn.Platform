@@ -141,7 +141,7 @@ namespace DotNetNuke.Security.Permissions
                     SaveFolderPermissions(f);
                     clearCache = true;
                 }
-                clearCache = clearCache || CopyPermissionsToSubfoldersRecursive(f, newPermissions);
+                clearCache = CopyPermissionsToSubfoldersRecursive(f, newPermissions) || clearCache;
             }
             return clearCache;
         }
