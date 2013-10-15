@@ -120,6 +120,9 @@
   <data name="CancelButton.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="cmdCopyPerm.Text" xml:space="preserve">
+    <value>Copy Permissions</value>
+  </data>
   <data name="DialogTitle.Text" xml:space="preserve">
     <value>{0} Folder Info</value>
   </data>
@@ -137,6 +140,18 @@
   </data>
   <data name="GeneralTab.Text" xml:space="preserve">
     <value>General</value>
+  </data>
+  <data name="lblCopyPerm.Help" xml:space="preserve">
+    <value>Copies the currently selected permissions for the folder to subfolders.</value>
+  </data>
+  <data name="lblCopyPerm.Text" xml:space="preserve">
+    <value>Copy Permissions to Subfolders:</value>
+  </data>
+  <data name="PermissionCopyError.Text" xml:space="preserve">
+    <value>There was an error copying the permissions</value>
+  </data>
+  <data name="PermissionsCopied.Text" xml:space="preserve">
+    <value>Permissions copied successfully</value>
   </data>
   <data name="PermissionsTab.Text" xml:space="preserve">
     <value>Permissions</value>

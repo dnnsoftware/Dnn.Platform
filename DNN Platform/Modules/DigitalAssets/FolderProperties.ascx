@@ -38,6 +38,10 @@
             </div>
             <div id="dnnModuleDigitalAssetsPermissions">            
                 <dnn:folderpermissionsgrid id="PermissionsGrid" runat="server"/>
+                <div id="copyPermissionRow" runat="server">
+					<div class="dnnFormItem"><dnn:Label ID="lblCopyPerm" runat="server" ResourceKey="lblCopyPerm" /></div>
+					<asp:LinkButton ID="cmdCopyPerm" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCopyPerm" />
+				</div>
             </div>
         </div>
     </asp:Panel>
