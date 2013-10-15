@@ -619,7 +619,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         //either update the username or update the user details
                         if (CanUpdateUsername())
                         {
-                            UserController.ChangeUsername(User.UserID, HttpUtility.HtmlEncode(renameUserName.Value.ToString()));
+                            UserController.ChangeUsername(User.UserID, renameUserName.Value.ToString());
                         }
 
                         UserController.UpdateUser(UserPortalID, User);

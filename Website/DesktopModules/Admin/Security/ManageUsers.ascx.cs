@@ -613,7 +613,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (ctlUser.IsValid && (ctlProfile.IsValid))
             {
-                User.Username = HttpUtility.HtmlEncode(User.Username);
                 ctlUser.CreateUser();
             }
             else
