@@ -113,6 +113,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public static string EditThisPageButton = "//a[@id = 'ControlBar_EditPage' and contains(text(), 'Edit This Page')]";
 		public static string CloseEditModeButton = "//a[@id = 'ControlBar_EditPage' and contains(text(), 'Close Edit Mode')]";
+		public static string PageInEditMode = "//a[@class = 'controlBar_editPageInEditMode']";
 		public static string PageSettingsOption = "//a[contains(@href, 'edit/activeTab/settingTab')]";
 		public static string ExportPageOption = "//a[contains(@href, 'ctl/ExportTab')]";
 		public static string DeletePageOption = "//a[@id = 'ControlBar_DeletePage']";

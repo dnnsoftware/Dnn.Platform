@@ -54,7 +54,9 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public void SetPageToEditMode()
 		{
-			if (ElementPresent(By.XPath(ControlPanelIDs.EditThisPageButton)))
+			WaitForElement(By.XPath("//ul[@id = 'ControlEditPageMenu']"));
+
+			if (! ElementPresent(By.XPath(ControlPanelIDs.PageInEditMode)))
 			{
 				Trace.WriteLine(TraceLevelPage + "Set the Page to Edit mode:");
 				SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.EditThisPageButton);
@@ -68,9 +70,9 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public void CloseEditMode(string pageName)
 		{
-			Trace.WriteLine(TraceLevelPage + "Set the Page to Edit mode:");
+			Trace.WriteLine(TraceLevelPage + "Close Page Edit mode:");
 			SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.CloseEditModeButton);
-			FindElement(By.XPath("//a[@class = 'controlBar_editPageInEditMode']")).WaitTillNotVisible();
+			FindElement(By.XPath(ControlPanelIDs.PageInEditMode)).WaitTillNotVisible();
 		}
 
 		/*
