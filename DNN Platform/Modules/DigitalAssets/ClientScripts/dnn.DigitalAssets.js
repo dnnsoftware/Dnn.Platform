@@ -608,7 +608,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         loadFolderFirstPage(currentFolderId);
     }
 
-    function refreshFolder() {
+    function refreshFolder(keepCurrentPage) {
+        if (keepCurrentPage && keepCurrentPage === true) {
+            internalResetGridComponents();
+            var pageSize = grid.get_pageSize();
+            var startIndex = grid.get_currentPageIndex() * pageSize;
+            loadFolder(currentFolderId, startIndex, pageSize, null);
+            return;
+        }
+
         refreshFolderNode(getCurrentNode());
     }
     
@@ -1359,7 +1367,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         grid.set_currentPageIndex(0);
         loadFolder(folderId, 0, grid.get_pageSize(), null);
     }
-    
+        
     function updateModuleState() {
         var state = "folderId=" + getCurrentNode().get_value() +
                     "&view=" + currentView +
