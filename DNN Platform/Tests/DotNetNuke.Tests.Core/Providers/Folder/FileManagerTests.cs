@@ -67,6 +67,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IContentWorkflowController> _contentWorkflowController;
         private Mock<IFileEventHandlersContainer> _fileEventHandlersContainer;
         private Mock<IFileLockingController> _mockFileLockingController;
+        private Mock<IFileDeletionController> _mockFileDeletionController;
 
         #endregion
 
@@ -90,6 +91,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _cbo = new Mock<ICBO>();
             _pathUtils = new Mock<IPathUtils>();
             _mockFileLockingController = new Mock<IFileLockingController>();
+            _mockFileDeletionController = new Mock<IFileDeletionController>();
             
             FolderManager.RegisterInstance(_folderManager.Object);
             FolderPermissionControllerWrapper.RegisterInstance(_folderPermissionController.Object);
@@ -109,12 +111,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _fileManager = new FileManager();
 
             FileLockingController.SetTestableInstance(_mockFileLockingController.Object);
+            FileDeletionController.SetTestableInstance(_mockFileDeletionController.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
             FileLockingController.ClearInstance();
+            FileDeletionController.ClearInstance();
             MockComponentProvider.ResetContainer();
         }
 
@@ -436,51 +440,28 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        public void DeleteFile_Calls_FolderProvider_DeleteFile()
+        public void DeleteFile_Calls_FileDeletionControllerDeleteFile()
         {
             _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
             _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
             _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
 
-            _fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(_fileInfo.Object, false));
-            
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFolder.Setup(mf => mf.DeleteFile(_fileInfo.Object)).Verifiable();
-
-            string someString;
-            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
+            _mockFileDeletionController.Setup(mfdc => mfdc.DeleteFile(_fileInfo.Object)).Verifiable();
 
             _mockFileManager.Object.DeleteFile(_fileInfo.Object);
 
-            _mockFolder.Verify();
+            _mockFileDeletionController.Verify();
         }
 
         [Test]
         [ExpectedException(typeof(FolderProviderException))]
-        public void DeleteFile_Throws_When_FolderProvider_Throws()
+        public void DeleteFile_Throws_WhenFileDeletionControllerThrows()
         {
             _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
             _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
 
-            _fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(_fileInfo.Object, false));
-
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-
-            _folderPermissionController.Setup(fpc => fpc.CanAdminFolder(_folderInfo.Object)).Returns(true);
-
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            string someString;
-            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
-
-            _mockFolder.Setup(mf => mf.DeleteFile(_fileInfo.Object)).Throws<Exception>();
+            _mockFileDeletionController.Setup(mfdc => mfdc.DeleteFile(_fileInfo.Object))
+                                       .Throws<FolderProviderException>();
 
             _mockFileManager.Object.DeleteFile(_fileInfo.Object);
         }

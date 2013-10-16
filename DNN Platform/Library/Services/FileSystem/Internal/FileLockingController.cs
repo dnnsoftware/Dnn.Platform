@@ -22,7 +22,6 @@
 using System;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 
@@ -34,7 +33,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         {
             lockReasonKey = "";
 
-            var allowedUser = IsHostAdminUser(file.PortalId, UserController.GetCurrentUserInfo().UserID);
+            var allowedUser = UserSecurityController.Instance.IsHostAdminUser(file.PortalId);
             if (allowedUser)
             {
                 return false;
@@ -62,7 +61,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
         public bool IsFileOutOfPublishPeriod(IFileInfo file, int portalId, int userId)
         {
-            if (IsHostAdminUser(portalId, userId))
+            if (UserSecurityController.Instance.IsHostAdminUser(portalId, userId))
             {
                 return false;
             }
@@ -73,16 +72,6 @@ namespace DotNetNuke.Services.FileSystem.Internal
         {
             //Publish Period locks
             return (file.EnablePublishPeriod && (file.StartDate > DateTime.Today || (file.EndDate < DateTime.Today && file.EndDate != Null.NullDate)));
-        }
-
-        private bool IsHostAdminUser(int portalId, int userId)
-        {
-            if (userId == Null.NullInteger)
-            {
-                return false;
-            }
-            var user = UserController.GetUserById(portalId, userId);
-            return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(new PortalSettings(portalId).AdministratorRoleName);
         }
 
         protected override Func<IFileLockingController> GetFactory()

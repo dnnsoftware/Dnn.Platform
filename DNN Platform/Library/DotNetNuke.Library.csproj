@@ -506,6 +506,8 @@
     <Compile Include="Services\FileSystem\Internal\FileLockingController.cs" />
     <Compile Include="Services\FileSystem\Internal\IFileDeletionController.cs" />
     <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
+    <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
+    <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />

@@ -18,20 +18,24 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 namespace DotNetNuke.Services.FileSystem.Internal
 {
-    public interface IFileDeletionController
+    public interface IUserSecurityController
     {
         /// <summary>
-        /// Deletes the specified file.
+        /// Checks if the Current user is Host user or Admin user of the provided portal
         /// </summary>
-        /// <param name="file">The file to delete.</param>
-        void DeleteFile(IFileInfo file);
+        /// <param name="portalId">Portal Id to check Admin users</param>
+        /// <returns>True if the Current user is Host user or Admin user. False otherwise</returns>
+        bool IsHostAdminUser(int portalId);
 
         /// <summary>
-        /// Deletes the specified file metadata.
+        /// Checks if the provided user is Host user or Admin user of the provided portal
         /// </summary>
-        /// <param name="file">The file to delete its metadata.</param>
-        void DeleteFileData(IFileInfo file);
-    }    
+        /// <param name="portalId">Portal Id to check Admin users</param>
+        /// <param name="userId">User Id to check</param>
+        /// <returns>True if the user is Host user or Admin user. False otherwise</returns>
+        bool IsHostAdminUser(int portalId, int userId);
+    }
 }

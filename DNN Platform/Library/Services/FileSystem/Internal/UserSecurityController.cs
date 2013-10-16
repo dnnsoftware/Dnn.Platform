@@ -18,20 +18,34 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Internal;
+using DotNetNuke.Framework;
+
 namespace DotNetNuke.Services.FileSystem.Internal
 {
-    public interface IFileDeletionController
+    public class UserSecurityController : ServiceLocator<IUserSecurityController, UserSecurityController>, IUserSecurityController
     {
-        /// <summary>
-        /// Deletes the specified file.
-        /// </summary>
-        /// <param name="file">The file to delete.</param>
-        void DeleteFile(IFileInfo file);
+        public bool IsHostAdminUser(int portalId)
+        {
+            return IsHostAdminUser(portalId, UserController.GetCurrentUserInfo().UserID);
+        }
 
-        /// <summary>
-        /// Deletes the specified file metadata.
-        /// </summary>
-        /// <param name="file">The file to delete its metadata.</param>
-        void DeleteFileData(IFileInfo file);
-    }    
+        public bool IsHostAdminUser(int portalId, int userId)
+        {
+            if (userId == Null.NullInteger)
+            {
+                return false;
+            }
+            var user = TestableUserController.Instance.GetUserById(portalId, userId);
+            return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(PortalControllerWrapper.Instance.GetPortal(portalId).AdministratorRoleName);
+        }
+
+        protected override System.Func<IUserSecurityController> GetFactory()
+        {
+            return () => new UserSecurityController();
+        }
+    }
 }
