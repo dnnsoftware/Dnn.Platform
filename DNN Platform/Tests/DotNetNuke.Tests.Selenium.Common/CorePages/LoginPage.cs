@@ -131,11 +131,11 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Login using url:");
 
-			OpenUsingUrl(baseUrl);
+			//OpenUsingUrl(baseUrl);
 
 			LetMeOut();
-			
-			DoLoginUsingUrl(username, password);
+
+			LoginUsingLoginLink(username, password);
 		}
 
 		public void LoginAsHost(string baseUrl)
