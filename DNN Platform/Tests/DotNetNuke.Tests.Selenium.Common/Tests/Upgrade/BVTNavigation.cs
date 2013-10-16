@@ -7,7 +7,6 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Common.Tests.Upgrade
 {
 	[TestFixture]
-	[Category("BVT")]
 	public abstract class BVTNavigation : CommonTestSteps
 	{
 		protected abstract string DataFileLocation { get; }
