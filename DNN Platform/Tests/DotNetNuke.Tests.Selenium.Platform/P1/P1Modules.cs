@@ -243,5 +243,19 @@ namespace DNNSelenium.Platform.P1
 		{
 			UpdateModuleSettings(assyName, pageClassName, openMethod, Modules.CommonModulesDescription);
 		}
+
+		[TestCase("Home/Page60", "HtmlModule", "ContentPane")]
+		[TestCase("Home/Page60", "HtmlModule", "LeftPane")]
+		[TestCase("Home/Page60", "HtmlModule", "ContentPaneLower")]
+		[TestCase("Home/Page60", "HtmlModule", "SideBarPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterLeftOuterPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterLeftPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterCenterPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterRightPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterRightOuterPane")]
+		public void Test016_DeleteModule(string pageName, string moduleName, string location)
+		{
+			DeleteModule(Modules.CommonModulesDescription, pageName, moduleName, location);
+		}
 	}
 }

@@ -37,38 +37,36 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
-			//Preconditions for
-			/*var adminPageManagementPage = new AdminPageManagementPage(_driver);
+			//Create a Page
+			/*var blankPage = new BlankPage(_driver);
+			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
+			blankPage.AddNewPage("page");
+
+			//Delete Default HTML Module on page
+			blankPage.OpenUsingUrl(_baseUrl,"/page");
+			var module = new Modules(_driver);
+			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
+			string moduleNumber =
+				module.WaitForElement(By.XPath(Modules.LocationDescription["ContentPane"].IdWhenOnPage + Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage + "/a")).GetAttribute("name");
+			module.DeleteModule(moduleNumber);
+
+			//Export new page as Default
+			var pageExportPage = new PageExportPage(_driver);
+			pageExportPage.OpenUsingControlPanel(_baseUrl + "/page");
+			pageExportPage.ExportPage("Default", "NewDefault");
+
+			//Create set of pages with New Default
+			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 			adminPageManagementPage.AddPagesInBulk("Page", 76, "Web", "Home");
-
-			var blankPage = new BlankPage(_driver);
-
-			var module = new Modules(_driver);
-
-			int pageNumber = 1;
-			while (pageNumber < 77)
-			{
-				blankPage.OpenUsingUrl(_baseUrl, "Home/Page" + pageNumber);
-				blankPage.SetPageToEditMode();
-
-				string moduleNumber =
-						module.WaitForElement(By.XPath(Modules.LocationDescription["ContentPane"].IdWhenOnPage +
-													   HtmlModuleDictionary.IdWhenOnPage + "/a")).GetAttribute("name");
-
-				module.DeleteModule(moduleNumber);
-				pageNumber++;
-
-			}
-
+			
+			//Create a page with 4 HtmlModuleDictionary Modules on page
 			blankPage.OpenUsingUrl(_baseUrl, "Home/Page61");
 			module.OpenModulePanelUsingControlPanel();
 			int i = 1;
 			while (i < 5)
 			{
-				module.AddNewModuleUsingMenu(HtmlModuleDictionary.IdWhenOnBanner,
-											HtmlModuleDictionary.IdWhenOnPage,
-											"ContentPane");
+				module.AddNewModuleUsingMenu(HtmlModuleDictionary.IdWhenOnBanner, HtmlModuleDictionary.IdWhenOnPage, "ContentPane");
 				i++;
 			}*/
 		}
@@ -76,20 +74,6 @@ namespace DNNSelenium.Common.Tests.P1
 		//[TestFixtureTearDown]
 		public void DeleteData()
 		{
-			OpenMainPageAndLoginAsHost();
-
-			var adminPageManagementPage = new AdminPageManagementPage(_driver);
-			adminPageManagementPage.OpenUsingButtons(_baseUrl);
-
-			int pageNumber = 1;
-
-			while (pageNumber < 75)
-			{
-				adminPageManagementPage.OpenUsingButtons(_baseUrl);
-				adminPageManagementPage.DeletePage("Page" + pageNumber, "Web");
-
-				pageNumber++;
-			}
 		}
 
 		public void AddModuleToContentPaneOnNewPage(Dictionary<string, Modules.ModuleIDs> modulesDescription, string pageName, string moduleName, string location)
@@ -622,6 +606,71 @@ namespace DNNSelenium.Common.Tests.P1
 								  currentPage.WaitForElement(
 									  By.XPath(modulesDescription[currentPage.PreLoadedModule].IdWhenOnPage + "//span[contains(@id, '_dnnTITLE_titleLabel')]")).Text.ToUpper(),
 								  "The new Module Title is not saved correctly");
+		}
+
+		public void DeleteModule(Dictionary<string, Modules.ModuleIDs> modulesDescription, string pageName, string moduleName,
+													   string location)
+		{
+			var module = new Modules(_driver);
+
+			string moduleNameOnPage = modulesDescription[moduleName].IdWhenOnPage;
+			string locationOnPage = Modules.LocationDescription[location].IdWhenOnPage;
+
+			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Delete the Module'");
+
+			var blankPage = new BlankPage(_driver);
+			blankPage.OpenUsingUrl(_baseUrl, pageName);
+			blankPage.SetPageToEditMode();
+
+			string moduleNumber =
+				module.WaitForElement(By.XPath(locationOnPage + moduleNameOnPage + "/a")).GetAttribute("name");
+
+			module.DeleteModule(moduleNumber);
+
+			blankPage.OpenUsingUrl(_baseUrl, pageName);
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the module " + moduleNumber + " deleted");
+			Assert.IsFalse(module.ElementPresent(By.XPath(locationOnPage + moduleNameOnPage + "/a[@name = '" + moduleNumber + "']")),
+						   "The Module is not deleted correctly");
+		}
+
+		[TestCase("Home/Page1", "AccountLoginModule", "LeftPane")]
+		[TestCase("Home/Page2", "AccountRegistrationModule", "LeftPane")]
+		[TestCase("Home/Page4", "AdvancedSettingsModule", "LeftPane")]
+		[TestCase("Home/Page5", "BannersModule", "LeftPane")]
+		[TestCase("Home/Page7", "ConfigurationManagerModule", "LeftPane")]
+		[TestCase("Home/Page8", "ConsoleModule", "LeftPane")]
+		[TestCase("Home/Page9", "ContentListModule", "LeftPane")]
+		[TestCase("Home/Page10", "DashboardModule", "LeftPane")]
+		[TestCase("Home/Page11", "DDRMenuModule", "LeftPane")]
+		[TestCase("Home/Page12", "DigitalAssetManagementModule", "LeftPane")]
+		[TestCase("Home/Page15", "ExtensionsModule", "LeftPane")]
+		[TestCase("Home/Page17", "GoogleAnalyticsModule", "LeftPane")]
+		[TestCase("Home/Page20", "HtmlModule", "LeftPane")]
+		[TestCase("Home/Page21", "JournalModule", "LeftPane")]
+		[TestCase("Home/Page22", "LanguagesModule", "LeftPane")]
+		[TestCase("Home/Page24", "ListsModule", "LeftPane")]
+		[TestCase("Home/Page25", "LogViewerModule", "LeftPane")]
+		[TestCase("Home/Page26", "MemberDirectoryModule", "LeftPane")]
+		[TestCase("Home/Page27", "MessageCenterModule", "LeftPane")]
+		[TestCase("Home/Page29", "NewslettersModule", "LeftPane")]
+		[TestCase("Home/Page30", "PagesModule", "LeftPane")]
+		[TestCase("Home/Page31", "ProfessionalPreviewModule", "LeftPane")]
+		[TestCase("Home/Page33", "RazorHostModule", "LeftPane")]
+		[TestCase("Home/Page34", "RecycleBinModule", "LeftPane")]
+		[TestCase("Home/Page35", "SearchAdminModule", "LeftPane")]
+		[TestCase("Home/Page36", "SearchResultsModule", "LeftPane")]
+		[TestCase("Home/Page40", "SiteLogModule", "LeftPane")]
+		[TestCase("Home/Page41", "SiteWizardModule", "LeftPane")]
+		[TestCase("Home/Page42", "SiteMapModule", "LeftPane")]
+		[TestCase("Home/Page43", "SkinsModule", "LeftPane")]
+		[TestCase("Home/Page44", "SocialGroupsModule", "LeftPane")]
+		[TestCase("Home/Page45", "TaxonomyManagerModule", "LeftPane")]
+		[TestCase("Home/Page47", "VendorsModule", "LeftPane")]
+		[TestCase("Home/Page48", "ViewProfileModule", "LeftPane")]
+		[TestCase("Home/Page74", "ModuleCreator", "LeftPane")]
+		public void Test016_DeleteModule(string pageName, string moduleName, string location)
+		{
+			DeleteModule(Modules.CommonModulesDescription, pageName, moduleName, location);
 		}
 	}
 }
