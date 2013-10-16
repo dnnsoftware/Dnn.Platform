@@ -75,7 +75,6 @@ namespace DNNSelenium.Common.Tests.Upgrade
 		}
 
 		[TestCaseSource("UpgradeData")]
-		[Category("Upgrade")]
 		public void UpgradeTest(XElement settings)
 		{
 			TryTest(RunUpgradeTest, settings);

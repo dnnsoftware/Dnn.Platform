@@ -9,7 +9,6 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Common.Tests.BVT
 {
 	[TestFixture]
-	[Category("BVT")]
 	public abstract class BVTSecurityRoles : CommonTestSteps
 	{
 		public string _roleName;

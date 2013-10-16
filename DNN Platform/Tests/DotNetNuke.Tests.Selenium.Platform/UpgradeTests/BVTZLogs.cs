@@ -4,6 +4,7 @@ using NUnit.Framework;
 namespace DNNSelenium.Platform.UpgradeTests
 {
 	[TestFixture]
+	[Category("Upgrade")]
 	public class BVTZLogs : Common.Tests.BVT.BVTZLogs
 	{
 		protected override string DataFileLocation

@@ -9,7 +9,6 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Common.Tests.BVT
 {
 	[TestFixture]
-	[Category("BVT")]
 	public abstract class BVTChildSite : CommonTestSteps
 	{
 		public string _siteAlias;
