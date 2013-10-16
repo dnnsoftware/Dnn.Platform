@@ -10,6 +10,7 @@ using DNNSelenium.Common.CorePages;
 using DNNSelenium.Common.Properties;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using InstallerPage = DNNSelenium.Common.CorePages.InstallerPage;
 
 namespace DNNSelenium.Common.BaseClasses
 {
@@ -95,5 +96,25 @@ namespace DNNSelenium.Common.BaseClasses
 			StringAssert.AreEqualIgnoringCase(logContentAfterTests, logContentBeforeTests, "ERROR in the Log");
 		}
 
+		public void CreateChildSiteAndPrepareSettings(string childSiteName)
+		{
+			//create a child site
+			HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
+			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
+			hostSiteMgmtPage.AddNewChildSite(_baseUrl, childSiteName, "Child Site");
+
+			//navigate to child site
+			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
+			hostSiteMgmtPage.NavigateToChildSite(_baseUrl, childSiteName);
+
+			//close welcome screen on child site
+			var installerPage = new InstallerPage(_driver);
+			installerPage.WelcomeScreen();
+
+			//disable popups on child site
+			var adminSiteSettingsPage = new AdminSiteSettingsPage(_driver);
+			adminSiteSettingsPage.OpenUsingButtons(_baseUrl);
+			adminSiteSettingsPage.DisablePopups();
+		}
 	}
 }

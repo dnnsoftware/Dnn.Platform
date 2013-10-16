@@ -47,20 +47,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
-            //create a child site
-            HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
-            hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
-            hostSiteMgmtPage.AddNewChildSite(_baseUrl, _childSiteName, "Child Site");
-            //navigate to child site
-            hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
-            hostSiteMgmtPage.NavigateToChildSite(_baseUrl, _childSiteName);
-            //close welcome screen on child site
-            var installerPage = new InstallerPage(_driver);
-            installerPage.WelcomeScreen();
-            //disable popups on child site
-            var adminSiteSettingsPage = new AdminSiteSettingsPage(_driver);
-            adminSiteSettingsPage.OpenUsingButtons(_baseUrl);
-            adminSiteSettingsPage.DisablePopups();
+			//CreateChildSiteAndPrepareSettings(_childSiteName);
 			
 			_logContent = LogContent();
 		}
@@ -132,9 +119,8 @@ namespace DNNSelenium.Common.Tests.P1
 						   "The Vocabulary is not deleted correctly");
 		}
 
-	    [Test]
+		[Test]//Testcase trace: Test-671
 	    public void Test004_Host_VocabularyWithApplicationScopeShouldBeAvailableOnChildSite()
-            //Testcase trace: Test-671
 	    {
 	        Trace.WriteLine(BasePage.RunningTestKeyWord + "'Host: Add Vocabulary with Application scope - it should be available on child site'");
 
@@ -151,8 +137,7 @@ namespace DNNSelenium.Common.Tests.P1
                         "The Vocabulary scope is not 'Application'");
 
             //Navigate to Child site using its url and Open 'Taxonomy' page
-            var childadminTaxonomyPage = new AdminTaxonomyPage(_driver);
-            childadminTaxonomyPage.OpenUsingButtons(_baseUrl + "/" + _childSiteName);
+			adminTaxonomyPage.OpenUsingButtons(_baseUrl + "/" + _childSiteName);
 
             //Assert the new vocabulary exists and Assert the new vocabulary's scope is Application
             Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Vocabulary is present in child site and its scope is Application");
@@ -160,9 +145,8 @@ namespace DNNSelenium.Common.Tests.P1
                         "The Vocabulary is not present or its scope is not 'Application'");
 	    }
 
-	    [Test]
+		[Test] //Testcase trace: Test-672
         public void Test005_Host_VocabularyWithWebsiteScopeShouldNotBeAvailableOnChildSite()
-            //Testcase trace: Test-672
         {
             Trace.WriteLine(BasePage.RunningTestKeyWord + "'Host: Add Vocabulary with Website scope - it should not be available on child site'");
 
@@ -179,8 +163,7 @@ namespace DNNSelenium.Common.Tests.P1
                         "The Vocabulary scope is not 'Website'");
 
             //Navigate to Child site using its url and Open 'Taxonomy' page
-            var childadminTaxonomyPage = new AdminTaxonomyPage(_driver);
-            childadminTaxonomyPage.OpenUsingButtons(_baseUrl + "/" + _childSiteName);
+			adminTaxonomyPage.OpenUsingButtons(_baseUrl + "/" + _childSiteName);
 
             //Assert the new vocabulary exists and Assert the new vocabulary's scope is Application
             Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Vocabulary is NOT present");
