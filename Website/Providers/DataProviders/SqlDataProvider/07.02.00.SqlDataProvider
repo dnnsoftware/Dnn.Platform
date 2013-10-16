@@ -914,6 +914,71 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
 GO
 
+
+/***** Story DNN-3133: Add sp GetAvailableUsersForIndex to get users who need update index. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+    @PortalId INT ,
+    @StartDate DATETIME ,
+	@pageIndex INT = 0,
+    @pageSize INT = 500
+AS 
+    BEGIN
+		DECLARE @startRow INT, @endRow INT
+		SELECT @startRow = @pageIndex * @pageSize + 1
+		SELECT @endRow = @startRow + @pageSize - 1;
+
+        WITH    ValidUsers
+                  AS ( SELECT   UserId
+                       FROM     ( SELECT DISTINCT
+                                            ( u.UserID ) ,
+                                            DENSE_RANK() OVER ( ORDER BY u.UserID ) AS rownumber
+                                  FROM      {databaseOwner}[{objectQualifier}Users] u
+                                            INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                            INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                                            INNER JOIN dbo.ProfilePropertyDefinition pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+                                  WHERE     up.PortalId = @PortalId
+                                            AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
+                                            AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
+                                ) AS T
+                       WHERE    T.rownumber BETWEEN @startRow AND @endRow
+                     ),
+                ValidDataType
+                  AS ( SELECT   EntryID
+                       FROM     {databaseOwner}[{objectQualifier}Lists]
+                       WHERE    ListName = 'DataType'
+                                AND SystemList = 1
+                                AND Value IN ( 'Text', 'RichText' )
+                     )
+            SELECT  DISTINCT u.UserID ,
+					u.DisplayName,
+                    pd.PropertyName ,
+                    CASE WHEN ( p.PropertyValue IS NULL ) THEN p.PropertyText
+                         ELSE p.PropertyValue
+                    END AS PropertyValue ,
+                    p.Visibility,
+					CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END AS 'ModifiedTime'
+            FROM    {databaseOwner}[{objectQualifier}Users] u
+                    INNER JOIN ValidUsers vu ON vu.UserId = u.UserID
+                    INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                    INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1
+                    INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+            WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
+
+        SELECT  COUNT(DISTINCT ( u.UserID )) AS TotalRecords
+        FROM    {databaseOwner}[{objectQualifier}Users] u
+                INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                INNER JOIN dbo.ProfilePropertyDefinition pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+        WHERE   up.PortalId = @PortalId
+                AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
+                AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
+    END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

@@ -23,6 +23,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Lists;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -51,8 +54,16 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     public class UserIndexer : IndexingProvider
     {
+        #region Private Properties
+
+        private const int BatchSize = 500;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserIndexer));
-        private static readonly int TabSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
+        private static readonly int UserSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
+
+        #endregion
+
+        #region Override Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -68,37 +79,75 @@ namespace DotNetNuke.Services.Search
         public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var users = UserController.GetUsers(portalId).Cast<UserInfo>().Where(u => u.LastModifiedOnDate > startDate);
+
             try
             {
-                foreach (var user in users)
+                var pageIndex = 0;
+                while (true)
                 {
-                    Array values = Enum.GetValues(typeof(UserVisibilityMode));
-                    foreach (var val in values)
-                    {
-                        var body = "";
-                        var mode = Enum.GetName(typeof(UserVisibilityMode), val);
-                        var props = user.Profile.ProfileProperties.Cast<ProfilePropertyDefinition>().Where(p => p.ProfileVisibility.VisibilityMode.ToString() == mode);
-                        foreach (var prop in props)
-                        {
-                            body += prop.PropertyValue + " ";
-                        }
-                        var searchDoc = new SearchDocument
-                        {
-                            SearchTypeId = TabSearchTypeId,
-                            UniqueKey = user.UserID.ToString() + val,
-                            AuthorUserId = user.UserID,
-                            PortalId = portalId,
-                            ModifiedTimeUtc = user.LastModifiedOnDate,
-                            Body = body,
-                            Description = user.Profile.FirstName,
-                            Title = user.DisplayName
-                        };
+                    var reader = DataProvider.Instance().GetAvailableUsersForIndex(portalId, startDate, pageIndex, BatchSize);
 
-                        Logger.Trace("UserIndexer: Search document for user [" + user.DisplayName + " uid:" + user.UserID + "]");
-                        searchDocuments.Add(searchDoc);
+                    while (reader.Read())
+                    {
+                        var userId = Convert.ToInt32(reader["UserId"]);
+                        var displayName = reader["DisplayName"].ToString();
+                        var propertyName = reader["PropertyName"].ToString();
+                        var propertyValue = reader["PropertyValue"].ToString();
+                        var visibilityMode = ((UserVisibilityMode) Convert.ToInt32(reader["Visibility"])).ToString();
+                        var modifiedTime = Convert.ToDateTime(reader["ModifiedTime"]);
+
+                        var uniqueKey = string.Format("{0}{1}", userId, visibilityMode);
+                        if (searchDocuments.Any(d => d.UniqueKey == uniqueKey))
+                        {
+                            var document = searchDocuments.First(d => d.UniqueKey == uniqueKey);
+                            document.Body += string.Format(" {0}", propertyValue);
+
+                            if (modifiedTime > document.ModifiedTimeUtc)
+                            {
+                                document.ModifiedTimeUtc = modifiedTime;
+                            }
+
+                            if (propertyName == "FirstName")
+                            {
+                                document.Description = propertyValue;
+                            }
+                        }
+                        else
+                        {
+                            //Need remove use exists index for all visibilities.
+                            DeleteDocuments(portalId, userId);
+                            var searchDoc = new SearchDocument
+                                            {
+                                                SearchTypeId = UserSearchTypeId,
+                                                UniqueKey = uniqueKey,
+                                                AuthorUserId = userId,
+                                                PortalId = portalId,
+                                                ModifiedTimeUtc = modifiedTime,
+                                                Body = string.Format("{0}", propertyValue),
+                                                Description = propertyName == "FirstName" ? propertyValue : string.Empty,
+                                                Title = displayName
+                                            };
+
+                            Logger.Trace("UserIndexer: Search document for user [" + displayName + " uid:" + userId + "]");
+                            searchDocuments.Add(searchDoc);
+                        }
+                    }
+
+                    //Get the next result (containing the total)
+                    reader.NextResult();
+
+                    //Get the total no of records from the second result
+                    var totalRecords = Globals.GetTotalRecords(ref reader);
+                    if (totalRecords <= BatchSize * (pageIndex + 1))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        pageIndex++;
                     }
                 }
+                
             }
             catch (Exception ex)
             {
@@ -108,10 +157,37 @@ namespace DotNetNuke.Services.Search
             return searchDocuments;
         }
 
+        #endregion
+
+        #region Private Methods
+
+        private void DeleteDocuments(int portalId, int userId)
+        {
+            Array values = Enum.GetValues(typeof(UserVisibilityMode));
+            foreach (var item in values)
+            {
+                var mode = Enum.GetName(typeof(UserVisibilityMode), item);
+                var searchDocument = new SearchDocument
+                                         {
+                                             UniqueKey = string.Format("{0}{1}", userId, mode),
+                                             SearchTypeId = UserSearchTypeId,
+                                             PortalId = portalId
+                                         };
+
+                InternalSearchController.Instance.DeleteSearchDocument(searchDocument);
+            }
+        }
+
+        #endregion
+
+        #region Obsoleted Methods
+
         [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'GetSearchDocuments' instead.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
             return null;
         }
+
+        #endregion
     }
 }
