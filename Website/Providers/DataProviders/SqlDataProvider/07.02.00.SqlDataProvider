@@ -939,7 +939,7 @@ AS
                                   FROM      {databaseOwner}[{objectQualifier}Users] u
                                             INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
                                             INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
-                                            INNER JOIN dbo.ProfilePropertyDefinition pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+                                            INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
                                   WHERE     up.PortalId = @PortalId
                                             AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
                                             AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
@@ -972,7 +972,7 @@ AS
         FROM    {databaseOwner}[{objectQualifier}Users] u
                 INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
                 INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
-                INNER JOIN dbo.ProfilePropertyDefinition pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+                INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
         WHERE   up.PortalId = @PortalId
                 AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
                 AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
