@@ -19,24 +19,29 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.ComponentModel;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints.Filters
 {
-    public interface IExtensionPointData
+    public class CompositeFilter : IExtensionPointFilter
     {
-        string Module { get; }
+        private readonly IList<IExtensionPointFilter> filters;
 
-        string Name { get; }
+        public CompositeFilter()
+        {
+            filters = new List<IExtensionPointFilter>();
+        }
 
-        string Group { get; }
+        public CompositeFilter And(IExtensionPointFilter filter)
+        {
+            filters.Add(filter);
+            return this;
+        }
 
-        int Priority { get; }
-
-        [DefaultValue(false)]
-        bool DisableOnHost { get; }
-
-        [DefaultValue(false)]
-        bool DisableUnauthenticated { get; }
+        public bool Condition(IExtensionPointData m)
+        {
+            return filters.All(f => f.Condition(m));
+        }
     }
 }

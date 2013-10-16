@@ -19,24 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.ComponentModel;
-
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints.Filters
 {
-    public interface IExtensionPointData
+    public interface IExtensionPointFilter
     {
-        string Module { get; }
-
-        string Name { get; }
-
-        string Group { get; }
-
-        int Priority { get; }
-
-        [DefaultValue(false)]
-        bool DisableOnHost { get; }
-
-        [DefaultValue(false)]
-        bool DisableUnauthenticated { get; }
+        bool Condition(IExtensionPointData m);
     }
 }

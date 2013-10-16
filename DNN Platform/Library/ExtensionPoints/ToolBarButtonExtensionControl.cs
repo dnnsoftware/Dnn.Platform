@@ -22,10 +22,12 @@
 using System;
 using System.ComponentModel;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.ExtensionPoints.Filters;
 
 namespace DotNetNuke.ExtensionPoints
 {
@@ -42,10 +44,12 @@ namespace DotNetNuke.ExtensionPoints
             var extensionPointManager = new ExtensionPointManager();
 
             var str = new StringBuilder();
-            
-            var isHostMenu = Globals.IsHostTab(PortalController.GetCurrentPortalSettings().ActiveTab.TabID);
 
-            foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(Module, Group, isHostMenu))
+            var filter = new CompositeFilter()
+                .And(new FilterByHostMenu(Globals.IsHostTab(PortalController.GetCurrentPortalSettings().ActiveTab.TabID)))
+                .And(new FilterByUnauthenticated(HttpContext.Current.Request.IsAuthenticated));
+            
+            foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(Module, Group, filter))
             {
                 if (extension is IToolBarMenuButtonExtensionPoint)
                 {

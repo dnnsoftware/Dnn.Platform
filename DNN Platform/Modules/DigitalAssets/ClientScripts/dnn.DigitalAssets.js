@@ -248,7 +248,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         
         var $ul = $("#dnnModuleDigitalAssetsLeftPaneActions", '#' + controls.scopeWrapperId);        
         
-        var actions = controller.getLeftPaneActions(settings.isHostMenu);
+        var actions = controller.getLeftPaneActions(settings);
         for (var i = 0, size = actions.length; i < size; i++) {
             var $li = $("<li></li>")
                 .attr('id', actions[i].id)

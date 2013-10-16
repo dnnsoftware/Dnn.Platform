@@ -258,6 +258,7 @@
             navigateUrl: '<%= ClientAPI.GetSafeJSString(NavigateUrl)%>',            
             selectedTab: '0',
             isHostMenu: <%= IsHostMenu ? "true" : "false" %>,
+            isAuthenticated: <%= Request.IsAuthenticated ? "true" : "false" %>,
             maxFileUploadSize: <%= MaxUploadSize.ToString(CultureInfo.InvariantCulture) %>,
             maxFileUploadSizeHumanReadable: '<%= string.Format(new FileSizeFormatProvider(), "{0:fs}", MaxUploadSize) %>',
             defaultFolderTypeId: '<%= DefaultFolderTypeId %>',

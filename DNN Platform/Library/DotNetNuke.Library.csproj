@@ -374,6 +374,11 @@
     <Compile Include="Entities\Users\UserTime.cs" />
     <Compile Include="Entities\Users\UserVisibilityMode.cs" />
     <Compile Include="ExtensionPoints\ContextMenuItemExtensionControl.cs" />
+    <Compile Include="ExtensionPoints\Filters\CompositeFilter.cs" />
+    <Compile Include="ExtensionPoints\Filters\NoFilter.cs" />
+    <Compile Include="ExtensionPoints\Filters\FilterByUnauthenticated.cs" />
+    <Compile Include="ExtensionPoints\Filters\FilterByHostMenu.cs" />
+    <Compile Include="ExtensionPoints\Filters\IExtensionPointFilter.cs" />
     <Compile Include="ExtensionPoints\IUserControlActions.cs" />
     <Compile Include="ExtensionPoints\IEditPageTabControlActions.cs" />
     <Compile Include="ExtensionPoints\DefaultExtensionControl.cs" />
