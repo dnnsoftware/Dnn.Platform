@@ -173,7 +173,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                                         UniqueName = columnExtension.UniqueName,
                                         ReadOnly = columnExtension.ReadOnly,
                                         Reorderable = columnExtension.Reorderable,
-                                        SortExpression = columnExtension.SortExpression
+                                        SortExpression = columnExtension.SortExpression,
+                                        HeaderTooltip = columnExtension.HeaderText
                                     };
                 column.HeaderStyle.Width = columnExtension.HeaderStyleWidth;
 
