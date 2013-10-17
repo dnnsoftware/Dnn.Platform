@@ -89,7 +89,8 @@
     padding: 9px 10px;
 }
 
-#dnnModuleDigitalAssetsSelectionToolbar, #dnnModuleDigitalAssetsListViewToolbar, #dnnModuleDigitalAssetsListContainer {    
+#dnnModuleDigitalAssetsSelectionToolbar, #dnnModuleDigitalAssetsListViewToolbar, #dnnModuleDigitalAssetsListContainer,
+.dnnModuleDigitalAssetsGrid > table > thead > tr {    
     min-height: 20px;
     border: none;
     border-right: 1px solid #E0E0E0;

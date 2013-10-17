@@ -176,6 +176,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         loadFolderFirstPage(currentFolderId);
         setView(settings.view == listViewMode ? listViewMode : gridViewMode);
         grid.set_pageSize(settings.pageSize ? settings.pageSize : 10);
+
+        controller.gridOnGridCreated(grid);
     }
     
     function initGridSelectAllUnselectAll(sender) {
