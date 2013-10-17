@@ -480,6 +480,16 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 if (rootFolderViewModel == null)
                 {
+                    if (SettingsRepository.IsGroupMode(ModuleId) && !string.IsNullOrEmpty(Request["groupId"]))
+                    {
+                        int groupId;
+
+                        if (int.TryParse(Request["groupId"], out groupId))
+                        {
+                            return controller.GetGroupFolder(groupId);
+                        }
+                    }
+
                     var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
                     this.rootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder();
                 }
@@ -499,14 +509,10 @@ namespace DotNetNuke.Modules.DigitalAssets
                 var stateCookie = Request.Cookies["damState-" + UserId];
                 var state = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : ""));
 
-                // TODO: Handle this
-                if (SettingsRepository.IsGroupMode(ModuleId))
-                {                    
-                }
-
                 int folderId;
                 if (int.TryParse(Request["folderId"] ?? state["folderId"], out folderId))
                 {
+                    // TODO: check this folder is under the module configured root folder
                     var folder = FolderManager.Instance.GetFolder(folderId);
                     Path = folder != null ? PathUtils.Instance.RemoveTrailingSlash(folder.FolderPath) : "";
                 }

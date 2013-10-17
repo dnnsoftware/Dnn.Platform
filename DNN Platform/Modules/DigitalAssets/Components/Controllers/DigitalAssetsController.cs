@@ -448,6 +448,34 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return GetFolderViewModel(FolderManager.Instance.GetFolder(CurrentPortalId, ""));
         }
 
+        public FolderViewModel GetGroupFolder(int groupId)
+        {
+            IFolderInfo groupFolder;
+            var groupFolderPath = "Groups/" + groupId;
+
+            if (!FolderManager.Instance.FolderExists(this.CurrentPortalId, groupFolderPath))
+            {
+                if (!FolderManager.Instance.FolderExists(this.CurrentPortalId, "Groups"))
+                {
+                    var folder = FolderManager.Instance.AddFolder(this.CurrentPortalId, "Groups");
+                    folder.IsProtected = true;
+                    FolderManager.Instance.UpdateFolder(folder);
+                }
+
+                groupFolder = FolderManager.Instance.AddFolder(this.CurrentPortalId, groupFolderPath);
+                groupFolder.IsProtected = true;
+                FolderManager.Instance.UpdateFolder(groupFolder);
+            }
+            else
+            {
+                groupFolder = FolderManager.Instance.GetFolder(this.CurrentPortalId, groupFolderPath);
+            }
+            
+            var folderViewModel = this.GetFolderViewModel(groupFolder);
+            folderViewModel.FolderName = "Group X"; // TODO: get group name
+            return folderViewModel;
+        }
+
         public FolderViewModel CreateFolder(string folderName, int folderParentID, int folderMappingID, string mappedPath)
         {
             Requires.NotNullOrEmpty("folderName", folderName);

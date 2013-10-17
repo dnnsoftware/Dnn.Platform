@@ -63,6 +63,13 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         FolderViewModel GetRootFolder();
 
         /// <summary>
+        /// Gets the group folder
+        /// </summary>
+        /// <param name="groupId">The identifier of the group.</param>
+        /// <returns>The root folderItem entity.</returns>
+        FolderViewModel GetGroupFolder(int groupId);
+
+        /// <summary>
         /// Gets the files and folders contained in the specified folder.
         /// </summary>
         /// <param name="folderId">Folder Identifier</param>
@@ -113,7 +120,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// </summary>
         /// <param name="items">Items list</param>
         /// <remarks>all the items belong at the same Folder</remarks>
-        /// <returns>The not deleted items list. The subfiles / subfolders for which the user has no permissions to delete</returns>
+        /// <returns>The non deleted item list. The files / subfolders for which the user has no permissions to delete</returns>
         IEnumerable<ItemPathViewModel> DeleteItems(IEnumerable<ItemBaseViewModel> items);
 
         /// <summary>
