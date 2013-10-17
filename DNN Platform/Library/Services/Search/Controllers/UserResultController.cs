@@ -21,12 +21,14 @@
 #region Usings
 
 using System;
-
+using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
 
@@ -40,12 +42,21 @@ namespace DotNetNuke.Services.Search.Controllers
     /// <remarks></remarks>
     public class UserResultController : BaseResultController
     {
+        #region Private Properties
+
+        private PortalSettings PortalSettings
+        {
+            get { return PortalController.GetCurrentPortalSettings(); }
+        }
+
+        #endregion
+
         #region Abstract Class Implmentation
 
         public override bool HasViewPermission(SearchResult searchResult)
         {
-            var userInSearchResult = UserController.GetUserById(PortalController.GetCurrentPortalSettings().PortalId, searchResult.AuthorUserId);
-            if (userInSearchResult.IsDeleted || userInSearchResult.UserID == Null.NullInteger)
+            var userInSearchResult = UserController.GetUserById(PortalSettings.PortalId, searchResult.AuthorUserId);
+            if (userInSearchResult == null || userInSearchResult.IsDeleted)
             {
                 return false;
             }
@@ -57,7 +68,10 @@ namespace DotNetNuke.Services.Search.Controllers
             
             if (searchResult.UniqueKey.Contains("FriendsAndGroups"))
             {
-                return userInSearchResult.Social.Friend != null;
+                var extendedVisibility = searchResult.UniqueKey.Contains("_")
+                                             ? searchResult.UniqueKey.Split('_')[1]
+                                             : string.Empty;
+                return HasSocialReplationship(userInSearchResult, UserController.GetCurrentUserInfo(), extendedVisibility);
             }
 
             if (searchResult.UniqueKey.Contains("MembersOnly"))
@@ -75,8 +89,59 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override string GetDocUrl(SearchResult searchResult)
         {
-            var url = Globals.NavigateURL(PortalController.GetCurrentPortalSettings().UserTabId, string.Empty, "userid=" + searchResult.AuthorUserId);
+            var url = Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + searchResult.AuthorUserId);
             return url;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private bool HasSocialReplationship(UserInfo targetUser, UserInfo accessingUser, string extendedVisibility)
+        {
+            if (string.IsNullOrEmpty(extendedVisibility))
+            {
+                return false;
+            }
+
+            var profileVisibility = new ProfileVisibility(PortalSettings.PortalId, extendedVisibility);
+
+            var isVisible = accessingUser.UserID == targetUser.UserID;
+            if (!isVisible)
+            {
+                //Relationships
+                foreach (var relationship in profileVisibility.RelationshipVisibilities)
+                {
+                    switch (relationship.RelationshipTypeId)
+                    {
+                        case (int)DefaultRelationshipTypes.Followers:
+                            isVisible = targetUser.Social.Following != null && targetUser.Social.Following.Status == RelationshipStatus.Accepted;
+                            break;
+                        case (int)DefaultRelationshipTypes.Friends:
+                            isVisible = targetUser.Social.Friend != null && targetUser.Social.Friend.Status == RelationshipStatus.Accepted;
+                            break;
+                        default:
+                            isVisible = targetUser.Social.UserRelationships.Any(userRelationship =>
+                                                                          (userRelationship.RelationshipId == relationship.RelationshipId
+                                                                              && accessingUser.UserID == userRelationship.RelatedUserId
+                                                                              && userRelationship.Status == RelationshipStatus.Accepted)
+                                                                      );
+                            break;
+                    }
+
+                    if (isVisible)
+                    {
+                        break;
+                    }
+                }
+                //Groups/Roles
+                if (profileVisibility.RoleVisibilities.Any(role => accessingUser.IsInRole(role.RoleName)))
+                {
+                    isVisible = true;
+                }
+            }
+
+            return isVisible;
         }
 
         #endregion

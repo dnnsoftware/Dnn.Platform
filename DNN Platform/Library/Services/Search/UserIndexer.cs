@@ -93,10 +93,15 @@ namespace DotNetNuke.Services.Search
                         var displayName = reader["DisplayName"].ToString();
                         var propertyName = reader["PropertyName"].ToString();
                         var propertyValue = reader["PropertyValue"].ToString();
-                        var visibilityMode = ((UserVisibilityMode) Convert.ToInt32(reader["Visibility"])).ToString();
+                        var visibilityMode = ((UserVisibilityMode) Convert.ToInt32(reader["Visibility"]));
                         var modifiedTime = Convert.ToDateTime(reader["ModifiedTime"]);
 
                         var uniqueKey = string.Format("{0}{1}", userId, visibilityMode);
+                        if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
+                        {
+                            uniqueKey = string.Format("{0}_{1}", uniqueKey, reader["ExtendedVisibility"]);
+                        }
+
                         if (searchDocuments.Any(d => d.UniqueKey == uniqueKey))
                         {
                             var document = searchDocuments.First(d => d.UniqueKey == uniqueKey);
