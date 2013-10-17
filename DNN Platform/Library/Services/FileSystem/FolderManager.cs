@@ -168,6 +168,36 @@ namespace DotNetNuke.Services.FileSystem
             return folder.FolderID;
         }
 
+        private void DeleteFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
+        {
+            Requires.NotNull("folder", folder);
+
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
+
+            try
+            {
+                FolderProvider.Instance(folderMapping.FolderProviderType).DeleteFolder(folder);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+
+                throw new FolderProviderException(
+                    Localization.Localization.GetExceptionMessage("DeleteFolderUnderlyingSystemError",
+                                                                  "The underlying system threw an exception. The folder has not been deleted."),
+                    ex);
+            }
+
+            if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
+            {
+                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, false);
+            }
+            DeleteFolder(folder.PortalID, folder.FolderPath);
+
+            // Notify folder deleted event
+            OnFolderDeleted(folder, GetCurrentUserId(), isCascadeDeleting);
+        }
+
         private IFolderInfo GetParentFolder(int portalId, string folderPath)
         {
             if (!String.IsNullOrEmpty(folderPath))
@@ -268,9 +298,9 @@ namespace DotNetNuke.Services.FileSystem
 
         private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders, bool isRecursiveDeletionFolder)
         {
-            if (folder == null) return true;
+            Requires.NotNull("folder", folder);
 
-            if (PortalSettings.Current.UserInfo.IsSuperUser || FolderPermissionController.HasFolderPermission(folder.FolderPermissions, "DELETE"))
+            if (UserSecurityController.Instance.HasFolderPermission(folder, "DELETE"))
             {
                 var subfolders = GetFolders(folder);
 
@@ -293,7 +323,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 if (allSubFoldersHasBeenDeleted)
                 {
-                    DeleteFolderInternal(folder, !isRecursiveDeletionFolder);
+                    DeleteFolderInternal(folder, !isRecursiveDeletionFolder);                    
                     return true;
                 }
             }
@@ -474,36 +504,6 @@ namespace DotNetNuke.Services.FileSystem
         public virtual void DeleteFolder(IFolderInfo folder)
         {
             DeleteFolderInternal(folder, false);
-        }
-
-        private void DeleteFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
-        {
-            Requires.NotNull("folder", folder);
-
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
-
-            try
-            {
-                FolderProvider.Instance(folderMapping.FolderProviderType).DeleteFolder(folder);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-
-                throw new FolderProviderException(
-                    Localization.Localization.GetExceptionMessage("DeleteFolderUnderlyingSystemError",
-                                                                  "The underlying system threw an exception. The folder has not been deleted."),
-                    ex);
-            }
-
-            if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
-            {
-                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, false);
-            }
-            DeleteFolder(folder.PortalID, folder.FolderPath);
-
-            // Notify folder deleted event
-            OnFolderDeleted(folder, GetCurrentUserId(), isCascadeDeleting);
         }
 
         /// <summary>

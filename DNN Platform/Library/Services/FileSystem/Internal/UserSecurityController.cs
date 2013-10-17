@@ -23,6 +23,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Framework;
+using DotNetNuke.Security.Permissions;
 
 namespace DotNetNuke.Services.FileSystem.Internal
 {
@@ -41,6 +42,12 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
             var user = TestableUserController.Instance.GetUserById(portalId, userId);
             return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(PortalControllerWrapper.Instance.GetPortal(portalId).AdministratorRoleName);
+        }
+
+        public bool HasFolderPermission(IFolderInfo folder, string permissionKey)
+        {
+            return UserController.GetCurrentUserInfo().IsSuperUser ||
+                   FolderPermissionController.HasFolderPermission(folder.FolderPermissions, permissionKey);
         }
 
         protected override System.Func<IUserSecurityController> GetFactory()

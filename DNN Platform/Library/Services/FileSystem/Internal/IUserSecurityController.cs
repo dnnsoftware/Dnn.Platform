@@ -37,5 +37,13 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// <param name="userId">User Id to check</param>
         /// <returns>True if the user is Host user or Admin user. False otherwise</returns>
         bool IsHostAdminUser(int portalId, int userId);
+
+        /// <summary>
+        /// Checks if the provided permission is allowed for the current user in the provided folder
+        /// </summary>
+        /// <param name="folder">Folder to check</param>
+        /// <param name="permissionKey">Permission key to check</param>
+        /// <returns></returns>
+        bool HasFolderPermission(IFolderInfo folder, string permissionKey);
     }
 }

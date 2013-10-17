@@ -23,75 +23,49 @@ using System;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Tests.Utilities;
+using Moq;
 
 namespace DotNetNuke.Tests.Core.Providers.Builders
 {
-    internal class FileInfoBuilder
+    internal class FolderInfoBuilder
     {
-        private int fileId;
         private int portalId;
         private int folderId;
-        private int contentItemId;
-        private DateTime startDate;
-        private DateTime endDate;
-        private bool enablePublishPeriod;
+        private string folderPath;
+        private string physicalPath;
         private int folderMappingID;
         
-        internal FileInfoBuilder()
+        internal FolderInfoBuilder()
         {
-            fileId = Constants.FOLDER_ValidFileId;
             portalId = Constants.CONTENT_ValidPortalId;
-            startDate = DateTime.Today;
-            endDate = DateTime.MaxValue;
-            enablePublishPeriod = false;
-            contentItemId = Null.NullInteger;
+            folderPath = Constants.FOLDER_ValidFolderRelativePath;
+            physicalPath = Constants.FOLDER_ValidFolderPath;
             folderMappingID = Constants.FOLDER_ValidFolderMappingID;
             folderId = Constants.FOLDER_ValidFolderId;
+            physicalPath = "";
         }
-
-        internal FileInfoBuilder WithFileId(int fileId)
+        internal FolderInfoBuilder WithPhysicalPath(string phisicalPath)
         {
-            this.fileId = fileId;
+            this.physicalPath = phisicalPath;
             return this;
         }
 
-        internal FileInfoBuilder WithContentItemId(int contentItemId)
+        internal FolderInfoBuilder WithFolderId(int folderId)
         {
-            this.contentItemId = contentItemId;
+            this.folderId = folderId;
             return this;
         }
 
-        internal FileInfoBuilder WithStartDate(DateTime startDate)
+        internal IFolderInfo Build()
         {
-            this.startDate = startDate;
-            return this;
-        }
-
-        internal FileInfoBuilder WithEndDate(DateTime endDate)
-        {
-            this.endDate = endDate;
-            return this;
-        }
-
-        internal FileInfoBuilder WithEnablePublishPeriod(bool enablePublishPeriod)
-        {
-            this.enablePublishPeriod = enablePublishPeriod;
-            return this;
-        }
-
-        internal FileInfo Build()
-        {
-            return new FileInfo
-                {
-                    FileId = fileId,
-                    PortalId = portalId,
-                    StartDate = startDate,
-                    EnablePublishPeriod = enablePublishPeriod,
-                    EndDate = endDate,
-                    ContentItemID = contentItemId,
-                    FolderMappingID = folderMappingID,
-                    FolderId = folderId
-                };
+            var mock = new Mock<IFolderInfo>();            
+            mock.Setup(f => f.FolderID).Returns(folderId);
+            mock.Setup(f => f.PortalID).Returns(portalId);
+            mock.Setup(f => f.FolderPath).Returns(folderPath);
+            mock.Setup(f => f.PhysicalPath).Returns(physicalPath);
+            mock.Setup(f => f.FolderMappingID).Returns(folderMappingID);
+            
+            return mock.Object;
         }
     }
 }
