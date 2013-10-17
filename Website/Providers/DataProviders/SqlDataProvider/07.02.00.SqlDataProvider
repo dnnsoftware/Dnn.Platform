@@ -956,10 +956,9 @@ AS
             SELECT  DISTINCT u.UserID ,
 					u.DisplayName,
                     pd.PropertyName ,
-                    CASE WHEN ( p.PropertyValue IS NULL ) THEN p.PropertyText
-                         ELSE p.PropertyValue
-                    END AS PropertyValue ,
+                    CASE WHEN (p.PropertyValue IS NULL) THEN p.PropertyText ELSE p.PropertyValue END AS PropertyValue,
                     p.Visibility,
+                    p.ExtendedVisibility,
 					CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END AS 'ModifiedTime'
             FROM    {databaseOwner}[{objectQualifier}Users] u
                     INNER JOIN ValidUsers vu ON vu.UserId = u.UserID
