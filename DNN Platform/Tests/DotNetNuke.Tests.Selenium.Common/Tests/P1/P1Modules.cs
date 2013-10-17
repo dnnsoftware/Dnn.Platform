@@ -38,7 +38,7 @@ namespace DNNSelenium.Common.Tests.P1
 			OpenMainPageAndLoginAsHost();
 
 			//Create a Page
-			/*var blankPage = new BlankPage(_driver);
+			var blankPage = new BlankPage(_driver);
 			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
 			blankPage.AddNewPage("page");
 
@@ -68,7 +68,7 @@ namespace DNNSelenium.Common.Tests.P1
 			{
 				module.AddNewModuleUsingMenu(HtmlModuleDictionary.IdWhenOnBanner, HtmlModuleDictionary.IdWhenOnPage, "ContentPane");
 				i++;
-			}*/
+			}
 		}
 
 		//[TestFixtureTearDown]
