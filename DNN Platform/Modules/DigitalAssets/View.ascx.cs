@@ -498,7 +498,12 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 var stateCookie = Request.Cookies["damState-" + UserId];
                 var state = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : ""));
-                
+
+                // TODO: Handle this
+                if (SettingsRepository.IsGroupMode(ModuleId))
+                {                    
+                }
+
                 int folderId;
                 if (int.TryParse(Request["folderId"] ?? state["folderId"], out folderId))
                 {

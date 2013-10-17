@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
@@ -64,6 +65,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                     DefaultFolderTypeComboBox.SelectedValue = defaultFolderTypeId.ToString();
                 }
 
+                GroupModeComboBox.SelectedValue = SettingsRepository.IsGroupMode(ModuleId).ToString(CultureInfo.InvariantCulture);
+
                 var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
                 if (rootFolderId.HasValue)
                 {                    
@@ -86,6 +89,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             try
             {
                 SettingsRepository.SaveDefaultFolderId(ModuleId, Convert.ToInt32(DefaultFolderTypeComboBox.SelectedValue));
+                SettingsRepository.SaveGroupMode(ModuleId, Convert.ToBoolean(GroupModeComboBox.SelectedValue));
                 SettingsRepository.SaveRootFolderId(ModuleId, RootFolderDropDownList.SelectedFolder.FolderID);
             }
             catch (Exception exc)

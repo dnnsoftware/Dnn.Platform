@@ -15,13 +15,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
     {
         private const string DefaultFolderTypeIdSetting = "DefaultFolderTypeId";
         private const string RootFolderIdSetting = "RootFolderId";
+        private const string GroupModeSetting = "GroupMode";
 
         private readonly ModuleController moduleController;
 
         public DigitalAssetsSettingsRepository()
         {
             this.moduleController = new ModuleController();
-        } 
+        }
 
         public int? GetDefaultFolderTypeId(int moduleId)
         {
@@ -47,6 +48,18 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return Convert.ToInt32(rootFolderId);
         }
 
+        public bool IsGroupMode(int moduleId)
+        {
+            var groupMode = this.GetSettingByKey(moduleId, GroupModeSetting);
+
+            if (string.IsNullOrEmpty(groupMode))
+            {
+                return false;
+            }
+
+            return Convert.ToBoolean(groupMode);
+        }
+
         public void SaveDefaultFolderId(int moduleId, int defaultFolderTypeId)
         {
             this.moduleController.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));            
@@ -55,6 +68,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         public void SaveRootFolderId(int moduleId, int rootFolderId)
         {
             this.moduleController.UpdateModuleSetting(moduleId, RootFolderIdSetting, rootFolderId.ToString(CultureInfo.InvariantCulture));
+        }
+
+        public void SaveGroupMode(int moduleId, bool groupMode)
+        {
+            this.moduleController.UpdateModuleSetting(moduleId, GroupModeSetting, groupMode.ToString(CultureInfo.InvariantCulture));
         }
 
         private string GetSettingByKey(int moduleId, string key)
