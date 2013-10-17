@@ -17,6 +17,7 @@ namespace DNNSelenium.Common.Tests.P1
 	{
 		private string _providerToInstall;
 		private string _authSystemToInstall;
+		public string _optionalModuleToInstall;
 
 		protected abstract string DataFileLocation { get; }
 
@@ -35,6 +36,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			_providerToInstall = testSettings.Attribute("providerToInstall").Value;
 			_authSystemToInstall = testSettings.Attribute("authSystemToInstall").Value;
+			_optionalModuleToInstall = testSettings.Attribute("optionalModuleToInstall").Value;
 
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'" + testName + "'");
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
@@ -66,8 +68,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "Installed Provider should not be available in the list");
 			Assert.IsFalse(
 				adminAdvancedSettingsPage.ElementPresent(
-					By.XPath(AdminAdvancedSettingsPage.ProvidersTable + "//td/span[text() = '" + _providerToInstall +
-							 "']")),
+					By.XPath(AdminAdvancedSettingsPage.ProvidersTable + "//td/span[text() = '" + _providerToInstall + "']")),
 				"Provider is present in the list");
 		}
 
@@ -91,7 +92,7 @@ namespace DNNSelenium.Common.Tests.P1
 			hostExtensionsPage.AccordionOpen(By.XPath(ExtensionsPage.ProvidersAccordion));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of elements in the list decreased by 1");
-			Assert.That(hostExtensionsPage.FindElements(By.XPath(ExtensionsPage.ProvidersList)).Count, Is.EqualTo(itemNumber + 1),
+			Assert.That(hostExtensionsPage.FindElements(By.XPath(ExtensionsPage.ProvidersList)).Count, Is.EqualTo(itemNumber - 1),
 						"The Extension is not deleted correctly");
 		}
 
@@ -112,8 +113,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "Installed Authentication System should not be available in the list");
 			Assert.IsFalse(
 				adminAdvancedSettingsPage.ElementPresent(
-					By.XPath(AdminAdvancedSettingsPage.AuthenticationSystemsTable + "//td/span[text() = '" + _authSystemToInstall +
-							 "']")),
+					By.XPath(AdminAdvancedSettingsPage.AuthenticationSystemsTable + "//td/span[text() = '" + _authSystemToInstall + "']")),
 				"Authentication System is present in the list");
 		}
 
@@ -137,7 +137,7 @@ namespace DNNSelenium.Common.Tests.P1
 			hostExtensionsPage.AccordionOpen(By.XPath(ExtensionsPage.AuthenticationSystemsAccordion));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of elements in the list decreased by 1");
-			Assert.That(hostExtensionsPage.FindElements(By.XPath(ExtensionsPage.AuthenticationSystemsList)).Count, Is.EqualTo(itemNumber + 1),
+			Assert.That(hostExtensionsPage.FindElements(By.XPath(ExtensionsPage.AuthenticationSystemsList)).Count, Is.EqualTo(itemNumber - 1),
 						"The Extension is not deleted correctly");
 		}
 	}

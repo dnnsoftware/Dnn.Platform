@@ -74,6 +74,7 @@
     <Compile Include="CorePages\AdminGoogleAnalyticsPage.cs" />
     <Compile Include="CorePages\AdminPage.cs" />
     <Compile Include="CorePages\HostPage.cs" />
+    <Compile Include="P1\P1AdminAdvancedSettings.cs" />
     <Compile Include="P1\P1AdminExtensions.cs" />
     <Compile Include="P1\P1AdminSiteSettings.cs" />
     <Compile Include="P1\P1FileUpload.cs" />

@@ -2,7 +2,7 @@
 
 <Tests>
 
-  <settings name="P1 CheckList" browser="firefox" baseURL="ce720v3.dnndev.me" InstallerLanguage="en" UserName="host"
+  <settings name="P1 CheckList" browser="chrome" baseURL="ce720v1.dnndev.me" InstallerLanguage="en" UserName="host"
             Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
             DatabaseType="" DatabaseServerName="" DatabaseName="" DatabaseFilename="" ObjectQualifier="" Security=""
             DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" />
@@ -48,6 +48,11 @@
               folderName="Images" />
 
   <languages name="P1 Languages" languagePackToDeploy="it" />
+
+  <adminConfigurationSettings name="Admin Configuration Settings"
+                             providerToInstall="DotNetNuke DNN Tree Navigation Provider"
+                             authSystemToInstall = "DotNetNuke Facebook Authentication Project"
+                             optionalModuleToInstall= ""/>
 
   <modules name = "P1 Modules" dictionary = "Content"/>
   
