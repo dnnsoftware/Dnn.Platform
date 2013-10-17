@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,7 +45,8 @@ namespace DotNetNuke.Entities.Portals
 
         #region Constructors
 
-        public PortalGroupController() : this(DataService.Instance, new PortalController())
+        public PortalGroupController()
+            : this(DataService.Instance, new PortalController())
         {
         }
 
@@ -72,94 +74,136 @@ namespace DotNetNuke.Entities.Portals
             DataCache.RemoveCache(DataCache.PortalGroupsCacheKey);
         }
 
-        #endregion
-
-        #region IPortalGroupController Members
-
-        public void AddPortalToGroup(PortalInfo portal, PortalGroupInfo portalGroup, UserCopiedCallback callback)
+        private void OnAddPortalToGroupStart(UserCopiedCallback callback, PortalInfo portal)
         {
-            //Argument Contract
-            Requires.NotNull("portal", portal);
-            Requires.PropertyNotNegative("portal", "PortalId", portal.PortalID);
-            Requires.NotNull("portalGroup", portalGroup);
-            Requires.PropertyNotNegative("portalGroup", "PortalGroupId", portalGroup.PortalGroupId);
-            Requires.PropertyNotNegative("portalGroup", "MasterPortalId", portalGroup.MasterPortalId);
+            if (callback == null) return;
 
-            //Callback to update progress bar
+            var args = new UserCopiedEventArgs
+                           {
+                               TotalUsers = 0,
+                               UserNo = 0,
+                               UserName = "",
+                               PortalName = portal.PortalName,
+                               Stage = "starting"
+                           };
+            callback(args);
+        }
+
+        private void OnUserAddedToSiteGroup(UserCopiedCallback callback, PortalInfo portal,  UserInfo currentUser, int totalUsers, int currentUserNumber)
+        {
+            if (callback == null) return;
+
+            var args = new UserCopiedEventArgs
+                    {
+                        TotalUsers = totalUsers,
+                        UserNo = currentUserNumber,
+                        UserName = currentUser.Username,
+                        PortalName = portal.PortalName
+                    };
+            callback(args);
+        }
+
+        private void OnAddPortalToGroupFinishing(UserCopiedCallback callback, PortalInfo portal, int totalUsers)
+        {
+            if (callback == null) return;
+
             var args = new UserCopiedEventArgs
             {
-                TotalUsers = 0,
-                UserNo = 0,
-                UserName = "",
-                PortalName = portal.PortalName,
-                Stage = "starting"
-            };
-            callback(args);
-
-            var masterPortal = _portalController.GetPortal(portalGroup.MasterPortalId);
-            var autoAssignRoles = TestableRoleController.Instance.GetRoles(portal.PortalID, role => role.AutoAssignment && role.Status == RoleStatus.Approved);
-            var roleController = new RoleController();
-
-
-            var users = UserController.GetUsers(portal.PortalID);
-            var userNo = 0;
-            foreach (UserInfo user in users)
-            {
-                userNo += 1;
-
-                //move user to master portal
-                UserController.CopyUserToPortal(user, masterPortal, true, true);
-
-                //add user to auto assign roles
-                foreach (var autoAssignRole in autoAssignRoles)
-                {
-                    roleController.AddUserRole(masterPortal.PortalID, user.UserID, autoAssignRole.RoleID, Null.NullDate, Null.NullDate);
-                }
-
-                //Callback to update progress bar
-                args = new UserCopiedEventArgs
-                                    {
-                                        TotalUsers = users.Count,
-                                        UserNo = userNo,
-                                        UserName = user.Username,
-                                        PortalName = portal.PortalName
-                                    };
-                callback(args);
-            }
-
-            //Callback to update progress bar
-            args = new UserCopiedEventArgs
-            {
-                TotalUsers = users.Count,
-                UserNo = userNo,
+                TotalUsers = totalUsers,
+                UserNo = totalUsers,
                 UserName = "",
                 PortalName = portal.PortalName,
                 Stage = "finalizing"
             };
             callback(args);
+        }
 
-            //Remove Profile Definitions
-            foreach(ProfilePropertyDefinition definition in ProfileController.GetPropertyDefinitionsByPortal(portal.PortalID))
+        private void OnAddPortalToGroupFinished(UserCopiedCallback callback, PortalInfo portal, PortalGroupInfo portalGroup, int totalUsers)
+        {
+            if (callback == null) return;
+
+            var args = new UserCopiedEventArgs
             {
-                ProfileController.DeletePropertyDefinition(definition);
-            }
-
-            //Add portal to group
-            portal.PortalGroupID = portalGroup.PortalGroupId;
-            _portalController.UpdatePortalInfo(portal);
-
-            //Callback to update progress bar
-            args = new UserCopiedEventArgs
-            {
-                TotalUsers = users.Count,
-                UserNo = userNo,
+                TotalUsers = totalUsers,
+                UserNo = totalUsers,
                 UserName = "",
                 PortalName = portal.PortalName,
                 Stage = "finished",
                 PortalGroupId = portalGroup.PortalGroupId
             };
             callback(args);
+        }
 
+        #endregion
+
+        #region IPortalGroupController Members
+
+        public void AddPortalToGroup(PortalInfo portal, PortalGroupInfo portalGroup, UserCopiedCallback callback)
+        {
+            Requires.NotNull("portal", portal);
+            Requires.PropertyNotNegative("portal", "PortalId", portal.PortalID);
+            Requires.NotNull("portalGroup", portalGroup);
+            Requires.PropertyNotNegative("portalGroup", "PortalGroupId", portalGroup.PortalGroupId);
+            Requires.PropertyNotNegative("portalGroup", "MasterPortalId", portalGroup.MasterPortalId);
+
+            OnAddPortalToGroupStart(callback, portal);
+            
+            var users = UserController.GetUsers(portal.PortalID);
+            var masterUsers = UserController.GetUsers(portalGroup.MasterPortalId);
+            var totalUsers = users.Count + masterUsers.Count;
+            var userNo = 0;
+            
+            if (users.Count > 0)
+            {
+                var masterPortal = _portalController.GetPortal(portalGroup.MasterPortalId);
+
+                foreach (UserInfo user in users)
+                {
+                    userNo += 1;
+
+                    //move user to master portal
+                    UserController.CopyUserToPortal(user, masterPortal, true, true);
+
+                    OnUserAddedToSiteGroup(callback, portal, user, totalUsers, userNo);
+                }
+            }
+
+            if (masterUsers.Count > 0)
+            {
+                var autoAssignRoles = TestableRoleController.Instance.GetRoles(portal.PortalID,
+                                                                               role =>
+                                                                               role.AutoAssignment &&
+                                                                               role.Status == RoleStatus.Approved);
+                foreach (UserInfo user in masterUsers)
+                {
+                    userNo += 1;
+                    foreach (var autoAssignRole in autoAssignRoles)
+                    {
+                        var roleController = new RoleController();
+                        roleController.AddUserRole(portalGroup.MasterPortalId, user.UserID, autoAssignRole.RoleID,
+                                                   Null.NullDate, Null.NullDate);
+                    }
+                    OnUserAddedToSiteGroup(callback, portal, user, totalUsers, userNo);
+                }
+            }
+
+            OnAddPortalToGroupFinishing(callback, portal, users.Count);
+
+            RemoveProfileDefinitions(portal);
+
+            //Add portal to group
+            portal.PortalGroupID = portalGroup.PortalGroupId;
+            _portalController.UpdatePortalInfo(portal);
+
+            OnAddPortalToGroupFinished(callback, portal, portalGroup, users.Count);
+        }
+        
+        private static void RemoveProfileDefinitions(PortalInfo portal)
+        {
+            foreach (ProfilePropertyDefinition definition in ProfileController.GetPropertyDefinitionsByPortal(portal.PortalID))
+            {
+                ProfileController.DeletePropertyDefinition(definition);
+            }
         }
 
         public int AddPortalGroup(PortalGroupInfo portalGroup)
@@ -203,9 +247,9 @@ namespace DotNetNuke.Entities.Portals
 
         public IEnumerable<PortalGroupInfo> GetPortalGroups()
         {
-            return CBO.GetCachedObject<IEnumerable<PortalGroupInfo>>(new CacheItemArgs(DataCache.PortalGroupsCacheKey, 
-                                                                                    DataCache.PortalGroupsCacheTimeOut, 
-                                                                                    DataCache.PortalGroupsCachePriority), 
+            return CBO.GetCachedObject<IEnumerable<PortalGroupInfo>>(new CacheItemArgs(DataCache.PortalGroupsCacheKey,
+                                                                                    DataCache.PortalGroupsCacheTimeOut,
+                                                                                    DataCache.PortalGroupsCachePriority),
                                                                                 GetPortalGroupsCallback);
         }
 
