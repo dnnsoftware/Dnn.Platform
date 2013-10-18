@@ -170,6 +170,7 @@ html .gs-container {
     background-color: transparent;
     box-shadow: none;
     color: #fff;
+    outline: none;
 }
 
 .gs-header-left-side-input a:link,
@@ -234,25 +235,27 @@ html .gs-container {
     padding: 9px 10px;
 }
 
+.gs-container .gs-footer-left-side input[type="checkbox"] {
+    display: none;
+    display: inline\9; /* show in IE < 9 */
+    margin: 0 0 2px 9px;
+    cursor: pointer;
+}
+
 .gs-container .gs-footer-left-side label {
     cursor: pointer;
     display: inline-block;
     padding: 0 0 0 25px;
-
+    padding-left: 10px\9;
     margin: 0 0 0 10px;
+    margin-left: 0\9;
     font-size: 13px;
     position: relative;
     color: #c0b3b3;
 }
 
-.gs-container .gs-footer-left-side input[type="checkbox"] {
-    display: none;
-    float: left;
-    margin: 0 0 0 -20px;
-    cursor: pointer;
-}
-
-.gs-container .gs-footer-left-side label:before {
+/* :root *> disable in IE < 9 */
+:root *> .gs-container .gs-footer-left-side label:before {
     border: 1px solid #11AAE5;
     background-color: #706162;
     /*bottom: 1px;*/
@@ -269,7 +272,8 @@ html .gs-container {
     border-radius: 6px;
 }
 
-.gs-container .gs-footer-left-side input[type="checkbox"]:checked + label:before {
+/* :root *> disable in IE < 9 */
+:root *> .gs-container .gs-footer-left-side input[type="checkbox"]:checked + label:before {
     color: #fff;
     content: "\2713";
     font-size: 15px;
