@@ -273,23 +273,41 @@
             });
         });
         
-        $(".journalrow .minidel").each(function() {
+        $(".journalrow .minidel, .journalrow .miniclose").each(function() {
             if($(this).data("confirmBinded")) {
                 return;
             }
 
-            $(this).data("confirmBinded", true);
-            var clickFunc = $(this).attr("onclick").substr(0, $(this).attr("onclick").indexOf("("));
-            $(this).attr("onclick", "");
-            var $this = this;
-            $(this).dnnConfirm({
+            var $this = $(this);
+            var oThis = this;
+            
+            $this.data("confirmBinded", true);
+            var clickFuncs = [];
+            if (typeof $this.attr("onclick") != "undefined" && $this.attr("onclick").length > 0) {
+                var clickFunc = $this.attr("onclick").substr(0, $this.attr("onclick").indexOf("("));
+                $this.attr("onclick", "");
+                clickFuncs.push(eval(clickFunc));
+            } else {
+                for (var i = 0; i < $this.data("events").click.length; i++) {
+                    var handler = $this.data("events").click[i].handler;
+                    if (typeof handler.name != "undefined" && handler.name.length > 0) {
+                        clickFuncs.push(handler);
+                        break;
+                    }
+                }
+
+                $this.unbind("click");
+            }
+
+            $this.dnnConfirm({
                 text: '<%= Localization.GetSafeJSString(LocalizeString("DeleteItem")) %>',
                 yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
                 noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
                 title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
                 isButton: true,
                 callbackTrue: function() {
-                    eval(clickFunc).call($this, $this);
+                    for(var i = 0; i < clickFuncs.length; i++)
+                        clickFuncs[i].call(oThis, oThis);
                 }
             });
         });
