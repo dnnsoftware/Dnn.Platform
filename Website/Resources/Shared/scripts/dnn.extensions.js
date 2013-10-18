@@ -326,3 +326,10 @@ dnn.guid = (function() {
     };
     return function () { return partOf8(false) + partOf8(true) + partOf8(true) + partOf8(false); };
 })();
+
+dnn.uid = (function () {
+    var id = (new Date()).getTime();
+    return function (prefix) {
+        return (prefix || "id") + (id++);
+    };
+})();
