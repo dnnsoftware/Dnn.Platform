@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace DNNSelenium.Platform.UpgradeTests
 {
 	[TestFixture]
-	[Category("Upgrade")]
+	[Category("BVToverUpgrade")]
 	public class BVTChildSite : Common.Tests.BVT.BVTChildSite
 	{
 		protected override string DataFileLocation

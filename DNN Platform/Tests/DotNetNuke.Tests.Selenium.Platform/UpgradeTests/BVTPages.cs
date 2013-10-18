@@ -8,7 +8,7 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Platform.UpgradeTests
 {
 	[TestFixture]
-	[Category("Upgrade")]
+	[Category("BVToverUpgrade")]
 	public class BVTPages : Platform.BVT.BVTPages
 	{
 		protected override string DataFileLocation
