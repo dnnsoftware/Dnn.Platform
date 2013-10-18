@@ -40,6 +40,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Web.UI;
@@ -450,7 +451,20 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public FolderViewModel GetGroupFolder(int groupId)
         {
-            IFolderInfo groupFolder;
+            var role = new RoleController().GetRole(groupId, this.CurrentPortalId);
+            if (role == null || role.SecurityMode != SecurityMode.SocialGroup)
+            {
+                return null;
+            }
+
+            var groupFolder = EnsureGroupFolder(groupId);
+            var folderViewModel = this.GetFolderViewModel(groupFolder);
+            folderViewModel.FolderName = role.RoleName;
+            return folderViewModel;
+        }
+
+        private IFolderInfo EnsureGroupFolder(int groupId)
+        {            
             var groupFolderPath = "Groups/" + groupId;
 
             if (!FolderManager.Instance.FolderExists(this.CurrentPortalId, groupFolderPath))
@@ -462,18 +476,13 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                     FolderManager.Instance.UpdateFolder(folder);
                 }
 
-                groupFolder = FolderManager.Instance.AddFolder(this.CurrentPortalId, groupFolderPath);
+                var groupFolder = FolderManager.Instance.AddFolder(this.CurrentPortalId, groupFolderPath);
                 groupFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(groupFolder);
-            }
-            else
-            {
-                groupFolder = FolderManager.Instance.GetFolder(this.CurrentPortalId, groupFolderPath);
+                return groupFolder;
             }
             
-            var folderViewModel = this.GetFolderViewModel(groupFolder);
-            folderViewModel.FolderName = "Group X"; // TODO: get group name
-            return folderViewModel;
+            return FolderManager.Instance.GetFolder(this.CurrentPortalId, groupFolderPath);        
         }
 
         public FolderViewModel CreateFolder(string folderName, int folderParentID, int folderMappingID, string mappedPath)

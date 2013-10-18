@@ -43,6 +43,8 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Skins;
+using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
@@ -57,8 +59,6 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private readonly IDigitalAssetsController controller;
         private readonly ExtensionPointManager epm = new ExtensionPointManager();
-
-        private FolderViewModel rootFolderViewModel;
 
         public View()
         {
@@ -129,8 +129,6 @@ namespace DotNetNuke.Modules.DigitalAssets
                 return defaultFolderTypeId.HasValue ? defaultFolderTypeId.ToString() : "";
             }
         }
-
-        protected string Path { get; private set; }
 
         protected string PageSize { get; private set; }
 
@@ -218,7 +216,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        private void InitializeTreeViews()
+        private void InitializeTreeViews(string initialPath)
         {
             var rootFolder = RootFolderViewModel;
             var rootNode = new DnnTreeNode
@@ -234,7 +232,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             var folderId = rootFolder.FolderID;
             var nextNode = rootNode;
-            foreach (var folderName in Path.Split('/'))
+            foreach (var folderName in initialPath.Split('/'))
             {
                 LoadSubfolders(nextNode, folderId, folderName, out nextNode, out folderId);
                 if (nextNode == null)
@@ -474,29 +472,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         }
         #endregion
 
-        protected FolderViewModel RootFolderViewModel
-        {
-            get
-            {
-                if (rootFolderViewModel == null)
-                {
-                    if (SettingsRepository.IsGroupMode(ModuleId) && !string.IsNullOrEmpty(Request["groupId"]))
-                    {
-                        int groupId;
-
-                        if (int.TryParse(Request["groupId"], out groupId))
-                        {
-                            return controller.GetGroupFolder(groupId);
-                        }
-                    }
-
-                    var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
-                    this.rootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder();
-                }
-
-                return rootFolderViewModel;
-            }
-        }
+        protected FolderViewModel RootFolderViewModel { get; private set; }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -506,25 +482,48 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 if (IsPostBack) return;
 
-                var stateCookie = Request.Cookies["damState-" + UserId];
-                var state = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : ""));
-
-                int folderId;
-                if (int.TryParse(Request["folderId"] ?? state["folderId"], out folderId))
+                if (SettingsRepository.IsGroupMode(ModuleId))
                 {
-                    // TODO: check this folder is under the module configured root folder
-                    var folder = FolderManager.Instance.GetFolder(folderId);
-                    Path = folder != null ? PathUtils.Instance.RemoveTrailingSlash(folder.FolderPath) : "";
+                    int groupId;
+                    if (string.IsNullOrEmpty(Request["groupId"]) || !int.TryParse(Request["groupId"], out groupId))
+                    {
+                        Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        return;
+                    }
+
+                    var groupFolder = controller.GetGroupFolder(groupId);
+                    if (groupFolder == null)
+                    {
+                        Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        return;
+                    }
+
+                    this.RootFolderViewModel = groupFolder;
                 }
                 else
                 {
-                    Path = "";
+                    var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
+                    this.RootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder();
+                }
+
+                var stateCookie = Request.Cookies["damState-" + UserId];
+                var state = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : ""));
+
+                var initialPath = "";
+                int folderId;
+                if (int.TryParse(Request["folderId"] ?? state["folderId"], out folderId))
+                {
+                    var folder = FolderManager.Instance.GetFolder(folderId);
+                    if (folder != null && folder.FolderPath.StartsWith(RootFolderViewModel.FolderPath))
+                    {
+                        initialPath = PathUtils.Instance.RemoveTrailingSlash(folder.FolderPath.Substring(RootFolderViewModel.FolderPath.Length));
+                    }
                 }
 
                 PageSize = Request["pageSize"] ?? state["pageSize"] ?? "10";
                 ActiveView = Request["view"] ?? state["view"] ?? "gridview";
 
-                InitializeTreeViews();
+                InitializeTreeViews(initialPath);
                 InitializeSearchBox();
                 InitializeFolderType();
                 InitializeGridContextMenu();

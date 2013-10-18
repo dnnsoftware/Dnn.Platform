@@ -231,7 +231,7 @@
     
     dnnModule.digitalAssets.init(
         $.ServicesFramework(<%=ModuleId %>),
-        '<%= RootFolderViewModel.FolderID%>',
+        '<%= RootFolderViewModel != null ? RootFolderViewModel.FolderID : 0 %>',
         // Controls
         {
             scopeWrapperId: '<%= ScopeWrapper.ClientID %>',
@@ -265,7 +265,7 @@
             pageSize: '<%= PageSize %>', 
             view: '<%= ActiveView %>',
             userId: '<%= UserId %>',
-            rootFolderPath: '<%= RootFolderViewModel.FolderPath %>'
+            rootFolderPath: '<%= RootFolderViewModel != null ? RootFolderViewModel.FolderPath : "" %>'
         },
         // Resources
         {
