@@ -40,9 +40,14 @@
             this.$this = $(this);
 
             this.$element = this.element ? $(this.element) : this._createLayout();
+            this._$iframe = this.$element.find("iframe");
+            this._$downloadManual = this.$element.find("." + this.options.headerRightCss).find("a");
+            //this._$downloadManual.attr("href", this.options.userManualLinkUrl);
+            //            this._$selectedItemCaption = this._$selectedItemContainer.find("." + this.options.selectedValueCss);
 
-//            this._$selectedItemContainer = this.$element.find("." + this.options.selectedItemCss);
-//            this._$selectedItemCaption = this._$selectedItemContainer.find("." + this.options.selectedValueCss);
+            if (this.options.showOnStartup) {
+                this.show();
+            }
         },
 
         _createLayout: function () {
@@ -50,49 +55,44 @@
             var signUpBoxId = dnn.uid("gs_");
 
             var layout = $("<div class='" + this.options.containerCss + "'/>")
-                    .append($("<div class='" + this.options.headerCss + "'/>")
-                        .append($("<div class='" + this.options.headerLeftCss + "'/>")
-                            .append($("<div/>")
-                                .append($("<div class='" + this.options.headerLeftTextCss + "'/>")
-                                    .append($("<div/>")
-                                        .append($("<label for='" + signUpBoxId + "'>" + "Sign Up For Our Newsleter" + "</label>"))
-                                        .append($("<span>" + "Get Tips, tricks, and Product Updates In Your Inbox" + "</span>"))))
-
-                                .append($("<div class='" + this.options.headerLeftInputCss + "'/>")
-                                    .append($("<div/>")
-                                        .append($("<div class='" + this.options.inputboxWrapperCss + "'/>")
-                                            .append($("<input type='text' id='" + signUpBoxId + "' maxlength='200' autocomplete='off'/>")))
-                                        .append($("<a href='javascript:void(0);' title='" + this.options.signUpButtonTooltip + "'>" + "Sign Up" + "</a>"))))))
-
-                        .append($("<div class='" + this.options.headerRightCss + "'/>")
-                            .append($("<div/>")
-                                .append($("<a href='javascript:void(0);' title='" + this.options.downloadUserManualTooltip + "'><span>" + "Download the User Manual" + "</span></a>")))))
-
-                    .append($("<div class='" + this.options.contentCss + "'/>")
+                .append($("<div class='" + this.options.headerCss + "'/>")
+                    .append($("<div class='" + this.options.headerLeftCss + "'/>")
                         .append($("<div/>")
-                            .append($("<iframe src='about:blank' scrolling='auto' frameborder='0' />"))))
-
-                    .append($("<div class='" + this.options.footerCss + "'/>")
-                        .append($("<div class='" + this.options.footerBorderCss + "'/>")
-                            .append($("<div/>")))
-
-                        .append($("<div class='" + this.options.footerLeftCss + "'/>")
-                            .append($("<input type='checkbox' id='" + checkBoxId + "' value='check1' name='dontshow' >"))
-                            .append($("<label for='" + checkBoxId + "'>" + "Don't show this again" + "</label>")))
-
-                        .append($("<div class='" + this.options.footerRightCss + "'/>")
-                            .append($("<a href='javascript:void(0);' class='" + this.options.tweetCss + "' title='" + this.options.tweetTooltip + "'/>"))
-                            .append($("<a href='javascript:void(0);' class='" + this.options.facebookCss + "' title='" + this.options.facebookTooltip + "'/>"))))
+                            .append($("<div class='" + this.options.headerLeftTextCss + "'/>")
+                                .append($("<div/>")
+                                    .append($("<label for='" + signUpBoxId + "'>" + this.options.signUpLabel + "</label>"))
+                                    .append($("<span>" + this.options.signUpText + "</span>"))))
+                            .append($("<div class='" + this.options.headerLeftInputCss + "'/>")
+                                .append($("<div/>")
+                                    .append($("<div class='" + this.options.inputboxWrapperCss + "'/>")
+                                        .append($("<input type='text' id='" + signUpBoxId + "' maxlength='200' autocomplete='off'/>")))
+                                    .append($("<a href='javascript:void(0);' title='" + this.options.signUpButtonTooltip + "'>" + this.options.signUpButton + "</a>"))))))
+                    .append($("<div class='" + this.options.headerRightCss + "'/>")
+                        .append($("<div/>")
+                            .append($("<a href='javascript:void(0);' title='" + this.options.downloadUserManualTooltip + "'><span>" + this.options.downloadManualButton + "</span></a>")))))
+                .append($("<div class='" + this.options.contentCss + "'/>")
+                    .append($("<div/>")
+                        .append($("<iframe src='about:blank' scrolling='auto' frameborder='0' />"))))
+                .append($("<div class='" + this.options.footerCss + "'/>")
+                    .append($("<div class='" + this.options.footerBorderCss + "'/>")
+                        .append($("<div/>")))
+                    .append($("<div class='" + this.options.footerLeftCss + "'/>")
+                        .append($("<input type='checkbox' id='" + checkBoxId + "' value='check1' name='dontshow' >"))
+                        .append($("<label for='" + checkBoxId + "'>" + this.options.dontShowDialogLabel + "</label>")))
+                    .append($("<div class='" + this.options.footerRightCss + "'/>")
+                        .append($("<a href='//twitter.com/dnncorp' class='" + this.options.twitterLinkCss + "' title='" + this.options.twitterLinkTooltip + "'/>"))
+                        .append($("<a href='//facebook.com/dotnetnuke' class='" + this.options.facebookLinkCss + "' title='" + this.options.facebookLinkTooltip + "'/>"))));
 
             return layout;
         },
 
-        show: function() {
+        show: function () {
+            this._$iframe.attr("src", this.options.contentUrl);
             this.$element.dialog({
                 modal: true,
                 autoOpen: true,
                 dialogClass: "dnnFormPopup",
-                title: "Welcome to your website",
+                title: this.options.title,
                 resizable: false,
                 width: 950,
                 height: 640,
@@ -115,8 +115,8 @@
         footerBorderCss: "gs-footer-border",
         footerLeftCss: "gs-footer-left-side",
         footerRightCss: "gs-footer-right-side",
-        tweetCss: "gs-tweet-button",
-        facebookCss: "gs-facebook-button"
+        twitterLinkCss: "gs-twitter-button",
+        facebookLinkCss: "gs-facebook-button"
     };
 
     GettingStarted.defaults = function (settings) {
@@ -132,7 +132,6 @@
 dnn.showGettingStarted = function (options) {
     $(document).ready(function () {
         var instance = new dnn.GettingStarted(null, options);
-        instance.show();
     });
 };
 
