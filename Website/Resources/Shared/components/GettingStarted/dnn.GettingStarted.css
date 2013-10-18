@@ -12,10 +12,27 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     right: -12px;
 }
 
-.gs-container {
+div.ui-dialog-titlebar .ui-dialog-title {
+    font-size: 20px;
+    font-family: Avenir, "Helvetica Neue", "HelveticaNeue", Arial, Helvetica, sans-serif;
+}
+
+html .gs-container {
     width: 100%;
     min-height: 100%;
     position: relative;
+    font-family: Avenir, "Helvetica Neue", "HelveticaNeue", Arial, Helvetica, sans-serif;
+}
+
+.gs-container label, .gs-container span {
+    /* unselectable */
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
 }
 
 .dnnFormPopup .ui-dialog-content, #iPopUp .ui-dialog-content {
@@ -105,7 +122,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     color: #fff;
     display: block;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 20px;
 }
 
@@ -167,6 +184,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     text-align: center;
     font-weight: bold;
     color: #fff;
+    font-size: 14px;
 }
 
 .gs-container .gs-content {
@@ -213,16 +231,18 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
 
 .gs-container .gs-footer-left-side {
     float: left;
-    padding: 8px;
+    padding: 9px 10px;
 }
 
 .gs-container .gs-footer-left-side label {
     cursor: pointer;
     display: inline-block;
+    padding: 0 0 0 25px;
+
+    margin: 0 0 0 10px;
     font-size: 13px;
-    margin-right: 15px;
-    padding-left: 25px;
     position: relative;
+    color: #c0b3b3;
 }
 
 .gs-container .gs-footer-left-side input[type="checkbox"] {
@@ -233,9 +253,10 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
 }
 
 .gs-container .gs-footer-left-side label:before {
+    border: 1px solid #11AAE5;
     background-color: #706162;
-    bottom: 1px;
-    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3) inset, 0 1px 0 0 rgba(255, 255, 255, 0.8);
+    /*bottom: 1px;*/
+    /*box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3) inset, 0 1px 0 0 rgba(255, 255, 255, 0.8);*/
     content: "";
     display: inline-block;
     height: 16px;
@@ -246,13 +267,6 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-}
-
-.gs-container .gs-footer-left-side label {
-    margin: 0 0 0 10px;
-    font-size: 13px;
-    position: relative;
-    color: #c0b3b3;
 }
 
 .gs-container .gs-footer-left-side input[type="checkbox"]:checked + label:before {

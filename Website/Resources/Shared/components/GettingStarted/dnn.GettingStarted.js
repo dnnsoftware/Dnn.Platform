@@ -46,8 +46,8 @@
         },
 
         _createLayout: function () {
-            var checkBoxId = dnn.uid();
-            var signUpBoxId = dnn.uid();
+            var checkBoxId = dnn.uid("gs_");
+            var signUpBoxId = dnn.uid("gs_");
 
             var layout = $("<div class='" + this.options.containerCss + "'/>")
                     .append($("<div class='" + this.options.headerCss + "'/>")
