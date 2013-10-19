@@ -62,12 +62,14 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+
+			_logContent = LogContent();
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs();
+			VerifyLogs(_logContent);
 		}
 
 		[Test]

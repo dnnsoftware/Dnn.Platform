@@ -21,7 +21,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 
@@ -29,7 +32,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class Settings : ModuleSettingsBase
     {
-        private const string DefaultFolderTypeIdSetting = "DefaultFolderTypeId";
+        private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
 
         #region Base Method Implementations
 
@@ -56,9 +59,18 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 DefaultFolderTypeComboBox.DataBind();
 
-                if (Settings.Contains(DefaultFolderTypeIdSetting))
+                var defaultFolderTypeId = SettingsRepository.GetDefaultFolderTypeId(ModuleId);
+                if (defaultFolderTypeId.HasValue)
                 {
-                    DefaultFolderTypeComboBox.SelectedValue = Settings[DefaultFolderTypeIdSetting].ToString();
+                    DefaultFolderTypeComboBox.SelectedValue = defaultFolderTypeId.ToString();
+                }
+
+                GroupModeComboBox.SelectedValue = SettingsRepository.IsGroupMode(ModuleId).ToString(CultureInfo.InvariantCulture);
+
+                var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
+                if (rootFolderId.HasValue)
+                {                    
+                    RootFolderDropDownList.SelectedFolder = FolderManager.Instance.GetFolder(rootFolderId.Value);
                 }
             }
             catch (Exception exc)
@@ -76,9 +88,9 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             try
             {
-                var modules = new ModuleController();
-
-                modules.UpdateModuleSetting(ModuleId, DefaultFolderTypeIdSetting, DefaultFolderTypeComboBox.SelectedValue);
+                SettingsRepository.SaveDefaultFolderId(ModuleId, Convert.ToInt32(DefaultFolderTypeComboBox.SelectedValue));
+                SettingsRepository.SaveGroupMode(ModuleId, Convert.ToBoolean(GroupModeComboBox.SelectedValue));
+                SettingsRepository.SaveRootFolderId(ModuleId, RootFolderDropDownList.SelectedFolder.FolderID);
             }
             catch (Exception exc)
             {

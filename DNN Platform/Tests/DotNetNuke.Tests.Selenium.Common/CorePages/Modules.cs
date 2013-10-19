@@ -37,7 +37,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string PageDropDownId = "//div[@id = 'ControlBar_PageList']";
 		public static string MakeACopyCheckbox = "//input[@id = 'ControlBar_Module_chkCopyModule']";
 
-		public static int NumberOfAvailableModules = 38;
+		public static int NumberOfAvailableModules = 34;
 		public static string List = "//ul[contains(@class, 'ModuleList')]/li";
 
 		public static string ModuleListMessage = "//p[contains(@class, 'ModuleListMessage_InitialMessage')]";
@@ -62,14 +62,18 @@ namespace DNNSelenium.Common.CorePages
 																					  "//div[contains(@class, 'DnnModule-Dashboard')]")},
 																				  {"DDRMenuModule", new ModuleIDs ("//div[span[text() = 'DDR Menu']]", 
 																					  "//div[contains(@class, 'DnnModule-DDRMenu')]")},
+																				  {"DeviceDetectionModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-51Degreesmobi')]")},
+																				  {"DevicePreviewModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-DotNetNukeModulesPreviewProfileManagement')]")},
 																				  {"DigitalAssetManagementModule", new ModuleIDs ("//div[span[contains(text(), 'Digital Asset')]]", 
 																					  "//div[contains(@class, 'DnnModule-DotNetNukeModulesDigitalAssets')]")},
-																				  {"ClientCapabilityProviderModule", new ModuleIDs ("//div[img[contains(@src, 'mobiledevicedet_16X16.png')]]", 
-																					  "//div[contains(@class, ' DnnModule-51Degreesmobi')]")},
 																				  {"ExtensionsModule", new ModuleIDs ("//div[img[contains(@src, 'Extensions_32X32_Standard.png')]]", 
 																					  "//div[contains(@class, 'DnnModule-Extensions')]")},
 																				  {"GoogleAnalyticsModule", new ModuleIDs ("//div[span[text() = 'Google Analytics']]", 
 																					  "//div[contains(@class, 'DnnModule-GoogleAnalytics')]")},
+																				  {"HostSettingsModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-HostSettings')]")},
 																				  {"HtmlModule", new ModuleIDs ("//div[img[contains(@src, 'html.png')]]", 
 																					  "//div[contains(@class, 'DNN_HTML DnnModule')]")},
 																				  {"JournalModule", new ModuleIDs ("//div[img[contains(@src, 'journal_32X32.png')]]", 
@@ -92,7 +96,7 @@ namespace DNNSelenium.Common.CorePages
 																					  "//div[contains(@class, 'DnnModule-Tabs')]")},
 																				  {"ProfessionalPreviewModule", new ModuleIDs ("//div[span[text() = 'ProfessionalPreview']]", 
 																					  "//div[contains(@class, 'DnnModule-ProfessionalPreview')]")},
-																				  {"RadEditorManagerModule", new ModuleIDs ("//div[span[text() = 'RadEditor Manager']]", 
+																				  {"RadEditorManagerModule", new ModuleIDs ("", 
 																					  "//div[contains(@class, 'DnnModule-DotNetNukeRadEditorProvider')]")},
 																				  {"RazorHostModule", new ModuleIDs ("//div[span[text() = 'Razor Host']]", 
 																					  "//div[contains(@class, 'DnnModule-DNNCorpRazorHost')]")},
@@ -102,8 +106,16 @@ namespace DNNSelenium.Common.CorePages
 																					  "//div[contains(@class, 'DnnModule-SearchAdmin')]")},
 																				  {"SearchResultsModule", new ModuleIDs ("//div[span[text() = 'Search Results']]", 
 																					  "//div[contains(@class, 'DnnModule-SearchResults')]")},
+																				  {"SecurityRolesModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-Security')]")},
+																				  {"SchedulerModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-Scheduler')]")},
 																				  {"SiteLogModule", new ModuleIDs ("//div[img[contains(@src, 'SiteLog_32X32_Standard.png')]]", 
 																					  "//div[contains(@class, 'DnnModule-SiteLog')]")},
+																				  {"SiteManagementModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-Portals')]")},
+																				  {"SiteRedirectionModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-DotNetNukeMobileManagement')]")},
 																				  {"SiteWizardModule", new ModuleIDs ("//div[img[contains(@src, 'Wizard_32X32_Standard.png')]]", 
 																					  "//div[contains(@class, 'DnnModule-SiteWizard')]")},
 																				  {"SiteMapModule", new ModuleIDs ("//div[img[contains(@src, 'Sitemap_32X32_Standard.png')]]", 
@@ -112,14 +124,14 @@ namespace DNNSelenium.Common.CorePages
 																					  "//div[contains(@class, 'DnnModule-Skins')]")},
 																				  {"SocialGroupsModule", new ModuleIDs ("//div[img[contains(@src, 'Social_Groups_32X32.png')]]", 
 																					  "//div[contains(@class, 'DnnModule-SocialGroups')]")},
+																				  {"SQLModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-SQL')]")},
 																				  {"TaxonomyManagerModule", new ModuleIDs ("//div[img[contains(@src, 'Tag_32X32_Standard.png')]]", 
 																					  "//div[contains(@class, 'DnnModule-DotNetNukeTaxonomy')]")},
 																				  {"VendorsModule", new ModuleIDs ("//div[img[contains(@src, 'Vendors_32X32_Standard.png')]]", 
 																					  "//div[contains(@class, 'DnnModule-Vendors')]")},
 																				  {"ViewProfileModule", new ModuleIDs ("//div[img[contains(@src, 'viewProfile.png')]]", 
 																					  "//div[contains(@class, 'DnnModule-ViewProfile')]")},
-																				  {"WhatsNewModule", new ModuleIDs ("//div[img[contains(@src, 'Whatsnew_32X32_Standard.png')]]", 
-																					  "//div[contains(@class, 'DnnModule-WhatsNew')]")},
 																				  {"ContactUsModule", new ModuleIDs ("//div[span[text() = 'Contact Us']]", 
 																					  "//div[contains(@class, 'DNN_HTML DnnModule')]")},
 			                                                                  };
@@ -142,7 +154,7 @@ namespace DNNSelenium.Common.CorePages
 		public static Dictionary<string, LocationIDs> LocationDescription = new Dictionary<string, LocationIDs>
 			                                                                  {
 																					{"ContentPane", new LocationIDs ("//li[@data-pane = 'contentPane']", 
-																					  "//div[@id = 'content']/div[1]",
+																					  "//div[@id = 'dnn_contentPane']",
 																					  "")},
 																					{"ContentPaneLower", new LocationIDs ("//li[@data-pane = 'contentPaneLower']", 
 																					  "//div[contains(@id, 'dnn_contentPaneLower')]",
@@ -256,6 +268,7 @@ namespace DNNSelenium.Common.CorePages
 			string optionID = "//div[@id = '" + ModuleActionsId + moduleNumber + "']" + SettingsIcon + option;
 
 			WaitForElement(By.XPath(settingsIcon)).ScrollIntoView();
+
 			SelectMenuOption(settingsIcon, optionID);
 		}
 
@@ -348,7 +361,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public void AddContentToHTMLModule(string moduleNumber, string moduleContent)
 		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Add content to Module:");
+			Trace.WriteLine(BasePage.TraceLevelPage + "Add content to HTML Module:");
 
 			SelectFromEditMenu(moduleNumber, EditContentOption);
 			Trace.WriteLine("Module number edited: " + moduleNumber);

@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.DemoPages
 			get { return "Contact Us"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open '" + PageTitleLabel + "' page:");

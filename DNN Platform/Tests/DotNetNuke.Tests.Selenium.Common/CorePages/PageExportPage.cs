@@ -20,6 +20,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
+
 		public static string FolderDropDownId = "//div[contains(@id, 'Export_cboFolders')]/div/a";
 		public static string TemplateNameTextBox = "//input[contains(@id, 'Export_txtFile')]";
 		public static string DescriptionTextBox = "//textarea[contains(@id, 'Export_txtDescription')]";

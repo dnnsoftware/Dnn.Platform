@@ -10,7 +10,6 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Common.Tests.BVT
 {
 	[SetUpFixture]
-	[Category("BVT")] 
 	public abstract class BVTSetup
 	{
 		protected abstract string DataFileLocation { get; }

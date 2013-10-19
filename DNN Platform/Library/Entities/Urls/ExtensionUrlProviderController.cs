@@ -511,14 +511,20 @@ namespace DotNetNuke.Entities.Urls
                                         foreach (var providerConfig in providerConfigs)
                                         {
                                             var providerType = Reflection.CreateType(providerConfig.ProviderType);
-                                            var provider = Reflection.CreateObject(providerType) as ExtensionUrlProvider;
-
-                                            if (provider != null)
+                                            if (providerType == null)
                                             {
-                                                provider.ProviderConfig = providerConfig;
-                                                provider.ProviderConfig.PortalId = id;
-                                                providers.Add(provider);
+                                                continue;
                                             }
+
+                                            var provider = Reflection.CreateObject(providerType) as ExtensionUrlProvider;
+                                            if (provider == null)
+                                            {
+                                                continue;
+                                            }
+
+                                            provider.ProviderConfig = providerConfig;
+                                            provider.ProviderConfig.PortalId = id;
+                                            providers.Add(provider);
                                         }
 
                                         if (dr.NextResult())

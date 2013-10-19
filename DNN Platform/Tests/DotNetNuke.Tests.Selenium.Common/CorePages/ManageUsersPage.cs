@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "User Accounts"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SecurityRolesModule"; }
+		}
+
 		#region ID's
 
 		public static string UsersTable = "//div[contains(@id, '_Users_grdUsers')]";

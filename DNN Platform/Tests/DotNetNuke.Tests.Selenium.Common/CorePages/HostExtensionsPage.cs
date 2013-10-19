@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Extensions"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "ExtensionsModule"; }
+		}
+
 		public static string CreateNewExtensionButton = "//a[contains(@id, '_createExtensionLink')]";
 		public static string CreateNewModuleButton = "//a[contains(@id, '_createModuleLink')]";
 

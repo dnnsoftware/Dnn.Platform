@@ -42,6 +42,8 @@ dnnModule.DigitalAssetsController.prototype = function () {
         },
         executeCommandOnSelectedNode = function (commandName, node) {
         },
+        gridOnGridCreated = function(grid) {
+        },
         gridOnRowDataBound = function (grid, item) {
         },
         setupGridContextMenuExtension = function (contextMenu, gridItems) {
@@ -67,6 +69,7 @@ dnnModule.DigitalAssetsController.prototype = function () {
         loadContent: loadContent,
         onLoadFolder: onLoadFolder,
         getHttpGETHeaders: getHttpGETHeaders,
+        gridOnGridCreated: gridOnGridCreated,
         gridOnRowDataBound: gridOnRowDataBound,
         extendResources: extendResources,
         executeCommandOnSelectedItems: executeCommandOnSelectedItems,

@@ -179,7 +179,14 @@ namespace DotNetNuke.Framework
 
             if (ShowGettingStartedPage)
             {
-                DNNClientAPI.ShowModalPage(Page, GettingStartedPageUrl);
+                if (!PortalSettings.EnablePopUps)
+                {
+                    Response.Redirect(GettingStartedPageUrl);
+                }
+                else
+                {
+                    DNNClientAPI.ShowModalPage(Page, GettingStartedPageUrl);
+                }
             }
         }
 

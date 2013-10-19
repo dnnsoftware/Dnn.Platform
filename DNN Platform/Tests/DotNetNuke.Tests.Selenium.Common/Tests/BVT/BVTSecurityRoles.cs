@@ -9,7 +9,6 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Common.Tests.BVT
 {
 	[TestFixture]
-	[Category("BVT")]
 	public abstract class BVTSecurityRoles : CommonTestSteps
 	{
 		public string _roleName;
@@ -45,6 +44,8 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			OpenMainPageAndLoginAsHost();
 
+			_logContent = LogContent();
+
 			var manageRolesPage = new ManageRolesPage(_driver);
 			manageRolesPage.OpenUsingControlPanel(_baseUrl);
 			manageRolesPage.AddNewSecurityRole(_assignedRoleName);
@@ -57,7 +58,7 @@ namespace DNNSelenium.Common.Tests.BVT
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs();
+			VerifyLogs(_logContent);
 		}
 
 		[Test]

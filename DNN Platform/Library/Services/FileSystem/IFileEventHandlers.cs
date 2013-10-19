@@ -25,22 +25,22 @@ namespace DotNetNuke.Services.FileSystem
 {
     public interface IFileEventHandlers
     {
-        void FileManager_FileDeleted(object sender, FileChangedEventArgs args);
+        void FileDeleted(object sender, FileDeletedEventArgs args);
 
-        void FileManager_FileRenamed(object sender, FileRenamedEventArgs args);
+        void FileRenamed(object sender, FileRenamedEventArgs args);
 
-        void FileManager_FileMoved(object sender, FileMovedEventArgs args);
+        void FileMoved(object sender, FileMovedEventArgs args);
 
-        void FileManager_FileAdded(object sender, FileAddedEventArgs args);
+        void FileAdded(object sender, FileAddedEventArgs args);
 
-        void FileManager_FileOverwritten(object sender, FileChangedEventArgs args);
+        void FileOverwritten(object sender, FileChangedEventArgs args);
 
-        void FolderManager_FolderAdded(object sender, FolderAddedEventArgs args);
+        void FolderAdded(object sender, FolderChangedEventArgs args);
 
-        void FolderManager_FolderMoved(object sender, FolderMovedEventArgs args);
+        void FolderMoved(object sender, FolderMovedEventArgs args);
 
-        void FolderManager_FolderRenamed(object sender, FolderRenamedEventArgs args);
+        void FolderRenamed(object sender, FolderRenamedEventArgs args);
 
-        void FolderManager_FolderDeleted(object sender, FolderChangedEventArgs args);
+        void FolderDeleted(object sender, FolderDeletedEventArgs args);
     }
 }

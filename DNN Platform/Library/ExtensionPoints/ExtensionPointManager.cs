@@ -27,10 +27,11 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
+using DotNetNuke.Common;
+using DotNetNuke.ExtensionPoints.Filters;
+
 namespace DotNetNuke.ExtensionPoints
 {
-    using Common;
-
     public class ExtensionPointManager
     {
         private static readonly object SyncRoot = new object();
@@ -114,18 +115,16 @@ namespace DotNetNuke.ExtensionPoints
         }
 
         public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module, string group)
-        {            
-            return GetToolBarButtonExtensionPoints(module, group, false);
+        {
+            return GetToolBarButtonExtensionPoints(module, group, new NoFilter());
         }
 
-        public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module, string group, bool excludeHost)
+        public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {            
             return from e in _toolbarButtonExtensionPoints
-                    where e.Metadata.Module == module
-                        && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
-                        && (!excludeHost || !e.Metadata.DisableOnHost)
-                    orderby e.Value.Order
-                    select e.Value;                
+                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+                   orderby e.Value.Order
+                   select e.Value;                
         }
 
         public IEnumerable<IScriptItemExtensionPoint> GetScriptItemExtensionPoints(string module)
@@ -201,15 +200,13 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module, string group)
         {
-            return GetMenuItemExtensionPoints(module, group, false);
+            return GetMenuItemExtensionPoints(module, group, new NoFilter());
         }
 
-        public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module, string group, bool excludeHost)
+        public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
-            return from e in _menuItems 
-                   where e.Metadata.Module == module
-                        && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
-                        && (!excludeHost || !e.Metadata.DisableOnHost)
+            return from e in _menuItems
+                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order 
                    select e.Value;
         }
@@ -221,17 +218,20 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module, string group)
         {
-            return GetGridColumnExtensionPoints(module, group, false);
+            return GetGridColumnExtensionPoints(module, group, new NoFilter());
         }
 
-        public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module, string group, bool excludeHost)
+        public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
             return from e in _gridColumns
-                    where e.Metadata.Module == module 
-                        && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
-                        && (!excludeHost || !e.Metadata.DisableOnHost)
-                    orderby e.Value.Order
-                    select e.Value;                
-        }        
+                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+                   orderby e.Value.Order
+                   select e.Value;
+        }
+
+        private bool FilterCondition(IExtensionPointData data, string module, string group)
+        {
+            return data.Module == module && (string.IsNullOrEmpty(@group) || data.Group == @group);
+        }
     }
 }

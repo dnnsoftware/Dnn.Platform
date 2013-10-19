@@ -441,4 +441,7 @@
   <data name="UploadingExtracting.Text" xml:space="preserve">
     <value>Uploading and extracting...</value>
   </data>
+  <data name="InvalidGroup.Error" xml:space="preserve">
+    <value>The group is not valid</value>
+  </data>
 </root>

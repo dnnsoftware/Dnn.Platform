@@ -132,6 +132,9 @@
   <data name="Community.Text" xml:space="preserve">
     <value>Community Members</value>
   </data>
+  <data name="DeleteItem.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this item?</value>
+  </data>
   <data name="EditModule.Text" xml:space="preserve">
     <value>Edit Module</value>
   </data>

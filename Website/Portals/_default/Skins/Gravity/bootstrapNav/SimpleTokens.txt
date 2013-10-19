@@ -15,3 +15,27 @@
 	[/?]
 	</li>
 [/>]
+
+<script type="text/javascript">
+(function($){
+	$(document).ready(function(){
+		$(".nav-pills > li a").on("mouseover", function(event){
+            var $this = $(this).parent().find(">ul");
+            if($this.length == 0) return;
+			if (!$.support.noCloneChecked && $this.prev("iframe").length == 0) {
+				var mask = $("<iframe src=\"about:blank\" frameborder=\"0\"></iframe>");
+				$this.before(mask);
+				mask.css({
+					position: "absolute"
+					, width: $this.outerWidth() + "px"
+					, height: $this.outerHeight() + "px"
+					, left: $this.position().left + "px"
+					, top: $this.position().top + "px"
+					, opacity: 0
+                    , zIndex: 1
+				});
+			}
+		});
+	});
+})(jQuery);
+</script>

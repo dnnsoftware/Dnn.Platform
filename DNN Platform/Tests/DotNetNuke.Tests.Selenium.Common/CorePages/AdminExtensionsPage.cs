@@ -19,6 +19,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Extensions"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "ExtensionsModule"; }
+		}
+
 		public static string AdminExtensionsUrl = "/Admin/Extensions";
 
 		public static string UpdateDesctopModuleButton = "//a[contains(@id, '_ModuleEditor_cmdUpdate')]";

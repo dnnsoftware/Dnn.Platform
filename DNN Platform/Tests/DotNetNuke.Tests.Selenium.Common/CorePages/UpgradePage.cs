@@ -20,6 +20,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
+
 		public static string HostUsernameTextBox = "//input[@id = 'txtUsername']";
 		public static string HostPasswordTexBox = "//input[@id = 'txtPassword']";
 		public static string UpgradeButton = "//a[@id = 'continueLink']";

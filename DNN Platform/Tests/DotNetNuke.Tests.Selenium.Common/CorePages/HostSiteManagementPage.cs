@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Site Management"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SiteManagementModule"; }
+		}
+
 		public static string PortalsTable = "//div[contains(@id, '_Portals_grdPortals')]";
 		public static string PortalsList = "//tr[contains(@id, 'Portals_grdPortals')]";
 		public static string AddNewSiteButton = "//a[contains(@id, 'Portals_createSite')]";

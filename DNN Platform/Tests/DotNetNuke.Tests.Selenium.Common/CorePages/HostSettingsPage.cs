@@ -24,6 +24,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Host Settings"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "HostSettingsModule"; }
+		}
+
 		public static string LogsTab = "//li[@aria-controls = 'logSettings']/a";
 		public static string LogFilesDropDownArrow = "HostSettings_ddlLogs_Arrow";
 		public static string LogFilesDropDownList = "//div[contains(@id, 'HostSettings_ddlLogs_DropDown')]";

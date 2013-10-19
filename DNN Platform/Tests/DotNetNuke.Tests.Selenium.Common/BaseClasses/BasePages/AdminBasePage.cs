@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 			get { return "Admin"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "ConsoleModule"; }
+		}
+
 		public static string AdvancedConfigurationSettingsLink = "//div[a/img[contains(@src, 'AdvancedSettings_32X32_Standard.png')]]";
 		public static string DevicePreviewManagementLink = "//div[a/img[contains(@src, 'DevicePreview_Standard_32X32.png')]]";
 		public static string DigitalAssetsLink = "//div[a/img[contains(@src, 'Files_32X32_Standard.png')]]";

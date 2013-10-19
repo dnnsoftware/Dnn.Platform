@@ -374,6 +374,11 @@
     <Compile Include="Entities\Users\UserTime.cs" />
     <Compile Include="Entities\Users\UserVisibilityMode.cs" />
     <Compile Include="ExtensionPoints\ContextMenuItemExtensionControl.cs" />
+    <Compile Include="ExtensionPoints\Filters\CompositeFilter.cs" />
+    <Compile Include="ExtensionPoints\Filters\NoFilter.cs" />
+    <Compile Include="ExtensionPoints\Filters\FilterByUnauthenticated.cs" />
+    <Compile Include="ExtensionPoints\Filters\FilterByHostMenu.cs" />
+    <Compile Include="ExtensionPoints\Filters\IExtensionPointFilter.cs" />
     <Compile Include="ExtensionPoints\IUserControlActions.cs" />
     <Compile Include="ExtensionPoints\IEditPageTabControlActions.cs" />
     <Compile Include="ExtensionPoints\DefaultExtensionControl.cs" />
@@ -478,7 +483,8 @@
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
-    <Compile Include="Services\FileSystem\EventArgs\FolderAddedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileDeletedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FolderDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileAddedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderRenamedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderChangedEventArgs.cs" />
@@ -496,6 +502,12 @@
     <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlersContainer.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
+    <Compile Include="Services\FileSystem\Internal\FileDeletionController.cs" />
+    <Compile Include="Services\FileSystem\Internal\FileLockingController.cs" />
+    <Compile Include="Services\FileSystem\Internal\IFileDeletionController.cs" />
+    <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
+    <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
+    <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />

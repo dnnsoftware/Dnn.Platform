@@ -231,7 +231,7 @@
     
     dnnModule.digitalAssets.init(
         $.ServicesFramework(<%=ModuleId %>),
-        '<%= RootFolderViewModel.FolderID%>',
+        '<%= RootFolderViewModel != null ? RootFolderViewModel.FolderID : 0 %>',
         // Controls
         {
             scopeWrapperId: '<%= ScopeWrapper.ClientID %>',
@@ -258,12 +258,14 @@
             navigateUrl: '<%= ClientAPI.GetSafeJSString(NavigateUrl)%>',            
             selectedTab: '0',
             isHostMenu: <%= IsHostMenu ? "true" : "false" %>,
+            isAuthenticated: <%= Request.IsAuthenticated ? "true" : "false" %>,
             maxFileUploadSize: <%= MaxUploadSize.ToString(CultureInfo.InvariantCulture) %>,
             maxFileUploadSizeHumanReadable: '<%= string.Format(new FileSizeFormatProvider(), "{0:fs}", MaxUploadSize) %>',
-            defaultFolderTypeId: '<%= Settings.Contains("DefaultFolderTypeId") ? Settings["DefaultFolderTypeId"].ToString() : "" %>',
+            defaultFolderTypeId: '<%= DefaultFolderTypeId %>',
             pageSize: '<%= PageSize %>', 
             view: '<%= ActiveView %>',
-            userId: '<%= UserId %>'
+            userId: '<%= UserId %>',
+            rootFolderPath: '<%= RootFolderViewModel != null ? RootFolderViewModel.FolderPath : "" %>'
         },
         // Resources
         {

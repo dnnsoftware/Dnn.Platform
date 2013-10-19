@@ -24,6 +24,7 @@
 #region Usings
 
 using System;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
 
@@ -41,6 +42,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected OAuthClientBase OAuthClient { get; set; }
 
         protected abstract UserData GetCurrentUser();
+
+        protected virtual void AddCustomProperties(NameValueCollection properties)
+        {
+            
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -63,9 +69,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 if (OAuthClient.Authorize() == AuthorisationResult.Authorized)
                 {
-                    OAuthClient.AuthenticateUser(GetCurrentUser(), PortalSettings, IPAddress,
-                                                 (properties) => { },
-                                                 OnUserAuthenticated);
+                    OAuthClient.AuthenticateUser(GetCurrentUser(), PortalSettings, IPAddress, AddCustomProperties, OnUserAuthenticated);
                 }
             }
         }

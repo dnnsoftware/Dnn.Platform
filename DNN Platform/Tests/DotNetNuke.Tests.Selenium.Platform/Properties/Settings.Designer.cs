@@ -86,15 +86,12 @@ namespace DNNSelenium.Platform.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("P1Data.xml")]
         public string P1DataFile {
             get {
                 return ((string)(this["P1DataFile"]));
-            }
-            set {
-                this["P1DataFile"] = value;
             }
         }
     }

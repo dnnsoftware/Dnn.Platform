@@ -68,7 +68,7 @@
 
         collapseTree: function (onComplete) {
             var self = this;
-            if (this._$treeElement) {
+            if (this._$treeElement && this._$treeElement.length) {
                 this._$treeElement.slideUp({
                     duration: 0,
                     complete: function() {

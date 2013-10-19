@@ -40,6 +40,8 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
+			_logContent = LogContent();
+
 			var manageRolesPage = new ManageRolesPage(_driver);
 			manageRolesPage.OpenUsingControlPanel(_baseUrl);
 			manageRolesPage.AddNewSecurityRole(_roleName);
@@ -51,7 +53,7 @@ namespace DNNSelenium.Common.Tests.P1
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs();
+			VerifyLogs(_logContent);
 		}
 
 		[Test]

@@ -45,6 +45,10 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "AccountLoginModule"; }
+		}
 
 		public void OpenUsingUrl(string baseUrl)
 		{
@@ -80,6 +84,7 @@ namespace DNNSelenium.Common.CorePages
 		public void LoginUsingLoginLinkAndFrame(string userName, string password)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Login using 'Login' link:");
+
 			LetMeOut();
 
 			string selector = null;
@@ -103,8 +108,6 @@ namespace DNNSelenium.Common.CorePages
 				FindElement(By.XPath(ControlPanelIDs.SocialLoginLink)).Click();
 			} 
 
-			/*FindElement(By.XPath(ControlPanelIDs.LoginLink)).Click();*/
-
 			WaitAndSwitchToFrame(30);
 			
 			DoLoginUsingLoginLink(userName, password);
@@ -127,14 +130,18 @@ namespace DNNSelenium.Common.CorePages
 		public void LoginUsingUrl(string baseUrl, string username, string password)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Login using url:");
+
+			//OpenUsingUrl(baseUrl);
+
 			LetMeOut();
-			OpenUsingUrl(baseUrl);
-			DoLoginUsingUrl(username, password);
+
+			LoginUsingLoginLink(username, password);
 		}
 
 		public void LoginAsHost(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Login as default host:");
+			GoToUrl(baseUrl);
 			LoginUsingUrl(baseUrl, "host", "dnnhost");
 		}
 
@@ -173,15 +180,6 @@ namespace DNNSelenium.Common.CorePages
 					WaitForElement(By.XPath(ControlPanelIDs.SocialLoginLink));
 				}		
 			}
-
-			/*WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 20).Info();
-
-			Trace.WriteLine(BasePage.TraceLevelElement + "Click on button: " + ControlPanelIDs.LogoutLink + "]");
-			if (ElementPresent(By.XPath(ControlPanelIDs.LogoutLink)))
-			{
-				FindElement(By.XPath(ControlPanelIDs.LogoutLink)).Click();
-				WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 20).WaitTillVisible(20);
-			}*/
 		}
 
 		public void DoRegisterUsingRegisterLink(string userName, string displayName, string emailAddress, string password)

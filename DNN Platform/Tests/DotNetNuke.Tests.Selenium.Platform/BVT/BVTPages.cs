@@ -50,7 +50,7 @@ namespace DNNSelenium.Platform.BVT
 
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenUsingUrl(_baseUrl, _pageName);
-			blankPage.SetPageToEditMode(_pageName);
+			blankPage.SetPageToEditMode();
 
 			var module = new Modules(_driver);
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");

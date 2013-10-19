@@ -43,7 +43,6 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Home/Page29", "NewslettersModule", "ContentPane")]
 		[TestCase("Home/Page30", "PagesModule", "ContentPane")]
 		[TestCase("Home/Page31", "ProfessionalPreviewModule", "ContentPane")]
-		[TestCase("Home/Page32", "RadEditorManagerModule", "ContentPane")]
 		[TestCase("Home/Page33", "RazorHostModule", "ContentPane")]
 		[TestCase("Home/Page34", "RecycleBinModule", "ContentPane")]
 		[TestCase("Home/Page35", "SearchAdminModule", "ContentPane")]
@@ -56,7 +55,6 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Home/Page45", "TaxonomyManagerModule", "ContentPane")]
 		[TestCase("Home/Page47", "VendorsModule", "ContentPane")]
 		[TestCase("Home/Page48", "ViewProfileModule", "ContentPane")]
-		[TestCase("Home/Page50", "WhatsNewModule", "ContentPane")]
 		[TestCase("Home/Page74", "ModuleCreator", "ContentPane")]
 		public void Test002_AddModuleToContentPaneOnNewPage(string pageName, string moduleName, string location)
 		{
@@ -98,7 +96,6 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Home/Page29", "NewslettersModule", "LeftPane")]
 		[TestCase("Home/Page30", "PagesModule", "LeftPane")]
 		[TestCase("Home/Page31", "ProfessionalPreviewModule", "LeftPane")]
-		[TestCase("Home/Page32", "RadEditorManagerModule", "LeftPane")]
 		[TestCase("Home/Page33", "RazorHostModule", "LeftPane")]
 		[TestCase("Home/Page34", "RecycleBinModule", "LeftPane")]
 		[TestCase("Home/Page35", "SearchAdminModule", "LeftPane")]
@@ -111,7 +108,6 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Home/Page45", "TaxonomyManagerModule", "LeftPane")]
 		[TestCase("Home/Page47", "VendorsModule", "LeftPane")]
 		[TestCase("Home/Page48", "ViewProfileModule", "LeftPane")]
-		[TestCase("Home/Page50", "WhatsNewModule", "LeftPane")]
 		[TestCase("Home/Page74", "ModuleCreator", "LeftPane")]
 		public void Test005_MoveModuleToLeftPane(string pageName, string moduleName, string newLocation)
 		{
@@ -152,7 +148,6 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Home/Page10", "DashboardModule", "ContentPane")]
 		[TestCase("Home/Page11", "DDRMenuModule", "ContentPane")]
 		[TestCase("Home/Page12", "DigitalAssetManagementModule", "ContentPane")]
-		[TestCase("Home/Page14", "ClientCapabilityProviderModule", "ContentPane")]
 		[TestCase("Home/Page15", "ExtensionsModule", "ContentPane")]
 		[TestCase("Home/Page17", "GoogleAnalyticsModule", "ContentPane")]
 		[TestCase("Home/Page20", "HtmlModule", "ContentPane")]
@@ -176,7 +171,6 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Home/Page10", "DashboardModule", "LeftPane")]
 		[TestCase("Home/Page11", "DDRMenuModule", "LeftPane")]
 		[TestCase("Home/Page12", "DigitalAssetManagementModule", "LeftPane")]
-		[TestCase("Home/Page14", "ClientCapabilityProviderModule", "LeftPane")]
 		[TestCase("Home/Page15", "ExtensionsModule", "LeftPane")]
 		[TestCase("Home/Page17", "GoogleAnalyticsModule", "LeftPane")]
 		[TestCase("Home/Page20", "HtmlModule", "LeftPane")]
@@ -228,7 +222,7 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Home/Page72", "Terrible Cycles, Inc.")]
 		public void Test0012_EditContentOfExistingModule(string pageName, string moduleContent)
 		{
-			EditContentOfExistingModuleWithoutCopy(Modules.CommonModulesDescription, pageName, moduleContent);
+			EditContentOfExistingModuleWithoutCopy("Common", "CorePages.Modules", Modules.CommonModulesDescription, pageName, moduleContent);
 		}
 
 		[TestCase("Home/Page73")]
@@ -240,7 +234,28 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Home/Page73", "Awesome Cycles, Inc.")]
 		public void Test0014_EditContentOfExistingModule(string pageName, string moduleContent)
 		{
-			EditContentOfExistingModuleWithCopy(Modules.CommonModulesDescription, pageName, moduleContent);
+			EditContentOfExistingModuleWithCopy("Common", "CorePages.Modules", Modules.CommonModulesDescription, pageName, moduleContent);
+		}
+
+		
+		[TestCase("Platform", "CorePages.AdminGoogleAnalyticsPage", "OpenUsingControlPanel")]
+		public void Test0015_UpdateModuleSettings(string assyName, string pageClassName, string openMethod)
+		{
+			UpdateModuleSettings(assyName, pageClassName, openMethod, Modules.CommonModulesDescription);
+		}
+
+		[TestCase("Home/Page60", "HtmlModule", "ContentPane")]
+		[TestCase("Home/Page60", "HtmlModule", "LeftPane")]
+		[TestCase("Home/Page60", "HtmlModule", "ContentPaneLower")]
+		[TestCase("Home/Page60", "HtmlModule", "SideBarPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterLeftOuterPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterLeftPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterCenterPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterRightPane")]
+		[TestCase("Home/Page60", "HtmlModule", "FooterRightOuterPane")]
+		public void Test016_DeleteModule(string pageName, string moduleName, string location)
+		{
+			DeleteModule(Modules.CommonModulesDescription, pageName, moduleName, location);
 		}
 	}
 }

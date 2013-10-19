@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "File Management"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "DigitalAssetManagementModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Host '" + PageTitleLabel + "' page:");

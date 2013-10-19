@@ -176,6 +176,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         loadFolderFirstPage(currentFolderId);
         setView(settings.view == listViewMode ? listViewMode : gridViewMode);
         grid.set_pageSize(settings.pageSize ? settings.pageSize : 10);
+
+        controller.gridOnGridCreated(grid);
     }
     
     function initGridSelectAllUnselectAll(sender) {
@@ -248,7 +250,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         
         var $ul = $("#dnnModuleDigitalAssetsLeftPaneActions", '#' + controls.scopeWrapperId);        
         
-        var actions = controller.getLeftPaneActions(settings.isHostMenu);
+        var actions = controller.getLeftPaneActions(settings);
         for (var i = 0, size = actions.length; i < size; i++) {
             var $li = $("<li></li>")
                 .attr('id', actions[i].id)
@@ -608,7 +610,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         loadFolderFirstPage(currentFolderId);
     }
 
-    function refreshFolder() {
+    function refreshFolder(keepCurrentPage) {
+        if (keepCurrentPage && keepCurrentPage === true) {
+            internalResetGridComponents();
+            var pageSize = grid.get_pageSize();
+            var startIndex = grid.get_currentPageIndex() * pageSize;
+            loadFolder(currentFolderId, startIndex, pageSize, null);
+            return;
+        }
+
         refreshFolderNode(getCurrentNode());
     }
     
@@ -1359,7 +1369,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         grid.set_currentPageIndex(0);
         loadFolder(folderId, 0, grid.get_pageSize(), null);
     }
-    
+        
     function updateModuleState() {
         var state = "folderId=" + getCurrentNode().get_value() +
                     "&view=" + currentView +
@@ -1441,7 +1451,20 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         });
     }
 
+    function getParentFolderName(parentFolder) {
+        if (parentFolder.indexOf(settings.rootFolderPath) == 0) {
+            parentFolder = parentFolder.substring(settings.rootFolderPath.length);
+        }
+        
+        return treeView.get_nodes().getNode(0).get_text() + '/' + parentFolder;
+    }
+
     function itemsDatabind(data, noItemsText) {
+        
+        for (var i = 0; i < data.Items.length; i++) {
+            data.Items[i].ParentFolder = getParentFolderName(data.Items[i].ParentFolder);
+        }
+
         grid.set_virtualItemCount(data.TotalCount);
         grid.set_dataSource(data.Items);
         grid.dataBind();
@@ -2273,8 +2296,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             folderPath = node.get_text() + '/' + folderPath;
             node = node.get_parent();
         }
-
-        return folderPath;
+        
+        return settings.rootFolderPath + folderPath;
     }
 
     function uploadFiles() {
@@ -2373,7 +2396,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             
             if (item.IsFolder) {
                 var hasBeenDeleted = true;
-                for (var j = 0; j < itemsNotDeleted.length; i++) {
+                for (var j = 0; j < itemsNotDeleted.length; j++) {
                     if(item.ItemId == itemsNotDeleted[j].ItemId) {
                         hasBeenDeleted = false;
                         break;

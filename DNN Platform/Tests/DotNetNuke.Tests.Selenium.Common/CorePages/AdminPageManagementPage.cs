@@ -23,6 +23,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Page Management"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "PagesModule"; }
+		}
+
 		public static string PageList = "//div[contains(@id, 'Tabs_ctlPages')]";
 
 		public static string WebsitePagesRadioButton = "//input[contains(@id, 'Tabs_rblMode_0')]";
@@ -163,8 +168,10 @@ namespace DNNSelenium.Common.CorePages
 
 			SelectFromContextMenu(pageName, ContextMenuDeletePageOption);
 
-			IAlert alert = _driver.SwitchTo().Alert();
-			alert.Accept();
+			//IAlert alert = _driver.SwitchTo().Alert();
+			//alert.Accept();
+			WaitForConfirmationBox(30);
+			ClickYesOnConfirmationBox();
 
 			WaitForElement(By.XPath(OperationConfirmationMessage));
 		}

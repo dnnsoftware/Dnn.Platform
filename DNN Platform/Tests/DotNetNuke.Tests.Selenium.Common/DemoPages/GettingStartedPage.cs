@@ -20,6 +20,11 @@ namespace DNNSelenium.Common.DemoPages
 			get { return "Getting Started"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Getting started' page:");

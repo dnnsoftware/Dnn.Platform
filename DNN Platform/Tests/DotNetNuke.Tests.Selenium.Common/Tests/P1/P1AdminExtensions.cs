@@ -36,13 +36,15 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
+			_logContent = LogContent();
+
 			CreateAdminAndLoginAsAdmin("Admin", "Admin", "admin@mail.com", "dnnadmin");
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs();
+			VerifyLogs(_logContent);
 		}
 
 		[Test]

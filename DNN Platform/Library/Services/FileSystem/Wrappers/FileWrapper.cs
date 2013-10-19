@@ -57,6 +57,11 @@ namespace DotNetNuke.Services.FileSystem.Internal
             File.Move(sourceFileName, destFileName);
         }
 
+        public void Copy(string sourceFileName, string destinationFileName, bool overwrite)
+        {
+            File.Copy(sourceFileName, destinationFileName, overwrite);
+        }
+
         public Stream OpenRead(string path)
         {
             return File.OpenRead(path);
