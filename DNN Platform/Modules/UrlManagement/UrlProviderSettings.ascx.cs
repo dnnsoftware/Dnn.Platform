@@ -65,6 +65,11 @@ namespace DotNetNuke.Modules.UrlManagement
 
         void cmdUpdate_Click(object sender, EventArgs e)
         {
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
+
             if (_providerSettingsControl != null)
             {
                 var settings = _providerSettingsControl.SaveSettings();
