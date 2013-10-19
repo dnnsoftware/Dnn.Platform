@@ -236,22 +236,28 @@ html .gs-container {
 }
 
 .gs-container .gs-footer-left-side input[type="checkbox"] {
-    display: none;
-    display: inline\9; /* show in IE < 9 */
+    display: inline;
     margin: 0 0 2px 9px;
     cursor: pointer;
+}
+
+:root *> .gs-container .gs-footer-left-side input[type="checkbox"] {
+    display: none;
 }
 
 .gs-container .gs-footer-left-side label {
     cursor: pointer;
     display: inline-block;
-    padding: 0 0 0 25px;
-    padding-left: 10px\9;
-    margin: 0 0 0 10px;
-    margin-left: 0\9;
+    padding: 0 0 0 10px;
+    margin: 0;
     font-size: 13px;
     position: relative;
     color: #c0b3b3;
+}
+
+:root *> .gs-container .gs-footer-left-side label {
+    padding-left: 25px;
+    margin-left: 10px;
 }
 
 /* :root *> disable in IE < 9 */
