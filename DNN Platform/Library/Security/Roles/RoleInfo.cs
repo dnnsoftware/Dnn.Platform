@@ -40,6 +40,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Tokens;
+using System.Web;
 
 #endregion
 
@@ -359,7 +360,7 @@ namespace DotNetNuke.Security.Roles
             AutoAssignment = Null.SetNullBoolean(dr["AutoAssignment"]);
             RSVPCode = Null.SetNullString(dr["RSVPCode"]);
             IconFile = Null.SetNullString(dr["IconFile"]);
-            
+
             //New properties may not be present if called before 6.2 Upgrade has been executed
             try
             {
@@ -404,8 +405,8 @@ namespace DotNetNuke.Security.Roles
                         IsSystemRole = Null.SetNullBoolean(dr["IsSystemRole"]);
                     }
                 }
-                
-               
+
+
             }
             catch (IndexOutOfRangeException)
             {
@@ -487,7 +488,7 @@ namespace DotNetNuke.Security.Roles
                 case "datecreated":
                     return PropertyAccess.FormatString(CreatedOnDate.ToString(), format);
                 case "photourl":
-                    return PropertyAccess.FormatString(PhotoURL, format);
+                    return PropertyAccess.FormatString(FormatUrl(PhotoURL), format);
                 case "stat_status":
                     return PropertyAccess.FormatString(GetString("stat_status", string.Empty), format);
                 case "stat_photo":
@@ -495,7 +496,7 @@ namespace DotNetNuke.Security.Roles
                 case "stat_file":
                     return PropertyAccess.FormatString(GetString("stat_file", string.Empty), format);
                 case "url":
-                    return PropertyAccess.FormatString(GetString("URL", string.Empty), format);
+                    return PropertyAccess.FormatString(FormatUrl(GetString("URL", string.Empty)), format);
                 case "issystemrole":
                     return PropertyAccess.Boolean2LocalizedYesNo(IsSystemRole, formatProvider);
                 case "grouptype":
@@ -511,9 +512,6 @@ namespace DotNetNuke.Security.Roles
                     propertyNotFound = true;
                     return string.Empty;
             }
-
-            
-            
         }
 
         #endregion
@@ -643,7 +641,7 @@ namespace DotNetNuke.Security.Roles
                                 case "both":
                                     SecurityMode = SecurityMode.Both;
                                     break;
-                            }                            
+                            }
                             break;
                         case "status":
                             switch (reader.ReadElementContentAsString())
@@ -754,6 +752,16 @@ namespace DotNetNuke.Security.Roles
             }
 
             return defaultValue;
+        }
+
+        private string FormatUrl(string url)
+        {
+            if (url.StartsWith("/") && HttpContext.Current != null) 
+            {
+                //server absolute path
+                return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
+            }
+            return url;
         }
     }
 }
