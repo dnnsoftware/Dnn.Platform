@@ -46,7 +46,7 @@
                         <dnn:LOGO runat="server" id="dnnLOGOmobi" />
                     </span><!--/Logo-->
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">Menu</a>
-                    <div class="nav-collapse collapse pull-right">
+                    <div id="navdttg" class="nav-collapse collapse pull-right">
                         <dnn:MENU ID="bootstrapNav" MenuStyle="bootstrapNav" runat="server"></dnn:MENU>
                     </div><!-- END nav-collapse -->
                 </div><!-- END navbar-inner -->
@@ -89,7 +89,12 @@
         </div>
 	</div><!--/contentWrapper-->
 </div><!--/siteWrapper-->
-
+<dnn:DnnJsInclude ID="dttg" runat="server" FilePath="js/doubletaptogo.min.js" PathNameAlias="SkinPath" />
+<script type="text/javascript">
+     $(function () {
+          $('#navdttg li:has(ul)').doubleTapToGo();
+     });
+</script>
     	
 	
 	
