@@ -1539,4 +1539,17 @@ Please do not reply to this email.</value>
     &lt;/tr&gt;
 &lt;/table&gt;&lt;/div&gt;</value>
   </data>
+  <data name="EMAIL_PASSWORD_UPDATED_BODY.Text" xml:space="preserve">
+    <value>Dear [User:DisplayName],
+
+Your Password on [Portal:PortalName] has been changed.
+
+Please contact the site administrator at the following email address - [Portal:Email]
+
+Sincerely,
+[Portal:PortalName]</value>
+  </data>
+  <data name="EMAIL_PASSWORD_UPDATED_SUBJECT.Text" xml:space="preserve">
+    <value>[Portal:PortalName] Password Updated</value>
+  </data>
 </root>

@@ -881,7 +881,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (accessingUser.UserID != User.UserID)
                     {
 						//The password was changed by someone else 
-                        Mail.SendMail(User, MessageType.PasswordReminder, PortalSettings);
+                        Mail.SendMail(User, MessageType.PasswordUpdated, PortalSettings);
                     }
                     else
                     {

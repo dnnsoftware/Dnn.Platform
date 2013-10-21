@@ -970,7 +970,7 @@
     <value>Password Question must be provided</value>
   </data>
   <data name="PasswordChanged.Text" xml:space="preserve">
-    <value>The password has been reset.</value>
+    <value>The password has been changed.</value>
   </data>
   <data name="PasswordInvalid.Text" xml:space="preserve">
     <value>You must enter a valid password.  Please check with the Website Administrator if you do not know the password requirements.</value>

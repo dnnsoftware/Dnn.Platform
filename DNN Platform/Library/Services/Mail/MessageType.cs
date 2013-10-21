@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.Mail
         UserRegistrationPrivate,
         UserRegistrationPublic,
         UserRegistrationVerified,
-        UserUpdatedOwnPassword
+        UserUpdatedOwnPassword,
+        PasswordUpdated
     }
 }
