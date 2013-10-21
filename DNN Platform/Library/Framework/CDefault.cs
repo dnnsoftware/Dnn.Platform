@@ -173,7 +173,6 @@ namespace DotNetNuke.Framework
                 Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentPortalId", "var pageCurrentPortalId = " + PortalSettings.PortalId + ";", true);
                 Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "GettingStartedPageTitle", "var gettingStartedPageTitle = '" + GettingStartedTitle + "';", true);
 
-                //stop the Ge
                 Personalization.SetProfile("GettingStarted", "Display", false);
             }
 
@@ -256,7 +255,9 @@ namespace DotNetNuke.Framework
                 {
                     if (!IsPage(GettingStartedTabId) && PortalSettings.UserInfo.IsSuperUser && Host.EnableGettingStartedPage)
                     {
-                        result = Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Display"));
+                        result = Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Display"))  &&
+                                    !((Personalization.GetProfile("GettingStarted", "Hide") != null) 
+                                        && Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Hide")));
                     }
                 }
                 return result;
