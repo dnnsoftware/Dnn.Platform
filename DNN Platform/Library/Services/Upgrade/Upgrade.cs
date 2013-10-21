@@ -42,6 +42,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -2827,6 +2828,8 @@ namespace DotNetNuke.Services.Upgrade
             {
                 ImportDocumentLibraryCategories();
                 ImportDocumentLibraryCategoryAssoc(fileContentType);
+
+                AddDefaultContentWorkflows();
             }
             
             //fixes issue introduced by eventlog's being defined in upgrade.cs
@@ -2850,6 +2853,14 @@ namespace DotNetNuke.Services.Upgrade
 
             //Remove WhatsNew module
             DesktopModuleController.DeleteDesktopModule("WhatsNew");
+        }
+
+        private static void AddDefaultContentWorkflows()
+        {
+            foreach (PortalInfo portal in TestablePortalController.Instance.GetPortals())
+            {
+                ContentWorkflowController.Instance.CreateDefaultWorkflows(portal.PortalID);
+            }
         }
 
         private static ContentItem CreateFileContentItem()
