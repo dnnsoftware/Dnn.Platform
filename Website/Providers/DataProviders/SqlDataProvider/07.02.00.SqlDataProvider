@@ -978,6 +978,466 @@ AS
     END
 GO
 
+/*   Fix DNN-3914 Add new SQL functions */
+/****************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FilePath]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}FilePath]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}FilePath]
+(
+    @StrMayContainFileId nVarChar(255)
+)
+	RETURNS 			 nVarChar(500)
+AS
+	BEGIN
+		DECLARE @Path AS nVarChar(500);
+
+		IF ISNULL(@StrMayContainFileId,'') = ''
+			SET @Path = ''
+		 ELSE IF Lower(@StrMayContainFileId) LIKE 'fileid=%'
+			SELECT @Path = IsNull(Folder, '') + FileName FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(@StrMayContainFileId, 8, 10) AS Int)
+		 ELSE
+			SET @Path = @StrMayContainFileId
+		RETURN @Path -- never Null!
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SuperuserTabID]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}SuperUserTabID]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}SuperUserTabID]
+() 
+	RETURNS Int
+AS
+BEGIN
+    DECLARE @HostTabId Int = Null
+    SELECT  TOP (1) @HostTabId = TabID
+		FROM  {databaseOwner}{objectQualifier}Tabs
+		WHERE (PortalID IS NULL) AND (ParentId IS NULL)
+		ORDER BY TabID
+    RETURN @HostTabId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HasChildTab]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}HasChildTab]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}HasChildTab]
+(
+   @TabId   Int
+) 
+	RETURNS Bit
+AS
+BEGIN
+    RETURN CASE WHEN EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}Tabs WHERE ParentId = @TabId) THEN 1 ELSE 0 END
+END
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Portals]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+GO
+
+-- updated view to use new function
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+AS
+    SELECT
+        P.PortalID,
+        P.PortalGroupID,
+        PL.PortalName,
+        {databaseOwner}{objectQualifier}FilePath(PL.LogoFile) AS LogoFile,
+        PL.FooterText,
+        P.ExpiryDate,
+        P.UserRegistration,
+        P.BannerAdvertising,
+        P.AdministratorId,
+        P.Currency,
+        P.HostFee,
+        P.HostSpace,
+        P.PageQuota,
+        P.UserQuota,
+        P.AdministratorRoleId,
+        P.RegisteredRoleId,
+        PL.Description,
+        PL.KeyWords,
+        {databaseOwner}{objectQualifier}FilePath(PL.BackgroundFile) AS BackgroundFile,
+        P.GUID,
+        P.PaymentProcessor,
+        P.ProcessorUserId,
+        P.ProcessorPassword,
+        P.SiteLogHistory,
+        U.Email,
+        P.DefaultLanguage,
+        P.TimezoneOffset,
+        PL.AdminTabId,
+        P.HomeDirectory,
+        PL.SplashTabId,
+        PL.HomeTabId,
+        PL.LoginTabId,
+        PL.RegisterTabId,
+        PL.UserTabId,
+        PL.SearchTabId,
+        {databaseOwner}{objectQualifier}SuperUserTabID() AS SuperTabId,
+        P.CreatedByUserID,
+        P.CreatedOnDate,
+        P.LastModifiedByUserID,
+        P.LastModifiedOnDate,
+        PL.CultureCode
+    FROM       {databaseOwner}{objectQualifier}Portals            AS P
+    INNER JOIN {databaseOwner}{objectQualifier}PortalLocalization AS PL ON P.PortalID = PL.PortalID
+    LEFT  JOIN {databaseOwner}{objectQualifier}Users              AS U  ON P.AdministratorId = U.UserID
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+AS
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Portals] WHERE CultureCode = DefaultLanguage
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_TabModules]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_TabModules]
+GO
+
+CREATE VIEW {databaseOwner}{objectQualifier}vw_TabModules
+AS
+    SELECT
+        M.PortalID AS [OwnerPortalID],
+        T.PortalID,
+        TM.TabID,
+        TM.TabModuleID,
+        M.ModuleID,
+        M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        TM.ModuleTitle,
+        TM.CacheTime,
+        TM.CacheMethod,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+        {databaseOwner}{objectQualifier}FilePath(TM.IconFile) AS IconFile,
+        M.AllTabs,
+        TM.Visibility,
+        TM.IsDeleted,
+        TM.Header,
+        TM.Footer,
+        M.StartDate,
+        M.EndDate,
+        TM.ContainerSrc,
+        TM.DisplayTitle,
+        TM.DisplayPrint,
+        TM.DisplaySyndicate,
+        TM.IsWebSlice,
+        TM.WebSliceTitle,
+        TM.WebSliceExpiryDate,
+        TM.WebSliceTTL,
+        M.InheritViewPermissions,
+        M.IsShareable,
+        M.IsShareableViewOnly,
+        MD.DesktopModuleID,
+        MD.DefaultCacheTime,
+        MC.ModuleControlID,
+        DM.BusinessControllerClass,
+        DM.IsAdmin,
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        TM.CreatedByUserID,
+        TM.CreatedOnDate,
+        TM.LastModifiedByUserID,
+        TM.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM {databaseOwner}{objectQualifier}ModuleDefinitions     AS MD
+     INNER JOIN {databaseOwner}{objectQualifier}Modules        AS M  ON MD.ModuleDefID = M.ModuleDefID
+     INNER JOIN {databaseOwner}{objectQualifier}ModuleControls AS MC ON MD.ModuleDefID = MC.ModuleDefID
+     INNER JOIN {databaseOwner}{objectQualifier}DesktopModules AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
+     LEFT  JOIN {databaseOwner}{objectQualifier}ContentItems   AS CI ON M.ContentItemID = CI.ContentItemID
+     LEFT  JOIN {databaseOwner}{objectQualifier}TabModules     AS TM ON M.ModuleID = TM.ModuleID
+     LEFT  JOIN {databaseOwner}{objectQualifier}Tabs           AS T  ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Modules]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+GO
+
+-- updated view to use new function
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Modules
+AS
+    SELECT
+        M.PortalID AS [OwnerPortalID],
+        T.PortalID,
+        TM.TabID,
+        TM.TabModuleID,
+        M.ModuleID,
+        M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        TM.ModuleTitle,
+        TM.CacheTime,
+        TM.CacheMethod,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+        {databaseOwner}{objectQualifier}FilePath(TM.IconFile) AS IconFile,
+        M.AllTabs,
+        TM.Visibility,
+        TM.IsDeleted,
+        TM.Header,
+        TM.Footer,
+        M.StartDate,
+        M.EndDate,
+        TM.ContainerSrc,
+        TM.DisplayTitle,
+        TM.DisplayPrint,
+        TM.DisplaySyndicate,
+        TM.IsWebSlice,
+        TM.WebSliceTitle,
+        TM.WebSliceExpiryDate,
+        TM.WebSliceTTL,
+        M.InheritViewPermissions,
+        M.IsShareable,
+        M.IsShareableViewOnly,
+        MD.DesktopModuleID,
+        MD.DefaultCacheTime,
+        MC.ModuleControlID,
+        DM.BusinessControllerClass,
+        DM.IsAdmin,
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        M.CreatedByUserID,
+        M.CreatedOnDate,
+        M.LastModifiedByUserID,
+        M.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM        {databaseOwner}{objectQualifier}ModuleDefinitions AS MD
+     INNER JOIN {databaseOwner}{objectQualifier}Modules           AS M  ON MD.ModuleDefID = M.ModuleDefID
+     INNER JOIN {databaseOwner}{objectQualifier}ModuleControls    AS MC ON MD.ModuleDefID = MC.ModuleDefID
+     INNER JOIN {databaseOwner}{objectQualifier}DesktopModules    AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
+     LEFT  JOIN {databaseOwner}{objectQualifier}ContentItems      AS CI ON M.ContentItemID = CI.ContentItemID
+     LEFT  JOIN {databaseOwner}{objectQualifier}TabModules        AS TM ON M.ModuleID = TM.ModuleID
+     LEFT  JOIN {databaseOwner}{objectQualifier}Tabs              AS T  ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+GO
+
+-- updated view to use new function
+-- note comment regarding signature modification
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+    SELECT
+        T.TabID,
+        T.TabOrder,
+        T.PortalID,
+        T.TabName,
+        T.ParentId,
+        T.[Level],
+        T.TabPath,
+        T.UniqueId,
+        T.VersionGuid,
+        T.DefaultLanguageGuid,
+        T.LocalizedVersionGuid,
+        T.IsVisible,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFile)      AS IconFile,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFileLarge) AS IconFileLarge,
+        T.DisableLink,
+        T.Title,
+        T.Description,
+        T.KeyWords,
+        T.IsDeleted,
+        T.SkinSrc,
+        T.ContainerSrc,
+        T.StartDate,
+        T.EndDate,
+        T.Url,
+        CASE WHEN {databaseOwner}{objectQualifier}HasChildTab(T.TabID) = 1 THEN 'true' ELSE 'false' END AS HasChildren,
+        T.RefreshInterval,
+        T.PageHeadText,
+        T.IsSecure,
+        T.PermanentRedirect,
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.[Content],
+        CI.ContentTypeID,
+        CI.ModuleID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        T.CultureCode,
+        T.CreatedByUserID,
+        T.CreatedOnDate,
+        T.LastModifiedByUserID,
+        T.LastModifiedOnDate
+    FROM       {databaseOwner}{objectQualifier}Tabs         AS T
+    LEFT  JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON T.ContentItemID = CI.ContentItemID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+    @ModuleId Int -- Null: settings from all modules
+AS
+	BEGIN
+		SELECT
+			MS.SettingName,
+			CASE WHEN MS.SettingValue LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(MS.SettingValue)
+				 ELSE MS.SettingValue END           AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}ModuleSettings] MS
+		WHERE  ModuleID = @ModuleId or IsNull(@ModuleId, -1) = -1
+		OPTION (OPTIMIZE FOR (@ModuleId UNKNOWN))
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSetting]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+    @ModuleId      Int,          -- not null!
+    @SettingName   nVarChar(50)  -- not null or empty!
+AS
+	BEGIN
+		SELECT
+			CASE WHEN Lower(MS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(MS.SettingValue)
+				 ELSE MS.SettingValue  END AS SettingValue
+		FROM {databaseOwner}[{objectQualifier}ModuleSettings] MS
+		WHERE  ModuleID = @ModuleId AND SettingName = @SettingName
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettings]
+    @TabModuleId Int -- Null: all tabmodules
+AS
+	BEGIN
+		SELECT
+			TMS.SettingName,
+			CASE WHEN Lower(TMS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TMS.SettingValue)
+				 ELSE TMS.SettingValue END           AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}TabModuleSettings] TMS
+		WHERE  TabModuleID = @TabModuleId OR IsNull(@TabModuleId, -1) = -1
+		OPTION (OPTIMIZE FOR (@TabModuleId UNKNOWN))
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSetting]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSetting]
+    @TabModuleId   Int,              -- not null!
+    @SettingName   nVarChar(50)      -- not null or empty!
+AS
+	BEGIN
+		SELECT
+			CASE WHEN TMS.SettingValue LIKE 'fileid%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TMS.SettingValue)
+				 ELSE TMS.SettingValue  END AS SettingValue
+		FROM {databaseOwner}[{objectQualifier}TabModuleSettings] TMS
+		WHERE  TabModuleID = @TabModuleId AND SettingName = @SettingName
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+    @TabId Int -- Null for all tabs
+AS
+	BEGIN
+		SELECT
+			TS.SettingName,
+			CASE WHEN TS.SettingValue LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TS.SettingValue)
+				 ELSE TS.SettingValue END           AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}TabSettings] TS
+		WHERE  (TabID = @TabId OR IsNull(@TabId, -1) = -1)
+		OPTION (OPTIMIZE FOR (@TabId UNKNOWN))
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSetting]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
+
+    @TabId         Int,         -- not null!
+    @SettingName   nVarChar(50) -- not null or empty!
+
+AS
+	BEGIN
+		SELECT
+			CASE WHEN TS.SettingValue LIKE 'fileid%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TS.SettingValue)
+				 ELSE TS.SettingValue  END AS SettingValue
+		FROM {databaseOwner}[{objectQualifier}TabSettings] TS
+		WHERE  TabID = @TabId AND SettingName = @SettingName
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not null!
+    @CultureCode nVarChar(20)    -- totally ignored
+AS
+	BEGIN
+		SELECT
+			PS.SettingName,
+			CASE WHEN PS.SettingValue LIKE 'fileid=%'
+			 THEN {databaseOwner}{objectQualifier}FilePath(PS.SettingValue)
+			 ELSE PS.SettingValue END   AS SettingValue,
+			PS.CreatedByUserID,
+			PS.CreatedOnDate,
+			PS.LastModifiedByUserID,
+			PS.LastModifiedOnDate,
+			PS.CultureCode
+			FROM {databaseOwner}[{objectQualifier}PortalSettings] PS
+		WHERE PortalID = @PortalId -- AND (ISNull(PS.CultureCode,@CultureCode) = @CultureCode OR @CultureCode Is Null) // multiple languages are currently not supported by API
+	END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
