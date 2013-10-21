@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Web.UI.WebControls
+namespace DotNetNuke.UI.WebControls
 {
     [DataContract]
     public class DnnGettingStartedOptions

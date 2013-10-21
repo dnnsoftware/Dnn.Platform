@@ -21,18 +21,10 @@
 #region Usings
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
-using System.Web.Caching;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 
-//using DotNetNuke.UI.Utilities;
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -40,6 +32,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using Globals = DotNetNuke.Common.Globals;
@@ -176,17 +169,14 @@ namespace DotNetNuke.Framework
                 Personalization.SetProfile("GettingStarted", "Display", false);
             }
 
-            if (ShowGettingStartedPage)
+            var gettingStarted = new DnnGettingStarted
             {
-                if (!PortalSettings.EnablePopUps)
-                {
-                    Response.Redirect(GettingStartedPageUrl);
-                }
-                else
-                {
-                    DNNClientAPI.ShowModalPage(Page, GettingStartedPageUrl);
-                }
-            }
+                ShowOnStarup = ShowGettingStartedPage,
+                ContentUrl = GettingStartedPageUrl
+            };
+
+            Page.Form.Controls.Add(gettingStarted);
+
         }
 
         protected void ManageInstallerFiles()

@@ -4,7 +4,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
-namespace DotNetNuke.Web.UI.WebControls
+namespace DotNetNuke.UI.WebControls
 {
     public class DnnGettingStarted : Control, INamingContainer
     {

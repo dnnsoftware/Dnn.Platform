@@ -194,8 +194,6 @@
     <Compile Include="Api\IServiceRouteMapper.cs" />
     <Compile Include="Api\Internal\ServicesRoutingManager.cs" />
     <Compile Include="Common\SharedConstants.cs" />
-    <Compile Include="UI\WebControls\DnnGettingStartedOptions.cs" />
-    <Compile Include="UI\WebControls\DnnGettingStarted.cs" />
     <Compile Include="UI\WebControls\DnnPortalPageDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnDropDownListOptions.cs" />
     <Compile Include="UI\WebControls\DnnFolderDropDownList.cs" />

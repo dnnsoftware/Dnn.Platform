@@ -1,18 +1,18 @@
-﻿.dnnFormPopup {
+﻿.gs-dialog {
     padding: 0;
 }
 
-.dnnFormPopup .ui-dialog-titlebar {
+.gs-dialog .ui-dialog-titlebar {
     border: none;
     padding: 30px 20px;
 }
 
-div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
+.gs-dialog div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     top: -12px;
     right: -12px;
 }
 
-div.ui-dialog-titlebar .ui-dialog-title {
+.gs-dialog div.ui-dialog-titlebar .ui-dialog-title {
     font-size: 20px;
     font-family: Avenir, "Helvetica Neue", "HelveticaNeue", Arial, Helvetica, sans-serif;
 }
@@ -35,7 +35,7 @@ html .gs-container {
     user-select: none;
 }
 
-.dnnFormPopup .ui-dialog-content, #iPopUp .ui-dialog-content {
+.gs-dialog .ui-dialog-content, #iPopUp .ui-dialog-content {
     padding: 0 20px;
 }
 

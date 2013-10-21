@@ -100,7 +100,7 @@
             this.$element.dialog({
                 modal: true,
                 autoOpen: true,
-                dialogClass: "dnnFormPopup",
+                dialogClass: "dnnFormPopup " + this.options.dialogCss,
                 title: this.options.title,
                 resizable: false,
                 width: 950,
@@ -112,6 +112,7 @@
     };
 
     GettingStarted._defaults = {
+        dialogCss: "gs-dialog",
         containerCss: "gs-container",
         headerCss: "gs-header",
         headerLeftCss: "gs-header-left-side",
