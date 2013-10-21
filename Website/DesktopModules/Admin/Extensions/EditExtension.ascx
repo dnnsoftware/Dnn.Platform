@@ -30,7 +30,7 @@
                 <dnn:DnnFormTextBoxItem ID="releaseNotes" runat="server" DataField = "ReleaseNotes" TextMode="MultiLine" Rows="10" />
                 <dnn:DnnFormTextBoxItem ID="owner" runat="server" DataField = "Owner" />
                 <dnn:DnnFormTextBoxItem ID="organization" runat="server" DataField = "Organization" />
-                <dnn:DnnFormTextBoxItem ID="url" runat="server" DataField = "Url" />
+                <dnn:DnnFormTextBoxItem ID="url" runat="server" DataField = "URL" />
                 <dnn:DnnFormTextBoxItem ID="email" runat="server" DataField = "Email" />
             </Items>
         </dnn:DnnFormEditor>
@@ -46,7 +46,7 @@
                 <dnn:DnnFormLiteralItem ID="DnnFormTextBoxItem5" runat="server" DataField = "ReleaseNotes" />
                 <dnn:DnnFormLiteralItem ID="DnnFormTextBoxItem6" runat="server" DataField = "Owner" />
                 <dnn:DnnFormLiteralItem ID="DnnFormTextBoxItem7" runat="server" DataField = "Organization" />
-                <dnn:DnnFormLiteralItem ID="DnnFormTextBoxItem8" runat="server" DataField = "Url" />
+                <dnn:DnnFormLiteralItem ID="DnnFormTextBoxItem8" runat="server" DataField = "URL" />
                 <dnn:DnnFormLiteralItem ID="DnnFormTextBoxItem9" runat="server" DataField = "Email" />
             </Items>
         </dnn:DnnFormEditor>    

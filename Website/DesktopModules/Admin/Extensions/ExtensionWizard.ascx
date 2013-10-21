@@ -79,7 +79,7 @@
                     <Items>
                         <dnn:DnnFormTextBoxItem ID="owner" runat="server" DataField="Owner" />
                         <dnn:DnnFormTextBoxItem ID="organization" runat="server" DataField="Organization" />
-                        <dnn:DnnFormTextBoxItem ID="url" runat="server" DataField="Url" />
+                        <dnn:DnnFormTextBoxItem ID="url" runat="server" DataField = "URL" />
                         <dnn:DnnFormTextBoxItem ID="email" runat="server" DataField="Email" />
                     </Items>
                 </dnn:DnnFormEditor>                
