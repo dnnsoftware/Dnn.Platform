@@ -451,13 +451,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public FolderViewModel GetGroupFolder(int groupId, PortalSettings portalSettings)
         {
-            var role = new RoleController().GetRole(groupId, this.CurrentPortalId);
+            var roleController = new RoleController();
+            var role = roleController.GetRole(groupId, this.CurrentPortalId);
             if (role == null || role.SecurityMode != SecurityMode.SocialGroup)
             {
                 return null;
             }
 
-            if (rc.GetUserRole(portalSettings.PortalId, portalSettings.UserId, role.RoleID) == null)
+            if (roleController.GetUserRole(portalSettings.PortalId, portalSettings.UserId, role.RoleID) == null)
             {
                 return null;
             }
