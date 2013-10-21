@@ -22,6 +22,7 @@
 using System.Collections.Generic;
 using System.IO;
 
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Services.FileSystem;
 
@@ -66,8 +67,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// Gets the group folder
         /// </summary>
         /// <param name="groupId">The identifier of the group.</param>
+        /// <param name="portalSettings" >The current portal settings.</param>
         /// <returns>The root folderItem entity.</returns>
-        FolderViewModel GetGroupFolder(int groupId);
+        FolderViewModel GetGroupFolder(int groupId, PortalSettings portalSettings);
 
         /// <summary>
         /// Gets the files and folders contained in the specified folder.

@@ -491,7 +491,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         return;
                     }
 
-                    var groupFolder = controller.GetGroupFolder(groupId);
+                    var groupFolder = controller.GetGroupFolder(groupId, PortalSettings);
                     if (groupFolder == null)
                     {
                         Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);

@@ -627,7 +627,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
             var radDirectories = new List<DirectoryItem>();
             foreach (var dnnChildFolder in dnnChildFolders)
             {
-                if (!dnnChildFolder.FolderPath.ToLowerInvariant().StartsWith("cache") && !dnnChildFolder.FolderPath.ToLowerInvariant().StartsWith("users"))
+                if (!dnnChildFolder.FolderPath.ToLowerInvariant().StartsWith("cache/") 
+                    && !dnnChildFolder.FolderPath.ToLowerInvariant().StartsWith("users/")
+                    && !dnnChildFolder.FolderPath.ToLowerInvariant().StartsWith("groups/"))
                 {
                         var radSubDirectory =
                             TelerikContent.ResolveDirectory(FileSystemValidation.ToVirtualPath(dnnChildFolder.FolderPath));

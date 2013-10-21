@@ -449,7 +449,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return GetFolderViewModel(FolderManager.Instance.GetFolder(CurrentPortalId, ""));
         }
 
-        public FolderViewModel GetGroupFolder(int groupId)
+        public FolderViewModel GetGroupFolder(int groupId, PortalSettings portalSettings)
         {
             var role = new RoleController().GetRole(groupId, this.CurrentPortalId);
             if (role == null || role.SecurityMode != SecurityMode.SocialGroup)
@@ -457,26 +457,45 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 return null;
             }
 
-            var groupFolder = EnsureGroupFolder(groupId);
+            if (rc.GetUserRole(portalSettings.PortalId, portalSettings.UserId, role.RoleID) == null)
+            {
+                return null;
+            }
+
+            var groupFolder = EnsureGroupFolder(groupId, portalSettings);
             var folderViewModel = this.GetFolderViewModel(groupFolder);
             folderViewModel.FolderName = role.RoleName;
             return folderViewModel;
         }
 
-        private IFolderInfo EnsureGroupFolder(int groupId)
-        {            
+        private IFolderInfo EnsureGroupFolder(int groupId, PortalSettings portalSettings)
+        {
+            const int AllUsersRoleId = -1;
             var groupFolderPath = "Groups/" + groupId;
 
             if (!FolderManager.Instance.FolderExists(this.CurrentPortalId, groupFolderPath))
             {
+                var pc = new PermissionController();
+                var browsePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "BROWSE").Cast<PermissionInfo>().FirstOrDefault();
+                var readPermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ").Cast<PermissionInfo>().FirstOrDefault(); 
+                var writePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "WRITE").Cast<PermissionInfo>().FirstOrDefault(); 
+
                 if (!FolderManager.Instance.FolderExists(this.CurrentPortalId, "Groups"))
                 {
                     var folder = FolderManager.Instance.AddFolder(this.CurrentPortalId, "Groups");
+
+                    folder.FolderPermissions.Remove(browsePermission.PermissionID, AllUsersRoleId, Null.NullInteger);
+                    folder.FolderPermissions.Remove(readPermission.PermissionID, AllUsersRoleId, Null.NullInteger);
                     folder.IsProtected = true;
                     FolderManager.Instance.UpdateFolder(folder);
                 }
 
                 var groupFolder = FolderManager.Instance.AddFolder(this.CurrentPortalId, groupFolderPath);
+
+                groupFolder.FolderPermissions.Add(new FolderPermissionInfo(browsePermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
+                groupFolder.FolderPermissions.Add(new FolderPermissionInfo(readPermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
+                groupFolder.FolderPermissions.Add(new FolderPermissionInfo(writePermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
+
                 groupFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(groupFolder);
                 return groupFolder;
