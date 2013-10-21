@@ -47,13 +47,9 @@ namespace DotNetNuke.Entities.Urls
 
         #region Internal Properties
 
-        private FriendlyUrlSettings Settings
+        private FriendlyUrlSettings GetSettings(int portalId)
         {
-            get
-            {
-                var portalSettings = PortalController.GetCurrentPortalSettings();
-                return new FriendlyUrlSettings(portalSettings.PortalId) { UrlFormat = "Advanced" }; 
-            }
+                return new FriendlyUrlSettings(portalId) { UrlFormat = "Advanced" };          
         }
 
         #endregion
@@ -420,7 +416,7 @@ namespace DotNetNuke.Entities.Urls
             Guid parentTraceId = Guid.Empty;
             int portalId = (portalSettings != null) ? portalSettings.PortalId : tab.PortalID;
             bool cultureSpecificAlias;
-            var localSettings = Settings;
+            var localSettings = GetSettings(portalId);
 
             //Call GetFriendlyAlias to get the Alias part of the url
             if (String.IsNullOrEmpty(portalAlias) && portalSettings != null)
@@ -627,7 +623,7 @@ namespace DotNetNuke.Entities.Urls
                     //should now have a standard /path/path/page.aspx?key=value style of Url
                     httpAliasFull = Globals.AddHTTP(httpAlias);
 
-                    if (HttpContext.Current.Items["UrlRewrite:OriginalUrl"] != null)
+                    if (HttpContext.Current != null && HttpContext.Current.Items["UrlRewrite:OriginalUrl"] != null)
                     {
                         string originalUrl = HttpContext.Current.Items["UrlRewrite:OriginalUrl"].ToString();
                         //confirming this portal was the original one requested, making all the generated aliases
