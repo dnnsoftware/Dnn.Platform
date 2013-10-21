@@ -458,7 +458,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 return null;
             }
 
-            if (roleController.GetUserRole(portalSettings.PortalId, portalSettings.UserId, role.RoleID) == null)
+            if (!role.IsPublic && roleController.GetUserRole(portalSettings.PortalId, portalSettings.UserId, role.RoleID) == null)
             {
                 return null;
             }

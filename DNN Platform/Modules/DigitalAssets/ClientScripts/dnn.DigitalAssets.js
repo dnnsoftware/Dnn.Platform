@@ -172,7 +172,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         $(".dnnModuleDigitalAssetsGrid > table > thead tr th.rgHeader a").attr("href", "#");
         initializePager();
 
-        currentFolderId = getSelectedNode().get_value();
+        var selectedNode = getSelectedNode();
+        if (selectedNode == null) {
+            return;
+        }
+        
+        currentFolderId = selectedNode.get_value();
         loadFolderFirstPage(currentFolderId);
         setView(settings.view == listViewMode ? listViewMode : gridViewMode);
         grid.set_pageSize(settings.pageSize ? settings.pageSize : 10);
@@ -246,7 +251,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
     function treeViewOnLoad(sender, eventArgs) {
         treeView = sender;
-        initDroppableNode(treeView.get_nodes().getNode(0));
+        var rootNode = treeView.get_nodes().getNode(0);
+        if (!rootNode) {
+            return;
+        }
+        
+        initDroppableNode(rootNode);
         
         var $ul = $("#dnnModuleDigitalAssetsLeftPaneActions", '#' + controls.scopeWrapperId);        
         
