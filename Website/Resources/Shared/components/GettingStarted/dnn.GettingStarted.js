@@ -37,11 +37,15 @@
             // e.g., this.element and this.options
             this.options = $.extend({}, GettingStarted.defaults(), this.options);
 
+            this._controller = new GettingStartedController();
+
             this.$this = $(this);
 
             this.$element = this.element ? $(this.element) : this._createLayout();
             this._$iframe = this.$element.find("iframe");
             this._$downloadManual = this.$element.find("." + this.options.headerRightCss).find("a");
+            this._$checkBox = this.$element.find("." + this.options.footerLeftCss).find("input");
+            this._$checkBox.on("click", $.proxy(this._onDontShowClick, this));
             //this._$downloadManual.attr("href", this.options.userManualLinkUrl);
             //            this._$selectedItemCaption = this._$selectedItemContainer.find("." + this.options.selectedValueCss);
 
@@ -66,10 +70,10 @@
                                 .append($("<div/>")
                                     .append($("<div class='" + this.options.inputboxWrapperCss + "'/>")
                                         .append($("<input type='text' id='" + signUpBoxId + "' maxlength='200' autocomplete='off'/>")))
-                                    .append($("<a href='javascript:void(0);' title='" + this.options.signUpButtonTooltip + "'>" + this.options.signUpButton + "</a>"))))))
+                                    .append($("<a href='javascript:void(0);' title='" + this.options.signUpButton + "'>" + this.options.signUpButton + "</a>"))))))
                     .append($("<div class='" + this.options.headerRightCss + "'/>")
                         .append($("<div/>")
-                            .append($("<a href='javascript:void(0);' title='" + this.options.downloadUserManualTooltip + "'><span>" + this.options.downloadManualButton + "</span></a>")))))
+                            .append($("<a href='javascript:void(0);' title='" + this.options.downloadManualButton + "'><span>" + this.options.downloadManualButton + "</span></a>")))))
                 .append($("<div class='" + this.options.contentCss + "'/>")
                     .append($("<div/>")
                         .append($("<iframe src='about:blank' scrolling='auto' frameborder='0' />"))))
@@ -77,13 +81,17 @@
                     .append($("<div class='" + this.options.footerBorderCss + "'/>")
                         .append($("<div/>")))
                     .append($("<div class='" + this.options.footerLeftCss + "'/>")
-                        .append($("<input type='checkbox' id='" + checkBoxId + "' value='check1' name='dontshow' >"))
+                        .append($("<input type='checkbox' id='" + checkBoxId + "' value='dontshow' name='ShowDialog' >"))
                         .append($("<label for='" + checkBoxId + "'>" + this.options.dontShowDialogLabel + "</label>")))
                     .append($("<div class='" + this.options.footerRightCss + "'/>")
                         .append($("<a href='//twitter.com/dnncorp' class='" + this.options.twitterLinkCss + "' title='" + this.options.twitterLinkTooltip + "'/>"))
                         .append($("<a href='//facebook.com/dotnetnuke' class='" + this.options.facebookLinkCss + "' title='" + this.options.facebookLinkTooltip + "'/>"))));
 
             return layout;
+        },
+
+        _onDontShowClick: function() {
+            this._controller.hideDialog();
         },
 
         show: function () {
@@ -125,6 +133,62 @@
         }
         return GettingStarted._defaults;
     };
+
+
+    //
+    // GettingStarted Controller
+    //
+    var GettingStartedController = this.GettingStartedController = function (options) {
+        this.options = options;
+        this.init();
+    };
+
+    GettingStartedController.prototype = {
+        constructor: GettingStartedController,
+
+        init: function() {
+            this.options = $.extend({}, GettingStartedController.defaults(), this.options);
+            this._serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
+        },
+
+        _callGet: function(data, onLoadHandler, method) {
+            var serviceSettings = {
+                url: this._serviceUrl + method,
+                beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: data,
+                type: "GET",
+                async: true,
+                success: onLoadHandler,
+                error: $.onAjaxError
+            };
+            $.ajax(serviceSettings);
+        },
+
+        hideDialog: function (hide, onHideDialogCallback) {
+            var onHideDialogHandler = $.proxy(this._onHideDialog, this, onHideDialogCallback);
+            this._callGet({ hide: hide }, onHideDialogHandler, this.options.hideDialogMethod);
+        },
+
+        _onHideDialog: function (onHideDialogCallback, data, textStatus, jqXhr) {
+            onHideDialogCallback.apply(this, [data]);
+        }
+
+    };
+
+    GettingStartedController._defaults = {
+        serviceRoot: "InternalServices",
+        hideGettingStartedPageMethod: "GettingStarted/HideGettingStartedPage"
+    };
+
+    GettingStartedController.defaults = function (settings) {
+        if (typeof settings !== "undefined") {
+            $.extend(GettingStartedController._defaults, settings);
+        }
+        return GettingStartedController._defaults;
+    };
+
 
 }).apply(dnn, [jQuery, window, document]);
 
