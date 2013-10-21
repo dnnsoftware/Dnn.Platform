@@ -44,10 +44,8 @@
             this.$element = this.element ? $(this.element) : this._createLayout();
             this._$iframe = this.$element.find("iframe");
             this._$downloadManual = this.$element.find("." + this.options.headerRightCss).find("a");
-            this._$checkBox = this.$element.find("." + this.options.footerLeftCss).find("input");
-            this._$checkBox.on("click", $.proxy(this._onDontShowClick, this));
             //this._$downloadManual.attr("href", this.options.userManualLinkUrl);
-            //            this._$selectedItemCaption = this._$selectedItemContainer.find("." + this.options.selectedValueCss);
+            //this._$selectedItemCaption = this._$selectedItemContainer.find("." + this.options.selectedValueCss);
 
             if (this.options.showOnStartup) {
                 this.show();
@@ -90,8 +88,11 @@
             return layout;
         },
 
-        _onDontShowClick: function() {
-            this._controller.hideDialog();
+        _onCloseDialog: function () {
+            var checkBox = this.$element.find("." + this.options.footerLeftCss).find("input");
+            if(checkBox.prop("checked")){
+                this._controller.hideDialog();
+            }
         },
 
         show: function () {
@@ -104,7 +105,7 @@
                 resizable: false,
                 width: 950,
                 height: 640,
-                close: function () { /*alert("closing");*/ }
+                close: $.proxy(this._onCloseDialog, this)
             });
         }
 
@@ -151,14 +152,14 @@
             this._serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
         },
 
-        _callGet: function(data, onLoadHandler, method) {
+        _callPost: function(data, onLoadHandler, method) {
             var serviceSettings = {
                 url: this._serviceUrl + method,
                 beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 data: data,
-                type: "GET",
+                type: "POST",
                 async: true,
                 success: onLoadHandler,
                 error: $.onAjaxError
@@ -166,20 +167,22 @@
             $.ajax(serviceSettings);
         },
 
-        hideDialog: function (hide, onHideDialogCallback) {
+        hideDialog: function (onHideDialogCallback) {
             var onHideDialogHandler = $.proxy(this._onHideDialog, this, onHideDialogCallback);
-            this._callGet({ hide: hide }, onHideDialogHandler, this.options.hideDialogMethod);
+            this._callPost({}, onHideDialogHandler, this.options.hideDialogMethod);
         },
 
         _onHideDialog: function (onHideDialogCallback, data, textStatus, jqXhr) {
-            onHideDialogCallback.apply(this, [data]);
+            if (typeof onHideDialogCallback === "function") {
+                onHideDialogCallback.apply(this, [data]);
+            }
         }
 
     };
 
     GettingStartedController._defaults = {
         serviceRoot: "InternalServices",
-        hideGettingStartedPageMethod: "GettingStarted/HideGettingStartedPage"
+        hideDialogMethod: "GettingStarted/HideGettingStartedPage"
     };
 
     GettingStartedController.defaults = function (settings) {
