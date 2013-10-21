@@ -617,13 +617,19 @@ dnn.controlBar.init = function (settings) {
     		});
             $('.onActionMenu').removeClass('onActionMenu');
             toggleModulePane($('.ControlModulePanel'), false);
-	        $(this).addClass("hover");
-            $(this).find('div.subNav').slideDown(300);
+            $(this).addClass("hover");
+            var subNav = $(this).find('div.subNav');
+	        subNav.slideDown(300, function() {
+	            dnn.addIframeMask(subNav[0]);
+	        });
         },
         out: function () {
         	if (!dnn.controlBar.focused) {
-        		$(this).removeClass("hover");
-		        $(this).find('div.subNav').slideUp(200);
+        	    $(this).removeClass("hover");
+        	    var subNav = $(this).find('div.subNav');
+        		subNav.slideUp(200, function() {
+        		    dnn.removeIframeMask(subNav[0]);
+        		});
 	        }
         },
         timeout: 300,
@@ -634,10 +640,16 @@ dnn.controlBar.init = function (settings) {
         over: function () {
             $('.onActionMenu').removeClass('onActionMenu');
             toggleModulePane($('.ControlModulePanel'), false);
-            $(this).find('ul').slideDown(200);
+            var subNav = $(this).find('ul');
+            subNav.slideDown(200, function() {
+                dnn.addIframeMask(subNav[0]);
+            });
         },
         out: function () {
-        	$(this).find('ul').slideUp(150);
+            var subNav = $(this).find('ul');
+            subNav.slideUp(150, function() {
+                dnn.removeIframeMask(subNav[0]);
+            });
         },
         timeout: 300,
         interval: 150

@@ -47,16 +47,18 @@
                     
                     if(!atViewPortTop) {
                         ul.css({top: -ulHeight, right: 0}).show('slide', { direction: 'down'},  80, function () {
-                              if($(this).parent().hasClass('actionMenuMove')) {
-                                    $(this).jScrollPane();    
-                              }
+                            if($(this).parent().hasClass('actionMenuMove')) {
+                                $(this).jScrollPane();    
+                            }
+                            dnn.addIframeMask(ul[0]);
                         });
                     }
                     else {
                         ul.css({top: 20, right: 0}).show('slide', { direction: 'up'},  80, function () {
-                              if($(this).parent().hasClass('actionMenuMove')) {
-                                    $(this).jScrollPane();    
-                              }
+                            if($(this).parent().hasClass('actionMenuMove')) {
+                                $(this).jScrollPane();    
+                            }
+                            dnn.addIframeMask(ul[0]);
                         });
                     }
                  
@@ -66,9 +68,13 @@
                     
                     if(ul && ul.position()) {
                         if (ul.position().top > 0) {
-                            ul.hide('slide', { direction: 'up' }, 80);
+                            ul.hide('slide', { direction: 'up' }, 80, function() {
+                                dnn.removeIframeMask(ul[0]);
+                            });
                         } else {
-                            ul.hide('slide', { direction: 'down' }, 80);
+                            ul.hide('slide', { direction: 'down' }, 80, function() {
+                                dnn.removeIframeMask(ul[0]);
+                            });
                         }
                     }
                 },

@@ -295,8 +295,28 @@ dnn.extend(dnn, {
         dnn.isLoaded = true;
         if (dnn._delayedSet)
             dnn.setVar(dnn._delayedSet.key, dnn._delayedSet.val);
+    },
+    
+    addIframeMask: function(ele) { //add an iframe behind the element, so that element will not mask by some special objects.
+        if (dnn.dom.browser.isType('ie') && (ele.previousSibling == null || ele.previousSibling.nodeName.toLowerCase() != "iframe")) {
+            var mask = document.createElement("iframe"); //"$("<iframe src=\"about:blank\" frameborder=\"0\"></iframe>");
+            ele.parentNode.insertBefore(mask, ele);
+            var rect = ele.getBoundingClientRect();
+            var parentRect = ele.parentNode.getBoundingClientRect();
+            mask.style.position = 'absolute';
+            mask.style.left = (rect.left - parentRect.left) + "px";
+            mask.style.top = (rect.top - parentRect.top) + "px";
+            mask.style.width = rect.width + "px";
+            mask.style.height = rect.height + "px";
+            mask.style.opacity = '0';
+            mask.style.zIndex = "-1";
+        }
+    },
+    removeIframeMask: function(ele) {
+        if (dnn.dom.browser.isType('ie') && (ele.previousSibling != null && ele.previousSibling.nodeName.toLowerCase() == "iframe")) {
+            ele.parentNode.removeChild(ele.previousSibling);
+        }
     }
-
 });
 
 //delayObject

@@ -774,6 +774,9 @@ a.altButton:hover {
     .nav-collapse:not(.in) .nav li:hover > ul { 
 		display:block;
 	}
+    .nav-collapse .nav li > iframe{ display: none;z-index: 1 !important;}
+    .nav-collapse:not(.in) .nav li:hover > iframe{ display: block;}
+
     .navbar .nav > li > .dropdown-menu:before{
         border:none!important;
     }

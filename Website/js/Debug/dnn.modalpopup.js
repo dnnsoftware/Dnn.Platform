@@ -76,7 +76,7 @@
             })
                 .width(width - 11)
                 .height(height - 11);
-
+            dnn.addIframeMask($(".ui-widget-overlay")[0]);
             if ($modal.parent().find('.ui-dialog-title').next('a.dnnModalCtrl').length === 0) {
                 var $dnnModalCtrl = $('<a class="dnnModalCtrl"></a>');
                 $modal.parent().find('.ui-dialog-titlebar-close').wrap($dnnModalCtrl);
@@ -154,6 +154,7 @@
                 popup.dialog('option', 'close', null).dialog('close');
             }
             $(windowTop.document).find('html').css('overflow', '');
+            dnn.removeframeMask($(".ui-widget-overlay")[0]);
         },
 
         refreshPopup: function(options) {
