@@ -5171,6 +5171,10 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     url += "&culture=" + culture;
                 }
+                if (!String.IsNullOrEmpty(HostController.Instance.GetString("NewsletterSubscribeEmail")))
+                {
+                    url += "@email=" + HostController.Instance.GetString("NewsletterSubscribeEmail");
+                }
             }
             return url;
         }
