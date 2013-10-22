@@ -1,59 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Tests>
-  <settings name="BVT" browser="chrome" baseURL="ce700v5.dnndev.me" InstallerLanguage="en" UserName="host"
-            Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
-            DatabaseType="" DatabaseServerName="(local)" DatabaseName="ceBVTTrunk" DatabaseFilename="" ObjectQualifier="dnn_" Security=""
-            DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" runWithDummyCachingProvider = "" />
 
-  <childSite
-    name = "Child Site, BVT"
-    siteAlias = "childsitebvt"
-    siteName = "ChildSiteTitleBVT"
-    siteDescription = "Child Site, BVT"
-    />
-
-  <modules
-    name = "Modules, BVT"
-    pageName = "BVTPageForModuleTesting"
-    moduleContent = "Module test string, BVT"
-    moduleTitle = "Module Title"
-    />
-
-  <pages
-   name = "Pages, BVT"
-   pageName = "TestPageBVT"
-   pageContent = "Page test string, BVT"
-   pageTitle = "Page Title"
-    />
-
-  <securityRoles
-    name = "Security Roles BVT"
-    roleName = "Security Role BVT"
-    roleDescription ="Security Role Description, BVT"
-    assignedRoleName = "assigned Security Role BVT"
-    userName = "User for Security Role BVT"
-    userDisplayName = "User for Security Role BVT"
-    />
-
-  <users
-    name ="Users BVT"
-    userName = "UserBVT"
-	  userDisplayName ="User BVT"
-	  registeredUserName = "RegisteredUserBVT"
-	  registeredUserDisplayName = "Registered User BVT"
-	  registeredUserPassword = "wordRTYU34"
-  
-	  cityName = "Vancouver"
-  />
-
-  <superUsers
-    name = "SuperUsers BVT"
-    superUserName = "SuperUserBVT"
-    superUserDisplayName = "SuperUserBVT"
-    superUserEmail= "superuser@mail.com"
-    superUserPassword= "pAss10word"
-    phoneNumber = "604-888-1185"
-    />
+  <settings
+    name = "Upgrade Test, Daily run"
+    browser = "firefox"
+    baseURL = "UpgradeCETest.lvh.me"
+    
+    UserName = "host"
+    Password = "dnnhost"
+/>
 
 </Tests>
+
