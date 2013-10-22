@@ -23,6 +23,7 @@ using System;
 
 namespace DotNetNuke.Services.Installer.Packages
 {
+    [Serializable]
     public class PackageDependencyInfo
     {
 	    public int PackageDependencyId { get; set; }
