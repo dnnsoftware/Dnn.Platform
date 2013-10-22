@@ -528,7 +528,7 @@ Gallery.prototype.DefaultDialogOptions = {
 }
 
 Gallery.prototype.getDownloadUrl = function (extensionID) {
-    return this.BaseDownLoadUrl.replace(escape("{{ExtensionID}}"), extensionID);
+    return this.BaseDownLoadUrl.replace(escape("{{ExtensionID}}"), extensionID).replace("{{ExtensionID}}", extensionID);
 }
 
 Gallery.prototype.ShowDetails = function (extensionID) {
