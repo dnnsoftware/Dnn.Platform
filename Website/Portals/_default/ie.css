@@ -20,7 +20,7 @@
 }
 .dnnFormMessage.dnnFormWarning{
 	background-color:#ffffd9; /* yellow */
-	border:1pix solid #eaeaa4; /* yellow */
+	border:1px solid #eaeaa4; /* yellow */
 }
 .dnnFormMessage.dnnFormSuccess{
 	background-color:#d9ffd9; /* green */

@@ -302,15 +302,18 @@ dnn.extend(dnn, {
             var mask = document.createElement("iframe"); //"$("<iframe src=\"about:blank\" frameborder=\"0\"></iframe>");
             ele.parentNode.insertBefore(mask, ele);
             var rect = ele.getBoundingClientRect();
-            var parentRect = ele.parentNode.getBoundingClientRect();
             mask.style.position = 'absolute';
-            mask.style.left = (rect.left - parentRect.left) + "px";
-            mask.style.top = (rect.top - parentRect.top) + "px";
+            mask.style.left = ele.offsetLeft + "px";
+            mask.style.top = ele.offsetTop + "px";
             mask.style.width = rect.width + "px";
             mask.style.height = rect.height + "px";
             mask.style.opacity = '0';
             mask.style.zIndex = "-1";
+
+            return mask;
         }
+
+        return null;
     },
     removeIframeMask: function(ele) {
         if (dnn.dom.browser.isType('ie') && (ele.previousSibling != null && ele.previousSibling.nodeName.toLowerCase() == "iframe")) {

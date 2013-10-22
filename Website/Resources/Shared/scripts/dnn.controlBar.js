@@ -659,9 +659,13 @@ dnn.controlBar.init = function (settings) {
         over: function () {
             $('.onActionMenu').removeClass('onActionMenu');
             toggleModulePane($('.ControlModulePanel'), false);
-            $(this).find('ul').slideDown(400);
+            var subNav = $(this).find('ul');
+            subNav.slideDown(400, function () { dnn.addIframeMask(subNav[0]); });
         },
-        out: function () { $(this).find('ul').slideUp(300); },
+        out: function () {
+            var subNav = $(this).find('ul');
+            subNav.slideUp(300, function () { dnn.removeIframeMask(subNav[0]); });
+        },
         timeout: 300,
         interval: 150
     });
