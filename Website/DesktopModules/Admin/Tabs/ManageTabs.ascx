@@ -51,7 +51,7 @@
 				</div>    
 				<div class="dnnFormItem">
 					<dnn:Label ID="plTags" runat="server" ControlName="termsSelector" />
-					<dnn:TermsSelector ID="termsSelector" runat="server" />
+					<dnn:TermsSelector ID="termsSelector" runat="server" IncludeTags="False" />
 				</div>    
 				<div class="dnnFormItem">
 					<dnn:Label ID="plParentTab" runat="server" ResourceKey="ParentTab" ControlName="cboParentTab" />
