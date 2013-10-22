@@ -2,6 +2,7 @@
 using System.Web.UI;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.WebControls
@@ -60,16 +61,16 @@ namespace DotNetNuke.UI.WebControls
             {
                 ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/Components/GettingStarted/dnn.GettingStarted." + skin + ".css");
             }
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.extensions.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/GettingStarted/dnn.GettingStarted.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.extensions.js", FileOrder.Js.DefaultPriority);
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 1);
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/GettingStarted/dnn.GettingStarted.js", FileOrder.Js.DefaultPriority + 2);
         }
 
         private void RegisterStartupScript()
         {
             var optionsAsJsonString = Json.Serialize(Options);
 
-            var script = string.Format("dnn.showGettingStarted({0});{1}", optionsAsJsonString, Environment.NewLine);
+            var script = string.Format("dnn.createGettingStartedPage({0});{1}", optionsAsJsonString, Environment.NewLine);
 
             if (ScriptManager.GetCurrent(Page) != null)
             {

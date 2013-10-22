@@ -22,7 +22,7 @@
     //
     var GettingStarted = this.GettingStarted = function (element, options) {
         this.element = element;
-        this.options = options;
+        this._options = options;
 
         this.init();
     };
@@ -34,21 +34,31 @@
         init: function () {
             // Place initialization logic here
             // You already have access to the DOM element and the options via the instance, 
-            // e.g., this.element and this.options
-            this.options = $.extend({}, GettingStarted.defaults(), this.options);
+            // e.g., this.element and this._options
+            this._options = $.extend({}, GettingStarted.defaults(), this._options);
 
             this._controller = new GettingStartedController();
 
             this.$this = $(this);
 
-            this.$element = this.element ? $(this.element) : this._createLayout();
-            this._$iframe = this.$element.find("iframe");
-            this._$downloadManual = this.$element.find("." + this.options.headerRightCss).find("a");
-            //this._$downloadManual.attr("href", this.options.userManualLinkUrl);
-            //this._$selectedItemCaption = this._$selectedItemContainer.find("." + this.options.selectedValueCss);
-
-            if (this.options.showOnStartup) {
+            if (this._options.showOnStartup) {
                 this.show();
+            }
+        },
+
+//        options: function(opts) {
+//            if (typeof opts !== "undefined") {
+//                $.extend(this._options, opts);
+//            }
+//            return this._options;
+//        },
+
+        _ensureDialog: function() {
+            if (!this.$element) {
+                this.$element = this.element ? $(this.element) : this._createLayout();
+                this._$iframe = this.$element.find("iframe");
+                this._$downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
+                //this._$downloadManual.attr("href", this._options.userManualLinkUrl);
             }
         },
 
@@ -56,52 +66,58 @@
             var checkBoxId = dnn.uid("gs_");
             var signUpBoxId = dnn.uid("gs_");
 
-            var layout = $("<div class='" + this.options.containerCss + "'/>")
-                .append($("<div class='" + this.options.headerCss + "'/>")
-                    .append($("<div class='" + this.options.headerLeftCss + "'/>")
+            var layout = $("<div class='" + this._options.containerCss + "'/>")
+                .append($("<div class='" + this._options.headerCss + "'/>")
+                    .append($("<div class='" + this._options.headerLeftCss + "'/>")
                         .append($("<div/>")
-                            .append($("<div class='" + this.options.headerLeftTextCss + "'/>")
+                            .append($("<div class='" + this._options.headerLeftTextCss + "'/>")
                                 .append($("<div/>")
-                                    .append($("<label for='" + signUpBoxId + "'>" + this.options.signUpLabel + "</label>"))
-                                    .append($("<span>" + this.options.signUpText + "</span>"))))
-                            .append($("<div class='" + this.options.headerLeftInputCss + "'/>")
+                                    .append($("<label for='" + signUpBoxId + "'>" + this._options.signUpLabel + "</label>"))
+                                    .append($("<span>" + this._options.signUpText + "</span>"))))
+                            .append($("<div class='" + this._options.headerLeftInputCss + "'/>")
                                 .append($("<div/>")
-                                    .append($("<div class='" + this.options.inputboxWrapperCss + "'/>")
+                                    .append($("<div class='" + this._options.inputboxWrapperCss + "'/>")
                                         .append($("<input type='text' id='" + signUpBoxId + "' maxlength='200' autocomplete='off'/>")))
-                                    .append($("<a href='javascript:void(0);' title='" + this.options.signUpButton + "'>" + this.options.signUpButton + "</a>"))))))
-                    .append($("<div class='" + this.options.headerRightCss + "'/>")
+                                    .append($("<a href='javascript:void(0);' title='" + this._options.signUpButton + "'>" + this._options.signUpButton + "</a>"))))))
+                    .append($("<div class='" + this._options.headerRightCss + "'/>")
                         .append($("<div/>")
-                            .append($("<a href='javascript:void(0);' title='" + this.options.downloadManualButton + "'><span>" + this.options.downloadManualButton + "</span></a>")))))
-                .append($("<div class='" + this.options.contentCss + "'/>")
+                            .append($("<a href='javascript:void(0);' title='" + this._options.downloadManualButton + "'><span>" + this._options.downloadManualButton + "</span></a>")))))
+                .append($("<div class='" + this._options.contentCss + "'/>")
                     .append($("<div/>")
                         .append($("<iframe src='about:blank' scrolling='auto' frameborder='0' />"))))
-                .append($("<div class='" + this.options.footerCss + "'/>")
-                    .append($("<div class='" + this.options.footerBorderCss + "'/>")
+                .append($("<div class='" + this._options.footerCss + "'/>")
+                    .append($("<div class='" + this._options.footerBorderCss + "'/>")
                         .append($("<div/>")))
-                    .append($("<div class='" + this.options.footerLeftCss + "'/>")
+                    .append($("<div class='" + this._options.footerLeftCss + "'/>")
                         .append($("<input type='checkbox' id='" + checkBoxId + "' value='dontshow' name='ShowDialog' >"))
-                        .append($("<label for='" + checkBoxId + "'>" + this.options.dontShowDialogLabel + "</label>")))
-                    .append($("<div class='" + this.options.footerRightCss + "'/>")
-                        .append($("<a href='//twitter.com/dnncorp' class='" + this.options.twitterLinkCss + "' title='" + this.options.twitterLinkTooltip + "'/>"))
-                        .append($("<a href='//facebook.com/dotnetnuke' class='" + this.options.facebookLinkCss + "' title='" + this.options.facebookLinkTooltip + "'/>"))));
+                        .append($("<label for='" + checkBoxId + "'>" + this._options.dontShowDialogLabel + "</label>")))
+                    .append($("<div class='" + this._options.footerRightCss + "'/>")
+                        .append($("<a href='//twitter.com/dnncorp' class='" + this._options.twitterLinkCss + "' title='" + this._options.twitterLinkTooltip + "'/>"))
+                        .append($("<a href='//facebook.com/dotnetnuke' class='" + this._options.facebookLinkCss + "' title='" + this._options.facebookLinkTooltip + "'/>"))));
 
             return layout;
         },
 
         _onCloseDialog: function () {
-            var checkBox = this.$element.find("." + this.options.footerLeftCss).find("input");
+            var checkBox = this.$element.find("." + this._options.footerLeftCss).find("input");
             if(checkBox.prop("checked")){
                 this._controller.hideDialog();
             }
+            this._isShown = false;
         },
 
         show: function () {
-            this._$iframe.attr("src", this.options.contentUrl);
+            if (this._isShown) {
+                return;
+            }
+            this._isShown = true;
+            this._ensureDialog();
+            this._$iframe.attr("src", this._options.contentUrl);
             this.$element.dialog({
                 modal: true,
                 autoOpen: true,
-                dialogClass: "dnnFormPopup " + this.options.dialogCss,
-                title: this.options.title,
+                dialogClass: "dnnFormPopup " + this._options.dialogCss,
+                title: this._options.title,
                 resizable: false,
                 width: 950,
                 height: 640,
@@ -141,7 +157,7 @@
     // GettingStarted Controller
     //
     var GettingStartedController = this.GettingStartedController = function (options) {
-        this.options = options;
+        this._options = options;
         this.init();
     };
 
@@ -149,14 +165,14 @@
         constructor: GettingStartedController,
 
         init: function() {
-            this.options = $.extend({}, GettingStartedController.defaults(), this.options);
-            this._serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
+            this._options = $.extend({}, GettingStartedController.defaults(), this._options);
+            this._serviceUrl = $.dnnSF(this._options.moduleId).getServiceRoot(this._options.serviceRoot);
         },
 
         _callPost: function(data, onLoadHandler, method) {
             var serviceSettings = {
                 url: this._serviceUrl + method,
-                beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
+                beforeSend: $.dnnSF(this._options.moduleId).setModuleHeaders,
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 data: data,
@@ -170,7 +186,7 @@
 
         hideDialog: function (onHideDialogCallback) {
             var onHideDialogHandler = $.proxy(this._onHideDialog, this, onHideDialogCallback);
-            this._callPost({}, onHideDialogHandler, this.options.hideDialogMethod);
+            this._callPost({}, onHideDialogHandler, this._options.hideDialogMethod);
         },
 
         _onHideDialog: function (onHideDialogCallback, data, textStatus, jqXhr) {
@@ -194,12 +210,14 @@
     };
 
 
+    var GettingStartedDialog = this.GettingStartedDialog = dnn.singletonify(GettingStarted);
+
+
 }).apply(dnn, [jQuery, window, document]);
 
 
-dnn.showGettingStarted = function (options) {
+dnn.createGettingStartedPage = function (options) {
     $(document).ready(function () {
-        var instance = new dnn.GettingStarted(null, options);
+        var instance = dnn.GettingStartedDialog.getInstance(null, options);
     });
 };
-

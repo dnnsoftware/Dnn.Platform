@@ -145,6 +145,7 @@ namespace DotNetNuke.Framework
         protected void ManageGettingStarted()
         {
             //add js of Getting Started Page
+/*
             if (GettingStartedTabId > -1 && IsPage(GettingStartedTabId) && Request["ctl"] == null)
             {
                 var scriptManager = ScriptManager.GetCurrent(Page);
@@ -168,12 +169,14 @@ namespace DotNetNuke.Framework
 
                 Personalization.SetProfile("GettingStarted", "Display", false);
             }
+*/
 
             var gettingStarted = new DnnGettingStarted
             {
                 ShowOnStarup = ShowGettingStartedPage,
                 ContentUrl = GettingStartedPageUrl
             };
+            Personalization.SetProfile("GettingStarted", "Display", false);
 
             Page.Form.Controls.Add(gettingStarted);
 
@@ -246,8 +249,8 @@ namespace DotNetNuke.Framework
                     if (!IsPage(GettingStartedTabId) && PortalSettings.UserInfo.IsSuperUser && Host.EnableGettingStartedPage)
                     {
                         result = Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Display"))  &&
-                                    !((Personalization.GetProfile("GettingStarted", "Hide") != null) 
-                                        && Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Hide")));
+                                !((Personalization.GetProfile("GettingStarted", "Hide") != null) && 
+                                    Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Hide")));
                     }
                 }
                 return result;

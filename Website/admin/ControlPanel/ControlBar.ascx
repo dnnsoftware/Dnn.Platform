@@ -138,7 +138,7 @@
                                     <asp:Literal ID="helpLink" runat="server"></asp:Literal>
                                     <% if (UserController.GetCurrentUserInfo().IsSuperUser)
                                        {%>
-                                        <li id="gettingStartedLink" runat="server"><a href="<%= GetTabURL("Getting Started", false) %>" class="ControlBar_PopupLink">
+                                        <li id="gettingStartedLink" runat="server"><a href="javascript:dnn.GettingStartedDialog.getInstance().show();">
                                             <%= GetString("Tool.GettingStarted.Text") %></a></li>
                                     <% } %>
                                 </ul>

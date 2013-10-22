@@ -190,9 +190,15 @@ dnn.singletonify = function(constructorFunc /*, args */) {
 
     return new function () {
         this.getInstance = function () {
+            var instanceArguments;
+            var f;
             if (instance == null) {
-                instance = new constructorFunc(args);
-                instance.constructor = null;
+                instanceArguments = Array.prototype.slice.call(arguments);
+                f = function() {
+                    return constructorFunc.apply(this, [].concat(args, instanceArguments));
+                };
+                f.prototype = constructorFunc.prototype;
+                instance = new f();
             }
             return instance;
         };
