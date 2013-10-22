@@ -228,7 +228,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 subscription.ObjectKey, 
                 subscription.Description, 
                 subscription.ModuleId, 
-                subscription.TabId)).Verifiable();
+                subscription.TabId,
+                subscription.ObjectData)).Verifiable();
 
             //Act
             subscriptionController.AddSubscription(subscription);
@@ -241,7 +242,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 subscription.ObjectKey,
                 subscription.Description,
                 subscription.ModuleId,
-                subscription.TabId), Times.Once);
+                subscription.TabId,
+                subscription.ObjectData), Times.Once);
         }
 
         [Test]
@@ -260,7 +262,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 subscription.ObjectKey,
                 subscription.Description,
                 subscription.ModuleId,
-                subscription.TabId)).Returns(expectedSubscriptionId);
+                subscription.TabId,
+                subscription.ObjectData)).Returns(expectedSubscriptionId);
 
             //Act
             subscriptionController.AddSubscription(subscription);

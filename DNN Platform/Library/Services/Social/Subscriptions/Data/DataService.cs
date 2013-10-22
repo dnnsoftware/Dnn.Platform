@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
 
 
         #region Subscriptions
-        public int AddSubscription(int userId, int portalId, int subscriptionTypeId, string objectKey, string description, int moduleId, int tabId)
+        public int AddSubscription(int userId, int portalId, int subscriptionTypeId, string objectKey, string description, int moduleId, int tabId, string objectData)
         {
             return provider.ExecuteScalar<int>("CoreMessaging_AddSubscription", 
                 userId, 
@@ -70,7 +70,8 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
                 objectKey, 
                 description,
                 provider.GetNull(moduleId),
-                provider.GetNull(tabId));
+                provider.GetNull(tabId),
+                objectData);
         }
 
         public IDataReader GetSubscriptionsByUser(int portalId, int userId, int subscriptionTypeId)

@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             var userInfo = GetUserFromSubscription(subscription);
 
             var moduleInfo = GetModuleFromSubscription(subscription);
-            if (moduleInfo != null)
+            if (moduleInfo != null && !moduleInfo.InheritViewPermissions)
             {
                 return HasUserModuleViewPermission(userInfo, moduleInfo);
             }

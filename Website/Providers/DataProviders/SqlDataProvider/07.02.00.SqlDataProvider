@@ -565,6 +565,7 @@ BEGIN
 		[PortalId] [int] NULL,
 		[SubscriptionTypeId] [int] NOT NULL,
 		[ObjectKey] [nvarchar](255) NULL,
+		[ObjectData] [nvarchar](MAX) NULL,
 		[Description] [nvarchar] (255) NOT NULL,
 		[CreatedOnDate] [datetime] NOT NULL,
 		[ModuleId] [int] NULL,
@@ -713,7 +714,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
 	@ObjectKey NVARCHAR(255) ,
 	@Description NVARCHAR(255),
 	@ModuleId INT ,
-	@TabId INT
+	@TabId INT,
+	@ObjectData NVARCHAR(MAX)
 AS 
 	BEGIN
         DECLARE @SubscriptionId INT = NULL   
@@ -737,7 +739,8 @@ AS
 							Description,
 							CreatedOnDate ,
 							ModuleId ,
-							TabId
+							TabId,
+							ObjectData
 						)
 				VALUES  ( @UserId ,
 							@PortalId ,
@@ -746,7 +749,8 @@ AS
 							@Description,
 							GETUTCDATE() ,
 							@ModuleId ,
-							@TabId
+							@TabId,
+							@ObjectData
 						)
 
 				SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
@@ -760,7 +764,8 @@ AS
 						ObjectKey = @ObjectKey ,
 						Description = @Description ,
 						ModuleId = @ModuleId ,
-						TabId = @TabId
+						TabId = @TabId,
+						ObjectData = @ObjectData
 				WHERE   SubscriptionId = @SubscriptionId
 
 				SELECT  @SubscriptionId AS [SubscriptionId]

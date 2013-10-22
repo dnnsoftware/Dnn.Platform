@@ -97,7 +97,8 @@ namespace DotNetNuke.Services.Social.Subscriptions
                                                subscription.ObjectKey,
                                                subscription.Description,
                                                subscription.ModuleId,
-                                               subscription.TabId);
+                                               subscription.TabId,
+                                               subscription.ObjectData);
         }
 
         public void DeleteSubscription(Subscription subscription)

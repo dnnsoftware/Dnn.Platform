@@ -57,8 +57,9 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         /// <param name="description">Description</param>
         /// <param name="moduleId">Module Id</param>
         /// <param name="tabId">Tab Id</param>
+        /// <param name="objectData">Object Data</param>
         /// <returns>Suscription Id</returns>
-        int AddSubscription(int userId, int portalId, int subscriptionTypeId, string objectKey, string description, int moduleId, int tabId);
+        int AddSubscription(int userId, int portalId, int subscriptionTypeId, string objectKey, string description, int moduleId, int tabId, string objectData);
 
         /// <summary>
         /// Returns the User Subscriptions

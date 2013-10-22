@@ -36,6 +36,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
         private string description;
         private int moduleId;
         private int tabId;
+        private string objectData;
 
         internal SubscriptionBuilder()
         {
@@ -47,6 +48,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
             tabId = Null.NullInteger;
             objectKey = "content";
             description = "my content description";
+            objectData = "";
         }
 
         internal SubscriptionBuilder WithSubscriptionId(int subscriptionId)
@@ -109,7 +111,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
                            Description = description,
                            PortalId = portalId,
                            TabId = tabId,
-                           UserId = userId
+                           UserId = userId,
+                           ObjectData = objectData
                        };
 
         }

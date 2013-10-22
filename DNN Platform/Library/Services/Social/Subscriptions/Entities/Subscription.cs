@@ -56,6 +56,12 @@ namespace DotNetNuke.Services.Social.Subscriptions.Entities
         public string ObjectKey { get; set; }
 
         /// <summary>
+        /// Object Data that represents metadata to manage the subscription.
+        /// The format of the ObjectData is up to the consumer. (i.e.: destinationModule:486, where 486 represents a extra property called Destination Module).
+        /// </summary>
+        public string ObjectData { get; set; }
+
+        /// <summary>
         /// Description of the content which user is subscribed to.
         /// </summary>
         public string Description { get; set; }
