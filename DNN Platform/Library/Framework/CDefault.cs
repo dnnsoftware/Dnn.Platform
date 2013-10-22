@@ -170,16 +170,15 @@ namespace DotNetNuke.Framework
                 HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", PortalSettings.UserId), "false");
             }
 */
-
-            var gettingStarted = new DnnGettingStarted
+            if (ShowGettingStartedPage)
             {
-                ShowOnStarup = ShowGettingStartedPage,
-                ContentUrl = GettingStartedPageUrl
-            };
-            Personalization.SetProfile("GettingStarted", "Display", false);
-
-            Page.Form.Controls.Add(gettingStarted);
-
+                var gettingStarted = new DnnGettingStarted
+                {
+                    ShowOnStarup = ShowGettingStartedPage,
+                    ContentUrl = GettingStartedPageUrl
+                };
+                Page.Form.Controls.Add(gettingStarted);
+            }
         }
 
         protected void ManageInstallerFiles()
@@ -249,10 +248,8 @@ namespace DotNetNuke.Framework
                     if (!IsPage(GettingStartedTabId) && PortalSettings.UserInfo.IsSuperUser && Host.EnableGettingStartedPage)
                     {
                         result =
-                            HostController.Instance.GetBoolean(
-                                String.Format("GettingStarted_Display_{0}", PortalSettings.UserId), true) &&
-                            !HostController.Instance.GetBoolean(
-                                String.Format("GettingStarted_Hide_{0}", PortalSettings.UserId), false);
+                            HostController.Instance.GetBoolean(String.Format("GettingStarted_Display_{0}", PortalSettings.UserId), true) &&
+                            !HostController.Instance.GetBoolean(String.Format("GettingStarted_Hide_{0}", PortalSettings.UserId), false);
                     }
                 }
                 return result;
