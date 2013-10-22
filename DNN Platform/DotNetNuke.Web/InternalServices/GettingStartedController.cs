@@ -21,11 +21,13 @@
 
 #endregion
 
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
@@ -34,12 +36,31 @@ namespace DotNetNuke.Web.InternalServices
     [RequireHost]
     public class GettingStartedController : DnnApiController
     {
-        [HttpPost]
-        public HttpResponseMessage HideGettingStartedPage()
+        [HttpGet]
+        public HttpResponseMessage GetGettingStartedPageSettings()
         {
-            Personalization.SetProfile("GettingStarted", "Hide", true);
+            var isHidden = ((Personalization.GetProfile("GettingStarted", "Hide") != null)
+                              && Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Hide")));
+            var userEmailAddress = PortalSettings.UserInfo.Email;
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { IsHidden = isHidden, EmailAddress = userEmailAddress});
+        }
+
+        [HttpPost]
+        public HttpResponseMessage HideGettingStartedPage(bool isHidden)
+        {
+            Personalization.SetProfile("GettingStarted", "Hide", isHidden);
 
             return Request.CreateResponse(HttpStatusCode.OK, "Success");
         }
+
+        [HttpPost]
+        public HttpResponseMessage SubscribeToNewsletter(string email)
+        {
+            HostController.Instance.Update("NewsletterSubscribeEmail", email);
+
+            return Request.CreateResponse(HttpStatusCode.OK, "Success");
+        }
+
     }
 }
