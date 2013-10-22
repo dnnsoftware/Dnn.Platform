@@ -148,7 +148,8 @@ namespace DotNetNuke.Framework
             var gettingStarted = new DnnGettingStarted
             {
                 ShowOnStarup = ShowGettingStartedPage,
-                ContentUrl = GettingStartedPageUrl
+                ContentUrl = GettingStartedPageUrl,
+                UserManualLinkUrl = "http://www.dnnsoftware.com/Community/Download/Manuals"
             };
             Page.Form.Controls.Add(gettingStarted);
         }

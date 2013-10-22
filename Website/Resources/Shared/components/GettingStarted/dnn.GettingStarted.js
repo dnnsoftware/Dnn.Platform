@@ -46,12 +46,10 @@
             }
         },
 
-//        options: function(opts) {
-//            if (typeof opts !== "undefined") {
-//                $.extend(this._options, opts);
-//            }
-//            return this._options;
-//        },
+        _isEmailValid: function(email) {
+            var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        },
 
         _ensureDialog: function() {
             if (!this.$element) {
@@ -62,7 +60,7 @@
                 var $signUpButton = this.$element.find("." + this._options.headerLeftInputCss).find("a");
                 $signUpButton.on("click", $.proxy(this._signUp, this));
                 this._$downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
-                //this._$downloadManual.attr("href", this._options.userManualLinkUrl);
+                this._$downloadManual.attr("href", this._options.userManualLinkUrl);
             }
         },
 
@@ -113,8 +111,15 @@
             this._$emailBox.val(settings.EmailAddress);
         },
 
-        _signUp: function() {
-            this._controller.signUp(this._$emailBox.val().trim(), $.proxy(this._onSignUp, this));
+        _signUp: function () {
+            var email = this._$emailBox.val().trim();
+            var isValid = this._isEmailValid(email);
+            var self = this;
+            if (!isValid) {
+                $.dnnAlert({ title: "Error", text: "Email is invalid", callback: function () { self._$emailBox.focus(); } });
+                return;
+            }
+            this._controller.signUp(email, $.proxy(this._onSignUp, this));
         },
 
         _onSignUp: function () {
