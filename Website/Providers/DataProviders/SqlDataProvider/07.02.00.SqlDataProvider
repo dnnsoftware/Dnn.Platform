@@ -1316,7 +1316,7 @@ AS
 	BEGIN
 		SELECT
 			MS.SettingName,
-			CASE WHEN MS.SettingValue LIKE 'fileid=%'
+			CASE WHEN Lower(MS.SettingValue) LIKE 'fileid=%'
 				 THEN {databaseOwner}{objectQualifier}FilePath(MS.SettingValue)
 				 ELSE MS.SettingValue END           AS SettingValue
 		FROM   {databaseOwner}[{objectQualifier}ModuleSettings] MS
@@ -1390,7 +1390,7 @@ AS
 	BEGIN
 		SELECT
 			TS.SettingName,
-			CASE WHEN TS.SettingValue LIKE 'fileid=%'
+			CASE WHEN Lower(TS.SettingValue) LIKE 'fileid=%'
 				 THEN {databaseOwner}{objectQualifier}FilePath(TS.SettingValue)
 				 ELSE TS.SettingValue END           AS SettingValue
 		FROM   {databaseOwner}[{objectQualifier}TabSettings] TS
@@ -1430,7 +1430,7 @@ AS
 	BEGIN
 		SELECT
 			PS.SettingName,
-			CASE WHEN PS.SettingValue LIKE 'fileid=%'
+			CASE WHEN Lower(PS.SettingValue) LIKE 'fileid=%'
 			 THEN {databaseOwner}{objectQualifier}FilePath(PS.SettingValue)
 			 ELSE PS.SettingValue END   AS SettingValue,
 			PS.CreatedByUserID,
