@@ -826,19 +826,22 @@ namespace DotNetNuke.UI.ControlPanels
 
 		private void BindLanguagesList()
 		{
-			if (ShowSwitchLanguagesPanel())
-			{
-				foreach (var lang in LoadLanguagesList())
-				{
-					var item = new DnnComboBoxItem(lang[0], lang[1]);
-					if (lang[2] == "true")
-					{
-						item.Selected = true;
-					}
+            if (ShowSwitchLanguagesPanel())
+            {
+                const string FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
+                foreach (var lang in LoadLanguagesList())
+                {
+                    var item = new DnnComboBoxItem(lang[0], lang[1]);
+                    item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+                    if (lang[2] == "true")
+                    {
+                        item.Selected = true;
+                    }
 
-					controlBar_SwitchLanguage.Items.Add(item);
-				}
-			}
+                    controlBar_SwitchLanguage.Items.Add(item);
+                }
+
+            }
 		}
 
         #endregion

@@ -90,7 +90,7 @@
                 <% } %>
                 <li class="controlBar_ArrowMenu"><a href="javascript:void(0)">
                     <%= GetString("Tool.Tools.Text") %></a>
-                    <div class="subNav">
+                    <div class="subNav tools">
                         <dl>
                             <dd>
                                 <ul>

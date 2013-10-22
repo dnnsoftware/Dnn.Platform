@@ -172,6 +172,10 @@
         width: 675px; /* 4 Column Width */
     }
 
+    .subNav.tools {
+        width: 300px;
+    }
+
 /* Control Nav -- Sub Nav Toggle */
 
 .subNavToggle {
@@ -375,7 +379,7 @@
 #ControlBar_LanguageSelector {
     border-top: 1px solid #555;
     padding-top: 10px;
-    width: 150px;
+    width: 100%;
 }
 
     #ControlBar_SiteSelector p,
@@ -1051,13 +1055,13 @@ ul#ControlBar_Module_ModulePosition {
 
 #controlBar_SwitchSite,
 #controlBar_SwitchLanguage {
-    width: 120px;
+    width: 215px;
 }
 
     #controlBar_SwitchSite .rcbInput,
     #controlBar_SwitchLanguage .rcbInput {
         padding: 4px !important;
-        width: 90px !important;
+        width: 190px !important;
     }
 
     #controlBar_SwitchSite .rcbArrowCellRight a,
