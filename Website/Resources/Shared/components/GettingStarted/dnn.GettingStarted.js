@@ -104,24 +104,21 @@
 
         _onCloseDialog: function () {
             var isHidden = this._$checkBox.prop("checked");
-            if (this._isHidden !== isHidden) {
-                this._controller.hideDialog(isHidden);
-            }
+            this._controller.closeDialog(isHidden);
             this._isShown = false;
         },
 
         _onGetSettings: function(settings) {
-            this._$checkBox.prop("checked", settings.isHidden);
+            this._$checkBox.prop("checked", settings.IsHidden);
             this._$emailBox.val(settings.EmailAddress);
-            this._isHidden = settings.IsHidden;
         },
 
         _signUp: function() {
             this._controller.signUp(this._$emailBox.val().trim(), $.proxy(this._onSignUp, this));
         },
 
-        _onSignUp: function() {
-            dnnAlert("You have been signed up!");
+        _onSignUp: function () {
+            $.dnnAlert({ title: "Congratulations!", text: "You have been signed up." });
         },
 
         show: function () {
@@ -196,7 +193,7 @@
                 beforeSend: $.dnnSF(this._options.moduleId).setModuleHeaders,
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                data: data,
+                data: isGet ? data : JSON.stringify(data),
                 type: isGet ? "GET" : "POST",
                 async: true,
                 success: onLoadHandler,
@@ -205,12 +202,12 @@
             $.ajax(serviceSettings);
         },
 
-        hideDialog: function (hide, callback) {
-            var onHideDialogHandler = $.proxy(this._onHideDialog, this, callback);
-            this._callService({ isHidden: hide }, onHideDialogHandler, this._options.hideDialogMethod);
+        closeDialog: function (isHidden, callback) {
+            var onCloseDialogHandler = $.proxy(this._onCloseDialog, this, callback);
+            this._callService({ IsHidden: isHidden }, onCloseDialogHandler, this._options.closeDialogMethod);
         },
 
-        _onHideDialog: function (callback, data, textStatus, jqXhr) {
+        _onCloseDialog: function (callback, data, textStatus, jqXhr) {
             if (typeof callback === "function") {
                 callback.apply(this, [data]);
             }
@@ -229,7 +226,7 @@
 
         signUp: function (email, callback) {
             var onSignUpHandler = $.proxy(this._onSignUp, this, callback);
-            this._callService({ email: email }, onSignUpHandler, this._options.signUpMethod);
+            this._callService({ Email: email }, onSignUpHandler, this._options.signUpMethod);
         },
 
         _onSignUp: function (callback, data, textStatus, jqXhr) {
@@ -242,7 +239,7 @@
 
     GettingStartedController._defaults = {
         serviceRoot: "InternalServices",
-        hideDialogMethod: "GettingStarted/HideGettingStartedPage",
+        closeDialogMethod: "GettingStarted/CloseGettingStartedPage",
         getSettingsMethod: "GettingStarted/GetGettingStartedPageSettings",
         signUpMethod: "GettingStarted/SubscribeToNewsletter"
     };

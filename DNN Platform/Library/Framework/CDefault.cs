@@ -144,41 +144,13 @@ namespace DotNetNuke.Framework
 
         protected void ManageGettingStarted()
         {
-            //add js of Getting Started Page
-/*
-            if (GettingStartedTabId > -1 && IsPage(GettingStartedTabId) && Request["ctl"] == null)
+            // The Getting Started dialog can be also opened from the Control Bar
+            var gettingStarted = new DnnGettingStarted
             {
-                var scriptManager = ScriptManager.GetCurrent(Page);
-                if (scriptManager == null)
-                {
-                    scriptManager = new ScriptManager();
-                    Page.Form.Controls.AddAt(0, scriptManager);
-                }
-
-                scriptManager.EnablePageMethods = true;
-
-                var gettingStartedFilePath = HttpContext.Current.IsDebuggingEnabled
-                                        ? "~/js/Debug/dnn.gettingstarted.js"
-                                        : "~/js/dnn.gettingstarted.js";
-
-                ClientResourceManager.RegisterScript(this, gettingStartedFilePath);
-                Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentPortalAliasUrl", "var pageCurrentPortalAliasUrl = '" + CurrentPortalAliasUrl + "';", true);
-                Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentDomainUrl", "var pageCurrentDomainUrl = '" + CurrentDomainUrl + "';", true);
-                Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentPortalId", "var pageCurrentPortalId = " + PortalSettings.PortalId + ";", true);
-                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "GettingStartedPageTitle", "var gettingStartedPageTitle = '" + GettingStartedTitle + "';", true);
-
-                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", PortalSettings.UserId), "false");
-            }
-*/
-            if (ShowGettingStartedPage)
-            {
-                var gettingStarted = new DnnGettingStarted
-                {
-                    ShowOnStarup = ShowGettingStartedPage,
-                    ContentUrl = GettingStartedPageUrl
-                };
-                Page.Form.Controls.Add(gettingStarted);
-            }
+                ShowOnStarup = ShowGettingStartedPage,
+                ContentUrl = GettingStartedPageUrl
+            };
+            Page.Form.Controls.Add(gettingStarted);
         }
 
         protected void ManageInstallerFiles()

@@ -24,11 +24,9 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 
 using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Web.InternalServices
@@ -38,6 +36,16 @@ namespace DotNetNuke.Web.InternalServices
     {
         private const string GettingStartedHideKey = "GettingStarted_Hide_{0}";
         private const string GettingStartedDisplayKey = "GettingStarted_Display_{0}";
+
+        public class ClosePageDto
+        {
+            public bool IsHidden { get; set; }
+        }
+
+        public class EmailDto
+        {
+            public string Email { get; set; }
+        }
 
         [HttpGet]
         public HttpResponseMessage GetGettingStartedPageSettings()
@@ -49,25 +57,18 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpPost]
-        public HttpResponseMessage CloseGettingStartedPage()
+        public HttpResponseMessage CloseGettingStartedPage(ClosePageDto dto)
         {
+            HostController.Instance.Update(String.Format(GettingStartedHideKey, PortalSettings.UserId), dto.IsHidden.ToString());
             HostController.Instance.Update(String.Format(GettingStartedDisplayKey, PortalSettings.UserId), "false");
 
             return Request.CreateResponse(HttpStatusCode.OK, "Success");
         }
 
         [HttpPost]
-        public HttpResponseMessage HideGettingStartedPage(bool isHidden)
+        public HttpResponseMessage SubscribeToNewsletter(EmailDto dto)
         {
-            HostController.Instance.Update(String.Format(GettingStartedHideKey, PortalSettings.UserId), isHidden.ToString());
-
-            return Request.CreateResponse(HttpStatusCode.OK, "Success");
-        }
-
-        [HttpPost]
-        public HttpResponseMessage SubscribeToNewsletter(string email)
-        {
-            HostController.Instance.Update("NewsletterSubscribeEmail", email);
+            HostController.Instance.Update("NewsletterSubscribeEmail", dto.Email);
 
             return Request.CreateResponse(HttpStatusCode.OK, "Success");
         }
