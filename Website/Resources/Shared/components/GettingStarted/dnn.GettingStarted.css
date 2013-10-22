@@ -171,6 +171,7 @@ html .gs-container {
     box-shadow: none;
     color: #fff;
     outline: none;
+    font-size: 14px;
 }
 
 .gs-header-left-side-input a:link,

@@ -56,7 +56,11 @@
         _ensureDialog: function() {
             if (!this.$element) {
                 this.$element = this.element ? $(this.element) : this._createLayout();
+                this._$checkBox = this.$element.find("." + this._options.footerLeftCss).find("input");
+                this._$emailBox = this.$element.find("." + this._options.inputboxWrapperCss).find("input");
                 this._$iframe = this.$element.find("iframe");
+                var $signUpButton = this.$element.find("." + this._options.headerLeftInputCss).find("a");
+                $signUpButton.on("click", $.proxy(this._signUp, this));
                 this._$downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
                 //this._$downloadManual.attr("href", this._options.userManualLinkUrl);
             }
@@ -99,11 +103,25 @@
         },
 
         _onCloseDialog: function () {
-            var checkBox = this.$element.find("." + this._options.footerLeftCss).find("input");
-            if(checkBox.prop("checked")){
-                this._controller.hideDialog();
+            var isHidden = this._$checkBox.prop("checked");
+            if (this._isHidden !== isHidden) {
+                this._controller.hideDialog(isHidden);
             }
             this._isShown = false;
+        },
+
+        _onGetSettings: function(settings) {
+            this._$checkBox.prop("checked", settings.isHidden);
+            this._$emailBox.val(settings.EmailAddress);
+            this._isHidden = settings.IsHidden;
+        },
+
+        _signUp: function() {
+            this._controller.signUp(this._$emailBox.val().trim(), $.proxy(this._onSignUp, this));
+        },
+
+        _onSignUp: function() {
+            dnnAlert("You have been signed up!");
         },
 
         show: function () {
@@ -113,6 +131,9 @@
             this._isShown = true;
             this._ensureDialog();
             this._$iframe.attr("src", this._options.contentUrl);
+
+            this._controller.getSettings($.proxy(this._onGetSettings, this));
+
             this.$element.dialog({
                 modal: true,
                 autoOpen: true,
@@ -169,14 +190,14 @@
             this._serviceUrl = $.dnnSF(this._options.moduleId).getServiceRoot(this._options.serviceRoot);
         },
 
-        _callPost: function(data, onLoadHandler, method) {
+        _callService: function (data, onLoadHandler, method, isGet) {
             var serviceSettings = {
                 url: this._serviceUrl + method,
                 beforeSend: $.dnnSF(this._options.moduleId).setModuleHeaders,
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 data: data,
-                type: "POST",
+                type: isGet ? "GET" : "POST",
                 async: true,
                 success: onLoadHandler,
                 error: $.onAjaxError
@@ -184,14 +205,36 @@
             $.ajax(serviceSettings);
         },
 
-        hideDialog: function (onHideDialogCallback) {
-            var onHideDialogHandler = $.proxy(this._onHideDialog, this, onHideDialogCallback);
-            this._callPost({}, onHideDialogHandler, this._options.hideDialogMethod);
+        hideDialog: function (hide, callback) {
+            var onHideDialogHandler = $.proxy(this._onHideDialog, this, callback);
+            this._callService({ isHidden: hide }, onHideDialogHandler, this._options.hideDialogMethod);
         },
 
-        _onHideDialog: function (onHideDialogCallback, data, textStatus, jqXhr) {
-            if (typeof onHideDialogCallback === "function") {
-                onHideDialogCallback.apply(this, [data]);
+        _onHideDialog: function (callback, data, textStatus, jqXhr) {
+            if (typeof callback === "function") {
+                callback.apply(this, [data]);
+            }
+        },
+
+        getSettings: function (callback) {
+            var onGetSettingsHandler = $.proxy(this._onGetSettings, this, callback);
+            this._callService({}, onGetSettingsHandler, this._options.getSettingsMethod, true);
+        },
+
+        _onGetSettings: function (callback, data, textStatus, jqXhr) {
+            if (typeof callback === "function") {
+                callback.apply(this, [data]);
+            }
+        },
+
+        signUp: function (email, callback) {
+            var onSignUpHandler = $.proxy(this._onSignUp, this, callback);
+            this._callService({ email: email }, onSignUpHandler, this._options.signUpMethod);
+        },
+
+        _onSignUp: function (callback, data, textStatus, jqXhr) {
+            if (typeof callback === "function") {
+                callback.apply(this, [data]);
             }
         }
 
@@ -199,7 +242,9 @@
 
     GettingStartedController._defaults = {
         serviceRoot: "InternalServices",
-        hideDialogMethod: "GettingStarted/HideGettingStartedPage"
+        hideDialogMethod: "GettingStarted/HideGettingStartedPage",
+        getSettingsMethod: "GettingStarted/GetGettingStartedPageSettings",
+        signUpMethod: "GettingStarted/SubscribeToNewsletter"
     };
 
     GettingStartedController.defaults = function (settings) {
