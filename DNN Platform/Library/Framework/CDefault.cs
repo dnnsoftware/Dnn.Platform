@@ -167,7 +167,7 @@ namespace DotNetNuke.Framework
                 Page.ClientScript.RegisterClientScriptBlock(GetType(), "PageCurrentPortalId", "var pageCurrentPortalId = " + PortalSettings.PortalId + ";", true);
                 Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "GettingStartedPageTitle", "var gettingStartedPageTitle = '" + GettingStartedTitle + "';", true);
 
-                Personalization.SetProfile("GettingStarted", "Display", false);
+                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", PortalSettings.UserId), "false");
             }
 */
 
@@ -248,9 +248,11 @@ namespace DotNetNuke.Framework
                 {
                     if (!IsPage(GettingStartedTabId) && PortalSettings.UserInfo.IsSuperUser && Host.EnableGettingStartedPage)
                     {
-                        result = Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Display"))  &&
-                                !((Personalization.GetProfile("GettingStarted", "Hide") != null) && 
-                                    Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Hide")));
+                        result =
+                            HostController.Instance.GetBoolean(
+                                String.Format("GettingStarted_Display_{0}", PortalSettings.UserId), true) &&
+                            !HostController.Instance.GetBoolean(
+                                String.Format("GettingStarted_Hide_{0}", PortalSettings.UserId), false);
                     }
                 }
                 return result;

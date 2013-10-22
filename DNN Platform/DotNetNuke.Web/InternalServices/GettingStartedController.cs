@@ -36,11 +36,12 @@ namespace DotNetNuke.Web.InternalServices
     [RequireHost]
     public class GettingStartedController : DnnApiController
     {
+        private const string GettingStartedHideKey = "GettingStarted_Hide_{0}";
+
         [HttpGet]
         public HttpResponseMessage GetGettingStartedPageSettings()
         {
-            var isHidden = ((Personalization.GetProfile("GettingStarted", "Hide") != null)
-                              && Convert.ToBoolean(Personalization.GetProfile("GettingStarted", "Hide")));
+            var isHidden = HostController.Instance.GetBoolean(String.Format(GettingStartedHideKey, PortalSettings.UserId), false);
             var userEmailAddress = PortalSettings.UserInfo.Email;
 
             return Request.CreateResponse(HttpStatusCode.OK, new { IsHidden = isHidden, EmailAddress = userEmailAddress});
@@ -49,7 +50,7 @@ namespace DotNetNuke.Web.InternalServices
         [HttpPost]
         public HttpResponseMessage HideGettingStartedPage(bool isHidden)
         {
-            Personalization.SetProfile("GettingStarted", "Hide", isHidden);
+            HostController.Instance.Update(String.Format(GettingStartedHideKey, PortalSettings.UserId), isHidden.ToString());
 
             return Request.CreateResponse(HttpStatusCode.OK, "Success");
         }

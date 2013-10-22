@@ -35,6 +35,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -660,7 +661,7 @@ namespace DotNetNuke.Security
                 //save userinfo object in context to ensure Personalization is saved correctly
                 HttpContext.Current.Items["UserInfo"] = user;
 
-                Personalization.SetProfile("GettingStarted", "Display", true);
+                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", user.UserID), "true");
             }
         }
 
