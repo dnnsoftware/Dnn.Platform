@@ -40,6 +40,18 @@ namespace DotNetNuke.UI.WebControls
         [DataMember(Name = "userManualLinkUrl")]
         public string UserManualLinkUrl;
 
+        [DataMember(Name = "invalidEmailTitle")]
+        public string InvalidEmailTitle;
+
+        [DataMember(Name = "invalidEmailMessage")]
+        public string InvalidEmailMessage;
+
+        [DataMember(Name = "signUpTitle")]
+        public string SignUpTitle;
+
+        [DataMember(Name = "signUpMessage")]
+        public string SignUpMessage;
+
         public DnnGettingStartedOptions()
         {
             // all the resources are located under the Website\App_GlobalResources\SharedResources.resx
@@ -51,6 +63,10 @@ namespace DotNetNuke.UI.WebControls
             DontShowDialogLabel = Localization.GetString("GettingStarted.DontShowDialogLabel", Localization.SharedResourceFile);
             FacebookLinkTooltip = Localization.GetString("GettingStarted.FacebookLinkTooltip", Localization.SharedResourceFile);
             TwitterLinkTooltip = Localization.GetString("GettingStarted.TwitterLinkTooltip", Localization.SharedResourceFile);
+            InvalidEmailTitle = Localization.GetString("GettingStarted.InvalidEmailTitle", Localization.SharedResourceFile);
+            InvalidEmailMessage = Localization.GetString("GettingStarted.InvalidEmailMessage", Localization.SharedResourceFile);
+            SignUpTitle = Localization.GetString("GettingStarted.SignUpTitle", Localization.SharedResourceFile);
+            SignUpMessage = Localization.GetString("GettingStarted.SignUpMessage", Localization.SharedResourceFile);
         }
 
     }

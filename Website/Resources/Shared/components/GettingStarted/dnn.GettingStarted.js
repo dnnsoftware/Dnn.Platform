@@ -116,14 +116,14 @@
             var isValid = this._isEmailValid(email);
             var self = this;
             if (!isValid) {
-                $.dnnAlert({ title: "Error", text: "Email is invalid", callback: function () { self._$emailBox.focus(); } });
+                $.dnnAlert({ title: this._options.invalidEmailTitle, text: this._options.invalidEmailMessage, callback: function () { self._$emailBox.focus(); } });
                 return;
             }
             this._controller.signUp(email, $.proxy(this._onSignUp, this));
         },
 
         _onSignUp: function () {
-            $.dnnAlert({ title: "Congratulations!", text: "You have been signed up." });
+            $.dnnAlert({ title: this._options.signUpTitle, text: this._options.signUpMessage });
         },
 
         show: function () {
