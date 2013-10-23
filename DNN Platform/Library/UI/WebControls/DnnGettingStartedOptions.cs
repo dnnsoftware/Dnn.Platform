@@ -37,8 +37,8 @@ namespace DotNetNuke.UI.WebControls
         [DataMember(Name = "contentUrl")]
         public string ContentUrl;
 
-        [DataMember(Name = "userManualLinkUrl")]
-        public string UserManualLinkUrl;
+        [DataMember(Name = "userManualUrl")]
+        public string UserManualUrl;
 
         [DataMember(Name = "invalidEmailTitle")]
         public string InvalidEmailTitle;

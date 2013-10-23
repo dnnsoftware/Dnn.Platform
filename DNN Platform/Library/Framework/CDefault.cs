@@ -25,10 +25,9 @@ using System.Linq;
 using System.Web.UI;
 
 using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.GettingStarted;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
 
@@ -41,13 +40,7 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     /// Project	 : DotNetNuke
     /// Class	 : CDefault
-    ///
     /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
     /// <history>
     /// 	[sun1]	1/19/2004	Created
     /// </history>
@@ -61,27 +54,6 @@ namespace DotNetNuke.Framework
         public string Generator = "";
         public string KeyWords = "";
         public new string Title = "";
-
-        #region Private Members
-
-        private int GettingStartedTabId
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsInteger("GettingStartedTabId", PortalSettings.PortalId, -1);
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        private bool IsPage(int tabId)
-        {
-            return (PortalSettings.ActiveTab.TabID == tabId);
-        }
-
-        #endregion
 
         protected override void RegisterAjaxScript()
         {
@@ -130,11 +102,12 @@ namespace DotNetNuke.Framework
         protected void ManageGettingStarted()
         {
             // The Getting Started dialog can be also opened from the Control Bar
+            var controller = new GettingStartedController();
             var gettingStarted = new DnnGettingStarted
             {
-                ShowOnStarup = ShowGettingStartedPage,
-                ContentUrl = GettingStartedPageUrl,
-                UserManualLinkUrl = "http://www.dnnsoftware.com/Community/Download/Manuals"
+                ShowOnStarup = controller.ShowOnStartup,
+                ContentUrl = controller.ContentUrl,
+                UserManualUrl = controller.UserManualUrl
             };
             Page.Form.Controls.Add(gettingStarted);
         }
@@ -148,43 +121,19 @@ namespace DotNetNuke.Framework
             }
         }
 
-        protected string GettingStartedPageUrl
-        {
-            get
-            {
-                string result = "";
-                var tabcontroller = new TabController();
-                var tab = tabcontroller.GetTab(GettingStartedTabId, PortalSettings.PortalId, false);
-                var modulecontroller = new ModuleController();
-                var modules = modulecontroller.GetTabModules(tab.TabID).Values;
-
-                if (modules.Count > 0)
-                {
-                    PortalModuleBase pmb = new PortalModuleBase();
-                    result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
-                }
-                else
-                {
-                    result = Globals.NavigateURL(tab.TabID);
-                }
-
-                return result;
-            }
-        }
-
         protected string AdvancedSettingsPageUrl
         {
             get
             {
-                string result = "";
+                var result = "";
                 var tabcontroller = new TabController();
-                var tab = tabcontroller.GetTabByName("Advanced Settings", PortalSettings.PortalId); //tabcontroller.GetTab(GettingStartedTabId, PortalSettings.PortalId, false);
+                var tab = tabcontroller.GetTabByName("Advanced Settings", PortalSettings.PortalId);
                 var modulecontroller = new ModuleController();
                 var modules = modulecontroller.GetTabModules(tab.TabID).Values;
 
                 if (modules.Count > 0)
                 {
-                    PortalModuleBase pmb = new PortalModuleBase();
+                    var pmb = new PortalModuleBase();
                     result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
                 }
                 else
@@ -192,24 +141,6 @@ namespace DotNetNuke.Framework
                     result = Globals.NavigateURL(tab.TabID);
                 }
 
-                return result;
-            }
-        }
-
-        protected bool ShowGettingStartedPage
-        {
-            get
-            {
-                var result = false;
-                if (GettingStartedTabId > -1)
-                {
-                    if (!IsPage(GettingStartedTabId) && PortalSettings.UserInfo.IsSuperUser && Host.EnableGettingStartedPage)
-                    {
-                        result =
-                            HostController.Instance.GetBoolean(String.Format("GettingStarted_Display_{0}", PortalSettings.UserId), true) &&
-                            !HostController.Instance.GetBoolean(String.Format("GettingStarted_Hide_{0}", PortalSettings.UserId), false);
-                    }
-                }
                 return result;
             }
         }

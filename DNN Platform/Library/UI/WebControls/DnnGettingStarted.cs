@@ -2,12 +2,13 @@
 using System.Web.UI;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.WebControls
 {
-    public class DnnGettingStarted : Control, INamingContainer
+    internal class DnnGettingStarted : Control, INamingContainer
     {
 
         private readonly Lazy<DnnGettingStartedOptions> _options =
@@ -31,9 +32,9 @@ namespace DotNetNuke.UI.WebControls
             set { Options.ContentUrl = value; }
         }
 
-        public string UserManualLinkUrl
+        public string UserManualUrl
         {
-            set { Options.UserManualLinkUrl = value; }
+            set { Options.UserManualUrl = value; }
         }
 
         public string Skin
@@ -53,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
         {
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RequestDnnPluginsRegistration();
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             jQuery.RegisterFileUpload(Page);
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/Components/GettingStarted/dnn.GettingStarted.css");
@@ -83,5 +84,6 @@ namespace DotNetNuke.UI.WebControls
             }
 
         }
+
     }
 }

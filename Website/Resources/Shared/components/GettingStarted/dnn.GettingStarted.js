@@ -61,7 +61,7 @@
                 var $signUpButton = this.$element.find("." + this._options.headerLeftInputCss).find("a");
                 $signUpButton.on("click", $.proxy(this._signUp, this));
                 var $downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
-                $downloadManual.attr("href", this._options.userManualLinkUrl);
+                $downloadManual.attr("href", this._options.userManualUrl);
             }
         },
 
