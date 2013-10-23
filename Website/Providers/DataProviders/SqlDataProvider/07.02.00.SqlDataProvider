@@ -1464,7 +1464,7 @@ BEGIN
     )
 
     SELECT @NotificationTypeId = SCOPE_IDENTITY()
-    INSERT INTO CoreMessaging_NotificationTypeActions(
+    INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
         [NotificationTypeID],
         [NameResourceKey],
         [DescriptionResourceKey],
