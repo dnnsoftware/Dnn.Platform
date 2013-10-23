@@ -22,7 +22,6 @@
 
 using System;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Entities.Controllers;
@@ -30,10 +29,8 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
-using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using Globals = DotNetNuke.Common.Globals;
 
@@ -75,25 +72,13 @@ namespace DotNetNuke.Framework
             }
         }
 
-        private string GettingStartedTitle
-        {
-            get
-            {
-                var tabcontroller = new TabController();
-                var tab = tabcontroller.GetTab(GettingStartedTabId, PortalSettings.PortalId, false);
-                return tab.Title;
-            }
-        }
-
         #endregion
 
         #region Private Methods
 
         private bool IsPage(int tabId)
         {
-            bool result = false;
-            result = (PortalSettings.ActiveTab.TabID == tabId);
-            return result;
+            return (PortalSettings.ActiveTab.TabID == tabId);
         }
 
         #endregion
@@ -228,22 +213,6 @@ namespace DotNetNuke.Framework
                 return result;
             }
         }
-
-        #region WebMethods
-
-        [System.Web.Services.WebMethod]
-        [System.Web.Script.Services.ScriptMethod()]
-        public static bool SetGettingStartedPageAsShown(int portailId)
-        {
-            string pageShown = PortalController.GetPortalSetting("GettingStartedPageShown", portailId, Boolean.FalseString);
-            if (!string.Equals(pageShown, Boolean.TrueString))
-            {
-                PortalController.UpdatePortalSetting(portailId, "GettingStartedPageShown", Boolean.TrueString);
-            }
-            return true;
-        }
-
-        #endregion
 
         #region Obsolete Methods
 
