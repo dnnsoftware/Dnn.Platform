@@ -186,7 +186,7 @@
 
     	$('body').previewify(opts);
 
-	    $("#journalContent").mentionsInput({servicesFramework: $.ServicesFramework(<%=ModuleContext.ModuleId %>)});
+	    
     });
   
     function buildLikes(data,journalId){
@@ -206,6 +206,48 @@
     };
     var commentOpts = {};
     commentOpts.servicesFramework = $.ServicesFramework(<%=ModuleId %>);
+    
+    function bindConfirm() {
+        $(".journalrow .minidel, .journalrow .miniclose").each(function() {
+            if($(this).data("confirmBinded")) {
+                return;
+            }
+
+            var $this = $(this);
+            var oThis = this;
+            
+            $this.data("confirmBinded", true);
+            var clickFuncs = [];
+            if (typeof $this.attr("onclick") != "undefined" && $this.attr("onclick").length > 0) {
+                var clickFunc = $this.attr("onclick").substr(0, $this.attr("onclick").indexOf("("));
+                $this.attr("onclick", "");
+                clickFuncs.push(eval(clickFunc));
+            } else {
+                for (var i = 0; i < $this.data("events").click.length; i++) {
+                    var handler = $this.data("events").click[i].handler;
+                    if (typeof handler.name != "undefined" && handler.name.length > 0) {
+                        clickFuncs.push(handler);
+                        break;
+                    }
+                }
+
+                $this.unbind("click");
+            }
+
+            $this.dnnConfirm({
+                text: '<%= Localization.GetSafeJSString(LocalizeString("DeleteItem")) %>',
+                yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+                noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+                title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+                isButton: true,
+                callbackTrue: function() {
+                    for(var i = 0; i < clickFuncs.length; i++)
+                        clickFuncs[i].call(oThis, oThis);
+                }
+            });
+        });
+    }
+
     function pluginInit() {
         
         $('.jcmt').each(function () {
@@ -272,45 +314,8 @@
                 journalPost('Like', data, buildLikes, jid);
             });
         });
-        
-        $(".journalrow .minidel, .journalrow .miniclose").each(function() {
-            if($(this).data("confirmBinded")) {
-                return;
-            }
 
-            var $this = $(this);
-            var oThis = this;
-            
-            $this.data("confirmBinded", true);
-            var clickFuncs = [];
-            if (typeof $this.attr("onclick") != "undefined" && $this.attr("onclick").length > 0) {
-                var clickFunc = $this.attr("onclick").substr(0, $this.attr("onclick").indexOf("("));
-                $this.attr("onclick", "");
-                clickFuncs.push(eval(clickFunc));
-            } else {
-                for (var i = 0; i < $this.data("events").click.length; i++) {
-                    var handler = $this.data("events").click[i].handler;
-                    if (typeof handler.name != "undefined" && handler.name.length > 0) {
-                        clickFuncs.push(handler);
-                        break;
-                    }
-                }
-
-                $this.unbind("click");
-            }
-
-            $this.dnnConfirm({
-                text: '<%= Localization.GetSafeJSString(LocalizeString("DeleteItem")) %>',
-                yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
-                isButton: true,
-                callbackTrue: function() {
-                    for(var i = 0; i < clickFuncs.length; i++)
-                        clickFuncs[i].call(oThis, oThis);
-                }
-            });
-        });
+        bindConfirm();
 
 	    if (!$("#getMore").data("clickBinded")) {
 		    $("#getMore").click(function(e) {
@@ -319,6 +324,7 @@
 		    });
 		    $("#getMore").data("clickBinded", true);
 	    }
+        $('#journalContent, .cmteditor').mentionsInput({servicesFramework: $.ServicesFramework(<%=ModuleContext.ModuleId %>)});
     }
     pluginInit();
 

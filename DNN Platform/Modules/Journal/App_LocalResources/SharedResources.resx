@@ -548,4 +548,16 @@
 	[JOURNALCONTROL:LIKELIST]
 &lt;/div&gt;</value>
   </data>
+  <data name="Notification_Mention.Body" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="Notification_Mention.Subject" xml:space="preserve">
+    <value>{0} mentioned you in a {1}</value>
+  </data>
+  <data name="Notification_MentionType_Comment.Text" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="Notification_MentionType_Post.Text" xml:space="preserve">
+    <value>Post</value>
+  </data>
 </root>

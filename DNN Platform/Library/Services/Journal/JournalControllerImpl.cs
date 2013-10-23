@@ -584,7 +584,6 @@ namespace DotNetNuke.Services.Journal
                 comment.Comment =
                     HttpUtility.HtmlDecode(portalSecurity.InputFilter(comment.Comment,
                                                                       PortalSecurity.FilterFlag.NoScripting));
-                comment.Comment = portalSecurity.InputFilter(comment.Comment, PortalSecurity.FilterFlag.NoMarkup);
             }
             //TODO: enable once the profanity filter is working properly.
             //objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);

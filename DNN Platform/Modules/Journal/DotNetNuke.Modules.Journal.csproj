@@ -115,6 +115,7 @@
     <Compile Include="Components\JournalParser.cs" />
     <Compile Include="Components\LinkInfo.cs" />
     <Compile Include="Components\Utilities.cs" />
+    <Compile Include="NotificationsController.cs" />
     <Compile Include="FilesStatus.cs" />
     <Compile Include="FileUploadController.cs" />
     <Compile Include="JournalList.cs" />
