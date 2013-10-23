@@ -81,24 +81,6 @@ namespace DotNetNuke.Framework
             }
         }
 
-        protected string CurrentPortalAliasUrl
-        {
-            get
-            {
-                //This statement throws an exception when PortalSettings.PortalAlias.HTTPAlias is a child alias
-                //return HttpContext.Current.Request.Url.AbsoluteUri.Substring(0, HttpContext.Current.Request.Url.AbsoluteUri.ToLower().IndexOf(PortalSettings.PortalAlias.HTTPAlias)) + PortalSettings.PortalAlias.HTTPAlias;
-                return Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias);
-            }
-        }
-
-        protected string CurrentDomainUrl
-        {
-            get
-            {
-                return Globals.AddHTTP(Globals.GetDomainName(Request));
-            }
-        }
-
         protected void ManageGettingStarted()
         {
             // The Getting Started dialog can be also opened from the Control Bar
