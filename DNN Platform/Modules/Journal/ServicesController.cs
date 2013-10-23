@@ -478,13 +478,21 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
+        public class SuggestDTO
+        {
+            public string displayName { get; set; }
+            public int userId { get; set; }
+            public string avatar { get; set; }
+            public string key { get; set; }
+        }
+
 		[HttpGet]
 		[DnnAuthorize(DenyRoles = "Unverified Users")]
 		public HttpResponseMessage GetSuggestions(string keyword)
 		{
 			try
 			{
-				var findedUsers = new ArrayList();
+                var findedUsers = new List<SuggestDTO>();
 				var relations = RelationshipController.Instance.GetUserRelationships(UserInfo);
 				foreach (var ur in relations)
 				{
@@ -498,9 +506,10 @@ namespace DotNetNuke.Modules.Journal
 						&& (targetUser.DisplayName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())
                                 || targetUser.DisplayName.ToLowerInvariant().Contains(keyword.Replace(".", " ").ToLowerInvariant())
 							)
+                        && findedUsers.All(s => s.userId != targetUser.UserID)
 						)
 					{
-						findedUsers.Add(new
+						findedUsers.Add(new SuggestDTO
 							                {
                                                 displayName = targetUser.DisplayName.Replace(" ", "."),
 											    userId = targetUser.UserID,
