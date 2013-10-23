@@ -411,9 +411,9 @@ namespace DotNetNuke.Framework
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
         public static void RegisterJQuery(Page page)
         {
-            ClientResourceManager.RegisterScript(page, GetJQueryScriptReference(), FileOrder.Js.jQuery, "DnnPageHeaderProvider");
-            ClientResourceManager.RegisterScript(page, GetJQueryMigrateScriptReference(), FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
-          //  JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+           // ClientResourceManager.RegisterScript(page, GetJQueryScriptReference(), FileOrder.Js.jQuery, "DnnPageHeaderProvider");
+            //ClientResourceManager.RegisterScript(page, GetJQueryMigrateScriptReference(), FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
+           JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
@@ -449,25 +449,34 @@ namespace DotNetNuke.Framework
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/jquery/jquery.fileupload.js");
         }
 
+        [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQuery);")]
         public static void RequestRegistration()
         {
-            HttpContext.Current.Items["jQueryRequested"] = true;
+            
+            JavaScript.RequestRegistration(CommonJs.jQuery);
         }
 
+        [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQueryUI);")]
         public static void RequestUIRegistration()
         {
-            HttpContext.Current.Items["jQueryUIRequested"] = true;
+            
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
         }
 
+        [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.DnnPlugins);")]
         public static void RequestDnnPluginsRegistration()
         {
-            HttpContext.Current.Items["jQueryDnnPluginsRequested"] = true;
+            
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
+        [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.HoverIntent);")]
         public static void RequestHoverIntentRegistration()
         {
-            HttpContext.Current.Items["jQueryHoverIntentRequested"] = true;
+            
+            JavaScript.RequestRegistration(CommonJs.HoverIntent);
         }
+
 
 		/// <summary>
 		/// Active the page with keep alive, so that authentication will not expire.

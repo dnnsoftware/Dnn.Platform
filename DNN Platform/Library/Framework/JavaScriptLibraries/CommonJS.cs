@@ -58,6 +58,18 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         ///     knockout mapping LibraryName
         /// </summary>
         public const string jQueryFileUpload = "jQuery.Fileupload";
+
+        /// <summary>
+        ///     knockout mapping LibraryName
+        /// </summary>
+        public const string DnnPlugins = "DnnPlugins";
+
+        /// <summary>
+        ///     knockout mapping LibraryName
+        /// </summary>
+        public const string HoverIntent = "HoverIntent";
         
+        
+
     }
 }
