@@ -1821,4 +1821,7 @@
   <data name="GettingStarted.SignUpMessage" xml:space="preserve">
     <value>Your request has been received.</value>
   </data>
+  <data name="ViewJournal.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
 </root>
