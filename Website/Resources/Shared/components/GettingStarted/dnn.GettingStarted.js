@@ -102,8 +102,8 @@
         },
 
         _onCloseDialog: function () {
-            var isHidden = this._$checkBox.prop("checked");
-            this._controller.closeDialog(isHidden);
+            var notShowAgain = this._$checkBox.prop("checked");
+            this._controller.closeDialog(notShowAgain);
             this._isShown = false;
         },
 
@@ -207,9 +207,9 @@
             $.ajax(serviceSettings);
         },
 
-        closeDialog: function (isHidden, callback) {
+        closeDialog: function (notShowAgain, callback) {
             var onCloseDialogHandler = $.proxy(this._onCloseDialog, this, callback);
-            this._callService({ IsHidden: isHidden }, onCloseDialogHandler, this._options.closeDialogMethod);
+            this._callService({ IsHidden: notShowAgain }, onCloseDialogHandler, this._options.closeDialogMethod);
         },
 
         _onCloseDialog: function (callback, data, textStatus, jqXhr) {
