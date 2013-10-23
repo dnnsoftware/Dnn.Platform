@@ -56,11 +56,12 @@
                 this.$element = this.element ? $(this.element) : this._createLayout();
                 this._$checkBox = this.$element.find("." + this._options.footerLeftCss).find("input");
                 this._$emailBox = this.$element.find("." + this._options.inputboxWrapperCss).find("input");
-                this._$iframe = this.$element.find("iframe");
+                var $iframe = this.$element.find("iframe");
+                $iframe.attr("src", this._options.contentUrl);
                 var $signUpButton = this.$element.find("." + this._options.headerLeftInputCss).find("a");
                 $signUpButton.on("click", $.proxy(this._signUp, this));
-                this._$downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
-                this._$downloadManual.attr("href", this._options.userManualLinkUrl);
+                var $downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
+                $downloadManual.attr("href", this._options.userManualLinkUrl);
             }
         },
 
@@ -132,7 +133,6 @@
             }
             this._isShown = true;
             this._ensureDialog();
-            this._$iframe.attr("src", this._options.contentUrl);
 
             this._controller.getSettings($.proxy(this._onGetSettings, this));
 
