@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Resources;
 using System.Web.UI;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
@@ -8,7 +9,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.WebControls
 {
-    internal class DnnGettingStarted : Control, INamingContainer
+    public class DnnGettingStarted : Control, INamingContainer
     {
 
         private readonly Lazy<DnnGettingStartedOptions> _options =
@@ -41,6 +42,25 @@ namespace DotNetNuke.UI.WebControls
         {
             get;
             set;
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            if (DesignMode)
+            {
+                return;
+            }
+            if (GetCurrent(Page) != null)
+            {
+                throw new InvalidOperationException("Only one instance of the DnnGettingStarted can be contained by the page.");
+            }
+            Page.Items[typeof(DnnGettingStarted)] = this;
+        }
+
+        public static DnnGettingStarted GetCurrent(Page page)
+        {
+            return page.Items[typeof(DnnGettingStarted)] as DnnGettingStarted;
         }
 
         protected override void OnPreRender(EventArgs e)

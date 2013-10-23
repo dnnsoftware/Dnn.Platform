@@ -39,9 +39,11 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.GettingStarted;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls;
@@ -75,9 +77,21 @@ namespace DotNetNuke.UI.ControlPanels
         #region Event Handlers
 
         protected override void OnInit(EventArgs e)
-        {           
+        {
             base.OnInit(e);
             ID = "ControlBar";
+
+            var controller = new GettingStartedController();
+            var gettingStarted = DnnGettingStarted.GetCurrent(Page);
+            if (gettingStarted == null)
+            {
+                gettingStarted = new DnnGettingStarted
+                {
+                    ContentUrl = controller.ContentUrl,
+                    UserManualUrl = controller.UserManualUrl
+                };
+                Page.Form.Controls.Add(gettingStarted);
+            }
         }
 
         protected override void OnLoad(EventArgs e)

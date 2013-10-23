@@ -103,13 +103,21 @@ namespace DotNetNuke.Framework
         {
             // The Getting Started dialog can be also opened from the Control Bar
             var controller = new GettingStartedController();
-            var gettingStarted = new DnnGettingStarted
+            if (!controller.ShowOnStartup)
             {
-                ShowOnStarup = controller.ShowOnStartup,
-                ContentUrl = controller.ContentUrl,
-                UserManualUrl = controller.UserManualUrl
-            };
-            Page.Form.Controls.Add(gettingStarted);
+                return;
+            }
+            var gettingStarted = DnnGettingStarted.GetCurrent(Page);
+            if (gettingStarted == null)
+            {
+                gettingStarted = new DnnGettingStarted
+                {
+                    ContentUrl = controller.ContentUrl,
+                    UserManualUrl = controller.UserManualUrl
+                };
+                Page.Form.Controls.Add(gettingStarted);
+            }
+            gettingStarted.ShowOnStarup = true;
         }
 
         protected void ManageInstallerFiles()

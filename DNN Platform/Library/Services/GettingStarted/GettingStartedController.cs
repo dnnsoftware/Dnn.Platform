@@ -10,7 +10,7 @@ using DotNetNuke.Entities.Tabs;
 
 namespace DotNetNuke.Services.GettingStarted
 {
-    internal class GettingStartedController
+    public class GettingStartedController
     {
 
         public string UserManualUrl
