@@ -32,6 +32,9 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
+using Lucene.Net.Index;
+using Lucene.Net.QueryParsers;
+using Lucene.Net.Search;
 
 #endregion
 
@@ -94,12 +97,17 @@ namespace DotNetNuke.Services.Search
                         var propertyName = reader["PropertyName"].ToString();
                         var propertyValue = reader["PropertyValue"].ToString();
                         var visibilityMode = ((UserVisibilityMode) Convert.ToInt32(reader["Visibility"]));
-                        var modifiedTime = Convert.ToDateTime(reader["ModifiedTime"]);
+                        var modifiedTime = Convert.ToDateTime(reader["ModifiedTime"]).ToUniversalTime();
 
-                        var uniqueKey = string.Format("{0}{1}", userId, visibilityMode);
+                        var uniqueKey = string.Format("{0}_{1}", userId, visibilityMode);
                         if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
                         {
                             uniqueKey = string.Format("{0}_{1}", uniqueKey, reader["ExtendedVisibility"]);
+                        }
+
+                        if (propertyName == "FirstName")
+                        {
+                            searchDocuments.Where(d => d.UniqueKey.StartsWith(userId + "_")).ToList().ForEach(d => d.Description = propertyValue);
                         }
 
                         if (searchDocuments.Any(d => d.UniqueKey == uniqueKey))
@@ -111,30 +119,30 @@ namespace DotNetNuke.Services.Search
                             {
                                 document.ModifiedTimeUtc = modifiedTime;
                             }
-
-                            if (propertyName == "FirstName")
-                            {
-                                document.Description = propertyValue;
-                            }
                         }
                         else
                         {
                             //Need remove use exists index for all visibilities.
                             DeleteDocuments(portalId, userId);
-                            var searchDoc = new SearchDocument
-                                            {
-                                                SearchTypeId = UserSearchTypeId,
-                                                UniqueKey = uniqueKey,
-                                                AuthorUserId = userId,
-                                                PortalId = portalId,
-                                                ModifiedTimeUtc = modifiedTime,
-                                                Body = string.Format("{0}", propertyValue),
-                                                Description = propertyName == "FirstName" ? propertyValue : string.Empty,
-                                                Title = displayName
-                                            };
+                            if (!string.IsNullOrEmpty(propertyValue))
+                            {
+                                var searchDoc = new SearchDocument
+                                                    {
+                                                        SearchTypeId = UserSearchTypeId,
+                                                        UniqueKey = uniqueKey,
+                                                        PortalId = portalId,
+                                                        ModifiedTimeUtc = modifiedTime,
+                                                        Body = propertyValue,
+                                                        Description = propertyName == "FirstName" ? propertyValue
+                                                            : (searchDocuments.Any(d => d.UniqueKey.StartsWith(userId + "_")) ? 
+                                                                searchDocuments.First(d => d.UniqueKey.StartsWith(userId + "_")).Description : string.Empty),
+                                                        Title = displayName
+                                                    };
 
-                            Logger.Trace("UserIndexer: Search document for user [" + displayName + " uid:" + userId + "]");
-                            searchDocuments.Add(searchDoc);
+                                Logger.Trace("UserIndexer: Search document for user [" + displayName + " uid:" + userId +
+                                             "]");
+                                searchDocuments.Add(searchDoc);
+                            }
                         }
                     }
 
@@ -172,14 +180,19 @@ namespace DotNetNuke.Services.Search
             foreach (var item in values)
             {
                 var mode = Enum.GetName(typeof(UserVisibilityMode), item);
-                var searchDocument = new SearchDocument
-                                         {
-                                             UniqueKey = string.Format("{0}{1}", userId, mode),
-                                             SearchTypeId = UserSearchTypeId,
-                                             PortalId = portalId
-                                         };
+                var keyword = SearchHelper.Instance.RephraseSearchText(string.Format("{0}_{1}", userId, mode), true);
 
-                InternalSearchController.Instance.DeleteSearchDocument(searchDocument);
+                var query = new BooleanQuery
+                {
+                    {NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.MUST},
+                    {NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, UserSearchTypeId, UserSearchTypeId, true, true), Occur.MUST}
+                };
+
+                var parserContent = new QueryParser(Constants.LuceneVersion, Constants.UniqueKeyTag, new SearchQueryAnalyzer(true));
+                var parsedQueryContent = parserContent.Parse(keyword);
+                query.Add(parsedQueryContent, Occur.MUST);
+
+                LuceneController.Instance.Delete(query);
             }
         }
 

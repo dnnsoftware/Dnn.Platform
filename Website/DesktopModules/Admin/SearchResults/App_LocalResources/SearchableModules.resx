@@ -132,6 +132,9 @@
   <data name="Crawler_url.Text" xml:space="preserve">
     <value>Pages</value>
   </data>
+  <data name="Crawler_user.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
   <data name="Module_Answers.Text" xml:space="preserve">
     <value>Answers</value>
   </data>

@@ -4207,9 +4207,9 @@ namespace DotNetNuke.Data
 
         #region User Index Methods 
 
-        public virtual IDataReader GetAvailableUsersForIndex(int portalId, DateTime startDate, int pageIndex, int pageSize)
+        public virtual IDataReader GetAvailableUsersForIndex(int portalId, DateTime startDate, int pageIndex, int numberOfUsers)
         {
-            return ExecuteReader("GetAvailableUsersForIndex", portalId, startDate, pageIndex, pageSize);
+            return ExecuteReader("GetAvailableUsersForIndex", portalId, startDate, pageIndex, numberOfUsers);
         }
 
         #endregion

@@ -234,6 +234,7 @@ namespace DotNetNuke.Web.InternalServices
 
             var groups = new List<GroupedDetailView>();
             var tabGroups = new Dictionary<string, IList<SearchResult>>();
+            var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
            
             foreach (var result in searchResults.Results)
             {
@@ -245,7 +246,17 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    tabGroups[key].Add(result);
+                    //when the result is a user search type, we should only show one result
+                    // and if duplicate, we should also reduce the totalHit number.
+                    if (result.SearchTypeId != userSearchTypeId ||
+                        tabGroups[key].All(r => r.Url != result.Url))
+                    {
+                        tabGroups[key].Add(result);
+                    }
+                    else
+                    {
+                        totalHits--;
+                    }
                 }
             }
 
