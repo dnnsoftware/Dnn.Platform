@@ -18,12 +18,12 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
@@ -68,6 +68,23 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Abstract Methods
+        public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
+        {
+            Requires.NotNull("folderPath", folderPath);
+            Requires.NotNullOrEmpty("fileName", fileName);
+            Requires.NotNull("newFolderPath", newFolderPath);
+            Requires.NotNull("folderMapping", folderMapping);
+
+            if (folderPath == newFolderPath) return;
+
+            var filePath = GetActualPath(folderMapping, folderPath, fileName);
+            var newFilePath = GetActualPath(folderMapping, newFolderPath, fileName);
+
+            if (FileWrapper.Instance.Exists(filePath))
+            {
+                FileWrapper.Instance.Copy(filePath, newFilePath, true);
+            }
+        }
 
         public override void AddFile(IFolderInfo folder, string fileName, Stream content)
         {
@@ -345,6 +362,18 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Protected Methods
+        /// <summary>
+        /// Get actual path to a file
+        /// </summary>
+        /// <param name="folderMapping">Folder Mapping of the folder</param>
+        /// <param name="folderPath">Folder Path where the file is contained</param>
+        /// <param name="fileName">Name of the file</param>
+        /// <returns>A windows supported path to the file</returns>
+        protected virtual string GetActualPath(FolderMappingInfo folderMapping, string folderPath, string fileName)
+        {
+            var actualFolderPath = GetActualPath(folderMapping, folderPath);
+            return Path.Combine(actualFolderPath, fileName);
+        }
 
         /// <summary>
         /// Get actual path to an IFileInfo

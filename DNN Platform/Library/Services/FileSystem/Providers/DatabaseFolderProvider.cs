@@ -88,6 +88,37 @@ namespace DotNetNuke.Services.FileSystem
 
         #region Abstract Methods
 
+        public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
+        {
+            Requires.NotNull("folderPath", folderPath);
+            Requires.NotNullOrEmpty("fileName", fileName);
+            Requires.NotNull("newFolderPath", newFolderPath);
+            Requires.NotNull("folderMapping", folderMapping);
+
+            if (folderPath == newFolderPath) return;
+
+            var sourceFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
+            var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
+
+            Requires.NotNull("sourceFolder", sourceFolder);
+            Requires.NotNull("destinationFolder", destinationFolder);
+
+            using (var fileContent = GetFileStream(sourceFolder, fileName))
+            {
+                if (!fileContent.CanSeek)
+                {
+                    using (var seekableStream = FileManager.Instance.GetSeekableStream(fileContent))
+                    {
+                        AddFile(destinationFolder, fileName, seekableStream);
+                    }
+                }
+                else
+                {
+                    AddFile(destinationFolder, fileName, fileContent);
+                }
+            }
+        }
+
         public override void AddFile(IFolderInfo folder, string fileName, Stream content)
         {
             Requires.NotNull("folder", folder);

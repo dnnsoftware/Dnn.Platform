@@ -99,6 +99,10 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Protected Methods
+        protected override string GetActualPath(FolderMappingInfo folderMapping, string folderPath, string fileName)
+        {
+            return base.GetActualPath(folderMapping, folderPath, fileName) + ProtectedExtension;
+        }
 
         protected override string GetActualPath(IFileInfo file)
         {
