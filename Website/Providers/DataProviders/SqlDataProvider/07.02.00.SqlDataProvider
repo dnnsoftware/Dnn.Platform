@@ -929,12 +929,12 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
     @PortalId INT ,
     @StartDate DATETIME ,
 	@pageIndex INT = 0,
-    @pageSize INT = 500
+    @numberOfUsers INT = 500
 AS 
     BEGIN
 		DECLARE @startRow INT, @endRow INT
-		SELECT @startRow = @pageIndex * @pageSize + 1
-		SELECT @endRow = @startRow + @pageSize - 1;
+		SELECT @startRow = @pageIndex * @numberOfUsers + 1
+		SELECT @endRow = @startRow + @numberOfUsers - 1;
 
         WITH    ValidUsers
                   AS ( SELECT   UserId

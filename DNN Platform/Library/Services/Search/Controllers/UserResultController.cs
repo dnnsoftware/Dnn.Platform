@@ -22,6 +22,7 @@
 
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -55,7 +56,13 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override bool HasViewPermission(SearchResult searchResult)
         {
-            var userInSearchResult = UserController.GetUserById(PortalSettings.PortalId, searchResult.AuthorUserId);
+            var userId = GetUserId(searchResult);
+            if (userId == Null.NullInteger)
+            {
+                return false;
+            }
+
+            var userInSearchResult = UserController.GetUserById(PortalSettings.PortalId, userId);
             if (userInSearchResult == null || userInSearchResult.IsDeleted)
             {
                 return false;
@@ -89,7 +96,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override string GetDocUrl(SearchResult searchResult)
         {
-            var url = Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + searchResult.AuthorUserId);
+            var url = Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
             return url;
         }
 
@@ -144,6 +151,16 @@ namespace DotNetNuke.Services.Search.Controllers
             return isVisible;
         }
 
+        private int GetUserId(SearchResult searchResult)
+        {
+            var match = Regex.Match(searchResult.UniqueKey, "^(\\d+)_");
+            if (!match.Success)
+            {
+                return Null.NullInteger;
+            }
+
+            return Convert.ToInt32(match.Groups[1].Value);
+        }
         #endregion
     }
 }
