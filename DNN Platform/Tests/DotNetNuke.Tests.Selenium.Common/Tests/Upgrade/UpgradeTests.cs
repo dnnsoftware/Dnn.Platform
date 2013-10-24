@@ -42,9 +42,6 @@ namespace DNNSelenium.Common.Tests.Upgrade
 
 			upgradePage.ClickOnVisitWebsiteButton();
 
-			var installerPage = new InstallerPage(driver);
-			installerPage.WelcomeScreen();
-
 			LoginPage loginPage = new LoginPage(driver);
 
 			loginPage.WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 20).WaitTillVisible(20).Click();
