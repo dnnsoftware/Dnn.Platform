@@ -110,16 +110,15 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			hostSiteManagementPage.NavigateToChildSite(_baseUrl, _siteAlias);
 
-			var installerPage = new InstallerPage(_driver);
-
-			installerPage.WelcomeScreen();
+			var mainPage = new MainPage(_driver);
+			mainPage.OpenUsingUrl(_baseUrl);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT current window Title");
-			Assert.That(installerPage.CurrentWindowTitle(), Is.StringContaining(_siteName + " > Home"),
+			Assert.That(mainPage.CurrentWindowTitle(), Is.StringContaining(_siteName + " > Home"),
 			            "The website name is not correct");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT current window Url");
-			Assert.That(installerPage.CurrentWindowUrl(), Is.StringStarting("http://" + _baseUrl + "/" + _siteAlias),
+			Assert.That(mainPage.CurrentWindowUrl(), Is.StringStarting("http://" + _baseUrl + "/" + _siteAlias),
 			            "The website URL is not correct");
 		}
 
