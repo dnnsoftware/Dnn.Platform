@@ -683,7 +683,6 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
     background-image: none;    
     border-bottom: 1px solid #DFDFDF;
     height: 35px;
-    width: 180px;
 }
 
 .RadMenu.dnnModuleDigitalAssetsContextMenu, .RadMenu.dnnModuleDigitalAssetsContextMenu a.rmLink 
@@ -696,7 +695,6 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
 .RadMenu.dnnModuleDigitalAssetsContextMenu ul.rmGroup {
     border-radius: 5px;
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-    width: 180px;
 }
 
 .RadMenu.dnnModuleDigitalAssetsContextMenu ul.rmGroup span.rmText {
