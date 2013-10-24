@@ -1363,12 +1363,21 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
+    function checkColumnVisibility() {
+        var nameColumn = grid.getColumnByUniqueName('ItemName').get_element();
+        var showColumns = nameColumn && $(nameColumn).width() > 100;
+        toggleColumn('LastModifiedOnDate', showColumns);
+        toggleColumn('Size', showColumns);
+    }
+
     function internalResetGridComponents() {
         toggleColumn('LastModifiedOnDate', true);
         toggleColumn('ParentFolder', false);        
         $('#' + controls.gridId + '>table', "#" + controls.scopeWrapperId).hide().show(); // FF workaround to hide the space of the last column
         grid.clearSort();
-        
+
+        checkColumnVisibility();
+
         if (searchProvider && (!searchPattern || searchPattern == '')) {
             searchProvider.clearSearch();
         }
