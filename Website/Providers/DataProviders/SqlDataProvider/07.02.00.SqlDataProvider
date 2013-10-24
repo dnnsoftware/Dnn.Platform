@@ -1481,7 +1481,7 @@ BEGIN
         'ViewJournal',
         NULL,
         1,
-        'DesktopModules/Journal/API/Notifications/ViewJournal',
+        'DesktopModules/Journal/API/NotificationServices/ViewJournal',
         -1,
         GETDATE(),
         -1,

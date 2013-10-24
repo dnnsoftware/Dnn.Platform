@@ -18,36 +18,28 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Http;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.Journal.Components;
 using DotNetNuke.Security;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Journal.Internal;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
+
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace DotNetNuke.Modules.Journal
 {
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [ValidateAntiForgeryToken]
-    public class NotificationsController : DnnApiController
+    public class NotificationServicesController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationsController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationServicesController));
 
         public class NotificationDTO
         {
@@ -59,12 +51,12 @@ namespace DotNetNuke.Modules.Journal
         {
             try
             {
-                var notification = Services.Social.Notifications.NotificationsController.Instance.GetNotification(postData.NotificationId);
+                var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
 
                 if(notification != null && notification.Context != null && notification.Context.Contains("_"))
                 {
                     //Dismiss the notification
-                    Services.Social.Notifications.NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, UserInfo.UserID);
+                    NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, UserInfo.UserID);
 
                     var context = notification.Context.Split('_');
                     var userId = Convert.ToInt32(context[0]);

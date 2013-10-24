@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Journal
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ServicesController));
 
-        private const int MentionNotificationLength = 50;
+        private const int MentionNotificationLength = 100;
         private const string MentionNotificationSuffix = "...";
         private const string MentionIdentityChar = "@";
 
@@ -500,18 +500,18 @@ namespace DotNetNuke.Modules.Journal
 					var targetUser = UserController.GetUserById(PortalSettings.PortalId, targetUserId);
 					var relationship = RelationshipController.Instance.GetRelationship(ur.RelationshipId);
 					if (ur.Status == RelationshipStatus.Accepted && targetUser != null
-						&& ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.UserId == UserInfo.UserID)
+						&& ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.RelatedUserId == UserInfo.UserID)
 								|| relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends
 							)
 						&& (targetUser.DisplayName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())
-                                || targetUser.DisplayName.ToLowerInvariant().Contains(keyword.Replace(".", " ").ToLowerInvariant())
+                                || targetUser.DisplayName.ToLowerInvariant().Contains(keyword.Replace("-", " ").ToLowerInvariant())
 							)
                         && findedUsers.All(s => s.userId != targetUser.UserID)
 						)
 					{
 						findedUsers.Add(new SuggestDTO
 							                {
-                                                displayName = targetUser.DisplayName.Replace(" ", "."),
+                                                displayName = targetUser.DisplayName.Replace(" ", "-"),
 											    userId = targetUser.UserID,
 											    avatar = targetUser.Profile.PhotoURL,
                                                 key = keyword
@@ -544,7 +544,7 @@ namespace DotNetNuke.Modules.Journal
 
                 if (user != null)
                 {
-                    var relationship = RelationshipController.Instance.GetFollowerRelationship(UserInfo, user) ??
+                    var relationship = RelationshipController.Instance.GetFollowingRelationship(UserInfo, user) ??
                                        RelationshipController.Instance.GetFriendRelationship(UserInfo, user);
                     if (relationship != null && relationship.Status == RelationshipStatus.Accepted)
                     {
