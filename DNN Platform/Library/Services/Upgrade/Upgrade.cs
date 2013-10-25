@@ -5156,6 +5156,11 @@ namespace DotNetNuke.Services.Upgrade
                 url += "&id=" + Host.GUID;
                 if (packageType.ToUpper() == DotNetNukeContext.Current.Application.Type.ToUpper())
                 {
+                    if (!String.IsNullOrEmpty(HostController.Instance.GetString("NewsletterSubscribeEmail")))
+                    {
+                        url += "&email=" + HttpUtility.UrlEncode(HostController.Instance.GetString("NewsletterSubscribeEmail"));
+                    }
+
                     var portals = new PortalController().GetPortals();
                     url += "&no=" + portals.Count;
                     url += "&os=" + Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, "");
@@ -5170,10 +5175,6 @@ namespace DotNetNuke.Services.Upgrade
                 if (!string.IsNullOrEmpty(culture))
                 {
                     url += "&culture=" + culture;
-                }
-                if (!String.IsNullOrEmpty(HostController.Instance.GetString("NewsletterSubscribeEmail")))
-                {
-                    url += "@email=" + HostController.Instance.GetString("NewsletterSubscribeEmail");
                 }
             }
             return url;
