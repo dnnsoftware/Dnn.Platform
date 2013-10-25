@@ -1,5 +1,5 @@
 Template Name  : Settings - User Control
-Compatible With: DotNetNuke 6.x, 7.x
+Compatible With: DNN 6.x, 7.x
 
 A Settings user control which can be accessed as a tab within the Module Settings user interface
 

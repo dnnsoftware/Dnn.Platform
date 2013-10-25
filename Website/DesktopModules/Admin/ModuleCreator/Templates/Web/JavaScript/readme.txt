@@ -1,5 +1,5 @@
 Template Name  : JavaScript
-Compatible With: DotNetNuke 6.x, 7.x
+Compatible With: DNN 6.x, 7.x
 
 A JavaScript file
 

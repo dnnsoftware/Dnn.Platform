@@ -1,5 +1,5 @@
 Template Name  : DAL2
-Compatible With: DotNetNuke 7.x
+Compatible With: DNN 7.x
 
 A business object class, a controller class with data access methods, and a SQL installation and uninstallation script
 
@@ -8,6 +8,6 @@ templateInfo.vb
 templateController.vb
 uninstall.sql
 
-*NOTE: When you add this module template there will be a momentary delay while the DotNetNuke application restarts
+*NOTE: When you add this module template there will be a momentary delay while the DNN application restarts
 
 (Include any special instructions for this Module Template in this area)

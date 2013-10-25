@@ -1,5 +1,5 @@
 Template Name  : Module - User Control
-Compatible With: DotNetNuke 6.x, 7.x
+Compatible With: DNN 6.x, 7.x
 
 A User Control module utilizes the ASP.NET Code File model where the user interface is stored in a file separate from the code.
 

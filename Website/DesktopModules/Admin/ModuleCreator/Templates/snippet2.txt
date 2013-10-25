@@ -1,5 +1,0 @@
-        if (node.get_level() == 2) {
-            var snippet = node.get_value();
-            var snippetView = document.getElementById('&lt;% =SnippetView.ClientID %&gt;');
-            snippetView.innerHTML = snippet;
-        }

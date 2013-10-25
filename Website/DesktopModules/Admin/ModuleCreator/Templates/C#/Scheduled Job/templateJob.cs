@@ -13,10 +13,10 @@ using DotNetNuke;
 namespace [OWNER].[MODULE]
 {
 
-    public class [MODULE]Controller : DotNetNuke.Services.Scheduling.SchedulerClient
+    public class [MODULE]Job : DotNetNuke.Services.Scheduling.SchedulerClient
     {
 
-        public [MODULE]Controller(DotNetNuke.Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
+        public [MODULE]Job(DotNetNuke.Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }

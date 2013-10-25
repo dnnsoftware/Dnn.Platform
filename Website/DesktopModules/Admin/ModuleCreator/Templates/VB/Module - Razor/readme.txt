@@ -1,5 +1,5 @@
 Template Name  : Module - Razor
-Compatible With: DotNetNuke 7.x
+Compatible With: DNN 7.x
 
 A Razor module utilizes the ASP.NET Razor scripting engine and stores markup and code in the same file
 

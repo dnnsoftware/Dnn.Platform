@@ -193,9 +193,15 @@
     <value>Configure</value>
   </data>
   <data name="Add.Text" xml:space="preserve">
-    <value>Add File</value>
+    <value>Add</value>
   </data>
   <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="AddFile.Text" xml:space="preserve">
+    <value>Add File</value>
+  </data>
+  <data name="EditFile.Text" xml:space="preserve">
     <value>Edit File</value>
   </data>
 </root>

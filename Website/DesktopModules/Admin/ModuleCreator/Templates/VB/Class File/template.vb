@@ -1,15 +1,15 @@
-#region Copyright
+#Region "Copyright"
 
-// 
-// Copyright (c) [YEAR]
-// by [OWNER]
-// 
+' 
+' Copyright (c) [YEAR]
+' by [OWNER]
+' 
 
-#endregion
+#End Region
 
-#region Using Statements
+#Region "Using Statements"
 
-#endregion
+#End Region
 
 Namespace [OWNER].[MODULE]
 

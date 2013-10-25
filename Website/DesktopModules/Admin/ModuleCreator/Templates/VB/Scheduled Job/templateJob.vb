@@ -1,18 +1,18 @@
-#region Copyright
+#Region "Copyright"
 
-// 
-// Copyright (c) [YEAR]
-// by [OWNER]
-// 
+' 
+' Copyright (c) [YEAR]
+' by [OWNER]
+' 
 
-#endregion
+#End Region
 
 Imports System
 Imports DotNetNuke
 
 Namespace [OWNER].[MODULE]
 
-    Public Class [MODULE]Controller
+    Public Class [MODULE]Job
 
         Inherits DotNetNuke.Services.Scheduling.SchedulerClient
 

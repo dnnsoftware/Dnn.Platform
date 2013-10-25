@@ -286,23 +286,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        //private void LoadSnippet()
-        //{
-        //    var snippetFile = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\Snippets\\" + cboSnippets.SelectedItem.Value;
-        //    if (File.Exists(snippetFile))
-        //    {
-        //        var readMe = Null.NullString;
-        //        TextReader tr = new StreamReader(snippetFile);
-        //        readMe = tr.ReadToEnd();
-        //        tr.Close();
-        //        lblDescription.Text = readMe;
-        //    }
-        //    else
-        //    {
-        //        lblDescription.Text = "";
-        //    }
-        //}
-
         private string CreateModuleControl()
         {
             EventLogController objEventLog = new EventLogController();

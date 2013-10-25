@@ -13,10 +13,8 @@
 <%-- Custom JavaScript Registration --%>
 <dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.js" Priority="1" />
 <dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/clike/clike.js" Priority="2" />
-<dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/Admin/ModuleCreator/js/ModuleCreator.js" Priority="2" />
 
 <script>
-    var snippetEditor;
     jQuery(function ($) {
         CodeMirror.fromTextArea($("textarea[id$='txtSource']")[0], {
             lineNumbers: true,
@@ -30,8 +28,8 @@
 <div id="viewSourceForm" class="dnnForm dnnViewSource dnnClear">
 
     <ul class="dnnAdminTabNav dnnClear">
-        <li><a href="#rbEdit"><%=Localization.GetString("Edit.Text", LocalResourceFile)%></a></li>
-        <li><a href="#rbAdd"><%=Localization.GetString("Add.Text", LocalResourceFile)%></a></li>
+        <li><a href="#rbEdit"><%=Localization.GetString("EditFile.Text", LocalResourceFile)%></a></li>
+        <li><a href="#rbAdd"><%=Localization.GetString("AddFile.Text", LocalResourceFile)%></a></li>
     </ul>
     <div class="rbEdit dnnClear" id="rbEdit">
         <fieldset>
