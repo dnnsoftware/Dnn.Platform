@@ -103,10 +103,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return name.Trim().TrimEnd(new[] { '.', ' ' });
         }
 
-        private static string GetDateTimeString(DateTime datetime)
-        {
-            return datetime.ToString("MMM d, yyyy h:mm") + datetime.ToString("tt").ToLower();
-        }
         #endregion
 
         #region Private Methods
@@ -886,7 +882,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 FolderName = folderName,
                 FolderPath = folder.FolderPath,
                 PortalID = folder.PortalID,
-                LastModifiedOnDate = GetDateTimeString(folder.LastModifiedOnDate),
+                LastModifiedOnDate = folder.LastModifiedOnDate.ToString("g"),
                 IconUrl = GetFolderIconUrl(folder.PortalID, folder.FolderMappingID),
                 Permissions = GetPermissionViewModelCollection(folder),
                 HasChildren = folder.HasChildren
@@ -910,7 +906,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 IsFolder = true,
                 ItemID = folder.FolderID,
                 ItemName = folder.FolderName,
-                LastModifiedOnDate = GetDateTimeString(folder.LastModifiedOnDate),
+                LastModifiedOnDate = folder.LastModifiedOnDate.ToString("g"),
                 PortalID = folder.PortalID,
                 IconUrl = GetFolderIconUrl(folder.PortalID, folder.FolderMappingID),
                 Permissions = GetPermissionViewModelCollection(folder),
@@ -928,12 +924,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 IsFolder = false,
                 ItemID = file.FileId,
                 ItemName = file.FileName,
-                LastModifiedOnDate = GetDateTimeString(file.LastModifiedOnDate),
+                LastModifiedOnDate = file.LastModifiedOnDate.ToString("g"),
                 PortalID = file.PortalId,
                 IconUrl = GetFileIconUrl(file.Extension),
                 Permissions = GetPermissionViewModelCollection(folder),
                 ParentFolderID = folder.FolderID,
-                ParentFolder =  folder.FolderPath,
+                ParentFolder = folder.FolderPath,
                 Size = string.Format(new FileSizeFormatProvider(), "{0:fs}", file.Size)
             };
         }
