@@ -47,6 +47,11 @@ namespace DotNetNuke.Common.Internal
             return Globals.LinkClick(link, tabId, moduleId);
         }
 
+        public string LinkClick(string link, int tabID, int moduleID, bool trackClicks, bool forceDownload, int portalId, bool enableUrlLanguage, string portalGuid)
+        {
+            return Globals.LinkClick(link, tabID, moduleID, trackClicks, forceDownload, portalId, enableUrlLanguage,portalGuid);
+        }
+
         public string ResolveUrl(string url)
         {
             return Globals.ResolveUrl(url);

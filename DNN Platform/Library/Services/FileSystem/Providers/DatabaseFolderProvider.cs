@@ -193,13 +193,6 @@ namespace DotNetNuke.Services.FileSystem
             return file != null ? GetFileStreamInternal(DataProvider.Instance().GetFileVersionContent(file.FileId, version)) : null;
         }
 
-        public override string GetFileUrl(IFileInfo file)
-        {
-            Requires.NotNull("file", file);
-
-            return TestableGlobals.Instance.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger);
-        }
-
         public override string GetFolderProviderIconPath()
         {
             return IconControllerWrapper.Instance.IconURL("FolderDatabase", "32x32");

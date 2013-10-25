@@ -3408,7 +3408,11 @@ namespace DotNetNuke.Common
                 //format LinkClick wrapper
                 if (Link.ToLowerInvariant().StartsWith("fileid="))
                 {
-                    strLink = ApplicationPath + "/LinkClick.aspx?fileticket=" + UrlUtils.EncryptParameter(UrlUtils.GetParameterValue(Link));
+                    strLink = ApplicationPath + "/LinkClick.aspx?fileticket=" + UrlUtils.EncryptParameter(UrlUtils.GetParameterValue(Link), portalGuid);
+                    if (PortalId == Null.NullInteger) //To track Host files
+                    {
+                        strLink += "&hf=1";                        
+                    }
                 }
                 if (String.IsNullOrEmpty(strLink))
                 {

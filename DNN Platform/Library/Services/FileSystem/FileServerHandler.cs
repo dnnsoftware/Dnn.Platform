@@ -28,6 +28,7 @@ using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -105,7 +106,8 @@ namespace DotNetNuke.Services.FileSystem
             bool blnForceDownload = false;
             if (context.Request.QueryString["fileticket"] != null)
             {
-                URL = "FileID=" + UrlUtils.DecryptParameter(context.Request.QueryString["fileticket"]);
+
+                URL = "FileID=" + FileLinkClickController.Instance.GetFileIdFromLinkClick(context.Request.QueryString);
             }
             if (context.Request.QueryString["userticket"] != null)
             {
