@@ -442,6 +442,14 @@ namespace DotNetNuke.Framework
                         button.Text = value;
                     }
                 }
+                if (control is HtmlButton)
+                {
+                    var button = (HtmlButton)control;
+                    if (!String.IsNullOrEmpty(value))
+                    {
+                        button.Attributes["Title"] = value;
+                    }
+                }
                 if (control is HtmlImage)
                 {
                     var htmlImage = (HtmlImage)control;

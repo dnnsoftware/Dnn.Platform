@@ -1,4 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.SQL.SQL" CodeFile="SQL.ascx.cs" %>
+<%@ Import Namespace="DotNetNuke.Entities.Icons" %>
+
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
@@ -11,35 +13,39 @@
 <dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.js" Priority="1" />
 <dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/sql/sql.js" Priority="2" />
 <div class="dnnForm dnnSQLModule dnnClear" id="dnnSQLModule">
-    <fieldset>
-        <div class="dnnFormItem">
-            <dnn:Label ID="lblSavedQuery" runat="server" ControlName="ddlSavedQuery" />
-            <asp:DropDownList ID="ddlSavedQuery" runat="server" DataTextField="Name" DataValueField="QueryId" AutoPostBack="true"></asp:DropDownList>
-            <asp:ImageButton ID="btDelete" resourcekey="btDelete" runat="server" Visible="false" ImageUrl="~/icons/sigma/Delete_16X16_Standard.png" />
-            <div class="dnnRight">
-                <asp:FileUpload ID="uplSqlScript" runat="server" />
-                <asp:LinkButton ID="cmdUpload" resourcekey="cmdUpload" EnableViewState="False" runat="server" CssClass="dnnSecondaryAction" />
+    <div class="sqlQuery">
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:Label ID="lblSavedQuery" runat="server" ControlName="ddlSavedQuery" />
+                <asp:DropDownList ID="ddlSavedQuery" runat="server" DataTextField="Name" DataValueField="QueryId" AutoPostBack="true"></asp:DropDownList>
+                <button id="btDelete" class="singleButton" resourceKey="btDelete" runat="server" >
+                    <span class="saveButton" style='background-image:url(<%= IconController.IconURL("Delete", "16x16", "Gray")%>)'><%= Localization.GetString("btDelete", LocalResourceFile) %></span>
+                </button>
+                <div class="dnnRight">
+                    <asp:FileUpload ID="uplSqlScript" runat="server" />
+                    <asp:LinkButton ID="cmdUpload" resourcekey="cmdUpload" EnableViewState="False" runat="server" CssClass="dnnSecondaryAction" />
+                </div>
             </div>
-        </div>
-        <hr />
-        <div class="dnnFormItem">
-            <dnn:Label ID="plConnection" runat="server" ControlName="ddlConnection" />
-            <asp:DropDownList ID="ddlConnection" runat="server"></asp:DropDownList>
-            <div class="dnnRight">
-                <asp:ImageButton ID="btSave" resourcekey="btSaveQuery" runat="server" ImageUrl="~/icons/sigma/Save_16X16_Standard.png" ValidationGroup="Script" />
+            <hr />
+            <div class="dnnFormItem">
+                <dnn:Label ID="plConnection" runat="server" ControlName="ddlConnection" />
+                <asp:DropDownList ID="ddlConnection" runat="server"></asp:DropDownList>
+                <div class="dnnRight">
+                    <button id="btSave" class="singleButton" title='<%= Localization.GetString("btSaveQuery", LocalResourceFile) %>' ><span class="saveButton" style='background-image:url(<%= IconController.IconURL("Save", "16x16", "Gray")%>)'><%= Localization.GetString("btSaveQuery", LocalResourceFile) %></span></button>
+                </div>
             </div>
-        </div>
-        <div class="dnnFormItem">
-            <asp:RequiredFieldValidator ID="valText" runat="server" CssClass="dnnFormMessage dnnFormError" resourcekey="NoScript" ControlToValidate="txtQuery" ValidationGroup="Script"></asp:RequiredFieldValidator>
-        </div>
-        <div>
-            <asp:TextBox ID="txtQuery" runat="server" TextMode="MultiLine" Rows="10" Width="100%" ValidationGroup="Script" />
-        </div>
-    </fieldset>
-    <ul class="dnnActions dnnClear">
-        <li>
-            <asp:LinkButton ID="cmdExecute" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdExecute" ValidationGroup="Script" /></li>
-    </ul>
+            <div class="dnnFormItem">
+                <asp:RequiredFieldValidator ID="valText" runat="server" CssClass="dnnFormMessage dnnFormError" resourcekey="NoScript" ControlToValidate="txtQuery" ValidationGroup="Script"></asp:RequiredFieldValidator>
+            </div>
+            <div>
+                <asp:TextBox ID="txtQuery" runat="server" TextMode="MultiLine" Rows="10" Width="100%" ValidationGroup="Script" />
+            </div>
+        </fieldset>
+        <ul class="dnnActions dnnClear">
+            <li>
+                <asp:LinkButton ID="cmdExecute" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdExecute" ValidationGroup="Script" /></li>
+        </ul>
+    </div>
     <asp:Panel ID="pnlError" runat="server" Visible="false">
         <div class="dnnFormItem">
             <dnn:Label ID="errorLabel" runat="server" ControlName="txtError" />
@@ -56,7 +62,7 @@
             <ItemTemplate>
                 <div class="dnnResults" id='result_<%#Container.ItemIndex +1 %>'>
                     <asp:Label ID="lblRows" runat="server" CssClass="NormalBold"></asp:Label>
-                    <asp:GridView ID="gvResults" runat="server" AutoGenerateColumns="true">
+                    <asp:GridView ID="gvResults" runat="server" AutoGenerateColumns="true" CssClass="dnnTableDisplay" HeaderStyle-CssClass="dnnGridHeader">
                     </asp:GridView>
                 </div>
             </ItemTemplate>
@@ -76,7 +82,7 @@
 
 <script>
     $(function () {
-        $('#<%=btSave.ClientID%>').bind("click", function () {
+        $('#btSave').bind("click", function () {
             if ($('#<%=txtQuery.ClientID%>').val() == "")
                 return false;
 
@@ -113,7 +119,7 @@
                         [10, 25, 50, 100, "<%=LocalizeString("AllRows")%>"]
                 ],
                 "iDisplayLength": -1,
-                "sDom": 'T<"clear">lfrtip',
+                "sDom": '<"dnnClear dnnSeparatorPanel"T>lfrt<"dnnClear dnnTableFooter"ip>',
                 "oTableTools": {
                     "sSwfPath": '<%=ResolveUrl("~/desktopmodules/admin/sql/plugins/datatables/swf/copy_csv_xls_pdf.swf") %>',
                     "aButtons": [
@@ -132,20 +138,20 @@
                             "sExtends": "csv",
                             "sToolTip": "<%=LocalizeString("CSVButtonAlt")%>",
                             "sTitle": query,
-                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/FileDownload_16x16_Black.png") %>'/>"
+                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/FileDownload_16x16_Gray.png") %>'/>"
                         },
                         {
                             "sExtends": "xls",
                             "sToolTip": "<%=LocalizeString("XLSButtonAlt")%>",
                             "sTitle": query,
-                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/ExtXlsx_16X16_Standard.png") %>'/>"
+                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/ExtXlsx_16X16_Gray.png") %>'/>"
                         },
                         {
                             "sExtends": "pdf",
                             "sToolTip": "<%=LocalizeString("PDFButtonAlt")%>",
                             "sTitle": query,
                             "sPdfOrientation": "landscape",
-                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/ExtPdf_16X16_Standard.png") %>'/>"
+                            "sButtonText": "<img src='<%=ResolveUrl("~/icons/sigma/ExtPdf_16X16_Gray.png") %>'/>"
                         }<%--,
                         {
                             "sExtends": "text",

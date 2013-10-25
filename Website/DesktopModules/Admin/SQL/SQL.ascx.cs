@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.Admin.SQL
 
             cmdExecute.Click += OnExecuteClick;
             cmdUpload.Click += OnUploadClick;
-            btDelete.Click += btDelete_Click;
+            btDelete.ServerClick += btDelete_Click;
             lnkSave.Click += lnkSave_Click;
             rptResults.ItemDataBound += rptResults_ItemDataBound;
             ddlSavedQuery.SelectedIndexChanged += ddlSavedQuery_SelectedIndexChanged;
@@ -89,8 +89,10 @@ namespace DotNetNuke.Modules.Admin.SQL
                     LoadSavedQueries();
 
                     cmdExecute.ToolTip = Localization.GetString("cmdExecute.ToolTip", LocalResourceFile);
-                    DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(btDelete, LocalizeString("DeleteItem"));
+                    //DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(btDelete, LocalizeString("DeleteItem"));
                 }
+                var js = string.Format("javascript:return confirm('{0}');", Localization.GetSafeJSString(LocalizeString("DeleteItem")));
+                btDelete.Attributes.Add("onClick", js);
             }
             catch (Exception exc)
             {
@@ -198,7 +200,8 @@ namespace DotNetNuke.Modules.Admin.SQL
                     else
                     {
                         gvResults.PreRender += gvResults_PreRender;
-                        lblRows.Text = string.Format(LocalizeString("NumRowsReturned"), gvResults.Rows.Count);
+                        //lblRows.Text = string.Format(LocalizeString("NumRowsReturned"), gvResults.Rows.Count);
+                        lblRows.Visible = false;
                     }
                 }
             }
