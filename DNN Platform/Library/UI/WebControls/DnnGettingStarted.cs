@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web.Resources;
 using System.Web.UI;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
@@ -31,11 +30,6 @@ namespace DotNetNuke.UI.WebControls
         public string ContentUrl
         {
             set { Options.ContentUrl = value; }
-        }
-
-        public string UserManualUrl
-        {
-            set { Options.UserManualUrl = value; }
         }
 
         public string Skin

@@ -81,14 +81,13 @@ namespace DotNetNuke.UI.ControlPanels
             base.OnInit(e);
             ID = "ControlBar";
 
-            var controller = new GettingStartedController();
             var gettingStarted = DnnGettingStarted.GetCurrent(Page);
             if (gettingStarted == null)
             {
+                var controller = new GettingStartedController();
                 gettingStarted = new DnnGettingStarted
                 {
-                    ContentUrl = controller.ContentUrl,
-                    UserManualUrl = controller.UserManualUrl
+                    ContentUrl = controller.ContentUrl
                 };
                 Page.Form.Controls.Add(gettingStarted);
             }

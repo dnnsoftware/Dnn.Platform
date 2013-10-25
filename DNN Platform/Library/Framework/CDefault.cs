@@ -94,8 +94,7 @@ namespace DotNetNuke.Framework
             {
                 gettingStarted = new DnnGettingStarted
                 {
-                    ContentUrl = controller.ContentUrl,
-                    UserManualUrl = controller.UserManualUrl
+                    ContentUrl = controller.ContentUrl
                 };
                 Page.Form.Controls.Add(gettingStarted);
             }

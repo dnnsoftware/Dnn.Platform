@@ -12,7 +12,30 @@
 
         inContainer: function ($container, element) {
             return $container && $container.length !== 0 && ($.contains($container[0], element) || $container[0] === element);
+        },
+
+        bindIframeLoadEvent: function (iframe, callback) {
+            $(iframe).bind('load', function () {
+                // when we remove iframe from dom the request stops, but in IE load event fires
+                if (!iframe.parentNode) {
+                    return;
+                }
+                // fixing Opera 10.53
+                try {
+                    var contentDocument = iframe.contentDocument;
+                    if (contentDocument && contentDocument.body && contentDocument.body.innerHTML == "false") {
+                        // In Opera event is fired second time when body.innerHTML changed from false
+                        // to server response approx. after 1 sec when we upload file with iframe
+                        return;
+                    }
+                }
+                catch (ex) {
+                    // supress the exception;
+                }
+                callback();
+            });
         }
+
     });
 })(jQuery);
 

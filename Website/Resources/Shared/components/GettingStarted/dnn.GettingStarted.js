@@ -52,17 +52,40 @@
         },
 
         _ensureDialog: function() {
-            if (!this.$element) {
-                this.$element = this.element ? $(this.element) : this._createLayout();
-                this._$checkBox = this.$element.find("." + this._options.footerLeftCss).find("input");
-                this._$emailBox = this.$element.find("." + this._options.inputboxWrapperCss).find("input");
-                var $iframe = this.$element.find("iframe");
-                $iframe.attr("src", this._options.contentUrl);
-                var $signUpButton = this.$element.find("." + this._options.headerLeftInputCss).find("a");
-                $signUpButton.on("click", $.proxy(this._signUp, this));
-                var $downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
-                $downloadManual.attr("href", this._options.userManualUrl);
+            if (this.$element) {
+                return;
             }
+
+            this.$element = this.element ? $(this.element) : this._createLayout();
+            this._$checkBox = this.$element.find("." + this._options.footerLeftCss).find("input");
+            this._$emailBox = this.$element.find("." + this._options.inputboxWrapperCss).find("input");
+
+            this._$content = this.$element.find("." + this._options.contentCss);
+            this._$content.addClass(this._options.loadingContentCss);
+
+            this._$iframe = this.$element.find("iframe");
+            $.bindIframeLoadEvent(this._$iframe[0], $.proxy(this._onContentLoad, this));
+
+            var $signUpButton = this.$element.find("." + this._options.headerLeftInputCss).find("a");
+            $signUpButton.on("click", $.proxy(this._signUp, this));
+            var $downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
+            $downloadManual.attr("href", this._options.userManualUrl);
+        },
+
+        _onCheckContentUrl: function (success) {
+            var url = success ? this._options.contentUrl : this._options.fallbackUrl;
+            this._$iframe.attr("src", url);
+        },
+
+        _onContentLoad: function () {
+            if (this._$iframe.attr("src") === "about:blank") {
+                return;
+            }
+            this._$content.removeClass(this._options.loadingContentCss);
+        },
+
+        _loadContent: function() {
+            this._controller.checkUrl(this._options.contentUrl, $.proxy(this._onCheckContentUrl, this));
         },
 
         _createLayout: function () {
@@ -84,7 +107,7 @@
                                     .append($("<a href='javascript:void(0);' title='" + this._options.signUpButton + "'>" + this._options.signUpButton + "</a>"))))))
                     .append($("<div class='" + this._options.headerRightCss + "'/>")
                         .append($("<div/>")
-                            .append($("<a href='javascript:void(0);' title='" + this._options.downloadManualButton + "'><span>" + this._options.downloadManualButton + "</span></a>")))))
+                            .append($("<a href='javascript:void(0);' target='manual' title='" + this._options.downloadManualButton + "'><span>" + this._options.downloadManualButton + "</span></a>")))))
                 .append($("<div class='" + this._options.contentCss + "'/>")
                     .append($("<div/>")
                         .append($("<iframe src='about:blank' scrolling='auto' frameborder='0' />"))))
@@ -92,7 +115,7 @@
                     .append($("<div class='" + this._options.footerBorderCss + "'/>")
                         .append($("<div/>")))
                     .append($("<div class='" + this._options.footerLeftCss + "'/>")
-                        .append($("<input type='checkbox' id='" + checkBoxId + "' value='dontshow' name='ShowDialog' >"))
+                        .append($("<input type='checkbox' id='" + checkBoxId + "' value='notshowagain' name='ShowDialog' >"))
                         .append($("<label for='" + checkBoxId + "'>" + this._options.dontShowDialogLabel + "</label>")))
                     .append($("<div class='" + this._options.footerRightCss + "'/>")
                         .append($("<a href='//twitter.com/dnncorp' class='" + this._options.twitterLinkCss + "' title='" + this._options.twitterLinkTooltip + "'/>"))
@@ -103,11 +126,17 @@
 
         _onCloseDialog: function () {
             var notShowAgain = this._$checkBox.prop("checked");
+            this._settings.IsHidden = notShowAgain;
             this._controller.closeDialog(notShowAgain);
             this._isShown = false;
         },
 
-        _onGetSettings: function(settings) {
+        _onGetSettings: function (settings) {
+            this._settings = settings;
+            this._bindSettings(settings);
+        },
+
+        _bindSettings: function(settings) {
             this._$checkBox.prop("checked", settings.IsHidden);
             this._$emailBox.val(settings.EmailAddress);
         },
@@ -132,9 +161,15 @@
                 return;
             }
             this._isShown = true;
+
             this._ensureDialog();
 
-            this._controller.getSettings($.proxy(this._onGetSettings, this));
+            if (this._settings) {
+                this._bindSettings(this._settings);
+            }
+            else {
+                this._controller.getSettings($.proxy(this._onGetSettings, this));
+            }
 
             this.$element.dialog({
                 modal: true,
@@ -146,6 +181,10 @@
                 height: 640,
                 close: $.proxy(this._onCloseDialog, this)
             });
+
+            var self = this;
+            setTimeout(function () { self._loadContent(); }, 0);
+
         }
 
     };
@@ -160,6 +199,7 @@
         inputboxWrapperCss: "gs-header-left-side-inputbox-wrapper",
         headerRightCss: "gs-header-right-side",
         contentCss: "gs-content",
+        loadingContentCss: "gs-loading-content",
         footerCss: "gs-footer",
         footerBorderCss: "gs-footer-border",
         footerLeftCss: "gs-footer-left-side",
@@ -214,7 +254,7 @@
 
         _onCloseDialog: function (callback, data, textStatus, jqXhr) {
             if (typeof callback === "function") {
-                callback.apply(this, [data]);
+                callback.call(this, data);
             }
         },
 
@@ -225,7 +265,7 @@
 
         _onGetSettings: function (callback, data, textStatus, jqXhr) {
             if (typeof callback === "function") {
-                callback.apply(this, [data]);
+                callback.call(this, data);
             }
         },
 
@@ -236,8 +276,24 @@
 
         _onSignUp: function (callback, data, textStatus, jqXhr) {
             if (typeof callback === "function") {
-                callback.apply(this, [data]);
+                callback.call(this, data);
             }
+        },
+
+        checkUrl: function (url, callback) {
+            var f = function(success) {
+                if (typeof callback === "function") {
+                    callback.call(this, success);
+                }
+            };
+            $.ajax({
+                type: "HEAD",
+                url: url,
+                crossDomain: true,
+                async: false,
+                success: function () { return f(true); },
+                error: function () { return f(false); }
+            });
         }
 
     };

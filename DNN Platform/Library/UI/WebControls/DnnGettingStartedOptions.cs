@@ -37,6 +37,9 @@ namespace DotNetNuke.UI.WebControls
         [DataMember(Name = "contentUrl")]
         public string ContentUrl;
 
+        [DataMember(Name = "fallbackUrl")]
+        public string FallbackUrl;
+
         [DataMember(Name = "userManualUrl")]
         public string UserManualUrl;
 
@@ -67,6 +70,9 @@ namespace DotNetNuke.UI.WebControls
             InvalidEmailMessage = Localization.GetString("GettingStarted.InvalidEmailMessage", Localization.SharedResourceFile);
             SignUpTitle = Localization.GetString("GettingStarted.SignUpTitle", Localization.SharedResourceFile);
             SignUpMessage = Localization.GetString("GettingStarted.SignUpMessage", Localization.SharedResourceFile);
+
+            FallbackUrl = "http://www.dnnsoftware.com";
+            UserManualUrl = "http://www.dnnsoftware.com/Community/Download/Manuals?src=dnn";
         }
 
     }

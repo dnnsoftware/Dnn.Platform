@@ -13,11 +13,6 @@ namespace DotNetNuke.Services.GettingStarted
     public class GettingStartedController
     {
 
-        public string UserManualUrl
-        {
-            get { return "http://www.dnnsoftware.com/Community/Download/Manuals"; }
-        }
-
         public string ContentUrl
         {
             get

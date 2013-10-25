@@ -195,6 +195,10 @@ html .gs-container {
     height: 400px;
 }
 
+.gs-container .gs-loading-content iframe {
+    background: transparent url("Images/loading.png") no-repeat center center;
+}
+
 .gs-container .gs-content > div {
     position: relative;
     margin: 10px 0;
