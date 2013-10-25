@@ -71,8 +71,9 @@ namespace DotNetNuke.UI.WebControls
             SignUpTitle = Localization.GetString("GettingStarted.SignUpTitle", Localization.SharedResourceFile);
             SignUpMessage = Localization.GetString("GettingStarted.SignUpMessage", Localization.SharedResourceFile);
 
-            FallbackUrl = "http://www.dnnsoftware.com";
-            UserManualUrl = "http://www.dnnsoftware.com/Community/Download/Manuals?src=dnn";
+            // specify Protocol Relative URLs for easy switch between HTTP and HTTPS (no protocol prefix)
+            FallbackUrl = "//www.dnnsoftware.com";
+            UserManualUrl = "//www.dnnsoftware.com/Community/Download/Manuals?src=dnn";
         }
 
     }

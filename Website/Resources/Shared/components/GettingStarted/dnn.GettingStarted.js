@@ -61,7 +61,6 @@
             this._$emailBox = this.$element.find("." + this._options.inputboxWrapperCss).find("input");
 
             this._$content = this.$element.find("." + this._options.contentCss);
-            this._$content.addClass(this._options.loadingContentCss);
 
             this._$iframe = this.$element.find("iframe");
             $.bindIframeLoadEvent(this._$iframe[0], $.proxy(this._onContentLoad, this));
@@ -78,13 +77,15 @@
         },
 
         _onContentLoad: function () {
-            if (this._$iframe.attr("src") === "about:blank") {
+            if (this._$iframe.attr("src") === GettingStarted._blankUrl) {
+                this._$iframe.show();
                 return;
             }
             this._$content.removeClass(this._options.loadingContentCss);
         },
 
         _loadContent: function() {
+            this._$content.addClass(this._options.loadingContentCss);
             this._controller.checkUrl(this._options.contentUrl, $.proxy(this._onCheckContentUrl, this));
         },
 
@@ -110,7 +111,7 @@
                             .append($("<a href='javascript:void(0);' target='manual' title='" + this._options.downloadManualButton + "'><span>" + this._options.downloadManualButton + "</span></a>")))))
                 .append($("<div class='" + this._options.contentCss + "'/>")
                     .append($("<div/>")
-                        .append($("<iframe src='about:blank' scrolling='auto' frameborder='0' />"))))
+                        .append($("<iframe scrolling='auto' frameborder='0' />"))))
                 .append($("<div class='" + this._options.footerCss + "'/>")
                     .append($("<div class='" + this._options.footerBorderCss + "'/>")
                         .append($("<div/>")))
@@ -164,6 +165,8 @@
 
             this._ensureDialog();
 
+            this._$iframe.hide().attr("src", GettingStarted._blankUrl);
+
             if (this._settings) {
                 this._bindSettings(this._settings);
             }
@@ -188,6 +191,8 @@
         }
 
     };
+
+    GettingStarted._blankUrl = "about:blank";
 
     GettingStarted._defaults = {
         dialogCss: "gs-dialog",
@@ -290,7 +295,7 @@
                 type: "HEAD",
                 url: url,
                 crossDomain: true,
-                async: false,
+                async: true,
                 success: function () { return f(true); },
                 error: function () { return f(false); }
             });
