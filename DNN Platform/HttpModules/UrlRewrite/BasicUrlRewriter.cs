@@ -353,7 +353,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         if (strURL.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                         {
                             //redirect to secure connection
-                            response.Redirect(strURL, true);
+                            response.RedirectPermanent(strURL);
                         }
                         else
                             //when switching to an unsecure page, use a clientside redirector to avoid the browser security warning
