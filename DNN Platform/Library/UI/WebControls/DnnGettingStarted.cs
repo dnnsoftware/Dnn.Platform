@@ -77,8 +77,10 @@ namespace DotNetNuke.UI.WebControls
                 ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/Components/GettingStarted/dnn.GettingStarted." + skin + ".css");
             }
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.extensions.js", FileOrder.Js.DefaultPriority);
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 1);
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/GettingStarted/dnn.GettingStarted.js", FileOrder.Js.DefaultPriority + 2);
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.DataStructures.js", FileOrder.Js.DefaultPriority + 1);
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.WebResourceUrl.js", FileOrder.Js.DefaultPriority + 2);
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 3);
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/GettingStarted/dnn.GettingStarted.js", FileOrder.Js.DefaultPriority + 4);
         }
 
         private void RegisterStartupScript()

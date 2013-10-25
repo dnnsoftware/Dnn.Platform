@@ -73,12 +73,14 @@
 
         _onCheckContentUrl: function (success) {
             var url = success ? this._options.contentUrl : this._options.fallbackUrl;
-            this._$iframe.attr("src", url);
+            var webResource = new dnn.WebResourceUrl(url);
+            webResource.parameters().set("timestamp", new Date().getTime());
+            this._$iframe.attr("src", webResource.toPathAndQuery());
         },
 
         _onContentLoad: function () {
+            this._$iframe.show();
             if (this._$iframe.attr("src") === GettingStarted._blankUrl) {
-                this._$iframe.show();
                 return;
             }
             this._$content.removeClass(this._options.loadingContentCss);

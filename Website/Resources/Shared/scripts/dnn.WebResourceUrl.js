@@ -37,7 +37,7 @@
             this._parameters = new dnn.Dictionary();
             this._path = "";
 
-            if (!String.isNullOrEmpty(pathAndQuery) || typeof(pathAndQuery) !== "string") {
+            if (String.isNullOrEmpty(pathAndQuery) || typeof(pathAndQuery) !== "string") {
                 return;
             }
             var parts = pathAndQuery.split("?");
