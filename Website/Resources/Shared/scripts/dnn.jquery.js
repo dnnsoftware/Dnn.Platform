@@ -2514,6 +2514,9 @@
                         $(img).css({ 'max-width': 180, 'max-height': 150 }).insertBefore($('#' + settings.dropZoneId + ' span'));
                     });
                     var src;
+                    if (data.dataType && typeof(data.result) == "object" && data.result.length) {
+                        data.result = data.result.text();
+                    }
                     var testContent = $('<pre>' + data.result + '</pre>');
                     if (testContent.length) {
                         src = testContent.text();
