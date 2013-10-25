@@ -312,6 +312,11 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         public void CreateDefaultWorkflows(int portalId)
         {
+            if(GetWorkflows(portalId).Any(w => w.WorkflowName == Localization.GetString("DefaultWorkflowName")))
+            {
+                return;
+            }
+
             var wf = new ContentWorkflow
             {
                 PortalID = portalId,
