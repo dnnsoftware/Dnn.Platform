@@ -45,7 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Components\WebAPI\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -176,6 +176,7 @@
     </None>
     <Content Include="Module.build" />
     <None Include="module.css" />
+    <Content Include="packages.config" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
   </ItemGroup>
