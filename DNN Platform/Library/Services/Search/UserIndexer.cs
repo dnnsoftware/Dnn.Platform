@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Search
                         var visibilityMode = ((UserVisibilityMode) Convert.ToInt32(reader["Visibility"]));
                         var modifiedTime = Convert.ToDateTime(reader["ModifiedTime"]).ToUniversalTime();
 
-                        var uniqueKey = string.Format("{0}_{1}", userId, visibilityMode);
+                        var uniqueKey = string.Format("{0}_{1}", userId, visibilityMode).ToLowerInvariant();
                         if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
                         {
                             uniqueKey = string.Format("{0}_{1}", uniqueKey, reader["ExtendedVisibility"]);
@@ -180,7 +180,7 @@ namespace DotNetNuke.Services.Search
             foreach (var item in values)
             {
                 var mode = Enum.GetName(typeof(UserVisibilityMode), item);
-                var keyword = SearchHelper.Instance.RephraseSearchText(string.Format("{0}_{1}", userId, mode), true);
+                var keyword = SearchHelper.Instance.RephraseSearchText(string.Format("{0}_{1}", userId, mode).ToLowerInvariant(), true);
 
                 var query = new BooleanQuery
                 {

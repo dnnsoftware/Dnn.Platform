@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.SearchResults
 
         protected string SearchTerm
         {
-            get { return HttpUtility.HtmlEncode(Request.QueryString["Search"].Replace("\"", "")); }
+            get { return Request.QueryString["Search"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Search"].Replace("\"", "")) : string.Empty; }
         }
 
         protected string LinkTarget
