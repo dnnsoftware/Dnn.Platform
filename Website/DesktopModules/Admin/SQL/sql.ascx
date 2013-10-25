@@ -112,6 +112,7 @@
             var query = $(this).attr("title");
             var oTable = $(this).dataTable(
             {
+                "aaSorting": [],
                 "sScrollX": "100%",
                 "sPaginationType": "full_numbers",
                 "aLengthMenu": [
