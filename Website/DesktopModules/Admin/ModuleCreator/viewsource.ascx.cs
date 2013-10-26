@@ -175,6 +175,40 @@ namespace DotNetNuke.Modules.Admin.Modules
             var objStreamReader = File.OpenText(lblPath.Text);
             txtSource.Text = objStreamReader.ReadToEnd();
             objStreamReader.Close();
+
+            SetFileType(lblPath.Text);
+        }
+
+        private void SetFileType(string filePath)
+        {
+            string mimeType;
+            switch (Path.GetExtension(filePath).ToLowerInvariant())
+            {
+                case ".vb":
+                    mimeType = "text/x-vb";
+                    break;
+                case ".cs":
+                    mimeType = "text/x-csharp";
+                    break;
+                case ".css":
+                    mimeType = "text/css";
+                    break;
+                case ".js":
+                    mimeType = "text/javascript";
+                    break;
+                case ".xml":
+                case ".xslt":
+                    mimeType = "application/xml";
+                    break;
+                case ".sql":
+                case ".sqldataprovider":
+                    mimeType = "text/x-sql";
+                    break;
+                default:
+                    mimeType = "text/html";
+                    break;
+            }
+            DotNetNuke.UI.Utilities.ClientAPI.RegisterClientVariable(Page, "mimeType", mimeType, true);
         }
 
         private void SaveFile()

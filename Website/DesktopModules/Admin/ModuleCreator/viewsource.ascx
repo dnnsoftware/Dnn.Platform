@@ -11,19 +11,14 @@
 <dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.css" />
 
 <%-- Custom JavaScript Registration --%>
-<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.js" Priority="1" />
-<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/clike/clike.js" Priority="2" />
-
-<script>
-    jQuery(function ($) {
-        CodeMirror.fromTextArea($("textarea[id$='txtSource']")[0], {
-            lineNumbers: true,
-            matchBrackets: true,
-            mode: "text/x-csharp"
-        });
-    });
-    
-</script>
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.js" Priority="101" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/sql/sql.js" Priority="102" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/clike/clike.js" Priority="102" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/vb/vb.js" Priority="102" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/xml/xml.js" Priority="102" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/javascript/javascript.js" Priority="102" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/css/css.js" Priority="102" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/htmlmixed/htmlmixed.js" Priority="103" />
 
 <div id="viewSourceForm" class="dnnForm dnnViewSource dnnClear">
 
@@ -128,11 +123,10 @@
 <script type="text/javascript">
 
     jQuery(function ($) {
+        var mimeType = dnn.getVar('mimeType') || "text/html";
 
         var setupModule = function () {
-
             $('#viewSourceForm').dnnTabs();
-
         };
 
         setupModule();
@@ -140,12 +134,17 @@
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 
             // note that this will fire when _any_ UpdatePanel is triggered,
-
             // which may or may not cause an issue
-
             setupModule();
 
         });
+        
+        CodeMirror.fromTextArea($("textarea[id$='txtSource']")[0], {
+            lineNumbers: true,
+            matchBrackets: true,
+            lineWrapping: true,
+            mode: mimeType
+        });
     });
-</script>
 
+</script>
