@@ -129,7 +129,9 @@
 
         _onCloseDialog: function () {
             var notShowAgain = this._$checkBox.prop("checked");
-            this._settings.IsHidden = notShowAgain;
+            if (this._settings) {
+                this._settings.IsHidden = notShowAgain;
+            }
             this._controller.closeDialog(notShowAgain);
             this._isShown = false;
         },
@@ -296,7 +298,8 @@
             $.ajax({
                 type: "HEAD",
                 url: url,
-                crossDomain: true,
+                crossDomain: true, // true == !(document.all), // jQuery $.ajax fails in IE for cross-domain request
+                cache: false,
                 async: true,
                 success: function () { return f(true); },
                 error: function () { return f(false); }
@@ -319,6 +322,7 @@
         return GettingStartedController._defaults;
     };
 
+    $.support.cors = true; // see http://bugs.jquery.com/ticket/12097
 
     var GettingStartedDialog = this.GettingStartedDialog = dnn.singletonify(GettingStarted);
 
