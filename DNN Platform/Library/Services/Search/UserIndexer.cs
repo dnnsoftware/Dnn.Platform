@@ -143,6 +143,25 @@ namespace DotNetNuke.Services.Search
                                              "]");
                                 searchDocuments.Add(searchDoc);
                             }
+                            else if (searchDocuments.All(d => !d.UniqueKey.StartsWith(userId + "_")))
+                            {
+                                //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
+                                //so that can make sure DisplayName will be indexed
+                                var searchDoc = new SearchDocument
+                                {
+                                    SearchTypeId = UserSearchTypeId,
+                                    UniqueKey = string.Format("{0}_{1}", userId, UserVisibilityMode.AllUsers).ToLowerInvariant(),
+                                    PortalId = portalId,
+                                    ModifiedTimeUtc = modifiedTime,
+                                    Body = string.Empty,
+                                    Description = string.Empty,
+                                    Title = displayName
+                                };
+
+                                Logger.Trace("UserIndexer: Search document for user [" + displayName + " uid:" + userId +
+                                             "]");
+                                searchDocuments.Add(searchDoc);
+                            }
                         }
                     }
 

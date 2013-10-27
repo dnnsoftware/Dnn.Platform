@@ -111,8 +111,12 @@ namespace DotNetNuke.Services.Search
             searchDocs = GetSearchDocuments(userIndexer, startDate);
             searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
             StoreSearchDocuments(searchDocuments);
-            IndexedSearchDocumentCount += searchDocuments.Count();
-            Results.Add("Users", searchDocuments.Count());
+            var userIndexed =
+                searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_")))
+                               .Distinct()
+                               .Count();
+            IndexedSearchDocumentCount += userIndexed;
+            Results.Add("Users", userIndexed);
         }
 
         internal bool CompactSearchIndexIfNeeded(ScheduleHistoryItem scheduleItem)
