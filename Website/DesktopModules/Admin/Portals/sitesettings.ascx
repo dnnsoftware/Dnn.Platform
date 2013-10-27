@@ -754,10 +754,6 @@
             prePopulate: <% = CustomRegistrationFields %>
         });         
         
-
-    }
-
-    $(document).ready(function () {
         var styleSheetEditor = CodeMirror.fromTextArea($("textarea[id$='txtStyleSheet']")[0], {
             lineNumbers: true,
             matchBrackets: true,
@@ -765,6 +761,15 @@
             indentWithTabs: true,
             mode: 'text/css'
         });
+
+        styleSheetEditor.on("blur", function (cm) {
+            cm.save();
+            return true;
+        });
+
+    }
+
+    $(document).ready(function () {
 
         setupDnnSiteSettings();
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
