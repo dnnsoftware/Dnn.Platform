@@ -2856,7 +2856,10 @@ namespace DotNetNuke.Services.Upgrade
 
             //read plaintext password via old API and encrypt
             var current = HostController.Instance.GetString("SMTPPassword");
+            if (!string.IsNullOrEmpty(current))
+            {
             HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
+            }
         }
 
 
