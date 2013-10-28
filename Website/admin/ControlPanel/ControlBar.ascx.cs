@@ -48,13 +48,13 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls;
 
-using Telerik.Web.UI;
-
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
+// ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.ControlPanels
+// ReSharper restore CheckNamespace
 {
     public partial class ControlBar : ControlPanelBase
     {
@@ -84,11 +84,7 @@ namespace DotNetNuke.UI.ControlPanels
             var gettingStarted = DnnGettingStarted.GetCurrent(Page);
             if (gettingStarted == null)
             {
-                var controller = new GettingStartedController();
-                gettingStarted = new DnnGettingStarted
-                {
-                    ContentUrl = controller.ContentUrl
-                };
+                gettingStarted = new DnnGettingStarted();
                 Page.Form.Controls.Add(gettingStarted);
             }
         }

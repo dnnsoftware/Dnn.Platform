@@ -22,21 +22,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        public bool ShowOnStarup
+        public bool ShowOnStartup
         {
             set { Options.ShowOnStartup = value; }
         }
 
-        public string ContentUrl
-        {
-            set { Options.ContentUrl = value; }
-        }
-
-        public string Skin
-        {
-            get;
-            set;
-        }
+        public string Skin { get; set; }
 
         protected override void OnInit(EventArgs e)
         {

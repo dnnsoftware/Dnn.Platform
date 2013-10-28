@@ -1,4 +1,7 @@
 ﻿using System.Runtime.Serialization;
+
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.UI.WebControls
@@ -72,7 +75,8 @@ namespace DotNetNuke.UI.WebControls
             SignUpMessage = Localization.GetString("GettingStarted.SignUpMessage", Localization.SharedResourceFile);
 
             // specify Protocol Relative URLs for easy switch between HTTP and HTTPS (no protocol prefix)
-            FallbackUrl = "//www.dnnsoftware.com";
+            ContentUrl = "//www.dnnsoftware.com";
+            FallbackUrl = Globals.AddHTTP(PortalController.GetCurrentPortalSettings().DefaultPortalAlias) + "/Portals/_default/GettingStartedFallback.htm";
             UserManualUrl = "//www.dnnsoftware.com/Community/Download/Manuals?src=dnn";
         }
 

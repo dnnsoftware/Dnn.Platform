@@ -12,31 +12,6 @@ namespace DotNetNuke.Services.GettingStarted
 {
     public class GettingStartedController
     {
-
-        public string ContentUrl
-        {
-            get
-            {
-                var result = "";
-                var tabcontroller = new TabController();
-                var tab = tabcontroller.GetTab(GettingStartedTabId, PortalController.GetCurrentPortalSettings().PortalId, false);
-                var modulecontroller = new ModuleController();
-                var modules = modulecontroller.GetTabModules(tab.TabID).Values;
-
-                if (modules.Count > 0)
-                {
-                    var pmb = new PortalModuleBase();
-                    result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + HttpUtility.UrlEncode(Globals.NavigateURL()));
-                }
-                else
-                {
-                    result = Globals.NavigateURL(tab.TabID);
-                }
-
-                return result;
-            }
-        }
-
         public bool ShowOnStartup
         {
             get

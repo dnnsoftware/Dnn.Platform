@@ -68,8 +68,6 @@ namespace DotNetNuke.Framework
         /// Allows the scroll position on the page to be moved to the top of the passed in control.
         /// </summary>
         /// <param name="objControl">Control to scroll to</param>
-        /// <remarks>
-        /// </remarks>
         /// -----------------------------------------------------------------------------
         public void ScrollToControl(Control objControl)
         {
@@ -92,13 +90,10 @@ namespace DotNetNuke.Framework
             var gettingStarted = DnnGettingStarted.GetCurrent(Page);
             if (gettingStarted == null)
             {
-                gettingStarted = new DnnGettingStarted
-                {
-                    ContentUrl = controller.ContentUrl
-                };
+                gettingStarted = new DnnGettingStarted();
                 Page.Form.Controls.Add(gettingStarted);
             }
-            gettingStarted.ShowOnStarup = true;
+            gettingStarted.ShowOnStartup = true;
         }
 
         protected void ManageInstallerFiles()
