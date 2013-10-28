@@ -456,6 +456,7 @@
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
     <Compile Include="Modules\SQL\Components\SqlQueryController.cs" />
     <Compile Include="Modules\SQL\Components\SqlQuery.cs" />
+    <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />
     <Compile Include="Security\Profile\DNNProfileProvider.cs" />
