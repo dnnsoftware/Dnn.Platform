@@ -40,10 +40,6 @@ namespace DotNetNuke.Services.FileSystem
         {
             try
             {
-                if (GetCurrentStatus() != Globals.UpgradeStatus.None)
-                {
-                    return;
-                }
                 ExtensionPointManager.ComposeParts(this);             
             }
             catch (Exception ex)
@@ -60,16 +56,5 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private Globals.UpgradeStatus GetCurrentStatus()
-        {
-            try
-            {
-                return Globals.Status;
-            }
-            catch (NullReferenceException)
-            {
-                return Globals.UpgradeStatus.Unknown;
-            }
-        }
     }
 }
