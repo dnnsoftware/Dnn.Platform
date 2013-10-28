@@ -936,7 +936,14 @@ AS
 		SELECT @startRow = @pageIndex * @numberOfUsers + 1
 		SELECT @endRow = @startRow + @numberOfUsers - 1;
 
-        WITH    ValidUsers
+        WITH    ValidDataType
+                  AS ( SELECT   EntryID
+                       FROM     dbo.[dnn_Lists]
+                       WHERE    ListName = 'DataType'
+                                AND SystemList = 1
+                                AND Value IN ( 'Text', 'RichText' )
+                     ),
+                  ValidUsers
                   AS ( SELECT   UserId
                        FROM     ( SELECT DISTINCT
                                             ( u.UserID ) ,
@@ -945,19 +952,14 @@ AS
                                             INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
                                             INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
                                             INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                                            INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
                                   WHERE     up.PortalId = @PortalId
                                             AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
                                             AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
                                 ) AS T
                        WHERE    T.rownumber BETWEEN @startRow AND @endRow
-                     ),
-                ValidDataType
-                  AS ( SELECT   EntryID
-                       FROM     {databaseOwner}[{objectQualifier}Lists]
-                       WHERE    ListName = 'DataType'
-                                AND SystemList = 1
-                                AND Value IN ( 'Text', 'RichText' )
                      )
+
             SELECT  DISTINCT u.UserID ,
 					u.DisplayName,
                     pd.PropertyName ,
@@ -972,11 +974,19 @@ AS
                     INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
             WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
 
+        ;WITH    ValidDataType
+                  AS ( SELECT   EntryID
+                       FROM     dbo.[dnn_Lists]
+                       WHERE    ListName = 'DataType'
+                                AND SystemList = 1
+                                AND Value IN ( 'Text', 'RichText' )
+                     )
         SELECT  COUNT(DISTINCT ( u.UserID )) AS TotalRecords
         FROM    {databaseOwner}[{objectQualifier}Users] u
                 INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
                 INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
                 INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
         WHERE   up.PortalId = @PortalId
                 AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
                 AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
