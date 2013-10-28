@@ -938,7 +938,7 @@ AS
 
         WITH    ValidDataType
                   AS ( SELECT   EntryID
-                       FROM     dbo.[dnn_Lists]
+                       FROM     {databaseOwner}[{objectQualifier}Lists]
                        WHERE    ListName = 'DataType'
                                 AND SystemList = 1
                                 AND Value IN ( 'Text', 'RichText' )
@@ -976,7 +976,7 @@ AS
 
         ;WITH    ValidDataType
                   AS ( SELECT   EntryID
-                       FROM     dbo.[dnn_Lists]
+                       FROM     {databaseOwner}[{objectQualifier}Lists]
                        WHERE    ListName = 'DataType'
                                 AND SystemList = 1
                                 AND Value IN ( 'Text', 'RichText' )
