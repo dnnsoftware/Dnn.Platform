@@ -48,6 +48,8 @@ namespace DotNetNuke.Entities.Controllers
 
         Dictionary<string, string> GetSettingsDictionary();
 
+        string GetEncryptedString(string key,string passPhrase);
+
         string GetString(string key);
 
         string GetString(string key, string defaultValue);
@@ -61,6 +63,8 @@ namespace DotNetNuke.Entities.Controllers
         void Update(string key, string value, bool clearCache);
 
         void Update(string key, string value);
+
+        void UpdateEncryptedString(string key, string value, string passPhrase);
 
         void IncrementCrmVersion(bool includeOverridingPortals);
     }

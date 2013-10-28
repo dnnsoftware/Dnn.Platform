@@ -839,7 +839,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("SMTPServer", txtSMTPServer.Text, false);
                     HostController.Instance.Update("SMTPAuthentication", optSMTPAuthentication.SelectedItem.Value, false);
                     HostController.Instance.Update("SMTPUsername", txtSMTPUsername.Text, false);
-                    HostController.Instance.Update("SMTPPassword", txtSMTPPassword.Text, false);
+                    HostController.Instance.UpdateEncryptedString("SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());
                     HostController.Instance.Update("SMTPEnableSSL", chkSMTPEnableSSL.Checked ? "Y" : "N", false);
                     // end of code copied to smtpServerSettings.Update()
                     HostController.Instance.Update("FileExtensions", txtFileExtensions.Text, false);

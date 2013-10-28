@@ -1,4 +1,5 @@
 ﻿#region Copyright
+
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2013
@@ -17,26 +18,53 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
+using System.Configuration;
 using System.Security.Cryptography;
 using System.Text;
+using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Security
 {
-    class FIPSCompliant
+    /// <summary>
+    ///     This class implements a number of methods that can be safely used in a FIPS-140 compliant environment
+    ///     FIPS compliant Algorithms:
+    ///     Hash algorithms
+    ///         HMACSHA1
+    ///         MACTripleDES
+    ///         SHA1CryptoServiceProvider
+    ///         SHA256CryptoServiceProvider
+    ///     
+    ///     Symmetric algorithms (use the same key for encryption and decryption)
+    ///         DESCryptoServiceProvider
+    ///         TripleDESCryptoServiceProvider
+    ///     
+    ///     Asymmetric algorithms (use a public key for encryption and a private key for decryption)
+    ///         DSACryptoServiceProvider
+    ///         RSACryptoServiceProvider
+    /// </summary>
+    public static class FIPSCompliant
     {
-        public string DecryptString(string message, string passphrase)
+     
+
+        public static string DecryptString(string message, string passphrase)
         {
             byte[] results;
             var utf8 = new UTF8Encoding();
 
-            //hash the passphrase using MD5 to create 128bit byte array
+            //hash the passphrase using SHA512CryptoServiceProvider to create 128bit byte array
             var hashProvider = new MD5CryptoServiceProvider();
             byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
 
-            var tdesAlgorithm = new TripleDESCryptoServiceProvider { Key = tdesKey, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7 };
+            var tdesAlgorithm = new TripleDESCryptoServiceProvider
+            {
+                Key = tdesKey,
+                Mode = CipherMode.ECB,
+                Padding = PaddingMode.PKCS7
+            };
 
 
             byte[] dataToDecrypt = Convert.FromBase64String(message);
@@ -55,16 +83,23 @@ namespace DotNetNuke.Security
             return utf8.GetString(results);
         }
 
-        public string EncryptString(string message, string passphrase)
+        public static string EncryptString(string message, string passphrase)
         {
             byte[] results;
             var utf8 = new UTF8Encoding();
 
-            //hash the passphrase using MD5 to create 128bit byte array
+            //hash the passphrase using SHA512CryptoServiceProvider to create 128bit byte array
             var hashProvider = new MD5CryptoServiceProvider();
-            byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
 
-            var tdesAlgorithm = new TripleDESCryptoServiceProvider { Key = tdesKey, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7 };
+
+            byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase ));
+
+            var tdesAlgorithm = new TripleDESCryptoServiceProvider
+            {
+                Key = tdesKey,
+                Mode = CipherMode.ECB,
+                Padding = PaddingMode.PKCS7
+            };
 
 
             byte[] dataToEncrypt = utf8.GetBytes(message);

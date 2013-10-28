@@ -2853,7 +2853,12 @@ namespace DotNetNuke.Services.Upgrade
 
             //Remove WhatsNew module
             DesktopModuleController.DeleteDesktopModule("WhatsNew");
+
+            //read plaintext password via old API and encrypt
+            var current = HostController.Instance.GetString("SMTPPassword");
+            HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
         }
+
 
         private static void AddDefaultContentWorkflows()
         {
