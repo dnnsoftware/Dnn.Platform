@@ -1345,6 +1345,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
 AS
 	BEGIN
 		SELECT
+			MS.SettingName,
 			CASE WHEN Lower(MS.SettingValue) LIKE 'fileid=%'
 				 THEN {databaseOwner}{objectQualifier}FilePath(MS.SettingValue)
 				 ELSE MS.SettingValue  END AS SettingValue
@@ -1382,6 +1383,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSetting]
 AS
 	BEGIN
 		SELECT
+			TMS.SettingName,
 			CASE WHEN TMS.SettingValue LIKE 'fileid%'
 				 THEN {databaseOwner}{objectQualifier}FilePath(TMS.SettingValue)
 				 ELSE TMS.SettingValue  END AS SettingValue
@@ -1421,11 +1423,38 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
 AS
 	BEGIN
 		SELECT
+			TS.SettingName,
 			CASE WHEN TS.SettingValue LIKE 'fileid%'
 				 THEN {databaseOwner}{objectQualifier}FilePath(TS.SettingValue)
 				 ELSE TS.SettingValue  END AS SettingValue
 		FROM {databaseOwner}[{objectQualifier}TabSettings] TS
 		WHERE  TabID = @TabId AND SettingName = @SettingName
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSetting]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+    @PortalID INT ,
+    @SettingName NVARCHAR(50) ,
+    @CultureCode NVARCHAR(50)
+AS
+	BEGIN
+		SELECT
+			PS.SettingName,
+			CASE WHEN Lower(PS.SettingValue) LIKE 'fileid=%'
+			 THEN {databaseOwner}{objectQualifier}FilePath(PS.SettingValue)
+			 ELSE PS.SettingValue END   AS SettingValue,
+			PS.CreatedByUserID,
+			PS.CreatedOnDate,
+			PS.LastModifiedByUserID,
+			PS.LastModifiedOnDate,
+			PS.CultureCode
+		FROM {databaseOwner}[{objectQualifier}PortalSettings] PS
+		WHERE PS.PortalID = @PortalID
+            AND PS.SettingName = @SettingName
 	END
 GO
 
