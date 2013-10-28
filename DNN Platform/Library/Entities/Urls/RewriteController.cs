@@ -232,7 +232,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                             else
                             {
-                                tabId = portal.HomeTabId;
+                                tabId = (portal.SplashTabId) > -1 ? portal.SplashTabId : portal.HomeTabId;
                                 //not a custom alias for a specific tab, so it must be the home page for the portal we identified
                                 if (culture == null)
                                 {
