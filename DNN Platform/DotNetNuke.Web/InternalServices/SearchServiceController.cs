@@ -416,11 +416,12 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     int totalHists;
                     var previews = GetBasicViews(query, out totalHists);
-
+                    var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
+                    var userSearchSource = contentSources.FirstOrDefault(s => s.SearchTypeId == userSearchTypeId);
                     foreach (var preview in previews)
                     {
                         //if the document type is user, then try to add user pic into preview's custom attributes.
-                        if (preview.DocumentTypeName == "user")
+                        if (userSearchSource != null && preview.DocumentTypeName == userSearchSource.LocalizedName)
                         {
                             var match = Regex.Match(preview.DocumentUrl, "userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase);
                             if (match.Success)

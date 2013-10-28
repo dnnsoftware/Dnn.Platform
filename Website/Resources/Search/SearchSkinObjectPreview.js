@@ -55,7 +55,7 @@
                                     var itemUrl = item.DocumentUrl;
                                     var itemSnippet = item.Snippet;
                                     markup += '<li data-url="' + itemUrl + '">';
-                                    if (groupTitle == "user" && item.Attributes.Avatar) {
+                                    if (item.Attributes.Avatar) {
                                         markup += '<span><img src="' + item.Attributes.Avatar + '" class="userpic" /></span>';
                                     }
                                     markup += '<span>' + itemTitle + '</span>';
