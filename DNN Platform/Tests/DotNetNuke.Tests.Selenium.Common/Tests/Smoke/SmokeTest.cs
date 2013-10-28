@@ -50,7 +50,7 @@ namespace DNNSelenium.Common.Tests.Smoke
 
 			loginPage.WaitAndSwitchToFrame(30);
 
-			loginPage.DoLoginUsingLoginLink("host", "dnnhost");
+			loginPage.DoLogin("host", "dnnhost");
 
 			loginPage.WaitAndSwitchToWindow(30);
 

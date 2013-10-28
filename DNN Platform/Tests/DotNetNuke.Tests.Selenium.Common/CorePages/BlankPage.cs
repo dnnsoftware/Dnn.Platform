@@ -42,6 +42,9 @@ namespace DNNSelenium.Common.CorePages
 		public static string AddPageFrameButton = "//a[contains(@id, 'ManageTabs_cmdUpdate')]";
 		public static string UpdatePageFrameButton = "//a[contains(@id, 'ManageTabs_cmdUpdate')]";
 
+		public static string PermissionTable = "//table[@class = 'dnnPermissionsGrid']";
+		public static string UpdateButton = "//a[contains(@id, '_ManageTabs_cmdUpdate')]";
+
 		public void OpenUsingUrl(string baseUrl, string pageName)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open '" + pageName + "' page:");
@@ -164,5 +167,34 @@ namespace DNNSelenium.Common.CorePages
 			Thread.Sleep(1000);
 		}
 
+		public void SetPageViewPermissions(string option, string allow)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Set Page View Permissions:");
+
+			SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PagePermissionsOption);
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Permission table: ");
+			WaitForElement(By.XPath(PermissionTable + "//tr[td[text() = '" + option + "'" + "]]/td[2]/img")).Click();
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Update Button: ");
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(1000);
+		}
+
+		public void SetPageEditPermissions(string option, string allow)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Set Page View Permissions:");
+
+			SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PagePermissionsOption);
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Permission table: ");
+			WaitForElement(By.XPath(PermissionTable + "//tr[td[text() = '" + option + "'" + "]]/td[3]/img")).Click();
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Update Button: ");
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(1000);
+		}
 	}
 }

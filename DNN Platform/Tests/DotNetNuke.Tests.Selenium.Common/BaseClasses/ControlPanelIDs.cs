@@ -31,7 +31,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string SocialEditAccount = "//a[@id = 'dnn_userLogin_accountLink']";
 
 		public static string MessageLink = "dnn_dnnUser_messageLink";
-		public static string NotificationLink = "dnn_dnnUser_notificationLink";
+		public static string NotificationLink = "//a[@id = 'dnn_dnnUser_notificationLink']";
 		public static string UserAvatar = "dnn_dnnUser_avatar";
 
 		public static string SearchBox = "//input[contains(@id,'dnnSearch_txtSearch')]";
@@ -115,6 +115,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string CloseEditModeButton = "//a[@id = 'ControlBar_EditPage' and contains(text(), 'Close Edit Mode')]";
 		public static string PageInEditMode = "//a[@class = 'controlBar_editPageInEditMode']";
 		public static string PageSettingsOption = "//a[contains(@href, 'edit/activeTab/settingTab')]";
+		public static string PagePermissionsOption = "//a[contains(@href, 'edit/activeTab/permissionsTab')]";
 		public static string ExportPageOption = "//a[contains(@href, 'ctl/ExportTab')]";
 		public static string DeletePageOption = "//a[@id = 'ControlBar_DeletePage']";
 

@@ -2,7 +2,7 @@
 
 <Tests>
 
-  <settings name="P1 CheckList" browser="chrome" baseURL="ce720v1.dnndev.me" InstallerLanguage="en" UserName="host"
+  <settings name="P1 CheckList" browser="firefox" baseURL="ce720v2.dnndev.me" InstallerLanguage="en" UserName="host"
             Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
             DatabaseType="" DatabaseServerName="" DatabaseName="" DatabaseFilename="" ObjectQualifier="" Security=""
             DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" />
@@ -10,7 +10,7 @@
   <securityRoleGroup name="Security Role Group P1" roleGroupName="Security Role Group P1"
                      roleGroupDescription="Security Role Group Description P1" roleName="Security Role P1"
                      assignedRoleGroupName="assigned Security Role Group P1" />
-  <securityRoles 
+  <securityRoles
     name = "Security Roles P1"
     roleNameWithServiceFee = "Security Role with Fee P1"
     serviceFee = "45.00"
@@ -55,5 +55,22 @@
                              optionalModuleToInstall= ""/>
 
   <modules name = "P1 Modules" dictionary = "Content"/>
+
+  <memberDirectory name= "Members Directory"
+                   userNameNumberOne = "User001"
+                   userNameNumberTwo = "User002"
+                   userNameNumberThree = "User003"
+                   userDisplayNameNumberOne = "UserDisplayName001"
+                   userDisplayNameNumberTwo = "UserDisplayName002"
+                   userDisplayNameNumberThree = "UserDisplayName003"
+                   pageName = "memberdirectory"
+                   password = "uSer1212"/>
   
+  <userProfile name = "User Profile" 
+               registeredUserName = "RegisteredUser" 
+               registeredUserPassword = "pAssword10" 
+               newPassword = "pAss10word" 
+               registeredUserDisplayName = "UserDisplayName"
+               avatarFileToUpload = "owl.jpg"/>
+
 </Tests>

@@ -74,6 +74,8 @@
     <Compile Include="CorePages\AdminGoogleAnalyticsPage.cs" />
     <Compile Include="CorePages\AdminPage.cs" />
     <Compile Include="CorePages\HostPage.cs" />
+    <Compile Include="P1\P1UserProfile.cs" />
+    <Compile Include="P1\P1MemberDirectory.cs" />
     <Compile Include="P1\P1AdminAdvancedSettings.cs" />
     <Compile Include="P1\P1AdminExtensions.cs" />
     <Compile Include="P1\P1AdminSiteSettings.cs" />
@@ -110,6 +112,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <Content Include="P1\NewsFeeds_05.00.01_Install.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\owl.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="P1\SocialMention_01.00.00_Install.zip">

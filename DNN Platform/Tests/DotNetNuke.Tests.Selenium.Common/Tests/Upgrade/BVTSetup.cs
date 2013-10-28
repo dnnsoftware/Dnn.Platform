@@ -53,7 +53,7 @@ namespace DNNSelenium.Common.Tests.Upgrade
 
 			loginPage.WaitAndSwitchToFrame(30);
 
-			loginPage.DoLoginUsingLoginLink(userName, password);
+			loginPage.DoLogin(userName, password);
 
 			loginPage.WaitAndSwitchToWindow(30);
 

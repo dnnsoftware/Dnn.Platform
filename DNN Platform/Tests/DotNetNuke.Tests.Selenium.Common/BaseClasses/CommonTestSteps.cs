@@ -98,7 +98,8 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public void CreateChildSiteAndPrepareSettings(string childSiteName)
 		{
-			//create a child site
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Child Site And Prepare Settings: '");
+
 			HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
 			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
 			hostSiteMgmtPage.AddNewChildSite(_baseUrl, childSiteName, "Child Site");
@@ -107,14 +108,35 @@ namespace DNNSelenium.Common.BaseClasses
 			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
 			hostSiteMgmtPage.NavigateToChildSite(_baseUrl, childSiteName);
 
-			//close welcome screen on child site
-			var installerPage = new InstallerPage(_driver);
-			installerPage.WelcomeScreen();
-
 			//disable popups on child site
 			var adminSiteSettingsPage = new AdminSiteSettingsPage(_driver);
 			adminSiteSettingsPage.OpenUsingButtons(_baseUrl);
 			adminSiteSettingsPage.DisablePopups();
+		}
+
+		public void CreatePageAndSetViewPermission(string pageName, string option, string permissionOption)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create A Page And Set View Permissions: '");
+
+			var blankPage = new BlankPage(_driver);
+			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
+
+			blankPage.AddNewPage(pageName);
+			blankPage.SetPageViewPermissions(option, permissionOption);
+
+			//The new page opens by Default after page created
+		}
+
+		public void AddModule(Dictionary<string, Modules.ModuleIDs> modulesDescription, string moduleName, string pane)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Add a new Module to Page: '");
+
+			var module = new Modules(_driver);
+			string moduleNameOnPage = modulesDescription[moduleName].IdWhenOnPage;
+			string moduleNameOnBanner = modulesDescription[moduleName].IdWhenOnBanner;
+
+			module.OpenModulePanelUsingControlPanel();
+			module.AddNewModuleUsingMenu(moduleNameOnBanner, moduleNameOnPage, pane);
 		}
 	}
 }
