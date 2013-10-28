@@ -40,11 +40,12 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			OpenMainPageAndLoginAsHost();
 
-			_logContent = LogContent();
-
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
 			blankPage.AddNewPage(_pageName);
+
+			_logContent = LogContent();
+
 		}
 
 		[TestFixtureTearDown]

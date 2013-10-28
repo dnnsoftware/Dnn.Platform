@@ -190,9 +190,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Quick Search Main Page'");
 
 			var loginPage = new LoginPage(_driver);
-			loginPage.LetMeOut();
-			loginPage.OpenUsingUrl(_baseUrl);
-			loginPage.DoLoginUsingLoginLink("host", "dnnhost");
+			loginPage.LoginAsHost(_baseUrl);
 
 			var mainPage = new MainPage(_driver);
 			mainPage.OpenUsingUrl(_baseUrl);
@@ -229,9 +227,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Search Results Main Page'");
 
 			var loginPage = new LoginPage(_driver);
-			loginPage.LetMeOut();
-			loginPage.OpenUsingUrl(_baseUrl);
-			loginPage.DoLoginUsingLoginLink("host", "dnnhost");
+			loginPage.LoginAsHost(_baseUrl);
 
 			var mainPage = new MainPage(_driver);
 			mainPage.OpenUsingUrl(_baseUrl);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.CorePages;
@@ -49,7 +50,8 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			installerPage.ClickOnVisitWebsiteButton();
 
-			installerPage.WelcomeScreen();
+			installerPage.WelcomeScreen(); 
+			//Thread.Sleep(10 * 1000);
 
 			var adminSiteSettingsPage = new AdminSiteSettingsPage(driver);
 			adminSiteSettingsPage.OpenUsingButtons(baseUrl);

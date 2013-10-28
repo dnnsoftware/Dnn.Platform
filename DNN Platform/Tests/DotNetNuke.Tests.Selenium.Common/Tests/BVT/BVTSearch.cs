@@ -116,9 +116,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			var loginPage = new LoginPage(_driver);
 
-			loginPage.LetMeOut();
-			loginPage.OpenUsingUrl(_baseUrl);
-			loginPage.DoLoginUsingLoginLink("host", "dnnhost");
+			loginPage.LoginAsHost(_baseUrl);
 
 			MainPage mainPage = new MainPage(_driver);
 			mainPage.OpenUsingUrl(_baseUrl);
@@ -157,9 +155,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			var loginPage = new LoginPage(_driver);
 
-			loginPage.LetMeOut();
-			loginPage.OpenUsingUrl(_baseUrl);
-			loginPage.DoLoginUsingLoginLink("host", "dnnhost");
+			loginPage.LoginAsHost(_baseUrl);
 
 			MainPage mainPage = new MainPage(_driver);
 			mainPage.OpenUsingUrl(_baseUrl);

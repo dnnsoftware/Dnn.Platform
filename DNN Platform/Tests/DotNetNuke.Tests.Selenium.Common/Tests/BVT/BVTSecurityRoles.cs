@@ -44,8 +44,6 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			OpenMainPageAndLoginAsHost();
 
-			_logContent = LogContent();
-
 			var manageRolesPage = new ManageRolesPage(_driver);
 			manageRolesPage.OpenUsingControlPanel(_baseUrl);
 			manageRolesPage.AddNewSecurityRole(_assignedRoleName);
@@ -53,6 +51,8 @@ namespace DNNSelenium.Common.Tests.BVT
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 			manageUsersPage.AddNewUser(_userName, _userDisplayName, "user10@mail.com", "pAssword10");
+
+			_logContent = LogContent();
 		}
 
 		[TestFixtureTearDown]
