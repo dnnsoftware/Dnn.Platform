@@ -77,16 +77,24 @@ namespace DotNetNuke.UI.WebControls
 
             var request = HttpContext.Current.Request;
 
-            var builder = new UriBuilder(request.Url.Scheme, "www.dnnsoftware.com/DesktopModules/DNNCorp/GettingStarted/7.2.0.html");
-            ContentUrl = builder.Uri.AbsoluteUri.TrimEnd('/');
+            var builder = new UriBuilder()
+            {
+                Scheme = request.Url.Scheme,
+                Host = "www.dnnsoftware.com",
+                Path = "DesktopModules/DNNCorp/GettingStarted/7.2.0.html"
+            };
+            ContentUrl = builder.Uri.AbsoluteUri;
 
             FallbackUrl = Globals.AddHTTP(PortalController.GetCurrentPortalSettings().DefaultPortalAlias) + "/Portals/_default/GettingStartedFallback.htm";
 
-            builder = new UriBuilder(request.Url.Scheme, "www.dnnsoftware.com/Community/Download/Manuals")
+            builder = new UriBuilder()
             {
+                Scheme = request.Url.Scheme,
+                Host = "www.dnnsoftware.com",
+                Path = "Community/Download/Manuals",
                 Query = "src=dnn"
             };
-            UserManualUrl = builder.Uri.AbsoluteUri.TrimEnd('/');
+            UserManualUrl = builder.Uri.AbsoluteUri;
         }
 
     }
