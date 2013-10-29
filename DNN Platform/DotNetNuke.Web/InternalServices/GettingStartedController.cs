@@ -73,5 +73,41 @@ namespace DotNetNuke.Web.InternalServices
             return Request.CreateResponse(HttpStatusCode.OK, "Success");
         }
 
+        [HttpGet]
+        public HttpResponseMessage IsValidUrl(string url)
+        {
+            var isValid = IsValidUrlInternal(url);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { IsValid = isValid });
+        }
+
+        /// <summary>
+        /// This method will check a url to see that it does not return server or protocol errors
+        /// </summary>
+        /// <param name="url">The path to check</param>
+        /// <returns></returns>
+        public bool IsValidUrlInternal(string url)
+        {
+            try
+            {
+                var request = WebRequest.Create(url);
+                request.Timeout = 5000; //set the timeout to 5 seconds to keep the user from waiting too long for the page to load
+                request.Method = "HEAD"; //Get only the header information -- no need to download any content
+
+                var response = request.GetResponse() as HttpWebResponse;
+
+                var statusCode = (int)response.StatusCode;
+                if (statusCode >= 500 && statusCode <= 510) // Server Errors
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }

@@ -1,5 +1,6 @@
-﻿using System.Runtime.Serialization;
-
+﻿using System;
+using System.Runtime.Serialization;
+using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
@@ -74,10 +75,18 @@ namespace DotNetNuke.UI.WebControls
             SignUpTitle = Localization.GetString("GettingStarted.SignUpTitle", Localization.SharedResourceFile);
             SignUpMessage = Localization.GetString("GettingStarted.SignUpMessage", Localization.SharedResourceFile);
 
-            // specify Protocol Relative URLs for easy switch between HTTP and HTTPS (no protocol prefix)
-            ContentUrl = "//www.dnnsoftware.com";
+            var request = HttpContext.Current.Request;
+
+            var builder = new UriBuilder(request.Url.Scheme, "www.dnnsoftware.com", request.Url.Port);
+            ContentUrl = builder.Uri.ToString();
+
             FallbackUrl = Globals.AddHTTP(PortalController.GetCurrentPortalSettings().DefaultPortalAlias) + "/Portals/_default/GettingStartedFallback.htm";
-            UserManualUrl = "//www.dnnsoftware.com/Community/Download/Manuals?src=dnn";
+
+            builder = new UriBuilder(request.Url.Scheme, "www.dnnsoftware.com/Community/Download/Manuals")
+            {
+                Query = "src=dnn"
+            };
+            UserManualUrl = builder.Uri.ToString();
         }
 
     }

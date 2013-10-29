@@ -290,20 +290,14 @@
         },
 
         checkUrl: function (url, callback) {
-            var f = function(success) {
-                if (typeof callback === "function") {
-                    callback.call(this, success);
-                }
-            };
-            $.ajax({
-                type: "HEAD",
-                url: url,
-                crossDomain: true, // true == !(document.all), // jQuery $.ajax fails in IE for cross-domain request
-                cache: false,
-                async: true,
-                success: function () { return f(true); },
-                error: function () { return f(false); }
-            });
+            var onCheckUrlHandler = $.proxy(this._onCheckUrl, this, callback);
+            this._callService({url: url}, onCheckUrlHandler, this._options.isValidUrlMethod, true);
+        },
+
+        _onCheckUrl: function (callback, data, textStatus, jqXhr) {
+            if (typeof callback === "function") {
+                callback.call(this, data.IsValid);
+            }
         }
 
     };
@@ -312,7 +306,8 @@
         serviceRoot: "InternalServices",
         closeDialogMethod: "GettingStarted/CloseGettingStartedPage",
         getSettingsMethod: "GettingStarted/GetGettingStartedPageSettings",
-        signUpMethod: "GettingStarted/SubscribeToNewsletter"
+        signUpMethod: "GettingStarted/SubscribeToNewsletter",
+        isValidUrlMethod: "GettingStarted/IsValidUrl"
     };
 
     GettingStartedController.defaults = function (settings) {
