@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.WebControls
 
             var request = HttpContext.Current.Request;
 
-            var builder = new UriBuilder(request.Url.Scheme, "www.dnnsoftware.com");
+            var builder = new UriBuilder(request.Url.Scheme, "www.dnnplatform.com/DesktopModules/DNNCorp/GettingStarted/7.2.0.html");
             ContentUrl = builder.Uri.ToString();
 
             FallbackUrl = Globals.AddHTTP(PortalController.GetCurrentPortalSettings().DefaultPortalAlias) + "/Portals/_default/GettingStartedFallback.htm";
