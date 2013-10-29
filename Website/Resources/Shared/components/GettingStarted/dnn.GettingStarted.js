@@ -317,10 +317,7 @@
         return GettingStartedController._defaults;
     };
 
-    $.support.cors = true; // see http://bugs.jquery.com/ticket/12097
-
     var GettingStartedDialog = this.GettingStartedDialog = dnn.singletonify(GettingStarted);
-
 
 }).apply(dnn, [jQuery, window, document]);
 
