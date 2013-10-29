@@ -670,6 +670,8 @@
     }
 
     function setupDnnSiteSettings() {
+        setupCodeEditor();
+
         $('#dnnSiteSettings').dnnTabs().dnnPanels();
         $('#siteSkinSettings').dnnPreview({
             skinSelector: '<%= portalSkinCombo.ClientID %>',
@@ -754,6 +756,9 @@
             prePopulate: <% = CustomRegistrationFields %>
         });         
         
+    }
+
+    function setupCodeEditor() {
         var styleSheetEditor = CodeMirror.fromTextArea($("textarea[id$='txtStyleSheet']")[0], {
             lineNumbers: true,
             matchBrackets: true,
@@ -766,7 +771,6 @@
             cm.save();
             return true;
         });
-
     }
 
     $(document).ready(function () {
