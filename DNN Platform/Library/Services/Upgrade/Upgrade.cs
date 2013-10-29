@@ -2818,6 +2818,10 @@ namespace DotNetNuke.Services.Upgrade
                 desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
                 desktopModule.Category = "Developer";
                 DesktopModuleController.SaveDesktopModule(desktopModule, false, false);
+
+                var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID);
+                package.IconFile = "~/Icons/Sigma/ModuleCreator_32x32.png";
+                PackageController.Instance.SaveExtensionPackage(package);
             }
 
             var typeController = new ContentTypeController();
