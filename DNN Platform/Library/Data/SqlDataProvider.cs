@@ -164,9 +164,17 @@ namespace DotNetNuke.Data
                 errorMessage = "";
                 return PetaPocoHelper.ExecuteReader(connectionString, CommandType.Text, sql);
             }
-            catch (Exception ex)
+            catch (SqlException sqlException)
             {
                 //error in SQL query
+                Logger.Debug(sqlException);
+
+                errorMessage = sqlException.Message + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug(ex);
                 errorMessage = ex + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
                 return null;
             }
