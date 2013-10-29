@@ -91,13 +91,13 @@ namespace DotNetNuke.Web.InternalServices
             try
             {
                 var request = WebRequest.Create(url);
-                request.Timeout = 5000; //set the timeout to 5 seconds to keep the user from waiting too long for the page to load
-                request.Method = "HEAD"; //Get only the header information -- no need to download any content
+                request.Timeout = 5000; // set the timeout to 5 seconds to keep the user from waiting too long for the page to load
+                request.Method = "HEAD"; // get only the header information -- no need to download any content
 
                 var response = request.GetResponse() as HttpWebResponse;
 
                 var statusCode = (int)response.StatusCode;
-                if (statusCode >= 500 && statusCode <= 510) // Server Errors
+                if (statusCode >= 500 && statusCode <= 510) // server errors
                 {
                     return false;
                 }
