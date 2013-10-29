@@ -82,20 +82,25 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         /// <summary>
-        /// This method will check a url to see that it does not return server or protocol errors
+        /// Checks if url does not return server or protocol errors
         /// </summary>
-        /// <param name="url">The path to check</param>
+        /// <param name="url">Url to check</param>
         /// <returns></returns>
-        public bool IsValidUrlInternal(string url)
+        private static bool IsValidUrlInternal(string url)
         {
+            HttpWebResponse response = null;
             try
             {
                 var request = WebRequest.Create(url);
                 request.Timeout = 5000; // set the timeout to 5 seconds to keep the user from waiting too long for the page to load
-                request.Method = "HEAD"; // get only the header information -- no need to download any content
+                request.Method = "HEAD"; // get only the header information - no need to download any content
 
-                var response = request.GetResponse() as HttpWebResponse;
+                response = request.GetResponse() as HttpWebResponse;
 
+                if (response == null)
+                {
+                    return false;
+                }
                 var statusCode = (int)response.StatusCode;
                 if (statusCode >= 500 && statusCode <= 510) // server errors
                 {
@@ -105,6 +110,13 @@ namespace DotNetNuke.Web.InternalServices
             catch (Exception)
             {
                 return false;
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
             }
             return true;
         }
