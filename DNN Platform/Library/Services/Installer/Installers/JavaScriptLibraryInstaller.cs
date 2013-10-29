@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 //Attempt to get the JavaScript Library
-                _installedLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == _library.LibraryName);
+                _installedLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == _library.LibraryName && l.Version == _library.Version);
 
                 if (_installedLibrary != null)
                 {
