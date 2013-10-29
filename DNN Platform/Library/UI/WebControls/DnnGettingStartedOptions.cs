@@ -92,7 +92,7 @@ namespace DotNetNuke.UI.WebControls
                 Scheme = request.Url.Scheme,
                 Host = "www.dnnsoftware.com",
                 Path = "Community/Download/Manuals",
-                Query = "src=dnn"
+                Query = "src=dnn" // parameter to judge the effectiveness of this as a channel (i.e. the number of click through)
             };
             UserManualUrl = builder.Uri.AbsoluteUri;
         }
