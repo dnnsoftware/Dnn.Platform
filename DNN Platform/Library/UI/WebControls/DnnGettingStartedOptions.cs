@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.WebControls
             var request = HttpContext.Current.Request;
 
             var builder = new UriBuilder(request.Url.Scheme, "www.dnnsoftware.com/DesktopModules/DNNCorp/GettingStarted/7.2.0.html");
-            ContentUrl = builder.Uri.ToString();
+            ContentUrl = builder.Uri.AbsoluteUri.TrimEnd('/');
 
             FallbackUrl = Globals.AddHTTP(PortalController.GetCurrentPortalSettings().DefaultPortalAlias) + "/Portals/_default/GettingStartedFallback.htm";
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 Query = "src=dnn"
             };
-            UserManualUrl = builder.Uri.ToString();
+            UserManualUrl = builder.Uri.AbsoluteUri.TrimEnd('/');
         }
 
     }
