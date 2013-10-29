@@ -184,8 +184,8 @@
                 dialogClass: "dnnFormPopup " + this._options.dialogCss,
                 title: this._options.title,
                 resizable: false,
-                width: 950,
-                height: 640,
+                width: this._options.width,
+                height: this._options.height,
                 close: $.proxy(this._onCloseDialog, this)
             });
 
@@ -214,7 +214,9 @@
         footerLeftCss: "gs-footer-left-side",
         footerRightCss: "gs-footer-right-side",
         twitterLinkCss: "gs-twitter-button",
-        facebookLinkCss: "gs-facebook-button"
+        facebookLinkCss: "gs-facebook-button",
+        width: 950,
+        height: 640
     };
 
     GettingStarted.defaults = function (settings) {
