@@ -285,20 +285,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Package_Updated runs when a Package has been updated by a custom editor.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	08/15/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private void Package_Updated(object sender, EventArgs e)
-        {
-        }
-
         protected void OnCancelClick(object sender, EventArgs e)
         {
             Response.Redirect(ReturnUrl);
@@ -327,7 +313,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
             try
             {
                 UpdatePackage(true);
-                Response.Redirect(Request.RawUrl, true);
             }
             catch (Exception ex)
             {
