@@ -51,7 +51,7 @@ using DotNetNuke.Application;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("7.2.0.0")]
 [assembly: AssemblyFileVersion("7.2.0.0")]
-[assembly: AssemblyStatus(ReleaseMode.Beta)]
+[assembly: AssemblyStatus(ReleaseMode.Stable)]
 // Allow internal variables to be visible to testing projects
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Core")]
 // This assembly is the default dynamic assembly generated Castle DynamicProxy, 
