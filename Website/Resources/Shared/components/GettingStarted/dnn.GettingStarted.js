@@ -67,8 +67,6 @@
 
             var $signUpButton = this.$element.find("." + this._options.headerLeftInputCss).find("a");
             $signUpButton.on("click", $.proxy(this._signUp, this));
-            var $downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
-            $downloadManual.attr("href", this._options.userManualUrl);
         },
 
         _onContentLoad: function () {
@@ -120,8 +118,8 @@
                         .append($("<input type='checkbox' id='" + checkBoxId + "' value='notshowagain' name='ShowDialog' >"))
                         .append($("<label for='" + checkBoxId + "'>" + this._options.dontShowDialogLabel + "</label>")))
                     .append($("<div class='" + this._options.footerRightCss + "'/>")
-                        .append($("<a href='//twitter.com/dnncorp' class='" + this._options.twitterLinkCss + "' title='" + this._options.twitterLinkTooltip + "'/>"))
-                        .append($("<a href='//facebook.com/dotnetnuke' class='" + this._options.facebookLinkCss + "' title='" + this._options.facebookLinkTooltip + "'/>"))));
+                        .append($("<a href='//twitter.com/dnncorp' target='dnn-twitter' class='" + this._options.twitterLinkCss + "' title='" + this._options.twitterLinkTooltip + "'/>"))
+                        .append($("<a href='//facebook.com/dotnetnuke' target='dnn-facebook' class='" + this._options.facebookLinkCss + "' title='" + this._options.facebookLinkTooltip + "'/>"))));
 
             return layout;
         },
@@ -143,6 +141,8 @@
         _bindSettings: function(settings) {
             this._$checkBox.prop("checked", settings.IsHidden);
             this._$emailBox.val(settings.EmailAddress);
+            var $downloadManual = this.$element.find("." + this._options.headerRightCss).find("a");
+            $downloadManual.attr("href", settings.UserManualUrl);
         },
 
         _signUp: function () {
