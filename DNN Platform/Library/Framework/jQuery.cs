@@ -461,7 +461,7 @@ namespace DotNetNuke.Framework
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
         public static void RegisterJQuery(Page page)
         {
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+            JavaScript.RequestRegistration(CommonJs.jQuery);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]

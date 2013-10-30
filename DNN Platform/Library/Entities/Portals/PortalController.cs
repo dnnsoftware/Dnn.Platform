@@ -401,6 +401,36 @@ namespace DotNetNuke.Entities.Portals
                 logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
                 logController.AddLogTypeConfigInfo(logTypeUrlConf);
             }
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.SCRIPT_COLLISION.ToString()))
+            {
+                //Add IP filter log type
+                var logTypeFilterInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    LogTypeFriendlyName = "Javscript library registration resolved script collision",
+                    LogTypeDescription = "",
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                };
+                logController.AddLogType(logTypeFilterInfo);
+
+                //Add LogType
+                var logTypeFilterConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*"
+                };
+                logController.AddLogTypeConfigInfo(logTypeFilterConf);
+            }
+
         }
 
         private static PortalInfo GetPortalInternal(int portalID, string cultureCode)

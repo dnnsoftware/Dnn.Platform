@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -115,7 +116,15 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
 
             JavaScriptLibrary library = GetHighestVersionLibrary(jsname);
+            if (library!=null)
+            {
             AddItemRequest(library.JavaScriptLibraryID);
+            }
+            else
+            {
+                //covers case where upgrading to 7.2.0 and JSL's are not installed
+                AddPreInstallorLegacyItemRequest(jsname);
+            }
         }
 
         private static void AddPreInstallorLegacyItemRequest(string jsl)
@@ -138,7 +147,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             else
             {
                 //this will only occur if a specific library is requested and not available
-                //TODO: should we update to any available version?
                 Logger.TraceFormat("Missing Library request - {0} : {1}", jsname, version.ToString());
             }
         }
@@ -160,18 +168,36 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     isProcessed = true;
                     break;
                 case SpecificVersion.LatestMajor:
-                    library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version.Major >= version.Major);
+                    library =
+               JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
+                   .OrderByDescending(l => l.Version).FirstOrDefault(l => l.Version.Major>= version.Major);                  
                     if (library != null)
                     {
                         AddItemRequest(library.JavaScriptLibraryID);
                     }
+                    else
+                    {
+                        //unable to find a higher major version
+                        library = GetHighestVersionLibrary(jsname);
+                        AddItemRequest(library.JavaScriptLibraryID);
+                        LogCollision(jsname + ":" + version + ":" + specific);
+                    }
                     isProcessed = true;
                     break;
                 case SpecificVersion.LatestMinor:
-                    library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version.Minor >= version.Minor);
+                    library =
+               JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
+                   .OrderByDescending(l => l.Version).FirstOrDefault(l => l.Version.Minor >= version.Minor);  
                     if (library != null)
                     {
                         AddItemRequest(library.JavaScriptLibraryID);
+                    }
+                    else
+                    {
+                        //unable to find a higher minor version
+                        library = GetHighestVersionLibrary(jsname);
+                        AddItemRequest(library.JavaScriptLibraryID);
+                        LogCollision(jsname + ":" + version + ":" + specific);
                     }
                     isProcessed = true;
                     break;
@@ -192,51 +218,65 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         {
             HandlePreInstallorLegacyItemRequests(page);
             IEnumerable<string> scripts = GetScriptVersions();
-            object finalScripts = GetFinalScripts(scripts);
-            foreach (string item in scripts)
+            List<JavaScriptLibrary> finalScripts = GetFinalScripts(scripts);
+            foreach (var jsl in finalScripts)
             {
-                JavaScriptLibrary library =
-                    JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString() == item);
-                RegisterScript(page, library.LibraryName);
+                RegisterScript(page, jsl);
             }
+            //foreach (string item in scripts)
+            //{
+            //    JavaScriptLibrary library =
+            //        JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString() == item);
+            //    RegisterScript(page, library.LibraryName);
+            //}
         }
 
-        private static object GetFinalScripts(IEnumerable<string> scripts)
+        private static List<JavaScriptLibrary> GetFinalScripts(IEnumerable<string> scripts)
         {
             var finalScripts = new List<JavaScriptLibrary>();
             foreach (string item in scripts)
             {
-                JavaScriptLibrary library =
-                    JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString() == item);
-                JavaScriptLibrary commonLibrary = finalScripts.Find(lib => lib.LibraryName == library.LibraryName);
-                if (commonLibrary != null)
+                JavaScriptLibrary processingLibrary =
+                    JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString(CultureInfo.InvariantCulture) == item);
+                //JavaScriptLibrary commonLibrary = finalScripts.Find(lib => lib.LibraryName == library.LibraryName);
+                JavaScriptLibrary existingLatestLibrary = finalScripts.FindAll(lib => lib.LibraryName == processingLibrary.LibraryName).OrderByDescending(l => l.Version).SingleOrDefault();
+                if (existingLatestLibrary != null)
                 {
                     //determine previous registration for same JSL
-                    if (commonLibrary.Version > library.Version)
+                    if (existingLatestLibrary.Version > processingLibrary.Version)
                     {
                         //skip new library & log
-                        //need to log an event
-                        var objEventLog = new EventLogController();
-                        objEventLog.AddLog("Javascript Libraries - post depedencies",
-                            commonLibrary.Version + " : " + library.Version,
-                            PortalController.GetCurrentPortalSettings(),
-                            UserController.GetCurrentUserInfo().UserID,
-                            EventLogController.EventLogType.SCRIPT_COLLISION);
-                        string strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile);
-                        var page = HttpContext.Current.Handler as Page;
-                        if (page != null)
-                        {
-                            Skin.AddPageMessage(page, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
-                        }
+                        LogCollision(existingLatestLibrary.Version + " : " + processingLibrary.Version);
                     }
                     else
                     {
-                        finalScripts.Remove(commonLibrary);
+                        finalScripts.Remove(existingLatestLibrary);
+                        finalScripts.Add(processingLibrary);
                     }
                 }
-                finalScripts.Add(library);
+                else
+                {
+                    finalScripts.Add(processingLibrary);    
+                }               
             }
             return finalScripts;
+        }
+
+        private static void LogCollision(string collisionText)
+        {
+        //need to log an event
+            var objEventLog = new EventLogController();
+            objEventLog.AddLog("Javascript Libraries",
+                collisionText,
+                PortalController.GetCurrentPortalSettings(),
+                UserController.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.SCRIPT_COLLISION);
+            string strMessage = Localization.GetString("ScriptCollision", Localization.SharedResourceFile);
+            var page = HttpContext.Current.Handler as Page;
+            if (page != null)
+            {
+                Skin.AddPageMessage(page, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
+            }
         }
 
         private static IEnumerable<string> GetScriptVersions()
@@ -287,25 +327,31 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static JavaScriptLibrary GetHighestVersionLibrary(String jsname)
         {
-            IEnumerable<JavaScriptLibrary> librarys =
-                JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
-                    .OrderByDescending(l => l.Version);
-            if (librarys.Any())
+            IEnumerable<JavaScriptLibrary> librarys;
+            try
             {
-                //need to log an event
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog("Javascript Libraries - request",
-                    librarys.ToString(),
-                    PortalController.GetCurrentPortalSettings(),
-                    UserController.GetCurrentUserInfo().UserID,
-                    EventLogController.EventLogType.SCRIPT_COLLISION);
+                librarys =
+                                JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
+                                    .OrderByDescending(l => l.Version);
+                if (librarys.Any())
+                {
+                    return librarys.First();
+                }
             }
-            return librarys.First();
+            catch (Exception)
+            {
+                //no library found (install or upgrade)
+                return null;
+            }
+            return null;
         }
 
         private static JavaScriptLibrary GetJavascriptLibrary(String jsname)
         {
-            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == jsname);
+          //  JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == jsname && l.JavaScriptLibraryID==1);
+            JavaScriptLibrary library =
+                JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
+                    .OrderByDescending(l => l.Version).FirstOrDefault();
             if (library == null)
             {
                 //this should only occur if packages are incorrect or a RequestRegistration call has a typo
@@ -343,9 +389,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return String.Empty;
         }
 
-        private static void RegisterScript(Page page, string js)
+        private static void RegisterScript(Page page, JavaScriptLibrary jsl)
         {
-            JavaScriptLibrary jsl = GetJavascriptLibrary(js);
+            //JavaScriptLibrary jsl = GetJavascriptLibrary(js);
             ClientResourceManager.RegisterScript(page, GetScriptPath(jsl), jsl.PackageID + 500, GetScriptLocation(jsl));
 
             //workaround to support IE specific script unti we move to IE version that no longer requires this
@@ -395,20 +441,35 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 switch (legacyScript)
                 {
                     case CommonJs.jQuery:
-                        ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
-                            FileOrder.Js.jQuery, "DnnPageHeaderProvider");
-                        ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
-                            FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
+                        if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
+                                FileOrder.Js.jQuery, "DnnPageHeaderProvider");
+                        }
+                        if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
+                                FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
+                        }
                         break;
                     case CommonJs.jQueryUI:
                         //register dependency
-                        ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
-                            FileOrder.Js.jQuery, "DnnPageHeaderProvider");
-                        ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
-                            FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
+                        if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
+                                FileOrder.Js.jQuery, "DnnPageHeaderProvider");
+                        }
+                        if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
+                                FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
+                        }
                         //actual jqueryui
-                        ClientResourceManager.RegisterScript(page, jQuery.GetJQueryUIScriptReference(),
-                            FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
+                        if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryUIScriptReference(),
+                                FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
+                        }
                         break;
                     case CommonJs.DnnPlugins:
                         //This method maybe called when Page.Form hasn't initialized yet, in that situation if needed should reference dnn js manually.
@@ -419,15 +480,33 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         }
 
                         //register dependency
-                        ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
-                            FileOrder.Js.jQuery, "DnnPageHeaderProvider");
-                        ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
+                        
+                        if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
+                                FileOrder.Js.jQuery, "DnnPageHeaderProvider");
+                        }
+                        
+                         if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
                             FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
-                        //actual jqueryui
-                        ClientResourceManager.RegisterScript(page, jQuery.GetJQueryUIScriptReference(),
-                            FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
-                        ClientResourceManager.RegisterScript(page,
-                            "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
+                        }
+                        
+                
+                //actual jqueryui
+                        if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryUIScriptReference(),
+                                FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
+                        }
+                        
+                        if (GetHighestVersionLibrary(CommonJs.HoverIntent) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page,
+                                "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
+                        }
+                        //no package for this - CRM will deduplicate
                         ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/dnn.jquery.js");
                         break;
                     case CommonJs.jQueryFileUpload:
@@ -437,8 +516,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                             "~/Resources/Shared/Scripts/jquery/jquery.fileupload.js");
                         break;
                     case CommonJs.HoverIntent:
-                        ClientResourceManager.RegisterScript(page,
-                            "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
+                         if (GetHighestVersionLibrary(CommonJs.HoverIntent) == null)
+                        {
+                            ClientResourceManager.RegisterScript(page,
+                                "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
+                        }
                         break;
                 }
             }
@@ -450,6 +532,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return requestUrl.Contains("/install.aspx") || requestUrl.Contains("/installwizard.aspx");
         }
 
+
+
         #region Legacy methods and preinstall support
 
         private const string jQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
@@ -460,46 +544,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
         private const string jQueryHoverIntentFile = "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js";
 
-        private static void RegisterJQuery(Page page)
-        {
-            ClientResourceManager.RegisterScript(page, GetJQueryScriptReference(), FileOrder.Js.jQuery,
-                "DnnPageHeaderProvider");
-            ClientResourceManager.RegisterScript(page, GetJQueryMigrateScriptReference(), FileOrder.Js.jQueryMigrate,
-                "DnnPageHeaderProvider");
-        }
-
-
-        private static void RegisterJQueryUI(Page page)
-        {
-            RegisterJQuery(page);
-            ClientResourceManager.RegisterScript(page, GetJQueryUIScriptReference(), FileOrder.Js.jQueryUI,
-                "DnnPageHeaderProvider");
-        }
-
-        private static void RegisterDnnJQueryPlugins(Page page)
-        {
-            //This method maybe called when Page.Form hasn't initialized yet, in that situation if needed should reference dnn js manually.
-            //such as call jQuery.RegisterDnnJQueryPlugins in Control.OnInit.
-            if (page.Form != null)
-            {
-                ClientAPI.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
-            }
-
-            RegisterJQueryUI(page);
-            RegisterHoverIntent(page);
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/dnn.jquery.js");
-        }
-
-        private static void RegisterHoverIntent(Page page)
-        {
-            ClientResourceManager.RegisterScript(page, jQueryHoverIntentFile, FileOrder.Js.HoverIntent);
-        }
-
-        private static void RegisterFileUpload(Page page)
-        {
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/jquery/jquery.fileupload.js");
-        }
 
         public static string JQueryUIFile(bool getMinFile)
         {
