@@ -112,6 +112,7 @@
     var InputFileNS = {};
     InputFileNS.chooseFileText = '<%=Localization.GetSafeJSString(LocalizeString("ChooseFile.Text"))%>';
     InputFileNS.initilizeInput = function() {
+        $('.fileUploadArea :file').dnnFileInput();
         var fileUploadCtrl = $('.fileUploadArea').find('.dnnInputFileWrapper .dnnSecondaryAction');
         if (fileUploadCtrl) {
             fileUploadCtrl.html(InputFileNS.chooseFileText);
