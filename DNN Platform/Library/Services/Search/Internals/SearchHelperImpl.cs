@@ -355,7 +355,8 @@ namespace DotNetNuke.Services.Search.Internals
         /// <returns>cleaned and pre-processed search phrase</returns>
         public string RephraseSearchText(string searchPhrase, bool useWildCard)
         {
-            searchPhrase = CleanSearchPhrase(searchPhrase);
+
+            searchPhrase = CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
 
             if (!useWildCard && !searchPhrase.Contains("\""))
             {

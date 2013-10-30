@@ -44,9 +44,14 @@ namespace DotNetNuke.Modules.SearchResults
         private IList<string> _searchContentSources;
         private IList<int> _searchPortalIds;
 
-        protected string SearchTerm
+        protected string SearchDisplayTerm
         {
             get { return Request.QueryString["Search"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Search"].Replace("\"", "")) : string.Empty; }
+        }
+
+        protected string SearchTerm
+        {
+            get { return Request.QueryString["Search"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Search"]) : string.Empty; }
         }
 
         protected string LinkTarget

@@ -4,7 +4,7 @@
 
 <div class="dnnSearchBoxPanel">
     <a href="javascript:void(0)" class="dnnSearchResultAdvancedTip"><%= LinkAdvancedTipText %></a>
-    <input type="text" id="dnnSearchResult_dnnSearchBox" value="<%= SearchTerm %>" />
+    <input type="text" id="dnnSearchResult_dnnSearchBox" value="<%= SearchDisplayTerm %>" />
     <div id="dnnSearchResult-advancedTipContainer">
         <%= AdvancedSearchHintText %>
     </div>
