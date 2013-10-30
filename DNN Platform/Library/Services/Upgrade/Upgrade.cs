@@ -2864,6 +2864,7 @@ namespace DotNetNuke.Services.Upgrade
             //{
             //HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
             //}
+
         }
 
 
