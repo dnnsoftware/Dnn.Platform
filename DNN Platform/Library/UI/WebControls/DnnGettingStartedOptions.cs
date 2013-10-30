@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
-using System.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
+﻿using System.Runtime.Serialization;
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.UI.WebControls
@@ -38,15 +34,6 @@ namespace DotNetNuke.UI.WebControls
         [DataMember(Name = "twitterLinkTooltip")]
         public string TwitterLinkTooltip;
 
-        [DataMember(Name = "contentUrl")]
-        public string ContentUrl;
-
-        [DataMember(Name = "fallbackUrl")]
-        public string FallbackUrl;
-
-        [DataMember(Name = "userManualUrl")]
-        public string UserManualUrl;
-
         [DataMember(Name = "invalidEmailTitle")]
         public string InvalidEmailTitle;
 
@@ -74,27 +61,6 @@ namespace DotNetNuke.UI.WebControls
             InvalidEmailMessage = Localization.GetString("GettingStarted.InvalidEmailMessage", Localization.SharedResourceFile);
             SignUpTitle = Localization.GetString("GettingStarted.SignUpTitle", Localization.SharedResourceFile);
             SignUpMessage = Localization.GetString("GettingStarted.SignUpMessage", Localization.SharedResourceFile);
-
-            var request = HttpContext.Current.Request;
-
-            var builder = new UriBuilder()
-            {
-                Scheme = request.Url.Scheme,
-                Host = "www.dnnsoftware.com",
-                Path = "DesktopModules/DNNCorp/GettingStarted/7.2.0.html"
-            };
-            ContentUrl = builder.Uri.AbsoluteUri;
-
-            FallbackUrl = Globals.AddHTTP(PortalController.GetCurrentPortalSettings().DefaultPortalAlias) + "/Portals/_default/GettingStartedFallback.htm";
-
-            builder = new UriBuilder()
-            {
-                Scheme = request.Url.Scheme,
-                Host = "www.dnnsoftware.com",
-                Path = "Community/Download/Manuals",
-                Query = "src=dnn" // parameter to judge the effectiveness of this as a channel (i.e. the number of click through)
-            };
-            UserManualUrl = builder.Uri.AbsoluteUri;
         }
 
     }

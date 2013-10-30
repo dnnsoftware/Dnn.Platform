@@ -24,9 +24,11 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
-
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Web.InternalServices
@@ -53,7 +55,17 @@ namespace DotNetNuke.Web.InternalServices
             var isHidden = HostController.Instance.GetBoolean(String.Format(GettingStartedHideKey, PortalSettings.UserId), false);
             var userEmailAddress = PortalSettings.UserInfo.Email;
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { IsHidden = isHidden, EmailAddress = userEmailAddress});
+            var request = HttpContext.Current.Request;
+            var builder = new UriBuilder
+            {
+                Scheme = request.Url.Scheme,
+                Host = "www.dnnsoftware.com",
+                Path = "Community/Download/Manuals",
+                Query = "src=dnn" // parameter to judge the effectiveness of this as a channel (i.e. the number of click through)
+            };
+            var userManualUrl = builder.Uri.AbsoluteUri;
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { IsHidden = isHidden, EmailAddress = userEmailAddress, UserManualUrl = userManualUrl });
         }
 
         [HttpPost]
@@ -74,11 +86,23 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
-        public HttpResponseMessage IsValidUrl(string url)
+        public HttpResponseMessage GetContentUrl()
         {
-            var isValid = IsValidUrlInternal(url);
+            var request = HttpContext.Current.Request;
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { IsValid = isValid });
+            var builder = new UriBuilder
+            {
+                Scheme = request.Url.Scheme,
+                Host = "www.dnnsoftware.com",
+                Path = "DesktopModules/DNNCorp/GettingStarted/7.2.0.html"
+            };
+            var contentUrl = builder.Uri.AbsoluteUri;
+
+            var fallbackUrl = Globals.AddHTTP(PortalController.GetCurrentPortalSettings().DefaultPortalAlias) + "/Portals/_default/GettingStartedFallback.htm";
+
+            var isValid = IsValidUrl(contentUrl);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { Url = isValid ? contentUrl : fallbackUrl });
         }
 
         /// <summary>
@@ -86,7 +110,7 @@ namespace DotNetNuke.Web.InternalServices
         /// </summary>
         /// <param name="url">Url to check</param>
         /// <returns></returns>
-        private static bool IsValidUrlInternal(string url)
+        private static bool IsValidUrl(string url)
         {
             HttpWebResponse response = null;
             try
@@ -107,7 +131,7 @@ namespace DotNetNuke.Web.InternalServices
                     return false;
                 }
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }

@@ -71,13 +71,6 @@
             $downloadManual.attr("href", this._options.userManualUrl);
         },
 
-        _onCheckContentUrl: function (success) {
-            var url = success ? this._options.contentUrl : this._options.fallbackUrl;
-            var webResource = new dnn.WebResourceUrl(url);
-            webResource.parameters().set("timestamp", new Date().getTime());
-            this._$iframe.attr("src", webResource.toPathAndQuery());
-        },
-
         _onContentLoad: function () {
             this._$iframe.show();
             if (this._$iframe.attr("src") === GettingStarted._blankUrl) {
@@ -86,9 +79,15 @@
             this._$content.removeClass(this._options.loadingContentCss);
         },
 
-        _loadContent: function() {
+        _getContentUrl: function() {
             this._$content.addClass(this._options.loadingContentCss);
-            this._controller.checkUrl(this._options.contentUrl, $.proxy(this._onCheckContentUrl, this));
+            this._controller.getContentUrl($.proxy(this._onGetContentUrl, this));
+        },
+
+        _onGetContentUrl: function (url) {
+            var webResource = new dnn.WebResourceUrl(url);
+            webResource.parameters().set("timestamp", new Date().getTime());
+            this._$iframe.attr("src", webResource.toPathAndQuery());
         },
 
         _createLayout: function () {
@@ -190,7 +189,7 @@
             });
 
             var self = this;
-            setTimeout(function () { self._loadContent(); }, 0);
+            setTimeout(function () { self._getContentUrl(); }, 0);
 
         }
 
@@ -291,14 +290,14 @@
             }
         },
 
-        checkUrl: function (url, callback) {
-            var onCheckUrlHandler = $.proxy(this._onCheckUrl, this, callback);
-            this._callService({url: url}, onCheckUrlHandler, this._options.isValidUrlMethod, true);
+        getContentUrl: function (callback) {
+            var onGetContentUrlHandler = $.proxy(this._onGetContentUrl, this, callback);
+            this._callService({}, onGetContentUrlHandler, this._options.getContentUrlMethod, true);
         },
 
-        _onCheckUrl: function (callback, data, textStatus, jqXhr) {
+        _onGetContentUrl: function (callback, data, textStatus, jqXhr) {
             if (typeof callback === "function") {
-                callback.call(this, data.IsValid);
+                callback.call(this, data.Url);
             }
         }
 
@@ -309,7 +308,7 @@
         closeDialogMethod: "GettingStarted/CloseGettingStartedPage",
         getSettingsMethod: "GettingStarted/GetGettingStartedPageSettings",
         signUpMethod: "GettingStarted/SubscribeToNewsletter",
-        isValidUrlMethod: "GettingStarted/IsValidUrl"
+        getContentUrlMethod: "GettingStarted/GetContentUrl"
     };
 
     GettingStartedController.defaults = function (settings) {
