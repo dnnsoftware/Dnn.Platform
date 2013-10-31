@@ -54,7 +54,10 @@ namespace DotNetNuke.Common.Utilities
             using (var ms = new MemoryStream())
             {
                 serializer.WriteObject(ms, obj);
-                return Encoding.Default.GetString(ms.ToArray());
+
+                ms.Position = 0;
+                var sr = new StreamReader(ms);
+                return sr.ReadToEnd();
             }
         }
     }
