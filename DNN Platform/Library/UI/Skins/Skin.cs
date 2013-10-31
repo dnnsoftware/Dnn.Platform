@@ -233,7 +233,8 @@ namespace DotNetNuke.UI.Skins
         {
             if (!String.IsNullOrEmpty(message))
             {
-                Control contentPane = control.FindControl(Globals.glbDefaultPane);
+                Control contentPane = FindControlRecursive(control, Globals.glbDefaultPane);
+
                 if (contentPane != null)
                 {
                     ModuleMessage moduleMessage = GetModuleMessageControl(heading, message, moduleMessageType, iconSrc);
@@ -241,6 +242,19 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
+
+        private static Control FindControlRecursive(Control rootControl, string controlID)
+        {
+            if (rootControl.ID == controlID) return rootControl;
+
+            foreach (Control controlToSearch in rootControl.Controls)
+            {
+                Control controlToReturn = FindControlRecursive(controlToSearch, controlID);
+                if (controlToReturn != null) return controlToReturn;
+            }
+            return null;
+        }
+
 
         private bool CheckExpired()
         {
