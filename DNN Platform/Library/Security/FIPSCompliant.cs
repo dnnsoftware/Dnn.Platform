@@ -22,10 +22,10 @@
 #endregion
 
 using System;
-using System.Configuration;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using DotNetNuke.Common.Utilities;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.Security
 {
@@ -33,91 +33,98 @@ namespace DotNetNuke.Security
     ///     This class implements a number of methods that can be safely used in a FIPS-140 compliant environment
     ///     FIPS compliant Algorithms:
     ///     Hash algorithms
-    ///         HMACSHA1
-    ///         MACTripleDES
-    ///         SHA1CryptoServiceProvider
-    ///         SHA256CryptoServiceProvider
-    ///     
+    ///     HMACSHA1
+    ///     MACTripleDES
+    ///     SHA1CryptoServiceProvider
+    ///     SHA256CryptoServiceProvider
     ///     Symmetric algorithms (use the same key for encryption and decryption)
-    ///         DESCryptoServiceProvider
-    ///         TripleDESCryptoServiceProvider
-    ///     
+    ///     DESCryptoServiceProvider
+    ///     TripleDESCryptoServiceProvider
     ///     Asymmetric algorithms (use a public key for encryption and a private key for decryption)
-    ///         DSACryptoServiceProvider
-    ///         RSACryptoServiceProvider
+    ///     DSACryptoServiceProvider
+    ///     RSACryptoServiceProvider
     /// </summary>
-    public static class FIPSCompliant
+    public class FIPSCompliant
     {
-     
-
-        public static string DecryptString(string message, string passphrase)
+        /// <summary>
+        /// uses the AES FIPS-140 compliant algorithm to encrypt a string
+        /// </summary>
+        /// <param name="plainText">the text to encrypt</param>
+        /// <param name="passPhrase">the pass phase to do the encryption</param>
+        /// <param name="salt">a salt value to ensure ciphertext using the same text/password is different</param>
+        /// <param name="iterations">number of iterations to derive the key (higher is slower but more secure) - optional parameter with a default of 1000</param>
+        /// <returns></returns>
+        public static String EncryptAES(String plainText, String passPhrase, String salt, int iterations = 1000)
         {
-            byte[] results;
-            var utf8 = new UTF8Encoding();
+            VerifyAesSettings(passPhrase, salt);
 
-            //hash the passphrase using SHA512CryptoServiceProvider to create 128bit byte array
-            var hashProvider = new MD5CryptoServiceProvider();
-            byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
+            byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
+            var aesProvider = new AesCryptoServiceProvider();
+            var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations);
+            Byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
+            Byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
+            Byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
-            var tdesAlgorithm = new TripleDESCryptoServiceProvider
-            {
-                Key = tdesKey,
-                Mode = CipherMode.ECB,
-                Padding = PaddingMode.PKCS7
-            };
+            aesProvider.KeySize = 256;
+            aesProvider.Padding = PaddingMode.ISO10126;
+            aesProvider.Mode = CipherMode.CBC;
 
+            ICryptoTransform encryptor = aesProvider.CreateEncryptor(derivedKey, derivedInitVector);
+            var memStream = new MemoryStream();
+            var cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write);
 
-            byte[] dataToDecrypt = Convert.FromBase64String(message);
-            try
-            {
-                ICryptoTransform decryptor = tdesAlgorithm.CreateDecryptor();
-                results = decryptor.TransformFinalBlock(dataToDecrypt, 0, dataToDecrypt.Length);
-            }
-            finally
-            {
-                // Clear the TripleDes and Hashprovider services of any sensitive information 
-                tdesAlgorithm.Clear();
-                hashProvider.Clear();
-            }
+            cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+            cryptoStream.FlushFinalBlock();
+            Byte[] cipherTextBytes = memStream.ToArray();
 
-            return utf8.GetString(results);
+            memStream.Close();
+            cryptoStream.Close();
+
+            return Convert.ToBase64String(cipherTextBytes);
         }
 
-        public static string EncryptString(string message, string passphrase)
+        private static void VerifyAesSettings(string passPhrase, string salt)
         {
-            byte[] results;
-            var utf8 = new UTF8Encoding();
+            Requires.NotNull("passPhrase", passPhrase);
+            Requires.NotNull("salt", salt);
+            // Throw exception if the password or salt are too short  
+            if (passPhrase.Length < 8)
+                throw new CryptographicException("Passphrase must be at least 8 characters long.");
+            if (salt.Length < 8) throw new CryptographicException("Salt must be at least 8 characters long.");
+        }
 
-            //hash the passphrase using SHA512CryptoServiceProvider to create 128bit byte array
-            var hashProvider = new MD5CryptoServiceProvider();
+        /// <summary>
+        /// uses the AES FIPS-140 compliant algorithm to encrypt a string
+        /// </summary>
+        /// <param name="encryptedText">the text to decrypt</param>
+        /// <param name="passPhrase">the pass phase to do the decryption</param>
+        /// <param name="salt">a salt value to ensure ciphertext using the same text/password is different</param>
+        /// <param name="iterations">number of iterations to derive the key (higher is slower but more secure) - optional parameter with a default of 1000</param>
+        /// <returns></returns>
+        public static String DecryptAES(String encryptedText, String passPhrase, String salt, int iterations = 1000)
+        {
+            VerifyAesSettings(passPhrase, salt);
 
+            Byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
+            var aesProvider = new AesCryptoServiceProvider();
+            var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations);
+            Byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
+            Byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
+            Byte[] cipherTextBytes = Convert.FromBase64String(encryptedText);
 
-            byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase ));
+            aesProvider.KeySize = 256;
+            aesProvider.Padding = PaddingMode.ISO10126;
+            aesProvider.Mode = CipherMode.CBC;
 
-            var tdesAlgorithm = new TripleDESCryptoServiceProvider
-            {
-                Key = tdesKey,
-                Mode = CipherMode.ECB,
-                Padding = PaddingMode.PKCS7
-            };
+            ICryptoTransform decryptor = aesProvider.CreateDecryptor(derivedKey, derivedInitVector);
+            var memStream = new MemoryStream(cipherTextBytes);
+            var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read);
+            var plainTextBytes = new Byte[cipherTextBytes.Length];
+            Int32 byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
 
-
-            byte[] dataToEncrypt = utf8.GetBytes(message);
-
-            try
-            {
-                ICryptoTransform encryptor = tdesAlgorithm.CreateEncryptor();
-                results = encryptor.TransformFinalBlock(dataToEncrypt, 0, dataToEncrypt.Length);
-            }
-            finally
-            {
-                // Clear the TripleDes and Hashprovider services of any sensitive information 
-                tdesAlgorithm.Clear();
-                hashProvider.Clear();
-            }
-
-            //Return the encrypted string as a base64 encoded string 
-            return Convert.ToBase64String(results);
+            memStream.Close();
+            cryptoStream.Close();
+            return Encoding.UTF8.GetString(plainTextBytes, 0, byteCount);
         }
     }
 }

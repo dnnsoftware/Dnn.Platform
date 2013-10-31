@@ -142,8 +142,7 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
             HostController.Instance.Update("SMTPServer", txtSMTPServer.Text, false);
             HostController.Instance.Update("SMTPAuthentication", optSMTPAuthentication.SelectedItem.Value, false);
             HostController.Instance.Update("SMTPUsername", txtSMTPUsername.Text, false);
-            //HostController.Instance.UpdateEncryptedString("SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());
-            HostController.Instance.Update("SMTPPassword", txtSMTPPassword.Text, false);
+            HostController.Instance.UpdateEncryptedString("SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());
             HostController.Instance.Update("SMTPEnableSSL", chkSMTPEnableSSL.Checked ? "Y" : "N", false);
 
             if (smtpWarning && redirectUrl.IndexOf("smtpwarning=true", StringComparison.InvariantCultureIgnoreCase) == -1)
