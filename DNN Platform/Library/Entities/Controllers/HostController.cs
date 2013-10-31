@@ -211,7 +211,7 @@ namespace DotNetNuke.Entities.Controllers
             Requires.NotNullOrEmpty("key", key);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
             var cipherText = GetString(key);
-            return Security.FIPSCompliant.DecryptString(cipherText, passPhrase);
+            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Entities.Host.Host.GUID);
         }
 
 
@@ -346,7 +346,7 @@ namespace DotNetNuke.Entities.Controllers
             Requires.NotNullOrEmpty("key", key);
             Requires.NotNullOrEmpty("value", value);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
-            var cipherText = Security.FIPSCompliant.EncryptString(value, passPhrase);
+            var cipherText = Security.FIPSCompliant.EncryptAES(value, passPhrase, Entities.Host.Host.GUID);
             Update(key, cipherText);
         }
 

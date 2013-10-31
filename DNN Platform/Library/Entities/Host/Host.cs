@@ -1379,8 +1379,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-               // return HostController.Instance.GetEncryptedString("SMTPPassword",Config.GetDecryptionkey());
-                return HostController.Instance.GetString("SMTPPassword");
+                return HostController.Instance.GetEncryptedString("SMTPPassword",Config.GetDecryptionkey());
             }
         }
 
