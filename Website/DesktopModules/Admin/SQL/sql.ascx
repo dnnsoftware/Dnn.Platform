@@ -169,7 +169,16 @@
             //new FixedColumns(oTable);
         });
 
-        $('#<%=pnlResults.ClientID%>').dnnTabs();
+        var resultsPane = $('#<%=pnlResults.ClientID%>');
+        resultsPane.dnnTabs();
+        var originActivateEvent = resultsPane.tabs("option", "activate");
+        resultsPane.tabs("option", "activate", function (ui, event) {
+            originActivateEvent.call(this, ui, event);
+		    var tools = TableTools.fnGetMasters();
+		    for (var i = 0; i < tools.length; i++) {
+			    tools[i].fnResizeButtons();
+		    }
+	    });
 
         var editor = CodeMirror.fromTextArea($("textarea[id$='txtQuery']")[0], {
             lineNumbers: true,
