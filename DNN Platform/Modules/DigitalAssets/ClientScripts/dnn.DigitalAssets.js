@@ -90,6 +90,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
     var loadingPanelProcesses = 0;
 
+    var tempBlurEventFunction = "tempBlurEventFunction";
+
     function setupDnnTabs() {
         // Remove Tab if only exists one Tab
         if ($(".dnnModuleDigitalAssetsTabNav li", '#' + controls.scopeWrapperId).length <= 1) {
@@ -834,12 +836,14 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                             id: "no_button",
                             text: resources.noText,
                             click: function () {
-                                cancelFunction();
                                 $(this).dialog("close");
                             },
                             "class": "dnnSecondaryAction"
                         }
-                    ]
+                    ],
+                close: function() {
+                    cancelFunction();
+                }
             });
         }
     }
@@ -924,16 +928,20 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function onRenameItemError(input, isFolder, errorMessage) {
-        var blurEvents = input.data("events").blur;
+        
         input.off('blur');
         var errorTitle = isFolder ? resources.renameFolderErrorTitle : resources.renameFileErrorTitle;
         showAlertDialog(errorTitle, errorMessage, function () {
-            if (blurEvents) {
-                input.on('blur', blurEvents[0]);
-            }
-
+            reassignBlurToRenameInput(input);
             selectNameWithoutExtension(input[0]);
         });
+    }
+    
+    function reassignBlurToRenameInput(input) {
+        var blurEvent = input.data(tempBlurEventFunction);
+        if (blurEvent) {
+            input.on('blur', blurEvent);
+        }
     }
 
     function renameItemInGrid(rowId) {
@@ -959,14 +967,13 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             renameItem(dataItem, newText, gridItem, rowId);
         } else {
             var input = $("#" + rowId + "_ItemNameEdit");
-            var blurEvent = input.data("events").blur[0];
             input.off('blur');
             extensionChangeConfirmation(oldText, newText, function () {
                 renameItem(dataItem, newText, gridItem, rowId);
             },
                 function () {
+                    reassignBlurToRenameInput(input);
                     selectNameWithoutExtension(input[0]);
-                    input.on('blur', blurEvent);
                 });
         }
     }
@@ -1007,9 +1014,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                     e.stopPropagation();
                 });
 
-                input.blur(function (e) {
+                input.data(tempBlurEventFunction, function () {
                     performRenameInListView($(this), dataItem, span, item);
                 });
+                input.blur(input.data(tempBlurEventFunction));
 
             } else if (currentView == gridViewMode) {
                 showRowEdition(grid.get_selectedItems()[0]);
@@ -1035,14 +1043,13 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         if (dataItem.IsFolder) {
             renameItemInListView(dataItem, item, input, span, newText);
         } else {
-            var blurEvent = input.data("events").blur[0];
             input.off('blur');
             extensionChangeConfirmation(dataItem.ItemName, newText, function () {
                 renameItemInListView(dataItem, item, input, span, newText);
             },
                 function () {
+                    reassignBlurToRenameInput(input);
                     selectNameWithoutExtension(input[0]);
-                    input.on('blur', blurEvent);
                 });
         }
     }
@@ -1693,9 +1700,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             } // esc
         });
 
-        inputItemName.blur(function (e) {
+        inputItemName.data(tempBlurEventFunction, function () {
             renameItemInGrid(rowId);
         });
+        inputItemName.blur(inputItemName.data(tempBlurEventFunction));
         
         inputItemName.click(function (e) {
             return false;
