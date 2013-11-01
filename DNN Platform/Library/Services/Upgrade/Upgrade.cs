@@ -70,6 +70,7 @@ using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Localization.Internal;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.Search;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Upgrade.InternalController.Steps;
@@ -2865,6 +2866,11 @@ namespace DotNetNuke.Services.Upgrade
                 HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
             }
 
+            //reset the user index flag, so user indexer will re-index the whole users.
+            foreach (PortalInfo portal in TestablePortalController.Instance.GetPortals())
+            {
+                PortalController.UpdatePortalSetting(portal.PortalID, UserIndexer.UserIndexResetFlag, "true");
+            }
         }
 
 
