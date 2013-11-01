@@ -5070,6 +5070,99 @@
       </panes>
     </tab>
     <tab >
+      <content>[Tab.404ErrorPage.Content.Text]</content>
+      <contentKey />
+      <containersrc />
+      <cultureCode />
+      <description />
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>false</issecure>
+      <visible>false</visible>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>404 Error Page</name>
+      <title>[Tab.404ErrorPage.Title.Text]</title>
+      <skinsrc>[G]Skins/Gravity/404Skin.ascx</skinsrc>
+      <url type="Normal" />
+      <tabtype>404Tab</tabtype>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <alltabs>false</alltabs>
+              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachetime>1200</cachetime>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>[Tab.404ErrorPage..Module.Title.Text]</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;[Tab.404ErrorPage..Module.Content.Text]&lt;/content&gt;&lt;/htmltext&gt;]]></content>
+              <modulesettings>
+                <modulesetting>
+                  <settingname>WorkflowID</settingname>
+                  <settingvalue>1</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>HtmlText_ReplaceTokens</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>DNN_HTML</definition>
+              <moduledefinition>Text/HTML</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab >
       <containersrc />
       <description>Search Admin</description>
       <disabled>false</disabled>
