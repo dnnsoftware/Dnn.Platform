@@ -22,6 +22,8 @@
 
 using System;
 using DotNetNuke.Framework;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+
 using Telerik.Web.UI;
 
 #endregion
@@ -36,7 +38,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
             base.EnableEmbeddedBaseStylesheet = false;
             Utilities.ApplySkin(this);
-            jQuery.RegisterDnnJQueryPlugins(this.Page);
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/dnn.jquery.js");
             this.OnClientLoad = "$.dnnComboBoxLoaded";
             this.OnClientFocus = "$.dnnComboBoxHack";
             this.OnClientDropDownOpened = "$.dnnComboBoxScroll";

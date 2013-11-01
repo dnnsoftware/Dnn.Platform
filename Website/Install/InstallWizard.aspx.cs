@@ -869,9 +869,6 @@ namespace DotNetNuke.Services.Install
             base.OnLoad(e);
             visitSite.Click += VisitSiteClick;           
 
-			//Register jquery reference.
-			jQuery.RequestRegistration();
-
             //Create Status Files
             if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
 
