@@ -22,6 +22,7 @@
 #region Usings
 
 using System;
+using System.Data.SqlTypes;
 
 using Telerik.Web.UI;
 
@@ -41,6 +42,8 @@ namespace DotNetNuke.Web.UI.WebControls
 			specialDay.Repeatable = Telerik.Web.UI.Calendar.RecurringEvents.Today;
 			specialDay.ItemStyle.CssClass = "dnnCalendarToday";
 			this.Calendar.SpecialDays.Add(specialDay);
-		}
+            this.Calendar.RangeMinDate = (DateTime)SqlDateTime.MinValue;
+            this.MinDate = (DateTime)SqlDateTime.MinValue;
+        }
     }
 }
