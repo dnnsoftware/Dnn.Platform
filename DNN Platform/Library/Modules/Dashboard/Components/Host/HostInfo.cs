@@ -72,8 +72,9 @@ namespace DotNetNuke.Modules.Dashboard.Components.Host
         {
             get
             {
-                var urlprovider = (Provider) ProviderConfiguration.GetProviderConfiguration("friendlyUrl").Providers[FriendlyUrlProvider];
-                return (urlprovider.Attributes["urlformat"] == "humanfriendly") ? "humanfriendly" : "searchfriendly";
+                var urlProvider = (Provider) ProviderConfiguration.GetProviderConfiguration("friendlyUrl").Providers[FriendlyUrlProvider];
+                var urlFormat = urlProvider.Attributes["urlformat"];
+                return string.IsNullOrWhiteSpace(urlFormat) ? "SearchFriendly" : urlFormat;
             }
         }
 
