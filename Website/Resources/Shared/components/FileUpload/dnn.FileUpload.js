@@ -35,21 +35,22 @@
 
             this.$this = $(this);
 
+            this._uploadMethods = new dnn.Enum([{ key: 0, value: "undefined" }, { key: 1, value: "local" }, { key: 2, value: "web" }]);
+            this._uploadMethod = this._uploadMethods.local;
 
             var $parent = $(this.element).parent();
             $parent.empty();
             this.$element = this._createLayout();
             $parent.append(this.$element);
 
-
             //this.$element = this.element ? $(this.element) : this._createLayout();
 
-            this._$buttonGroup = this.$element.find(".dnnFileUploadHead  ul.dnnButtonGroup");
+            this._$buttonGroup = this.$element.find(".fu-dialog-content-header ul.dnnButtonGroup");
             this._$uploadResultPanel = this.$element.find('.dnnFileUploadExternalResultZone');
             this._$dialogCloseBtn = this.$element.find('.dnnFileUploadDialogClose');
             this._$dropFileZone = this.$element.find('.dnnFileUploadDropZone');
             this._$inputFileControl = $("<input type='file' name='postfile' multiple data-text='DRAG FILES HERE OR CLICK TO BROWSE' />");
-            this._$decompressZipCheckbox = this.$element.find('input.normalCheckbox');
+            this._$decompressZipCheckbox = this.$element.find("." + "fu-dialog-content-header").find("input");
             
             var stateElementId = this.options.internalStateFieldId;
             if (stateElementId) {
@@ -71,20 +72,36 @@
                     showSelectedFileNameAsButtonText: false
                 });
 
-            this._$buttonGroup.find('a').on('click', function () {
-                self._$buttonGroup.find('li').removeClass('active');
-                $(this).parent().addClass('active');
-                self._$uploadResultPanel.hide();
-                var uploadMethod = $(this).attr('href').replace('#', '');
-                self.$element.find('.dnnFileUploadContainer').hide();
-                self.$element.find('.' + uploadMethod).show();
-                return false;
-            });
-
             this._initUploadFileFromLocal();
         },
 
+        _selectUpload: function (uploadMethod, eventObject) {
+            eventObject.preventDefault();
+            eventObject.stopPropagation();
+            if (uploadMethod === this._uploadMethods.local) {
+                this.$element.find(".fu-dialog-content-fileupload-local").show();
+                this.$element.find(".fu-dialog-content-fileupload-web").hide();
+            }
+            else {
+                this.$element.find(".fu-dialog-content-fileupload-local").hide();
+                this.$element.find(".fu-dialog-content-fileupload-web").show();
+            }
+            var clickedElement = eventObject.currentTarget;
+            this._$buttonGroup.find('a').each(function(i, element) {
+                if (element !== clickedElement) {
+                    $(element).removeClass("active");
+                }
+            });
+            $(clickedElement).addClass('active');
+        },
+
         _createLayout: function () {
+
+            var $element = function(element, props) {
+                var $e = $(document.createElement(element));
+                props && $e.attr(props);
+                return $e;
+            };
 
             var checkBoxId = dnn.uid("fu_");
 
@@ -119,41 +136,36 @@
             };
 
             this._folderPicker = new dnn.DropDownList(null, folderPickerOptions);
-            var dialog = $("<div id='fu-dialog' tabindex='-1' class='fu-container' role='dialog'/>")
-                .append($("<p class='dnnFileUploadFileInfo'/>")
-                    .append($("<span>Use one of the methods below to upload files</span>")))
-                .append($("<div class='dnnFileUploadPanel'/>")
-                    .append($("<div class='dnnFileUploadHead'/>")
-                        .append($("<div class='dnnLeft'/>")
-                            .append($("<ul class='dnnButtonGroup'/>")
-                                .append($("<li class='active'/>")
-                                    .append($("<a href='javascript:void(0);'>Upload File</a>")))
-                                .append($("<li/>")
-                                    .append($("<a href='javascript:void(0);'>From Web</a>"))))
-                            .append($("<span/>")
-                                .append($("<input type='checkbox' id='" + checkBoxId + "' class='normalCheckbox'/>"))
-                                .append($("<label for='" + checkBoxId + "' class='dnnFileUploadDecompressZipInfo'>Decompress Zip Files</label>"))))
-                        .append($("<div class='fu-folder-picker-container dnnRight'/>")
-                            .append($("<label>Upload To:</label>"))
-                            .append(this._folderPicker.$element.addClass("dnnLeftComboBox")))
-                        .append($("<div class='dnnClear'/>")))
-
-                    .append($("<div class='dnnFileUploadFromLocal dnnFileUploadContainer'/>")
-                        .append($("<div class='dnnFileUploadDropZone'/>")
-                            .append($("<div class='dnnDropFileMessage'/>"))))
-
-                    .append($("<div style='display: none' class='dnnFileUploadFromWeb dnnFileUploadContainer'/>")
-                        .append($("<table class='dnnFileUploadWebInput'/>")
-                            .append($("<tbody/>")
-                                .append($("<tr/>")
-                                    .append($("<td/>")
-                                        .append($("<div class='txtWrapper'/>")
-                                            .append($("<input type='text'/>"))))
-                                    .append($("<td/>")
-                                        .append($("<a href='javascript:void(0);' class='dnnSecondaryAction'>Load</a>")))))))
-
-                    .append($("<div style='display: none' class='dnnFileUploadExternalResultZone'/>")
-                        .append($("<div class='dnnFileUploadResultZone'/>"))));
+            var dialog = $element('div', { tabindex: '-1', 'class': 'fu-container', role: 'dialog' }).append(
+                $element('h5', { 'class': 'fu-dialog-header' }).text("Use one of the methods below to upload files"),
+                $element('div', { 'class': 'fu-dialog-content' }).append(
+                    $element("div", { 'class': 'fu-dialog-content-header' }).append(
+                        $element("div", { 'class': 'dnnLeft' }).append(
+                            $element("ul", { 'class': 'dnnButtonGroup' }).append(
+                                $element("li").append(
+                                    $element("a", { href: "javascript:void(0);", 'class': 'active' }).text("Upload File").on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))),
+                                $element("li").append(
+                                    $element("a", { href: "javascript:void(0);" }).text("From Web").on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web)))),
+                            $element("span").append(
+                                $element("input", { type: 'checkbox', id: checkBoxId }),
+                                $element("label", { 'for': checkBoxId, 'class': 'fu-decompress-label' }).text("Decompress Zip Files"))),
+                        $element("div", { 'class': 'fu-folder-picker-container dnnRight' }).append(
+                            $element("label").text("Upload To:"),
+                            this._folderPicker.$element.addClass("dnnLeftComboBox"))),
+                    $element("div", { 'class': 'fu-dialog-content-fileupload-local' }).append(
+                        $element("div", { 'class': 'dnnFileUploadDropZone' }).append(
+                            $element("div", { 'class': 'dnnDropFileMessage' }))),
+                    $element("div", { style: 'display: none', 'class': 'fu-dialog-content-fileupload-web' }).append(
+                        $element("table", { 'class': 'dnnFileUploadWebInput' }).append(
+                            $element("tbody").append(
+                                $element("tr").append(
+                                    $element("td").append(
+                                        $element("div", { 'class': 'txtWrapper' }).append(
+                                            $element("input", { type: 'text' } ))),
+                                $element("td").append(
+                                    $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text("Load")))))),
+                    $element("div", { style: 'display: none', 'class': 'dnnFileUploadExternalResultZone' }).append(
+                        $element("div", { 'class': 'dnnFileUploadResultZone' }))));
 
             return dialog;
         },
@@ -312,7 +324,9 @@
 
     };
 
-    FileUpload._defaults = {};
+    FileUpload._defaults = {
+        
+    };
 
     FileUpload.defaults = function (settings) {
         if (typeof settings !== "undefined") {
