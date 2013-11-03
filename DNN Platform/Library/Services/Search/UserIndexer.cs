@@ -21,11 +21,14 @@
 #region Usings
 
 using System;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Collections.Generic;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -57,6 +60,8 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     public class UserIndexer : IndexingProvider
     {
+        internal const string UserIndexResetFlag = "UserIndexer_ReIndex";
+
         #region Private Properties
 
         private const int BatchSize = 500;
@@ -82,6 +87,11 @@ namespace DotNetNuke.Services.Search
         public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
+            var needReindex = PortalController.GetPortalSettingAsBoolean(UserIndexResetFlag, portalId, false);
+            if (needReindex)
+            {
+                startDate = SqlDateTime.MinValue.Value;
+            }
 
             try
             {
@@ -178,12 +188,20 @@ namespace DotNetNuke.Services.Search
                     {
                         pageIndex++;
                     }
+
+                    //close the data reader
+                    reader.Close();
                 }
                 
             }
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
+            }
+
+            if (needReindex)
+            {
+                PortalController.DeletePortalSetting(portalId, UserIndexResetFlag);
             }
 
             return searchDocuments;
