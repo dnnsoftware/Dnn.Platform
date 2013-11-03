@@ -188,6 +188,9 @@ namespace DotNetNuke.Services.Search
                     {
                         pageIndex++;
                     }
+
+                    //close the data reader
+                    reader.Close();
                 }
                 
             }
