@@ -852,7 +852,7 @@ BEGIN
 		[CreatedOnDate] [datetime] NOT NULL,
 		[LastModifiedByUserId] [int] NOT NULL,
 		[LastModifiedOnDate] [datetime] NOT NULL,
-		 CONSTRAINT [PK_dnn_SavedQueries] PRIMARY KEY CLUSTERED 
+		 CONSTRAINT [PK_{objectQualifier}SavedQueries] PRIMARY KEY CLUSTERED 
 		(
 			[QueryId] ASC
 		)
