@@ -8,6 +8,12 @@
 (function ($, window, document, undefined) {
     "use strict";
 
+    var $element = function (element, props) {
+        var $e = $(document.createElement(element));
+        props && $e.attr(props);
+        return $e;
+    };
+
     var suportAjaxUpload = function() {
         var xhr = new XMLHttpRequest;
         return !!(xhr && ('upload' in xhr) && ('onprogress' in xhr.upload));
@@ -20,7 +26,6 @@
     var FileUpload = this.FileUpload = function (element, options) {
         this.element = element;
         this.options = options;
-
         this.init();
     };
 
@@ -46,7 +51,9 @@
             //this.$element = this.element ? $(this.element) : this._createLayout();
 
             this._$buttonGroup = this.$element.find(".fu-dialog-content-header ul.dnnButtonGroup");
-            this._$uploadResultPanel = this.$element.find('.dnnFileUploadExternalResultZone');
+            this._$uploadResultPanel = this.$element.find('.fu-fileupload-statuses-container');
+            this._$uploadResultPanel.jScrollbar();
+
             this._$dialogCloseBtn = this.$element.find('.dnnFileUploadDialogClose');
             this._$dropFileZone = this.$element.find('.dnnFileUploadDropZone');
             this._$inputFileControl = $("<input type='file' name='postfile' multiple data-text='DRAG FILES HERE OR CLICK TO BROWSE' />");
@@ -56,7 +63,7 @@
             if (stateElementId) {
                 this._stateElement = document.getElementById(stateElementId);
             }
-            
+
             this._draggable = supportDragDrop();
             this._ajaxUploadable = suportAjaxUpload();
             this._uploadUrl = this.serviceFramework.getServiceRoot('internalservices') + 'fileupload/postfile';
@@ -65,7 +72,7 @@
                 this._uploadUrl += '?__RequestVerificationToken=' + antiForgeryToken;
             }
 
-            this._$uploadResultPanel.hide().find('.dnnFileUploadResultZone').empty();
+            this._$uploadResultPanel.hide().find('.fu-fileupload-statuses').empty();
             this._$inputFileControl.appendTo(this._$dropFileZone.find('.dnnDropFileMessage')).dnnFileInput(
                 {
                     buttonClass: 'normalClass',
@@ -78,14 +85,10 @@
         _selectUpload: function (uploadMethod, eventObject) {
             eventObject.preventDefault();
             eventObject.stopPropagation();
-            if (uploadMethod === this._uploadMethods.local) {
-                this.$element.find(".fu-dialog-content-fileupload-local").show();
-                this.$element.find(".fu-dialog-content-fileupload-web").hide();
-            }
-            else {
-                this.$element.find(".fu-dialog-content-fileupload-local").hide();
-                this.$element.find(".fu-dialog-content-fileupload-web").show();
-            }
+            var isLocal = uploadMethod === this._uploadMethods.local;
+            this.$element.find(".fu-dialog-content-fileupload-local").toggle(isLocal);
+            this.$element.find(".fu-dialog-content-fileupload-web").toggle(!isLocal);
+
             var clickedElement = eventObject.currentTarget;
             this._$buttonGroup.find('a').each(function(i, element) {
                 if (element !== clickedElement) {
@@ -96,12 +99,6 @@
         },
 
         _createLayout: function () {
-
-            var $element = function(element, props) {
-                var $e = $(document.createElement(element));
-                props && $e.attr(props);
-                return $e;
-            };
 
             var checkBoxId = dnn.uid("fu_");
 
@@ -164,8 +161,9 @@
                                             $element("input", { type: 'text' } ))),
                                 $element("td").append(
                                     $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text("Load")))))),
-                    $element("div", { style: 'display: none', 'class': 'dnnFileUploadExternalResultZone' }).append(
-                        $element("div", { 'class': 'dnnFileUploadResultZone' }))));
+                    $element("div", { style: 'display: none', 'class': 'fu-fileupload-statuses-container' }).append(
+                        $element("div", { 'class': 'ps-container' }).append(
+                            $element("ul", { 'class': 'fu-fileupload-statuses' })))));
 
             return dialog;
         },
@@ -180,7 +178,7 @@
                 progressInterval: 20,
                 add: function (e, data) {
                     if (!self._$uploadResultPanel.is(':visible')) {
-                        self._$uploadResultPanel.show().jScrollPane();
+                        self._$uploadResultPanel.show().jScrollbar("update");
                     }
                     //TODO: do some check
                     data.submit();
@@ -188,13 +186,13 @@
                 submit: function (e, data) {
                     var fileResultZone = self._getUploadFileResultZone(data.files[0].name);
                     if (!fileResultZone.length) {
-                        fileResultZone = self._getNewUploadFileResultZone(data.files[0].name);
-                        self._$uploadResultPanel.find('.dnnFileUploadResultZone').append(fileResultZone);
-                        fileResultZone.find('.dnnFileUploadFileStatusIcon.uploading').on('click', function() {
+                        fileResultZone = self._createFileUploadStatusElement(data.files[0].name);
+                        self._$uploadResultPanel.find('.fu-fileupload-statuses').append(fileResultZone);
+                        fileResultZone.find('.fu-fileupload-progressbar-check.uploading').on('click', function() {
                             if (data.jqXHR) data.jqXHR.abort();
                         });
 
-                        self._$uploadResultPanel.show().jScrollPane();
+                        self._$uploadResultPanel.show().jScrollbar("update");
                     } else {
                         self._initProgressBar(fileResultZone);
                     }
@@ -217,7 +215,7 @@
                     var fileResultZone = self._getUploadFileResultZone(data.files[0].name);
                     if (data.formData.extract == "true") {
                         if (fileResultZone.find('.dnnFileUploadExtracting').length == 0) {
-                            fileResultZone.find('.dnnFileUploadFileName')
+                            fileResultZone.find('.fu-fileupload-filename')
                                 .append("<span class='dnnFileUploadExtracting'> - Decompressing File</span>");
                         }
                         return;
@@ -248,11 +246,11 @@
 
             });
         },
-        
+
         _getDecompressZipFileOption: function() {
             return this._$decompressZipCheckbox.is(':checked') ? 'true' : 'false';
         },
-        
+
         _getSelectedFolder: function() {
             var selectedPathArray = this._folderPicker.selectedPath();
             var selectedPath = '';
@@ -263,7 +261,7 @@
             } 
             return selectedPath;
         },
-        
+
         _getFileUploadError: function(data) {
             var error;
             try {
@@ -279,53 +277,51 @@
             if (!error.Message) return null;
             return error;
         },
-        
-        _getNewUploadFileResultZone: function(fileName) {
-            return $('<div class="dnnFileUploadFile" data-filename="' + fileName + '">' +
-                        '<div class="dnnFileUploadFileName">' + fileName + '</div>' +
-                        '<div class="dnnFileUploadFileProgress">' +
-                            '<div class="dnnFileUploadFileProgressBar ui-progressbar">' + 
-                                '<div class="ui-progressbar-value" style="width: 0%;"></div>' +
-                            '</div>' +
-                            '<div class="dnnFileUploadFileStatusIcon uploading"></div>' +
-                        '</div>' +
-                    '</div>');
+
+        _createFileUploadStatusElement: function (fileName) {
+            var $status = $element("li", { "class": "fu-fileupload-status", "data-filename": fileName }).append(
+                $element("div", { "class": "fu-fileupload-filename" }).text(fileName),
+                $element("div", { "class": "fu-fileupload-progressbar-container" }).append(
+                    $element("div", { "class": "fu-fileupload-progressbar ui-progressbar" }).append(
+                        $element("div", { "class": "ui-progressbar-value" }).width(0)),
+                    $element("div", { "class": "fu-fileupload-progressbar-check uploading" })));
+            return $status;
         },
 
         _getUploadFileResultZone: function(fileName) {
-            return this._$uploadResultPanel.find('div[data-filename="' + fileName + '"]');
+            return this._$uploadResultPanel.find('li[data-filename="' + fileName + '"]');
         },
-        
+
         _initProgressBar: function(fileResultZone) {
-            fileResultZone.find('.dnnFileUploadFileProgressBar > div').css('width', '0%');
-            fileResultZone.find('.dnnFileUploadFileStatusIcon').removeClass('finished').addClass('uploading');
-            fileResultZone.find('.dnnFileUploadFileProgress').show();
+            fileResultZone.find('.fu-fileupload-progressbar > div').css('width', '0%');
+            fileResultZone.find('.fu-fileupload-progressbar-check').removeClass('finished').addClass('uploading');
+            fileResultZone.find('.fu-fileupload-progressbar-container').show();
         },
-        
+
         _setProgressBar: function(fileResultZone, progress) {
-            fileResultZone.find(".dnnFileUploadFileProgress").show();
+            fileResultZone.find(".fu-fileupload-progressbar-container").show();
 
             if (!progress) {
-                fileResultZone.find('.dnnFileUploadFileProgressBar').addClass('indeterminate-progress');
-                fileResultZone.find('.dnnFileUploadFileProgressBar > div').css('width', '100%');
+                fileResultZone.find('.fu-fileupload-progressbar').addClass('indeterminate-progress');
+                fileResultZone.find('.fu-fileupload-progressbar > div').css('width', '100%');
                 return;
             }
 
             if (progress < 100) {
-                fileResultZone.find(".dnnFileUploadFileProgressBar > div").css('width', progress + '%');
+                fileResultZone.find(".fu-fileupload-progressbar > div").css('width', progress + '%');
                 return;
             }
 
-            fileResultZone.find('.dnnFileUploadFileStatusIcon').removeClass('uploading').addClass('finished');
-            fileResultZone.find('.dnnFileUploadFileProgressBar.indeterminate-progress').removeClass('indeterminate-progress');
+            fileResultZone.find('.fu-fileupload-progressbar-check').removeClass('uploading').addClass('finished');
+            fileResultZone.find('.fu-fileupload-progressbar.indeterminate-progress').removeClass('indeterminate-progress');
             fileResultZone.find('.dnnFileUploadExtracting').remove();
-            fileResultZone.find('.dnnFileUploadFileProgressBar > div').css('width', '100%');
+            fileResultZone.find('.fu-fileupload-progressbar > div').css('width', '100%');
         }
 
     };
 
     FileUpload._defaults = {
-        
+
     };
 
     FileUpload.defaults = function (settings) {

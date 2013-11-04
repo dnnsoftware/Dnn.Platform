@@ -151,16 +151,26 @@
     margin: 0;
 }
 
-.fu-container .dnnFileUploadExternalResultZone {
+.fu-container .fu-fileupload-statuses-container {
     margin-top: 20px;
     height: 240px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
 }
 
-.fu-container .dnnFileUploadResultZone .dnnFileUploadFile {
+.fu-container ul.fu-fileupload-statuses,
+.fu-container ul.fu-fileupload-statuses li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.fu-container .fu-fileupload-statuses .fu-fileupload-status {
     margin-top: 10px;
 }
 
-.fu-container .dnnFileUploadResultZone .dnnFileUploadFileProgress {
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-container {
     border: 1px solid #B6BAC2;
     border-radius: 5px;
     padding: 2px 4px;
@@ -174,14 +184,14 @@
     box-shadow: 0 1px white;
 }
 
-.fu-container .dnnFileUploadResultZone .dnnFileUploadFileName
+.fu-container .fu-fileupload-statuses .fu-fileupload-filename
 {
     color: #777;
     font-style: italic;
     padding: 0 0 5px 0;
 }
 
-.fu-container .dnnFileUploadResultZone .dnnFileUploadFileProgressBar {
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar {
     border: 1px solid #B6BAC2;
     border-radius: 4px;
     box-shadow: 0 1px white, 0 2px 3px #999999 inset;
@@ -191,16 +201,16 @@
     display: inline-block;    
 }
 
-.fu-container .dnnFileUploadResultZone .dnnFileUploadFileProgressBar .indeterminate-progress {
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar .indeterminate-progress {
     background-color: #3FBDFF;
 }
 
-.fu-container .dnnFileUploadResultZone .dnnFileUploadFileProgressBar .indeterminate-progress > div.ui-progressbar-value {
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar .indeterminate-progress > div.ui-progressbar-value {
     background-image: url("images/indeterminate.gif");
     opacity: 0.15;
 }
 
-.fu-container .dnnFileUploadResultZone .dnnFileUploadFileStatusIcon {
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-check {
     display: inline-block;
     height: 16px;
     width: 16px;
@@ -208,12 +218,12 @@
     margin: 4px 6px 0 0;
 }
 
-.fu-container .dnnFileUploadResultZone .dnnFileUploadFileStatusIcon.uploading {
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-check.uploading {
     background-image: url("../../../../icons/sigma/Cancel_16x16_Standard.png");
     cursor: pointer;
 }
 
-.fu-container .dnnFileUploadResultZone .dnnFileUploadFileStatusIcon.finished {
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-check.finished {
     background-image: url("../../../../icons/sigma/Checked_16x16_Standard(dark).png");
 }
 
