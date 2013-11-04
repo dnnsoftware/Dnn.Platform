@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FolderProperties.ascx.cs" Inherits="DotNetNuke.Modules.DigitalAssets.FolderProperties" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Import Namespace="DotNetNuke.UI.Utilities" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
@@ -101,8 +102,8 @@
         }, 
         {
             selectedTab: '<%=(!IsPostBack ? "0" : "-1")%>',
-            canAdminPermissions: '<%=ClientAPI.GetSafeJSString(HasFullControl.ToString().ToLowerInvariant()) %>',
-            dialogTitle: '<%=ClientAPI.GetSafeJSString(DialogTitle)%>'
+            canAdminPermissions: '<%=Localization.GetSafeJSString(HasFullControl.ToString().ToLowerInvariant()) %>',
+            dialogTitle: '<%=Localization.GetSafeJSString(DialogTitle)%>'
         }
     );
 </script>
