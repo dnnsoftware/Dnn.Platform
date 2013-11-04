@@ -2865,12 +2865,6 @@ namespace DotNetNuke.Services.Upgrade
             {
                 HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
             }
-
-            //reset the user index flag, so user indexer will re-index the whole users.
-            foreach (PortalInfo portal in TestablePortalController.Instance.GetPortals())
-            {
-                PortalController.UpdatePortalSetting(portal.PortalID, UserIndexer.UserIndexResetFlag, "true");
-            }
         }
 
 
