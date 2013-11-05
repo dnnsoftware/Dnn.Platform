@@ -371,7 +371,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static void RegisterScript(Page page, JavaScriptLibrary jsl)
         {
-            ClientResourceManager.RegisterScript(page, GetScriptPath(jsl), jsl.PackageID + 500, GetScriptLocation(jsl));
+            ClientResourceManager.RegisterScript(page, GetScriptPath(jsl), GetFileOrder(jsl), GetScriptLocation(jsl));
 
             //workaround to support IE specific script unti we move to IE version that no longer requires this
             if (jsl.LibraryName == CommonJs.jQueryFileUpload)
@@ -407,6 +407,24 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 {
                     scriptloader.Controls.Add(fallback);
                 }
+            }
+        }
+
+        private static int GetFileOrder(JavaScriptLibrary jsl)
+        {
+            switch (jsl.LibraryName)
+            {
+                case CommonJs.jQuery:
+                    return (int)FileOrder.Js.jQuery;
+                case CommonJs.jQueryMigrate:
+                    return (int)FileOrder.Js.jQueryMigrate;
+                case CommonJs.jQueryUI:
+                    return (int)FileOrder.Js.jQueryUI;
+                case CommonJs.HoverIntent:
+                    return (int)FileOrder.Js.HoverIntent;
+                default:
+                    return jsl.PackageID + (int) FileOrder.Js.DefaultPriority;
+
             }
         }
 
