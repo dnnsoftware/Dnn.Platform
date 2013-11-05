@@ -116,6 +116,8 @@ namespace DNNSelenium.Common.CorePages
 		{
 			OpenTab(By.XPath(OtherSettingsTab));
 
+			WaitForElement(By.XPath(AllowContentLocalizationCheckBox)).Info();
+
 			CheckBoxCheck(By.XPath(AllowContentLocalizationCheckBox));
 
 			ClickOnButton(By.XPath(UpdateButton));

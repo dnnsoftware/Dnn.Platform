@@ -94,6 +94,9 @@ namespace DNNSelenium.Common.CorePages
 		public void SelectFromContextMenu(string pageName, string option)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Select from Context menu:");
+
+			WaitForElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = '" + pageName + " ']")).Info();
+
 			Actions builder = new Actions(_driver);
 			builder.ContextClick(
 				FindElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = '" + pageName + " ']"))).
@@ -141,13 +144,15 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(OperationConfirmationMessage));
 		}
 
-		public void AddPagesInBulk(string pageName, int pageAmount, string pageType, string addPageAfter)
+		public void AddPagesInBulk(string pageName, string parentPage, int pageAmount, string pageType, string addPageAfter)
 		{
 			OpenPageList(pageType, addPageAfter);
 
 			SelectFromContextMenu(addPageAfter, ContextMenuAddPageOption);
 
 			WaitForElement(By.XPath(PageNameTextBox));
+			Type(By.XPath(PageNameTextBox), parentPage);
+			Type(By.XPath(PageNameTextBox), Keys.Enter);
 
 			int pageNumber = 1;
 			while (pageNumber < pageAmount + 1)
@@ -193,7 +198,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			OpenPageList(pageType, pageName);
 
-			WaitForElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = '" + pageName + " ']")).Click();
+			FindElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = '" + pageName + " ']")).WaitTillVisible().Click();
 
 			AccordionOpen(By.XPath(SEOSettingsAccordion));
 

@@ -100,7 +100,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			OpenTab(By.XPath(LanguagesTab));
 
-			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']"));
+			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']")).Info();
 
 			CheckBoxCheck(By.XPath("//tr[td//span[text() = '" + packName + "']]/td/input"));
 
@@ -111,7 +111,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			OpenTab(By.XPath(LanguagesTab));
 
-			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']"));
+			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']")).Info();
 
 			CheckBoxUncheck(By.XPath("//tr[td//span[text() = '" + packName + "']]/td/input"));
 

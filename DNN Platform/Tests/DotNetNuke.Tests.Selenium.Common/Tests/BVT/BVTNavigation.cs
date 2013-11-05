@@ -63,7 +63,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT The Message Link or Message Link bubble-help is present");
 			Utilities.SoftAssert(
-				() => Assert.IsNotEmpty(currentPage.FindElement(By.Id(ControlPanelIDs.MessageLink)).GetAttribute("title"),
+				() => Assert.IsNotEmpty(currentPage.FindElement(By.XPath(ControlPanelIDs.MessageLink)).GetAttribute("title"),
 				                        "The Message Link or Message Link bubble-help is missing."));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT The Notification Link or Notification Link bubble-help is present");
@@ -268,11 +268,10 @@ namespace DNNSelenium.Common.Tests.BVT
 
 		public void NumberOfLinksOnPage(BasePage currentPage, string featureList, int numberOfLinks)
 		{
-			var loginPage = new LoginPage(_driver);
-			loginPage.LoginAsHost(_baseUrl);
-
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of links on page: " +
 							numberOfLinks);
+
+			currentPage.WaitForElement(By.XPath(featureList + "/div[last()]"));
 			Assert.That(currentPage.FindElements(By.XPath(featureList)).Count,
 						Is.EqualTo(numberOfLinks),
 						"The number of links on page is not correct");

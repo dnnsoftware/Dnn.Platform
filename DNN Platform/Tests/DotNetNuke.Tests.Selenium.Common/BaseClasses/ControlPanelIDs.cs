@@ -30,7 +30,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string SocialEditProfile = "//a[@id = 'dnn_userLogin_editProfileLink']";
 		public static string SocialEditAccount = "//a[@id = 'dnn_userLogin_accountLink']";
 
-		public static string MessageLink = "dnn_dnnUser_messageLink";
+		public static string MessageLink = "//a[@id = 'dnn_dnnUser_messageLink']";
 		public static string NotificationLink = "//a[@id = 'dnn_dnnUser_notificationLink']";
 		public static string UserAvatar = "dnn_dnnUser_avatar";
 

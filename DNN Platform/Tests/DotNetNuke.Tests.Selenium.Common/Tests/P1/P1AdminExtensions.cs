@@ -45,6 +45,11 @@ namespace DNNSelenium.Common.Tests.P1
 		public void Cleanup()
 		{
 			VerifyLogs(_logContent);
+
+			var manageUsersPage = new ManageUsersPage(_driver);
+			manageUsersPage.OpenUsingControlPanel(_baseUrl);
+			manageUsersPage.DeleteUser("Admin");
+			manageUsersPage.RemoveDeletedUsers();
 		}
 
 		[Test]

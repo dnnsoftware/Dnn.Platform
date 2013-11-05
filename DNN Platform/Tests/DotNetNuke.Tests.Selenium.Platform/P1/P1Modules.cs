@@ -43,195 +43,195 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Home/Page29", "NewslettersModule", "ContentPane")]
 		[TestCase("Home/Page30", "PagesModule", "ContentPane")]
 		[TestCase("Home/Page31", "ProfessionalPreviewModule", "ContentPane")]
-		[TestCase("Home/Page33", "RazorHostModule", "ContentPane")]
-		[TestCase("Home/Page34", "RecycleBinModule", "ContentPane")]
-		[TestCase("Home/Page35", "SearchAdminModule", "ContentPane")]
-		[TestCase("Home/Page36", "SearchResultsModule", "ContentPane")]
-		[TestCase("Home/Page40", "SiteLogModule", "ContentPane")]
-		[TestCase("Home/Page41", "SiteWizardModule", "ContentPane")]
-		[TestCase("Home/Page42", "SiteMapModule", "ContentPane")]
-		[TestCase("Home/Page43", "SkinsModule", "ContentPane")]
-		[TestCase("Home/Page44", "SocialGroupsModule", "ContentPane")]
-		[TestCase("Home/Page45", "TaxonomyManagerModule", "ContentPane")]
-		[TestCase("Home/Page47", "VendorsModule", "ContentPane")]
-		[TestCase("Home/Page48", "ViewProfileModule", "ContentPane")]
-		[TestCase("Home/Page74", "ModuleCreator", "ContentPane")]
+		[TestCase("Home/P1Modules/Page33", "RazorHostModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page34", "RecycleBinModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page35", "SearchAdminModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page36", "SearchResultsModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page40", "SiteLogModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page41", "SiteWizardModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page42", "SiteMapModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page43", "SkinsModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page44", "SocialGroupsModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page45", "TaxonomyManagerModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page47", "VendorsModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page48", "ViewProfileModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page74", "ModuleCreator", "ContentPane")]
 		public void Test002_AddModuleToContentPaneOnNewPage(string pageName, string moduleName, string location)
 		{
 			AddModuleToContentPaneOnNewPage(Modules.CommonModulesDescription, pageName, moduleName, location);
 		}
 
-		[TestCase("Home/Page51", "HtmlModule", "ContentPane")]
-		[TestCase("Home/Page52", "HtmlModule", "LeftPane")]
-		[TestCase("Home/Page53", "HtmlModule", "ContentPaneLower")]
-		[TestCase("Home/Page54", "HtmlModule", "SideBarPane")]
-		[TestCase("Home/Page55", "HtmlModule", "FooterLeftOuterPane")]
-		[TestCase("Home/Page56", "HtmlModule", "FooterLeftPane")]
-		[TestCase("Home/Page57", "HtmlModule", "FooterCenterPane")]
-		[TestCase("Home/Page58", "HtmlModule", "FooterRightPane")]
-		[TestCase("Home/Page59", "HtmlModule", "FooterRightOuterPane")]
+		[TestCase("Home/P1Modules/Page51", "HtmlModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page52", "HtmlModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page53", "HtmlModule", "ContentPaneLower")]
+		[TestCase("Home/P1Modules/Page54", "HtmlModule", "SideBarPane")]
+		[TestCase("Home/P1Modules/Page55", "HtmlModule", "FooterLeftOuterPane")]
+		[TestCase("Home/P1Modules/Page56", "HtmlModule", "FooterLeftPane")]
+		[TestCase("Home/P1Modules/Page57", "HtmlModule", "FooterCenterPane")]
+		[TestCase("Home/P1Modules/Page58", "HtmlModule", "FooterRightPane")]
+		[TestCase("Home/P1Modules/Page59", "HtmlModule", "FooterRightOuterPane")]
 		public void Test003_AddHTMLModuleToPaneOnPage(string pageName, string moduleName,
 													  string location)
 		{
 			AddHTMLModuleToPaneOnPage(Modules.CommonModulesDescription, pageName, moduleName, location);
 		}
 
-		[TestCase("Home/Page60", "HtmlModule", "ContentPane")]
-		[TestCase("Home/Page60", "HtmlModule", "LeftPane")]
-		[TestCase("Home/Page60", "HtmlModule", "ContentPaneLower")]
-		[TestCase("Home/Page60", "HtmlModule", "SideBarPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterLeftOuterPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterLeftPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterCenterPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterRightPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterRightOuterPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "ContentPaneLower")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "SideBarPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterLeftOuterPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterLeftPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterCenterPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterRightPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterRightOuterPane")]
 		public void Test004_AddHTMLModuleToToAllPanesOnOnePage(string pageName, string moduleName,
 															   string location)
 		{
 			AddHTMLModuleToToAllPanesOnOnePage(Modules.CommonModulesDescription, pageName, moduleName, location);
 		}
 
-		[TestCase("Home/Page26", "MemberDirectoryModule", "LeftPane")]
-		[TestCase("Home/Page27", "MessageCenterModule", "LeftPane")]
-		[TestCase("Home/Page29", "NewslettersModule", "LeftPane")]
-		[TestCase("Home/Page30", "PagesModule", "LeftPane")]
-		[TestCase("Home/Page31", "ProfessionalPreviewModule", "LeftPane")]
-		[TestCase("Home/Page33", "RazorHostModule", "LeftPane")]
-		[TestCase("Home/Page34", "RecycleBinModule", "LeftPane")]
-		[TestCase("Home/Page35", "SearchAdminModule", "LeftPane")]
-		[TestCase("Home/Page36", "SearchResultsModule", "LeftPane")]
-		[TestCase("Home/Page40", "SiteLogModule", "LeftPane")]
-		[TestCase("Home/Page41", "SiteWizardModule", "LeftPane")]
-		[TestCase("Home/Page42", "SiteMapModule", "LeftPane")]
-		[TestCase("Home/Page43", "SkinsModule", "LeftPane")]
-		[TestCase("Home/Page44", "SocialGroupsModule", "LeftPane")]
-		[TestCase("Home/Page45", "TaxonomyManagerModule", "LeftPane")]
-		[TestCase("Home/Page47", "VendorsModule", "LeftPane")]
-		[TestCase("Home/Page48", "ViewProfileModule", "LeftPane")]
-		[TestCase("Home/Page74", "ModuleCreator", "LeftPane")]
+		[TestCase("Home/P1Modules/Page26", "MemberDirectoryModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page27", "MessageCenterModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page29", "NewslettersModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page30", "PagesModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page31", "ProfessionalPreviewModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page33", "RazorHostModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page34", "RecycleBinModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page35", "SearchAdminModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page36", "SearchResultsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page40", "SiteLogModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page41", "SiteWizardModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page42", "SiteMapModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page43", "SkinsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page44", "SocialGroupsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page45", "TaxonomyManagerModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page47", "VendorsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page48", "ViewProfileModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page74", "ModuleCreator", "LeftPane")]
 		public void Test005_MoveModuleToLeftPane(string pageName, string moduleName, string newLocation)
 		{
 			MoveModuleToLeftPane(Modules.CommonModulesDescription, pageName, moduleName, newLocation);
 		}
 
-		[TestCase("Home/Page61")]
+		[TestCase("Home/P1Modules/Page61")]
 		public void Test0061_MoveHTMLModuleWithinContentPaneToTop(string pageName)
 		{
 			MoveHTMLModuleWithinContentPaneToTop(Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage, pageName);
 		}
 
-		[TestCase("Home/Page61")]
+		[TestCase("Home/P1Modules/Page61")]
 		public void Test0062_MoveHTMLModuleWithinContentPaneToBottom(string pageName)
 		{
 			MoveHTMLModuleWithinContentPaneToBottom(Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage, pageName);
 		}
 
-		[TestCase("Home/Page61")]
+		[TestCase("Home/P1Modules/Page61")]
 		public void Test0063_MoveHTMLModuleWithinContentPaneUp(string pageName)
 		{
 			MoveHTMLModuleWithinContentPaneUp(Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage, pageName);
 		}
 
-		[TestCase("Home/Page61")]
+		[TestCase("Home/P1Modules/Page61")]
 		public void Test0064_MoveHTMLModuleWithinContentPaneDown(string pageName)
 		{
 			MoveHTMLModuleWithinContentPaneDown(Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage, pageName);
 		}
 
-		[TestCase("Home/Page1", "AccountLoginModule", "ContentPane")]
-		[TestCase("Home/Page2", "AccountRegistrationModule", "ContentPane")]
-		[TestCase("Home/Page4", "AdvancedSettingsModule", "ContentPane")]
-		[TestCase("Home/Page5", "BannersModule", "ContentPane")]
-		[TestCase("Home/Page7", "ConfigurationManagerModule", "ContentPane")]
-		[TestCase("Home/Page8", "ConsoleModule", "ContentPane")]
-		[TestCase("Home/Page9", "ContentListModule", "ContentPane")]
-		[TestCase("Home/Page10", "DashboardModule", "ContentPane")]
-		[TestCase("Home/Page11", "DDRMenuModule", "ContentPane")]
-		[TestCase("Home/Page12", "DigitalAssetManagementModule", "ContentPane")]
-		[TestCase("Home/Page15", "ExtensionsModule", "ContentPane")]
-		[TestCase("Home/Page17", "GoogleAnalyticsModule", "ContentPane")]
-		[TestCase("Home/Page20", "HtmlModule", "ContentPane")]
-		[TestCase("Home/Page21", "JournalModule", "ContentPane")]
-		[TestCase("Home/Page22", "LanguagesModule", "ContentPane")]
-		[TestCase("Home/Page24", "ListsModule", "ContentPane")]
-		[TestCase("Home/Page25", "LogViewerModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page1", "AccountLoginModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page2", "AccountRegistrationModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page4", "AdvancedSettingsModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page5", "BannersModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page7", "ConfigurationManagerModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page8", "ConsoleModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page9", "ContentListModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page10", "DashboardModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page11", "DDRMenuModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page12", "DigitalAssetManagementModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page15", "ExtensionsModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page17", "GoogleAnalyticsModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page20", "HtmlModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page21", "JournalModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page22", "LanguagesModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page24", "ListsModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page25", "LogViewerModule", "ContentPane")]
 		public void Test007_DragDropModuleToContentPaneOnNewPage(string pageName, string moduleName,
 																 string location)
 		{
 			DragDropModuleToContentPaneOnNewPage(Modules.CommonModulesDescription, pageName, moduleName, location);
 		}
 
-		[TestCase("Home/Page1", "AccountLoginModule", "LeftPane")]
-		[TestCase("Home/Page2", "AccountRegistrationModule", "LeftPane")]
-		[TestCase("Home/Page4", "AdvancedSettingsModule", "LeftPane")]
-		[TestCase("Home/Page5", "BannersModule", "LeftPane")]
-		[TestCase("Home/Page7", "ConfigurationManagerModule", "LeftPane")]
-		[TestCase("Home/Page8", "ConsoleModule", "LeftPane")]
-		[TestCase("Home/Page9", "ContentListModule", "LeftPane")]
-		[TestCase("Home/Page10", "DashboardModule", "LeftPane")]
-		[TestCase("Home/Page11", "DDRMenuModule", "LeftPane")]
-		[TestCase("Home/Page12", "DigitalAssetManagementModule", "LeftPane")]
-		[TestCase("Home/Page15", "ExtensionsModule", "LeftPane")]
-		[TestCase("Home/Page17", "GoogleAnalyticsModule", "LeftPane")]
-		[TestCase("Home/Page20", "HtmlModule", "LeftPane")]
-		[TestCase("Home/Page21", "JournalModule", "LeftPane")]
-		[TestCase("Home/Page22", "LanguagesModule", "LeftPane")]
-		[TestCase("Home/Page24", "ListsModule", "LeftPane")]
-		[TestCase("Home/Page25", "LogViewerModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page1", "AccountLoginModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page2", "AccountRegistrationModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page4", "AdvancedSettingsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page5", "BannersModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page7", "ConfigurationManagerModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page8", "ConsoleModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page9", "ContentListModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page10", "DashboardModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page11", "DDRMenuModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page12", "DigitalAssetManagementModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page15", "ExtensionsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page17", "GoogleAnalyticsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page20", "HtmlModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page21", "JournalModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page22", "LanguagesModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page24", "ListsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page25", "LogViewerModule", "LeftPane")]
 		public void Test008_DragAndDropModuleToLeftPane(string pageName, string moduleName, string newLocation)
 		{
 			DragAndDropModuleToLeftPane(Modules.CommonModulesDescription, pageName, moduleName, newLocation);
 		}
 
-		[TestCase("Home/Page71", "HtmlModule", "ContentPane")]
-		[TestCase("Home/Page71", "HtmlModule", "LeftPane")]
-		[TestCase("Home/Page71", "HtmlModule", "ContentPaneLower")]
-		[TestCase("Home/Page71", "HtmlModule", "SideBarPane")]
-		[TestCase("Home/Page71", "HtmlModule", "FooterLeftOuterPane")]
-		[TestCase("Home/Page71", "HtmlModule", "FooterLeftPane")]
-		[TestCase("Home/Page71", "HtmlModule", "FooterCenterPane")]
-		[TestCase("Home/Page71", "HtmlModule", "FooterRightPane")]
-		[TestCase("Home/Page71", "HtmlModule", "FooterRightOuterPane")]
+		[TestCase("Home/P1Modules/Page71", "HtmlModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page71", "HtmlModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page71", "HtmlModule", "ContentPaneLower")]
+		[TestCase("Home/P1Modules/Page71", "HtmlModule", "SideBarPane")]
+		[TestCase("Home/P1Modules/Page71", "HtmlModule", "FooterLeftOuterPane")]
+		[TestCase("Home/P1Modules/Page71", "HtmlModule", "FooterLeftPane")]
+		[TestCase("Home/P1Modules/Page71", "HtmlModule", "FooterCenterPane")]
+		[TestCase("Home/P1Modules/Page71", "HtmlModule", "FooterRightPane")]
+		[TestCase("Home/P1Modules/Page71", "HtmlModule", "FooterRightOuterPane")]
 		public void Test009_DragAngDropHTMLModulesToAllPanesOnOnePage(string pageName, string moduleName,
 																	   string location)
 		{
 			DragAngDropHTMLModulesToAllPanesOnOnePage(Modules.CommonModulesDescription, pageName, moduleName, location);
 		}
 
-		[TestCase("Home/Page62", "HtmlModule", "ContentPane")]
-		[TestCase("Home/Page63", "HtmlModule", "LeftPane")]
-		[TestCase("Home/Page64", "HtmlModule", "ContentPaneLower")]
-		[TestCase("Home/Page65", "HtmlModule", "SideBarPane")]
-		[TestCase("Home/Page66", "HtmlModule", "FooterLeftOuterPane")]
-		[TestCase("Home/Page67", "HtmlModule", "FooterLeftPane")]
-		[TestCase("Home/Page68", "HtmlModule", "FooterCenterPane")]
-		[TestCase("Home/Page69", "HtmlModule", "FooterRightPane")]
-		[TestCase("Home/Page70", "HtmlModule", "FooterRightOuterPane")]
+		[TestCase("Home/P1Modules/Page62", "HtmlModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page63", "HtmlModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page64", "HtmlModule", "ContentPaneLower")]
+		[TestCase("Home/P1Modules/Page65", "HtmlModule", "SideBarPane")]
+		[TestCase("Home/P1Modules/Page66", "HtmlModule", "FooterLeftOuterPane")]
+		[TestCase("Home/P1Modules/Page67", "HtmlModule", "FooterLeftPane")]
+		[TestCase("Home/P1Modules/Page68", "HtmlModule", "FooterCenterPane")]
+		[TestCase("Home/P1Modules/Page69", "HtmlModule", "FooterRightPane")]
+		[TestCase("Home/P1Modules/Page70", "HtmlModule", "FooterRightOuterPane")]
 		public void Test0010_DragAngDropHTMLModulesToAllPanesOnPage(string pageName, string moduleName,
 																	string location)
 		{
 			DragAngDropHTMLModulesToAllPanesOnPage(Modules.CommonModulesDescription, pageName, moduleName, location);
 		}
 
-		[TestCase("Home/Page72")]
+		[TestCase("Home/P1Modules/Page72")]
 		public void Test0011_AddExistingModuleNoCopy(string pageName)
 		{
 			AddExistingModuleNoCopy(Modules.CommonModulesDescription, pageName);
 		}
 
-		[TestCase("Home/Page72", "Terrible Cycles, Inc.")]
+		[TestCase("Home/P1Modules/Page72", "Terrible Cycles, Inc.")]
 		public void Test0012_EditContentOfExistingModule(string pageName, string moduleContent)
 		{
 			EditContentOfExistingModuleWithoutCopy("Common", "CorePages.Modules", Modules.CommonModulesDescription, pageName, moduleContent);
 		}
 
-		[TestCase("Home/Page73")]
+		[TestCase("Home/P1Modules/Page73")]
 		public void Test0013_AddExistingModuleWithCopy(string pageName)
 		{
 			AddExistingModuleWithCopy(Modules.CommonModulesDescription, pageName);
 		}
 
-		[TestCase("Home/Page73", "Awesome Cycles, Inc.")]
+		[TestCase("Home/P1Modules/Page73", "Awesome Cycles, Inc.")]
 		public void Test0014_EditContentOfExistingModule(string pageName, string moduleContent)
 		{
 			EditContentOfExistingModuleWithCopy("Common", "CorePages.Modules", Modules.CommonModulesDescription, pageName, moduleContent);
@@ -244,15 +244,15 @@ namespace DNNSelenium.Platform.P1
 			UpdateModuleSettings(assyName, pageClassName, openMethod, Modules.CommonModulesDescription);
 		}
 
-		[TestCase("Home/Page60", "HtmlModule", "ContentPane")]
-		[TestCase("Home/Page60", "HtmlModule", "LeftPane")]
-		[TestCase("Home/Page60", "HtmlModule", "ContentPaneLower")]
-		[TestCase("Home/Page60", "HtmlModule", "SideBarPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterLeftOuterPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterLeftPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterCenterPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterRightPane")]
-		[TestCase("Home/Page60", "HtmlModule", "FooterRightOuterPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "ContentPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "ContentPaneLower")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "SideBarPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterLeftOuterPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterLeftPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterCenterPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterRightPane")]
+		[TestCase("Home/P1Modules/Page60", "HtmlModule", "FooterRightOuterPane")]
 		public void Test016_DeleteModule(string pageName, string moduleName, string location)
 		{
 			DeleteModule(Modules.CommonModulesDescription, pageName, moduleName, location);

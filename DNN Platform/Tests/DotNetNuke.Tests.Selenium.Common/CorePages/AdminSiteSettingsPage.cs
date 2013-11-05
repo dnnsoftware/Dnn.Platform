@@ -73,7 +73,7 @@ namespace DNNSelenium.Common.CorePages
 
 			Thread.Sleep(Settings.Default.WaitFactor * 3000);
 
-			FindElement(By.XPath(UpdateButton)).WaitTillEnabled(60);
+			//FindElement(By.XPath(UpdateButton)).WaitTillEnabled(60);
 		}
 
 		public void SetUserRegistrationType(string registrationType)
