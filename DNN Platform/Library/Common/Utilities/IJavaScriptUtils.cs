@@ -27,7 +27,7 @@ namespace DotNetNuke.Common.Utilities
     public interface IJavaScriptUtils
     {
         /// <summary>
-        /// Regist a javascript varible in a page with its value
+        /// Registers a javascript variable in a page with its value
         /// </summary>
         /// <param name="variableName">Variable name and also the name of the registered code</param>
         /// <param name="value">Object to be assigned to the variable</param>
