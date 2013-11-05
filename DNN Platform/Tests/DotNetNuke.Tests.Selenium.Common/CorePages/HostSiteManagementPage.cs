@@ -92,7 +92,23 @@ namespace DNNSelenium.Common.CorePages
 			Type(By.XPath(SiteAliasTextBox), baseUrl + "/" + siteName);
 			Type(By.XPath(TitleTextBox), title);
 
-			CheckBoxCheck( By.XPath(EnableCurrentUserAsAdmin));
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Create Site' button:");
+			ClickOnButton(By.XPath(CreateSiteFrameButton));
+
+			WaitForElement(By.XPath(SiteCreatedConfirmationMessage), 60);
+		}
+
+		public void AddNewParentSite(string siteName, string title)
+		{
+			WaitAndClick(By.XPath(AddNewSiteButton));
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new parent site:");
+
+			WaitForElement(By.Id(ParentSiteRadioButton));
+
+			Clear(By.XPath(SiteAliasTextBox));
+			Type(By.XPath(SiteAliasTextBox), siteName);
+			Type(By.XPath(TitleTextBox), title);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Create Site' button:");
 			ClickOnButton(By.XPath(CreateSiteFrameButton));

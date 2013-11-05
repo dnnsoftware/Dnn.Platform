@@ -96,22 +96,39 @@ namespace DNNSelenium.Common.BaseClasses
 			StringAssert.AreEqualIgnoringCase(logContentAfterTests, logContentBeforeTests, "ERROR in the Log");
 		}
 
-		public void CreateChildSiteAndPrepareSettings(string childSiteName)
+		public void DisablePopups(string url)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Disable Popups: '");
+
+			var adminSiteSettingsPage = new AdminSiteSettingsPage(_driver);
+			adminSiteSettingsPage.OpenUsingButtons(url);
+			adminSiteSettingsPage.DisablePopups();
+		}
+
+		public void CreateChildSiteAndPrepareSettings(string childSiteName, string childSiteTitle)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Child Site And Prepare Settings: '");
 
 			HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
 			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
-			hostSiteMgmtPage.AddNewChildSite(_baseUrl, childSiteName, "Child Site");
+			hostSiteMgmtPage.AddNewChildSite(_baseUrl, childSiteName, childSiteTitle);
 
-			//navigate to child site
+			DisablePopups(_baseUrl + "/" + childSiteName);
+		}
+
+		public void CreateParentSiteAndPrepareSettings(string parentSiteName, string parentSiteTitle)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Parent Site And Prepare Settings: '");
+
+			HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
 			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
-			hostSiteMgmtPage.NavigateToChildSite(_baseUrl, childSiteName);
+			hostSiteMgmtPage.AddNewParentSite(parentSiteName, parentSiteTitle);
 
-			//disable popups on child site
-			var adminSiteSettingsPage = new AdminSiteSettingsPage(_driver);
-			adminSiteSettingsPage.OpenUsingButtons(_baseUrl);
-			adminSiteSettingsPage.DisablePopups();
+			LoginPage loginPage = new LoginPage(_driver);
+			loginPage.OpenUsingUrl(parentSiteName);
+			loginPage.DoLogin("host", "dnnhost");
+			
+			DisablePopups(parentSiteName);
 		}
 
 		public void CreatePageAndSetViewPermission(string pageName, string option, string permissionOption)
@@ -124,19 +141,24 @@ namespace DNNSelenium.Common.BaseClasses
 			blankPage.AddNewPage(pageName);
 			blankPage.SetPageViewPermissions(option, permissionOption);
 
-			//The new page opens by Default after page created
+			blankPage.CloseEditMode();
 		}
 
-		public void AddModule(Dictionary<string, Modules.ModuleIDs> modulesDescription, string moduleName, string pane)
+		public void AddModule(string pageName, Dictionary<string, Modules.ModuleIDs> modulesDescription, string moduleName, string pane)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Add a new Module to Page: '");
 
+			var blankPage = new BlankPage(_driver);
+			blankPage.OpenUsingUrl(_baseUrl, pageName);
+			
 			var module = new Modules(_driver);
 			string moduleNameOnPage = modulesDescription[moduleName].IdWhenOnPage;
 			string moduleNameOnBanner = modulesDescription[moduleName].IdWhenOnBanner;
 
 			module.OpenModulePanelUsingControlPanel();
 			module.AddNewModuleUsingMenu(moduleNameOnBanner, moduleNameOnPage, pane);
+
+			blankPage.CloseEditMode();
 		}
 	}
 }

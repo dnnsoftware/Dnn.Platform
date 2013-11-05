@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using DNNSelenium.Common.BaseClasses;
 using OpenQA.Selenium;
 
 namespace DNNSelenium.Common.BaseClasses
@@ -47,8 +48,9 @@ namespace DNNSelenium.Common.BaseClasses
 			lastElementStart = lastElement.Location;
 			if (strict == SelectByValueType.Equal)
 			{
-				_driver.FindElement(By.XPath("//*[@id='" + listDropDown.GetAttribute("id") + "']//li[text() = '" + value + "']")).ScrollIntoView().
-					Click();
+				_driver.FindElement(By.XPath("//*[@id='" + listDropDown.GetAttribute("id") + "']//li[text() = '" + value + "']")).
+								ScrollIntoView().
+								Click();
 			}
 			else if (strict == SelectByValueType.Contains)
 			{
@@ -72,6 +74,42 @@ namespace DNNSelenium.Common.BaseClasses
 
 		}
 			
+		public void SelectCheckBoxByValue(string value)
+		{
+			IWebElement listDropDown = _driver.FindElement(_listDropDownId);
+
+			IWebElement firstElement = _driver.FindElement(By.XPath("//*[@id='" + listDropDown.GetAttribute("id") + "']//li[1]"));
+			IWebElement lastElement = _driver.FindElement(By.XPath("//*[@id='" + listDropDown.GetAttribute("id") + "']//li[last()]"));
+
+			Point fistElementStart = firstElement.Location;
+			Point lastElementStart = lastElement.Location;
+			
+			_driver.FindElement(_arrowId).Click();
+
+			BasePage.WaitTillStopMoving(_driver, firstElement, fistElementStart);
+			BasePage.WaitTillStopMoving(_driver, lastElement, lastElementStart);
+
+			fistElementStart = firstElement.Location;
+			lastElementStart = lastElement.Location;
+
+			_driver.FindElement(By.XPath("//*[@id='" + listDropDown.GetAttribute("id") + "']//li/label[text() = '" + value + "']")).
+								ScrollIntoView().
+								Click();
+
+			Thread.Sleep(1000);
+
+			try
+			{
+				BasePage.WaitTillStopMoving(_driver, firstElement, fistElementStart);
+				BasePage.WaitTillStopMoving(_driver, lastElement, lastElementStart);
+			}
+			catch (StaleElementReferenceException)
+			{
+				Trace.WriteLine(BasePage.TraceLevelElement + "StaleElementReferenceException in SelectByValue of '" + value + "'");
+			}
+
+		}
+
 		public int CountAllOptions ()
 		{
 			IWebElement listDropDown = _driver.FindElement(_listDropDownId);
@@ -83,6 +121,12 @@ namespace DNNSelenium.Common.BaseClasses
 		{
 			Trace.WriteLine(BasePage.TraceLevelElement + "Select '" + value + "' in the list '" + listDropDownId + "'");
 			new SlidingSelect(driver, arrowId, listDropDownId).SelectByValue(value, strict);
+		}
+
+		public static void SelectCheckBoxByValue(IWebDriver driver, By arrowId, By listDropDownId, string value)
+		{
+			Trace.WriteLine(BasePage.TraceLevelElement + "Select '" + value + "' in the list '" + listDropDownId + "'");
+			new SlidingSelect(driver, arrowId, listDropDownId).SelectCheckBoxByValue(value);
 		}
 
 		public static int CountAllOptions (IWebDriver driver, By arrowId, By listDropDownId)
@@ -260,36 +304,4 @@ namespace DNNSelenium.Common.BaseClasses
 		}
 	}
 
-	public interface IUserInfoBlock
-	{
-		string MessageLink { get; }
-		string NotificationLink { get; }
-		string RegisteredUserLink { get; }
-		string UserAvatar { get; }
-	}
-
-	public class CorePacket : IUserInfoBlock
-	{
-		public string MessageLink
-		{
-			get { return "dnn_dnnUser_messageLink";  }
-		}
-
-		public string NotificationLink
-		{
-			get { return "dnn_dnnUser_notificationLink"; }
-		}
-
-		public string RegisteredUserLink
-		{
-			get { return "dnn_dnnUser_enhancedRegisterLink"; }
-		}
-
-		public string UserAvatar
-		{
-			get { return "dnn_dnnUser_avatar"; }
-		}
-
-		static public readonly CorePacket TheInstance = new CorePacket();
-	}
 }
