@@ -93,6 +93,8 @@
     <Compile Include="CorePages\AdminVendorsPage.cs" />
     <Compile Include="CorePages\BlankPage.cs" />
     <Compile Include="BaseClasses\BasePages\ExtensionsPage.cs" />
+    <Compile Include="CorePages\MessageCenterModule.cs" />
+    <Compile Include="CorePages\JournalModule.cs" />
     <Compile Include="CorePages\MemberDirectoryModule.cs" />
     <Compile Include="CorePages\FileUploadPage.cs" />
     <Compile Include="CorePages\HostConfigurationManagerPage.cs" />
@@ -142,6 +144,8 @@
     <Compile Include="Tests\BVT\BVTUsers.cs" />
     <Compile Include="Tests\BVT\BVTZLogs.cs" />
     <Compile Include="Tests\Installer\InstallerTests.cs" />
+    <Compile Include="Tests\P1\P1Journal.cs" />
+    <Compile Include="Tests\P1\P1MessageCenter.cs" />
     <Compile Include="Tests\P1\P1UserProfile.cs" />
     <Compile Include="Tests\P1\P1MemberDirectory.cs" />
     <Compile Include="Tests\P1\P1SecurityRoles.cs" />

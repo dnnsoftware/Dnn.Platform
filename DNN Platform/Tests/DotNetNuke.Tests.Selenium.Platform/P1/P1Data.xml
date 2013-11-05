@@ -2,7 +2,7 @@
 
 <Tests>
 
-  <settings name="P1 CheckList" browser="firefox" baseURL="ce720v2.dnndev.me" InstallerLanguage="en" UserName="host"
+  <settings name="P1 CheckList" browser="ie" baseURL="ce720v3.dnndev.me" InstallerLanguage="en" UserName="host"
             Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
             DatabaseType="" DatabaseServerName="" DatabaseName="" DatabaseFilename="" ObjectQualifier="" Security=""
             DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" />
@@ -67,10 +67,34 @@
                    password = "uSer1212"/>
   
   <userProfile name = "User Profile" 
-               registeredUserName = "RegisteredUser" 
+               registeredUserName = "AuthorizedUser" 
                registeredUserPassword = "pAssword10" 
                newPassword = "pAss10word" 
-               registeredUserDisplayName = "UserDisplayName"
+               registeredUserDisplayName = "AuthorizedUserDisplayName"
                avatarFileToUpload = "owl.jpg"/>
+
+  <messageCenter name= "Message Center"
+          userNameNumberOne = "Message_User001"
+          userNameNumberTwo = "Message_User002"
+          userNameNumberThree = "Message_User003"
+          userDisplayNameNumberOne = "Message_UserDisplayName001"
+          userDisplayNameNumberTwo = "Message_UserDisplayName002"
+          userDisplayNameNumberThree = "Message_UserDisplayName003"
+          password = "uSer1212"
+          subject = "P1 test Message"/>
+
+  <journal name= "Journal"
+          userNameNumberOne = "Journal_User001"
+          userNameNumberTwo = "Journal_User002"
+          userNameNumberThree = "Journal_User003"
+          userDisplayNameNumberOne = "Journal_UserDisplayName001"
+          userDisplayNameNumberTwo = "Journal_UserDisplayName002"
+          userDisplayNameNumberThree = "Journal_UserDisplayName003"
+          password = "uSer1212"
+          subject = "P1 test Message"
+          comment = "P1 test Comment"
+          fileNameToAttach = "owls.txt"
+          pictureNameToAttach = "owl.jpg"
+          pageName = "journal"/>
 
 </Tests>
