@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Search
 
         #region Private Properties
 
-        private const int BatchSize = 5000;
+        private const int BatchSize = 250;
         private const int ClauseMaxCount = 1024;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserIndexer));
