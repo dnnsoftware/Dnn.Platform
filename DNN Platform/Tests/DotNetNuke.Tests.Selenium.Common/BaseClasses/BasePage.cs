@@ -68,11 +68,11 @@ namespace DNNSelenium.Common.BaseClasses
 			}
 		}
 
-		public void CloseEditMode(string pageName)
+		public void CloseEditMode()
 		{
 			Trace.WriteLine(TraceLevelPage + "Close Page Edit mode:");
 			SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.CloseEditModeButton);
-			FindElement(By.XPath(ControlPanelIDs.PageInEditMode)).WaitTillNotVisible();
+			//FindElement(By.XPath(ControlPanelIDs.PageInEditMode)).WaitTillNotVisible();
 		}
 
 		/*
@@ -393,7 +393,7 @@ namespace DNNSelenium.Common.BaseClasses
 				ScrollIntoView(FindElement(tabName), 200).WaitTillVisible();
 			}
 
-			FindElement(tabName).Click();
+			WaitForElement(tabName).Click();
 		}
 
 		public void ClickOnButton(By buttonName)
@@ -440,6 +440,11 @@ namespace DNNSelenium.Common.BaseClasses
 		public void SlidingSelectByValue(By arrowId, By listDropDownId, string value)
 		{
 			new SlidingSelect(_driver, arrowId, listDropDownId).SelectByValue(value);
+		}
+
+		public void SlidingSelectWithCheckBox(By arrowId, By listDropDownId, string value)
+		{
+			new SlidingSelect(_driver, arrowId, listDropDownId).SelectCheckBoxByValue(value);
 		}
 
 		public void LoadableSelectByValue(By dropDownId, string value)

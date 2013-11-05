@@ -1,7 +1,9 @@
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using DNNSelenium.Common.BaseClasses;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace DNNSelenium.Common.CorePages
 {
@@ -34,8 +36,6 @@ namespace DNNSelenium.Common.CorePages
 		public static string MessagesLink = "//div[contains(@id, 'ViewConsole_Console')]//h3[text() = 'Messages']";
 		public static string MyProfileLink = "//div[contains(@id, 'ViewConsole_Console')]//h3[text() = 'My Profile']";
 
-		public static string FriendsNotFoundMessage = "//div[@class = 'dnnFormMessage dnnFormInfo']";
-		public static string FriendsNotFoundMessageText = "No members were found that satisfy the search conditions.";
 		public static string LocationCity = "//span[contains(@data-bind, 'text: Location()')]";
 
 		public void OpenUsingUrl(string baseUrl)
@@ -49,6 +49,8 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'User Account' page:");
 			GoToUrl(baseUrl);
 			WaitAndClick(By.XPath(ControlPanelIDs.RegisterLink));
+
+			Thread.Sleep(1000);
 		}
 
 		public void OpenMyProfileInfo()
@@ -65,5 +67,24 @@ namespace DNNSelenium.Common.CorePages
 
 			Thread.Sleep(1000);
 		}
+
+		public void OpenMessagesLink(string baseUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Open 'Messages' Link:");
+			OpenUsingLink(baseUrl);
+			WaitAndClick(By.XPath(UserAccountPage.MessagesLink));
+
+			Thread.Sleep(1000);
+		}
+
+		public void OpenActivityFeedLink(string baseUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Open 'Activity Feed' Link:");
+			OpenUsingLink(baseUrl);
+			WaitAndClick(By.XPath(UserAccountPage.ActivityFeedLink));
+
+			Thread.Sleep(1000);
+		}
+
 	}
 }
