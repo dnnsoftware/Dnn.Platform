@@ -136,7 +136,8 @@ namespace DotNetNuke.Providers.RadEditorProvider
 				var virtualDestinationPath = FileSystemValidation.GetDestinationFolder(virtualNewPath);
 
 				string returnValue;
-				if (FileSystemValidation.GetDestinationFolder(virtualPath) == virtualDestinationPath)
+			    var isRename = FileSystemValidation.GetDestinationFolder(virtualPath) == virtualDestinationPath;
+				if (isRename)
 				{
 					//rename directory
 					returnValue = DNNValidator.OnRenameFolder(virtualPath);
@@ -162,9 +163,18 @@ namespace DotNetNuke.Providers.RadEditorProvider
 					return DNNValidator.LogDetailError(ErrorCodes.CannotMoveFolder_ChildrenVisible);
 				}
 
-			    var dnnFolderToMove = FolderManager.Instance.GetFolder(PortalSettings.PortalId,FileSystemValidation.ToDBPath(virtualPath));
-			    var dnnDestinationFolder = FolderManager.Instance.GetFolder(PortalSettings.PortalId,FileSystemValidation.ToDBPath(virtualDestinationPath));
-			    FolderManager.Instance.MoveFolder( dnnFolderToMove, dnnDestinationFolder);
+			    if (isRename)
+                {
+                    var dnnFolderToRename = FolderManager.Instance.GetFolder(PortalSettings.PortalId, FileSystemValidation.ToDBPath(virtualPath));
+                    var newFolderName = virtualNewPath.TrimEnd('/').Split('/').LastOrDefault();
+                    FolderManager.Instance.RenameFolder(dnnFolderToRename, newFolderName);
+			    }
+			    else // move
+                {
+                    var dnnFolderToMove = FolderManager.Instance.GetFolder(PortalSettings.PortalId, FileSystemValidation.ToDBPath(virtualPath));
+                    var dnnDestinationFolder = FolderManager.Instance.GetFolder(PortalSettings.PortalId, FileSystemValidation.ToDBPath(virtualDestinationPath));
+                    FolderManager.Instance.MoveFolder(dnnFolderToMove, dnnDestinationFolder);
+			    }
 
 				return returnValue;
 			}
