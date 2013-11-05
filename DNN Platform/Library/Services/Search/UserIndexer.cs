@@ -197,16 +197,15 @@ namespace DotNetNuke.Services.Search
                         break;
                     }
                 }
-                
+
+                if (needReindex)
+                {
+                    PortalController.DeletePortalSetting(portalId, UserIndexResetFlag);
+                }
             }
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-            }
-
-            if (needReindex)
-            {
-                PortalController.DeletePortalSetting(portalId, UserIndexResetFlag);
             }
 
             return searchDocuments.Values;
