@@ -22,6 +22,7 @@ namespace DNNSelenium.Common.Tests.P1
 		private string _userDisplayNameNumberThree;
 		private string _password;
 		private string _pageName;
+
 		protected abstract string DataFileLocation { get; }
 
 		[TestFixtureSetUp]
@@ -51,17 +52,15 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
-			CreatePageAndSetViewPermission(_pageName, "All Users", "allow");
-
-			//The new page opens by Default after page created
-
-			AddModule(Modules.CommonModulesDescription, "MemberDirectoryModule", "ContentPane");
-
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 			manageUsersPage.AddNewUser(_userNameNumberOne, _userDisplayNameNumberOne, "user10@mail.com", _password);
 			manageUsersPage.AddNewUser(_userNameNumberTwo, _userDisplayNameNumberTwo, "user10@mail.com", _password);
 			manageUsersPage.AddNewUser(_userNameNumberThree, _userDisplayNameNumberThree, "user10@mail.com", _password);
+
+			CreatePageAndSetViewPermission(_pageName, "All Users", "allow");
+
+			AddModule(_pageName, Modules.CommonModulesDescription, "MemberDirectoryModule", "ContentPane");
 
 			_logContent = LogContent();
 		}
@@ -70,10 +69,25 @@ namespace DNNSelenium.Common.Tests.P1
 		public void Cleanup()
 		{
 			VerifyLogs(_logContent);
+
+			var manageUsersPage = new ManageUsersPage(_driver);
+			manageUsersPage.OpenUsingControlPanel(_baseUrl);
+			manageUsersPage.DeleteUser(_userNameNumberOne);
+			manageUsersPage.DeleteUser(_userNameNumberTwo);
+			manageUsersPage.DeleteUser(_userNameNumberThree);
+			manageUsersPage.RemoveDeletedUsers();
+
+			var page = new BlankPage(_driver);
+			page.OpenUsingUrl(_baseUrl, _pageName);
+			page.DeletePage(_pageName);
+
+			var adminRecycleBinPage = new AdminRecycleBinPage(_driver);
+			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
+			adminRecycleBinPage.EmptyRecycleBin();
 		}
 
 		[Test]
-		public void Test002_AddAsFriend()
+		public void Test001_AddAsFriend()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Send Friend Request'");
 
@@ -86,28 +100,28 @@ namespace DNNSelenium.Common.Tests.P1
 			var module = new MemberDirectoryModule(_driver);
 			module.AddAsFriend(_userDisplayNameNumberTwo);
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT 'Add Friend link changed to 'Pending Request' link'");
+			Trace.WriteLine("ASSERT 'Add Friend link changed to 'Pending Request' link'");
 			Assert.IsTrue(module.ElementPresent(By.XPath("//div[not(@style)]/div[ul[@class = 'MdMemberInfo']//span[contains(text(), '" + _userDisplayNameNumberTwo + "')]]/ul/li[@class = 'mdFriendPending']")));
 
 			var userAccountPage = new UserAccountPage(_driver);
 			userAccountPage.OpenFriendsLink(_baseUrl);
 
-			userAccountPage.WaitForElement(By.XPath(UserAccountPage.FriendsNotFoundMessage)).Info();
+			userAccountPage.WaitForElement(By.XPath(MemberDirectoryModule.FriendsNotFoundMessage)).Info();
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT 'Friends are not found' message is present :");
-			Assert.That(userAccountPage.FindElement(By.XPath(UserAccountPage.FriendsNotFoundMessage)).Text,
-						Is.EqualTo(UserAccountPage.FriendsNotFoundMessageText),
+			Trace.WriteLine("ASSERT 'Friends are not found' message is present :");
+			Assert.That(userAccountPage.FindElement(By.XPath(MemberDirectoryModule.FriendsNotFoundMessage)).Text,
+						Is.EqualTo(MemberDirectoryModule.FriendsNotFoundMessageText),
 						"Info message is not found");
 
 			loginPage.LoginUsingDirectUrl(_baseUrl,_userNameNumberTwo, _password);
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT Notification icon contains number '1' for incoming request :");
-			Assert.That(loginPage.FindElement(By.XPath(ControlPanelIDs.NotificationLink + "/span")).Text, Is.EqualTo("1"));
+			Trace.WriteLine("ASSERT Notification icon contains number '1' for incoming request :");
+			Assert.That(loginPage.WaitForElement(By.XPath(ControlPanelIDs.NotificationLink + "/span")).Text, Is.EqualTo("1"));
 
 		}
 
 		[Test]
-		public void Test003_AcceptFriendRequest()
+		public void Test002_AcceptFriendRequest()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Accept Friend Request'");
 
@@ -120,25 +134,25 @@ namespace DNNSelenium.Common.Tests.P1
 			var module = new MemberDirectoryModule(_driver);
 			module.AcceptFriendRequest(_userDisplayNameNumberThree);
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT 'Pending Request' link changed to 'Remove Friend' link'");
+			Trace.WriteLine("ASSERT 'Pending Request' link changed to 'Remove Friend' link'");
 			Assert.IsTrue(module.ElementPresent(By.XPath("//div[not(@style)]/div[ul[@class = 'MdMemberInfo']//span[contains(text(), '" + _userDisplayNameNumberThree + "')]]/ul/li[@class = 'mdFriendRemove']")));
 
 			var userAccountPage = new UserAccountPage(_driver);
 			userAccountPage.OpenFriendsLink(_baseUrl);
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT New friend is listed:");
+			Trace.WriteLine("ASSERT New friend is listed:");
 			Assert.IsTrue(userAccountPage.ElementPresent(By.XPath("//div[not(@style)]/div/ul[@class = 'MdMemberInfo']//span[contains(text(), '" + _userDisplayNameNumberThree + "')]")), "New Friend is not found");
 
 			loginPage.LoginUsingDirectUrl(_baseUrl, _userNameNumberThree, _password);
 
 			userAccountPage.OpenFriendsLink(_baseUrl);
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT New friend is listed:");
+			Trace.WriteLine("ASSERT New friend is listed:");
 			Assert.IsTrue(userAccountPage.ElementPresent(By.XPath("//div[not(@style)]/div/ul[@class = 'MdMemberInfo']//span[contains(text(), '" + _userDisplayNameNumberTwo + "')]")), "New Friend is not found");
 		}
 
 		[Test]
-		public void Test004_RemoveFriend()
+		public void Test003_RemoveFriend()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Remove Friend'");
 
@@ -151,33 +165,33 @@ namespace DNNSelenium.Common.Tests.P1
 			var module = new MemberDirectoryModule(_driver);
 			module.RemoveFriend(_userDisplayNameNumberThree);
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT 'Remove Friend' link changed to 'Add Friend' link'");
+			Trace.WriteLine("ASSERT 'Remove Friend' link changed to 'Add Friend' link'");
 			Assert.IsTrue(module.ElementPresent(By.XPath("//div[not(@style)]/div[ul[@class = 'MdMemberInfo']//span[contains(text(), '" + _userDisplayNameNumberTwo + "')]]/ul/li[@class = 'mdFriendRequest']")));
 
 			var userAccountPage = new UserAccountPage(_driver);
 			userAccountPage.OpenFriendsLink(_baseUrl);
 
-			userAccountPage.WaitForElement(By.XPath(UserAccountPage.FriendsNotFoundMessage)).Info();
+			userAccountPage.WaitForElement(By.XPath(MemberDirectoryModule.FriendsNotFoundMessage)).Info();
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT 'Friends are not found' message is present :");
-			Assert.That(userAccountPage.FindElement(By.XPath(UserAccountPage.FriendsNotFoundMessage)).Text,
-						Is.EqualTo(UserAccountPage.FriendsNotFoundMessageText),
+			Trace.WriteLine("ASSERT 'Friends are not found' message is present :");
+			Assert.That(userAccountPage.FindElement(By.XPath(MemberDirectoryModule.FriendsNotFoundMessage)).Text,
+						Is.EqualTo(MemberDirectoryModule.FriendsNotFoundMessageText),
 						"Info message is not found");
 
 			loginPage.LoginUsingDirectUrl(_baseUrl, _userNameNumberThree, _password);
 
 			userAccountPage.OpenFriendsLink(_baseUrl);
 
-			userAccountPage.WaitForElement(By.XPath(UserAccountPage.FriendsNotFoundMessage)).Info();
+			userAccountPage.WaitForElement(By.XPath(MemberDirectoryModule.FriendsNotFoundMessage)).Info();
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT 'Friends are not found' message is present :");
-			Assert.That(userAccountPage.FindElement(By.XPath(UserAccountPage.FriendsNotFoundMessage)).Text,
-						Is.EqualTo(UserAccountPage.FriendsNotFoundMessageText),
+			Trace.WriteLine("ASSERT 'Friends are not found' message is present :");
+			Assert.That(userAccountPage.FindElement(By.XPath(MemberDirectoryModule.FriendsNotFoundMessage)).Text,
+						Is.EqualTo(MemberDirectoryModule.FriendsNotFoundMessageText),
 						"Info message is not found");
 		}
 
 		[Test]
-		public void Test005_HostAccessToMemberDirectory()
+		public void Test004_HostAccessToMemberDirectory()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Host Access To Member Directory'");
 
@@ -190,10 +204,10 @@ namespace DNNSelenium.Common.Tests.P1
 			var module = new MemberDirectoryModule(_driver);
 			module.FindElement(By.XPath("//ul[@id = 'mdMemberList']/li[last()]")).Info();
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of Users are correct :");
+			Trace.WriteLine("ASSERT the number of Users are correct :");
 			Assert.That(module.FindElements(By.XPath("//ul[@id = 'mdMemberList']/li")).Count, Is.EqualTo(4), "The number of Users is incorrect");
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the link visibility is correct :");
+			Trace.WriteLine("ASSERT the link visibility is correct :");
 			Assert.IsFalse(module.ElementPresent(By.XPath("//ul[@id = 'mdMemberList']/li[1]//div[not(@style)]/div[ul[@class = 'mdHoverActions' and not(@style)]]")),
 								 "The links are displayed in User #1 Info");
 			Assert.IsTrue(module.ElementPresent(By.XPath("//ul[@id = 'mdMemberList']/li[2]//div[not(@style)]/div[ul[@class = 'mdHoverActions' and not(@style)]]")),
@@ -206,7 +220,7 @@ namespace DNNSelenium.Common.Tests.P1
 		}
 
 		[Test]
-		public void Test006_RegularUserAccessToMemberDirectory()
+		public void Test005_RegularUserAccessToMemberDirectory()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Authorized User Access To Member Directory'");
 
@@ -219,10 +233,10 @@ namespace DNNSelenium.Common.Tests.P1
 			var module = new MemberDirectoryModule(_driver);
 			module.FindElement(By.XPath("//ul[@id = 'mdMemberList']/li[last()]")).Info();
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of Users are correct :");
+			Trace.WriteLine("ASSERT the number of Users are correct :");
 			Assert.That(module.FindElements(By.XPath("//ul[@id = 'mdMemberList']/li")).Count, Is.EqualTo(4), "The number of Users is incorrect");
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the link visibility is correct :");
+			Trace.WriteLine("ASSERT the link visibility is correct :");
 			Assert.IsTrue(module.ElementPresent(By.XPath("//ul[@id = 'mdMemberList']/li[1]//div[not(@style)]/div[ul[@class = 'mdHoverActions' and not(@style)]]")),
 					 "The links are not displayed in User #1 Info");
 			Assert.IsTrue(module.ElementPresent(By.XPath("//ul[@id = 'mdMemberList']/li[2]//div[not(@style)]/div[ul[@class = 'mdHoverActions' and not(@style)]]")),
@@ -234,7 +248,7 @@ namespace DNNSelenium.Common.Tests.P1
 		}
 
 		[Test]
-		public void Test007_AnonymousAccessToMemberDirectory()
+		public void Test006_AnonymousAccessToMemberDirectory()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Anonymous User Access To Member Directory'");
 
@@ -247,10 +261,10 @@ namespace DNNSelenium.Common.Tests.P1
 			var module = new MemberDirectoryModule(_driver);
 			module.FindElement(By.XPath("//ul[@id = 'mdMemberList']/li[last()]")).Info();
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of Users are correct :");
+			Trace.WriteLine("ASSERT the number of Users are correct :");
 			Assert.That(module.FindElements(By.XPath("//ul[@id = 'mdMemberList']/li")).Count, Is.EqualTo(4), "The number of Users is incorrect");
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the link visibility is correct :");
+			Trace.WriteLine("ASSERT the link visibility is correct :");
 			Assert.IsFalse(module.ElementPresent(By.XPath("//ul[@id = 'mdMemberList']/li[1]//div[not(@style)]/div[ul[@class = 'mdHoverActions' and not(@style)]]")),
 					 "The links are displayed in User #1 Info");
 			Assert.IsFalse(module.ElementPresent(By.XPath("//ul[@id = 'mdMemberList']/li[2]//div[not(@style)]/div[ul[@class = 'mdHoverActions' and not(@style)]]")),
