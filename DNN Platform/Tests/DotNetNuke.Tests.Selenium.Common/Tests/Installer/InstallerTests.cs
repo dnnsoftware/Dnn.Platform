@@ -233,7 +233,7 @@ namespace DNNSelenium.Common.Tests.Installer
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Set site language: '" + language + "'");
 			installerPage.SetDictionary(language);
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "Verify frame title: '" + installerPage.CurrentFrameTitle() + "'");
+			/*Trace.WriteLine(BasePage.TraceLevelPage + "Verify frame title: '" + installerPage.CurrentFrameTitle() + "'");
 			Utilities.SoftAssert(() => StringAssert.AreEqualIgnoringCase(installerPage.Translate("WelcomeScreenTitle"), installerPage.CurrentFrameTitle(),
 								 "The Welcome Screen title is missing or incorrect"));
 
@@ -244,7 +244,9 @@ namespace DNNSelenium.Common.Tests.Installer
 
 			installerPage.WaitForElement(By.Id(InstallerPage.LetMeAtIn), 60).WaitTillEnabled().Click();
 
-			installerPage.WaitAndSwitchToWindow(60);
+			installerPage.WaitAndSwitchToWindow(60);*/
+
+			installerPage.WelcomeScreen();
 
 			LoginPage loginPage = new LoginPage(driver);
 

@@ -56,22 +56,6 @@ namespace DNNSelenium.Common.CorePages
 			GoToUrl(baseUrl + LoginPageUrl);
 		}
 
-		/*public void DoLoginUsingLoginLink(string userName, string password)
-		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Login using user credentials:");
-
-			Trace.WriteLine(BasePage.TraceLevelElement + "Set '" + userName + "' in input field [id: " + LoginUserNameTextbox + "]");
-			WaitForElement(By.Id(LoginUserNameTextbox)).SendKeys(userName);
-
-			Trace.WriteLine(BasePage.TraceLevelElement + "Set '" + password + "' in input field [id: " + LoginPasswordTextbox + "]");
-			WaitForElement(By.Id(LoginPasswordTextbox)).SendKeys(password);
-
-			Trace.WriteLine(BasePage.TraceLevelElement + "Click on button [id: " + LoginButton + "]");
-			WaitForElement(By.Id(LoginButton)).Click();
-
-			Thread.Sleep(1000);
-		}*/
-
 		public void DoLogin(string username, string password)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Login using user credentials:");
@@ -228,6 +212,8 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Register using 'Register' link:");
 			LetMeOut();
 			DoRegisterUsingRegisterLink(userName, displayName, emailAddress, password);
+
+			_driver.Navigate().Refresh();
 		}
 
 	}

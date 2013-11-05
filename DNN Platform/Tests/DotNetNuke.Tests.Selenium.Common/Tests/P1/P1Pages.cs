@@ -86,6 +86,10 @@ namespace DNNSelenium.Common.Tests.P1
 		public void Cleanup()
 		{
 			VerifyLogs(_logContent);
+
+			var adminRecycleBinPage = new AdminRecycleBinPage(_driver);
+			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
+			adminRecycleBinPage.EmptyRecycleBin();
 		}
 
 		[Test]

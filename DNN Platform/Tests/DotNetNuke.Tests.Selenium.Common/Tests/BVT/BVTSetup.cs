@@ -39,6 +39,9 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			installerPage.OpenUsingUrl(baseUrl);
 
+			//var login = new LoginPage(driver);
+			//login.LoginAsHost(baseUrl);
+
 			installerPage.SetInstallerLanguage(installerLanguage);
 			installerPage.SetDictionary(installerLanguage);
 
@@ -51,7 +54,6 @@ namespace DNNSelenium.Common.Tests.BVT
 			installerPage.ClickOnVisitWebsiteButton();
 
 			installerPage.WelcomeScreen(); 
-			//Thread.Sleep(10 * 1000);
 
 			var adminSiteSettingsPage = new AdminSiteSettingsPage(driver);
 			adminSiteSettingsPage.OpenUsingButtons(baseUrl);

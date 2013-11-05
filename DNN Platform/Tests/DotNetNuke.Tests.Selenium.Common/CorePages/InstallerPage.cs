@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using OpenQA.Selenium;
@@ -125,18 +126,22 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitForElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
 
+			_driver.SwitchTo().Frame(WaitForElement(By.XPath("//div/iframe[contains(@src, 'GettingStarted')]"), 60));
+
+			Thread.Sleep(1000);
+
 			//WaitForElement(By.Id(IntroVideo), 60).WaitTillVisible(60);
 			//WaitForElement(By.Id(WhatIsNew), 60).WaitTillVisible(60);
+			_driver.SwitchTo().DefaultContent();
+
+			WaitForElement(By.XPath("//div[contains(@class, 'footer-left-side')]/label")).WaitTillEnabled(30);
 
 			Actions action = new Actions(_driver);
 			action.MoveToElement(FindElement(By.XPath("//div[contains(@class, 'footer-left-side')]/label"))).Click().Build().Perform();
 
-			//WaitForElement(By.Id(LetMeAtIn), 60).ScrollIntoView().WaitTillEnabled().Click();
+			WaitAndClick(By.XPath("//div[contains(@style,'display: block;')]//button[@role = 'button' and @title = 'close']"));
 
-			Click(By.XPath("//div[contains(@style,'display: block;')]//button[@role = 'button' and @title = 'close']"));
-
-			WaitAndSwitchToWindow(60);
-
+			WaitForElementNotPresent(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
 		}
 
 		public void SetWebSiteLanguage(string language)
