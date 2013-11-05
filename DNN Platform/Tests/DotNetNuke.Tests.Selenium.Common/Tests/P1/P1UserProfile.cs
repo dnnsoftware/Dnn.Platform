@@ -47,26 +47,71 @@ namespace DNNSelenium.Common.Tests.P1
 
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
-			manageUsersPage.AddNewUser(_registeredUserName, _registeredUserDisplayName, "user10@mail.com", _registeredUserPassword); 
+			manageUsersPage.AddNewUser(_registeredUserName, _registeredUserDisplayName, "user10@mail.com", _registeredUserPassword);
 
+			_logContent = LogContent();
 		}
 
-		//[TestFixtureTearDown]
+		[TestFixtureTearDown]
 		public void Cleanup()
 		{
 			VerifyLogs(_logContent);
+
+			var manageUsersPage = new ManageUsersPage(_driver);
+			manageUsersPage.OpenUsingControlPanel(_baseUrl);
+			manageUsersPage.DeleteUser(_registeredUserName);
+			manageUsersPage.RemoveDeletedUsers();
 		}
 
 		[Test]
-		public void Test001_RegisteredUserChangesProfile()
+		public void Test001_RegisteredUserUploadsAvatar()
+		{
+			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Registered User uploads Avatar'");
+
+			var loginPage = new LoginPage(_driver);
+			loginPage.LoginUsingDirectUrl(_baseUrl, _registeredUserName, _registeredUserPassword);
+
+			var manageUserProfilePage = new ManageUserProfilePage(_driver);
+			manageUserProfilePage.OpenUsingLink(_baseUrl);
+
+			manageUserProfilePage.AddProfileAvatar(_avatarFileToUpload);
+
+			var userAccountPage = new UserAccountPage(_driver);
+			userAccountPage.OpenUsingLink(_baseUrl);
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT avatar file is loaded correctly");
+
+			userAccountPage.WaitForElement(By.XPath(ManageUserProfilePage.ProfilePhoto)).Info();
+			Assert.That(manageUserProfilePage.WaitForElement(By.XPath(ManageUserProfilePage.ProfilePhoto)).GetAttribute("src"), Is.StringContaining(_avatarFileToUpload),
+						"The User Avatar is not added correctly");
+		}
+
+		[Test]
+		public void Test002_RegisteredUserRemovesAvatar()
+		{
+			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Registered User removes Avatar'");
+
+			var loginPage = new LoginPage(_driver);
+			loginPage.LoginUsingDirectUrl(_baseUrl, _registeredUserName, _registeredUserPassword);
+
+			var manageUserProfilePage = new ManageUserProfilePage(_driver);
+			manageUserProfilePage.OpenUsingLink(_baseUrl);
+
+			manageUserProfilePage.ChangeProfileAvatar(_avatarFileToUpload, "<None Specified>");
+
+			var userAccountPage = new UserAccountPage(_driver);
+			userAccountPage.OpenUsingLink(_baseUrl);
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT avatar file is loaded correctly");
+			Assert.That(manageUserProfilePage.WaitForElement(By.XPath(ManageUserProfilePage.ProfilePhoto)).GetAttribute("src"), Is.StringContaining("no_avatar.gif"),
+						"The User Avatar is not removed correctly");
+		}
+
+		[Test]
+		public void Test003_RegisteredUserChangesProfile()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Registered User changes Password'");
 
 			var loginPage = new LoginPage(_driver);
-			loginPage.LetMeOut();
-
-			loginPage.OpenUsingUrl(_baseUrl);
-			loginPage.DoLogin(_registeredUserName, _registeredUserPassword);
+			loginPage.LoginUsingDirectUrl(_baseUrl, _registeredUserName, _registeredUserPassword);
 
 			var manageUserProfilePage = new ManageUserProfilePage(_driver);
 			manageUserProfilePage.OpenUsingLink(_baseUrl);
@@ -79,55 +124,8 @@ namespace DNNSelenium.Common.Tests.P1
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the name of logged User is correct");
 			Assert.That(mainPage.WaitForElement(By.XPath(ControlPanelIDs.RegisterLink)).Text,
-			            Is.EqualTo(_registeredUserDisplayName),
-			            "The User is not added correctly");
-		}
-
-
-		[Test]
-		public void Test002_RegisteredUserUploadsAvatar()
-		{
-			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Registered User uploads Avatar'");
-
-			var loginPage = new LoginPage(_driver);
-			loginPage.LetMeOut();
-
-			loginPage.OpenUsingUrl(_baseUrl);
-			loginPage.DoLogin(_registeredUserName, _newPassword);
-
-			var manageUserProfilePage = new ManageUserProfilePage(_driver);
-			manageUserProfilePage.OpenUsingLink(_baseUrl);
-
-			manageUserProfilePage.AddProfileAvatar(_avatarFileToUpload);
-
-			var userAccountPage = new UserAccountPage(_driver);
-			userAccountPage.OpenUsingLink(_baseUrl);
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT avatar file is loaded correctly");
-			Assert.That(manageUserProfilePage.WaitForElement(By.XPath(ManageUserProfilePage.ProfilePhoto)).GetAttribute("src"), Is.StringContaining(_avatarFileToUpload),
-						"The User Avatar is not added correctly");
-		}
-
-		[Test]
-		public void Test003_RegisteredUserRemovesAvatar()
-		{
-			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Registered User removes Avatar'");
-
-			var loginPage = new LoginPage(_driver);
-			loginPage.LetMeOut();
-
-			loginPage.OpenUsingUrl(_baseUrl);
-			loginPage.DoLogin(_registeredUserName, _newPassword);
-
-			var manageUserProfilePage = new ManageUserProfilePage(_driver);
-			manageUserProfilePage.OpenUsingLink(_baseUrl);
-
-			manageUserProfilePage.ChangeProfileAvatar(_avatarFileToUpload, "<None Specified>");
-
-			var userAccountPage = new UserAccountPage(_driver);
-			userAccountPage.OpenUsingLink(_baseUrl);
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT avatar file is loaded correctly");
-			Assert.That(manageUserProfilePage.WaitForElement(By.XPath(ManageUserProfilePage.ProfilePhoto)).GetAttribute("src"), Is.StringContaining("no_avatar.gif"),
-						"The User Avatar is not removed correctly");
+						Is.EqualTo(_registeredUserDisplayName),
+						"The User is not added correctly");
 		}
 	}
 }
