@@ -57,7 +57,7 @@
         <div class="container">
             <div id="content">
                 <div class="row-fluid">
-		            <div id="contentPane" class="contentPane" runat="server"></div>
+		            <div id="ContentPane" class="contentPane" runat="server"></div>
                 </div>
                 <div class="row-fluid">
 				    <div id="leftPane" class="span8 leftPane spacingTop" runat="server"></div>

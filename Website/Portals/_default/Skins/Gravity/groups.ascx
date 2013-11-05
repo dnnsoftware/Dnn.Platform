@@ -61,7 +61,7 @@
         <div class="row-fluid paneGroup">
             <div id="rightPane" class="span2 pull-right" runat="server"></div>
 			<div id="leftPane" class="span3" runat="server"></div>
-			<div id="contentPane" class="span7" runat="server"></div>
+			<div id="ContentPane" class="span7" runat="server"></div>
 		</div>
 		
             <div id="footer">

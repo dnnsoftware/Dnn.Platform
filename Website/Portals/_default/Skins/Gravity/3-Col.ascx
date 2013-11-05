@@ -64,7 +64,7 @@
 			    <div id="rightPane" class="span4 threeColRightPane" runat="server"></div>
 		    </div>
             <div class="row-fluid">
-		        <div id="contentPane" class="span12 contentPane" runat="server"></div>
+		        <div id="ContentPane" class="span12 contentPane" runat="server"></div>
             </div>
             <div id="footer">
                 <div class="row-fluid">
