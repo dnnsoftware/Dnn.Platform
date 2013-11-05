@@ -57,7 +57,7 @@
     <div id="contentWrapper">
         <div class="container">
             <div class="row-fluid">
-        	    <div id="contentPane" class="span12 contentPane" runat="server"></div>
+        	    <div id="ContentPane" class="span12 contentPane" runat="server"></div>
             </div>
             <div class="row-fluid">
 			    <div id="leftPane" class="span8 leftPane spacingTop" runat="server"></div>

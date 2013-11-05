@@ -59,7 +59,7 @@
     	        <div id="Breadcrumb" class="span12"><dnn:BREADCRUMB ID="dnnBreadcrumb" runat="server" CssClass="breadcrumbLink" RootLevel="0" Separator="&lt;img src=&quot;images/breadcrumb.png&quot;&gt;" /></div>
             </div>
             <div class="row-fluid">
-		        <div id="contentPane" class="contentPane" runat="server"></div>
+		        <div id="ContentPane" class="contentPane" runat="server"></div>
             </div>
             <div class="row-fluid">
                 <div class="span8">
