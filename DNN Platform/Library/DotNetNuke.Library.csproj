@@ -94,6 +94,10 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
       <Private>False</Private>
@@ -187,9 +191,11 @@
     <Compile Include="Common\Utilities\HtmlUtils.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Common\Utilities\IJavaScriptUtils.cs" />
     <Compile Include="Common\Utilities\ImageUtils.cs" />
     <Compile Include="Common\Utilities\IPathUtils.cs" />
     <Compile Include="Common\Utilities\JavaScriptObjectDictionary.cs" />
+    <Compile Include="Common\Utilities\JavaScriptUtils.cs" />
     <Compile Include="Common\Utilities\NetworkUtils.cs" />
     <Compile Include="Common\Utilities\Null.cs">
       <SubType>Code</SubType>

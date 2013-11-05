@@ -1,5 +1,4 @@
 ﻿#region Copyright
-
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2013
@@ -18,34 +17,36 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-
 #endregion
-
-#region Usings
 
 using System;
-using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using Newtonsoft.Json;
-
-#endregion
+using System.Web.UI;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Common.Utilities
 {
-    /// <summary>
-    /// Serialize or Deserialize Json
-    /// </summary>
-    public static class Json
+    public class JavaScriptUtils: ServiceLocator<IJavaScriptUtils,JavaScriptUtils>, IJavaScriptUtils
     {
-        public static T Deserialize<T>(string json)
+        public void RegisterJavascriptVariable(string variableName, object value, Page page, Type type)
         {
-            return JsonConvert.DeserializeObject<T>(json);
+            var valueAsJson = Json.Serialize(value);
+
+            var script = string.Format("var {0} = {1};", variableName, valueAsJson);
+
+            if (ScriptManager.GetCurrent(page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(page, type, variableName, script, true);
+            }
+            else
+            {
+                page.ClientScript.RegisterStartupScript(type, variableName, script, true);
+            }
         }
 
-        public static string Serialize<T>(T obj)
+        protected override Func<IJavaScriptUtils> GetFactory()
         {
-            return JsonConvert.SerializeObject(obj);  
+            return () => new JavaScriptUtils();
         }
     }
 }

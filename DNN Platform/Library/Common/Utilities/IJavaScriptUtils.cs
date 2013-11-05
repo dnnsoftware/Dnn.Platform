@@ -1,5 +1,4 @@
 ﻿#region Copyright
-
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2013
@@ -18,34 +17,22 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-
 #endregion
-
-#region Usings
 
 using System;
-using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using Newtonsoft.Json;
-
-#endregion
+using System.Web.UI;
 
 namespace DotNetNuke.Common.Utilities
 {
-    /// <summary>
-    /// Serialize or Deserialize Json
-    /// </summary>
-    public static class Json
+    public interface IJavaScriptUtils
     {
-        public static T Deserialize<T>(string json)
-        {
-            return JsonConvert.DeserializeObject<T>(json);
-        }
-
-        public static string Serialize<T>(T obj)
-        {
-            return JsonConvert.SerializeObject(obj);  
-        }
+        /// <summary>
+        /// Regist a javascript varible in a page with its value
+        /// </summary>
+        /// <param name="variableName">Variable name and also the name of the registered code</param>
+        /// <param name="value">Object to be assigned to the variable</param>
+        /// <param name="page">Page where the varialbe will be registered</param>
+        /// <param name="type">Type</param>
+        void RegisterJavascriptVariable(string variableName, object value, Page page, Type type);
     }
 }
