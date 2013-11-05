@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="View.ascx.cs" Inherits="DotNetNuke.Modules.DigitalAssets.View" %>
 
 <%@ Import Namespace="System.Globalization" %>
-<%@ Import Namespace="DotNetNuke.Modules.DigitalAssets.Components.Controllers" %>
+<%@ Import Namespace="DotNetNuke.Services.FileSystem" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Import Namespace="DotNetNuke.UI.Utilities" %>
 <%@ Import Namespace="DotNetNuke.Entities.Icons" %>

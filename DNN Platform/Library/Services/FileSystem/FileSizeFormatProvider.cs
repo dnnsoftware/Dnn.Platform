@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
@@ -21,9 +21,7 @@
 
 using System;
 
-using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
-
-namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
+namespace DotNetNuke.Services.FileSystem
 {
     public class FileSizeFormatProvider : IFormatProvider, ICustomFormatter
     {
@@ -64,23 +62,23 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             if (size >= OneGigaByte)
             {
                 size /= OneGigaByte;
-                suffix = LocalizationHelper.GetString("SizeGb"); 
+                suffix = Localization.Localization.GetString("SizeGb");
             }
             else if (size >= OneMegaByte)
             {
                 size /= OneMegaByte;
-                suffix = LocalizationHelper.GetString("SizeMb");
+                suffix = Localization.Localization.GetString("SizeMb");
             }
             else if (size >= OneKiloByte)
             {
                 size /= OneKiloByte;
-                suffix = LocalizationHelper.GetString("SizeKb");
+                suffix = Localization.Localization.GetString("SizeKb");
             }
             else
             {
-                suffix = LocalizationHelper.GetString("SizeB");
+                suffix = Localization.Localization.GetString("SizeB");
             }
-            
+
             return string.Format("{0:N1} {1}", size, suffix);
         }
 
