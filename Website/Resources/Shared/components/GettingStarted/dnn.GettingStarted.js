@@ -113,7 +113,7 @@
                             .append($("<a href='javascript:void(0);' target='manual' title='" + this._options.downloadManualButton + "'><span>" + this._options.downloadManualButton + "</span></a>")))))
                 .append($("<div class='" + this._options.contentCss + "'/>")
                     .append($("<div/>")
-                        .append($("<iframe scrolling='auto' frameborder='0' />"))))
+                        .append($("<iframe scrolling='no' frameborder='0' />"))))
                 .append($("<div class='" + this._options.footerCss + "'/>")
                     .append($("<div class='" + this._options.footerBorderCss + "'/>")
                         .append($("<div/>")))

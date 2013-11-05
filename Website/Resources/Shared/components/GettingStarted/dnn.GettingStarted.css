@@ -63,7 +63,7 @@ html .gs-container {
 .gs-header-left-side > div {
     position: relative;
     padding: 30px;
-    background-color: #573f40;
+    background-color: #472a2b;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
@@ -215,6 +215,7 @@ html .gs-container {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .gs-container .gs-footer {
@@ -222,7 +223,7 @@ html .gs-container {
     bottom: 0;
     right: 0;
     width: 100%;
-    background-color: #573f40;
+    background-color: #472a2b;
     height: 40px;
 }
 
