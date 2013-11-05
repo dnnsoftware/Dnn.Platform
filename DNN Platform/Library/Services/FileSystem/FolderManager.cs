@@ -2142,8 +2142,16 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("newFolderPath", newFolderPath);
 
-            var parentFolderPath = newFolderPath.Substring(0, newFolderPath.Substring(0, newFolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
-            return MoveFolder(folder, GetFolder(folder.PortalID, parentFolderPath));
+            var nameCharIndex = newFolderPath.Substring(0, newFolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1;
+            var parentFolder = GetFolder(folder.PortalID, newFolderPath.Substring(0, nameCharIndex));
+            if (parentFolder.FolderID == folder.ParentID)
+            {
+                var newFolderName = newFolderPath.Substring(nameCharIndex, newFolderPath.Length - nameCharIndex - 1);
+                RenameFolder(folder, newFolderName);
+                return folder;
+            }
+
+            return MoveFolder(folder, parentFolder);
         }
 
         #endregion
