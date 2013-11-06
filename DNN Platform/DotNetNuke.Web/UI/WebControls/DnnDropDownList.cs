@@ -411,7 +411,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RegisterStartupScript()
         {
-            Options.SelectedItemCss = "selected-item";
             Options.InternalStateFieldId = StateControl.ClientID;
 
             if (SelectedItem == null && UseUndefinedItem)

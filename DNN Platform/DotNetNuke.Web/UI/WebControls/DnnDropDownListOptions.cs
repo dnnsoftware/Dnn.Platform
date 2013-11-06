@@ -38,6 +38,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnDropDownListOptions()
         {
+            SelectedItemCss = "selected-item";
             Services = new ItemListServicesOptions();
             ItemList = new ItemListOptions();
         }
