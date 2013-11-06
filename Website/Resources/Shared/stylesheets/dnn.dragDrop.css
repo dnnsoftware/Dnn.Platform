@@ -22,11 +22,11 @@
     margin-top: 45px;
 }
 .dnnSortable {
-    min-height: 110px;
+    min-height: 110px !important;
 }
 .dnnDropEmptyPanes {
-    outline: 1px dashed #ccc;
-    min-width: 110px;
+    outline: 1px dashed #ccc !important;
+    min-width: 110px !important;
 }
 
 

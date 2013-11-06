@@ -2082,8 +2082,8 @@ ul.footerConnect {
 .dropdown-submenu:focus > a{background-image:none!important; outline:none!important;}
 
 /* remove min-height from bootstrap */
-.row-fluid [class*='span'] {
-    min-height:0!important;
+.row-fluid [class*='span']:not([class*='dnnSortable']) {
+    min-height:0 !important;
 }
 
 /* Navbar */
