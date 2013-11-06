@@ -79,13 +79,18 @@ namespace DotNetNuke.UI.ControlPanels
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            ID = "ControlBar";
 
-            var gettingStarted = DnnGettingStarted.GetCurrent(Page);
-            if (gettingStarted == null)
+            //page will be null if the control panel initial twice, it will be removed in the second time.
+            if (Page != null)
             {
-                gettingStarted = new DnnGettingStarted();
-                Page.Form.Controls.Add(gettingStarted);
+                ID = "ControlBar";
+
+                var gettingStarted = DnnGettingStarted.GetCurrent(Page);
+                if (gettingStarted == null)
+                {
+                    gettingStarted = new DnnGettingStarted();
+                    Page.Form.Controls.Add(gettingStarted);
+                }
             }
         }
 
