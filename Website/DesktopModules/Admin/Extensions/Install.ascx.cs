@@ -600,7 +600,11 @@ namespace DotNetNuke.Modules.Admin.Extensions
 		private bool? AzureCompact()
 		{
 			bool? compact = null;
-			var manifestFile = Installer.InstallerInfo.ManifestFile.TempFileName;
+			string manifestFile = null;
+            if (Installer.InstallerInfo.ManifestFile != null)
+            {
+                manifestFile = Installer.InstallerInfo.ManifestFile.TempFileName;
+            }
             if (!IsAzureDatabase())
             {
                 compact = true;
