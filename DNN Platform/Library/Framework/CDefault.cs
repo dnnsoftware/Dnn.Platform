@@ -22,6 +22,7 @@
 
 using System;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Entities.Controllers;
@@ -81,9 +82,9 @@ namespace DotNetNuke.Framework
 
         protected void ManageGettingStarted()
         {
-            // The Getting Started dialog can be also opened from the Control Bar
+            // The Getting Started dialog can be also opened from the Control Bar, also do not show getting started in popup.
             var controller = new GettingStartedController();
-            if (!controller.ShowOnStartup)
+            if (!controller.ShowOnStartup || (HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true")))
             {
                 return;
             }
