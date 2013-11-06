@@ -96,7 +96,7 @@
     padding: 20px;    
 }
 
-.fu-container .fu-dialog-content-fileupload-local .dnnFileUploadDropZone {
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area {
     background-image: url("Images/dropZone.png");
     background-position: center 10px;
     background-repeat: no-repeat;
@@ -109,11 +109,11 @@
     transition: box-shadow 200ms ease-in-out 0s;
 }
 
-.fu-container .fu-dialog-content-fileupload-local .dnnFileUploadDropZone.dragover {
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area.dragover {
     box-shadow: 0 0 13px 8px rgba(0, 0, 0, 0.1) inset;
 }
 
-.fu-container .fu-dialog-content-fileupload-local .dnnFileUploadDropZone .dnnDropFileMessage {
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area .dnnDropFileMessage {
     bottom: 8px;
     font-size: 11px;
     position: absolute;
@@ -121,7 +121,7 @@
     width: 100%;
 }
 
-.fu-container .fu-dialog-content-fileupload-local .dnnFileUploadDropZone .dnnDropFileMessage span.dnnInputFileWrapper {
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area .dnnDropFileMessage span.dnnInputFileWrapper {
     float: none !important;
 }
 
@@ -186,6 +186,7 @@
 
 .fu-container .fu-fileupload-statuses .fu-fileupload-filename
 {
+    display: block;
     color: #777;
     font-style: italic;
     padding: 0 0 5px 0;
@@ -198,7 +199,7 @@
     margin: 6px 0 0 6px;
     width: 325px;
     height: 21px;
-    display: inline-block;    
+    display: inline-block;
 }
 
 .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar .indeterminate-progress {

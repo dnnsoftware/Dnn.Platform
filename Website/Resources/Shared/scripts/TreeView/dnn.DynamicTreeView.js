@@ -317,9 +317,6 @@
 
             this._$itemListFooterElement = this.$element.find("." + this.options.footerCss);
             this._$resultValue = this._$itemListFooterElement.find("." + this.options.resultElementCss).children(":first");
-            this._$resizerElement = this._$itemListFooterElement.find("." + this.options.resizerElementCss);
-            this._resizer = new dnn.Resizer(this._$resizerElement[0], { container: this.$element });
-            $(this._resizer).bind("resized", $.proxy(this._onResize, this));
 
             this._$itemListContentElement = this.$element.find("." + this.options.contentCss);
 
@@ -429,9 +426,16 @@
         },
 
         show: function () {
+            /* the component is a part of DOM, the dimension is known at this point */
             this._itemListHeaderHeight = this._$itemListHeaderElement.outerHeight(true);
             this._itemListFooterHeight = this._$itemListFooterElement.outerHeight(true);
             this._$itemListContentElement.height(this.$element.height() - this._itemListHeaderHeight - this._itemListFooterHeight);
+
+            if (!this._resizer) {
+                var $resizerElement = this._$itemListFooterElement.find("." + this.options.resizerElementCss);
+                this._resizer = new dnn.Resizer($resizerElement[0], { container: this.$element });
+                $(this._resizer).bind("resized", $.proxy(this._onResize, this));
+            }
 
             this._showTree(this._selectedNodeId);
         },
