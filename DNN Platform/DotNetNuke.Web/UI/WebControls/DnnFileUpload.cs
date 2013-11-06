@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Globalization;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Web.Common;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -75,11 +76,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RegisterStartupScript()
         {
-
             var folder = FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, string.Empty);
-            var SelectedItem = (folder != null) ? new ListItem() { Text = folder.FolderName, Value = folder.FolderID.ToString(CultureInfo.InvariantCulture) } : null;
-
-
+            Options.FolderPicker.InitialState = new DnnDropDownListState
+            {
+                SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), SharedConstants.RootFolder) : null
+            };
 
             Options.FolderPicker.Services.GetTreeMethod = "ItemListService/GetFolders";
             Options.FolderPicker.Services.GetNodeDescendantsMethod = "ItemListService/GetFolderDescendants";

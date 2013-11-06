@@ -32,6 +32,7 @@
 .dnnDropDownList .selected-item a:active {
     padding: 7px;
     display: block;
+    height: 18px;
     margin: 0;
     color: #333;
     white-space: nowrap;

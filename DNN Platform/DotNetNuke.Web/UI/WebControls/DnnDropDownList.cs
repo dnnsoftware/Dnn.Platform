@@ -418,6 +418,11 @@ namespace DotNetNuke.Web.UI.WebControls
                 SelectedItem = UndefinedItem;
             }
 
+            Options.InitialState = new DnnDropDownListState
+            {
+                SelectedItem = StateControl.TypedValue != null ? StateControl.TypedValue.SelectedItem : null
+            };
+
             SelectedValue.InnerText = (SelectedItem != null) ? SelectedItem.Text : Options.SelectItemDefaultText;
 
             Options.Disabled = !Enabled;

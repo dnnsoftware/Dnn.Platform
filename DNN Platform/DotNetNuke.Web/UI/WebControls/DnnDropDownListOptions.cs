@@ -19,6 +19,9 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "selectItemDefaultText")]
         public string SelectItemDefaultText;
 
+        [DataMember(Name = "initialState")]
+        public DnnDropDownListState InitialState;
+
         private List<string> _onClientSelectionChanged;
 
         [DataMember(Name = "onSelectionChanged")]
@@ -39,6 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public DnnDropDownListOptions()
         {
             SelectedItemCss = "selected-item";
+            SelectItemDefaultText = "";
             Services = new ItemListServicesOptions();
             ItemList = new ItemListOptions();
         }
