@@ -171,4 +171,7 @@
   <data name="cmdCommunications.Text" xml:space="preserve">
     <value>Communications</value>
   </data>
+  <data name="ControlTitle_profile.Text" xml:space="preserve">
+    <value>Profile</value>
+  </data>
 </root>
