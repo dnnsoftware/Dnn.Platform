@@ -1,8 +1,8 @@
 ﻿.fu-container {
     width: 100%;
-    padding: 15px;
     background: #fff;
     width: 780px;
+    margin: 20px 0 0;
 }
 
 .fu-container .fu-dialog-header {
@@ -113,7 +113,7 @@
     box-shadow: 0 0 13px 8px rgba(0, 0, 0, 0.1) inset;
 }
 
-.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area .dnnDropFileMessage {
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area-message {
     bottom: 8px;
     font-size: 11px;
     position: absolute;
@@ -121,7 +121,7 @@
     width: 100%;
 }
 
-.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area .dnnDropFileMessage span.dnnInputFileWrapper {
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area-message span.dnnInputFileWrapper {
     float: none !important;
 }
 

@@ -63,40 +63,9 @@
         },
 
         _createLayout: function () {
-
             var checkBoxId = dnn.uid("fu_");
-
-            var folderPickerOptions = {
-                itemList: {
-                    clearButtonTooltip: "Clear",
-                    firstItem: null,
-                    loadingResultText: "...Loading Results",
-                    resultsText: "Results",
-                    searchButtonTooltip: "Search",
-                    searchInputPlaceHolder: "Search...",
-                    selectedItemCollapseTooltip: "Click to collapse",
-                    selectedItemExpandTooltip: "Click to expand",
-                    sortAscendingButtonTitle: "A-Z",
-                    sortAscendingButtonTooltip: "Sort in ascending order",
-                    sortDescendingButtonTooltip: "Sort in descending order",
-                    unsortedOrderButtonTooltip: "Remove sorting"
-                },
-                onSelectionChanged: [],
-                selectItemDefaultText: "Select A Folder",
-                selectedItemCss: "selected-item",
-                services: {
-                    getNodeDescendantsMethod: "ItemListService/GetFolderDescendants",
-                    getTreeMethod: "ItemListService/GetFolders",
-                    getTreeWithNodeMethod: "ItemListService/GetTreePathForFolder",
-                    parameters: [],
-                    rootId: "Root",
-                    searchTreeMethod: "ItemListService/SearchFolders",
-                    serviceRoot: "InternalServices",
-                    sortTreeMethod: "ItemListService/SortFolders"
-                }
-            };
-
             this._folderPicker = new dnn.DropDownList(null, this.options.folderPicker);
+
             var dialog = $element('div', { tabindex: '-1', 'class': 'fu-container', role: 'dialog' }).append(
                 $element('h5', { 'class': 'fu-dialog-header' }).text("Use one of the methods below to upload files"),
                 $element('div', { 'class': 'fu-dialog-content' }).append(
@@ -115,7 +84,7 @@
                             this._folderPicker.$element.addClass("dnnLeftComboBox"))),
                     $element("div", { 'class': 'fu-dialog-content-fileupload-local' }).append(
                         $element("div", { 'class': 'fu-dialog-drag-and-drop-area' }).append(
-                            $element("div", { 'class': 'dnnDropFileMessage' }))),
+                            $element("div", { 'class': 'fu-dialog-drag-and-drop-area-message' }))),
                     $element("div", { style: 'display: none', 'class': 'fu-dialog-content-fileupload-web' }).append(
                         $element("table", { 'class': 'dnnFileUploadWebInput' }).append(
                             $element("tbody").append(
@@ -136,7 +105,7 @@
             this._$inputFileControl.fileupload({
                 url: this._uploadUrl,
                 beforeSend: this.serviceFramework.setModuleHeaders,
-                dropZone: this._$dropFileZone,
+                dropZone: this._$dragAndDropArea,
                 sequentialUpload: false,
                 progressInterval: 20,
                 add: function (e, data) {
@@ -167,7 +136,7 @@
                     }
 
                     data.formData = {
-                        folder: self._getSelectedFolder(),
+                        folder: self._selectedPath(),
                         filter: '',
                         extract : extract,
                         overwrite: 'true'
@@ -200,10 +169,10 @@
                     //TODO: not implemented  
                 },
                 dragover: function () {
-                    self._$dropFileZone.addClass("dragover");
+                    self._$dragAndDropArea.addClass("dragover");
                 },
                 drop: function () {
-                    self._$dropFileZone.removeClass("dragover");
+                    self._$dragAndDropArea.removeClass("dragover");
                 }
 
             });
@@ -213,7 +182,7 @@
             return this._$extract.is(':checked') ? 'true' : 'false';
         },
 
-        _getSelectedFolder: function() {
+        _selectedPath: function() {
             var selectedPathArray = this._folderPicker.selectedPath();
             var selectedPath = '';
             if (selectedPathArray.length > 1) {
@@ -294,9 +263,7 @@
 
             this._$buttonGroup = this.$element.find(".fu-dialog-content-header ul.dnnButtonGroup");
             this._$fileUploadStatuses = this.$element.find('.fu-fileupload-statuses-container').jScrollbar();
-
-            this._$dialogCloseBtn = this.$element.find('.dnnFileUploadDialogClose');
-            this._$dropFileZone = this.$element.find('.fu-dialog-drag-and-drop-area');
+            this._$dragAndDropArea = this.$element.find('.fu-dialog-drag-and-drop-area');
             this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: true, "data-text": 'DRAG FILES HERE OR CLICK TO BROWSE' });
             this._$extract = this.$element.find("." + "fu-dialog-content-header").find("input");
 
@@ -314,7 +281,7 @@
             }
 
             this._$fileUploadStatuses.hide().find('.fu-fileupload-statuses').empty();
-            this._$inputFileControl.appendTo(this._$dropFileZone.find('.dnnDropFileMessage')).dnnFileInput(
+            this._$inputFileControl.appendTo(this._$dragAndDropArea.find('.fu-dialog-drag-and-drop-area-message')).dnnFileInput(
                 {
                     buttonClass: 'normalClass',
                     showSelectedFileNameAsButtonText: false
@@ -335,11 +302,17 @@
                 modal: true,
                 autoOpen: true,
                 dialogClass: "dnnFormPopup " + this.options.dialogCss,
-                title: this.options.title,
-                resizable: true,
+                title: "Upload Files",
+                resizable: false,
                 width: this.options.width,
                 height: this.options.height,
-                close: $.proxy(this._onCloseDialog, this)
+                close: $.proxy(this._onCloseDialog, this),
+                buttons: [ {
+                        text: "Close",
+                        click: function () { $(this).dialog("close"); },
+                        "class": "dnnSecondaryAction"
+                    }
+                ]
             });
 
         }
