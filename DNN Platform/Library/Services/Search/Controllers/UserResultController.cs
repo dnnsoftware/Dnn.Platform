@@ -41,6 +41,7 @@ namespace DotNetNuke.Services.Search.Controllers
     /// Search Result Controller for Tab Indexer
     /// </summary>
     /// <remarks></remarks>
+    [Serializable]
     public class UserResultController : BaseResultController
     {
         #region Private Properties
