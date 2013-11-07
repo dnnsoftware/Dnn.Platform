@@ -9,8 +9,10 @@
                     var windowTop = parent;
                     var parentTop = windowTop.parent;
 
-                    if (typeof(parentTop.$find) != "undefined") {
-                        if (location.href.indexOf('popUp') == -1 || windowTop.location.href.indexOf("popUp") > -1) {
+                    if (typeof (parentTop.$find) != "undefined") {
+                        var thisIsANotPopUp = location.href.indexOf('popUp') == -1;
+                        var windowTopIsAPopUp = windowTop.location.href.indexOf("popUp") > -1;
+                        if (thisIsANotPopUp || windowTopIsAPopUp) {
 
                             var popup = windowTop.jQuery("#iPopUp");
                             var refresh = popup.dialog("option", "refresh");
@@ -18,6 +20,10 @@
                             var width = popup.dialog("option", "minWidth");
                             var height = popup.dialog("option", "minHeight");
                             var showReturn = popup.dialog("option", "showReturn");
+
+                            if (!windowTopIsAPopUp) {
+                                closingUrl = parent.location.href;
+                            }
 
                             if (!closingUrl) {
                                 closingUrl = location.href;
@@ -57,10 +63,6 @@
                 $modal.attr('src', 'about:blank');
             }
             $(document).find('html').css('overflow', 'hidden');
-
-            if (!closingUrl || closingUrl == "") {
-                closingUrl = window.location.href;
-            }
 
             $modal.dialog({
                 modal: true,
