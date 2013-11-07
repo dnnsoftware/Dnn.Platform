@@ -832,6 +832,11 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(PortalId, "ContentLocalizationEnabled", XmlUtils.GetNodeValue(nodeSettings, "contentlocalizationenabled"));
             }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "inlineeditorenabled")))
+            {
+                UpdatePortalSetting(PortalId, "InlineEditorEnabled", XmlUtils.GetNodeValue(nodeSettings, "inlineeditorenabled"));
+            }
         }
 
         private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int PortalId)

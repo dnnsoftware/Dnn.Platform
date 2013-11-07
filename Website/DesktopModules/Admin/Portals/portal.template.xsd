@@ -32,6 +32,7 @@
               <xs:element name="containersrcadmin" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="portalaliasmapping" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="contentlocalizationenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="inlineeditorenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
             </xs:all>
             <xs:attribute name="sku" type="xs:string"/>
           </xs:complexType>
