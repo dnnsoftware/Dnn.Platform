@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
 // Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
@@ -709,7 +709,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     }
                     else
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, "", Localization.GetString("EmailSentMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                        UI.Skins.Skin.AddModuleMessage(this, "", String.Format(Localization.GetString("EmailSentMessage", LocalResourceFile), txtHostEmail.Text), ModuleMessage.ModuleMessageType.GreenSuccess);
                     }
                 }
                 else
