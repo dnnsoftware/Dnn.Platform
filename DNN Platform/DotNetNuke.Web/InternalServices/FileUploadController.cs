@@ -222,7 +222,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             alreadyExists = false;
             try
-            {                
+            {
                 var extension = Path.GetExtension(fileName).Replace(".", "");
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
                 {
@@ -238,7 +238,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 var folderManager = FolderManager.Instance;
 
-                // Check if this is a User Folder                
+                // Check if this is a User Folder
                 var effectivePortalId = isHostMenu ? -1 : PortalController.GetEffectivePortalId(portalSettings.PortalId);
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                 if (folder.ToLowerInvariant().StartsWith("users/") && folder.EndsWith(string.Format("/{0}/", userInfo.UserID)))
@@ -288,7 +288,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private static string GetLocalizedString(string key)
         {
-            string resourceFile = "/App_GlobalResources/FileUpload.resx";
+            const string resourceFile = "/App_GlobalResources/FileUpload.resx";
             return Localization.GetString(key, resourceFile);
         }
 

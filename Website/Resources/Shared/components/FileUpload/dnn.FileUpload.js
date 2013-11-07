@@ -100,7 +100,7 @@
             return dialog;
         },
 
-        _initUploadFileFromLocal: function () {
+        _initFileUploadFromLocal: function () {
             var self = this;
             this._$inputFileControl.fileupload({
                 url: this._uploadUrl,
@@ -161,12 +161,13 @@
                     var fileResultZone = self._getFileUploadStatusElement(data.files[0].name);
                     var fileError = self._getFileUploadError(data);
                     if (fileError) {
+                        alert("error");
                         return;
                     }
                     self._setProgressBar(fileResultZone, 100);
                 },
                 fail: function(e, data) {
-                    //TODO: not implemented  
+                    alert("fail");
                 },
                 dragover: function () {
                     self._$dragAndDropArea.addClass("dragover");
@@ -274,7 +275,10 @@
 
             this._draggable = supportDragDrop();
             this._ajaxUploadable = suportAjaxUpload();
-            this._uploadUrl = this.serviceFramework.getServiceRoot('internalservices') + 'fileupload/postfile';
+
+            this._serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
+            this._uploadUrl = this._serviceUrl + this.options.fileUploadMethod;
+
             if (!this._ajaxUploadable) {
                 var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
                 this._uploadUrl += '?__RequestVerificationToken=' + antiForgeryToken;
@@ -287,7 +291,7 @@
                     showSelectedFileNameAsButtonText: false
                 });
 
-            this._initUploadFileFromLocal();
+            this._initFileUploadFromLocal();
         },
 
         show: function () {
@@ -322,7 +326,9 @@
     FileUpload._defaults = {
         dialogCss: "fu-dialog",
         width: 780,
-        height: 500
+        height: 500,
+        serviceRoot: "InternalServices",
+        fileUploadMethod: "fileupload/postfile"
     };
 
     FileUpload.defaults = function (settings) {
