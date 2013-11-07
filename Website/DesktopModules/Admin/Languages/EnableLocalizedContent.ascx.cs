@@ -108,8 +108,16 @@ namespace DotNetNuke.Modules.Admin.Languages
             progress.Speed = "N/A";
             progress.PrimaryTotal = totalLanguages;
             progress.PrimaryValue = languageCount;
+            
 
             int total = pageList.Count;
+            if (total == 0)
+            {
+                progress.SecondaryTotal = 0;
+                progress.SecondaryValue = 0;
+                progress.SecondaryPercent = 100;
+            }
+
             for (int i = 0; i <= total - 1; i++)
             {
                 TabInfo currentTab = pageList[i];
