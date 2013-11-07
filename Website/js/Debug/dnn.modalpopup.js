@@ -58,6 +58,10 @@
             }
             $(document).find('html').css('overflow', 'hidden');
 
+            if (!closingUrl || closingUrl == "") {
+                closingUrl = window.location.href;
+            }
+
             $modal.dialog({
                 modal: true,
                 autoOpen: true,
