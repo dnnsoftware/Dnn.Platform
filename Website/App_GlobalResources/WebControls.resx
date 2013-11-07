@@ -186,7 +186,34 @@
   <data name="ConfirmPasswordUnmatched.Text" xml:space="preserve">
     <value>Password does not match</value>
   </data>
-  <data name="ConfirmPasswordMatched.Text" xml:space="preserve">
-    <value>Password is matched</value>
+  <data name="FileUpload.Title.Text" xml:space="preserve">
+    <value>Upload Files</value>
+  </data>
+  <data name="FileUpload.DialogHeader.Text" xml:space="preserve">
+    <value>Use one of the methods below to upload files</value>
+  </data>
+  <data name="FileUpload.DecompressLabel.Text" xml:space="preserve">
+    <value>Decompress Zip Files</value>
+  </data>
+  <data name="FileUpload.UploadToFolderLabel.Text" xml:space="preserve">
+    <value>Upload To:</value>
+  </data>
+  <data name="FileUpload.DragAndDropAreaTitle.Text" xml:space="preserve">
+    <value>Drag files here or click to browse</value>
+  </data>
+  <data name="FileUpload.UploadFileMethod.Text" xml:space="preserve">
+    <value>Upload File</value>
+  </data>
+  <data name="FileUpload.UploadFromWebMethod.Text" xml:space="preserve">
+    <value>From Web</value>
+  </data>
+  <data name="FileUpload.CloseButton.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="FileUpload.UploadFromWebButton.Text" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="FileUpload.DecompressingFile.Text" xml:space="preserve">
+    <value>Decompressing File</value>
   </data>
 </root>

@@ -123,6 +123,7 @@
 
 .fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area-message span.dnnInputFileWrapper {
     float: none !important;
+    text-transform: uppercase;
 }
 
 .fu-container .fu-dialog-content-fileupload-web .dnnFileUploadWebInput{
