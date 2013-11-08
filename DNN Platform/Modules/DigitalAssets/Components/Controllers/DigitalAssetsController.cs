@@ -936,11 +936,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         protected string GetFolderIconUrl(int portalId, int folderMappingID)
         {
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingID);
+            var imageUrl = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingID).ImageUrl;
 
-            if (folderMapping != null && File.Exists(HttpContext.Current.Server.MapPath(folderMapping.ImageUrl)))
+            if (File.Exists(HttpContext.Current.Server.MapPath(imageUrl)))
             {
-                return folderMapping.ImageUrl;
+                return imageUrl;
             }
 
             return IconController.IconURL("ExtClosedFolder", "32x32", "Standard");
