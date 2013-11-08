@@ -233,18 +233,9 @@ namespace DNNSelenium.Common.Tests.Installer
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Set site language: '" + language + "'");
 			installerPage.SetDictionary(language);
 
-			/*Trace.WriteLine(BasePage.TraceLevelPage + "Verify frame title: '" + installerPage.CurrentFrameTitle() + "'");
-			Utilities.SoftAssert(() => StringAssert.AreEqualIgnoringCase(installerPage.Translate("WelcomeScreenTitle"), installerPage.CurrentFrameTitle(),
-								 "The Welcome Screen title is missing or incorrect"));
-
-			installerPage.WaitAndSwitchToFrame(60);
-
-			installerPage.WaitForElement(By.Id(InstallerPage.IntroVideo), 60).WaitTillVisible(60);
-			installerPage.WaitForElement(By.Id(InstallerPage.WhatIsNew), 60).WaitTillVisible(60);
-
-			installerPage.WaitForElement(By.Id(InstallerPage.LetMeAtIn), 60).WaitTillEnabled().Click();
-
-			installerPage.WaitAndSwitchToWindow(60);*/
+			//Trace.WriteLine(BasePage.TraceLevelPage + "Verify frame title: '" + installerPage.CurrentFrameTitle() + "'");
+			//Utilities.SoftAssert(() => StringAssert.AreEqualIgnoringCase(installerPage.Translate("WelcomeScreenTitle"), installerPage.CurrentFrameTitle(),
+			//					 "The Welcome Screen title is missing or incorrect"));
 
 			installerPage.WelcomeScreen();
 
@@ -287,14 +278,14 @@ namespace DNNSelenium.Common.Tests.Installer
 
 						//blank template; look for the "Home" option (only one option is present)
 						Trace.WriteLine("Assert current Template: Blank: ");
-						Assert.AreEqual(1, installerPage.FindElements(By.XPath("//ul[@id='dnn_pnav']/li")).Count(),
+						Assert.AreEqual(1, installerPage.FindElements(By.XPath("//ul[@class='nav nav-pills']/li")).Count(),
 										"This is not a Blank page or The number of options are incorrect");
 
 						loginPage.LoginUsingDirectUrl(baseUrl, username, password);
 
 						//blank template; look for the "Home" option (only one option is present)
 						Trace.WriteLine("Assert current Template: Blank: ");
-						Assert.AreEqual(1, installerPage.FindElements(By.XPath("//ul[@id='dnn_pnav']/li")).Count(),
+						Assert.AreEqual(1, installerPage.FindElements(By.XPath("//ul[@class='nav nav-pills']/li")).Count(),
 										"This is not a Blank page or The number of options are incorrect");
 						break;
 					}

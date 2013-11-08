@@ -277,7 +277,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public string CurrentFrameTitle()
 		{
-			WaitForElement(By.XPath("//div[@aria-describedby = 'iPopUp']"), 60);
+			//WaitForElement(By.XPath("//div[@aria-describedby = 'iPopUp']"), 60);
 
 			string _title = WaitForElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//span[contains(@class, '-dialog-title')]"), 30).Text;
 
@@ -357,7 +357,7 @@ namespace DNNSelenium.Common.BaseClasses
 			BasePage.WaitTillStopMoving(_driver, lastElement, lastElementStart);
 
 			_driver.FindElement(By.XPath(optionLocator)).Info();
-			Click(By.XPath(optionLocator));
+			_driver.FindElement(By.XPath(optionLocator)).WaitTillVisible().Click();
 
 			Thread.Sleep(1000);
 		}
@@ -388,7 +388,9 @@ namespace DNNSelenium.Common.BaseClasses
 			Trace.WriteLine(BasePage.TraceLevelElement + "Click on Tab:");
 
 			IWebElement tab = BasePage.WaitForElement(_driver, tabName);
-			if (!tab.Displayed)
+			int locationOnPage = tab.Location.Y;
+
+			if ((!tab.Displayed) || (tab.Displayed && locationOnPage < 100))
 			{
 				ScrollIntoView(FindElement(tabName), 200).WaitTillVisible();
 			}

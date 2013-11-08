@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using DNNSelenium.Common.BaseClasses;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 namespace DNNSelenium.Common.CorePages
@@ -79,6 +80,29 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelElement + "Click on 'Visit Site' button:");
 			FindElement(By.XPath(VisitSiteButton)).WaitTillEnabled().Click();
+		}
+
+		public void WelcomeScreen()
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Login to the site first time, using 'Visit Website' button:");
+
+			WaitForElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
+
+			WaitForElement(By.XPath("//div/iframe[contains(@src, 'GettingStarted')]"), 60);
+			_driver.SwitchTo().Frame(0);
+
+			WaitForElement(By.XPath("//div/a[last()]"), 60).WaitTillVisible(60);
+
+			_driver.SwitchTo().DefaultContent();
+
+			WaitForElement(By.XPath("//div[contains(@class, 'footer-left-side')]/label")).WaitTillEnabled(30);
+
+			Actions action = new Actions(_driver);
+			action.MoveToElement(FindElement(By.XPath("//div[contains(@class, 'footer-left-side')]/label"))).Click().Build().Perform();
+
+			WaitAndClick(By.XPath("//div[contains(@style,'display: block;')]//button[@role = 'button' and @title = 'close']"));
+
+			WaitForElementNotPresent(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
 		}
 	}
 }

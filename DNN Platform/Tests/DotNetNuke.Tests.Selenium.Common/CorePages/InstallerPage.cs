@@ -29,10 +29,6 @@ namespace DNNSelenium.Common.CorePages
 		public static string ItalianIconId = "lang_it_IT";
 		public static string HollandIconId = "lang_nl_NL";
 
-		public static string IntroVideo = "introVideo";
-		public static string WhatIsNew = "whatsNewVideo";
-		public static string LetMeAtIn = "btnLetMeAtIn";
-
 		#endregion
 
 		public string SetLanguageOptionName(string language)
@@ -126,12 +122,11 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitForElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
 
-			_driver.SwitchTo().Frame(WaitForElement(By.XPath("//div/iframe[contains(@src, 'GettingStarted')]"), 60));
+			WaitForElement(By.XPath("//div/iframe[contains(@src, 'GettingStarted')]"), 60);
+			_driver.SwitchTo().Frame(0);
 
-			Thread.Sleep(1000);
-
-			//WaitForElement(By.Id(IntroVideo), 60).WaitTillVisible(60);
-			//WaitForElement(By.Id(WhatIsNew), 60).WaitTillVisible(60);
+			WaitForElement(By.XPath("//div/a[last()]"), 60).WaitTillVisible(60);
+			
 			_driver.SwitchTo().DefaultContent();
 
 			WaitForElement(By.XPath("//div[contains(@class, 'footer-left-side')]/label")).WaitTillEnabled(30);
