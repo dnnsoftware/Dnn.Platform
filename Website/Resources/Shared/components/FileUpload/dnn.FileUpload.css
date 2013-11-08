@@ -167,11 +167,20 @@
     list-style: none;
 }
 
+.fu-container ul.fu-fileupload-statuses {
+    margin: 0 30px 0 0;
+}
+
+.fu-container ul.fu-fileupload-statuses li {
+    overflow: hidden;
+}
+
 .fu-container .fu-fileupload-statuses .fu-fileupload-status {
     margin-top: 10px;
 }
 
 .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-container {
+    float: right;
     border: 1px solid #B6BAC2;
     border-radius: 5px;
     padding: 2px 4px;
@@ -180,7 +189,7 @@
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0,  rgba(0, 0, 0, 0.1)), color-stop(1, transparent));
     background-image: -webkit-linear-gradient(top, transparent 0%,  rgba(0, 0, 0, 0.1) 100%);
     background-image: linear-gradient(to bottom,  rgba(0, 0, 0, 0.1) 0%, transparent 100%);
-    width: 360px;
+    width: 260px;
     height: 25px;
     box-shadow: 0 1px white;
 }
@@ -188,6 +197,7 @@
 .fu-container .fu-fileupload-statuses .fu-fileupload-filename
 {
     display: block;
+    float: left;
     color: #777;
     font-style: italic;
     padding: 0 0 5px 0;
@@ -198,7 +208,7 @@
     border-radius: 4px;
     box-shadow: 0 1px white, 0 2px 3px #999999 inset;
     margin: 6px 0 0 6px;
-    width: 325px;
+    width: 225px;
     height: 21px;
     display: inline-block;
 }

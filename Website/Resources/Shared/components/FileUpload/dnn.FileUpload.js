@@ -33,7 +33,6 @@
         constructor: FileUpload,
 
         init: function () {
-            var self = this;
             this.options = $.extend({}, FileUpload.defaults(), this.options);
             this.serviceFramework = $.dnnSF();
 
@@ -100,83 +99,131 @@
             return dialog;
         },
 
+        handleFileUploadError: function handleFileUploadError($element, error, data) {
+
+/*
+            // File already Exists Scenario
+            if (error.AlreadyExists) {
+                var replaceButton = $('<a class="dnnModuleDigitalAssetsUploadFileReplaceFile dnnModuleDigitalAssetsUploadFileAction">' + resources.replaceText + '</a>')
+                    .on('click', function () {
+                        $(this).closest('.dnnModuleDigitalAssetsUploadFileFile').attr("data-fileoverwrite", "true");
+                        $(this).data().uploadedBytes = 0;
+                        $(this).data().data = null;
+                        $(this).data().submit();
+                    });
+
+                setNotification($element, resources.fileUploadAlreadyExistsText +
+                    "<span class='dnnModuleDigitalAssetsUploadFileActions'><a class='dnnModuleDigitalAssetsUploadFileKeepFile dnnModuleDigitalAssetsUploadFileAction'>" +
+                    resources.keepText + "</a></span>");
+
+                $element.find('.dnnModuleDigitalAssetsUploadFileActions').prepend(replaceButton.clone(true).data(data));
+
+                $element.find('.dnnModuleDigitalAssetsUploadFileNotification .dnnModuleDigitalAssetsUploadFileKeepFile').click(function () {
+                    $element.find('.dnnModuleDigitalAssetsUploadFileActions').remove();
+                    setNotification($element, resources.fileUploadStoppedText);
+                });
+
+            } else {
+                setNotification($element, "<span class='dnnModuleDigitalAssetsErrorMessage'>" + error.Message + "</span>");
+            }
+
+            showFileNotification($element);
+
+            $("#dnnModuleDigitalAssetsUploadFileExternalResultZone").jScrollPane();
+*/
+        },
+
+        add: function (e, data) {
+            if (!this._$fileUploadStatuses.is(':visible')) {
+                this._$fileUploadStatuses.show().jScrollbar("update");
+            }
+            //TODO: do some check
+            data.submit();
+        },
+
+        submit: function (e, data) {
+            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+            if (!$fileUploadStatus.length) {
+                $fileUploadStatus = this._createFileUploadStatusElement(data.files[0].name);
+                this._$fileUploadStatuses.find('.fu-fileupload-statuses').append($fileUploadStatus);
+                $fileUploadStatus.find('.fu-fileupload-progressbar-check.uploading').on('click', function () {
+                    if (data.jqXHR) {
+                        data.jqXHR.abort();
+                    }
+                });
+                this._$fileUploadStatuses.show().jScrollbar("update");
+            }
+            else {
+                this._initProgressBar($fileUploadStatus);
+            }
+
+            var extract = this._extract();
+            var extension = data.files[0].name.substring(data.files[0].name.lastIndexOf('.') + 1);
+            if (extension === 'zip' && extract == 'true') {
+                $fileUploadStatus.attr('data-extract', 'true');
+            }
+
+            data.formData = {
+                folder: this._selectedPath(),
+                filter: '',
+                extract: extract,
+                overwrite: 'true'
+            };
+            return true;
+        },
+
+        progress: function(e, data) {
+            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+            if (data.formData.extract == "true") {
+                if ($fileUploadStatus.find('.fu-dialog-fileupload-extracting').length == 0) {
+                    $fileUploadStatus.find('.fu-fileupload-filename').append(
+                        $element("span", { "class": "fu-dialog-fileupload-extracting"}).text(" - " + this.options.decompressingFile));
+                }
+                return;
+            }
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            if (progress < 100) {
+                this._setProgressBar($fileUploadStatus, progress);
+            }
+        },
+
+        done: function(e, data) {
+            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+            var error = this._getFileUploadError(data);
+            if (error) {
+                this.handleFileUploadError($fileUploadStatus, error, data);
+                return;
+            }
+            this._setProgressBar($fileUploadStatus, 100);
+        },
+
+        fail: function(e, data) {
+            alert("fail");
+        },
+
+        dragover: function () {
+            this._$dragAndDropArea.addClass("dragover");
+        },
+
+        drop: function () {
+            this._$dragAndDropArea.removeClass("dragover");
+        },
+
         _initFileUploadFromLocal: function () {
-            var self = this;
             this._$inputFileControl.fileupload({
                 url: this._uploadUrl,
                 beforeSend: this.serviceFramework.setModuleHeaders,
                 dropZone: this._$dragAndDropArea,
                 sequentialUpload: false,
-                progressInterval: 20,
-                add: function (e, data) {
-                    if (!self._$fileUploadStatuses.is(':visible')) {
-                        self._$fileUploadStatuses.show().jScrollbar("update");
-                    }
-                    //TODO: do some check
-                    data.submit();
-                },
-                submit: function (e, data) {
-                    var $fileUploadStatus = self._getFileUploadStatusElement(data.files[0].name);
-                    if (!$fileUploadStatus.length) {
-                        $fileUploadStatus = self._createFileUploadStatusElement(data.files[0].name);
-                        self._$fileUploadStatuses.find('.fu-fileupload-statuses').append($fileUploadStatus);
-                        $fileUploadStatus.find('.fu-fileupload-progressbar-check.uploading').on('click', function() {
-                            if (data.jqXHR) data.jqXHR.abort();
-                        });
-                        self._$fileUploadStatuses.show().jScrollbar("update");
-                    }
-                    else {
-                        self._initProgressBar($fileUploadStatus);
-                    }
-
-                    var extract = self._extract();
-                    var extension = data.files[0].name.substring(data.files[0].name.lastIndexOf('.') + 1);
-                    if (extension === 'zip' && extract == 'true') {
-                        $fileUploadStatus.attr('data-extract', 'true');
-                    }
-
-                    data.formData = {
-                        folder: self._selectedPath(),
-                        filter: '',
-                        extract : extract,
-                        overwrite: 'true'
-                    };
-                    return true;
-                },
-                progress: function(e, data) {
-                    var $fileUploadStatus = self._getFileUploadStatusElement(data.files[0].name);
-                    if (data.formData.extract == "true") {
-                        if ($fileUploadStatus.find('.fu-dialog-fileupload-extracting').length == 0) {
-                            $fileUploadStatus.find('.fu-fileupload-filename').append(
-                                $element("span", { "class": "fu-dialog-fileupload-extracting"}).text(" - " + this.options.decompressingFile));
-                        }
-                        return;
-                    }
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    if (progress < 100) {
-                        self._setProgressBar($fileUploadStatus, progress);
-                    }
-                },
-                done: function(e, data) {
-                    var fileResultZone = self._getFileUploadStatusElement(data.files[0].name);
-                    var fileError = self._getFileUploadError(data);
-                    if (fileError) {
-                        alert("error");
-                        return;
-                    }
-                    self._setProgressBar(fileResultZone, 100);
-                },
-                fail: function(e, data) {
-                    alert("fail");
-                },
-                dragover: function () {
-                    self._$dragAndDropArea.addClass("dragover");
-                },
-                drop: function () {
-                    self._$dragAndDropArea.removeClass("dragover");
-                }
-
-            });
+                progressInterval: 20
+            })
+            .on("fileuploadadd", $.proxy(this.add, this))
+            .on("fileuploadsubmit", $.proxy(this.submit, this))
+            .on("fileuploadprogress", $.proxy(this.progress, this))
+            .on("fileuploaddone", $.proxy(this.done, this))
+            .on("fileuploadfail", $.proxy(this.fail, this))
+            .on("fileuploaddragover", $.proxy(this.dragover, this))
+            .on("fileuploaddrop", $.proxy(this.drop, this));
         },
 
         _extract: function() {
