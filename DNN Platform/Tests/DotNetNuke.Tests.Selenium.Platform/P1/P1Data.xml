@@ -2,10 +2,10 @@
 
 <Tests>
 
-  <settings name="P1 CheckList" browser="ie" baseURL="ce720v3.dnndev.me" InstallerLanguage="en" UserName="host"
-            Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
-            DatabaseType="" DatabaseServerName="" DatabaseName="" DatabaseFilename="" ObjectQualifier="" Security=""
-            DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" />
+  <settings name="CEP1" browser="firefox" baseURL="CEP1.lvh.me" InstallerLanguage="en" UserName="host"
+            Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Custom"
+            DatabaseType="Default" DatabaseServerName="(local)" DatabaseName="CEP1" DatabaseFilename="" ObjectQualifier="can_" Security="Integrated"
+            DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" runWithDummyCachingProvider = "" />
 
   <securityRoleGroup name="Security Role Group P1" roleGroupName="Security Role Group P1"
                      roleGroupDescription="Security Role Group Description P1" roleName="Security Role P1"
