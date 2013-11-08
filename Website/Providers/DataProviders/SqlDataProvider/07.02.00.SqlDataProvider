@@ -945,13 +945,13 @@ AS
                          FROM ( SELECT DISTINCT
                                             ( u.UserID )
                                   FROM      {databaseOwner}[{objectQualifier}Users] u
-                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
-                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
-                                            LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
-                                            LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
-                                  WHERE     (up.PortalId = @PortalId OR up.PortalId IS NULL)
-                                            AND (u.LastModifiedOnDate > @StartDate OR (p.LastUpdatedDate IS NOT NULL AND (p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)))
-                                            AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+                                            INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                            INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                                            INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                                            INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                                  WHERE     up.PortalId = @PortalId
+                                            AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
+                                            AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
                                 ) AS T WHERE UserID > @startUserId) AS T
                                 WHERE rownumber <= @numberOfUsers
                      ),
@@ -971,11 +971,11 @@ AS
 					CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END AS 'ModifiedTime'
             FROM    {databaseOwner}[{objectQualifier}Users] u
                     INNER JOIN ValidUsers vu ON vu.UserId = u.UserID
-                    LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
-                    LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
-                    LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                    INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                    INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                    INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
                     LEFT JOIN FirstName fn ON fn.UserID = u.UserID
-            WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+            WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
     END
 GO
 
