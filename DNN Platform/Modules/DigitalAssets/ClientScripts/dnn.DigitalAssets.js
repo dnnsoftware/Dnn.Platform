@@ -1376,11 +1376,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         toggleColumn('LastModifiedOnDate', showColumns);
         toggleColumn('Size', showColumns);
     }
+    
+    function gridOnColumnHidden() {
+        $('#' + controls.gridId + '>table', "#" + controls.scopeWrapperId).hide().show(); // FF workaround to hide the space of the last column
+    }
 
     function internalResetGridComponents() {
         toggleColumn('LastModifiedOnDate', true);
         toggleColumn('ParentFolder', false);        
-        $('#' + controls.gridId + '>table', "#" + controls.scopeWrapperId).hide().show(); // FF workaround to hide the space of the last column
+        
         grid.clearSort();
 
         checkColumnVisibility();
@@ -3023,7 +3027,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         grid.clearSelectedItems();
         toggleColumn('LastModifiedOnDate', false);
         toggleColumn('ParentFolder', true);
-        $('#' + controls.gridId + '>table', "#" + controls.scopeWrapperId).hide().show(); // FF workaround to hide the space of the last column
         
         $('#dnnModuleDigitalAssetsMainToolbar .folderRequired', "#" + controls.scopeWrapperId).hide();
         if (hideSync === true) {
@@ -3258,6 +3261,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         gridOnRowDeselected: gridOnRowDeselected,
         gridOnRowDataBound: gridOnRowDataBound,
         gridOnDataBound: gridOnDataBound,
+        gridOnColumnHidden: gridOnColumnHidden,
         contextMenuOnItemClicked: contextMenuOnItemClicked,
         contextMenuOnLoad: contextMenuOnLoad,
         contextMenuOnShown: onContextMenuShown,

@@ -109,7 +109,8 @@
                             OnRowSelected="dnnModule.digitalAssets.gridOnRowSelected" 
                             OnRowDeselected="dnnModule.digitalAssets.gridOnRowDeselected"
                             OnRowDataBound="dnnModule.digitalAssets.gridOnRowDataBound"
-                            OnDataBound="dnnModule.digitalAssets.gridOnDataBound" /> 
+                            OnDataBound="dnnModule.digitalAssets.gridOnDataBound"
+                            OnColumnHidden="dnnModule.digitalAssets.gridOnColumnHidden" /> 
                     </ClientSettings>
                     <MasterTableView TableLayout="Fixed" AllowCustomSorting="True" AllowSorting="true" EditMode="InPlace" EnableColumnsViewState="false">
                         <Columns>
