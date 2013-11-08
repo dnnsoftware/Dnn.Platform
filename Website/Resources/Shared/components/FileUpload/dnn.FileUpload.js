@@ -100,7 +100,7 @@
         },
 
         handleFileUploadError: function handleFileUploadError($element, error, data) {
-
+            $element.addClass(this.options.statusErrorCss);
 /*
             // File already Exists Scenario
             if (error.AlreadyExists) {
@@ -190,11 +190,11 @@
         done: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
             var error = this._getFileUploadError(data);
+            this._setProgressBar($fileUploadStatus, 100);
             if (error) {
                 this.handleFileUploadError($fileUploadStatus, error, data);
                 return;
             }
-            this._setProgressBar($fileUploadStatus, 100);
         },
 
         fail: function(e, data) {
@@ -372,8 +372,9 @@
 
     FileUpload._defaults = {
         dialogCss: "fu-dialog",
+        statusErrorCss: "fu-status-error",
         width: 780,
-        height: 500,
+        height: 630,
         serviceRoot: "InternalServices",
         fileUploadMethod: "fileupload/postfile"
     };

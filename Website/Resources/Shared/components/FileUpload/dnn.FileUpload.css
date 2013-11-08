@@ -222,6 +222,10 @@
     opacity: 0.15;
 }
 
+.fu-container .fu-status-error .ui-progressbar .ui-progressbar-value {
+    background: -moz-linear-gradient(left center , #bd522c 0%, #ee7f27 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
 .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-check {
     display: inline-block;
     height: 16px;
