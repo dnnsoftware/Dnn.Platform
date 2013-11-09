@@ -175,6 +175,10 @@
     overflow: hidden;
 }
 
+.fu-container ul.fu-fileupload-statuses li:hover .fu-fileupload-filename {
+    color: #000;
+}
+
 .fu-container .fu-fileupload-statuses .fu-fileupload-status {
     margin-top: 10px;
 }

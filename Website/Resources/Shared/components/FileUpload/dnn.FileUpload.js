@@ -99,41 +99,47 @@
             return dialog;
         },
 
-        handleFileUploadError: function handleFileUploadError($element, error, data) {
-            $element.addClass(this.options.statusErrorCss);
-/*
-            // File already Exists Scenario
+        _handleFileUploadError: function ($fileUploadStatus, error, data) {
+            $fileUploadStatus.addClass(this.options.statusErrorCss);
+
+            // File already exists scenario
             if (error.AlreadyExists) {
-                var replaceButton = $('<a class="dnnModuleDigitalAssetsUploadFileReplaceFile dnnModuleDigitalAssetsUploadFileAction">' + resources.replaceText + '</a>')
+                var replaceButton = $element("a", { "class": "dnnModuleDigitalAssetsUploadFileReplaceFile dnnModuleDigitalAssetsUploadFileAction" })
+                    .text("The file you want to upload already exists in this folder")
                     .on('click', function () {
-                        $(this).closest('.dnnModuleDigitalAssetsUploadFileFile').attr("data-fileoverwrite", "true");
-                        $(this).data().uploadedBytes = 0;
-                        $(this).data().data = null;
-                        $(this).data().submit();
+                        var $this = $(this);
+                        $this.closest('.dnnModuleDigitalAssetsUploadFileFile').attr("data-fileoverwrite", "true");
+                        var data = $this.data();
+                        data.uploadedBytes = 0;
+                        data.data = null;
+                        data.submit();
+                    })
+                    .data(data);
+
+                var keepButton = $element("a", { "class": "dnnModuleDigitalAssetsUploadFileKeepFile dnnModuleDigitalAssetsUploadFileAction" })
+                    .text("Keep")
+                    .click(function() {
+                        $element.find('.dnnModuleDigitalAssetsUploadFileActions').remove();
+                        //setNotification($element, resources.fileUploadStoppedText);
                     });
 
-                setNotification($element, resources.fileUploadAlreadyExistsText +
-                    "<span class='dnnModuleDigitalAssetsUploadFileActions'><a class='dnnModuleDigitalAssetsUploadFileKeepFile dnnModuleDigitalAssetsUploadFileAction'>" +
-                    resources.keepText + "</a></span>");
+                var $statusMessage = $element("span", { "class": "fu-status-message" })
+                    .text("The file you want to upload already exists in this folder");
 
-                $element.find('.dnnModuleDigitalAssetsUploadFileActions').prepend(replaceButton.clone(true).data(data));
+                $statusMessage.append(replaceButton, keepButton);
 
-                $element.find('.dnnModuleDigitalAssetsUploadFileNotification .dnnModuleDigitalAssetsUploadFileKeepFile').click(function () {
-                    $element.find('.dnnModuleDigitalAssetsUploadFileActions').remove();
-                    setNotification($element, resources.fileUploadStoppedText);
-                });
+                $fileUploadStatus.append($statusMessage);
 
-            } else {
-                setNotification($element, "<span class='dnnModuleDigitalAssetsErrorMessage'>" + error.Message + "</span>");
+            }
+            else {
+                //setNotification($element, "<span class='dnnModuleDigitalAssetsErrorMessage'>" + error.Message + "</span>");
             }
 
-            showFileNotification($element);
+            //showFileNotification($element);
 
-            $("#dnnModuleDigitalAssetsUploadFileExternalResultZone").jScrollPane();
-*/
         },
 
-        add: function (e, data) {
+        _add: function (e, data) {
             if (!this._$fileUploadStatuses.is(':visible')) {
                 this._$fileUploadStatuses.show().jScrollbar("update");
             }
@@ -141,7 +147,7 @@
             data.submit();
         },
 
-        submit: function (e, data) {
+        _submit: function (e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
             if (!$fileUploadStatus.length) {
                 $fileUploadStatus = this._createFileUploadStatusElement(data.files[0].name);
@@ -172,7 +178,7 @@
             return true;
         },
 
-        progress: function(e, data) {
+        _progress: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
             if (data.formData.extract == "true") {
                 if ($fileUploadStatus.find('.fu-dialog-fileupload-extracting').length == 0) {
@@ -187,25 +193,25 @@
             }
         },
 
-        done: function(e, data) {
+        _done: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
             var error = this._getFileUploadError(data);
             this._setProgressBar($fileUploadStatus, 100);
             if (error) {
-                this.handleFileUploadError($fileUploadStatus, error, data);
+                this._handleFileUploadError($fileUploadStatus, error, data);
                 return;
             }
         },
 
-        fail: function(e, data) {
+        _fail: function(e, data) {
             alert("fail");
         },
 
-        dragover: function () {
+        _dragover: function () {
             this._$dragAndDropArea.addClass("dragover");
         },
 
-        drop: function () {
+        _drop: function () {
             this._$dragAndDropArea.removeClass("dragover");
         },
 
@@ -217,13 +223,13 @@
                 sequentialUpload: false,
                 progressInterval: 20
             })
-            .on("fileuploadadd", $.proxy(this.add, this))
-            .on("fileuploadsubmit", $.proxy(this.submit, this))
-            .on("fileuploadprogress", $.proxy(this.progress, this))
-            .on("fileuploaddone", $.proxy(this.done, this))
-            .on("fileuploadfail", $.proxy(this.fail, this))
-            .on("fileuploaddragover", $.proxy(this.dragover, this))
-            .on("fileuploaddrop", $.proxy(this.drop, this));
+            .on("fileuploadadd", $.proxy(this._add, this))
+            .on("fileuploadsubmit", $.proxy(this._submit, this))
+            .on("fileuploadprogress", $.proxy(this._progress, this))
+            .on("fileuploaddone", $.proxy(this._done, this))
+            .on("fileuploadfail", $.proxy(this._fail, this))
+            .on("fileuploaddragover", $.proxy(this._dragover, this))
+            .on("fileuploaddrop", $.proxy(this._drop, this));
         },
 
         _extract: function() {
