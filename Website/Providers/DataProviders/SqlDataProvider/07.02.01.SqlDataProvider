@@ -13,3 +13,15 @@
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
+
+DELETE {databaseOwner}{objectQualifier}Folders
+FROM {databaseOwner}{objectQualifier}Folders f
+	LEFT JOIN {databaseOwner}{objectQualifier}FolderMappings fm ON F.FolderMappingID = fm.FolderMappingID
+WHERE fm.FolderMappingID IS NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Folders 
+ADD CONSTRAINT FK_Folders_FolderMappings 
+	FOREIGN KEY (FolderMappingID) 
+		REFERENCES {databaseOwner}{objectQualifier}FolderMappings (FolderMappingID)
+GO
