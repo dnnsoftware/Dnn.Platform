@@ -198,4 +198,7 @@
   <data name="ItemsPerPage.Text" xml:space="preserve">
     <value>Items per page:</value>
   </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
 </root>

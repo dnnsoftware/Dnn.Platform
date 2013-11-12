@@ -157,7 +157,7 @@
     <value>Template:</value>
   </data>
   <data name="plTemplate.Help" xml:space="preserve">
-    <value>Select your preferred module development template. Module development templates are stored in the Modules subfolder within the Host Root folder.</value>
+    <value>Select your preferred module development template. Module development templates are stored in the Templates subfolder within the Module Creator module folder.</value>
   </data>
   <data name="plControl.Text" xml:space="preserve">
     <value>Control Name:</value>
@@ -187,7 +187,7 @@
     <value>You Must Select A Module Template And Provide A Control Name.</value>
   </data>
   <data name="cmdPackage.Text" xml:space="preserve">
-    <value>Package</value>
+    <value>Create Package</value>
   </data>
   <data name="cmdConfigure.Text" xml:space="preserve">
     <value>Configure</value>

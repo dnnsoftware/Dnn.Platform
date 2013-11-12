@@ -1187,7 +1187,7 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
     <value>Search Index Size:</value>
   </data>
   <data name="plDebugMode.Help" xml:space="preserve">
-    <value>If checked the installation runs in "debug mode", meaning that various parts of the application will write more verbose error logs etc. Note this may lead to performance degredation.</value>
+    <value>If checked the installation runs in "debug mode", meaning that various parts of the application will write more verbose error logs etc. Note this may lead to performance degradation.</value>
   </data>
   <data name="plDebugMode.Text" xml:space="preserve">
     <value>Debug Mode</value>

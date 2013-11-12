@@ -1762,10 +1762,10 @@
     <value>Host Root</value>
   </data>
   <data name="LIBRARY_ReadSuccess.Text" xml:space="preserve">
-    <value>Parsed Library Manaifest Successfully</value>
+    <value>Parsed Library Manifest Successfully</value>
   </data>
   <data name="LIBRARY_Registered.Text" xml:space="preserve">
-    <value>Library Registered Succssfully - {0}</value>
+    <value>Library Registered Successfully - {0}</value>
   </data>
   <data name="LIBRARY_UnRegistered.Text" xml:space="preserve">
     <value>Library UnRegistered Successfully - {0}</value>
