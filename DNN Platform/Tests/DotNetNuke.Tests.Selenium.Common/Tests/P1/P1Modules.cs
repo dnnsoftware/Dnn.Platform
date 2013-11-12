@@ -43,7 +43,7 @@ namespace DNNSelenium.Common.Tests.P1
 			blankPage.AddNewPage("page");
 
 			//Delete Default HTML Module on page
-			blankPage.OpenUsingUrl(_baseUrl,"/page");
+			blankPage.OpenUsingUrl(_baseUrl,"page");
 			var module = new Modules(_driver);
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
 			string moduleNumber =
@@ -58,7 +58,11 @@ namespace DNNSelenium.Common.Tests.P1
 			//Create set of pages with New Default
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
-			adminPageManagementPage.AddPagesInBulk(">" + "Page", "P1Modules", 76, "Web", "Home");
+			adminPageManagementPage.AddPagesInBulk(">" + "Page", "P1Modules", 65, "Web", "Home");
+
+			//Create set of pages for Drag&Drop tests with New Default
+			adminPageManagementPage.OpenUsingButtons(_baseUrl);
+			adminPageManagementPage.AddPagesInBulk(">" + "Page", "P1ModulesDragDrop", 65, "Web", "Home");
 			
 			//Create a page with 4 HtmlModuleDictionary Modules on page
 			blankPage.OpenUsingUrl(_baseUrl, "Home/P1Modules/Page61");
@@ -69,7 +73,7 @@ namespace DNNSelenium.Common.Tests.P1
 				module.AddNewModuleUsingMenu(HtmlModuleDictionary.IdWhenOnBanner, HtmlModuleDictionary.IdWhenOnPage, "ContentPane");
 				i++;
 			}
-
+			
 			_logContent = LogContent(); 
 		}
 
@@ -81,6 +85,9 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 			adminPageManagementPage.DeletePage("P1Modules", "Web");
+
+			adminPageManagementPage.OpenUsingButtons(_baseUrl);
+			adminPageManagementPage.DeletePage("P1ModulesDragDrop", "Web");
 
 			var adminRecycleBinPage = new AdminRecycleBinPage(_driver);
 			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
@@ -656,7 +663,6 @@ namespace DNNSelenium.Common.Tests.P1
 		[TestCase("Home/P1Modules/Page12", "DigitalAssetManagementModule", "LeftPane")]
 		[TestCase("Home/P1Modules/Page15", "ExtensionsModule", "LeftPane")]
 		[TestCase("Home/P1Modules/Page17", "GoogleAnalyticsModule", "LeftPane")]
-		[TestCase("Home/P1Modules/Page20", "HtmlModule", "LeftPane")]
 		[TestCase("Home/P1Modules/Page21", "JournalModule", "LeftPane")]
 		[TestCase("Home/P1Modules/Page22", "LanguagesModule", "LeftPane")]
 		[TestCase("Home/P1Modules/Page24", "ListsModule", "LeftPane")]
@@ -678,7 +684,7 @@ namespace DNNSelenium.Common.Tests.P1
 		[TestCase("Home/P1Modules/Page45", "TaxonomyManagerModule", "LeftPane")]
 		[TestCase("Home/P1Modules/Page47", "VendorsModule", "LeftPane")]
 		[TestCase("Home/P1Modules/Page48", "ViewProfileModule", "LeftPane")]
-		[TestCase("Home/P1Modules/Page74", "ModuleCreator", "LeftPane")]
+		[TestCase("Home/P1Modules/Page64", "ModuleCreator", "LeftPane")]
 		public void Test016_DeleteModule(string pageName, string moduleName, string location)
 		{
 			DeleteModule(Modules.CommonModulesDescription, pageName, moduleName, location);

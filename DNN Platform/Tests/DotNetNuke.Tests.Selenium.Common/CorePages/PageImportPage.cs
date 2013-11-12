@@ -63,11 +63,15 @@ namespace DNNSelenium.Common.CorePages
 
 		public void ImportPage(string templateName, string pageName, string insertPageAfter)
 		{
-			WaitForElement(By.XPath(ControlPanelIDs.PageTitleID));
+			//WaitForElement(By.XPath(ControlPanelIDs.PageTitleID));
+
+			WaitForElement(By.XPath(FolderDropDownId));
 
 			LoadableSelectByValue(By.XPath(FolderDropDownId), "Templates");
 
-			SlidingSelectByValue( By.XPath("//a[contains(@id, '" + TemplateDropDownArrow + "')]"), By.XPath(TemplateDropDownId), templateName);
+			WaitForElement(By.XPath("//a[contains(@id, '" + TemplateDropDownArrow + "')]"));
+
+			SlidingSelectByValue(By.XPath("//a[contains(@id, '" + TemplateDropDownArrow + "')]"), By.XPath(TemplateDropDownId), templateName);
 
 			RadioButtonSelect(By.XPath(CreateNewPageRadioButton));
 

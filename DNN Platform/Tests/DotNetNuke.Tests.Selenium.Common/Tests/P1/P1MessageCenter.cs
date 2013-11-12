@@ -177,10 +177,10 @@ namespace DNNSelenium.Common.Tests.P1
 			var module = new MessageCenterModule(_driver);
 			module.OpenNotificationsUsingIcon();
 
-			module.DismissNotification("New User Registration");
+			module.DismissNotification(MessageCenterModule.NotificationSubject);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT New notification is Not present in the list:");
-			Assert.IsFalse(module.ElementPresent(By.XPath("//ul[@class = 'messages']//li[@class = 'ListCol-3']//span[contains(text(), 'New User Registration')]")),
+			Assert.IsFalse(module.ElementPresent(By.XPath("//ul[@class = 'messages']//li[@class = 'ListCol-3']//span[contains(text(), '" + MessageCenterModule.NotificationSubject + "')]")),
 						"Notification subject is found");
 		}
 	}

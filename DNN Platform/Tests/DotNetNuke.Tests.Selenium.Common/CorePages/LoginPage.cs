@@ -148,7 +148,7 @@ namespace DNNSelenium.Common.CorePages
 
 			if (selector == null || selector.EndsWith(ControlPanelIDs.AwesomeCycles))
 			{
-				WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 20).Info();
+				WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 60).Info();
 
 				Trace.WriteLine(BasePage.TraceLevelElement + "Click on button: " + ControlPanelIDs.LogoutLink + "]");
 				if (ElementPresent(By.XPath(ControlPanelIDs.LogoutLink)))

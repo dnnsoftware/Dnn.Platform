@@ -100,6 +100,7 @@ namespace DNNSelenium.Common.BaseClasses
 			Trace.WriteLine("\r\n\t\t\tMax waiting time: " + timeOutSeconds + " sec");
 
 			WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeOutSeconds));
+			wait.IgnoreExceptionTypes(new Type[] { typeof(NoSuchElementException), typeof(StaleElementReferenceException) });
 			return wait.Until(d => d.FindElement(locator));
 		}
 
@@ -147,7 +148,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 				//Trace.WriteLine("Waiting for move to start.");
 
-				Thread.Sleep(100);
+				Thread.Sleep(50);
 			}
 
 			Point lastPos = startPos;
@@ -165,7 +166,7 @@ namespace DNNSelenium.Common.BaseClasses
 				}
 
 				lastPos = curPos;
-				Thread.Sleep(100);
+				Thread.Sleep(50);
 			}
 			while (true);
 		}
@@ -387,14 +388,15 @@ namespace DNNSelenium.Common.BaseClasses
 		{
 			Trace.WriteLine(BasePage.TraceLevelElement + "Click on Tab:");
 
-			IWebElement tab = BasePage.WaitForElement(_driver, tabName);
-			int locationOnPage = tab.Location.Y;
+			//IWebElement tab = BasePage.WaitForElement(_driver, tabName);
+			//int locationOnPage = tab.Location.Y;
 
-			if ((!tab.Displayed) || (tab.Displayed && locationOnPage < 100))
-			{
-				ScrollIntoView(FindElement(tabName), 200).WaitTillVisible();
-			}
+			//if ((!tab.Displayed) || (tab.Displayed && locationOnPage < 100))
+			//{
+			//    ScrollIntoView(FindElement(tabName), 200).WaitTillVisible();
+			//}
 
+			ScrollIntoViewFromTop(FindElement(tabName), 200).WaitTillVisible();
 			WaitForElement(tabName).Click();
 		}
 
@@ -420,6 +422,13 @@ namespace DNNSelenium.Common.BaseClasses
 			((IJavaScriptExecutor)_driver).ExecuteScript("window.scrollBy(0," + (pt.Y - offset) + ");");
 
 			return element;
+		}
+
+		public IWebElement ScrollIntoViewFromTop(IWebElement element, int offset)
+		{
+			((IJavaScriptExecutor)_driver).ExecuteScript("window.scrollTo(0,0);");
+
+			return ScrollIntoView(element, offset);
 		}
 
 		#region Page Control Helpers

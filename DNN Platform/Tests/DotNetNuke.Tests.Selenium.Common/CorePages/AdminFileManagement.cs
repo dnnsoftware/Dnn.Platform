@@ -53,7 +53,8 @@ namespace DNNSelenium.Common.CorePages
 
 		public void SearchForFile(string fileToSearch)
 		{
-			Type(By.XPath(AdminFileManagementPage.FileSearchBox), fileToSearch);
+			Trace.WriteLine(BasePage.TraceLevelPage + "Search for file:" + fileToSearch);
+			WaitAndType(By.XPath(AdminFileManagementPage.FileSearchBox), fileToSearch);
 			FindElement(By.XPath(AdminFileManagementPage.FileSearchIcon)).Click();
 
 			Thread.Sleep(1000);

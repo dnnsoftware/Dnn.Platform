@@ -57,7 +57,7 @@ namespace DNNSelenium.Common.BaseClasses
 					}
 			}
 
-			//driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(3));
+			driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromMilliseconds(500));
 			driver.Manage().Window.Maximize();
 			return driver;
 		}

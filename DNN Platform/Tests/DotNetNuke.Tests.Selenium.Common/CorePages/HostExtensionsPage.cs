@@ -115,7 +115,7 @@ namespace DNNSelenium.Common.CorePages
 		public void DeleteLanguagePack(string panelName, string packName)
 		{
 			IWebElement element = WaitForElement( By.XPath(
-				panelName + "/following-sibling :: *//tr[td/span[contains(text(), '" + SetLanguageName(packName) + "')]][last()]//a/img[contains(@src, 'Delete')]"));
+			panelName + "/following-sibling :: *//tr[td/span[contains(text(), '" + SetLanguageName(packName) + "')]][last()]//a/img[contains(@src, 'Delete')]"));
 			ScrollIntoView(element, 100);
 			element.Click();
 

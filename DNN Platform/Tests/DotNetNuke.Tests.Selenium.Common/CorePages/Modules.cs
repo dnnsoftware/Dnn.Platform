@@ -153,8 +153,8 @@ namespace DNNSelenium.Common.CorePages
 
 		public static Dictionary<string, LocationIDs> LocationDescription = new Dictionary<string, LocationIDs>
 			                                                                  {
-																					{"ContentPane", new LocationIDs ("//li[@data-pane = 'contentPane']", 
-																					  "//div[@id = 'dnn_contentPane']",
+																					{"ContentPane", new LocationIDs ("//li[@data-pane = 'ContentPane']", 
+																					  "//div[@id = 'dnn_ContentPane']",
 																					  "")},
 																					{"ContentPaneLower", new LocationIDs ("//li[@data-pane = 'contentPaneLower']", 
 																					  "//div[contains(@id, 'dnn_contentPaneLower')]",
@@ -292,9 +292,13 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(TraceLevelPage + "Mouse over module: '" + moduleName);
 
 			Actions action = new Actions(_driver);
+			//IWebElement dragArea = FindElement(By.XPath(moduleName));
+			//IWebElement to = FindElement(By.XPath(Modules.LocationDescription[location].IdWhenOnPage));
 			action.MoveToElement(FindElement(By.XPath(moduleName))).Perform();
 
 			action.DragAndDrop(FindElement(By.XPath(moduleName)), FindElement(By.XPath(Modules.LocationDescription[location].IdWhenOnPage)).ScrollIntoView());
+			//action.ClickAndHold(dragArea).MoveToElement(to.ScrollIntoView()).Release();
+
 			action.Build().Perform();
 	
 			Thread.Sleep(1000);

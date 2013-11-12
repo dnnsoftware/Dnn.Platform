@@ -191,6 +191,7 @@ namespace DNNSelenium.Common.BaseClasses
 			_driver.FindElement(By.XPath("//div[@id='" + listDropDown.GetAttribute("id") + "']" + "//input[@class = 'search-input']")).SendKeys(value);
 			_driver.FindElement(By.XPath("//div[@id='" + listDropDown.GetAttribute("id") + "']" + "//a[@class = 'search-button']")).Click();
 
+			Thread.Sleep(1000);
 			BasePage.WaitForElement(_driver, By.XPath("//div[contains(@class, '-tree')]//a[text() = '" + value + "']")).Click();
 			BasePage.WaitForElement(_driver, By.XPath("//a[@class = 'selected-value' and text() ='" + value + "']")).Info();
 		}

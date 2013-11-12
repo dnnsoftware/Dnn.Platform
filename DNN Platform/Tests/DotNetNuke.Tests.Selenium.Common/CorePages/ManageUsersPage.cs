@@ -102,7 +102,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Delete the User:");
 
-			Click(By.XPath("//tr[td[text() = '" + userName + "']]/td/input[contains(@id, '_Delete')]"));
+			WaitAndClick(By.XPath("//tr[td[text() = '" + userName + "']]/td/input[contains(@id, '_Delete')]"));
 			WaitForConfirmationBox(60);
 			ClickYesOnConfirmationBox();
 		}

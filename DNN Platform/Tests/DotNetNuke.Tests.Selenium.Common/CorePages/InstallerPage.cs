@@ -134,9 +134,12 @@ namespace DNNSelenium.Common.CorePages
 			Actions action = new Actions(_driver);
 			action.MoveToElement(FindElement(By.XPath("//div[contains(@class, 'footer-left-side')]/label"))).Click().Build().Perform();
 
-			WaitAndClick(By.XPath("//div[contains(@style,'display: block;')]//button[@role = 'button' and @title = 'close']"));
+			//WaitAndClick(By.XPath("//div[contains(@style,'display: block;')]//button[@role = 'button' and @title = 'close']"));
 
-			WaitForElementNotPresent(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
+			//WaitForElementNotPresent(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
+
+			FindElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]")).SendKeys(
+				Keys.Escape);
 		}
 
 		public void SetWebSiteLanguage(string language)

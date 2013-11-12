@@ -60,6 +60,8 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Host '" + PageTitleLabel + "' page:");
 			GoToUrl(baseUrl + HostSiteManagementUrl);
+
+			WaitForElement(By.XPath(HostSiteManagementPage.PortalsTable));
 		}
 
 		public void OpenUsingButtons(string baseUrl)
@@ -68,6 +70,8 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Host '" + PageTitleLabel + "' page:");
 			WaitAndClick(By.XPath(HostBasePage.HostTopMenuLink));
 			WaitAndClick(By.XPath(HostBasePage.SiteManagementLink));
+
+			WaitForElement(By.XPath(HostSiteManagementPage.PortalsTable));
 		}
 
 		public void OpenUsingControlPanel(string baseUrl)
@@ -75,6 +79,8 @@ namespace DNNSelenium.Common.CorePages
 			GoToUrl(baseUrl);
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Host '" + PageTitleLabel + "' page:");
 			SelectSubMenuOption(ControlPanelIDs.ControlPanelHostOption, ControlPanelIDs.ControlPanelHostCommonSettings, ControlPanelIDs.HostSiteManagementOption);
+
+			WaitForElement(By.XPath(HostSiteManagementPage.PortalsTable));
 		}
 
 		public void AddNewChildSite(string baseUrl, string siteName, string title)
@@ -116,15 +122,15 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(SiteCreatedConfirmationMessage), 60);
 		}
 
-		public void EditSite(string baseUrl, string siteName)
+		public void EditSite(string siteName)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Edit site:");
-			WaitAndClick(By.XPath("//tr[td/span[contains(@id, 'lblPortalAliases')]/a[contains(string(), '" + baseUrl + "/" + siteName + "')]]/td/a[contains(@href, 'Edit')]"));
+			WaitAndClick(By.XPath("//tr[td/span[contains(@id, 'lblPortalAliases')]/a[contains(string(), '" + siteName + "')]]/td/a[contains(@href, 'Edit')]"));
 		}
 
-		public void DeleteSite(string baseUrl, string siteName)
+		public void DeleteSite(string siteName)
 		{
-			EditSite(baseUrl, siteName);
+			EditSite(siteName);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Delete the site:");
 
@@ -137,9 +143,9 @@ namespace DNNSelenium.Common.CorePages
 			Thread.Sleep(1000);
 		}
 
-		public void AddDescriptionToSite(string baseUrl, string siteName, string siteNameDescription)
+		public void AddDescriptionToSite(string siteName, string siteNameDescription)
 		{
-			EditSite(baseUrl, siteName);
+			EditSite(siteName);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add description to the site:");
 
@@ -152,11 +158,11 @@ namespace DNNSelenium.Common.CorePages
 			Thread.Sleep(1000);
 		}
 
-		public void NavigateToChildSite(string baseUrl, string siteName)
+		public void NavigateToSite(string siteName)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Navigate to the site:");
 
-			Click(By.XPath("//span[contains(@id, 'Portals_grdPortals')]/a[contains(string(), '" + baseUrl + "/" + siteName + "')]"));
+			Click(By.XPath("//span[contains(@id, 'Portals_grdPortals')]/a[contains(string(), '" + siteName + "')]"));
 
 			Thread.Sleep(1000);
 		}

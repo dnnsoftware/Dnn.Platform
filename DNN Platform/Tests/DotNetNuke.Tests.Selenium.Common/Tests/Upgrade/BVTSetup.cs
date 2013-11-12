@@ -49,13 +49,15 @@ namespace DNNSelenium.Common.Tests.Upgrade
 
 			LoginPage loginPage = new LoginPage(driver);
 
-			loginPage.WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 20).WaitTillVisible(20).Click();
+			loginPage.WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 60).WaitTillVisible(20).Click();
 
 			loginPage.WaitAndSwitchToFrame(30);
 
 			loginPage.DoLogin(userName, password);
 
 			loginPage.WaitAndSwitchToWindow(30);
+
+			upgradePage.WelcomeScreen();
 
 			var adminSiteSettingsPage = new AdminSiteSettingsPage(driver);
 			adminSiteSettingsPage.OpenUsingButtons(baseUrl);

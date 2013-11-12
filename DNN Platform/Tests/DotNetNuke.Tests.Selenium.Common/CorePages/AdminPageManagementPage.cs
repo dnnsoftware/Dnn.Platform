@@ -33,7 +33,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string WebsitePagesRadioButton = "//input[contains(@id, 'Tabs_rblMode_0')]";
 		public static string HostPagesRadioButton = "//input[contains(@id, 'Tabs_rblMode_1')]";
 		public static string ExpandAllLink = "//a[contains(@id, 'Tabs_cmdExpandTree')]";
-		public static string HostPage = "//div[contains(@id, 'Tabs_ctlPages')]//span[text() = 'Host ']";
+		public static string HostPage = PageList + "//span[text() = 'Host ']";
 
 		public static string ContextMenuAddPageOption = "//div[contains(@id, 'ctlPages_ctlContext_detached')]//a[span[contains(text(),'Add Page')]]";
 		public static string ContextMenuDeletePageOption = "//div[contains(@id, 'ctlPages_ctlContext_detached')]//a[span[contains(text(),'Delete')]]";
@@ -53,6 +53,8 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");
 			GoToUrl(baseUrl + AdminPageManagementUrl);
+
+			WaitForElement(By.XPath(PageList + "//li[@class = 'rtLI rtLast']//span[last()]"));
 		}
 
 		public void OpenUsingButtons(string baseUrl)
@@ -61,6 +63,8 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");
 			WaitAndClick(By.XPath(AdminBasePage.AdminTopMenuLink));
 			WaitAndClick(By.XPath(AdminBasePage.PageManagementLink));
+
+			WaitForElement(By.XPath(PageList + "//li[@class = 'rtLI rtLast']//span[last()]"));
 		}
 
 		public void OpenUsingControlPanel(string baseUrl)
@@ -68,11 +72,15 @@ namespace DNNSelenium.Common.CorePages
 			GoToUrl(baseUrl);
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");
 			SelectSubMenuOption(ControlPanelIDs.ControlPanelAdminOption, ControlPanelIDs.ControlPanelAdminCommonSettings, ControlPanelIDs.AdminPageManagementOption);
+
+			WaitForElement(By.XPath(PageList + "//li[@class = 'rtLI rtLast']//span[last()]"));
 		}
 
 		public void OpenPageList(string pageType, string waitForPageName)
 		{
 			Thread.Sleep(1000);
+			//WaitForElement(By.XPath(HostPage)).WaitTillVisible();
+
 			Trace.WriteLine(BasePage.TraceLevelPage + "Select Page type :");
 			if (pageType == "Web")
 			{
@@ -88,18 +96,20 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on link 'Expand All'");
 			WaitAndClick(By.XPath(ExpandAllLink));
-			WaitForElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = '" + waitForPageName + " ']")).Info();
+
+			WaitForElement(By.XPath(PageList + "//li[@class = 'rtLI rtLast']//span[last()]"));
+			WaitForElement(By.XPath(PageList + "//span[text() = '" + waitForPageName + " ']")).Info();
 		}
 
 		public void SelectFromContextMenu(string pageName, string option)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Select from Context menu:");
 
-			WaitForElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = '" + pageName + " ']")).Info();
+			WaitForElement(By.XPath(PageList + "//span[text() = '" + pageName + " ']")).Info();
 
 			Actions builder = new Actions(_driver);
 			builder.ContextClick(
-				FindElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = '" + pageName + " ']"))).
+				FindElement(By.XPath(PageList + "//span[text() = '" + pageName + " ']"))).
 				MoveToElement(WaitForElement(By.XPath(option))).Build().Perform();
 
 			FindElement(By.XPath(option)).Info();
@@ -173,8 +183,6 @@ namespace DNNSelenium.Common.CorePages
 
 			SelectFromContextMenu(pageName, ContextMenuDeletePageOption);
 
-			//IAlert alert = _driver.SwitchTo().Alert();
-			//alert.Accept();
 			WaitForConfirmationBox(30);
 			ClickYesOnConfirmationBox();
 
@@ -198,7 +206,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			OpenPageList(pageType, pageName);
 
-			FindElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = '" + pageName + " ']")).WaitTillVisible().Click();
+			FindElement(By.XPath(PageList + "//span[text() = '" + pageName + " ']")).WaitTillVisible().Click();
 
 			AccordionOpen(By.XPath(SEOSettingsAccordion));
 
@@ -208,14 +216,13 @@ namespace DNNSelenium.Common.CorePages
 			ClickOnButton(By.XPath(UpdatePageButton));
 
 			Thread.Sleep(1000);
-			//WaitForElement(By.XPath(OperationConfirmationMessage));
 		}
 
 		public void DeleteModuleOnPage(string pageName, string pageType)
 		{
 			OpenPageList(pageType, pageName);
 
-			WaitForElement(By.XPath("//div[contains(@id, 'Tabs_ctlPages')]//span[text() = '" + pageName + " ']")).ScrollIntoView().Click();
+			WaitForElement(By.XPath(PageList + "//span[text() = '" + pageName + " ']")).ScrollIntoView().Click();
 
 			AccordionOpen(By.XPath(ModulesAccordion));
 

@@ -1,14 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Tests>
 
-  <settings
-    name = "Upgrade Test, Daily run"
-    browser = "chrome"
-    baseURL = "ce700v4.dnndev.me"
-    
-    UserName = "host"
-    Password = "dnnhost"
-/>
+  <settings name="BVT" browser="chrome" baseURL="ce700v3.dnndev.me" InstallerLanguage="en" UserName="host"
+            Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
+            DatabaseType="" DatabaseServerName="(local)" DatabaseName="ceBVTTrunk" DatabaseFilename="" ObjectQualifier="dnn_" Security=""
+            DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" runWithDummyCachingProvider = "" />
 
   <siteManagement
     name = "Site Management, BVT"
@@ -62,5 +58,6 @@
     superUserPassword= "pAss10word"
     phoneNumber = "604-888-1185"
     />
+
 </Tests>
 

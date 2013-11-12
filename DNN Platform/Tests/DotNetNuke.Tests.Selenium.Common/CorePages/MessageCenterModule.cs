@@ -42,6 +42,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string ReplyButton = "//div[@class = 'dnnCoreMessagingFooter']/a";
 
 		public static string DismissLink = "//dd[@class = 'notificationControls']/a";
+		public static string NotificationSubject = "New User Registration";
 
 		public void OpenMessagesUsingIcon()
 		{
@@ -108,7 +109,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public void DismissNotification(string subject)
 		{
-			WaitAndClick(By.XPath("//ul[@class = 'messages']//li[@class = 'ListCol-3'][//span[contains(text(), 'New User Registration')]]" + DismissLink));
+			WaitAndClick(By.XPath("//ul[@class = 'messages']//li[@class = 'ListCol-3'][//span[contains(text(), '" + subject + "')]]" + DismissLink));
 
 			WaitForElement(By.XPath("//div[@class = 'dnnFormMessage dnnFormSuccess' and contains(text(), 'successfully')]"));
 			Thread.Sleep(1000);

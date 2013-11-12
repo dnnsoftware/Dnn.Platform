@@ -93,7 +93,7 @@ namespace DNNSelenium.Common.BaseClasses
 			loginPage.LoginAsHost(_baseUrl);
 
 			string logContentAfterTests = LogContent();
-			StringAssert.AreEqualIgnoringCase(logContentAfterTests, logContentBeforeTests, "ERROR in the Log");
+			Utilities.SoftAssert(() => StringAssert.AreEqualIgnoringCase(logContentAfterTests, logContentBeforeTests, "ERROR in the Log"));
 		}
 
 		public void DisablePopups(string url)
@@ -139,9 +139,11 @@ namespace DNNSelenium.Common.BaseClasses
 			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
 
 			blankPage.AddNewPage(pageName);
+
+			//blankPage.OpenUsingUrl(_baseUrl, pageName);
 			blankPage.SetPageViewPermissions(option, permissionOption);
 
-			blankPage.CloseEditMode();
+			//blankPage.CloseEditMode();
 		}
 
 		public void AddModule(string pageName, Dictionary<string, Modules.ModuleIDs> modulesDescription, string moduleName, string pane)
