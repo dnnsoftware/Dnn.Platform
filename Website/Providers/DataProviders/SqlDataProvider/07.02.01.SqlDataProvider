@@ -237,6 +237,19 @@ AS
 GO
 
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
+@FileId int,
+@LastModificationTime datetime
+AS
+	UPDATE {databaseOwner}{objectQualifier}Files 
+	SET [LastModificationTime] = @LastModificationTime
+	WHERE [FileId] = @FileId
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
