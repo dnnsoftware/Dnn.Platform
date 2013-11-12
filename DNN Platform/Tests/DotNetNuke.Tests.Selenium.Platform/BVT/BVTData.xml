@@ -4,7 +4,7 @@
   <settings  
     name="BVT" 
     browser="firefox" 
-    baseURL="ceBVTTrunk.lvh.me" 
+    baseURL="cebvt.lvh.me" 
     InstallerLanguage="en" 
     UserName="host"
     Password="dnnhost"
@@ -14,7 +14,7 @@
     DatabaseSetup="Custom"
     DatabaseType="Default"
     DatabaseServerName="(local)" 
-    DatabaseName="ceBVTTrunk" 
+    DatabaseName="cebvt" 
     DatabaseFilename="" 
     ObjectQualifier="can_" 
     Security=""
