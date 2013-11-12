@@ -1183,4 +1183,7 @@ $(function () {
 			}
         });
 	});
+    
+    //Set the checkbox in control bar as DNN style.
+    $('#ControlBar input[type="checkbox"]').dnnCheckbox();
 });
