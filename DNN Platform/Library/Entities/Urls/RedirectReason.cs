@@ -60,6 +60,7 @@ namespace DotNetNuke.Entities.Urls
         SiteUrls_Config_Rule,
         Diacritic_Characters,
         Module_Provider_Rewrite_Redirect,
-        Module_Provider_Redirect
+        Module_Provider_Redirect,
+        Requested_SplashPage
     }
 }

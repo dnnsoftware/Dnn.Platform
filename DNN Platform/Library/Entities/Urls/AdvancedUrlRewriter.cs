@@ -2430,7 +2430,8 @@ namespace DotNetNuke.Entities.Urls
                     //575 check on absolutePath instead of absoluteUri : this ignores query strings and fragments like #
                     //610 don't always end with '/' - reverses previous setting
                     //687 don't double-check 301 redirects.  'CheckFor301' is less concise than 'Redirect301'
-                    if (requestUri.AbsolutePath.EndsWith("/") && result.Action != ActionType.Redirect301)
+                    // DNN-21906: if the redirect is for splash page, then we should continue the 302 redirect.
+                    if (requestUri.AbsolutePath.EndsWith("/") && result.Action != ActionType.Redirect301 && result.Reason != RedirectReason.Requested_SplashPage)
                     {
                         result.Action = ActionType.CheckFor301;
                     }

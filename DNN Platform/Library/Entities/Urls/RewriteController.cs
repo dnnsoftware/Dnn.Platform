@@ -232,8 +232,20 @@ namespace DotNetNuke.Entities.Urls
                             }
                             else
                             {
-                                tabId = portal.HomeTabId;
-                                //not a custom alias for a specific tab, so it must be the home page for the portal we identified
+                                //not a custom alias for a specific tab, so it must be the home page for the portal we identified,
+                                //if its first request and splash page defined, then redirec to splash page.
+                                if (portal.SplashTabId > Null.NullInteger && HttpContext.Current != null &&
+                                    !HttpContext.Current.Request.Cookies.AllKeys.Contains("SplashPageView"))
+                                {
+                                    tabId = portal.SplashTabId;
+                                    HttpContext.Current.Response.Cookies.Add(new HttpCookie("SplashPageView", "true"));
+                                    result.Action = ActionType.Redirect302;
+                                    result.Reason = RedirectReason.Requested_SplashPage;
+                                }
+                                else
+                                {
+                                    tabId = portal.HomeTabId;
+                                }                                
                                 if (culture == null)
                                 {
                                     culture = portal.DefaultLanguage; //set culture to default if not found specifically
