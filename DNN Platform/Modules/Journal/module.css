@@ -188,9 +188,9 @@ border-bottom-left-radius: 3px;
 .progress_bar_wrapper{ width: 500px;overflow: hidden;}
 .progress-bar div{ background-image: url('Images/progress.gif');position:relative;padding:0 !important;}
 
-#tbar-attach-Area input{cursor:pointer; left: 0;top: 0;width: 150px;position:absolute; opacity:0; display:inline;height:18px;padding:4px;margin-bottom:9px;font-size:13px;line-height:18px;color:#555555;border:1px solid #ccc;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
+#tbar-attach-Area input:not([type=file]){cursor:pointer; left: 0;top: 0;width: 150px;position:absolute; opacity:0; display:inline;height:18px;padding:4px;margin-bottom:9px;font-size:13px;line-height:18px;color:#555555;border:1px solid #ccc;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
 
-.journalTools #journalOptionArea div span.browser-upload-btn{position:relative; font-weight: bold; padding-left:0px; cursor:pointer; }
+.journalTools #journalOptionArea div span.browser-upload-btn{position:relative; font-weight: bold; padding-left:0px; cursor:pointer;display: block; }
     .browser-upload-btn:hover{cursor:pointer;}
 div.journalTools div#journalOptionArea div.fileUploadArea div#itemUpload div.filePreviewArea {padding:0;margin:0}
 div.journalTools div#journalOptionArea div.fileUploadArea div#itemUpload div.progress_bar_wrapper{padding:0;margin:0;}
