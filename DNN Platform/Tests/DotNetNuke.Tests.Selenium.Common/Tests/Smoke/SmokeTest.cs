@@ -92,7 +92,7 @@ namespace DNNSelenium.Common.Tests.Smoke
 
 			int itemNumber = hostSiteManagementPage.FindElements(By.XPath(HostSiteManagementPage.PortalsList)).Count;
 
-			hostSiteManagementPage.DeleteSite(_baseUrl, _siteAlias);
+			hostSiteManagementPage.DeleteSite(_baseUrl + _siteAlias);
 
 			hostSiteManagementPage.OpenUsingButtons(_baseUrl);
 

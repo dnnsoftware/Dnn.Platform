@@ -1,16 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Tests>
-  <settings name="BVT" browser="firefox" baseURL="CEBVT.lvh.me" InstallerLanguage="en" UserName="host"
-            Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Custom"
-            DatabaseType="Default" DatabaseServerName="(local)" DatabaseName="CEBVT" DatabaseFilename="" ObjectQualifier="can_" Security="Integrated"
-            DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" runWithDummyCachingProvider = "" />
+  <settings name = "BVT"
+  browser = "chrome"
+  baseURL = "ce720v5.dnndev.me"
+  InstallerLanguage = "en"
+  Template = "Default Template"
+  Language = "en"
+  DatabaseSetup = "Default"
+  DatabaseType = "SQL Server"
+  DatabaseServerName = ".\alpha"
+  DatabaseName = "ce720v13"
+  DatabaseFilename = ""
+  ObjectQualifier = "abc_"
+  Security = "Integrated"
+  DatabaseUserName = ""
+  DatabasePassword = ""
+  RunDatabaseAsDatabaseOwner = "yes"
+  UserName = "host"
+  Password = "dnnhost"
+  WebsiteName = "My Website"
+  runWithDummyCachingProvider = "yes" />
 
-  <childSite
-    name = "Child Site, BVT"
-    siteAlias = "childsitebvt"
-    siteName = "ChildSiteTitleBVT"
-    siteDescription = "Child Site, BVT"
+  <siteManagement
+     name = "Site Management, BVT"
+     childSiteAlias = "childsitebvt"
+     childSiteTitle = "ChildSiteTitleBVT"
+     childSiteDescription = "Child Site, BVT"
+     parentSiteAlias = "parent"
+     parentSiteTitle = "ParentSiteTitleBVT"
+     parentSiteDescription = "Parent Site, BVT"
     />
 
   <modules

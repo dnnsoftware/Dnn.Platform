@@ -37,7 +37,7 @@
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.37.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,20 +48,20 @@
     <Reference Include="System.Xml" />
     <Reference Include="ThoughtWorks.Selenium.Core, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.37.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.37.0\net40\WebDriver.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver.Support, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
+    <Reference Include="WebDriver.Support, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.Support.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.37.0\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseClasses\PlatformControlPanelIDs.cs" />
-    <Compile Include="BVT\BVTChildSite.cs" />
+    <Compile Include="BVT\BVTSiteManagement.cs" />
     <Compile Include="BVT\BVTModules.cs" />
     <Compile Include="BVT\BVTNavigation.cs" />
     <Compile Include="BVT\BVTPages.cs" />
@@ -76,6 +76,7 @@
     <Compile Include="CorePages\HostPage.cs" />
     <Compile Include="P1\P1Journal.cs" />
     <Compile Include="P1\P1MessageCenter.cs" />
+    <Compile Include="P1\P1Setup.cs" />
     <Compile Include="P1\P1UserProfile.cs" />
     <Compile Include="P1\P1MemberDirectory.cs" />
     <Compile Include="P1\P1AdminAdvancedSettings.cs" />
@@ -92,7 +93,7 @@
     <Compile Include="P1\P1Taxonomy.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SetUpFixture.cs" />
-    <Compile Include="UpgradeTests\BVTChildSite.cs" />
+    <Compile Include="UpgradeTests\BVTSiteManagement.cs" />
     <Compile Include="UpgradeTests\BVTModules.cs" />
     <Compile Include="UpgradeTests\BVTNavigation.cs" />
     <Compile Include="UpgradeTests\BVTPages.cs" />
@@ -143,14 +144,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="InstallerTests\InstallerData.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="InstallerTests\InstallerLogData.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="InstallerTests\LayoutInstallerData.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="P1\P1Data.xml">
       <SubType>Designer</SubType>
@@ -170,6 +171,7 @@
     </Content>
     <Content Include="UpgradeTests\UpgradeData.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
