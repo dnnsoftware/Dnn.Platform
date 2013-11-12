@@ -1,26 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Tests>
-  <settings name = "BVT"
-  browser = "chrome"
-  baseURL = "ce720v5.dnndev.me"
-  InstallerLanguage = "en"
-  Template = "Default Template"
-  Language = "en"
-  DatabaseSetup = "Default"
-  DatabaseType = "SQL Server"
-  DatabaseServerName = ".\alpha"
-  DatabaseName = "ce720v13"
-  DatabaseFilename = ""
-  ObjectQualifier = "abc_"
-  Security = "Integrated"
-  DatabaseUserName = ""
-  DatabasePassword = ""
-  RunDatabaseAsDatabaseOwner = "yes"
-  UserName = "host"
-  Password = "dnnhost"
-  WebsiteName = "My Website"
-  runWithDummyCachingProvider = "yes" />
+  <settings  
+    name="BVT" 
+    browser="firefox" 
+    baseURL="ceBVTTrunk.lvh.me" 
+    InstallerLanguage="en" 
+    UserName="host"
+    Password="dnnhost"
+    WebsiteName="My Website" 
+    Template="Default Template" 
+    Language="en" 
+    DatabaseSetup="Custom"
+    DatabaseType="Default"
+    DatabaseServerName="(local)" 
+    DatabaseName="ceBVTTrunk" 
+    DatabaseFilename="" 
+    ObjectQualifier="can_" 
+    Security=""
+    DatabaseUserName=""
+    DatabasePassword="" 
+    RunDatabaseAsDatabaseOwner="" 
+    runWithDummyCachingProvider = "yes" />
 
   <siteManagement
      name = "Site Management, BVT"
