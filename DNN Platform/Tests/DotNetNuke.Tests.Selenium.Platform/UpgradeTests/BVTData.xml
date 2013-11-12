@@ -2,26 +2,13 @@
 <Tests>
 
   <settings
-    name="BVT over Upgraded site"
-    browser="firefox"
-    baseURL="peBVTTrunk.lvh.me"
-    InstallerLanguage="en"
-    UserName="host"
-    Password="dnnhost"
-    WebsiteName="My Website"
-    Template="Default Template"
-    Language="en"
-    DatabaseSetup="Custom"
-    DatabaseType="Default"
-    DatabaseServerName="(local)"
-    DatabaseName="peBVTTrunk"
-    DatabaseFilename=""
-    ObjectQualifier="can_"
-    Security=""
-    DatabaseUserName=""
-    DatabasePassword=""
-    RunDatabaseAsDatabaseOwner=""
-    runWithDummyCachingProvider = "yes"  />
+    name = "Upgrade Test, Daily run"
+    browser = "firefox"
+    baseURL = "UpgradeCETest.lvh.me"
+    
+    UserName = "host"
+    Password = "dnnhost"
+/>
 
   <siteManagement
     name = "Site Management, BVT"
