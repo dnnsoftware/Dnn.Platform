@@ -273,7 +273,7 @@ namespace DotNetNuke.UI.Skins
             //if querystring dnnprintmode=true, controlpanel will not be shown
             if (Request.QueryString["dnnprintmode"] != "true" && Request.QueryString["popUp"] != "true")
             {
-                if ((ControlPanelBase.IsPageAdmin() || ControlPanelBase.IsModuleAdmin()))
+                if ((ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
                 {
                     //ControlPanel processing
                     var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);

@@ -154,34 +154,18 @@ namespace DotNetNuke.UI.ControlPanels
           get { return false; }
           set { }
         }
-      
-        [Obsolete("Deprecated in 5.0. Replaced By UserMode.")]
-        protected bool ShowContent
+
+        protected bool IsModuleAdmin()
         {
-            get
-            {
-                return PortalSettings.UserMode != PortalSettings.Mode.Layout;
-            }
+            return IsModuleAdminInternal();
         }
 
-        [Obsolete("Deprecated in 5.0. Replaced By UserMode.")]
-        protected bool IsPreview
+        protected bool IsPageAdmin()
         {
-            get
-            {
-                if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
-                {
-                    return false;
-                }
-                return true;
-            }
+            return IsPageAdminInternal();
         }
-		
-		#endregion
-		
-		#region Protected Methods
 
-        protected internal static bool IsModuleAdmin()
+        internal static bool IsModuleAdminInternal()
         {
             bool _IsModuleAdmin = Null.NullBoolean;
             foreach (ModuleInfo objModule in TabController.CurrentPage.Modules)
@@ -199,7 +183,7 @@ namespace DotNetNuke.UI.ControlPanels
             return PortalController.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
         }
 
-        protected internal static bool IsPageAdmin()
+        internal static bool IsPageAdminInternal()
         {
             bool _IsPageAdmin = Null.NullBoolean;
             if (TabPermissionController.CanAddContentToPage() || TabPermissionController.CanAddPage() || TabPermissionController.CanAdminPage() || TabPermissionController.CanCopyPage() ||
@@ -209,7 +193,7 @@ namespace DotNetNuke.UI.ControlPanels
             }
             return _IsPageAdmin;
         }
-		
+
 		#endregion
 		
 		#region Private Methods
@@ -545,6 +529,28 @@ namespace DotNetNuke.UI.ControlPanels
             else
             {
                 Personalization.SetProfile("Usability", "UserMode" + PortalSettings.PortalId, "Edit");
+            }
+        }
+
+        [Obsolete("Deprecated in 5.0. Replaced By UserMode.")]
+        protected bool ShowContent
+        {
+            get
+            {
+                return PortalSettings.UserMode != PortalSettings.Mode.Layout;
+            }
+        }
+
+        [Obsolete("Deprecated in 5.0. Replaced By UserMode.")]
+        protected bool IsPreview
+        {
+            get
+            {
+                if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                {
+                    return false;
+                }
+                return true;
             }
         }
 		
