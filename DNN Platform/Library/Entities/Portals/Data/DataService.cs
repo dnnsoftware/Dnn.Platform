@@ -20,12 +20,10 @@
 #endregion
 #region Usings
 
-using System;
 using System.Data;
 
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
-
 #endregion
 
 namespace DotNetNuke.Entities.Portals.Data
@@ -62,6 +60,16 @@ namespace DotNetNuke.Entities.Portals.Data
                                             portalGroup.PortalGroupDescription,
                                             portalGroup.AuthenticationDomain,
                                             lastModifiedByUserId);
+        }
+
+        public IDataReader GetSharedModulesWithPortal(PortalInfo portal)
+        {
+            return _provider.ExecuteReader("GetSharedModulesWithPortal", portal.PortalID);
+        }
+
+        public IDataReader GetSharedModulesByPortal(PortalInfo portal)
+        {
+            return _provider.ExecuteReader("GetSharedModulesByPortal", portal.PortalID);
         }
     }
 }

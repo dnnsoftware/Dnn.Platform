@@ -28,6 +28,8 @@ using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals.Data;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
@@ -206,6 +208,32 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        private void DeleteSharedModules(PortalInfo portal)
+        {
+            var sharedModules = GetSharedModulesWithPortal(portal);
+            var moduleController = new ModuleController();
+            foreach (var sharedModule in sharedModules)
+            {
+                moduleController.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);                
+            }
+
+            sharedModules = GetSharedModulesByPortal(portal);
+            foreach (var sharedModule in sharedModules)
+            {
+                moduleController.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);
+            }
+        }
+
+        private IEnumerable<ModuleInfo> GetSharedModulesWithPortal(PortalInfo portal)
+        {
+            return CBO.FillCollection<ModuleInfo>(_dataService.GetSharedModulesWithPortal(portal));
+        }
+
+        private IEnumerable<ModuleInfo> GetSharedModulesByPortal(PortalInfo portal)
+        {
+            return CBO.FillCollection<ModuleInfo>(_dataService.GetSharedModulesByPortal(portal));
+        } 
+
         public int AddPortalGroup(PortalGroupInfo portalGroup)
         {
             //Argument Contract
@@ -236,6 +264,7 @@ namespace DotNetNuke.Entities.Portals
             var portal = _portalController.GetPortal(portalGroup.MasterPortalId);
             if (portal != null)
             {
+                DeleteSharedModules(portal);
                 portal.PortalGroupID = -1;
                 _portalController.UpdatePortalInfo(portal);
             }
@@ -284,6 +313,7 @@ namespace DotNetNuke.Entities.Portals
             callback(args);
 
             //Remove portal from group
+            DeleteSharedModules(portal);
             portal.PortalGroupID = -1;
             _portalController.UpdatePortalInfo(portal);
 

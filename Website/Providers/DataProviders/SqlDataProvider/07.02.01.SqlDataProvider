@@ -236,6 +236,33 @@ AS
         EXEC(@sql)
 GO
 
+/*** Fix bug CONTENT-1982 - Cross-site-Shared-Modules still sharing updates after deleting Site-Group ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSharedModulesByPortal]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesByPortal]
+	@Portald int
+AS
+	SELECT * FROM {databaseOwner}vw_TabModules tb		
+	WHERE tb.PortalID != tb.OwnerPortalID	
+	AND tb.OwnerPortalID = @Portald
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSharedModulesWithPortal]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesWithPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesWithPortal]
+	@Portald int
+AS
+	SELECT * FROM {databaseOwner}vw_TabModules tb		
+	WHERE tb.PortalID != tb.OwnerPortalID	
+	AND tb.PortalID = @Portald
+
+GO
+
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
