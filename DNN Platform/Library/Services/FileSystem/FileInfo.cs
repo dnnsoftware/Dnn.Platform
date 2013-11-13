@@ -487,8 +487,9 @@ namespace DotNetNuke.Services.FileSystem
             }
             
             _sha1Hash = fileManager.GetHash(fileContent);
-            
             fileContent.Close();
+
+            fileManager.UpdateFile(this);
         }
 
         #endregion
