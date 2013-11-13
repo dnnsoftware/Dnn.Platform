@@ -62,14 +62,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        private string ReturnURL
-        {
-            get
-            {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
-            }
-        }
-
         #endregion
 
         #region Private Methods
@@ -161,7 +153,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
             if (Page.IsPostBack == false)
             {
-                cmdCancel.NavigateUrl = ReturnURL;
+                cmdCancel.NavigateUrl = Globals.NavigateURL();
 
                 var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
                 if (objModuleControl != null)
@@ -210,7 +202,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                             objStream.Close();
                         }
                     }
-                    Response.Redirect(ReturnURL, true);
+                    Response.Redirect(Globals.NavigateURL(), true);
                 }
             }
             catch (Exception exc) //Module failed to load

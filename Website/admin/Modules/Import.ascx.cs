@@ -61,14 +61,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        private string ReturnURL
-        {
-            get
-            {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
-            }
-        }
-
         #endregion
 
         #region Private Methods
@@ -159,7 +151,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 if (!Page.IsPostBack)
                 {
-                    cmdCancel.NavigateUrl = ReturnURL;
+                    cmdCancel.NavigateUrl = Globals.NavigateURL();
                     cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
                     cboFolders.Services.Parameters.Add("permission", "ADD");
                 }
@@ -228,7 +220,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     var strMessage = ImportModule();
                     if (String.IsNullOrEmpty(strMessage))
                     {
-                        Response.Redirect(ReturnURL, true);
+                        Response.Redirect(Globals.NavigateURL(), true);
                     }
                     else
                     {
