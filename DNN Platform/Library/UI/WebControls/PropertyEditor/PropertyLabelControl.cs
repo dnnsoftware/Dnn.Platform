@@ -28,6 +28,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -327,8 +328,7 @@ namespace DotNetNuke.UI.WebControls
 			base.OnLoad(e);
 
 			ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
-            jQuery.RequestHoverIntentRegistration();
-			jQuery.RequestDnnPluginsRegistration();
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 		    ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 		}
 

@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.Modules
                                           ? Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
                                           : GetRedirectUrl(), true);
                 }
-                catch (ThreadAbortException ex)
+                catch (ThreadAbortException)
                 {
                     Thread.ResetAbort();
                 }

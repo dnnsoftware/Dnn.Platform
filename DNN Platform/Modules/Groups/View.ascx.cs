@@ -27,6 +27,7 @@ using System;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -68,7 +69,7 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                jQuery.RequestDnnPluginsRegistration();
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 if (GroupId < 0) {
                     if (TabId != GroupListTabId && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName)) {
                        Response.Redirect(Globals.NavigateURL(GroupListTabId));

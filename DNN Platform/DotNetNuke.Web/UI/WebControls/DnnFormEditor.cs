@@ -28,6 +28,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -300,7 +301,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             Page.RegisterRequiresControlState(this);
-            jQuery.RequestDnnPluginsRegistration();
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             base.OnInit(e);
         }
 

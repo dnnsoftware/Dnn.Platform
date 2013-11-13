@@ -27,6 +27,7 @@ using System.Web.UI;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
@@ -78,7 +79,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 base.OnInit(e);
 
-                jQuery.RequestDnnPluginsRegistration();
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                 var folderId = Convert.ToInt32(Request.Params["FolderId"]);
                 Folder = FolderManager.Instance.GetFolder(folderId);

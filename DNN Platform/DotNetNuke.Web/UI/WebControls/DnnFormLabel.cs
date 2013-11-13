@@ -26,6 +26,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.Utilities;
@@ -92,8 +93,7 @@ namespace DotNetNuke.Web.UI.WebControls
 				panel.Controls.Add(pinLink);
 
 				ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
-                jQuery.RequestHoverIntentRegistration();
-				jQuery.RequestDnnPluginsRegistration();
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 //ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 			}
 		}

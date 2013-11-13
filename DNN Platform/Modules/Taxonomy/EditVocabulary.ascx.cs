@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.Taxonomy.Presenters;
 using DotNetNuke.Modules.Taxonomy.Views.Models;
 using DotNetNuke.Services.Localization;
@@ -117,7 +118,7 @@ namespace DotNetNuke.Modules.Taxonomy.Views
         {
             base.OnLoad(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 			ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             addTermButton.Click += OnAddTermClick;

@@ -27,6 +27,7 @@ using DotNetNuke.Framework;
 
 #region Usings
 
+using DotNetNuke.Framework.JavaScriptLibraries;
 using Telerik.Web.UI;
 
 #endregion
@@ -48,7 +49,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
             base.EnableEmbeddedBaseStylesheet = false;
             Utilities.ApplySkin(this);
-            jQuery.RegisterDnnJQueryPlugins(this.Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             if (string.IsNullOrEmpty(ClientSettings.ClientEvents.OnGridCreated))
             {
                 ClientSettings.ClientEvents.OnGridCreated = "$.dnnGridCreated";

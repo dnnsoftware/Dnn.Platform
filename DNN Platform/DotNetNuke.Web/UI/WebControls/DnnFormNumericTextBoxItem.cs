@@ -25,7 +25,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Framework;
-
+using DotNetNuke.Framework.JavaScriptLibraries;
 using Telerik.Web.UI;
 
 #endregion
@@ -74,7 +74,7 @@ namespace DotNetNuke.Web.UI.WebControls
             _textBox.Text = Convert.ToString(Value);
 
             container.Controls.Add(_textBox);
-            jQuery.RegisterDnnJQueryPlugins(this.Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             var initalizeScript = "<script type='text/javascript'>$(function(){$('.DnnNumericTextBox').dnnSpinner({type: 'range', defaultVal:" + _textBox.Text + ", typedata: { min: 1, interval: 1, max: 2147482624 }});});</script>";
             Page.ClientScript.RegisterClientScriptBlock(GetType(), "DnnFormNumericTextBoxItem", initalizeScript);

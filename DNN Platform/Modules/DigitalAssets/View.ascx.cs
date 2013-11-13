@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.ExtensionPoints.Filters;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Services;
@@ -546,8 +547,8 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 ServicesFramework.Instance.RequestAjaxScriptSupport();
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-                jQuery.RequestDnnPluginsRegistration();
-                jQuery.RegisterFileUpload(Page);
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
 
                 ClientResourceManager.RegisterScript(Page, "~/js/dnn.modalpopup.js", FileOrder.Js.DnnModalPopup);
                 ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FileUpload.js", FileOrder.Js.DefaultPriority);

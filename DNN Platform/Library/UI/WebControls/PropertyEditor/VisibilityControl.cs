@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
@@ -253,7 +254,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			base.OnInit(e);
 
-			jQuery.RequestRegistration();
+            JavaScript.RequestRegistration(CommonJs.jQuery);
 		}
 
         protected override void OnPreRender(EventArgs e)

@@ -22,6 +22,7 @@ using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -59,7 +60,7 @@ namespace DotNetNuke.Framework
 
         public void RequestAjaxScriptSupport()
         {
-            jQuery.RequestRegistration();
+            JavaScript.RequestRegistration(CommonJs.jQuery);
             SetKey(ScriptKey);
         }
 

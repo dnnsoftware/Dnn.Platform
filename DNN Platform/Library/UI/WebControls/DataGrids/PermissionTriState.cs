@@ -24,6 +24,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 
@@ -65,7 +66,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             if (!ClientAPI.IsClientScriptBlockRegistered(page, scriptKey))
             {
                 AJAX.RegisterScriptManager();
-                jQuery.RequestRegistration();
+                JavaScript.RequestRegistration(CommonJs.jQuery);
                 ClientAPI.RegisterClientScriptBlock(page, "dnn.permissiontristate.js");
 
                 ClientAPI.RegisterStartUpScript(page, scriptKey, "<script type='text/javascript'>" + GetInitScript(ctl) + "</script>");

@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Security.Roles;
@@ -40,7 +41,7 @@ namespace DotNetNuke.Modules.Groups
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DotNetNuke.Framework.jQuery.RegisterDnnJQueryPlugins(this.Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         private void Cancel_Click(object sender, EventArgs e)

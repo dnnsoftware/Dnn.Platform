@@ -102,6 +102,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             switch (jsname)
             {
                 case CommonJs.DnnPlugins:
+                    RequestRegistration(CommonJs.jQueryUI);
+                    RequestRegistration(CommonJs.HoverIntent);
+                    AddPreInstallorLegacyItemRequest(jsname);
+                    return;
                 case CommonJs.HoverIntent:
                 case CommonJs.jQueryFileUpload:
                     AddPreInstallorLegacyItemRequest(jsname);

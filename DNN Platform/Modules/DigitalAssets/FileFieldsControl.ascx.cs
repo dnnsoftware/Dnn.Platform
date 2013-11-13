@@ -25,6 +25,7 @@ using System.Text.RegularExpressions;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
@@ -69,7 +70,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         protected override void OnLoad(EventArgs e)

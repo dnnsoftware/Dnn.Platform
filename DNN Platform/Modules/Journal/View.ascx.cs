@@ -15,6 +15,7 @@ using System;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -41,9 +42,8 @@ namespace DotNetNuke.Modules.Journal {
 
         override protected void OnInit(EventArgs e) 
         {
-
-            jQuery.RequestDnnPluginsRegistration();
-			jQuery.RegisterFileUpload(Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/Scripts/journal.js");

@@ -5,7 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -132,7 +132,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             LoadFolders();
             jQuery.RegisterFileUpload(Page);
-            jQuery.RegisterDnnJQueryPlugins(Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             if (!IsPostBack && FileID == 0)
