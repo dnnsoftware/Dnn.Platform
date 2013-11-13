@@ -52,8 +52,8 @@ namespace DotNetNuke.Services.OutputCache
         protected string GenerateCacheKeyHash(int tabId, string cacheKey)
         {
             byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            var md5 = new MD5CryptoServiceProvider();
-            hash = md5.ComputeHash(hash);
+            var sha256 = new SHA256CryptoServiceProvider();
+            hash = sha256.ComputeHash(hash);
             return string.Concat(tabId.ToString(), "_", ByteArrayToString(hash));
         }
 
