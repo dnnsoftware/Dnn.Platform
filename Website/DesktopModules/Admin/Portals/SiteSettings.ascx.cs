@@ -554,7 +554,8 @@ namespace DesktopModules.Admin.Portals
 
                 var tabs = listTabs.Where(t => t.DisableLink == false).ToList();
 
-                var redirectTab = settings.GetValueOrDefault<int>("Redirect_AfterRegistration", -1);
+                //using values from current portal
+                var redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterRegistration", portal.PortalID, 0);
                 if (redirectTab > 0)
                 {
                     RedirectAfterRegistration.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
@@ -575,14 +576,17 @@ namespace DesktopModules.Admin.Portals
                 loginSettings.DataSource = settings;
                 loginSettings.DataBind();
 
-                redirectTab = settings.GetValueOrDefault<int>("Redirect_AfterLogin", -1);
+                //using values from current portal
+                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogin", portal.PortalID, 0);
                 if (redirectTab > 0)
                 {
                     RedirectAfterLogin.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
                 }
                 RedirectAfterLogin.PortalId = portal.PortalID;
 
-                redirectTab = settings.GetValueOrDefault<int>("Redirect_AfterLogout", -1);
+                //using values from current portal
+                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogout", portal.PortalID, 0);
+
                 if (redirectTab > 0)
                 {
                     RedirectAfterLogout.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
