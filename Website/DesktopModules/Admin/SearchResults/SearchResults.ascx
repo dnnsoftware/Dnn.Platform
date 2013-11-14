@@ -55,7 +55,7 @@
 <div id="dnnSearchResultAdvancedForm" class="dnnForm">
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedTags" runat="server" ResourceKey="lblAdvancedTags" />
-        <input type="text" id="advancedTagsCtrl" />
+        <input type="text" id="advancedTagsCtrl" value="<%=TagsQuery %>" />
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedDates" runat="server" ResourceKey="lblAdvancedDates" />

@@ -211,7 +211,8 @@
 
     dnn.searchResult.doSearch = function () {
         var sterm = dnn.searchResult.queryOptions.searchTerm;
-        if (!sterm || $.trim(sterm).length <= 1) {
+        var advancedTerm = dnn.searchResult.queryOptions.advancedTerm;
+        if ((!sterm || $.trim(sterm).length <= 1) && (!advancedTerm || $.trim(advancedTerm).length <= 1)) {
             dnn.searchResult.renderResults(null);
             return;
         }
@@ -361,7 +362,7 @@
             return false;
         });
 
-        $('#dnnSearchResultAdvancedSearch').on('click', function () {
+        $('#dnnSearchResultAdvancedSearch').on('click', function (e, isTrigger) {
             var tags = $('#advancedTagsCtrl').val() ? $('#advancedTagsCtrl').val().split(',') : [];
 
             var afterCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedDates);
@@ -392,7 +393,7 @@
             dnn.searchResult.queryOptions.pageIndex = 1;
             dnn.searchResult.doSearch();
 
-            $('.DnnModule .dnnSearchBoxPanel .dnnSearchBox_advanced_label').triggerHandler('click');
+            if(!isTrigger) $('.DnnModule .dnnSearchBoxPanel .dnnSearchBox_advanced_label').triggerHandler('click');
             return false;
         });
 
@@ -485,7 +486,11 @@
 
         });
 
-        dnn.searchResult.doSearch();
+        if ($('#advancedTagsCtrl').val()) {
+            setTimeout(function() { $('#dnnSearchResultAdvancedSearch').trigger("click", [true])}, 0);
+        } else {
+            dnn.searchResult.doSearch();
+        }
     };
 
 })(jQuery, dnn);

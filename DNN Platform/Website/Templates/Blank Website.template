@@ -5027,44 +5027,6 @@
               <definition>SearchResults</definition>
               <moduledefinition>Search Results</moduledefinition>
             </module>
-            <module>
-              <moduleID>369</moduleID>
-              <title>Results</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header>
-              </header>
-              <footer>
-              </footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod />
-              <alignment />
-              <color />
-              <border />
-              <iconfile />
-              <visibility>Maximized</visibility>
-              <containersrc />
-              <displaytitle>true</displaytitle>
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <modulesettings />
-              <tabmodulesettings />
-              <definition>ContentList</definition>
-              <moduledefinition>Content List</moduledefinition>
-            </module>
           </modules>
         </pane>
       </panes>
