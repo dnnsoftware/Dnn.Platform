@@ -321,4 +321,7 @@
   <data name="FileDoesNotExists.Error" xml:space="preserve">
     <value>The file does not exist</value>
   </data>
+  <data name="MyFolder.Text" xml:space="preserve">
+    <value>My Folder</value>
+  </data>
 </root>

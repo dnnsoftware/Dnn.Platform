@@ -483,28 +483,41 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 if (IsPostBack) return;
 
-                if (SettingsRepository.IsGroupMode(ModuleId))
+                switch (SettingsRepository.GetMode(ModuleId))
                 {
-                    int groupId;
-                    if (string.IsNullOrEmpty(Request["groupId"]) || !int.TryParse(Request["groupId"], out groupId))
-                    {
-                        Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                        return;
-                    }
+                    case DigitalAssestsMode.Group:
+                        int groupId;
+                        if (string.IsNullOrEmpty(Request["groupId"]) || !int.TryParse(Request["groupId"], out groupId))
+                        {
+                            Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            return;
+                        }
 
-                    var groupFolder = controller.GetGroupFolder(groupId, PortalSettings);
-                    if (groupFolder == null)
-                    {
-                        Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                        return;
-                    }
+                        var groupFolder = controller.GetGroupFolder(groupId, PortalSettings);
+                        if (groupFolder == null)
+                        {
+                            Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            return;
+                        }
 
-                    this.RootFolderViewModel = groupFolder;
-                }
-                else
-                {
-                    var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
-                    this.RootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder();
+                        this.RootFolderViewModel = groupFolder;
+                        break;
+
+                    case DigitalAssestsMode.User:
+                        var userFolder = controller.GetUserFolder(PortalSettings);
+                        if (userFolder == null)
+                        {
+                            Skin.AddModuleMessage(this, Localization.GetString("InvalidUser.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            return;
+                        }
+
+                        this.RootFolderViewModel = userFolder;
+                        break;
+
+                    default:
+                        var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
+                        this.RootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder();
+                        break;
                 }
 
                 var stateCookie = Request.Cookies["damState-" + UserId];

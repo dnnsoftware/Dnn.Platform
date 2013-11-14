@@ -26,7 +26,6 @@ using System.Web.UI;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.ExtensionPoints;
-using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
@@ -42,6 +41,8 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class FolderProperties : PortalModuleBase
     {
+        private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
+
         private readonly IDigitalAssetsController controller = (new Factory()).DigitalAssetsController;
         private FolderViewModel folderViewModel;
         private bool isRootFolder;
@@ -83,16 +84,31 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 var folderId = Convert.ToInt32(Request.Params["FolderId"]);
                 Folder = FolderManager.Instance.GetFolder(folderId);
-                if (string.IsNullOrEmpty(Folder.FolderPath))
+
+                FolderViewModel rootFolder;
+                switch (SettingsRepository.GetMode(ModuleId))
                 {
-                    folderViewModel = controller.GetRootFolder();
-                    isRootFolder = true;
-                }
-                else
-                {
-                    folderViewModel = controller.GetFolder(folderId);
+                    case DigitalAssestsMode.Group:
+                        var groupId = Convert.ToInt32(Request.Params["GroupId"]);
+                        rootFolder = controller.GetGroupFolder(groupId, PortalSettings);
+                        if (rootFolder == null)
+                        {
+                            throw new Exception("Invalid group folder");
+                        }
+                        break;
+
+                    case DigitalAssestsMode.User:
+                        rootFolder = controller.GetUserFolder(PortalSettings);
+                        break;
+
+                    default:
+                        rootFolder = controller.GetRootFolder();
+                        break;
                 }
 
+                isRootFolder = rootFolder.FolderID == folderId;
+                folderViewModel = isRootFolder ? rootFolder : controller.GetFolder(folderId);
+                
                 // Setup controls
                 CancelButton.Click += OnCancelClick;
                 SaveButton.Click += OnSaveClick;
@@ -110,7 +126,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     if (fieldsControl != null)
                     {
                         fieldsControl.SetController(controller);
-                        fieldsControl.SetItemViewModel(new ItemViewModel()
+                        fieldsControl.SetItemViewModel(new ItemViewModel
                         {
                             ItemID = folderViewModel.FolderID,
                             IsFolder = true,
@@ -134,6 +150,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 {
                     return;
                 }
+
                 SaveFolderProperties();
 
                 SavePermissions();
@@ -164,6 +181,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 controller.RenameFolder(folderViewModel.FolderID, FolderNameInput.Text);
             }
+
             var fieldsControl = folderFieldsControl as IFieldsControl;
             if (fieldsControl != null)
             {
@@ -178,7 +196,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 throw new DotNetNukeException(LocalizeString("UserCannotChangePermissionsError"));
             }
 
-            Folder = (FolderInfo)FolderManager.Instance.GetFolder(Folder.FolderID);
+            Folder = FolderManager.Instance.GetFolder(Folder.FolderID);
             Folder.FolderPermissions.Clear();
             Folder.FolderPermissions.AddRange(PermissionsGrid.Permissions);
             FolderPermissionController.SaveFolderPermissions(Folder);

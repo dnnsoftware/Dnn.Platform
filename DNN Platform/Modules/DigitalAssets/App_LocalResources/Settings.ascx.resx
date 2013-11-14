@@ -129,10 +129,10 @@
   <data name="Group.Text" xml:space="preserve">
     <value>Group</value>
   </data>
-  <data name="GroupMode.Help" xml:space="preserve">
+  <data name="Mode.Help" xml:space="preserve">
     <value>The mode the module should operate in</value>
   </data>
-  <data name="GroupMode.Text" xml:space="preserve">
+  <data name="Mode.Text" xml:space="preserve">
     <value>Mode</value>
   </data>
   <data name="Normal.Text" xml:space="preserve">
@@ -143,5 +143,8 @@
   </data>
   <data name="RootFolder.Text" xml:space="preserve">
     <value>Root folder</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>User</value>
   </data>
 </root>

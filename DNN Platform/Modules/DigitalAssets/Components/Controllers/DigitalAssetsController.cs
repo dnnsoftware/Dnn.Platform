@@ -501,6 +501,13 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return FolderManager.Instance.GetFolder(this.CurrentPortalId, groupFolderPath);        
         }
 
+        public FolderViewModel GetUserFolder(PortalSettings portalSettings)
+        {
+            var folder = GetFolderViewModel(FolderManager.Instance.GetUserFolder(portalSettings.UserInfo));
+            folder.FolderName = LocalizationHelper.GetString("MyFolder");
+            return folder;
+        }
+
         public FolderViewModel CreateFolder(string folderName, int folderParentID, int folderMappingID, string mappedPath)
         {
             Requires.NotNullOrEmpty("folderName", folderName);

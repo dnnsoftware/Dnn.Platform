@@ -444,4 +444,7 @@
   <data name="InvalidGroup.Error" xml:space="preserve">
     <value>The group is not valid</value>
   </data>
+  <data name="InvalidUser.Error" xml:space="preserve">
+    <value>The module is configured as User mode, it cannot be used with unauthenticated user</value>
+  </data>
 </root>

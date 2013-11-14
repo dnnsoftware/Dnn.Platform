@@ -25,11 +25,14 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 {
+    using DotNetNuke.Entities.Portals;
+
     public class DigitalAssetsSettingsRepository
     {
         private const string DefaultFolderTypeIdSetting = "DefaultFolderTypeId";
         private const string RootFolderIdSetting = "RootFolderId";
         private const string GroupModeSetting = "GroupMode";
+        private const string ModeSetting = "Mode";
 
         private readonly ModuleController moduleController;
 
@@ -62,7 +65,19 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return Convert.ToInt32(rootFolderId);
         }
 
-        public bool IsGroupMode(int moduleId)
+        public DigitalAssestsMode GetMode(int moduleId)
+        {
+            DigitalAssestsMode mode;
+
+            if (!Enum.TryParse(GetSettingByKey(moduleId, ModeSetting), true, out mode))
+            {
+                return this.IsGroupMode(moduleId) ? DigitalAssestsMode.Group : DigitalAssestsMode.Normal;
+            }
+
+            return mode;
+        }
+
+        private bool IsGroupMode(int moduleId)
         {
             var groupMode = this.GetSettingByKey(moduleId, GroupModeSetting);
 
@@ -73,7 +88,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             return Convert.ToBoolean(groupMode);
         }
-
+        
         public void SaveDefaultFolderId(int moduleId, int defaultFolderTypeId)
         {
             this.moduleController.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));            
@@ -84,9 +99,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             this.moduleController.UpdateModuleSetting(moduleId, RootFolderIdSetting, rootFolderId.ToString(CultureInfo.InvariantCulture));
         }
 
-        public void SaveGroupMode(int moduleId, bool groupMode)
+        public void SaveMode(int moduleId, DigitalAssestsMode mode)
         {
-            this.moduleController.UpdateModuleSetting(moduleId, GroupModeSetting, groupMode.ToString(CultureInfo.InvariantCulture));
+            this.moduleController.UpdateModuleSetting(moduleId, ModeSetting, mode.ToString());
         }
 
         private string GetSettingByKey(int moduleId, string key)
@@ -94,5 +109,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var settings = this.moduleController.GetModuleSettings(moduleId);
             return (string)settings[key];               
         }
+    }
+
+    public enum DigitalAssestsMode
+    {
+        Normal,
+        Group,
+        User
     }
 }

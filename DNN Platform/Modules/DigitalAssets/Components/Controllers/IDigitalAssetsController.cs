@@ -68,8 +68,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// </summary>
         /// <param name="groupId">The identifier of the group.</param>
         /// <param name="portalSettings" >The current portal settings.</param>
-        /// <returns>The root folderItem entity.</returns>
+        /// <returns>The group folderItem entity.</returns>
         FolderViewModel GetGroupFolder(int groupId, PortalSettings portalSettings);
+
+        /// <summary>
+        /// Gets the user folder
+        /// </summary>
+        /// <param name="portalSettings" >The current portal settings.</param>
+        /// <returns>The user folderItem entity.</returns>
+        FolderViewModel GetUserFolder(PortalSettings portalSettings);
 
         /// <summary>
         /// Gets the files and folders contained in the specified folder.

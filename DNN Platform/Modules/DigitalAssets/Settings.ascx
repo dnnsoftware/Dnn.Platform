@@ -10,11 +10,12 @@
     </div>
     
     <div class="dnnFormItem">
-        <dnnweb:Label ID="GroupModeLabel" runat="server" ResourceKey="GroupMode" Suffix=":" ControlName="GroupModeComboBox" />
-        <dnnweb:DnnComboBox ID="GroupModeComboBox" runat="server" OnClientSelectedIndexChanged="updateRootFolderItemVisibility" >
+        <dnnweb:Label ID="ModeLabel" runat="server" ResourceKey="Mode" Suffix=":" ControlName="ModeComboBox" />
+        <dnnweb:DnnComboBox ID="ModeComboBox" runat="server" OnClientSelectedIndexChanged="updateRootFolderItemVisibility" >
             <Items>
-                <dnnweb:DnnComboBoxItem Value="False" ResourceKey="Normal"></dnnweb:DnnComboBoxItem>
-                <dnnweb:DnnComboBoxItem Value="True" ResourceKey="Group"></dnnweb:DnnComboBoxItem>
+                <dnnweb:DnnComboBoxItem Value="Normal" ResourceKey="Normal"></dnnweb:DnnComboBoxItem>
+                <dnnweb:DnnComboBoxItem Value="Group" ResourceKey="Group"></dnnweb:DnnComboBoxItem>
+                <dnnweb:DnnComboBoxItem Value="User" ResourceKey="User"></dnnweb:DnnComboBoxItem>
             </Items>
         </dnnweb:DnnComboBox>
     </div>
@@ -29,14 +30,14 @@
 <script type="text/javascript">
 
     function updateRootFolderItemVisibility(sender) {
-        if (sender.get_value() == "True") {
+        if (sender.get_value() != "Normal") {
             $('#<%=RootFolderItem.ClientID%>').hide();
         } else {            
             $('#<%=RootFolderItem.ClientID%>').show();
         }
     }
 
-    <% if (GroupModeComboBox.SelectedValue == "True") 
+    <% if (ModeComboBox.SelectedValue != "Normal") 
        { %>
     
         $(function() {        

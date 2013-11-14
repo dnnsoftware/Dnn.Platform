@@ -31,22 +31,22 @@ namespace DotNetNuke.Modules.DigitalAssets {
         protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox DefaultFolderTypeComboBox;
         
         /// <summary>
-        /// GroupModeLabel control.
+        /// ModeLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl GroupModeLabel;
+        protected global::System.Web.UI.UserControl ModeLabel;
         
         /// <summary>
-        /// GroupModeComboBox control.
+        /// ModeComboBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox GroupModeComboBox;
+        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox ModeComboBox;
         
         /// <summary>
         /// RootFolderItem control.
