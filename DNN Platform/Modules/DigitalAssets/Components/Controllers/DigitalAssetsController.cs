@@ -37,6 +37,7 @@ using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
 using DotNetNuke.Security.Permissions;
@@ -501,9 +502,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return FolderManager.Instance.GetFolder(this.CurrentPortalId, groupFolderPath);        
         }
 
-        public FolderViewModel GetUserFolder(PortalSettings portalSettings)
+        public FolderViewModel GetUserFolder(UserInfo userInfo)
         {
-            var folder = GetFolderViewModel(FolderManager.Instance.GetUserFolder(portalSettings.UserInfo));
+            var folder = GetFolderViewModel(FolderManager.Instance.GetUserFolder(userInfo));
             folder.FolderName = LocalizationHelper.GetString("MyFolder");
             return folder;
         }

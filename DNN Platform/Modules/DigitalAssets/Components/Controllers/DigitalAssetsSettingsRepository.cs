@@ -25,8 +25,6 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 {
-    using DotNetNuke.Entities.Portals;
-
     public class DigitalAssetsSettingsRepository
     {
         private const string DefaultFolderTypeIdSetting = "DefaultFolderTypeId";

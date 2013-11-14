@@ -504,13 +504,13 @@ namespace DotNetNuke.Modules.DigitalAssets
                         break;
 
                     case DigitalAssestsMode.User:
-                        var userFolder = controller.GetUserFolder(PortalSettings);
-                        if (userFolder == null)
+                        if (PortalSettings.UserId == Null.NullInteger)
                         {
                             Skin.AddModuleMessage(this, Localization.GetString("InvalidUser.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                             return;
                         }
 
+                        var userFolder = controller.GetUserFolder(PortalSettings.UserInfo);                        
                         this.RootFolderViewModel = userFolder;
                         break;
 

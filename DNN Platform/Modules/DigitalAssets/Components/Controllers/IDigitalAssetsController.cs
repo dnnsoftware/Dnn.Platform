@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Services.FileSystem;
 
@@ -74,9 +75,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// <summary>
         /// Gets the user folder
         /// </summary>
-        /// <param name="portalSettings" >The current portal settings.</param>
+        /// <param name="userInfo" >The current user.</param>
         /// <returns>The user folderItem entity.</returns>
-        FolderViewModel GetUserFolder(PortalSettings portalSettings);
+        FolderViewModel GetUserFolder(UserInfo userInfo);
 
         /// <summary>
         /// Gets the files and folders contained in the specified folder.

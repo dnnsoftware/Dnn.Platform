@@ -403,7 +403,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
     function showPropertiesDialog(itemId, isFolder) {
         if (isFolder) {
-            showDialog('FolderProperties', { folderId: itemId }, 950, 550);
+            showDialog('FolderProperties', { folderId: itemId, groupId: settings.groupId }, 950, 550);
         } else {
             showDialog('FileProperties', { fileId: itemId }, 950, 550);
         }

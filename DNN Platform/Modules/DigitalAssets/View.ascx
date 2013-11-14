@@ -266,6 +266,7 @@
             pageSize: '<%= PageSize %>', 
             view: '<%= ActiveView %>',
             userId: '<%= UserId %>',
+            groupId: '<%= Request.Params["GroupId"] %>',
             rootFolderPath: '<%= RootFolderViewModel != null ? RootFolderViewModel.FolderPath : "" %>'
         },
         // Resources

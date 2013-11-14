@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         break;
 
                     case DigitalAssestsMode.User:
-                        rootFolder = controller.GetUserFolder(PortalSettings);
+                        rootFolder = controller.GetUserFolder(PortalSettings.UserInfo);
                         break;
 
                     default:
