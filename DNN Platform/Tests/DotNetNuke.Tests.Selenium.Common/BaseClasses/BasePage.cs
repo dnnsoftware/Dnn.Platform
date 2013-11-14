@@ -388,15 +388,15 @@ namespace DNNSelenium.Common.BaseClasses
 		{
 			Trace.WriteLine(BasePage.TraceLevelElement + "Click on Tab:");
 
-			//IWebElement tab = BasePage.WaitForElement(_driver, tabName);
-			//int locationOnPage = tab.Location.Y;
+			IWebElement tab = BasePage.WaitForElement(_driver, tabName);
+			int locationOnPage = tab.Location.Y;
 
-			//if ((!tab.Displayed) || (tab.Displayed && locationOnPage < 100))
-			//{
-			//    ScrollIntoView(FindElement(tabName), 200).WaitTillVisible();
-			//}
+			if ((!tab.Displayed) || (tab.Displayed && locationOnPage < 100))
+			{
+			    ScrollIntoView(FindElement(tabName), 200).WaitTillVisible();
+			}
 
-			ScrollIntoViewFromTop(FindElement(tabName), 200).WaitTillVisible();
+			//ScrollIntoViewFromTop(FindElement(tabName), 200).WaitTillVisible();
 			WaitForElement(tabName).Click();
 		}
 
