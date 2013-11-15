@@ -152,12 +152,19 @@
                 }
                 
                 windowTop.location.href = url;
+                if($(".ui-widget-overlay").length > 0)
+                {
+                    dnn.removeIframeMask($(".ui-widget-overlay")[0]);
+                }
                 popup.hide();
             } else {
+                if($(".ui-widget-overlay").length > 0)
+                {
+                    dnn.removeIframeMask($(".ui-widget-overlay")[0]);
+                }
                 popup.dialog('option', 'close', null).dialog('close');
             }
-            $(windowTop.document).find('html').css('overflow', '');
-            dnn.removeIframeMask($(".ui-widget-overlay")[0]);
+            $(windowTop.document).find('html').css('overflow', '');            
         },
 
         refreshPopup: function(options) {
