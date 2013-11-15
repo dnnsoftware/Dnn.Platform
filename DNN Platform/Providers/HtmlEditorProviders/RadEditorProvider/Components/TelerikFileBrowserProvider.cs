@@ -683,7 +683,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 	    private string GetFileUrl(IFileInfo file)
         {
             var url = FileManager.Instance.GetUrl(file);
-            if (url.Contains("LinkClick") && NotUseRelativeUrl)
+            if (NotUseRelativeUrl)
             {
                 url = string.Format("{0}{1}{2}{3}",
                                     (HttpContext.Current.Request.IsSecureConnection ? "https://" : "http://"),
