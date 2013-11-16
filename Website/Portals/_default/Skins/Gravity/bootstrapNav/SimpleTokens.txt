@@ -15,15 +15,3 @@
 	[/?]
 	</li>
 [/>]
-
-<script type="text/javascript">
-(function($){
-	$(document).ready(function(){
-		$(".nav-pills > li a").on("mouseover", function(event){
-            var $this = $(this).parent().find(">ul");
-            if($this.length == 0) return;
-            dnn.addIframeMask($this[0]);
-		});
-	});
-})(jQuery);
-</script>
