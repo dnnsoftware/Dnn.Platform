@@ -30,6 +30,9 @@ namespace DotNetNuke.Modules.Journal.Components
         private bool isAdmin;
 	    private bool isUnverifiedUser;
 	    private const string ResxPath = "~/DesktopModules/Journal/App_LocalResources/SharedResources.resx";
+        // DNN-3917 - Let owners of social groups delete posts from social group feeds they manage.
+        private bool isSocialGroupOwner = false;
+        // DNN-3917 ///////////////////////////////////////////////////////////////////////////////
 
 	    public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo) 
         {
@@ -60,6 +63,21 @@ namespace DotNetNuke.Modules.Journal.Components
         {
             if (CurrentUser.UserID > 0) {
                 isAdmin = CurrentUser.IsInRole(PortalSettings.AdministratorRoleName);
+                // DNN-3917 - Let owners of social groups delete posts from social group feeds they manage.
+                // if we are looking at a social group - test to see if currentuser is an owner of group
+                if (SocialGroupId > 0 && CurrentUser.UserID > 0)
+                {
+                    Security.Roles.RoleController rc = new Security.Roles.RoleController();
+
+                    UserRoleInfo thisUserRoleInfo = rc.GetUserRole(PortalSettings.PortalId, CurrentUser.UserID, SocialGroupId);
+
+                    if (thisUserRoleInfo != null)
+                    {
+                        isSocialGroupOwner = thisUserRoleInfo.IsOwner;
+                    }
+                }
+                // DNN-3917 //////////////////////////////////////////////////////////////////////////////
+
             }
 		    isUnverifiedUser = !CurrentUser.IsSuperUser && CurrentUser.IsInRole("Unverified Users");
 
@@ -154,7 +172,13 @@ namespace DotNetNuke.Modules.Journal.Components
 				string tmp = tokenReplace.ReplaceJournalItemTokens(rowTemplate);
                 tmp = tmp.Replace("<br>", "<br />");
                 sb.Append("<div class=\"journalrow\" id=\"jid-" + ji.JournalId + "\">");
-                if (isAdmin || CurrentUser.UserID == ji.UserId || (ProfileId > Null.NullInteger && CurrentUser.UserID == ProfileId)) {
+
+                // DNN-3917 - Let owners of social groups delete posts from social group feeds they manage.
+                // added   || isSocialGroupOwner 
+                // turn on the delete button if the current user is social group owner
+                if (isAdmin || CurrentUser.UserID == ji.UserId || isSocialGroupOwner || (ProfileId > Null.NullInteger && CurrentUser.UserID == ProfileId))
+                // DNN-3917 ////////////////////////////////////////////////////////////   
+                {
                     sb.Append("<div class=\"minidel\" onclick=\"journalDelete(this);\"></div>");
                 }
 				sb.Append(tmp);
@@ -293,7 +317,11 @@ namespace DotNetNuke.Modules.Journal.Components
             var sb = new StringBuilder();
             string pic = string.Format(Globals.UserProfilePicFormattedUrl(), comment.UserId, 32, 32);
             sb.AppendFormat("<li id=\"cmt-{0}\">", comment.CommentId);
-            if (comment.UserId == CurrentUser.UserID || journal.UserId == CurrentUser.UserID || isAdmin) {
+            // DNN-3917 - Let owners of social groups delete posts from social group feeds they manage - also allow them to delete comments
+            // DNN-3917 - add || isSocialGroupOwner
+            if (comment.UserId == CurrentUser.UserID || isSocialGroupOwner || journal.UserId == CurrentUser.UserID || isAdmin) 
+            // DNN-3917 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            {
                 sb.Append("<div class=\"miniclose\"></div>");
             }
             sb.AppendFormat("<img src=\"{0}\" />", pic);

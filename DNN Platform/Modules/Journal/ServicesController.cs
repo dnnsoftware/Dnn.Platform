@@ -232,7 +232,23 @@ namespace DotNetNuke.Modules.Journal
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
                 }
 
-                if (ji.UserId == UserInfo.UserID || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                // DNN-3917 - Let owners of social groups delete posts from social group feeds they manage.
+                bool isSocialGroupOwner = false;
+
+                if (ji.SocialGroupId > 0)
+                {
+                    Security.Roles.RoleController rc = new Security.Roles.RoleController();
+                    DotNetNuke.Entities.Users.UserRoleInfo thisUserRoleInfo = rc.GetUserRole(PortalSettings.PortalId, UserInfo.UserID, ji.SocialGroupId);
+                    // test if the current user is the owner of the social group
+                    if (thisUserRoleInfo != null)
+                    {
+                        isSocialGroupOwner = thisUserRoleInfo.IsOwner;
+                    }
+                }
+
+                // DNN-3917 - added  || isSocialGroupOwner
+                if (ji.UserId == UserInfo.UserID || isSocialGroupOwner || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                // DNN-3917 ///////////////////////////////////////////////////////////////////////////////
                 {
                     jc.SoftDeleteJournalItem(PortalSettings.PortalId, UserInfo.UserID, postData.JournalId);
                     return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
@@ -460,10 +476,26 @@ namespace DotNetNuke.Modules.Journal
 
                 if (ji == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
+                }
+                
+                // DNN-3917 - Let owners of social groups delete posts from social group feeds they manage.
+                bool isSocialGroupOwner = false;
+                //  IF the journal post is in a Social Group
+                if (ji.SocialGroupId > 0)
+                {
+                    //  Lookup the roleinfo to see if the current user is owner 
+                    Security.Roles.RoleController rc = new Security.Roles.RoleController();
+                    DotNetNuke.Entities.Users.UserRoleInfo thisUserRoleInfo = rc.GetUserRole(PortalSettings.PortalId, UserInfo.UserID, ji.SocialGroupId);
+                    if (thisUserRoleInfo != null)
+                    {
+                        isSocialGroupOwner = thisUserRoleInfo.IsOwner;
+                    }
                 }
 
-                if (ci.UserId == UserInfo.UserID || ji.UserId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                // DNN-3917 - add in test for isSocialGroup owner
+                if (ci.UserId == UserInfo.UserID || isSocialGroupOwner || ji.UserId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                // DNN-3917 /////////////////////////////////////////////////////////////////////////////////    
                 {
                     JournalController.Instance.DeleteComment(postData.JournalId, postData.CommentId);
                     return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
