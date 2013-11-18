@@ -3158,6 +3158,16 @@ namespace DotNetNuke.Data
                                       CreatedByUserID);
         }
 
+        /// <summary>
+        /// Get a User Authentication record from slq database. DNN-4016
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>UserAuthentication record</returns>
+        public virtual IDataReader GetUserAuthentication(int userID)
+        {
+            return ExecuteReader("GetUserAuthentication", userID);
+        }
+
         public virtual void DeleteAuthentication(int authenticationID)
         {
             ExecuteNonQuery("DeleteAuthentication", authenticationID);
