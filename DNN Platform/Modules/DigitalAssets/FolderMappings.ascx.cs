@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -90,7 +91,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
+            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
             CancelButton.NavigateUrl = Globals.NavigateURL();
             NewMappingButton.Click += OnNewMappingClick;
 

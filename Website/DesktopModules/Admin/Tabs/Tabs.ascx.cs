@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -242,7 +243,7 @@ namespace DesktopModules.Admin.Tabs
 
             jQuery.RequestDnnPluginsRegistration();
 
-            ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
+            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
             ClientAPI.RegisterClientScriptBlock(Page, "dnn.controls.js");
             dgPermissions.RegisterScriptsForAjaxPanel();
         }

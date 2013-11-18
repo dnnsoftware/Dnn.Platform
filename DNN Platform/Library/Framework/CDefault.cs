@@ -28,6 +28,7 @@ using System.Web.UI;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.GettingStarted;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
@@ -74,7 +75,7 @@ namespace DotNetNuke.Framework
         {
             if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.Positioning))
             {
-                ClientAPI.RegisterClientReference(this, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
+                JavaScript.RegisterClientReference(this, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
                 ClientAPI.RegisterClientVariable(this, "ScrollToControl", objControl.ClientID, true);
                 DNNClientAPI.SetScrollTop(Page);
             }

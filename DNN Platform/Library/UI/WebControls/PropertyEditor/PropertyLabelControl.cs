@@ -327,7 +327,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			base.OnLoad(e);
 
-			ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
+            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 		    ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 		}
