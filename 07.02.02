@@ -1,0 +1,29 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/***** Fix bug 4016: add stored procedure to find GetUserAuthentication records from dbo.userauthentication *****/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUserAuthentication]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserAuthentication]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserAuthentication]
+	@UserID					int
+
+AS
+	select * from {databaseOwner}{objectQualifier}UserAuthentication
+	   where UserId = @UserID
+
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
