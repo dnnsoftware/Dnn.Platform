@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls
 			    pinLink.Attributes.Add("href", "#");
 				panel.Controls.Add(pinLink);
 
-				ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
+                JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 //ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 			}

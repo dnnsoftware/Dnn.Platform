@@ -29,6 +29,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 
@@ -123,7 +124,7 @@ namespace DotNetNuke.UI.Utilities
 
         private static void AddBodyOnLoad(Page objPage, string scriptKey, string strJSFunction)
         {
-            ClientAPI.RegisterClientReference(objPage, ClientAPI.ClientNamespaceReferences.dnn);
+            JavaScript.RegisterClientReference(objPage, ClientAPI.ClientNamespaceReferences.dnn);
             objPage.ClientScript.RegisterStartupScript(objPage.GetType(), scriptKey, strJSFunction, true);
         }
 
@@ -148,7 +149,7 @@ namespace DotNetNuke.UI.Utilities
 #pragma warning disable 612,618
                 AddBodyOnloadEventHandler(objTitle.Page, "__dnn_enableDragDrop()");
 #pragma warning restore 612,618
-                ClientAPI.RegisterClientReference(objTitle.Page, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
+                JavaScript.RegisterClientReference(objTitle.Page, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
                 ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_dragDrop", objContainer.ClientID + " " + objTitle.ClientID + " " + ModuleID + ";", false);
                 string strPanes = "";
                 string strPaneNames = "";
@@ -239,7 +240,7 @@ namespace DotNetNuke.UI.Utilities
         {
             if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML))
             {
-                ClientAPI.RegisterClientReference(objButton.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
+                JavaScript.RegisterClientReference(objButton.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
                 switch (ePersistanceType)
                 {
                     case MinMaxPersistanceType.None:

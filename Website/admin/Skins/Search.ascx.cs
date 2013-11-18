@@ -26,6 +26,7 @@ using System.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -565,7 +566,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     SearchType = "S";
                 }
 
-                ClientAPI.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
+                JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
                 ClientResourceManager.RegisterScript(Page, "~/Resources/Search/Search.js", FileOrder.Js.DefaultPriority, "DnnFormBottomProvider");
 
                 txtSearchNew.Attributes.Add("autocomplete", "off");

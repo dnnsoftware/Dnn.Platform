@@ -79,7 +79,7 @@ namespace DotNetNuke.Framework
                 path = "/";
             }
             path = path.EndsWith("/") ? path : path + "/";
-            ClientAPI.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
+            JavaScript.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
             ClientAPI.RegisterClientVariable(page, "sf_siteRoot", path, /*overwrite*/ true);
             ClientAPI.RegisterClientVariable(page, "sf_tabId", PortalSettings.Current.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture), /*overwrite*/ true);
                         

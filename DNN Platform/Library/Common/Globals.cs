@@ -54,6 +54,7 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -2101,7 +2102,7 @@ namespace DotNetNuke.Common
                     //JH dnn.js mod
                     if (ClientAPI.ClientAPIDisabled() == false)
                     {
-                        ClientAPI.RegisterClientReference(control.Page, ClientAPI.ClientNamespaceReferences.dnn);
+                        JavaScript.RegisterClientReference(control.Page, ClientAPI.ClientNamespaceReferences.dnn);
                         DNNClientAPI.SetInitialFocus(control.Page, control);
                     }
                     else
