@@ -206,6 +206,14 @@ namespace DNNSelenium.Common.BaseClasses
 		{
 			Trace.WriteLine(TraceLevelLow + "Looking for element: '" + locator + "'");
 			//Trace.WriteLine(TraceLevelLow + _driver.FindElement(locator).Info());
+
+			IWebElement element = BasePage.WaitForElement(_driver, locator);
+			int locationOnPage = element.Location.Y;
+
+			if ((!element.Displayed) || (element.Displayed && locationOnPage < 100))
+			{
+				ScrollIntoView(element, 200).WaitTillVisible();
+			}
 			return _driver.FindElement(locator);
 		}
 
@@ -380,7 +388,7 @@ namespace DNNSelenium.Common.BaseClasses
 			{
 				Trace.WriteLine(BasePage.TraceLevelElement + "The HTTP request to the remote WebDriver server for URL timed out");
 			}
-
+		
 			Thread.Sleep(Settings.Default.WaitFactor * 1000);
 		}
 
