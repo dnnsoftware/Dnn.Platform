@@ -843,7 +843,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         #endregion
 
         #region Protected Methods
-        protected bool HasPermission(IFolderInfo folder, string permissionKey)
+        public bool HasPermission(IFolderInfo folder, string permissionKey)
         {
             var hasPermision = PortalSettings.Current.UserInfo.IsSuperUser;
 

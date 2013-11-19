@@ -223,5 +223,13 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// Gets the current Portal Id
         /// </summary>
         int CurrentPortalId { get; }
+
+        /// <summary>
+        /// Check if the current user has the specified permission over the specified folder
+        /// </summary>
+        /// <param name="folder">The folder to check</param>
+        /// <param name="permissionKey">The permission to check</param>
+        /// <returns>Returns TRUE if the current user has the specified permission over the specified folder. FALSE otherwise</returns>
+        bool HasPermission(IFolderInfo folder, string permissionKey);
     }
 }
