@@ -87,9 +87,9 @@ namespace DNNSelenium.Common.CorePages
 
 			Click(By.XPath(AddPageFrameButton));
 
-			Thread.Sleep(1000);
+			Thread.Sleep(Settings.Default.WaitFactor * 2000);
 
-			WaitForElement(By.XPath("//div[@id = 'Breadcrumb']/span/a[contains(text(), '" + pageName + "')]"), 30).WaitTillVisible(30);
+//			WaitForElement(By.XPath("//div[@id = 'Breadcrumb']/span/a[contains(text(), '" + pageName + "')]"), 30).WaitTillVisible(30);
 
 		}
 
@@ -154,6 +154,7 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitForConfirmationBox(60);
 			ClickYesOnConfirmationBox();
+
 		}
 
 		public void EditPageTitle(string pageTitle)
@@ -166,7 +167,7 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Update Page' button:");
 			ClickOnButton(By.XPath(UpdatePageFrameButton));
 
-			Thread.Sleep(1000);
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
 		}
 
 		public void SetPageViewPermissions(string option, string allow)
@@ -181,7 +182,7 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Update Button: ");
 			ClickOnButton(By.XPath(UpdateButton));
 
-			Thread.Sleep(1000);
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
 		}
 
 		public void SetPageEditPermissions(string option, string allow)
@@ -196,7 +197,7 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Update Button: ");
 			ClickOnButton(By.XPath(UpdateButton));
 
-			Thread.Sleep(1000);
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
 		}
 	}
 }

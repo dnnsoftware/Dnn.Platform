@@ -153,7 +153,7 @@ namespace DNNSelenium.Common.CorePages
 				Trace.WriteLine(BasePage.TraceLevelElement + "Click on button: " + ControlPanelIDs.LogoutLink + "]");
 				if (ElementPresent(By.XPath(ControlPanelIDs.LogoutLink)))
 				{
-					FindElement(By.XPath(ControlPanelIDs.LogoutLink)).Click();
+					ScrollIntoView(FindElement(By.XPath(ControlPanelIDs.LogoutLink)), 100).Click();
 					WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 20).WaitTillVisible(20);
 				}
 			}

@@ -381,7 +381,7 @@ namespace DNNSelenium.Common.BaseClasses
 				Trace.WriteLine(BasePage.TraceLevelElement + "The HTTP request to the remote WebDriver server for URL timed out");
 			}
 
-			Thread.Sleep(1000);
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
 		}
 
 		public void OpenTab(By tabName)
