@@ -71,12 +71,21 @@ namespace DotNetNuke.Modules.DigitalAssets
             get
             {
                 return new CompositeFilter()
-                    .And(new FilterByHostMenu(IsHostMenu))
+                    .And(new FilterByHostMenu(IsHostPortal))
                     .And(new FilterByUnauthenticated(HttpContext.Current.Request.IsAuthenticated));
             }
         }
 
         #region Protected Properties
+
+        protected bool IsHostPortal
+        {
+            get
+            {
+                return IsHostMenu || controller.GetCurrentPortalId(ModuleId) == Null.NullInteger;
+            }
+        }
+
         protected string InvalidCharacters
         {
             get
@@ -531,6 +540,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 PageSize = Request["pageSize"] ?? state["pageSize"] ?? "10";
                 ActiveView = Request["view"] ?? state["view"] ?? "gridview";
 
+                Page.DataBind();
                 InitializeTreeViews(initialPath);
                 InitializeSearchBox();
                 InitializeFolderType();

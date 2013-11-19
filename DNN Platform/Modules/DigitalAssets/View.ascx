@@ -58,11 +58,11 @@
             </div>
             
             <div id="dnnModuleDigitalAssetsMainToolbar">                
-                <dnnext:ToolBarButtonExtensionControl Module="DigitalAssets" runat="server" ID="MainToolBar" Group="Main" />                
+                <dnnext:ToolBarButtonExtensionControl Module="DigitalAssets" runat="server" ID="MainToolBar" Group="Main" IsHost="<%# IsHostPortal %>" />                
             </div>
             <div id="dnnModuleDigitalAssetsSelectionToolbar">
                 <span id="dnnModuleDigitalAssetsSelectionText"></span>
-                <dnnext:ToolBarButtonExtensionControl Module="DigitalAssets" runat="server" ID="SelectionToolBar" Group="Selection" />
+                <dnnext:ToolBarButtonExtensionControl Module="DigitalAssets" runat="server" ID="SelectionToolBar" Group="Selection" IsHost="<%# IsHostPortal %>" />
             </div>
             
             <div id="dnnModuleDigitalAssetsListContainer" class="emptySpace"> 
@@ -258,7 +258,7 @@
             listViewInactiveImageUrl: '<%= ResolveUrl(IconController.IconURL("ThumbView", "16x16", "Gray")) %>',
             navigateUrl: '<%= Localization.GetSafeJSString(NavigateUrl)%>',            
             selectedTab: '0',
-            isHostMenu: <%= IsHostMenu ? "true" : "false" %>,
+            isHostMenu: <%= IsHostPortal ? "true" : "false" %>,
             isAuthenticated: <%= Request.IsAuthenticated ? "true" : "false" %>,
             maxFileUploadSize: <%= MaxUploadSize.ToString(CultureInfo.InvariantCulture) %>,
             maxFileUploadSizeHumanReadable: '<%= string.Format(new FileSizeFormatProvider(), "{0:fs}", MaxUploadSize) %>',
