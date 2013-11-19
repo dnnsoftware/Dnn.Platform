@@ -98,17 +98,50 @@ namespace DotNetNuke.Services.Authentication
         /// <param name="authenticationToken">The authentication token</param>
         /// <history>
         /// 	[cnurse]	07/12/2007  Created
+        /// 	[skydnn]    11/14/2013  DNN-4016
         /// </history>
         /// -----------------------------------------------------------------------------
         public static int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
         {
             var objEventLog = new EventLogController();
-            objEventLog.AddLog("userID/authenticationType",
-                               userID + "/" + authenticationType,
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
-            return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.GetCurrentUserInfo().UserID);
+
+            UserAuthenticationInfo userAuth = GetUserAuthentication(userID);
+
+            if (userAuth == null || String.IsNullOrEmpty(userAuth.AuthenticationType))
+            {
+                objEventLog.AddLog("userID/authenticationType",
+                                   userID + "/" + authenticationType,
+                                   PortalController.GetCurrentPortalSettings(),
+                                   UserController.GetCurrentUserInfo().UserID,
+                                   EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
+                return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.GetCurrentUserInfo().UserID);
+            }
+            else
+            {
+
+                objEventLog.AddLog("userID/authenticationType already exists",
+                   userID + "/" + authenticationType,
+                   PortalController.GetCurrentPortalSettings(),
+                   UserController.GetCurrentUserInfo().UserID,
+                   EventLogController.EventLogType.AUTHENTICATION_USER_UPDATED);
+
+                return userAuth.UserAuthenticationID;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves authentication information for an user.
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        /// <history>
+        ///    [skydnn]  11/11/2013 DNN-4016
+        /// </history>
+        public static UserAuthenticationInfo GetUserAuthentication(int userID)
+        {
+            //Go to database
+            return CBO.FillObject<UserAuthenticationInfo>(provider.GetUserAuthentication(userID));
+
         }
 
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
