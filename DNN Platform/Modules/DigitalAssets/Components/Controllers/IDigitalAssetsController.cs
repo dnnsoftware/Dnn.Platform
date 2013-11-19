@@ -32,10 +32,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
     public interface IDigitalAssetsController
     {
         /// <summary>
-        /// Gets the list of the Folder Mappings
+        /// Gets the list of the Folder Mappings. This list depends on the configuration of the module instanced
         /// </summary>
+        /// <param name="moduleId">The Id of the module</param>
         /// <returns>The list of Folder Mappings</returns>
-        IEnumerable<FolderMappingViewModel> GetFolderMappings();
+        IEnumerable<FolderMappingViewModel> GetFolderMappings(int moduleId);
 
         /// <summary>
         /// Gets the list of subfolders for the specified folder.
@@ -59,10 +60,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         FolderViewModel GetFolder(int folderID);
 
         /// <summary>
-        /// Gets the root folder of the current Portal.
+        /// Gets the root folder of the current Portal. This folder depends on the configuration of the module.
         /// </summary>
+        /// <param name="moduleId">The Id of the module</param>
         /// <returns>The root folderItem entity.</returns>
-        FolderViewModel GetRootFolder();
+        FolderViewModel GetRootFolder(int moduleId);
 
         /// <summary>
         /// Gets the group folder
@@ -220,9 +222,27 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         PreviewInfoViewModel GetFilePreviewInfo(IFileInfo file, ItemViewModel item);
 
         /// <summary>
-        /// Gets the current Portal Id
+        /// Get the list of the default FolderMappings, i.e.: Standard/Database/Secure, associated to the module instance.
+        /// This depends on the configuration of the module.
         /// </summary>
-        int CurrentPortalId { get; }
+        /// <param name="moduleId">The id of the Module</param>
+        /// <returns>The list of default FolderMappingInfo associated</returns>
+        IEnumerable<FolderMappingInfo> GetDefaultFolderProviderValues(int moduleId);
+
+        /// <summary>
+        /// Get the default FolderTypeId to use when creating new folders under the root folder.
+        /// This depends on the module configuration
+        /// </summary>
+        /// <param name="moduleId">The Id of the module</param>
+        /// <returns>The default FolderTypeId</returns>
+        int? GetDefaultFolderTypeId(int moduleId);
+
+        /// <summary>
+        /// Gets the current Portal Id. This id depends on the configuration of the module
+        /// </summary>
+        /// <param name="moduleId">The Id of the module</param>
+        /// <returns>The id of the current portal</returns>
+        int GetCurrentPortalId(int moduleId);
 
         /// <summary>
         /// Check if the current user has the specified permission over the specified folder

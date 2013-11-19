@@ -110,15 +110,10 @@ namespace DotNetNuke.Modules.DigitalAssets
         }
 
         protected IEnumerable<string> DefaultFolderProviderValues
-        {
+        {            
             get
             {
-                return new List<string>
-                    {
-                        FolderMappingController.Instance.GetFolderMapping(controller.CurrentPortalId, "Standard").FolderMappingID.ToString(CultureInfo.InvariantCulture),
-                        FolderMappingController.Instance.GetFolderMapping(controller.CurrentPortalId, "Secure").FolderMappingID.ToString(CultureInfo.InvariantCulture),
-                        FolderMappingController.Instance.GetFolderMapping(controller.CurrentPortalId, "Database").FolderMappingID.ToString(CultureInfo.InvariantCulture)
-                    };
+                return this.controller.GetDefaultFolderProviderValues(this.ModuleId).Select(f => f.FolderMappingID.ToString(CultureInfo.InvariantCulture)).ToList();
             }
         }
 
@@ -126,7 +121,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                var defaultFolderTypeId = SettingsRepository.GetDefaultFolderTypeId(ModuleId);
+                var defaultFolderTypeId = controller.GetDefaultFolderTypeId(ModuleId);
                 return defaultFolderTypeId.HasValue ? defaultFolderTypeId.ToString() : "";
             }
         }
@@ -151,7 +146,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void InitializeFolderType()
         {
-            FolderTypeComboBox.DataSource = controller.GetFolderMappings();
+            FolderTypeComboBox.DataSource = controller.GetFolderMappings(ModuleId);
             FolderTypeComboBox.DataBind();
         }
 
@@ -509,14 +504,13 @@ namespace DotNetNuke.Modules.DigitalAssets
                             Skin.AddModuleMessage(this, Localization.GetString("InvalidUser.Error", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                             return;
                         }
-
-                        var userFolder = controller.GetUserFolder(PortalSettings.UserInfo);                        
-                        this.RootFolderViewModel = userFolder;
+                  
+                        this.RootFolderViewModel = this.controller.GetUserFolder(this.PortalSettings.UserInfo);     
                         break;
 
                     default:
                         var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
-                        this.RootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder();
+                        this.RootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder(ModuleId);
                         break;
                 }
 

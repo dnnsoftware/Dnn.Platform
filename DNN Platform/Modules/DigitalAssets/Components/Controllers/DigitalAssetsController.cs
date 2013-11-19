@@ -265,7 +265,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                                  GetFolderSizeField(folder), 
                                  GetTotalFilesField(folder)
                              };
-            fields.AddRange(GetAuditFields((FolderInfo)folder));
+            fields.AddRange(GetAuditFields((FolderInfo)folder, folder.PortalID));
             return fields;
         }
 
@@ -276,14 +276,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                                  GetFileKindField(file),
                                  GetFileSizeField(file),
                              };
-            fields.AddRange(GetAuditFields((FileInfo)file));
+            fields.AddRange(GetAuditFields((FileInfo)file, file.PortalId));
             return fields;
         }
 
-        private IEnumerable<Field> GetAuditFields(BaseEntityInfo item)
+        private IEnumerable<Field> GetAuditFields(BaseEntityInfo item, int portalId)
         {
-            var createdByUser = item.CreatedByUser(CurrentPortalId);
-            var lastModifiedByUser = item.LastModifiedByUser(CurrentPortalId);
+            var createdByUser = item.CreatedByUser(portalId);
+            var lastModifiedByUser = item.LastModifiedByUser(portalId);
             return new List<Field>
                 {                    
                     new Field(DefaultMetadataNames.Created)
@@ -335,20 +335,50 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         }
         #endregion
 
-        #region Public Properties
-        public int CurrentPortalId
-        {
-            get
-            {
-                return IsHostMenu ? Null.NullInteger : PortalSettings.Current.PortalId;
-            }
-        }
-        #endregion
-
         #region Public Methods
-        public IEnumerable<FolderMappingViewModel> GetFolderMappings()
+
+        public IEnumerable<FolderMappingInfo> GetDefaultFolderProviderValues(int moduleId)
         {
-            return FolderMappingController.Instance.GetFolderMappings(CurrentPortalId).Select(GetFolderMappingViewModel);
+            var portalId = GetCurrentPortalId(moduleId);
+
+            return new List<FolderMappingInfo>
+                {                        
+                    FolderMappingController.Instance.GetFolderMapping(portalId, "Standard"),
+                    FolderMappingController.Instance.GetFolderMapping(portalId, "Secure"),
+                    FolderMappingController.Instance.GetFolderMapping(portalId, "Database")
+                };
+        }
+
+        public int? GetDefaultFolderTypeId(int moduleId)
+        {
+            var s = new DigitalAssetsSettingsRepository();
+
+            if (PortalSettings.Current.UserInfo.IsSuperUser && s.GetMode(moduleId) == DigitalAssestsMode.User)
+            {
+                return null;
+            }
+
+            return s.GetDefaultFolderTypeId(moduleId);
+        }
+
+        public int GetCurrentPortalId(int moduleId)
+        {
+            if (PortalSettings.Current.UserInfo.IsSuperUser)
+            {
+                var s = new DigitalAssetsSettingsRepository();
+                if (s.GetMode(moduleId) == DigitalAssestsMode.User)
+                {
+                    return Null.NullInteger;
+                }
+            }
+
+            return IsHostMenu ? Null.NullInteger : PortalSettings.Current.PortalId;            
+        }
+
+        public IEnumerable<FolderMappingViewModel> GetFolderMappings(int moduleId)
+        {
+            var portalId = this.GetCurrentPortalId(moduleId);
+            return FolderMappingController.Instance.GetFolderMappings(portalId).Select(GetFolderMappingViewModel);
         }
 
         public IEnumerable<FolderViewModel> GetFolders(int folderId)
@@ -441,15 +471,16 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return GetFolderViewModel(GetFolderInfo(folderID));
         }
 
-        public FolderViewModel GetRootFolder()
+        public FolderViewModel GetRootFolder(int moduleId)
         {
-            return GetFolderViewModel(FolderManager.Instance.GetFolder(CurrentPortalId, ""));
+            var portalId = this.GetCurrentPortalId(moduleId);
+            return GetFolderViewModel(FolderManager.Instance.GetFolder(portalId, ""));
         }
 
         public FolderViewModel GetGroupFolder(int groupId, PortalSettings portalSettings)
         {
             var roleController = new RoleController();
-            var role = roleController.GetRole(groupId, this.CurrentPortalId);
+            var role = roleController.GetRole(groupId, portalSettings.PortalId);
             if (role == null || role.SecurityMode != SecurityMode.SocialGroup)
             {
                 return null;
@@ -471,16 +502,16 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             const int AllUsersRoleId = -1;
             var groupFolderPath = "Groups/" + groupId;
 
-            if (!FolderManager.Instance.FolderExists(this.CurrentPortalId, groupFolderPath))
+            if (!FolderManager.Instance.FolderExists(portalSettings.PortalId, groupFolderPath))
             {
                 var pc = new PermissionController();
                 var browsePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "BROWSE").Cast<PermissionInfo>().FirstOrDefault();
                 var readPermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ").Cast<PermissionInfo>().FirstOrDefault(); 
-                var writePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "WRITE").Cast<PermissionInfo>().FirstOrDefault(); 
+                var writePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "WRITE").Cast<PermissionInfo>().FirstOrDefault();
 
-                if (!FolderManager.Instance.FolderExists(this.CurrentPortalId, "Groups"))
+                if (!FolderManager.Instance.FolderExists(portalSettings.PortalId, "Groups"))
                 {
-                    var folder = FolderManager.Instance.AddFolder(this.CurrentPortalId, "Groups");
+                    var folder = FolderManager.Instance.AddFolder(portalSettings.PortalId, "Groups");
 
                     folder.FolderPermissions.Remove(browsePermission.PermissionID, AllUsersRoleId, Null.NullInteger);
                     folder.FolderPermissions.Remove(readPermission.PermissionID, AllUsersRoleId, Null.NullInteger);
@@ -488,7 +519,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                     FolderManager.Instance.UpdateFolder(folder);
                 }
 
-                var groupFolder = FolderManager.Instance.AddFolder(this.CurrentPortalId, groupFolderPath);
+                var groupFolder = FolderManager.Instance.AddFolder(portalSettings.PortalId, groupFolderPath);
 
                 groupFolder.FolderPermissions.Add(new FolderPermissionInfo(browsePermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
                 groupFolder.FolderPermissions.Add(new FolderPermissionInfo(readPermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
@@ -498,8 +529,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 FolderManager.Instance.UpdateFolder(groupFolder);
                 return groupFolder;
             }
-            
-            return FolderManager.Instance.GetFolder(this.CurrentPortalId, groupFolderPath);        
+
+            return FolderManager.Instance.GetFolder(portalSettings.PortalId, groupFolderPath);        
         }
 
         public FolderViewModel GetUserFolder(UserInfo userInfo)
@@ -512,8 +543,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         public FolderViewModel CreateFolder(string folderName, int folderParentID, int folderMappingID, string mappedPath)
         {
             Requires.NotNullOrEmpty("folderName", folderName);
-
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(CurrentPortalId, folderMappingID);
 
             var filterFolderName = CleanDotsAtTheEndOfTheName(folderName);
 
@@ -548,6 +577,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             try
             {
+                var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingID);
                 var folder = FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath);
                 return GetFolderViewModel(folder);
             }
@@ -685,7 +715,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             var newFolderPath = GetNewFolderPath(newFolderName, folder);
             // Check if the new folder already exists
-            if (FolderManager.Instance.FolderExists(CurrentPortalId, newFolderPath))
+            if (FolderManager.Instance.FolderExists(folder.PortalID, newFolderPath))
             {
                 throw new DotNetNukeException(LocalizationHelper.GetString("FolderAlreadyExists.Error"));
             }

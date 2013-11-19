@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         break;
 
                     default:
-                        rootFolder = controller.GetRootFolder();
+                        rootFolder = controller.GetRootFolder(ModuleId);
                         break;
                 }
 

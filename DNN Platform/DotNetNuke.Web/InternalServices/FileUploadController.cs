@@ -240,18 +240,11 @@ namespace DotNetNuke.Web.InternalServices
 
                 // Check if this is a User Folder                
                 IFolderInfo folderInfo;
-                if (folder.ToLowerInvariant().StartsWith("users/") && folder.EndsWith(string.Format("/{0}/", userInfo.UserID)))
+                var userFolder = folderManager.GetUserFolder(userInfo);
+                if (folder.ToLowerInvariant().StartsWith(userFolder.FolderPath.ToLowerInvariant()))
                 {
-                    var effectivePortalId = isHostMenu ? -1 : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                    var effectivePortalId = userInfo.IsSuperUser ? -1 : PortalController.GetEffectivePortalId(userInfo.PortalID);
                     folderInfo = folderManager.GetFolder(effectivePortalId, folder);
-                    // Make sure the user folder exists
-                    if (folderInfo == null)
-                    {
-                        // Add User folder
-                        // fix user's portal id
-                        userInfo.PortalID = effectivePortalId;
-                        folderInfo = ((FolderManager)folderManager).AddUserFolder(userInfo);
-                    }
                 }
                 else
                 {
