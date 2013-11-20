@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="BaseClasses\BasePage.cs" />
     <Compile Include="BaseClasses\BasePages\AdminBasePage.cs" />
+    <Compile Include="BaseClasses\BasePages\FileManagementPage.cs" />
     <Compile Include="BaseClasses\BasePages\HostBasePage.cs" />
     <Compile Include="BaseClasses\BasePages\InstallerPage.cs" />
     <Compile Include="BaseClasses\ControlPanelIDs.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Tests\BVT\BVTUsers.cs" />
     <Compile Include="Tests\BVT\BVTZLogs.cs" />
     <Compile Include="Tests\Installer\InstallerTests.cs" />
+    <Compile Include="Tests\P1\P1AdminFileManagement.cs" />
     <Compile Include="Tests\P1\P1Journal.cs" />
     <Compile Include="Tests\P1\P1MessageCenter.cs" />
     <Compile Include="Tests\P1\P1UserProfile.cs" />

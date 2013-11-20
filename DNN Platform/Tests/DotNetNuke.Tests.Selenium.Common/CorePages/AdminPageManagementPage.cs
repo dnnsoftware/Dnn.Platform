@@ -97,8 +97,9 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on link 'Expand All'");
 			WaitAndClick(By.XPath(ExpandAllLink));
 
-			WaitForElement(By.XPath(PageList + "//li[@class = 'rtLI rtLast']//span[last()]"));
-			WaitForElement(By.XPath(PageList + "//span[text() = '" + waitForPageName + " ']")).Info();
+			//WaitForElement(By.XPath(PageList + "//li[@class = 'rtLI rtLast']//span[last()]"));
+			//WaitForElement(By.XPath(PageList + "//span[text() = '" + waitForPageName + " ']")).Info();
+			Thread.Sleep(1000);
 		}
 
 		public void SelectFromContextMenu(string pageName, string option)
@@ -112,7 +113,8 @@ namespace DNNSelenium.Common.CorePages
 				FindElement(By.XPath(PageList + "//span[text() = '" + pageName + " ']"))).
 				MoveToElement(WaitForElement(By.XPath(option))).Build().Perform();
 
-			FindElement(By.XPath(option)).Info();
+			//FindElement(By.XPath(option)).Info();
+			Thread.Sleep(1000);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on option: " + option);
 			Click(By.XPath(option));
@@ -199,7 +201,7 @@ namespace DNNSelenium.Common.CorePages
 								Build().
 								Perform();
 
-			WaitForElement(By.XPath(OperationConfirmationMessage));
+			WaitForElement(By.XPath(OperationConfirmationMessage), 30);
 		}
 
 		public void AddDescriptionToPage(string pageName, string pageDescription, string pageType)

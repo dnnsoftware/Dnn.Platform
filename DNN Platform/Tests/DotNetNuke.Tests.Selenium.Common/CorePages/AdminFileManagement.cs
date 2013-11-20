@@ -3,10 +3,11 @@ using System.Threading;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.BaseClasses.BasePages;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace DNNSelenium.Common.CorePages
 {
-	public class AdminFileManagementPage : BasePage
+	public class AdminFileManagementPage : FileManagementPage
 	{
 		public AdminFileManagementPage(IWebDriver driver) : base(driver) { }
 
@@ -26,9 +27,6 @@ namespace DNNSelenium.Common.CorePages
 		{
 			get { return "DigitalAssetManagementModule"; }
 		}
-
-		public static string FileSearchBox = "//div[@id = 'dnnModuleDigitalAssetsSearchBox']/input";
-		public static string FileSearchIcon = "//div[@id = 'dnnModuleDigitalAssetsSearchBox']/a";
 
 		public void OpenUsingUrl(string baseUrl)
 		{
@@ -51,13 +49,5 @@ namespace DNNSelenium.Common.CorePages
 			SelectSubMenuOption(ControlPanelIDs.ControlPanelAdminOption, ControlPanelIDs.ControlPanelAdminCommonSettings, ControlPanelIDs.AdminFileManagementOption);
 		}
 
-		public void SearchForFile(string fileToSearch)
-		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Search for file:" + fileToSearch);
-			WaitAndType(By.XPath(AdminFileManagementPage.FileSearchBox), fileToSearch);
-			FindElement(By.XPath(AdminFileManagementPage.FileSearchIcon)).Click();
-
-			Thread.Sleep(1000);
-		}
 	}
 }

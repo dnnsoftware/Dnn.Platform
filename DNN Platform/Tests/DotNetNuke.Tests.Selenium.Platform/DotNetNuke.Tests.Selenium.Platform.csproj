@@ -74,6 +74,7 @@
     <Compile Include="CorePages\AdminGoogleAnalyticsPage.cs" />
     <Compile Include="CorePages\AdminPage.cs" />
     <Compile Include="CorePages\HostPage.cs" />
+    <Compile Include="P1\P1AdminFileManagement.cs" />
     <Compile Include="P1\P1Journal.cs" />
     <Compile Include="P1\P1MessageCenter.cs" />
     <Compile Include="P1\P1Setup.cs" />
@@ -114,6 +115,39 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="P1\FilesToUpload\Birds_files.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\Birds_files.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\Birds_files.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\Birds_files.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\Birds_files.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\Birds_files.swf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\Birds_files.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\Birds_files.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\DatabaseFolderBirds.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\SecureFolderBirds.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="P1\FilesToUpload\StandardFolderBirds.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="P1\NewsFeeds_05.00.01_Install.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -126,6 +160,42 @@
     </Content>
     <None Include="Drivers\DummySerializationCachingProvider_01.00.01_Install.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\Birds_files.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\Birds_files.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\Birds_files.pptx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\Birds_files.rar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\Birds_files.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\Birds_files.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\DatabaseFolderBirds.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\DatabaseFolderBirds.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\SecureFolderBirds.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\SecureFolderBirds.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\StandardFolderBirds.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="P1\FilesToUpload\StandardFolderBirds.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
