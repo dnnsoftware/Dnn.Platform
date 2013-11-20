@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Web;
@@ -29,6 +30,7 @@ using System.Xml.Serialization;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 
@@ -51,7 +53,7 @@ namespace DotNetNuke.Services.FileSystem
     /// -----------------------------------------------------------------------------
     [XmlRoot("file", IsNullable = false)]
     [Serializable]
-    public class FileInfo : BaseEntityInfo, IFileInfo
+    public class FileInfo : BaseEntityInfo, IHydratable, IFileInfo
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileInfo));
         private string _folder;
@@ -411,6 +413,51 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets or sets a reference to ContentItem, to use in Workflows
         /// </summary>
         public int ContentItemID { get; set; }
+
+        #endregion
+
+        #region IHydratable Implementation
+
+        public void Fill(IDataReader dr)
+        {
+            ContentType = Null.SetNullString(dr["ContentType"]);
+            Extension = Null.SetNullString(dr["Extension"]);
+            FileId = Null.SetNullInteger(dr["FileId"]);
+            FileName = Null.SetNullString(dr["FileName"]);
+            Folder = Null.SetNullString(dr["Folder"]);
+            FolderId = Null.SetNullInteger(dr["FolderId"]);
+            Height = Null.SetNullInteger(dr["Height"]);
+            IsCached = Null.SetNullBoolean(dr["IsCached"]);
+            PortalId  = Null.SetNullInteger(dr["PortalId"]);
+            SHA1Hash = Null.SetNullString(dr["SHA1Hash"]);
+            Size = Null.SetNullInteger(dr["Height"]);
+            StorageLocation = Null.SetNullInteger(dr["StorageLocation"]);
+            UniqueId = Null.SetNullGuid(dr["UniqueId"]);
+            VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
+            Width = Null.SetNullInteger(dr["Width"]);
+            LastModificationTime = Null.SetNullDateTime(dr["LastModificationTime"]);
+            FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
+            Title = Null.SetNullString(dr["Title"]);
+            EnablePublishPeriod = Null.SetNullBoolean(dr["EnablePublishPeriod"]);
+            StartDate = Null.SetNullDateTime(dr["StartDate"]);
+            EndDate  = Null.SetNullDateTime(dr["EndDate"]);
+            ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
+            PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
+            FillBaseProperties(dr);
+        }
+
+        [XmlIgnore]
+        public int KeyID
+        {
+            get
+            {
+                return this.FileId;
+            }
+            set
+            {
+                FileId = value;
+            }
+        }
 
         #endregion
 
