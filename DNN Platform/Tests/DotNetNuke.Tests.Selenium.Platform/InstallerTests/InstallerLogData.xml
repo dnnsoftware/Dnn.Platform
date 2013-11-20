@@ -3,7 +3,7 @@
 
   <settings
     name = "Test3"
-    browser = "firefox"
+    browser = "chrome"
     baseURL = "InstallerCETest3.lvh.me"
     InstallerLanguage = "en"
     Template = "Default Template"

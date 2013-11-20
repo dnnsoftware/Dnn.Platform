@@ -3,7 +3,7 @@
 
   <settings
     name = "Upgrade Test, Daily run"
-    browser = "firefox"
+    browser = "chrome"
     baseURL = "UpgradeCETest.lvh.me"
     
     UserName = "host"
