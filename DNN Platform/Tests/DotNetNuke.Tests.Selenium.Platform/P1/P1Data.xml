@@ -2,10 +2,10 @@
 
 <Tests>
   <settings 
-    name="P1 CheckList" 
-    browser="firefox" 
-    baseURL="CEP1.lvh.me" 
-    InstallerLanguage="en"
+    name="P1 CheckList"
+    browser = "chrome"
+    baseURL = "CEP1.lvh.me"
+    InstallerLanguage = "en"
     Template = "Default Template"
     Language = "en"
     DatabaseSetup = "Custom"
@@ -21,7 +21,7 @@
     UserName = "host"
     Password = "dnnhost"
     WebsiteName = "My Website"
-    runWithDummyCachingProvider = ""/>
+    runWithDummyCachingProvider = "" />
 
   <securityRoleGroup name="Security Role Group P1" roleGroupName="Security Role Group P1"
                      roleGroupDescription="Security Role Group Description P1" roleName="Security Role P1"
@@ -112,5 +112,9 @@
           fileNameToAttach = "owls.txt"
           pictureNameToAttach = "owl.jpg"
           pageName = "journal"/>
+  
+  <adminFileManagement
+   name = "Admin File Management"
+  />
 
 </Tests>
