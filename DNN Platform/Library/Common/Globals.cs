@@ -746,8 +746,8 @@ namespace DotNetNuke.Common
         /// </returns>
         private static bool IsInstallationURL()
         {
-            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant();
-            return requestURL.Contains("\\install.aspx") || requestURL.Contains("\\installwizard.aspx");
+            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
+            return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
         }
 
         /// <summary>
