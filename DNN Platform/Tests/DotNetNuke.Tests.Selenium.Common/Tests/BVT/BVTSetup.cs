@@ -10,7 +10,6 @@ using OpenQA.Selenium;
 
 namespace DNNSelenium.Common.Tests.BVT
 {
-	[SetUpFixture]
 	public abstract class BVTSetup
 	{
 		protected abstract string DataFileLocation { get; }
@@ -38,9 +37,6 @@ namespace DNNSelenium.Common.Tests.BVT
 			var installerPage = new InstallerPage(driver);
 
 			installerPage.OpenUsingUrl(baseUrl);
-
-			//var login = new LoginPage(driver);
-			//login.LoginAsHost(baseUrl);
 
 			installerPage.SetInstallerLanguage(installerLanguage);
 			installerPage.SetDictionary(installerLanguage);

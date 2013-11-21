@@ -11,7 +11,6 @@ using OpenQA.Selenium;
 
 namespace DNNSelenium.Common.Tests.Upgrade
 {
-	[SetUpFixture]
 	public abstract class BVTSetup
 	{
 		protected abstract string DataFileLocation { get; }
