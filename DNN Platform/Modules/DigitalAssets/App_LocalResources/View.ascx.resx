@@ -442,6 +442,6 @@
     <value>Uploading and extracting...</value>
   </data>
   <data name="InvalidGroup.Error" xml:space="preserve">
-    <value>The group is not valid</value>
+    <value>The group ID is not set. Please go back to the groups page and select the desired group.</value>
   </data>
 </root>
