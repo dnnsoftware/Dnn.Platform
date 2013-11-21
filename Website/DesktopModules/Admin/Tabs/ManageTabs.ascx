@@ -115,8 +115,8 @@
                                 <asp:TemplateColumn ItemStyle-Width="200px"  HeaderText="Action" >
 									<ItemTemplate>
                                        
-										<asp:RadioButton ID="optNew" runat="server" GroupName="Copy" resourcekey="ModuleNew" Checked="True" />
-										<asp:RadioButton ID="optCopy" runat="server" GroupName="Copy" resourcekey="ModuleCopy" Enabled='<%# DataBinder.Eval(Container.DataItem, "IsPortable") %>' />
+										<asp:RadioButton ID="optNew" runat="server" GroupName="Copy" resourcekey="ModuleNew" />
+										<asp:RadioButton ID="optCopy" runat="server" GroupName="Copy" resourcekey="ModuleCopy" Enabled='<%# DataBinder.Eval(Container.DataItem, "IsPortable") %>' Checked="True" />
 										<asp:RadioButton ID="optReference" runat="server" GroupName="Copy" resourcekey="ModuleReference" Enabled='<%# Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ModuleID")) != -1  %>' />
                                      
 									</ItemTemplate>

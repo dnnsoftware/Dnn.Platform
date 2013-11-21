@@ -340,6 +340,7 @@ namespace DotNetNuke.Common
         private static string _installPath;
         private static Version _dataBaseVersion;
         private static UpgradeStatus _status = UpgradeStatus.Unknown;
+        private static string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; //this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
 
         /// <summary>
         /// Gets the application path.
@@ -3531,18 +3532,18 @@ namespace DotNetNuke.Common
         ///                             modified to remove characters not allowed in urls
         /// </history>
         /// -----------------------------------------------------------------------------
-        public static string GenerateTabPath(int ParentId, string TabName)
+        public static string GenerateTabPath(int parentId, string tabName)
         {
             string strTabPath = "";
             var objTabs = new TabController();
 
-            if (!Null.IsNull(ParentId))
+            if (!Null.IsNull(parentId))
             {
                 string strTabName;
-                var objTab = objTabs.GetTab(ParentId, Null.NullInteger, false);
+                var objTab = objTabs.GetTab(parentId, Null.NullInteger, false);
                 while (objTab != null)
                 {
-                    strTabName = HtmlUtils.StripNonWord(objTab.TabName, false);
+                    strTabName = Regex.Replace(objTab.TabName, _tabPathInvalidCharsEx, string.Empty);
                     strTabPath = "//" + strTabName + strTabPath;
                     if (Null.IsNull(objTab.ParentId))
                     {
@@ -3555,7 +3556,7 @@ namespace DotNetNuke.Common
                 }
             }
 
-            strTabPath = strTabPath + "//" + HtmlUtils.StripNonWord(TabName, false);
+            strTabPath = strTabPath + "//" + Regex.Replace(tabName, _tabPathInvalidCharsEx, string.Empty); ;
             return strTabPath;
         }
 
