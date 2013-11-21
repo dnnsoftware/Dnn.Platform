@@ -62,6 +62,14 @@ namespace DNNSelenium.Common.Tests.Upgrade
 			var adminSiteSettingsPage = new AdminSiteSettingsPage(driver);
 			adminSiteSettingsPage.OpenUsingButtons(baseUrl);
 			adminSiteSettingsPage.DisablePopups();
+
+			driver.Quit();
+		}
+
+		[TearDown]
+		public void RunAfterBVTTests()
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "BVT Teardown");
 		}
 	}
 }
