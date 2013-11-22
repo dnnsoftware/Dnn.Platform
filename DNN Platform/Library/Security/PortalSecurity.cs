@@ -156,11 +156,11 @@ namespace DotNetNuke.Security
             if (TempInput.Contains("&gt;") && TempInput.Contains("&lt;"))
             {
 				//text is encoded, so decode and try again
-                TempInput = HttpContext.Current.Server.HtmlDecode(TempInput);
+                TempInput = HttpUtility.HtmlDecode(TempInput);
                 TempInput = listStrings.Aggregate(TempInput, (current, s) => Regex.Replace(current, s, replacement, options));
 
                 //Re-encode
-                TempInput = HttpContext.Current.Server.HtmlEncode(TempInput);
+                TempInput = HttpUtility.HtmlEncode(TempInput);
             }
             else
             {
