@@ -146,6 +146,13 @@ namespace DNNSelenium.Common.BaseClasses
 			//blankPage.CloseEditMode();
 		}
 
+		public void CreateNewPage(string pageName)
+		{
+			var blankPage = new BlankPage(_driver);
+			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
+			blankPage.AddNewPage(pageName);
+		}
+
 		public void AddModule(string pageName, Dictionary<string, Modules.ModuleIDs> modulesDescription, string moduleName, string pane)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Add a new Module to Page: '");
@@ -161,6 +168,17 @@ namespace DNNSelenium.Common.BaseClasses
 			module.AddNewModuleUsingMenu(moduleNameOnBanner, moduleNameOnPage, pane);
 
 			blankPage.CloseEditMode();
+		}
+
+		public void RemoveUsedPage(string pageName)
+		{
+			var page = new BlankPage(_driver);
+			page.OpenUsingUrl(_baseUrl, pageName);
+			page.DeletePage(pageName);
+
+			var adminRecycleBinPage = new AdminRecycleBinPage(_driver);
+			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
+			adminRecycleBinPage.EmptyRecycleBin();
 		}
 	}
 }
