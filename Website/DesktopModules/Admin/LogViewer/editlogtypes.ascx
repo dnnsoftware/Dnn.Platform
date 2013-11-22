@@ -15,7 +15,10 @@
 		        </Columns>
             </MasterTableView>
 	    </dnn:DnnGrid>
-	    <ul class="dnnActions dnnClear"><li><asp:HyperLink class="dnnPrimaryAction" id="hlReturn" runat="server" resourcekey="cmdReturn" causesvalidation="False" /></li></ul>
+	    <ul class="dnnActions dnnClear">
+	        <li><asp:HyperLink class="dnnPrimaryAction" id="hlAdd" runat="server" resourcekey="AddContent.Action" /></li>
+	        <li><asp:HyperLink class="dnnSecondaryAction" id="hlReturn" runat="server" resourcekey="cmdReturn" causesvalidation="False" /></li>
+	    </ul>
     </asp:panel>
     <asp:panel id="pnlEditLogTypeConfigInfo" runat="server">
         <div class="eltContent dnnClear" id="eltContent">
