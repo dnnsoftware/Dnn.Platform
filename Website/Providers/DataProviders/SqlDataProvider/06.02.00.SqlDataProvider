@@ -6033,14 +6033,14 @@ GO
 /* Add new Columns To UserRoles Table */
 /**************************************/
 
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{databaseOwner}{objectQualifier}UserRoles' AND COLUMN_NAME='Status')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}UserRoles' AND COLUMN_NAME='Status')
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}UserRoles
 			ADD [Status] int NOT NULL CONSTRAINT DF_{objectQualifier}UserRoles_Status DEFAULT 1
 	END
 GO
 
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{databaseOwner}{objectQualifier}UserRoles' AND COLUMN_NAME='IsOwner')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}UserRoles' AND COLUMN_NAME='IsOwner')
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}UserRoles
 			ADD IsOwner bit NOT NULL CONSTRAINT DF_{objectQualifier}UserRoles_IsOwner DEFAULT 0
