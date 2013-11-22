@@ -628,11 +628,11 @@
         init: function() {
             this.options = $.extend({}, DynamicTreeViewController.defaults(), this.options);
             this._serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
-            this.parameters = dnn.KeyValueConverter.arrayToDictionary(this.options.parameters, "Key", "Value");
+            this.parameters = this.options.parameters;
         },
 
         _callGet: function (data, onLoadHandler, method) {
-            $.extend(data, this.parameters.entries());
+            $.extend(data, this.parameters);
             var serviceSettings = {
                 url: this._serviceUrl + method,
                 beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
