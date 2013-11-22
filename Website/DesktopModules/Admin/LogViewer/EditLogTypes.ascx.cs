@@ -69,14 +69,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         {
             get
             {
-                var actionCollection = new ModuleActionCollection
-                                           {
-                                               {
-                                                   GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), ModuleActionType.AddContent, "", "", EditUrl("action", "add")
-                                                   , false, SecurityAccessLevel.Admin, true, false
-                                                   }
-                                           };
-                return actionCollection;
+                return new ModuleActionCollection();
             }
         }
 
@@ -211,6 +204,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                 if (!Page.IsPostBack)
                 {
                     hlReturn.NavigateUrl = Globals.NavigateURL();
+                    hlAdd.NavigateUrl = EditUrl("action", "add");
 
                     if (Request.QueryString["action"] == "add")
                     {
