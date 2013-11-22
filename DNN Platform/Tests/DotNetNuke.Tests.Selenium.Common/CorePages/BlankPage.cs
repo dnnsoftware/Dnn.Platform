@@ -28,7 +28,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string PageDetailsFrameTab = "//li[contains(@id, 'ManageTabs_settingTab')]/a";
 		public static string CopyPageFrameTab = "//li[contains(@id, 'ManageTabs_copyTab')]/a";
 		public static string PermissionsFrameTab = "//li[contains(@id, 'ManageTabs_permissionsTab')]/a";
-		public static string AdvancedSettings = "//li[contains(@id, 'ManageTabs_advancedTab')]/a";
+		public static string AdvancedSettingsTab = "//li[contains(@id, 'ManageTabs_advancedTab')]/a";
 
 		public static string PageNameTextBox = "//input[contains(@id, 'ManageTabs_txtTabName')]";
 		public static string PageDescriptionTextBox = "//textarea[contains(@id, 'ManageTabs_txtDescription')]";
@@ -44,6 +44,13 @@ namespace DNNSelenium.Common.CorePages
 
 		public static string PermissionTable = "//table[@class = 'dnnPermissionsGrid']";
 		public static string UpdateButton = "//a[contains(@id, '_ManageTabs_cmdUpdate')]";
+
+		public static string URLManagementAccordion = "//h2[@id='dnnPanel-TabsUrlManagement-Extension']/a";
+		public static string CustomUrlTable = "//table[@id = 'custom-urls']";
+		public static string OriginalUrlTable = "//table[@id = 'system-generated-urls']";
+		public static string CreateButton = "//a[contains(@data-bind, 'createCustomUrl')]";
+		public static string URLPathTextbox = "//input[contains(@data-bind, 'value: path')]";
+		public static string SaveButton = "//a[contains(@data-bind, 'click: save')]";
 
 		public void OpenUsingUrl(string baseUrl, string pageName)
 		{
@@ -198,6 +205,66 @@ namespace DNNSelenium.Common.CorePages
 			ClickOnButton(By.XPath(UpdateButton));
 
 			Thread.Sleep(Settings.Default.WaitFactor * 1000);
+		}
+
+		public void CreateCustomURL(string newUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Create Custom Url:");
+
+			OpenTab(By.XPath(AdvancedSettingsTab));
+			AccordionOpen(By.XPath(URLManagementAccordion));
+
+			WaitAndClick(By.XPath(CreateButton));
+
+			WaitForElement(By.XPath(URLPathTextbox)).WaitTillEnabled();
+
+			Type(By.XPath(URLPathTextbox), newUrl);
+
+			Click(By.XPath(SaveButton));
+
+			Thread.Sleep(1000);
+
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(1000);
+		}
+
+		public void EditCustomURL(string oldUrl, string modifiedUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Edit Custom Url:");
+
+			OpenTab(By.XPath(AdvancedSettingsTab));
+			AccordionOpen(By.XPath(URLManagementAccordion));
+
+			WaitForElement(By.XPath("//table[@id = 'custom-urls']/tbody/tr/td//a[@data-bind = 'click: editUrl']")).WaitTillEnabled().Click();
+
+			WaitForElement(By.XPath(URLPathTextbox)).WaitTillEnabled();
+
+			Clear(By.XPath(URLPathTextbox));
+
+			Type(By.XPath(URLPathTextbox), modifiedUrl);
+
+			Click(By.XPath(SaveButton));
+
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(1000);
+		}
+
+		public void DeleteCustomURL(string newUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Delete Custom Url:");
+
+			OpenTab(By.XPath(AdvancedSettingsTab));
+			AccordionOpen(By.XPath(URLManagementAccordion));
+
+			WaitForElement(By.XPath("//table[@id = 'custom-urls']/tbody/tr/td//a[@data-bind = 'attachDeleteConfirmation: true']")).WaitTillEnabled().Click();
+
+			WaitForConfirmationBox(15);
+
+			ClickYesOnConfirmationBox();
+
+			Thread.Sleep(1000);
 		}
 	}
 }
