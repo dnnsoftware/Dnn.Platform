@@ -249,8 +249,8 @@ namespace DotNetNuke.Common.Utilities
             var configNav = Load();
 
             var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ?? 
-						   configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
-	        long maxRequestLength = 0;
+                           configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
+            long maxRequestLength = 0;
             if (httpNode != null)
             {
                 maxRequestLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxRequestLength", 0) * 1024;
@@ -258,13 +258,25 @@ namespace DotNetNuke.Common.Utilities
 
             httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
                        configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
-	        if (httpNode != null)
+
+            if (httpNode == null && Iis7AndAbove())
+            {
+                const int DefaultMaxAllowedContentLenght = 30000000;
+                return Math.Min(maxRequestLength, DefaultMaxAllowedContentLenght);
+            }
+
+            if (httpNode != null)
             {
                 var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 0);
                 return Math.Min(maxRequestLength, maxAllowedContentLength);
             }
 
             return maxRequestLength;
+        }
+
+        private static bool Iis7AndAbove()
+        {
+            return Environment.OSVersion.Version.Major >= 6;
         }
 
         /// -----------------------------------------------------------------------------
