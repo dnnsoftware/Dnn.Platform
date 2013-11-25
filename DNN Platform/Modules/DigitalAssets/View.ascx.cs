@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -60,7 +61,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private readonly IDigitalAssetsController controller;
         private readonly ExtensionPointManager epm = new ExtensionPointManager();
-
+        private NameValueCollection damState = null;
         public View()
         {
             controller = new Factory().DigitalAssetsController;
@@ -76,7 +77,29 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
+        private NameValueCollection DAMState
+        {
+            get
+            {
+                if (damState == null)
+                {
+                    var stateCookie = Request.Cookies["damState-" + UserId];
+                    damState = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : ""));
+                    return damState;
+                }
+                return damState;
+            }
+        }
+
         #region Protected Properties
+
+        protected int InitialTab
+        {
+            get
+            {
+                return controller.GetInitialTab(Request.Params, DAMState);
+            }
+        }
 
         protected bool IsHostPortal
         {
@@ -306,7 +329,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         Value = "DeleteFolder",
                         CssClass = "permission_DELETE",
                         ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black")
-                    }, 
+                    },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
@@ -522,13 +545,10 @@ namespace DotNetNuke.Modules.DigitalAssets
                         this.RootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder(ModuleId);
                         break;
                 }
-
-                var stateCookie = Request.Cookies["damState-" + UserId];
-                var state = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : ""));
-
+                
                 var initialPath = "";
                 int folderId;
-                if (int.TryParse(Request["folderId"] ?? state["folderId"], out folderId))
+                if (int.TryParse(Request["folderId"] ?? DAMState["folderId"], out folderId))
                 {
                     var folder = FolderManager.Instance.GetFolder(folderId);
                     if (folder != null && folder.FolderPath.StartsWith(RootFolderViewModel.FolderPath))
@@ -537,8 +557,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                     }
                 }
 
-                PageSize = Request["pageSize"] ?? state["pageSize"] ?? "10";
-                ActiveView = Request["view"] ?? state["view"] ?? "gridview";
+                PageSize = Request["pageSize"] ?? DAMState["pageSize"] ?? "10";
+                ActiveView = Request["view"] ?? DAMState["view"] ?? "gridview";
 
                 Page.DataBind();
                 InitializeTreeViews(initialPath);
