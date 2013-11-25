@@ -34,6 +34,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Tokens;
+using DotNetNuke.Security.Permissions;
 
 #endregion
 
@@ -168,8 +169,21 @@ namespace DotNetNuke.UI.Skins.Controls
                                     //skip parameter as it is part of a querystring param that has the following form
                                     // [friendlyURL]/?param=value
                                     // gemini 25516
+
+                                    if (!DotNetNuke.Entities.Host.Host.UseFriendlyUrls)
+                                    {
+                                        if (!String.IsNullOrEmpty(returnValue))
+                                        {
+                                            returnValue += "&";
+                                        }
+                                        returnValue += arrKeys[i] + "=" + HttpUtility.UrlEncode(rawQueryStringCollection.Get(arrKeys[i]));
+                                    }
+
+
                                 }
-                                else
+                                // on localised pages most of the module parameters have no sense and generate duplicate urls for the same content
+                                // because we are on a other tab with other modules (example : /en-US/news/articleid/1)
+                                else if (!isLocalized)
                                 {
                                     string[] arrValues = queryStringCollection.GetValues(i);
                                     if (arrValues != null)
@@ -228,11 +242,47 @@ namespace DotNetNuke.UI.Skins.Controls
             if (localizedTab != null)
             {
                 islocalized = true;
-                tabId = localizedTab.TabID;
+                if (localizedTab.IsDeleted || !TabPermissionController.CanViewPage(localizedTab))
+                {
+                    PortalInfo localizedPortal = new PortalController().GetPortal(objPortal.PortalId, newLocale.Code);
+                    tabId = localizedPortal.HomeTabId;
+                }
+                else
+                {
+                    string fullurl = "";
+                    switch (localizedTab.TabType)
+                    {
+                        case TabType.Normal:
+                            //normal tab
+                            tabId = localizedTab.TabID;
+                            break;
+                        case TabType.Tab:
+                            //alternate tab url                                
+                            fullurl = Globals.NavigateURL(Convert.ToInt32(localizedTab.Url));
+                            break;
+                        case TabType.File:
+                            //file url
+                            fullurl = Globals.LinkClick(localizedTab.Url, localizedTab.TabID, Null.NullInteger);
+                            break;
+                        case TabType.Url:
+                            //external url
+                            fullurl = localizedTab.Url;
+                            break;
+                    }
+                    if (!string.IsNullOrEmpty(fullurl))
+                    {
+                        return objSecurity.InputFilter(fullurl, PortalSecurity.FilterFlag.NoScripting);
+                    }
+                }
             }
 
-
-            var rawQueryString = new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query;
+            // on localised pages most of the querystring parameters have no sense and generate duplicate urls for the same content
+            // because we are on a other tab with other modules (example : ?returntab=/en-US/about)
+            string rawQueryString = "";
+            if (DotNetNuke.Entities.Host.Host.UseFriendlyUrls && !islocalized )
+            {
+                rawQueryString = new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query;
+            }
 
             return
                 objSecurity.InputFilter(
