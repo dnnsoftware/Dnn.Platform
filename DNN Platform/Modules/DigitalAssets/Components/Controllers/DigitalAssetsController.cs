@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
@@ -869,6 +870,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var file = FileManager.Instance.GetFile(fileId, true);
             FileManager.Instance.UnzipFile(file);
             return null;
+        }
+
+        public virtual int GetInitialTab(NameValueCollection requestParams, NameValueCollection damState)
+        {
+            return 0; //Always
         }
         #endregion
 

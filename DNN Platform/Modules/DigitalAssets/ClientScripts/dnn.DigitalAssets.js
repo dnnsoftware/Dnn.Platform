@@ -180,7 +180,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
         
         currentFolderId = selectedNode.get_value();
-        loadFolderFirstPage(currentFolderId);
+        //loadFolderFirstPage(currentFolderId);
         setView(settings.view == listViewMode ? listViewMode : gridViewMode);
         grid.set_pageSize(settings.pageSize ? settings.pageSize : 10);
 
@@ -764,8 +764,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 var selectedFolderId = selectedNode.get_value();                
                 loadFolderFirstPage(selectedFolderId);
             } else { //Refresh only the breadcrumb
-                updateBreadcrumb(searchPattern);
-                updateModuleState();
+                updateBreadcrumb(searchPattern);                
+                controller.updateModuleState(createInternalModuleState());
             }
         }).fail(function (xhr, status, error) {
             if (!isXhrHandled(xhr)) {
@@ -1394,28 +1394,27 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
+    function loadInitialContent() {
+        loadFolderFirstPage(currentFolderId);
+    }
+
     function loadFolderFirstPage(folderId) {
         internalResetGridComponents();
         grid.set_currentPageIndex(0);
         loadFolder(folderId, 0, grid.get_pageSize(), null);
     }
         
-    function updateModuleState() {
-        var state = "folderId=" + getCurrentNode().get_value() +
-                    "&view=" + currentView +
-                    "&pageSize=" + grid.get_pageSize();
-
-        var d = new Date();
-        d.setDate(d.getDate() + 30);
-        document.cookie = "damState-" + settings.userId + "=" + encodeURIComponent(state)
-            + "; path=" + window.location.pathname
-            + "; expires=" + d.toUTCString();
-
-        if (history.replaceState) { // IE9 does not support replaceState
-            history.replaceState(null, null, '?' + state);            
-        }
+    function createInternalModuleState() {        
+        return createModuleState("folderId", getCurrentNode().get_value());
     }
     
+    function createModuleState(stateMode, stateValue) {
+        var state = controller.getCurrentState(grid, currentView);
+        state.stateMode = stateMode;
+        state.stateValue = stateValue;
+        return state;
+    }
+
     function loadFolderCurrentPage(folderId) {
         internalResetGridComponents();
         loadFolder(folderId, grid.get_currentPageIndex(), grid.get_pageSize(), null);
@@ -1476,8 +1475,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }).fail(function (xhr) {
             handledXhrError(xhr, resources.loadFolderContentErrorTitle);
         }).always(function () {
-            enableLoadingPanel(false);            
-            updateModuleState();            
+            enableLoadingPanel(false);                        
+            controller.updateModuleState(createInternalModuleState());
         });
     }
 
@@ -1932,6 +1931,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 $(this).parent().hide();
             });
         }
+        
+        if (!areOnlyFoldersSelected(items)) {
+            $(menuSelector + " a.rmLink.onlyFolders").each(function () {
+                $(this).parent().hide();
+            });
+        }
 
         var downloadVisible = controller.isDownloadAvailable(items);
         contextMenu.findItemByValue("Download").set_visible(downloadVisible);
@@ -1976,6 +1981,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return true;
     }
 
+    function areOnlyFoldersSelected(items) {
+        for (var i = 0; i < items.length; i++) {
+            if (!items[i].IsFolder) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     function updateSelectionToolBar() {
 
         var items = convertToItemsFromGridItems(grid.get_selectedItems());
@@ -1999,6 +2013,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         if (!areOnlyFilesSelected(items)) {
             $(".DigitalAssetsSelectionToolBar.onlyFiles", "#" + controls.scopeWrapperId).hide();
+        }
+        
+        if (!areOnlyFoldersSelected(items)) {
+            $(".DigitalAssetsSelectionToolBar.onlyFolders", "#" + controls.scopeWrapperId).hide();
         }
 
         if (controller.isDownloadAvailable(items)) {
@@ -2800,8 +2818,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
     function getUrl() {
         var items = convertToItemsFromGridItems(grid.get_selectedItems());
-        var fileId = items[0].ItemId;
-        getUrlFromFileId(fileId);
+        var itemId = items[0].ItemId;
+        if (items[0].IsFolder) {
+            getUrlFromFolderId(itemId)
+        } else {
+            getUrlFromFileId(itemId);
+        }
     }
 
     function showProperties() {
@@ -2824,32 +2846,37 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             } else {
                 url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + data;
             }
-            $('#dnnModuleDigitalAssetsGetUrlModal input').val(url).select();
-            $('#dnnModuleDigitalAssetsGetUrlModal').dialog({
-                modal: true,
-                autoOpen: true,
-                dialogClass: "dnnFormPopup",
-                width: 500,
-                height: 250,
-                resizable: false,
-                title: resources.getUrlTitle,
-                buttons:
-                    [
-                        {
-                            id: "close_button",
-                            text: resources.closeText,
-                            click: function() {
-                                $(this).dialog("close");
-                            },
-                            "class": "dnnSecondaryAction"
-                        }
-                    ]
-            });
+            openGetUrlModal(url, resources.getFileUrlLabel);
         }).fail(function(xhr) {
             handledXhrError(xhr, resources.getUrlErrorTitle);
         });
     }
-    
+
+    function openGetUrlModal(url, label) {
+        $('#dnnModuleDigitalAssetsGetUrlModal input').val(url).select();
+        $('#dnnModuleDigitalAssetsGetUrlModal span').text(label);
+        $('#dnnModuleDigitalAssetsGetUrlModal').dialog({
+            modal: true,
+            autoOpen: true,
+            dialogClass: "dnnFormPopup",
+            width: 500,
+            height: 250,
+            resizable: false,
+            title: resources.getUrlTitle,
+            buttons:
+                [
+                    {
+                        id: "close_button",
+                        text: resources.closeText,
+                        click: function () {
+                            $(this).dialog("close");
+                        },
+                        "class": "dnnSecondaryAction"
+                    }
+                ]
+        });
+    }
+
     function getTimeStamp() {
         var timestamp = new Date();
         timestamp = timestamp.getTime();
@@ -2939,8 +2966,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             currentView = gridViewMode;
             activeListView(false);
             activeGridView(true);
-        }
-        updateModuleState();
+        }        
+        var state = controller.getCurrentState(grid, currentView);        
+        controller.updateModuleState(state);
         treeViewRefreshScrollbars();
     }
 
@@ -3303,6 +3331,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         executeCommandOnSelectedItems: executeCommandOnSelectedItems,
         setSearchProvider: setSearchProvider,
         getSearchProvider: getSearchProvider,
-        getRootFolderId: getRootFolderId
+        getRootFolderId: getRootFolderId,
+        createModuleState: createModuleState,
+        openGetUrlModal: openGetUrlModal,
+        loadInitialContent: loadInitialContent
     };
 }(jQuery, $find, $telerik, dnnModal);

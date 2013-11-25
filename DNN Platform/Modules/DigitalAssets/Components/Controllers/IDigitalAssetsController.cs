@@ -20,6 +20,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 
 using DotNetNuke.Entities.Portals;
@@ -251,5 +252,13 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// <param name="permissionKey">The permission to check</param>
         /// <returns>Returns TRUE if the current user has the specified permission over the specified folder. FALSE otherwise</returns>
         bool HasPermission(IFolderInfo folder, string permissionKey);
+
+        /// <summary>
+        /// Get the index of the inital tab to be shown when module is loaded
+        /// </summary>
+        /// <param name="requestParams">Request parameters collection</param>
+        /// <param name="damState">Module State values collection</param>
+        /// <returns>The index to the tab to be shown</returns>
+        int GetInitialTab(NameValueCollection requestParams, NameValueCollection damState);
     }
 }

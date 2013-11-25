@@ -1,9 +1,10 @@
 ﻿// IE8 doesn't like using var dnnModule = dnnModule || {}
 if (typeof dnnModule === "undefined" || dnnModule === null) { dnnModule = {}; };
 
-dnnModule.DigitalAssetsController = function (servicesFramework, resources) {
+dnnModule.DigitalAssetsController = function (servicesFramework, resources, settings) {
     this.servicesFramework = servicesFramework;
-    this.resources = resources;
+    this.resources = resources
+    this.settings = settings;
 };
 
 dnnModule.DigitalAssetsController.prototype = function () {
@@ -42,7 +43,8 @@ dnnModule.DigitalAssetsController.prototype = function () {
         },
         executeCommandOnSelectedNode = function (commandName, node) {
         },
-        gridOnGridCreated = function(grid) {
+        gridOnGridCreated = function (grid) {
+            dnnModule.digitalAssets.loadInitialContent();
         },
         gridOnRowDataBound = function (grid, item) {
         },
@@ -52,11 +54,40 @@ dnnModule.DigitalAssetsController.prototype = function () {
         },
         updateSelectionToolBar = function (selectionToolbar, gridItems) {
         },
+        initTagsListMenu = function(sender) {
+            
+        },
         extendResources = function (extendedResouces) {
             $.extend(this.resources, extendedResouces);
         },
         getLeftPaneActions = function() {
             return [];
+        },
+        updateModuleState = function (stateObject) {            
+            var state = stateObject.stateMode + "=" + stateObject.stateValue +
+                        "&view=" + stateObject.currentView +
+                        "&pageSize=" + stateObject.pageSize;
+
+            var d = new Date();
+            d.setDate(d.getDate() + 30);
+            document.cookie = "damState-" + stateObject.userId + "=" + encodeURIComponent(state)
+                + "; path=" + window.location.pathname
+                + "; expires=" + d.toUTCString();
+
+            if (history.replaceState) { // IE9 does not support replaceState
+                history.replaceState(null, null, '?' + state);
+            }            
+        },
+        getCurrentState = function (grid,  view) {
+            var stateMode = "folderId";
+            var stateValue = dnnModule.digitalAssets.getCurrentFolderId();
+            return {
+                stateMode: stateMode,
+                stateValue: stateValue,
+                currentView: view,
+                pageSize: grid.get_pageSize(),
+                userId: this.settings.userId
+            };
         };
 
     return {
@@ -77,6 +108,8 @@ dnnModule.DigitalAssetsController.prototype = function () {
         setupTreeViewContextMenuExtension: setupTreeViewContextMenuExtension,
         updateSelectionToolBar: updateSelectionToolBar,
         executeCommandOnSelectedNode: executeCommandOnSelectedNode,
-        getLeftPaneActions: getLeftPaneActions
+        getLeftPaneActions: getLeftPaneActions,
+        updateModuleState: updateModuleState,
+        getCurrentState: getCurrentState
     };
 }();

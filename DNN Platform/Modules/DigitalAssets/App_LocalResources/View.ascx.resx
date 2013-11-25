@@ -297,7 +297,7 @@
   <data name="GetUrlAltText.Text" xml:space="preserve">
     <value>Click and press CTRL+C to copy...</value>
   </data>
-  <data name="GetUrlLabel.Text" xml:space="preserve">
+  <data name="GetFileUrlLabel.Text" xml:space="preserve">
     <value>File URL Is:</value>
   </data>
   <data name="GetUrlError.Title" xml:space="preserve">

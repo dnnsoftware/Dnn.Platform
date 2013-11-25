@@ -223,7 +223,7 @@
     
     <div id="dnnModuleDigitalAssetsGetUrlModal" style="display: none;">
         <br />
-        <%=LocalizeString("GetUrlLabel") %>
+        <span><%=LocalizeString("GetFileUrlLabel") %></span>
         <input type="text" readonly="readonly" onclick="this.select()" title="<%=LocalizeString("GetUrlAltText") %>" />
     </div>
 
@@ -257,7 +257,7 @@
             listViewActiveImageUrl: '<%= ResolveUrl(IconController.IconURL("ThumbViewActive", "16x16", "Gray")) %>',
             listViewInactiveImageUrl: '<%= ResolveUrl(IconController.IconURL("ThumbView", "16x16", "Gray")) %>',
             navigateUrl: '<%= Localization.GetSafeJSString(NavigateUrl)%>',            
-            selectedTab: '0',
+            selectedTab: '<%= InitialTab %>',
             isHostMenu: <%= IsHostPortal ? "true" : "false" %>,
             isAuthenticated: <%= Request.IsAuthenticated ? "true" : "false" %>,
             maxFileUploadSize: <%= MaxUploadSize.ToString(CultureInfo.InvariantCulture) %>,
@@ -324,6 +324,7 @@
             invalidCharsErrorText: '<%= Localization.GetSafeJSString(InvalidCharactersErrorText) %>',
             getUrlTitle: '<%= Localization.GetSafeJSString(LocalizeString("GetUrl.Title")) %>',
             getUrlErrorTitle: '<%= Localization.GetSafeJSString(LocalizeString("GetUrlError.Title")) %>',
+            getFileUrlLabel: '<%= Localization.GetSafeJSString(LocalizeString("GetFileUrlLabel.Text")) %>',            
             searchBreadcrumb: '<%= Localization.GetSafeJSString(LocalizeString("SearchBreadcrumb.Text")) %>',
             moving: '<%= Localization.GetSafeJSString(LocalizeString("Moving.Text")) %>',
             selectAll: '<%= Localization.GetSafeJSString(LocalizeString("SelectAll.Text")) %>',
@@ -342,7 +343,7 @@
             noItemsText: '<%= Localization.GetSafeJSString("NoItems", LocalResourceFile) %>',
             noItemsSearchText: '<%= Localization.GetSafeJSString("NoItemsSearch", LocalResourceFile) %>'
         },
-        new dnnModule.DigitalAssetsController($.ServicesFramework(<%=ModuleId %>), {})
+        new dnnModule.DigitalAssetsController($.ServicesFramework(<%=ModuleId %>), {}, {userId: '<%= UserId %>'})
     );
     
 </script>
