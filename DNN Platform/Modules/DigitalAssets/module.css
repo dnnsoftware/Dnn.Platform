@@ -968,6 +968,7 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
 {
     position: relative;
     display: inline-block;
+    background-image: url("Images/transparencyBG.jpg");
 }
 
 .dnnModuleDigitalAssetsPreviewInfoZoomOut {
