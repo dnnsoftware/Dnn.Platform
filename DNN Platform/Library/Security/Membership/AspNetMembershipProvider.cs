@@ -507,7 +507,8 @@ namespace DotNetNuke.Security.Membership
                             UserID = Null.SetNullInteger(dr["UserID"]),
                             FirstName = Null.SetNullString(dr["FirstName"]),
                             LastName = Null.SetNullString(dr["LastName"]),
-                            DisplayName = Null.SetNullString(dr["DisplayName"])
+                            DisplayName = Null.SetNullString(dr["DisplayName"]),
+                            LastIPAddress = Null.SetNullString(dr["LastIPAddress"])
                         };
 
                     var schema = dr.GetSchemaTable();
