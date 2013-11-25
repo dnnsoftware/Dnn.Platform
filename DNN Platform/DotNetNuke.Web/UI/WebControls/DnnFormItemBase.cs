@@ -164,11 +164,6 @@ namespace DotNetNuke.Web.UI.WebControls
                                                 ID = ID + "_Required", 
                                                 ErrorMessage = ResourceKey + RequiredMessageSuffix
                                             };
-                if (String.IsNullOrEmpty(value) && Page.IsPostBack)
-                {
-                    requiredValidator.IsValid = false;
-                    IsValid = requiredValidator.IsValid;
-                }
                 Validators.Add(requiredValidator);
             }
 
