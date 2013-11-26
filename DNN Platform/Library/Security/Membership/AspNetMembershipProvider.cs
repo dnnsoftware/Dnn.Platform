@@ -267,20 +267,20 @@ namespace DotNetNuke.Security.Membership
         private static UserCreateStatus CreateMemberhipUser(UserInfo user)
         {
             var portalSecurity = new PortalSecurity();
-            user.Username = portalSecurity.InputFilter(user.Username,
+            string userName = portalSecurity.InputFilter(user.Username,
                                                          PortalSecurity.FilterFlag.NoScripting |
                                                          PortalSecurity.FilterFlag.NoAngleBrackets |
                                                          PortalSecurity.FilterFlag.NoMarkup);
-            user.Email = portalSecurity.InputFilter(user.Email,
+            string email = portalSecurity.InputFilter(user.Email,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
                                                       PortalSecurity.FilterFlag.NoMarkup);
             MembershipCreateStatus status;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
-                System.Web.Security.Membership.CreateUser(user.Username,
+                System.Web.Security.Membership.CreateUser(userName,
                                                           user.Membership.Password,
-                                                          user.Email,
+                                                          email,
                                                           user.Membership.PasswordQuestion,
                                                           user.Membership.PasswordAnswer,
                                                           true,
@@ -288,9 +288,9 @@ namespace DotNetNuke.Security.Membership
             }
             else
             {
-                System.Web.Security.Membership.CreateUser(user.Username,
+                System.Web.Security.Membership.CreateUser(userName,
                                                           user.Membership.Password,
-                                                          user.Email,
+                                                          email,
                                                           null,
                                                           null,
                                                           true,
