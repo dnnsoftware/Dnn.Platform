@@ -430,7 +430,7 @@ namespace DotNetNuke.Services.FileSystem
             IsCached = Null.SetNullBoolean(dr["IsCached"]);
             PortalId  = Null.SetNullInteger(dr["PortalId"]);
             SHA1Hash = Null.SetNullString(dr["SHA1Hash"]);
-            Size = Null.SetNullInteger(dr["Height"]);
+            Size = Null.SetNullInteger(dr["Size"]);
             StorageLocation = Null.SetNullInteger(dr["StorageLocation"]);
             UniqueId = Null.SetNullGuid(dr["UniqueId"]);
             VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
