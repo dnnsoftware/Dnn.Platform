@@ -3524,8 +3524,8 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="ParentId">The Id of the Parent Tab</param>
-        /// <param name="TabName">The Name of the current Tab</param>
+        /// <param name="parentId">The Id of the Parent Tab</param>
+        /// <param name="tabName">The Name of the current Tab</param>
         /// <returns>The TabPath</returns>
         /// <history>
         ///		[cnurse]	1/28/2005	documented
