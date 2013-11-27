@@ -31,6 +31,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         private const string RootFolderIdSetting = "RootFolderId";
         private const string GroupModeSetting = "GroupMode";
         private const string ModeSetting = "Mode";
+        private const string FilterConditionSetting = "FilterCondition";
+        private const string ExcludeSubfoldersSetting = "ExcludeSubfolders";
+
+        private const string DefaultFilterCondition = "NoSet";
 
         private readonly ModuleController moduleController;
 
@@ -86,10 +90,28 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             return Convert.ToBoolean(groupMode);
         }
+
+        public string GetFilterCondition(int moduleId)
+        {
+            var viewCondition = this.GetSettingByKey(moduleId, FilterConditionSetting);
+            return viewCondition ?? DefaultFilterCondition;
+        }
+
+        public int GetExcludeSubfolders(int moduleId)
+        {
+            var value = this.GetSettingByKey(moduleId, ExcludeSubfoldersSetting);
+            int settingValue;
+            return int.TryParse(value, out settingValue) ? settingValue : (int)ExcludeSubfolderSettingValues.ExcludeSubfoldersValue;
+        }
         
-        public void SaveDefaultFolderId(int moduleId, int defaultFolderTypeId)
+        public void SaveDefaultFolderTypeId(int moduleId, int defaultFolderTypeId)
         {
             this.moduleController.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));            
+        }
+
+        public void SaveMode(int moduleId, DigitalAssestsMode mode)
+        {
+            this.moduleController.UpdateModuleSetting(moduleId, ModeSetting, mode.ToString());
         }
 
         public void SaveRootFolderId(int moduleId, int rootFolderId)
@@ -97,9 +119,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             this.moduleController.UpdateModuleSetting(moduleId, RootFolderIdSetting, rootFolderId.ToString(CultureInfo.InvariantCulture));
         }
 
-        public void SaveMode(int moduleId, DigitalAssestsMode mode)
+        public void SaveExcludeSubfolders(int moduleId, string excludeSubfolders)
         {
-            this.moduleController.UpdateModuleSetting(moduleId, ModeSetting, mode.ToString());
+            moduleController.UpdateModuleSetting(moduleId, ExcludeSubfoldersSetting, excludeSubfolders);
+        }
+
+        public void SaveFilterCondition(int moduleId, string filterCondition)
+        {
+            moduleController.UpdateModuleSetting(moduleId, FilterConditionSetting, filterCondition);
         }
 
         private string GetSettingByKey(int moduleId, string key)
@@ -114,5 +141,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         Normal,
         Group,
         User
+    }
+
+    public enum ExcludeSubfolderSettingValues
+    {
+        ExcludeSubfoldersValue = 0,
+        IncludeSubfoldersFilesOnlyValue = 1,
+        IncludeSubfoldersFolderStructureValue = 2
     }
 }

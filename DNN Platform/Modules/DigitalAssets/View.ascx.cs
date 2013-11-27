@@ -541,8 +541,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         break;
 
                     default:
-                        var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
-                        this.RootFolderViewModel = rootFolderId.HasValue ? this.controller.GetFolder(rootFolderId.Value) : this.controller.GetRootFolder(ModuleId);
+                        this.RootFolderViewModel = this.controller.GetRootFolder(ModuleId);
                         break;
                 }
                 

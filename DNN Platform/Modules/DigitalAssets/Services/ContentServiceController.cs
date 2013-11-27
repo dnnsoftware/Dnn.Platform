@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;

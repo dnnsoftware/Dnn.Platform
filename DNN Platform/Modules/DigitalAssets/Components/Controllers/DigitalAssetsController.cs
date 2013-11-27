@@ -55,6 +55,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
     [ExportMetadata("Edition", "CE")]
     public class DigitalAssetsController : IDigitalAssetsController, IUpgradeable
     {
+        private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
+
         #region Static Private Methods
         private static bool IsHostMenu
         {
@@ -352,22 +354,19 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public int? GetDefaultFolderTypeId(int moduleId)
         {
-            var s = new DigitalAssetsSettingsRepository();
-
-            if (PortalSettings.Current.UserInfo.IsSuperUser && s.GetMode(moduleId) == DigitalAssestsMode.User)
+            if (PortalSettings.Current.UserInfo.IsSuperUser && SettingsRepository.GetMode(moduleId) == DigitalAssestsMode.User)
             {
                 return null;
             }
 
-            return s.GetDefaultFolderTypeId(moduleId);
+            return SettingsRepository.GetDefaultFolderTypeId(moduleId);
         }
 
         public int GetCurrentPortalId(int moduleId)
         {
             if (PortalSettings.Current.UserInfo.IsSuperUser)
             {
-                var s = new DigitalAssetsSettingsRepository();
-                if (s.GetMode(moduleId) == DigitalAssestsMode.User)
+                if (SettingsRepository.GetMode(moduleId) == DigitalAssestsMode.User)
                 {
                     return Null.NullInteger;
                 }
@@ -474,8 +473,19 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public FolderViewModel GetRootFolder(int moduleId)
         {
+            if (SettingsRepository.GetMode(moduleId) != DigitalAssestsMode.Normal)
+            {
+                return null;
+            }
+
+            var rootFolderId = SettingsRepository.GetRootFolderId(moduleId);
+            if (rootFolderId.HasValue && SettingsRepository.GetFilterCondition(moduleId) == "FilterByFolder")
+            {
+                return this.GetFolder(rootFolderId.Value);
+            }
+
             var portalId = this.GetCurrentPortalId(moduleId);
-            return GetFolderViewModel(FolderManager.Instance.GetFolder(portalId, ""));
+            return this.GetFolderViewModel(FolderManager.Instance.GetFolder(portalId, ""));            
         }
 
         public FolderViewModel GetGroupFolder(int groupId, PortalSettings portalSettings)

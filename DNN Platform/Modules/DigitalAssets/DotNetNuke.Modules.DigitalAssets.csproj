@@ -222,6 +222,7 @@
     <Content Include="ClientScripts\dnn.DigitalAssets.js" />
     <Content Include="ClientScripts\dnn.DigitalAssets.SearchBox.js" />
     <Content Include="ClientScripts\dnn.DigitalAssetsController.js" />
+    <Content Include="ClientScripts\dnn.DigitalAssets.FilterViewSettings.js" />
     <Content Include="FileFieldsControl.ascx" />
     <Content Include="FolderProperties.ascx" />
     <Content Include="Images\down.png" />

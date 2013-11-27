@@ -21,11 +21,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Web.Client;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.DigitalAssets
 {
@@ -33,7 +37,10 @@ namespace DotNetNuke.Modules.DigitalAssets
     {
         private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
 
-        #region Base Method Implementations
+        protected override void OnInit(EventArgs e)
+        {
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FilterViewSettings.js", FileOrder.Js.DefaultPriority);
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -66,11 +73,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 ModeComboBox.SelectedValue = SettingsRepository.GetMode(ModuleId).ToString();
 
-                var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
-                if (rootFolderId.HasValue)
-                {                    
-                    RootFolderDropDownList.SelectedFolder = FolderManager.Instance.GetFolder(rootFolderId.Value);
-                }
+                LoadFilterViewSettings();
             }
             catch (Exception exc)
             {
@@ -85,13 +88,17 @@ namespace DotNetNuke.Modules.DigitalAssets
         /// -----------------------------------------------------------------------------
         public override void UpdateSettings()
         {
+            Page.Validate();
+            if (!Page.IsValid) return;
+
             try
             {
-                SettingsRepository.SaveDefaultFolderId(ModuleId, Convert.ToInt32(DefaultFolderTypeComboBox.SelectedValue));
+                SettingsRepository.SaveDefaultFolderTypeId(ModuleId, Convert.ToInt32(DefaultFolderTypeComboBox.SelectedValue));
                 DigitalAssestsMode mode;
                 Enum.TryParse(ModeComboBox.SelectedValue, true, out mode);
                 SettingsRepository.SaveMode(ModuleId, mode);
-                SettingsRepository.SaveRootFolderId(ModuleId, RootFolderDropDownList.SelectedFolder.FolderID);
+
+                UpdateFilterViewSettings();
             }
             catch (Exception exc)
             {
@@ -99,6 +106,45 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        #endregion
+        protected void ValidateFolderIsSelected(object source, ServerValidateEventArgs args)
+        {
+            var filterCondition = FilterOptionsRadioButtonsList.SelectedValue;
+            if (filterCondition == "FilterByFolder" && FilterByFolderDropDownList.SelectedFolder == null)
+            {
+                args.IsValid = false;
+                return;
+            }
+
+            args.IsValid = true;
+        }
+
+        private void LoadFilterViewSettings()
+        {
+            FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(ModuleId);
+            ExcludeSubfoldersRadioButtonList.SelectedValue = SettingsRepository.GetExcludeSubfolders(ModuleId).ToString(CultureInfo.InvariantCulture);
+            switch (FilterOptionsRadioButtonsList.SelectedValue)
+            {
+                case "FilterByFolder":
+                    var folderId = SettingsRepository.GetRootFolderId(ModuleId);
+                    if (folderId.HasValue)
+                    {
+                        var folder = FolderManager.Instance.GetFolder(folderId.Value);
+                        FilterByFolderDropDownList.SelectedFolder = folder;
+                    }
+                    break;
+            }
+        }
+
+        private void UpdateFilterViewSettings()
+        {
+            SettingsRepository.SaveFilterCondition(ModuleId, FilterOptionsRadioButtonsList.SelectedValue);
+            SettingsRepository.SaveExcludeSubfolders(ModuleId, ExcludeSubfoldersRadioButtonList.SelectedValue);
+            switch (FilterOptionsRadioButtonsList.SelectedValue)
+            {
+                case "FilterByFolder":
+                    SettingsRepository.SaveRootFolderId(ModuleId, FilterByFolderDropDownList.SelectedFolder.FolderID);
+                    break;
+            }
+        }
     }
 }
