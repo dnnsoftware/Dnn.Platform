@@ -2867,6 +2867,38 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
+        private static void UpgradeToVersion721()
+        {
+            try
+            {
+                //the username maybe html encode when register in 7.1.2, it will caught unicode charactors changed, need use InputFilter to correct the value.
+                var portalSecurity = new PortalSecurity();
+                using (var reader = DataProvider.Instance().ExecuteSQL("SELECT UserId, Username FROM {databaseOwner}[{objectQualifier}Users] WHERE Username LIKE '%&%'"))
+                {
+                    while (reader.Read())
+                    {
+                        var userId = Convert.ToInt32(reader["UserId"]);
+                        var userName = reader["Username"].ToString();
+
+                        if (userName != HttpUtility.HtmlDecode(userName))
+                        {
+                            
+                            userName = HttpUtility.HtmlDecode(userName);
+                            userName = portalSecurity.InputFilter(userName,
+                                                                 PortalSecurity.FilterFlag.NoScripting |
+                                                                 PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                                 PortalSecurity.FilterFlag.NoMarkup);
+
+                            UserController.ChangeUsername(userId, userName);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
 
         private static void AddDefaultContentWorkflows()
         {
@@ -4930,6 +4962,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.2.0":
                         UpgradeToVersion720();
+                        break;
+                    case "7.2.1":
+                        UpgradeToVersion721();
                         break;
                 }
             }
