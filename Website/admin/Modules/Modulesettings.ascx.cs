@@ -359,7 +359,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
 
             //Verify that the current user has access to edit this module
-            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", Module))
+            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", Module))
             {
                 if (!(IsSharedViewOnly() && TabPermissionController.CanAddContentToPage()))
                 {

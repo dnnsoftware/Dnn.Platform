@@ -44,9 +44,11 @@ dnn.controls.triStateManager = function (images, toolTips) {
 
         if ($hdn.hasClass('fullControl')) {
             $collection.each(function (index, elem) {
-                elem.value = hidden.value;
                 var $elem = jQuery(elem);
-                updateImage($elem, state);
+                if (!$elem.hasClass('lockedPerm')) {
+                    elem.value = hidden.value;
+                    updateImage($elem, state);
+                }
             });
         } else {
             updateImage($hdn, state);
