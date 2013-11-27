@@ -848,7 +848,6 @@ namespace DotNetNuke.Security
         public static bool IsInRoles(string roles)
         {
             UserInfo objUserInfo = UserController.GetCurrentUserInfo();
-            //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
             PortalSettings settings = PortalController.GetCurrentPortalSettings();
             return IsInRoles(objUserInfo, settings, roles);            
         }

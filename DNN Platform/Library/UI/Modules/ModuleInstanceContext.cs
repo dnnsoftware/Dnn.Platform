@@ -686,9 +686,9 @@ namespace DotNetNuke.UI.Modules
 
 
 
-            if (!Globals.IsAdminControl() && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE,MANAGE", Configuration))
+            if (!Globals.IsAdminControl() && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "DELETE,MANAGE", Configuration))
             {
-                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE", Configuration))
+                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "DELETE", Configuration))
                 {
                     //Check if this is the owner instance of a shared module.
                     string confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteModule.Confirm")) + "')";

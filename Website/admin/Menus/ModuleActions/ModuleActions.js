@@ -138,16 +138,16 @@
                         htmlString += "<img src=\"" + action.Icon + "\"><span>" + action.Title + "</span>";
                     }
 
-                    $parent.find("#moduleActions-" + moduleId + "-Delete a").dnnConfirm({
-                        text: opts.deleteText,
-                        yesText: opts.yesText,
-                        noText: opts.noText,
-                        title: opts.confirmTitle
-                    });
-
                     $parent.append(htmlString);
                 }
             }
+
+            $parent.find("#moduleActions-" + moduleId + "-Delete a").dnnConfirm({
+                text: opts.deleteText,
+                yesText: opts.yesText,
+                noText: opts.noText,
+                title: opts.confirmTitle
+            });
         }
 
         function buildMenuRoot(root, rootText, rootClass) {
