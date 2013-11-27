@@ -673,7 +673,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 	    private FileItem[] IncludeFilesForCurrentFolder(IFolderInfo dnnParentFolder)
 	    {
-	        var files = FolderManager.Instance.GetFiles(dnnParentFolder);
+	        var files = FolderManager.Instance.GetFiles(dnnParentFolder).Where(f => CheckSearchPatterns(f.FileName, SearchPatterns));
             var folderPermissions = FileSystemValidation.TelerikPermissions(dnnParentFolder);
 
 	        return (from file in files
@@ -728,8 +728,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			var visibleFileCount = 0;
 			foreach (Services.FileSystem.FileInfo fileItem in files.Values)
 			{
-				string[] tempVar = SearchPatterns;
-				if (CheckSearchPatterns(fileItem.FileName, ref tempVar))
+                if (CheckSearchPatterns(fileItem.FileName, SearchPatterns))
 				{
 					visibleFileCount = visibleFileCount + 1;
 				}
@@ -840,7 +839,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 #region Search Patterns
 
-		private bool CheckSearchPatterns(string dnnFileName, ref string[] searchPatterns)
+		private bool CheckSearchPatterns(string dnnFileName, string[] searchPatterns)
 		{
 			if (searchPatterns == null | searchPatterns.Length < 1)
 			{
