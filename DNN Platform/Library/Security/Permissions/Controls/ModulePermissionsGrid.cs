@@ -379,6 +379,11 @@ namespace DotNetNuke.Security.Permissions.Controls
             return permissionList;
         }
 
+        protected override bool IsFullControl(PermissionInfo permissionInfo)
+        {
+            return (permissionInfo.PermissionKey == "EDIT");
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Load the ViewState

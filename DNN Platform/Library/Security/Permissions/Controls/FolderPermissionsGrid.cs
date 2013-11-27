@@ -37,7 +37,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 {
     public class FolderPermissionsGrid : PermissionsGrid
     {
-        #region "Private Members"
+        #region Private Members
 
         private string _folderPath = "";
         protected FolderPermissionCollection FolderPermissions;
@@ -47,7 +47,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Protected Properties"
+        #region Protected Properties
 
         protected override List<PermissionInfoBase> PermissionsList
         {
@@ -71,7 +71,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Public Properties"
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -117,7 +117,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Private Methods"
+        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -162,7 +162,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Protected Methods"
+        #region Protected Methods
 
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
@@ -258,6 +258,11 @@ namespace DotNetNuke.Security.Permissions.Controls
                 permission = base.GetPermission(objPerm, role, column, defaultState);
             }
             return permission;
+        }
+
+        protected override bool IsFullControl(PermissionInfo permissionInfo)
+        {
+            return (permissionInfo.PermissionKey == "WRITE");
         }
 
         private bool IsPermissionAlwaysGrantedToAdmin(PermissionInfo permissionInfo)

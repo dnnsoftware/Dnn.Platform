@@ -42,10 +42,15 @@ namespace DotNetNuke.UI.WebControls.Internal
             triState.Value = dataRowView[DataField].ToString();
             triState.Locked = !bool.Parse(dataRowView[EnabledField].ToString());
             triState.SupportsDenyMode = SupportDenyMode;
+            triState.IsFullControl = IsFullControl;
         }
 
         public string DataField { get; set; }
+
         public string EnabledField { get; set; }
+
+        public bool IsFullControl { get; set; }
+
         public bool SupportDenyMode { get; set; }
     }
 }

@@ -546,6 +546,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 var columnTemplate = new PermissionTriStateTemplate();
                 columnTemplate.DataField = objPermission.PermissionName;
                 columnTemplate.EnabledField = objPermission.PermissionName + "_Enabled";
+                columnTemplate.IsFullControl = IsFullControl(objPermission);
                 columnTemplate.SupportDenyMode = SupportsDenyPermissions(objPermission);
                 templateCol.ItemTemplate = columnTemplate;
 
@@ -949,6 +950,11 @@ namespace DotNetNuke.Security.Permissions.Controls
                 }
             }
             return arrUsers;
+        }
+
+        protected virtual bool IsFullControl(PermissionInfo permissionInfo)
+        {
+            return false;
         }
 
         /// <summary>

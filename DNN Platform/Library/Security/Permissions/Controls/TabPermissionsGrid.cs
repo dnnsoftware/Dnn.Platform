@@ -36,7 +36,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 {
     public class TabPermissionsGrid : PermissionsGrid
     {
-        #region "Private Members"
+        #region Private Members
 
         private List<PermissionInfoBase> _PermissionsList;
         private int _TabID = -1;
@@ -44,7 +44,12 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Protected Properties"
+        #region Protected Methods
+
+        protected override bool IsFullControl(PermissionInfo permissionInfo)
+        {
+            return (permissionInfo.PermissionKey == "EDIT");
+        }
 
         protected override List<PermissionInfoBase> PermissionsList
         {
@@ -372,7 +377,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Public Methods"
+        #region Public Methods
 
         public override void GenerateDataGrid()
         {
