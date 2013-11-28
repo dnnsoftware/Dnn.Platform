@@ -2898,6 +2898,71 @@ namespace DotNetNuke.Services.Upgrade
             {
                 Logger.Error(ex);
             }
+
+            AddManageUsersModulePermissions();
+        }
+
+        private static void AddManageUsersModulePermissions()
+        {
+           var permCtl = new PermissionController();
+           var desktopInfo = DesktopModuleController.GetDesktopModuleByModuleName("Security", Null.NullInteger);
+            //add new user dialog
+            var md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("User Account", desktopInfo.DesktopModuleID);
+            
+               try
+                   {
+                   var pi = new PermissionInfo
+                   {
+                       ModuleDefID = md.ModuleDefID,
+                       PermissionCode = "SECURITY_MODULE",
+                       PermissionKey = "MANAGEUSER",
+                       PermissionName = "Manage User"
+                   };
+
+                       permCtl.AddPermission(pi);
+
+                     }
+                catch
+                {
+                    //suppress
+                }
+
+               try
+               {
+                   var pi = new PermissionInfo
+                   {
+                       ModuleDefID = md.ModuleDefID,
+                       PermissionCode = "SECURITY_MODULE",
+                       PermissionKey = "MANAGEUSERS",
+                       PermissionName = "Manage Users"
+                   };
+
+                   permCtl.AddPermission(pi);
+
+               }
+               catch
+               {
+                   //suppress
+               }
+
+               try
+               {
+                   var pi = new PermissionInfo
+                   {
+                       ModuleDefID = md.ModuleDefID,
+                       PermissionCode = "SECURITY_MODULE",
+                       PermissionKey = "MANAGEROLES",
+                       PermissionName = "Manage Roles"
+                   };
+
+                   permCtl.AddPermission(pi);
+
+               }
+               catch
+               {
+                   //suppress
+               }
+            
         }
 
         private static void AddDefaultContentWorkflows()
