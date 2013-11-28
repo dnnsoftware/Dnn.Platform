@@ -144,10 +144,10 @@
   <data name="Group.Text" xml:space="preserve">
     <value>Group</value>
   </data>
-  <data name="IncludeSubfolders_FilesOnly.Text" xml:space="preserve">
+  <data name="IncludeSubfoldersFilesOnly.Text" xml:space="preserve">
     <value>Include Subfolders (Files Only)</value>
   </data>
-  <data name="IncludeSubfolders_ShowFolderStructure.Text" xml:space="preserve">
+  <data name="IncludeSubfoldersFolderStructure.Text" xml:space="preserve">
     <value>Include Subfolders (Show folder structure)</value>
   </data>
   <data name="Mode.Help" xml:space="preserve">

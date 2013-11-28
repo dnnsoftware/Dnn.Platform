@@ -31,10 +31,10 @@
             <div id="FilterByFolderOptions">
                 <dnnweb:DnnFolderDropDownList ID="FilterByFolderDropDownList" runat="server" /><br/>
                 <div>                        
-                    <asp:RadioButtonList ID="ExcludeSubfoldersRadioButtonList" runat="server" RepeatDirection="Vertical" RepeatLayout="Flow">
-                        <asp:ListItem Value="0" resourcekey="ExcludeSubfolders" Selected="True" />                      
-                        <asp:ListItem Value="1" resourcekey="IncludeSubfolders_FilesOnly"/>                      
-                        <asp:ListItem Value="2" resourcekey="IncludeSubfolders_ShowFolderStructure"/>
+                    <asp:RadioButtonList ID="SubfolderFilterRadioButtonList" runat="server" RepeatDirection="Vertical" RepeatLayout="Flow">
+                        <asp:ListItem Value="ExcludeSubfolders" resourcekey="ExcludeSubfolders" Selected="True" />                      
+                        <asp:ListItem Value="IncludeSubfoldersFilesOnly" resourcekey="IncludeSubfoldersFilesOnly"/>                      
+                        <asp:ListItem Value="IncludeSubfoldersFolderStructure" resourcekey="IncludeSubfoldersFolderStructure"/>
                     </asp:RadioButtonList>
                 </div>                
                 <asp:CustomValidator runat="server" Display="Dynamic" resourcekey="FolderMustBeSelected.ErrorMessage" 

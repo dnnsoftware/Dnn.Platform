@@ -85,13 +85,13 @@ namespace DotNetNuke.Modules.DigitalAssets {
         protected global::DotNetNuke.Web.UI.WebControls.DnnFolderDropDownList FilterByFolderDropDownList;
         
         /// <summary>
-        /// ExcludeSubfoldersRadioButtonList control.
+        /// SubfolderFilterRadioButtonList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList ExcludeSubfoldersRadioButtonList;
+        protected global::System.Web.UI.WebControls.RadioButtonList SubfolderFilterRadioButtonList;
         
         /// <summary>
         /// FolderMustBeSelected control.

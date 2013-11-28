@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return ApplyOrder(folders.AsQueryable(), field, asc);
         } 
 
-        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, string orderingField, bool asc)
+        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, string orderingField, bool asc, bool recursive)
         {
             Requires.NotNull("folder", folder);
 
@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             // Set default sorting values
             var field = string.IsNullOrEmpty(orderingField) ? "FileName" : orderingField;
 
-            return ApplyOrder(FolderManager.Instance.GetFiles(folder, false, true).AsQueryable(), field, asc);            
+            return ApplyOrder(FolderManager.Instance.GetFiles(folder, recursive, true).AsQueryable(), field, asc);            
         }
 
         /// <summary>
@@ -393,7 +393,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return GetFolders(folder, "FolderName", true).Select(GetFolderViewModel);
         }
 
-        public PageViewModel GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression)
+        public PageViewModel GetFolderContent(int moduleId, int folderId, int startIndex, int numItems, string sortExpression)
         {
             var folder = GetFolderInfo(folderId);
 
@@ -410,8 +410,20 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             var sortProperties = SortProperties.Parse(sortExpression);
 
-            var folders = GetFolders(folder, sortProperties.Column == "ItemName" ? "FolderName" : sortProperties.Column, sortProperties.Ascending).ToList();
-            var files = GetFiles(folder, sortProperties.Column == "ItemName" ? "FileName" : sortProperties.Column, sortProperties.Ascending).ToList();
+            List<IFolderInfo> folders;      
+
+            var subfolderFilter = SettingsRepository.GetSubfolderFilter(moduleId);
+            if (subfolderFilter != SubfolderFilter.IncludeSubfoldersFolderStructure)
+            {
+                folders = new List<IFolderInfo>();
+            }
+            else
+            { 
+                folders = GetFolders(folder, sortProperties.Column == "ItemName" ? "FolderName" : sortProperties.Column, sortProperties.Ascending).ToList();
+            }
+
+            var recursive = subfolderFilter == SubfolderFilter.IncludeSubfoldersFilesOnly;
+            var files = GetFiles(folder, sortProperties.Column == "ItemName" ? "FileName" : sortProperties.Column, sortProperties.Ascending, recursive).ToList();
 
             IEnumerable<ItemViewModel> content;
             if (startIndex + numItems <= folders.Count())
@@ -479,7 +491,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
 
             var rootFolderId = SettingsRepository.GetRootFolderId(moduleId);
-            if (rootFolderId.HasValue && SettingsRepository.GetFilterCondition(moduleId) == "FilterByFolder")
+            if (rootFolderId.HasValue && SettingsRepository.GetFilterCondition(moduleId) == FilterCondition.FilterByFolder)
             {
                 return this.GetFolder(rootFolderId.Value);
             }

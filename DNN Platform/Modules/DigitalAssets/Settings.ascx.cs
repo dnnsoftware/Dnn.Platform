@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Modules;
@@ -36,6 +35,26 @@ namespace DotNetNuke.Modules.DigitalAssets
     public partial class Settings : ModuleSettingsBase
     {
         private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
+
+        private DigitalAssestsMode SelectedDigitalAssestsMode
+        {
+            get
+            {
+                DigitalAssestsMode mode;
+                Enum.TryParse(ModeComboBox.SelectedValue, true, out mode);
+                return mode;
+            }
+        }
+
+        private FilterCondition SelectedFilterCondition
+        {
+            get
+            {
+                FilterCondition filterCondition;
+                Enum.TryParse(FilterOptionsRadioButtonsList.SelectedValue, true, out filterCondition);
+                return filterCondition;
+            }
+        }
 
         protected override void OnInit(EventArgs e)
         {
@@ -94,9 +113,8 @@ namespace DotNetNuke.Modules.DigitalAssets
             try
             {
                 SettingsRepository.SaveDefaultFolderTypeId(ModuleId, Convert.ToInt32(DefaultFolderTypeComboBox.SelectedValue));
-                DigitalAssestsMode mode;
-                Enum.TryParse(ModeComboBox.SelectedValue, true, out mode);
-                SettingsRepository.SaveMode(ModuleId, mode);
+                
+                SettingsRepository.SaveMode(ModuleId, SelectedDigitalAssestsMode);
 
                 UpdateFilterViewSettings();
             }
@@ -108,8 +126,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         protected void ValidateFolderIsSelected(object source, ServerValidateEventArgs args)
         {
-            var filterCondition = FilterOptionsRadioButtonsList.SelectedValue;
-            if (filterCondition == "FilterByFolder" && FilterByFolderDropDownList.SelectedFolder == null)
+            if (SelectedFilterCondition == FilterCondition.FilterByFolder && FilterByFolderDropDownList.SelectedFolder == null)
             {
                 args.IsValid = false;
                 return;
@@ -120,28 +137,35 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void LoadFilterViewSettings()
         {
-            FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(ModuleId);
-            ExcludeSubfoldersRadioButtonList.SelectedValue = SettingsRepository.GetExcludeSubfolders(ModuleId).ToString(CultureInfo.InvariantCulture);
-            switch (FilterOptionsRadioButtonsList.SelectedValue)
+            FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(ModuleId).ToString();
+            SubfolderFilterRadioButtonList.SelectedValue = SettingsRepository.GetSubfolderFilter(ModuleId).ToString();
+
+            if (FilterOptionsRadioButtonsList.SelectedValue == FilterCondition.FilterByFolder.ToString())
             {
-                case "FilterByFolder":
-                    var folderId = SettingsRepository.GetRootFolderId(ModuleId);
-                    if (folderId.HasValue)
-                    {
-                        var folder = FolderManager.Instance.GetFolder(folderId.Value);
-                        FilterByFolderDropDownList.SelectedFolder = folder;
-                    }
-                    break;
+                var folderId = SettingsRepository.GetRootFolderId(ModuleId);
+                if (folderId.HasValue)
+                {
+                    var folder = FolderManager.Instance.GetFolder(folderId.Value);
+                    FilterByFolderDropDownList.SelectedFolder = folder;
+                }
             }
         }
 
         private void UpdateFilterViewSettings()
         {
-            SettingsRepository.SaveFilterCondition(ModuleId, FilterOptionsRadioButtonsList.SelectedValue);
-            SettingsRepository.SaveExcludeSubfolders(ModuleId, ExcludeSubfoldersRadioButtonList.SelectedValue);
-            switch (FilterOptionsRadioButtonsList.SelectedValue)
+            var filterCondition = SelectedDigitalAssestsMode != DigitalAssestsMode.Normal ? FilterCondition.NotSet : SelectedFilterCondition;
+
+            SettingsRepository.SaveFilterCondition(ModuleId, filterCondition);
+
+            switch (filterCondition)
             {
-                case "FilterByFolder":
+                case FilterCondition.NotSet:
+                    SettingsRepository.SaveExcludeSubfolders(ModuleId, SubfolderFilter.IncludeSubfoldersFolderStructure);
+                    break;
+                case FilterCondition.FilterByFolder:
+                    SubfolderFilter subfolderFilter;
+                    Enum.TryParse(SubfolderFilterRadioButtonList.SelectedValue, true, out subfolderFilter);
+                    SettingsRepository.SaveExcludeSubfolders(ModuleId, subfolderFilter);
                     SettingsRepository.SaveRootFolderId(ModuleId, FilterByFolderDropDownList.SelectedFolder.FolderID);
                     break;
             }

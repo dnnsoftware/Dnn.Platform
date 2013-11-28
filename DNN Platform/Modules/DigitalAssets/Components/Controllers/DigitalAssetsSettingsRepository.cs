@@ -32,9 +32,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         private const string GroupModeSetting = "GroupMode";
         private const string ModeSetting = "Mode";
         private const string FilterConditionSetting = "FilterCondition";
-        private const string ExcludeSubfoldersSetting = "ExcludeSubfolders";
-
-        private const string DefaultFilterCondition = "NoSet";
+        private const string SubfolderFilterSetting = "SubfolderFilter";
 
         private readonly ModuleController moduleController;
 
@@ -91,17 +89,18 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return Convert.ToBoolean(groupMode);
         }
 
-        public string GetFilterCondition(int moduleId)
+        public FilterCondition GetFilterCondition(int moduleId)
         {
-            var viewCondition = this.GetSettingByKey(moduleId, FilterConditionSetting);
-            return viewCondition ?? DefaultFilterCondition;
+            var setting = this.GetSettingByKey(moduleId, FilterConditionSetting);
+            FilterCondition filterCondition;
+            return !Enum.TryParse(setting, true, out filterCondition) ? FilterCondition.NotSet : filterCondition;
         }
 
-        public int GetExcludeSubfolders(int moduleId)
+        public SubfolderFilter GetSubfolderFilter(int moduleId)
         {
-            var value = this.GetSettingByKey(moduleId, ExcludeSubfoldersSetting);
-            int settingValue;
-            return int.TryParse(value, out settingValue) ? settingValue : (int)ExcludeSubfolderSettingValues.ExcludeSubfoldersValue;
+            var setting = this.GetSettingByKey(moduleId, SubfolderFilterSetting);
+            SubfolderFilter excludeSubfolders;
+            return !Enum.TryParse(setting, true, out excludeSubfolders) ? SubfolderFilter.IncludeSubfoldersFolderStructure : excludeSubfolders;
         }
         
         public void SaveDefaultFolderTypeId(int moduleId, int defaultFolderTypeId)
@@ -119,14 +118,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             this.moduleController.UpdateModuleSetting(moduleId, RootFolderIdSetting, rootFolderId.ToString(CultureInfo.InvariantCulture));
         }
 
-        public void SaveExcludeSubfolders(int moduleId, string excludeSubfolders)
+        public void SaveExcludeSubfolders(int moduleId, SubfolderFilter subfolderFilter)
         {
-            moduleController.UpdateModuleSetting(moduleId, ExcludeSubfoldersSetting, excludeSubfolders);
+            moduleController.UpdateModuleSetting(moduleId, SubfolderFilterSetting, subfolderFilter.ToString());
         }
 
-        public void SaveFilterCondition(int moduleId, string filterCondition)
+        public void SaveFilterCondition(int moduleId, FilterCondition filterCondition)
         {
-            moduleController.UpdateModuleSetting(moduleId, FilterConditionSetting, filterCondition);
+            moduleController.UpdateModuleSetting(moduleId, FilterConditionSetting, filterCondition.ToString());
         }
 
         private string GetSettingByKey(int moduleId, string key)
@@ -143,10 +142,16 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         User
     }
 
-    public enum ExcludeSubfolderSettingValues
+    public enum FilterCondition
     {
-        ExcludeSubfoldersValue = 0,
-        IncludeSubfoldersFilesOnlyValue = 1,
-        IncludeSubfoldersFolderStructureValue = 2
+        NotSet,
+        FilterByFolder
+    }
+
+    public enum SubfolderFilter
+    {
+        ExcludeSubfolders,
+        IncludeSubfoldersFilesOnly,
+        IncludeSubfoldersFolderStructure
     }
 }

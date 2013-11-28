@@ -61,7 +61,8 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private readonly IDigitalAssetsController controller;
         private readonly ExtensionPointManager epm = new ExtensionPointManager();
-        private NameValueCollection damState = null;
+        private NameValueCollection damState;
+
         public View()
         {
             controller = new Factory().DigitalAssetsController;
@@ -85,8 +86,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                 {
                     var stateCookie = Request.Cookies["damState-" + UserId];
                     damState = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : ""));
-                    return damState;
                 }
+
                 return damState;
             }
         }
@@ -217,21 +218,8 @@ namespace DotNetNuke.Modules.DigitalAssets
             foreach (var folder in folders)
             {
                 var hasViewPermissions = HasViewPermissions(folder.Permissions);
-                var newNode = new DnnTreeNode
-                {
-                    ExpandMode = folder.HasChildren && hasViewPermissions ? TreeNodeExpandMode.WebService : TreeNodeExpandMode.ClientSide,
-                    Text = folder.FolderName,
-                    ImageUrl = folder.IconUrl,
-                    Value = folder.FolderID.ToString(CultureInfo.InvariantCulture),
-                    Category = folder.FolderMappingID.ToString(CultureInfo.InvariantCulture),                    
-                };
-
-                // Setup attributes
-                newNode.Attributes.Add("permissions", folder.Permissions.ToJson());
-                foreach (var attribute in folder.Attributes)
-                {
-                    newNode.Attributes.Add(attribute.Key, attribute.Value.ToJson());
-                }
+                var newNode = this.CreateNodeFromFolder(folder);
+                SetupNodeAttributes(newNode, folder.Permissions, folder);
 
                 node.Nodes.Add(newNode);
 
@@ -247,48 +235,70 @@ namespace DotNetNuke.Modules.DigitalAssets
         private void InitializeTreeViews(string initialPath)
         {
             var rootFolder = RootFolderViewModel;
-            var rootNode = new DnnTreeNode
-            {
-                ExpandMode = HasViewPermissions(rootFolder.Permissions) ? TreeNodeExpandMode.WebService : TreeNodeExpandMode.ClientSide,
-                Text = rootFolder.FolderName,
-                ImageUrl = rootFolder.IconUrl,
-                Value = rootFolder.FolderID.ToString(CultureInfo.InvariantCulture),
-                Category = rootFolder.FolderMappingID.ToString(CultureInfo.InvariantCulture),
-                Selected = true,
-                Expanded = true
-            };      
 
-            var folderId = rootFolder.FolderID;
-            var nextNode = rootNode;
-            foreach (var folderName in initialPath.Split('/'))
+            var rootNode = this.CreateNodeFromFolder(rootFolder);
+            rootNode.Selected = true;
+            rootNode.Expanded = true;
+
+            if (SettingsRepository.GetSubfolderFilter(ModuleId) == SubfolderFilter.IncludeSubfoldersFolderStructure)
             {
-                LoadSubfolders(nextNode, folderId, folderName, out nextNode, out folderId);
-                if (nextNode == null)
+                var folderId = rootFolder.FolderID;
+                var nextNode = rootNode;
+                foreach (var folderName in initialPath.Split('/'))
                 {
-                    // The requested folder does not exist or the user does not have permissions
-                    break;
+                    LoadSubfolders(nextNode, folderId, folderName, out nextNode, out folderId);
+                    if (nextNode == null)
+                    {
+                        // The requested folder does not exist or the user does not have permissions
+                        break;
+                    }
+                }
+
+                if (nextNode != null)
+                {
+                    nextNode.Expanded = false;
+                    nextNode.Selected = true;
+                    this.SetExpandable(rootNode, false);
                 }
             }
-
-            if (nextNode != null)
+            else
             {
-                nextNode.Expanded = false;
-                nextNode.Selected = true;
-                rootNode.ExpandMode = TreeNodeExpandMode.ClientSide;
-                rootNode.Selected = false;                    
+                this.SetExpandable(rootNode, false);
             }
 
-            // Setup attributes
-            rootNode.Attributes.Add("permissions", GetPermissionsForRootFolder(rootFolder.Permissions).ToJson());
-            foreach (var attribute in rootFolder.Attributes)
-            {
-                rootNode.Attributes.Add(attribute.Key, attribute.Value.ToJson());
-            }
+            SetupNodeAttributes(rootNode, GetPermissionsForRootFolder(rootFolder.Permissions), rootFolder);
 
             FolderTreeView.Nodes.Add(rootNode);
             DestinationTreeView.Nodes.Add(rootNode.Clone());
 
             InitializeTreeViewContextMenu();
+        }
+
+        private DnnTreeNode CreateNodeFromFolder(FolderViewModel folder)
+        {
+            var node = new DnnTreeNode
+            {
+                Text = folder.FolderName,
+                ImageUrl = folder.IconUrl,
+                Value = folder.FolderID.ToString(CultureInfo.InvariantCulture),
+                Category = folder.FolderMappingID.ToString(CultureInfo.InvariantCulture),
+            };
+            this.SetExpandable(node, folder.HasChildren && HasViewPermissions(folder.Permissions));
+            return node;
+        }
+
+        private void SetExpandable(DnnTreeNode node, bool expandable)
+        {
+            node.ExpandMode = expandable ? TreeNodeExpandMode.WebService : TreeNodeExpandMode.ClientSide;
+        }
+
+        private void SetupNodeAttributes(DnnTreeNode node, IEnumerable<PermissionViewModel> permissions, FolderViewModel folder)
+        {
+            node.Attributes.Add("permissions", permissions.ToJson());
+            foreach (var attribute in folder.Attributes)
+            {
+                node.Attributes.Add(attribute.Key, attribute.Value.ToJson());
+            }
         }
 
         private void InitializeTreeViewContextMenu()

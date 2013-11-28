@@ -51,7 +51,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [HttpPost]
         public HttpResponseMessage GetFolderContent(GetFolderContentRequest r)
         {
-            var p = DigitalAssetsController.GetFolderContent(r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
+            var moduleId = Request.FindModuleId();
+            var p = DigitalAssetsController.GetFolderContent(moduleId, r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
             return Request.CreateResponse(HttpStatusCode.OK, p);
         }
 
