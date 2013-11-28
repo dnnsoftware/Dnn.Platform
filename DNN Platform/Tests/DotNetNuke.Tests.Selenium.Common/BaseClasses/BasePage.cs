@@ -75,6 +75,19 @@ namespace DNNSelenium.Common.BaseClasses
 			//FindElement(By.XPath(ControlPanelIDs.PageInEditMode)).WaitTillNotVisible();
 		}
 
+		public void ClearCache()
+		{
+			Trace.WriteLine(TraceLevelPage + "Select menu option: '" + ControlPanelIDs.ControlPanelToolsOption + "'");
+
+			Click(By.XPath(ControlPanelIDs.ControlPanelToolsOption));
+
+			FindElement(By.XPath(ControlPanelIDs.ToolsGoButton)).WaitTillVisible();
+
+			FindElement(By.XPath(ControlPanelIDs.ToolsClearCacheOption)).WaitTillVisible().Click();
+
+			Thread.Sleep(5000);
+		}
+
 		/*
 			var js = (IJavaScriptExecutor)driver;
 			js.ExecuteScript
@@ -210,7 +223,7 @@ namespace DNNSelenium.Common.BaseClasses
 			IWebElement element = BasePage.WaitForElement(_driver, locator);
 			int locationOnPage = element.Location.Y;
 
-			if ((!element.Displayed) || (element.Displayed && locationOnPage < 100))
+			if (element.Displayed && locationOnPage < 100)
 			{
 				ScrollIntoView(element, 200).WaitTillVisible();
 			}

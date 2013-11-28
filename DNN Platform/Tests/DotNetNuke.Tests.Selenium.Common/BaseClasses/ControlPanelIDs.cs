@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using OpenQA.Selenium;
@@ -97,6 +98,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public static string ToolsGoButton = "//input[@id = 'controlBar_SwitchSiteButton']";
 		public static string ToolsFileUploadOption = "//a[contains(text(), 'Upload File')]";
+		public static string ToolsClearCacheOption = "//a[@id = 'controlBar_ClearCache']";
 
 		public static string HelpGettingStartedOption = "//li[@id = 'ControlBar_gettingStartedLink']/a";
 
@@ -120,5 +122,6 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string DeletePageOption = "//a[@id = 'ControlBar_DeletePage']";
 
 		#endregion
+
 	}
 }

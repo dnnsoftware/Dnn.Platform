@@ -39,6 +39,12 @@ namespace DNNSelenium.Common.CorePages
 		public static string PublicRadioButton = "//input[contains(@id, '_SiteSettings_optUserRegistration_2')]";
 		public static string VerifiedRadioButton = "//input[contains(@id, '_SiteSettings_optUserRegistration_3')]";
 
+		public static string AdvancedUrlSettingsTab = "//a[@href = '#ssAdvancedUrlSettings']";
+		public static string UrlSettingsAccordion = "//h2[@id='dnnSitePanel-UrlSettings-Extension']/a";
+		public static string RedirectToHomePageRadioButton = "//input[contains(@id, '_optDeletedPageHandling_0')]";
+		public static string Show404ErrorRadioButton = "//input[contains(@id, '_optDeletedPageHandling_1')]";
+
+
 		public static string UpdateButton = "//a[contains(@id, 'SiteSettings_cmdUpdate')]";
 
 		public void OpenUsingUrl(string baseUrl)
@@ -64,6 +70,8 @@ namespace DNNSelenium.Common.CorePages
 
 		public void DisablePopups()
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Disable POPUPS");
+
 			OpenTab(By.XPath(AdvancedSettingsTab));
 			AccordionOpen(By.XPath(UsabilitySettingsAccordion));
 
@@ -71,13 +79,13 @@ namespace DNNSelenium.Common.CorePages
 
 			ClickOnButton(By.XPath(UpdateButton));
 
-			Thread.Sleep(Settings.Default.WaitFactor * 3000);
-
-			//FindElement(By.XPath(UpdateButton)).WaitTillEnabled(60);
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
 		}
 
 		public void SetUserRegistrationType(string registrationType)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Set User registration type");
+
 			OpenTab(By.XPath(UserAccountSettingsTab));
 			AccordionOpen(By.XPath(RegistrationSettingsAccordion));
 
@@ -85,7 +93,21 @@ namespace DNNSelenium.Common.CorePages
 
 			ClickOnButton(By.XPath(UpdateButton));
 
-			Thread.Sleep(Settings.Default.WaitFactor * 3000);
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
+		}
+
+		public void SetDeletedExpiredDisabledPagesHandling(string handlingType)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Set deleted, expired, disabled pages handling");
+
+			OpenTab(By.XPath(AdvancedUrlSettingsTab));
+			AccordionOpen(By.XPath(UrlSettingsAccordion));
+
+			RadioButtonSelect(By.XPath(handlingType));
+
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
 		}
 	}
 }
