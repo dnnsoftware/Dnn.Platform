@@ -1339,6 +1339,9 @@ namespace DesktopModules.Admin.Portals
 
                     DataCache.ClearPortalCache(PortalId, false);
 
+                    //Because portal info changed, we need update current portal setting to load the correct value.
+                    HttpContext.Current.Items["PortalSettings"] = new PortalSettings(TabId, PortalSettings.PortalAlias);
+
                     //Redirect to this site to refresh only if admin skin changed or either of the images have changed
                     if (refreshPage)
                     {
