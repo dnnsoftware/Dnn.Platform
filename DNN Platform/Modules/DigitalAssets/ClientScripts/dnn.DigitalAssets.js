@@ -3074,7 +3074,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     function prepareForFilteredContent(hideSync) {
         grid.clearSelectedItems();
         toggleColumn('LastModifiedOnDate', false);
-        toggleColumn('ParentFolder', true);
+        toggleColumn('ParentFolder', !settings.isFilteredContent);
         
         $('#dnnModuleDigitalAssetsMainToolbar .folderRequired', "#" + controls.scopeWrapperId).hide();
         if (hideSync === true) {
