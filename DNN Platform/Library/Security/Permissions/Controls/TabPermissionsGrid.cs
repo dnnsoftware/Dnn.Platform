@@ -48,7 +48,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         protected override bool IsFullControl(PermissionInfo permissionInfo)
         {
-            return (permissionInfo.PermissionKey == "EDIT");
+            return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
         }
 
         protected override List<PermissionInfoBase> PermissionsList

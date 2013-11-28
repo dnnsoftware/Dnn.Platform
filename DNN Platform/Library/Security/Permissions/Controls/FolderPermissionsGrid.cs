@@ -262,7 +262,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         protected override bool IsFullControl(PermissionInfo permissionInfo)
         {
-            return (permissionInfo.PermissionKey == "WRITE");
+            return (permissionInfo.PermissionKey == "WRITE") && PermissionProvider.Instance().SupportsFullControl();
         }
 
         private bool IsPermissionAlwaysGrantedToAdmin(PermissionInfo permissionInfo)

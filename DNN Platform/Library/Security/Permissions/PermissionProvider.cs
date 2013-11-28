@@ -302,6 +302,11 @@ namespace DotNetNuke.Security.Permissions
 
         #region Public Methods
 
+        public virtual bool SupportsFullControl()
+        {
+            return true;
+        }
+
         #region FolderPermission Methods
 
         public virtual bool CanAdminFolder(FolderInfo folder)
