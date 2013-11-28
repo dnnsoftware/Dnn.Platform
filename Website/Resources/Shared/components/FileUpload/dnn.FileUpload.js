@@ -106,13 +106,13 @@
 
         _createFileUploadStatusElement: function (fileName) {
             var status = { fileName: fileName, overwrite: false, extract: false };
-            var $status = $element("li", { "class": "fu-fileupload-status" }).append(
+            var $status = $element("li").append(
                 $element("div", { "class": "fu-fileupload-filename-container" }).append(
                     $element("span", { "class": "fu-fileupload-filename", title: fileName }).text(fileName)),
                 $element("div", { "class": "fu-fileupload-progressbar-container" }).append(
                     $element("div", { "class": "fu-fileupload-progressbar ui-progressbar" }).append(
                         $element("div", { "class": "ui-progressbar-value" }).width(0)),
-                    $element("div", { "class": "fu-fileupload-progressbar-check uploading" })))
+                    $element("a", { href: "javascript:void(0);", "class": "uploading" })))
                 .data("status", status);
             return $status;
         },
@@ -166,7 +166,7 @@
             if (!this._$fileUploadStatusesContainer.is(':visible')) {
                 this._$fileUploadStatusesContainer.show().jScrollbar("update");
             }
-            //TODO: do some check
+            // TODO: do some check
             setTimeout(function () { data.submit(); }, 25);
         },
 
@@ -176,9 +176,11 @@
             if (!$fileUploadStatus.length) {
                 $fileUploadStatus = this._createFileUploadStatusElement(data.files[0].name);
                 this._$fileUploadStatuses.append($fileUploadStatus);
-                $fileUploadStatus.find('.fu-fileupload-progressbar-check.uploading').on('click', function () {
-                    if (data.jqXHR) {
-                        data.jqXHR.abort();
+                $fileUploadStatus.find(".fu-fileupload-progressbar-container a").on("click", function () {
+                    var xhr = data.jqXHR;
+                    if (xhr && xhr.readyState !== 4) {
+                        xhr.abort();
+                        $(this).removeClass().addClass("cancelled");
                     }
                 });
                 this._$fileUploadStatusesContainer.show().jScrollbar("update");
@@ -205,8 +207,8 @@
 
         _progress: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
-            if (data.formData.extract === true) {
-                if ($fileUploadStatus.find('.fu-dialog-fileupload-extracting').length == 0) {
+            if (data.formData.extract) {
+                if ($fileUploadStatus.find('.fu-dialog-fileupload-extracting').length === 0) {
                     $fileUploadStatus.find('.fu-fileupload-filename').append(
                         $element("span", { "class": "fu-dialog-fileupload-extracting"}).text(" - " + this.options.decompressingFile));
                 }
@@ -308,7 +310,6 @@
 
         _initProgressBar: function ($fileUploadStatus) {
             $fileUploadStatus.find('.fu-fileupload-progressbar > div').css('width', '0');
-            $fileUploadStatus.find('.fu-fileupload-progressbar-check').removeClass('finished').addClass('uploading');
             $fileUploadStatus.find('.fu-fileupload-progressbar-container').show();
         },
 
@@ -326,7 +327,6 @@
                 return;
             }
 
-            $fileUploadStatus.find('.fu-fileupload-progressbar-check').removeClass('uploading').addClass('finished');
             $fileUploadStatus.find('.fu-fileupload-progressbar.indeterminate-progress').removeClass('indeterminate-progress');
             $fileUploadStatus.find('.fu-dialog-fileupload-extracting').remove();
             $fileUploadStatus.find('.fu-fileupload-progressbar > div').css('width', '100%');

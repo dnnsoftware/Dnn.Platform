@@ -185,7 +185,8 @@
 }
 
 .fu-container ul.fu-fileupload-statuses li {
-    margin-top: 4px;
+    padding: 6px 0;
+    border-bottom: #fff solid 1px;
 }
 
 .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-container {
@@ -200,7 +201,7 @@
     background-image: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
     width: 260px;
-    height: 25px;
+    height: 24px;
     box-shadow: 0 1px white;
 }
 
@@ -282,7 +283,7 @@
     box-shadow: 0 1px white, 0 2px 3px #999999 inset;
     margin: 6px 0 0 6px;
     width: 225px;
-    height: 21px;
+    height: 20px;
     display: inline-block;
 }
 
@@ -295,21 +296,26 @@
     opacity: 0.15;
 }
 
-.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-check {
+.fu-fileupload-progressbar-container a {
     display: inline-block;
     height: 16px;
     width: 16px;
     float: right;
     margin: 4px 6px 0 0;
-}
-
-.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-check.uploading {
-    background-image: url("../../../../icons/sigma/Cancel_16x16_Standard.png");
+    background-color: transparent;
     cursor: pointer;
+    background-image: url("../../../../icons/sigma/Cancel_16x16_Standard(dark).png");
 }
 
-.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-check.finished {
+.fu-status-uploaded .fu-fileupload-progressbar-container a {
     background-image: url("../../../../icons/sigma/Checked_16x16_Standard(dark).png");
+    cursor: default;
+}
+
+.fu-status-error .fu-fileupload-progressbar-container a,
+.fu-status-cancelled .fu-fileupload-progressbar-container a {
+    background-image: url("../../../../icons/sigma/Cancel_16x16_Standard.png");
+    cursor: default;
 }
 
 .fu-container .dnnFileUploadFooter {
