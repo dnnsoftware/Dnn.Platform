@@ -108,10 +108,31 @@ namespace DotNetNuke.Security.Permissions
 
         private static bool IsDeniedTabPermission(ModuleInfo moduleConfiguration, string permissionKey)
         {
-            return false;
-            //return CanViewModule(moduleConfiguration) &&
-            //                    (HasModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
-            //                     || HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT")); ;
+            var tab = new TabController().GetTab(moduleConfiguration.TabID, moduleConfiguration.PortalID, false);
+            return IsDeniedTabPermission(tab.TabPermissions, "VIEW")
+                        || IsDeniedTabPermission(tab.TabPermissions, permissionKey)
+                        || IsDeniedTabPermission(tab.TabPermissions, "EDIT");
+        }
+
+        private static bool IsDeniedTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
+        {
+            bool isDenied = Null.NullBoolean;
+            if (permissionKey.Contains(","))
+            {
+                foreach (string permission in permissionKey.Split(','))
+                {
+                    if (Provider.IsDeniedTabPermission(tabPermissions, permission))
+                    {
+                        isDenied = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                isDenied = Provider.IsDeniedTabPermission(tabPermissions, permissionKey);
+            }
+            return isDenied;
         }
 
 
@@ -283,7 +304,7 @@ namespace DotNetNuke.Security.Permissions
                             else
                             {
                                // Need to check if it was denied at Tab level
-                                if (!IsDeniedTabPermission(moduleConfiguration, "CONTENT,EDIT"))
+                                if (IsDeniedTabPermission(moduleConfiguration, "CONTENT,EDIT"))
                                 {
                                     isAuthorized = false;
                                 }

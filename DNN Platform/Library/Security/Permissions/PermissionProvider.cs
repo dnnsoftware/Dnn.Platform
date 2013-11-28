@@ -293,6 +293,11 @@ namespace DotNetNuke.Security.Permissions
             return PortalSecurity.IsDenied(modulePermissions.ToString(permissionKey));
         }
 
+        internal bool IsDeniedTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
+        {
+            return PortalSecurity.IsDenied(tabPermissions.ToString(permissionKey));
+        }
+
         #endregion
 
         #region Public Methods
