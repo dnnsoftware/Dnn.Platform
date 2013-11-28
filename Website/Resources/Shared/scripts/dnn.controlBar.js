@@ -963,7 +963,7 @@ dnn.controlBar.init = function (settings) {
             data: { UserMode: mode },
             beforeSend: service.setModuleHeaders,
             success: function () {
-                dnn.dom.setCookie('StayInEditMode', 'NO', '', dnn.controlBar.getSiteRoot());
+                if( mode === 'VIEW') dnn.dom.setCookie('StayInEditMode', 'NO', '', dnn.controlBar.getSiteRoot());
                 window.location.href = window.location.href.split('#')[0];
             },
             error: function (xhr) {
@@ -982,6 +982,10 @@ dnn.controlBar.init = function (settings) {
             $('#ControlBar_ViewInLayout').removeAttr('disabled');
         }
         dnn.dom.setCookie('StayInEditMode', mode, '', dnn.controlBar.getSiteRoot());
+        
+        if (this.checked && currentUserMode !== 'EDIT') {
+            $('a#ControlBar_EditPage').click();
+        }
     }).change();
 
     $('#ControlBar_ViewInLayout').change(function () {

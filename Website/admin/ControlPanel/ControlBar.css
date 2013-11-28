@@ -1022,6 +1022,13 @@ ul#ControlBar_Module_ModulePosition {
         font-weight: normal !important;
     }
 
+    #ControlEditPageMenu .dnnCheckbox:hover + label, #ControlEditPageMenu .dnnCheckbox + label:hover {
+        color: #4e89e3;
+    }
+    #ControlEditPageMenu input[type='checkbox'][disabled] + span + label {
+        color: #444;
+    }
+
 #ControlBar .dnnCheckbox img {
     background: transparent url(../../images/darkCheckbox.png) no-repeat;
 }

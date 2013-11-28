@@ -653,7 +653,7 @@ namespace DotNetNuke.UI.ControlPanels
                 checkboxState = "checked='checked'";
             }
 
-            if(UserMode != PortalSettings.Mode.Edit)
+            if(UserMode == PortalSettings.Mode.Layout)
             {
                 checkboxState += " disabled='disabled'";
             }
