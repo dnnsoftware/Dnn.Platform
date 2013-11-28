@@ -367,6 +367,7 @@ namespace DotNetNuke.Services.Installer.Installers
             //Add Event Message
             if (_eventMessage != null && !String.IsNullOrEmpty(_eventMessage.Attributes["UpgradeVersionsList"]))
             {
+                _eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
                 EventQueueController.SendMessage(_eventMessage, "Application_Start");
             }
 
