@@ -2908,7 +2908,6 @@ namespace DotNetNuke.Services.Upgrade
            var desktopInfo = DesktopModuleController.GetDesktopModuleByModuleName("Security", Null.NullInteger);
             //add new user dialog
             var md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("User Account", desktopInfo.DesktopModuleID);
-            
                try
                    {
                    var pi = new PermissionInfo
@@ -2926,7 +2925,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     //suppress
                 }
-
+               md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("User Accounts", desktopInfo.DesktopModuleID);
                try
                {
                    var pi = new PermissionInfo
@@ -2944,7 +2943,7 @@ namespace DotNetNuke.Services.Upgrade
                {
                    //suppress
                }
-
+               md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Security Roles", desktopInfo.DesktopModuleID);
                try
                {
                    var pi = new PermissionInfo
