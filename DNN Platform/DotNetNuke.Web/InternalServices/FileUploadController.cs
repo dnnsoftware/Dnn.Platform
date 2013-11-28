@@ -199,7 +199,7 @@ namespace DotNetNuke.Web.InternalServices
                                 new
                                 {
                                     AlreadyExists = alreadyExists,
-                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage)
+                                    Message = errorMessage
                                 }, mediaTypeFormatter, "text/plain");
                         }
 

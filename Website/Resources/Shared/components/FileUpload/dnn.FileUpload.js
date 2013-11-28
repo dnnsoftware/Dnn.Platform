@@ -14,10 +14,16 @@
         return $e;
     };
 
-    var suportAjaxUpload = function() {
-        var xhr = new XMLHttpRequest;
-        return !!(xhr && ('upload' in xhr) && ('onprogress' in xhr.upload));
-    };
+    var suportAjaxUpload = (function () {
+        var support;
+        return function() {
+            if (typeof support === "undefined") {
+                var xhr = new XMLHttpRequest;
+                support = !!(xhr && ('upload' in xhr) && ('onprogress' in xhr.upload));
+            }
+            return support;
+        };
+    })();
 
     var supportDragDrop = function() {
         return ('draggable' in document.createElement('span'));
@@ -34,7 +40,6 @@
 
         init: function () {
             this.options = $.extend({}, FileUpload.defaults(), this.options);
-            this.serviceFramework = $.dnnSF();
 
             this.$this = $(this);
 
@@ -99,88 +104,108 @@
             return dialog;
         },
 
-        _handleFileUploadError: function ($fileUploadStatus, error, data) {
-            $fileUploadStatus.addClass(this.options.statusErrorCss);
+        _createFileUploadStatusElement: function (fileName) {
+            var status = { fileName: fileName, overwrite: false, extract: false };
+            var $status = $element("li", { "class": "fu-fileupload-status" }).append(
+                $element("div", { "class": "fu-fileupload-filename-container" }).append(
+                    $element("span", { "class": "fu-fileupload-filename", title: fileName }).text(fileName)),
+                $element("div", { "class": "fu-fileupload-progressbar-container" }).append(
+                    $element("div", { "class": "fu-fileupload-progressbar ui-progressbar" }).append(
+                        $element("div", { "class": "ui-progressbar-value" }).width(0)),
+                    $element("div", { "class": "fu-fileupload-progressbar-check uploading" })))
+                .data("status", status);
+            return $status;
+        },
 
-            // File already exists scenario
-            if (error.AlreadyExists) {
-                var replaceButton = $element("a", { "class": "dnnModuleDigitalAssetsUploadFileReplaceFile dnnModuleDigitalAssetsUploadFileAction" })
-                    .text("The file you want to upload already exists in this folder")
+        _showFileUploadStatus: function ($fileUploadStatus, state, data) {
+
+            $fileUploadStatus.find(".fu-fileupload-filename-container .fu-file-already-exists-prompt").remove();
+
+            var $prompt = $element("div", { "class": "fu-file-already-exists-prompt" });
+            var $statusMessage = $element("span", { "class": "fu-status-message" });
+            $prompt.append($statusMessage);
+            $fileUploadStatus.find(".fu-fileupload-filename-container").append($prompt);
+
+            var message;
+            // file already exists scenario: show Keep/Replace prompt
+            if (state.AlreadyExists) {
+
+                var self = this;
+                var $keepButton = $element("a", { href: "javascript:void(0);", "class": "fu-file-already-exists-prompt-button-keep" })
+                    .text("Keep")
+                    .click(function () {
+                        $fileUploadStatus.removeClass().addClass(self.options.statusCancelledCss);
+                        self._showFileUploadStatus($fileUploadStatus, { Message: "File upload stopped" }, data);
+                    });
+
+                var $replaceButton = $element("a", { href: "javascript:void(0);", "class": "fu-file-already-exists-prompt-button-replace" })
+                    .text("Replace")
                     .on('click', function () {
                         var $this = $(this);
-                        $this.closest('.dnnModuleDigitalAssetsUploadFileFile').attr("data-fileoverwrite", "true");
+                        $fileUploadStatus.data("status").overwrite = true;
                         var data = $this.data();
                         data.uploadedBytes = 0;
                         data.data = null;
                         data.submit();
+                        $prompt.remove();
                     })
                     .data(data);
 
-                var keepButton = $element("a", { "class": "dnnModuleDigitalAssetsUploadFileKeepFile dnnModuleDigitalAssetsUploadFileAction" })
-                    .text("Keep")
-                    .click(function() {
-                        $element.find('.dnnModuleDigitalAssetsUploadFileActions').remove();
-                        //setNotification($element, resources.fileUploadStoppedText);
-                    });
-
-                var $statusMessage = $element("span", { "class": "fu-status-message" })
-                    .text("The file you want to upload already exists in this folder");
-
-                $statusMessage.append(replaceButton, keepButton);
-
-                $fileUploadStatus.append($statusMessage);
-
+                $prompt.append($keepButton, $replaceButton);
+                message = "The file you want to upload already exists in this folder";
             }
             else {
-                //setNotification($element, "<span class='dnnModuleDigitalAssetsErrorMessage'>" + error.Message + "</span>");
+                message = state.Message;
             }
+            $statusMessage.text(message);
 
-            //showFileNotification($element);
-
+            $fileUploadStatus.find(".fu-fileupload-progressbar-container").attr("title", message);
         },
 
         _add: function (e, data) {
-            if (!this._$fileUploadStatuses.is(':visible')) {
-                this._$fileUploadStatuses.show().jScrollbar("update");
+            if (!this._$fileUploadStatusesContainer.is(':visible')) {
+                this._$fileUploadStatusesContainer.show().jScrollbar("update");
             }
             //TODO: do some check
-            data.submit();
+            setTimeout(function () { data.submit(); }, 25);
         },
 
         _submit: function (e, data) {
+            var overwrite = false;
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
             if (!$fileUploadStatus.length) {
                 $fileUploadStatus = this._createFileUploadStatusElement(data.files[0].name);
-                this._$fileUploadStatuses.find('.fu-fileupload-statuses').append($fileUploadStatus);
+                this._$fileUploadStatuses.append($fileUploadStatus);
                 $fileUploadStatus.find('.fu-fileupload-progressbar-check.uploading').on('click', function () {
                     if (data.jqXHR) {
                         data.jqXHR.abort();
                     }
                 });
-                this._$fileUploadStatuses.show().jScrollbar("update");
+                this._$fileUploadStatusesContainer.show().jScrollbar("update");
             }
             else {
                 this._initProgressBar($fileUploadStatus);
+                overwrite = $fileUploadStatus.data("status").overwrite;
             }
 
             var extract = this._extract();
             var extension = data.files[0].name.substring(data.files[0].name.lastIndexOf('.') + 1);
-            if (extension === 'zip' && extract == 'true') {
-                $fileUploadStatus.attr('data-extract', 'true');
+            if (extension === 'zip' && extract) {
+                $fileUploadStatus.data("status").extract = true;
             }
 
             data.formData = {
                 folder: this._selectedPath(),
                 filter: '',
                 extract: extract,
-                overwrite: 'true'
+                overwrite: overwrite
             };
             return true;
         },
 
         _progress: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
-            if (data.formData.extract == "true") {
+            if (data.formData.extract === true) {
                 if ($fileUploadStatus.find('.fu-dialog-fileupload-extracting').length == 0) {
                     $fileUploadStatus.find('.fu-fileupload-filename').append(
                         $element("span", { "class": "fu-dialog-fileupload-extracting"}).text(" - " + this.options.decompressingFile));
@@ -196,15 +221,25 @@
         _done: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
             var error = this._getFileUploadError(data);
-            this._setProgressBar($fileUploadStatus, 100);
             if (error) {
-                this._handleFileUploadError($fileUploadStatus, error, data);
+                if (!error.AlreadyExists) {
+                    this._setProgressBar($fileUploadStatus, 100);
+                    $fileUploadStatus.addClass(this.options.statusErrorCss);
+                }
+                this._showFileUploadStatus($fileUploadStatus, error, data);
                 return;
             }
+            $fileUploadStatus.data("status").overwrite = false;
+            this._setProgressBar($fileUploadStatus, 100);
+            this._showFileUploadStatus($fileUploadStatus, { Message: "File uploaded" }, data);
+            $fileUploadStatus.addClass(this.options.statusUploadedCss);
         },
 
         _fail: function(e, data) {
-            alert("fail");
+            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+            $fileUploadStatus.addClass(this.options.statusErrorCss);
+            var message = data.errorThrown === "abort" ? "Upload cancelled" : "Upload failed";
+            this._showFileUploadStatus($fileUploadStatus, { Message: message }, data);
         },
 
         _dragover: function () {
@@ -216,9 +251,10 @@
         },
 
         _initFileUploadFromLocal: function () {
+
             this._$inputFileControl.fileupload({
-                url: this._uploadUrl,
-                beforeSend: this.serviceFramework.setModuleHeaders,
+                url: this._uploadUrl(),
+                beforeSend: $.dnnSF().setModuleHeaders,
                 dropZone: this._$dragAndDropArea,
                 sequentialUpload: false,
                 progressInterval: 20
@@ -233,15 +269,15 @@
         },
 
         _extract: function() {
-            return this._$extract.is(':checked') ? 'true' : 'false';
+            return this._$extract.is(':checked');
         },
 
         _selectedPath: function() {
             var selectedPathArray = this._folderPicker.selectedPath();
-            var selectedPath = '';
+            var selectedPath = "";
             if (selectedPathArray.length > 1) {
-                for (var i = 1; i < selectedPathArray.length; i++) {
-                    selectedPath += selectedPathArray[i].name + '/';
+                for (var i = 1, size = selectedPathArray.length; i < size; i++) {
+                    selectedPath += selectedPathArray[i].name + "/";
                 }
             } 
             return selectedPath;
@@ -250,32 +286,24 @@
         _getFileUploadError: function(data) {
             var error;
             try {
-                if (!this._ajaxUploadable) {
+                if (!suportAjaxUpload()) {
                     error = JSON.parse($("pre", data.result).html());
                 }
                 else {
                     error = JSON.parse(data.result);
                 }
-            } catch (e) {
+            }
+            catch (e) {
                 return null;
             }
-
-            if (!error.Message) return null;
+            if (!error.Message) {
+                return null;
+            }
             return error;
         },
 
-        _createFileUploadStatusElement: function (fileName) {
-            var $status = $element("li", { "class": "fu-fileupload-status", "data-filename": fileName }).append(
-                $element("span", { "class": "fu-fileupload-filename" }).text(fileName),
-                $element("div", { "class": "fu-fileupload-progressbar-container" }).append(
-                    $element("div", { "class": "fu-fileupload-progressbar ui-progressbar" }).append(
-                        $element("div", { "class": "ui-progressbar-value" }).width(0)),
-                    $element("div", { "class": "fu-fileupload-progressbar-check uploading" })));
-            return $status;
-        },
-
         _getFileUploadStatusElement: function(fileName) {
-            return this._$fileUploadStatuses.find('li[data-filename="' + fileName + '"]');
+            return this._$fileUploadStatuses.children().filter(function (index) { return $(this).data("status").fileName == fileName; });
         },
 
         _initProgressBar: function ($fileUploadStatus) {
@@ -316,7 +344,8 @@
             this.$element = this._createLayout();
 
             this._$buttonGroup = this.$element.find(".fu-dialog-content-header ul.dnnButtonGroup");
-            this._$fileUploadStatuses = this.$element.find('.fu-fileupload-statuses-container').jScrollbar();
+            this._$fileUploadStatusesContainer = this.$element.find('.fu-fileupload-statuses-container').hide().jScrollbar();
+            this._$fileUploadStatuses = this._$fileUploadStatusesContainer.find('.fu-fileupload-statuses').empty();
             this._$dragAndDropArea = this.$element.find('.fu-dialog-drag-and-drop-area');
             this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: true, "data-text": this.options.dragAndDropAreaTitle });
             this._$extract = this.$element.find("." + "fu-dialog-content-header").find("input");
@@ -327,17 +356,7 @@
             }
 
             this._draggable = supportDragDrop();
-            this._ajaxUploadable = suportAjaxUpload();
 
-            this._serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
-            this._uploadUrl = this._serviceUrl + this.options.fileUploadMethod;
-
-            if (!this._ajaxUploadable) {
-                var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
-                this._uploadUrl += '?__RequestVerificationToken=' + antiForgeryToken;
-            }
-
-            this._$fileUploadStatuses.hide().find('.fu-fileupload-statuses').empty();
             this._$inputFileControl.appendTo(this._$dragAndDropArea.find('.fu-dialog-drag-and-drop-area-message')).dnnFileInput(
                 {
                     buttonClass: 'normalClass',
@@ -345,6 +364,16 @@
                 });
 
             this._initFileUploadFromLocal();
+        },
+
+        _uploadUrl: function() {
+            var serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
+            var url = serviceUrl + this.options.fileUploadMethod;
+            if (!suportAjaxUpload()) {
+                var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
+                url += '?__RequestVerificationToken=' + antiForgeryToken;
+            }
+            return url;
         },
 
         show: function () {
@@ -379,6 +408,8 @@
     FileUpload._defaults = {
         dialogCss: "fu-dialog",
         statusErrorCss: "fu-status-error",
+        statusUploadedCss: "fu-status-uploaded",
+        statusCancelledCss: "fu-status-cancelled",
         width: 780,
         height: 630,
         serviceRoot: "InternalServices",

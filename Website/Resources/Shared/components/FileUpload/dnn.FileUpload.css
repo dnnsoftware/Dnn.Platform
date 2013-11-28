@@ -168,43 +168,112 @@
 }
 
 .fu-container ul.fu-fileupload-statuses {
-    margin: 0 30px 0 0;
+    margin: 0 30px 0 2px;
 }
 
 .fu-container ul.fu-fileupload-statuses li {
     overflow: hidden;
 }
 
-.fu-container ul.fu-fileupload-statuses li:hover .fu-fileupload-filename {
+.fu-container ul.fu-fileupload-statuses li .fu-fileupload-filename {
     color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 400px;
 }
 
-.fu-container .fu-fileupload-statuses .fu-fileupload-status {
-    margin-top: 10px;
+.fu-container ul.fu-fileupload-statuses li {
+    margin-top: 4px;
 }
 
 .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-container {
     float: right;
     border: 1px solid #B6BAC2;
     border-radius: 5px;
-    padding: 2px 4px;
-    background-image: -ms-linear-gradient(top,  rgba(0, 0, 0, 0.1) 0%, transparent 100%);
-    background-image: -moz-linear-gradient(top,  rgba(0, 0, 0, 0.1) 0%, transparent 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0,  rgba(0, 0, 0, 0.1)), color-stop(1, transparent));
-    background-image: -webkit-linear-gradient(top, transparent 0%,  rgba(0, 0, 0, 0.1) 100%);
-    background-image: linear-gradient(to bottom,  rgba(0, 0, 0, 0.1) 0%, transparent 100%);
+    padding: 2px;
+    margin: 3px 0;
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0, 0, 0, 0.1)), color-stop(1, transparent));
+    background-image: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
     width: 260px;
     height: 25px;
     box-shadow: 0 1px white;
 }
 
-.fu-container .fu-fileupload-statuses .fu-fileupload-filename
-{
+.fu-container .fu-fileupload-statuses .fu-fileupload-filename-container {
     display: block;
     float: left;
     color: #777;
+    padding: 0;
+}
+
+.fu-file-already-exists-prompt {
+    overflow: hidden;
     font-style: italic;
-    padding: 0 0 5px 0;
+}
+
+.fu-file-already-exists-prompt .fu-status-message {
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 400px;
+    line-height: 12px;
+}
+
+.fu-status-error .fu-file-already-exists-prompt .fu-status-message {
+    color: #bd522c;
+}
+
+.fu-status-uploaded .fu-file-already-exists-prompt .fu-status-message {
+    color: #2b7fda;
+}
+
+.fu-status-cancelled .fu-file-already-exists-prompt .fu-status-message {
+    color: #777;
+}
+
+.fu-container .fu-status-cancelled .ui-progressbar .ui-progressbar-value {
+    background: rgb(188,188,188); /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2JjYmNiYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZGVkZWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(left,  rgba(188,188,188,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(188,188,188,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  rgba(188,188,188,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  rgba(188,188,188,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  rgba(188,188,188,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+    background: linear-gradient(to right,  rgba(188,188,188,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bcbcbc', endColorstr='#ededed',GradientType=1 ); /* IE6-8 */
+}
+
+.fu-container .fu-status-error .ui-progressbar .ui-progressbar-value {
+    background: rgb(189,82,44); /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2JkNTIyYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZTdmMjciIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(left,  rgba(189,82,44,1) 0%, rgba(238,127,39,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(189,82,44,1)), color-stop(100%,rgba(238,127,39,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  rgba(189,82,44,1) 0%,rgba(238,127,39,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  rgba(189,82,44,1) 0%,rgba(238,127,39,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  rgba(189,82,44,1) 0%,rgba(238,127,39,1) 100%); /* IE10+ */
+    background: linear-gradient(to right,  rgba(189,82,44,1) 0%,rgba(238,127,39,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bd522c', endColorstr='#ee7f27',GradientType=1 ); /* IE6-8 */
+}
+
+.fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-keep,
+.fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-replace {
+    float: right;
+    margin: 0 4px;
+    font-weight: bold;
+    line-height: 12px;
+}
+
+.fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-replace {
+    margin-left: 10px;
 }
 
 .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar {
@@ -224,10 +293,6 @@
 .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar .indeterminate-progress > div.ui-progressbar-value {
     background-image: url("images/indeterminate.gif");
     opacity: 0.15;
-}
-
-.fu-container .fu-status-error .ui-progressbar .ui-progressbar-value {
-    background: -moz-linear-gradient(left center , #bd522c 0%, #ee7f27 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
 }
 
 .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-check {
