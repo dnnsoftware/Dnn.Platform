@@ -498,7 +498,25 @@ namespace DotNetNuke.UI.Skins
             {
                 slaveModule.ModuleControlId = moduleControl.ModuleControlID;
                 slaveModule.IconFile = moduleControl.IconFile;
-                if (ModulePermissionController.HasModuleAccess(slaveModule.ModuleControl.ControlType, Null.NullString, slaveModule))
+                
+                string permissionKey;
+                switch (slaveModule.ModuleControl.ControlSrc)
+                {
+                    case "Admin/Modules/ModuleSettings.ascx":
+                        permissionKey = "MANAGE,EDIT";
+                        break;
+                    case "Admin/Modules/Import.ascx":
+                        permissionKey = "IMPORT,EDIT";
+                        break;
+                    case "Admin/Modules/Export.ascx":
+                        permissionKey = "EXPORT,EDIT";
+                        break;
+                    default:
+                        permissionKey = "CONTENT,EDIT";
+                        break;
+                }
+
+                if (ModulePermissionController.HasModuleAccess(slaveModule.ModuleControl.ControlType, permissionKey, slaveModule))
                 {
                     success = InjectModule(pane, slaveModule);
                 }
