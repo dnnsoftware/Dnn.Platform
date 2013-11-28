@@ -63,6 +63,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public void ImportPage(string templateName, string pageName, string insertPageAfter)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Import the page:");
 			//WaitForElement(By.XPath(ControlPanelIDs.PageTitleID));
 
 			WaitForElement(By.XPath(FolderDropDownId));

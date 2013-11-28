@@ -236,6 +236,12 @@ namespace DNNSelenium.Common.BaseClasses
 			_checkBoxId = checkBoxId;
 		}
 
+		public enum ActionType
+		{
+			Check,
+			Uncheck
+		};
+
 		public void Check()
 		{
 			if (!_driver.FindElement(_checkBoxId).FindElement(By.XPath("./following-sibling::*"))
@@ -285,6 +291,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public void Open()
 		{
 			IWebElement accordion = BasePage.WaitForElement(_driver, _accordionId);
+
 			if (accordion.Displayed)
 			{
 				accordion.ScrollIntoView().WaitTillVisible();

@@ -37,6 +37,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public static string ContextMenuAddPageOption = "//div[contains(@id, 'ctlPages_ctlContext_detached')]//a[span[contains(text(),'Add Page')]]";
 		public static string ContextMenuDeletePageOption = "//div[contains(@id, 'ctlPages_ctlContext_detached')]//a[span[contains(text(),'Delete')]]";
+		public static string ContextMenuViewPageOption = "//div[contains(@id, 'ctlPages_ctlContext_detached')]//a[span[contains(text(),'View Page')]]";
 
 		public static string PageNameTextBox = "//textarea[contains(@id, 'Tabs_txtBulk')]";
 		public static string CreatePageButton = "//a[contains(@id, 'Tabs_btnBulkCreate')]";
@@ -48,6 +49,15 @@ namespace DNNSelenium.Common.CorePages
 
 		public static string ModulesAccordion = "//h2[@id='Panel-Modules']/a";
 		public static string DeleteHTMLIcon = "//tr[td[contains(text(), 'HTML')]]/td/input[contains(@id, 'cmdDeleteModule')]";
+
+		public static string CommonAccordion = "//h2[@id='Panel-Common']/a";
+		public static string DisablePageCheckBox = "//input[contains(@id, 'Tabs_chkDisabled')]";
+
+		public enum PageType
+		{
+			Web,
+			Host
+		};
 
 		public void OpenUsingUrl(string baseUrl)
 		{
@@ -76,13 +86,13 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(PageList + "//li[@class = 'rtLI rtLast']//span[last()]"));
 		}
 
-		public void OpenPageList(string pageType, string waitForPageName)
+		public void OpenPageList(PageType pageType, string waitForPageName)
 		{
 			Thread.Sleep(1000);
 			//WaitForElement(By.XPath(HostPage)).WaitTillVisible();
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Select Page type :");
-			if (pageType == "Web")
+			if (pageType == PageType.Web)
 			{
 				Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'WEB' button :");
 				//RadioButtonSelect(By.XPath(WebsitePagesRadioButton));
@@ -113,15 +123,16 @@ namespace DNNSelenium.Common.CorePages
 				FindElement(By.XPath(PageList + "//span[text() = '" + pageName + " ']"))).
 				MoveToElement(WaitForElement(By.XPath(option))).Build().Perform();
 
-			//FindElement(By.XPath(option)).Info();
 			Thread.Sleep(1000);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on option: " + option);
 			Click(By.XPath(option));
 		}
 
-		public void AddPage(string pageName, string pageType, string addPageAfter)
+		public void AddPage(string pageName, PageType pageType, string addPageAfter)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Add a Page");
+
 			OpenPageList(pageType, addPageAfter);
 
 			SelectFromContextMenu(addPageAfter, ContextMenuAddPageOption);
@@ -133,8 +144,10 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(OperationConfirmationMessage)); 
 		}
 
-		public void AddPages(string pageName1, string pageName2, string pageName3, string pageName4, string pageType, string addPageAfter)
+		public void AddPages(string pageName1, string pageName2, string pageName3, string pageName4, PageType pageType, string addPageAfter)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Add the Pages");
+
 			OpenPageList(pageType, addPageAfter);
 
 			SelectFromContextMenu(addPageAfter, ContextMenuAddPageOption);
@@ -156,8 +169,11 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(OperationConfirmationMessage));
 		}
 
-		public void AddPagesInBulk(string pageName, string parentPage, int pageAmount, string pageType, string addPageAfter)
+
+		public void AddPagesInBulk(string pageName, string parentPage, int pageAmount, PageType pageType, string addPageAfter)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Add the Pages in bulk");
+
 			OpenPageList(pageType, addPageAfter);
 
 			SelectFromContextMenu(addPageAfter, ContextMenuAddPageOption);
@@ -179,8 +195,12 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitForElement(By.XPath(OperationConfirmationMessage));
 		}
-		public void DeletePage(string pageName, string pageType)
+
+
+		public void DeletePage(string pageName, PageType pageType)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Delete the Page");
+
 			OpenPageList(pageType, pageName);
 
 			SelectFromContextMenu(pageName, ContextMenuDeletePageOption);
@@ -191,8 +211,11 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(OperationConfirmationMessage));
 		}
 
-		public void MovePage(string pageName, string newLocation, string pageType)
+
+		public void MovePage(string pageName, string newLocation, PageType pageType)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Move the Page");
+
 			OpenPageList(pageType, pageName);
 
 			Actions action = new Actions(_driver);
@@ -204,8 +227,11 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(OperationConfirmationMessage), 30);
 		}
 
-		public void AddDescriptionToPage(string pageName, string pageDescription, string pageType)
+
+		public void AddDescriptionToPage(string pageName, string pageDescription, PageType pageType)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Add description to the Page");
+
 			OpenPageList(pageType, pageName);
 
 			FindElement(By.XPath(PageList + "//span[text() = '" + pageName + " ']")).WaitTillVisible().Click();
@@ -220,8 +246,11 @@ namespace DNNSelenium.Common.CorePages
 			Thread.Sleep(1000);
 		}
 
-		public void DeleteModuleOnPage(string pageName, string pageType)
+
+		public void DeleteModuleOnPage(string pageName, PageType pageType)
 		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Delete a Module on the Page");
+
 			OpenPageList(pageType, pageName);
 
 			WaitForElement(By.XPath(PageList + "//span[text() = '" + pageName + " ']")).ScrollIntoView().Click();
@@ -231,6 +260,33 @@ namespace DNNSelenium.Common.CorePages
 			WaitAndClick(By.XPath(DeleteHTMLIcon));
 
 			WaitForElement(By.XPath("//div[contains(@class, 'dnnFormWarning')]/span[contains(@id, '_lblNoRecords')]"));
+		}
+
+
+		public void DisablePage(string pageName, PageType pageType, CheckBox.ActionType action)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Disable the Page");
+
+			OpenPageList(pageType, pageName);
+
+			WaitForElement(By.XPath(PageList + "//span[text() = '" + pageName + " ']")).ScrollIntoView().Click();
+
+			AccordionOpen(By.XPath(CommonAccordion));
+
+			if (action == CheckBox.ActionType.Check)
+			{
+				CheckBoxCheck(By.XPath(DisablePageCheckBox));
+			}
+
+			else
+			{
+				CheckBoxUncheck(By.XPath(DisablePageCheckBox));
+			}
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Update' button:");
+			ClickOnButton(By.XPath(UpdatePageButton));
+
+			Thread.Sleep(1000);
 		}
 	}
 }

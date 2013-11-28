@@ -58,11 +58,11 @@ namespace DNNSelenium.Common.Tests.P1
 			//Create set of pages with New Default
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
-			adminPageManagementPage.AddPagesInBulk(">" + "Page", "P1Modules", 65, "Web", "Home");
+			adminPageManagementPage.AddPagesInBulk(">" + "Page", "P1Modules", 65, AdminPageManagementPage.PageType.Web, "Home");
 
 			//Create set of pages for Drag&Drop tests with New Default
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
-			adminPageManagementPage.AddPagesInBulk(">" + "Page", "P1ModulesDragDrop", 65, "Web", "Home");
+			adminPageManagementPage.AddPagesInBulk(">" + "Page", "P1ModulesDragDrop", 65, AdminPageManagementPage.PageType.Web, "Home");
 			
 			//Create a page with 4 HtmlModuleDictionary Modules on page
 			blankPage.OpenUsingUrl(_baseUrl, "Home/P1Modules/Page61");
@@ -84,10 +84,10 @@ namespace DNNSelenium.Common.Tests.P1
 
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
-			adminPageManagementPage.DeletePage("P1Modules", "Web");
+			adminPageManagementPage.DeletePage("P1Modules", AdminPageManagementPage.PageType.Web);
 
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
-			adminPageManagementPage.DeletePage("P1ModulesDragDrop", "Web");
+			adminPageManagementPage.DeletePage("P1ModulesDragDrop", AdminPageManagementPage.PageType.Web);
 
 			var adminRecycleBinPage = new AdminRecycleBinPage(_driver);
 			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
