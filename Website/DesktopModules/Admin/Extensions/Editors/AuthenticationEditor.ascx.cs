@@ -22,7 +22,7 @@
 
 using System;
 using System.IO;
-
+using DotNetNuke.Common;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
@@ -184,6 +184,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 SettingsControl.UpdateSettings();
             }
+
+            Response.Redirect(Globals.NavigateURL(), true);
         }
 		
 		#endregion
