@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Threading;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.BaseClasses.BasePages;
+using DNNSelenium.Common.Properties;
 using OpenQA.Selenium;
 
 namespace DNNSelenium.Common.CorePages
@@ -101,7 +102,7 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Create Site' button:");
 			ClickOnButton(By.XPath(CreateSiteFrameButton));
 
-			WaitForElement(By.XPath(SiteCreatedConfirmationMessage), 60);
+			WaitForElement(By.XPath(SiteCreatedConfirmationMessage), Settings.Default.WaitFactor * 60);
 		}
 
 		public void AddNewParentSite(string siteName, string title)

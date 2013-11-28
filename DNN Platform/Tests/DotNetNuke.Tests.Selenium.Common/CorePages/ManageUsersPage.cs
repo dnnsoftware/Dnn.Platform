@@ -162,7 +162,9 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath("//a[contains(@id, '" + SecurityRolesArrow + "')]")).WaitTillVisible();
 			SlidingSelectByValue( By.XPath("//a[contains(@id, '" + SecurityRolesArrow + "')]"), By.XPath(SecurityRolesDropdown), roleName);
 
-			WaitAndClick(By.XPath(AddRoleToUserFrameButton));
+			Thread.Sleep(1000);
+
+			WaitForElement(By.XPath(AddRoleToUserFrameButton)).WaitTillEnabled().Click();
 
 			WaitForElement(By.XPath("//tr[td[contains(text(), '" + roleName + "')]]"));
 		}

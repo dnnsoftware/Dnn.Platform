@@ -100,7 +100,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.AddPage(_pageName, "Web", _addWebAfter);
+			adminPageManagementPage.AddPage(_pageName, AdminPageManagementPage.PageType.Web, _addWebAfter);
 
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
@@ -120,7 +120,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.AddPages(_pageName1, _pageName2, _pageName3, _pageName4, "Web", _addWebAfter);
+			adminPageManagementPage.AddPages(_pageName1, _pageName2, _pageName3, _pageName4, AdminPageManagementPage.PageType.Web, _addWebAfter);
 
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
@@ -161,7 +161,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.AddDescriptionToPage(_pageName, _pageDescription, "Web");
+			adminPageManagementPage.AddDescriptionToPage(_pageName, _pageDescription, AdminPageManagementPage.PageType.Web);
 
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenUsingUrl(_baseUrl, _addWebAfter + "/" + _pageName);
@@ -180,7 +180,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.MovePage(_pageName, _moveAfterWebPage, "Web");
+			adminPageManagementPage.MovePage(_pageName, _moveAfterWebPage, AdminPageManagementPage.PageType.Web);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is NOT present in the old location");
 			Assert.IsFalse(
@@ -206,7 +206,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.DeletePage(_pageName, "Web");
+			adminPageManagementPage.DeletePage(_pageName, AdminPageManagementPage.PageType.Web);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is  NOT present in the list");
 			Assert.IsFalse(
@@ -225,7 +225,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.AddPage(_pageName, "Host", _addHostAfter);
+			adminPageManagementPage.AddPage(_pageName, AdminPageManagementPage.PageType.Host, _addHostAfter);
 
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 			adminPageManagementPage.RadioButtonSelect(By.XPath(AdminPageManagementPage.HostPagesRadioButton));
@@ -247,7 +247,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.AddPages(_pageName1, _pageName2, _pageName3, _pageName4, "Host", _addHostAfter);
+			adminPageManagementPage.AddPages(_pageName1, _pageName2, _pageName3, _pageName4, AdminPageManagementPage.PageType.Host, _addHostAfter);
 
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 			adminPageManagementPage.RadioButtonSelect(By.XPath(AdminPageManagementPage.HostPagesRadioButton));
@@ -291,7 +291,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.AddDescriptionToPage(_pageName, _pageDescription, "Host");
+			adminPageManagementPage.AddDescriptionToPage(_pageName, _pageDescription, AdminPageManagementPage.PageType.Host);
 
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenUsingUrl(_baseUrl, "Host/" + _addHostAfter + "/" + _pageName);
@@ -310,7 +310,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.MovePage(_pageName, _moveAfterHostPage, "Host");
+			adminPageManagementPage.MovePage(_pageName, _moveAfterHostPage, AdminPageManagementPage.PageType.Host);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is NOT present in the old location");
 			Assert.IsFalse(
@@ -336,7 +336,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminPageManagementPage.DeletePage(_pageName, "Host");
+			adminPageManagementPage.DeletePage(_pageName, AdminPageManagementPage.PageType.Host);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the page: " + _pageName + "is  NOT present in the list");
 			Assert.IsFalse(

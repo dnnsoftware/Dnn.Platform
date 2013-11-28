@@ -25,7 +25,7 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
-		public static string ProfilePhoto = "//span/img[@class = 'ProfilePhoto']";
+		public static string ProfilePhoto = "//div[@id = 'UserProfileImg']/span/img[@class = 'ProfilePhoto']";
 		public static string ManageAccountTab = "//div[@id='dnnEditUser']//a[contains(@href, 'dnnUserDetails')]";
 		public static string ManageProfileTab = "//div[@id='dnnEditUser']//a[contains(@href, 'dnnProfileDetails')]";
 

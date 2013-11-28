@@ -94,13 +94,15 @@ namespace DNNSelenium.Common.Tests.P1
 			manageUsersPage.DeleteUser(_userNameNumberThree);
 			manageUsersPage.RemoveDeletedUsers();
 
-			var page = new BlankPage(_driver);
+			/*var page = new BlankPage(_driver);
 			page.OpenUsingUrl(_baseUrl, _pageName);
 			page.DeletePage(_pageName);
 
 			var adminRecycleBinPage = new AdminRecycleBinPage(_driver);
 			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
-			adminRecycleBinPage.EmptyRecycleBin();
+			adminRecycleBinPage.EmptyRecycleBin();*/
+
+			RemoveUsedPage(_pageName);
 		}
 
 		[Test]
