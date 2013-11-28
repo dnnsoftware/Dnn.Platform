@@ -381,8 +381,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return FolderMappingController.Instance.GetFolderMappings(portalId).Select(GetFolderMappingViewModel);
         }
 
-        public IEnumerable<FolderViewModel> GetFolders(int folderId)
+        public IEnumerable<FolderViewModel> GetFolders(int moduleId, int folderId)
         {
+            var subfolderFilter = SettingsRepository.GetSubfolderFilter(moduleId);
+            if (subfolderFilter != SubfolderFilter.IncludeSubfoldersFolderStructure)
+            {
+                return new List<FolderViewModel>();
+            }
+
             var folder = GetFolderInfo(folderId);
 
             if (!(HasPermission(folder, "BROWSE") || HasPermission(folder, "READ")))

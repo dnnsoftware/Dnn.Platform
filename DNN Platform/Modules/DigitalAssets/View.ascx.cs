@@ -159,6 +159,14 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
+        protected bool FilteredContent
+        {
+            get
+            {
+                return SettingsRepository.GetSubfolderFilter(ModuleId) != SubfolderFilter.IncludeSubfoldersFolderStructure;
+            }
+        }
+
         protected string PageSize { get; private set; }
 
         protected string ActiveView { get; private set; }
@@ -214,7 +222,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             nextNode = null;
             nextFolderId = 0;
-            var folders = controller.GetFolders(folderId);
+            var folders = controller.GetFolders(ModuleId, folderId);
             foreach (var folder in folders)
             {
                 var hasViewPermissions = HasViewPermissions(folder.Permissions);
@@ -240,32 +248,29 @@ namespace DotNetNuke.Modules.DigitalAssets
             rootNode.Selected = true;
             rootNode.Expanded = true;
 
-            if (SettingsRepository.GetSubfolderFilter(ModuleId) == SubfolderFilter.IncludeSubfoldersFolderStructure)
+            var folderId = rootFolder.FolderID;
+            var nextNode = rootNode;
+            foreach (var folderName in initialPath.Split('/'))
             {
-                var folderId = rootFolder.FolderID;
-                var nextNode = rootNode;
-                foreach (var folderName in initialPath.Split('/'))
+                LoadSubfolders(nextNode, folderId, folderName, out nextNode, out folderId);
+                if (nextNode == null)
                 {
-                    LoadSubfolders(nextNode, folderId, folderName, out nextNode, out folderId);
-                    if (nextNode == null)
-                    {
-                        // The requested folder does not exist or the user does not have permissions
-                        break;
-                    }
-                }
-
-                if (nextNode != null)
-                {
-                    nextNode.Expanded = false;
-                    nextNode.Selected = true;
-                    this.SetExpandable(rootNode, false);
+                    // The requested folder does not exist or the user does not have permissions
+                    break;
                 }
             }
-            else
+
+            if (nextNode != null)
             {
-                this.SetExpandable(rootNode, false);
+                nextNode.Expanded = false;
+                nextNode.Selected = true;
             }
 
+            if (rootNode.Nodes.Count == 0)
+            {
+                this.SetExpandable(rootNode, false);                
+            }
+            
             SetupNodeAttributes(rootNode, GetPermissionsForRootFolder(rootFolder.Permissions), rootFolder);
 
             FolderTreeView.Nodes.Add(rootNode);
@@ -309,7 +314,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("CreateFolder", LocalResourceFile),
                         Value = "NewFolder",
-                        CssClass = "permission_ADD",
+                        CssClass = "permission_ADD disabledIfFiltered",
                         ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray")
                     },    
                 new DnnMenuItem
@@ -401,7 +406,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("Move", LocalResourceFile),
                         Value = "Move",
-                        CssClass = "permission_COPY",
+                        CssClass = "permission_COPY disabledIfFiltered",
                         ImageUrl = IconController.IconURL("FileMove", "16x16", "Black")
                     }, 
                 new DnnMenuItem
@@ -455,7 +460,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("CreateFolder", LocalResourceFile),
                         Value = "NewFolder",
-                        CssClass = "permission_ADD",
+                        CssClass = "permission_ADD disabledIfFiltered",
                         ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray")
                     },    
                 new DnnMenuItem

@@ -42,9 +42,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// <summary>
         /// Gets the list of subfolders for the specified folder.
         /// </summary>
+        /// <param name="moduleId">The Id of the module</param>
         /// <param name="parentFolderId">The folderItemId of the folder to get the list of subfolders.</param>
         /// <returns>The list of subfolders for the specified folder.</returns>
-        IEnumerable<FolderViewModel> GetFolders(int parentFolderId);
+        IEnumerable<FolderViewModel> GetFolders(int moduleId, int parentFolderId);
 
         /// <summary>
         /// Gets a file entity by providing a file identifier.

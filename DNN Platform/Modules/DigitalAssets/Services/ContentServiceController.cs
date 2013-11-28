@@ -108,7 +108,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage GetSubFolders(GetSubFolderRequest request)
         {
-            var subFolders = DigitalAssetsController.GetFolders(request.FolderId);
+            var moduleId = Request.FindModuleId();
+            var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
             return Request.CreateResponse(HttpStatusCode.OK, subFolders);
         }
 

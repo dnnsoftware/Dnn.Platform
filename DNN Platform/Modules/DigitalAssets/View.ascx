@@ -267,7 +267,8 @@
             view: '<%= ActiveView %>',
             userId: '<%= UserId %>',
             groupId: '<%= Request.Params["GroupId"] %>',
-            rootFolderPath: '<%= RootFolderViewModel != null ? RootFolderViewModel.FolderPath : "" %>'
+            rootFolderPath: '<%= RootFolderViewModel != null ? RootFolderViewModel.FolderPath : "" %>',
+            isFilteredContent: <%= FilteredContent ? "true" : "false" %>
         },
         // Resources
         {

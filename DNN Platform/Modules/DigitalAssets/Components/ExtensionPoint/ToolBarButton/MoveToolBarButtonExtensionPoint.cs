@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.ComponentModel.Composition;
 
 using DotNetNuke.Entities.Icons;
@@ -42,7 +41,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public string CssClass
         {
-            get { return "DigitalAssetsSelectionToolBar DigitalAssetsMove permission_COPY"; }
+            get { return "DigitalAssetsSelectionToolBar DigitalAssetsMove permission_COPY disabledIfFiltered"; }
         }
 
         public string Action
