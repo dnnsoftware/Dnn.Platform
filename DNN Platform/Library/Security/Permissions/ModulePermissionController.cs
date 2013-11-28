@@ -71,6 +71,50 @@ namespace DotNetNuke.Security.Permissions
             return TabPermissionController.CanAddContentToPage(objTab);
         }
 
+        private static bool HasModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
+        {
+            return CanViewModule(moduleConfiguration) &&
+                                (HasModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
+                                 || HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT")); ;
+        }
+
+        private static bool IsDeniedModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
+        {
+            return IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "VIEW") 
+                        || IsDeniedModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
+                        || IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "EDIT");
+        }
+
+        private static bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
+        {
+            bool isDenied = Null.NullBoolean;
+            if (permissionKey.Contains(","))
+            {
+                foreach (string permission in permissionKey.Split(','))
+                {
+                    if (Provider.IsDeniedModulePermission(modulePermissions, permission))
+                    {
+                        isDenied = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                isDenied = Provider.IsDeniedModulePermission(modulePermissions, permissionKey);
+            }
+            return isDenied;
+        }
+
+        private static bool IsDeniedTabPermission(ModuleInfo moduleConfiguration, string permissionKey)
+        {
+            return false;
+            //return CanViewModule(moduleConfiguration) &&
+            //                    (HasModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
+            //                     || HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT")); ;
+        }
+
+
         #endregion
 
         #region Public Methods
@@ -226,21 +270,26 @@ namespace DotNetNuke.Security.Permissions
                         if (moduleConfiguration != null && !((moduleConfiguration.IsShared && moduleConfiguration.IsShareableViewOnly)
                                 && TabPermissionController.CanAddContentToPage()))
                         {
+                            if (string.IsNullOrEmpty(permissionKey))
+                            {
+                                permissionKey = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
+                            }
+
                             if (TabPermissionController.CanAddContentToPage())
                             {
-                                isAuthorized = true;
+                                //Need to check for Deny at the Module Level
+                                isAuthorized = !IsDeniedModulePermission(moduleConfiguration, permissionKey);
                             }
                             else
                             {
-                                if (string.IsNullOrEmpty(permissionKey))
+                               // Need to check if it was denied at Tab level
+                                if (!IsDeniedTabPermission(moduleConfiguration, "CONTENT,EDIT"))
                                 {
-                                    permissionKey = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
+                                    isAuthorized = false;
                                 }
-                                if (CanViewModule(moduleConfiguration) &&
-                                    (HasModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
-                                        || HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT")))
+                                else
                                 {
-                                    isAuthorized = true;
+                                    isAuthorized = HasModulePermission(moduleConfiguration, permissionKey);
                                 }
                             }
                         }

@@ -288,6 +288,11 @@ namespace DotNetNuke.Security.Permissions
             return dic;
         }
 
+        internal bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
+        {
+            return PortalSecurity.IsDenied(modulePermissions.ToString(permissionKey));
+        }
+
         #endregion
 
         #region Public Methods

@@ -834,6 +834,51 @@ namespace DotNetNuke.Security
             return cookieDomain;
         }
 
+        public static bool IsDenied(string roles)
+        {
+            UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            return IsDenied(objUserInfo, settings, roles);
+        }
+
+        public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
+        {
+            //super user always has full access
+            if (objUserInfo.IsSuperUser)
+            {
+                return false;
+            }
+
+            bool isDenied = false;
+
+            if (roles != null)
+            {
+                //permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+                foreach (string role in roles.Split(new[] { ';' }))
+                {
+                    if (!String.IsNullOrEmpty(role))
+                    {
+                        //Deny permission
+                        if (role.StartsWith("!"))
+                        {
+                            //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
+                            if (!(settings.PortalId == objUserInfo.PortalID && settings.AdministratorId == objUserInfo.UserID))
+                            {
+                                string denyRole = role.Replace("!", "");
+                                if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))
+                                {
+                                    isDenied = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return isDenied;
+        }
+
         public static bool IsInRole(string role)
         {
             UserInfo objUserInfo = UserController.GetCurrentUserInfo();
@@ -851,13 +896,13 @@ namespace DotNetNuke.Security
             PortalSettings settings = PortalController.GetCurrentPortalSettings();
             return IsInRoles(objUserInfo, settings, roles);            
         }
-        
+
         public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
             //super user always has full access
-            bool blnIsInRoles = objUserInfo.IsSuperUser;
+            bool isInRoles = objUserInfo.IsSuperUser;
 
-            if (!blnIsInRoles)
+            if (!isInRoles)
             {
                 if (roles != null)
                 {
@@ -883,7 +928,7 @@ namespace DotNetNuke.Security
                             {
                                 if (role == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(role))
                                 {
-                                    blnIsInRoles = true;
+                                    isInRoles = true;
                                     break;
                                 }
                             }
@@ -891,7 +936,7 @@ namespace DotNetNuke.Security
                     }
                 }
             }
-            return blnIsInRoles;
+            return isInRoles;
         }
 		
 		#endregion
