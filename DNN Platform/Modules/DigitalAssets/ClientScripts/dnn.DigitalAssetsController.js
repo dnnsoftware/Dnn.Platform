@@ -34,7 +34,7 @@ dnnModule.DigitalAssetsController.prototype = function () {
         getThumbnailClass = function (item) {
             return "dnnModuleDigitalAssetsThumbnailNoThumbnail";
         },
-        loadContent = function (folderId, startIndex, numItems, sortExpression, isHostMenu, scopeId) {
+        loadContent = function (folderId, startIndex, numItems, sortExpression, settings, scopeId) {
             return false;
         },        
         onLoadFolder = function () {

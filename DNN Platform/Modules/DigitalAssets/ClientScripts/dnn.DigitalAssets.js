@@ -1436,7 +1436,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
     function loadFolder(folderId, startIndex, numItems, sortExpression) {
 
-        if (controller.loadContent(folderId, startIndex, numItems, sortExpression, settings.isHostMenu, controls.scopeWrapperId)) {
+        if (controller.loadContent(folderId, startIndex, numItems, sortExpression, settings, controls.scopeWrapperId)) {
             currentFolder = null;
             return;
         }
@@ -1474,8 +1474,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             type: "POST",
             beforeSend: servicesFramework.setModuleHeaders
         }).done(function (data) {
-            if (settings.isFilteredContent === false) {
-                $('#dnnModuleDigitalAssetsMainToolbar .folderRequired', "#" + controls.scopeWrapperId).css("display", "");
+            if (settings.isFilteredContent === true) {
+                $('#dnnModuleDigitalAssetsMainToolbar #DigitalAssetsUploadFilesBtnId', "#" + controls.scopeWrapperId).css("display", "");
             }
             currentFolder = data.Folder;
             currentFolder.ItemID = currentFolder.FolderID;
