@@ -25,10 +25,6 @@
         };
     })();
 
-    var supportDragDrop = function() {
-        return ('draggable' in document.createElement('span'));
-    };
-
     var FileUpload = this.FileUpload = function (options) {
         this.options = options;
         this.init();
@@ -135,7 +131,7 @@
                     .text("Keep")
                     .click(function () {
                         $fileUploadStatus.removeClass().addClass(self.options.statusCancelledCss);
-                        self._showFileUploadStatus($fileUploadStatus, { Message: this.options.resources.uploadStopped }, data);
+                        self._showFileUploadStatus($fileUploadStatus, { Message: self.options.resources.uploadStopped }, data);
                     });
 
                 var $replaceButton = $element("a", { href: "javascript:void(0);", "class": "fu-file-already-exists-prompt-button-replace" })
@@ -179,7 +175,7 @@
             }
 
             if (message) {
-                var $fileUploadStatus = this._getInitializedStatusElement(data).addClass(this.options.statusErrorCss);
+                var $fileUploadStatus = this._getInitializedStatusElement(data).removeClass().addClass(this.options.statusErrorCss);
                 this._showFileUploadStatus($fileUploadStatus, { Message: message }, data);
                 return;
             }
@@ -246,7 +242,7 @@
             if (error) {
                 if (!error.AlreadyExists) {
                     this._setProgressBar($fileUploadStatus, 100);
-                    $fileUploadStatus.addClass(this.options.statusErrorCss);
+                    $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
                 }
                 this._showFileUploadStatus($fileUploadStatus, error, data);
                 return;
@@ -254,12 +250,12 @@
             $fileUploadStatus.data("status").overwrite = false;
             this._setProgressBar($fileUploadStatus, 100);
             this._showFileUploadStatus($fileUploadStatus, { Message: this.options.resources.fileUploaded }, data);
-            $fileUploadStatus.addClass(this.options.statusUploadedCss);
+            $fileUploadStatus.removeClass().addClass(this.options.statusUploadedCss);
         },
 
         _fail: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
-            $fileUploadStatus.addClass(this.options.statusErrorCss);
+            $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
             var message = data.errorThrown === "abort" ? this.options.resources.fileUploadCancelled : this.options.resources.fileUploadFailed;
             this._showFileUploadStatus($fileUploadStatus, { Message: message }, data);
         },
@@ -370,8 +366,6 @@
             this._$dragAndDropArea = this.$element.find('.fu-dialog-drag-and-drop-area');
             this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: true, "data-text": this.options.resources.dragAndDropAreaTitle });
             this._$extract = this.$element.find("." + "fu-dialog-content-header").find("input");
-
-            this._draggable = supportDragDrop();
 
             this._$inputFileControl.appendTo(this._$dragAndDropArea.find('.fu-dialog-drag-and-drop-area-message')).dnnFileInput(
                 {
