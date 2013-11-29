@@ -598,9 +598,9 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                if (!Globals.IsAdminControl() && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "DELETE,MANAGE", Configuration))
+                if (!Globals.IsAdminControl() && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE,MANAGE", Configuration))
                 {
-                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", Configuration))
+                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", Configuration))
                     {
                         _moduleGenericActions.Actions.Add(GetNextActionID(),
                                                           Localization.GetString(ModuleActionType.ModuleSettings, Localization.GlobalResourceFile),
@@ -621,7 +621,7 @@ namespace DotNetNuke.UI.Modules
                 //check if module implements IPortable interface, and user has Admin permissions
                 if (Configuration.DesktopModule.IsPortable)
                 {
-                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EXPORT", Configuration))
+                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "EXPORT", Configuration))
                     {
                         _moduleGenericActions.Actions.Add(GetNextActionID(),
                                      Localization.GetString(ModuleActionType.ExportModule, Localization.GlobalResourceFile),
@@ -636,7 +636,7 @@ namespace DotNetNuke.UI.Modules
                                      true,
                                      false);
                     }
-                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "IMPORT", Configuration))
+                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "IMPORT", Configuration))
                     {
                         _moduleGenericActions.Actions.Add(GetNextActionID(),
                                      Localization.GetString(ModuleActionType.ImportModule, Localization.GlobalResourceFile),
@@ -686,9 +686,9 @@ namespace DotNetNuke.UI.Modules
 
 
 
-            if (!Globals.IsAdminControl() && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "DELETE,MANAGE", Configuration))
+            if (!Globals.IsAdminControl() && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE,MANAGE", Configuration))
             {
-                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "DELETE", Configuration))
+                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE", Configuration))
                 {
                     //Check if this is the owner instance of a shared module.
                     string confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteModule.Confirm")) + "')";
@@ -713,7 +713,7 @@ namespace DotNetNuke.UI.Modules
                                  true,
                                  false);
                 }
-                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", Configuration))
+                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", Configuration))
                 {
                     _moduleGenericActions.Actions.Add(GetNextActionID(),
                                  Localization.GetString(ModuleActionType.ClearCache, Localization.GlobalResourceFile),
