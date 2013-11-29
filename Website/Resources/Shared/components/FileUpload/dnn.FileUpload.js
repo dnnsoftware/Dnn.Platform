@@ -135,7 +135,7 @@
                     .text("Keep")
                     .click(function () {
                         $fileUploadStatus.removeClass().addClass(self.options.statusCancelledCss);
-                        self._showFileUploadStatus($fileUploadStatus, { Message: "File upload stopped" }, data);
+                        self._showFileUploadStatus($fileUploadStatus, { Message: this.options.resources.uploadStopped }, data);
                     });
 
                 var $replaceButton = $element("a", { href: "javascript:void(0);", "class": "fu-file-already-exists-prompt-button-replace" })
@@ -152,7 +152,7 @@
                     .data(data);
 
                 $prompt.append($keepButton, $replaceButton);
-                message = "The file you want to upload already exists in this folder";
+                message = this.options.resources.fileAlreadyExists;
             }
             else {
                 message = state.Message;
@@ -171,11 +171,11 @@
 
             // Empty file upload does not be supported in IE10
             if (data.files[0].size == 0 && $.browser.msie && $.browser.version == "10.0") {
-                message = "Empty file upload is not supported";
+                message = this.options.resources.emptyFileUpload;;
             }
 
             if (typeof message === "undefined" && this.options.maxFileSize && data.files[0].size > this.options.maxFileSize) {
-                message = "File size is too large";
+                message = this.options.resources.fileIsTooLarge;
             }
 
             if (message) {
@@ -253,14 +253,14 @@
             }
             $fileUploadStatus.data("status").overwrite = false;
             this._setProgressBar($fileUploadStatus, 100);
-            this._showFileUploadStatus($fileUploadStatus, { Message: "File uploaded" }, data);
+            this._showFileUploadStatus($fileUploadStatus, { Message: this.options.resources.fileUploaded }, data);
             $fileUploadStatus.addClass(this.options.statusUploadedCss);
         },
 
         _fail: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
             $fileUploadStatus.addClass(this.options.statusErrorCss);
-            var message = data.errorThrown === "abort" ? "Upload cancelled" : "Upload failed";
+            var message = data.errorThrown === "abort" ? this.options.resources.fileUploadCancelled : this.options.resources.fileUploadFailed;
             this._showFileUploadStatus($fileUploadStatus, { Message: message }, data);
         },
 

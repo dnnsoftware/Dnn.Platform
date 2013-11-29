@@ -216,4 +216,25 @@
   <data name="FileUpload.DecompressingFile.Text" xml:space="preserve">
     <value>Decompressing File</value>
   </data>
+  <data name="FileUpload.FileIsTooLarge.Error" xml:space="preserve">
+    <value>File size bigger than {0}</value>
+  </data>
+  <data name="FileUpload.FileUploadCancelled.Error" xml:space="preserve">
+    <value>Upload cancelled</value>
+  </data>
+  <data name="FileUpload.FileUploadFailed.Error" xml:space="preserve">
+    <value>Upload failed</value>
+  </data>
+  <data name="FileUpload.FileUploaded.Text" xml:space="preserve">
+    <value>File uploaded</value>
+  </data>
+  <data name="FileUpload.EmptyFileUpload.Error" xml:space="preserve">
+    <value>Your browser does not support empty file uploads</value>
+  </data>
+  <data name="FileUpload.FileAlreadyExists.Error" xml:space="preserve">
+    <value>The file you want to upload already exists in this folder</value>
+  </data>
+  <data name="FileUpload.UploadStopped.Text" xml:space="preserve">
+    <value>File upload stopped</value>
+  </data>
 </root>

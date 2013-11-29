@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Globalization;
+using System.Runtime.Serialization;
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -36,6 +37,27 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "decompressingFile")]
         public string DecompressingFile;
+
+        [DataMember(Name = "fileIsTooLarge")]
+        public string FileIsTooLarge;
+
+        [DataMember(Name = "fileUploadCancelled")]
+        public string FileUploadCancelled;
+
+        [DataMember(Name = "fileUploadFailed")]
+        public string FileUploadFailed;
+
+        [DataMember(Name = "fileUploaded")]
+        public string FileUploaded;
+
+        [DataMember(Name = "emptyFileUpload")]
+        public string EmptyFileUpload;
+
+        [DataMember(Name = "fileAlreadyExists")]
+        public string FileAlreadyExists;
+
+        [DataMember(Name = "uploadStopped")]
+        public string UploadStopped;
     }
 
     [DataContract]
@@ -54,6 +76,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public DnnFileUploadOptions()
         {
             FolderPicker = new DnnDropDownListOptions();
+            MaxFileSize = (int)Config.GetMaxUploadSize();
             Resources = new DnnFileUploadResources
             {
                 Title = Utilities.GetLocalizedString("FileUpload.Title.Text"),
@@ -65,9 +88,15 @@ namespace DotNetNuke.Web.UI.WebControls
                 UploadFromWebMethod = Utilities.GetLocalizedString("FileUpload.UploadFromWebMethod.Text"),
                 CloseButtonText = Utilities.GetLocalizedString("FileUpload.CloseButton.Text"),
                 UploadFromWebButtonText = Utilities.GetLocalizedString("FileUpload.UploadFromWebButton.Text"),
-                DecompressingFile = Utilities.GetLocalizedString("FileUpload.DecompressingFile.Text")
+                DecompressingFile = Utilities.GetLocalizedString("FileUpload.DecompressingFile.Text"),
+                FileIsTooLarge = string.Format(Utilities.GetLocalizedString("FileUpload.FileIsTooLarge.Error") + " Kb", (MaxFileSize / 1024).ToString(CultureInfo.InvariantCulture)),
+                FileUploadCancelled = Utilities.GetLocalizedString("FileUpload.FileUploadCancelled.Error"),
+                FileUploadFailed = Utilities.GetLocalizedString("FileUpload.FileUploadFailed.Error"),
+                FileUploaded = Utilities.GetLocalizedString("FileUpload.FileUploaded.Text"),
+                EmptyFileUpload = Utilities.GetLocalizedString("FileUpload.EmptyFileUpload.Error"),
+                FileAlreadyExists = Utilities.GetLocalizedString("FileUpload.FileAlreadyExists.Error"),
+                UploadStopped = Utilities.GetLocalizedString("FileUpload.UploadStopped.Text"),
             };
-            MaxFileSize = (int)Config.GetMaxUploadSize();
         }
     }
 }
