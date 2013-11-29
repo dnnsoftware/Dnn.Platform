@@ -11,12 +11,12 @@
     WebResourceUrl.prototype = {
         constructor: WebResourceUrl,
 
-        path: function() {
+        path: function () {
             this._ensureInitialize();
             return this._path;
         },
 
-        parameters: function() {
+        parameters: function () {
             this._ensureInitialize();
             return this._parameters;
         },
@@ -33,11 +33,11 @@
             }
         },
 
-        _initialize: function(pathAndQuery) {
+        _initialize: function (pathAndQuery) {
             this._parameters = new dnn.Dictionary();
             this._path = "";
 
-            if (!String.isNullOrEmpty(pathAndQuery) || typeof(pathAndQuery) !== "string") {
+            if (String.isNullOrEmpty(pathAndQuery) || typeof (pathAndQuery) !== "string") {
                 return;
             }
             var parts = pathAndQuery.split("?");
@@ -54,7 +54,7 @@
         }
     };
 
-    WebResourceUrl.toQueryString = function(dictionary) {
+    WebResourceUrl.toQueryString = function (dictionary) {
         var queryString = "";
         var key;
         var value;
@@ -82,7 +82,7 @@
         return decodeURIComponent(String(encodedValue).replace(lsRegExp, " "));
     };
 
-    WebResourceUrl.encodeParameterValue = function(decodedValue) {
+    WebResourceUrl.encodeParameterValue = function (decodedValue) {
         // So encodeURIComponent encodes + correctly 
         // we don't need workaround as in DecodeParameterValue.
         return encodeURIComponent(decodedValue);

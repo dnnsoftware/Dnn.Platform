@@ -368,11 +368,12 @@
         _uploadUrl: function() {
             var serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
             var url = serviceUrl + this.options.fileUploadMethod;
+            var webResource = new dnn.WebResourceUrl(url);
             if (!suportAjaxUpload()) {
                 var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
-                url += '?__RequestVerificationToken=' + antiForgeryToken;
+                webResource.parameters().set("__RequestVerificationToken", antiForgeryToken);
             }
-            return url;
+            return webResource.toPathAndQuery();
         },
 
         show: function () {
@@ -387,13 +388,13 @@
                 modal: true,
                 autoOpen: true,
                 dialogClass: "dnnFormPopup " + this.options.dialogCss,
-                title: this.options.title,
+                title: this.options.resources.title,
                 resizable: false,
                 width: this.options.width,
                 height: this.options.height,
                 close: $.proxy(this._onCloseDialog, this),
                 buttons: [ {
-                    text: this.options.closeButtonText,
+                    text: this.options.resources.closeButtonText,
                     click: function () { $(this).dialog("close"); },
                     "class": "dnnSecondaryAction"
                     }
