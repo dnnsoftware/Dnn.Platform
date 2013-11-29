@@ -2839,9 +2839,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     function getUrl() {
         var items = convertToItemsFromGridItems(grid.get_selectedItems());
         var itemId = items[0].ItemId;
-        if (items[0].IsFolder) {
-            getUrlFromFolderId(itemId)
-        } else {
+        if (!items[0].IsFolder) {            
             getUrlFromFileId(itemId);
         }
     }
