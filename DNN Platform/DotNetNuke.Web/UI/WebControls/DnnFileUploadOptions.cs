@@ -3,13 +3,10 @@ using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
+
     [DataContract]
-    public class DnnFileUploadOptions
+    public class DnnFileUploadResources
     {
-
-        [DataMember(Name = "folderPicker")]
-        public DnnDropDownListOptions FolderPicker;
-
         [DataMember(Name = "title")]
         public string Title;
 
@@ -39,26 +36,38 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "decompressingFile")]
         public string DecompressingFile;
+    }
+
+    [DataContract]
+    public class DnnFileUploadOptions
+    {
+
+        [DataMember(Name = "folderPicker")]
+        public DnnDropDownListOptions FolderPicker;
 
         [DataMember(Name = "maxFileSize")]
         public int MaxFileSize;
 
+        [DataMember(Name = "resources")]
+        public DnnFileUploadResources Resources;
+
         public DnnFileUploadOptions()
         {
             FolderPicker = new DnnDropDownListOptions();
-            // all the PasswordStrength related resources are located under the Website\App_GlobalResources\WebControls.resx
-            Title = Utilities.GetLocalizedString("FileUpload.Title.Text");
-            DialogHeader = Utilities.GetLocalizedString("FileUpload.DialogHeader.Text");
-            DecompressLabel = Utilities.GetLocalizedString("FileUpload.DecompressLabel.Text");
-            UploadToFolderLabel = Utilities.GetLocalizedString("FileUpload.UploadToFolderLabel.Text");
-            DragAndDropAreaTitle = Utilities.GetLocalizedString("FileUpload.DragAndDropAreaTitle.Text");
-            UploadFileMethod = Utilities.GetLocalizedString("FileUpload.UploadFileMethod.Text");
-            UploadFromWebMethod = Utilities.GetLocalizedString("FileUpload.UploadFromWebMethod.Text");
-            CloseButtonText = Utilities.GetLocalizedString("FileUpload.CloseButton.Text");
-            UploadFromWebButtonText = Utilities.GetLocalizedString("FileUpload.UploadFromWebButton.Text");
-            DecompressingFile = Utilities.GetLocalizedString("FileUpload.DecompressingFile.Text");
+            Resources = new DnnFileUploadResources
+            {
+                Title = Utilities.GetLocalizedString("FileUpload.Title.Text"),
+                DialogHeader = Utilities.GetLocalizedString("FileUpload.DialogHeader.Text"),
+                DecompressLabel = Utilities.GetLocalizedString("FileUpload.DecompressLabel.Text"),
+                UploadToFolderLabel = Utilities.GetLocalizedString("FileUpload.UploadToFolderLabel.Text"),
+                DragAndDropAreaTitle = Utilities.GetLocalizedString("FileUpload.DragAndDropAreaTitle.Text"),
+                UploadFileMethod = Utilities.GetLocalizedString("FileUpload.UploadFileMethod.Text"),
+                UploadFromWebMethod = Utilities.GetLocalizedString("FileUpload.UploadFromWebMethod.Text"),
+                CloseButtonText = Utilities.GetLocalizedString("FileUpload.CloseButton.Text"),
+                UploadFromWebButtonText = Utilities.GetLocalizedString("FileUpload.UploadFromWebButton.Text"),
+                DecompressingFile = Utilities.GetLocalizedString("FileUpload.DecompressingFile.Text")
+            };
             MaxFileSize = (int)Config.GetMaxUploadSize();
         }
-
     }
 }

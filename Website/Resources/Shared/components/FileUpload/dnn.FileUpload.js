@@ -71,20 +71,20 @@
             this._folderPicker = new dnn.DropDownList(null, this.options.folderPicker);
 
             var dialog = $element('div', { tabindex: '-1', 'class': 'fu-container', role: 'dialog' }).append(
-                $element('h5', { 'class': 'fu-dialog-header' }).text(this.options.dialogHeader),
+                $element('h5', { 'class': 'fu-dialog-header' }).text(this.options.resources.dialogHeader),
                 $element('div', { 'class': 'fu-dialog-content' }).append(
                     $element("div", { 'class': 'fu-dialog-content-header' }).append(
                         $element("div", { 'class': 'dnnLeft' }).append(
                             $element("ul", { 'class': 'dnnButtonGroup' }).append(
                                 $element("li").append(
-                                    $element("a", { href: "javascript:void(0);", 'class': 'active' }).text(this.options.uploadFileMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))),
+                                    $element("a", { href: "javascript:void(0);", 'class': 'active' }).text(this.options.resources.uploadFileMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))),
                                 $element("li").append(
-                                    $element("a", { href: "javascript:void(0);" }).text(this.options.uploadFromWebMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web)))),
+                                    $element("a", { href: "javascript:void(0);" }).text(this.options.resources.uploadFromWebMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web)))),
                             $element("span").append(
                                 $element("input", { type: 'checkbox', id: checkBoxId }),
-                                $element("label", { 'for': checkBoxId, 'class': 'fu-decompress-label' }).text(this.options.decompressLabel))),
+                                $element("label", { 'for': checkBoxId, 'class': 'fu-decompress-label' }).text(this.options.resources.decompressLabel))),
                         $element("div", { 'class': 'fu-folder-picker-container dnnRight' }).append(
-                            $element("label").text(this.options.uploadToFolderLabel),
+                            $element("label").text(this.options.resources.uploadToFolderLabel),
                             this._folderPicker.$element.addClass("dnnLeftComboBox"))),
                     $element("div", { 'class': 'fu-dialog-content-fileupload-local' }).append(
                         $element("div", { 'class': 'fu-dialog-drag-and-drop-area' }).append(
@@ -97,7 +97,7 @@
                                         $element("div", { 'class': 'txtWrapper' }).append(
                                             $element("input", { type: 'text' } ))),
                                 $element("td").append(
-                                    $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text(this.options.uploadFromWebButtonText)))))),
+                                    $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text(this.options.resources.uploadFromWebButtonText)))))),
                     $element("div", { style: 'display: none', 'class': 'fu-fileupload-statuses-container' }).append(
                         $element("ul", { 'class': 'fu-fileupload-statuses' }))));
 
@@ -230,7 +230,7 @@
             if (data.formData.extract) {
                 if ($fileUploadStatus.find('.fu-dialog-fileupload-extracting').length === 0) {
                     $fileUploadStatus.find('.fu-fileupload-filename').append(
-                        $element("span", { "class": "fu-dialog-fileupload-extracting"}).text(" - " + this.options.decompressingFile));
+                        $element("span", { "class": "fu-dialog-fileupload-extracting" }).text(" - " + this.options.resources.decompressingFile));
                 }
                 return;
             }
@@ -368,13 +368,8 @@
             this._$fileUploadStatusesContainer = this.$element.find('.fu-fileupload-statuses-container').hide().jScrollbar();
             this._$fileUploadStatuses = this._$fileUploadStatusesContainer.find('.fu-fileupload-statuses').empty();
             this._$dragAndDropArea = this.$element.find('.fu-dialog-drag-and-drop-area');
-            this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: true, "data-text": this.options.dragAndDropAreaTitle });
+            this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: true, "data-text": this.options.resources.dragAndDropAreaTitle });
             this._$extract = this.$element.find("." + "fu-dialog-content-header").find("input");
-
-            var stateElementId = this.options.internalStateFieldId;
-            if (stateElementId) {
-                this._stateElement = document.getElementById(stateElementId);
-            }
 
             this._draggable = supportDragDrop();
 
