@@ -97,13 +97,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// <summary>
         /// Searches the files and folders contained in the specified folder.
         /// </summary>
+        /// <param name="moduleId">The id of the Module</param>
         /// <param name="folderId">Folder Identifier</param>
         /// <param name="pattern">The pattern to search for</param>
         /// <param name="startIndex">Start index to retrieve items</param>
         /// <param name="numItems">Max Number of items</param>
         /// <param name="sortExpression">The sort expression in a SQL format, e.g. FileName ASC</param>
         /// <returns>The list of files and folders contained in the specified folder paginated</returns>
-        PageViewModel SearchFolderContent(int folderId, string pattern, int startIndex, int numItems, string sortExpression);
+        PageViewModel SearchFolderContent(int moduleId, int folderId, string pattern, int startIndex, int numItems, string sortExpression);
 
         /// <summary>
         /// Synchronize a folder within the File System

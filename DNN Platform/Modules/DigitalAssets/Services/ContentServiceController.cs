@@ -60,7 +60,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage SearchFolderContent(SearchFolderContentRequest r)
         {
-            var p = DigitalAssetsController.SearchFolderContent(r.FolderId, r.Pattern, r.StartIndex, r.NumItems, r.SortExpression);
+            var moduleId = Request.FindModuleId();
+            var p = DigitalAssetsController.SearchFolderContent(moduleId, r.FolderId, r.Pattern, r.StartIndex, r.NumItems, r.SortExpression);
             return Request.CreateResponse(HttpStatusCode.OK, p);
         }
 

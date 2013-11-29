@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
     [ExportMetadata("Edition", "CE")]
     public class DigitalAssetsController : IDigitalAssetsController, IUpgradeable
     {
-        private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
+        protected static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
 
         #region Static Private Methods
         private static bool IsHostMenu
@@ -467,11 +467,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, recursive, true);
         }
 
-        public PageViewModel SearchFolderContent(int folderId, string pattern, int startIndex, int numItems, string sortExpression)
+        public PageViewModel SearchFolderContent(int moduleId, int folderId, string pattern, int startIndex, int numItems, string sortExpression)
         {
+            var recursive = SettingsRepository.GetSubfolderFilter(moduleId) != SubfolderFilter.ExcludeSubfolders;
             var folder = GetFolderInfo(folderId);
 
-            var results = FolderManager.Instance.SearchFiles(folder, pattern, true).Select(GetItemViewModel);
+            var results = FolderManager.Instance.SearchFiles(folder, pattern, recursive).Select(GetItemViewModel);
 
             var sortProperties = SortProperties.Parse(sortExpression);
             results = ApplyOrder(results.AsQueryable(), sortProperties.Column, sortProperties.Ascending);
