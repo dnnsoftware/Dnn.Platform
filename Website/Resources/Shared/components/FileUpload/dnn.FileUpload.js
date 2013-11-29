@@ -100,15 +100,22 @@
             return dialog;
         },
 
-        _createFileUploadStatusElement: function (fileName) {
+        _createFileUploadStatusElement: function (data) {
+            var fileName = data.files[0].name;
             var status = { fileName: fileName, overwrite: false, extract: false };
+            var cancelUpload = function () {
+                var xhr = data && data.jqXHR;
+                if (xhr && xhr.readyState !== 4) {
+                    xhr.abort();
+                }
+            };
             var $status = $element("li").append(
                 $element("div", { "class": "fu-fileupload-filename-container" }).append(
                     $element("span", { "class": "fu-fileupload-filename", title: fileName }).text(fileName)),
                 $element("div", { "class": "fu-fileupload-progressbar-container" }).append(
                     $element("div", { "class": "fu-fileupload-progressbar ui-progressbar" }).append(
                         $element("div", { "class": "ui-progressbar-value" }).width(0)),
-                    $element("a", { href: "javascript:void(0);", "class": "uploading" })))
+                    $element("a", { href: "javascript:void(0);", "class": "uploading" }).on("click", cancelUpload)))
                 .data("status", status);
             return $status;
         },
@@ -184,22 +191,13 @@
         },
 
         _getInitializedStatusElement: function(data) {
-            var fileName = data.files[0].name;
-            var $fileUploadStatus = this._getFileUploadStatusElement(fileName);
-            var cancelUpload;
+            var $fileUploadStatus = this._getFileUploadStatusElement(data);
             if (!$fileUploadStatus.length) {
-                $fileUploadStatus = this._createFileUploadStatusElement(fileName);
+                $fileUploadStatus = this._createFileUploadStatusElement(data);
                 this._$fileUploadStatuses.append($fileUploadStatus);
-                cancelUpload = function() {
-                    var xhr = data && data.jqXHR;
-                    if (xhr && xhr.readyState !== 4) {
-                        xhr.abort();
-                    }
-                };
-                $fileUploadStatus.find(".fu-fileupload-progressbar-container a").on("click", cancelUpload);
                 this._$fileUploadStatusesContainer.show().jScrollbar("update");
             }
-            this._initProgressBar($fileUploadStatus);
+            this._setProgress($fileUploadStatus, 0);
             return $fileUploadStatus;
         },
 
@@ -222,7 +220,7 @@
         },
 
         _progress: function(e, data) {
-            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+            var $fileUploadStatus = this._getFileUploadStatusElement(data);
             if (data.formData.extract) {
                 if ($fileUploadStatus.find('.fu-dialog-fileupload-extracting').length === 0) {
                     $fileUploadStatus.find('.fu-fileupload-filename').append(
@@ -232,29 +230,29 @@
             }
             var progress = parseInt(data.loaded / data.total * 100, 10);
             if (progress < 100) {
-                this._setProgressBar($fileUploadStatus, progress);
+                this._setProgress($fileUploadStatus, progress);
             }
         },
 
         _done: function(e, data) {
-            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+            var $fileUploadStatus = this._getFileUploadStatusElement(data);
             var error = this._getFileUploadError(data);
             if (error) {
                 if (!error.AlreadyExists) {
-                    this._setProgressBar($fileUploadStatus, 100);
+                    this._setProgress($fileUploadStatus, 100);
                     $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
                 }
                 this._showFileUploadStatus($fileUploadStatus, error, data);
                 return;
             }
             $fileUploadStatus.data("status").overwrite = false;
-            this._setProgressBar($fileUploadStatus, 100);
+            this._setProgress($fileUploadStatus, 100);
             this._showFileUploadStatus($fileUploadStatus, { Message: this.options.resources.fileUploaded }, data);
             $fileUploadStatus.removeClass().addClass(this.options.statusUploadedCss);
         },
 
         _fail: function(e, data) {
-            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+            var $fileUploadStatus = this._getFileUploadStatusElement(data);
             $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
             var message = data.errorThrown === "abort" ? this.options.resources.fileUploadCancelled : this.options.resources.fileUploadFailed;
             this._showFileUploadStatus($fileUploadStatus, { Message: message }, data);
@@ -274,7 +272,7 @@
                 url: this._uploadUrl(),
                 beforeSend: $.dnnSF().setModuleHeaders,
                 dropZone: this._$dragAndDropArea,
-                sequentialUpload: false,
+                sequentialUpload: true,
                 progressInterval: 20,
                 autoUpload: false
             })
@@ -321,32 +319,23 @@
             return error;
         },
 
-        _getFileUploadStatusElement: function(fileName) {
+        _getFileUploadStatusElement: function (data) {
+            var fileName = data.files[0].name;
             return this._$fileUploadStatuses.children().filter(function (index) { return $(this).data("status").fileName == fileName; });
         },
 
-        _initProgressBar: function ($fileUploadStatus) {
-            $fileUploadStatus.find('.fu-fileupload-progressbar > div').css('width', '0');
-            $fileUploadStatus.find('.fu-fileupload-progressbar-container').show();
-        },
+        _setProgress: function ($fileUploadStatus, percent) {
 
-        _setProgressBar: function ($fileUploadStatus, progress) {
-            $fileUploadStatus.find(".fu-fileupload-progressbar-container").show();
+            $fileUploadStatus.find(".fu-fileupload-progressbar > div").css('width', percent + '%');
 
-            if (!progress) {
+            if (percent === 0) {
                 $fileUploadStatus.find('.fu-fileupload-progressbar').addClass('indeterminate-progress');
-                $fileUploadStatus.find('.fu-fileupload-progressbar > div').css('width', '100%');
-                return;
             }
 
-            if (progress < 100) {
-                $fileUploadStatus.find(".fu-fileupload-progressbar > div").css('width', progress + '%');
-                return;
+            if (percent === 100) {
+                $fileUploadStatus.find('.fu-fileupload-progressbar').removeClass('indeterminate-progress');
+                $fileUploadStatus.find('.fu-dialog-fileupload-extracting').remove();
             }
-
-            $fileUploadStatus.find('.fu-fileupload-progressbar.indeterminate-progress').removeClass('indeterminate-progress');
-            $fileUploadStatus.find('.fu-dialog-fileupload-extracting').remove();
-            $fileUploadStatus.find('.fu-fileupload-progressbar > div').css('width', '100%');
         },
 
         _onCloseDialog: function () {
