@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Scheduling
     {
         #region "Private Members"
 
-        private DateTime _NextStart;
+        private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
 
         #endregion
@@ -54,7 +54,6 @@ namespace DotNetNuke.Services.Scheduling
             RetryTimeLapseMeasurement = Null.NullString;
             ObjectDependencies = Null.NullString;
             RetainHistoryNum = Null.NullInteger;
-            _NextStart = Null.NullDate;
             CatchUpEnabled = Null.NullBoolean;
             Enabled = Null.NullBoolean;
             AttachToEvent = Null.NullString;
@@ -80,11 +79,11 @@ namespace DotNetNuke.Services.Scheduling
         {
             get
             {
-                if (_NextStart == Null.NullDate)
+                if (!_NextStart.HasValue)
                 {
                     _NextStart = DateTime.Now;
                 }
-                return _NextStart;
+                return _NextStart.Value;
             }
             set
             {

@@ -323,16 +323,19 @@ namespace DotNetNuke.Services.Scheduling
 							numRun < numToRun)
 			            {
 				            scheduleItem.ProcessGroup = processGroup;
-				            if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
-				            {
-					            scheduleItem.ScheduleSource = ScheduleSource.STARTED_FROM_TIMER;
-				            }
-				            else if (SchedulingProvider.SchedulerMode == SchedulerMode.REQUEST_METHOD)
-				            {
-					            scheduleItem.ScheduleSource = ScheduleSource.STARTED_FROM_BEGIN_REQUEST;
-				            }
+			                if (scheduleItem.ScheduleSource == ScheduleSource.NOT_SET)
+			                {
+			                    if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
+			                    {
+			                        scheduleItem.ScheduleSource = ScheduleSource.STARTED_FROM_TIMER;
+			                    }
+			                    else if (SchedulingProvider.SchedulerMode == SchedulerMode.REQUEST_METHOD)
+			                    {
+			                        scheduleItem.ScheduleSource = ScheduleSource.STARTED_FROM_BEGIN_REQUEST;
+			                    }
+			                }
 
-				            var delegateFunc = new AddToScheduleInProgressDelegate(AddToScheduleInProgress);
+			                var delegateFunc = new AddToScheduleInProgressDelegate(AddToScheduleInProgress);
 				            var result = delegateFunc.BeginInvoke(new ScheduleHistoryItem(scheduleItem), null, null);
 				            Thread.Sleep(1000);
 
@@ -1055,9 +1058,13 @@ namespace DotNetNuke.Services.Scheduling
 
             public static void WorkErrored(SchedulerClient schedulerClient, Exception exception)
             {
+                WorkErrored(schedulerClient.ScheduleHistoryItem, exception);
+            }
+
+            public static void WorkErrored(ScheduleHistoryItem scheduleHistoryItem, Exception exception)
+            {
                 try
                 {
-                    ScheduleHistoryItem scheduleHistoryItem = schedulerClient.ScheduleHistoryItem;
                     //Remove the object in the ScheduleInProgress collection
                     RemoveFromScheduleInProgress(scheduleHistoryItem);
 
@@ -1107,19 +1114,19 @@ namespace DotNetNuke.Services.Scheduling
                         AddToScheduleQueue(scheduleHistoryItem);
                     }
 
-                    if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
+                    if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         //Write out the log entry for this event
                         var eventLogController = new EventLogController();
                         var eventLogInfo = new LogInfo();
                         eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("TYPE", schedulerClient.GetType().FullName);
+                        eventLogInfo.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         if (exception != null)
                         {
                             eventLogInfo.AddProperty("EXCEPTION", exception.Message);
                         }
                         eventLogInfo.AddProperty("RESCHEDULED FOR", Convert.ToString(scheduleHistoryItem.NextStart));
-                        eventLogInfo.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
+                        eventLogInfo.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
                         eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
                         eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
                         eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
@@ -1168,15 +1175,20 @@ namespace DotNetNuke.Services.Scheduling
 
             public static void WorkStarted(SchedulerClient schedulerClient)
             {
+                WorkStarted(schedulerClient.ScheduleHistoryItem);
+            }
+
+            public static void WorkStarted(ScheduleHistoryItem scheduleHistoryItem)
+            {
                 bool activeThreadCountIncremented = false;
                 try
                 {
-                    schedulerClient.ScheduleHistoryItem.ThreadID = Thread.CurrentThread.GetHashCode();
+                    scheduleHistoryItem.ThreadID = Thread.CurrentThread.GetHashCode();
 
                     //Put the object in the ScheduleInProgress collection
                     //and remove it from the ScheduleQueue
-                    RemoveFromScheduleQueue(schedulerClient.ScheduleHistoryItem);
-                    AddToScheduleInProgress(schedulerClient.ScheduleHistoryItem);
+                    RemoveFromScheduleQueue(scheduleHistoryItem);
+                    AddToScheduleInProgress(scheduleHistoryItem);
 
                     //A SchedulerClient is notifying us that their
                     //process has started.  Increase our ActiveThreadCount
@@ -1185,18 +1197,18 @@ namespace DotNetNuke.Services.Scheduling
 
                     //Update the schedule item
                     //object property to note the start time.
-                    schedulerClient.ScheduleHistoryItem.StartDate = DateTime.Now;
-                    AddScheduleHistory(schedulerClient.ScheduleHistoryItem);
+                    scheduleHistoryItem.StartDate = DateTime.Now;
+                    AddScheduleHistory(scheduleHistoryItem);
 
 
-                    if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
+                    if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         //Write out the log entry for this event
                         var eventLogController = new EventLogController();
                         var eventLogInfo = new LogInfo();
                         eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("TYPE", schedulerClient.GetType().FullName);
-                        eventLogInfo.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
+                        eventLogInfo.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
+                        eventLogInfo.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
                         eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
                         eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
                         eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());

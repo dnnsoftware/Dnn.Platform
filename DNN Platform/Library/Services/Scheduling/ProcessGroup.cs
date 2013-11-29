@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Scheduling
                 Process.ScheduleHistoryItem = objScheduleHistoryItem;
                 
 				//Set up the handlers for the CoreScheduler
-               Process.ProcessStarted += Scheduler.CoreScheduler.WorkStarted;
+                Process.ProcessStarted += Scheduler.CoreScheduler.WorkStarted;
                 Process.ProcessProgressing += Scheduler.CoreScheduler.WorkProgressing;
                 Process.ProcessCompleted += Scheduler.CoreScheduler.WorkCompleted;
                 Process.ProcessErrored += Scheduler.CoreScheduler.WorkErrored;
@@ -151,6 +151,14 @@ namespace DotNetNuke.Services.Scheduling
                         Process.ScheduleHistoryItem.Succeeded = false;
                     }
                     Process.Errored(ref exc);
+                }
+                else
+                {
+                    //when the schedule has invalid config and can't initialize the Process, 
+                    //we need also trigger work errored event so that the schedule can remove from inprogress and inqueue list to prevent endless loop.
+                    Scheduler.CoreScheduler.WorkStarted(objScheduleHistoryItem);
+                    objScheduleHistoryItem.Succeeded = false;
+                    Scheduler.CoreScheduler.WorkErrored(objScheduleHistoryItem, exc);
                 }
             }
             finally
