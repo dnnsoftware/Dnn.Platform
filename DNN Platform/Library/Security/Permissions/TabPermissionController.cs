@@ -42,27 +42,15 @@ namespace DotNetNuke.Security.Permissions
     /// <summary>
     /// TabPermissionController provides the Business Layer for Tab Permissions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class TabPermissionController
 	{
 		#region "Private Shared Methods"
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// ClearPermissionCache clears the Tab Permission Cache
-		/// </summary>
-		/// <param name="tabId">The ID of the Tab</param>
-		/// <history>
-		/// 	[cnurse]	01/15/2008   Documented
-		/// </history>
-		/// -----------------------------------------------------------------------------
 		private static void ClearPermissionCache(int tabId)
 		{
-			TabController objTabs = new TabController();
-			TabInfo objTab = objTabs.GetTab(tabId, Null.NullInteger, false);
+			var objTabs = new TabController();
+			var objTab = objTabs.GetTab(tabId, Null.NullInteger, false);
 			DataCache.ClearTabPermissionsCache(objTab.PortalID);
 		}
 
@@ -70,142 +58,226 @@ namespace DotNetNuke.Security.Permissions
 		
 		#region Private Members
 		
-        private static readonly PermissionProvider provider = PermissionProvider.Instance();
+        private static readonly PermissionProvider _provider = PermissionProvider.Instance();
 		
 		#endregion
 		
 		#region Public Shared Methods
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add content to the current page
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanAddContentToPage()
         {
             return CanAddContentToPage(TabController.CurrentPage);
         }
 
-        public static bool CanAddContentToPage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add content to a page
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanAddContentToPage(TabInfo tab)
         {
-            return provider.CanAddContentToPage(objTab) || CanAdminPage(objTab);
+            return _provider.CanAddContentToPage(tab);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add a child page to the current page
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanAddPage()
         {
             return CanAddPage(TabController.CurrentPage);
         }
 
-        public static bool CanAddPage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add a child page to a page
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanAddPage(TabInfo tab)
         {
-            return provider.CanAddPage(objTab) || CanAdminPage(objTab);
+            return _provider.CanAddPage(tab);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can administer the current page
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanAdminPage()
         {
             return CanAdminPage(TabController.CurrentPage);
         }
 
-        public static bool CanAdminPage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can administer a page
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanAdminPage(TabInfo tab)
         {
-            return provider.CanAdminPage(objTab);
+            return _provider.CanAdminPage(tab);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can copy the current page
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanCopyPage()
         {
             return CanCopyPage(TabController.CurrentPage);
         }
 
-        public static bool CanCopyPage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can copy a page
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanCopyPage(TabInfo tab)
         {
-            return provider.CanCopyPage(objTab) || CanAdminPage(objTab);
+            return _provider.CanCopyPage(tab);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can delete the current page
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanDeletePage()
         {
             return CanDeletePage(TabController.CurrentPage);
         }
 
-        public static bool CanDeletePage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can delete a page
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanDeletePage(TabInfo tab)
         {
-            return provider.CanDeletePage(objTab) || CanAdminPage(objTab);
+            return _provider.CanDeletePage(tab);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can export the current page
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanExportPage()
         {
             return CanExportPage(TabController.CurrentPage);
         }
 
-        public static bool CanExportPage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can export a page
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanExportPage(TabInfo tab)
         {
-            return provider.CanExportPage(objTab) || CanAdminPage(objTab);
+            return _provider.CanExportPage(tab);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can import the current page
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanImportPage()
         {
             return CanImportPage(TabController.CurrentPage);
         }
 
-        public static bool CanImportPage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can import a page
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanImportPage(TabInfo tab)
         {
-            return provider.CanImportPage(objTab) || CanAdminPage(objTab);
+            return _provider.CanImportPage(tab);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can manage the current page's settings
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanManagePage()
         {
             return CanManagePage(TabController.CurrentPage);
         }
 
-        public static bool CanManagePage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can manage a page's settings
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanManagePage(TabInfo tab)
         {
-            return provider.CanManagePage(objTab) || CanAdminPage(objTab);
+            return _provider.CanManagePage(tab);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can see the current page in a navigation object
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanNavigateToPage()
         {
             return CanNavigateToPage(TabController.CurrentPage);
         }
 
-        public static bool CanNavigateToPage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can see a page in a navigation object
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanNavigateToPage(TabInfo tab)
         {
-            return provider.CanNavigateToPage(objTab) || CanAdminPage(objTab);
+            return _provider.CanNavigateToPage(tab);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can view the current page
+        /// </summary>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanViewPage()
         {
             return CanViewPage(TabController.CurrentPage);
         }
 
-        public static bool CanViewPage(TabInfo objTab)
+        /// <summary>
+        /// Returns a flag indicating whether the current user can view a page
+        /// </summary>
+        /// <param name="tab">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanViewPage(TabInfo tab)
         {
-            return provider.CanViewPage(objTab) || CanAdminPage(objTab);
+            return _provider.CanViewPage(tab);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// DeleteTabPermissionsByUser deletes a user's Tab Permissions in the Database
         /// </summary>
-        /// <param name="objUser">The user</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
+        /// <param name="user">The user</param>
         /// -----------------------------------------------------------------------------
-        public static void DeleteTabPermissionsByUser(UserInfo objUser)
+        public static void DeleteTabPermissionsByUser(UserInfo user)
         {
-            provider.DeleteTabPermissionsByUser(objUser);
+            _provider.DeleteTabPermissionsByUser(user);
             var objEventLog = new EventLogController();
-            objEventLog.AddLog(objUser, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
-            DataCache.ClearTabPermissionsCache(objUser.PortalID);
+            objEventLog.AddLog(user, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+            DataCache.ClearTabPermissionsCache(user.PortalID);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetTabPermissions gets a TabPermissionCollection
         /// </summary>
-        /// <param name="tabID">The ID of the tab</param>
-        /// <param name="portalID">The ID of the portal</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
+        /// <param name="tabId">The ID of the tab</param>
+        /// <param name="portalId">The ID of the portal</param>
         /// -----------------------------------------------------------------------------
-        public static TabPermissionCollection GetTabPermissions(int tabID, int portalID)
+        public static TabPermissionCollection GetTabPermissions(int tabId, int portalId)
         {
-            return provider.GetTabPermissions(tabID, portalID);
+            return _provider.GetTabPermissions(tabId, portalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -215,10 +287,6 @@ namespace DotNetNuke.Security.Permissions
         /// <remarks>If you pass in a comma delimited list of permissions (eg "ADD,DELETE", this will return
         /// true if the user has any one of the permissions.</remarks>
         /// <param name="permissionKey">The Permission to check</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Documented
-        /// 	[cnurse]	04/22/2009   Added multi-permisison support
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool HasTabPermission(string permissionKey)
         {
@@ -231,56 +299,30 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <remarks>If you pass in a comma delimited list of permissions (eg "ADD,DELETE", this will return
         /// true if the user has any one of the permissions.</remarks>
-        /// <param name="objTabPermissions">The Permissions for the Tab</param>
+        /// <param name="tabPermissions">The Permissions for the Tab</param>
         /// <param name="permissionKey">The Permission(s) to check</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Documented
-        /// 	[cnurse]	04/22/2009   Added multi-permisison support
-        /// </history>
         /// -----------------------------------------------------------------------------
-        public static bool HasTabPermission(TabPermissionCollection objTabPermissions, string permissionKey)
+        public static bool HasTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
         {
-            bool hasPermission = provider.HasTabPermission(objTabPermissions, "EDIT");
-            if (!hasPermission)
-            {
-                if (permissionKey.Contains(","))
-                {
-                    foreach (string permission in permissionKey.Split(','))
-                    {
-                        if (provider.HasTabPermission(objTabPermissions, permission))
-                        {
-                            hasPermission = true;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    hasPermission = provider.HasTabPermission(objTabPermissions, permissionKey);
-                }
-            }
-            return hasPermission;
+            return _provider.HasTabPermission(tabPermissions, permissionKey);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// SaveTabPermissions saves a Tab's permissions
         /// </summary>
-        /// <param name="tabInfo">The Tab to update</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
+        /// <param name="tab">The Tab to update</param>
         /// -----------------------------------------------------------------------------
-        public static void SaveTabPermissions(TabInfo tabInfo)
+        public static void SaveTabPermissions(TabInfo tab)
         {
-            provider.SaveTabPermissions(tabInfo);
-            new EventLogController().AddLog(tabInfo, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_UPDATED);
-            DataCache.ClearTabPermissionsCache(tabInfo.PortalID);
+            _provider.SaveTabPermissions(tab);
+            new EventLogController().AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_UPDATED);
+            DataCache.ClearTabPermissionsCache(tab.PortalID);
         }
 
 		#endregion
 
-		#region "Obsolete Methods"
+		#region Obsolete Methods
 
 		[Obsolete("Deprecated in DNN 5.1.")]
 		public int AddTabPermission(TabPermissionInfo objTabPermission)
@@ -345,7 +387,7 @@ namespace DotNetNuke.Security.Permissions
 		}
 
 		[Obsolete("Deprecated in DNN 5.0.  Please use GetTabPermissions(TabId, PortalId)")]
-		public Security.Permissions.TabPermissionCollection GetTabPermissionsCollectionByTabID(int TabID)
+		public TabPermissionCollection GetTabPermissionsCollectionByTabID(int TabID)
 		{
 			return new TabPermissionCollection(CBO.FillCollection(DataProvider.Instance().GetTabPermissionsByTabID(TabID, -1), typeof(TabPermissionInfo)));
 		}
