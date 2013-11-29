@@ -166,32 +166,52 @@
             if (!this._$fileUploadStatusesContainer.is(':visible')) {
                 this._$fileUploadStatusesContainer.show().jScrollbar("update");
             }
-            // TODO: do some check
+
+            var message;
+
+            // Empty file upload does not be supported in IE10
+            if (data.files[0].size == 0 && $.browser.msie && $.browser.version == "10.0") {
+                message = "Empty file upload is not supported";
+            }
+
+            if (typeof message === "undefined" && this.options.maxFileSize && data.files[0].size > this.options.maxFileSize) {
+                message = "File size is too large";
+            }
+
+            if (message) {
+                var $fileUploadStatus = this._getInitializedStatusElement(data).addClass(this.options.statusErrorCss);
+                this._showFileUploadStatus($fileUploadStatus, { Message: message }, data);
+                return;
+            }
+
             setTimeout(function () { data.submit(); }, 25);
         },
 
-        _submit: function (e, data) {
-            var overwrite = false;
-            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+        _getInitializedStatusElement: function(data) {
+            var fileName = data.files[0].name;
+            var $fileUploadStatus = this._getFileUploadStatusElement(fileName);
+            var cancelUpload;
             if (!$fileUploadStatus.length) {
-                $fileUploadStatus = this._createFileUploadStatusElement(data.files[0].name);
+                $fileUploadStatus = this._createFileUploadStatusElement(fileName);
                 this._$fileUploadStatuses.append($fileUploadStatus);
-                $fileUploadStatus.find(".fu-fileupload-progressbar-container a").on("click", function () {
-                    var xhr = data.jqXHR;
+                cancelUpload = function() {
+                    var xhr = data && data.jqXHR;
                     if (xhr && xhr.readyState !== 4) {
                         xhr.abort();
-                        $(this).removeClass().addClass("cancelled");
                     }
-                });
+                };
+                $fileUploadStatus.find(".fu-fileupload-progressbar-container a").on("click", cancelUpload);
                 this._$fileUploadStatusesContainer.show().jScrollbar("update");
             }
-            else {
-                this._initProgressBar($fileUploadStatus);
-                overwrite = $fileUploadStatus.data("status").overwrite;
-            }
+            this._initProgressBar($fileUploadStatus);
+            return $fileUploadStatus;
+        },
 
+        _submit: function (e, data) {
+            var $fileUploadStatus = this._getInitializedStatusElement(data);
             var extract = this._extract();
-            var extension = data.files[0].name.substring(data.files[0].name.lastIndexOf('.') + 1);
+            var fileName = data.files[0].name;
+            var extension = fileName.substring(fileName.lastIndexOf('.') + 1);
             if (extension === 'zip' && extract) {
                 $fileUploadStatus.data("status").extract = true;
             }
@@ -200,7 +220,7 @@
                 folder: this._selectedPath(),
                 filter: '',
                 extract: extract,
-                overwrite: overwrite
+                overwrite: $fileUploadStatus.data("status").overwrite
             };
             return true;
         },
@@ -259,7 +279,8 @@
                 beforeSend: $.dnnSF().setModuleHeaders,
                 dropZone: this._$dragAndDropArea,
                 sequentialUpload: false,
-                progressInterval: 20
+                progressInterval: 20,
+                autoUpload: false
             })
             .on("fileuploadadd", $.proxy(this._add, this))
             .on("fileuploadsubmit", $.proxy(this._submit, this))

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -39,6 +40,9 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "decompressingFile")]
         public string DecompressingFile;
 
+        [DataMember(Name = "maxFileSize")]
+        public int MaxFileSize;
+
         public DnnFileUploadOptions()
         {
             FolderPicker = new DnnDropDownListOptions();
@@ -53,6 +57,7 @@ namespace DotNetNuke.Web.UI.WebControls
             CloseButtonText = Utilities.GetLocalizedString("FileUpload.CloseButton.Text");
             UploadFromWebButtonText = Utilities.GetLocalizedString("FileUpload.UploadFromWebButton.Text");
             DecompressingFile = Utilities.GetLocalizedString("FileUpload.DecompressingFile.Text");
+            MaxFileSize = (int)Config.GetMaxUploadSize();
         }
 
     }
