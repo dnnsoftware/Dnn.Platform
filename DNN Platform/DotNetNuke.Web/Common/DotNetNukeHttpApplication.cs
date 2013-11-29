@@ -36,6 +36,7 @@ using DotNetNuke.Security.Profile;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.ClientCapability;
+using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.ModuleCache;
@@ -104,6 +105,7 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("htmlEditor", typeof(HtmlEditorProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider),typeof(CoreCryptographyProvider)));
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
         }

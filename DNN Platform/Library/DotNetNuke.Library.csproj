@@ -488,6 +488,7 @@
     <Compile Include="Services\Authentication\OAuth\QueryParameter.cs" />
     <Compile Include="Services\Authentication\OAuth\QueryParameterComparer.cs" />
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
+    <Compile Include="Services\Cryptography\CoreCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\ICryptographyProvider.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
