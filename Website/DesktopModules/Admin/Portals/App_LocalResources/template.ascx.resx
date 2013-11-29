@@ -249,4 +249,7 @@
   <data name="lblNoteSingleLanguage.Text" xml:space="preserve">
     <value>Note: the default language is &lt;b&gt;{0}&lt;/b&gt;</value>
   </data>
+  <data name="lblRedirect.Text" xml:space="preserve">
+    <value>Page redirection</value>
+  </data>
 </root>

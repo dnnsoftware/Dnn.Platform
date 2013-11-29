@@ -398,17 +398,20 @@ namespace DotNetNuke.Modules.Admin.Portals
         }
         private string GetNodeStatusIcon(TabInfo tab)
         {
+            string s = "";
             if (tab.DisableLink)
             {
-                return string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageDisabled, LocalizeString("lblDisabled"));
+                s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageDisabled, LocalizeString("lblDisabled"));
             }
-
             if (tab.IsVisible == false)
             {
-                return string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageHidden, LocalizeString("lblHidden"));
+                s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageHidden, LocalizeString("lblHidden"));
             }
-
-            return "";
+            if (tab.Url != "")
+            {
+                s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconRedirect, LocalizeString("lblRedirect"));
+            }
+            return s;
         }
         private string IconPageDisabled
         {
@@ -457,6 +460,13 @@ namespace DotNetNuke.Modules.Admin.Portals
             get
             {
                 return ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_UserSecure.png");
+            }
+        }
+        private string IconRedirect
+        {
+            get
+            {
+                return ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Redirect.png");
             }
         }
         private string GetNodeIcon(TabInfo tab, out string toolTip)
