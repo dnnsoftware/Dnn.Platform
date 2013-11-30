@@ -249,4 +249,37 @@
   <data name="CopyTitle.Text" xml:space="preserve">
     <value>SQL Query Result</value>
   </data>
+  <data name="sFirst.Text" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="sInfo.Text" xml:space="preserve">
+    <value>Showing _START_ to _END_ of _TOTAL_ entries</value>
+  </data>
+  <data name="sInfoFiltered.Text" xml:space="preserve">
+    <value>(filtered from _MAX_ total entries)</value>
+  </data>
+  <data name="sLast.Text" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="sLengthMenu.Text" xml:space="preserve">
+    <value>Show _MENU_ entries</value>
+  </data>
+  <data name="sLoadingRecords.Text" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="sNext.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="sPrevious.Text" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="sProcessing.Text" xml:space="preserve">
+    <value>Processing...</value>
+  </data>
+  <data name="sSearch.Text" xml:space="preserve">
+    <value>Search:</value>
+  </data>
+  <data name="sInfoEmpty.Text" xml:space="preserve">
+    <value>Showing 0 to 0 of 0 entries</value>
+  </data>
 </root>
