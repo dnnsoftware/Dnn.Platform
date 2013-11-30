@@ -220,6 +220,7 @@ namespace DotNetNuke.Services.Sitemap
             // build header
             writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION);
             writer.WriteAttributeString("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
+            writer.WriteAttributeString("xmlns", "xhtml", null, "http://www.w3.org/1999/xhtml");
             var schemaLocation = "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION;
             writer.WriteAttributeString("xsi", "schemaLocation", null, string.Format("{0} {0}/sitemap.xsd", schemaLocation));
 
@@ -300,6 +301,18 @@ namespace DotNetNuke.Services.Sitemap
             writer.WriteElementString("lastmod", sitemapUrl.LastModified.ToString("yyyy-MM-dd"));
             writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLower());
             writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
+
+            if (sitemapUrl.AlternateUrls != null)
+            {
+                foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
+                {
+                    writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
+                    writer.WriteAttributeString("rel", "alternate");
+                    writer.WriteAttributeString("hreflang", alternate.Language);
+                    writer.WriteAttributeString("href", alternate.Url);
+                    writer.WriteEndElement();
+                }
+            }
             writer.WriteEndElement();
         }
 
