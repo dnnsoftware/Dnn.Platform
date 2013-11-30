@@ -120,6 +120,8 @@ namespace DNNSelenium.Common.Tests.P1
 
 			adminFileManagementPage.OpenUsingButtons(_baseUrl);
 
+			adminFileManagementPage.SelectFolderFromTreeView(folderName);
+
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the the size of uploaded file is correct");
 			Assert.That(adminFileManagementPage.WaitForElement(
 						By.XPath(FileManagementPage.FileView + "//tr[td/div[@title = '" + fileToUpload + "']]/td[@class = 'dnnModuleDigitalAssetsGrid-SizeColumn']")).Text,
@@ -147,6 +149,8 @@ namespace DNNSelenium.Common.Tests.P1
 			adminFileManagementPage.UploadZipFileToFolderAndKeepItCompressed(folderName, fileToUpload);
 
 			adminFileManagementPage.OpenUsingButtons(_baseUrl);
+
+			adminFileManagementPage.SelectFolderFromTreeView(folderName);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the the size of uploaded file is correct");
 			Assert.That(adminFileManagementPage.WaitForElement(
@@ -186,6 +190,8 @@ namespace DNNSelenium.Common.Tests.P1
 
 			adminFileManagementPage.OpenUsingButtons(_baseUrl);
 
+			adminFileManagementPage.SelectSubFolderFromTreeView(folderName, subFolderName);
+
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the the size of uploaded file is correct");
 			Assert.That(adminFileManagementPage.WaitForElement(
 						By.XPath(FileManagementPage.FileView + "//tr[td/div[@title = '" + fileToUpload + "']]/td[@class = 'dnnModuleDigitalAssetsGrid-SizeColumn']")).Text,
@@ -211,6 +217,8 @@ namespace DNNSelenium.Common.Tests.P1
 			adminFileManagementPage.UploadZipFileToFolderAndKeepItCompressed(folderName, fileToUpload);
 
 			adminFileManagementPage.OpenUsingButtons(_baseUrl);
+
+			adminFileManagementPage.SelectSubFolderFromTreeView(folderName, subFolderName);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the size of uploaded file is correct");
 			Assert.That(adminFileManagementPage.WaitForElement(
@@ -419,16 +427,15 @@ namespace DNNSelenium.Common.Tests.P1
 
 			adminFileManagementPage.MoveFile(folderFrom, folderTo, prefix + fileToMove);
 
-			adminFileManagementPage.WaitAndClick(By.XPath(FileManagementPage.FolderTreeView + "//li/div/span[text() = '" + folderFrom + "']"));
-			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the File is NOT present in the list");
-			Assert.IsFalse(adminFileManagementPage.ElementPresent(By.XPath(FileManagementPage.FileView + "//tr/td/div[@title = '" + prefix + fileToMove + "']")),
-						"The File is not moved correctly");
-
 			adminFileManagementPage.WaitAndClick(By.XPath(FileManagementPage.FolderTreeView + "//li/div/span[text() = '" + folderTo + "']"));
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the File is present in the list");
 			Assert.IsTrue(adminFileManagementPage.ElementPresent(By.XPath(FileManagementPage.FileView + "//tr/td/div[@title = '" + prefix + fileToMove + "']")),
 						"The File is not moved correctly");
-			
+
+			adminFileManagementPage.WaitAndClick(By.XPath(FileManagementPage.FolderTreeView + "//li/div/span[text() = '" + folderFrom + "']"));
+			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the File is NOT present in the list");
+			Assert.IsFalse(adminFileManagementPage.ElementPresent(By.XPath(FileManagementPage.FileView + "//tr/td/div[@title = '" + prefix + fileToMove + "']")),
+						"The File is not moved correctly");
 		}
 
 		[TestCase("StandardFolder")]
