@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+
+
 #region Usings
 
 using System;
@@ -83,7 +86,18 @@ namespace DotNetNuke.Common.Lists
 
             foreach (ListInfo list in colLists)
             {
-				var node = new DnnTreeNode { Text = list.DisplayName.Replace(list.ParentList + ".", "") };
+                String filteredNode;
+                if (list.DisplayName.Contains(":"))
+                {
+                    var finalPeriod = list.DisplayName.LastIndexOf(".", StringComparison.InvariantCulture);
+                    filteredNode = list.DisplayName.Substring(finalPeriod + 1);
+
+                }
+                else
+                {
+                    filteredNode = list.DisplayName;
+                }
+				var node = new DnnTreeNode { Text = filteredNode };
                 {
                     node.Value = list.Key;
                     node.ToolTip = String.Format(LocalizeString("NoEntries"), list.EntryCount);
@@ -97,7 +111,9 @@ namespace DotNetNuke.Common.Lists
                 {
                     if (indexLookup[list.ParentList] != null)
                     {
+                        
                         var parentNode = (DnnTreeNode) indexLookup[list.ParentList];
+  
                         parentNode.Nodes.Add(node);
                     }
                 }
