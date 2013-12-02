@@ -182,7 +182,7 @@ namespace DotNetNuke.Security.Roles
                 user = new UserInfo() {UserID = -1, PortalID = portalId};
             }
 
-            return new ArrayList(GetUserRoles(user, includePrivate).ToArray());
+            return (user == null) ? new ArrayList() : new ArrayList(GetUserRoles(user, includePrivate).ToArray());
         }
 
         [Obsolete("Deprecated in DotNetNuke 6.2. Replaced by GetUserRoles overload that returns IList")]
