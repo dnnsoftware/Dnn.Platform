@@ -308,6 +308,7 @@ namespace DotNetNuke.Services.Installer
                     case "dnn":
                     case "dnn5":
                     case "dnn6":
+                    case "dnn7":
                         Type = InstallFileType.Manifest;
                         break;
                     case "resx":
