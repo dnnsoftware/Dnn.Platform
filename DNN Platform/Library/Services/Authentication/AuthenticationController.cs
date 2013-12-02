@@ -293,14 +293,14 @@ namespace DotNetNuke.Services.Authentication
                 if (TabPermissionController.CanViewPage())
                 {
 					//redirect to current page (or home page if current page is a profile page to reduce redirects)
-		    if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
-		    {
-			_RedirectURL = Globals.NavigateURL(settings.HomeTabId);
-		    }
-		    else
-		    {
-			_RedirectURL = Globals.NavigateURL(settings.ActiveTab.TabID);
-		    }
+		            if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
+		            {
+			            _RedirectURL = Globals.NavigateURL(settings.HomeTabId);
+		            }
+		            else
+		            {
+			            _RedirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : Globals.NavigateURL(settings.ActiveTab.TabID);
+		            }
 
                 }
                 else if (settings.HomeTabId != -1)
