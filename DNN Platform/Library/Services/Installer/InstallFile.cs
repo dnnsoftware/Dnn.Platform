@@ -37,27 +37,15 @@ namespace DotNetNuke.Services.Installer
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class InstallFile
     {
-		#region "Private Members"
+		#region Private Members
 
-        private readonly InstallerInfo _InstallerInfo;
-        private readonly string _SourceFileName;
-        private string _Action;
-        private TextEncoding _Encoding = TextEncoding.UTF8;
-        private string _Name;
-        private string _Path;
-        private InstallFileType _Type;
-        private Version _Version;
+        #endregion
 
-		#endregion
-
-		#region "Constructors"
+		#region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -68,13 +56,11 @@ namespace DotNetNuke.Services.Installer
         /// <param name="zip">The ZipInputStream</param>
         /// <param name="entry">The ZipEntry</param>
         /// <param name="info">An INstallerInfo instance</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
         {
-            _InstallerInfo = info;
+            Encoding = TextEncoding.UTF8;
+            InstallerInfo = info;
             ReadZip(zip, entry);
         }
 
@@ -83,12 +69,10 @@ namespace DotNetNuke.Services.Installer
         /// This Constructor creates a new InstallFile instance
         /// </summary>
         /// <param name="fileName">The fileName of the File</param>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName)
         {
+            Encoding = TextEncoding.UTF8;
             ParseFileName(fileName);
         }
 
@@ -98,14 +82,12 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="fileName">The fileName of the File</param>
         /// <param name="info">An INstallerInfo instance</param>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, InstallerInfo info)
         {
+            Encoding = TextEncoding.UTF8;
             ParseFileName(fileName);
-            _InstallerInfo = info;
+            InstallerInfo = info;
         }
 
         /// -----------------------------------------------------------------------------
@@ -115,15 +97,13 @@ namespace DotNetNuke.Services.Installer
         /// <param name="fileName">The fileName of the File</param>
         /// <param name="sourceFileName">Source file name.</param>
         /// <param name="info">An INstallerInfo instance</param>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string sourceFileName, InstallerInfo info)
         {
+            Encoding = TextEncoding.UTF8;
             ParseFileName(fileName);
-            _SourceFileName = sourceFileName;
-            _InstallerInfo = info;
+            SourceFileName = sourceFileName;
+            InstallerInfo = info;
         }
 
         /// -----------------------------------------------------------------------------
@@ -132,49 +112,31 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="fileName">The file name of the File</param>
         /// <param name="filePath">The file path of the file</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string filePath)
         {
-            _Name = fileName;
-            _Path = filePath;
+            Encoding = TextEncoding.UTF8;
+            Name = fileName;
+            Path = filePath;
         }
 		
 		#endregion
 
-		#region "Public Properties"
+		#region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Action for this file
         /// </summary>
         /// <value>A string</value>
-        /// <history>
-        /// 	[cnurse]	09/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
-        public string Action
-        {
-            get
-            {
-                return _Action;
-            }
-            set
-            {
-                _Action = value;
-            }
-        }
+        public string Action { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the location of the backup file
         /// </summary>
         /// <value>A string</value>
-        /// <history>
-        /// 	[cnurse]	08/02/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string BackupFileName
         {
@@ -189,9 +151,6 @@ namespace DotNetNuke.Services.Installer
         /// Gets the location of the backup folder
         /// </summary>
         /// <value>A string</value>
-        /// <history>
-        /// 	[cnurse]	08/02/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual string BackupPath
         {
@@ -201,36 +160,24 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        public TextEncoding Encoding
-        {
-            get
-            {
-                return _Encoding;
-            }
-        }
+        public TextEncoding Encoding { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the File Extension of the file
         /// </summary>
         /// <value>A string</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Extension
         {
             get
             {
-                string ext = System.IO.Path.GetExtension(_Name);
+                string ext = System.IO.Path.GetExtension(Name);
                 if (String.IsNullOrEmpty(ext))
                 {
                     return "";
                 }
-                else
-                {
-                    return ext.Substring(1);
-                }
+                return ext.Substring(1);
             }
         }
 
@@ -239,15 +186,12 @@ namespace DotNetNuke.Services.Installer
         /// Gets the Full Name of the file
         /// </summary>
         /// <value>A string</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FullName
         {
             get
             {
-                return System.IO.Path.Combine(_Path, _Name);
+                return System.IO.Path.Combine(Path, Name);
             }
         }
 
@@ -256,78 +200,39 @@ namespace DotNetNuke.Services.Installer
         /// Gets the associated InstallerInfo
         /// </summary>
         /// <value>An InstallerInfo object</value>
-        /// <history>
-        /// 	[cnurse]	08/02/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
-        public InstallerInfo InstallerInfo
-        {
-            get
-            {
-                return _InstallerInfo;
-            }
-        }
+        public InstallerInfo InstallerInfo { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Name of the file
         /// </summary>
         /// <value>A string</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
-        public string Name
-        {
-            get
-            {
-                return _Name;
-            }
-        }
+        public string Name { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Path of the file
         /// </summary>
         /// <value>A string</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
-        public string Path
-        {
-            get
-            {
-                return _Path;
-            }
-        }
+        public string Path { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the source file name
         /// </summary>
         /// <value>A string</value>
-        /// <history>
-        /// 	[cnurse]	01/29/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
-        public string SourceFileName
-        {
-            get
-            {
-                return _SourceFileName;
-            }
-        }
+        public string SourceFileName { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the location of the temporary file
         /// </summary>
         /// <value>A string</value>
-        /// <history>
-        /// 	[cnurse]	08/02/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string TempFileName
         {
@@ -347,161 +252,95 @@ namespace DotNetNuke.Services.Installer
         /// Gets and sets the Type of the file
         /// </summary>
         /// <value>An InstallFileType Enumeration</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
-        public InstallFileType Type
-        {
-            get
-            {
-                return _Type;
-            }
-            set
-            {
-                _Type = value;
-            }
-        }
+        public InstallFileType Type { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Version of the file
         /// </summary>
         /// <value>A System.Version</value>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
-        public Version Version
-        {
-            get
-            {
-                return _Version;
-            }
-        }
-		
-		#endregion
+        public Version Version { get; private set; }
 
-		#region "Private Methods"
+        #endregion
 
-        private TextEncoding GetTextEncodingType(byte[] Buffer)
-        {
-            //UTF7 = No byte higher than 127
-            //UTF8 = first three bytes EF BB BF
-            //UTF16BigEndian = first two bytes FE FF
-            //UTF16LittleEndian = first two bytes FF FE
-
-            //Lets do the easy ones first
-			if (Buffer[0] == 255 && Buffer[1] == 254)
-            {
-                return TextEncoding.UTF16LittleEndian;
-            }
-            if (Buffer[0] == 254 && Buffer[1] == 255)
-            {
-                return TextEncoding.UTF16BigEndian;
-            }
-            if (Buffer[0] == 239 && Buffer[1] == 187 && Buffer[2] == 191)
-            {
-                return TextEncoding.UTF8;
-            }
-			
-            //This does a simple test to verify that there are no bytes with a value larger than 127
-            //which would be invalid in UTF-7 encoding
-            int i;
-            for (i = 0; i <= 100; i++)
-            {
-                if (Buffer[i] > 127)
-                {
-                    return TextEncoding.Unknown;
-                }
-            }
-            return TextEncoding.UTF7;
-        }
+		#region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ParseFileName parses the ZipEntry metadata
         /// </summary>
         /// <param name="fileName">A String representing the file name</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ParseFileName(string fileName)
         {
-            int i = fileName.Replace("\\", "/").LastIndexOf("/");
+            int i = fileName.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal);
             if (i < 0)
             {
-                _Name = fileName.Substring(0, fileName.Length);
-                _Path = "";
+                Name = fileName.Substring(0, fileName.Length);
+                Path = "";
             }
             else
             {
-                _Name = fileName.Substring(i + 1, fileName.Length - (i + 1));
-                _Path = fileName.Substring(0, i);
+                Name = fileName.Substring(i + 1, fileName.Length - (i + 1));
+                Path = fileName.Substring(0, i);
             }
-            if (string.IsNullOrEmpty(_Path) && fileName.StartsWith("[app_code]"))
+            if (string.IsNullOrEmpty(Path) && fileName.StartsWith("[app_code]"))
             {
-                _Name = fileName.Substring(10, fileName.Length - 10);
-                _Path = fileName.Substring(0, 10);
+                Name = fileName.Substring(10, fileName.Length - 10);
+                Path = fileName.Substring(0, 10);
             }
-            if (_Name.ToLower() == "manifest.xml")
+            if (Name.ToLower() == "manifest.xml")
             {
-                _Type = InstallFileType.Manifest;
+                Type = InstallFileType.Manifest;
             }
             else
             {
                 switch (Extension.ToLower())
                 {
                     case "ascx":
-                        _Type = InstallFileType.Ascx;
+                        Type = InstallFileType.Ascx;
                         break;
                     case "dll":
-                        _Type = InstallFileType.Assembly;
+                        Type = InstallFileType.Assembly;
                         break;
                     case "dnn":
                     case "dnn5":
                     case "dnn6":
-                        _Type = InstallFileType.Manifest;
+                        Type = InstallFileType.Manifest;
                         break;
                     case "resx":
-                        _Type = InstallFileType.Language;
+                        Type = InstallFileType.Language;
                         break;
                     case "resources":
                     case "zip":
-                        _Type = InstallFileType.Resources;
+                        Type = InstallFileType.Resources;
                         break;
                     default:
                         if (Extension.ToLower().EndsWith("dataprovider") || Extension.ToLower() == "sql")
                         {
-                            _Type = InstallFileType.Script;
+                            Type = InstallFileType.Script;
                         }
-                        else if (_Path.StartsWith("[app_code]"))
+                        else if (Path.StartsWith("[app_code]"))
                         {
-                            _Type = InstallFileType.AppCode;
+                            Type = InstallFileType.AppCode;
                         }
                         else
                         {
-                            if (Regex.IsMatch(_Name, Util.REGEX_Version + ".txt"))
-                            {
-                                _Type = InstallFileType.CleanUp;
-                            }
-                            else
-                            {
-                                _Type = InstallFileType.Other;
-                            }
+                            Type = Regex.IsMatch(Name, Util.REGEX_Version + ".txt") ? InstallFileType.CleanUp : InstallFileType.Other;
                         }
                         break;
                 }
             }
 			
             //remove [app_code] token
-            _Path = _Path.Replace("[app_code]", "");
+            Path = Path.Replace("[app_code]", "");
 
             //remove starting "\"
-            if (_Path.StartsWith("\\"))
+            if (Path.StartsWith("\\"))
             {
-                _Path = _Path.Substring(1);
+                Path = Path.Substring(1);
             }
         }
 
@@ -511,9 +350,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="unzip">A ZipStream containing the file content</param>
         /// <param name="entry">A ZipEntry containing the file metadata</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ReadZip(ZipInputStream unzip, ZipEntry entry)
         {
@@ -524,20 +360,17 @@ namespace DotNetNuke.Services.Installer
 		
 		#endregion
 
-		#region "Public Methods"
+		#region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The SetVersion method sets the version of the file
         /// </summary>
         /// <param name="version">The version of the file</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void SetVersion(Version version)
         {
-            _Version = version;
+            Version = version;
         }
 		
 		#endregion
