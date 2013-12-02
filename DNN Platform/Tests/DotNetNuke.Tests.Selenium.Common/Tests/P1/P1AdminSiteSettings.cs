@@ -47,18 +47,18 @@ namespace DNNSelenium.Common.Tests.P1
 		{
 			VerifyLogs(_logContent);
 
+			var module = new MessageCenterModule(_driver);
+			module.OpenNotificationsUsingIcon();
+			module.DismissNotification(MessageCenterModule.NotificationSubject);
+			module.DismissNotification(MessageCenterModule.NotificationSubject);
+			module.DismissNotification(MessageCenterModule.NotificationSubject);
+
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 			manageUsersPage.DeleteUser(_userWithPublicRegistration);
 			manageUsersPage.DeleteUser(_userWithVerifiedRegistration);
 			manageUsersPage.DeleteUser(_userWithPrivateRegistration);
 			manageUsersPage.RemoveDeletedUsers();
-
-			var module = new MessageCenterModule(_driver);
-			module.OpenNotificationsUsingIcon();
-			module.DismissNotification(MessageCenterModule.NotificationSubject);
-			module.DismissNotification(MessageCenterModule.NotificationSubject);
-			module.DismissNotification(MessageCenterModule.NotificationSubject);
 		}
 
 		[Test]
