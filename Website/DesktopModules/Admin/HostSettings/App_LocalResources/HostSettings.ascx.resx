@@ -1192,4 +1192,10 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="plDebugMode.Text" xml:space="preserve">
     <value>Debug Mode</value>
   </data>
+  <data name="plShowCriticalErrors.Help" xml:space="preserve">
+    <value>This setting determines if error messages sent via the error querystring parameter should be shown inline in the page.</value>
+  </data>
+  <data name="plShowCriticalErrors.Text" xml:space="preserve">
+    <value>Show Critical Errors on screen?</value>
+  </data>
 </root>

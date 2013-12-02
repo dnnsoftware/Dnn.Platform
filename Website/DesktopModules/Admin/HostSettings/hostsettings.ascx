@@ -620,6 +620,10 @@
                     <asp:CheckBox ID="chkDebugMode" runat="server" />
                 </div>
                 <div class="dnnFormItem">
+                    <dnn:label id="plShowCriticalErrors" controlname="chkCriticalErrors" runat="server" />
+                    <asp:CheckBox ID="chkCriticalErrors" runat="server" />
+                </div>
+                <div class="dnnFormItem">
                     <dnn:label id="plAsyncTimeout" controlname="txtAsyncTimeout" runat="server" />
                     <asp:TextBox ID="txtAsyncTimeout" runat="server" MaxLength="4" />
                     <asp:Label runat="server" resourcekey="Seconds" />

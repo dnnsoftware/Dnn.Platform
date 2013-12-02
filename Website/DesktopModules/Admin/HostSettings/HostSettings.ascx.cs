@@ -381,6 +381,7 @@ namespace DotNetNuke.Modules.Admin.Host
             chkAutoSync.Checked = Entities.Host.Host.EnableFileAutoSync;
             chkEnableContentLocalization.Checked = Entities.Host.Host.EnableContentLocalization;
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
+            chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
 			txtAsyncTimeout.Text = Entities.Host.Host.AsyncTimeout.ToString();
 
@@ -860,6 +861,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("HelpURL", txtHelpURL.Text, false);
                     HostController.Instance.Update("EnableContentLocalization", chkEnableContentLocalization.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("DebugMode", chkDebugMode.Checked ? "Y" : "N", false);
+                    HostController.Instance.Update("ShowCriticalErrors", chkCriticalErrors.Checked ? "Y" : "N", true);
                     HostController.Instance.Update("MessageSchedulerBatchSize", txtBatch.Text, false);
                     
                     HostController.Instance.Update("EventLogBuffer", chkLogBuffer.Checked ? "Y" : "N", false);

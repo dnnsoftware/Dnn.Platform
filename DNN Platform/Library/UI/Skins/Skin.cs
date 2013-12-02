@@ -557,7 +557,7 @@ namespace DotNetNuke.UI.Skins
             InjectControlPanel();
 
             //Register any error messages on the Skin
-            if (Request.QueryString["error"] != null)
+            if (Request.QueryString["error"] != null && Host.ShowCriticalErrors)
             {
                 AddPageMessage(this, Localization.GetString("CriticalError.Error"), Server.HtmlEncode(Request.QueryString["error"]), ModuleMessage.ModuleMessageType.RedError);
             }

@@ -1289,6 +1289,17 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        /// <summary>
+        /// display the text of errors injected via the error querystring parameter
+        /// </summary>
+        public static bool ShowCriticalErrors
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("ShowCriticalErrors", true);
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the Site Log Buffer size
