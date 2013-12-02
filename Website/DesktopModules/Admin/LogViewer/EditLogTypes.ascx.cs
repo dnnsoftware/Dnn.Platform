@@ -37,6 +37,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.UserControls;
+using DotNetNuke.Web.UI.WebControls;
 using Telerik.Web.UI;
 
 #endregion
@@ -80,15 +81,15 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         private void BindDetailData()
         {
             var pc = new PortalController();
-            ddlLogTypePortalID.DataTextField = "PortalName";
-            ddlLogTypePortalID.DataValueField = "PortalID";
-            ddlLogTypePortalID.DataSource = pc.GetPortals();
-            ddlLogTypePortalID.DataBind();
+            cboLogTypePortalID.DataTextField = "PortalName";
+            cboLogTypePortalID.DataValueField = "PortalID";
+            cboLogTypePortalID.DataSource = pc.GetPortals();
+            cboLogTypePortalID.DataBind();
 
 // ReSharper disable LocalizableElement
-            var i = new ListItem {Text = Localization.GetString("All"), Value = "*"};
+            var i = new DnnComboBoxItem{Text = Localization.GetString("All"), Value = "*"};
 // ReSharper restore LocalizableElement
-            ddlLogTypePortalID.Items.Insert(0, i);
+            cboLogTypePortalID.Items.Insert(0, i);
 
 
             pnlEditLogTypeConfigInfo.Visible = true;
@@ -97,32 +98,44 @@ namespace DotNetNuke.Modules.Admin.LogViewer
 
         	var arrLogTypeInfo = logController.GetLogTypeInfoDictionary().Values.OrderBy(t => t.LogTypeFriendlyName);
 
-            ddlLogTypeKey.DataTextField = "LogTypeFriendlyName";
-            ddlLogTypeKey.DataValueField = "LogTypeKey";
-            ddlLogTypeKey.DataSource = arrLogTypeInfo;
-            ddlLogTypeKey.DataBind();
+            cboLogTypeKey.DataTextField = "LogTypeFriendlyName";
+            cboLogTypeKey.DataValueField = "LogTypeKey";
+            cboLogTypeKey.DataSource = arrLogTypeInfo;
+            cboLogTypeKey.DataBind();
 
             int[] items = {1, 2, 3, 4, 5, 10, 25, 100, 250, 500};
-            ddlKeepMostRecent.Items.Clear();
-            ddlKeepMostRecent.Items.Add(new ListItem(Localization.GetString("All"), "*"));
+            cboKeepMostRecent.Items.Clear();
+            cboKeepMostRecent.Items.Add(new DnnComboBoxItem(Localization.GetString("All"), "*"));
             foreach (int item in items)
             {
-                ddlKeepMostRecent.Items.Add(item == 1
-                                                ? new ListItem(item + Localization.GetString("LogEntry", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture))
-                                                : new ListItem(item + Localization.GetString("LogEntries", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
+                cboKeepMostRecent.Items.Add(item == 1
+                                                ? new DnnComboBoxItem(item + Localization.GetString("LogEntry", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture))
+                                                : new DnnComboBoxItem(item + Localization.GetString("LogEntries", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
             }
             int[] items2 = {1, 2, 3, 4, 5, 10, 25, 100, 250, 500, 1000};
-            ddlThreshold.Items.Clear();
+            cboThreshold.Items.Clear();
             foreach (int item in items2)
             {
-                ddlThreshold.Items.Add(item == 1
-                                           ? new ListItem(item + Localization.GetString("Occurence", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture))
-                                           : new ListItem(item + Localization.GetString("Occurences", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
+                cboThreshold.Items.Add(item == 1
+                                           ? new DnnComboBoxItem(item + Localization.GetString("Occurence", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture))
+                                           : new DnnComboBoxItem(item + Localization.GetString("Occurences", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
+            }
+
+            cboThresholdNotificationTime.Items.Clear();
+            foreach (int item in new []{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 60, 90, 120})
+            {
+                cboThresholdNotificationTime.Items.Add(new DnnComboBoxItem(item.ToString(CultureInfo.InvariantCulture), item.ToString(CultureInfo.InvariantCulture)));
+            }
+
+            cboThresholdNotificationTimeType.Items.Clear();
+            foreach (int item in new[] { 1, 2, 3, 4 })
+            {
+                cboThresholdNotificationTimeType.Items.Add(new DnnComboBoxItem(Localization.GetString(string.Format("TimeType_{0}", item), LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
             }
 // ReSharper disable LocalizableElement
-            var j = new ListItem {Text = Localization.GetString("All"), Value = "*"};
+            var j = new DnnComboBoxItem{Text = Localization.GetString("All"), Value = "*"};
 // ReSharper restore LocalizableElement
-            ddlLogTypeKey.Items.Insert(0, j);
+            cboLogTypeKey.Items.Insert(0, j);
         }
 
         private void BindSummaryData()
@@ -140,15 +153,15 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         {
             if (chkIsActive.Checked)
             {
-                ddlLogTypeKey.Enabled = true;
-                ddlLogTypePortalID.Enabled = true;
-                ddlKeepMostRecent.Enabled = true;
+                cboLogTypeKey.Enabled = true;
+                cboLogTypePortalID.Enabled = true;
+                cboKeepMostRecent.Enabled = true;
             }
             else
             {
-                ddlLogTypeKey.Enabled = false;
-                ddlLogTypePortalID.Enabled = false;
-                ddlKeepMostRecent.Enabled = false;
+                cboLogTypeKey.Enabled = false;
+                cboLogTypePortalID.Enabled = false;
+                cboKeepMostRecent.Enabled = false;
             }
         }
 
@@ -156,17 +169,17 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         {
             if (chkEmailNotificationStatus.Checked)
             {
-                ddlThreshold.Enabled = true;
-                ddlThresholdNotificationTime.Enabled = true;
-                ddlThresholdNotificationTimeType.Enabled = true;
+                cboThreshold.Enabled = true;
+                cboThresholdNotificationTime.Enabled = true;
+                cboThresholdNotificationTimeType.Enabled = true;
                 txtMailFromAddress.Enabled = true;
                 txtMailToAddress.Enabled = true;
             }
             else
             {
-                ddlThreshold.Enabled = false;
-                ddlThresholdNotificationTime.Enabled = false;
-                ddlThresholdNotificationTimeType.Enabled = false;
+                cboThreshold.Enabled = false;
+                cboThresholdNotificationTime.Enabled = false;
+                cboThresholdNotificationTimeType.Enabled = false;
                 txtMailFromAddress.Enabled = false;
                 txtMailToAddress.Enabled = false;
             }
@@ -289,16 +302,16 @@ namespace DotNetNuke.Modules.Admin.LogViewer
             var objLogTypeConfigInfo = new LogTypeConfigInfo
                                            {
                                                LoggingIsActive = chkIsActive.Checked,
-                                               LogTypeKey = ddlLogTypeKey.SelectedItem.Value,
-                                               LogTypePortalID = ddlLogTypePortalID.SelectedItem.Value,
-                                               KeepMostRecent = ddlKeepMostRecent.SelectedItem.Value,
+                                               LogTypeKey = cboLogTypeKey.SelectedItem.Value,
+                                               LogTypePortalID = cboLogTypePortalID.SelectedItem.Value,
+                                               KeepMostRecent = cboKeepMostRecent.SelectedItem.Value,
 
                                                EmailNotificationIsActive = chkEmailNotificationStatus.Checked,
-                                               NotificationThreshold = Convert.ToInt32(ddlThreshold.SelectedItem.Value),
-                                               NotificationThresholdTime = Convert.ToInt32(ddlThresholdNotificationTime.SelectedItem.Value),
+                                               NotificationThreshold = Convert.ToInt32(cboThreshold.SelectedItem.Value),
+                                               NotificationThresholdTime = Convert.ToInt32(cboThresholdNotificationTime.SelectedItem.Value),
                                                NotificationThresholdTimeType =
                                                    (LogTypeConfigInfo.NotificationThresholdTimeTypes)
-                                                   Enum.Parse(typeof (LogTypeConfigInfo.NotificationThresholdTimeTypes), ddlThresholdNotificationTimeType.SelectedItem.Value),
+                                                   Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), cboThresholdNotificationTimeType.SelectedItem.Value),
                                                MailFromAddress = txtMailFromAddress.Text,
                                                MailToAddress = txtMailToAddress.Text
                                            };
@@ -345,39 +358,41 @@ namespace DotNetNuke.Modules.Admin.LogViewer
             chkIsActive.Checked = objLogTypeConfigInfo.LoggingIsActive;
             chkEmailNotificationStatus.Checked = objLogTypeConfigInfo.EmailNotificationIsActive;
 
-            if (ddlLogTypeKey.Items.FindByValue(objLogTypeConfigInfo.LogTypeKey) != null)
+            if (cboLogTypeKey.FindItemByValue(objLogTypeConfigInfo.LogTypeKey) != null)
             {
-                ddlLogTypeKey.ClearSelection();
-                ddlLogTypeKey.Items.FindByValue(objLogTypeConfigInfo.LogTypeKey).Selected = true;
+                cboLogTypeKey.ClearSelection();
+                cboLogTypeKey.FindItemByValue(objLogTypeConfigInfo.LogTypeKey).Selected = true;
             }
-            if (ddlLogTypePortalID.Items.FindByValue(objLogTypeConfigInfo.LogTypePortalID) != null)
+            if (cboLogTypePortalID.FindItemByValue(objLogTypeConfigInfo.LogTypePortalID) != null)
             {
-                ddlLogTypePortalID.ClearSelection();
-                ddlLogTypePortalID.Items.FindByValue(objLogTypeConfigInfo.LogTypePortalID).Selected = true;
+                cboLogTypePortalID.ClearSelection();
+                cboLogTypePortalID.FindItemByValue(objLogTypeConfigInfo.LogTypePortalID).Selected = true;
             }
-            if (ddlKeepMostRecent.Items.FindByValue(objLogTypeConfigInfo.KeepMostRecent) != null)
+            if (cboKeepMostRecent.FindItemByValue(objLogTypeConfigInfo.KeepMostRecent) != null)
             {
-                ddlKeepMostRecent.ClearSelection();
-                ddlKeepMostRecent.Items.FindByValue(objLogTypeConfigInfo.KeepMostRecent).Selected = true;
+                cboKeepMostRecent.ClearSelection();
+                cboKeepMostRecent.FindItemByValue(objLogTypeConfigInfo.KeepMostRecent).Selected = true;
             }
-            if (ddlThreshold.Items.FindByValue(objLogTypeConfigInfo.NotificationThreshold.ToString(CultureInfo.InvariantCulture)) != null)
+            if (cboThreshold.FindItemByValue(objLogTypeConfigInfo.NotificationThreshold.ToString(CultureInfo.InvariantCulture)) != null)
             {
-                ddlThreshold.ClearSelection();
-                ddlThreshold.Items.FindByValue(objLogTypeConfigInfo.NotificationThreshold.ToString(CultureInfo.InvariantCulture)).Selected = true;
+                cboThreshold.ClearSelection();
+                cboThreshold.FindItemByValue(objLogTypeConfigInfo.NotificationThreshold.ToString(CultureInfo.InvariantCulture)).Selected = true;
             }
-            if (ddlThresholdNotificationTime.Items.FindByValue(objLogTypeConfigInfo.NotificationThresholdTime.ToString(CultureInfo.InvariantCulture)) != null)
+            if (cboThresholdNotificationTime.FindItemByValue(objLogTypeConfigInfo.NotificationThresholdTime.ToString(CultureInfo.InvariantCulture)) != null)
             {
-                ddlThresholdNotificationTime.ClearSelection();
-                ddlThresholdNotificationTime.Items.FindByValue(objLogTypeConfigInfo.NotificationThresholdTime.ToString(CultureInfo.InvariantCulture)).Selected = true;
+                cboThresholdNotificationTime.ClearSelection();
+                cboThresholdNotificationTime.FindItemByValue(objLogTypeConfigInfo.NotificationThresholdTime.ToString(CultureInfo.InvariantCulture)).Selected = true;
             }
-            if (ddlThresholdNotificationTimeType.Items.FindByText(objLogTypeConfigInfo.NotificationThresholdTimeType.ToString()) != null)
+            if (cboThresholdNotificationTimeType.FindItemByText(objLogTypeConfigInfo.NotificationThresholdTimeType.ToString()) != null)
             {
-                ddlThresholdNotificationTimeType.ClearSelection();
-                ddlThresholdNotificationTimeType.Items.FindByText(objLogTypeConfigInfo.NotificationThresholdTimeType.ToString()).Selected = true;
+                cboThresholdNotificationTimeType.ClearSelection();
+                cboThresholdNotificationTimeType.FindItemByText(objLogTypeConfigInfo.NotificationThresholdTimeType.ToString()).Selected = true;
             }
             txtMailFromAddress.Text = objLogTypeConfigInfo.MailFromAddress;
             txtMailToAddress.Text = objLogTypeConfigInfo.MailToAddress;
+
             DisableLoggingControls();
+            DisableNotificationControls();
 
             e.Canceled = true; //disable inline editing in grid
         }
