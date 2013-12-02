@@ -56,7 +56,6 @@
                     <asp:RadioButtonList ID="rblLegacySkin" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="dnnFormRadioButtons">
                         <asp:ListItem Value="Skin" resourcekey="Skin" />
                         <asp:ListItem Value="Container" resourcekey="Container" />
-                        <asp:ListItem Value="None" Selected="True" resourcekey="None" />
                     </asp:RadioButtonList>
                 </asp:Panel>
                 <asp:Panel ID="pnlWhitelist" runat = "server" Visible="false">

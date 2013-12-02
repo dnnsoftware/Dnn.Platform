@@ -502,7 +502,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             var azureCompact = AzureCompact();
             if (string.IsNullOrEmpty(ManifestFile))
             {
-                if (rblLegacySkin.SelectedValue != "None")
+                if (!string.IsNullOrEmpty(rblLegacySkin.SelectedValue))
                 {
 					//We need to create a manifest file so the installer can continue to run
                     CreateManifest();
