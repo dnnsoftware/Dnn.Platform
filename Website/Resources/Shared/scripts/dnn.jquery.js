@@ -2418,6 +2418,8 @@
 
         return this.each(function () {
             var $ctrl = $(this);
+            if ($ctrl.hasClass('normalFileUpload')) return;
+
             if (this.wrapper)
             	return;
 	        
