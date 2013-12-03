@@ -112,11 +112,18 @@ namespace DNNSelenium.Common.Tests.P1
 			string moduleNumber =
 				blankPage.WaitForElement(By.XPath(locationOnPage + "/div[last()]/a")).GetAttribute("name");
 
+			blankPage.CloseEditMode();
+
 			blankPage.OpenUsingUrl(_baseUrl, pageName);
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Module location: " + location + moduleName);
 			Assert.IsTrue(
 				blankPage.ElementPresent(By.XPath(locationOnPage + moduleNameOnPage + "/a[@name='" + moduleNumber + "']")),
 				"Module is not found");
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Edit Mode is closed: ");
+			Assert.IsFalse(
+				blankPage.ElementPresent(By.XPath(ControlPanelIDs.PageInEditMode)),
+				"The Edit Mode is not closed");
 		}
 
 		public void AddHTMLModuleToPaneOnPage(Dictionary<string, Modules.ModuleIDs> modulesDescription, string pageName, string moduleName,

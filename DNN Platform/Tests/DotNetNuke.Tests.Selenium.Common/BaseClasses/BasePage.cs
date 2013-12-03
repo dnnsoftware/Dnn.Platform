@@ -60,7 +60,8 @@ namespace DNNSelenium.Common.BaseClasses
 			{
 				Trace.WriteLine(TraceLevelPage + "Set the Page to Edit mode:");
 				SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.EditThisPageButton);
-				WaitForElement(By.XPath("//a[@class = 'controlBar_editPageInEditMode']"));
+				//WaitForElement(By.XPath("//a[@class = 'controlBar_editPageInEditMode']"));
+				WaitForElement(By.XPath(ControlPanelIDs.PageInEditMode));
 			}
 			else
 			{
