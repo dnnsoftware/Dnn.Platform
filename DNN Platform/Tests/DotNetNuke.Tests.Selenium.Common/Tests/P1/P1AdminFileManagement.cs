@@ -227,7 +227,7 @@ namespace DNNSelenium.Common.Tests.P1
 						"The File is not loaded correctly");
 		}
 
-		[TestCase("Root", "*.txt", 4)]
+		[TestCase("Root", "*.pdf", 4)]
 		[TestCase("Root", "Birds?files.docx", 4)]
 		[TestCase("Root", "Awesome-Cycles-Logo.png", 2)]
 		[TestCase("StandardFolder", "*.txt", 2)]
@@ -427,12 +427,12 @@ namespace DNNSelenium.Common.Tests.P1
 
 			adminFileManagementPage.MoveFile(folderFrom, folderTo, prefix + fileToMove);
 
-			adminFileManagementPage.WaitAndClick(By.XPath(FileManagementPage.FolderTreeView + "//li/div/span[text() = '" + folderTo + "']"));
+			adminFileManagementPage.SelectFolderFromTreeView(folderTo);
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the File is present in the list");
 			Assert.IsTrue(adminFileManagementPage.ElementPresent(By.XPath(FileManagementPage.FileView + "//tr/td/div[@title = '" + prefix + fileToMove + "']")),
 						"The File is not moved correctly");
 
-			adminFileManagementPage.WaitAndClick(By.XPath(FileManagementPage.FolderTreeView + "//li/div/span[text() = '" + folderFrom + "']"));
+			adminFileManagementPage.SelectFolderFromTreeView(folderFrom);
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the File is NOT present in the list");
 			Assert.IsFalse(adminFileManagementPage.ElementPresent(By.XPath(FileManagementPage.FileView + "//tr/td/div[@title = '" + prefix + fileToMove + "']")),
 						"The File is not moved correctly");
@@ -561,15 +561,15 @@ namespace DNNSelenium.Common.Tests.P1
 
 			adminFileManagementPage.CopyFile(folderFrom, folderTo, prefix + fileToMove);
 
-			adminFileManagementPage.WaitAndClick(By.XPath(FileManagementPage.FolderTreeView + "//li/div/span[text() = '" + folderFrom + "']"));
+			adminFileManagementPage.SelectFolderFromTreeView(folderTo);
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the File is  present in the list");
 			Assert.IsTrue(adminFileManagementPage.ElementPresent(By.XPath(FileManagementPage.FileView + "//tr/td/div[@title = '" + prefix + fileToMove + "']")),
-						"The File is not deleted correctly");
+						"The File is not copied correctly");
 
-			adminFileManagementPage.WaitAndClick(By.XPath(FileManagementPage.FolderTreeView + "//li/div/span[text() = '" + folderTo + "']"));
+			adminFileManagementPage.SelectFolderFromTreeView(folderFrom);
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the File is NOT present in the list");
 			Assert.IsTrue(adminFileManagementPage.ElementPresent(By.XPath(FileManagementPage.FileView + "//tr/td/div[@title = '" + prefix + fileToMove + "']")),
-						"The File is not deleted correctly");
+						"The File is not copied correctly");
 		}
 
 		[TestCase("StandardFolder")]

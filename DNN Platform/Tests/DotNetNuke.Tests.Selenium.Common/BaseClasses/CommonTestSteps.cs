@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using DNNSelenium.Common.BaseClasses;
-using DNNSelenium.Common.BaseClasses.BasePages;
 using DNNSelenium.Common.CorePages;
-using DNNSelenium.Common.Properties;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using InstallerPage = DNNSelenium.Common.CorePages.InstallerPage;
 
 namespace DNNSelenium.Common.BaseClasses
 {
@@ -93,7 +87,7 @@ namespace DNNSelenium.Common.BaseClasses
 			loginPage.LoginAsHost(_baseUrl);
 
 			string logContentAfterTests = LogContent();
-			Utilities.SoftAssert(() => StringAssert.AreEqualIgnoringCase(logContentAfterTests, logContentBeforeTests, "ERROR in the Log"));
+			StringAssert.AreEqualIgnoringCase(logContentAfterTests, logContentBeforeTests, "ERROR in the Log");
 		}
 
 		public void DisablePopups(string url)

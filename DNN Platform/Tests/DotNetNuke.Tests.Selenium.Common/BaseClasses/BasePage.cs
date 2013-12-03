@@ -547,7 +547,7 @@ namespace DNNSelenium.Common.BaseClasses
 	{
 		public static bool ElementPresent (this IWebDriver driver, By locator)
 		{
-			Trace.WriteLine(BasePage.TraceLevelLow + "Looking for element: " );
+			Trace.WriteLine(BasePage.TraceLevelLow + "Looking for element: " + locator);
 			return driver.FindElements(locator).Count > 0;
 		}
 	}
