@@ -503,16 +503,16 @@ namespace DotNetNuke.UI.Skins
                 switch (slaveModule.ModuleControl.ControlSrc)
                 {
                     case "Admin/Modules/ModuleSettings.ascx":
-                        permissionKey = "MANAGE,EDIT";
+                        permissionKey = "MANAGE";
                         break;
                     case "Admin/Modules/Import.ascx":
-                        permissionKey = "IMPORT,EDIT";
+                        permissionKey = "IMPORT";
                         break;
                     case "Admin/Modules/Export.ascx":
-                        permissionKey = "EXPORT,EDIT";
+                        permissionKey = "EXPORT";
                         break;
                     default:
-                        permissionKey = "CONTENT,EDIT";
+                        permissionKey = "CONTENT";
                         break;
                 }
 

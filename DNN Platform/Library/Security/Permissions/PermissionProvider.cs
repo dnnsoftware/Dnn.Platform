@@ -727,13 +727,20 @@ namespace DotNetNuke.Security.Permissions
                         {
                             if (string.IsNullOrEmpty(permissionKey))
                             {
-                                permissionKey = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
+                                permissionKey = "CONTENT,DELETE,EXPORT,IMPORT,MANAGE";
                             }
 
                             if (TabPermissionController.CanAddContentToPage())
                             {
-                                //Need to check for Deny at the Module Level
-                                isAuthorized = !IsDeniedModulePermission(moduleConfiguration, permissionKey);
+                                //Need to check for Deny Edit at the Module Level
+                                if (permissionKey == "CONTENT")
+                                {
+                                    isAuthorized = !IsDeniedModulePermission(moduleConfiguration, permissionKey);
+                                }
+                                else
+                                {
+                                    isAuthorized = true;
+                                }
                             }
                             else
                             {
