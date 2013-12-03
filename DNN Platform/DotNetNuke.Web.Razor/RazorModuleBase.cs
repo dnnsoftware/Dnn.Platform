@@ -44,13 +44,14 @@ namespace DotNetNuke.Web.Razor
                 {
                     //Try VB (vbhtml)
                     scriptFile = scriptFolder + "_" + fileRoot + ".vbhtml";
+
+                    if (!(File.Exists(Server.MapPath(scriptFile))))
+                    {
+                        //Return ""
+                        scriptFile = "";
+                    }
                 }
 
-                if (! (File.Exists(Server.MapPath(scriptFile))))
-                {
-                    //Return ""
-                    scriptFile = "";
-                }
                 return scriptFile;
             }
         }
