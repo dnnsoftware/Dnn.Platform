@@ -94,7 +94,7 @@ namespace DNNSelenium.Common.CorePages
 
 			Click(By.XPath(AddPageFrameButton));
 
-			Thread.Sleep(Settings.Default.WaitFactor * 2000);
+			Thread.Sleep(Settings.Default.WaitFactor * 4000);
 
 //			WaitForElement(By.XPath("//div[@id = 'Breadcrumb']/span/a[contains(text(), '" + pageName + "')]"), 30).WaitTillVisible(30);
 

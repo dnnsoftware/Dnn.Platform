@@ -48,7 +48,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 		public static string UserAccountsLink = "//div[a/img[contains(@src, 'Users_32X32_Standard.png')]]";
 		public static string VendorsLink = "//div[a/img[contains(@src, 'Vendors_32X32_Standard.png')]]";
 
-		public static string FeaturesList = "//div[contains(@id, 'ViewConsole_Console')]/div/div[@class = 'console-large']";
+		public static string FeaturesList = "//div[contains(@id, 'ViewConsole_Console')]/div[@class = 'console-large']/div";
 
 		public void OpenUsingUrl(string baseUrl)
 		{

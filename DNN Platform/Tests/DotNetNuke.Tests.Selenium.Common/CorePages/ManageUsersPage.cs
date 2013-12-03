@@ -164,7 +164,7 @@ namespace DNNSelenium.Common.CorePages
 
 			Thread.Sleep(1000);
 
-			WaitForElement(By.XPath(AddRoleToUserFrameButton)).WaitTillEnabled().Click();
+			WaitAndClick(By.XPath(AddRoleToUserFrameButton));
 
 			WaitForElement(By.XPath("//tr[td[contains(text(), '" + roleName + "')]]"));
 		}
