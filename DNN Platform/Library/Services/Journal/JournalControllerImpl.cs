@@ -234,6 +234,8 @@ namespace DotNetNuke.Services.Journal
             {
                 journalData = null;
             }
+
+            var originalSecuritySet = journalItem.SecuritySet;
             if (String.IsNullOrEmpty(journalItem.SecuritySet))
             {
                 journalItem.SecuritySet = "E,";
@@ -266,7 +268,9 @@ namespace DotNetNuke.Services.Journal
             {
                 journalItem.SecuritySet += "U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
             }
-            if (journalItem.SocialGroupId > 0)
+
+            //if the post mark as private, shouldn't let it visible to the group.
+            if (journalItem.SocialGroupId > 0 && originalSecuritySet != "U")
             {
                 JournalItem item = journalItem;
                 RoleInfo role = TestableRoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
