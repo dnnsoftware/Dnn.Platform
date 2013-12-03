@@ -495,6 +495,11 @@ namespace DotNetNuke.UI.Modules
 
         }
 
+        private static string FilterUrl(HttpRequest request)
+        {
+            return request.RawUrl.Replace("\"", "");
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetActionsCount gets the current number of actions
@@ -590,7 +595,7 @@ namespace DotNetNuke.UI.Modules
                              "ModulePermissions",
                              "",
                              "action_settings.gif",
-                             NavigateUrl(TabId, "ModulePermissions", false, "ModuleId=" + ModuleId, "ReturnURL=" + request.RawUrl),
+                             NavigateUrl(TabId, "ModulePermissions", false, "ModuleId=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
                              false,
                              SecurityAccessLevel.ViewPermissions,
                              true,
@@ -607,7 +612,7 @@ namespace DotNetNuke.UI.Modules
                                                           ModuleActionType.ModuleSettings,
                                                           "",
                                                           "action_settings.gif",
-                                                          NavigateUrl(TabId, "Module", false, "ModuleId=" + ModuleId, "ReturnURL=" + request.RawUrl),
+                                                          NavigateUrl(TabId, "Module", false, "ModuleId=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
                                                           false,
                                                           SecurityAccessLevel.Edit,
                                                           true,
@@ -628,7 +633,7 @@ namespace DotNetNuke.UI.Modules
                                      "",
                                      "",
                                      "action_export.gif",
-                                     NavigateUrl(PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + request.RawUrl),
+                                     NavigateUrl(PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
 
                                      "",
                                      false,
@@ -643,7 +648,7 @@ namespace DotNetNuke.UI.Modules
                                      "",
                                      "",
                                      "action_import.gif",
-                                     NavigateUrl(PortalSettings.ActiveTab.TabID, "ImportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + request.RawUrl),
+                                     NavigateUrl(PortalSettings.ActiveTab.TabID, "ImportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
                                      "",
                                      false,
                                      SecurityAccessLevel.View,
@@ -677,7 +682,7 @@ namespace DotNetNuke.UI.Modules
                              ModuleActionType.ViewSource,
                              "",
                              "action_source.gif",
-                             NavigateUrl(TabId, "ViewSource", false, "ModuleId=" + ModuleId, "ctlid=" + Configuration.ModuleControlId, "ReturnURL=" + request.RawUrl),
+                             NavigateUrl(TabId, "ViewSource", false, "ModuleId=" + ModuleId, "ctlid=" + Configuration.ModuleControlId, "ReturnURL=" + FilterUrl(request)),
                              false,
                              SecurityAccessLevel.Host,
                              true,
