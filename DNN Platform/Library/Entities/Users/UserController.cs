@@ -47,6 +47,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
@@ -174,6 +175,37 @@ namespace DotNetNuke.Entities.Users
 
             //Delete Tab Permissions
             TabPermissionController.DeleteTabPermissionsByUser(user);
+        }
+
+        private static void RestoreUserPermissions(UserInfo user)
+        {
+            //restore user's folder permission
+            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
+            var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
+            var userFolder = FolderManager.Instance.GetFolder(portalId, userFolderPath);
+
+            if (userFolder != null)
+            {
+                foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
+                {
+                    if (permission.PermissionKey.ToUpper() == "READ" 
+                            || permission.PermissionKey.ToUpper() == "WRITE" 
+                            || permission.PermissionKey.ToUpper() == "BROWSE")
+                    {
+                        var folderPermission = new FolderPermissionInfo(permission)
+                                                   {
+                                                       FolderID = userFolder.FolderID,
+                                                       UserID = user.UserID,
+                                                       RoleID = Null.NullInteger,
+                                                       AllowAccess = true
+                                                   };
+
+                        userFolder.FolderPermissions.Add(folderPermission, true);
+                    }
+                }
+
+                FolderPermissionController.SaveFolderPermissions((FolderInfo) userFolder);
+            }
         }
 
         private static void FixMemberPortalId(UserInfo user, int portalId)
@@ -1485,6 +1517,9 @@ namespace DotNetNuke.Entities.Users
 
             if ((retValue))
             {
+                //restore user permissions
+                RestoreUserPermissions(user);
+
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.GetCurrentPortalSettings();
 
