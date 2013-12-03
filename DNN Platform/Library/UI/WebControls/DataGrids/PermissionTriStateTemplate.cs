@@ -43,6 +43,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             triState.Locked = !bool.Parse(dataRowView[EnabledField].ToString());
             triState.SupportsDenyMode = SupportDenyMode;
             triState.IsFullControl = IsFullControl;
+            triState.IsView = IsView;
         }
 
         public string DataField { get; set; }
@@ -50,6 +51,8 @@ namespace DotNetNuke.UI.WebControls.Internal
         public string EnabledField { get; set; }
 
         public bool IsFullControl { get; set; }
+
+        public bool IsView { get; set; }
 
         public bool SupportDenyMode { get; set; }
     }

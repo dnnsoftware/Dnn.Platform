@@ -52,23 +52,54 @@ dnn.controls.triStateManager = function (images, toolTips) {
             });
         } else {
             updateImage($hdn, state);
-            var $fullControl = $hdn.parent().parent().find('td input.fullControl');
-            var fullControl = $fullControl[0];
-            var $col = $collection.not('input.fullControl');
-            var colstate = state;
-            var setFullControl = true;
-            $col.each(function(index, elem) {
-                if (colstate != elem.value) {
-                    setFullControl = false;
-                    return;
+            
+            //Check if View Permission is denied (can't do other tasks if can't view)
+            if ($hdn.hasClass('viewPermission')) {
+                if (state === 'False') {
+                    var $notView = $collection.not('input.viewPermission');
+                    $notView.each(function (index, elem) {
+                        var $elem = jQuery(elem);
+                        if (!$elem.hasClass('lockedPerm')) {
+                            elem.value = state;
+                            updateImage($elem, state);
+                        }
+                    });
+
                 }
-            });
-            if (setFullControl) {
-                fullControl.value = state;
             } else {
-                fullControl.value = 'Null';
+                //if other permissions are set to true must have View
+                if (state === 'True') {
+                    var $view = $collection.filter('viewPermission');
+                    $collection.each(function (index, elem) {
+                        var $elem = jQuery(elem);
+                        if (!$elem.hasClass('lockedPerm')) {
+                            elem.value = state;
+                            updateImage($elem, state);
+                        }
+                    });
+
+                }
             }
-            updateImage($fullControl, fullControl.value);
+            
+            var $fullControl = $hdn.parent().parent().find('td input.fullControl');
+            if ($fullControl.length > 0) {
+                var fullControl = $fullControl[0];
+                var $notFullControl = $collection.not('input.fullControl');
+                var colstate = state;
+                var setFullControl = true;
+                $notFullControl.each(function (index, elem) {
+                    if (colstate != elem.value) {
+                        setFullControl = false;
+                        return;
+                    }
+                });
+                if (setFullControl) {
+                    fullControl.value = state;
+                } else {
+                    fullControl.value = 'Null';
+                }
+                updateImage($fullControl, fullControl.value);
+            }
         }
     }
     

@@ -53,8 +53,6 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #region Private Members
 
-        private readonly DataTable _dtRolePermissions = new DataTable();
-        private readonly DataTable _dtUserPermissions = new DataTable();
         private ArrayList _permissions;
         private ArrayList _users;
         private DropDownList cboRoleGroups;
@@ -65,6 +63,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         private Label lblUser;
         private Panel pnlPermissions;
         private TextBox txtUser;
+
+        public PermissionsGrid()
+        {
+            dtUserPermissions = new DataTable();
+            dtRolePermissions = new DataTable();
+        }
 
         #endregion
 
@@ -204,9 +208,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the Id of the Administrator Role
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/16/2006  Created
-        /// </history>
         public int AdministratorRoleId
         {
             get
@@ -218,9 +219,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the Id of the Registered Users Role
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/16/2006  Created
-        /// </history>
         public int RegisteredUsersRoleId
         {
             get
@@ -232,9 +230,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets and Sets whether a Dynamic Column has been added
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Documented
-        /// </history>
         public bool DynamicColumnAdded
         {
             get
@@ -250,37 +245,16 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the underlying Permissions Data Table
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
-        public DataTable dtRolePermissions
-        {
-            get
-            {
-                return _dtRolePermissions;
-            }
-        }
+        public DataTable dtRolePermissions { get; private set; }
 
         /// <summary>
         /// Gets the underlying Permissions Data Table
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
-        public DataTable dtUserPermissions
-        {
-            get
-            {
-                return _dtUserPermissions;
-            }
-        }
+        public DataTable dtUserPermissions { get; private set; }
 
         /// <summary>
         /// Gets the Id of the Portal
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/16/2006  Created
-        /// </history>
         public int PortalId
         {
             get
@@ -303,17 +277,11 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets and Sets the collection of Roles to display
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         public ArrayList Roles { get; set; }
 
         /// <summary>
         /// Gets and Sets the ResourceFile to localize permissions
         /// </summary>
-        /// <history>
-        ///     [vmasanas]    02/24/2006  Created
-        /// </history>
         public string ResourceFile { get; set; }
 
         #endregion
@@ -323,21 +291,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Generate the Data Grid
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         public abstract void GenerateDataGrid();
 
         #endregion
 
         #region Private Methods
 
-        /// <summary>
-        /// Bind the data to the controls
-        /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         private void BindData()
         {
             EnsureChildControls();
@@ -345,12 +304,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             BindUsersGrid();
         }
 
-        /// <summary>
-        /// Bind the Roles data to the Grid
-        /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         private void BindRolesGrid()
         {
             dtRolePermissions.Columns.Clear();
@@ -409,12 +362,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             rolePermissionsGrid.DataBind();
         }
 
-        /// <summary>
-        /// Bind the Users data to the Grid
-        /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         private void BindUsersGrid()
         {
             dtUserPermissions.Columns.Clear();
@@ -490,15 +437,8 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// <summary>
-        /// Gets the roles from the Database and loads them into the Roles property
-        /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         private void GetRoles()
         {
-            var roleController = new RoleController();
             int roleGroupId = -2;
             if ((cboRoleGroups != null) && (cboRoleGroups.SelectedValue != null))
             {
@@ -521,108 +461,74 @@ namespace DotNetNuke.Security.Permissions.Controls
             Roles.Sort(new RoleComparer());
         }
 
-        /// <summary>
-        /// Sets up the columns for the Grid
-        /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
-        private void SetUpRolesGrid()
+        private void SetUpGrid(DataGrid grid, string nameColumnDataField, string idColumnDataField)
         {
-            rolePermissionsGrid.Columns.Clear();
-            var textCol = new BoundColumn { HeaderText = "&nbsp;", DataField = "RoleName" };
-            textCol.ItemStyle.Width = Unit.Parse("150px");
-            textCol.ItemStyle.HorizontalAlign = HorizontalAlign.Right;
-            rolePermissionsGrid.Columns.Add(textCol);
-            var idCol = new BoundColumn();
-            idCol.HeaderText = "";
-            idCol.DataField = "roleid";
-            idCol.Visible = false;
-            rolePermissionsGrid.Columns.Add(idCol);
-            TemplateColumn templateCol;
-            foreach (PermissionInfo objPermission in _permissions)
+            grid.Columns.Clear();
+            var nameColumn = new BoundColumn
+                                {
+                                    HeaderText = "&nbsp;",
+                                    DataField = nameColumnDataField
+                                };
+            nameColumn.ItemStyle.Width = Unit.Parse("150px");
+            nameColumn.ItemStyle.HorizontalAlign = HorizontalAlign.Right;
+            grid.Columns.Add(nameColumn);
+
+            var idColumn = new BoundColumn
+                                {
+                                    HeaderText = "",
+                                    DataField = idColumnDataField,
+                                    Visible = false
+                                };
+            grid.Columns.Add(idColumn);
+
+            foreach (PermissionInfo permission in _permissions)
             {
-                templateCol = new TemplateColumn();
-                var columnTemplate = new PermissionTriStateTemplate();
-                columnTemplate.DataField = objPermission.PermissionName;
-                columnTemplate.EnabledField = objPermission.PermissionName + "_Enabled";
-                columnTemplate.IsFullControl = IsFullControl(objPermission);
-                columnTemplate.SupportDenyMode = SupportsDenyPermissions(objPermission);
+                var templateCol = new TemplateColumn();
+                var columnTemplate = new PermissionTriStateTemplate
+                                            {
+                                                DataField = permission.PermissionName,
+                                                EnabledField = permission.PermissionName + "_Enabled",
+                                                IsFullControl = IsFullControl(permission),
+                                                IsView = IsViewPermisison(permission),
+                                                SupportDenyMode = SupportsDenyPermissions(permission)
+                                            };
                 templateCol.ItemTemplate = columnTemplate;
 
                 var locName = "";
-                if (objPermission.ModuleDefID > 0)
+                if (permission.ModuleDefID > 0)
                 {
                     if (!String.IsNullOrEmpty(ResourceFile))
                     {
                         //custom permission
-                        locName = Localization.GetString(objPermission.PermissionName + ".Permission", ResourceFile);
+                        locName = Localization.GetString(permission.PermissionName + ".Permission", ResourceFile);
                     }
                 }
                 else
                 {
                     //system permission
-                    locName = Localization.GetString(objPermission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile);
+                    locName = Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile);
                 }
-                templateCol.HeaderText = !String.IsNullOrEmpty(locName) ? locName : objPermission.PermissionName;
+
+                templateCol.HeaderText = !String.IsNullOrEmpty(locName) ? locName : permission.PermissionName;
                 templateCol.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 templateCol.HeaderStyle.VerticalAlign = VerticalAlign.Bottom;
                 templateCol.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
                 templateCol.ItemStyle.Width = Unit.Parse("70px");
                 templateCol.HeaderStyle.Wrap = true;
-                rolePermissionsGrid.Columns.Add(templateCol);
+                grid.Columns.Add(templateCol);
             }
+        }
+
+        private void SetUpRolesGrid()
+        {
+            SetUpGrid(rolePermissionsGrid, "RoleName", "roleid");
         }
 
         private void SetUpUsersGrid()
         {
             if (userPermissionsGrid != null)
             {
-                userPermissionsGrid.Columns.Clear();
-                var textCol = new BoundColumn();
-                textCol.HeaderText = "&nbsp;";
-                textCol.DataField = "DisplayName";
-                textCol.ItemStyle.Width = Unit.Parse("150px");
-                textCol.ItemStyle.HorizontalAlign = HorizontalAlign.Right;
-                userPermissionsGrid.Columns.Add(textCol);
-                var idCol = new BoundColumn();
-                idCol.HeaderText = "";
-                idCol.DataField = "userid";
-                idCol.Visible = false;
-                userPermissionsGrid.Columns.Add(idCol);
-                TemplateColumn templateCol;
-                foreach (PermissionInfo objPermission in _permissions)
-                {
-                    templateCol = new TemplateColumn();
-                    var columnTemplate = new PermissionTriStateTemplate();
-                    columnTemplate.DataField = objPermission.PermissionName;
-                    columnTemplate.EnabledField = objPermission.PermissionName + "_Enabled";
-                    columnTemplate.IsFullControl = IsFullControl(objPermission);
-                    columnTemplate.SupportDenyMode = SupportsDenyPermissions(objPermission);
-                    templateCol.ItemTemplate = columnTemplate;
-
-
-                    string locName = "";
-                    if (objPermission.ModuleDefID > 0)
-                    {
-                        if (!String.IsNullOrEmpty(ResourceFile))
-                        {
-                            //custom permission
-                            locName = Localization.GetString(objPermission.PermissionName + ".Permission", ResourceFile);
-                        }
-                    }
-                    else
-                    {
-                        //system permission
-                        locName = Localization.GetString(objPermission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile);
-                    }
-                    templateCol.HeaderText = !String.IsNullOrEmpty(locName) ? locName : objPermission.PermissionName;
-                    templateCol.HeaderStyle.VerticalAlign = VerticalAlign.Bottom;
-                    templateCol.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-                    templateCol.ItemStyle.Width = Unit.Parse("70px");
-                    templateCol.HeaderStyle.Wrap = true;
-                    userPermissionsGrid.Columns.Add(templateCol);
-                }
+                SetUpGrid(userPermissionsGrid, "DisplayName", "userid");
             }
         }
 
@@ -639,9 +545,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// </summary>
         /// <param name="permissions">The permissions collection</param>
         /// <param name="user">The user to add</param>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         protected virtual void AddPermission(ArrayList permissions, UserInfo user)
         {
         }
@@ -671,9 +574,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="roleName">The role name</param>
         /// <param name="userID">The user id</param>
         /// <param name="displayName">The user display name</param>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         protected string BuildKey(bool allowAccess, int permissionId, int objectPermissionId, int roleId, string roleName, int userID, string displayName)
         {
             string key;
@@ -702,9 +602,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Creates the Child Controls
         /// </summary>
-        /// <history>
-        ///     [cnurse]    02/23/2006  Created
-        /// </history>
         protected override void CreateChildControls()
         {
             _permissions = GetPermissions();
@@ -786,9 +683,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="role">The role</param>
         /// <param name="column">The column of the Grid</param>
-        /// <history>
-        ///     [cnurse]    01/13/2006  Created
-        /// </history>
         protected virtual bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
             return true;
@@ -800,9 +694,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="user">The user</param>
         /// <param name="column">The column of the Grid</param>
-        /// <history>
-        ///     [cnurse]    01/13/2006  Created
-        /// </history>
         protected virtual bool GetEnabled(PermissionInfo objPerm, UserInfo user, int column)
         {
             return true;
@@ -814,9 +705,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="role">The role</param>
         /// <param name="column">The column of the Grid</param>
-        /// <history>
-        ///     [cnurse]    01/13/2006  Created
-        /// </history>
         protected virtual bool GetPermission(PermissionInfo objPerm, RoleInfo role, int column)
         {
             return Convert.ToBoolean(GetPermission(objPerm, role, column, PermissionTypeDeny));
@@ -829,9 +717,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="role">The role</param>
         /// <param name="column">The column of the Grid</param>
         /// <param name="defaultState">Default State.</param>
-        /// <history>
-        ///     [cnurse]    01/13/2006  Created
-        /// </history>
         protected virtual string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
         {
             string stateKey = defaultState;
@@ -862,9 +747,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="user">The user</param>
         /// <param name="column">The column of the Grid</param>
-        /// <history>
-        ///     [cnurse]    01/13/2006  Created
-        /// </history>
         protected virtual bool GetPermission(PermissionInfo objPerm, UserInfo user, int column)
         {
             return Convert.ToBoolean(GetPermission(objPerm, user, column, PermissionTypeDeny));
@@ -877,9 +759,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="user">The user</param>
         /// <param name="column">The column of the Grid</param>
         /// <param name="defaultState">Default State.</param>
-        /// <history>
-        ///     [cnurse]    01/13/2006  Created
-        /// </history>
         protected virtual string GetPermission(PermissionInfo objPerm, UserInfo user, int column, string defaultState)
         {
             var stateKey = defaultState;
@@ -907,9 +786,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the permissions from the Database
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         protected virtual ArrayList GetPermissions()
         {
             return null;
@@ -918,9 +794,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the users from the Database
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         protected virtual ArrayList GetUsers()
         {
             var arrUsers = new ArrayList();
@@ -958,12 +831,14 @@ namespace DotNetNuke.Security.Permissions.Controls
             return false;
         }
 
+        protected virtual bool IsViewPermisison(PermissionInfo permissionInfo)
+        {
+            return false;
+        }
+
         /// <summary>
         /// Overrides the base OnPreRender method to Bind the Grid to the Permissions
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Documented
-        /// </history>
         protected override void OnPreRender(EventArgs e)
         {
             BindData();
@@ -983,6 +858,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
         }
 
+        protected virtual bool SupportsDenyPermissions(PermissionInfo permissionInfo)
+        {
+            //to maintain backward compatibility the base implementation must always call the simple parameterless version of this method
+#pragma warning disable 612,618
+            return SupportsDenyPermissions();
+#pragma warning restore 612,618
+        }
+
         /// <summary>
         /// Updates a Permission
         /// </summary>
@@ -990,19 +873,9 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="roleId">Rold Id.</param>
         /// <param name="roleName">The name of the role</param>
         /// <param name="allowAccess">The value of the permission</param>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         protected virtual void UpdatePermission(PermissionInfo permission, int roleId, string roleName, bool allowAccess)
         {
-            if (allowAccess)
-            {
-                UpdatePermission(permission, roleId, roleName, PermissionTypeGrant);
-            }
-            else
-            {
-                UpdatePermission(permission, roleId, roleName, PermissionTypeNull);
-            }
+            UpdatePermission(permission, roleId, roleName, allowAccess ? PermissionTypeGrant : PermissionTypeNull);
         }
 
         /// <summary>
@@ -1012,9 +885,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="roleId">Role Id.</param>
         /// <param name="roleName">The name of the role</param>
         /// <param name="stateKey">The permission state</param>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         protected virtual void UpdatePermission(PermissionInfo permission, int roleId, string roleName, string stateKey)
         {
             RemovePermission(permission.PermissionID, roleId, Null.NullInteger);
@@ -1036,9 +906,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="displayName">The user's displayname</param>
         /// <param name="userId">The user's id</param>
         /// <param name="allowAccess">The value of the permission</param>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         protected virtual void UpdatePermission(PermissionInfo permission, string displayName, int userId, bool allowAccess)
         {
             UpdatePermission(permission, displayName, userId, allowAccess ? PermissionTypeGrant : PermissionTypeNull);
@@ -1051,9 +918,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="displayName">The user's displayname</param>
         /// <param name="userId">The user's id</param>
         /// <param name="stateKey">The permission state</param>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         protected virtual void UpdatePermission(PermissionInfo permission, string displayName, int userId, string stateKey)
         {
             RemovePermission(permission.PermissionID, int.Parse(Globals.glbRoleNothing), userId);
@@ -1067,33 +931,9 @@ namespace DotNetNuke.Security.Permissions.Controls
                     break;
             }
         }
-
-        /// <summary>
-        /// returns whether or not the derived grid supports Deny permissions
-        /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
-        [Obsolete("Deprecated in 6.2.0 use SupportsDenyPermissions(PermissionInfo) instead.")]  //todo just guessing at the version that this will release in
-        protected virtual bool SupportsDenyPermissions()
-        {
-            return false; //to support Deny permissions a derived grid typically needs to implement the new GetPermission and UpdatePermission overload methods which support StateKey
-        }
-
-        protected virtual bool SupportsDenyPermissions(PermissionInfo permissionInfo)
-        {
-            //to maintain backward compatibility the base implementation must always call the simple parameterless version of this method
-#pragma warning disable 612,618
-            return SupportsDenyPermissions();
-#pragma warning restore 612,618
-        }
-
         /// <summary>
         /// Updates the permissions
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         protected void UpdatePermissions()
         {
             EnsureChildControls();
@@ -1104,9 +944,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Updates the permissions
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         protected void UpdateRolePermissions()
         {
             if (rolePermissionsGrid != null && !RefreshGrid)
@@ -1138,9 +975,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Updates the permissions
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         protected void UpdateUserPermissions()
         {
             if (userPermissionsGrid != null && !RefreshGrid)
@@ -1204,12 +1038,27 @@ namespace DotNetNuke.Security.Permissions.Controls
                 else
                 {
                     //user does not exist
-                    lblUser = new Label();
-                    lblUser.Text = "<br />" + Localization.GetString("InvalidUserName");
-                    lblUser.CssClass = "NormalRed";
+                    lblUser = new Label
+                                    {
+                                        Text = "<br />" + Localization.GetString("InvalidUserName"),
+                                        CssClass = "NormalRed"
+                                    };
                     pnlPermissions.Controls.Add(lblUser);
                 }
             }
+        }
+
+        #endregion
+
+        #region Obsolete Methods
+
+        /// <summary>
+        /// returns whether or not the derived grid supports Deny permissions
+        /// </summary>
+        [Obsolete("Deprecated in 6.2.0 use SupportsDenyPermissions(PermissionInfo) instead.")]
+        protected virtual bool SupportsDenyPermissions()
+        {
+            return false; //to support Deny permissions a derived grid typically needs to implement the new GetPermission and UpdatePermission overload methods which support StateKey
         }
 
         #endregion

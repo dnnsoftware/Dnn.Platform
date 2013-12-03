@@ -152,6 +152,11 @@ namespace DotNetNuke.UI.WebControls.Internal
                 cssClass += " fullControl";
             }
 
+            if (IsView && !Locked)
+            {
+                cssClass += " viewPermission";
+            }
+
             writer.Write("<img src='{0}' alt='{1}' />", imagePath, altText);
 
             writer.AddAttribute("class", cssClass);
@@ -159,6 +164,8 @@ namespace DotNetNuke.UI.WebControls.Internal
         }
 
         public bool IsFullControl { get; set; }
+
+        public bool IsView { get; set; }
 
         //Locked is currently not used on a post-back and therefore the 
         //value on postback is undefined at this time
