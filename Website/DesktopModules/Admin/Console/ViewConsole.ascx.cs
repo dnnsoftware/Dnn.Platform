@@ -208,6 +208,7 @@ namespace DesktopModules.Admin.Console
         {
             bool canShowTab = TabPermissionController.CanViewPage(tab) &&
                                 !tab.IsDeleted &&
+                                tab.IsVisible &&
                                 (tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate);
 
             if (canShowTab)
