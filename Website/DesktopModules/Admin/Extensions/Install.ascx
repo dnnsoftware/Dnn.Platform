@@ -118,6 +118,14 @@
 				}
 
 				actionLinks.addClass("dnnDisabledAction");
+			    //show the loading icon
+				var loading = $("<div class=\"dnnLoading\"></div>");
+			    var container = $('#dnnInstallExtension');
+			    loading.css({
+			        width: container.width(),
+			        height: container.height()
+			    });
+			    container.prepend(loading);
 			});
 		}
 		

@@ -6,6 +6,7 @@
     width: 96%;
     margin: 2em auto;
 }
+.dnnLoading{opacity: 0.7;}
 .dnnEditExtension .dnnFormItem input[type="text"], .dnnEditExtension .dnnFormItem textarea, .dnnCreateExtension .dnnFormItem input[type="text"], .dnnEditDefinition .dnnFormItem input[type="text"], .dnnEditDefinition .dnnFormItem textarea, .dnnEditModuleControl .dnnFormItem input[type="text"] {
     /*min-width: 35%;*/
 }
