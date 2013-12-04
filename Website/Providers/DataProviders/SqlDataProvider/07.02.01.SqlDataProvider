@@ -277,6 +277,30 @@ AS
 	WHERE [FileId] = @FileId
 GO
 
+/***** Fix bug DNN-3718: update sp UnRegisterAssembly to don't delete assembly which still exist in db. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UnRegisterAssembly]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UnRegisterAssembly
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UnRegisterAssembly
+	@PackageID     INT,
+	@AssemblyName   NVARCHAR(250)
+AS
+	DECLARE @ReturnCode BIT
+	SET @ReturnCode = 1 -- 1 = Can Delete Assembly, 0 = Cannot Delete Assembly
+
+	-- First remove the Assembly Reference for this Package
+	DELETE FROM {databaseOwner}{objectQualifier}Assemblies
+		WHERE PackageID = @PackageID
+			AND AssemblyName = @AssemblyName
+
+	IF EXISTS(SELECT TOP 1 PackageID FROM {databaseOwner}{objectQualifier}Assemblies WHERE AssemblyName = @AssemblyName)
+		-- Set ReturnCode = 0, so assembly is not deleted
+		SET @ReturnCode = 0
+
+	SELECT @ReturnCode
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
