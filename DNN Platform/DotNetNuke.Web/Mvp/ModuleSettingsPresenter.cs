@@ -31,6 +31,9 @@ namespace DotNetNuke.Web.Mvp
         {
             view.OnLoadSettings += OnLoadSettingsInternal;
             view.OnSaveSettings += OnSaveSettingsInternal;
+
+            ModuleSettings = new Dictionary<string, string>();
+            TabModuleSettings = new Dictionary<string, string>();
         }
 
         #endregion
