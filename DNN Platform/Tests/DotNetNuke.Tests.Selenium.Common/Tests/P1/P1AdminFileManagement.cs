@@ -195,7 +195,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the the size of uploaded file is correct");
 			Assert.That(adminFileManagementPage.WaitForElement(
 						By.XPath(FileManagementPage.FileView + "//tr[td/div[@title = '" + fileToUpload + "']]/td[@class = 'dnnModuleDigitalAssetsGrid-SizeColumn']")).Text,
-						Is.EqualTo("40.4 KB"),
+						Is.Not.EqualTo("0.0 KB"),
 						"The File is not loaded correctly");
 		}
 
