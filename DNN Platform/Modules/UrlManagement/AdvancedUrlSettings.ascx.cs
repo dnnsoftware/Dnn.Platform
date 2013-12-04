@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.UrlManagement
 
             UrlSettingsExtensionControl.BindAction(portalId, tabId, moduleId);
 
-            var settings = new FriendlyUrlSettings(portalId);
+            var settings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(portalId);
             if (settings.EnableCustomProviders == false)
             {
                 providersGrid.Visible = false;

@@ -1325,7 +1325,7 @@ namespace DesktopModules.Admin.Portals
                                         : "-1";
                     PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogout", redirectTabId);
 
-                    PortalController.UpdatePortalSetting(_portalId, FriendlyUrlSettings.VanityUrlPrefixSetting, vanilyUrlPrefixTextBox.Text, false);
+                    PortalController.UpdatePortalSetting(_portalId, DotNetNuke.Entities.Urls.FriendlyUrlSettings.VanityUrlPrefixSetting, vanilyUrlPrefixTextBox.Text, false);
                     foreach (DnnFormItemBase item in profileSettings.Items)
                     {
                         PortalController.UpdatePortalSetting(_portalId, item.DataField,

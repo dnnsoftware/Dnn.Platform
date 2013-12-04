@@ -260,7 +260,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 if (!IsPostBack)
                 {
-                    var urlSettings = new FriendlyUrlSettings(PortalSettings.PortalId);
+                    var urlSettings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId);
                     var showVanityUrl = (Config.GetFriendlyUrlProvider() == "advanced") && !User.IsSuperUser;
                     if (showVanityUrl)
                     {
