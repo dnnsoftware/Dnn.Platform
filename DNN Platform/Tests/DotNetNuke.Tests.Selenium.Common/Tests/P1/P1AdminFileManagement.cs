@@ -125,7 +125,7 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the the size of uploaded file is correct");
 			Assert.That(adminFileManagementPage.WaitForElement(
 						By.XPath(FileManagementPage.FileView + "//tr[td/div[@title = '" + fileToUpload + "']]/td[@class = 'dnnModuleDigitalAssetsGrid-SizeColumn']")).Text,
-						Is.EqualTo("40.4 KB"),
+						Is.Not.EqualTo("0.0 KB"),
 						"The File is not loaded correctly");
 		}
 
@@ -231,7 +231,7 @@ namespace DNNSelenium.Common.Tests.P1
 		[TestCase("Root", "Birds?files.docx", 4)]
 		[TestCase("Root", "Awesome-Cycles-Logo.png", 2)]
 		[TestCase("StandardFolder", "*.txt", 2)]
-		[TestCase("StandardFolder", "Birds?files.docs", 2)]
+		[TestCase("StandardFolder", "Birds?files.docx", 2)]
 		[TestCase("Images", "Awesome-Cycles-Logo.png", 1)]
 		public void Test006_Search(string folderName, string pattern, int results)
 		{
@@ -266,7 +266,8 @@ namespace DNNSelenium.Common.Tests.P1
 							"Birds_files.swf",
 							"Birds_files.txt",
 							"Birds_files.xlsx",
-							"Birds_files.xml")] string nameToDelete)
+							"Birds_files.xml",
+							"Birds_files.zip")] string nameToDelete)
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Delete File:'");
 
@@ -341,19 +342,19 @@ namespace DNNSelenium.Common.Tests.P1
 
 		[Test, Combinatorial]
 		public void Test0102_MoveFile_PreconditionsAddFolders(
-			[ValuesAttribute("Standard",
-							"Secure",
-							"Database")] string folderType,
 			[ValuesAttribute("StandardFolder",
 							"SecureFolder",
-							"DatabaseFolder")] string folderName)
+							"DatabaseFolder")] string folderName,
+			[ValuesAttribute("Standard",
+							"Secure",
+							"Database")] string folderType)
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Add Folder:'");
 
 			var adminFileManagementPage = new AdminFileManagementPage(_driver);
 			adminFileManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminFileManagementPage.CreateFolder(folderType, folderType + "FolderMoveTo" + folderName);
+			adminFileManagementPage.CreateFolder(folderType, folderName + "MoveTo" + folderType + "Folder");
 		}
 
 		[Test, Combinatorial]
@@ -476,19 +477,19 @@ namespace DNNSelenium.Common.Tests.P1
 
 		[Test, Combinatorial]
 		public void Test0202_CopyFile_PreconditionsAddFolders(
-			[ValuesAttribute("Standard",
-							"Secure",
-							"Database")] string folderType,
 			[ValuesAttribute("StandardFolder",
 							"SecureFolder",
-							"DatabaseFolder")] string folderName)
+							"DatabaseFolder")] string folderName,
+			[ValuesAttribute("Standard",
+							"Secure",
+							"Database")] string folderType)
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Add Folder:'");
 
 			var adminFileManagementPage = new AdminFileManagementPage(_driver);
 			adminFileManagementPage.OpenUsingButtons(_baseUrl);
 
-			adminFileManagementPage.CreateFolder(folderType, folderType + "FolderCopyTo" + folderName);
+			adminFileManagementPage.CreateFolder(folderType, folderName + "CopyTo" + folderType + "Folder");
 		}
 
 		[Test, Combinatorial]

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Threading;
 using DNNSelenium.Common.BaseClasses;
 using OpenQA.Selenium;
 
@@ -29,6 +30,8 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Main' page:");
 			GoToUrl(baseUrl + MainPageUrl);
+
+			Thread.Sleep(1000);
 		}
 	}
 }
