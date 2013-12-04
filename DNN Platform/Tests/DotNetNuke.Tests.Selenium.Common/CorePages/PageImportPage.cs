@@ -26,7 +26,7 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
-		public static string FolderDropDownId = "//div[contains(@id, 'Import_cboFolders')]/div/a";
+		public static string FolderDropDownId = "//div[@id = 'dnn_ctr_Import_cboFolders']";
 		public static string TemplateDropDownArrow = "Import_cboTemplate_Arrow";
 		public static string TemplateDropDownId = "//div[contains(@id, 'Import_cboTemplate_DropDown')]";
 
@@ -64,11 +64,10 @@ namespace DNNSelenium.Common.CorePages
 		public void ImportPage(string templateName, string pageName, string insertPageAfter)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Import the page:");
-			//WaitForElement(By.XPath(ControlPanelIDs.PageTitleID));
 
 			WaitForElement(By.XPath(FolderDropDownId));
 
-			LoadableSelectByValue(By.XPath(FolderDropDownId), "Templates");
+			FolderSelectByValue(By.XPath(FolderDropDownId), "Templates");
 
 			WaitForElement(By.XPath("//a[contains(@id, '" + TemplateDropDownArrow + "')]"));
 

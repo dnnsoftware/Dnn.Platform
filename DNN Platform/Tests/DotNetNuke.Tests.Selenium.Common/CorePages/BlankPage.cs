@@ -34,10 +34,10 @@ namespace DNNSelenium.Common.CorePages
 		public static string PageDescriptionTextBox = "//textarea[contains(@id, 'ManageTabs_txtDescription')]";
 		public static string PageTitleTextBox = "//input[contains(@id, 'ManageTabs_txtTitle')]";
 		public static string ParentPageArrow = "cboParentTab_Arrow";
-		public static string ParentPageDropDown = "//div[contains(@id, 'ManageTabs_cboParentTab')]/div/a";
+		public static string ParentPageDropDown = "//div[@id = 'dnn_ctr_ManageTabs_cboParentTab']";
 
 		public static string CopyFromPageArrow = "cboCopyPage_Arrow";
-		public static string CopyFromPageDropDown = "//div[contains(@id, 'ManageTabs_cboCopyPage')]/div/a";
+		public static string CopyFromPageDropDown = "//div[@id = 'dnn_ctr_ManageTabs_cboCopyPage']";
 
 		public static string AddPageFrameButton = "//a[contains(@id, 'ManageTabs_cmdUpdate')]";
 		public static string UpdatePageFrameButton = "//a[contains(@id, 'ManageTabs_cmdUpdate')]";
@@ -94,10 +94,7 @@ namespace DNNSelenium.Common.CorePages
 
 			Click(By.XPath(AddPageFrameButton));
 
-			Thread.Sleep(Settings.Default.WaitFactor * 4000);
-
-//			WaitForElement(By.XPath("//div[@id = 'Breadcrumb']/span/a[contains(text(), '" + pageName + "')]"), 30).WaitTillVisible(30);
-
+			Thread.Sleep(Settings.Default.WaitFactor*4000);
 		}
 
 		public void CopyFromContactUsPage()
@@ -132,18 +129,19 @@ namespace DNNSelenium.Common.CorePages
 			OpenTab(By.XPath(PageDetailsFrameTab));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Enter page name in 'Page Name' text box:");
+			WaitAndClear(By.XPath(PageNameTextBox));
 			Type(By.XPath(PageNameTextBox), pageName);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Select Parent Page:");
 
-			LoadableSelectByValue(By.XPath(ParentPageDropDown), parentPage);
+			FolderSelectByValue(By.XPath(ParentPageDropDown), parentPage);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Copy Page' Tab:");
 			OpenTab(By.XPath(CopyPageFrameTab));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Select 'Copy From Page':");
 
-			LoadableSelectByValue(By.XPath(CopyFromPageDropDown), copyFromPage);
+			FolderSelectByValue(By.XPath(CopyFromPageDropDown), copyFromPage);
 
 			CopyFromContactUsPage();
 
