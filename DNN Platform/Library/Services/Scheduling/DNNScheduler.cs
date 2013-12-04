@@ -28,7 +28,6 @@ using System.Threading;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
-using DotNetNuke.Framework;
 
 using Microsoft.VisualBasic;
 
@@ -218,14 +217,17 @@ namespace DotNetNuke.Services.Scheduling
         {
             //Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
-            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem);
-            scheduleHistoryItem.NextStart = DateTime.Now;
-            if (scheduleHistoryItem.TimeLapse != Null.NullInteger && scheduleHistoryItem.TimeLapseMeasurement != Null.NullString && scheduleHistoryItem.Enabled &&
-                CanRunOnThisServer(scheduleItem.Servers))
+            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem) {NextStart = DateTime.Now};
+
+            if (scheduleHistoryItem.TimeLapse != Null.NullInteger 
+                && scheduleHistoryItem.TimeLapseMeasurement != Null.NullString 
+                && scheduleHistoryItem.Enabled 
+                && CanRunOnThisServer(scheduleItem.Servers))
             {
                 scheduleHistoryItem.ScheduleSource = ScheduleSource.STARTED_FROM_SCHEDULE_CHANGE;
                 Scheduler.CoreScheduler.AddToScheduleQueue(scheduleHistoryItem);
             }
+
             DataCache.RemoveCache("ScheduleLastPolled");
         }
 

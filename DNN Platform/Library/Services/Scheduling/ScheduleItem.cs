@@ -35,14 +35,14 @@ namespace DotNetNuke.Services.Scheduling
     [Serializable]
     public class ScheduleItem : BaseEntityInfo, IHydratable
     {
-        #region "Private Members"
+        #region Private Members
 
         private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
 
         #endregion
 
-        #region "Constructors"
+        #region Constructors
 
         public ScheduleItem()
         {
@@ -64,8 +64,7 @@ namespace DotNetNuke.Services.Scheduling
 
         #endregion
 
-
-        #region "Persisted Properties"
+        #region Persisted Properties
 
         public string AttachToEvent { get; set; }
 
