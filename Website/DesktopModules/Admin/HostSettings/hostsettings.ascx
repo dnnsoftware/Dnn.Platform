@@ -620,6 +620,11 @@
                     <asp:CheckBox ID="chkDebugMode" runat="server" />
                 </div>
                 <div class="dnnFormItem">
+                    <dnn:label id="plMaxUploadSize" controlname="txtMaxUploadSize" runat="server" />
+                    <asp:TextBox ID="txtMaxUploadSize" runat="server" />
+                    <asp:Label runat="server" resourcekey="Mb" />
+                </div>
+                <div class="dnnFormItem">
                     <dnn:label id="plAsyncTimeout" controlname="txtAsyncTimeout" runat="server" />
                     <asp:TextBox ID="txtAsyncTimeout" runat="server" MaxLength="4" />
                     <asp:Label runat="server" resourcekey="Seconds" />
