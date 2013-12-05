@@ -90,10 +90,10 @@
 .fu-container .fu-dialog-content-fileupload-local {
     background-color: #E8F0FB;
     border-color: #CED4E0;
-    border-radius: 4px 4px 4px 4px;
+    border-radius: 4px;
     border-style: solid;
     border-width: 1px;
-    padding: 20px;    
+    padding: 20px;
 }
 
 .fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area {
@@ -126,23 +126,33 @@
     text-transform: uppercase;
 }
 
-.fu-container .fu-dialog-content-fileupload-web .dnnFileUploadWebInput{
+.fu-container .fu-dialog-content-fileupload-web {
+    background-color: #E8F0FB;
+    border-color: #CED4E0;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    padding: 0 10px;
+}
+
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area{
     width: 100%;
 }
 
-.fu-container .fu-dialog-content-fileupload-web .dnnFileUploadWebInput {
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area {
     width: 100%;
+    height: 109px;
 }
 
-.fu-container .fu-dialog-content-fileupload-web .dnnFileUploadWebInput td:first-child {
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area td:first-child {
     width: 100%;
 }
-.fu-container .fu-dialog-content-fileupload-web .dnnFileUploadWebInput .txtWrapper {
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area div {
     overflow: hidden;
     width: 100%;
 }
 
-.fu-container .fu-dialog-content-fileupload-web .dnnFileUploadWebInput .txtWrapper input {
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area div input {
     width: 96%;
     margin: 0;
 }

@@ -47,8 +47,6 @@
         },
 
         _selectUpload: function (uploadMethod, eventObject) {
-            eventObject.preventDefault();
-            eventObject.stopPropagation();
             var isLocal = uploadMethod === this._uploadMethods.local;
             this.$element.find(".fu-dialog-content-fileupload-local").toggle(isLocal);
             this.$element.find(".fu-dialog-content-fileupload-web").toggle(!isLocal);
@@ -86,18 +84,43 @@
                         $element("div", { 'class': 'fu-dialog-drag-and-drop-area' }).append(
                             $element("div", { 'class': 'fu-dialog-drag-and-drop-area-message' }))),
                     $element("div", { style: 'display: none', 'class': 'fu-dialog-content-fileupload-web' }).append(
-                        $element("table", { 'class': 'dnnFileUploadWebInput' }).append(
+                        $element("table", { 'class': 'fu-dialog-url-upload-area' }).append(
                             $element("tbody").append(
                                 $element("tr").append(
                                     $element("td").append(
-                                        $element("div", { 'class': 'txtWrapper' }).append(
-                                            $element("input", { type: 'text' } ))),
+                                        $element("div").append(this._$url = $element("input", { type: 'text' } ))),
                                 $element("td").append(
-                                    $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text(this.options.resources.uploadFromWebButtonText)))))),
+                                    $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text(this.options.resources.uploadFromWebButtonText).on("click", $.proxy(this._uploadByUrl, this))))))),
                     $element("div", { style: 'display: none', 'class': 'fu-fileupload-statuses-container' }).append(
                         $element("ul", { 'class': 'fu-fileupload-statuses' }))));
 
             return dialog;
+        },
+
+        _uploadByUrl: function(eventObject) {
+            var url = this._$url.val();
+
+            var serviceUrl = $.dnnSF().getServiceRoot("InternalServices");
+
+            var serviceSettings = {
+                beforeSend: $.dnnSF().setModuleHeaders,
+                url: serviceUrl + "fileupload/UploadByUrl",
+                type: "POST",
+                async: true,
+                success: $.proxy(this._onUploadByUrl, this),
+                error: $.onAjaxError
+            };
+            //serviceSettings.data = JSON.stringify({ Url: url, Folder: this._selectedPath(), Overwrite: true, Unzip: true, Filter: "" });
+            serviceSettings.data = { Url: url, Folder: this._selectedPath(), Overwrite: false, Unzip: this._extract(), Filter: "", IsHostMenu: false };
+            $.ajax(serviceSettings);
+        },
+
+        _onUploadByUrl: function (data, textStatus, jqXhr) {
+            if (data.Success) {
+            }
+            else {
+                //$.dnnAlert({ title: this.options.errorTitle || "Error", text: data.ErrorMessage || "Unknown error" });
+            }
         },
 
         _createFileUploadStatusElement: function (data) {
@@ -194,7 +217,7 @@
             var $fileUploadStatus = this._getFileUploadStatusElement(data);
             if (!$fileUploadStatus.length) {
                 $fileUploadStatus = this._createFileUploadStatusElement(data);
-                this._$fileUploadStatuses.append($fileUploadStatus);
+                this._$fileUploadStatuses.prepend($fileUploadStatus);
                 this._$fileUploadStatusesContainer.show().jScrollbar("update");
             }
             this._setProgress($fileUploadStatus, 0);
