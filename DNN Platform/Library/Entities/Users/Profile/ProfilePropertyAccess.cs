@@ -91,7 +91,8 @@ namespace DotNetNuke.Entities.Users
                             {
                                 if (user.Social.UserRelationships.Any(userRelationship =>
                                                                           (userRelationship.RelationshipId == relationship.RelationshipId
-                                                                              && accessingUser.UserID == userRelationship.RelatedUserId)
+                                                                              && userRelationship.Status == RelationshipStatus.Accepted
+                                                                              && (accessingUser.UserID == userRelationship.RelatedUserId || user.UserID==userRelationship.RelatedUserId))
                                                                       ))
                                 {
                                     isVisible = true;
