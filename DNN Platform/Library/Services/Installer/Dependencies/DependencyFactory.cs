@@ -36,23 +36,16 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	09/02/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DependencyFactory
     {
-		#region "Public Shared Methods"
+        #region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetDependency method instantiates (and returns) the relevant Dependency
         /// </summary>
         /// <param name="dependencyNav">The manifest (XPathNavigator) for the dependency</param>
-        /// <history>
-        /// 	[cnurse]	09/02/2007  created
-        ///     [bdukes]    03/04/2009  added case-insensitivity to type attribute, added InvalidDependency for dependencies that can't be created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static IDependency GetDependency(XPathNavigator dependencyNav)
         {
@@ -66,6 +59,9 @@ namespace DotNetNuke.Services.Installer.Dependencies
                 case "package":
                     dependency = new PackageDependency();
                     break;
+                case "managedpackage":
+                    dependency = new ManagedPackageDependency();
+                    break;
                 case "permission":
                     dependency = new PermissionsDependency();
                     break;
@@ -78,14 +74,14 @@ namespace DotNetNuke.Services.Installer.Dependencies
                     ListEntryInfo entry = listController.GetListEntryInfo("Dependency", dependencyType);
                     if (entry != null && !string.IsNullOrEmpty(entry.Text))
                     {
-						//The class for the Installer is specified in the Text property
-                        dependency = (DependencyBase) Reflection.CreateObject(entry.Text, "Dependency_" + entry.Value);
+                        //The class for the Installer is specified in the Text property
+                        dependency = (DependencyBase)Reflection.CreateObject(entry.Text, "Dependency_" + entry.Value);
                     }
                     break;
             }
             if (dependency == null)
             {
-				//Could not create dependency, show generic error message
+                //Could not create dependency, show generic error message
                 dependency = new InvalidDependency(Util.INSTALL_Dependencies);
             }
             //Read Manifest
@@ -93,7 +89,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
             return dependency;
         }
-		
-		#endregion
+
+        #endregion
     }
 }

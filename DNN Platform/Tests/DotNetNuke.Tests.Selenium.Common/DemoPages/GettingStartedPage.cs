@@ -15,19 +15,31 @@ namespace DNNSelenium.Common.DemoPages
 			get { return ""; }
 		}
 
-		public static string PageHeader = "Getting Started";
+		public override string PageHeaderLabel
+		{
+			get { return "Getting Started"; }
+		}
+
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
 
 		public void OpenUsingUrl(string baseUrl)
 		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Main' page:");
+			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Getting started' page:");
 			GoToUrl(baseUrl + HomePageUrl);
 		}
 
 		public void OpenUsingControlPanel(string baseUrl)
 		{
 			GoToUrl(baseUrl);
-			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");
-			SelectMenuOption(ControlPanelIDs.ControlPanelHelpOption, ControlPanelIDs.HelpGettingStartedOption);
+			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Getting started' page:");
+
+			Click(By.XPath(ControlPanelIDs.ControlPanelHelpOption));
+
+			FindElement(By.XPath(ControlPanelIDs.HelpGettingStartedOption)).WaitTillVisible().Click();
+
 		}
 	}
 }

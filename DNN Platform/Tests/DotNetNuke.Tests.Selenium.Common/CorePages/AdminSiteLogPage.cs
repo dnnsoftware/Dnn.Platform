@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Site Log"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SiteLogModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");

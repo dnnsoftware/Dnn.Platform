@@ -111,7 +111,8 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         #region Queued email API's
 
-        IList<MessageRecipient> GetNextMessagesForDispatch(Guid schedulerInstance,int batchSize);
+        IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance,int batchSize);
+        IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize);
         void MarkMessageAsDispatched(int messageId, int recipientId);
         void MarkMessageAsSent(int messageId, int recipientId);
 

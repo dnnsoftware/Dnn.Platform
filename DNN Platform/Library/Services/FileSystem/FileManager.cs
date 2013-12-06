@@ -18,8 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -41,7 +41,8 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-
+using DotNetNuke.Services.FileSystem.EventArgs;
+using DotNetNuke.Services.FileSystem.Internal;
 using ICSharpCode.SharpZipLib.Zip;
 
 namespace DotNetNuke.Services.FileSystem
@@ -52,6 +53,14 @@ namespace DotNetNuke.Services.FileSystem
     public class FileManager : ComponentBase<IFileManager, FileManager>, IFileManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
+        
+        #region Private Events
+        private event EventHandler<FileDeletedEventArgs> FileDeleted;
+        private event EventHandler<FileRenamedEventArgs> FileRenamed;
+        private event EventHandler<FileMovedEventArgs> FileMoved;
+        private event EventHandler<FileChangedEventArgs> FileOverwritten;
+        private event EventHandler<FileAddedEventArgs> FileAdded; 
+        #endregion
 
         #region Properties
 
@@ -109,15 +118,13 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Constructor
-
         internal FileManager()
         {
+            RegisterEventHandlers();
         }
-
         #endregion
 
         #region Private Methods
-
         private void AddFileToFolderProvider(Stream fileContent, string fileName, IFolderInfo destinationFolder, FolderProvider provider)
         {
             try
@@ -154,6 +161,84 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
+
+        private void RegisterEventHandlers()
+        {
+            foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
+            {
+                FileDeleted += value.FileDeleted;
+                FileRenamed += value.FileRenamed;
+                FileMoved += value.FileMoved;
+                FileAdded += value.FileAdded;
+                FileOverwritten += value.FileOverwritten;
+            }
+        }
+
+        #region On File Events
+        private void OnFileDeleted(IFileInfo fileInfo, int userId)
+        {
+            if (FileDeleted != null)
+            {
+                FileDeleted(this, new FileDeletedEventArgs
+                    {
+                        FileInfo = fileInfo,
+                        UserId = userId,
+                        IsCascadeDeleting = false
+                    });
+            }
+        }
+
+        private void OnFileRenamed(IFileInfo fileInfo, string oldFileName, int userId)
+        {
+            if (FileRenamed != null)
+            {
+                FileRenamed(this, new FileRenamedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId,
+                    OldFileName = oldFileName
+                });
+            }
+        }
+
+        private void OnFileMoved(IFileInfo fileInfo, string oldFilePath, int userId)
+        {
+            if (FileMoved != null)
+            {
+                FileMoved(this, new FileMovedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId,
+                    OldFilePath = oldFilePath
+                });
+            }
+        }
+
+        private void OnFileOverwritten(IFileInfo fileInfo, int userId)
+        {
+            if (FileOverwritten != null)
+            {
+                FileOverwritten(this, new FileChangedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId
+                });
+            }
+        }
+
+        private void OnFileAdded(IFileInfo fileInfo, IFolderInfo folderInfo, int userId)
+        {
+            if (FileAdded != null)
+            {
+                FileAdded(this, new FileAddedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId,
+                    FolderInfo = folderInfo
+                });
+            }
+        }
+        #endregion
 
         #endregion
 
@@ -319,7 +404,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     //Publish Period
-                    if (fileExists && IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserID))
+                    if (fileExists && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserID))
                     {
                         throw new FileLockedException(
                                         Localization.Localization.GetExceptionMessage("FileLockedOutOfPublishPeriodError",
@@ -403,9 +488,8 @@ namespace DotNetNuke.Services.FileSystem
                     Logger.Error(ex);
 
                     if (!folderProvider.FileExists(folder, file.FileName))
-                    {
-                        DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);
-                        DeleteContentItem(file.ContentItemID);
+                    {                     
+                        FileDeletionController.Instance.DeleteFileData(file);
                     }
 
                     throw new FolderProviderException(
@@ -415,7 +499,20 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 DataCache.RemoveCache("GetFileById" + file.FileId);
-                return GetFile(file.FileId);
+                var addedFile = GetFile(file.FileId);
+
+                // Notify file event
+                if (fileExists && folderWorkflow == null)
+                {
+                    OnFileOverwritten(addedFile, createdByUserID);
+                }
+
+                if(!fileExists)
+                {
+                    OnFileAdded(addedFile, folder, createdByUserID);
+                }
+
+                return addedFile;
             }
             finally
             {
@@ -487,7 +584,12 @@ namespace DotNetNuke.Services.FileSystem
                     file.EnablePublishPeriod,
                     contentItemID);
 
-                return GetFile(fileId, true);
+                var copiedFile = GetFile(fileId, true);
+
+                // Notify added file event
+                OnFileAdded(copiedFile, destinationFolder, GetCurrentUserID());
+
+                return copiedFile;
             }
 
             using (var fileContent = GetFileContent(file))
@@ -504,32 +606,11 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public virtual void DeleteFile(IFileInfo file)
         {
-
             Requires.NotNull("file", file);
-
-            var lockReason = "";
-            if (IsFileLocked(file, out lockReason))
-            {
-                throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
-            }
-
-            FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
-
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-
-            try
-            {
-                FolderProvider.Instance(folderMapping.FolderProviderType).DeleteFile(file);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("DeleteFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been deleted."), ex);
-            }
-
-            DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);
-            DeleteContentItem(file.ContentItemID);
+            FileDeletionController.Instance.DeleteFile(file);
+            
+            // Notify File Delete Event
+            OnFileDeleted(file, GetCurrentUserID());
         }
 
         /// <summary>
@@ -833,7 +914,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             var lockReason = "";
-            if (IsFileLocked(file, out lockReason))
+            if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
             {
                 throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
             }
@@ -882,9 +963,15 @@ namespace DotNetNuke.Services.FileSystem
                 FileVersionController.Instance.DeleteAllUnpublishedVersions(file, true);
             }
 
+            var oldFilePath = file.Folder;
             file.FolderId = destinationFolder.FolderID;
             file.Folder = destinationFolder.FolderPath;
+            file.FolderMappingID = destinationFolder.FolderMappingID;
             file = UpdateFile(file);
+
+            // Notify File Moved event
+            OnFileMoved(file, oldFilePath, GetCurrentUserID());
+
             return file;
         }
 
@@ -929,12 +1016,18 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FolderProviderException(Localization.Localization.GetExceptionMessage("RenameFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been renamed."), ex);
             }
 
+            var oldfileName = file.FileName;
             file.FileName = newFileName;
             if (Path.HasExtension(newFileName))
             {
                 file.Extension = Path.GetExtension(newFileName).Replace(".", "");
             }
-            return UpdateFile(file);
+            var renamedFile = UpdateFile(file);
+
+            // Notify File Renamed event
+            OnFileRenamed(renamedFile, oldfileName, GetCurrentUserID());
+
+            return renamedFile;
         }
 
         /// <summary>
@@ -1170,72 +1263,6 @@ namespace DotNetNuke.Services.FileSystem
             return objContent;
         }
 
-        internal virtual void DeleteContentItem(int contentItemId)
-        {
-            if (contentItemId == Null.NullInteger) return;
-
-            Util.GetContentController().DeleteContentItem(contentItemId);
-        }
-
-        #endregion
-
-        #region File Locked
-        /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        internal virtual bool IsFileLocked(IFileInfo file, out string lockReasonKey)
-        {
-            lockReasonKey = "";
-
-            var allowedUser = IsHostAdminUser(file.PortalId, UserController.GetCurrentUserInfo().UserID);
-            if (allowedUser)
-            {
-                return false;
-            }
-
-            if (file.ContentItemID != Null.NullInteger)
-            {
-                var workflowCompleted = ContentWorkflowController.Instance.IsWorkflowCompleted(file.ContentItemID);
-                if (!workflowCompleted)
-                {
-                    lockReasonKey = "FileLockedRunningWorkflowError";
-                    return true;
-                }
-            }
-
-            var outOfPublishPeriod = IsFileOutOfPublishPeriod(file);
-            if (outOfPublishPeriod)
-            {
-                lockReasonKey = "FileLockedOutOfPublishPeriodError";
-                return true;
-            }
-
-            return false;
-        }
-
-        internal virtual bool IsFileOutOfPublishPeriod(IFileInfo file, int portalId, int userId)
-        {
-            if (IsHostAdminUser(portalId, userId))
-            {
-                return false;
-            }
-            return IsFileOutOfPublishPeriod(file);
-        }
-
-        internal virtual bool IsFileOutOfPublishPeriod(IFileInfo file)
-        {
-            //Publish Period locks
-            return (file.EnablePublishPeriod && (file.StartDate > DateTime.Today || (file.EndDate < DateTime.Today && file.EndDate != Null.NullDate)));
-        }
-
-        internal virtual bool IsHostAdminUser(int portalId, int userId)
-        {
-            if (userId == Null.NullInteger)
-            {
-                return false;
-            }
-            var user = UserController.GetUserById(portalId, userId);
-            return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(new PortalSettings(portalId).AdministratorRoleName);
-        }
-
         #endregion
 
         #region File Versions
@@ -1336,7 +1363,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
-            
+
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
             if (folderProvider.FileExists(folder, file.FileName))
@@ -1428,7 +1455,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal void EnsureZipFolder(string fileName, IFolderInfo destinationFolder)
-        {            
+        {
             var folderManager = FolderManager.Instance;
 
             var folderMappingController = FolderMappingController.Instance;
@@ -1469,7 +1496,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
             }
         }
-        
+
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual Stream GetAutoDeleteFileStream(string filePath)
         {

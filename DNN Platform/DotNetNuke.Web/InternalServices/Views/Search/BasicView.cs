@@ -21,7 +21,7 @@
 #region Usings
 
 using System;
-
+using System.Collections.Generic;
 using DotNetNuke.Services.Search.Internals;
 
 #endregion
@@ -52,6 +52,16 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         /// Display Name of the Document Type
         /// </summary>
         public string DocumentTypeName { get; set; }
+
+        /// <summary>
+        /// Custom Attributes of the document.
+        /// </summary>
+        public IDictionary<string, string> Attributes { get; set; }
+
+        public BasicView()
+        {
+            Attributes = new Dictionary<string, string>();
+        }
 
     }
 }

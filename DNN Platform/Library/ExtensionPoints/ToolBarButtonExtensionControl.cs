@@ -22,7 +22,12 @@
 using System;
 using System.ComponentModel;
 using System.Text;
+using System.Web;
 using System.Web.UI;
+
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.ExtensionPoints.Filters;
 
 namespace DotNetNuke.ExtensionPoints
 {
@@ -40,18 +45,22 @@ namespace DotNetNuke.ExtensionPoints
 
             var str = new StringBuilder();
 
-            foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(Module, Group))
+            var filter = new CompositeFilter()
+                .And(new FilterByHostMenu(Globals.IsHostTab(PortalController.GetCurrentPortalSettings().ActiveTab.TabID)))
+                .And(new FilterByUnauthenticated(HttpContext.Current.Request.IsAuthenticated));
+            
+            foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(Module, Group, filter))
             {
                 if (extension is IToolBarMenuButtonExtensionPoint)
                 {
                     btnRenderer = new ToolBarMenuButtonRenderer();
                     str.AppendFormat(btnRenderer.GetOutput(extension));
-                } else 
+                } 
+                else 
                 {
                     btnRenderer = new ToolBarButtonRenderer();
                     str.AppendFormat(btnRenderer.GetOutput(extension));
-                }
-                
+                }                
             }
 
             content = str.ToString();

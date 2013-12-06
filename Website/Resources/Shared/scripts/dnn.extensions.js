@@ -23,6 +23,18 @@ Object.IsArray = function (obj) {
     return false;
 };
 
+if (typeof Object.getOwnPropertyNames === "undefined") {
+    Object.getOwnPropertyNames = function(obj) {
+        var ownProperties = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                ownProperties.push(key);
+            }
+        }
+        return ownProperties;
+    };
+};
+
 if (typeof String.toCamel === "undefined") {
 	String.toCamel = function (text) {
 		return String.isNullOrEmpty(text) ? text : (text.charAt(0).toLowerCase() + text.substr(1));
@@ -59,7 +71,7 @@ String.prototype.append = function (stringToAppend, separator) {
 	if (String.isNullOrEmpty(stringToAppend)) {
 		return this.toString();
 	}
-	else if (String.isNullOrEmpty(this)) {
+	else if (String.isNullOrEmpty(this.toString())) {
 		return stringToAppend;
 	}
 	else {
@@ -97,6 +109,12 @@ if (typeof Array.prototype.insertAt !== "function") {
         this.splice.apply(this, [index, 0].concat(
             Array.prototype.slice.call(arguments, 1)));
         return this;
+    };
+}
+
+if (typeof Array.prototype.peek !== "function") {
+    Array.prototype.peek = function () {
+        return this[this.length - 1];
     };
 }
 
@@ -142,6 +160,15 @@ dnn.Enum = function (keyValuePairs) {
     }
 };
 
+dnn.Enum.prototype.getEnumName = function(enumValue) {
+    for (var propertyName in this) {
+        if (Object.prototype.hasOwnProperty.call(this, propertyName) && enumValue === this[propertyName]) {
+            return propertyName;
+        }
+    }
+    return "";
+};
+
 dnn.SortOrder = new dnn.Enum([{ key: 0, value: "unspecified" }, { key: 1, value: "ascending" }, { key: 2, value: "descending" }]);
 
 dnn.executeFunctionByName = function(functionName, context /*, args */) {
@@ -163,11 +190,152 @@ dnn.singletonify = function(constructorFunc /*, args */) {
 
     return new function () {
         this.getInstance = function () {
+            var instanceArguments;
+            var f;
             if (instance == null) {
-                instance = new constructorFunc(args);
-                instance.constructor = null;
+                instanceArguments = Array.prototype.slice.call(arguments);
+                f = function() {
+                    return constructorFunc.apply(this, [].concat(args, instanceArguments));
+                };
+                f.prototype = constructorFunc.prototype;
+                instance = new f();
             }
             return instance;
         };
     };
 };
+
+dnn.extend = function(child, parent) {
+    var tempConstructor = function() {};
+    tempConstructor.prototype = parent.prototype;
+    child.prototype = new tempConstructor();
+    child.prototype.constructor = child;
+    child.superclass = parent.prototype;
+};
+
+(function ($, window, document, undefined) {
+    "use strict";
+
+    var KeyValueConverter = this.KeyValueConverter = function () {
+    };
+
+    KeyValueConverter.arrayToDictionary = function (pairs, keyProp, valProp) {
+        var dictionary = new dnn.Dictionary();
+        if (pairs && pairs.length > 0) {
+            for (var i = 0, size = pairs.length; i < size; i++) {
+                dictionary.set(pairs[i][keyProp], pairs[i][valProp]);
+            }
+        }
+        return dictionary;
+    };
+
+    KeyValueConverter.dictionaryToArray = function (dictionary, keyProp, valProp) {
+        var pairs = [];
+        if (dictionary) {
+            for (var key in dictionary) {
+                var pair = {};
+                pair[keyProp] = key;
+                pair[valProp] = dictionary[key];
+                pairs.push(pair);
+            }
+        }
+        return pairs;
+    };
+
+    KeyValueConverter.getKeyValuePairByKey = function (pairs, key) {
+        if (!pairs) {
+            return null;
+        }
+        for (var i = 0, size = pairs.length; i < size; i++) {
+            if (pairs[i].key === key) {
+                return pairs[i];
+            }
+        }
+        return null;
+    };
+
+}).apply(dnn, [jQuery, window, document]);
+
+if (typeof Date.prototype.format === "undefined") {
+    Date.prototype.format = function(pattern) {
+        var hours = this.getHours();
+        var ttime = "AM";
+        if (pattern.indexOf("t") > -1 && hours > 12) {
+            hours = hours - 12;
+            ttime = "PM";
+        }
+
+        var o = {
+            "M+": this.getMonth() + 1, //month
+            "d+": this.getDate(), //day
+            "h+": hours, //hour
+            "m+": this.getMinutes(), //minute
+            "s+": this.getSeconds(), //second
+            "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+            "S": this.getMilliseconds(), //millisecond,
+            "t+": ttime
+        };
+
+        if (/(y+)/.test(pattern)) {
+            pattern = pattern.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(pattern)) {
+                pattern = pattern.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return pattern;
+    };
+}
+
+/* Compare the current date against another date.
+     *
+     * @param b  {Date} the other date
+     * @returns   -1 : if this < b
+     *             0 : if this === b
+     *             1 : if this > b
+     *            NaN : if a or b is an illegal date
+    */
+if (typeof Date.prototype.compare === "undefined") {
+    Date.prototype.compare = function (b) {
+        if (b.constructor !== Date) {
+            throw "invalid_date";
+        }
+        return (isFinite(this.valueOf()) && isFinite(b.valueOf()) ?
+                    (this > b) - (this < b) : NaN);
+    };
+}
+
+//Returns true if it is a DOM element
+if (typeof Object.isElement === "undefined") {
+    Object.isElement = function (o) {
+        return typeof HTMLElement === "object" ?
+                o instanceof HTMLElement : //DOM2
+                o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string";
+    };
+}
+
+dnn.removeElement = function (element) {
+    if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+    }
+};
+
+/*
+ * Generates a GUID string, according to RFC4122 standards.
+ * @returns {String} The generated GUID like "af8a8416-6e18-a307-bd9c-f2c947bbb3aa"
+ */
+dnn.guid = (function() {
+    var partOf8 = function (dashed) {
+        var part = (Math.random().toString(16) + "000000000").substr(2, 8);
+        return dashed ? "-" + part.substr(0, 4) + "-" + part.substr(4, 4) : part;
+    };
+    return function () { return partOf8(false) + partOf8(true) + partOf8(true) + partOf8(false); };
+})();
+
+dnn.uid = (function () {
+    var id = (new Date()).getTime();
+    return function (prefix) {
+        return (prefix || "id") + (id++);
+    };
+})();

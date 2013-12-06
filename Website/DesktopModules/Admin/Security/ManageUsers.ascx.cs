@@ -613,7 +613,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (ctlUser.IsValid && (ctlProfile.IsValid))
             {
-                User.Username = HttpUtility.HtmlEncode(User.Username);
                 ctlUser.CreateUser();
             }
             else
@@ -882,7 +881,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (accessingUser.UserID != User.UserID)
                     {
 						//The password was changed by someone else 
-                        Mail.SendMail(User, MessageType.PasswordReminder, PortalSettings);
+                        Mail.SendMail(User, MessageType.PasswordUpdated, PortalSettings);
                     }
                     else
                     {

@@ -32,12 +32,10 @@
                 <td valign="top" width="200"></td>
             </tr>
             <tr>
-                <td valign="top" width="250">
+                <td valign="top" width="220">
                     <asp:TextBox ID="txtUsers" runat="server" Width="150" />
                     <asp:LinkButton ID="cmdValidate" runat="server" CssClass="dnnSecondaryAction" resourceKey="cmdValidate" />
-                    <%--<asp:DropDownList ID="cboUsers" runat="server" AutoPostBack="True" Width="100%" />--%>
                     <dnn:DnnComboBox ID="cboUsers" runat="server" AutoPostBack="True" />
-                    <%--<asp:DropDownList ID="cboRoles" runat="server" AutoPostBack="True" DataValueField="RoleID" DataTextField="RoleName" Width="100%" />--%>
                     <dnn:DnnComboBox ID="cboRoles" runat="server" AutoPostBack="True" DataValueField="RoleID" DataTextField="RoleName" />
                 </td>
                 <td width="30"></td>
@@ -53,8 +51,9 @@
                     <td valign="top" width="150" nowrap="nowrap" align="right"><asp:CheckBox runat="server" ID="chkIsOwner"/></td>
                 </asp:PlaceHolder>
                 <td width="30"></td>
-                <td valign="top" width="200" nowrap="nowrap">
+                <td valign="top" width="" nowrap="nowrap">
                     <asp:LinkButton ID="cmdAdd" CssClass="dnnPrimaryAction" runat="server"  CausesValidation="true" ValidationGroup="SecurityRole" />
+                    <asp:CheckBox ID="chkNotify" resourcekey="SendNotification" runat="server" Checked="True" />
                 </td>
             </tr>
         </table>
@@ -63,8 +62,6 @@
         <asp:CompareValidator ID="valDates" CssClass="dnnFormError" runat="server" resourcekey="valDates" Display="Dynamic" Type="Date" Operator="GreaterThan" ControlToValidate="expiryDatePicker" ControlToCompare="effectiveDatePicker" ValidationGroup="SecurityRole" />
          </div>
     </asp:Panel>
-    <asp:CheckBox ID="chkNotify" resourcekey="SendNotification" runat="server" Checked="True" />
-
     <asp:Panel ID="pnlUserRoles" runat="server" CssClass="WorkPanel" Visible="True">
         <asp:DataGrid ID="grdUserRoles" runat="server" Width="100%" GridLines="None" DataKeyField="UserRoleID" EnableViewState="false" AutoGenerateColumns="false" CellSpacing="0" CellPadding="0" CssClass="dnnGrid">
             <headerstyle cssclass="dnnGridHeader" verticalalign="Top"/>

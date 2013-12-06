@@ -366,7 +366,7 @@ namespace DotNetNuke.Entities.Urls
                         string vanityUrl = urlSegments[1];
 
                         //check if its a vanityUrl
-                        var user = GetUser(result.PortalId, vanityUrl);
+                        var user = GetUser(PortalController.GetEffectivePortalId(result.PortalId), vanityUrl);
                         if (user != null)
                         {
                             userParam = "UserId=" + user.UserID.ToString();

@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
@@ -882,6 +882,8 @@ namespace DotNetNuke.Entities.Modules
                 {
                     moduleController.UpdateTranslationStatus(module, false);
                 }
+		// and clear the cache
+                moduleController.ClearCache(module.TabID);
             }
         }
 

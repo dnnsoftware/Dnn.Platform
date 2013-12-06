@@ -131,13 +131,6 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
                 cmdModulesCancel.Visible = false;
             }
 
-            if (HttpContext.Current.Request.Url.AbsoluteUri.ToLower().Contains("popup"))
-            {
-                var popupCookie = new HttpCookie("AdvSettingsPopup") { Value = "true" };                
-                popupCookie.HttpOnly = false;
-                Response.Cookies.Add(popupCookie); 
-            }
-
             try
             {
                 if (!Page.IsPostBack)

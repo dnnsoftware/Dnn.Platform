@@ -1,10 +1,7 @@
 ﻿<?xml version ="1.0" encoding ="utf-8"?>
-
 <Tests>
 
-  <!--community edition / english / -->
-
-<settings
+  <settings
     name = "Test2"
     browser = "firefox"
     baseURL = "InstallerCETest2.lvh.me"
@@ -13,10 +10,11 @@
     Language = "en"
     DatabaseSetup = "Custom"
     DatabaseType = "Default"
+	  edition = "community"
     DatabaseServerName = "(local)"
     DatabaseName = "InstallerCETest2"
     DatabaseFilename = ""
-    ObjectQualifier = "dnn_"
+    ObjectQualifier = "abc_"
     Security = "Integrated"
     DatabaseUserName = ""
     DatabasePassword = ""
@@ -26,6 +24,5 @@
     WebsiteName = "My Website"
 
 />
-
 
 </Tests>

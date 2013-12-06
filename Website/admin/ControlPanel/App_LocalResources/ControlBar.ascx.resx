@@ -324,4 +324,7 @@
   <data name="Tool.ManageLocalization.Text" xml:space="preserve">
     <value>Page Localization</value>
   </data>
+  <data name="Tool.CreateModule.Text" xml:space="preserve">
+    <value>Create Module</value>
+  </data>
 </root>

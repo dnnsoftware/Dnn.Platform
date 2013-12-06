@@ -24,6 +24,12 @@ namespace DNNSelenium.Common.CorePages
 		public static string ExtensionLanguagePacksPanel = "//h2[@id='Panel-Extension Language Packs']";
 		public static string ExtensionLanguagePacksAccordion = ExtensionLanguagePacksPanel + "/a";
 		public static string ExtensionLanguagePacksList = ExtensionLanguagePacksPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";
+		public static string AuthenticationSystemsPanel = "//h2[@id='Panel-Authentication Systems']";
+		public static string AuthenticationSystemsAccordion = AuthenticationSystemsPanel + "/a";
+		public static string AuthenticationSystemsList = AuthenticationSystemsPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";
+		public static string ProvidersPanel = "//h2[@id='Panel-Providers']";
+		public static string ProvidersAccordion = ProvidersPanel + "/a";
+		public static string ProvidersList = ProvidersPanel + "/following-sibling :: *//tr[contains(@class, 'Item')]";
 
 		//Install Extension page
 		public static string UploadFileButton = "//input[contains(@id, '_Install_wizInstall_cmdBrowse')]";
@@ -95,7 +101,7 @@ namespace DNNSelenium.Common.CorePages
 			FindElement(By.XPath(InstallExtensionButton)).Click();
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Upload File: ");
-			WaitForElement(By.XPath(UploadFileButton)).SendKeys(Path.GetFullPath(@"P1\" + fileToUpload));
+			WaitForElement(By.XPath(UploadFileButton)).SendKeys(Path.GetFullPath(fileToUpload));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Next Button: ");
 			Click(By.XPath(NextButtonStart));
@@ -112,8 +118,9 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(ReviewLicenseScreenTitle));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Accept CheckBox: ");
-			WaitForElement(By.XPath(AcceptCheckBox)).WaitTillEnabled(30);
-			WaitForElement(By.XPath(AcceptCheckBox)).Info();
+			WaitForElement(By.XPath(AcceptCheckBox)).ScrollIntoView().WaitTillEnabled(30);
+			//WaitForElement(By.XPath(AcceptCheckBox)).Info();
+			Thread.Sleep(100);
 			CheckBoxCheck(By.XPath(AcceptCheckBox));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Next Button: ");

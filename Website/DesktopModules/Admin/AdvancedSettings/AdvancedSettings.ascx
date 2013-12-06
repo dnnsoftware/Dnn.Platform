@@ -183,9 +183,6 @@
         }
 
         var AdvSettings = {};
-        AdvSettings.ResetCookie = function () {
-            document.cookie = "AdvSettingsPopup" + "=" + "false" + "" + "; path=/";
-        };
         AdvSettings.addBeforeCloseEvent = function () {
             var dialog = parent.$('.ui-dialog:visible'); //this object remains shown when the confirm dialog appears
             if (dialog != null) {
@@ -194,7 +191,6 @@
                 }
                 dialog.bind('dialogbeforeclose', function (event, ui) {
                     AdvSettings.deleteBeforeCloseEvent();
-                    AdvSettings.ResetCookie();
                 });
             }
         };

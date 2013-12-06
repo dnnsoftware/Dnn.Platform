@@ -76,7 +76,7 @@
             })
                 .width(width - 11)
                 .height(height - 11);
-
+            
             if ($modal.parent().find('.ui-dialog-title').next('a.dnnModalCtrl').length === 0) {
                 var $dnnModalCtrl = $('<a class="dnnModalCtrl"></a>');
                 $modal.parent().find('.ui-dialog-titlebar-close').wrap($dnnModalCtrl);

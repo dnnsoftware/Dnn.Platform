@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Site Wizard"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SiteWizardModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");

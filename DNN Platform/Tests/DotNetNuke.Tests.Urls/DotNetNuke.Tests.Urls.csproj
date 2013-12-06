@@ -33,6 +33,9 @@
     <Reference Include="DotNetNuke.Log4Net">
       <HintPath>..\..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\..\packages\Moq.4.1.1309.1617\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -50,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
+    <Compile Include="ExtensionUrlProviderControllerTests.cs" />
     <Compile Include="FriendlyUrlTests.cs" />
     <Compile Include="TestUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

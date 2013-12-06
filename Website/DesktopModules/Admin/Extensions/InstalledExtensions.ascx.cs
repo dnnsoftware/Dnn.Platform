@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if ((_packageTypes == null))
                 {
                     _packageTypes = new Dictionary<string, PackageType>();
-                    foreach (PackageType packageType in PackageController.GetPackageTypes())
+                    foreach (PackageType packageType in PackageController.Instance.GetExtensionPackageTypes())
                     {
                         _packageTypes[packageType.PackageType] = packageType;
                     }
@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         private void AddModulesToList(List<PackageInfo> packages)
         {
             Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(ModuleContext.PortalId);
-            packages.AddRange(from modulePackage in PackageController.GetPackagesByType(Null.NullInteger, "Module") 
+            packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module") 
                               let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID) 
                                 from portalModule in portalModules.Values 
                                 where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID 
@@ -137,15 +137,15 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     }
                     else
                     {
-                        packages = PackageController.GetPackagesByType(Null.NullInteger, "Module");
+                        packages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module").ToList();
                     }
                     break;
                 case "Skin":
                 case "Container":
-                    packages = PackageController.GetPackagesByType(ModuleContext.PortalSettings.ActiveTab.IsSuperTab ? Null.NullInteger : ModuleContext.PortalId, packageType);
+                    packages = PackageController.Instance.GetExtensionPackages(ModuleContext.PortalSettings.ActiveTab.IsSuperTab ? Null.NullInteger : ModuleContext.PortalId, p => p.PackageType == packageType).ToList();
                     break;
                 default:
-                    packages = PackageController.GetPackagesByType(Null.NullInteger, packageType);
+                    packages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == packageType).ToList();
                     break;
             }
 

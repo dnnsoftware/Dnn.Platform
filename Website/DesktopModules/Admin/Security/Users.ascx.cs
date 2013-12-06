@@ -46,14 +46,16 @@ using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
+// ReSharper disable CheckNamespace
 namespace DotNetNuke.Modules.Admin.Users
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// The Users PortalModuleBase is used to manage the Registered Users of a portal
     /// </summary>
     public partial class UserAccounts : PortalModuleBase
     {
-		#region "Private Members"
+		#region Private Members
 
         public UserAccounts()
         {
@@ -64,7 +66,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         #endregion
 
-		#region "Protected Members"
+		#region Protected Members
 
         protected string Filter { get; set; }
 
@@ -95,7 +97,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         #endregion
 
-		#region "Private Methods"
+		#region Private Methods
 
         protected string UserFilter(bool newFilter)
         {
@@ -177,6 +179,10 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             else if (searchText != "None")
             {
+                if (searchText.Length > 1)
+                {
+                    searchText = "%" + searchText;
+                }
                 switch (searchField)
                 {
                     case "Email":
@@ -288,7 +294,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		
 		#endregion
 
-		#region "Public Methods"
+		#region Public Methods
 
         public string DisplayAddress(object unit, object street, object city, object region, object country, object postalCode)
         {
@@ -363,7 +369,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		#endregion
 
-		#region "Event Handlers"
+		#region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {

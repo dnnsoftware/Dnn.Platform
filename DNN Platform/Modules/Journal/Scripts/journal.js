@@ -276,6 +276,7 @@ function attachPhoto(fileId, path, isImage) {
             if (tmpValue == '' && data.itemData == '') {
                 return false;
             }
+            data.mentions = $content.data("mentions");
             $.ajax({
                 type: "POST",
                 url: opts.servicesFramework.getServiceRoot('Journal') + "Services/Create",

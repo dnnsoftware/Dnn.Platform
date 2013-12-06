@@ -89,14 +89,17 @@ namespace DotNetNuke.Entities.Users.Membership
         public bool IsPasswordInHistory(int userId, int portalId, string newPassword)
         {
             Requires.NotNullOrEmpty("newPassword", newPassword);
-            bool isPreviouslyUsed = true;
+            bool isPreviouslyUsed = false;
             var settings = new MembershipPasswordSettings(portalId);
             if (settings.EnablePasswordHistory)
             {
                 if (IsPasswordPreviouslyUsed(userId, newPassword) == false)
                 {
                     AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored);
-                    isPreviouslyUsed = false;
+                }
+                else
+                {
+                    isPreviouslyUsed = true;
                 }
             }
             return isPreviouslyUsed;

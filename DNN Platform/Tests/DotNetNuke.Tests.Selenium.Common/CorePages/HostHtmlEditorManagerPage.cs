@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "HTML Editor Manager"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "RadEditorManagerModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Host '" + PageTitleLabel + "' page:");

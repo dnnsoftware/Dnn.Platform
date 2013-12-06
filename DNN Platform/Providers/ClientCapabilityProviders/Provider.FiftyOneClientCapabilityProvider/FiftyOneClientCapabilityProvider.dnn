@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="FiftyOneClientCapabilityProvider" type="Provider" version="07.01.02">
+    <package name="FiftyOneClientCapabilityProvider" type="Provider" version="07.02.00">
       <friendlyName>DotNetNuke Client Capability Provider</friendlyName>
       <description>Device Detection / Client Capability Provider</description>
       <iconFile>~/DesktopModules/Admin/FiftyOneClientCapabilityProvider/Images/mobiledevicedet_16X16.png</iconFile>
@@ -39,6 +39,7 @@
           <desktopModule>
             <moduleName>51Degrees.mobi</moduleName>
             <foldername>FiftyOne</foldername>
+            <isPremium>true</isPremium>
             <businessControllerClass>DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components.FeatureController, DotNetNuke.Providers.FiftyOneClientCapabilityProvider</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Searchable" />

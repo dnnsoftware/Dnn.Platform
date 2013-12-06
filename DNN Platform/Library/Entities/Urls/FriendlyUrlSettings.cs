@@ -328,7 +328,7 @@ namespace DotNetNuke.Entities.Urls
             PageExtension = GetStringSetting(PageExtensionSetting, ".aspx");
             _pageExtensionUsage = GetStringSetting(PageExtensionUsageSetting, PageExtensionUsageType.Never.ToString());
 
-            IgnoreRegex = GetStringSetting(IgnoreRegexSetting, @"(?<!linkclick\.aspx.+)(?:(?<!\?.+)(\.pdf$|\.gif$|\.png($|\?)|\.css($|\?)|\.js($|\?)|\.jpg$|\.html$|\.htm$|\.axd($|\?)|\.swf$|\.flv$|\.ico$|\.xml($|\?)|\.txt$))");
+            IgnoreRegex = GetStringSetting(IgnoreRegexSetting, @"(?<!linkclick\.aspx.+)(?:(?<!\?.+)(\.pdf$|\.gif$|\.png($|\?)|\.css($|\?)|\.js($|\?)|\.jpg$|\.axd($|\?)|\.swf$|\.flv$|\.ico$|\.xml($|\?)|\.txt$))");
             UseSiteUrlsRegex = GetStringSetting(SiteUrlsOnlyRegexSetting, @"/rss\.aspx|Telerik.RadUploadProgressHandler\.ashx|BannerClickThrough\.aspx|(?:/[^/]+)*/Tabid/\d+/.*default\.aspx");
 
             ForceLowerCase = GetBooleanSetting(ForceLowerCaseSetting, false);

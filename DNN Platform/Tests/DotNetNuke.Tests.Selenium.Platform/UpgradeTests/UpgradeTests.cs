@@ -10,6 +10,7 @@ using OpenQA.Selenium;
 
 namespace DNNSelenium.Platform.UpgradeTests
 {
+	[Category("Upgrade")]
 	public class UpgradeTests : Common.Tests.Upgrade.UpgradeTests
 	{
 		protected override string DataFileLocation

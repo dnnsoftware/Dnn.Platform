@@ -37,7 +37,7 @@
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,15 +48,15 @@
     <Reference Include="System.Xml" />
     <Reference Include="ThoughtWorks.Selenium.Core, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\WebDriver.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver.Support, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebDriver.Support, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\WebDriver.Support.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -74,11 +74,13 @@
     <Compile Include="CorePages\AdminGoogleAnalyticsPage.cs" />
     <Compile Include="CorePages\AdminPage.cs" />
     <Compile Include="CorePages\HostPage.cs" />
+    <Compile Include="P1\P1AdminAdvancedSettings.cs" />
     <Compile Include="P1\P1AdminExtensions.cs" />
     <Compile Include="P1\P1AdminSiteSettings.cs" />
     <Compile Include="P1\P1FileUpload.cs" />
     <Compile Include="P1\P1HostExtensions.cs" />
     <Compile Include="P1\P1Languages.cs" />
+    <Compile Include="P1\P1Modules.cs" />
     <Compile Include="P1\P1Pages.cs" />
     <Compile Include="P1\P1Search.cs" />
     <Compile Include="P1\P1SecurityRoleGroups.cs" />
@@ -86,6 +88,15 @@
     <Compile Include="P1\P1Taxonomy.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SetUpFixture.cs" />
+    <Compile Include="UpgradeTests\BVTChildSite.cs" />
+    <Compile Include="UpgradeTests\BVTModules.cs" />
+    <Compile Include="UpgradeTests\BVTNavigation.cs" />
+    <Compile Include="UpgradeTests\BVTPages.cs" />
+    <Compile Include="UpgradeTests\BVTSecurityRoles.cs" />
+    <Compile Include="UpgradeTests\BVTSetup.cs" />
+    <Compile Include="UpgradeTests\BVTSuperUsers.cs" />
+    <Compile Include="UpgradeTests\BVTUsers.cs" />
+    <Compile Include="UpgradeTests\BVTZLogs.cs" />
     <Compile Include="UpgradeTests\UpgradeTests.cs" />
     <Compile Include="SmokeTest\SmokeTest.cs" />
     <Compile Include="InstallerTests\InstallerTests.cs" />
@@ -104,6 +115,9 @@
     <Content Include="P1\SocialMention_01.00.00_Install.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Drivers\DummySerializationCachingProvider_01.00.01_Install.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -112,7 +126,7 @@
   <ItemGroup>
     <Content Include="BVT\BVTData.xml">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Drivers\chromedriver.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -122,6 +136,7 @@
     </Content>
     <Content Include="InstallerTests\InstallerData.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="InstallerTests\InstallerLogData.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -131,7 +146,7 @@
     </Content>
     <Content Include="P1\P1Data.xml">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="P1\Penguins.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -141,7 +156,13 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="UpgradeTests\UpgradeData.xml" />
+    <Content Include="UpgradeTests\BVTData.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpgradeTests\UpgradeData.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetNuke.Tests.Selenium.Common\DotNetNuke.Tests.Selenium.Common.csproj">

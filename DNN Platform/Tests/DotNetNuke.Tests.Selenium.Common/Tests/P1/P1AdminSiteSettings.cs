@@ -31,11 +31,21 @@ namespace DNNSelenium.Common.Tests.P1
 			_driver = StartBrowser(settings.Attribute("browser").Value);
 			_baseUrl = settings.Attribute("baseURL").Value;
 
+			OpenMainPageAndLoginAsHost();
+
+			_logContent = LogContent();
+
 			_userWithPublicRegistration = testSettings.Attribute("userWithPublicRegistration").Value;
 			_userWithVerifiedRegistration = testSettings.Attribute("userWithVerifiedRegistration").Value;
 			_userWithPrivateRegistration = testSettings.Attribute("userWithPrivateRegistration").Value;
 
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'" + testName + "'");
+		}
+
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs(_logContent);
 		}
 
 		[Test]

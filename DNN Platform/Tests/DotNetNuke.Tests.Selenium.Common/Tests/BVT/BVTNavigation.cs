@@ -12,7 +12,6 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Common.Tests.BVT
 {
 	[TestFixture]
-	[Category("BVT")]
 	public abstract class BVTNavigation : CommonTestSteps
 	{
 		protected abstract string DataFileLocation { get; }
@@ -31,6 +30,14 @@ namespace DNNSelenium.Common.Tests.BVT
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+
+			_logContent = LogContent();
+		}
+
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs(_logContent);
 		}
 
 		public void VerifyStandardPageLayout(BasePage currentPage)
@@ -46,6 +53,13 @@ namespace DNNSelenium.Common.Tests.BVT
 					By.XPath(
 						"//div[contains(@id, 'dnnSkinMessage') and contains(@class, 'dnnFormValidationSummary')]")),
 				"The error message is present on the current page");
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the error popup is not present");
+			Assert.IsFalse(
+				currentPage.ElementPresent(
+					By.XPath(
+						"//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//span[contains(text(), 'Error')]")),
+				"The error popup is present on the current page");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT The Message Link or Message Link bubble-help is present");
 			Utilities.SoftAssert(
@@ -85,20 +99,6 @@ namespace DNNSelenium.Common.Tests.BVT
 			Utilities.SoftAssert(
 				() => StringAssert.Contains(ControlPanelIDs.CopyrightText, currentPage.FindElement(By.Id(ControlPanelIDs.CopyrightNotice)).Text,
 				                            "Copyright notice is not present or contains wrong text message"));
-		}
-
-		private void VerifyOutsidePage(BaseOutsidePage currentPage)
-		{
-			Utilities.SoftAssert(
-					() => Assert.That(
-						currentPage.GetType().GetField("WindowTitle").GetValue("WindowTitle").ToString().ToUpper(),
-						Is.EqualTo(currentPage.CurrentWindowTitle().ToUpper()),
-						"Current window Title is not correct."));
-
-			Assert.That(
-					currentPage.GetType().GetField("OutsideUrl").GetValue("OutsideUrl").ToString().ToUpper(),
-					Is.EqualTo(currentPage.CurrentWindowUrl().ToUpper()),
-					"Current window URL is not correct.");
 		}
 
 		[TestCase("Common", "CorePages.AdminAdvancedSettingsPage", "OpenUsingUrl")]
@@ -164,15 +164,7 @@ namespace DNNSelenium.Common.Tests.BVT
 		[TestCase("Common", "CorePages.AdminVendorsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminVendorsPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.AdminVendorsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostActivateYourLicensePage", "OpenUsingUrl")]
-		[TestCase("Common", "CorePages.HostActivateYourLicensePage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostActivateYourLicensePage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostAdvancedUrlManagementPage", "OpenUsingUrl")]
-		[TestCase("Common", "CorePages.HostAdvancedUrlManagementPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostAdvancedUrlManagementPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostApplicationIntegrityPage", "OpenUsingUrl")]
-		[TestCase("Common", "CorePages.HostApplicationIntegrityPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostApplicationIntegrityPage", "OpenUsingControlPanel")]
+		
 		[TestCase("Common", "CorePages.HostConfigurationManagerPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostConfigurationManagerPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostConfigurationManagerPage", "OpenUsingControlPanel")]
@@ -188,27 +180,18 @@ namespace DNNSelenium.Common.Tests.BVT
 		[TestCase("Common", "CorePages.HostExtensionsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostExtensionsPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostExtensionsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostHealthMonitoringPage", "OpenUsingUrl")]
-		[TestCase("Common", "CorePages.HostHealthMonitoringPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostHealthMonitoringPage", "OpenUsingControlPanel")]
+		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingUrl")]
+		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingButtons")]
+		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingControlPanel")]
 		[TestCase("Common", "CorePages.HostHtmlEditorManagerPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostHtmlEditorManagerPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostHtmlEditorManagerPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostManageWebServersPage", "OpenUsingUrl")]
-		[TestCase("Common", "CorePages.HostManageWebServersPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostManageWebServersPage", "OpenUsingControlPanel")]
 		[TestCase("Common", "CorePages.HostListsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostListsPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostListsPage", "OpenUsingControlPanel")]
 		[TestCase("Common", "CorePages.HostSchedulePage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostSchedulePage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSchedulePage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostSecurityCenterPage", "OpenUsingUrl")]
-		[TestCase("Common", "CorePages.HostSecurityCenterPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostSecurityCenterPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingUrl")]
-		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingControlPanel")]
 		[TestCase("Common", "CorePages.HostSiteManagementPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostSiteManagementPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSiteManagementPage", "OpenUsingControlPanel")]
@@ -218,21 +201,17 @@ namespace DNNSelenium.Common.Tests.BVT
 		[TestCase("Common", "CorePages.HostSuperUserAccountsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostSuperUserAccountsPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSuperUserAccountsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostUserSwitcherPage", "OpenUsingUrl")]
-		[TestCase("Common", "CorePages.HostUserSwitcherPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostUserSwitcherPage", "OpenUsingControlPanel")]
 		[TestCase("Common", "CorePages.HostVendorsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostVendorsPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostVendorsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostWhatsNewPage", "OpenUsingUrl")]
-		[TestCase("Common", "CorePages.HostWhatsNewPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostWhatsNewPage", "OpenUsingControlPanel")]
+		
 		[TestCase("Common", "CorePages.FileUploadPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.FileUploadPage", "OpenUsingControlPanel")]
 		[TestCase("Common", "CorePages.PageImportPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.PageImportPage", "OpenUsingControlPanel")]
 		[TestCase("Common", "CorePages.PageExportPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.PageExportPage", "OpenUsingControlPanel")]
+
 		[TestCase("Common", "CorePages.ManageRolesPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.ManageRolesPage", "OpenUsingControlPanel")]
 		[TestCase("Common", "CorePages.ManageUsersPage", "OpenUsingUrl")]
@@ -240,30 +219,20 @@ namespace DNNSelenium.Common.Tests.BVT
 		[TestCase("Common", "CorePages.UserAccountPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.UserAccountPage", "OpenUsingLink")]
 		[TestCase("Common", "CorePages.ManageUserProfilePage", "OpenUsingLink")]
+
+		[TestCase("Common", "DemoPages.AboutUsPage", "OpenUsingLink")]
+		[TestCase("Common", "DemoPages.AboutUsPage", "OpenUsingUrl")]
+		[TestCase("Common", "DemoPages.ContactUsPage", "OpenUsingLink")]
+		[TestCase("Common", "DemoPages.ContactUsPage", "OpenUsingUrl")]
+		[TestCase("Common", "DemoPages.HomePage", "OpenUsingLink")]
+		[TestCase("Common", "DemoPages.HomePage", "OpenUsingUrl")]
+		[TestCase("Common", "DemoPages.OurProductsPage", "OpenUsingLink")]
+		[TestCase("Common", "DemoPages.OurProductsPage", "OpenUsingUrl")]
+		//[TestCase("Common", "DemoPages.GettingStartedPage", "OpenUsingControlPanel")]
+		//[TestCase("Common", "DemoPages.GettingStartedPage", "OpenUsingUrl")]
 		public void NavigationToPage(string assyName, string pageClassName, string openMethod)
 		{
 			VerifyStandardPageLayout(OpenPage(assyName, pageClassName, openMethod));
-		}
-
-		[TestCase("Common", "CorePages.HostTechnicalSupportPage", "OpenHostTechnicalSupportPageUsingButtons")]
-		[TestCase("Common", "CorePages.HostTechnicalSupportPage", "OpenHostTechnicalSupportPageUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostKnowledgeBasePage", "OpenHostKnowledgeBasePageUsingButtons")]
-		[TestCase("Common", "CorePages.HostKnowledgeBasePage", "OpenHostKnowledgeBasePageUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostMySupportTicketsPage", "OpenHostMySupportTicketsPageUsingButtons")]
-		[TestCase("Common", "CorePages.HostMySupportTicketsPage", "OpenHostMySupportTicketsPageUsingControlPanel")]
-		public void NavigationToOutsidePagePart1(string assyName, string pageClassName, string openMethod)
-		{
-			VerifyOutsidePage(OpenOutsidePage(assyName, pageClassName, openMethod));
-		}
-
-		[TestCase("Common", "CorePages.HostLicenseManagementPage", "OpenHostLicenseManagementPageUsingButtons")]
-		[TestCase("Common", "CorePages.HostLicenseManagementPage", "OpenHostLicenseManagementPageUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostSoftwareAndDocumentationPage", "OpenHostSoftwareAndDocumentationPageUsingButtons")]
-		[TestCase("Common", "CorePages.HostSoftwareAndDocumentationPage", "OpenHostSoftwareAndDocumentationPageUsingControlPanel")]
-		[Category("Local only")]
-		public void NavigationToOutsidePagePart2(string assyName, string pageClassName, string openMethod)
-		{
-			VerifyOutsidePage(OpenOutsidePage(assyName, pageClassName, openMethod));
 		}
 
 		[Test]
@@ -299,15 +268,13 @@ namespace DNNSelenium.Common.Tests.BVT
 			loginPage.DoLoginUsingLoginLink("host", "dnnhost");
 		}
 
-		[Test]
-		public void NavigationToMainPage()
+		public void NumberOfLinksOnPage(BasePage currentPage, string featureList, int numberOfLinks)
 		{
-			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Navigation To Main Page'");
-
-			var mainPage = new MainPage(_driver);
-			mainPage.OpenUsingUrl(_baseUrl);
-			VerifyStandardPageLayout(mainPage);
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of links on page: " +
+							numberOfLinks);
+			Assert.That(currentPage.FindElements(By.XPath(featureList)).Count,
+						Is.EqualTo(numberOfLinks),
+						"The number of links on page is not correct");
 		}
-
 	}
 }

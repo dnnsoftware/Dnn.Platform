@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.MobileManagement.Components
                 }
             }
 
-            var package = PackageController.GetPackageByName("DotNetNuke.Professional.MobileManagement");
+            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Professional.MobileManagement");
             if(package != null)
             {
                 var installer = new Installer(package, Globals.ApplicationMapPath);

@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 using Lucene.Net.Documents;
@@ -88,30 +89,82 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        private string GetStringFromField(Document doc, SortField sortField)
+        {
+            var field = doc.GetField(sortField.Field);
+            return field == null ? "" : field.StringValue;
+        }
+
+        private long GetLongFromField(Document doc, SortField sortField)
+        {
+            var field = doc.GetField(sortField.Field);
+            if (field == null) return 0;
+
+            long data;
+            if (long.TryParse(field.StringValue, out data) && data >= 0) return data;
+            
+            return 0;
+        }
+
         private void PrepareScoreDocs()
         {
             int skippedSoFar;
             var collectedSoFar = skippedSoFar = 0;
             var pageSize = _query.PageSize;
             var toSkip = _query.PageIndex <= 1 ? 0 : ((_query.PageIndex - 1) * pageSize);
-            _scoreDocs = new List<ScoreDoc>(pageSize);
-            IEnumerable<ScoreDoc> tempDocs;
+            IEnumerable<ScoreDoc> tempDocs = new List<ScoreDoc>();
 
             _totalHits = _hitDocs.Count;
- 
+
+            var useRelevance = false;
             if (ReferenceEquals(Sort.RELEVANCE, _query.Sort))
             {
-                tempDocs = _hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
+                useRelevance = true;
             }
             else
             {
-                //HACK: order by document date descending based on date's "StringValue" as below
-                //      and we don't take into consideration all of the Sort fields; only the first
-                tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
-                    .OrderByDescending(rec => rec.Document.GetField(Constants.ModifiedTimeTag).StringValue)
-                    .ThenBy(rec => rec.Document.Boost)
-                    .Select(rec => rec.SDoc);
+                var fields = _query.Sort.GetSort();
+                if (fields == null || fields.Count() != 1)
+                {
+                    useRelevance = true;
+                }
+                else
+                {
+                    var field = fields[0];
+                    if (field.Type == SortField.INT || field.Type == SortField.LONG)
+                    {
+                        if(field.Reverse)
+                            tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
+                                       .OrderByDescending(rec => GetLongFromField(rec.Document, field))
+                                       .ThenByDescending(rec => rec.Document.Boost)
+                                       .Select(rec => rec.SDoc);
+                        else
+                            tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
+                                       .OrderBy(rec => GetLongFromField(rec.Document, field))
+                                       .ThenByDescending(rec => rec.Document.Boost)
+                                       .Select(rec => rec.SDoc);
+                    }
+                    else
+                    {
+                        if (field.Reverse)
+                            tempDocs = _hitDocs.Select(d => new {SDoc = d, Document = _searcher.Doc(d.Doc)})
+                                           .OrderByDescending(rec => GetStringFromField(rec.Document, field))
+                                           .ThenByDescending(rec => rec.Document.Boost)
+                                           .Select(rec => rec.SDoc);
+                        else
+                            tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
+                                       .OrderBy(rec => GetStringFromField(rec.Document, field))
+                                       .ThenByDescending(rec => rec.Document.Boost)
+                                       .Select(rec => rec.SDoc);
+                    }
+                }
             }
+
+            if (useRelevance)
+                tempDocs = _hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
+
+            var scoreDocSize = Math.Min(tempDocs.Count(), pageSize);
+            _scoreDocs = new List<ScoreDoc>(scoreDocSize);
 
            foreach (var scoreDoc in tempDocs)
             {

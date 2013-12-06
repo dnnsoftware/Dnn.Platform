@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 		{
 			get
 			{
-				return _Package ?? (_Package = PackageID == Null.NullInteger ? new PackageInfo() : PackageController.GetPackage(PackageID));
+				return _Package ?? (_Package = PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID));
 			}
 		}
 
@@ -189,44 +189,44 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 				string name = GetClassName();
 				string moduleControl = "DesktopModules/" + folder + "/" + controlSrc;
 
-                var packageInfo = PackageController.GetPackages().FirstOrDefault(p => p.Name == name || p.FriendlyName == friendlyName);
+                var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == name || p.FriendlyName == friendlyName);
                 if (packageInfo != null)
                 {
                     UI.Skins.Skin.AddModuleMessage(this, String.Format(Localization.GetString("NonuniqueNameModule", LocalResourceFile), packageInfo.FriendlyName), ModuleMessage.ModuleMessageType.RedError);
                 }
                 else
                 {
-                    var package = new PackageInfo();
-                    package.Name = name;
-                    package.FriendlyName = friendlyName;
-                    package.Description = txtDescription.Text;
-                    package.Version = new Version(1, 0, 0);
-                    package.PackageType = "Module";
-                    package.License = Util.PACKAGE_NoLicense;
+                    var package = new PackageInfo
+                        {
+                            Name = name,
+                            FriendlyName = friendlyName,
+                            Description = txtDescription.Text,
+                            Version = new Version(1, 0, 0),
+                            PackageType = "Module",
+                            License = Util.PACKAGE_NoLicense
+                        };
 
                     //Save Package
-                    PackageController.SavePackage(package);
+                    PackageController.Instance.SaveExtensionPackage(package);
 
-                    var objDesktopModules = new DesktopModuleController();
-                    var objDesktopModule = new DesktopModuleInfo();
+                    var objDesktopModule = new DesktopModuleInfo
+                        {
+                            DesktopModuleID = Null.NullInteger,
+                            ModuleName = name,
+                            FolderName = folder,
+                            FriendlyName = friendlyName,
+                            Description = txtDescription.Text,
+                            IsPremium = false,
+                            IsAdmin = false,
+                            Version = "01.00.00",
+                            BusinessControllerClass = "",
+                            CompatibleVersions = "",
+                            Dependencies = "",
+                            Permissions = "",
+                            PackageID = package.PackageID
+                        };
 
-                    objDesktopModule.DesktopModuleID = Null.NullInteger;
-                    objDesktopModule.ModuleName = name;
-                    objDesktopModule.FolderName = folder;
-                    objDesktopModule.FriendlyName = friendlyName;
-                    objDesktopModule.Description = txtDescription.Text;
-                    objDesktopModule.IsPremium = false;
-                    objDesktopModule.IsAdmin = false;
-                    objDesktopModule.Version = "01.00.00";
-                    objDesktopModule.BusinessControllerClass = "";
-                    objDesktopModule.CompatibleVersions = "";
-                    objDesktopModule.Dependencies = "";
-                    objDesktopModule.Permissions = "";
-                    objDesktopModule.PackageID = package.PackageID;
-
-#pragma warning disable 612,618
-                    objDesktopModule.DesktopModuleID = objDesktopModules.AddDesktopModule(objDesktopModule);
-#pragma warning restore 612,618
+                    objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
 
                     //Add module to all portals
                     DesktopModuleController.AddDesktopModuleToPortals(objDesktopModule.DesktopModuleID);
@@ -638,7 +638,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 
 						var uniqueName = true;
 						var packages = new List<PackageInfo>();
-						foreach (var package in PackageController.GetPackages())
+						foreach (var package in PackageController.Instance.GetExtensionPackages(Null.NullInteger))
 						{
 							if (package.Name == txtName.Text || package.FriendlyName == txtName.Text)
 							{

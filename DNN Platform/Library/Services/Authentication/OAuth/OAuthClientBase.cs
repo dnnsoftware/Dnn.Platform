@@ -594,17 +594,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             if (String.IsNullOrEmpty(user.TimeZoneInfo))
             {
-#pragma warning disable 612,618
-
                 int timeZone;
                 if (Int32.TryParse(user.Timezone, out timeZone))
                 {
-                    TimeZoneInfo timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(timeZone);
+                    var timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(timeZone);
 
                     profileProperties.Add("PreferredTimeZone", timeZoneInfo.Id);
                 }
-
-#pragma warning restore 612,618
             }
             else
             {
@@ -683,7 +679,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 responseText = ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + "access_token=" + AuthToken), null, String.Empty);
             }
-            TUserData user = Json.Deserialize<TUserData>(responseText);
+            var user = Json.Deserialize<TUserData>(responseText);
             return user;
         }
 

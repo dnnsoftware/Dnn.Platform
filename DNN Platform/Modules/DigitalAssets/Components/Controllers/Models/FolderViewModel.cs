@@ -19,29 +19,35 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
 {
     public class FolderViewModel
     {
-        public int FolderID { get; internal set; }
-
-        public int FolderMappingID { get; internal set; }
+        public FolderViewModel()
+        {
+            Attributes = new List<KeyValuePair<string, object>>(); 
+        }
         
-        public string FolderName { get; internal set; }
+        public int FolderID { get; set; }
 
-        public string IconUrl { get; internal set; }
+        public int FolderMappingID { get; set; }
 
-        public string FolderPath { get; internal set; }
+        public string FolderName { get; set; }
 
-        public string LastModifiedOnDate { get; internal set; }
+        public string IconUrl { get; set; }
+
+        public string FolderPath { get; set; }
+
+        public string LastModifiedOnDate { get; set; }
 
         public int PortalID { get; set; }
 
         public bool HasChildren { get; set; }
 
-        public IEnumerable<PermissionViewModel> Permissions { get; set; }        
+        public IEnumerable<PermissionViewModel> Permissions { get; set; }
+
+        public IList<KeyValuePair<string, object>> Attributes { get; set; } 
     }
 }

@@ -6,6 +6,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Services.Journal {
+    [Serializable]
     public class JournalTypeInfo : IHydratable {
         public int JournalTypeId { get; set; }
         public int PortalId { get; set; }

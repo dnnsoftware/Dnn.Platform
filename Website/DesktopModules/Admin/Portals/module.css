@@ -48,9 +48,7 @@
     font-weight: normal;
     margin: 0;
 }
-.ssasPremiumModule td.dnnFormLabel + td{
-    width: 8%; 
-}
+
 .dnnSiteSettings div.dnnssStat {
     border-top: 1px #ccc solid;
     padding: 1em 0 4em;
@@ -223,4 +221,8 @@ a[id$='IncrementCrmVersionButton']{
 
 #dnnSiteSettings .dnnUserVanityUrl {
     width: 25%;
+}
+
+#ssStylesheetEditor .editor {
+    margin-bottom: 2em;
 }

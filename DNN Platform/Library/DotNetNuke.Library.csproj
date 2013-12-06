@@ -123,6 +123,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Components\MVC4\System.Web.WebPages.dll</HintPath>
@@ -373,6 +374,11 @@
     <Compile Include="Entities\Users\UserTime.cs" />
     <Compile Include="Entities\Users\UserVisibilityMode.cs" />
     <Compile Include="ExtensionPoints\ContextMenuItemExtensionControl.cs" />
+    <Compile Include="ExtensionPoints\Filters\CompositeFilter.cs" />
+    <Compile Include="ExtensionPoints\Filters\NoFilter.cs" />
+    <Compile Include="ExtensionPoints\Filters\FilterByUnauthenticated.cs" />
+    <Compile Include="ExtensionPoints\Filters\FilterByHostMenu.cs" />
+    <Compile Include="ExtensionPoints\Filters\IExtensionPointFilter.cs" />
     <Compile Include="ExtensionPoints\IUserControlActions.cs" />
     <Compile Include="ExtensionPoints\IEditPageTabControlActions.cs" />
     <Compile Include="ExtensionPoints\DefaultExtensionControl.cs" />
@@ -399,12 +405,19 @@
     <Compile Include="ExtensionPoints\ToolBarButtonRenderer.cs" />
     <Compile Include="ExtensionPoints\ToolBarMenuButtonRenderer.cs" />
     <Compile Include="ExtensionPoints\UserControlExtensionControl.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\CommonJS.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\SpecificVersion.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\IJavaScriptLibraryController.cs" />
     <Compile Include="Framework\Internal\Reflection\AssemblyWrapper.cs" />
     <Compile Include="Framework\Internal\Reflection\IAssembly.cs" />
     <Compile Include="Framework\Internal\Reflection\IAssemblyLocator.cs" />
     <Compile Include="Framework\Internal\Reflection\ITypeLocator.cs" />
     <Compile Include="Framework\Internal\Reflection\TypeLocator.cs" />
     <Compile Include="Framework\IServiceFrameworkInternals.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScript.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibrary.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibraryController.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\ScriptLocation.cs" />
     <Compile Include="Framework\ServiceLocator.cs" />
     <Compile Include="ComponentModel\IComponentBuilder.cs" />
     <Compile Include="ComponentModel\IComponentInstaller.cs" />
@@ -441,6 +454,9 @@
     <Compile Include="Framework\ServicesFramework.cs" />
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
+    <Compile Include="Modules\SQL\Components\SqlQueryController.cs" />
+    <Compile Include="Modules\SQL\Components\SqlQuery.cs" />
+    <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />
     <Compile Include="Security\Profile\DNNProfileProvider.cs" />
@@ -468,22 +484,51 @@
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileDeletedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FolderDeletedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileAddedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FolderRenamedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FolderChangedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileMovedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileRenamedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FolderMovedEventArgs.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileLockedException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidMetadataValuesException.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\FileSystem\EventArgs\FileChangedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\FileEventHandlersContainer.cs" />
+    <Compile Include="Services\FileSystem\FileLinkClickController.cs" />
     <Compile Include="Services\FileSystem\FileVersionController.cs" />
     <Compile Include="Services\FileSystem\FileVersionInfo.cs" />
+    <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
+    <Compile Include="Services\FileSystem\IFileEventHandlersContainer.cs" />
+    <Compile Include="Services\FileSystem\IFileLincClickController.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
+    <Compile Include="Services\FileSystem\Internal\FileDeletionController.cs" />
+    <Compile Include="Services\FileSystem\Internal\FileLockingController.cs" />
+    <Compile Include="Services\FileSystem\Internal\IFileDeletionController.cs" />
+    <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
+    <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
+    <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
+    <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
+    <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
+    <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
+    <Compile Include="Services\Installer\Installers\JavaScriptLibraryInstaller.cs" />
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
+    <Compile Include="Services\Installer\Packages\IPackageController.cs" />
+    <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
     <Compile Include="Services\Search\Controllers\ModuleResultController.cs" />
+    <Compile Include="Services\Search\Controllers\UserResultController.cs" />
+    <Compile Include="Services\Search\Entities\SortDirections.cs" />
     <Compile Include="Services\Search\Entities\SearchResults.cs" />
     <Compile Include="Services\Search\Entities\SortFields.cs" />
     <Compile Include="Services\Search\Entities\SearchStopWords.cs" />
     <Compile Include="Services\Search\Entities\SynonymsGroup.cs" />
     <Compile Include="Services\Search\Internals\Constants.cs" />
+    <Compile Include="Services\Search\Internals\ISearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\SearchQueryAnalyzer.cs" />
     <Compile Include="Services\Search\Internals\ISearchHelper.cs" />
     <Compile Include="Services\Search\Internals\SearchContentSource.cs" />
@@ -491,6 +536,7 @@
     <Compile Include="Services\Search\Internals\SearchHelperImpl.cs" />
     <Compile Include="Services\Search\Internals\LuceneResult.cs" />
     <Compile Include="Services\Search\Internals\LuceneQuery.cs" />
+    <Compile Include="Services\Search\Internals\SearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\SearchSecurityTrimmer.cs" />
     <Compile Include="Services\Search\Internals\SearchStatistics.cs" />
     <Compile Include="Services\Search\Internals\SynonymAnalyzer.cs" />
@@ -509,6 +555,21 @@
     <Compile Include="Services\Search\Controllers\SearchController.cs" />
     <Compile Include="Services\Search\Controllers\SearchControllerImpl.cs" />
     <Compile Include="Services\Search\Entities\SearchQuery.cs" />
+    <Compile Include="Services\Search\UserIndexer.cs" />
+    <Compile Include="Services\Social\Messaging\Frequency.cs" />
+    <Compile Include="Services\Social\Subscriptions\Data\DataService.cs" />
+    <Compile Include="Services\Social\Subscriptions\Data\IDataService.cs" />
+    <Compile Include="Services\Social\Subscriptions\Entities\Subscription.cs" />
+    <Compile Include="Services\Social\Subscriptions\Entities\SubscriptionType.cs" />
+    <Compile Include="Services\Social\Subscriptions\ISubscriptionController.cs" />
+    <Compile Include="Services\Social\Subscriptions\ISubscriptionSecurityController.cs" />
+    <Compile Include="Services\Social\Subscriptions\ISubscriptionTypeController.cs" />
+    <Compile Include="Services\Social\Subscriptions\SubscriptionController.cs" />
+    <Compile Include="Services\Social\Subscriptions\SubscriptionSecurityController.cs" />
+    <Compile Include="Services\Social\Subscriptions\SubscriptionTypeController.cs" />
+    <Compile Include="Services\Social\Messaging\IUserPreferencesController.cs" />
+    <Compile Include="Services\Social\Messaging\UserPreference.cs" />
+    <Compile Include="Services\Social\Messaging\UserPreferencesController.cs" />
     <Compile Include="Services\Upgrade\DnnInstallLogger.cs" />
     <Compile Include="Services\Upgrade\Internals\IInstallController.cs" />
     <Compile Include="Services\Upgrade\Internals\InstallConfiguration\ConnectionConfig.cs" />
@@ -570,13 +631,12 @@
     <Compile Include="Services\Social\Messaging\Scheduler\CoreMessagingScheduler.cs" />
     <Compile Include="Services\Social\Notifications\Notification.cs" />
     <Compile Include="Services\Social\Notifications\NotificationTypeAction.cs" />
-    <Compile Include="Services\Social\Messaging\MessagingController.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageThreadsView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageBoxView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageFileView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageThreadView.cs" />
     <Compile Include="Services\Social\Messaging\Internal\Views\MessageConversationView.cs" />
-    <Compile Include="Services\Social\Messaging\MessagingControllerImpl.cs" />
+    <Compile Include="Services\Social\Messaging\MessagingController.cs" />
     <Compile Include="Services\Social\Messaging\Data\DataService.cs" />
     <Compile Include="Services\Social\Messaging\Data\IDataService.cs" />
     <Compile Include="Services\Social\Messaging\IMessagingController.cs" />
@@ -889,9 +949,8 @@
     <Compile Include="Services\Social\Notifications\Data\DataService.cs" />
     <Compile Include="Services\Social\Notifications\Data\IDataService.cs" />
     <Compile Include="Services\Social\Notifications\INotificationsController.cs" />
-    <Compile Include="Services\Social\Notifications\NotificationsControllerImpl.cs" />
-    <Compile Include="Services\Social\Notifications\NotificationType.cs" />
     <Compile Include="Services\Social\Notifications\NotificationsController.cs" />
+    <Compile Include="Services\Social\Notifications\NotificationType.cs" />
     <Compile Include="Services\SystemDateTime\SystemDateTime.cs" />
     <Compile Include="Services\EventQueue\Config\EventQueueConfiguration.cs" />
     <Compile Include="Services\EventQueue\Config\PublishedEvent.cs" />
@@ -1375,9 +1434,12 @@
     <Compile Include="UI\WebControls\DataGrids\RolesSelectionGrid.cs" />
     <Compile Include="UI\WebControls\DataGrids\TextColumn.cs" />
     <Compile Include="UI\WebControls\DataGrids\TextColumnTemplate.cs" />
+    <Compile Include="UI\WebControls\DnnGettingStartedOptions.cs" />
     <Compile Include="UI\WebControls\DualListBox.cs" />
     <Compile Include="UI\WebControls\Events\DualListBoxEventArgs.cs" />
     <Compile Include="UI\WebControls\Events\DualListBoxEventHandler.cs" />
+    <Compile Include="UI\WebControls\DnnGettingStarted.cs" />
+    <Compile Include="Services\GettingStarted\GettingStartedController.cs" />
     <Compile Include="UI\WebControls\LanguageSelector.cs" />
     <Compile Include="UI\WebControls\LiteralTemplate.cs" />
     <Compile Include="UI\WebControls\NavDataSource\NavDataPageHierarchicalEnumerable.cs" />
@@ -1561,7 +1623,6 @@
     <Compile Include="Common\Utilities\FileSystemPermissionVerifier.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\" />
     <Folder Include="Properties\" />
     <Folder Include="Services\Log\Logger\" />
   </ItemGroup>

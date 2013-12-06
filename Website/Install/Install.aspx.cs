@@ -59,7 +59,8 @@ namespace DotNetNuke.Services.Install
     public partial class Install : Page
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
-        #region "Private Methods"
+        
+        #region Private Methods
 
         private void ExecuteScripts()
         {
@@ -256,13 +257,11 @@ namespace DotNetNuke.Services.Install
                     Upgrade.Upgrade.UpgradeDNN(strProviderPath, databaseVersion);
 
                     //Install optional resources if present
-                    Upgrade.Upgrade.InstallPackages("Module", true);
-                    Upgrade.Upgrade.InstallPackages("Skin", true);
-                    Upgrade.Upgrade.InstallPackages("Container", true);
-                    Upgrade.Upgrade.InstallPackages("Language", true);
-                    Upgrade.Upgrade.InstallPackages("Provider", true);
-                    Upgrade.Upgrade.InstallPackages("AuthSystem", true);
-                    Upgrade.Upgrade.InstallPackages("Package", true);
+                    var packages = Upgrade.Upgrade.GetInstallPackages();
+                    foreach (var package in packages)
+                    {
+                        Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
+                    }
 
                     string strError = Config.UpdateInstallVersion(installVersion);
                     if (!string.IsNullOrEmpty(strError))
@@ -352,13 +351,11 @@ namespace DotNetNuke.Services.Install
             Response.Flush();
 
             //install new resources(s)
-            Upgrade.Upgrade.InstallPackages("Module", true);
-            Upgrade.Upgrade.InstallPackages("Skin", true);
-            Upgrade.Upgrade.InstallPackages("Container", true);
-            Upgrade.Upgrade.InstallPackages("Language", true);
-            Upgrade.Upgrade.InstallPackages("Provider", true);
-            Upgrade.Upgrade.InstallPackages("AuthSystem", true);
-            Upgrade.Upgrade.InstallPackages("Package", true);
+            var packages = Upgrade.Upgrade.GetInstallPackages();
+            foreach (var package in packages)
+            {
+                Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
+            }
 
             Response.Write("<h2>Installation Complete</h2>");
             Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");

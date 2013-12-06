@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         public GroupedBasicView(BasicView basic)
         {
             DocumentTypeName = basic.DocumentTypeName;
-            Results = new List<BasicView> {new BasicView {Title = basic.Title, Snippet = basic.Snippet, DocumentUrl = basic.DocumentUrl}};
+            Results = new List<BasicView> {new BasicView {Title = basic.Title, Snippet = basic.Snippet, DocumentUrl = basic.DocumentUrl, Attributes = basic.Attributes}};
         }
 
         #endregion

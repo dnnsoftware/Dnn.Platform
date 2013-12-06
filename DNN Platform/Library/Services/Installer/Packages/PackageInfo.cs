@@ -38,21 +38,17 @@ namespace DotNetNuke.Services.Installer.Packages
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class PackageInfo : BaseEntityInfo
     {
+        private IList<PackageDependencyInfo> _dependencies;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new InstallPackage instance as defined by the
         /// Parameters
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PackageInfo(InstallerInfo info) : this()
         {
@@ -62,9 +58,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <summary>
         /// This Constructor creates a new InstallPackage instance
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PackageInfo()
         {
@@ -75,69 +68,22 @@ namespace DotNetNuke.Services.Installer.Packages
             InstalledVersion = new Version(0, 0, 0);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ID of this package
-        /// </summary>
-        /// <value>An Integer</value>
-        /// <history>
-        /// 	[cnurse]	07/26/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public int PackageID { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ID of this portal
-        /// </summary>
-        /// <value>An Integer</value>
-        /// <history>
-        /// 	[cnurse]	09/11/2008  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public int PortalID { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Owner of this package
-        /// </summary>
-        /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/26/2008  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public string Owner { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Organisation for this package
-        /// </summary>
-        /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/26/2008  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public string Organization { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Url for this package
-        /// </summary>
-        /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/26/2008  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public string Url { get; set; }
+        [XmlIgnore]
+        public IList<PackageDependencyInfo> Dependencies 
+        { 
+            get
+            {
+                return _dependencies ?? (_dependencies = (PackageID == -1) 
+                                        ? new List<PackageDependencyInfo>() 
+                                        : PackageController.Instance.GetPackageDependencies(p => p.PackageId == PackageID));
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Email for this package
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/26/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Email { get; set; }
 
@@ -146,9 +92,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets the Description of this package
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/26/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Description { get; set; }
 
@@ -165,9 +108,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets a Dictionary of Files that are included in the Package
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public Dictionary<string, InstallFile> Files
@@ -180,50 +120,50 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the FriendlyName of this package
+        /// Gets the name (path) of the folder where the package is installed
         /// </summary>
-        /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
+        /// <value>A string</value>
         /// -----------------------------------------------------------------------------
-        public string FriendlyName { get; set; }
-
         public string FolderName { get; set; }
-
-        public string IconFile { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated InstallerInfo
+        /// Gets and Sets the FriendlyName of this package
         /// </summary>
-        /// <value>An InstallerInfo object</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
+        /// <value>A String</value>
         /// -----------------------------------------------------------------------------
-        [XmlIgnore]
-        public InstallerInfo InstallerInfo { get; private set; }
+        public string FriendlyName { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the url for the icon for the package
+        /// </summary>
+        /// <value>A string</value>
+        /// -----------------------------------------------------------------------------
+        public string IconFile { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Installed Version of the Package
         /// </summary>
         /// <value>A System.Version</value>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Version InstalledVersion { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the associated InstallerInfo
+        /// </summary>
+        /// <value>An InstallerInfo object</value>
+        /// -----------------------------------------------------------------------------
+        [XmlIgnore]
+        public InstallerInfo InstallerInfo { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the InstallMode
         /// </summary>
         /// <value>An InstallMode value</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public InstallMode InstallMode
         {
@@ -238,11 +178,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets and Sets whether this package is a "system" Package
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/19/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
-
         public bool IsSystemPackage { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -250,9 +186,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets whether the Package is Valid
         /// </summary>
         /// <value>A Boolean value</value>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public bool IsValid { get; private set; }
@@ -262,9 +195,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets and Sets the License of this package
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string License { get; set; }
 
@@ -273,9 +203,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets the Logger
         /// </summary>
         /// <value>An Logger object</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public Logger Log
@@ -291,9 +218,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets the Manifest of this package
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/26/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Manifest { get; set; }
 
@@ -302,42 +226,70 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets the Name of this package
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Name { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Organisation for this package
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
+        public string Organization { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Owner of this package
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
+        public string Owner { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the ID of this package
+        /// </summary>
+        /// <value>An Integer</value>
+        /// -----------------------------------------------------------------------------
+        public int PackageID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Type of this package
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string PackageType { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the ID of this portal
+        /// </summary>
+        /// <value>An Integer</value>
+        /// -----------------------------------------------------------------------------
+        public int PortalID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and Sets the ReleaseNotes of this package
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/07/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ReleaseNotes { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Url for this package
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
+        public string Url { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Version of this package
         /// </summary>
         /// <value>A System.Version</value>
-        /// <history>
-        /// 	[cnurse]	07/26/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Version Version { get; set; }
 
@@ -346,9 +298,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// The AttachInstallerInfo method attachs an InstallerInfo instance to the Package
         /// </summary>
         /// <param name="installer">The InstallerInfo instance to attach</param>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void AttachInstallerInfo(InstallerInfo installer)
         {

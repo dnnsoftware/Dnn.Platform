@@ -38,6 +38,10 @@ using System.Data;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using DotNetNuke.Modules.SQL.Components;
+using System.Text.RegularExpressions;
+using System.Web.UI.HtmlControls;
+using System.Web.UI;
 
 #endregion
 
@@ -61,68 +65,34 @@ namespace DotNetNuke.Modules.Admin.SQL
 
         #region Event Handlers
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        ///     [VMasanas]  9/28/2004   Changed redirect to Access Denied
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             CheckSecurity();
+            LoadPlugins();
 
             cmdExecute.Click += OnExecuteClick;
             cmdUpload.Click += OnUploadClick;
-            ResultsRepeater.ItemDataBound += ResultsRepeater_ItemDataBound;
+            btDelete.ServerClick += btDelete_Click;
+            lnkSave.Click += lnkSave_Click;
+            rptResults.ItemDataBound += rptResults_ItemDataBound;
+            ddlSavedQuery.SelectedIndexChanged += ddlSavedQuery_SelectedIndexChanged;
+
+            txtQuery.Attributes.Add("placeholder", Localization.GetSafeJSString(LocalizeString("Placeholder")));
 
             try
             {
-                if (!UserInfo.IsSuperUser)
-                {
-                    Response.Redirect(Globals.NavigateURL("Access Denied"), true);
-                }
                 if (!Page.IsPostBack)
                 {
-                    ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
-                    foreach (ConnectionStringSettings connection in connections)
-                    {
-                        if (connection.Name.ToLower() != "localmysqlserver" && connection.Name.ToLower() != "localsqlserver")
-                        {
-                            cboConnection.AddItem(connection.Name, connection.Name);
-                        }
-                    }
-                    cboConnection.SelectedIndex = 0;
+                    LoadConnectionStrings();
+                    LoadSavedQueries();
+
                     cmdExecute.ToolTip = Localization.GetString("cmdExecute.ToolTip", LocalResourceFile);
-                    chkRunAsScript.ToolTip = Localization.GetString("chkRunAsScript.ToolTip", LocalResourceFile);
+                    //DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(btDelete, LocalizeString("DeleteItem"));
                 }
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        private void ResultsRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            try
-            {
-                if (e.Item.ItemType != ListItemType.AlternatingItem && e.Item.ItemType != ListItemType.Item)
-                {
-                    return;
-                }
-
-                var gvResults = (DnnGrid)e.Item.FindControl("gvResults");
-                gvResults.PreRender += this.gvResults_PreRender;
-                gvResults.DataSource = e.Item.DataItem;
-                gvResults.DataBind();
+                var js = string.Format("javascript:return confirm('{0}');", Localization.GetSafeJSString(LocalizeString("DeleteItem")));
+                btDelete.Attributes.Add("onClick", js);
             }
             catch (Exception exc)
             {
@@ -130,83 +100,207 @@ namespace DotNetNuke.Modules.Admin.SQL
             }
         }
 
-
-        void gvResults_PreRender(object sender, EventArgs e)
-        {
-            ((DnnGrid)sender).ClientSettings.Scrolling.AllowScroll = false;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdExecute_Click runs when the Execute button is clicked
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void OnExecuteClick(object sender, EventArgs e)
         {
             try
             {
-
-                if (!String.IsNullOrEmpty(txtQuery.Text))
+                if (!Page.IsValid)
                 {
-                    var connectionstring = Config.GetConnectionString(cboConnection.SelectedValue);
-                    if (chkRunAsScript.Checked)
+                    return;
+                }
+                pnlResults.Visible = false;
+                pnlError.Visible = false;
+
+                var connectionstring = Config.GetConnectionString(ddlConnection.SelectedValue);
+
+                if (RunAsScript())
+                {
+                    var strError = DataProvider.Instance().ExecuteScript(connectionstring, txtQuery.Text);
+                    if (strError == Null.NullString)
                     {
-                        var strError = DataProvider.Instance().ExecuteScript(connectionstring, txtQuery.Text);
-                        if (strError == Null.NullString)
+                        pnlResults.Visible = true;
+                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                    }
+                    else
+                    {
+                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        pnlError.Visible = true;
+                        txtError.Text = strError;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        string errorMessage;
+                        var dr = DataProvider.Instance().ExecuteSQLTemp(connectionstring, txtQuery.Text, out errorMessage);
+                        if (dr != null)
                         {
+                            var tables = new List<DataTable>();
+                            string tabs = "";
+                            int numTabs = 1;
+                            do
+                            {
+                                var table = new DataTable { Locale = CultureInfo.CurrentCulture };
+                                table.Load(dr);
+                                tables.Add(table);
+                                tabs += string.Format("<li><a href='#result_{0}'>{1} {0}</a></li>", numTabs.ToString(), LocalizeString("ResultTitle"));
+                                numTabs++;
+                            }
+                            while (!dr.IsClosed); // table.Load automatically moves to the next result and closes the reader once there are no more
+
+                            plTabs.Controls.Add(new LiteralControl(tabs));
+                            rptResults.DataSource = tables;
+                            rptResults.DataBind();
+
+                            pnlResults.Visible = true;
                             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                         }
                         else
                         {
-                            UI.Skins.Skin.AddModuleMessage(this, strError, ModuleMessage.ModuleMessageType.RedError);
+                            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            pnlError.Visible = true;
+                            txtError.Text = errorMessage;
                         }
                     }
-                    else
+                    catch (SqlException sqlException)
                     {
-                        try
-                        {
-                            var dr = DataProvider.Instance().ExecuteSQLTemp(connectionstring, txtQuery.Text);
-                            if (dr != null)
-                            {
-                                var tables = new List<DataTable>();
-                                do
-                                {
-                                    var table = new DataTable { Locale = CultureInfo.CurrentCulture };
-                                    table.Load(dr);
-                                    tables.Add(table);
-                                }
-                                while (!dr.IsClosed); // table.Load automatically moves to the next result and closes the reader once there are no more
-
-                                ResultsRepeater.DataSource = tables;
-                                ResultsRepeater.DataBind();
-
-                                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
-                            }
-                            else
-                            {
-
-                                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                            }
-                        }
-                        catch (SqlException sqlException)
-                        {
-                            UI.Skins.Skin.AddModuleMessage(this, sqlException.Message, ModuleMessage.ModuleMessageType.RedError);
-                            return;
-                        }
+                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        pnlError.Visible = true;
+                        txtError.Text = sqlException.Message;
+                        return;
                     }
-                    RecordAuditEventLog(txtQuery.Text);
                 }
+                RecordAuditEventLog(txtQuery.Text);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void rptResults_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
+                {
+                    var gvResults = (GridView)e.Item.FindControl("gvResults");
+                    var lblRows = (Label)e.Item.FindControl("lblRows");
+
+                    gvResults.DataSource = e.Item.DataItem;
+                    gvResults.DataBind();
+                    gvResults.ToolTip = "Query " + (e.Item.ItemIndex + 1).ToString();
+                    
+
+                    if (gvResults.Rows.Count == 0)
+                    {
+                        lblRows.Text = LocalizeString("NoDataReturned");
+                    }
+                    else
+                    {
+                        gvResults.PreRender += gvResults_PreRender;
+                        //lblRows.Text = string.Format(LocalizeString("NumRowsReturned"), gvResults.Rows.Count);
+                        lblRows.Visible = false;
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        void gvResults_PreRender(object sender, EventArgs e)
+        {
+            GridView gvResults = (GridView)sender;
+            gvResults.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
+
+        private void ddlSavedQuery_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlSavedQuery.SelectedValue == "")
+            {
+                txtQuery.Text = "";
+                btDelete.Visible = false;
+                ddlConnection.SelectedValue = "SiteSqlServer";
+            }
+            else
+            {
+                SqlQueryController ctl = new SqlQueryController();
+                SqlQuery query = ctl.GetQuery(int.Parse(ddlSavedQuery.SelectedValue));
+                if (query != null)
+                {
+                    txtQuery.Text = query.Query;
+                    btDelete.Visible = true;
+                    if (ddlConnection.Items.FindByValue(query.ConnectionStringName) != null)
+                    {
+                        ddlConnection.SelectedValue = query.ConnectionStringName;
+                    }
+                    else
+                    {
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, string.Format(LocalizeString("CnnStringNotFound"), query.ConnectionStringName), ModuleMessage.ModuleMessageType.YellowWarning);
+                    }
+                }
+            }
+        }
+
+        private void lnkSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SqlQueryController ctl = new SqlQueryController();
+                SqlQuery query = ctl.GetQuery(txtName.Text);
+                if (query == null)
+                {
+                    query = new SqlQuery();
+                    query.CreatedByUserId = UserId;
+                    query.CreatedOnDate = DateTime.Now;
+                }
+                query.Name = txtName.Text;
+                query.Query = txtQuery.Text;
+                query.ConnectionStringName = ddlConnection.SelectedValue;
+                query.LastModifiedByUserId = UserId;
+                query.LastModifiedOnDate = DateTime.Now;
+
+                if (query.QueryId == 0)
+                {
+                    ctl.AddQuery(query);
+                }
+                else
+                {
+                    ctl.UpdateQuery(query);
+                }
+                LoadSavedQueries();
+                ddlSavedQuery.SelectedValue = query.QueryId.ToString();
+                btDelete.Visible = true;
+
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("Saved"), ModuleMessage.ModuleMessageType.GreenSuccess);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        private void btDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SqlQueryController ctl = new SqlQueryController();
+                SqlQuery query = ctl.GetQuery(int.Parse(ddlSavedQuery.SelectedValue));
+                if (query != null)
+                {
+                    ctl.DeleteQuery(query);
+                    LoadSavedQueries();
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("Deleted"), ModuleMessage.ModuleMessageType.GreenSuccess);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+
         }
 
         protected void OnUploadClick(object sender, EventArgs e)
@@ -241,6 +335,50 @@ namespace DotNetNuke.Modules.Admin.SQL
             }
         }
 
+        private void LoadConnectionStrings()
+        {
+            ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
+            foreach (ConnectionStringSettings connection in connections)
+            {
+                if (connection.Name.ToLower() != "localmysqlserver" && connection.Name.ToLower() != "localsqlserver")
+                {
+                    ddlConnection.Items.Add(new ListItem(connection.Name, connection.Name));
+                }
+            }
+            ddlConnection.SelectedIndex = 0;
+        }
+
+        private void LoadSavedQueries()
+        {
+            SqlQueryController ctl = new SqlQueryController();
+            ddlSavedQuery.DataSource = ctl.GetQueries();
+            ddlSavedQuery.DataBind();
+
+            ddlSavedQuery.Items.Insert(0, new ListItem(LocalizeString("NewQuery"), ""));
+            btDelete.Visible = false;
+
+        }
+
+        private bool RunAsScript()
+        {
+            string _scriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
+            Regex objRegex = new Regex(_scriptDelimiterRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            return objRegex.IsMatch(txtQuery.Text);
+        }
+
+        private void LoadPlugins()
+        {
+            Page.ClientScript.RegisterClientScriptInclude("datatables", this.TemplateSourceDirectory + "/plugins/datatables/js/jquery.dataTables.min.js");
+            Page.ClientScript.RegisterClientScriptInclude("fixedheader", this.TemplateSourceDirectory + "/plugins/datatables/js/FixedHeader.min.js");
+            Page.ClientScript.RegisterClientScriptInclude("fixedcolumn", this.TemplateSourceDirectory + "/plugins/datatables/js/FixedColumns.min.js");
+            Page.ClientScript.RegisterClientScriptInclude("tabletools", this.TemplateSourceDirectory + "/plugins/datatables/js/TableTools.min.js");
+            Page.ClientScript.RegisterClientScriptInclude("zclip", this.TemplateSourceDirectory + "/plugins/datatables/js/ZeroClipboard.js");
+        }
+
+        protected string GetClipboardPath()
+        {
+            return this.TemplateSourceDirectory + "/plugins/clipboard/zeroclipboard.swf";
+        }
         #endregion
 
     }

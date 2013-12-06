@@ -49,6 +49,13 @@ namespace DotNetNuke.Authentication.Twitter
             return OAuthClient.GetCurrentUser<TwitterUserData>();
         }
 
+        protected override void AddCustomProperties(System.Collections.Specialized.NameValueCollection properties)
+        {
+            base.AddCustomProperties(properties);
+
+            properties.Add("Twitter", string.Format("http://twitter.com/{0}", OAuthClient.GetCurrentUser<TwitterUserData>().ScreenName));
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

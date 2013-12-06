@@ -6,7 +6,6 @@
 }
 
 #dnnModuleDigitalAssetsLeftPane {
-    border-top: 1px solid #CCCCCC;
     position: absolute;
     width: 220px;
     min-height: 465px;
@@ -25,6 +24,7 @@
 
 #dnnModuleDigitalAssetsLeftPane ul.dnnAdminTabNav li {    
     width: 50%;
+    margin-right: 0;
 }
 
 #dnnModuleDigitalAssetsLeftPane ul.dnnAdminTabNav li a {    
@@ -43,14 +43,42 @@
 }
 
 #dnnModuleDigitalAssetsLeftPaneFilesTabContentScroll {
-    padding-top: 10px;
-    width: 100%;
-    height: 100%;
+    padding-top: 10px;    
     outline: none;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 10px;
+    right: 0;    
+}
+
+#dnnModuleDigitalAssetsLeftPaneActions {
+    position: absolute;   
+    list-style: none outside none; 
+    color: #000000;
+    font: 12px/16px "Segoe UI",Arial,Helvetica,sans-serif;
+    margin-left: 0;
+}
+
+#dnnModuleDigitalAssetsLeftPaneActions li {
+    cursor: pointer;
+    line-height: 40px; 
+    background-position: 3px center;
+    background-repeat: no-repeat;
+    padding-left: 22px;
+}
+
+#dnnModuleDigitalAssetsLeftPaneActions li.selected {
+    color: #4E89E3;
+    font-weight: bold;
 }
 
 #dnnModuleDigitalAssetsContentPane {
     margin-left: 220px;
+}
+
+#dnnModuleDigitalAssetsContentPane .dnnCheckbox-focus {
+    background-color: transparent;
 }
 
 .dnnModuleDigitalAssetsErrorMessage {
@@ -61,15 +89,16 @@
     padding: 9px 10px;
 }
 
-#dnnModuleDigitalAssetsSelectionToolbar, #dnnModuleDigitalAssetsListViewToolbar, #dnnModuleDigitalAssetsListContainer {    
+#dnnModuleDigitalAssetsSelectionToolbar, #dnnModuleDigitalAssetsListViewToolbar, #dnnModuleDigitalAssetsListContainer,
+.dnnModuleDigitalAssetsGrid > table > thead > tr {    
     min-height: 20px;
     border: none;
     border-right: 1px solid #E0E0E0;
     background: #f0f2f1;
-	background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
-	background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
     border-left: 1px solid #CCCCCC;
 }
 
@@ -178,15 +207,13 @@
     padding: 1px;
     font-size: 12px;
     text-align: center;
-    min-height: 452px;
 }
 
 #dnnModuleDigitalAssetsListViewNoItems {
     padding-top: 2px;
 }
 
-span.dnnModuleDigitalAssetsNoItems, 
-span.dnnModuleDigitalAssetsNoItemsSearch {
+span.dnnModuleDigitalAssetsNoItems {
     color: #BBBBBB;
     text-align: center;
     text-decoration: none !important;
@@ -225,11 +252,11 @@ span.dnnModuleDigitalAssetsNoItemsSearch {
     background-image: -webkit-linear-gradient(top, #FEFEFE 0%, #EAEAEA 100%);
     background-image: -ms-linear-gradient(top, #FEFEFE 0%, #EAEAEA 100%);
     background-image: -webkit-gradient(
-	    linear,
-	    left top,
-	    left bottom,
-	    color-stop(0, #FEFEFE),
-	    color-stop(1, #EAEAEA)
+        linear,
+        left top,
+        left bottom,
+        color-stop(0, #FEFEFE),
+        color-stop(1, #EAEAEA)
     );
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFFFFF inset;
     border: 1px solid #C2C2C2;
@@ -294,10 +321,10 @@ span.dnnModuleDigitalAssetsNoItemsSearch {
     margin-right: 11px;
     margin-top: 10px;
     position: relative;
-    width: 250px;
+    min-width: 300px;
 }
 
-#dnnModuleDigitalAssetsSearchBox input {
+#dnnModuleDigitalAssetsSearchBox > input.searchInput {
     color: #777777;
     background: none repeat scroll 0 0 transparent;
     border: medium none;
@@ -308,13 +335,13 @@ span.dnnModuleDigitalAssetsNoItemsSearch {
     outline: none;
 }
 
-#dnnModuleDigitalAssetsSearchBox a {
+#dnnModuleDigitalAssetsSearchBox > a.searchButton {
     background-image: url("Images/Search.png");
-    display: block;
+    cursor: pointer;
     height: 16px;
-    position: absolute;
+    position: relative;
+    float: right;
     right: 9px;
-    text-indent: -10000px;
     top: 6px;
     width: 16px;
 }
@@ -516,8 +543,7 @@ li.rmItem a.permission_denied {
     height: 16px;
 }
 
-.dnnModuleDigitalAssetsLoading
-{
+.dnnModuleDigitalAssetsLoading {
     background: url("../../images/loading.gif") no-repeat scroll center center #FFFFFF;
     position: absolute;
     z-index: 999;
@@ -525,9 +551,10 @@ li.rmItem a.permission_denied {
 }
 
 .dnnModuleDigitalAssetsMainLoading {
-    display: none; 
-    width: 100%;
-    height: 100%;
+    bottom: 0;
+    left: 220px;
+    right: 0;
+    top: 42px;
 }
 
 #dnnModuleDigitalAssetsAlertItemsSubtext {
@@ -656,7 +683,6 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
     background-image: none;    
     border-bottom: 1px solid #DFDFDF;
     height: 35px;
-    width: 180px;
 }
 
 .RadMenu.dnnModuleDigitalAssetsContextMenu, .RadMenu.dnnModuleDigitalAssetsContextMenu a.rmLink 
@@ -669,7 +695,6 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
 .RadMenu.dnnModuleDigitalAssetsContextMenu ul.rmGroup {
     border-radius: 5px;
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-    width: 180px;
 }
 
 .RadMenu.dnnModuleDigitalAssetsContextMenu ul.rmGroup span.rmText {
@@ -1003,7 +1028,12 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
 }
 
 .dnnModuleDigitalAssetsGeneralPropertiesSingleField{
-    margin-left: 8px;
+    margin-left: 8px;    
+}
+
+.dnnLabel + span.dnnModuleDigitalAssetsGeneralPropertiesSingleField
+{
+    margin-bottom: 18px;
 }
 
 .dnnModuleDigitalAssetsGeneralPropertiesGroupedFields {
@@ -1018,8 +1048,8 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
     left: -5px;
 }
 
-.dnnModuleDigitalAssetsGeneralProperties .dnnFormItem{
-    margin-bottom: 5px;
+.dnnFormItem > div.dnnModuleDigitalAssetsGeneralPropertiesGroupedFields {    
+    margin-bottom: 18px;
 }
 
 .dnnModuleDigitalAssetsGeneralProperties .token-input-list-facebook {
@@ -1047,28 +1077,19 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
     color: black;
 }
 
-/* TABS */
-ul.dnnModuleDigitalAssetsTabNav {
-    border-bottom-width: 0px;
-}
-
 #dnnModuleDigitalAssetsLeftPane ul.buttonGroup li a {
     padding: 5px 0px;
     margin-top: 5px;    
     border: 1px solid #c2c2c2;
     background: #f0f2f1;
-	background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); 
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); 
-	background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); 
-	background: linear-gradient(top, #fff 0%,#f0f2f1 100%); 
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); 
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); 
+    background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); 
+    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); 
     color: #999999;
     font-weight: normal;
     box-shadow: 0 1px grey;
     -webkit-box-shadow: 0 1px grey;
-}
-
-#dnnModuleDigitalAssetsLeftPane ul.dnnAdminTabNav li {
-    margin-right: 0;
 }
 
 #dnnModuleDigitalAssetsLeftPane ul.buttonGroup li:first-child a
@@ -1111,9 +1132,9 @@ ul.dnnModuleDigitalAssetsTabNav {
 }
 
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_wrapper {
-	height:16px;    
+    height:16px;    
     margin-top: 5px;
-	min-width:25px;
+    min-width:25px;
     position: relative;
     float: right;
     top: -5px;
@@ -1128,27 +1149,27 @@ ul.dnnModuleDigitalAssetsTabNav {
 }
 
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_menu {
-	position: absolute;
+    position: absolute;
     right: -3px;
     bottom: -13px;
-	display:none;
-	min-width:82px; 
+    display:none;
+    min-width:82px; 
     margin-top: 24px;
-	background-color:#fff;
-	z-index:1000;
+    background-color:#fff;
+    z-index:1000;
 }
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_menu .handle{
-	z-index:1000;
-	position:absolute; 
+    z-index:1000;
+    position:absolute; 
     right: 19px;
     top: -29px;
     width: 39px;
     height:25px;
-	border:1px solid #ccc;
-	border-bottom:1px solid #fff;
-	-moz-border-radius-topright: 3px;
-	-webkit-border-radius: 			0px 3px 0px 0px;
-	border-radius: 					0px 3px 0px 0px; 
+    border:1px solid #ccc;
+    border-bottom:1px solid #fff;
+    -moz-border-radius-topright: 3px;
+    -webkit-border-radius: 			0px 3px 0px 0px;
+    border-radius: 					0px 3px 0px 0px; 
 }
 
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_menu .handle:hover
@@ -1161,21 +1182,21 @@ ul.dnnModuleDigitalAssetsTabNav {
 }
 
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_menu ul{
-	position:absolute; 
+    position:absolute; 
     top:-3px; 
     right:-157px;
     width: 215px;
-	padding:10px 0 10px 0;
-	border:1px solid #ccc;
-	list-style:none;
-	background:#fff;
-	
-	-webkit-border-radius: 0px 0px 3px 3px;
+    padding:10px 0 10px 0;
+    border:1px solid #ccc;
+    list-style:none;
+    background:#fff;
+    
+    -webkit-border-radius: 0px 0px 3px 3px;
     border-radius: 0px 0px 3px 3px;
-	
-	-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
-	-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
-	box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+    
+    -webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
+    box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
         
 }
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_menu ul li {

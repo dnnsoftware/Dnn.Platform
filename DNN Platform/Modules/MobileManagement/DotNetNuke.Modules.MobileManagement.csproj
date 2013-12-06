@@ -92,21 +92,18 @@
     <Compile Include="Views\IRedirectionSettingsView.cs" />
     <Compile Include="Views\RedirectionManagerView.ascx.cs">
       <DependentUpon>RedirectionManagerView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\RedirectionManagerView.ascx.designer.cs">
       <DependentUpon>RedirectionManagerView.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\RedirectionSettingsView.ascx.cs">
       <DependentUpon>RedirectionSettingsView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\RedirectionSettingsView.ascx.designer.cs">
       <DependentUpon>RedirectionSettingsView.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\SimpleSettingsView.ascx.cs">
       <DependentUpon>SimpleSettingsView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\SimpleSettingsView.ascx.designer.cs">
       <DependentUpon>SimpleSettingsView.ascx</DependentUpon>
@@ -119,6 +116,7 @@
     <Content Include="Images\MobileManagement_Standard_16x16.png" />
     <Content Include="Images\MobileManagement_Standard_32x32.png" />
     <Content Include="packages.config" />
+    <Content Include="Module.build" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />
@@ -168,52 +166,12 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>dnn_MobileManagement</DNNFileName>
-    <PackageName>DNNCE_MobileManagement</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-      <SourceFiles Include="*.asmx;*.js;*.css;*.png" />
-      <ResourceFiles Include="App_LocalResources\*.resx" />
-      <JsFiles Include="js/*.*" />
-      <ConfigFiles Include="*.config" />
-      <Images Include="Images/*.*" />
-      <Views Include="Views\*.ascx" />
-      <Resources Include="@(ResourceFiles);@(SourceFiles);@(Images);@(ConfigFiles);@(TextFiles);@(JsFiles);" />
-    </ItemGroup>
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CreateItem Include="*.dnn">
-      <Output TaskParameter="Include" ItemName="Manifests" />
-    </CreateItem>
-    <CreateItem Include="web.config">
-      <Output TaskParameter="Include" ItemName="Config" />
-    </CreateItem>
-    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\MobileManagement" />
-    <Copy SourceFiles="@(Views)" DestinationFolder="$(WebsitePath)\DesktopModules\MobileManagement" />
-    <Copy SourceFiles="@(Images)" DestinationFolder="$(WebsitePath)\DesktopModules\MobileManagement\Images" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\MobileManagement\App_LocalResources" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>

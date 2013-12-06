@@ -63,6 +63,7 @@
             var data = {};
             data.JournalId = jid;
             data.Comment = encodeURIComponent($textarea.val());
+            data.mentions = $textarea.data("mentions");
             var tmpValue = $textarea.val();
             tmpValue = tmpValue.replace(/<(?:.|\n)*?>/gm, '').replace(/\s+/g, '').replace(/&nbsp;/g, '');
             if (tmpValue == '') {
@@ -85,8 +86,7 @@
             var li = $(data);
             li.insertBefore('#' + $id + ' .cmteditarea');
             $(li).find('.miniclose').bind('click', deleteComment);
-
-
+            bindConfirm();
         }
         function Post(method, data, callback, journalId) {
             var sf = opts.servicesFramework;

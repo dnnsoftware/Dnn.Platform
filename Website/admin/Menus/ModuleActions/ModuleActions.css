@@ -48,15 +48,15 @@ form .dnn_mact > li > a {
 }
 
 form .dnn_mact > li.actionMenuEdit > a {
-    background-position: 2px 3px;
+    background-position: 2px 0px;
 }
 
 form .dnn_mact > li.actionMenuAdmin > a {
-    background-position: -48px 3px;
+    background-position: -48px 0px;
 }
 
 form .dnn_mact > li.actionMenuMove > a {
-    background-position: -99px 3px;
+    background-position: -99px 0px;
 }
 
 form .dnn_mact > li.actionMenuEdit:hover > a {

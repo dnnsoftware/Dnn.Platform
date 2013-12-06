@@ -34,6 +34,14 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+
+			_logContent = LogContent();
+		}
+
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs(_logContent);
 		}
 
 		[Test]
@@ -90,6 +98,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			adminLanguagesPage.EnableLocalization();
 
+			adminLanguagesPage.WaitForElement(By.XPath(AdminLanguagesPage.LanguagesTable));
 			Trace.WriteLine(BasePage.TraceLevelPage + "The localization table should be present");
 			Assert.IsTrue(adminLanguagesPage.ElementPresent(By.XPath(AdminLanguagesPage.LocalizationTable)),
 						"The Localization table is not present");

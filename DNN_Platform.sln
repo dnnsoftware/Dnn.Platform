@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Client", "DN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Syndication", "DNN Platform\Syndication\DotNetNuke.Syndication.csproj", "{9F2F4076-D434-448F-9CBB-7BF7A9766AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Externally.Sourced", "DNN Platform\Externally Sourced\Externally.Sourced.csproj", "{9E1E178B-844B-40B8-9665-384220C46C1E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Library", "DNN Platform\Library\DotNetNuke.Library.csproj", "{6B29ADED-7B56-4484-BEA5-C0E09079535B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountryListBox", "DNN Platform\Controls\CountryListBox\CountryListBox.csproj", "{CA056730-5759-41F8-A6C1-420F9C0C63E7}"
@@ -94,10 +92,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.UI", "DNN 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Core", "DNN Platform\Tests\DotNetNuke.Tests.Core\DotNetNuke.Tests.Core.csproj", "{BCA9AC2A-1DF7-4697-8836-452E13E7CAFA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Automation", "Automation", "{98739F02-F34A-4427-9A17-C0509E7AAD75}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.DNNSelenium", "DNN Platform\Tests\DotNetNuke.Tests.Selenium\DotNetNuke.Tests.DNNSelenium.csproj", "{96FD101E-326A-4038-A081-A347061A6B77}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{7E98CA08-903E-45F7-BD83-853763D5E15B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
@@ -145,7 +139,67 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Taxonomy",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JavaScript Libraries", "JavaScript Libraries", "{886DB964-63D4-4841-81D1-5A7360C98230}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{6308FA00-5E1A-4924-98C1-4B4010AD2BEB}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt = DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt
+		DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn = DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn
+		DNN Platform\JavaScript Libraries\Knockout\knockout.js = DNN Platform\JavaScript Libraries\Knockout\knockout.js
+		DNN Platform\JavaScript Libraries\Knockout\releaseNotes.txt = DNN Platform\JavaScript Libraries\Knockout\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{D8E1B782-01BB-4FEC-8E8D-E5729CBB3C5E}"
+	ProjectSection(SolutionItems) = preProject
+		DNN_Platform.build = DNN_Platform.build
+		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
+		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Authentication", "DNN Platform\Tests\DotNetNuke.Tests.Authentication\DotNetNuke.Tests.Authentication.csproj", "{0E8502FD-DE8B-46A5-AB96-B1BE39777917}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery", "jQuery", "{4E0EBB54-3987-461C-85C5-9281AC49C72B}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQuery\jQuery (MIT).txt = DNN Platform\JavaScript Libraries\jQuery\jQuery (MIT).txt
+		DNN Platform\JavaScript Libraries\jQuery\jQuery.dnn = DNN Platform\JavaScript Libraries\jQuery\jQuery.dnn
+		DNN Platform\JavaScript Libraries\jQuery\jquery.js = DNN Platform\JavaScript Libraries\jQuery\jquery.js
+		DNN Platform\JavaScript Libraries\jQuery\jquery.min.map = DNN Platform\JavaScript Libraries\jQuery\jquery.min.map
+		DNN Platform\JavaScript Libraries\jQuery\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQuery\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryUI", "jQueryUI", "{6040AAC4-8533-4EBF-8918-2173B5400415}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt = DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt
+		DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js = DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js
+		DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn = DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn
+		DNN Platform\JavaScript Libraries\jQueryUI\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQueryUI\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryMigrate", "jQueryMigrate", "{2D3D39C2-142A-4382-9EF1-2AC14ACAAAE0}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQueryMigrate\jQuery (MIT).txt = DNN Platform\JavaScript Libraries\jQueryMigrate\jQuery (MIT).txt
+		DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.js = DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.js
+		DNN Platform\JavaScript Libraries\jQueryMigrate\jQueryMigrate.dnn = DNN Platform\JavaScript Libraries\jQueryMigrate\jQueryMigrate.dnn
+		DNN Platform\JavaScript Libraries\jQueryMigrate\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQueryMigrate\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KnockoutMapping", "KnockoutMapping", "{96F739AA-D737-4A48-B423-326B4ED37425}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\KnockoutMapping\Knockout Mapping (MIT).txt = DNN Platform\JavaScript Libraries\KnockoutMapping\Knockout Mapping (MIT).txt
+		DNN Platform\JavaScript Libraries\KnockoutMapping\knockout.mapping.js = DNN Platform\JavaScript Libraries\KnockoutMapping\knockout.mapping.js
+		DNN Platform\JavaScript Libraries\KnockoutMapping\KnockoutMapping.dnn = DNN Platform\JavaScript Libraries\KnockoutMapping\KnockoutMapping.dnn
+		DNN Platform\JavaScript Libraries\KnockoutMapping\releaseNotes.txt = DNN Platform\JavaScript Libraries\KnockoutMapping\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{A765907D-1AB9-4CF4-AAAB-FC2F8049EEBA}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Templates\Blank Website.template = DNN Platform\Website\Templates\Blank Website.template
+		DNN Platform\Website\Templates\Blank Website.template.en-US.resx = DNN Platform\Website\Templates\Blank Website.template.en-US.resx
+		DNN Platform\Website\Templates\Blank Website.template.resources = DNN Platform\Website\Templates\Blank Website.template.resources
+		DNN Platform\Website\Templates\Default Website.template = DNN Platform\Website\Templates\Default Website.template
+		DNN Platform\Website\Templates\Default Website.template.en-US.resx = DNN Platform\Website\Templates\Default Website.template.en-US.resx
+		DNN Platform\Website\Templates\Default Website.template.resources = DNN Platform\Website\Templates\Default Website.template.resources
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -179,12 +233,6 @@ Global
 		{9F2F4076-D434-448F-9CBB-7BF7A9766AB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F2F4076-D434-448F-9CBB-7BF7A9766AB1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9F2F4076-D434-448F-9CBB-7BF7A9766AB1}.Release|x86.ActiveCfg = Release|Any CPU
-		{9E1E178B-844B-40B8-9665-384220C46C1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E1E178B-844B-40B8-9665-384220C46C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E1E178B-844B-40B8-9665-384220C46C1E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9E1E178B-844B-40B8-9665-384220C46C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E1E178B-844B-40B8-9665-384220C46C1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9E1E178B-844B-40B8-9665-384220C46C1E}.Release|x86.ActiveCfg = Release|Any CPU
 		{6B29ADED-7B56-4484-BEA5-C0E09079535B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B29ADED-7B56-4484-BEA5-C0E09079535B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B29ADED-7B56-4484-BEA5-C0E09079535B}.Debug|x86.ActiveCfg = Debug|x86
@@ -387,12 +435,6 @@ Global
 		{BCA9AC2A-1DF7-4697-8836-452E13E7CAFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCA9AC2A-1DF7-4697-8836-452E13E7CAFA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BCA9AC2A-1DF7-4697-8836-452E13E7CAFA}.Release|x86.ActiveCfg = Release|Any CPU
-		{96FD101E-326A-4038-A081-A347061A6B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96FD101E-326A-4038-A081-A347061A6B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96FD101E-326A-4038-A081-A347061A6B77}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{96FD101E-326A-4038-A081-A347061A6B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96FD101E-326A-4038-A081-A347061A6B77}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96FD101E-326A-4038-A081-A347061A6B77}.Release|x86.ActiveCfg = Release|Any CPU
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -458,11 +500,13 @@ Global
 		{FDDC95FE-3341-4AED-A93E-7A5DF85A55C2} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{5D82591D-1525-40A1-ACA3-1F89D817E9AD} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{973A675B-1CF8-42E0-8566-09B4EFD3E83E} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
+		{886DB964-63D4-4841-81D1-5A7360C98230} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
+		{D8E1B782-01BB-4FEC-8E8D-E5729CBB3C5E} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
+		{A765907D-1AB9-4CF4-AAAB-FC2F8049EEBA} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{3B64E72E-63CC-4A90-ADFF-4B919EF17239} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 		{3CD5F6B8-8360-4862-80B6-F402892DB7DD} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 		{03E3AFA5-DDC9-48FB-A839-AD4282CE237E} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 		{9F2F4076-D434-448F-9CBB-7BF7A9766AB1} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
-		{9E1E178B-844B-40B8-9665-384220C46C1E} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 		{CA056730-5759-41F8-A6C1-420F9C0C63E7} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 		{5DEAB0D5-0F54-44C9-A167-F48264A04B3D} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 		{1A0646A3-CB4A-4E8E-A497-2C677DE320FF} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
@@ -492,7 +536,6 @@ Global
 		{F57492B8-295E-4952-8EF4-8FD037B751D0} = {1367F8D5-50BA-401A-A066-02F739E54FDA}
 		{88E649D7-1379-430F-B794-1F3B9B442C80} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
 		{68368906-57DD-40D1-AC10-35211A17D617} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
-		{98739F02-F34A-4427-9A17-C0509E7AAD75} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
 		{7E98CA08-903E-45F7-BD83-853763D5E15B} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
 		{22A67B3F-D9B6-4447-A3F7-E387075AF969} = {88E649D7-1379-430F-B794-1F3B9B442C80}
 		{2595AADE-D3E0-4205-B8AF-109CB23F4223} = {88E649D7-1379-430F-B794-1F3B9B442C80}
@@ -504,8 +547,12 @@ Global
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7} = {88E649D7-1379-430F-B794-1F3B9B442C80}
 		{86019DD5-96F3-4748-B47C-E51D0E81F219} = {88E649D7-1379-430F-B794-1F3B9B442C80}
 		{0E8502FD-DE8B-46A5-AB96-B1BE39777917} = {88E649D7-1379-430F-B794-1F3B9B442C80}
-		{96FD101E-326A-4038-A081-A347061A6B77} = {98739F02-F34A-4427-9A17-C0509E7AAD75}
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
 		{6629A64D-58B9-48B9-B932-15AF193C2212} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
+		{6308FA00-5E1A-4924-98C1-4B4010AD2BEB} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{4E0EBB54-3987-461C-85C5-9281AC49C72B} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{6040AAC4-8533-4EBF-8918-2173B5400415} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{2D3D39C2-142A-4382-9EF1-2AC14ACAAAE0} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{96F739AA-D737-4A48-B423-326B4ED37425} = {886DB964-63D4-4841-81D1-5A7360C98230}
 	EndGlobalSection
 EndGlobal

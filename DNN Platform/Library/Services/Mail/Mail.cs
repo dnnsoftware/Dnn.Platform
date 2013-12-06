@@ -271,6 +271,10 @@ namespace DotNetNuke.Services.Mail
                     subject = "EMAIL_PROFILE_UPDATED_SUBJECT";
                     body = "EMAIL_PROFILE_UPDATED_BODY";
                     break;
+                case MessageType.PasswordUpdated:
+                    subject = "EMAIL_PASSWORD_UPDATED_SUBJECT";
+                    body = "EMAIL_PASSWORD_UPDATED_BODY";
+                    break;
                 default:
                     subject = "EMAIL_USER_UPDATED_OWN_PASSWORD_SUBJECT";
                     body = "EMAIL_USER_UPDATED_OWN_PASSWORD_BODY";

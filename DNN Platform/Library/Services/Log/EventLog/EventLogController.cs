@@ -126,6 +126,7 @@ namespace DotNetNuke.Services.Log.EventLog
             LANGUAGE_CREATED,
             LANGUAGE_UPDATED,
             LANGUAGE_DELETED,
+            LIBRARY_UPDATED,
             SKINPACKAGE_CREATED,
             SKINPACKAGE_UPDATED,
             SKINPACKAGE_DELETED,
@@ -172,7 +173,8 @@ namespace DotNetNuke.Services.Log.EventLog
             PAGE_NOT_FOUND_404,
             TABURL_CREATED,
             TABURL_UPDATED,
-            TABURL_DELETED
+            TABURL_DELETED,
+            SCRIPT_COLLISION
         }
 
         #endregion

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace DNNSelenium.Common.CorePages
 {
@@ -122,12 +123,17 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Login to the site first time, using 'Visit Website' button:");
 
-			WaitAndSwitchToFrame(60);
+			WaitForElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
 
-			WaitForElement(By.Id(IntroVideo), 60).WaitTillVisible(60);
-			WaitForElement(By.Id(WhatIsNew), 60).WaitTillVisible(60);
+			//WaitForElement(By.Id(IntroVideo), 60).WaitTillVisible(60);
+			//WaitForElement(By.Id(WhatIsNew), 60).WaitTillVisible(60);
 
-			WaitForElement(By.Id(LetMeAtIn), 60).WaitTillEnabled().Click();
+			Actions action = new Actions(_driver);
+			action.MoveToElement(FindElement(By.XPath("//div[contains(@class, 'footer-left-side')]/label"))).Click().Build().Perform();
+
+			//WaitForElement(By.Id(LetMeAtIn), 60).ScrollIntoView().WaitTillEnabled().Click();
+
+			Click(By.XPath("//div[contains(@style,'display: block;')]//button[@role = 'button' and @title = 'close']"));
 
 			WaitAndSwitchToWindow(60);
 
@@ -135,6 +141,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public void SetWebSiteLanguage(string language)
 		{
+			Trace.WriteLine(BasePage.TraceLevelPage + "Set Website Language:");
 			SlidingSelectByValue(By.Id(LanguageArrow), By.XPath(LanguageDropdown), SetLanguageOptionName(language));
 		}
 	}

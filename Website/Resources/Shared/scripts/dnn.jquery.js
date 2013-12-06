@@ -479,6 +479,7 @@
     $.fn.dnnCheckbox = function (options) {
         var settings = {
             cls: 'dnnCheckbox'  /* checkbox  */
+            , labelClass: 'dnnBoxLabel'
         };
         settings = $.extend(settings, options || {});
         
@@ -538,7 +539,7 @@
             }
             
             if (label) {
-                label.css('display', 'inline-block');
+                label.addClass(settings.labelClass);
                 if (!parentLabel) {
                     label.click(function (e) {
                         $ch.triggerHandler('focus');
@@ -2513,6 +2514,9 @@
                         $(img).css({ 'max-width': 180, 'max-height': 150 }).insertBefore($('#' + settings.dropZoneId + ' span'));
                     });
                     var src;
+                    if (data.dataType && typeof(data.result) == "object" && data.result.length) {
+                        data.result = data.result.text();
+                    }
                     var testContent = $('<pre>' + data.result + '</pre>');
                     if (testContent.length) {
                         src = testContent.text();

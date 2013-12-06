@@ -26,6 +26,9 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public static string SocialUserMenu = "//ul[@class = 'userMenu']";
 		public static string SocialLogoutLink = "//a[@id = 'dnn_userLogin_logoffLink']";
+		public static string SocialMyProfileLink = "//a[@id = 'dnn_userLogin_viewProfileLink']";
+		public static string SocialEditProfile = "//a[@id = 'dnn_userLogin_editProfileLink']";
+		public static string SocialEditAccount = "//a[@id = 'dnn_userLogin_accountLink']";
 
 		public static string MessageLink = "dnn_dnnUser_messageLink";
 		public static string NotificationLink = "dnn_dnnUser_notificationLink";
@@ -80,31 +83,17 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string HostDashboardOption = "//dl[@id='controlbar_host_basic']//li[@data-tabname='Dashboard']/a[1]";
 		public static string HostExtensionsOption = "//dl[@id='controlbar_host_basic']//li[@data-tabname='Extensions']/a[1]";
 		public static string HostFileManagementOption = "//dl[@id='controlbar_host_basic']//li[@data-tabname='File Management']/a[1]";
-		public static string HostHealthMonitoringOption = "//dl[@id='controlbar_host_basic']//li[@data-tabname='Health Monitoring']/a[1]";
 		public static string HostHostSettingsOption = "//dl[@id='controlbar_host_basic']//li[@data-tabname='Host Settings']/a[1]";
-		public static string HostKnowledgeBaseOption = "//dl[@id='controlbar_host_basic']//li[@data-tabname='Knowledge Base']/a[1]";
 		public static string HostSiteManagementOption = "//dl[@id='controlbar_host_basic']//li[@data-tabname='Site Management']/a[1]";
-		public static string HostSoftwareAndDocumentationOption = "//dl[@id='controlbar_host_basic']//li[@data-tabname='Software and Documentation']/a[1]";
-		public static string HostTechnicalSupportOption = "//dl[@id='controlbar_host_basic']//li[@data-tabname='Technical Support']/a[1]";
-		public static string HostApplicationIntegrityOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Application Integrity']/a[1]";
-		public static string HostActivateYourLicenseOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Activate Your License']/a[1]";
-		public static string HostAdvancedUrlManagementOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Advanced URL Management']/a[1]";
 		public static string HostConfigurationManagerOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Configuration Manager']/a[1]";
 		public static string HostDeviceDetectionManagementOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Device Detection Management']/a[1]";
 		public static string HostHtmlEditorManagerOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='HTML Editor Manager']/a[1]";
-		public static string HostLicenseManagementOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='License Management']/a[1]";
 		public static string HostListsOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Lists']/a[1]";
-		public static string HostManageWebServersOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Manage Web Servers']/a[1]";
-		public static string HostMySupportTicketsOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='My Support Tickets']/a[1]";
 		public static string HostScheduleOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Schedule']/a[1]";
 		public static string HostSearchAdminOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Search Admin']/a[1]";
-		public static string HostSearchCrawlerAdminOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='SearchCrawler Admin']/a[1]";
-		public static string HostSecurityCenterOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Security Center']/a[1]";
 		public static string HostSqlOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='SQL']/a[1]";
 		public static string HostSuperuserAccountsOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Superuser Accounts']/a[1]";
-		public static string HostUserSwitcherOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='User Switcher']/a[1]";
 		public static string HostVendorsOption = "//dl[@id='controlbar_host_advanced']//li[@data-tabname='Vendors']/a[1]";
-		public static string HostWhatsNewOption = "//dl[@id='controlbar_host_advanced']//li[contains(@data-tabname, 'What')]/a[1]";
 
 		public static string ToolsGoButton = "//input[@id = 'controlBar_SwitchSiteButton']";
 		public static string ToolsFileUploadOption = "//a[contains(text(), 'Upload File')]";
@@ -124,6 +113,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public static string EditThisPageButton = "//a[@id = 'ControlBar_EditPage' and contains(text(), 'Edit This Page')]";
 		public static string CloseEditModeButton = "//a[@id = 'ControlBar_EditPage' and contains(text(), 'Close Edit Mode')]";
+		public static string PageInEditMode = "//a[@class = 'controlBar_editPageInEditMode']";
 		public static string PageSettingsOption = "//a[contains(@href, 'edit/activeTab/settingTab')]";
 		public static string ExportPageOption = "//a[contains(@href, 'ctl/ExportTab')]";
 		public static string DeletePageOption = "//a[@id = 'ControlBar_DeletePage']";

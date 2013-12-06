@@ -30,6 +30,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
@@ -407,62 +408,7 @@ namespace DotNetNuke.Framework
             return scriptsrc;
         }
 
-        public static void RegisterJQuery(Page page)
-        {
-            ClientResourceManager.RegisterScript(page, GetJQueryScriptReference(), FileOrder.Js.jQuery, "DnnPageHeaderProvider");
-	        ClientResourceManager.RegisterScript(page, GetJQueryMigrateScriptReference(), FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
-        }
 
-        public static void RegisterJQueryUI(Page page)
-        {
-            RegisterJQuery(page);
-            ClientResourceManager.RegisterScript(page, GetJQueryUIScriptReference(), FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
-        }
-
-        public static void RegisterDnnJQueryPlugins(Page page)
-        {
-			//This method maybe called when Page.Form hasn't initialized yet, in that situation if needed should reference dnn js manually.
-			//such as call jQuery.RegisterDnnJQueryPlugins in Control.OnInit.
-			if (page.Form != null)
-			{
-				ClientAPI.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
-			}
-
-        	RegisterJQueryUI(page);
-        	RegisterHoverIntent(page);
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/dnn.jquery.js");
-        }
-
-        public static void RegisterHoverIntent(Page page)
-        {
-            ClientResourceManager.RegisterScript(page, jQueryHoverIntentFile, FileOrder.Js.HoverIntent);
-        }
-
-        public static void RegisterFileUpload(Page page)
-        {
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/jquery/jquery.fileupload.js");
-        }
-
-        public static void RequestRegistration()
-        {
-            HttpContext.Current.Items["jQueryRequested"] = true;
-        }
-
-        public static void RequestUIRegistration()
-        {
-            HttpContext.Current.Items["jQueryUIRequested"] = true;
-        }
-
-        public static void RequestDnnPluginsRegistration()
-        {
-            HttpContext.Current.Items["jQueryDnnPluginsRequested"] = true;
-        }
-
-        public static void RequestHoverIntentRegistration()
-        {
-            HttpContext.Current.Items["jQueryHoverIntentRequested"] = true;
-        }
 
 		/// <summary>
 		/// Active the page with keep alive, so that authentication will not expire.
@@ -511,6 +457,69 @@ namespace DotNetNuke.Framework
         {
             ClientResourceManager.RegisterScript(page, script);
         }
+
+        [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
+        public static void RegisterJQuery(Page page)
+        {
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+        }
+
+        [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
+        public static void RegisterJQueryUI(Page page)
+        {
+            RegisterJQuery(page);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+        }
+
+        [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
+        public static void RegisterDnnJQueryPlugins(Page page)
+        {
+            RegisterJQueryUI(page);
+            RegisterHoverIntent(page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+        }
+
+        [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
+        public static void RegisterHoverIntent(Page page)
+        {
+            JavaScript.RequestRegistration(CommonJs.HoverIntent);
+        }
+
+        public static void RegisterFileUpload(Page page)
+        {
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
+
+        }
+
+        [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQuery);")]
+        public static void RequestRegistration()
+        {
+
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+        }
+
+        [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQueryUI);")]
+        public static void RequestUIRegistration()
+        {
+
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+        }
+
+        [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.DnnPlugins);")]
+        public static void RequestDnnPluginsRegistration()
+        {
+
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+        }
+
+        [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.HoverIntent);")]
+        public static void RequestHoverIntentRegistration()
+        {
+
+            JavaScript.RequestRegistration(CommonJs.HoverIntent);
+        }
+
 
         #endregion
     }

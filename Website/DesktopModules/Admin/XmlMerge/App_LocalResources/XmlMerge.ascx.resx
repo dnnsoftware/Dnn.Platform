@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cmdExecute.Text" xml:space="preserve">
     <value>Execute Merge</value>
@@ -136,10 +136,10 @@
     <value>Load</value>
   </data>
   <data name="Configuration.Text" xml:space="preserve">
-    <value>Configuration Files</value>
+    <value>Files</value>
   </data>
   <data name="Merge.Text" xml:space="preserve">
-    <value>Configuration Merge Scripts</value>
+    <value>Merge Scripts</value>
   </data>
   <data name="plConfig.Help" xml:space="preserve">
     <value>Select a configuration file for editing.</value>

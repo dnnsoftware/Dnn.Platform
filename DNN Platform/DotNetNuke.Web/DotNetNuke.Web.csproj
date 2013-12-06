@@ -68,19 +68,12 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\WebAPI\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Components\WebAPI\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\Packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -93,9 +86,6 @@
     </Reference>
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\Components\WebAPI\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.WebRequest">
-      <HintPath>..\Components\WebAPI\System.Net.Http.WebRequest.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
@@ -159,6 +149,7 @@
     <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
+    <Compile Include="InternalServices\GettingStartedController.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
     <Compile Include="InternalServices\ItemListServiceController.cs" />
     <Compile Include="InternalServices\SearchServiceController.cs" />
@@ -398,6 +389,8 @@
     <Compile Include="UI\WebControls\Extensions\ListControlExtensions.cs" />
     <Compile Include="UI\WebControls\Extensions\WebControlExtensions.cs" />
     <Compile Include="UI\WebControls\IDnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\ItemListOptions.cs" />
+    <Compile Include="UI\WebControls\ItemListServicesOptions.cs" />
     <Compile Include="UI\WebControls\PropertyEditorControls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditorControls\DateTimeEditControl.cs" />
     <Compile Include="UI\WebControls\RibbonBarToolInfo.cs" />
@@ -437,10 +430,6 @@
     <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj">
-      <Project>{9f2f4076-d434-448f-9cbb-7bf7a9766ab1}</Project>
-      <Name>DotNetNuke.Syndication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

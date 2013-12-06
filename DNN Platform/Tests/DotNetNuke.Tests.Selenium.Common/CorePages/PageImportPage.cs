@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
+
 		public static string FolderDropDownId = "//div[contains(@id, 'Import_cboFolders')]/div/a";
 		public static string TemplateDropDownArrow = "Import_cboTemplate_Arrow";
 		public static string TemplateDropDownId = "//div[contains(@id, 'Import_cboTemplate_DropDown')]";

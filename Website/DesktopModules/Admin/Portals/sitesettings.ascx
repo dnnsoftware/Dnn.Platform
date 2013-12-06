@@ -12,6 +12,14 @@
 <dnn:DnnJsInclude id="DnnJsInclude1" runat="server" filepath="~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js" priority="103" />
 <dnn:DnnCssInclude id="DnnCssInclude1" runat="server" filepath="~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css" />
 
+<%-- Custom CodeMirror CSS Registration --%>
+<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.css" />
+
+<%-- Custom CodeMirror JavaScript Registration --%>
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.js" Priority="104" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/css/css.js" Priority="105" />
+
+
 <div class="dnnForm dnnSiteSettings dnnClear" id="dnnSiteSettings">
     <dnnext:EditPageTabExtensionControl runat="server"  ID="SiteSettingsTabExtensionControl" 
             Module="SiteSettings" Group="SiteSettingsTabExtensions"
@@ -142,11 +150,11 @@
                 <fieldset>
                     <div class="dnnFormItem">
                         <dnn:label id="plSplashTabId" runat="server" controlname="cboSplashTabId" ResourceKey="plSplashTabId" />
-                        <dnn:DnnPageDropDownList ID="cboSplashTabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cboSplashTabId" runat="server" IncludeDisabledTabs="True" />
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plHomeTabId" runat="server" controlname="cboHomeTabId" />
-                        <dnn:DnnPageDropDownList ID="cboHomeTabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cboHomeTabId" runat="server"  IncludeDisabledTabs="True"/>
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plLoginTabId" runat="server" controlname="cboLoginTabId" />
@@ -154,11 +162,11 @@
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plRegisterTabId" runat="server" controlname="cboRegisterTabId" />
-                        <dnn:DnnPageDropDownList ID="cboRegisterTabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cboRegisterTabId" runat="server"  IncludeDisabledTabs="True"/>
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plUserTabId" runat="server" controlname="cboUserTabId" />
-                        <dnn:DnnPageDropDownList ID="cboUserTabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cboUserTabId" runat="server"  IncludeDisabledTabs="True"/>
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plSearchTabId" runat="server" controlname="cboSearchTabId" />
@@ -606,8 +614,10 @@
         <div class="ssStylesheetEditor dnnClear" id="ssStylesheetEditor">
             <div class="ssseContent dnnClear">
                 <fieldset>
-                    <asp:TextBox ID="txtStyleSheet" runat="server" Rows="30" TextMode="MultiLine" Wrap="False"
-                        Columns="100" />
+                    <div class="editor">
+                        <asp:TextBox ID="txtStyleSheet" runat="server" Rows="30" TextMode="MultiLine" Wrap="False"
+                            Columns="100" />
+                    </div>
                     <ul class="dnnActions dnnClear">
                         <li>
                             <asp:LinkButton ID="cmdSave" CssClass="dnnPrimaryAction" runat="server" resourcekey="SaveStyleSheet"
@@ -660,6 +670,8 @@
     }
 
     function setupDnnSiteSettings() {
+        setupCodeEditor();
+
         $('#dnnSiteSettings').dnnTabs().dnnPanels();
         $('#siteSkinSettings').dnnPreview({
             skinSelector: '<%= portalSkinCombo.ClientID %>',
@@ -746,7 +758,23 @@
         
     }
 
+    function setupCodeEditor() {
+        var styleSheetEditor = CodeMirror.fromTextArea($("textarea[id$='txtStyleSheet']")[0], {
+            lineNumbers: true,
+            matchBrackets: true,
+            lineWrapping: true,
+            indentWithTabs: true,
+            mode: 'text/css'
+        });
+
+        styleSheetEditor.on("blur", function (cm) {
+            cm.save();
+            return true;
+        });
+    }
+
     $(document).ready(function () {
+
         setupDnnSiteSettings();
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
             setupDnnSiteSettings();

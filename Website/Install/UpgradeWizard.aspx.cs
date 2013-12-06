@@ -31,6 +31,7 @@ using System.Web;
 using System.Xml.XPath;
 
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Common.Utilities;
@@ -53,10 +54,6 @@ namespace DotNetNuke.Services.Install
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/23/2007 Created
-    ///     [vnguyen]   07/09/2012 Modified
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class UpgradeWizard : PageBase
     {
@@ -72,11 +69,11 @@ namespace DotNetNuke.Services.Install
         private static IInstallationStep _currentStep;
         private static bool _upgradeRunning;
         private static int _upgradeProgress;
-        private static bool _isAuthenticated = false;
 
         #endregion
 
         #region Protected Members
+
         protected Version ApplicationVersion
         {
             get
@@ -91,9 +88,11 @@ namespace DotNetNuke.Services.Install
                 return _dataBaseVersion ?? (_dataBaseVersion = DataProvider.Instance().GetVersion());
             }
         }
+
         #endregion
 
         #region Private Properties
+
         private static string StatusFile
         {
             get
@@ -102,20 +101,12 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        private static bool IsAuthenticated
-        {
-            get
-            {
-                return _isAuthenticated;
-            }
-            set
-            {
-                _isAuthenticated = value;
-            }
-        }
+        private static bool IsAuthenticated { get; set; }
+
         #endregion
 
         #region Private Methods
+
         private void LocalizePage()
         {
             SetBrowserLanguage();
@@ -295,6 +286,13 @@ namespace DotNetNuke.Services.Install
             //remove installwizard files added back by upgrade package
             Upgrade.Upgrade.DeleteInstallerFiles();
 
+            //Update Getting Started Settings
+            foreach (UserInfo hostUser in UserController.GetUsers(false, true, -1))
+            {
+                HostController.Instance.Update(String.Format("GettingStarted_Hide_{0}", hostUser.UserID), "false");
+                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", hostUser.UserID), "true");
+            }
+
             Config.Touch();
             Response.Redirect("../Default.aspx", true);
         }
@@ -358,7 +356,8 @@ namespace DotNetNuke.Services.Install
         }
         #endregion
         
-        #region "Web Methods"
+        #region Web Methods
+
         //steps shown in UI
         static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
         static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
@@ -366,6 +365,11 @@ namespace DotNetNuke.Services.Install
         //Ordered List of Steps (and weight in percentage) to be executed
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
                                         { {upgradeDatabase, 50}, {upgradeExtensions, 49}, {new InstallVersionStep(), 1} };
+
+        static UpgradeWizard()
+        {
+            IsAuthenticated = false;
+        }
 
         [System.Web.Services.WebMethod()]
         public static Tuple<bool, string> ValidateInput(Dictionary<string, string> accountInfo)

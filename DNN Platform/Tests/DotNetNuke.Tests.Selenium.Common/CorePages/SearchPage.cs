@@ -19,6 +19,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Search Results"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SearchResultsModule"; }
+		}
+
 		public static string ResultsList = "//div[@class = 'dnnSearchResultContainer']/div[@class = 'dnnSearchResultItem']";
 		public static string TitleOfFirstFoundElement =
 			"//div[@class = 'dnnSearchResultContainer']//div[@class = 'dnnSearchResultItem-Title']";

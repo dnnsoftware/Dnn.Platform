@@ -23,7 +23,7 @@
     <Setting Name="BVTDataFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">BVTData.xml</Value>
     </Setting>
-    <Setting Name="P1DataFile" Type="System.String" Scope="User">
+    <Setting Name="P1DataFile" Type="System.String" Scope="Application">
       <Value Profile="(Default)">P1Data.xml</Value>
     </Setting>
   </Settings>

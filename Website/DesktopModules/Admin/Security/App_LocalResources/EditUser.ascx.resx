@@ -168,4 +168,7 @@
   <data name="UserUnSubscribed.Text" xml:space="preserve">
     <value>You have successfully unsubscribed from the {0} role.</value>
   </data>
+  <data name="cmdCommunications.Text" xml:space="preserve">
+    <value>Communications</value>
+  </data>
 </root>

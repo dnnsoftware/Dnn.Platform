@@ -73,6 +73,7 @@ namespace DotNetNuke.Services.Search
         {
             var tabIndexer = new TabIndexer();
             var moduleIndexer = new ModuleIndexer();
+            var userIndexer = new UserIndexer();
             IndexedSearchDocumentCount = 0;
             Results = new Dictionary<string, int>();
 
@@ -105,6 +106,17 @@ namespace DotNetNuke.Services.Search
 
             //Both SearchModuleBase and ISearchable module content count
             Results.Add("Modules (Content)", searchDocuments.Count() + searchItems.Count);
+
+            //Index User data
+            searchDocs = GetSearchDocuments(userIndexer, startDate);
+            searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
+            StoreSearchDocuments(searchDocuments);
+            var userIndexed =
+                searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_")))
+                               .Distinct()
+                               .Count();
+            IndexedSearchDocumentCount += userIndexed;
+            Results.Add("Users", userIndexed);
         }
 
         internal bool CompactSearchIndexIfNeeded(ScheduleHistoryItem scheduleItem)
@@ -273,13 +285,10 @@ namespace DotNetNuke.Services.Search
         /// <param name="portalId"></param>
         /// <param name="startDate"></param>
         /// <returns></returns>
-        /// <history>
-        ///     [galatrash]   06/04/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static DateTime FixedIndexingStartDate(int portalId, DateTime startDate)
         {
-            if (startDate != SqlDateTime.MinValue.Value && 
+            if (startDate < SqlDateTime.MinValue.Value ||
                 SearchHelper.Instance.IsReindexRequested(portalId, startDate))
             {
                 return SqlDateTime.MinValue.Value;

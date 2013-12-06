@@ -697,6 +697,10 @@
 
                     self.TotalNotifications(self.TotalNotifications() - 1);
                     displayMessage("#dnnCoreNotification", settings.actionPerformedText, "dnnFormSuccess");
+                    
+                    if (data.Link) {
+                        location.href = data.Link;
+                    }
                 }
                 else {
                     if (typeof data.Message !== "undefined" && data.Message != null && data.Message !== '') {
@@ -865,6 +869,7 @@
                 }
             });
         };
+	    		
     }
 
     this.init = function (element) {

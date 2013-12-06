@@ -155,23 +155,6 @@ namespace DotNetNuke.Framework
                 return HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
             }
         }
-
-        protected string CurrentPortalAliasUrl
-        {
-            get
-            {
-                //This statement throws an exception when PortalSettings.PortalAlias.HTTPAlias is a child alias
-                //return HttpContext.Current.Request.Url.AbsoluteUri.Substring(0, HttpContext.Current.Request.Url.AbsoluteUri.ToLower().IndexOf(PortalSettings.PortalAlias.HTTPAlias)) + PortalSettings.PortalAlias.HTTPAlias;
-                return Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias);
-            }
-        }
-        protected string CurrentDomainUrl
-        {
-            get
-            {
-                return Globals.AddHTTP(Globals.GetDomainName(Request));
-            }
-        }
         
         #endregion
 
@@ -639,7 +622,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Contains the functionality to populate the Root aspx page with controls
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// - obtain PortalSettings from Current Context
@@ -647,10 +629,6 @@ namespace DotNetNuke.Framework
         /// - initialise reference paths to load the cascading style sheets
         /// - add skin control placeholder.  This holds all the modules and content of the page.
         /// </remarks>
-        /// <history>
-        /// 	[sun1]	1/19/2004	Created
-        ///		[jhenning] 8/24/2005 Added logic to look for post originating from a ClientCallback
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -783,71 +761,28 @@ namespace DotNetNuke.Framework
 		        AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
 	        }
         }
-
         
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initialize the Scrolltop html control which controls the open / closed nature of each module 
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[sun1]	1/19/2004	Created
-        ///		[jhenning] 3/23/2005 No longer passing in parameter to __dnn_setScrollTop, instead pulling value from textbox on client
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            //add js of Getting Started Page
-            if (GettingStartedTabId > -1 && IsPage(GettingStartedTabId) && Request["ctl"] == null)
-            {
-                var scriptManager = ScriptManager.GetCurrent(Page);
-                if (scriptManager == null)
-                {
-                    scriptManager = new ScriptManager();
-                    Page.Form.Controls.AddAt(0, scriptManager);
+            ManageGettingStarted();
 
-                }
-
-                scriptManager.EnablePageMethods = true;
-
-                var gettingStartedFilePath = HttpContext.Current.IsDebuggingEnabled
-                                        ? "~/js/Debug/dnn.gettingstarted.js"
-                                        : "~/js/dnn.gettingstarted.js";
-
-                ClientResourceManager.RegisterScript(this, gettingStartedFilePath);
-                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "PageCurrentPortalAliasUrl", "var pageCurrentPortalAliasUrl = '" + CurrentPortalAliasUrl + "';", true);
-                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "PageCurrentDomainUrl", "var pageCurrentDomainUrl = '" + CurrentDomainUrl + "';", true);
-                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "PageCurrentPortalId", "var pageCurrentPortalId = " + PortalSettings.PortalId + ";", true);
-                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "GettingStartedPageTitle", "var gettingStartedPageTitle = '" + GettingStartedTitle + "';", true);
-            }
-
-            if(ShowGettingStartedPage)
-            {                
-                DNNClientAPI.ShowModalPage(Page, GettingStartedPageUrl);
-                Services.Upgrade.Upgrade.DeleteInstallerFiles();
-            }
-            else if (Request.Cookies["AdvSettingsPopup"] != null && Request.Cookies["AdvSettingsPopup"].Value == "true" && !HttpContext.Current.Request.Url.AbsoluteUri.ToLower().Contains("popup"))
-            {
-                DNNClientAPI.ShowModalPage(Page, AdvancedSettingsPageUrl);
-            }
+            ManageInstallerFiles();
 
             if (!String.IsNullOrEmpty(ScrollTop.Value))
             {
                 DNNClientAPI.SetScrollTop(Page);
                 ScrollTop.Value = ScrollTop.Value;
             }
-        }
-
-        private bool IsPage(int tabId)
-        {
-            bool result = false;
-            result = (PortalSettings.ActiveTab.TabID == tabId);
-            return result;
         }
 
         protected override void OnPreRender(EventArgs evt)
@@ -893,107 +828,5 @@ namespace DotNetNuke.Framework
 
         #endregion
 
-        #region Getting Started members
-        private int GettingStartedTabId
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsInteger("GettingStartedTabId", PortalSettings.PortalId, -1);
-            }
-        }
-
-        private string GettingStartedTitle
-        {
-            get
-            {
-                var tabcontroller = new TabController();
-                var tab = tabcontroller.GetTab(GettingStartedTabId, PortalSettings.PortalId, false);
-                return tab.Title;
-            }
-        }
-
-        protected string GettingStartedPageUrl
-        {
-            get
-            {
-                string result = "";
-                var tabcontroller = new TabController();
-                var tab = tabcontroller.GetTab(GettingStartedTabId, PortalSettings.PortalId, false);
-                var modulecontroller = new ModuleController();
-                var modules = modulecontroller.GetTabModules(tab.TabID).Values;
-
-                if (modules.Count > 0)
-                {
-                    PortalModuleBase pmb = new PortalModuleBase();
-                    result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
-                }
-                else
-                {
-                    result = Globals.NavigateURL(tab.TabID);
-                }
-
-                return result;
-            }
-        }
-
-        protected string AdvancedSettingsPageUrl
-        {
-            get
-            {
-                string result = "";
-                var tabcontroller = new TabController();
-                var tab = tabcontroller.GetTabByName("Advanced Settings", PortalSettings.PortalId); //tabcontroller.GetTab(GettingStartedTabId, PortalSettings.PortalId, false);
-                var modulecontroller = new ModuleController();
-                var modules = modulecontroller.GetTabModules(tab.TabID).Values;
-
-                if (modules.Count > 0)
-                {
-                    PortalModuleBase pmb = new PortalModuleBase();
-                    result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
-                }
-                else
-                {
-                    result = Globals.NavigateURL(tab.TabID);
-                }
-
-                return result;
-            }
-        }
-
-        protected bool ShowGettingStartedPage
-        {
-            get
-            {
-                var result = false;
-                if (GettingStartedTabId > -1)
-                {
-                    if (!IsPage(GettingStartedTabId))
-                    {
-                        string pageShown = PortalController.GetPortalSetting("GettingStartedPageShown", PortalSettings.PortalId, Boolean.FalseString);
-                        if (!string.Equals(pageShown, Boolean.TrueString))
-                        {
-                            result = true;
-                        }
-                    }
-                }
-                return result;
-            }
-
-        }
-
-        #region WebMethods
-        [System.Web.Services.WebMethod]
-        [System.Web.Script.Services.ScriptMethod()]
-        public static bool SetGettingStartedPageAsShown(int portailId)
-        {
-            string pageShown = PortalController.GetPortalSetting("GettingStartedPageShown", portailId, Boolean.FalseString);
-            if (!string.Equals(pageShown, Boolean.TrueString))
-            {
-                PortalController.UpdatePortalSetting(portailId, "GettingStartedPageShown", Boolean.TrueString);
-            }
-            return true;
-        }
-        #endregion
-        #endregion
     }
 }

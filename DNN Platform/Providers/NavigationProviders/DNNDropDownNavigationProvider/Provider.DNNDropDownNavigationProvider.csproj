@@ -47,6 +47,7 @@
     <DebugType>pdbonly</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.WebControls, Version=2.0.107.0, Culture=neutral, processorArchitecture=MSIL">
@@ -64,9 +65,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DNNDropDownNavigationProvider.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="DNNDropDownNavigationProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\DotNetNuke.Library.csproj">

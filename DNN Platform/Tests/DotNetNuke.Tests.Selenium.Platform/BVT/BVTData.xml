@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Tests>
-
-  <settings name="BVT" browser="firefox" baseURL="ceBVTTrunk.lvh.me" InstallerLanguage="en" UserName="host"
-            Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
-            DatabaseType="" DatabaseServerName="(local)" DatabaseName="ceBVTTrunk" DatabaseFilename="" ObjectQualifier="dnn_" Security=""
-            DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" />
+  <settings name="BVT" browser="firefox" baseURL="CEBVT.lvh.me" InstallerLanguage="en" UserName="host"
+            Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Custom"
+            DatabaseType="Default" DatabaseServerName="(local)" DatabaseName="CEBVT" DatabaseFilename="" ObjectQualifier="can_" Security="Integrated"
+            DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" runWithDummyCachingProvider = "" />
 
   <childSite
     name = "Child Site, BVT"

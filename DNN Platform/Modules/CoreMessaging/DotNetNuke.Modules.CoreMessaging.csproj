@@ -15,7 +15,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
@@ -47,52 +47,24 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotNetNuke.WebControls">
-      <HintPath>..\..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Components\WebAPI\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http">
       <HintPath>..\..\Components\WebAPI\System.Net.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\..\Components\WebAPI\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Routing" />
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Telerik.Web.UI">
-      <HintPath>..\..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="WebFormsMvp">
-      <HintPath>..\..\..\packages\WebFormsMvp.1.2.0.0\lib\WebFormsMvp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\CoreMessagingBusinessController.cs" />
@@ -100,36 +72,55 @@
     <Compile Include="Services\FileUploadController.cs" />
     <Compile Include="Services\MessagingServiceController.cs" />
     <Compile Include="Services\CoreMessagingRouteMapper.cs" />
+    <Compile Include="Services\SubscriptionsController.cs" />
+    <Compile Include="Subscriptions.ascx.cs">
+      <DependentUpon>Subscriptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Subscriptions.ascx.designer.cs">
+      <DependentUpon>Subscriptions.ascx</DependentUpon>
+    </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View.ascx.designer.cs">
       <DependentUpon>View.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\InboxSubscriptionViewModel.cs" />
     <Compile Include="ViewModels\NotificationActionViewModel.cs" />
     <Compile Include="ViewModels\NotificationsViewModel.cs" />
     <Compile Include="ViewModels\NotificationViewModel.cs" />
+    <Compile Include="ViewModels\SubscriptionViewModel.cs" />
     <Compile Include="ViewModels\TotalsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CoreMessaging.dnn">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Module.build" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ie-messages.css" />
     <Content Include="Images\ajax-loader.gif" />
     <Content Include="Images\downArrow-hover.png" />
     <Content Include="Images\downArrow.png" />
+    <Content Include="Images\grid-sprite.png" />
     <Content Include="Images\icons.png" />
     <Content Include="Images\ie-backgrounds.png" />
     <Content Include="Images\list-Icon.png" />
     <Content Include="Images\page-Icon.png" />
     <Content Include="Images\paperClip.png" />
     <Content Include="Images\progress.gif" />
+    <Content Include="Images\reply.png" />
+    <Content Include="Images\right.png" />
     <Content Include="Scripts\CoreMessaging.js" />
+    <Content Include="Scripts\LocalizationController.js" />
+    <Content Include="Scripts\SubscriptionsViewModel.js" />
+    <Content Include="Scripts\Subscription.js" />
+    <Content Include="Subscriptions.ascx" />
+    <Content Include="subscriptions.css" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -142,7 +133,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="App_LocalResources\SharedResources.resx" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
       <Project>{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}</Project>
@@ -162,11 +155,6 @@
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>
       <Name>DotNetNuke.Web</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HttpModules\DotNetNuke.HttpModules.csproj">
-      <Project>{6F0A5B23-E09F-431A-879A-993CB77E23D8}</Project>
-      <Name>DotNetNuke.HttpModules</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
@@ -193,51 +181,12 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>CoreMessaging</DNNFileName>
-    <PackageName>DNNCE_CoreMessaging</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-      <SourceFiles Include="*.ascx; *.asmx;*.js;*.css; *.ashx" />
-      <ResourceFiles Include="App_LocalResources\*.resx" />
-      <JsFiles Include="scripts/*.*" />
-      <ConfigFiles Include="*.config" />
-      <Images Include="Images/*.*" />
-      <Resources Include="@(ResourceFiles);@(SourceFiles);@(Images);@(ConfigFiles);@(TextFiles);@(JsFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CreateItem Include="*.ascx">
-      <Output TaskParameter="Include" ItemName="MySourceFiles" />
-    </CreateItem>
-    <CreateItem Include="App_LocalResources\*.resx">
-      <Output TaskParameter="Include" ItemName="MyLocalResourceFilesFiles" />
-    </CreateItem>
-    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\CoreMessaging" />
-    <Copy SourceFiles="@(Images)" DestinationFolder="$(WebsitePath)\DesktopModules\CoreMessaging\Images" />
-    <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\CoreMessaging\Scripts" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\CoreMessaging\App_LocalResources" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>

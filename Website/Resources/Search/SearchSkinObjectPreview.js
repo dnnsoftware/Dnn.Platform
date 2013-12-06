@@ -54,7 +54,11 @@
                                     var itemTitle = item.Title;
                                     var itemUrl = item.DocumentUrl;
                                     var itemSnippet = item.Snippet;
-                                    markup += '<li data-url="' + itemUrl + '"><span>' + itemTitle + '</span>';
+                                    markup += '<li data-url="' + itemUrl + '">';
+                                    if (item.Attributes.Avatar) {
+                                        markup += '<span><img src="' + item.Attributes.Avatar + '" class="userpic" /></span>';
+                                    }
+                                    markup += '<span>' + itemTitle + '</span>';
                                     if (itemSnippet)
                                         markup += '<p>' + itemSnippet + '</p></li>';
                                     else

@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "SuperUser Accounts"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SecurityRolesModule"; }
+		}
+
 		#region ID's
 
 		public static string SuperUsersTable = "//div[contains(@id, '_Users_grdUsers')]";

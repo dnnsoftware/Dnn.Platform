@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Security Roles"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SecurityRolesModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");

@@ -135,21 +135,32 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
 
-				if (Convert.ToInt32(setting) <= 0)
+                if (Convert.ToInt32(setting) > 0) //redirect to after registration page
+                {
+                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                }
+                else
+                {
+                
+                if (Convert.ToInt32(setting) <= 0)
                 {
                     if (Request.QueryString["returnurl"] != null)
                     {
                         //return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
                         //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                        if (_RedirectURL.Contains("://") && !_RedirectURL.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias), StringComparison.InvariantCultureIgnoreCase))
+                        if (_RedirectURL.Contains("://") &&
+                            !_RedirectURL.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
+                                StringComparison.InvariantCultureIgnoreCase))
                         {
                             _RedirectURL = "";
                         }
                         if (_RedirectURL.Contains("?returnurl"))
                         {
-                            string baseURL = _RedirectURL.Substring(0, _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
-                            string returnURL = _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+                            string baseURL = _RedirectURL.Substring(0,
+                                _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
+                            string returnURL =
+                                _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
 
                             _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                         }
@@ -164,9 +175,12 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
                 }
+                }
+
                 return _RedirectURL;
             }
-        }
+        
+    }
 
         protected string RegistrationFields
         {
@@ -866,8 +880,10 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else
                 {
-                    AddLocalizedModuleMessage(UserController.GetUserCreateStatus(CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
-                    userForm.DataBind();
+                    if (CreateStatus != UserCreateStatus.AddUser)
+                    {
+                        AddLocalizedModuleMessage(UserController.GetUserCreateStatus(CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
+                    }
                 }
             }
         }

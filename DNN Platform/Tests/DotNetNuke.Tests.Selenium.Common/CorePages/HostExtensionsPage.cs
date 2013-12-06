@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Extensions"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "ExtensionsModule"; }
+		}
+
 		public static string CreateNewExtensionButton = "//a[contains(@id, '_createExtensionLink')]";
 		public static string CreateNewModuleButton = "//a[contains(@id, '_createModuleLink')]";
 
@@ -116,7 +121,8 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitForElement(By.XPath(DeleteCheckBox)).ScrollIntoView();
 			WaitForElement(By.XPath(DeleteCheckBox)).WaitTillEnabled(30);
-			WaitForElement(By.XPath(DeleteCheckBox)).Info();
+			//WaitForElement(By.XPath(DeleteCheckBox)).Info();
+			Thread.Sleep(100);
 			CheckBoxCheck(By.XPath(DeleteCheckBox));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Uninstall Package button :");

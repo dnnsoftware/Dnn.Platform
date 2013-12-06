@@ -58,9 +58,9 @@ namespace DotNetNuke.Authentication.Facebook.Components
         public Uri Link { get; set; }
 
         [DataMember(Name = "first_name")]
-        private string FacebookFirstName { get; set; }
+        public string FacebookFirstName { get; set; }
 
         [DataMember(Name = "last_name")]
-        private string FacebookLastName { get; set; }
+        public string FacebookLastName { get; set; }
     }
 }

@@ -50,11 +50,11 @@ namespace DNNSelenium.Platform.BVT
 
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenUsingUrl(_baseUrl, _pageName);
-			blankPage.SetPageToEditMode(_pageName);
+			blankPage.SetPageToEditMode();
 
 			var module = new Modules(_driver);
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
-			string moduleNumber = module.WaitForElement(By.XPath(Modules.HtmlModuleOnPage + "/a")).GetAttribute("name");
+			string moduleNumber = module.WaitForElement(By.XPath(Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage + "/a")).GetAttribute("name");
 
 			module.AddContentToHTMLModule(moduleNumber, _pageContent);
 
@@ -107,7 +107,7 @@ namespace DNNSelenium.Platform.BVT
 					By.XPath(AdminRecycleBinPage.RecycleBinPageContainerOption + "[contains(text(), '" + _pageName + "')]")));
 		}
 
-		//[Test]
+		[Test]
 		public void Test005_RemovePageFromRecycleBin()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Remove the Page from Recycling Bin'");

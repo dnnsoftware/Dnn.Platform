@@ -102,7 +102,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                         {
                             _allClientCapabilityValues = new Dictionary<string, List<string>>();
 
-                            foreach (var property in Factory.ActiveProvider.Properties)
+                            foreach (var property in Factory.ActiveProvider.Properties.Values)
                             {
                                 var values = new List<string>();
                                 foreach (var value in property.Values)

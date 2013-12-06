@@ -74,6 +74,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int RoleId532 = 532;
         private const int RoleId0 = 0;
         private const string Tag0 = "tag0";
+        private const string Tag0WithSpace = "tag0 hello";
         private const string Tag1 = "tag1";
         private const string Tag2 = "tag2";
         private const string Tag3 = "tag3";
@@ -109,6 +110,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string NumericKey2 = "numerickey2";
         private const int NumericValue1 = 77777;
         private const int NumericValue2 = 55555;
+        private const int NumericValue50 = 50;
+        private const int NumericValue200 = 200;
+        private const int NumericValue1000 = 1000;
         private const string KeyWord1Name = "keyword1";
         private const string KeyWord1Value = "value1";
         private const string KeyWord2Name = "keyword2";
@@ -380,7 +384,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private IEnumerable<SearchDocument> GetStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
             var searchDocs = new List<SearchDocument> {
-                new SearchDocument { Tags = new List<string> { Tag0, Tag1, TagOldest }, Title = Line1 },
+                new SearchDocument { Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
                 new SearchDocument { Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2 },
                 new SearchDocument { Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
                 new SearchDocument { Tags = new List<string> { Tag3, Tag4, TagLatest }, Title = Line4, CultureCode = CultureEnCa },
@@ -410,6 +414,83 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var docs = GetStandardSearchDocs(searchTypeId).ToArray();
             _internalSearchController.AddSearchDocuments(docs);
             return docs.Length;
+        }
+
+        private int AddDocumentsWithNumericKeys(int searchTypeId = OtherSearchTypeId)
+        {
+             var doc1 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key1",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
+            };
+            var doc2 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key2",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
+            };
+            var doc3 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key3",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
+            };
+
+            var docs = new List<SearchDocument>() {doc1, doc2, doc3};
+
+            _internalSearchController.AddSearchDocuments(docs);
+
+            return docs.Count;
+        }
+
+        private int AddDocuments(IList<string> titles, string body,  int searchTypeId = OtherSearchTypeId)
+        {
+            var count = 0;
+            foreach (var doc in titles.Select(title => new SearchDocument
+                                                           {
+                                                               Title = title,
+                                                               UniqueKey = Guid.NewGuid().ToString(),
+                                                               Body = body,
+                                                               SearchTypeId = OtherSearchTypeId,
+                                                               ModifiedTimeUtc = DateTime.UtcNow,
+                                                               PortalId = PortalId12
+                                                           }))
+            {
+                _internalSearchController.AddSearchDocument(doc);
+                count++;
+            }
+
+            return count;
+        }
+
+        private int AddDocumentsWithKeywords(IEnumerable<string> keywords, string title, int searchTypeId = OtherSearchTypeId)
+        {
+            var count = 0;
+            foreach (var doc in keywords.Select(keyword => new SearchDocument
+            {
+                Title = title,
+                UniqueKey = Guid.NewGuid().ToString(),
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, keyword } },
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12
+            }))
+            {
+                _internalSearchController.AddSearchDocument(doc);
+                count++;
+            }
+
+            return count;
         }
 
         private void AddLinesAsSearchDocs(IList<string> lines, int searchTypeId = OtherSearchTypeId)
@@ -1365,6 +1446,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, search.Results.Count);
         }
 
+        [Test]
+        public void SearchController_GetResult_TagSearch_Single_Tag_With_Space_Returns_Single_Result()
+        {
+            //Arrange
+            AddStandardSearchDocs();
+
+            //Act
+            var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { Tag0WithSpace } };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(1, search.Results.Count);
+        }
+
 
         [Test]
         public void SearchController_GetResult_TagSearch_Lowercase_Search_Returns_PropercaseTag_Single_Result()
@@ -1449,7 +1544,63 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         #region Sort Tests
 
         [Test]
-        public void SearchController_GetResult_Sorty_By_Date_Returns_Recent_Docs_First()
+        [ExpectedException(typeof(ArgumentException))]
+        public void SearchController_GetResult_Throws_When_CustomNumericField_Is_Specified_And_CustomSortField_Is_Not()
+        {
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.CustomNumericField
+            };
+
+            _searchController.SiteSearch(query);
+         }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SearchController_GetResult_Throws_When_CustomStringField_Is_Specified_And_CustomSortField_Is_Not()
+        {
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.CustomStringField
+            };
+
+            _searchController.SiteSearch(query);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SearchController_GetResult_Throws_When_NumericKey_Is_Specified_And_CustomSortField_Is_Not()
+        {
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.NumericKey
+            };
+
+            _searchController.SiteSearch(query);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SearchController_GetResult_Throws_When_Keyword_Is_Specified_And_CustomSortField_Is_Not()
+        {
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Keyword
+            };
+
+            _searchController.SiteSearch(query);
+        }
+        
+        [Test]
+        public void SearchController_GetResult_Sorty_By_Date_Returns_Latest_Docs_First()
         {
             //Arrange
             var added = AddStandardSearchDocs();
@@ -1470,6 +1621,256 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+        public void SearchController_GetResult_Sorty_By_Date_Ascending_Returns_Earliest_Docs_First()
+        {
+            //Arrange
+            var added = AddStandardSearchDocs();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.LastModified,
+                SortDirection = SortDirections.Ascending
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.Greater(search.Results[1].DisplayModifiedTime, search.Results[0].DisplayModifiedTime);
+            Assert.Greater(search.Results[2].DisplayModifiedTime, search.Results[1].DisplayModifiedTime);
+            Assert.Greater(search.Results[3].DisplayModifiedTime, search.Results[2].DisplayModifiedTime);
+
+            Assert.AreEqual(Tag0, search.Results[0].Tags.ElementAt(0));
+            Assert.AreEqual(Tag1, search.Results[0].Tags.ElementAt(1));
+            Assert.AreEqual(TagOldest, search.Results[0].Tags.ElementAt(2));
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_NumericKeys_Ascending_Returns_Smaller_Numers_First()
+        {
+            var added = AddDocumentsWithNumericKeys();
+
+            //Act
+            var query = new SearchQuery
+            {
+                KeyWords = "Title",
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                SortField = SortFields.NumericKey,
+                SortDirection = SortDirections.Ascending,
+                CustomSortField = NumericKey1
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.Greater(search.Results[1].NumericKeys[NumericKey1], search.Results[0].NumericKeys[NumericKey1]);
+            Assert.Greater(search.Results[2].NumericKeys[NumericKey1], search.Results[1].NumericKeys[NumericKey1]);
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_NumericKeys_Descending_Returns_Bigger_Numbers_First()
+        {
+            var added = AddDocumentsWithNumericKeys();
+
+            //Act
+            var query = new SearchQuery
+            {
+                KeyWords = "Title",
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                SortField = SortFields.NumericKey,
+                SortDirection = SortDirections.Descending,
+                CustomSortField = NumericKey1
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.Greater(search.Results[0].NumericKeys[NumericKey1], search.Results[1].NumericKeys[NumericKey1]);
+            Assert.Greater(search.Results[1].NumericKeys[NumericKey1], search.Results[2].NumericKeys[NumericKey1]);
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_Title_Ascending_Returns_Alphabetic_Ascending()
+        {
+            var titles = new List<string> {"cat", "ant", "dog", "antelope", "zebra", "yellow", " "};
+
+            var added = AddDocuments(titles, "animal");
+
+            //Act
+            var query = new SearchQuery
+            {
+                KeyWords = "animal",
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                SortField = SortFields.Title,
+                SortDirection = SortDirections.Ascending
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+
+            var count = 0;
+            foreach (var title in titles.OrderBy(s => s))
+            {
+                Assert.AreEqual(title, search.Results[count++].Title);
+            }
+       }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_Title_Descending_Returns_Alphabetic_Descending()
+        {
+            var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
+
+            var added = AddDocuments(titles, "animal");
+
+            //Act
+            var query = new SearchQuery
+            {
+                KeyWords = "animal",
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                SortField = SortFields.Title,
+                SortDirection = SortDirections.Descending
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+
+            var count = 0;
+            foreach (var title in titles.OrderByDescending(s => s))
+            {
+                Assert.AreEqual(title, search.Results[count++].Title);
+            }
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_Keyword_Ascending_Returns_Alphabetic_Ascending()
+        {
+            var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
+
+            var added = AddDocumentsWithKeywords(titles, "animal");
+
+            //Act
+            var query = new SearchQuery
+            {
+                KeyWords = "animal",
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                SortField = SortFields.Keyword,
+                SortDirection = SortDirections.Ascending,
+                CustomSortField = KeyWord1Name
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+
+            var count = 0;
+            foreach (var title in titles.OrderBy(s => s))
+            {
+                Assert.AreEqual(title, search.Results[count++].Keywords[KeyWord1Name]);
+            }
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_Keyword_Descending_Returns_Alphabetic_Descending()
+        {
+            var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
+
+            var added = AddDocumentsWithKeywords(titles, "animal");
+
+            //Act
+            var query = new SearchQuery
+            {
+                KeyWords = "animal",
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                SortField = SortFields.Keyword,
+                SortDirection = SortDirections.Descending,
+                CustomSortField = KeyWord1Name
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+
+            var count = 0;
+            foreach (var title in titles.OrderByDescending(s => s))
+            {
+                Assert.AreEqual(title, search.Results[count++].Keywords[KeyWord1Name]);
+            }
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sort_By_Unknown_StringField_In_Descending_Order_Does_Not_Throw()
+        {
+            //Arrange
+            AddStandardSearchDocs();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.CustomStringField,
+                SortDirection = SortDirections.Descending,
+                CustomSortField = "unknown"
+            };
+            _searchController.SiteSearch(query);
+        }
+
+
+        [Test]
+        public void SearchController_GetResult_Sort_By_Unknown_StringField_In_Ascending_Order_Does_Not_Throw()
+        {
+            //Arrange
+            AddStandardSearchDocs();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.CustomStringField,
+                SortDirection = SortDirections.Ascending,
+                CustomSortField = "unknown"
+            };
+            _searchController.SiteSearch(query);
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sort_By_Unknown_NumericField_In_Descending_Order_Does_Not_Throw()
+        {
+            //Arrange
+            AddStandardSearchDocs();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.CustomNumericField,
+                SortDirection = SortDirections.Descending,
+                CustomSortField = "unknown"
+            };
+            _searchController.SiteSearch(query);
+        }
+
+
+        [Test]
+        public void SearchController_GetResult_Sort_By_Unknown_NumericField_In_Ascending_Order_Does_Not_Throw()
+        {
+            //Arrange
+            AddStandardSearchDocs();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.CustomNumericField,
+                SortDirection = SortDirections.Ascending,
+                CustomSortField = "unknown"
+            };
+            _searchController.SiteSearch(query);
+        }
+
+        [Test]
         public void SearchController_GetResult_Sorty_By_Relevance_Returns_TopHit_Docs_First()
         {
             //Arrange
@@ -1482,6 +1883,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     SortField = SortFields.Relevance,
                     KeyWords = "brown OR fox"
                 };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.AreEqual(true, search.Results[0].Snippet.Contains("brown") && search.Results[0].Snippet.Contains("dog"));
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_Relevance_Ascending_Does_Not_Change_Sequence_Of_Results()
+        {
+            //Arrange
+            var added = AddStandardSearchDocs();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                SortDirection = SortDirections.Ascending,
+                KeyWords = "brown OR fox"
+            };
             var search = _searchController.SiteSearch(query);
 
             //Assert
@@ -1870,6 +2292,80 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, result.TotalHits);
             Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
         }
+        #endregion
+
+        #region folder scope search tests
+
+        private void AddFoldersAndFiles()
+        {
+            var allFiles = new Dictionary<string, string>
+                               {
+                                { "Awesome-Cycles-Logo.png", "Images/" },
+                                { "Banner1.jpg", "Images/" },
+                                { "Banner2.jpg", "Images/" },
+                                { "bike-powered.png", "Images/DNN/" },
+                                { "Spacer.gif", "Images/DNN/" },
+                                { "monday.png", "My<Images/" },
+                                { "tuesday.jpg", "My<Images/" },
+                                { "wednesday.jpg", "My<Images/" },
+                                { "thursday.png", "My<Images/My<DNN/" },
+                                { "friday.gif", "My<Images/My<DNN/" }
+                               };
+
+
+            foreach (var file in allFiles)
+            {
+                var doc = new SearchDocument
+                {
+                    Title = file.Key,
+                    UniqueKey = Guid.NewGuid().ToString(),
+                    SearchTypeId = OtherSearchTypeId,
+                    ModifiedTimeUtc = DateTime.UtcNow,
+                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLower() } }
+                };
+                _internalSearchController.AddSearchDocument(doc);
+            }
+
+            _internalSearchController.Commit();
+        }
+
+        [Test]
+        public void SearchController_Scope_By_FolderName()
+        {
+            //Arrange
+            AddFoldersAndFiles();
+            
+            //Act
+            var result1 = SearchForKeyword("kw-folderName:Images/*");
+            var result2 = SearchForKeyword("kw-folderName:Images/DNN/*");
+            var result3 = SearchForKeywordWithWildCard("kw-folderName:Images/* AND spacer");
+
+            //Assert
+            Assert.AreEqual(5, result1.TotalHits);
+            Assert.AreEqual(2, result2.TotalHits);
+            Assert.AreEqual(1, result3.TotalHits);
+        }
+
+        [Test]
+        public void SearchController_Scope_By_FolderName_With_Spaces()
+        {
+            //Arrange
+            AddFoldersAndFiles();
+
+            //Act - Space is replaced by <
+            var query1 = new SearchQuery {KeyWords = "kw-folderName:Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = false };
+            var query2 = new SearchQuery { KeyWords = "kw-folderName:my<Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
+            var query3 = new SearchQuery { KeyWords = "kw-folderName:my<Images/my<dnn/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
+            var result1 = _searchController.SiteSearch(query1);
+            var result2 = _searchController.SiteSearch(query2);
+            var result3 = _searchController.SiteSearch(query3);
+
+            //Assert
+            Assert.AreEqual(5, result1.TotalHits);
+            Assert.AreEqual(5, result2.TotalHits);
+            Assert.AreEqual(2, result3.TotalHits);
+        }
+
         #endregion
 
         #region EmailAddress Tests

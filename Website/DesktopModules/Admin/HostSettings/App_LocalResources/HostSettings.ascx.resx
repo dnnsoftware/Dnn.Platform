@@ -792,6 +792,12 @@
   <data name="plJQueryVersion.Text" xml:space="preserve">
     <value>Installed jQuery Version:</value>
   </data>
+  <data name="plEnableCDN.Help" xml:space="preserve">
+    <value>If checked, then the associated URL will be used for javascript libraries.  If unchecked then local copies of the file will be used.</value>
+  </data>
+  <data name="plEnableCDN.Text" xml:space="preserve">
+    <value>Use javascript libraries CDN?</value>
+  </data>
   <data name="HostEmail.Error" xml:space="preserve">
     <value>Email Address is invalid</value>
   </data>
@@ -1090,7 +1096,7 @@
     <value>Search Index Path:</value>
   </data>
   <data name="SearchIndex.Text" xml:space="preserve">
-    <value>Search</value>
+    <value>Search Settings</value>
   </data>
   <data name="btnCompactSearchIndex.Text" xml:space="preserve">
     <value>Compact Index</value>
@@ -1179,5 +1185,11 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   </data>
   <data name="lblSearchIndexDbSize.Text" xml:space="preserve">
     <value>Search Index Size:</value>
+  </data>
+  <data name="plDebugMode.Help" xml:space="preserve">
+    <value>If checked the installation runs in "debug mode", meaning that various parts of the application will write more verbose error logs etc. Note this may lead to performance degredation.</value>
+  </data>
+  <data name="plDebugMode.Text" xml:space="preserve">
+    <value>Debug Mode</value>
   </data>
 </root>

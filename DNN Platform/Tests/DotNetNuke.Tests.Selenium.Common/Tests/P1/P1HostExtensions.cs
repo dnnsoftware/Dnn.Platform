@@ -62,6 +62,14 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+
+			_logContent = LogContent();
+		}
+
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs(_logContent);
 		}
 
 		[Test]
@@ -75,7 +83,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			int itemNumber = hostExtensionsPage.FindElements(By.XPath(ExtensionsPage.ModulesExtensionsList)).Count;
 
-			hostExtensionsPage.InstallExtension(_hostFileToUpload);
+			hostExtensionsPage.InstallExtension(@"P1\" + _hostFileToUpload);
 
 			hostExtensionsPage.OpenUsingButtons(_baseUrl);
 			hostExtensionsPage.AccordionOpen(By.XPath(ExtensionsPage.ModulesAccordion));
@@ -203,7 +211,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			int itemNumber = adminExtensionsPage.FindElements(By.XPath(ExtensionsPage.ModulesExtensionsList)).Count;
 
-			adminExtensionsPage.InstallExtension(_adminFileToUpload);
+			adminExtensionsPage.InstallExtension(@"P1\" + _adminFileToUpload);
 
 			adminExtensionsPage.OpenUsingButtons(_baseUrl);
 			adminExtensionsPage.AccordionOpen(By.XPath(ExtensionsPage.ModulesAccordion));

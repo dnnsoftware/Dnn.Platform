@@ -38,6 +38,14 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+
+			_logContent = LogContent();
+		}
+
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs(_logContent);
 		}
 
 		[Test]
@@ -56,7 +64,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			Assert.IsTrue(
 				adminFileManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'dnnModuleDigitalAssetsListViewItem')]/span/font[text() = '" + _smallFileToUpload +
+					By.XPath("//div[contains(@class, 'dnnModuleDigitalAssetItemName')]//span/font[text() = '" + _smallFileToUpload +
 					         "']")));
 		}
 
@@ -76,7 +84,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			Assert.IsFalse(
 				adminFileManagementPage.ElementPresent(
-					By.XPath("//div[contains(@id, 'dnnModuleDigitalAssetsListViewItem')]/span/font[text() = '" + _largeFileToUpload +
+					By.XPath("//div[contains(@class, 'dnnModuleDigitalAssetItemName')]//span/font[text() = '" + _largeFileToUpload +
 					         "']")));
 		}
 	}

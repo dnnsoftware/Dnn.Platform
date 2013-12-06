@@ -21,6 +21,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "SQL"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SQLModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Host '" + PageTitleLabel + "' page:");

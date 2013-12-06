@@ -1,0 +1,9 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
+    <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
+    <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+  </PropertyGroup>
+</Project>

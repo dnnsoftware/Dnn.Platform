@@ -27,6 +27,14 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+
+			_logContent = LogContent();
+		}
+
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs(_logContent);
 		}
 
 		public void VerifyQuickSearch(BasePage currentPage)
@@ -87,27 +95,19 @@ namespace DNNSelenium.Common.Tests.P1
 		[TestCase("Common", "CorePages.AdminTaxonomyPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.AdminUserAccountsPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.AdminVendorsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostActivateYourLicensePage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostApplicationIntegrityPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostAdvancedUrlManagementPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostConfigurationManagerPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostDashboardPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostDeviceDetectionManagementPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostFileManagementPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostExtensionsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostHealthMonitoringPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostHtmlEditorManagerPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostListsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostManageWebServersPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSchedulePage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostSecurityCenterPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSiteManagementPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSqlPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSuperUserAccountsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostUserSwitcherPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostVendorsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostWhatsNewPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.UserAccountPage", "OpenUsingLink")]
 		[TestCase("Common", "CorePages.ManageUserProfilePage", "OpenUsingLink")]
 		[TestCase("Common", "CorePages.ManageUsersPage", "OpenUsingControlPanel")]
@@ -144,27 +144,19 @@ namespace DNNSelenium.Common.Tests.P1
 		[TestCase("Common", "CorePages.AdminTaxonomyPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.AdminUserAccountsPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.AdminVendorsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostActivateYourLicensePage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostApplicationIntegrityPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostAdvancedUrlManagementPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostConfigurationManagerPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostDashboardPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostDeviceDetectionManagementPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostFileManagementPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostExtensionsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostHealthMonitoringPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostHtmlEditorManagerPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostListsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostManageWebServersPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSchedulePage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostSecurityCenterPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSiteManagementPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSqlPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostSuperUserAccountsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostUserSwitcherPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.HostVendorsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostWhatsNewPage", "OpenUsingButtons")]
 		[TestCase("Common", "CorePages.UserAccountPage", "OpenUsingLink")]
 		[TestCase("Common", "CorePages.ManageUserProfilePage", "OpenUsingLink")]
 		[TestCase("Common", "CorePages.ManageUsersPage", "OpenUsingControlPanel")]
@@ -267,11 +259,10 @@ namespace DNNSelenium.Common.Tests.P1
 			var hostSchedulePage = new HostSchedulePage(_driver);
 			hostSchedulePage.OpenUsingButtons(_baseUrl);
 
-			StringAssert.Contains("dnnCheckbox-checked",
-			                      hostSchedulePage.WaitForElement(
-				                      By.XPath("//tr[td[text() = '" + HostSchedulePage.SearchSiteCrawlerName +
-				                               "']]//span[input[contains(@id, 'ViewSchedule_dgSchedule')]]/span")).GetAttribute(
-					                               "class"),
+			Assert.That(hostSchedulePage.WaitForElement(
+				                    By.XPath("//tr[td[text() = '" + HostSchedulePage.SearchSiteCrawlerName +
+				                               "']]//span/input[contains(@id, 'ViewSchedule_dgSchedule')]")).GetAttribute("checked"), 
+									Is.EqualTo("true"),
 			                      "Site Crawler is not enabled");
 		}
 

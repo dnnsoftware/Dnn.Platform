@@ -19,9 +19,14 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Extensions"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "ExtensionsModule"; }
+		}
+
 		public static string AdminExtensionsUrl = "/Admin/Extensions";
 
-		public static string UpdateDesctopModuleButton = "//a[contains(@id, '_ModuleEditor_cmdUpdate')]";
+		public static string UpdateDesktopModuleButton = "//a[contains(@id, '_ModuleEditor_cmdUpdate')]";
 		public static string PermissionTable = "//div[contains(@class, 'dnnPermissionsGrid')]//tr[td[text() = ";
 
 		public void OpenUsingUrl(string baseUrl)
@@ -58,8 +63,8 @@ namespace DNNSelenium.Common.CorePages
 			ScrollIntoView(element, 200);
 			element.Click();
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Update Desctop Module Button: ");
-			ClickOnButton(By.XPath(UpdateDesctopModuleButton));
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Update Desktop Module Button: ");
+			ClickOnButton(By.XPath(UpdateDesktopModuleButton));
 		}
 	}
 }

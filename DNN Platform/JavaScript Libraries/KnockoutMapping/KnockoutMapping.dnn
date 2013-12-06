@@ -1,0 +1,48 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Knockout.Mapping" type="JavaScript_Library" version="02.04.01">
+      <friendlyName>Knockout Mapping JavaScript Library</friendlyName>
+      <description>Knockout Mapping is a plugin for Knockout that adds the ability for JSON documents to be automatically mapped to
+      Knockout ViewModels.</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>DotNetNuke Corporation</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>http://www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="Knockout Mapping (MIT).txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+	      <dependency type="managedPackage" version="2.2.1">Knockout</dependency>
+      </dependencies>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>Knockout.Mapping</libraryName>
+            <fileName>knockout.mapping.js</fileName>
+            <preferredScriptLocation>BodyBottom</preferredScriptLocation>
+            <CDNPath></CDNPath>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>Knockout.Mapping</libraryFolderName>
+            <jsfile>
+              <name>knockout.mapping.js</name>
+            </jsfile>
+          </jsfiles>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>Licenses</basePath>
+            <file>
+              <name>Knockout Mapping (MIT).txt</name>
+            </file>
+          </files>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

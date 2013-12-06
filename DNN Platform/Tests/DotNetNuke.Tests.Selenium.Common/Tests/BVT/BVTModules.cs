@@ -9,7 +9,6 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Common.Tests.BVT
 {
 	[TestFixture ]
-	[Category("BVT")]
 	public abstract class BVTModules : CommonTestSteps
 	{
 		public string _pageName;
@@ -41,10 +40,17 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			OpenMainPageAndLoginAsHost();
 
+			_logContent = LogContent();
+
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
 			blankPage.AddNewPage(_pageName);
 		}
 
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs(_logContent);
+		}
 	}
 }

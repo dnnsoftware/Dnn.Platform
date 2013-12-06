@@ -53,11 +53,8 @@ namespace DotNetNuke.Entities.Content
     public class ContentTypeController : IContentTypeController
     {
         private readonly IDataService _DataService;
-        private string _CacheKey = "ContentTypes";
 
-        private int _CacheTimeOut = 20;
-
-        #region "Constructors"
+        #region Constructors
 
         public ContentTypeController() : this(Util.GetDataService())
         {
@@ -70,16 +67,7 @@ namespace DotNetNuke.Entities.Content
 
         #endregion
 
-        #region "Private Methods"
-
-        private object GetContentTypesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillQueryable<ContentType>(_DataService.GetContentTypes()).ToList();
-        }
-
-        #endregion
-
-        #region "Public Methods"
+        #region Public Methods
 
 		/// <summary>
 		/// Adds the type of the content.
@@ -97,7 +85,7 @@ namespace DotNetNuke.Entities.Content
             contentType.ContentTypeId = _DataService.AddContentType(contentType);
 
             //Refresh cached collection of types
-            DataCache.RemoveCache(_CacheKey);
+            ClearContentTypeCache();
 
             return contentType.ContentTypeId;
         }
@@ -107,7 +95,7 @@ namespace DotNetNuke.Entities.Content
 		/// </summary>
         public void ClearContentTypeCache()
         {
-            DataCache.RemoveCache(_CacheKey);
+            DataCache.RemoveCache(DataCache.ContentTypesCacheKey);
         }
 
 		/// <summary>
@@ -125,7 +113,7 @@ namespace DotNetNuke.Entities.Content
             _DataService.DeleteContentType(contentType);
 
             //Refresh cached collection of types
-            DataCache.RemoveCache(_CacheKey);
+            ClearContentTypeCache();
         }
 
 		/// <summary>
@@ -134,7 +122,10 @@ namespace DotNetNuke.Entities.Content
 		/// <returns>content type collection.</returns>
         public IQueryable<ContentType> GetContentTypes()
         {
-            return CBO.GetCachedObject<List<ContentType>>(new CacheItemArgs(_CacheKey, _CacheTimeOut), GetContentTypesCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<ContentType>>(new CacheItemArgs(DataCache.ContentTypesCacheKey, 
+                                                                            DataCache.ContentTypesCacheTimeOut, 
+                                                                            DataCache.ContentTypesCachePriority),
+                                                                c => CBO.FillQueryable<ContentType>(_DataService.GetContentTypes()).ToList()).AsQueryable();
         }
 
 		/// <summary>
@@ -154,7 +145,7 @@ namespace DotNetNuke.Entities.Content
             _DataService.UpdateContentType(contentType);
 
             //Refresh cached collection of types
-            DataCache.RemoveCache(_CacheKey);
+            ClearContentTypeCache();
         }
 
         #endregion

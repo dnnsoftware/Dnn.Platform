@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Installer.Packages
             {
                 if (_Package == null)
                 {
-                    _Package = PackageController.GetPackage(PackageID);
+                    _Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == PackageID); ;
                 }
                 return _Package;
             }

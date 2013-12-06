@@ -100,28 +100,24 @@
     </Compile>
     <Compile Include="AddScript.ascx.cs">
       <DependentUpon>AddScript.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CreateModule.ascx.designer.cs">
       <DependentUpon>CreateModule.ascx</DependentUpon>
     </Compile>
     <Compile Include="CreateModule.ascx.cs">
       <DependentUpon>CreateModule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditScript.ascx.designer.cs">
       <DependentUpon>EditScript.ascx</DependentUpon>
     </Compile>
     <Compile Include="EditScript.ascx.cs">
       <DependentUpon>EditScript.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="RazorHost.ascx.designer.cs">
       <DependentUpon>RazorHost.ascx</DependentUpon>
     </Compile>
     <Compile Include="RazorHost.ascx.cs">
       <DependentUpon>RazorHost.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="RazorHostSettingsExtensions.cs" />
     <Compile Include="Settings.ascx.designer.cs">
@@ -129,7 +125,6 @@
     </Compile>
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +141,7 @@
     <None Include="Manifest.dnn">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Module.build" />
     <None Include="RazorHost.dnn">
       <SubType>Designer</SubType>
     </None>
@@ -222,130 +218,12 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>RazorHost</DNNFileName>
-    <PackageName>DNNCE_RazorHost</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\ModulePackage.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="DebugProject;PackageRazor">
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CreateItem Include="..\..\Components\WebPages\*.dll">
-      <Output TaskParameter="Include" ItemName="ComponentReferences" />
-    </CreateItem>
-    <CreateItem Include="*.ascx;*.dnn;*.txt;*.css">
-      <Output TaskParameter="Include" ItemName="ModuleFiles" />
-    </CreateItem>
-    <CreateItem Include="RazorHelpers\*.cshtml">
-      <Output TaskParameter="Include" ItemName="RazorHelpers" />
-    </CreateItem>
-    <CreateItem Include="Scripts\*.cshtml">
-      <Output TaskParameter="Include" ItemName="CSHtmlFiles" />
-    </CreateItem>
-    <CreateItem Include="Scripts\*.vbhtml">
-      <Output TaskParameter="Include" ItemName="VBHtmlFiles" />
-    </CreateItem>
-    <CreateItem Include="Scripts\Shared\*.cshtml">
-      <Output TaskParameter="Include" ItemName="SharedCSHtmlFiles" />
-    </CreateItem>
-    <CreateItem Include="Scripts\Shared\*.vbhtml">
-      <Output TaskParameter="Include" ItemName="SharedVBHtmlFiles" />
-    </CreateItem>
-    <CreateItem Include="App_LocalResources\*.resx">
-      <Output TaskParameter="Include" ItemName="LocalResourceFilesFiles" />
-    </CreateItem>
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="@(ComponentReferences)" DestinationFolder="$(WebsitePath)\bin" />
-    <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules" />
-    <Copy SourceFiles="@(ModuleFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost" />
-    <Copy SourceFiles="@(RazorHelpers)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\RazorHelpers" />
-    <Copy SourceFiles="@(CSHtmlFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\Scripts" />
-    <Copy SourceFiles="@(VBHtmlFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\Scripts" />
-    <Copy SourceFiles="@(SharedCSHtmlFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\Scripts\Shared" />
-    <Copy SourceFiles="@(SharedVBHtmlFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\Scripts\Shared" />
-    <Copy SourceFiles="@(LocalResourceFilesFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\RazorModules\RazorHost\App_LocalResources" />
-  </Target>
-  <Target Name="PackageRazor" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <XmlRead Prefix="n" Namespace="http://schemas.microsoft.com/developer/msbuild/2003" XPath="dotnetnuke/packages/package/@version" XmlFileName="$(DNNFileName).dnn">
-      <Output TaskParameter="Value" PropertyName="Version" />
-    </XmlRead>
-    <CreateItem Include="$(DNNFileName).dnn">
-      <Output TaskParameter="Include" ItemName="PackageManifestFiles" />
-    </CreateItem>
-    <CreateItem Include="*.txt">
-      <Output TaskParameter="Include" ItemName="PackageTextFiles" />
-    </CreateItem>
-    <CreateItem Include="*.asmx;*.ascx;*.css;*.xsl;*.svc;*.xml">
-      <Output TaskParameter="Include" ItemName="PackageSourceFiles" />
-    </CreateItem>
-    <CreateItem Include="App_LocalResources\*.resx">
-      <Output TaskParameter="Include" ItemName="PackageLocalResourceFiles" />
-    </CreateItem>
-    <CreateItem Include="Documentation\*.txt">
-      <Output TaskParameter="Include" ItemName="PackageDocumentationFiles" />
-    </CreateItem>
-    <CreateItem Include="Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
-      <Output TaskParameter="Include" ItemName="PackageSqlDataProviderFiles" />
-    </CreateItem>
-    <CreateItem Include="Data\*.SqlDataProvider">
-      <Output TaskParameter="Include" ItemName="PackageDataFiles" />
-    </CreateItem>
-    <CreateItem Include="images\*.*">
-      <Output TaskParameter="Include" ItemName="MyImages" />
-    </CreateItem>
-    <CreateItem Include="js\*.js">
-      <Output TaskParameter="Include" ItemName="MyJsFiles" />
-    </CreateItem>
-    <CreateItem Include="keys\*.*">
-      <Output TaskParameter="Include" ItemName="MyKeys" />
-    </CreateItem>
-    <CreateItem Include="Views\*.ascx">
-      <Output TaskParameter="Include" ItemName="MyViews" />
-    </CreateItem>
-    <CreateItem Include="Views\Controls\*.ascx">
-      <Output TaskParameter="Include" ItemName="MyViewControls" />
-    </CreateItem>
-    <CreateItem Include="Scripts\*.cshtml">
-      <Output TaskParameter="Include" ItemName="MyScripts" />
-    </CreateItem>
-    <CreateItem Include="Scripts\Shared\*.cshtml">
-      <Output TaskParameter="Include" ItemName="MySharedScripts" />
-    </CreateItem>
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin" />
-    <Copy SourceFiles="@(PackageSourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-    <Copy SourceFiles="@(PackageLocalResourceFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\App_LocalResources" />
-    <Copy SourceFiles="@(PackageSqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Providers\DataProviders\SqlDataProvider" />
-    <Copy SourceFiles="@(PackageDataFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Data" />
-    <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-    <Copy SourceFiles="@(PackageTextFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-    <Copy SourceFiles="@(PackageDocumentationFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Documentation" />
-    <Copy SourceFiles="@(MyImages)" DestinationFolder="$(MSBuildProjectDirectory)\Package\images" />
-    <Copy SourceFiles="@(MyJsFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\js" />
-    <Copy SourceFiles="@(MyKeys)" DestinationFolder="$(MSBuildProjectDirectory)\Package\keys" />
-    <Copy SourceFiles="@(MyViews)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-    <Copy SourceFiles="@(MyViewControls)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Controls" />
-    <Copy SourceFiles="@(MyScripts)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Scripts" />
-    <Copy SourceFiles="@(MySharedScripts)" DestinationFolder="$(MSBuildProjectDirectory)\Package\Scripts\Shared" />
-    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
-      <Output TaskParameter="Include" ItemName="OutputContent" />
-    </CreateItem>
-    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(WebsitePath)/Install/Module" />
-    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
-    <RemoveDir Directories="$(MSBuildProjectDirectory)\Package" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>

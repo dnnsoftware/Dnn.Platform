@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="6.0">
 	<packages>
-		<package name="DotNetNuke.Modules.PreviewProfileManagement" type="Module" version="07.01.02" isSystem="true">
+		<package name="DotNetNuke.Modules.PreviewProfileManagement" type="Module" version="07.02.00" isSystem="true">
 			<friendlyName>Device Preview Management</friendlyName>
 			<iconFile>~/DesktopModules/DevicePreviewManagement/Images/DevicePreview_Standard_32X32.png</iconFile>
 			<description>The Device Preview Management module allows users to manage their mobile preview profiles.</description>

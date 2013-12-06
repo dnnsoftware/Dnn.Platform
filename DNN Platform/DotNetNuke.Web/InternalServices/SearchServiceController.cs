@@ -37,6 +37,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
@@ -64,107 +65,17 @@ namespace DotNetNuke.Web.InternalServices
             public string Culture { get; set; }
         }
 
-        //private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchServiceController));
-
         #region private methods
 
         private readonly ModuleController _moduleController = new ModuleController();
         private readonly TabController _tabController = new TabController();
-
-        #region  search query regex parsers
-
-        private static readonly Regex TagRegex = new Regex(@"\[(.*?)\]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex DateRegex = new Regex(@"after:(\w+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex TypeRegex = new Regex(@"type:(\w+(,\w+)*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
+        
         private static readonly int HtmlModuleDefitionId = GetHtmlModuleDefinitionId();
 
         private static int GetHtmlModuleDefinitionId()
         {
             var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Text/HTML");
             return modDef != null ? modDef.ModuleDefID : -1;
-        }
-
-        private static List<string> GetTags(string keywords, out string outputKeywords)
-        {
-            var tags = new List<string>();
-            if (string.IsNullOrEmpty(keywords))
-            {
-                outputKeywords = string.Empty;
-            }
-            else
-            {
-                var m = TagRegex.Match(keywords);
-                while (m.Success)
-                {
-                    var tag = m.Groups[1].ToString();
-                    if (!string.IsNullOrEmpty(tag))
-                    {
-                        tags.Add(tag.Trim());
-                    }
-                    m = m.NextMatch();
-                }
-
-                outputKeywords = TagRegex.Replace(keywords, string.Empty).Trim();
-            }
-            return tags;
-        }
-
-        private static DateTime GetLastModifiedDate(string keywords, out string outputKeywords)
-        {
-            var m = DateRegex.Match(keywords);
-            var date = "";
-            while (m.Success && string.IsNullOrEmpty(date))
-            {
-                date = m.Groups[1].ToString();
-            }
-
-            var result = DateTime.MinValue;
-            if (!string.IsNullOrEmpty(date))
-            {
-                switch (date.ToLower())
-                {
-                    case "day":
-                        result = DateTime.UtcNow.AddDays(-1);
-                        break;
-                    case "week":
-                        result = DateTime.UtcNow.AddDays(-7);
-                        break;
-                    case "month":
-                        result = DateTime.UtcNow.AddDays(-30);
-                        break;
-                    case "quarter":
-                        result = DateTime.UtcNow.AddDays(-90);
-                        break;
-                    case "year":
-                        result = DateTime.UtcNow.AddDays(-365);
-                        break;
-                }
-            }
-
-            outputKeywords = DateRegex.Replace(keywords, string.Empty).Trim();
-            return result;
-        }
-
-        private static List<string> GetSearchTypeList(string keywords, out string outputKeywords)
-        {
-            var m = TypeRegex.Match(keywords);
-            var types = "";
-            while (m.Success && string.IsNullOrEmpty(types))
-            {
-                types = m.Groups[1].ToString();
-            }
-
-            var typesList = new List<string>();
-            if (!string.IsNullOrEmpty(types))
-            {
-                typesList = types.Split(',').ToList();
-            }
-
-            outputKeywords = TypeRegex.Replace(keywords, string.Empty).Trim();
-            return typesList;
         }
 
         private bool IsWildCardEnabledForModule()
@@ -178,8 +89,6 @@ namespace DotNetNuke.Web.InternalServices
 
             return enableWildSearch;
         }
-
-        #endregion
 
         #region Loads Search portal ids, crawler ids and module def ids
 
@@ -261,7 +170,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-	    return list.Distinct().ToList();
+            return list;
         }
 
         private static IEnumerable<int> GetSearchModuleDefIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)
@@ -292,7 +201,7 @@ namespace DotNetNuke.Web.InternalServices
             return list;
         }
 
-        private List<SearchContentSource> GetSearchContentSources(List<string> typesList)
+        private IList<SearchContentSource> GetSearchContentSources(IList<string> typesList)
         {
             var sources = new List<SearchContentSource>();
             var list = InternalSearchController.Instance.GetSearchContentSourceList(PortalSettings.PortalId);
@@ -325,6 +234,7 @@ namespace DotNetNuke.Web.InternalServices
 
             var groups = new List<GroupedDetailView>();
             var tabGroups = new Dictionary<string, IList<SearchResult>>();
+            var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
            
             foreach (var result in searchResults.Results)
             {
@@ -336,7 +246,17 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    tabGroups[key].Add(result);
+                    //when the result is a user search type, we should only show one result
+                    // and if duplicate, we should also reduce the totalHit number.
+                    if (result.SearchTypeId != userSearchTypeId ||
+                        tabGroups[key].All(r => r.Url != result.Url))
+                    {
+                        tabGroups[key].Add(result);
+                    }
+                    else
+                    {
+                        totalHits--;
+                    }
                 }
             }
 
@@ -462,9 +382,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             string cleanedKeywords;
             keywords = (keywords ?? string.Empty).Trim();
-            var tags = GetTags(keywords, out cleanedKeywords);
-            var beginModifiedTimeUtc = GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
-            var searchTypes = GetSearchTypeList(keywords, out cleanedKeywords);
+            var tags = SearchQueryStringParser.Instance.GetTags(keywords, out cleanedKeywords);
+            var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
+            var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out cleanedKeywords);
 
             var contentSources = GetSearchContentSources(searchTypes);
             var settings = GetSearchModuleSettings();
@@ -496,9 +416,25 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     int totalHists;
                     var previews = GetBasicViews(query, out totalHists);
-
+                    var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
+                    var userSearchSource = contentSources.FirstOrDefault(s => s.SearchTypeId == userSearchTypeId);
                     foreach (var preview in previews)
                     {
+                        //if the document type is user, then try to add user pic into preview's custom attributes.
+                        if (userSearchSource != null && preview.DocumentTypeName == userSearchSource.LocalizedName)
+                        {
+                            var match = Regex.Match(preview.DocumentUrl, "userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase);
+                            if (match.Success)
+                            {
+                                var userid = Convert.ToInt32(match.Groups[2].Value);
+                                var user = UserController.GetUserById(PortalSettings.PortalId, userid);
+                                if (user != null)
+                                {
+                                    preview.Attributes.Add("Avatar", user.Profile.PhotoURL);
+                                }
+                            }
+                        }
+
                         var groupedResult = results.SingleOrDefault(g => g.DocumentTypeName == preview.DocumentTypeName);
                         if (groupedResult != null)
                         {
@@ -507,7 +443,8 @@ namespace DotNetNuke.Web.InternalServices
                             {
                                 Title = preview.Title,
                                 Snippet = preview.Snippet,
-                                DocumentUrl = preview.DocumentUrl
+                                DocumentUrl = preview.DocumentUrl,
+                                Attributes = preview.Attributes
                             });
                         }
                         else
@@ -531,9 +468,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             string cleanedKeywords;
             search = (search ?? string.Empty).Trim();
-            var tags = GetTags(search, out cleanedKeywords);
-            var beginModifiedTimeUtc = GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
-            var searchTypes = GetSearchTypeList(cleanedKeywords, out cleanedKeywords);
+            var tags = SearchQueryStringParser.Instance.GetTags(search, out cleanedKeywords);
+            var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
+            var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(cleanedKeywords, out cleanedKeywords);
 
             var contentSources = GetSearchContentSources(searchTypes);
             var settings = GetSearchModuleSettings();

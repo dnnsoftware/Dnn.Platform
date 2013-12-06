@@ -117,11 +117,17 @@
 			var id = '<%=ctlContext.ClientID%>';
 			var item = eventArgs.get_menuItem();
 			var cmd = item.get_value();
-			if (cmd == 'delete') {
-				if (!confirm('<%=GetConfirmString()%>')) {
-					item.get_menu().hide();
-					eventArgs.set_cancel(true);
-				}
+		    var attributes = item.get_attributes();
+			if (cmd == 'delete' && !attributes.getAttribute("confirm")) {
+			    item.get_menu().hide();
+			    $("<a href='#' />").dnnConfirm({
+			        text: '<%=GetConfirmString()%>',
+			        callbackTrue: function () {
+			            attributes.setAttribute("confirm", true);
+			            item.click();
+			        }
+			    }).click();
+			    eventArgs.set_cancel(true);
 			}
 			/*get current node to set hash*/
 			var nodeValue = eventArgs.get_node().get_value();

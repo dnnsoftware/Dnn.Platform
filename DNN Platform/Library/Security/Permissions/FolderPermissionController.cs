@@ -27,6 +27,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
+using System.Collections.Generic;
 
 #endregion
 
@@ -111,6 +112,38 @@ namespace DotNetNuke.Security.Permissions
                 }
             }
             return hasPermission;
+        }
+
+        /// <summary>
+        /// Copies the permissions to subfolders.
+        /// </summary>
+        /// <param name="folder">The parent folder.</param>
+        /// <param name="newPermissions">The new permissions.</param>
+        public static void CopyPermissionsToSubfolders(IFolderInfo folder, FolderPermissionCollection newPermissions)
+        {
+            bool clearCache = CopyPermissionsToSubfoldersRecursive(folder, newPermissions);
+            if (clearCache)
+            {
+                DataCache.ClearFolderCache(folder.PortalID);
+            }
+        }
+
+        private static bool CopyPermissionsToSubfoldersRecursive(IFolderInfo folder, FolderPermissionCollection newPermissions)
+        {
+            bool clearCache = Null.NullBoolean;
+            IEnumerable<IFolderInfo> childFolders = FolderManager.Instance.GetFolders(folder);
+            foreach (FolderInfo f in childFolders)
+            {
+                if (CanAdminFolder(f))
+                {
+                    f.FolderPermissions.Clear();
+                    f.FolderPermissions.AddRange(newPermissions);
+                    SaveFolderPermissions(f);
+                    clearCache = true;
+                }
+                clearCache = CopyPermissionsToSubfoldersRecursive(f, newPermissions) || clearCache;
+            }
+            return clearCache;
         }
 
         /// -----------------------------------------------------------------------------

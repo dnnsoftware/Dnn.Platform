@@ -19,8 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
@@ -52,11 +50,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         protected ModuleInfo ModuleConfiguration { get; private set; }
         #endregion
-
-        #region Protected Methods
         
-        #endregion
-
         #region Public Methods
         public void SetPreviewInfo(PreviewInfoViewModel previewInfoViewModel)
         {

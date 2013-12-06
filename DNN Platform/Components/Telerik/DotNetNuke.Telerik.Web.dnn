@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Telerik.Web" type="Library" version="07.01.02">
+    <package name="DotNetNuke.Telerik.Web" type="Library" version="07.02.00">
       <friendlyName>DotNetNuke Telerik Web Components</friendlyName>
       <description>Provides Telerik Components for DotNetNuke.</description>
       <dependencies/>

@@ -223,7 +223,7 @@
     <value>The question provided was invalid.</value>
   </data>
   <data name="PasswordMismatch.Text" xml:space="preserve">
-    <value>Password Mismatch</value>
+    <value>The new password and confirmation password do not match. The password has not been changed.</value>
   </data>
   <data name="PasswordMismatch_Detail.Text" xml:space="preserve">
     <value>The password and password confirmation did not match.</value>
@@ -239,5 +239,8 @@
   </data>
   <data name="VanityUrl.Text" xml:space="preserve">
     <value>Profile URL:</value>
+  </data>
+  <data name="PasswordReset.Text" xml:space="preserve">
+    <value>The password has been reset.</value>
   </data>
 </root>

@@ -117,28 +117,24 @@
     <Compile Include="Components\WorkflowStatePermissionInfo.cs" />
     <Compile Include="EditHtml.ascx.cs">
       <DependentUpon>EditHtml.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditHtml.ascx.designer.cs">
       <DependentUpon>EditHtml.ascx</DependentUpon>
     </Compile>
     <Compile Include="HtmlModule.ascx.cs">
       <DependentUpon>HtmlModule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HtmlModule.ascx.designer.cs">
       <DependentUpon>HtmlModule.ascx</DependentUpon>
     </Compile>
     <Compile Include="MyWork.ascx.cs">
       <DependentUpon>MyWork.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MyWork.ascx.designer.cs">
       <DependentUpon>MyWork.ascx</DependentUpon>
     </Compile>
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
@@ -168,6 +164,7 @@
     <Content Include="releaseNotes.txt" />
     <Content Include="Settings.ascx" />
     <None Include="dnn_HTML.dnn" />
+    <Content Include="Module.build" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.05.00.SqlDataProvider" />
@@ -209,9 +206,8 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
@@ -225,43 +221,5 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>dnn_HTML</DNNFileName>
-    <PackageName>DNNCE_HTML</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-    </ItemGroup>
-    <ItemGroup>
-      <Views Include="*.ascx" />
-    </ItemGroup>
-    <ItemGroup>
-      <ResourceFiles Include="App_LocalResources\*.resx" />
-    </ItemGroup>
-    <ItemGroup>
-      <Images Include="Images/*.*" />
-    </ItemGroup>
-    <ItemGroup>
-      <Resources Include="@(ResourceFiles);@(Views);@(Images);@(TextFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Copy SourceFiles="@(Views)" DestinationFolder="$(WebsitePath)\DesktopModules\HTML" />
-    <Copy SourceFiles="@(Images)" DestinationFolder="$(WebsitePath)\DesktopModules\HTML\Images" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\HTML" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\HTML\App_LocalResources" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>

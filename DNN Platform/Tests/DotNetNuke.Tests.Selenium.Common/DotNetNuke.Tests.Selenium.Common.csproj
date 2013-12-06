@@ -37,7 +37,7 @@
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,15 +49,15 @@
     <Reference Include="System.Xml" />
     <Reference Include="ThoughtWorks.Selenium.Core, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\WebDriver.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver.Support, Version=2.35.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebDriver.Support, Version=2.31.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Selenium.WebDriver.2.31.0\net40\WebDriver.Support.dll</HintPath>
+      <HintPath>..\..\..\Packages\selenium-dotnet-2.35.0\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -91,36 +91,22 @@
     <Compile Include="CorePages\AdminTaxonomyPage.cs" />
     <Compile Include="CorePages\AdminUserAccountsPage.cs" />
     <Compile Include="CorePages\AdminVendorsPage.cs" />
-    <Compile Include="BaseClasses\BasePages\BaseOutsidePage.cs" />
     <Compile Include="CorePages\BlankPage.cs" />
     <Compile Include="BaseClasses\BasePages\ExtensionsPage.cs" />
     <Compile Include="CorePages\FileUploadPage.cs" />
-    <Compile Include="CorePages\HostActivateYourLicensePage.cs" />
-    <Compile Include="CorePages\HostAdvancedUrlManagementPage.cs" />
-    <Compile Include="CorePages\HostApplicationIntegrityPage.cs" />
     <Compile Include="CorePages\HostConfigurationManagerPage.cs" />
     <Compile Include="CorePages\HostDashboardPage.cs" />
     <Compile Include="CorePages\HostDeviceDetectionManagementPage.cs" />
     <Compile Include="CorePages\HostExtensionsPage.cs" />
     <Compile Include="CorePages\HostFileManagementPage.cs" />
-    <Compile Include="CorePages\HostHealthMonitoringPage.cs" />
     <Compile Include="CorePages\HostHtmlEditorManagerPage.cs" />
-    <Compile Include="CorePages\HostKnowledgeBasePage.cs" />
-    <Compile Include="CorePages\HostLicenseManagementPage.cs" />
     <Compile Include="CorePages\HostListsPage.cs" />
-    <Compile Include="CorePages\HostManageWebServersPage.cs" />
-    <Compile Include="CorePages\HostMySupportTicketsPage.cs" />
     <Compile Include="CorePages\HostSchedulePage.cs" />
-    <Compile Include="CorePages\HostSecurityCenterPage.cs" />
     <Compile Include="CorePages\HostSettingsPage.cs" />
     <Compile Include="CorePages\HostSiteManagementPage.cs" />
-    <Compile Include="CorePages\HostSoftwareAndDocumentationPage.cs" />
     <Compile Include="CorePages\HostSqlPage.cs" />
     <Compile Include="CorePages\HostSuperUserAccountsPage.cs" />
-    <Compile Include="CorePages\HostTechnicalSupportPage.cs" />
-    <Compile Include="CorePages\HostUserSwitcherPage.cs" />
     <Compile Include="CorePages\HostVendorsPage.cs" />
-    <Compile Include="CorePages\HostWhatsNewPage.cs" />
     <Compile Include="CorePages\InstallerPage.cs" />
     <Compile Include="CorePages\LoginPage.cs" />
     <Compile Include="CorePages\MainPage.cs" />
@@ -136,7 +122,7 @@
     <Compile Include="DemoPages\AboutUsPage.cs" />
     <Compile Include="DemoPages\GettingStartedPage.cs" />
     <Compile Include="DemoPages\HomePage.cs" />
-    <Compile Include="DemoPages\OurProduct.cs" />
+    <Compile Include="DemoPages\OurProducts.cs" />
     <Compile Include="DemoPages\ContactUsPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -155,17 +141,21 @@
     <Compile Include="Tests\BVT\BVTUsers.cs" />
     <Compile Include="Tests\BVT\BVTZLogs.cs" />
     <Compile Include="Tests\Installer\InstallerTests.cs" />
+    <Compile Include="Tests\P1\P1SecurityRoles.cs" />
+    <Compile Include="Tests\P1\P1AdminAdvancedSettings.cs" />
     <Compile Include="Tests\P1\P1AdminExtensions.cs" />
     <Compile Include="Tests\P1\P1AdminSiteSettings.cs" />
     <Compile Include="Tests\P1\P1FileUpload.cs" />
     <Compile Include="Tests\P1\P1HostExtensions.cs" />
     <Compile Include="Tests\P1\P1Languages.cs" />
+    <Compile Include="Tests\P1\P1Modules.cs" />
     <Compile Include="Tests\P1\P1Pages.cs" />
     <Compile Include="Tests\P1\P1Search.cs" />
     <Compile Include="Tests\P1\P1SecurityRoleGroups.cs" />
-    <Compile Include="Tests\P1\P1SecurityRoles.cs" />
     <Compile Include="Tests\P1\P1Taxonomy.cs" />
     <Compile Include="Tests\Smoke\SmokeTest.cs" />
+    <Compile Include="Tests\Upgrade\BVTNavigation.cs" />
+    <Compile Include="Tests\Upgrade\BVTSetup.cs" />
     <Compile Include="Tests\Upgrade\UpgradeTests.cs" />
   </ItemGroup>
   <ItemGroup>

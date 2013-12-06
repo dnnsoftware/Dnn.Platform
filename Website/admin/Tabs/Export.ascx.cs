@@ -22,7 +22,9 @@
 
 using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web.UI.WebControls;
 using System.Xml;
 
@@ -33,6 +35,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 
@@ -147,14 +150,14 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         XmlNode nodeTabs = nodePortal.AppendChild(xmlTemplate.CreateElement("tabs"));
                         SerializeTab(xmlTemplate, nodeTabs);
 
-                        xmlTemplate.Save(filename);
                         UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", LocalResourceFile), filename), ModuleMessage.ModuleMessageType.BlueInfo);
 
                         //add file to Files table
-#pragma warning disable 612,618
-                        FileSystemUtils.AddFile(txtFile.Text + ".page.template", PortalId, folder.FolderPath, PortalSettings.HomeDirectoryMapPath, "application/octet-stream");
-#pragma warning restore 612,618
-
+						using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
+						{
+							FileManager.Instance.AddFile(folder, txtFile.Text + ".page.template", fileContent, true, true, "application/octet-stream");
+						}
+						
                     }
                 }
             }

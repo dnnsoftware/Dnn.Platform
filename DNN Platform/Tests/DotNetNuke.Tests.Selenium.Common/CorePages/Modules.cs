@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using DNNSelenium.Common.BaseClasses;
@@ -20,122 +21,191 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
+		public struct ModuleIDs
+		{
+			public ModuleIDs(string IdWhenOnBanner, string IdWhenOnPage)
+			{
+				this.IdWhenOnBanner = IdWhenOnBanner;
+				this.IdWhenOnPage = IdWhenOnPage;
+			}
+
+			public string IdWhenOnBanner;
+			public string IdWhenOnPage;
+		}
+
 		public static string ModulePanel = "//div[@id = 'ControlBar_Module_AddNewModule']";
 		public static string PageDropDownId = "//div[@id = 'ControlBar_PageList']";
 		public static string MakeACopyCheckbox = "//input[@id = 'ControlBar_Module_chkCopyModule']";
 
-		public static int NumberOfAvailableModules = 37;
-		public static string List = "//div[@id = 'ControlBar_ModuleListHolder_NewModule']/ul[contains(@class, 'ModuleList')]/li";
+		public static int NumberOfAvailableModules = 34;
+		public static string List = "//ul[contains(@class, 'ModuleList')]/li";
 
 		public static string ModuleListMessage = "//p[contains(@class, 'ModuleListMessage_InitialMessage')]";
 		
-		//Module ID's in the Uppper List
-		public static string AccountLoginModule = "//div[img[contains(@src, 'authentication.png')]]";
-		public static string AccountRegistrationModule = "//div[img[contains(@src, 'Users_32x32_Standard.png')]]";
-		public static string AdvancedSettingsModule = "//div[span[text() = 'AdvancedSettings']]";
-		public static string BannersModule = "//div[img[contains(@src, 'banners.png')]]";
-		public static string ConfigurationManagerModule = "//div[img[contains(@src, 'Configuration_32X32_Standard.png')]]";
-		public static string ConsoleModule = "//div[img[contains(@src, 'console.png')]]";
-		public static string ContentListModule = "//div[img[contains(@src, 'contentList.png')]]";
-		public static string DashboardModule = "//div[img[contains(@src, 'Dashboard_32X32_Standard.png')]]";
-		public static string DDRMenuModule = "//div[span[text() = 'DDR Menu']]";
-		public static string DigitalAssetManagementModule = "//div[span[contains(text(), 'Digital Asset')]]";
-		public static string ClientCapabilityProviderModule = "//div[img[contains(@src, 'mobiledevicedet_16X16.png')]]";
-		public static string ExtensionsModule = "//div[img[contains(@src, 'Extensions_32X32_Standard.png')]]";
-		public static string GoogleAnalyticsModule = "//div[span[text() = 'Google Analytics']]";
-		public static string HtmlModule = "//div[img[contains(@src, 'html.png')]]";
-		public static string JournalModule = "//div[img[contains(@src, 'journal_32X32.png')]]";
-		public static string LanguagesModule = "//div[img[contains(@src, 'Languages_32X32_Standard.png')]]";
-		public static string ListsModule = "//div[img[contains(@src, 'Lists_32X32_Standard.png')]]";
-		public static string LogViewerModule = "//div[img[contains(@src, 'ViewStats_32X32_Standard.png')]]";
-		public static string MemberDirectoryModule = "//div[img[contains(@src, 'member_list_32X32.png')]]";
-		public static string MessageCenterModule = "//div[img[contains(@src, 'messaging_32X32.png')]]";
-		public static string NewslettersModule = "//div[img[contains(@src, 'Newsletters_32X32.png')]]";
-		public static string PagesModule = "//div[img[contains(@src, 'Tabs_32X32_Standard.png')]]";
-		public static string ProfessionalPreviewModule = "//div[span[text() = 'ProfessionalPreview']]";
-		public static string RadEditorManagerModule = "//div[span[text() = 'RadEditor Manager']]";
-		public static string RazorHostModule = "//div[span[text() = 'Razor Host']]";
-		public static string RecycleBinModule = "//div[img[contains(@src, 'Trash_32X32_Standard.png')]]";
-		public static string SearchAdminModule = "//div[span[text() = 'Search Admin']]";
-		public static string SearchResultsModule = "//div[span[text() = 'Search Results']]";
-		public static string SiteLogModule = "//div[img[contains(@src, 'SiteLog_32X32_Standard.png')]]";
-		public static string SiteWizardModule = "//div[img[contains(@src, 'Wizard_32X32_Standard.png')]]";
-		public static string SiteMapModule = "//div[img[contains(@src, 'Sitemap_32X32_Standard.png')]]";
-		public static string SkinsModule = "//div[img[contains(@src, 'Skins_32X32_Standard.png')]]";
-		public static string SocialGroupsModule = "//div[img[contains(@src, 'Social_Groups_32X32.png')]]";
-		public static string TaxonomyManagerModule = "//div[img[contains(@src, 'Tag_32X32_Standard.png')]]";
-		public static string VendorsModule = "//div[img[contains(@src, 'Vendors_32X32_Standard.png')]]";
-		public static string ViewProfileModule = "//div[img[contains(@src, 'viewProfile.png')]]";
-		public static string WhatsNewModule = "//div[img[contains(@src, 'Whatsnew_32X32_Standard.png')]]";
+		public static Dictionary<string, ModuleIDs> CommonModulesDescription = new Dictionary<string, ModuleIDs>
+			                                                                  {
+																				  {"AccountLoginModule", new ModuleIDs ("//div[img[contains(@src, 'authentication.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Authentication')]")},
+																				  {"AccountRegistrationModule", new ModuleIDs ("//div[img[contains(@src, 'Users_32x32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Registration')]")},
+																				  {"AdvancedSettingsModule", new ModuleIDs ("//div[span[text() = 'AdvancedSettings']]", 
+																					  "//div[contains(@class, 'DnnModule-AdvancedSettings')]")},
+																				  {"BannersModule", new ModuleIDs ("//div[img[contains(@src, 'banners.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Banners')]")},
+																				  {"ConfigurationManagerModule", new ModuleIDs ("//div[img[contains(@src, 'Configuration_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-ConfigurationManager')]")},
+																				  {"ConsoleModule", new ModuleIDs ("//div[img[contains(@src, 'console.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Console')]")},
+																				  {"ContentListModule", new ModuleIDs ("//div[img[contains(@src, 'contentList.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-ContentList')]")},
+																				  {"DashboardModule", new ModuleIDs ("//div[img[contains(@src, 'Dashboard_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Dashboard')]")},
+																				  {"DDRMenuModule", new ModuleIDs ("//div[span[text() = 'DDR Menu']]", 
+																					  "//div[contains(@class, 'DnnModule-DDRMenu')]")},
+																				  {"DeviceDetectionModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-51Degreesmobi')]")},
+																				  {"DevicePreviewModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-DotNetNukeModulesPreviewProfileManagement')]")},
+																				  {"DigitalAssetManagementModule", new ModuleIDs ("//div[span[contains(text(), 'Digital Asset')]]", 
+																					  "//div[contains(@class, 'DnnModule-DotNetNukeModulesDigitalAssets')]")},
+																				  {"ExtensionsModule", new ModuleIDs ("//div[img[contains(@src, 'Extensions_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Extensions')]")},
+																				  {"GoogleAnalyticsModule", new ModuleIDs ("//div[span[text() = 'Google Analytics']]", 
+																					  "//div[contains(@class, 'DnnModule-GoogleAnalytics')]")},
+																				  {"HostSettingsModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-HostSettings')]")},
+																				  {"HtmlModule", new ModuleIDs ("//div[img[contains(@src, 'html.png')]]", 
+																					  "//div[contains(@class, 'DNN_HTML DnnModule')]")},
+																				  {"JournalModule", new ModuleIDs ("//div[img[contains(@src, 'journal_32X32.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Journal')]")},
+																				  {"LanguagesModule", new ModuleIDs ("//div[img[contains(@src, 'Languages_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Languages')]")},
+																				  {"ListsModule", new ModuleIDs ("//div[img[contains(@src, 'Lists_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Lists')]")},
+																				  {"LogViewerModule", new ModuleIDs ("//div[img[contains(@src, 'ViewStats_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-LogViewer')]")},
+																				  {"MemberDirectoryModule", new ModuleIDs ("//div[img[contains(@src, 'member_list_32X32.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-DotNetNukeModulesMemberDirectory')]")},
+																				  {"MessageCenterModule", new ModuleIDs ("//div[img[contains(@src, 'messaging_32X32.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-DotNetNukeModulesCoreMessaging')]")},
+																				  {"ModuleCreator", new ModuleIDs ("//div[span[text() = 'Module Creator']]", 
+																					  "//div[contains(@class, 'DnnModule-ModuleCreator')]")},
+																				  {"NewslettersModule", new ModuleIDs ("//div[img[contains(@src, 'Newsletters_32X32.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Newsletters')]")},
+																				  {"PagesModule", new ModuleIDs ("//div[img[contains(@src, 'Tabs_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Tabs')]")},
+																				  {"ProfessionalPreviewModule", new ModuleIDs ("//div[span[text() = 'ProfessionalPreview']]", 
+																					  "//div[contains(@class, 'DnnModule-ProfessionalPreview')]")},
+																				  {"RadEditorManagerModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-DotNetNukeRadEditorProvider')]")},
+																				  {"RazorHostModule", new ModuleIDs ("//div[span[text() = 'Razor Host']]", 
+																					  "//div[contains(@class, 'DnnModule-DNNCorpRazorHost')]")},
+																				  {"RecycleBinModule", new ModuleIDs ("//div[img[contains(@src, 'Trash_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-RecycleBin')]")},
+																				  {"SearchAdminModule", new ModuleIDs ("//div[span[text() = 'Search Admin']]", 
+																					  "//div[contains(@class, 'DnnModule-SearchAdmin')]")},
+																				  {"SearchResultsModule", new ModuleIDs ("//div[span[text() = 'Search Results']]", 
+																					  "//div[contains(@class, 'DnnModule-SearchResults')]")},
+																				  {"SecurityRolesModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-Security')]")},
+																				  {"SchedulerModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-Scheduler')]")},
+																				  {"SiteLogModule", new ModuleIDs ("//div[img[contains(@src, 'SiteLog_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-SiteLog')]")},
+																				  {"SiteManagementModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-Portals')]")},
+																				  {"SiteRedirectionModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-DotNetNukeMobileManagement')]")},
+																				  {"SiteWizardModule", new ModuleIDs ("//div[img[contains(@src, 'Wizard_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-SiteWizard')]")},
+																				  {"SiteMapModule", new ModuleIDs ("//div[img[contains(@src, 'Sitemap_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Sitemap')]")},
+																				  {"SkinsModule", new ModuleIDs ("//div[img[contains(@src, 'Skins_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Skins')]")},
+																				  {"SocialGroupsModule", new ModuleIDs ("//div[img[contains(@src, 'Social_Groups_32X32.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-SocialGroups')]")},
+																				  {"SQLModule", new ModuleIDs ("", 
+																					  "//div[contains(@class, 'DnnModule-SQL')]")},
+																				  {"TaxonomyManagerModule", new ModuleIDs ("//div[img[contains(@src, 'Tag_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-DotNetNukeTaxonomy')]")},
+																				  {"VendorsModule", new ModuleIDs ("//div[img[contains(@src, 'Vendors_32X32_Standard.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-Vendors')]")},
+																				  {"ViewProfileModule", new ModuleIDs ("//div[img[contains(@src, 'viewProfile.png')]]", 
+																					  "//div[contains(@class, 'DnnModule-ViewProfile')]")},
+																				  {"ContactUsModule", new ModuleIDs ("//div[span[text() = 'Contact Us']]", 
+																					  "//div[contains(@class, 'DNN_HTML DnnModule')]")},
+			                                                                  };
 
-		public static string ContactUsModule = "//div[span[text() = 'Contact Us']]";
 
-		//Module ID's on the Page
-		public static string AccountLoginModuleOnPage = "//div[contains(@class, 'DnnModule-Authentication')]";
-		public static string AccountRegistrationModuleOnPage = "//div[contains(@class, 'DnnModule-Registration')]";
-		public static string AdvancedSettingsModuleOnPage = "//div[contains(@class, 'DnnModule-AdvancedSettings')]";
-		public static string BannersModuleOnPage = "//div[contains(@class, 'DnnModule-Banners')]";
-		public static string ConfigurationManagerModuleOnPage = "//div[contains(@class, 'DnnModule-ConfigurationManager')]";
-		public static string ConsoleModuleOnPage = "//div[contains(@class, 'DnnModule-Console')]";
-		public static string ContentListModuleOnPage = "//div[contains(@class, 'DnnModule-ContentList')]";
-		public static string DashboardModuleOnPage = "//div[contains(@class, 'DnnModule-Dashboard')]";
-		public static string DDRMenuModuleOnPage = "//div[contains(@class, 'DnnModule-DDRMenu')]";
-		public static string DigitalAssetManagementModuleOnPage = "//div[contains(@class, 'DnnModule-DotNetNukeModulesDigitalAssets')]";
-		public static string ClientCapabilityProviderModuleOnPage = "//div[contains(@class, ' DnnModule-51Degreesmobi')]";
-		public static string ExtensionsModuleOnPage = "//div[contains(@class, 'DnnModule-Extensions')]";
-		public static string GoogleAnalyticsModuleOnPage = "//div[contains(@class, 'DnnModule-GoogleAnalytics')]";
-		public static string HtmlModuleOnPage = "//div[contains(@class, 'DNN_HTML DnnModule')]";
-		public static string JournalModuleOnPage = "//div[contains(@class, 'DnnModule-Journal')]";
-		public static string LanguagesModuleOnPage = "//div[contains(@class, 'DnnModule-Languages ')]";
-		public static string ListsModuleOnPage = "//div[contains(@class, 'DnnModule-Lists')]";
-		public static string LogViewerModuleOnPage = "//div[contains(@class, 'DnnModule-LogViewer')]";
-		public static string MemberDirectoryModuleOnPage = "//div[contains(@class, 'DnnModule-DotNetNukeModulesMemberDirectory ')]";
-		public static string MessageCenterModuleOnPage = "//div[contains(@class, 'DnnModule-DotNetNukeModulesCoreMessaging ')]";
-		public static string NewslettersModuleOnPage = "//div[contains(@class, 'DnnModule-Newsletters')]";
-		public static string PagesModuleOnPage = "//div[contains(@class, 'DnnModule-Tabs')]";
-		public static string ProfessionalPreviewModuleOnPage = "//div[contains(@class, 'DnnModule-ProfessionalPreview')]";
-		public static string RadEditorManagerModuleOnPage = "//div[contains(@class, 'DnnModule-DotNetNukeRadEditorProvider')]";
-		public static string RazorHostModuleOnPage = "//div[contains(@class, 'DnnModule-DNNCorpRazorHost')]";
-		public static string RecycleBinModuleOnPage = "//div[contains(@class, 'DnnModule-RecycleBin')]";
-		public static string SearchAdminModuleOnPage = "//div[contains(@class, 'DnnModule-SearchAdmin')]";
-		public static string SearchResultsModuleOnPage = "//div[contains(@class, 'DnnModule-SearchResults')]";
-		public static string SiteLogModuleOnPage = "//div[contains(@class, 'DnnModule-SiteLog')]";
-		public static string SiteWizardModuleOnPage = "//div[contains(@class, 'DnnModule-SiteWizard')]";
-		public static string SiteMapModuleOnPage = "//div[contains(@class, 'DnnModule-Sitemap')]";
-		public static string SkinsModuleOnPage = "//div[contains(@class, 'DnnModule-Skins')]";
-		public static string SocialGroupsModuleOnPage = "//div[contains(@class, 'DnnModule-SocialGroups')]";
-		public static string TaxonomyManagerModuleOnPage = "//div[contains(@class, 'DnnModule-DotNetNukeTaxonomy')]";
-		public static string VendorsModuleOnPage = "//div[contains(@class, 'DnnModule-Vendors')]";
-		public static string ViewProfileModuleOnPage = "//div[contains(@class, 'DnnModule-ViewProfile')]";
-		public static string WhatsNewModuleOnPage = "//div[contains(@class, 'DnnModule-WhatsNew')]";
+		public struct LocationIDs
+		{
+			public LocationIDs(string IdWhenOnUpperList, string IdWhenOnPage, string IdWhenOnModuleDropDown)
+			{
+				this.IdWhenOnUpperList = IdWhenOnUpperList;
+				this.IdWhenOnPage = IdWhenOnPage;
+				this.IdWhenOnModuleDropDown = IdWhenOnModuleDropDown;
+			}
 
-		//Pane ID's on the page
-		public static string ContentPaneID = "//div[@id = 'content']/div[1]";
-		public static string ContentPaneLowerID = "//div[contains(@id, 'dnn_contentPaneLower')]";
-		public static string LeftPaneID = "//div[contains(@id,'dnn_leftPane')]";
-		public static string RightPaneID = "//div[contains(@id,'dnn_rightPane')]";
-		public static string SideBarPaneID = "//div[contains(@id,'dnn_sidebarPane')]";
-		public static string FooterLeftOuterPaneID = "//div[contains(@id,'dnn_footerLeftOuterPane')]";
-		public static string FooterLeftPaneID = "//div[contains(@id, 'dnn_footerLeftPane')]";
-		public static string FooterCenterPaneID = "//div[contains(@id,'dnn_footerCenterPane')]";
-		public static string FooterRightPaneID = "//div[contains(@id, 'dnn_footerRightPane')]";
-		public static string FooterRightOuterPaneID = "//div[@id = 'dnn_footerRightOuterPane']";
+			public string IdWhenOnUpperList;
+			public string IdWhenOnPage;
+			public string IdWhenOnModuleDropDown;
+		}
 
-		//Drop-down with Location Options in the Upper List
+		public static Dictionary<string, LocationIDs> LocationDescription = new Dictionary<string, LocationIDs>
+			                                                                  {
+																					{"ContentPane", new LocationIDs ("//li[@data-pane = 'contentPane']", 
+																					  "//div[@id = 'dnn_contentPane']",
+																					  "")},
+																					{"ContentPaneLower", new LocationIDs ("//li[@data-pane = 'contentPaneLower']", 
+																					  "//div[contains(@id, 'dnn_contentPaneLower')]",
+																					  "//li[text() = 'To contentPaneLower']")},
+																					{"LeftPane", new LocationIDs ("//li[@data-pane = 'leftPane']", 
+																					  "//div[contains(@id,'dnn_leftPane')]", 
+																					  "//li[text() = 'To leftPane']")},
+																					{"RightPane", new LocationIDs ("//li[@data-pane = 'rightPane']", 
+																					  "//div[contains(@id,'dnn_rightPane')]", "")},
+																					{"SideBarPane", new LocationIDs ("//li[@data-pane = 'sidebarPane']", 
+																					  "//div[contains(@id,'dnn_sidebarPane')]", 
+																					  "//li[text() = 'To sidebarPane']")},
+																					{"FooterLeftOuterPane", new LocationIDs ("//li[@data-pane = 'footerLeftOuterPane']", 
+																					  "//div[contains(@id,'dnn_footerLeftOuterPane')]",
+																					  "//li[text() = 'To footerLeftOuterPane']")},
+																					{"FooterLeftPane", new LocationIDs ("//li[@data-pane = 'footerLeftPane']", 
+																					  "//div[contains(@id, 'dnn_footerLeftPane')]",
+																					  "//li[text() = 'To footerLeftPane']")},
+																					{"FooterCenterPane", new LocationIDs ("//li[@data-pane = 'footerCenterPane']", 
+																					  "//div[contains(@id,'dnn_footerCenterPane')]",
+																					  "//li[text() = 'To footerCenterPane']")},
+																					{"FooterRightPane", new LocationIDs ("//li[@data-pane = 'footerRightPane']",
+																					  "//div[contains(@id, 'dnn_footerRightPane')]", 
+																					  "//li[text() = 'To footerRightPane']")},
+																					{"FooterRightOuterPane", new LocationIDs ("//li[@data-pane = 'footerRightOuterPane']",
+																					  "//div[@id = 'dnn_footerRightOuterPane']", 
+																					  "//li[text() = 'To footerRightOuterPane']")},
+																					{"LeftPaneLowerLeft", new LocationIDs ("//li[@data-pane = 'leftPaneLowerLeft']", 
+																					  "", 
+																					  "")},
+																					{"LeftPaneLowerRightPane", new LocationIDs ("//li[@data-pane = 'leftPaneLowerRight']", 
+																					  "", 
+																					  "")},
+																					{"LeftPaneBottom", new LocationIDs ("//li[@data-pane = 'leftPaneBottom']", 
+																					  "", 
+																					  "")},
+																					{"Top", new LocationIDs ("", 
+																					  "", 
+																					  "//li[text() = 'Top']")},
+																					{"Bottom", new LocationIDs ("", 
+																					  "", 
+																					  "//li[text() = 'Bottom']")},
+																					{"Up", new LocationIDs ("", 
+																					  "", 
+																					  "//li[text() = 'Up']")},
+																					{"Down", new LocationIDs ("", 
+																					  "", 
+																					  "//li[text() = 'Down']")},
+																			  };
+
 		public static string ModuleLocatorMenu = "/div[contains(@class, 'ModuleLocator_Menu')]";
-		public static string ContentPaneOption = "//li[@data-pane = 'contentPane']";
-		public static string ContentPaneLowerOption = "//li[@data-pane = 'contentPaneLower']";
-		public static string LeftPaneOption = "//li[@data-pane = 'leftPane']";
-		public static string RightPaneOption = "//li[@data-pane = 'rightPane']";
-		public static string SideBarPaneOption = "//li[@data-pane = 'sidebarPane']";
-		public static string LeftPaneLowerLeftOption = "//li[@data-pane = 'leftPaneLowerLeft']";
-		public static string LeftPaneLowerRightPaneOption = "//li[@data-pane = 'leftPaneLowerRight']";
-		public static string LeftPaneBottomOption = "//li[@data-pane = 'leftPaneBottom']";
-		public static string FooterLeftOuterPaneOption = "//li[@data-pane = 'footerLeftOuterPane']";
-		public static string FooterLeftPaneOption = "//li[@data-pane = 'footerLeftPane']";
-		public static string FooterCenterPaneOption = "//li[@data-pane = 'footerCenterPane']";
-		public static string FooterRightPaneOption = "//li[@data-pane = 'footerRightPane']";
-		public static string FooterRightOuterPaneOption = "//li[@data-pane = 'footerRightOuterPane']";
 
 		public static string EditContentFrame = "//iframe[contains(@id, 'txtContent_contentIframe')]";
 		public static string EditContentFrameTab = "//a[@href = '#currentContent']";
@@ -149,20 +219,6 @@ namespace DNNSelenium.Common.CorePages
 		public static string SettingsOption = "//span[contains(text(), 'Settings')]";
 		public static string DeleteOption = "//span[contains(text(), 'Delete')]";
 		public static string EditContentOption = "//span[contains(text(), 'Edit Content')]";
-
-		//Module Drop-down Options with Locations
-		public static string TopOption = "//li[text() = 'Top']";
-		public static string UpOption = "//li[text() = 'Up']";
-		public static string DownOption = "//li[text() = 'Down']";
-		public static string BottomOption = "//li[text() = 'Bottom']";
-		public static string ToLeftPane = "//li[text() = 'To leftPane']";
-		public static string ToSideBarPane = "//li[text() = 'To sidebarPane']";
-		public static string ToLowerContentPane = "//li[text() = 'To contentPaneLower']";
-		public static string ToFooterLeftPane = "//li[text() = 'To footerLeftPane']";
-		public static string ToFooterLeftOuterPane = "//li[text() = 'To footerLeftOuterPane']";
-		public static string ToFooterCenterPane = "//li[text() = 'To footerCenterPane']";
-		public static string ToFooterRightPane = "//li[text() = 'To footerRightPane']";
-		public static string ToFooterRightOuterPane = "//li[text() = 'To footerRightOuterPane']";
 
 		public static string ModuleSettingsTab = "//a[@href = '#msModuleSettings']";
 		public static string PageSettingsTab = "//a[@href = '#msPageSettings']";
@@ -212,6 +268,7 @@ namespace DNNSelenium.Common.CorePages
 			string optionID = "//div[@id = '" + ModuleActionsId + moduleNumber + "']" + SettingsIcon + option;
 
 			WaitForElement(By.XPath(settingsIcon)).ScrollIntoView();
+
 			SelectMenuOption(settingsIcon, optionID);
 		}
 
@@ -226,7 +283,7 @@ namespace DNNSelenium.Common.CorePages
 		}
 
 
-		public void AddNewModuleUsingDragAndDrop(string moduleName, string moduleNameOnPage, string location)
+		public void AddNewModuleUsingDragAndDrop(string moduleName, string location)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Add a Module, Using Drag&Drop:");
 
@@ -237,13 +294,13 @@ namespace DNNSelenium.Common.CorePages
 			Actions action = new Actions(_driver);
 			action.MoveToElement(FindElement(By.XPath(moduleName))).Perform();
 
-			action.DragAndDrop(FindElement(By.XPath(moduleName)), FindElement(By.XPath(location)).ScrollIntoView());
+			action.DragAndDrop(FindElement(By.XPath(moduleName)), FindElement(By.XPath(Modules.LocationDescription[location].IdWhenOnPage)).ScrollIntoView());
 			action.Build().Perform();
 	
 			Thread.Sleep(1000);
 		}
 
-		public void AddNewModuleUsingMenu(string moduleName, string moduleNameOnPage, string location, string locationID)
+		public void AddNewModuleUsingMenu(string moduleName, string moduleNameOnPage, string location)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Add a Module, using Menu:");
 
@@ -253,19 +310,19 @@ namespace DNNSelenium.Common.CorePages
 
 			Actions builder = new Actions(_driver);
 			builder.MoveToElement(FindElement(By.XPath(moduleName))).Perform();
-			
+
 			builder.MoveToElement(WaitForElement(By.XPath(moduleName + ModuleLocatorMenu))).Perform();
 
 			Thread.Sleep(100);
-			FindElement(By.XPath(location)).ScrollIntoView().WaitTillVisible().Click(); 
+			FindElement(By.XPath(Modules.LocationDescription[location].IdWhenOnUpperList)).ScrollIntoView().WaitTillVisible().Click(); 
 
-			Trace.WriteLine(TraceLevelPage + "Wait for Module on the page: '" + moduleNameOnPage);
-			WaitForElement(By.XPath(locationID + moduleNameOnPage), 60);
+			Trace.WriteLine(TraceLevelPage + "Wait for Module on the page: '" + moduleName);
+			WaitForElement(By.XPath(Modules.LocationDescription[location].IdWhenOnPage + moduleNameOnPage), 60);
 
 			Thread.Sleep(1000);
 		}
 
-		public void MoveModuleUsingDragAndDrop(string moduleNumber, string moduleNameOnPage, string newLocation)
+		public void MoveModuleUsingDragAndDrop(string moduleNumber, string newLocation)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Move a Module, using Drag and Drop:");
 
@@ -280,7 +337,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Move a Module, using Menu:");
 
-			SelectFromMovingMenu(moduleNumber, newLocation);
+			SelectFromMovingMenu(moduleNumber, Modules.LocationDescription[newLocation].IdWhenOnModuleDropDown);
 
 			Trace.WriteLine(TraceLevelPage + "Wait for Module arrives to new Location: '" + moduleNameOnPage);
 			Thread.Sleep(1000);
@@ -304,7 +361,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public void AddContentToHTMLModule(string moduleNumber, string moduleContent)
 		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Add content to Module:");
+			Trace.WriteLine(BasePage.TraceLevelPage + "Add content to HTML Module:");
 
 			SelectFromEditMenu(moduleNumber, EditContentOption);
 			Trace.WriteLine("Module number edited: " + moduleNumber);
@@ -333,7 +390,6 @@ namespace DNNSelenium.Common.CorePages
 			SelectFromSettingsMenu(moduleNumber, SettingsOption);
 
 			OpenTab(By.XPath(ModuleSettingsTab));
-			//WaitForElement(By.XPath(ModuleTitleTextBox));
 
 			WaitAndClear(By.XPath(ModuleTitleTextBox));
 			Type(By.XPath(ModuleTitleTextBox), moduleTitle);

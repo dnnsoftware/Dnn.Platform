@@ -232,7 +232,8 @@ namespace DotNetNuke.UI.Skins
         {
             if (!String.IsNullOrEmpty(message))
             {
-                Control contentPane = control.FindControl(Globals.glbDefaultPane);
+                Control contentPane = FindControlRecursive(control, Globals.glbDefaultPane);
+
                 if (contentPane != null)
                 {
                     ModuleMessage moduleMessage = GetModuleMessageControl(heading, message, moduleMessageType, iconSrc);
@@ -240,6 +241,19 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
+
+        private static Control FindControlRecursive(Control rootControl, string controlID)
+        {
+            if (rootControl.ID == controlID) return rootControl;
+
+            foreach (Control controlToSearch in rootControl.Controls)
+            {
+                Control controlToReturn = FindControlRecursive(controlToSearch, controlID);
+                if (controlToReturn != null) return controlToReturn;
+            }
+            return null;
+        }
+
 
         private bool CheckExpired()
         {
@@ -272,52 +286,55 @@ namespace DotNetNuke.UI.Skins
             //if querystring dnnprintmode=true, controlpanel will not be shown
             if (Request.QueryString["dnnprintmode"] != "true" && Request.QueryString["popUp"] != "true")
             {
-                //ControlPanel processing
-                var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
-                var objForm = (HtmlForm)Parent.FindControl("Form");
-
-                if(objControlPanel.IncludeInControlHierarchy)
+                if ((ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
                 {
-                    //inject ControlPanel control into skin
-                    if (ControlPanel == null)
-                    {
-                        if (objForm != null)
-                        {
-                            objForm.Controls.AddAt(0, objControlPanel);
-                        }
-                        else
-                        {
-                            Page.Controls.AddAt(0, objControlPanel);
-                        }
-                    }
-                    else
-                    {
-                        if (objForm != null)
-                        {
-                            if (Host.ControlPanel.ToLowerInvariant().EndsWith("controlbar.ascx"))
-                            {
-                                objForm.Controls.AddAt(0, objControlPanel);
-                            }
-                            else
-                            {
-                                ControlPanel.Controls.Add(objControlPanel);
-                            }
-                        }
-                        else
-                        {
-                            if (Host.ControlPanel.ToLowerInvariant().EndsWith("controlbar.ascx"))
-                            {
-                                Page.Controls.AddAt(0, objControlPanel);
-                            }
-                            else
-                            {
-                                ControlPanel.Controls.Add(objControlPanel);
-                            }
-                        }
-                    }
+                    //ControlPanel processing
+                    var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
+                    var form = (HtmlForm)Parent.FindControl("Form");
 
-                    //register admin.css
-                    ClientResourceManager.RegisterAdminStylesheet(Page, Globals.HostPath + "admin.css");
+                    if (controlPanel.IncludeInControlHierarchy)
+                    {
+                        //inject ControlPanel control into skin
+                        if (ControlPanel == null)
+                        {
+                            if (form != null)
+                            {
+                                form.Controls.AddAt(0, controlPanel);
+                            }
+                            else
+                            {
+                                Page.Controls.AddAt(0, controlPanel);
+                            }
+                        }
+                        else
+                        {
+                            if (form != null)
+                            {
+                                if (Host.ControlPanel.ToLowerInvariant().EndsWith("controlbar.ascx"))
+                                {
+                                    form.Controls.AddAt(0, controlPanel);
+                                }
+                                else
+                                {
+                                    ControlPanel.Controls.Add(controlPanel);
+                                }
+                            }
+                            else
+                            {
+                                if (Host.ControlPanel.ToLowerInvariant().EndsWith("controlbar.ascx"))
+                                {
+                                    Page.Controls.AddAt(0, controlPanel);
+                                }
+                                else
+                                {
+                                    ControlPanel.Controls.Add(controlPanel);
+                                }
+                            }
+                        }
+
+                        //register admin.css
+                        ClientResourceManager.RegisterAdminStylesheet(Page, Globals.HostPath + "admin.css");
+                    }
                 }
             }
         }
@@ -378,7 +395,7 @@ namespace DotNetNuke.UI.Skins
             try
             {
                 string skinSrc = skinPath;
-                if (skinPath.ToLower().IndexOf(Globals.ApplicationPath) != -1)
+                if (skinPath.ToLower().IndexOf(Globals.ApplicationPath, StringComparison.Ordinal) != -1)
                 {
                     skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
                 }
@@ -528,9 +545,8 @@ namespace DotNetNuke.UI.Skins
             //Load the Panes
             LoadPanes();
 
-            bool success;
             //Load the Module Control(s)
-            success = Globals.IsAdminControl() ? ProcessSlaveModule() : ProcessMasterModules();
+            bool success = Globals.IsAdminControl() ? ProcessSlaveModule() : ProcessMasterModules();
 
             //Load the Control Panel
             InjectControlPanel();
@@ -855,10 +871,9 @@ namespace DotNetNuke.UI.Skins
         public static Skin GetPopUpSkin(PageBase page)
         {
             Skin skin = null;
-            var skinSource = Null.NullString;
 
             //attempt to find and load a popup skin from the assigned skinned source
-            skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+            string skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
             if (!String.IsNullOrEmpty(skinSource))
             {
                 skinSource = SkinController.FormatSkinSrc(SkinController.FormatSkinPath(skinSource) + "popUpSkin.ascx", page.PortalSettings);

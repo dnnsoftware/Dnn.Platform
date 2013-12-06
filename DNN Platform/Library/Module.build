@@ -5,22 +5,22 @@
     <WebsiteAppDataPath>$(WebsitePath)\App_Data</WebsiteAppDataPath>
     <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
     <WebsiteConfigPath>$(WebsitePath)\Config</WebsiteConfigPath>
-    <WebsiteCleanupPath>$(WebsitePath)\Install\Cleanup</WebsiteCleanupPath>
-    <WebsiteConfigMergePath>$(WebsitePath)\Install\Config</WebsiteConfigMergePath>
+    <WebsiteInstallPath>$(WebsitePath)\Install</WebsiteInstallPath>
     <WebsiteHostPortalPath>$(WebsitePath)\Portals\_default</WebsiteHostPortalPath>
     <WebsiteRadSpellPath>$(WebsitePath)\App_Data\RadSpell</WebsiteRadSpellPath>
   </PropertyGroup>
-  <Target Name="AfterBuild" DependsOnTargets="GetFiles;DebugProject">
+  <Import Project="$(BuildScriptsPath)\MSBuild.Community.Tasks.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="GetFiles;DebugProject;ReleasePackages">
   </Target>
+  
   <Target Name="GetFiles">
     <ItemGroup>
-      <Templates Include="..\Library\Templates\*.*" />
+      <Templates Include="..\Website\Templates\*.*" />
       <Database Include="..\Website\App_Data\Database.mdf" />
       <RadSpell Include="..\Website\App_Data\RadSpell\*.tdf" />
       <ConfigFiles Include="..\Website\Config\*.*" />
       <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
       <ConfigMergeFiles Include="..\Website\Install\Config\*.*" />
-
       <WebConfig Include="$(WebsitePath)\we*.config" />
       <WebsiteDatabase Include="$(WebsiteAppDataPath)\Data*ase.mdf" />
       <WebsiteRadSpell Include="$(WebsiteRadSpellPath)\*.tdf" />
@@ -28,10 +28,16 @@
       <WebsiteConfig Include="$(WebsiteConfigPath)\*.config" />
       <WebsiteCleanup Include="$(WebsiteCleanupPath)\0*.txt" />
       <WebsiteConfigMerge Include="$(WebsiteConfigMergePath)\*.config" />
+      <Knockout Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Knockout\*.*" />
+      <jQuery Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQuery\*.*" />
+      <jQueryUI Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI\*.*" />
+      <jQueryMigrate Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate\*.*" />
+      <KnockoutMapping Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping\*.*" />
+      <ExternalModulePackages Include="$(MSBuildProjectDirectory)\..\Externally Sourced\Modules\*.*" />
     </ItemGroup>
   </Target>
+  
   <Target Name="DebugProject">
-
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.pdb" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.xml" DestinationFolder="$(WebsiteBinPath)" />
@@ -52,13 +58,32 @@
     <Copy SourceFiles="@(RadSpell)" DestinationFolder="$(WebsiteRadSpellPath)" Condition="'@(WebsiteRadSpell)' == ''" />
     <Copy SourceFiles="@(Templates)" DestinationFolder="$(WebsiteHostPortalPath)" Condition="'@(WebsiteTemplates)' == ''"/>
     <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsiteConfigPath)" Condition="'@(WebsiteConfig)' == ''"/>
-    <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteCleanupPath)" Condition="'@(WebsiteCleanup)' == ''" />
-    <Copy SourceFiles="@(ConfigMergeFiles)" DestinationFolder="$(WebsiteConfigMergePath)" Condition="'@(WebsiteConfigMerge)' == ''" />
+    <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteInstallPath)\Cleanup" Condition="'@(WebsiteCleanup)' == ''" />
+    <Copy SourceFiles="@(ConfigMergeFiles)" DestinationFolder="$(WebsiteInstallPath)\Config" Condition="'@(WebsiteConfigMerge)' == ''" />
 
     <!-- Copy development.config or release.config to web.config -->
     <Copy SourceFiles="$(WebsitePath)\development.config" DestinationFiles="$(WebsitePath)\web.config" 
           Condition="'@(WebConfig)' == '' And '$(Configuration)|$(Platform)' == 'Debug|AnyCPU'"/>
     <Copy SourceFiles="$(WebsitePath)\release.config" DestinationFiles="$(WebsitePath)\web.config" 
           Condition="'@(WebConfig)' == '' And '$(Configuration)|$(Platform)' == 'Release|AnyCPU'"/>
+  </Target>
+  
+  <Target Name="ReleasePackages" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Zip Files="@(Knockout)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Knockout"
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\Knockout.zip" />
+
+    <Zip Files="@(jQuery)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQuery"
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\jQuery.zip" />
+    
+    <Zip Files="@(jQueryUI)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI"
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\jQueryUI.zip" />
+
+    <Zip Files="@(jQueryMigrate)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate"
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\jQueryMigrate.zip" />
+
+    <Zip Files="@(KnockoutMapping)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping"
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\KnockoutMapping.zip" />
+
+    <Copy SourceFiles="@(ExternalModulePackages)" DestinationFolder="$(WebsiteInstallPath)\Module"/>
   </Target>
 </Project>

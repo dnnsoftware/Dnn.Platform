@@ -366,4 +366,58 @@
   <data name="Upload.Text" xml:space="preserve">
     <value>Upload From Computer</value>
   </data>
+  <data name="Subscriptions.Text" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="Action.Text" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Activity.Text" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="ManageSubscriptions.Text" xml:space="preserve">
+    <value>Manage Subscriptions</value>
+  </data>
+  <data name="Frequency.Text" xml:space="preserve">
+    <value>Frequency</value>
+  </data>
+  <data name="lblMessageFreq.Help" xml:space="preserve">
+    <value>How often you will receive emails informing you of messages from users on the site.</value>
+  </data>
+  <data name="lblMessageFreq.Text" xml:space="preserve">
+    <value>Message Frequency:</value>
+  </data>
+  <data name="lblNotificationFreq.Help" xml:space="preserve">
+    <value>How often you will receive emails informing you of site notifications.</value>
+  </data>
+  <data name="lblNotificationFreq.Text" xml:space="preserve">
+    <value>Notification Frequency:</value>
+  </data>
+  <data name="EmailDeliverySchedule.Text" xml:space="preserve">
+    <value>Email Delivery Schedule</value>
+  </data>
+  <data name="PrefSaved.Text" xml:space="preserve">
+    <value>Your preferences have been updated</value>
+  </data>
+  <data name="SearchFilter.Text" xml:space="preserve">
+    <value>Search Filter</value>
+  </data>
+  <data name="SubscriptionType.Text" xml:space="preserve">
+    <value>Subscription Type</value>
+  </data>
+  <data name="Unsubscribe.Text" xml:space="preserve">
+    <value>Unsubscribe</value>
+  </data>
+  <data name="SubscribedDescription.Text" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="Unsubscribed.Text" xml:space="preserve">
+    <value>You have been successfully unsubscribed</value>
+  </data>
+  <data name="lblSubscriptions.Help" xml:space="preserve">
+    <value>View and manage the items the user is subscribed to.</value>
+  </data>
+  <data name="lblSubscriptions.Text" xml:space="preserve">
+    <value>Subscriptions:</value>
+  </data>
 </root>

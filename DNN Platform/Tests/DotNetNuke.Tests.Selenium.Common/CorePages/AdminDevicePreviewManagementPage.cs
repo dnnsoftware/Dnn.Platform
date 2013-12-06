@@ -19,6 +19,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Device Preview Management"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "DevicePreviewModule"; }
+		}
+
 		public AdminDevicePreviewManagementPage(IWebDriver driver) : base(driver)
 		{
 		}

@@ -31,13 +31,24 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.FileSystem.EventArgs;
 
 namespace DotNetNuke.Services.FileSystem
 {
     public class FileVersionController : ComponentBase<IFileVersionController, FileVersionController>, IFileVersionController
     {
-        #region database methods
+        #region Private Events
+        private event EventHandler<FileChangedEventArgs> FileChanged;
+        #endregion
 
+        #region Contructor
+        public FileVersionController()
+        {
+            RegisterEventHandlers();
+        }
+        #endregion
+
+        #region database methods
         public string AddFileVersion(IFileInfo file, int userId, bool published, bool removeOldestVersions, Stream content = null)
         {
             Requires.NotNull("file", file);
@@ -113,6 +124,9 @@ namespace DotNetNuke.Services.FileSystem
             folderProvider.RenameFile(
                     new FileInfo { FileName = GetVersionedFilename(file, newPublishedVersion), Folder = file.Folder, FolderId = file.FolderId, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID }, 
                     file.FileName);
+            
+            // Notify File Changed
+            OnFileChanged(file, UserControllerWrapper.Instance.GetCurrentUserInfo().UserID);
         }
 
         public int DeleteFileVersion(IFileInfo file, int version)
@@ -134,6 +148,9 @@ namespace DotNetNuke.Services.FileSystem
                 folderProvider.RenameFile(
                     new FileInfo { FileId = file.FileId, FileName = GetVersionedFilename(file, newVersion), Folder = file.Folder, FolderId = file.FolderId, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID }, 
                     file.FileName);
+
+                // Notify File Changed
+                OnFileChanged(file, UserControllerWrapper.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
@@ -245,6 +262,25 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region helper methods
+        private void RegisterEventHandlers()
+        {
+            foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
+            {
+                FileChanged += value.FileOverwritten;
+            }
+        }
+
+        private void OnFileChanged(IFileInfo fileInfo, int userId)
+        {
+            if (FileChanged != null)
+            {
+                FileChanged(this, new FileChangedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId
+                });
+            }
+        }
 
         private Stream GetVersionContent(FolderProvider provider, IFolderInfo folder, IFileInfo file, int version)
         {

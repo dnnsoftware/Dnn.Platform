@@ -19,7 +19,7 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Platform", "CorePages.AdminPage", "OpenUsingButtons")]
 		[TestCase("Platform", "CorePages.HostPage", "OpenUsingButtons")]
 		[TestCase("Platform", "CorePages.AdminGoogleAnalyticsPage", "OpenUsingButtons")]
-		public void SearchResultsEEPage(string assyName, string pageClassName, string openMethod)
+		public void SearchResultsCEPage(string assyName, string pageClassName, string openMethod)
 		{
 			VerifySearchResults(OpenPage(assyName, pageClassName, openMethod));
 		}
@@ -27,7 +27,7 @@ namespace DNNSelenium.Platform.P1
 		[TestCase("Platform", "CorePages.AdminPage", "OpenUsingButtons")]
 		[TestCase("Platform", "CorePages.HostPage", "OpenUsingButtons")]
 		[TestCase("Platform", "CorePages.AdminGoogleAnalyticsPage", "OpenUsingButtons")]
-		public void QuickSearchEE(string assyName, string pageClassName, string openMethod)
+		public void QuickSearchCE(string assyName, string pageClassName, string openMethod)
 		{
 			VerifyQuickSearch(OpenPage(assyName, pageClassName, openMethod));
 		}

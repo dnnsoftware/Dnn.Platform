@@ -49,6 +49,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
     <RegisterForComInterop>false</RegisterForComInterop>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.WebControls, Version=2.2.0.7, Culture=neutral, processorArchitecture=MSIL">
@@ -71,9 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DNNMenuNavigationProvider.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="DNNMenuNavigationProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\DotNetNuke.Library.csproj">

@@ -461,3 +461,475 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .dnnPri
     .composeMessageDialog .itemUpload .progress_bar_wrapper{ width: 500px;overflow: hidden;}
     .composeMessageDialog .itemUpload .progress-bar div{ background-image: url('Images/progress.gif');position:relative;padding:0 !important;}
 	
+	/* Subscriptions Style*/
+	.moduleContainer * {
+  margin: 0;
+  padding: 0;
+}
+
+/* module container */
+
+.moduleContainer {
+  width: 100%;
+}
+
+/* Module Title Container */
+
+.moduleTitleContainer {
+  background-color: #fff;
+  padding: 18px;
+}
+
+.moduleTitleContainer > .activities-votes-indicator {
+  float: left;
+  margin-right: 20px;
+  padding: 12px 10px 5px 8px;
+}
+
+.moduleTitleContainer > .activities-votes-indicator span {
+  display: block;
+}
+
+.activities-votes-indicator span.activities-numberOfVotes {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+
+.activities-votes-indicator span.dea-votes-span {
+  font-size: 10px;
+  text-align: center;
+}
+
+.activities-title-container {
+  float: left;
+  padding-top: 4px;
+}
+
+.activities-title-container > p.activities-title-status {
+  float: left;
+  font-family: "Titillium Web", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 1.2em;
+  margin-right: 5px;
+}
+
+.activities-title-container > h3.activities-title {
+  display: block;
+  float: left;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.activities-title-container > p.activities-title-returnPrev {
+  font-size: 12px;
+  margin-top: 7px;
+}
+
+ul.activities-actions {
+  list-style-type: none;
+  margin-top: 20px;
+}
+
+  ul.activities-actions > li {
+    border-right: 1px solid #dfdfdf;
+    display: block;
+    float: left;
+    line-height: 1em;
+    padding: 0 10px 0 10px;
+  }
+
+    ul.activities-actions > li > a {
+      padding-left: 25px;
+      padding-bottom: 10px;
+    }
+
+    ul.activities-actions > li:first-child {
+    }
+
+    ul.activities-actions > li:last-child {
+      border-right: none;
+    }
+
+ul.activities-social-actions {
+  float: right;
+  list-style-type: none;
+  margin-top: 8px;
+}
+
+  ul.activities-social-actions > li {
+    display: block;
+    float: left;
+    height: 20px;
+    margin-right: 5px;
+    width: 20px;
+  }
+
+    ul.activities-social-actions > li a {
+      display: block;
+      height: 20px;
+      width: 20px;
+    }
+
+.moduleThreadContainer > .activities-info-panel {
+  border-bottom: 1px solid #dfdfdf;
+  padding: 25px 20px 20px 20px;
+}
+
+.moduleThreadContainer > .activities-comments-panel {
+  padding: 15px 20px 10px 20px;
+}
+
+.activities-comments-panel > div.activities-avatar {
+  margin-right: 20px;
+}
+
+.activities-comments-panel > a.activities-comment-button {
+  margin: 2px 20px 0 0;
+}
+
+.activities-comments-panel > span {
+  margin: 10px 15px 0 0;
+}
+
+ul.activities-pager-ul {
+  list-style-type: none;
+  margin: 10px 0 0 0;
+}
+
+  ul.activities-pager-ul > li {
+    display: block;
+    float: left;
+    margin-right: 3px;
+  }
+
+    ul.activities-pager-ul > li > span:after,
+    ul.activities-pager-ul > li > a:after {
+      content: ",";
+    }
+
+    ul.activities-pager-ul > li:last-child > a:after {
+      content: "";
+    }
+
+div.activities-pager-rightside {
+  margin: 10px 0 0 0;
+  width: 150px;
+}
+
+  div.activities-pager-rightside > span {
+    float: left;
+    margin-right: 15px;
+  }
+
+  div.activities-pager-rightside > a {
+    -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 1);
+    background: #fff; /* Old browsers */
+    background: -moz-linear-gradient(top, #fff 0%, #eee6e5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#eee6e5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#eee6e5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fff 0%,#eee6e5 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fff 0%,#eee6e5 100%); /* IE10+ */
+    background: linear-gradient(top, #fff 0%,#eee6e5 100%); /* W3C */
+    border: 1px solid #ddd;
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    color: #555;
+    display: block;
+    float: left;
+    height: 25px;
+    margin-top: -6px;
+    text-shadow: 0px 1px 0px #ffffff;
+    width: 25px;
+  }
+
+    div.activities-pager-rightside > a.activities-pager-prev {
+      -webkit-border-bottom-left-radius: 3px;
+      -webkit-border-top-left-radius: 3px;
+      background-image: url("images/left.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      border-bottom-left-radius: 3px;
+      border-right: none;
+      border-top-left-radius: 3px;
+    }
+
+    div.activities-pager-rightside > a.activities-pager-next {
+      -webkit-border-bottom-right-radius: 3px;
+      -webkit-border-top-right-radius: 3px;
+      background-image: url("images/right.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      border-bottom-right-radius: 3px;
+      border-top-right-radius: 3px;
+    }
+
+      div.activities-pager-rightside > a.activities-pager-next.disabled {
+        opacity: 0.65;
+      }
+
+    div.activities-pager-rightside > a.activities-pager-prev.disabled {
+      opacity: 0.65;
+    }
+
+.activities-info-panel > a.activities-vote-button {
+  float: left;
+  margin-right: 20px;
+}
+
+  .activities-info-panel > a.activities-vote-button.disabled {
+    opacity: 0.5;
+  }
+
+.activities-info-panel > .activities-vote-options {
+  position: absolute;
+  border: 1px solid #bbb;
+  background-color: #eee;
+  padding: 15px;
+  display: none;
+}
+
+.activities-vote-options > div {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 15px;
+}
+
+.activities-info-panel > ul {
+  color: #bbb;
+  list-style-type: none;
+  margin-top: 12px;
+}
+
+  .activities-info-panel > ul > li {
+    border-right: 1px solid #dfdfdf;
+    display: block;
+    float: left;
+    line-height: 1em;
+    padding: 0 8px 0 8px;
+  }
+
+    .activities-info-panel > ul > li:last-child {
+      border-right: none;
+    }
+
+.activities-info-panel a.activities-like-button {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-image: url("images/LikeSelect.png");
+  vertical-align: top;
+  margin: -2px 4px 0 0;
+}
+
+.activities-main-container {
+  background-color: #fff;
+  padding: 25px 20px 20px 20px;
+}
+
+  .activities-main-container.activities-response {
+    border-bottom: 1px solid #dfdfdf;
+    padding-top: 5px;
+  }
+
+  .activities-main-container.activities-comment {
+    padding: 0 20px 0 20px;
+  }
+
+    .activities-main-container.activities-comment:first-child {
+      padding-top: 5px;
+    }
+
+    .activities-main-container.activities-comment:last-child {
+      padding-bottom: 20px;
+    }
+
+  .activities-main-container > h3 {
+    font-family: arial;
+    font-size: 20px;
+    font-weight: normal;
+  }
+
+.activities-avatar {
+  display: block;
+  float: left;
+  padding: 1px;
+  margin-right: 20px;
+  background-color: #bbb;
+}
+
+  .activities-avatar img {
+    height: 40px;
+    width: 40px;
+  }
+
+.activities-content > span {
+}
+
+span.activities-comments-author {
+  color: #000;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+span.activities-comments-date {
+  color: #bbb;
+  display: block;
+}
+
+.activities-content > p,
+.activities-response-content > p {
+  margin-top: 20px;
+}
+
+ul.activities-comments-actions {
+  list-style-type: none;
+  margin-top: 20px;
+}
+
+  ul.activities-comments-actions > li {
+    border-right: 1px solid #dfdfdf;
+    display: block;
+    float: left;
+    line-height: 1em;
+    padding: 0 10px 0 10px;
+  }
+
+    ul.activities-comments-actions > li a {
+      display: block;
+      height: 20px;
+      width: 20px;
+    }
+
+    ul.activities-comments-actions > li:first-child {
+      padding-left: 0;
+    }
+
+    ul.activities-comments-actions > li:last-child {
+      border-right: none;
+    }
+
+p.activities-response-more {
+  text-align: center;
+}
+
+  p.activities-response-more > a {
+    font-weight: bold;
+  }
+
+
+/* activities list view
+----------------------------------*/
+
+.activities-list-container {
+  margin-top: 25px;
+}
+
+.loading-container.loading {
+  background-image: url('/Images/dnnanim.gif') !IMPORTANT;
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.75;
+}
+
+.activities-reply {
+  background: transparent url('Images/reply.png') no-repeat;
+  background-position-y: -7px;
+}
+
+.activities-report {
+  background: transparent url('Images/report.png') no-repeat;
+  background-position-y: -7px;
+}
+
+.activities-like {
+  background: transparent url('Images/Likes.png') no-repeat;
+  background-position-y: -2px;
+}
+
+.activities-like-liked {
+  background: transparent url('Images/LikeSelect.png') no-repeat;
+}
+
+/* Targetting Webkit browsers only. FF will show the dropdown arrow with so much padding. */
+
+.loading-container .loading {
+  background-image: url('/Images/dnnanim.gif');
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.activities-comments-panel textarea.message {
+  height: 120px;
+  width: 500px;
+}
+
+div.messageArea {
+  margin-top: 16px;
+}
+
+.fixed {
+    table-layout: fixed;
+}
+
+.dnnTableDisplay {
+    width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.number-cell {
+    text-align: right;
+}
+
+::-webkit-input-placeholder {
+    color: #777;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: #777;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: #777;
+}
+
+:-ms-input-placeholder {
+    color: #777;
+}
+
+#dnnActivities .dnnFilterSet {
+    position: relative;
+}
+
+#dnnActivities .dnnFilterSet ul li {
+    margin: 6px 3px;
+}
+
+/* Badges */
+.badgeContainer {   
+    padding: 12px;
+    width: 184px;
+    margin-right: 18px;
+    margin-bottom: 18px;
+    border: 1px solid #CCCCCC;
+	border-radius:4px;
+}
+
+div.dnnBadgeList {
+    list-style-type: none;
+    margin: 0;
+    width: 720px;
+}
+
+img.badgeImage {
+    padding-right: 10px;
+    width: 36px;
+    height: 36px;
+}
+
+span.badgeName {
+    font-weight: bold;
+}
+	/* End Subscriptions Style*/

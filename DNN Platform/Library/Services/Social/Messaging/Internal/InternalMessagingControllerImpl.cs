@@ -426,10 +426,16 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         #region Queued email API's
 
-        public IList<MessageRecipient> GetNextMessagesForDispatch(Guid schedulerInstance, int batchSize)
+        public IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)
         {
-            return CBO.FillCollection<MessageRecipient>(_dataService.GetNextMessagesForDispatch(schedulerInstance, batchSize));
+            return CBO.FillCollection<MessageRecipient>(_dataService.GetNextMessagesForInstantDispatch(schedulerInstance, batchSize));
         }
+
+        public IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize)
+        {
+            return CBO.FillCollection<MessageRecipient>(_dataService.GetNextMessagesForDigestDispatch(Convert.ToInt32(frequency), schedulerInstance, batchSize));            
+        }
+
 
         public virtual void MarkMessageAsDispatched(int messageId, int recipientId)
         {

@@ -1,104 +1,105 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-	<package name="DotNetNuke.RadEditorProvider" type="Provider" version="07.01.02">
-	<friendlyName>RadEditor Manager</friendlyName>
-	<description>A module used to configure toolbar items, behavior, and other options used in the DotNetNuke RadEditor Provider.</description>
-	  <owner>
-		<name>DotNetNuke RadEditor Provider</name>
-		<organization>DotNetNuke Corporation</organization>
-		<url>http://www.dotnetnuke.com</url>
-		<email />
-	  </owner>
-	<license src="License.txt"></license>
-	<releaseNotes src="ReleaseNotes.txt"></releaseNotes>
-    <azureCompatible>true</azureCompatible>
-	<dependencies>
-		<dependency type="CoreVersion">06.00.00</dependency>
-	</dependencies>
-  <components>
-	<component type="Module">
-	  <desktopModule>
-		<moduleName>DotNetNuke.RadEditorProvider</moduleName>
-		<foldername>Admin/RadEditorProvider</foldername>
-		<businessControllerClass />
-		<supportedFeatures />
-		<moduleDefinitions>
-		  <moduleDefinition>
-			<friendlyName>RadEditor Manager</friendlyName>
-			<defaultCacheTime>0</defaultCacheTime>
-			<moduleControls>
-			  <moduleControl>
-				<controlKey />
-				<controlSrc>DesktopModules/Admin/RadEditorProvider/ProviderConfig.ascx</controlSrc>
-				<supportsPartialRendering>True</supportsPartialRendering>
-				<controlTitle />
-				<controlType>View</controlType>
-				<iconFile />
-          <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Host Console/HTML Editor Manager/About the HTML Editor Manager.html</helpUrl>
-				<viewOrder>0</viewOrder>
-			  </moduleControl>
-			</moduleControls>
-		  </moduleDefinition>
-		</moduleDefinitions>
-	  </desktopModule>
-	  <eventMessage>
-		<processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
-		<processorCommand>UpgradeModule</processorCommand>
-		<attributes>
-			<businessControllerClass>DotNetNuke.Providers.RadEditorProvider.UpgradeController, DotNetNuke.RadEditorProvider</businessControllerClass>
-			<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-			<upgradeVersionsList>06.00.00,07.00.06</upgradeVersionsList>
-		</attributes>
-	  </eventMessage>
-	</component>
-	<component type="Assembly">
-	  <assemblies>
-		<assembly>
-      <path>bin</path>		  
-      <name>DotNetNuke.RadEditorProvider.dll</name>
-		</assembly>
-	  </assemblies>
-	</component>
-	<component type="ResourceFile">
-		<resourceFiles>
-			<basePath>DesktopModules\Admin\RadEditorProvider</basePath>
-			<resourceFile>
-				<name>Resources.zip</name>
-				<sourceFileName>Resources.zip</sourceFileName>
-			</resourceFile>
-		</resourceFiles>
-	</component>
-	<component type="Config">
-		<config>
-			<configFile>web.config</configFile>
-			<install>
-				<configuration>
-					<nodes>
-						<node path="/configuration/dotnetnuke/htmlEditor/providers" action="update" key="name" collision="overwrite">
-							<add name="DotNetNuke.RadEditorProvider"
-								type="DotNetNuke.Providers.RadEditorProvider.EditorProvider, DotNetNuke.RadEditorProvider"
-								providerPath="~/DesktopModules/Admin/RadEditorProvider" />
-						</node>
-            <node path="/configuration/system.webServer/handlers" action="update" key="name" collision="overwrite">
-              <add name="HtmTemplateFileHandler"
-                 verb="*"
-                 path="*.htmtemplate"
-                 type="DotNetNuke.Providers.RadEditorProvider.HtmTemplateFileHandler, DotNetNuke.RadEditorProvider"
-                 preCondition="integratedMode" />
-            </node>
-          </nodes>
-				</configuration>
-			</install>
-			<uninstall>
-				<configuration>
-					<nodes>
-						<node path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='DotNetNuke.RadEditorProvider']" action="remove" />
-					</nodes>
-				</configuration>
-			</uninstall>
-		</config>
-	</component>
-  </components>
-</package>
+    <package name="DotNetNuke.RadEditorProvider" type="Provider" version="07.02.00">
+      <friendlyName>RadEditor Manager</friendlyName>
+      <description>A module used to configure toolbar items, behavior, and other options used in the DotNetNuke RadEditor Provider.</description>
+      <owner>
+        <name>DotNetNuke RadEditor Provider</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>http://www.dotnetnuke.com</url>
+        <email />
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">06.00.00</dependency>
+      </dependencies>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>DotNetNuke.RadEditorProvider</moduleName>
+            <foldername>Admin/RadEditorProvider</foldername>
+            <businessControllerClass />
+            <supportedFeatures />
+            <isPremium>true</isPremium>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>RadEditor Manager</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/Admin/RadEditorProvider/ProviderConfig.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Host Console/HTML Editor Manager/About the HTML Editor Manager.html</helpUrl>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>DotNetNuke.Providers.RadEditorProvider.UpgradeController, DotNetNuke.RadEditorProvider</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>06.00.00,07.00.06</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.RadEditorProvider.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules\Admin\RadEditorProvider</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+              <sourceFileName>Resources.zip</sourceFileName>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/htmlEditor/providers" action="update" key="name" collision="overwrite">
+                    <add name="DotNetNuke.RadEditorProvider"
+                      type="DotNetNuke.Providers.RadEditorProvider.EditorProvider, DotNetNuke.RadEditorProvider"
+                      providerPath="~/DesktopModules/Admin/RadEditorProvider" />
+                  </node>
+                  <node path="/configuration/system.webServer/handlers" action="update" key="name" collision="overwrite">
+                    <add name="HtmTemplateFileHandler"
+                       verb="*"
+                       path="*.htmtemplate"
+                       type="DotNetNuke.Providers.RadEditorProvider.HtmTemplateFileHandler, DotNetNuke.RadEditorProvider"
+                       preCondition="integratedMode" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='DotNetNuke.RadEditorProvider']" action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+      </components>
+    </package>
   </packages>
 </dotnetnuke>

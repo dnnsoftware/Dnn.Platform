@@ -27,12 +27,15 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
+using DotNetNuke.Common;
+using DotNetNuke.ExtensionPoints.Filters;
+
 namespace DotNetNuke.ExtensionPoints
 {
-    using Common;
-
     public class ExtensionPointManager
     {
+        private static readonly object SyncRoot = new object();
+
 #pragma warning disable 649
 
         [ImportMany]
@@ -61,7 +64,10 @@ namespace DotNetNuke.ExtensionPoints
 
 #pragma warning restore 649
 
-        private static readonly object SyncRoot = new Object();
+        public ExtensionPointManager()
+        {        
+            ComposeParts(this);
+        }
 
         private static CompositionContainer MefCompositionContainer
         {
@@ -89,139 +95,143 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
-        public ExtensionPointManager()
-        {        
-            ComposeParts(this);
-        }
-
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module)
         {
-            return _editPageTabExtensionPoint.Where(e => e.Metadata.Module == module).OrderBy(e => e.Value.Order).Select(e => e.Value);
+            return GetEditPageTabExtensionPoints(module, null);
         }
 
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module, string group)
         {
-            if (String.IsNullOrEmpty(group))
-            {
-                return GetEditPageTabExtensionPoints(module);
-            }
-
-            return _editPageTabExtensionPoint.Where(e => e.Metadata.Module == module && e.Metadata.Group == @group).OrderBy(e => e.Value.Order).Select(e => e.Value);
+            return from e in _editPageTabExtensionPoint
+                   where e.Metadata.Module == module
+                        && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
+                   orderby e.Value.Order
+                   select e.Value;
         }
 
         public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module)
         {
-            return _toolbarButtonExtensionPoints.Where(e => e.Metadata.Module == module).OrderBy(e => e.Value.Order).Select(e => e.Value);
+            return GetToolBarButtonExtensionPoints(module, null);
         }
 
         public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module, string group)
         {
-            if (string.IsNullOrEmpty(group))
-            {
-                return GetToolBarButtonExtensionPoints(module);
-            }
+            return GetToolBarButtonExtensionPoints(module, group, new NoFilter());
+        }
 
-            return _toolbarButtonExtensionPoints.Where(e => e.Metadata.Module == module && e.Metadata.Group == @group).OrderBy(e => e.Value.Order).Select(e => e.Value);
+        public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module, string group, IExtensionPointFilter filter)
+        {            
+            return from e in _toolbarButtonExtensionPoints
+                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+                   orderby e.Value.Order
+                   select e.Value;                
         }
 
         public IEnumerable<IScriptItemExtensionPoint> GetScriptItemExtensionPoints(string module)
         {
-            return _scripts.Where(e => e.Metadata.Module == module).OrderByDescending(e => e.Value.Order).Select(e => e.Value);
+            return GetScriptItemExtensionPoints(module, null);
         }
 
         public IEnumerable<IScriptItemExtensionPoint> GetScriptItemExtensionPoints(string module, string group)
         {
-            if (string.IsNullOrEmpty(group))
-            {
-                return GetScriptItemExtensionPoints(module);
-            }
-            
-            return _scripts.Where(e => e.Metadata.Module == module && e.Metadata.Group == group).OrderBy(e => e.Value.Order).Select(e => e.Value);
+            return from e in _scripts
+                where e.Metadata.Module == module 
+                    && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)     
+                orderby e.Value.Order
+                select e.Value;
         }
 
         public IEnumerable<IEditPagePanelExtensionPoint> GetEditPagePanelExtensionPoints(string module)
         {
-            return _editPagePanelExtensionPoints.Where(e => e.Metadata.Module == module).OrderBy(e => e.Value.Order).Select(e => e.Value);
+            return GetEditPagePanelExtensionPoints(module, null);
         }
 
         public IEnumerable<IEditPagePanelExtensionPoint> GetEditPagePanelExtensionPoints(string module, string group)
         {
-            if(string.IsNullOrEmpty(group))
-            {
-                return GetEditPagePanelExtensionPoints(module);
-            }
-
-            return _editPagePanelExtensionPoints.Where(e => e.Metadata.Module == module && e.Metadata.Group == @group)
-                                                .OrderBy(e => e.Value.Order)
-                                                .Select(e => e.Value);
+            return from e in _editPagePanelExtensionPoints
+                   where e.Metadata.Module == module
+                        && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
+                   orderby e.Value.Order
+                   select e.Value;
         }
 
         public IEditPagePanelExtensionPoint GetEditPagePanelExtensionPointFirstByPriority(string module, string name)
         {
-            return _editPagePanelExtensionPoints.Where(e => e.Metadata.Module == module && e.Metadata.Name == name)
-                                            .OrderBy(e => e.Metadata.Priority)
-                                            .Select(e => e.Value)
-                                            .FirstOrDefault(); 
+            return (from e in _editPagePanelExtensionPoints 
+                    where e.Metadata.Module == module && e.Metadata.Name == name
+                    orderby e.Metadata.Priority
+                    select e.Value).FirstOrDefault(); 
         }
 
         public IEnumerable<IContextMenuItemExtensionPoint> GetContextMenuItemExtensionPoints(string module)
         {
-            return _ctxMenuItemExtensionPoints.Where(e => e.Metadata.Module == module).OrderBy(e => e.Value.Order).Select(e => e.Value);
+            return GetContextMenuItemExtensionPoints(module, null);
         }
 
         public IEnumerable<IContextMenuItemExtensionPoint> GetContextMenuItemExtensionPoints(string module, string group)
-        {
-            if (string.IsNullOrEmpty(group))
-            {
-                return GetContextMenuItemExtensionPoints(module);
-            }
-
-            return _ctxMenuItemExtensionPoints.Where(e => e.Metadata.Module == module && e.Metadata.Group == @group).OrderBy(e => e.Value.Order).Select(e => e.Value);
+        {            
+            return from e in _ctxMenuItemExtensionPoints
+                   where e.Metadata.Module == module
+                        && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
+                   orderby e.Value.Order 
+                   select e.Value;
         }
 
         public IUserControlExtensionPoint GetUserControlExtensionPointFirstByPriority(string module, string name)
         {
-            return _userControlExtensionPoints.Where(e => e.Metadata.Module == module && e.Metadata.Name == name)
-                                            .OrderBy(e => e.Metadata.Priority)
-                                            .Select(e => e.Value)
-                                            .FirstOrDefault();            
+            return (from e in _userControlExtensionPoints
+                    where e.Metadata.Module == module && e.Metadata.Name == name
+                    orderby e.Metadata.Priority
+                    select e.Value).FirstOrDefault();            
         }
 
         public IEnumerable<IUserControlExtensionPoint> GetUserControlExtensionPoints(string module, string group)
         {
-            return _userControlExtensionPoints.Where(e => e.Metadata.Module == module && e.Metadata.Group == @group)
-                                                .OrderBy(e => e.Value.Order)
-                                                .Select(e => e.Value);
+            return from e in _userControlExtensionPoints 
+                   where e.Metadata.Module == module && e.Metadata.Group == @group
+                   orderby e.Value.Order
+                   select e.Value;
         }
 
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module)
         {
-            return _menuItems.Where(e => e.Metadata.Module == module).OrderBy(e => e.Value.Order).Select(e => e.Value);
+            return GetMenuItemExtensionPoints(module, null);
         }
 
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module, string group)
         {
-            if (string.IsNullOrEmpty(group))
-            {
-                return GetMenuItemExtensionPoints(module);
-            }
+            return GetMenuItemExtensionPoints(module, group, new NoFilter());
+        }
 
-            return _menuItems.Where(e => e.Metadata.Module == module && e.Metadata.Group == @group).OrderBy(e => e.Value.Order).Select(e => e.Value);
+        public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module, string group, IExtensionPointFilter filter)
+        {
+            return from e in _menuItems
+                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+                   orderby e.Value.Order 
+                   select e.Value;
         }
         
         public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module)
         {
-            return _gridColumns.Where(e => e.Metadata.Module == module).OrderBy(e => e.Value.Order).Select(e => e.Value);
+            return GetGridColumnExtensionPoints(module, null);
         }
 
         public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module, string group)
         {
-            if (string.IsNullOrEmpty(group))
-            {
-                return GetGridColumnExtensionPoints(module);
-            }
+            return GetGridColumnExtensionPoints(module, group, new NoFilter());
+        }
 
-            return _gridColumns.Where(e => e.Metadata.Module == module && e.Metadata.Group == @group).OrderBy(e => e.Value.Order).Select(e => e.Value);
+        public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module, string group, IExtensionPointFilter filter)
+        {
+            return from e in _gridColumns
+                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+                   orderby e.Value.Order
+                   select e.Value;
+        }
+
+        private bool FilterCondition(IExtensionPointData data, string module, string group)
+        {
+            return data.Module == module && (string.IsNullOrEmpty(@group) || data.Group == @group);
         }
     }
 }

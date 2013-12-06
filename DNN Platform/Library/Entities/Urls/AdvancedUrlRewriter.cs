@@ -1999,9 +1999,7 @@ namespace DotNetNuke.Entities.Urls
                         //This is because the tabid in the query string should take precedence over the portal alias
                         //to handle parent.com/default.aspx?tabid=xx where xx lives in parent.com/child/ 
                         var tc = new TabController();
-#pragma warning disable 612,618
-                        TabInfo tab = tc.GetTab(result.TabId);
-#pragma warning restore 612,618
+                        var tab = tc.GetTab(result.TabId, Null.NullInteger, false);
                         //when result alias is null or result alias is different from tab-identified portalAlias
                         if (tab != null && (result.PortalAlias == null || tab.PortalID != result.PortalAlias.PortalID))
                         {
@@ -2557,7 +2555,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 rewritePathOnly = result.RewritePath;
                                 var pos = rewritePathOnly.IndexOf("default.aspx", StringComparison.OrdinalIgnoreCase);
-                                if (pos > -1)
+                                if (pos > Null.NullInteger)
                                 {
                                     rewritePathOnly = rewritePathOnly.Substring(pos);
                                 }
@@ -2568,8 +2566,9 @@ namespace DotNetNuke.Entities.Urls
                             }
 
                             //remove the http alias from the path 
-                            int pathAliasEnd = rewritePathOnly.IndexOf(result.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase);
-                            if (pathAliasEnd > -1)
+                            var pathAliasEnd = rewritePathOnly.IndexOf(result.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase);
+                            var queryStringIndex = rewritePathOnly.IndexOf("?", StringComparison.InvariantCultureIgnoreCase);
+                            if (pathAliasEnd > Null.NullInteger && (queryStringIndex == Null.NullInteger || pathAliasEnd < queryStringIndex))
                             {
                                 rewritePathOnly = rewritePathOnly.Substring(pathAliasEnd + result.PortalAlias.HTTPAlias.Length);
                             }
@@ -2579,7 +2578,7 @@ namespace DotNetNuke.Entities.Urls
                             string requestedUrl = fullUrl;
                             int requestedUrlAliasEnd = requestedUrl.IndexOf(result.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase) 
                                                         + (result.PortalAlias.HTTPAlias + "/").Length;
-                            if (requestedUrlAliasEnd > -1)
+                            if (requestedUrlAliasEnd > Null.NullInteger)
                             {
                                 //818 : when a site root is used for a custom page Url, then check for max length within bounds
                                 if ((requestedUrl.Length - requestedUrlAliasEnd) >= 12 && requestedUrl.Substring(requestedUrlAliasEnd).ToLower() == "default.aspx")

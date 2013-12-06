@@ -90,7 +90,7 @@
                 <% } %>
                 <li class="controlBar_ArrowMenu"><a href="javascript:void(0)">
                     <%= GetString("Tool.Tools.Text") %></a>
-                    <div class="subNav">
+                    <div class="subNav tools">
                         <dl>
                             <dd>
                                 <ul>
@@ -136,8 +136,11 @@
                             <dd>
                                 <ul>
                                     <asp:Literal ID="helpLink" runat="server"></asp:Literal>
-                                    <li id="gettingStartedLink" runat="server"><a href="<%= GetTabURL("Getting Started", false) %>" class="ControlBar_PopupLink">
-                                        <%= GetString("Tool.GettingStarted.Text") %></a></li>
+                                    <% if (UserController.GetCurrentUserInfo().IsSuperUser)
+                                       {%>
+                                        <li id="gettingStartedLink" runat="server"><a href="javascript:dnn.GettingStartedDialog.getInstance().show();">
+                                            <%= GetString("Tool.GettingStarted.Text") %></a></li>
+                                    <% } %>
                                 </ul>
                             </dd>
                         </dl>
@@ -160,11 +163,12 @@
                         <% if (UserController.GetCurrentUserInfo().IsSuperUser)
                            {%>
 						<li class="separator"></li>
+                        <li><a href="javascript:void(0)" id="controlBar_CreateModule">
+                            <%= GetString("Tool.CreateModule.Text") %></a> </li>
                         <li><a href='<%= GetTabURL("Extensions", true) %>#moreExtensions'>
                             <%= GetString("Tool.FindModules.Text") %></a> </li>
-                        <%   }
-                        %>
-                    </ul>
+                         <%   }%>
+                   </ul>
                 </li>
                <% } %>
                

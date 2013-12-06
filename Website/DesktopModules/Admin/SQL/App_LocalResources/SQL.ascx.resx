@@ -121,7 +121,7 @@
     <value>Run Script</value>
   </data>
   <data name="cmdExecute.ToolTip" xml:space="preserve">
-    <value>can include {directives} and /*comments*/</value>
+    <value>Can include {directives} and /*comments*/</value>
   </data>
   <data name="QueryError.Text" xml:space="preserve">
     <value>There is an error in your query!</value>
@@ -157,15 +157,96 @@
     <value>The query did not return any data</value>
   </data>
   <data name="scriptLabel.Text" xml:space="preserve">
-    <value>Script:</value>
+    <value>Script</value>
   </data>
   <data name="scriptLabel.Help" xml:space="preserve">
-    <value>Enter the SQL you wish to execute.</value>
+    <value>Enter the SQL you wish to execute. You can use more than one SELECT statement to return multiple result sets.</value>
   </data>
-  <data name="runasLabel.Text" xml:space="preserve">
-    <value>Run as Script:</value>
+  <data name="errorLabel.Help" xml:space="preserve">
+    <value>This is the error returned by SQL server after executing your SQL script.</value>
   </data>
-  <data name="runasLabel.Help" xml:space="preserve">
-    <value>Select if the SQL statement does not return a value and only acts on the database to make changes</value>
+  <data name="errorLabel.Text" xml:space="preserve">
+    <value>Error Details</value>
+  </data>
+  <data name="CnnStringNotFound.Text" xml:space="preserve">
+    <value>The query has been loaded but the associated Connection ("{0}") was not found. Default "SiteSqlServer" Connection has been selected instead.</value>
+  </data>
+  <data name="Deleted.Text" xml:space="preserve">
+    <value>The query has been successfully deleted.</value>
+  </data>
+  <data name="lblSavedQuery.Help" xml:space="preserve">
+    <value>You can select a saved query and run or modify and save it again. Or you can select to create a new query.</value>
+  </data>
+  <data name="lblSavedQuery.Text" xml:space="preserve">
+    <value>Queries:</value>
+  </data>
+  <data name="btDelete.Text" xml:space="preserve">
+    <value>Delete Query</value>
+  </data>
+  <data name="lnkLoad.Text" xml:space="preserve">
+    <value>Load Query</value>
+  </data>
+  <data name="btSaveQuery.Text" xml:space="preserve">
+    <value>Save Query</value>
+  </data>
+  <data name="NewQuery.Text" xml:space="preserve">
+    <value>&lt; New Query &gt;</value>
+  </data>
+  <data name="NoScript.Text" xml:space="preserve">
+    <value>Please write or load the script you want to run.</value>
+  </data>
+  <data name="SaveDialogTitle.Text" xml:space="preserve">
+    <value>Save Query As...</value>
+  </data>
+  <data name="lblName.Help" xml:space="preserve">
+    <value>Provide a name to identify the saved query.</value>
+  </data>
+  <data name="lblName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="lnkSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="NoName.Text" xml:space="preserve">
+    <value>You have to provide a name for the query</value>
+  </data>
+  <data name="Saved.Text" xml:space="preserve">
+    <value>The query has been successfully saved.</value>
+  </data>
+  <data name="CopyToClipboard.Text" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
+  <data name="CopyText.Text" xml:space="preserve">
+    <value>The result was copied to the clipboard.</value>
+  </data>
+  <data name="NumRowsReturned.Text" xml:space="preserve">
+    <value>{0} rows returned</value>
+  </data>
+  <data name="ResultTitle.Text" xml:space="preserve">
+    <value>Query</value>
+  </data>
+  <data name="AllRows.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="CopyButtonAlt.Text" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
+  <data name="CSVButtonAlt.Text" xml:space="preserve">
+    <value>Export to CSV</value>
+  </data>
+  <data name="PDFButtonAlt.Text" xml:space="preserve">
+    <value>Export to PDF</value>
+  </data>
+  <data name="Placeholder.Text" xml:space="preserve">
+    <value>Enter your SQL query...</value>
+  </data>
+  <data name="PopupButtonAlt.Text" xml:space="preserve">
+    <value>Open in new popup</value>
+  </data>
+  <data name="XLSButtonAlt.Text" xml:space="preserve">
+    <value>Export to Excel</value>
+  </data>
+  <data name="CopyTitle.Text" xml:space="preserve">
+    <value>SQL Query Result</value>
   </data>
 </root>

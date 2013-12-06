@@ -19,11 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.IO;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.FileSystem.Internal;
 
 // ReSharper disable CheckNamespace
@@ -86,9 +83,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public override string GetFileUrl(IFileInfo file)
         {
-            Requires.NotNull("file", file);
-
-            return TestableGlobals.Instance.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger);
+            return FileLinkClickController.Instance.GetFileLinkClick(file);
         }
 
         public override string GetFolderProviderIconPath()
@@ -99,6 +94,10 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Protected Methods
+        protected override string GetActualPath(FolderMappingInfo folderMapping, string folderPath, string fileName)
+        {
+            return base.GetActualPath(folderMapping, folderPath, fileName) + ProtectedExtension;
+        }
 
         protected override string GetActualPath(IFileInfo file)
         {

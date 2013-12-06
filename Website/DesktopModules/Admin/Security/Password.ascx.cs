@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         #endregion
 		
-		#region "Public Properties"
+		#region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		
 		#endregion
 
-		#region "Events"
+		#region Events
 
 
         public event PasswordUpdatedEventHandler PasswordUpdated;
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		#endregion
 
-		#region "Event Methods"
+		#region Event Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		#endregion
 
-		#region "Public Methods"
+		#region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -262,7 +262,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		#endregion
 
-		#region "Event Handlers"
+		#region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -275,16 +275,6 @@ namespace DotNetNuke.Modules.Admin.Users
             jQuery.RequestDnnPluginsRegistration();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/03/2006  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -355,16 +345,6 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdReset_Click runs when the Reset Button is clicked
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/03/2006  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdReset_Click(object sender, EventArgs e)
         {
             if (IsUserOrAdmin == false)
@@ -487,18 +467,6 @@ namespace DotNetNuke.Modules.Admin.Users
             objEventLog.AddLog(objEventLogInfo);
         }
 
-     
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdUpdate_Click runs when the Update  Button is clicked
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/03/2006  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(Object sender, EventArgs e)
         {
             if (IsUserOrAdmin == false)

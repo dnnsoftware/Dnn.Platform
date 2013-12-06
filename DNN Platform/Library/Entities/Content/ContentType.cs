@@ -22,6 +22,7 @@
 
 using System;
 using System.Data;
+using System.Linq;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -52,7 +53,19 @@ namespace DotNetNuke.Entities.Content
     [Serializable]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
-        //private string _ContentType;
+        #region Private Members
+
+        private static ContentType _desktopModule;
+        private static ContentType _module;
+        private static ContentType _tab;
+
+        private const string desktopModuleContentTypeName = "DesktopModule";
+        private const string moduleContentTypeName = "Module";
+        private const string tabContentTypeName = "Tab";
+
+        #endregion
+
+        #region Constructors
 
         public ContentType() : this(Null.NullString)
         {
@@ -64,7 +77,37 @@ namespace DotNetNuke.Entities.Content
             ContentType = contentType;
         }
 
-		/// <summary>
+        #endregion
+
+        #region Public Static Properties
+
+        public static ContentType DesktopModule
+	    {
+	        get
+	        {
+	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  desktopModuleContentTypeName));
+	        }
+	    }
+
+	    public static ContentType Module
+	    {
+	        get
+	        {
+	            return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  moduleContentTypeName));
+	        }
+	    }
+
+        public static ContentType Tab 
+        {
+            get
+            {
+                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == tabContentTypeName));
+            }
+        }
+
+        #endregion
+
+        /// <summary>
 		/// Gets or sets the content type id.
 		/// </summary>
 		/// <value>
@@ -72,7 +115,7 @@ namespace DotNetNuke.Entities.Content
 		/// </value>
         public int ContentTypeId { get; set; }
 
-        #region "IHydratable Implementation"
+        #region IHydratable Implementation
 
 		/// <summary>
 		/// Fill this content object will the information from data reader.

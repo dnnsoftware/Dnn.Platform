@@ -1,0 +1,84 @@
+﻿.subscription-table-container {    
+    display: inline-block;
+    position: relative;
+    background-color: white;
+}
+
+.loading-panel {
+    background: url("../../../Images/loading.gif") no-repeat scroll center center #FFFFFF;
+    bottom: 0;
+    left: 0;
+    opacity: 0.7;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 999;
+}
+
+#subscription-table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin-bottom: 0;
+}
+
+#subscription-table tfoot {
+    background-color: #E9E9E9;
+    color: gray;
+}
+
+#subscription-table thead > tr > th > span.sortable {
+    cursor: pointer;
+    float: left;
+}
+
+#subscription-table thead > tr > th span.sortArrow {
+    box-shadow: none;
+    display: inline-block;
+    float: right;
+    height: 16px;
+    width: 15px;
+}
+
+#subscription-table thead > tr > th span.sortAsc {
+    background: url("../../../images/dnnSpinnerUpArrow.png") no-repeat scroll center center transparent;
+}
+
+#subscription-table thead > tr > th span.sortDesc {
+    background: url("../../../images/dnnSpinnerDownArrow.png") no-repeat scroll center center transparent;
+}
+
+.subscriptions-page-size,
+.subscriptions-pager {
+    float: left;
+    line-height: 40px;
+    margin-right: 10px;
+}
+
+.subscriptions-page-size select {
+    width: 60px;
+    vertical-align: inherit;
+    margin-bottom: 0;
+}
+
+.subscriptions-pager .disabled {
+    color: gray;
+}
+
+.subscriptions-pager .currentPage {
+    font-weight: bold;
+}
+
+.subscriptions-pager ul {
+    display: inline;
+    list-style: none outside none;
+    margin: 0;
+}
+
+.subscriptions-pager ul li {
+    display: inline;
+}
+
+.subscriptions-count {
+    float: right;
+    line-height: 40px;
+}

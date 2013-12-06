@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.CorePages;
@@ -9,7 +10,6 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Common.Tests.BVT
 {
 	[SetUpFixture]
-	[Category("BVT")] 
 	public abstract class BVTSetup
 	{
 		protected abstract string DataFileLocation { get; }
@@ -28,6 +28,8 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			IWebDriver driver = TestBase.StartDriver(settings.Attribute("browser").Value);
 			string baseUrl = settings.Attribute("baseURL").Value;
+			bool dummyProvider = settings.Attribute("runWithDummyCachingProvider")
+										 .Value.Equals("yes", StringComparison.InvariantCultureIgnoreCase);
 
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'" + testName + "'");
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
@@ -53,6 +55,13 @@ namespace DNNSelenium.Common.Tests.BVT
 			adminSiteSettingsPage.OpenUsingButtons(baseUrl);
 			adminSiteSettingsPage.DisablePopups();
 
+			if (dummyProvider)
+			{
+				var hostExtensionsPage = new HostExtensionsPage(driver);
+				hostExtensionsPage.OpenUsingButtons(baseUrl);
+				hostExtensionsPage.InstallExtension(@"Drivers\" + "DummySerializationCachingProvider_01.00.01_Install.zip");
+			}
+			
 			driver.Quit();
 		}
 

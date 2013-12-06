@@ -1,0 +1,318 @@
+﻿.gs-dialog {
+    padding: 0;
+}
+
+.gs-dialog .ui-dialog-titlebar {
+    border: none;
+    padding: 30px 20px;
+}
+
+.gs-dialog div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
+    top: -12px;
+    right: -12px;
+}
+
+.gs-dialog div.ui-dialog-titlebar .ui-dialog-title {
+    font-size: 20px;
+    font-family: Avenir, "Helvetica Neue", "HelveticaNeue", Arial, Helvetica, sans-serif;
+}
+
+html .gs-container {
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+    font-family: Avenir, "Helvetica Neue", "HelveticaNeue", Arial, Helvetica, sans-serif;
+}
+
+.gs-container label, .gs-container span {
+    /* unselectable */
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+}
+
+.gs-dialog .ui-dialog-content, #iPopUp .ui-dialog-content {
+    padding: 0 20px;
+}
+
+.gs-container .gs-header {
+/*    width: 100%;*/
+    position: relative;
+    overflow: hidden;
+}
+
+.gs-container .gs-header:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.gs-header-left-side {
+    float: left;
+    width: 70%;
+    position: relative;
+    overflow: hidden;
+}
+
+.gs-header-left-side > div {
+    position: relative;
+    padding: 30px;
+    background-color: #472a2b;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.gs-header-right-side {
+    float: right;
+    width: 30%;
+    position: absolute;
+    overflow: hidden;
+    height: 100%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.gs-header-right-side > div {
+    margin: 0 0 0 10px;
+    height: 100%;
+    position: relative;
+}
+
+.gs-header-right-side a:link,
+.gs-header-right-side a:visited,
+.gs-header-right-side a:hover,
+.gs-header-right-side a:active {
+    display: table;
+    float: right;
+    background-color: #00a3e4;
+    width: 100%;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    height: 100%;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    background: #00a3e4 url("Images/manual.png") no-repeat 30px center;
+}
+
+.gs-header-right-side a span {
+    vertical-align: middle;
+    padding: 0 20px 0 100px;
+    display: table-cell;
+}
+
+.gs-header-left-side-text {
+    float: left;
+    width: 60%;
+    position: relative;
+    overflow: hidden;
+}
+
+.gs-header-left-side-text label {
+    color: #fff;
+    display: block;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.gs-header-left-side-text span {
+    color: #c0b3b3;
+    display: block;
+    font-size: 13px
+}
+
+.gs-header-left-side-input {
+    float: right;
+    width: 40%;
+    line-height: 40px;
+}
+
+.gs-header-left-side-text > div {
+    padding: 0 10px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.gs-header-left-side-input > div {
+    padding: 0 0 0 10px;
+    border: #00a3e4 solid 1px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background-color: #706162;
+    position: relative;
+    overflow: hidden;
+}
+
+.gs-header-left-side-inputbox-wrapper {
+    float: left;
+    width: 60%;
+    padding: 0;
+    position: relative;
+}
+
+.gs-header-left-side-inputbox-wrapper input {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    color: #fff;
+    outline: none;
+    font-size: 14px;
+}
+
+.gs-header-left-side-input a:link,
+.gs-header-left-side-input a:visited,
+.gs-header-left-side-input a:hover,
+.gs-header-left-side-input a:active {
+    float: left;
+    width: 40%;
+    background: #00a3e4;
+    text-transform: uppercase;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+}
+
+.gs-container .gs-content {
+/*    width: 100%;*/
+    position: relative;
+    height: 400px;
+}
+
+.gs-container .gs-loading-content iframe {
+    background: transparent url("Images/loading.png") no-repeat center center;
+}
+
+.gs-container .gs-content > div {
+    position: relative;
+    margin: 10px 0;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    background-color: #f1eaea;
+    height: 100%;
+}
+
+.gs-container .gs-content iframe {
+    width: 100%;
+    height: 100%;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.gs-container .gs-footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background-color: #472a2b;
+    height: 40px;
+}
+
+.gs-container .gs-footer-border {
+    background: none repeat scroll 0 0 #11AAE5;
+    height: 3px;
+}
+
+.gs-container .gs-footer-border > div {
+    float: left;
+    width: 50%;
+    background: none repeat scroll 0 0 #EE3A43;
+    height: 3px;
+}
+
+.gs-container .gs-footer-left-side {
+    float: left;
+    padding: 9px 10px;
+}
+
+.gs-container .gs-footer-left-side input[type="checkbox"] {
+    display: inline;
+    margin: 0 0 2px 9px;
+    cursor: pointer;
+}
+
+:root *> .gs-container .gs-footer-left-side input[type="checkbox"] {
+    display: none;
+}
+
+.gs-container .gs-footer-left-side label {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 0 0 10px;
+    margin: 0;
+    font-size: 13px;
+    position: relative;
+    color: #c0b3b3;
+}
+
+:root *> .gs-container .gs-footer-left-side label {
+    padding-left: 25px;
+    margin-left: 10px;
+}
+
+/* :root *> disable in IE < 9 */
+:root *> .gs-container .gs-footer-left-side label:before {
+    border: 1px solid #11AAE5;
+    background-color: #706162;
+    /*bottom: 1px;*/
+    /*box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3) inset, 0 1px 0 0 rgba(255, 255, 255, 0.8);*/
+    content: "";
+    display: inline-block;
+    height: 16px;
+    left: 0;
+    margin-right: 10px;
+    position: absolute;
+    width: 16px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+/* :root *> disable in IE < 9 */
+:root *> .gs-container .gs-footer-left-side input[type="checkbox"]:checked + label:before {
+    color: #fff;
+    content: "\2713";
+    font-size: 15px;
+    line-height: 15px;
+    text-align: center;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.gs-container .gs-footer-right-side {
+    float: right;
+    padding: 6px 20px 6px 4px;
+}
+
+.gs-container .gs-footer-right-side a {
+    width: 24px;
+    height: 24px;
+    margin: 0 0 0 12px;
+    float: left;
+}
+
+.gs-container .gs-footer-right-side a.gs-twitter-button {
+    background: transparent url("Images/twitter.png") no-repeat 0 0;
+}
+
+.gs-container .gs-footer-right-side a.gs-facebook-button {
+    background: transparent url("Images/facebook.png") no-repeat center center;
+}

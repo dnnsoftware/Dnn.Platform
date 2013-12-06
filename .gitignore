@@ -33,6 +33,9 @@
 *.dotCover
 *.ldf
 
+# git merge artifacts
+*.orig
+
 ## TODO: If you have NuGet Package Restore enabled, uncomment this
 #packages/
 
@@ -109,6 +112,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Mm]obile[Mm]anagement
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Rr]azor[Mm]odules
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Ss]ocial[Gg]roups
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Ss]ubscriptions[Mm]gmt
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Ii]dentity[Ss]witcher
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Bb]log
 
@@ -120,6 +124,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Ii]nstall/installstat.log.resources.txt
 [Ww]ebsite/[Ii]nstall/upgradestat.log.resources.txt
 
+[Ww]ebsite/[Ll]icenses/*.txt
 
 [Ww]ebsite/[Pp]ortals/_default/[Ll]ogs
 [Ww]ebsite/[Pp]ortals/_default/[Mm]erged[Tt]emplate
@@ -134,6 +139,8 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Pp]roviders/*/*/license.txt
 [Ww]ebsite/[Pp]roviders/*/*/release[Nn]otes.txt
 [Ww]ebsite/[Pp]roviders/[Ff]older[Pp]roviders
+
+[Ww]ebsite/[Rr]esources/[Ll]ibraries
 
 [Ww]ebsite/[Ss]ignatures
 

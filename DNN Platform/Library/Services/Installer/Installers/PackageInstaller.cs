@@ -27,6 +27,7 @@ using System.Xml.XPath;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Installer.Dependencies;
 using DotNetNuke.Services.Installer.Packages;
 
@@ -48,6 +49,7 @@ namespace DotNetNuke.Services.Installer.Installers
 	
         private readonly SortedList<int, ComponentInstallerBase> _componentInstallers = new SortedList<int, ComponentInstallerBase>();
         private PackageInfo _installedPackage;
+        private EventMessage _eventMessage;
 		
 		#endregion
 
@@ -156,7 +158,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
-            PackageType type = PackageController.GetPackageType(Package.PackageType);
+            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
             if (type == null)
             {
                 //This package type not registered
@@ -289,6 +291,56 @@ namespace DotNetNuke.Services.Installer.Installers
             return result;
         }
 
+        private void ReadEventMessageNode(XPathNavigator manifestNav)
+        {
+            XPathNavigator eventMessageNav = manifestNav.SelectSingleNode("eventMessage");
+            if (eventMessageNav != null)
+            {
+                _eventMessage = new EventMessage();
+                _eventMessage.Priority = MessagePriority.High;
+                _eventMessage.ExpirationDate = DateTime.Now.AddYears(-1);
+                _eventMessage.SentDate = DateTime.Now;
+                _eventMessage.Body = "";
+                _eventMessage.ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing);
+                _eventMessage.ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing);
+                foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
+                {
+                    var attribName = attributeNav.Name;
+                    var attribValue = attributeNav.Value;
+                    if (attribName == "upgradeVersionsList")
+                    {
+                        if (!String.IsNullOrEmpty(attribValue))
+                        {
+                            string[] upgradeVersions = attribValue.Split(',');
+                            attribValue = ""; foreach (string version in upgradeVersions)
+                            {
+                                Version upgradeVersion = null;
+                                try
+                                {
+                                    upgradeVersion = new Version(version);
+                                }
+                                catch (FormatException)
+                                {
+                                    Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
+                                }
+
+                                if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion && Globals.Status == Globals.UpgradeStatus.Upgrade) //To allow when upgrading to an upper version
+                                {
+                                    attribValue += version + ",";
+                                }
+                                else if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install || Globals.Status == Globals.UpgradeStatus.None)) //To allow when fresh installing or installresources
+                                {
+                                    attribValue += version + ",";                                    
+                                }
+                            }
+                            attribValue = attribValue.TrimEnd(',');
+                        }
+                    }
+                   _eventMessage.Attributes.Add(attribName, attribValue);
+                }
+            }
+        }
+
 		#endregion
 
 	    #region Public Methods
@@ -311,6 +363,13 @@ namespace DotNetNuke.Services.Installer.Installers
                     compInstaller.Commit();
                 }
             }
+
+            //Add Event Message
+            if (_eventMessage != null && !String.IsNullOrEmpty(_eventMessage.Attributes["UpgradeVersionsList"]))
+            {
+                EventQueueController.SendMessage(_eventMessage, "Application_Start");
+            }
+
             if (Log.Valid)
             {
                 Log.AddInfo(Util.INSTALL_Committed);
@@ -342,7 +401,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
 				
                 //Save Package
-                PackageController.SavePackage(Package);
+                PackageController.Instance.SaveExtensionPackage(Package);
 
                 //Iterate through all the Components
                 for (int index = 0; index <= _componentInstallers.Count - 1; index++)
@@ -414,20 +473,54 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 return;
             }
-			
-            //Attempt to get the Package from the Data Store (see if its installed)
-            _installedPackage = PackageController.GetPackageByName(Package.PortalID, Package.Name);
 
             //Get IsSystem
             Package.IsSystemPackage = bool.Parse(Util.ReadAttribute(manifestNav, "isSystem", false, Log, "", bool.FalseString));
 
             //Get Version
             string strVersion = Util.ReadAttribute(manifestNav, "version", Log, Util.EXCEPTION_VersionMissing);
-            ValidateVersion(strVersion);
-            if (!IsValid)
+            if (string.IsNullOrEmpty(strVersion))
+            {
+                IsValid = false;
+            }
+            if (IsValid)
+            {
+                Package.Version = new Version(strVersion);
+            }
+            else
             {
                 return;
             }
+
+            //Attempt to get the Package from the Data Store (see if its installed)
+            var packageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
+
+            if (packageType.SupportsSideBySideInstallation)
+            {
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name && p.Version == Package.Version);                
+            }
+            else
+            {
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name);
+            }
+
+            if (_installedPackage != null)
+            {
+                Package.InstalledVersion = _installedPackage.Version;
+                Package.InstallerInfo.PackageID = _installedPackage.PackageID;
+
+                if (Package.InstalledVersion > Package.Version)
+                {
+                    Log.AddFailure(Util.INSTALL_Version + " - " + Package.InstalledVersion.ToString(3));
+                    IsValid = false;
+                }
+                else if (Package.InstalledVersion == Package.Version)
+                {
+                    Package.InstallerInfo.Installed = true;
+                    Package.InstallerInfo.PortalID = _installedPackage.PortalID;
+                }
+            }
+
             Log.AddInfo(Util.DNN_ReadingPackage + " - " + Package.PackageType + " - " + Package.Name);
             Package.FriendlyName = Util.ReadElement(manifestNav, "friendlyName", Package.Name);
             Package.Description = Util.ReadElement(manifestNav, "description");
@@ -457,6 +550,8 @@ namespace DotNetNuke.Services.Installer.Installers
                 default:
                     break;
             }
+
+            ReadEventMessageNode(manifestNav);
 
             //Get Icon
             XPathNavigator iconFileNav = manifestNav.SelectSingleNode("iconFile");
@@ -528,17 +623,23 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 			
             //Parse the Dependencies
-            IDependency dependency = null;
             foreach (XPathNavigator dependencyNav in manifestNav.CreateNavigator().Select("dependencies/dependency"))
             {
-                dependency = DependencyFactory.GetDependency(dependencyNav);
+			    var dependency = DependencyFactory.GetDependency(dependencyNav);
+		        var packageDependecy = dependency as IManagedPackageDependency;
+
+                if (packageDependecy != null)
+                {
+                    Package.Dependencies.Add(packageDependecy.PackageDependency);
+                }
+
                 if (!dependency.IsValid)
                 {
                     Log.AddFailure(dependency.ErrorMessage);
                     return;
                 }
             }
-			
+
             //Read Components
             ReadComponents(manifestNav);
         }
@@ -568,12 +669,12 @@ namespace DotNetNuke.Services.Installer.Installers
             if (_installedPackage == null)
             {
 				//No Previously Installed Package - Delete newly added Package
-                PackageController.DeletePackage(Package);
+                PackageController.Instance.DeleteExtensionPackage(Package);
             }
             else
             {
 				//Previously Installed Package - Rollback to Previously Installed
-                PackageController.SavePackage(_installedPackage);
+                PackageController.Instance.SaveExtensionPackage(_installedPackage);
             }
         }
 
@@ -611,7 +712,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 			
             //Remove the Package information from the Data Store
-            PackageController.DeletePackage(Package);
+            PackageController.Instance.DeleteExtensionPackage(Package);
         }
 		
 		#endregion

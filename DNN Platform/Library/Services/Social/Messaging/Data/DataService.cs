@@ -279,9 +279,14 @@ namespace DotNetNuke.Services.Social.Messaging.Data
 
         #region Queued email API's
 
-        public IDataReader GetNextMessagesForDispatch(Guid schedulerInstance,int batchSize)
+        public IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetNextMessagesForDispatch", schedulerInstance,batchSize);
+            return _provider.ExecuteReader("CoreMessaging_GetNextMessagesForInstantDispatch", schedulerInstance,batchSize);
+        }
+
+        public IDataReader GetNextMessagesForDigestDispatch(int frequecy, Guid schedulerInstance, int batchSize)
+        {
+            return _provider.ExecuteReader("CoreMessaging_GetNextMessagesForDigestDispatch", frequecy, schedulerInstance, batchSize);
         }
 
         public void MarkMessageAsDispatched(int messageId,int recipientId)
@@ -292,6 +297,20 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         public void MarkMessageAsSent(int messageId, int recipientId)
         {
             _provider.ExecuteNonQuery("CoreMessaging_MarkMessageAsSent", messageId, recipientId);
+        }
+
+        #endregion
+
+        #region User Preferences
+
+        public IDataReader GetUserPreference(int portalId, int userId)
+        {
+            return _provider.ExecuteReader("CoreMessaging_GetUserPreference", portalId, userId);
+        }
+
+        public void SetUserPreference(int portalId, int userId, int messagesEmailFrequency, int notificationsEmailFrequency)
+        {
+            _provider.ExecuteNonQuery("CoreMessaging_SetUserPreference", portalId, userId, messagesEmailFrequency, notificationsEmailFrequency);
         }
 
         #endregion

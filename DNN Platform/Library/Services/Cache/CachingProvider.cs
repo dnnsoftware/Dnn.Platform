@@ -191,6 +191,10 @@ namespace DotNetNuke.Services.Cache
             RemoveCacheKey(DataCache.DesktopModulePermissionCacheKey, clearRuntime);
             RemoveCacheKey("GetRoles", clearRuntime);
             RemoveCacheKey("CompressionConfig", clearRuntime);
+            RemoveCacheKey(DataCache.SubscriptionTypesCacheKey, clearRuntime);
+            RemoveCacheKey(DataCache.PackageTypesCacheKey, clearRuntime);
+            RemoveCacheKey(DataCache.ContentTypesCacheKey, clearRuntime);
+            RemoveCacheKey(DataCache.JavaScriptLibrariesCacheKey, clearRuntime);
 
             //Clear "portal keys" for Host
             ClearFolderCacheInternal(-1, clearRuntime);
@@ -254,6 +258,7 @@ namespace DotNetNuke.Services.Cache
             ClearTabCacheInternal(portalId, clearRuntime);
 
             RemoveCacheKey(String.Format(DataCache.RolesCacheKey, portalId), clearRuntime);
+            RemoveCacheKey(String.Format(DataCache.JournalTypesCacheKey, portalId), clearRuntime);
         }
 
         private void ClearTabCacheInternal(int portalId, bool clearRuntime)

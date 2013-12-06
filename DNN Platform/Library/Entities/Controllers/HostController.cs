@@ -200,7 +200,22 @@ namespace DotNetNuke.Entities.Controllers
             return GetSettings().ToDictionary(c => c.Key, c => c.Value.Value);
         }
 
-		/// <summary>
+        /// <summary>
+        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value
+        /// </summary>
+        /// <param name="key">the host setting to read</param>
+        /// <param name="passPhrase">the pass phrase used for encryption/decryption</param>
+        /// <returns></returns>
+        public string GetEncryptedString(string key, string passPhrase)
+        {
+            Requires.NotNullOrEmpty("key", key);
+            Requires.NotNullOrEmpty("passPhrase", passPhrase);
+            var cipherText = GetString(key);
+            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Entities.Host.Host.GUID);
+        }
+
+
+        /// <summary>
 		/// Gets the setting value by the specific key.
 		/// </summary>
 		/// <param name="key">The key.</param>
@@ -319,6 +334,23 @@ namespace DotNetNuke.Entities.Controllers
         {
             Update(key, value, true);
         }
+
+        /// <summary>
+        /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores
+        /// </summary>
+        /// <param name="key">host settings key</param>
+        /// <param name="value">host settings value</param>
+        /// <param name="passPhrase">pass phrase to allow encryption/decryption</param>
+        public void UpdateEncryptedString(string key, string value, string passPhrase)
+        {
+            Requires.NotNullOrEmpty("key", key);
+            Requires.NotNull("value", value);
+            Requires.NotNullOrEmpty("passPhrase", passPhrase);
+            var cipherText = Security.FIPSCompliant.EncryptAES(value, passPhrase, Entities.Host.Host.GUID);
+            Update(key, cipherText);
+        }
+
+
 
         public void IncrementCrmVersion(bool includeOverridingPortals)
         {

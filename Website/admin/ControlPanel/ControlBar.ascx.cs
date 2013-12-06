@@ -39,20 +39,22 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.GettingStarted;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls;
-
-using Telerik.Web.UI;
 
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
+// ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.ControlPanels
+// ReSharper restore CheckNamespace
 {
     public partial class ControlBar : ControlPanelBase
     {
@@ -75,9 +77,21 @@ namespace DotNetNuke.UI.ControlPanels
         #region Event Handlers
 
         protected override void OnInit(EventArgs e)
-        {           
+        {
             base.OnInit(e);
-            ID = "ControlBar";
+
+            //page will be null if the control panel initial twice, it will be removed in the second time.
+            if (Page != null)
+            {
+                ID = "ControlBar";
+
+                var gettingStarted = DnnGettingStarted.GetCurrent(Page);
+                if (gettingStarted == null)
+                {
+                    gettingStarted = new DnnGettingStarted();
+                    Page.Form.Controls.Add(gettingStarted);
+                }
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -826,19 +840,22 @@ namespace DotNetNuke.UI.ControlPanels
 
 		private void BindLanguagesList()
 		{
-			if (ShowSwitchLanguagesPanel())
-			{
-				foreach (var lang in LoadLanguagesList())
-				{
-					var item = new DnnComboBoxItem(lang[0], lang[1]);
-					if (lang[2] == "true")
-					{
-						item.Selected = true;
-					}
+            if (ShowSwitchLanguagesPanel())
+            {
+                const string FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
+                foreach (var lang in LoadLanguagesList())
+                {
+                    var item = new DnnComboBoxItem(lang[0], lang[1]);
+                    item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+                    if (lang[2] == "true")
+                    {
+                        item.Selected = true;
+                    }
 
-					controlBar_SwitchLanguage.Items.Add(item);
-				}
-			}
+                    controlBar_SwitchLanguage.Items.Add(item);
+                }
+
+            }
 		}
 
         #endregion
@@ -949,7 +966,15 @@ namespace DotNetNuke.UI.ControlPanels
             var hosts = TabController.GetTabsByParent(hostTab, -1);
 
             var professionalTab = tabController.GetTabByName("Professional Features", -1);
-            var professionalTabs = TabController.GetTabsByParent(professionalTab.TabID, -1);
+            List<TabInfo> professionalTabs;
+            if (professionalTab != null)
+            {
+                professionalTabs = TabController.GetTabsByParent(professionalTab.TabID, -1);
+            }
+            else
+            {
+                professionalTabs = new List<TabInfo>();
+            }
 
             _hostTabs = new List<TabInfo>();
             _hostTabs.AddRange(hosts);

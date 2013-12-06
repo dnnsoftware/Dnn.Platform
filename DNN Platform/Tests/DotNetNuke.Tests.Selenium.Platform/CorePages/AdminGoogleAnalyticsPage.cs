@@ -22,6 +22,11 @@ namespace DNNSelenium.Platform.CorePages
 			get { return "Google Analytics"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "GoogleAnalyticsModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");

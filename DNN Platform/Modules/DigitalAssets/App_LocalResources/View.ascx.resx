@@ -306,14 +306,11 @@
   <data name="ManageFolderTypes.Text" xml:space="preserve">
     <value>Manage Folder Types</value>
   </data>
-  <data name="Search.Title" xml:space="preserve">
-    <value>Search</value>
-  </data>
   <data name="ParentFolder.Header" xml:space="preserve">
     <value>Parent Folder</value>
   </data>
   <data name="SearchBreadcrumb.Text" xml:space="preserve">
-    <value>Search '[PATTERN]' results</value>
+    <value>Search</value>
   </data>
   <data name="NoItemsSearch.Text" xml:space="preserve">
     <value>No items match your search</value>
@@ -362,9 +359,6 @@
   </data>
   <data name="UploadFilesDragDrop.Info" xml:space="preserve">
     <value>Or drag and drop on the blue area below</value>
-  </data>
-  <data name="Search.Placeholder" xml:space="preserve">
-    <value>Enter search term</value>
   </data>
   <data name="ParentFolder.Text" xml:space="preserve">
     <value>Parent Folder</value>
@@ -446,5 +440,8 @@
   </data>
   <data name="UploadingExtracting.Text" xml:space="preserve">
     <value>Uploading and extracting...</value>
+  </data>
+  <data name="InvalidGroup.Error" xml:space="preserve">
+    <value>The group ID is not set. Please go back to the groups page and select the desired group.</value>
   </data>
 </root>

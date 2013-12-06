@@ -68,34 +68,21 @@
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="Telerik.Web.UI">
       <HintPath>..\..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientDialog.cs" />
+    <Compile Include="Components\Controllers\DigitalAssetsSettingsRepository.cs" />
     <Compile Include="Components\Controllers\FileSizeFormatProvider.cs" />
     <Compile Include="Components\Controllers\IDigitalAssetsControllerData.cs" />
     <Compile Include="Components\Controllers\Models\ExtractedItemViewModel.cs" />
@@ -112,20 +99,24 @@
     <Compile Include="Components\Controllers\Models\PageViewModel.cs" />
     <Compile Include="Components\Controllers\Models\PermissionViewModel.cs" />
     <Compile Include="Components\ExtensionPoint\IFieldsControl.cs" />
-    <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\UnzipFileToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\DefaultMenuButtonItem.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\SyncToolBarMenuButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\UserControls\FileFieldsControlExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\UserControls\PreviewInfoPanelExtensionPoint.cs" />
+    <Compile Include="Components\ExtensionPoint\UserControls\SearchBoxExtensionPoint.cs" />
     <Compile Include="FileFieldsControl.ascx.cs">
       <DependentUpon>FileFieldsControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FileFieldsControl.ascx.designer.cs">
       <DependentUpon>FileFieldsControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FolderProperties.ascx.cs">
+      <DependentUpon>FolderProperties.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FolderProperties.ascx.designer.cs">
+      <DependentUpon>FolderProperties.ascx</DependentUpon>
     </Compile>
     <Compile Include="PreviewFieldsControl.ascx.cs">
       <DependentUpon>PreviewFieldsControl.ascx</DependentUpon>
@@ -160,33 +151,29 @@
     <Compile Include="Components\Controllers\Models\Field.cs" />
     <Compile Include="EditFolderMapping.ascx.cs">
       <DependentUpon>EditFolderMapping.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditFolderMapping.ascx.designer.cs">
       <DependentUpon>EditFolderMapping.ascx</DependentUpon>
     </Compile>
     <Compile Include="FileProperties.ascx.cs">
       <DependentUpon>FileProperties.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FileProperties.ascx.designer.cs">
       <DependentUpon>FileProperties.ascx</DependentUpon>
     </Compile>
     <Compile Include="FolderMappings.ascx.cs">
       <DependentUpon>FolderMappings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FolderMappings.ascx.designer.cs">
       <DependentUpon>FolderMappings.ascx</DependentUpon>
     </Compile>
-    <Compile Include="EditFolder.ascx.cs">
-      <DependentUpon>EditFolder.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EditFolder.ascx.designer.cs">
-      <DependentUpon>EditFolder.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchBoxControl.ascx.cs">
+      <DependentUpon>SearchBoxControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SearchBoxControl.ascx.designer.cs">
+      <DependentUpon>SearchBoxControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Services\ContentServiceController.cs" />
     <Compile Include="Services\DamExceptionFilterAttribute.cs" />
     <Compile Include="Services\DownloadServiceController.cs" />
@@ -207,14 +194,12 @@
     <Compile Include="Services\Factory.cs" />
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
     </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View.ascx.designer.cs">
       <DependentUpon>View.ascx</DependentUpon>
@@ -224,9 +209,12 @@
     <Content Include="App_LocalResources\SharedResources.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="ClientScripts\dnn.DigitalAssets.FileUpload.js" />
     <Content Include="ClientScripts\dnn.DigitalAssets.js" />
+    <Content Include="ClientScripts\dnn.DigitalAssets.SearchBox.js" />
     <Content Include="ClientScripts\dnn.DigitalAssetsController.js" />
     <Content Include="FileFieldsControl.ascx" />
+    <Content Include="FolderProperties.ascx" />
     <Content Include="Images\down.png" />
     <Content Include="Images\indeterminate.gif" />
     <Content Include="Images\manageFolderTypes.png" />
@@ -243,8 +231,8 @@
     <Content Include="Images\tree.png" />
     <Content Include="License.txt" />
     <Content Include="module.css" />
-    <Content Include="EditFolder.ascx" />
     <Content Include="ReleaseNotes.txt" />
+    <Content Include="SearchBoxControl.ascx" />
     <Content Include="Settings.ascx" />
     <Content Include="View.ascx" />
   </ItemGroup>
@@ -283,9 +271,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_LocalResources\EditFolder.ascx.resx" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="App_LocalResources\FolderMappings.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
@@ -300,6 +285,13 @@
   <ItemGroup>
     <Content Include="App_LocalResources\Settings.ascx.resx" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\FolderProperties.ascx.resx" />
+    <Content Include="App_LocalResources\SearchBoxControl.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Module.build" />
+  </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
@@ -311,12 +303,10 @@
           <IISUrl>
           </IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>
-          </IISAppRootUrl>
+          <IISAppRootUrl>http://localhost/DotNetNuke.Modules.DigitalAssets</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
@@ -324,47 +314,5 @@
   </ProjectExtensions>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>dnn_DigitalAssets</DNNFileName>
-    <PackageName>DNNCE_DigitalAssetsManagement</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-      <SourceFiles Include="*.css;*.htm" />
-    </ItemGroup>
-    <ItemGroup>
-      <Views Include="*.ascx;Components\Controls\*.ascx" />
-    </ItemGroup>
-    <ItemGroup>
-      <ResourceFiles Include="App_LocalResources\*.resx" />
-    </ItemGroup>
-    <ItemGroup>
-      <Images Include="Images/*.*" />
-      <JsFiles Include="ClientScripts/*.*" />
-    </ItemGroup>
-    <ItemGroup>
-      <Resources Include="@(ResourceFiles);@(Views);@(Images);@(TextFiles);@(SourceFiles);@(JsFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Copy SourceFiles="@(Views)" DestinationFolder="$(WebsitePath)\DesktopModules\DigitalAssets" />
-    <Copy SourceFiles="@(Images)" DestinationFolder="$(WebsitePath)\DesktopModules\DigitalAssets\Images" />
-    <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\DigitalAssets\ClientScripts" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\DigitalAssets" />
-    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\DigitalAssets" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\DigitalAssets\App_LocalResources" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>

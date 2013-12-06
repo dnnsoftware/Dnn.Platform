@@ -28,11 +28,12 @@ namespace DNNSelenium.Platform.BVT
 			var module = new Modules(_driver);
 			module.OpenModulePanelUsingControlPanel();
 
-			module.AddNewModuleUsingDragAndDrop(Modules.HtmlModule, Modules.HtmlModuleOnPage, Modules.LeftPaneID);
+			module.AddNewModuleUsingMenu(Modules.CommonModulesDescription["HtmlModule"].IdWhenOnBanner,
+			                             Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage, "LeftPane");
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Module location: " + Modules.LeftPaneID +
-			                Modules.HtmlModuleOnPage);
-			Assert.IsTrue(blankPage.ElementPresent(By.XPath(Modules.LeftPaneID + Modules.HtmlModuleOnPage)),
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Module location: " + Modules.LocationDescription["LeftPane"].IdWhenOnPage +
+							Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage);
+			Assert.IsTrue(blankPage.ElementPresent(By.XPath(Modules.LocationDescription["LeftPane"].IdWhenOnPage + Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage)),
 			              "Module is not found");
 		}
 
@@ -47,7 +48,7 @@ namespace DNNSelenium.Platform.BVT
 			var module = new Modules(_driver);
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
 			string moduleNumber =
-				module.WaitForElement(By.XPath(Modules.LeftPaneID + Modules.HtmlModuleOnPage + "/a")).GetAttribute("name");
+				module.WaitForElement(By.XPath(Modules.LocationDescription["LeftPane"].IdWhenOnPage + Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage + "/a")).GetAttribute("name");
 
 			module.AddContentToHTMLModule(moduleNumber, _moduleContent);
 
@@ -71,7 +72,7 @@ namespace DNNSelenium.Platform.BVT
 
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
 			string moduleNumber =
-				module.WaitForElement(By.XPath(Modules.LeftPaneID + Modules.HtmlModuleOnPage + "/a")).GetAttribute("name");
+				module.WaitForElement(By.XPath(Modules.LocationDescription["LeftPane"].IdWhenOnPage + Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage + "/a")).GetAttribute("name");
 			module.ChangeModuleTitle(moduleNumber, _moduleTitle);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT a new Module Title is present on the page");
@@ -93,7 +94,7 @@ namespace DNNSelenium.Platform.BVT
 			var module = new Modules(_driver);
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
 			string moduleNumber =
-				module.WaitForElement(By.XPath(Modules.LeftPaneID + Modules.HtmlModuleOnPage + "/a")).GetAttribute("name");
+				module.WaitForElement(By.XPath(Modules.LocationDescription["LeftPane"].IdWhenOnPage + Modules.CommonModulesDescription["HtmlModule"].IdWhenOnPage + "/a")).GetAttribute("name");
 			module.DeleteModule(moduleNumber);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the module " + moduleNumber + " deleted");
@@ -101,7 +102,7 @@ namespace DNNSelenium.Platform.BVT
 						   "The Module is not deleted correctly");
 		}
 
-		//[Test]
+		[Test]
 		public void Test005_RemoveModuleFromRecycleBin()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Remove the Module from Recycling Bin'");

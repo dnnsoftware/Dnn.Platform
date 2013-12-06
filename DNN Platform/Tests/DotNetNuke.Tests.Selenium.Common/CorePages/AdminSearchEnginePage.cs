@@ -21,6 +21,10 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Search Engine Site Map"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SiteMapModule"; }
+		}
 
 		public void OpenUsingUrl(string baseUrl)
 		{

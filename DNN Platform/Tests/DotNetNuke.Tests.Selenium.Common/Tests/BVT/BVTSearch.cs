@@ -10,7 +10,6 @@ using OpenQA.Selenium;
 namespace DNNSelenium.Common.Tests.BVT
 {
 	[TestFixture]
-	[Category("BVT")]
 	public abstract class BVTSearch : CommonTestSteps
 	{
 		protected abstract string DataFileLocation { get; }
@@ -29,6 +28,14 @@ namespace DNNSelenium.Common.Tests.BVT
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+
+			_logContent = LogContent();
+		}
+
+		[TestFixtureTearDown]
+		public void Cleanup()
+		{
+			VerifyLogs(_logContent);
 		}
 
 		public void VerifyQuickSearch(BasePage currentPage)

@@ -601,6 +601,11 @@ namespace DotNetNuke.Entities.Users
             {
                 //add user to new portal
                 AddUserPortal(portal.PortalID, user.UserID);
+
+                if (!user.IsSuperUser)
+                {
+                    AutoAssignUsersToRoles(user, portal.PortalID);
+                }
             }
             else
             {

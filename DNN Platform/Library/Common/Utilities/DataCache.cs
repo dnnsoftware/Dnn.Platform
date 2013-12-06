@@ -225,6 +225,14 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority RolesCachePriority = CacheItemPriority.Default;
         public const int RolesCacheTimeOut = 20;
 
+        public const string RoleGroupsCacheKey = "RoleGroups:{0}";
+        public const CacheItemPriority RoleGroupsCachePriority = CacheItemPriority.Default;
+        public const int RoleGroupsCacheTimeOut = 20;
+
+        public const string JournalTypesCacheKey = "JournalTypes:{0}";
+        public const CacheItemPriority JournalTypesCachePriority = CacheItemPriority.Default;
+        public const int JournalTypesTimeOut = 20;
+
         public const string NotificationTypesCacheKey = "NotificationTypes:{0}";
         public const CacheItemPriority NotificationTypesCachePriority = CacheItemPriority.Default;
         public const int NotificationTypesTimeOut = 20;
@@ -234,10 +242,26 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority NotificationTypeActionsPriority = CacheItemPriority.Default;
         public const int NotificationTypeActionsTimeOut = 20;
 
+        public const string SubscriptionTypesCacheKey = "SubscriptionTypes";
+        public const CacheItemPriority SubscriptionTypesCachePriority = CacheItemPriority.Default;
+        public const int SubscriptionTypesTimeOut = 20;
 
 		public const string PackagesCacheKey = "Packages_{0}";
-		public const CacheItemPriority PackagesCachePriority = CacheItemPriority.Default;
+        public const string PackageDependenciesCacheKey = "Packages_Dependencies";
+        public const CacheItemPriority PackagesCachePriority = CacheItemPriority.Default;
 		public const int PackagesCacheTimeout = 20;
+
+        public const string ContentTypesCacheKey = "ContentTypes";
+        public const CacheItemPriority ContentTypesCachePriority = CacheItemPriority.AboveNormal;
+        public const int ContentTypesCacheTimeOut = 20;
+
+        public const string PackageTypesCacheKey = "PackagesTypes";
+        public const CacheItemPriority PackageTypesCachePriority = CacheItemPriority.AboveNormal;
+        public const int PackageTypesCacheTimeout = 20;
+
+	    public const string JavaScriptLibrariesCacheKey = "JavaScriptLibraries";
+	    public const CacheItemPriority JavaScriptLibrariesCachePriority = CacheItemPriority.AboveNormal;
+	    public const int JavaScriptLibrariesCacheTimeout = 20;
 
         private static string _CachePersistenceEnabled = "";
 

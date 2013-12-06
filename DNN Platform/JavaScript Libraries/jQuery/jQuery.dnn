@@ -1,0 +1,47 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="jQuery" type="JavaScript_Library" version="01.09.01">
+      <friendlyName>jQuery JavaScript Library</friendlyName>
+      <description>jQuery is a JavaScript library that is used to manipulate the Document Object Model (DOM).</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>DotNetNuke Corporation</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>http://www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="jQuery (MIT).txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>jQuery</libraryName>
+            <fileName>jquery.js</fileName>
+            <objectName>jQuery</objectName>
+            <CDNPath>http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</CDNPath>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>jQuery</libraryFolderName>
+            <jsfile>
+              <name>jquery.js</name>
+            </jsfile>
+            <jsfile>
+              <name>jquery.min.map</name>
+            </jsfile>
+          </jsfiles>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>Licenses</basePath>
+            <file>
+              <name>jQuery (MIT).txt</name>
+            </file>
+          </files>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

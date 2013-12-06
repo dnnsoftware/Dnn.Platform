@@ -141,4 +141,7 @@
   <data name="NoList.Text" xml:space="preserve">
     <value>Please, select a list from the left</value>
   </data>
+  <data name="NoEntries.Text" xml:space="preserve">
+    <value>{0} entries</value>
+  </data>
 </root>

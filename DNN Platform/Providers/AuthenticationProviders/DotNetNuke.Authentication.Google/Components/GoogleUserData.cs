@@ -57,12 +57,12 @@ namespace DotNetNuke.Authentication.Google.Components
         #endregion
 
         [DataMember(Name = "given_name")]
-        private string GivenName { get; set; }
+        public string GivenName { get; set; }
 
         [DataMember(Name = "family_name")]
-        private string FamilyName { get; set; }
+        public string FamilyName { get; set; }
 
         [DataMember(Name = "picture")]
-        private string Picture { get; set; }
+        public string Picture { get; set; }
     }
 }

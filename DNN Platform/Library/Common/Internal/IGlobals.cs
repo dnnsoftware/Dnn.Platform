@@ -54,6 +54,21 @@ namespace DotNetNuke.Common.Internal
         string LinkClick(string link, int tabId, int moduleId);
 
         /// <summary>
+        /// Gets Link click url.
+        /// </summary>
+        /// <param name="Link">The link</param>
+        /// <param name="TabID">The Tab ID</param>
+        /// <param name="ModuleID">The Module ID</param>
+        /// <param name="TrackClicks">Check whether it has to track clicks</param>
+        /// <param name="ForceDownload">Check whether it has to force the download</param>
+        /// <param name="PortalId">The Portal ID</param>
+        /// <param name="EnableUrlLanguage">Check whether the portal has enabled  ulr languages</param>
+        /// <param name="portalGuid">The Portal GUID</param>
+        /// <returns></returns>
+        string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks, bool ForceDownload, int PortalId,
+                         bool EnableUrlLanguage, string portalGuid);
+
+        /// <summary>
         /// Generates the correctly formatted url
         /// </summary>
         /// <remarks>

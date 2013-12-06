@@ -29,5 +29,50 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox DefaultFolderTypeComboBox;
+        
+        /// <summary>
+        /// GroupModeLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl GroupModeLabel;
+        
+        /// <summary>
+        /// GroupModeComboBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox GroupModeComboBox;
+        
+        /// <summary>
+        /// RootFolderItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RootFolderItem;
+        
+        /// <summary>
+        /// RootFolderLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl RootFolderLabel;
+        
+        /// <summary>
+        /// RootFolderDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnFolderDropDownList RootFolderDropDownList;
     }
 }

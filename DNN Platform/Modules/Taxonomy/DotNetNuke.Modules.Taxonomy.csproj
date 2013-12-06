@@ -128,14 +128,12 @@
     </Compile>
     <Compile Include="CreateVocabulary.ascx.cs">
       <DependentUpon>CreateVocabulary.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CreateVocabulary.ascx.designer.cs">
       <DependentUpon>CreateVocabulary.ascx</DependentUpon>
     </Compile>
     <Compile Include="EditVocabulary.ascx.cs">
       <DependentUpon>EditVocabulary.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditVocabulary.ascx.designer.cs">
       <DependentUpon>EditVocabulary.ascx</DependentUpon>
@@ -145,9 +143,9 @@
     <Compile Include="IVocabularyListView.cs" />
     <Compile Include="Services\ServicesController.cs" />
     <Compile Include="Services\ServicesRouteMapper.cs" />
+    <Compile Include="Validators\VocabularyNameValidator.cs" />
     <Compile Include="VocabularyList.ascx.cs">
       <DependentUpon>VocabularyList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="VocabularyList.ascx.designer.cs">
       <DependentUpon>VocabularyList.ascx</DependentUpon>
@@ -171,6 +169,7 @@
     <Content Include="Scripts\TaxonomyEditor.js" />
     <Content Include="VocabularyList.ascx" />
     <Content Include="packages.config" />
+    <Content Include="Module.build" />
     <None Include="Taxonomy.dnn" />
   </ItemGroup>
   <ItemGroup>
@@ -227,9 +226,8 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
@@ -237,49 +235,5 @@
   </ProjectExtensions>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>Taxonomy</DNNFileName>
-    <PackageName>DNNCE_Taxonomy</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-    </ItemGroup>
-    <ItemGroup>
-      <Views Include="*.ascx;*.css" />
-    </ItemGroup>
-    <ItemGroup>
-      <Controls Include="Controls\*.ascx" />
-    </ItemGroup>
-    <ItemGroup>
-      <Controls Include="Views\Controls\*.ascx" />
-    </ItemGroup>
-    <ItemGroup>
-      <ResourceFiles Include="App_LocalResources\*.resx" />
-    </ItemGroup>
-    <ItemGroup>
-      <ScriptFiles Include="Scripts\*.js" />
-    </ItemGroup>
-    <ItemGroup>
-      <Resources Include="@(ResourceFiles);@(Views);@(Controls);@(TextFiles);@(ScriptFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Copy SourceFiles="@(Views)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\Taxonomy" />
-    <Copy SourceFiles="@(Controls)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\Taxonomy\Controls" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\Taxonomy\App_LocalResources" />
-    <Copy SourceFiles="@(ScriptFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\Taxonomy\Scripts" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>

@@ -137,11 +137,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 					if (! (string.IsNullOrEmpty(fileTicket)))
 					{
-						var strFileID = UrlUtils.DecryptParameter(fileTicket);
-
 						try
 						{
-							returnValue = int.Parse(strFileID);
+							returnValue = FileLinkClickController.Instance.GetFileIdFromLinkClick(@params); 
 						}
 						catch (Exception ex)
 						{

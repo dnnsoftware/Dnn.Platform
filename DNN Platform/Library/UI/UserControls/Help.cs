@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.UserControls
                         DesktopModuleInfo objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
                         if (objDesktopModule != null)
                         {
-                            PackageInfo objPackage = PackageController.GetPackage(objDesktopModule.PackageID);
+                            PackageInfo objPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == objDesktopModule.PackageID);
                             if (objPackage != null)
                             {
                                 strInfo = strInfo.Replace("[ORGANIZATION]", objPackage.Organization);

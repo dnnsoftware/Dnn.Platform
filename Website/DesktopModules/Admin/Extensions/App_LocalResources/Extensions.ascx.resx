@@ -393,4 +393,7 @@
   <data name="ListExtensions.Text" xml:space="preserve">
     <value>Learn more about how to offer your extensions &lt;a href="http://www.dotnetnuke.com/App-Gallery.aspx " target="_blank" class="info"&gt;here&lt;/a&gt;.</value>
   </data>
+  <data name="JavaScript_Library.Type" xml:space="preserve">
+    <value>JavaScript Libraries</value>
+  </data>
 </root>

@@ -48,7 +48,8 @@ namespace DotNetNuke.Modules.Journal {
             
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/Scripts/journal.js");
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/Scripts/journalcomments.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/json2.js");
+			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/Scripts/mentionsInput.js");
+			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/json2.js");
 
             if (!Request.IsAuthenticated || (!UserInfo.IsSuperUser && UserInfo.IsInRole("Unverified Users")))
             {

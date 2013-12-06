@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class InstallerFactory
     {
-		#region "Public Shared Methods"
+		#region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -112,6 +112,12 @@ namespace DotNetNuke.Services.Installer.Installers
                     break;
                 case "Widget":
                     installer = new WidgetInstaller();
+                    break;
+                case "JavaScript_Library":
+                    installer = new JavaScriptLibraryInstaller();
+                    break;
+                case "JavaScriptFile":
+                    installer = new JavaScriptFileInstaller();
                     break;
                 default:
                     //Installer type is defined in the List

@@ -32,6 +32,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public virtual string PageHeaderLabel { get { return "Override me!!!";  } }
 		public virtual string PageTitleLabel { get { return "Override me!!!"; } }
+		public virtual string PreLoadedModule { get { return "Override me!!!"; } }
 
 		public void GoToUrl (string url)
 		{
@@ -51,9 +52,11 @@ namespace DNNSelenium.Common.BaseClasses
 			return localized;
 		}
 
-		public void SetPageToEditMode(string pageName)
+		public void SetPageToEditMode()
 		{
-			if (ElementPresent(By.XPath(ControlPanelIDs.EditThisPageButton)))
+			WaitForElement(By.XPath("//ul[@id = 'ControlEditPageMenu']"));
+
+			if (! ElementPresent(By.XPath(ControlPanelIDs.PageInEditMode)))
 			{
 				Trace.WriteLine(TraceLevelPage + "Set the Page to Edit mode:");
 				SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.EditThisPageButton);
@@ -67,9 +70,9 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public void CloseEditMode(string pageName)
 		{
-			Trace.WriteLine(TraceLevelPage + "Set the Page to Edit mode:");
+			Trace.WriteLine(TraceLevelPage + "Close Page Edit mode:");
 			SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.CloseEditModeButton);
-			FindElement(By.XPath("//a[@class = 'controlBar_editPageInEditMode']")).WaitTillNotVisible();
+			FindElement(By.XPath(ControlPanelIDs.PageInEditMode)).WaitTillNotVisible();
 		}
 
 		/*
@@ -201,6 +204,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public IWebElement FindElement(By locator)
 		{
 			Trace.WriteLine(TraceLevelLow + "Looking for element: '" + locator + "'");
+			//Trace.WriteLine(TraceLevelLow + _driver.FindElement(locator).Info());
 			return _driver.FindElement(locator);
 		}
 
@@ -260,14 +264,14 @@ namespace DNNSelenium.Common.BaseClasses
 			WaitForElementNotPresent(By.Id("iPopUp"), timeOutSeconds);
 			_driver.SwitchTo().DefaultContent();
 
-			WaitForElement(By.Id(ControlPanelIDs.CopyrightNotice), timeOutSeconds).WaitTillEnabled();
+			WaitForElement(By.Id(ControlPanelIDs.CopyrightNotice), timeOutSeconds);
 		}
 
 		public void ClickCloseButtonOnFrame(int timeOutSeconds)
 		{
 			Trace.WriteLine(BasePage.TraceLevelElement + "Click on 'Close' button on frame and switch to window");
 			_driver.SwitchTo().DefaultContent();
-			FindElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//a[@role='button'] ")).WaitTillVisible().Click();
+			FindElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//span")).WaitTillVisible().Click();
 			WaitForElement(By.Id(ControlPanelIDs.CopyrightNotice), timeOutSeconds).WaitTillVisible();
 		}
 
@@ -275,7 +279,7 @@ namespace DNNSelenium.Common.BaseClasses
 		{
 			WaitForElement(By.XPath("//div[@aria-describedby = 'iPopUp']"), 60);
 
-			string _title = WaitForElement(By.XPath("//div[contains(@style, 'display: block')]//span[contains(@class, 'dialog-title')]"), 20).Text;
+			string _title = WaitForElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//span[contains(@class, '-dialog-title')]"), 30).Text;
 
 			Trace.WriteLine(BasePage.TraceLevelElement + "The current frame title is: '" + _title + "'");
 
@@ -375,6 +379,8 @@ namespace DNNSelenium.Common.BaseClasses
 			{
 				Trace.WriteLine(BasePage.TraceLevelElement + "The HTTP request to the remote WebDriver server for URL timed out");
 			}
+
+			Thread.Sleep(1000);
 		}
 
 		public void OpenTab(By tabName)
@@ -503,7 +509,7 @@ namespace DNNSelenium.Common.BaseClasses
 	{
 		public static bool ElementPresent (this IWebDriver driver, By locator)
 		{
-			Trace.WriteLine(BasePage.TraceLevelLow + "Looking for elements: " );
+			Trace.WriteLine(BasePage.TraceLevelLow + "Looking for element: " );
 			return driver.FindElements(locator).Count > 0;
 		}
 	}

@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Site Management"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SiteManagementModule"; }
+		}
+
 		public static string PortalsTable = "//div[contains(@id, '_Portals_grdPortals')]";
 		public static string PortalsList = "//tr[contains(@id, 'Portals_grdPortals')]";
 		public static string AddNewSiteButton = "//a[contains(@id, 'Portals_createSite')]";
@@ -89,7 +94,6 @@ namespace DNNSelenium.Common.CorePages
 
 			CheckBoxCheck( By.XPath(EnableCurrentUserAsAdmin));
 
-			//Click(By.XPath(CreateSiteFrameButton));
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Create Site' button:");
 			ClickOnButton(By.XPath(CreateSiteFrameButton));
 
@@ -108,7 +112,6 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Delete the site:");
 
-			//WaitAndClick(By.XPath(DeleteFrameButton));
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Delete' button:");
 			ClickOnButton(By.XPath(DeleteFrameButton));
 
@@ -127,7 +130,6 @@ namespace DNNSelenium.Common.CorePages
 			WaitAndClick(By.XPath(BasicSettingsFrameTab));
 			Type(By.XPath(SiteNameDescriptionTextBox), siteNameDescription);
 
-			//Click(By.XPath(UpdateFrameButton));
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Update' button:");
 			ClickOnButton(By.XPath(UpdateFrameButton));
 
@@ -139,6 +141,8 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Navigate to the site:");
 
 			Click(By.XPath("//span[contains(@id, 'Portals_grdPortals')]/a[contains(string(), '" + baseUrl + "/" + siteName + "')]"));
+
+			Thread.Sleep(1000);
 		}
 	}
 }

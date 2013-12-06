@@ -1,0 +1,44 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Knockout" type="JavaScript_Library" version="02.02.01">
+      <friendlyName>Knockout JavaScript Library</friendlyName>
+      <description>Knockout is an MVVM library that is used for client side databinding.</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>DotNetNuke Corporation</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>http://www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="Knockout (MIT).txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>Knockout</libraryName>
+            <fileName>knockout.js</fileName>
+            <objectName>ko</objectName>
+            <CDNPath>http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js</CDNPath>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>Knockout</libraryFolderName>
+            <jsfile>
+              <name>knockout.js</name>
+            </jsfile>
+          </jsfiles>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>Licenses</basePath>
+            <file>
+              <name>Knockout (MIT).txt</name>
+            </file>
+          </files>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

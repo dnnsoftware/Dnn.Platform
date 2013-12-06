@@ -87,6 +87,18 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        /// <summary>
+        /// gets whether or not CDN has been enabled for all registered javascript libraries
+        /// </summary>
+        public static bool CdnEnabled
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("CDNEnabled", false);
+            }
+        }
+
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether the Upgrade Indicator is enabled
@@ -434,6 +446,24 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Gets whether the installation runs in debug mode. This property can be used
+        ///   by the framework and extensions alike to write more verbose logs/onscreen
+        ///   information, etc. It is set in the host settings page.
+        /// </summary>
+        /// <history>
+        ///   [pdonker]  10/02/2013   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool DebugMode
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("DebugMode", false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Gets whether a css class based on the Module Name is automatically rendered
         /// </summary>
         /// <remarks>
@@ -458,15 +488,28 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EnableFileAutoSync
         {
             get
             {
                 return HostController.Instance.GetBoolean("EnableFileAutoSync", false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether The Getting Started Page is Enabled
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to True
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static bool EnableGettingStartedPage
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableGettingStartedPage", true);
             }
         }
 
@@ -1336,7 +1379,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return HostController.Instance.GetString("SMTPPassword");
+                return HostController.Instance.GetEncryptedString("SMTPPassword",Config.GetDecryptionkey());
             }
         }
 

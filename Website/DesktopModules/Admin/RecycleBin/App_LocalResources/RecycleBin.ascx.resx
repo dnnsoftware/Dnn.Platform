@@ -180,4 +180,10 @@
   <data name="TabDeleted.ErrorMessage" xml:space="preserve">
     <value>&lt;b&gt;{0}&lt;/b&gt; module cannot be restored until the page which this module belong to is restored first.</value>
   </data>
+  <data name="NoTabSelected.Text" xml:space="preserve">
+    <value>You haven't select any page to restore.</value>
+  </data>
+  <data name="RestoreTab.Text" xml:space="preserve">
+    <value>Do you want to also restore child pages of selected pages?</value>
+  </data>
 </root>

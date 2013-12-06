@@ -28,6 +28,7 @@ using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Caching;
 using System.Xml;
 
 using DotNetNuke.Common.Utilities;
@@ -129,27 +130,33 @@ namespace DotNetNuke.Services.Journal
         #endregion
 
         #region Public Methods
+
         // Journal Items
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
         {
             return GetJournalItem(portalId, currentUserId, journalId, false, false);
         }
+
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems)
         {
             return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
         }
+
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
         {
             return CBO.FillObject<JournalItem>(_dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted));
         }
+
         public JournalItem GetJournalItemByKey(int portalId, string objectKey)
         {
             return GetJournalItemByKey(portalId, objectKey, false, false);
         }
+
         public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems)
         {
             return GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
         }
+
         public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
         {
             if (string.IsNullOrEmpty(objectKey))
@@ -318,6 +325,7 @@ namespace DotNetNuke.Services.Journal
                 }
             }
         }
+
         public void UpdateJournalItem(JournalItem journalItem, int tabId)
         {
             if (journalItem.UserId < 1)
@@ -472,22 +480,27 @@ namespace DotNetNuke.Services.Journal
                 }
             }
         }
+
         public void DisableComments(int portalId, int journalId)
         {
             _dataService.Journal_Comments_ToggleDisable(portalId, journalId, true);
         }
+
         public void EnableComments(int portalId, int journalId)
         {
             _dataService.Journal_Comments_ToggleDisable(portalId, journalId, false);
         }
+
         public void HideComments(int portalId, int journalId)
         {
             _dataService.Journal_Comments_ToggleHidden(portalId, journalId, true);
         }
+
         public void ShowComments(int portalId, int journalId)
         {
            _dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
         }
+
         // Delete Journal Items
         /// <summary>
         /// HARD deletes journal items.
@@ -499,6 +512,7 @@ namespace DotNetNuke.Services.Journal
         {
             DeleteJournalItem(portalId, currentUserId, journalId, false);
         }
+
         /// <summary>
         /// HARD deletes journal items based on item key
         /// </summary>
@@ -508,6 +522,7 @@ namespace DotNetNuke.Services.Journal
         {
             _dataService.Journal_DeleteByKey(portalId, objectKey);
         }
+
         /// <summary>
         /// HARD deletes journal items based on group Id
         /// </summary>
@@ -517,6 +532,7 @@ namespace DotNetNuke.Services.Journal
         {
             _dataService.Journal_DeleteByGroupId(portalId, groupId);
         }
+
         /// <summary>
         /// SOFT deletes journal items.
         /// </summary>
@@ -527,6 +543,7 @@ namespace DotNetNuke.Services.Journal
         {
             DeleteJournalItem(portalId, currentUserId, journalId, true);
         }
+
         /// <summary>
         /// SOFT deletes journal items based on item key
         /// </summary>
@@ -536,6 +553,7 @@ namespace DotNetNuke.Services.Journal
         {
             _dataService.Journal_SoftDeleteByKey(portalId, objectKey);
         }
+
         /// <summary>
         /// SOFT deletes journal items based on group Id
         /// </summary>
@@ -566,7 +584,6 @@ namespace DotNetNuke.Services.Journal
                 comment.Comment =
                     HttpUtility.HtmlDecode(portalSecurity.InputFilter(comment.Comment,
                                                                       PortalSecurity.FilterFlag.NoScripting));
-                comment.Comment = portalSecurity.InputFilter(comment.Comment, PortalSecurity.FilterFlag.NoMarkup);
             }
             //TODO: enable once the profanity filter is working properly.
             //objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
@@ -615,7 +632,12 @@ namespace DotNetNuke.Services.Journal
 
         public IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId)
         {
-            return CBO.FillCollection<JournalTypeInfo>(_dataService.Journal_Types_List(portalId));
+            return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
+                                            new CacheItemArgs(String.Format(DataCache.JournalTypesCacheKey, portalId), 
+                                                                DataCache.JournalTypesTimeOut, 
+                                                                DataCache.JournalTypesCachePriority, 
+                                                                portalId), 
+                                            c => CBO.FillCollection<JournalTypeInfo>(_dataService.Journal_Types_List(portalId)));
         }
 
         #endregion

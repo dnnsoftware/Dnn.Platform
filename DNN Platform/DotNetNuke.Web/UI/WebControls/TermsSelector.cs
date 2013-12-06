@@ -21,87 +21,44 @@
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Script.Serialization;
 using System.Web.UI;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Framework;
-
+using DotNetNuke.UI.Utilities;
 using Telerik.Web.UI;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class TermsSelector : DnnComboBox
+    public class TermsSelector : DnnComboBox, IClientAPICallbackEventHandler
     {
-        public event EventHandler DataSourceChanged;
         public TermsSelector()
         {
             IncludeSystemVocabularies = false;
             IncludeTags = true;
+            EnableViewState = false;
         }
 
-        #region "Public Properties"
+        #region Public Properties
 
-        public int PortalId
-        {
-            get
-            {
-                return Convert.ToInt32(ViewState["PortalId"]);
-            }
-            set
-            {
-                ViewState["PortalId"] = value;
-                OnDataSourceChanged();
-            }
-        }
+		public int PortalId { get; set; }
 
-        public bool IncludeSystemVocabularies
-        {
-            get
-            {
-                return Convert.ToBoolean(ViewState["IncludeSystemVocabularies"]);
-            }
-            set
-            {
-                ViewState["IncludeSystemVocabularies"] = value;
-                OnDataSourceChanged();
-            }
-            
-        }
+		public bool IncludeSystemVocabularies { get; set; }
 
-        public bool IncludeTags
-        {
-            get
-            {
-                return Convert.ToBoolean(ViewState["IncludeTags"]);
-            }
-            set
-            {
-                ViewState["IncludeTags"] = value;
-                OnDataSourceChanged();
-            }
+		public bool IncludeTags { get; set; }
 
-        }
-
-		public List<Term> Terms
-		{
-			get
-			{
-				return ViewState["Terms"] as List<Term>;
-			}
-			set
-			{
-				ViewState["Terms"] = value;
-			}
-		}
+		public List<Term> Terms { get; set; }
 
         #endregion
 
-        #region "Protected Methods"
+        #region Protected Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -109,7 +66,7 @@ namespace DotNetNuke.Web.UI.WebControls
             Items.Add(new RadComboBoxItem());
             base.OnInit(e);
 
-			OnClientDropDownOpened = "dnn.controls.termsSelector.OnClientDropDownOpened";
+			OnClientDropDownOpened = "webcontrols.termsSelector.OnClientDropDownOpened";
 			if (!string.IsNullOrEmpty(CssClass))
 			{
 				CssClass = string.Format("{0} TermsSelector", CssClass);
@@ -154,142 +111,37 @@ namespace DotNetNuke.Web.UI.WebControls
 					}
 				}
 			}
+
+			Page.ClientScript.RegisterClientScriptResource(GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.js");
+
+			ClientAPI.RegisterClientVariable(Page, "TermsSelectorCallback",
+				ClientAPI.GetCallbackEventReference(this, "'[PARAMS]'", "webcontrols.termsSelector.itemDataLoaded", "this", "webcontrols.termsSelector.itemDataLoadError"), true);
 		}
 
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            Text = Terms.ToDelimittedString(", ");
-            ToolTip = Terms.ToDelimittedString(", ");
-        }
-
-        protected override void LoadViewState(object savedState)
-        {
-            base.LoadViewState(savedState);
-
-            OnDataSourceChanged();
-        }
-
-		protected override object SaveViewState()
-		{
-			Page.ClientScript.RegisterClientScriptResource(GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.js");
-
-			return base.SaveViewState();
-		}
-
-        protected void OnDataSourceChanged()
-        {
-            if(DataSourceChanged != null)
+            if (Terms != null)
             {
-                DataSourceChanged(this, new EventArgs());
+                Attributes.Add("SelectedTerms", String.Join(",", Terms.Select(t => t.TermId.ToString()).ToArray()));
             }
+			Attributes.Add("IncludeSystemVocabularies", IncludeSystemVocabularies.ToString().ToLowerInvariant());
+			Attributes.Add("IncludeTags", IncludeTags.ToString().ToLowerInvariant());
+			Attributes.Add("PortalId", PortalId.ToString());
         }
+
         #endregion
 
-        #region "Private Template Class"
+        #region Private Template Class
 
         public class TreeViewTemplate : ITemplate
 		{
 			#region Private Fields
 
 			private RadComboBoxItem _container;
-            private List<Term> _terms;
             private TermsSelector _termsSelector;
 
             private DnnTreeView _tree;
-
-			#endregion
-
-			#region Private Properties
-
-			private bool IncludeSystemVocabularies
-            {
-                get
-                {
-                    return _termsSelector.IncludeSystemVocabularies;
-                }
-            }
-
-            private bool IncludeTags
-            {
-                get
-                {
-                    return _termsSelector.IncludeTags;
-                }
-            }
-
-            private int PortalId
-            {
-                get
-                {
-                    return _termsSelector.PortalId;
-                }
-            }
-
-            private List<Term> SelectedTerms
-            {
-                get
-                {
-                    return _termsSelector.Terms;
-                }
-            }
-
-            private List<Term> Terms
-            {
-                get
-                {
-                    if (_terms == null)
-                    {
-                         IVocabularyController vocabRep = Util.GetVocabularyController();
-                        _terms = new List<Term>();
-                        var vocabularies = from v in vocabRep.GetVocabularies() where v.ScopeType.ScopeType == "Application" || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == PortalId) select v;
-
-                        foreach (Vocabulary v in vocabularies)
-                        {
-                            if(v.IsSystem)
-                            {
-                                if (IncludeSystemVocabularies || (IncludeTags && v.Name == "Tags"))
-                                {
-                                    AddTerms(v);
-                                }
-                            }
-                            else
-                            {
-                                AddTerms(v);
-                            }
-                        }
-                    }
-                    return _terms;
-                }
-            }
-
-			#endregion
-
-			#region Private Methods
-
-			private void AddTerms(Vocabulary v)
-            {
-                ITermController termRep = Util.GetTermController();
-                
-                //Add a dummy parent term if simple vocabulary
-                if (v.Type == VocabularyType.Simple)
-                {
-                    Term dummyTerm = new Term(v.VocabularyId);
-                    dummyTerm.ParentTermId = null;
-                    dummyTerm.Name = v.Name;
-                    dummyTerm.TermId = -v.VocabularyId;
-                    _terms.Add(dummyTerm);
-                }
-                foreach (Term t in termRep.GetTermsByVocabulary(v.VocabularyId))
-                {
-                    if (v.Type == VocabularyType.Simple)
-                    {
-                        t.ParentTermId = -v.VocabularyId;
-                    }
-                    _terms.Add(t);
-                }
-                
-            }
 
 			#endregion
 
@@ -302,59 +154,83 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 _tree = new DnnTreeView();
 	            _tree.ID = string.Format("{0}_TreeView", _termsSelector.ID);
-                _tree.DataTextField = "Name";
-                _tree.DataValueField = "TermId";
-                _tree.DataFieldID = "TermId";
-                _tree.DataFieldParentID = "ParentTermId";
                 _tree.CheckBoxes = true;
-                _tree.ExpandAllNodes();
+				_tree.EnableViewState = false;
 
 				//bind client-side events
-	            _tree.OnClientNodeChecked = "dnn.controls.termsSelector.OnClientNodeChecked";
-
-                _tree.DataSource = Terms;
-
-                _tree.NodeDataBound += TreeNodeDataBound;
-                _tree.DataBound += TreeDataBound;
+				_tree.OnClientNodeChecked = "webcontrols.termsSelector.OnClientNodeChecked";
 
                 _container.Controls.Add(_tree);
-
-                _termsSelector.DataSourceChanged += TermsSelector_DataSourceChanged;
             }
+
 
             #endregion
-
-            private void TreeDataBound(object sender, EventArgs e)
-            {
-                _tree.ExpandAllNodes();
-            }
-
-            private void TreeNodeDataBound(object sender, RadTreeNodeEventArgs e)
-            {
-                RadTreeNode node = e.Node;
-                Term term = node.DataItem as Term;
-
-                if (term.TermId < 0)
-                {
-                    node.Checkable = false;
-                }
-                foreach (Term tag in SelectedTerms)
-                {
-                    if (tag.TermId == term.TermId)
-                    {
-                        node.Checked = true;
-                        break;
-                    }
-                }
-            }
-
-            private void TermsSelector_DataSourceChanged(object sender, EventArgs e)
-            {
-                _terms = null;
-                _tree.DataSource = Terms;
-            }
         }
 
         #endregion
-    }
+
+		#region IClientAPICallbackEventHandler Implementation
+
+		public string RaiseClientAPICallbackEvent(string eventArgument)
+		{
+			var parameters = eventArgument.Split('-');
+			PortalId = Convert.ToInt32(parameters[1]);
+			IncludeTags = Convert.ToBoolean(parameters[2]);
+			IncludeSystemVocabularies = Convert.ToBoolean(parameters[3]);
+			var terms = GetTerms();
+			terms.Insert(0, new { clientId = parameters[0]});
+			var serializer = new JavaScriptSerializer();
+			return serializer.Serialize(terms);
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private ArrayList GetTerms()
+		{
+			var vocabRep = Util.GetVocabularyController();
+			var terms = new ArrayList();
+			var vocabularies = from v in vocabRep.GetVocabularies() where v.ScopeType.ScopeType == "Application" || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == PortalId) select v;
+
+			foreach (Vocabulary v in vocabularies)
+			{
+				if (v.IsSystem)
+				{
+					if (IncludeSystemVocabularies || (IncludeTags && v.Name == "Tags"))
+					{
+						AddTerms(v, terms);
+					}
+				}
+				else
+				{
+					AddTerms(v, terms);
+				}
+			}
+
+			return terms;
+		}
+
+		private void AddTerms(Vocabulary v, ArrayList terms)
+		{
+			ITermController termRep = Util.GetTermController();
+
+			//Add a dummy parent term if simple vocabulary
+			if (v.Type == VocabularyType.Simple)
+			{
+				terms.Add(new { termId = -v.VocabularyId, name = v.Name, parentTermId = Null.NullInteger});
+			}
+			foreach (Term t in termRep.GetTermsByVocabulary(v.VocabularyId))
+			{
+				if (v.Type == VocabularyType.Simple)
+				{
+					t.ParentTermId = -v.VocabularyId;
+				}
+				terms.Add(new { termId = t.TermId, name = t.Name, parentTermId = t.ParentTermId });
+			}
+
+		}
+
+		#endregion
+	}
 }

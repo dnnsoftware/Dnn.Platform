@@ -54,9 +54,9 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
         public Uri Link { get; set; }
 
         [DataMember(Name = "first_name")]
-        private string LiveFirstName { get; set; }
+        public string LiveFirstName { get; set; }
 
         [DataMember(Name = "last_name")]
-        private string LiveLastName { get; set; }
+        public string LiveLastName { get; set; }
     }
 }

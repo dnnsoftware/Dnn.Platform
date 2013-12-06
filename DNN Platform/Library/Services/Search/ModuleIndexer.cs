@@ -24,7 +24,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
@@ -97,7 +97,15 @@ namespace DotNetNuke.Services.Search
                         {
                             searchItem.ModuleDefId = module.ModuleDefID;
                             searchItem.ModuleId = module.ModuleID;
-                            if (string.IsNullOrEmpty(searchItem.CultureCode)) searchItem.CultureCode = module.CultureCode;
+                            if (string.IsNullOrEmpty(searchItem.CultureCode))
+                            {
+                                searchItem.CultureCode = module.CultureCode;
+                            }
+
+                            if (Null.IsNull(searchItem.ModifiedTimeUtc))
+                            {
+                                searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
+                            }
                         }
 
                         Logger.Trace("ModuleIndexer: " + searchItems.Count + " search documents found for module [" + module.DesktopModule.ModuleName + " mid:" + module.ModuleID + "]");

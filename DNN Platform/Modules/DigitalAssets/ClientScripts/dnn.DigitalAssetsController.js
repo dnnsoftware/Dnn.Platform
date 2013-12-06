@@ -38,10 +38,25 @@ dnnModule.DigitalAssetsController.prototype = function () {
         },        
         onLoadFolder = function () {
         },
+        executeCommandOnSelectedItems = function (commandName, items) {
+        },
+        executeCommandOnSelectedNode = function (commandName, node) {
+        },
+        gridOnGridCreated = function(grid) {
+        },
         gridOnRowDataBound = function (grid, item) {
+        },
+        setupGridContextMenuExtension = function (contextMenu, gridItems) {
+        },
+        setupTreeViewContextMenuExtension = function (contextMenu, node) {
+        },
+        updateSelectionToolBar = function (selectionToolbar, gridItems) {
         },
         extendResources = function (extendedResouces) {
             $.extend(this.resources, extendedResouces);
+        },
+        getLeftPaneActions = function() {
+            return [];
         };
 
     return {
@@ -54,7 +69,14 @@ dnnModule.DigitalAssetsController.prototype = function () {
         loadContent: loadContent,
         onLoadFolder: onLoadFolder,
         getHttpGETHeaders: getHttpGETHeaders,
+        gridOnGridCreated: gridOnGridCreated,
         gridOnRowDataBound: gridOnRowDataBound,
-        extendResources: extendResources
+        extendResources: extendResources,
+        executeCommandOnSelectedItems: executeCommandOnSelectedItems,
+        setupGridContextMenuExtension: setupGridContextMenuExtension,
+        setupTreeViewContextMenuExtension: setupTreeViewContextMenuExtension,
+        updateSelectionToolBar: updateSelectionToolBar,
+        executeCommandOnSelectedNode: executeCommandOnSelectedNode,
+        getLeftPaneActions: getLeftPaneActions
     };
 }();

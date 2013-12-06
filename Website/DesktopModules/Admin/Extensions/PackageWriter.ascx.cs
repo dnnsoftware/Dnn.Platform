@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 if (_Package == null && PackageID > Null.NullInteger)
                 {
-                    _Package = PackageController.GetPackage(PackageID);
+                    _Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
                 }
                 return _Package;
             }
@@ -554,7 +554,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     Package.Manifest = packageNav.InnerXml;
                     var pkgIconFile = Util.ParsePackageIconFileName(Package);
                     Package.IconFile = (pkgIconFile.Trim().Length > 0) ? Util.ParsePackageIconFile(Package) : null;
-                    PackageController.SavePackage(Package);
+                    PackageController.Instance.SaveExtensionPackage(Package);
                     break;
                 case 4:
                     if (chkManifest.Checked && (!string.IsNullOrEmpty(txtManifestName.Text)) && (!txtManifestName.Text.ToLower().EndsWith(".dnn")))

@@ -18,6 +18,11 @@
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,7 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Components\WebAPI\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -110,6 +115,7 @@
     <Compile Include="Components\JournalParser.cs" />
     <Compile Include="Components\LinkInfo.cs" />
     <Compile Include="Components\Utilities.cs" />
+    <Compile Include="NotificationServicesController.cs" />
     <Compile Include="FilesStatus.cs" />
     <Compile Include="FileUploadController.cs" />
     <Compile Include="JournalList.cs" />
@@ -118,7 +124,6 @@
     <Compile Include="ServicesController.cs" />
     <Compile Include="MyFiles.ascx.cs">
       <DependentUpon>MyFiles.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MyFiles.ascx.designer.cs">
       <DependentUpon>MyFiles.ascx</DependentUpon>
@@ -129,29 +134,22 @@
     </Compile>
     <Compile Include="Edit.ascx.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
     </Compile>
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="JournalSettingsBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="JournalSettingsBase.cs" />
     <Compile Include="UserFolderHelper.cs" />
     <Compile Include="View.ascx.designer.cs">
       <DependentUpon>View.ascx</DependentUpon>
     </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="JournalModuleBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="JournalModuleBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_LocalResources\Edit.ascx.resx" />
@@ -168,7 +166,9 @@
     <None Include="Journal.dnn">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Module.build" />
     <None Include="module.css" />
+    <Content Include="packages.config" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
   </ItemGroup>
@@ -181,6 +181,7 @@
     <Content Include="Scripts\journal.js" />
     <Content Include="Scripts\journalcomments.js" />
     <Content Include="Scripts\journaleditor.js" />
+    <Content Include="Scripts\mentionsInput.js" />
     <Content Include="Settings.ascx" />
     <Content Include="View.ascx" />
   </ItemGroup>
@@ -224,48 +225,19 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5420</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>Journal</DNNFileName>
-    <PackageName>DNNCE_Journal</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-      <SourceFiles Include="*.ascx; *.asmx;*.js;*.css; *.ashx" />
-      <ResourceFiles Include="App_LocalResources\*.resx" />
-      <JsFiles Include="scripts/*.*" />
-      <ConfigFiles Include="*.config" />
-      <Images Include="Images/*.*" />
-      <Resources Include="@(ResourceFiles);@(SourceFiles);@(Images);@(ConfigFiles);@(TextFiles);@(JsFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CreateItem Include="*.ascx">
-      <Output TaskParameter="Include" ItemName="MySourceFiles" />
-    </CreateItem>
-    <CreateItem Include="App_LocalResources\*.resx">
-      <Output TaskParameter="Include" ItemName="MyLocalResourceFilesFiles" />
-    </CreateItem>
-    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\Journal" />
-    <Copy SourceFiles="@(Images)" DestinationFolder="$(WebsitePath)\DesktopModules\Journal\Images" />
-    <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\Journal\Scripts" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\Journal\App_LocalResources" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>

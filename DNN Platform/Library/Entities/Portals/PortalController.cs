@@ -213,6 +213,16 @@ namespace DotNetNuke.Entities.Portals
             {
                 Exceptions.LogException(ex);
             }
+
+            try
+            {
+                EnsureRequiredEventLogTypesExist();
+            }
+            catch (Exception)
+            {
+                //should be no exception, but suppress just in case
+            }
+
             return PortalId;
         }
 
@@ -270,6 +280,157 @@ namespace DotNetNuke.Entities.Portals
             {
                 roleGroup.RoleGroupID = objRoleGroupInfo.RoleGroupID;
             }
+        }
+
+        private static bool DoesLogTypeExists(string logTypeKey)
+        {
+            var logController = new LogController();
+            LogTypeInfo logType;
+            Dictionary<string, LogTypeInfo> logTypeDictionary = logController.GetLogTypeInfoDictionary();
+            logTypeDictionary.TryGetValue(logTypeKey, out logType);
+            if (logType == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// this ensures that all portals have any logtypes (and sometimes configuration) required
+        /// </summary>
+        public static void EnsureRequiredEventLogTypesExist()
+        {
+            var logController = new LogController();
+            if (!DoesLogTypeExists(EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString()))
+            {
+                //Add 404 Log
+                var logTypeInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                    LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
+                    LogTypeDescription = "",
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                };
+                logController.AddLogType(logTypeInfo);
+
+                //Add LogType
+                var logTypeConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*"
+                };
+                logController.AddLogTypeConfigInfo(logTypeConf);
+            }
+
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.IP_LOGIN_BANNED.ToString()))
+            {
+                //Add IP filter log type
+                var logTypeFilterInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+                    LogTypeFriendlyName = "HTTP Error Code Forbidden IP address rejected",
+                    LogTypeDescription = "",
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                };
+                logController.AddLogType(logTypeFilterInfo);
+
+                //Add LogType
+                var logTypeFilterConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*"
+                };
+                logController.AddLogTypeConfigInfo(logTypeFilterConf);
+            }
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.TABURL_CREATED.ToString()))
+            {
+                var logTypeInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
+                    LogTypeFriendlyName = "TabURL created",
+                    LogTypeDescription = "",
+                    LogTypeCSSClass = "OperationSuccess",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                };
+                logController.AddLogType(logTypeInfo);
+
+                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
+                logTypeInfo.LogTypeFriendlyName = "TabURL updated";
+                logController.AddLogType(logTypeInfo);
+
+                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
+                logTypeInfo.LogTypeFriendlyName = "TabURL deleted";
+                logController.AddLogType(logTypeInfo);
+
+                //Add LogType
+                var logTypeUrlConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = false,
+                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*"
+                };
+                logController.AddLogTypeConfigInfo(logTypeUrlConf);
+                
+                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
+                logController.AddLogTypeConfigInfo(logTypeUrlConf);
+
+                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
+                logController.AddLogTypeConfigInfo(logTypeUrlConf);
+            }
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.SCRIPT_COLLISION.ToString()))
+            {
+                //Add IP filter log type
+                var logTypeFilterInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    LogTypeFriendlyName = "Javscript library registration resolved script collision",
+                    LogTypeDescription = "",
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                };
+                logController.AddLogType(logTypeFilterInfo);
+
+                //Add LogType
+                var logTypeFilterConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*"
+                };
+                logController.AddLogTypeConfigInfo(logTypeFilterConf);
+            }
+
         }
 
         private static PortalInfo GetPortalInternal(int portalID, string cultureCode)
@@ -670,6 +831,11 @@ namespace DotNetNuke.Entities.Portals
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "contentlocalizationenabled")))
             {
                 UpdatePortalSetting(PortalId, "ContentLocalizationEnabled", XmlUtils.GetNodeValue(nodeSettings, "contentlocalizationenabled"));
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "inlineeditorenabled")))
+            {
+                UpdatePortalSetting(PortalId, "InlineEditorEnabled", XmlUtils.GetNodeValue(nodeSettings, "inlineeditorenabled"));
             }
         }
 
@@ -1623,8 +1789,20 @@ namespace DotNetNuke.Entities.Portals
                 message += Localization.GetString("CreatePortal.Error");
                 throw new Exception(message);
             }
+            try
+            {
+                EnsureRequiredEventLogTypesExist();
+            }
+            catch (Exception)
+            {
+                //should be no exception, but suppress just in case
+            }
+
             return portalId;
         }
+
+     
+
         /// <summary>
         /// Creates the portal.
         /// </summary>
@@ -1927,6 +2105,15 @@ namespace DotNetNuke.Entities.Portals
                 message += Localization.GetString("CreatePortal.Error");
                 throw new Exception(message);
             }
+            try
+            {
+                EnsureRequiredEventLogTypesExist();
+            }
+            catch (Exception)
+            {
+                //should be no exception, but suppress just in case
+            }
+
             return portalId;
         }
 

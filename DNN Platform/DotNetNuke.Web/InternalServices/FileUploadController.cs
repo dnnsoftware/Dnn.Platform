@@ -29,7 +29,9 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 using DotNetNuke.Common;
@@ -102,6 +104,7 @@ namespace DotNetNuke.Web.InternalServices
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
+        [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         public Task<HttpResponseMessage> PostFile()
         {
@@ -116,8 +119,9 @@ namespace DotNetNuke.Web.InternalServices
 
             // local references for use in closure
             var portalSettings = PortalSettings;
+            var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = UserInfo;
-            var task = request.Content.ReadAsMultipartAsync(provider)
+            var task = request.Content.ReadAsMultipartAsync(provider)            
                 .ContinueWith(o =>
                     {
                         string folder = string.Empty;
@@ -169,8 +173,16 @@ namespace DotNetNuke.Web.InternalServices
                         var alreadyExists = false;
                         if (!string.IsNullOrEmpty(fileName) && stream != null)
                         {
-                            // everything ready
-                            returnFilename = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
+                            // Everything ready
+                            
+                            // The SynchronizationContext keeps the main thread context. Send method is synchronous
+                            currentSynchronizationContext.Send(
+                                delegate
+                                    {
+                                        returnFilename = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
+                                    },null
+                                );
+                            
                         }
 
                         if (string.IsNullOrEmpty(returnFilename))
@@ -181,7 +193,7 @@ namespace DotNetNuke.Web.InternalServices
                              */
                             var mediaTypeFormatter = new JsonMediaTypeFormatter();
                             mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
-                            
+
                             return Request.CreateResponse(
                                 HttpStatusCode.OK,
                                 new
@@ -193,13 +205,14 @@ namespace DotNetNuke.Web.InternalServices
 
                         var root = AppDomain.CurrentDomain.BaseDirectory;
                         returnFilename = returnFilename.Replace(root, "~/");
-                        returnFilename = System.Web.VirtualPathUtility.ToAbsolute(returnFilename);
+                        returnFilename = VirtualPathUtility.ToAbsolute(returnFilename);
 
                         return new HttpResponseMessage
                         {
                             StatusCode = HttpStatusCode.OK,
                             Content = new StringContent(returnFilename)
                         };
+
                     });
 
             return task; 
@@ -226,10 +239,11 @@ namespace DotNetNuke.Web.InternalServices
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder                
-                var effectivePortalId = isHostMenu ? -1 : PortalController.GetEffectivePortalId(portalSettings.PortalId);
-                var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
+                IFolderInfo folderInfo;
                 if (folder.ToLowerInvariant().StartsWith("users/") && folder.EndsWith(string.Format("/{0}/", userInfo.UserID)))
                 {
+                    var effectivePortalId = isHostMenu ? -1 : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                    folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                     // Make sure the user folder exists
                     if (folderInfo == null)
                     {
@@ -238,6 +252,11 @@ namespace DotNetNuke.Web.InternalServices
                         userInfo.PortalID = effectivePortalId;
                         folderInfo = ((FolderManager)folderManager).AddUserFolder(userInfo);
                     }
+                }
+                else
+                {
+                    var portalId = isHostMenu ? -1 : portalSettings.PortalId;
+                    folderInfo = folderManager.GetFolder(portalId, folder);
                 }
 
                 if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE")) 

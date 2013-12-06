@@ -51,8 +51,6 @@ namespace DotNetNuke.Entities.Urls
 {
     public class FriendlyUrlController
     {
-        private static Dictionary<string, object> _providerObjects;
-
         #region Constants
 
         private const string DisableMobileRedirectCookieName = "disablemobileredirect"; //dnn cookies

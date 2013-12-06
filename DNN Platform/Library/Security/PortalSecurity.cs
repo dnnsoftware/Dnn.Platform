@@ -35,11 +35,13 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Personalization;
 
 #endregion
 
@@ -653,7 +655,14 @@ namespace DotNetNuke.Security
             else
             {
                 FormsAuthentication.SetAuthCookie(user.Username, false);
-            }           
+            }
+            if (user.IsSuperUser)
+            {
+                //save userinfo object in context to ensure Personalization is saved correctly
+                HttpContext.Current.Items["UserInfo"] = user;
+
+                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", user.UserID), "true");
+            }
         }
 
         public void SignOut()

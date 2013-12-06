@@ -617,7 +617,7 @@ dnn.controlBar.init = function (settings) {
     		});
             $('.onActionMenu').removeClass('onActionMenu');
             toggleModulePane($('.ControlModulePanel'), false);
-	        $(this).addClass("hover");
+            $(this).addClass("hover");
             $(this).find('div.subNav').slideDown(300);
         },
         out: function () {
@@ -672,7 +672,35 @@ dnn.controlBar.init = function (settings) {
         return false;
     });
 
-    $('#controlBar_AddNewModule').click(function () {
+    $('#controlBar_AddNewModule').click(addModule);
+    $('#controlBar_CreateModule').click(addCreateModule);
+
+    function addCreateModule() {
+        if (currentUserMode !== 'EDIT') {
+            var service = dnn.controlBar.getService();
+            var serviceUrl = dnn.controlBar.getServiceUrl(service);
+            $.ajax({
+                url: serviceUrl + 'ToggleUserMode',
+                type: 'POST',
+                data: { UserMode: 'EDIT' },
+                beforeSend: service.setModuleHeaders,
+                success: function () {
+                    dnn.dom.setCookie('ControlBarInit', 'CreateModule');
+                    window.location.href = window.location.href.split('#')[0];
+                },
+                error: function (xhr) {
+                    dnn.controlBar.responseError(xhr);
+                }
+            });
+
+            return false;
+        }
+
+        $find(settings.categoryComboId).findItemByValue("Developer").select();
+        addModule();
+    }
+
+    function addModule () {
         if (currentUserMode !== 'EDIT') {
             var service = dnn.controlBar.getService();
             var serviceUrl = dnn.controlBar.getServiceUrl(service);
@@ -711,8 +739,7 @@ dnn.controlBar.init = function (settings) {
         $('#ControlBar_Action_Menu').addClass('onActionMenu');
         $('#ControlBar_ModuleListMessage_NewModule').hide();
         return false;
-    });
-
+    }
     $('#controlBar_AddExistingModule').click(function () {
         if (currentUserMode !== 'EDIT') {
             var service = dnn.controlBar.getService();
@@ -1058,11 +1085,15 @@ dnn.controlBar.init = function (settings) {
                 setTimeout(function () {
                     $('#controlBar_AddNewModule').click();
                 }, 500);
-
                 break;
             case 'AddExistingModule':
                 setTimeout(function () {
                     $('#controlBar_AddExistingModule').click();
+                }, 500);
+                break;
+            case 'CreateModule':
+                setTimeout(function () {
+                    $('#controlBar_CreateModule').click();
                 }, 500);
                 break;
         }

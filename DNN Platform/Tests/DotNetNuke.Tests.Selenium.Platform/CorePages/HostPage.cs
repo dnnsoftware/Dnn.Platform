@@ -8,8 +8,8 @@ namespace DNNSelenium.Platform.CorePages
 	{
 		public HostPage (IWebDriver driver) : base (driver) {}
 
-		public static string SiteGroupsLink = "//div[a/img[contains(@src, 'portalgroups_32X32.png')]]";
+		//public static string SiteGroupsLink = "//div[a/img[contains(@src, 'portalgroups_32X32.png')]]";
 
-		public static int NumberOfLinks = 27;
+		public static int NumberOfLinks = 13;
 	}
 }

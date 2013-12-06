@@ -126,4 +126,22 @@
   <data name="DefaultFolderType.Text" xml:space="preserve">
     <value>Default folder type</value>
   </data>
+  <data name="Group.Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="GroupMode.Help" xml:space="preserve">
+    <value>The mode the module should operate in</value>
+  </data>
+  <data name="GroupMode.Text" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="Normal.Text" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="RootFolder.Help" xml:space="preserve">
+    <value>Set the selected folder as the root folder for this module instance</value>
+  </data>
+  <data name="RootFolder.Text" xml:space="preserve">
+    <value>Root folder</value>
+  </data>
 </root>

@@ -1392,6 +1392,7 @@ a.pinHelp {
 .dnnCheckbox-focus {
 	background-color: #e3e3e5;
 }
+.dnnBoxLabel{ display: inline-block;}
 /* normal checkbox fix */
 .dnnFormItem input[type="checkbox"].normalCheckBox {
     display: inline-block;
@@ -2593,8 +2594,8 @@ table.dnnASPGrid {
         padding: 4px;
     }
 
-.dnnGridHeader td {
-    padding: 6px 0 6px 12px;
+.dnnGridHeader td, thead.dnnGridHeader th,  tr.dnnGridHeader th{
+    padding: 6px 12px 6px 12px;
     border-bottom: 1px solid #c9c9c9;
     border-right: 1px solid #c9c9c9;
     background: #f0f2f1;

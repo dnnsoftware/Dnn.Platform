@@ -57,80 +57,67 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateCustomUrl(SaveUrlDto dto)
         {
-            var tab = PortalSettings.ActiveTab;
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
-            HttpResponseMessage response;
-
-            if (string.IsNullOrEmpty(urlPath))
+            bool modified;
+            //Clean Url
+            var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(PortalSettings.PortalId));
+            //custom urls are special in that they can contain the / character to create path levels
+            options.ReplaceChars = options.ReplaceChars.Replace("/", "");
+            options.IllegalChars = options.IllegalChars.Replace("/", "");
+            options.RegexMatch = options.RegexMatch.Replace("[^", "[^/");
+            //now clean the path
+            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
+            if (modified)
             {
-                var tabUrl = new TabUrlInfo
-                {
-                    TabId = tab.TabID,
-                    SeqNum = dto.Id,
-                };
-                TestableTabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
-
-                response = Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
-            }
-            else
-            {
-                bool modified;
-                //Clean Url
-                var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(PortalSettings.PortalId));
-                //custom urls are special in that they can contain the / character to create path levels
-                options.ReplaceChars = options.ReplaceChars.Replace("/", "");
-                options.IllegalChars = options.IllegalChars.Replace("/", "");
-                options.RegexMatch = options.RegexMatch.Replace("[^", "[^/");
-                //now clean the path
-                urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
-                if (modified)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK,
-                        new
-                        {
-                            Success = false,
-                            ErrorMessage = Localization.GetString("UrlPathCleaned.Error", Localization.GlobalResourceFile),
-                            SuggestedUrlPath = "/" + urlPath
-                        });
-                }
-
-                //Validate for uniqueness
-                urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, PortalSettings, out modified);
-                if (modified)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK,
-                        new
-                        {
-                            Success = false,
-                            ErrorMessage = Localization.GetString("UrlPathNotUnique.Error", Localization.GlobalResourceFile),
-                            SuggestedUrlPath = "/" + urlPath
-                        });
-                }
-
-                var cultureCode = LocaleController.Instance.GetLocales(PortalId)
-                                        .Where(l => l.Value.KeyID == dto.LocaleKey)
-                                        .Select(l => l.Value.Code)
-                                        .SingleOrDefault();
-
-                var tabUrl = new TabUrlInfo
-                {
-                    TabId = tab.TabID,
-                    SeqNum = dto.Id,
-                    PortalAliasId = dto.SiteAliasKey,
-                    PortalAliasUsage = (PortalAliasUsageType)dto.SiteAliasUsage,
-                    QueryString = dto.QueryString.ValueOrEmpty(),
-                    Url = dto.Path.ValueOrEmpty(),
-                    CultureCode = cultureCode,
-                    HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
-                    IsSystem = dto.IsSystem // false
-                };
-
-                TestableTabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
-
-                response = Request.CreateResponse(HttpStatusCode.OK, new {Success = true,});
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    new
+                    {
+                        Success = false,
+                        ErrorMessage = Localization.GetString("UrlPathCleaned.Error", Localization.GlobalResourceFile),
+                        SuggestedUrlPath = "/" + urlPath
+                    });
             }
 
-            return response;
+            //Validate for uniqueness
+            urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, PortalSettings, out modified);
+            if (modified)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    new
+                    {
+                        Success = false,
+                        ErrorMessage = Localization.GetString("UrlPathNotUnique.Error", Localization.GlobalResourceFile),
+                        SuggestedUrlPath = "/" + urlPath
+                    });
+            }
+
+            var tab = PortalSettings.ActiveTab;
+            var cultureCode = LocaleController.Instance.GetLocales(PortalId)
+                                    .Where(l => l.Value.KeyID == dto.LocaleKey)
+                                    .Select(l => l.Value.Code)
+                                    .SingleOrDefault();
+
+            var tabUrl = new TabUrlInfo
+                                {
+                                    TabId = tab.TabID,
+                                    SeqNum = dto.Id,
+                                    PortalAliasId = dto.SiteAliasKey,
+                                    PortalAliasUsage = (PortalAliasUsageType)dto.SiteAliasUsage,
+                                    QueryString = dto.QueryString.ValueOrEmpty(),
+                                    Url = dto.Path.ValueOrEmpty(),
+                                    CultureCode = cultureCode,
+                                    HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
+                                    IsSystem = dto.IsSystem // false
+                                };
+
+            TestableTabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
+
+            var response = new
+            {
+                Success = true,
+            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
     }
 }

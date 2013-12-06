@@ -970,7 +970,7 @@
     <value>Password Question must be provided</value>
   </data>
   <data name="PasswordChanged.Text" xml:space="preserve">
-    <value>The password has been reset.</value>
+    <value>The password has been changed.</value>
   </data>
   <data name="PasswordInvalid.Text" xml:space="preserve">
     <value>You must enter a valid password.  Please check with the Website Administrator if you do not know the password requirements.</value>
@@ -1757,5 +1757,71 @@
   </data>
   <data name="RootFolder.Name" xml:space="preserve">
     <value>Site Root</value>
+  </data>
+  <data name="HostRootFolder.Name" xml:space="preserve">
+    <value>Host Root</value>
+  </data>
+  <data name="LIBRARY_ReadSuccess.Text" xml:space="preserve">
+    <value>Parsed Library Manaifest Successfully</value>
+  </data>
+  <data name="LIBRARY_Registered.Text" xml:space="preserve">
+    <value>Library Registered Succssfully - {0}</value>
+  </data>
+  <data name="LIBRARY_UnRegistered.Text" xml:space="preserve">
+    <value>Library UnRegistered Successfully - {0}</value>
+  </data>
+  <data name="Daily.Text" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="Hourly.Text" xml:space="preserve">
+    <value>Hourly</value>
+  </data>
+  <data name="Monthly.Text" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="Weekly.Text" xml:space="preserve">
+    <value>Weekly</value>
+  </data>
+  <data name="ScriptCollision.Text" xml:space="preserve">
+    <value>Requests for two or more different versions of JavaScript libraries were made for this page. The details have been logged to the event log.</value>
+  </data>
+  <data name="GettingStarted.Title" xml:space="preserve">
+    <value>Welcome to your website</value>
+  </data>
+  <data name="GettingStarted.SignUpLabel" xml:space="preserve">
+    <value>Sign Up For Our Newsletter</value>
+  </data>
+  <data name="GettingStarted.SignUpText" xml:space="preserve">
+    <value>Get Tips, Tricks, and Product Updates In Your Inbox</value>
+  </data>
+  <data name="GettingStarted.SignUpButton" xml:space="preserve">
+    <value>Sign Up</value>
+  </data>
+  <data name="GettingStarted.DownloadManualButton" xml:space="preserve">
+    <value>Download the User Manual</value>
+  </data>
+  <data name="GettingStarted.DontShowDialogLabel" xml:space="preserve">
+    <value>Don't show this again</value>
+  </data>
+  <data name="GettingStarted.FacebookLinkTooltip" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="GettingStarted.TwitterLinkTooltip" xml:space="preserve">
+    <value>DNN Corp Twitter</value>
+  </data>
+  <data name="GettingStarted.InvalidEmailTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="GettingStarted.InvalidEmailMessage" xml:space="preserve">
+    <value>Specified e-mail is invalid.</value>
+  </data>
+  <data name="GettingStarted.SignUpTitle" xml:space="preserve">
+    <value>Thank You!</value>
+  </data>
+  <data name="GettingStarted.SignUpMessage" xml:space="preserve">
+    <value>Your request has been received.</value>
+  </data>
+  <data name="ViewJournal.Text" xml:space="preserve">
+    <value>View</value>
   </data>
 </root>

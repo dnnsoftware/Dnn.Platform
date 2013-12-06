@@ -446,17 +446,7 @@ namespace DotNetNuke.Common.Utilities
 
             XPathNavigator configNav = Load().CreateNavigator();
             //Select the location node
-            XPathNavigator locationNav = configNav.SelectSingleNode("configuration/location");
-            XPathNavigator customErrorsNav;
-            //Test for the existence of the location node if it exists then include that in the nodes of the XPath Query
-            if (locationNav == null)
-            {
-                customErrorsNav = configNav.SelectSingleNode("configuration/system.web/customErrors");
-            }
-            else
-            {
-                customErrorsNav = configNav.SelectSingleNode("configuration/location/system.web/customErrors");
-            }
+            var customErrorsNav = configNav.SelectSingleNode("//configuration/system.web/customErrors|//configuration/location/system.web/customErrors");
 
             string customErrorMode = XmlUtils.GetAttributeValue(customErrorsNav, "mode");
             if (string.IsNullOrEmpty(customErrorMode))

@@ -110,7 +110,6 @@
     <Compile Include="Components\Utilities.cs" />
     <Compile Include="Create.ascx.cs">
       <DependentUpon>Create.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Create.ascx.designer.cs">
       <DependentUpon>Create.ascx</DependentUpon>
@@ -118,7 +117,6 @@
     <Compile Include="Components\GroupInfo.cs" />
     <Compile Include="GroupEdit.ascx.cs">
       <DependentUpon>GroupEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="GroupEdit.ascx.designer.cs">
       <DependentUpon>GroupEdit.ascx</DependentUpon>
@@ -127,21 +125,18 @@
     <Compile Include="ModerationServiceController.cs" />
     <Compile Include="GroupView.ascx.cs">
       <DependentUpon>GroupView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="GroupView.ascx.designer.cs">
       <DependentUpon>GroupView.ascx</DependentUpon>
     </Compile>
     <Compile Include="List.ascx.cs">
       <DependentUpon>List.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="List.ascx.designer.cs">
       <DependentUpon>List.ascx</DependentUpon>
     </Compile>
     <Compile Include="Loader.ascx.cs">
       <DependentUpon>Loader.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Loader.ascx.designer.cs">
       <DependentUpon>Loader.ascx</DependentUpon>
@@ -152,14 +147,10 @@
     </Compile>
     <Compile Include="ListSettings.ascx.cs">
       <DependentUpon>ListSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="GroupsSettingsBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="GroupsSettingsBase.cs" />
     <Compile Include="Setup.ascx.cs">
       <DependentUpon>Setup.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Setup.ascx.designer.cs">
       <DependentUpon>Setup.ascx</DependentUpon>
@@ -169,11 +160,8 @@
     </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="GroupsModuleBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="GroupsModuleBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_LocalResources\Edit.ascx.resx" />
@@ -181,6 +169,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="App_LocalResources\View.ascx.resx" />
+    <Content Include="Module.build" />
     <None Include="SocialGroups.dnn">
       <SubType>Designer</SubType>
     </None>
@@ -253,49 +242,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>SocialGroups</DNNFileName>
-    <PackageName>DNNCE_SocialGroups</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-    </ItemGroup>
-    <ItemGroup>
-      <Images Include="Images/*.*" />
-    </ItemGroup>
-    <ItemGroup>
-      <JsFiles Include="scripts/*.*" />
-    </ItemGroup>
-    <ItemGroup>
-      <Views Include="*.ascx" />
-    </ItemGroup>
-    <ItemGroup>
-      <ResourceFiles Include="App_LocalResources\*.resx" />
-    </ItemGroup>
-    <ItemGroup>
-      <CssFiles Include="*.css" />
-    </ItemGroup>
-    <ItemGroup>
-      <Resources Include="@(ResourceFiles);@(Images);@(JsFiles);@(Views);@(CssFiles);@(TextFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Copy SourceFiles="@(Views)" DestinationFolder="$(WebsitePath)\DesktopModules\SocialGroups" />
-    <Copy SourceFiles="@(CssFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\SocialGroups" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\SocialGroups" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\SocialGroups\App_LocalResources" />
-  </Target>
+  <Import Project="Module.build" />
 </Project>

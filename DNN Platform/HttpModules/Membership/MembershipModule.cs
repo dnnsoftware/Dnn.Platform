@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
@@ -44,6 +45,7 @@ namespace DotNetNuke.HttpModules.Membership
 {
     public class MembershipModule : IHttpModule
     {
+	    private static string _cultureCode;
         public string ModuleName
         {
             get
@@ -51,6 +53,19 @@ namespace DotNetNuke.HttpModules.Membership
                 return "DNNMembershipModule";
             }
         }
+
+	    private static string CurrentCulture
+	    {
+		    get
+		    {
+			    if (string.IsNullOrEmpty(_cultureCode))
+			    {
+				    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name; 
+			    }
+
+			    return _cultureCode;
+		    }
+	    }
 
         #region IHttpModule Members
 
@@ -73,7 +88,7 @@ namespace DotNetNuke.HttpModules.Membership
 
         public static void OnUnverifiedUserSkinInit(object sender, SkinEventArgs e)
         {
-            var strMessage = Localization.GetString("UnverifiedUser");
+			var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture);
             UI.Skins.Skin.AddPageMessage(e.Skin, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
@@ -144,12 +159,12 @@ namespace DotNetNuke.HttpModules.Membership
 
                 if (!user.IsSuperUser && user.IsInRole("Unverified Users") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
                 {
-                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("UnverifiedUser"));
+					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture));
                 }
 
 				if (!user.IsSuperUser && HttpContext.Current.Request.QueryString.AllKeys.Contains("VerificationSuccess") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
 				{
-					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("VerificationSuccess"));
+					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, CurrentCulture));
 					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
 				}
 

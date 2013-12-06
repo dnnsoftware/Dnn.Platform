@@ -2,6 +2,7 @@
 <%@ Import Namespace="DotNetNuke.Common.Utilities" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+<%@ Register src="Subscriptions.ascx" tagPrefix="dnn" tagName="Subscriptions" %>
 
 <asp:Panel runat="server" ID="CoreMessagingContainer">
 
@@ -19,7 +20,7 @@
     <div id="smMainContent" class="dnnForm DnnModule-Messaging-Notifications">
         <ul class="dnnAdminTabNav">
             <li><a href="#dnnCoreMessaging" data-bind="click: loadMessagesTab, attr: { title: TotalNewThreads() + '<%=LocalizeString("NewUnreadMessages") %>    '}"><span data-bind="    text: TotalNewThreads, visible: TotalNewThreads() > 0"></span><%=LocalizeString("Messages") %></a></li>
-            <li><a href="#dnnCoreNotification" data-bind="click: loadNotificationsTab, attr: {title: TotalNotifications() + '<%=LocalizeString("TotalNotifications") %>    '}"><span data-bind="    text: TotalNotifications, visible: TotalNotifications() > 0"></span><%=LocalizeString("Notifications") %></a></li>
+            <li><a href="#dnnCoreNotification" data-bind="click: loadNotificationsTab, attr: {title: TotalNotifications() + '<%=LocalizeString("TotalNotifications") %>    '}"><span data-bind="    text: TotalNotifications, visible: TotalNotifications() > 0"></span><%=LocalizeString("Notifications") %></a></li>            
         </ul>
         <!-- start core messaging -->
         <div class="coreMessaging" id="dnnCoreMessaging">
@@ -235,11 +236,11 @@
             <div class="dnnCoreMessagingFooter"><a href="#" class="dnnTertiaryAction" data-bind="click: loadMoreNotifications, visible: loadMoreNotificationsVisible"><%=LocalizeString("LoadMore")%></a></div>
         </div>
         <!-- end core notification -->
-
+		
     </div>
 </div>
 <script type="text/javascript">
-    jQuery(document).ready(function ($) {
+	jQuery(document).ready(function ($) {		
         var sm = new CoreMessaging($, ko, {
             profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicFormattedUrl() %>',
             conversationSetAsReadText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsRead"))%>',

@@ -1,4 +1,4 @@
-﻿function MemberDirectory($, ko, settings) {
+﻿function MemberDirectory($, ko, settings, composeMessageSettings) {
     var opts = $.extend({}, MemberDirectory.defaultSettings, settings);
     var serviceFramework = settings.servicesFramework;
     var baseServicepath = serviceFramework.getServiceRoot('MemberDirectory') + 'MemberDirectory/';
@@ -469,16 +469,17 @@
                     $(".mdSearch").removeClass("active");
                 });
 
-                //Compose Message
-                $.fn.dnnComposeMessage({
-                    openTriggerSelector: containerElement + " .ComposeMessage",
-                    onPrePopulate: function (target) {
-                        var context = ko.contextFor(target);
-                        var prePopulatedRecipients = [{ id: "user-" + context.$data.UserId(), name: context.$data.DisplayName()}];
-                        return prePopulatedRecipients;
-                    },
-                    servicesFramework: serviceFramework
-                });
+            	//Compose Message
+	            var options = $.extend({}, {
+		            openTriggerSelector: containerElement + " .ComposeMessage",
+		            onPrePopulate: function(target) {
+			            var context = ko.contextFor(target);
+			            var prePopulatedRecipients = [{ id: "user-" + context.$data.UserId(), name: context.$data.DisplayName() }];
+			            return prePopulatedRecipients;
+		            },
+		            servicesFramework: serviceFramework
+	            }, composeMessageSettings);
+                $.fn.dnnComposeMessage(options);
             } else {
                 displayMessage(settings.serverErrorText, "dnnFormWarning");
             }

@@ -296,7 +296,6 @@ dnn.extend(dnn, {
         if (dnn._delayedSet)
             dnn.setVar(dnn._delayedSet.key, dnn._delayedSet.val);
     }
-
 });
 
 //delayObject

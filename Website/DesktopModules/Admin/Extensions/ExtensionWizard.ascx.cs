@@ -26,11 +26,15 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.UI.Skins;
 
 #endregion
 
@@ -97,7 +101,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     }
                     else
                     {
-                        _Package = PackageController.GetPackage(PackageID);
+                        _Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
                     }
                 }
                 return _Package;
@@ -112,7 +116,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 {
                     if (Package != null)
                     {
-                        PackageType _PackageType = PackageController.GetPackageType(Package.PackageType);
+                        PackageType _PackageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
                         if ((_PackageType != null) && (!string.IsNullOrEmpty(_PackageType.EditorControlSrc)))
                         {
                             _Control = ControlUtilities.LoadControl<Control>(this, _PackageType.EditorControlSrc);
@@ -142,7 +146,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         private void BindExtensionTypes()
         {
-            cboExtensionType.DataSource = PackageController.GetPackageTypes();
+            cboExtensionType.DataSource = PackageController.Instance.GetExtensionPackageTypes();
             cboExtensionType.DataBind();
         }
 
@@ -312,7 +316,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     if (extensionForm.IsValid)
                     {
                         var newPackage = extensionForm.DataSource as PackageInfo;
-                        PackageInfo tmpPackage = PackageController.GetPackageByName(newPackage.Name);
+                        PackageInfo tmpPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == newPackage.Name);
                         if (tmpPackage == null)
                         {
                             switch (Mode)
@@ -324,7 +328,76 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                     newPackage.PackageType = Mode;
                                     break;
                             }
-                            PackageID = PackageController.AddPackage(newPackage, true);
+                            PackageController.Instance.SaveExtensionPackage(newPackage);
+
+                            Locale locale;
+                            LanguagePackInfo languagePack;
+                            switch (newPackage.PackageType)
+                            {
+                                case "Auth_System":
+                                    //Create a new Auth System
+                                    var authSystem = new AuthenticationInfo
+                                    {
+                                        AuthenticationType = newPackage.Name,
+                                        IsEnabled = Null.NullBoolean,
+                                        PackageID = newPackage.PackageID
+                                    };
+                                    AuthenticationController.AddAuthentication(authSystem);
+                                    break;
+                                case "Container":
+                                case "Skin":
+                                    var skinPackage = new SkinPackageInfo
+                                    {
+                                        SkinName = newPackage.Name,
+                                        PackageID = newPackage.PackageID,
+                                        SkinType = newPackage.PackageType
+                                    };
+                                    SkinController.AddSkinPackage(skinPackage);
+                                    break;
+                                case "CoreLanguagePack":
+                                    locale = LocaleController.Instance.GetLocale(PortalController.GetCurrentPortalSettings().DefaultLanguage);
+                                    languagePack = new LanguagePackInfo
+                                    {
+                                        PackageID = newPackage.PackageID,
+                                        LanguageID = locale.LanguageId,
+                                        DependentPackageID = -2
+                                    };
+                                    LanguagePackController.SaveLanguagePack(languagePack);
+                                    break;
+                                case "ExtensionLanguagePack":
+                                    locale = LocaleController.Instance.GetLocale(PortalController.GetCurrentPortalSettings().DefaultLanguage);
+                                    languagePack = new LanguagePackInfo
+                                    {
+                                        PackageID = newPackage.PackageID,
+                                        LanguageID = locale.LanguageId,
+                                        DependentPackageID = Null.NullInteger
+                                    };
+                                    LanguagePackController.SaveLanguagePack(languagePack);
+                                    break;
+                                case "Module":
+                                    //Create a new DesktopModule
+                                    var desktopModule = new DesktopModuleInfo
+                                    {
+                                        PackageID = newPackage.PackageID,
+                                        ModuleName = newPackage.Name,
+                                        FriendlyName = newPackage.FriendlyName,
+                                        FolderName = newPackage.Name,
+                                        Description = newPackage.Description,
+                                        Version = newPackage.Version.ToString(3),
+                                        SupportedFeatures = 0
+                                    };
+                                    int desktopModuleId = DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
+                                    if (desktopModuleId > Null.NullInteger)
+                                    {
+                                        DesktopModuleController.AddDesktopModuleToPortals(desktopModuleId);
+                                    }
+                                    break;
+                                case "SkinObject":
+                                    var skinControl = new SkinControlInfo { PackageID = newPackage.PackageID, ControlKey = newPackage.Name };
+                                    SkinControlController.SaveSkinControl(skinControl);
+                                    break;
+                            }
+
                         }
                         else
                         {
@@ -347,7 +420,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 case 2:
                     if (ownerForm.IsValid)
                     {
-                        PackageController.SavePackage(ownerForm.DataSource as PackageInfo);
+                        PackageController.Instance.SaveExtensionPackage(ownerForm.DataSource as PackageInfo);
                     }
                     Response.Redirect(Globals.NavigateURL(), true);
                     break;

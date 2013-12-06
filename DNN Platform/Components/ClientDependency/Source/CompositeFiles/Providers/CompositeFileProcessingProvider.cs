@@ -74,6 +74,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 
 			foreach (string s in filePaths)
 			{
+                sw.WriteLine("/* - Start of "+ s + " - */");
 				if (!string.IsNullOrEmpty(s))
 				{
 					try
@@ -120,6 +121,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 					sw.Write(";;;"); //write semicolons in case the js isn't formatted correctly. This also helps for debugging.
 				}
 
+                sw.WriteLine("/* - End of " + s + " - */");
 			}
 			sw.Flush();
 			byte[] outputBytes = ms.ToArray();

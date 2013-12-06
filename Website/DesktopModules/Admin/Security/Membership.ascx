@@ -20,5 +20,5 @@
     <li><asp:LinkButton id="cmdUnAuthorize" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdUnAuthorize" CausesValidation="False" /></li>
     <li><asp:LinkButton id="cmdUnLock" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdUnLock" CausesValidation="False" /></li>
     <li><asp:LinkButton id="cmdPassword" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdPassword" CausesValidation="False" /></li>
-    <li><asp:LinkButton id="cmdToggleSuperuser" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdToggleSuperuser" CausesValidation="False" Visible="False" /></li>
+    <li><asp:LinkButton id="cmdToggleSuperuser" runat="server" CssClass="dnnSecondaryAction" CausesValidation="False" Visible="False" /></li>
 </ul>

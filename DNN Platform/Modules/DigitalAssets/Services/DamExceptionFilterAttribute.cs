@@ -23,19 +23,17 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
 
-using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Modules.DigitalAssets.Services
 {
     public class DamExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        protected static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentServiceController));
-
         public override void OnException(HttpActionExecutedContext context)
         {
             if (context.Exception != null)
             {
-                Logger.Error(context.Exception);                
+                Exceptions.LogException(context.Exception);
                 context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, context.Exception);
             }
         }

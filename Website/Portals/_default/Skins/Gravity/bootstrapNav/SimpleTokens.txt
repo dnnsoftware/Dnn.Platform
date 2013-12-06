@@ -1,0 +1,17 @@
+<ul class="nav nav-pills">
+[*>NODE]
+</ul>
+[>NODE]
+	<li class="[?NODE]dropdown [/?][?SELECTED]active[/?]">
+	[?ENABLED]
+		<a target="[=TARGET]" href="[=URL]" [?NODE] [/?]>[=TEXT] [?NODE]<b class="caret hidden-desktop pull-right icon-chevron-down icon-white"></b>[/?]</a>
+	[?ELSE]
+		<a href="#" [?NODE] [/?]>[=TEXT] [?NODE]<b class="caret hidden-desktop pull-right icon-chevron-down icon-white"></b>[/?]</a>
+	[/?]
+	[?NODE]
+	    <ul class="dropdown-menu">
+	    [*>NODE]
+	    </ul>
+	[/?]
+	</li>
+[/>]

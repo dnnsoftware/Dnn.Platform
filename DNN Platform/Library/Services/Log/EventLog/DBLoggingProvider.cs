@@ -213,8 +213,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             if (logTypeConfigInfo.NotificationThreshold == 0)
                             {
                                 string str = logQueueItem.LogInfo.Serialize();
-    
-                                Mail.Mail.SendEmail(logTypeConfigInfo.MailFromAddress, logTypeConfigInfo.MailToAddress, "Event Notification", str);
+                                Mail.Mail.SendEmail(logTypeConfigInfo.MailFromAddress, logTypeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(str)));
                             }
                         }
                         finally
@@ -455,7 +454,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     CBO.CloseDataReader(dr, true);
                 }
-                Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", log);
+                Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(log)));
                 DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
             }
         }

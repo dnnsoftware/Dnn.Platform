@@ -22,6 +22,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Recycle Bin"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "RecycleBinModule"; }
+		}
+
 		public static string PagesTab = "//a[@href = '#rbTabs']";
 		public static string ModulesTab = "//a[@href = '#rbModules']";
 

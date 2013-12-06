@@ -390,6 +390,10 @@
                         <asp:TextBox ID="txtTelerikSecureUrl" runat="server" MaxLength="256" />
                     </div>
                 </div>
+                  <div class="dnnFormItem">
+                    <dnn:label id="plEnableCDN" controlname="chkEnableCDN" runat="server" />
+                    <asp:CheckBox ID="chkEnableCDN" runat="server" />
+                </div>
             </fieldset>
             <h2 id="Panel-ClientResourceManagement" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("ClientResourceManagement")%></a></h2>
             <fieldset>
@@ -521,9 +525,9 @@
                         <asp:LinkButton runat="server" ID="btnCompactSearchIndex" CssClass="dnnSecondaryAction" resourcekey="btnCompactSearchIndex" OnClick="CompactSearchIndex" CausesValidation="False" />
                         <asp:LinkButton runat="server" ID="btnHostSearchReindex" CssClass="dnnSecondaryAction" resourcekey="btnHostSearchReindex" OnClick="HostSearchReindex" CausesValidation="False" />
                     </div>
-                </div>
+                </div>                
             </fieldset>
-
+            <dnnext:EditPagePanelExtensionControl runat="server" ID="FileCrawlerSettingsExtensionControl" Module="HostSettings" Name="FileCrawlerSettingsExtensionPoint" />            
         </div>
     </div>
     <div id="otherSettings" class="ssOtherSettings dnnClear">
@@ -612,6 +616,10 @@
                     <asp:CheckBox ID="chkEnableContentLocalization" runat="server" />
                 </div>
                 <div class="dnnFormItem">
+                    <dnn:label id="plDebugMode" controlname="chkDebugMode" runat="server" />
+                    <asp:CheckBox ID="chkDebugMode" runat="server" />
+                </div>
+                <div class="dnnFormItem">
                     <dnn:label id="plAsyncTimeout" controlname="txtAsyncTimeout" runat="server" />
                     <asp:TextBox ID="txtAsyncTimeout" runat="server" MaxLength="4" />
                     <asp:Label runat="server" resourcekey="Seconds" />
@@ -649,6 +657,7 @@
             </div>
         </div>
     </div>
+    
     <ul class="dnnActions dnnClear">
         <li>
             <asp:LinkButton ID="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdUpdate" /></li>
@@ -737,6 +746,18 @@
                 title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationTitle")) %>'
             });
 
+            // extensions
+            var moduleId = <%= ModuleContext.ModuleId %>;
+            if (dnn.searchAdmin && dnn.searchAdmin.extensions && dnn.searchAdmin.extensionsInitializeSettings) {
+                for (var k in dnn.searchAdmin.extensions) {
+                    var extensionSettings = dnn.searchAdmin.extensionsInitializeSettings[k];
+                    var extensionObject = dnn.searchAdmin.extensions[k];
+                    if (extensionSettings && typeof extensionObject.init == 'function') {
+                        extensionSettings.moduleId = moduleId;
+                        dnn.searchAdmin.extensions[k].init(extensionSettings);
+                    }
+                }
+            }
         }
 
         $(document).ready(function () {

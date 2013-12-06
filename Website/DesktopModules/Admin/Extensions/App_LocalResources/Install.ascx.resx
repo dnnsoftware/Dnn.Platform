@@ -259,15 +259,21 @@
     <value>Your site is configured with a maximum file upload size of {0} MB. </value>
   </data>
   <data name="AzureCompact.Text" xml:space="preserve">
-    <value>Install without Sql Azure Compatible Verification?</value>
+    <value>Install Extension without Windows Azure SQL Database verification anyway?</value>
   </data>
   <data name="AzureCompactHelp.Text" xml:space="preserve">
-    <value>The website is currently using SQL Azure as the database server, and the package you are trying to install is not verifed as SQL Azure compatible. If a non-compatible module is installed, it can prevent backups and restores of the database from taking place, and can cause run-time exceptions that are not detected during installation.</value>
+    <value>This site uses Windows Azure SQL Database for database storage, and the package you are currently installing has not been verified by the owner to be compatible with Windows Azure SQL Database. If a non-compatible extension is installed, it can stop successful backups and restores of the database, and can cause run-time errors once the extension is in use. You may continue the installation process if you have verified the compatibility of the extension yourself, or click Cancel and contact the owner of the Extension to ask for an Azure SQL Database compatible version.</value>
   </data>
   <data name="AzureCompactMessage.Text" xml:space="preserve">
-    <value>The package doesn't has Sql Azure Compatible Verification.</value>
+    <value>This package is not verified to be compatible with Azure SQL Database.</value>
   </data>
   <data name="AzureCompactWarning.Text" xml:space="preserve">
-    <value>WARNING: You have selected to install the package without SqlAzure Compatible Verification.</value>
+    <value>WARNING: You have selected to install the package without Windows Azure SQL Database verification.</value>
+  </data>
+  <data name="NoAzureCompactHelp.Text" xml:space="preserve">
+    <value>This site uses Windows Azure SQL Database for database storage, and the package you are currently installing has been verified by the owner to be incompatible with Windows Azure SQL Database. Please click 'Cancel' to end the installation process.</value>
+  </data>
+  <data name="NoAzureCompactMessage.Text" xml:space="preserve">
+    <value>This package is not compatible with the Windows Azure SQL Database.</value>
   </data>
 </root>

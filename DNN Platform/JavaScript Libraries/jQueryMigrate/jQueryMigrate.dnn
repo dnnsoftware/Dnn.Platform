@@ -1,0 +1,46 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="jQuery-Migrate" type="JavaScript_Library" version="01.02.01">
+      <friendlyName>jQuery Migrate JavaScript Library</friendlyName>
+      <description>jQuery Migrate is a JavaScript library that is used to mintain jQuery backwards compatability.</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>DotNetNuke Corporation</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>http://www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <license src="jQuery (MIT).txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="managedPackage" version="1.6.4">jQuery</dependency>
+      </dependencies>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>jQuery-Migrate</libraryName>
+            <fileName>jquery-migrate.js</fileName>
+            <CDNPath>http://code.jquery.com/jquery-migrate-1.2.1.min.js</CDNPath>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>jQuery-Migrate</libraryFolderName>
+            <jsfile>
+              <name>jquery-migrate.js</name>
+            </jsfile>
+          </jsfiles>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>Licenses</basePath>
+            <file>
+              <name>jQuery (MIT).txt</name>
+            </file>
+          </files>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

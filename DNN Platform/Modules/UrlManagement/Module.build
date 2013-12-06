@@ -1,37 +1,11 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\DNN_Platform.build" />
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>dnn_UrlManagement</DNNFileName>
     <PackageName>DNNCE_UrlManagement</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\Admin\UrlManagement</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-      <SourceFiles Include="*.css;*.htm" />
-      <Views Include="*.ascx;" />
-      <ResourceFiles Include="App_LocalResources/*.resx" />
-      <Images Include="Images/*.*" />
-      <JsFiles Include="ClientScripts/*.*" />
-      <Resources Include="@(ResourceFiles);@(Views);@(Images);@(TextFiles);@(SourceFiles);@(JsFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
-  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Copy SourceFiles="@(Views)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\UrlManagement" />
-    <Copy SourceFiles="@(Images)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\UrlManagement\Images" />
-    <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\UrlManagement\ClientScripts" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\UrlManagement" />
-    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\UrlManagement" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\DesktopModules\Admin\UrlManagement\App_LocalResources" />
-  </Target>
+  <Import Project="$(BuildScriptsPath)\Module.Build"/>
 </Project>

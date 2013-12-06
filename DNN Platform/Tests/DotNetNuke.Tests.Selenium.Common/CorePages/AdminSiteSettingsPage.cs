@@ -23,6 +23,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Site Settings"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "SiteManagementModule"; }
+		}
+
 		public static string AdvancedSettingsTab = "//a[@href = '#ssAdvancedSettings']";
 		public static string UsabilitySettingsAccordion = "//h2[@id='dnnSitePanel-Usability']/a";
 		public static string EnablePopups = "//input[contains(@id, 'SiteSettings_enablePopUpsCheckBox')]";

@@ -18,10 +18,12 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System.Xml.XPath;
 
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Installer.Packages;
 
 #endregion
@@ -34,9 +36,6 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	09/02/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PackageDependency : DependencyBase
     {
@@ -57,7 +56,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
                 bool _IsValid = true;
 
                 //Get Package from DataStore
-                PackageInfo package = PackageController.GetPackageByName(PackageName);
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.Name == PackageName);
                 if (package == null)
                 {
                     _IsValid = false;

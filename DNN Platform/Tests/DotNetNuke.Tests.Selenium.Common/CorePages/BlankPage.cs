@@ -20,6 +20,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return ""; }
+		}
+
 		public static string PageDetailsFrameTab = "//li[contains(@id, 'ManageTabs_settingTab')]/a";
 		public static string CopyPageFrameTab = "//li[contains(@id, 'ManageTabs_copyTab')]/a";
 		public static string PermissionsFrameTab = "//li[contains(@id, 'ManageTabs_permissionsTab')]/a";

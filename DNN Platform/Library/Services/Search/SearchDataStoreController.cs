@@ -64,19 +64,25 @@ namespace DotNetNuke.Services.Search
             DataProvider.Instance().DeleteSearchItemWords(SearchItemId);
         }
 
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
         public static SearchItemInfo GetSearchItem(int ModuleId, string SearchKey)
         {
-            return (SearchItemInfo) CBO.FillObject(DataProvider.Instance().GetSearchItem(ModuleId, SearchKey), typeof (SearchItemInfo));
+            var empty=new SearchItemInfo();
+            return empty;
         }
 
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
         public static Dictionary<string, SearchItemInfo> GetSearchItems(int ModuleId)
         {
-            return CBO.FillDictionary<string, SearchItemInfo>("SearchKey", DataProvider.Instance().GetSearchItems(Null.NullInteger, Null.NullInteger, ModuleId));
+            var empty = new Dictionary<string, SearchItemInfo>();
+            return empty;
         }
 
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
         public static ArrayList GetSearchItems(int PortalId, int TabId, int ModuleId)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetSearchItems(PortalId, TabId, ModuleId), typeof (SearchItemInfo));
+            var empty = new ArrayList();
+            return empty;
         }
 
         /// -----------------------------------------------------------------------------
@@ -91,14 +97,18 @@ namespace DotNetNuke.Services.Search
         ///		[cnurse]	11/15/2004	documented
         /// </history>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
         public static SearchResultsInfoCollection GetSearchResults(int PortalID, string Word)
         {
-            return new SearchResultsInfoCollection(CBO.FillCollection(DataProvider.Instance().GetSearchResults(PortalID, Word), typeof (SearchResultsInfo)));
+            var empty = new SearchResultsInfoCollection();
+            return empty;
         }
 
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
         public static SearchResultsInfoCollection GetSearchResults(int PortalId, int TabId, int ModuleId)
         {
-            return new SearchResultsInfoCollection(CBO.FillCollection(DataProvider.Instance().GetSearchResults(PortalId, TabId, ModuleId), typeof (SearchResultsInfo)));
+            var empty = new SearchResultsInfoCollection();
+            return empty;
         }
 
         /// -----------------------------------------------------------------------------

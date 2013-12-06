@@ -2,7 +2,7 @@
 
 <Tests>
 
-  <settings name="P1 CheckList" browser="firefox" baseURL="ce712v2.dnndev.me" InstallerLanguage="en" UserName="host"
+  <settings name="P1 CheckList" browser="chrome" baseURL="ce720v1.dnndev.me" InstallerLanguage="en" UserName="host"
             Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
             DatabaseType="" DatabaseServerName="" DatabaseName="" DatabaseFilename="" ObjectQualifier="" Security=""
             DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" />
@@ -35,7 +35,8 @@
 
   <adminExtensions name="P1 Admin Extensions" adminExtensionToEdit="Banners" />
 
-  <taxonomy name="P1 Taxonomy" vocabularyName = "Vocabulary P1" vocabularyDescription = "Vocabulary description, P1" vocabularyType = "simple" vocabularyScope = "application"/>
+  <taxonomy name="P1 Taxonomy" vocabularyName = "Vocabulary P1" vocabularyDescription = "Vocabulary description, P1" vocabularyType = "simple" vocabularyScope = "application"
+             websiteScopeVocabularyName= "websiteScopeVocabularyName" appScopeVocabularyName= "appScopeVocabularyName" childSiteName="childsitename"/>/>
 
   <siteSettings name="Verify User Registration" userWithPublicRegistration="User With Public Registration"
                 userWithVerifiedRegistration="User With Verified Registration"
@@ -47,4 +48,12 @@
               folderName="Images" />
 
   <languages name="P1 Languages" languagePackToDeploy="it" />
+
+  <adminConfigurationSettings name="Admin Configuration Settings"
+                             providerToInstall="DotNetNuke DNN Tree Navigation Provider"
+                             authSystemToInstall = "DotNetNuke Facebook Authentication Project"
+                             optionalModuleToInstall= ""/>
+
+  <modules name = "P1 Modules" dictionary = "Content"/>
+  
 </Tests>

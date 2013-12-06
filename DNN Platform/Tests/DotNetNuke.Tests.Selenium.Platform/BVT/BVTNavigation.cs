@@ -28,37 +28,24 @@ namespace DNNSelenium.Platform.BVT
 		[TestCase("Platform", "CorePages.AdminGoogleAnalyticsPage", "OpenUsingControlPanel")]
 		[TestCase("Platform", "CorePages.HostPage", "OpenUsingUrl")]
 		[TestCase("Platform", "CorePages.HostPage", "OpenUsingButtons")]
-		public void NavigationToPageCEpackage(string assyName, string pageClassName, string openMethod)
+		public void NavigationToPage(string assyName, string pageClassName, string openMethod)
 		{
 			VerifyStandardPageLayout(OpenPage(assyName, pageClassName, openMethod));
 		}
 
 		[Test]
-		public void NumberOfLinksOnHostPageCEPackage()
+		public void NumberOfLinksOnHostPage()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Number of Links on Host Page'");
-
-			HostBasePage hostPage = new HostPage(_driver);
-			hostPage.OpenUsingUrl(_baseUrl);
-
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of links on Host page: " + HostPage.NumberOfLinks);
-			Assert.That(hostPage.FindElements(By.XPath(HostBasePage.FeaturesList)).Count, Is.EqualTo(HostPage.NumberOfLinks),
-			            "The number of links on Host page is not correct");
-
-			VerifyStandardPageLayout(hostPage);
+			NumberOfLinksOnPage(OpenPage("Platform", "CorePages.HostPage", "OpenUsingUrl"), HostBasePage.FeaturesList, HostPage.NumberOfLinks);
 		}
 
 		[Test]
-		public void NumberOfLinksOnToAdminPageCEPackage()
+		public void NumberOfLinksOnAdminPage()
 		{
-			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Number Of Links on Admin Page'");
-
-			var adminPage = new AdminPage(_driver);
-			adminPage.OpenUsingUrl(_baseUrl);
-
-			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of links on Admin page: " + AdminPage.NumberOfLinks);
-			Assert.That(adminPage.FindElements(By.XPath(AdminBasePage.FeaturesList)).Count, Is.EqualTo(AdminPage.NumberOfLinks),
-			            "The number of links on Admin page is not correct");
+			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Number of Links on Admin Page'");
+			NumberOfLinksOnPage(OpenPage("Platform", "CorePages.AdminPage", "OpenUsingUrl"), AdminBasePage.FeaturesList, AdminPage.NumberOfLinks);
 		}
+
 	}
 }

@@ -43,6 +43,11 @@ namespace DNNSelenium.Common.CorePages
 			get { return "Taxonomy"; }
 		}
 
+		public override string PreLoadedModule
+		{
+			get { return "TaxonomyManagerModule"; }
+		}
+
 		public void OpenUsingUrl(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open Admin '" + PageTitleLabel + "' page:");
