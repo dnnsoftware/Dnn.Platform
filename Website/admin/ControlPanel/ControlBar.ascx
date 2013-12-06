@@ -151,7 +151,7 @@
             </ul>
             <!--close ControlNav-->
             <ul id="ControlActionMenu">
-               <% if (TabPermissionController.HasTabPermission("EDIT,CONTENT,MANAGE"))
+                <% if (TabPermissionController.CanAddContentToPage())
                   {%>
                 <li><a href="javascript:void(0)" id="ControlBar_Action_Menu">
                     <%= GetString("Tool.Modules.Text") %></a>
