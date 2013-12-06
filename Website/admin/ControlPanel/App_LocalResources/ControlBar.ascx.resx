@@ -163,7 +163,7 @@
     <value>Online Help</value>
   </data>
   <data name="Tool.RecycleApp.Text" xml:space="preserve">
-    <value>Recycle Application Pool</value>
+    <value>Recycle Application Domain</value>
   </data>
   <data name="Tool.UploadFile.Text" xml:space="preserve">
     <value>Upload File</value>
