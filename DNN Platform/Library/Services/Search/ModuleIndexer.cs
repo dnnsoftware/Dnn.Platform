@@ -54,9 +54,15 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     public class ModuleIndexer : IndexingProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleIndexer));
+        #region Private Fields
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleIndexer));
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
-        
+
+        #endregion
+
+        #region Public Methods
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Returns the collection of SearchDocuments for the portal.
@@ -136,7 +142,7 @@ namespace DotNetNuke.Services.Search
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = GetSearchModules(portalId);
+            var searchModuleCollection = GetSearchModules(portalId, true);
             foreach (ModuleInfo module in searchModuleCollection)
             {
                 try
@@ -216,6 +222,10 @@ namespace DotNetNuke.Services.Search
         }
         #pragma warning restore 0618
 
+        #endregion
+
+        #region Protected Methods
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of modules that are listed as "Searchable" from the module definition and check if they
@@ -229,50 +239,12 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId)
         {
-            var tabController = new TabController();
-            var moduleController = new ModuleController();
-            var businessControllers = new Hashtable();
-            var searchModuleIds = new HashSet<int>();
-            var searchModules = new List<ModuleInfo>();
-            //Only get modules that are set to be Indexed.
-            var modules = moduleController.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
-            
-            foreach (var module in modules.Where(module => !searchModuleIds.Contains(module.ModuleID)))
-            {
-                try
-                {
-                    var tab = tabController.GetTab(module.TabID, portalId, false);
-                    //Only index modules on tabs that are set to be Indexed.
-                    if(tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"]!=null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
-                    {
-                        //Check if the business controller is in the Hashtable
-                        var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
-                        if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
-                        {
-                            //If nothing create a new instance
-                            if (controller == null)
-                            {
-                                //Add to hashtable
-                                controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                                businessControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
-                            }
-                            //Check if module inherits from ModuleSearchBase
-                            if (controller is ModuleSearchBase) searchModules.Add(module);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                    ThrowLogError(module, ex);
-                }
-                finally
-                {
-                    searchModuleIds.Add(module.ModuleID);
-                }
-            }
-            return searchModules;
+            return GetSearchModules(portalId, false);
         }
+
+        #endregion
+
+        #region Obsolete Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -381,6 +353,10 @@ namespace DotNetNuke.Services.Search
             return results;
         }
 
+        #endregion
+
+        #region Private Methods
+
         private static void ThrowLogError(ModuleInfo module, Exception ex)
         {
             try
@@ -398,6 +374,56 @@ namespace DotNetNuke.Services.Search
                 Exceptions.Exceptions.LogException(ex1);
             }
         }
+
+        protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
+        {
+            var tabController = new TabController();
+            var moduleController = new ModuleController();
+            var businessControllers = new Hashtable();
+            var searchModuleIds = new HashSet<int>();
+            var searchModules = new List<ModuleInfo>();
+            //Only get modules that are set to be Indexed.
+            var modules = moduleController.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
+
+            foreach (var module in modules.Where(module => !searchModuleIds.Contains(module.ModuleID)))
+            {
+                try
+                {
+                    var tab = tabController.GetTab(module.TabID, portalId, false);
+                    //Only index modules on tabs that are set to be Indexed.
+                    if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
+                    {
+                        //Check if the business controller is in the Hashtable
+                        var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
+                        if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
+                        {
+                            //If nothing create a new instance
+                            if (controller == null)
+                            {
+                                //Add to hashtable
+                                controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
+                                businessControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
+                            }
+                        }
+
+                        //Check if module inherits from ModuleSearchBase or include all modules to index module metadata.
+                        if (controller is ModuleSearchBase || allModules) searchModules.Add(module);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    ThrowLogError(module, ex);
+                }
+                finally
+                {
+                    searchModuleIds.Add(module.ModuleID);
+                }
+            }
+            return searchModules;
+        }
+
+        #endregion
 
     }
 }
