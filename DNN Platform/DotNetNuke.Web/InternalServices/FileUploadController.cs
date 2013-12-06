@@ -340,6 +340,8 @@ namespace DotNetNuke.Web.InternalServices
         {
             WebResponse response = null;
             Stream responseStream = null;
+            var mediaTypeFormatter = new JsonMediaTypeFormatter();
+            mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
             try
             {
                 var request = (HttpWebRequest) WebRequest.Create(dto.Url);
@@ -375,8 +377,6 @@ namespace DotNetNuke.Web.InternalServices
                          * because IE9 with iframe-transport manages the response 
                          * as a file download 
                          */
-                        var mediaTypeFormatter = new JsonMediaTypeFormatter();
-                        mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
 
                         return Request.CreateResponse(HttpStatusCode.OK,
                                                       new {AlreadyExists = alreadyExists, Message = errorMessage},
@@ -396,8 +396,8 @@ namespace DotNetNuke.Web.InternalServices
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.OK,
-                                              new {AlreadyExists = false, Message = ex.Message}, "text/plain");
+                return Request.CreateResponse(HttpStatusCode.OK, new {AlreadyExists = false, Message = ex.Message},
+                    mediaTypeFormatter, "text/plain");
             }
             finally
             {
