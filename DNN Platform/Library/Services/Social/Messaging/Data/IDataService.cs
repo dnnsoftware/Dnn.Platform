@@ -53,6 +53,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         int CountArchivedMessagesByConversation(int conversationId);
         int CountSentMessages(int userId, int portalId);
         int CountArchivedMessages(int userId, int portalId);
+        int CheckReplyHasRecipients(int conversationId, int userId);
         
         #endregion
 

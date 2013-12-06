@@ -284,6 +284,21 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         }
 
         [HttpGet]
+        public HttpResponseMessage CheckReplyHasRecipients(int conversationId)
+        {
+            try
+            {
+                var recipientCount = InternalMessagingController.Instance.CheckReplyHasRecipients(conversationId, UserController.GetCurrentUserInfo().UserID);
+                return Request.CreateResponse(HttpStatusCode.OK, recipientCount);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpGet]
         public HttpResponseMessage CountNotifications()
         {
             try

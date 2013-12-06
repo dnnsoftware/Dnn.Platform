@@ -153,6 +153,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
                 throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
             }
 
+
             //Profanity Filter
             var profanityFilterSetting = GetPortalSetting("MessagingProfanityFilters", sender.PortalID, "NO");
             if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
@@ -327,6 +328,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         #endregion
 
         #region Counter APIs
+
+        public virtual int CheckReplyHasRecipients(int conversationId, int userId)
+        {
+            return _dataService.CheckReplyHasRecipients(conversationId, userId);
+        }
 
         public virtual int CountArchivedMessagesByConversation(int conversationId)
         {

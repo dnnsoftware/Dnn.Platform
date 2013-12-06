@@ -120,6 +120,8 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         #region Counter APIs
 
+        int CheckReplyHasRecipients(int conversationId , int userId);
+
         int CountUnreadMessages(int userId, int portalId);
 
         int CountConversations(int userId, int portalId);

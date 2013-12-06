@@ -202,6 +202,9 @@
 
         //use an observable value to show/hide the replies list
         self.showReplies = ko.observable(false);
+        
+        //use an observable value to decide if a reply is possible
+        self.replyHasRecipients = ko.observable(true);
 
         self.threadSubject = ko.observable('');
         self.threadTo = ko.observable('');
@@ -282,7 +285,32 @@
             History.pushState({ view: 'messages', action: 'thread', conversationId: message.ConversationId }, "", "?view=messages&action=thread&t=" + self.fetch_unix_timestamp());
         };
 
+        self.checkReplyHasRecipients = function (conversationId) {
+            var returnValue = 0; // If the call fails, just return 0.
+
+            $.ajax({
+                type: "GET",
+                beforeSend: serviceFramework.setModuleHeaders,
+                url: baseServicepath + "CheckReplyHasRecipients",
+                async: false,
+                cache: false,
+                data: { conversationId: conversationId }
+            }).done(function (data) {
+                if ($.type(data) === "number") {
+                    returnValue = data;
+                }
+            });
+
+            if (returnValue == 0) {
+                self.replyHasRecipients(false);
+                displayMessage("#dnnCoreMessaging", settings.replyHasNoRecipientsText, "dnnFormWarning");
+            } else {
+                self.replyHasRecipients(true);
+            }
+        };
+        
         self.sendThreadRequestHandler = function (conversationId, afterMessageId) {
+            self.checkReplyHasRecipients(conversationId);
             $.ajax({
                 type: "GET",
                 url: baseServicepath + "Thread",
@@ -786,7 +814,7 @@
             var body = $(containerElement + " #replyMessage").val();
             if (body.length == 0) return;
             var conversationId = self.messagethreads()[0].ConversationId;
-
+            displayMessage("#dnnCoreMessaging", "test", "dnnFormWarning");
             $.ajax({
                 type: "POST",
                 url: baseServicepath + "Reply",
