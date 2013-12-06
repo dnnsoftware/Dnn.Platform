@@ -173,6 +173,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 pnlChange.Visible = true;
                 cmdUpdate.Visible = true;
                 oldPasswordRow.Visible = false;
+                lblChangeHelp.Text = Localization.GetString("AdminChangeHelp", LocalResourceFile);
             }
             else
             {
