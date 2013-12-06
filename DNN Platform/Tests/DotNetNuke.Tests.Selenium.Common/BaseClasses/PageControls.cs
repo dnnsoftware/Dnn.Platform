@@ -154,7 +154,9 @@ namespace DNNSelenium.Common.BaseClasses
 			Trace.WriteLine(BasePage.TraceLevelElement + "Select '" + value + "' in the list '" + _dropDownId + "'");
 
 			BasePage.WaitForElement(_driver,_dropDownId).Click();
-			BasePage.WaitForElement(_driver, By.XPath("//div[contains(@class, '-tree')]//a[text() = '" + value + "']")).ScrollIntoView().Click();
+			BasePage.WaitForElement(_driver, By.XPath("//div[contains(@class, '-tree')]//a[text() = '" + value + "']")).ScrollIntoView().WaitTillVisible();
+			BasePage.WaitForElement(_driver, By.XPath("//div[contains(@class, '-tree')]//a[text() = '" + value + "']")).Click();
+
 			BasePage.WaitForElement(_driver, By.XPath("//a[@class = 'selected-value' and text() ='" + value + "']")).Info();
 		}
 
