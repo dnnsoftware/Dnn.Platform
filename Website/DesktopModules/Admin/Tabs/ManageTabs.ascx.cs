@@ -379,14 +379,14 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                 if (!Null.IsNull(Tab.StartDate))
                 {
-                    datepickerStartDate.SelectedDate = Tab.StartDate;
+                    startDatePicker.SelectedDate = Tab.StartDate;
                 }
                 if (!Null.IsNull(Tab.EndDate))
                 {
-                    datepickerEndDate.SelectedDate = Tab.EndDate;
+                    endDatePicker.SelectedDate = Tab.EndDate;
                 }
 
-                datepickerEndDate.MinDate = DateTime.Now;
+                endDatePicker.MinDate = DateTime.Now;
 
                 if (Tab.RefreshInterval != Null.NullInteger)
                 {
@@ -868,10 +868,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 }
             }
 
-            Tab.StartDate = datepickerStartDate.SelectedDate != null ? datepickerStartDate.SelectedDate.Value : Null.NullDate;
-            Tab.EndDate = datepickerEndDate.SelectedDate != null ? datepickerEndDate.SelectedDate.Value : Null.NullDate;
+            Tab.StartDate = startDatePicker.SelectedDate != null ? startDatePicker.SelectedDate.Value : Null.NullDate;
+            Tab.EndDate = endDatePicker.SelectedDate != null ? endDatePicker.SelectedDate.Value : Null.NullDate;
 
-            if (Tab.StartDate > Null.NullDate && Tab.EndDate > Null.NullDate && Tab.StartDate.AddDays(1) >= Tab.EndDate)
+            if (Tab.StartDate > Null.NullDate && Tab.EndDate > Null.NullDate && Tab.StartDate >= Tab.EndDate)
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InvalidTabDates", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 return Null.NullInteger;
