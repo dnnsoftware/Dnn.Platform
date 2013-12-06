@@ -39,8 +39,8 @@
             }
             var childContext;
             var $childNodeElement;
-
             var $childrenNodeElement = $("<ul/>");
+
             $childrenNodeElement.addClass(this.options.nodeListCss);
             if (isRoot) {
                 $childrenNodeElement.addClass(this.options.rootCss);

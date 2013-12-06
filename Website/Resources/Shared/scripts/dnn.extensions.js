@@ -339,3 +339,8 @@ dnn.uid = (function () {
         return (prefix || "id") + (id++);
     };
 })();
+
+dnn.isUrl = function(url) {
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(url);
+};

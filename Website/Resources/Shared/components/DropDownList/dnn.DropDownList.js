@@ -64,7 +64,7 @@
         },
 
         _createLayout: function () {
-            var layout = $("<div class='" + this.options.containerCss + "'/>")
+            var layout = $("<div id='" + (this.options.containerId || dnn.uid()) + "' class='" + this.options.containerCss + "'/>")
                     .append($("<div class='" + this.options.selectedItemCss + "'/>")
                         .append($("<a href='javascript:void(0);' class='" + this.options.selectedValueCss + "'/>")));
             return layout;
@@ -116,7 +116,7 @@
         _onCloseItemList: function () {
             this._$selectedItemCaption.removeClass(this.options.openedItemListCss);
             $(document).off("click." + this._id, this._onDocumentClickHandler);
-            dnn.removeElement(this._$treeViewLayout[0]);
+            this._$treeViewLayout.detach(); // keeps all jQuery data associated with the removed element
         },
 
         _openItemList: function () {

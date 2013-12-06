@@ -20,10 +20,8 @@
     color: #999;
     text-decoration: none;
     margin: 0;
-    width: 200px;
     -webkit-border-radius: 3px;
     border-radius: 3px;
-    width: 100%;
     position: relative;
 }
 
@@ -34,6 +32,7 @@
 .dnnDropDownList .selected-item a:active {
     padding: 7px;
     display: block;
+    height: 18px;
     margin: 0;
     color: #333;
     white-space: nowrap;
@@ -44,6 +43,7 @@
     border-left: 5px solid transparent;
     border-right: 14px solid transparent;
     text-overflow: ellipsis;
+    /*outline: #ececec solid thin;*/
 }
 
 .dnnDropDownList .selected-item a.opened,
@@ -241,7 +241,7 @@
 /* in form style */
 .dnnFormItem .dnnDropDownList {
     width: 47%;
-    max-width: 443px;
+    max-width: 445px;
     margin-bottom: 18px;
 }
 

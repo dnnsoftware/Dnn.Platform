@@ -29,11 +29,13 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Runtime.Serialization;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-
+using ClientDependency.Core;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
@@ -121,7 +123,7 @@ namespace DotNetNuke.Web.InternalServices
             var portalSettings = PortalSettings;
             var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = UserInfo;
-            var task = request.Content.ReadAsMultipartAsync(provider)            
+            var task = request.Content.ReadAsMultipartAsync(provider)
                 .ContinueWith(o =>
                     {
                         string folder = string.Empty;
@@ -199,7 +201,7 @@ namespace DotNetNuke.Web.InternalServices
                                 new
                                 {
                                     AlreadyExists = alreadyExists,
-                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage)
+                                    Message = errorMessage
                                 }, mediaTypeFormatter, "text/plain");
                         }
 
@@ -217,12 +219,12 @@ namespace DotNetNuke.Web.InternalServices
 
             return task; 
         }
-         
-        private string SaveFile(Stream stream, PortalSettings portalSettings, UserInfo userInfo, string folder, string filter, string fileName, bool overwrite, bool isHostMenu, bool extract, out bool alreadyExists, out string errorMessage)
+
+        private static string SaveFile(Stream stream, PortalSettings portalSettings, UserInfo userInfo, string folder, string filter, string fileName, bool overwrite, bool isHostMenu, bool extract, out bool alreadyExists, out string errorMessage)
         {
             alreadyExists = false;
             try
-            {                
+            {
                 var extension = Path.GetExtension(fileName).Replace(".", "");
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
                 {
@@ -238,18 +240,19 @@ namespace DotNetNuke.Web.InternalServices
 
                 var folderManager = FolderManager.Instance;
 
-                // Check if this is a User Folder                
-                IFolderInfo folderInfo;
-                var userFolder = folderManager.GetUserFolder(userInfo);
-                if (folder.ToLowerInvariant().StartsWith(userFolder.FolderPath.ToLowerInvariant()))
+                // Check if this is a User Folder
+                var effectivePortalId = isHostMenu ? -1 : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
+                if (folder.ToLowerInvariant().StartsWith("users/") && folder.EndsWith(string.Format("/{0}/", userInfo.UserID)))
                 {
-                    var effectivePortalId = userInfo.IsSuperUser ? -1 : PortalController.GetEffectivePortalId(userInfo.PortalID);
-                    folderInfo = folderManager.GetFolder(effectivePortalId, folder);
-                }
-                else
-                {
-                    var portalId = isHostMenu ? -1 : portalSettings.PortalId;
-                    folderInfo = folderManager.GetFolder(portalId, folder);
+                    // Make sure the user folder exists
+                    if (folderInfo == null)
+                    {
+                        // Add User folder
+                        // fix user's portal id
+                        userInfo.PortalID = effectivePortalId;
+                        folderInfo = ((FolderManager)folderManager).AddUserFolder(userInfo);
+                    }
                 }
 
                 if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE")) 
@@ -287,7 +290,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private static string GetLocalizedString(string key)
         {
-            string resourceFile = "/App_GlobalResources/FileUpload.resx";
+            const string resourceFile = "/App_GlobalResources/FileUpload.resx";
             return Localization.GetString(key, resourceFile);
         }
 
@@ -296,7 +299,7 @@ namespace DotNetNuke.Web.InternalServices
             return folderPath.ToLowerInvariant().StartsWith("users/") && folderPath.EndsWith(string.Format("/{0}/", UserInfo.UserID));
         }
 
-        private string ShowImage(int fileId)
+        private static string ShowImage(int fileId)
         {
             var image = (Services.FileSystem.FileInfo)FileManager.Instance.GetFile(fileId);
 
@@ -309,16 +312,106 @@ namespace DotNetNuke.Web.InternalServices
             return null;
         }
 
-        private bool IsImageExtension(string extension)
+        private static bool IsImageExtension(string extension)
         {
             var imageExtensions = new List<string> { "JPG", "JPE", "BMP", "GIF", "PNG", "JPEG", "ICO" }; 
             return imageExtensions.Contains(extension.ToUpper());
         }
 
-        private bool IsAllowedExtension(string extension)
+        private static bool IsAllowedExtension(string extension)
         {
             return !string.IsNullOrEmpty(extension)
                    && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension);
         }
+
+        public class UploadByUrlDto
+        {
+            public string Url { get; set; }
+            public string Folder { get; set; }
+            public bool Overwrite { get; set; }
+            public bool Unzip { get; set; }
+            public string Filter { get; set; }
+            public bool IsHostMenu { get; set; }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UploadByUrl(UploadByUrlDto dto)
+        {
+            WebResponse response = null;
+            Stream responseStream = null;
+            var mediaTypeFormatter = new JsonMediaTypeFormatter();
+            mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
+            try
+            {
+                var request = (HttpWebRequest) WebRequest.Create(dto.Url);
+                request.Credentials = CredentialCache.DefaultCredentials;
+                response = request.GetResponse();
+                responseStream = response.GetResponseStream();
+                if (responseStream == null)
+                {
+                    throw new Exception("No server response");
+                }
+                var inMemoryStream = new MemoryStream();
+                {
+                    var count = 0;
+                    do
+                    {
+                        var buffer = new byte[4096];
+                        count = responseStream.Read(buffer, 0, 4096);
+                        inMemoryStream.Write(buffer, 0, count);
+                    } while (responseStream.CanRead && count > 0);
+
+                    string errorMessage;
+                    bool alreadyExists;
+
+                    var segments = dto.Url.Split('/');
+                    var fileName = segments[segments.Length - 1];
+                    var returnFilename = SaveFile(inMemoryStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
+                                                  fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip, out alreadyExists,
+                                                  out errorMessage);
+
+                    if (string.IsNullOrEmpty(returnFilename))
+                    {
+                        /* Response Content Type cannot be application/json 
+                         * because IE9 with iframe-transport manages the response 
+                         * as a file download 
+                         */
+
+                        return Request.CreateResponse(HttpStatusCode.OK,
+                                                      new {AlreadyExists = alreadyExists, Message = errorMessage},
+                                                      mediaTypeFormatter, "text/plain");
+                    }
+
+                    var root = AppDomain.CurrentDomain.BaseDirectory;
+                    returnFilename = returnFilename.Replace(root, "~/");
+                    returnFilename = VirtualPathUtility.ToAbsolute(returnFilename);
+
+                    return new HttpResponseMessage
+                        {
+                            StatusCode = HttpStatusCode.OK,
+                            Content = new StringContent(returnFilename)
+                        };
+                }
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new {AlreadyExists = false, Message = ex.Message},
+                    mediaTypeFormatter, "text/plain");
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+                if (responseStream != null)
+                {
+                    responseStream.Close();
+                }
+            }
+        }
+
     }
+
 }

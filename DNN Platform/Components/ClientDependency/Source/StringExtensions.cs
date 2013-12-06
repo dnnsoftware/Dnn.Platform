@@ -114,5 +114,10 @@ namespace ClientDependency.Core
             return isExt;
         }
 
+        public static string TextOrEmpty(this string text)
+        {
+            return text ?? string.Empty;
+        }
+
     }
 }
