@@ -69,8 +69,8 @@ dnn.controls.triStateManager = function (images, toolTips) {
             } else {
                 //if other permissions are set to true must have View
                 if (state === 'True') {
-                    var $view = $collection.filter('viewPermission');
-                    $collection.each(function (index, elem) {
+                    var $view = $collection.filter('input.viewPermission');
+                    $view.each(function (index, elem) {
                         var $elem = jQuery(elem);
                         if (!$elem.hasClass('lockedPerm')) {
                             elem.value = state;
