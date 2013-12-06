@@ -290,8 +290,10 @@ namespace DotNetNuke.Security.Permissions
 
         private bool HasPagePermission(TabInfo tab, string permissionKey)
         {
-            return PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
-                || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey));
+            return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
+                || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
+                && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey))
+                && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
         }
 
         private bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
