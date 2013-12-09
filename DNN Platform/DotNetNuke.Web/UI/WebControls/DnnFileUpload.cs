@@ -71,6 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.WebResourceUrl.js", FileOrder.Js.DefaultPriority + 2);
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 3);
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/jquery/jquery.fileupload.js", FileOrder.Js.DefaultPriority + 3);
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload.js", FileOrder.Js.DefaultPriority + 4);
         }
 
