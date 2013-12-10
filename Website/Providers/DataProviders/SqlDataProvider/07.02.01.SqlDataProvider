@@ -369,6 +369,304 @@ if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSkin]
 GO
 
+/*DNN-3214 - Modify GetSiteLogXX stored procedures to make them Azure compliant (Remove string literals as column aliases) */
+/**************************************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog1]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog1]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog12]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog12]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog2]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog2]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog3]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog3]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog4]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog4]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog5]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog5]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog6]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog6]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog7]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog7]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog8]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog8]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog9]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog9]
+GO
+
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog1
+
+@PortalID int,
+@PortalAlias nvarchar(50),
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select convert(varchar,DateTime,102) AS 'Date',
+ count(*) AS 'Views',
+ count(distinct {databaseOwner}{objectQualifier}SiteLog.UserHostAddress) AS 'Visitors',
+ count(distinct {databaseOwner}{objectQualifier}SiteLog.UserId) 'Users'
+from {databaseOwner}{objectQualifier}SiteLog
+where PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+group by convert(varchar,DateTime,102)
+order by Date desc
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog2
+
+@PortalID int,
+@PortalAlias nvarchar(50),
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select {databaseOwner}{objectQualifier}SiteLog.DateTime, 
+ case
+when {databaseOwner}{objectQualifier}SiteLog.UserId is null then null
+else {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName
+end AS 'Name',
+ case 
+ when {databaseOwner}{objectQualifier}SiteLog.Referrer like '%' + @PortalAlias + '%' then null 
+ else {databaseOwner}{objectQualifier}SiteLog.Referrer
+ end AS 'Referrer', 
+ case 
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/5%' then 'Netscape Navigator 6+'
+ else {databaseOwner}{objectQualifier}SiteLog.UserAgent
+ end 'UserAgent',
+ {databaseOwner}{objectQualifier}SiteLog.UserHostAddress,
+ {databaseOwner}{objectQualifier}Tabs.TabName
+from {databaseOwner}{objectQualifier}SiteLog
+left outer join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}SiteLog.UserId = {databaseOwner}{objectQualifier}Users.UserId 
+left outer join {databaseOwner}{objectQualifier}Tabs on {databaseOwner}{objectQualifier}SiteLog.TabId = {databaseOwner}{objectQualifier}Tabs.TabId 
+where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+order by {databaseOwner}{objectQualifier}SiteLog.DateTime desc
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog3
+
+	@PortalID int,
+	@PortalAlias nvarchar(50),
+	@StartDate datetime,
+	@EndDate datetime
+
+as
+
+select {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {databaseOwner}{objectQualifier}Users.LastName AS 'Name',
+	count(*) AS 'Requests',
+	max(DateTime) AS 'LastRequest'
+from {databaseOwner}{objectQualifier}SiteLog
+inner join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}SiteLog.UserId = {databaseOwner}{objectQualifier}Users.UserId
+where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+and {databaseOwner}{objectQualifier}SiteLog.UserId is not null
+group by {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {databaseOwner}{objectQualifier}Users.LastName
+order by Requests desc
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog4
+
+@PortalID int,
+@PortalAlias nvarchar(50),
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select Referrer,
+ count(*) AS 'Requests',
+ max(DateTime) AS 'LastRequest'
+from {databaseOwner}{objectQualifier}SiteLog
+where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+and Referrer is not null
+and Referrer not like '%' + @PortalAlias + '%'
+group by Referrer
+order by Requests desc
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog5
+
+@PortalID int,
+@PortalAlias nvarchar(50),
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select
+ case 
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/5%' then 'Netscape Navigator 6+'
+ else {databaseOwner}{objectQualifier}SiteLog.UserAgent
+ end AS 'UserAgent',
+ count(*) AS 'Requests',
+ max(DateTime) AS 'LastRequest'
+from {databaseOwner}{objectQualifier}SiteLog
+where PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+group by case 
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
+ when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/5%' then 'Netscape Navigator 6+'
+ else {databaseOwner}{objectQualifier}SiteLog.UserAgent
+ end
+order by Requests desc
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog6
+
+@PortalID int,
+@PortalAlias nvarchar(50),
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select datepart(hour,DateTime) AS 'Hour',
+ count(*) AS 'Views',
+ count(distinct {databaseOwner}{objectQualifier}SiteLog.UserHostAddress) AS 'Visitors',
+ count(distinct {databaseOwner}{objectQualifier}SiteLog.UserId) AS 'Users'
+from {databaseOwner}{objectQualifier}SiteLog
+where PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+group by datepart(hour,DateTime)
+order by Hour
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog7
+
+@PortalID int,
+@PortalAlias nvarchar(50),
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select datepart(weekday,DateTime) AS 'WeekDay',
+ count(*) AS 'Views',
+ count(distinct {databaseOwner}{objectQualifier}SiteLog.UserHostAddress) AS 'Visitors',
+ count(distinct {databaseOwner}{objectQualifier}SiteLog.UserId) AS 'Users'
+from {databaseOwner}{objectQualifier}SiteLog
+where PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+group by datepart(weekday,DateTime)
+order by WeekDay
+GO
+
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog8
+
+@PortalID int,
+@PortalAlias nvarchar(50),
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select datepart(month,DateTime) AS 'Month',
+ count(*) AS 'Views',
+ count(distinct {databaseOwner}{objectQualifier}SiteLog.UserHostAddress) AS 'Visitors',
+ count(distinct {databaseOwner}{objectQualifier}SiteLog.UserId) AS 'Users'
+from {databaseOwner}{objectQualifier}SiteLog
+where PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+group by datepart(month,DateTime)
+order by Month
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog9
+
+@PortalID int,
+@PortalAlias nvarchar(50),
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select {databaseOwner}{objectQualifier}Tabs.TabName AS 'Page',
+ count(*) AS 'Requests',
+ max(DateTime) AS 'LastRequest'
+from {databaseOwner}{objectQualifier}SiteLog
+inner join {databaseOwner}{objectQualifier}Tabs on {databaseOwner}{objectQualifier}SiteLog.TabId = {databaseOwner}{objectQualifier}Tabs.TabId
+where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+and {databaseOwner}{objectQualifier}SiteLog.TabId is not null
+group by {databaseOwner}{objectQualifier}Tabs.TabName
+order by Requests desc
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog12
+
+@PortalID int,
+@PortalAlias nvarchar(50),
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select AffiliateId,
+ count(*) AS 'Requests',
+ max(DateTime) AS 'LastReferral'
+from {databaseOwner}{objectQualifier}SiteLog
+where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
+and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+and AffiliateId is not null
+group by AffiliateId
+order by Requests desc
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
