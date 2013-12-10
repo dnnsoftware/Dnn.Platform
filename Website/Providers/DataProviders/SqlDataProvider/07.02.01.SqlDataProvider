@@ -908,7 +908,7 @@ GO
 /* DNN-3017 Add Indexes */
 /************************/
 
-IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Files_FolderID' AND object_id = OBJECT_ID('{objectQualifier}Files'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_FolderID' AND object_id = OBJECT_ID('{objectQualifier}Files'))
     BEGIN
         CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files_FolderID] ON {databaseOwner}[{objectQualifier}Files] 
 			(
@@ -917,7 +917,7 @@ IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Fi
     END
 GO
 
-IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogConfigID' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogConfigID' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
     BEGIN
         CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogConfigID] ON {databaseOwner}[{objectQualifier}EventLog] 
 			(
@@ -932,7 +932,7 @@ IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Ev
     END
 GO
 
-IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogCreateDate' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogCreateDate' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
     BEGIN
         CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogCreateDate] ON {databaseOwner}[{objectQualifier}EventLog] 
 			(
@@ -945,7 +945,7 @@ IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Ev
     END
 GO
 
-IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}UrlTracking_Url_ModuleId' AND object_id = OBJECT_ID('{objectQualifier}UrlTracking'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}UrlTracking_Url_ModuleId' AND object_id = OBJECT_ID('{objectQualifier}UrlTracking'))
     BEGIN
         CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UrlTracking_Url_ModuleId] ON {databaseOwner}[{objectQualifier}UrlTracking] 
 			(
@@ -960,7 +960,7 @@ IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Ur
     END
 GO
 
-IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}UrlTracking_ModuleId' AND object_id = OBJECT_ID('{objectQualifier}UrlTracking'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}UrlTracking_ModuleId' AND object_id = OBJECT_ID('{objectQualifier}UrlTracking'))
     BEGIN
         CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UrlTracking_ModuleId] ON {databaseOwner}[{objectQualifier}UrlTracking] 
 			(
@@ -969,7 +969,7 @@ IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Ur
     END
 GO
 
-IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}ContentItems_TabID' AND object_id = OBJECT_ID('{objectQualifier}ContentItems'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ContentItems_TabID' AND object_id = OBJECT_ID('{objectQualifier}ContentItems'))
     BEGIN
         CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_TabID] ON {databaseOwner}[{objectQualifier}ContentItems] 
 			(
@@ -978,7 +978,7 @@ IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Co
     END
 GO
 
-IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Tabs_ParentId_IsDeleted' AND object_id = OBJECT_ID('{objectQualifier}Tabs'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Tabs_ParentId_IsDeleted' AND object_id = OBJECT_ID('{objectQualifier}Tabs'))
     BEGIN
         CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted] ON {databaseOwner}[{objectQualifier}Tabs] 
 			(
@@ -992,7 +992,7 @@ IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Ta
     END
 GO
 
-IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Tabs_ParentId_IsDeleted_2' AND object_id = OBJECT_ID('{objectQualifier}Tabs'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Tabs_ParentId_IsDeleted_2' AND object_id = OBJECT_ID('{objectQualifier}Tabs'))
     BEGIN
         CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted_2] ON {databaseOwner}[{objectQualifier}Tabs] 
 			(
@@ -1038,7 +1038,7 @@ IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Ta
     END
 GO
 
-IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_ModuleID' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_ModuleID' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
     BEGIN
         CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules] 
 			(
