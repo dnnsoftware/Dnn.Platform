@@ -1430,6 +1430,11 @@ namespace DotNetNuke.Entities.Users
                 var objEventLog = new EventLogController();
                 objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
+                //Delete userFolder - DNN-3787
+                var userFolder = FolderManager.Instance.GetUserFolder(user);
+                var notDeletedSubfolders = new List<IFolderInfo>();
+                FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
+
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);
             }
