@@ -668,6 +668,243 @@ group by AffiliateId
 order by Requests desc
 GO
 
+/*DNN-3216 - String literals as column aliases in SP (not allowed in SQL Azure) */
+/*******************************************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAffiliates]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAffiliates]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalSpaceUsed]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSpaceUsed]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTables]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTables]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUrLLog]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUrLLog]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetVendorClassifications]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetVendorClassifications]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetVendors]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetVendors]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetVendorsByEmail]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetVendorsByEmail]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetVendorsByName]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetVendorsByName]
+GO
+
+
+
+create procedure {databaseOwner}{objectQualifier}GetAffiliates
+
+@VendorId int
+
+as
+
+select AffiliateId,
+       StartDate,
+       EndDate,
+       CPC,
+       Clicks,
+       Clicks * CPC AS 'CPCTotal',
+       CPA,
+       Acquisitions,
+       Acquisitions * CPA 'CPATotal'
+from   {databaseOwner}{objectQualifier}Affiliates
+where  VendorId = @VendorId
+order  by StartDate desc
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortalSpaceUsed
+	@PortalID int
+AS
+
+SELECT SUM(CAST(Size as bigint)) AS 'SpaceUsed'
+FROM   {objectQualifier}Files
+WHERE  ((PortalId = @PortalID) OR (@PortalID is null and PortalId is null))
+GO
+
+
+ create procedure {databaseOwner}{objectQualifier}GetTables
+
+as
+
+/* Be carefull when changing this procedure as the GetSearchTables() function 
+   in SearchDB.cs is only looking at the first column (to support databases that cannot return 
+   a TableName column name (like MySQL))
+*/
+
+select [name] AS 'TableName'
+from   sysobjects 
+where  xtype = 'U'
+GO
+
+
+ create procedure {databaseOwner}{objectQualifier}GetUrlLog
+
+@URLTrackingID int,
+@StartDate     datetime,
+@EndDate       datetime
+
+as
+
+select {databaseOwner}{objectQualifier}UrlLog.*,
+       {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {databaseOwner}{objectQualifier}Users.LastName AS 'FullName'
+from   {databaseOwner}{objectQualifier}UrlLog
+inner join {databaseOwner}{objectQualifier}UrlTracking on {databaseOwner}{objectQualifier}UrlLog.UrlTrackingId = {databaseOwner}{objectQualifier}UrlTracking.UrlTrackingId
+left outer join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}UrlLog.UserId = {databaseOwner}{objectQualifier}Users.UserId
+where  {databaseOwner}{objectQualifier}UrlLog.UrlTrackingID = @UrlTrackingID
+and    ((ClickDate >= @StartDate) or @StartDate is null)
+and    ((ClickDate <= @EndDate) or @EndDate is null)
+order by ClickDate
+GO
+
+
+create procedure {databaseOwner}{objectQualifier}GetVendorClassifications
+
+@VendorId  int
+
+as
+
+select ClassificationId,
+       ClassificationName,
+       case when exists ( select 1 from {databaseOwner}{objectQualifier}VendorClassification vc where vc.VendorId = @VendorId and vc.ClassificationId = {objectQualifier}Classification.ClassificationId ) then 1 else 0 end AS 'IsAssociated'
+from {databaseOwner}{objectQualifier}Classification
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetVendors
+	@PortalID int,
+	@UnAuthorized bit,
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		VendorId	int
+	)
+
+	INSERT INTO #PageIndex (VendorId)
+	SELECT VendorId
+	FROM {objectQualifier}Vendors
+	WHERE ( ((Authorized = 0 AND @UnAuthorized = 1) OR @UnAuthorized = 0 ) AND ((PortalId = @PortalID) or (@PortalID is null and PortalId is null)) )
+	ORDER BY VendorId DESC
+
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+
+
+	SELECT {databaseOwner}{objectQualifier}Vendors.*,
+       		( select count(*) from {databaseOwner}{objectQualifier}Banners where {databaseOwner}{objectQualifier}Banners.VendorId = {databaseOwner}{objectQualifier}Vendors.VendorId ) AS 'Banners'
+	FROM {databaseOwner}{objectQualifier}Vendors
+	INNER JOIN #PageIndex PageIndex
+		ON {databaseOwner}{objectQualifier}Vendors.VendorId = PageIndex.VendorId
+	WHERE ( (PageIndex.IndexID > @PageLowerBound) OR @PageLowerBound is null )	
+		AND ( (PageIndex.IndexID < @PageUpperBound) OR @PageUpperBound is null )	
+	ORDER BY
+		PageIndex.IndexID
+GO
+
+ CREATE procedure {databaseOwner}{objectQualifier}GetVendorsByEmail
+	@Filter nvarchar(50),
+	@PortalID int,
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		VendorId	int
+	)
+
+	INSERT INTO #PageIndex (VendorId)
+	SELECT VendorId
+	FROM {databaseOwner}{objectQualifier}Vendors
+	WHERE ( (Email like @Filter + '%') AND ((PortalId = @PortalID) or (@PortalID is null and PortalId is null)) )
+	ORDER BY VendorId DESC
+
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+
+
+	SELECT {databaseOwner}{objectQualifier}Vendors.*,
+       		( select count(*) from {databaseOwner}{objectQualifier}Banners where {databaseOwner}{objectQualifier}Banners.VendorId = {databaseOwner}{objectQualifier}Vendors.VendorId ) AS 'Banners'
+	FROM {databaseOwner}{objectQualifier}Vendors
+	INNER JOIN #PageIndex PageIndex
+		ON {databaseOwner}{objectQualifier}Vendors.VendorId = PageIndex.VendorId
+	WHERE ( (PageIndex.IndexID > @PageLowerBound) OR @PageLowerBound is null )	
+		AND ( (PageIndex.IndexID < @PageUpperBound) OR @PageUpperBound is null )	
+	ORDER BY
+		PageIndex.IndexID
+GO
+
+
+ CREATE procedure {databaseOwner}{objectQualifier}GetVendorsByName
+	@Filter nvarchar(50),
+	@PortalID int,
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		VendorId	int
+	)
+
+	INSERT INTO #PageIndex (VendorId)
+	SELECT VendorId
+	FROM {databaseOwner}{objectQualifier}Vendors
+	WHERE ( (VendorName like @Filter + '%') AND ((PortalId = @PortalID) or (@PortalID is null and PortalId is null)) )
+	ORDER BY VendorId DESC
+
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+
+
+	SELECT {databaseOwner}{objectQualifier}Vendors.*,
+       		( select count(*) from {databaseOwner}{objectQualifier}Banners where {databaseOwner}{objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId ) AS 'Banners'
+	FROM {databaseOwner}{objectQualifier}Vendors
+	INNER JOIN #PageIndex PageIndex
+		ON {databaseOwner}{objectQualifier}Vendors.VendorId = PageIndex.VendorId
+	WHERE ( (PageIndex.IndexID > @PageLowerBound) OR @PageLowerBound is null )	
+		AND ( (PageIndex.IndexID < @PageUpperBound) OR @PageUpperBound is null )	
+	ORDER BY
+		PageIndex.IndexID
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
