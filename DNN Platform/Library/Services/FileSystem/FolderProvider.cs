@@ -289,7 +289,7 @@ namespace DotNetNuke.Services.FileSystem
                 var newSubFolderPath = newFolderPath + subFolderPath.Substring(folderPath.Length);
                 AddFolderAndMoveFiles(subFolderPath, newSubFolderPath, folderMapping);
 
-                folderProvider.DeleteFolder(new FolderInfo { FolderPath = subFolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.FolderMappingID });
+                folderProvider.DeleteFolder(new FolderInfo { FolderPath = subFolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID });
             }
 
             folderProvider.DeleteFolder(new FolderInfo { FolderPath = folderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID });
