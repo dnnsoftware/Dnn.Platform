@@ -384,4 +384,13 @@
   <data name="ProfileProperties_Twitter.Text" xml:space="preserve">
     <value>Twitter</value>
   </data>
+  <data name="ProfileProperties_Skype.Help" xml:space="preserve">
+    <value>A link to your call you on Skype via your username</value>
+  </data>
+  <data name="ProfileProperties_Skype.Required" xml:space="preserve">
+    <value>Skype ID is required</value>
+  </data>
+  <data name="ProfileProperties_Skype.Text" xml:space="preserve">
+    <value>Skype ID</value>
+  </data>
 </root>

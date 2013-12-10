@@ -1836,4 +1836,10 @@
   <data name="SizeMb.Text" xml:space="preserve">
     <value>MB</value>
   </data>
+  <data name="Friends.Text" xml:space="preserve">
+    <value>Friends</value>
+  </data>
+  <data name="Followers.Text" xml:space="preserve">
+    <value>Followers</value>
+  </data>
 </root>

@@ -134,8 +134,11 @@ namespace DotNetNuke.Modules.MemberDirectory
                     filterBySelector.Items.FindByValue("Group").Enabled = false;
                 }
 
-                relationShipList.DataSource = Model.Relationships;
-                relationShipList.DataBind();
+                foreach (var rel in Model.Relationships)
+                {
+                    relationShipList.AddItem(Localization.GetString(rel.Name,Localization.SharedResourceFile),rel.RelationshipId.ToString());
+                }
+
 
                 var profileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
