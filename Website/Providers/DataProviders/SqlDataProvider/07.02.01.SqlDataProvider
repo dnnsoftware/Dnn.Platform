@@ -359,7 +359,6 @@ GO
 
 /*DNN-3215 - drop unused legacy procedures */
 /*******************************************/
-
  
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetSkins]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSkins]
@@ -905,6 +904,153 @@ AS
 	ORDER BY
 		PageIndex.IndexID
 GO
+
+/* DNN-3017 Add Indexes */
+/************************/
+
+IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Files_FolderID' AND object_id = OBJECT_ID('{objectQualifier}Files'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files_FolderID] ON {databaseOwner}[{objectQualifier}Files] 
+			(
+				[FolderID]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogConfigID' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogConfigID] ON {databaseOwner}[{objectQualifier}EventLog] 
+			(
+				[LogConfigID],
+				[LogNotificationPending],
+				[LogCreateDate]
+			)
+			INCLUDE 
+			(
+				[LogEventID]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogCreateDate' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogCreateDate] ON {databaseOwner}[{objectQualifier}EventLog] 
+			(
+				[LogCreateDate]
+			)
+			INCLUDE 
+			(
+				[LogConfigID]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}UrlTracking_Url_ModuleId' AND object_id = OBJECT_ID('{objectQualifier}UrlTracking'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UrlTracking_Url_ModuleId] ON {databaseOwner}[{objectQualifier}UrlTracking] 
+			(
+				[Url],
+				[ModuleId]
+			)
+			INCLUDE 
+			(
+				[TrackClicks],
+				[NewWindow]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}UrlTracking_ModuleId' AND object_id = OBJECT_ID('{objectQualifier}UrlTracking'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UrlTracking_ModuleId] ON {databaseOwner}[{objectQualifier}UrlTracking] 
+			(
+				[ModuleId]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}ContentItems_TabID' AND object_id = OBJECT_ID('{objectQualifier}ContentItems'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_TabID] ON {databaseOwner}[{objectQualifier}ContentItems] 
+			(
+				[TabID]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Tabs_ParentId_IsDeleted' AND object_id = OBJECT_ID('{objectQualifier}Tabs'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted] ON {databaseOwner}[{objectQualifier}Tabs] 
+			(
+				[ParentId],
+				[IsDeleted]
+			)
+			INCLUDE 
+			(
+				[CreatedOnDate]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}Tabs_ParentId_IsDeleted_2' AND object_id = OBJECT_ID('{objectQualifier}Tabs'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted_2] ON {databaseOwner}[{objectQualifier}Tabs] 
+			(
+				[ParentId],
+				[IsDeleted]
+			)
+			INCLUDE 
+			(
+				[TabID],
+				[TabOrder],
+				[PortalID],
+				[TabName],
+				[IsVisible],
+				[IconFile],
+				[DisableLink],
+				[Title],
+				[Description],
+				[KeyWords],
+				[Url],
+				[SkinSrc],
+				[ContainerSrc],
+				[StartDate],
+				[EndDate],
+				[RefreshInterval],
+				[PageHeadText],
+				[IsSecure],
+				[PermanentRedirect],
+				[SiteMapPriority],
+				[CreatedByUserID],
+				[CreatedOnDate],
+				[LastModifiedByUserID],
+				[LastModifiedOnDate],
+				[IconFileLarge],
+				[CultureCode],
+				[ContentItemID],
+				[UniqueId],
+				[VersionGuid],
+				[DefaultLanguageGuid],
+				[LocalizedVersionGuid],
+				[Level],
+				[TabPath]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM dbo.sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_ModuleID' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules] 
+			(
+				[ModuleID]
+			)
+			INCLUDE 
+			(
+				[TabID]
+			)
+    END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
