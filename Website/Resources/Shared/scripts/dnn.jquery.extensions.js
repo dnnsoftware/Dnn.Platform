@@ -161,9 +161,11 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; }; //var dnn = dnn |
         },
 
         _onKeyUp: function (e) {
-            if (!this.element.value.ltrim().startsWith(this.prefix)) {
-                this.element.value = this.prefix + this.element.value;
-            }
+            this._prependPrefix();
+        },
+
+        _onFocus: function (e) {
+            this._prependPrefix();
         },
 
         _onBlur: function (e) {
@@ -172,8 +174,9 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; }; //var dnn = dnn |
             }
         },
 
-        _onFocus: function (e) {
-            if (!this.element.value.ltrim().startsWith(this.prefix)) {
+        _prependPrefix: function() {
+            var val = this.element.value;
+            if ((!val.ltrim().startsWith(this.prefix) && val !== "" && !this.prefix.startsWith(val)) || val === "") {
                 this.element.value = this.prefix + this.element.value;
             }
         }

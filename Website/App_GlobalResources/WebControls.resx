@@ -211,7 +211,7 @@
     <value>Close</value>
   </data>
   <data name="FileUpload.UploadFromWebButton.Text" xml:space="preserve">
-    <value>Load</value>
+    <value>Upload</value>
   </data>
   <data name="FileUpload.DecompressingFile.Text" xml:space="preserve">
     <value>Decompressing File</value>
@@ -236,5 +236,14 @@
   </data>
   <data name="FileUpload.UploadStopped.Text" xml:space="preserve">
     <value>File upload stopped</value>
+  </data>
+  <data name="FileUpload.UrlTooltip.Text" xml:space="preserve">
+    <value>Enter Resource Url like http://SomeWebSite.com/Images/About.png</value>
+  </data>
+  <data name="FileUpload.KeepButton.Text" xml:space="preserve">
+    <value>Keep</value>
+  </data>
+  <data name="FileUpload.ReplaceButton.Text" xml:space="preserve">
+    <value>Replace</value>
   </data>
 </root>

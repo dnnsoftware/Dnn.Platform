@@ -58,6 +58,15 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "uploadStopped")]
         public string UploadStopped;
+
+        [DataMember(Name = "urlTooltip")]
+        public string UrlTooltip;
+
+        [DataMember(Name = "keepButtonText")]
+        public string KeepButtonText;
+
+        [DataMember(Name = "replaceButtonText")]
+        public string ReplaceButtonText;
     }
 
     [DataContract]
@@ -96,6 +105,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 EmptyFileUpload = Utilities.GetLocalizedString("FileUpload.EmptyFileUpload.Error"),
                 FileAlreadyExists = Utilities.GetLocalizedString("FileUpload.FileAlreadyExists.Error"),
                 UploadStopped = Utilities.GetLocalizedString("FileUpload.UploadStopped.Text"),
+                UrlTooltip = Utilities.GetLocalizedString("FileUpload.UrlTooltip.Text"),
+                KeepButtonText = Utilities.GetLocalizedString("FileUpload.KeepButton.Text"),
+                ReplaceButtonText = Utilities.GetLocalizedString("FileUpload.ReplaceButton.Text"),
             };
         }
     }

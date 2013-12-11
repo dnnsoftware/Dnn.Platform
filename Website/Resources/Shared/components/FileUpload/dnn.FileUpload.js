@@ -89,13 +89,27 @@
                             $element("tbody").append(
                                 $element("tr").append(
                                     $element("td").append(
-                                        $element("div").append(this._$url = $element("input", { type: 'text', title: "Enter Resource Url like http://SomeWebSite.com/Images/About.png", placeholder: "Enter Resource Url like http://SomeWebSite.com/Images/About.png" } ).onEnter($.proxy(this._uploadByUrl, this)))),
+                                        $element("div").append(
+                                            this._$url = $element("input", { type: 'text', title: this.options.resources.urlTooltip, placeholder: this.options.resources.urlTooltip })
+                                                .onEnter($.proxy(this._uploadByUrl, this))
+                                                .on("change keyup paste input propertychange", $.proxy(this._validateUrl, this))
+                                                .prefixInput({ prefix: "http" }))),
                                 $element("td").append(
                                     $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text(this.options.resources.uploadFromWebButtonText).on("click", $.proxy(this._uploadByUrl, this))))))),
                     $element("div", { style: 'display: none', 'class': 'fu-fileupload-statuses-container' }).append(
                         $element("ul", { 'class': 'fu-fileupload-statuses' }))));
 
             return dialog;
+        },
+
+        _validateUrl: function() {
+            var url = this._$url.val();
+            if (dnn.isUrl(url)) {
+                this._$url.removeClass("fu-dialog-url-error");
+            }
+            else {
+                this._$url.addClass("fu-dialog-url-error");
+            }
         },
 
         _uploadByUrl: function(eventObject) {
@@ -164,14 +178,14 @@
 
                 var self = this;
                 var $keepButton = $element("a", { href: "javascript:void(0);", "class": "fu-file-already-exists-prompt-button-keep" })
-                    .text("Keep")
+                    .text(this.options.resources.keepButtonText)
                     .click(function () {
                         $fileUploadStatus.removeClass().addClass(self.options.statusCancelledCss);
                         self._showFileUploadStatus($fileUploadStatus, { Message: self.options.resources.uploadStopped });
                     });
 
                 var $replaceButton = $element("a", { href: "javascript:void(0);", "class": "fu-file-already-exists-prompt-button-replace" })
-                    .text("Replace")
+                    .text(this.options.resources.replaceButtonText)
                     .on('click', function () {
                         var status = $fileUploadStatus.data("status");
                         status.overwrite = true;

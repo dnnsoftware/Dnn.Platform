@@ -254,7 +254,7 @@
     min-width: 250px;
 }
 
-.dnnDropDownList .dt-container ul, li {
+.dnnDropDownList .dt-container ul li {
     padding: 0;
     margin: 0
 }

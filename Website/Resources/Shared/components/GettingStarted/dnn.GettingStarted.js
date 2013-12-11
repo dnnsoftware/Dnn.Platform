@@ -8,6 +8,12 @@
 (function ($, window, document, undefined) {
     "use strict";
 
+    var $element = function (element, props) {
+        var $e = $(document.createElement(element));
+        props && $e.attr(props);
+        return $e;
+    };
+
     // undefined is used here as the undefined global variable in ECMAScript 3 is
     // mutable (ie. it can be changed by someone else). undefined isn't really being
     // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
@@ -92,35 +98,53 @@
             var checkBoxId = dnn.uid("gs_");
             var signUpBoxId = dnn.uid("gs_");
 
-            var layout = $("<div class='" + this._options.containerCss + "'/>")
-                .append($("<div class='" + this._options.headerCss + "'/>")
-                    .append($("<div class='" + this._options.headerLeftCss + "'/>")
-                        .append($("<div/>")
-                            .append($("<div class='" + this._options.headerLeftTextCss + "'/>")
-                                .append($("<div/>")
-                                    .append($("<label for='" + signUpBoxId + "'>" + this._options.signUpLabel + "</label>"))
-                                    .append($("<span>" + this._options.signUpText + "</span>"))))
-                            .append($("<div class='" + this._options.headerLeftInputCss + "'/>")
-                                .append($("<div/>")
-                                    .append($("<div class='" + this._options.inputboxWrapperCss + "'/>")
-                                        .append($("<input type='text' id='" + signUpBoxId + "' maxlength='200' autocomplete='off'/>")))
-                                    .append($("<a href='javascript:void(0);' title='" + this._options.signUpButton + "'>" + this._options.signUpButton + "</a>"))))))
-                    .append($("<div class='" + this._options.headerRightCss + "'/>")
-                        .append($("<div/>")
-                            .append($("<a href='javascript:void(0);' target='manual' title='" + this._options.downloadManualButton + "'><span>" + this._options.downloadManualButton + "</span></a>")))))
-                .append($("<div class='" + this._options.contentCss + "'/>")
-                    .append($("<div/>")
-                        .append($("<iframe scrolling='no' frameborder='0' />"))))
-                .append($("<div class='" + this._options.footerCss + "'/>")
-                    .append($("<div class='" + this._options.footerBorderCss + "'/>")
-                        .append($("<div/>")))
-                    .append($("<div class='" + this._options.footerLeftCss + "'/>")
-                        .append($("<input type='checkbox' id='" + checkBoxId + "' value='notshowagain' name='ShowDialog' >"))
-                        .append($("<label for='" + checkBoxId + "'>" + this._options.dontShowDialogLabel + "</label>")))
-                    .append($("<div class='" + this._options.footerRightCss + "'/>")
-                        .append($("<a href='//twitter.com/dnncorp' target='dnn-twitter' class='" + this._options.twitterLinkCss + "' title='" + this._options.twitterLinkTooltip + "'/>"))
-                        .append($("<a href='//facebook.com/dotnetnuke' target='dnn-facebook' class='" + this._options.facebookLinkCss + "' title='" + this._options.facebookLinkTooltip + "'/>"))));
-
+            var layout = $element("div", { "class": this._options.containerCss }).append(
+                $element("div", { "class": this._options.headerCss }).append(
+                    $element("div", { "class": this._options.headerLeftCss }).append(
+                        $element("div").append(
+                            $element("div", { "class": this._options.headerLeftTextCss }).append(
+                                $element("div").append(
+                                    $element("label", { 'for': signUpBoxId }).text(this._options.signUpLabel),
+                                    $element("span").text(this._options.signUpText)
+                                )
+                            ),
+                            $element("div", { "class": this._options.headerLeftInputCss }).append(
+                                $element("div").append(
+                                    $element("div", { "class": this._options.inputboxWrapperCss }).append(
+                                        $element("input", { type: "text", "id": signUpBoxId, maxlength: "200", autocomplete: "off" }).text(this._options.signUpLabel)
+                                    ),
+                                    $element("a", { href: "javascript:void(0);", title: this._options.signUpButton }).text(this._options.signUpButton)
+                                )
+                            )
+                        )
+                    ),
+                    $element("div", { "class": this._options.headerRightCss }).append(
+                        $element("div").append(
+                            $element("a", { href: "javascript:void(0);", target: 'manual', title: this._options.downloadManualButton }).append(
+                                $element("span").text(this._options.downloadManualButton)
+                            )
+                        )
+                    )
+                ),
+                $element("div", { "class": this._options.contentCss }).append(
+                    $element("div").append(
+                        $element("iframe", { scrolling: "no", frameborder: "0" })
+                    )
+                ),
+                $element("div", { "class": this._options.footerCss }).append(
+                    $element("div", { "class": this._options.footerBorderCss }).append(
+                        $element("div")
+                    ),
+                    $element("div", { "class": this._options.footerLeftCss }).append(
+                        $element("input", { type: "checkbox", id: checkBoxId, value: "notshowagain", name: "ShowDialog" }),
+                        $element("label", { "for": checkBoxId }).text(this._options.dontShowDialogLabel)
+                    ),
+                    $element("div", { "class": this._options.footerRightCss }).append(
+                        $element("a", { href: "//twitter.com/dnncorp", target: "dnn-twitter", "class": this._options.twitterLinkCss, title: this._options.twitterLinkTooltip}),
+                        $element("a", { href: "//facebook.com/dotnetnuke", target: "dnn-facebook", "class": this._options.facebookLinkCss, title: this._options.facebookLinkTooltip})
+                    )
+                )
+            );
             return layout;
         },
 
