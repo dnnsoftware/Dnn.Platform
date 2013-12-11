@@ -2849,6 +2849,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         showPropertiesDialog(items[0].ItemId, items[0].IsFolder);
     }
 
+    function getFullUrl(relativePath) {
+        return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + relativePath;
+    }
+
     function getUrlFromFileId(fileId) {
         $.ajax({
             type: 'POST',
@@ -2862,7 +2866,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             if (data.indexOf("http://") == 0 || data.indexOf("https://") == 0) {
                 url = data;
             } else {
-                url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + data;
+                url = getFullUrl(data);
             }
             openGetUrlModal(url, resources.getFileUrlLabel);
         }).fail(function(xhr) {
@@ -3358,6 +3362,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         getRootFolderId: getRootFolderId,
         createModuleState: createModuleState,
         openGetUrlModal: openGetUrlModal,
-        loadInitialContent: loadInitialContent
+        loadInitialContent: loadInitialContent,
+        getFullUrl: getFullUrl
     };
 }(jQuery, $find, $telerik, dnnModal);
