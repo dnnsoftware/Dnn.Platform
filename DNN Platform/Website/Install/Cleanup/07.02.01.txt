@@ -116,3 +116,4 @@ Install/Provider/SolpartMenuNavigationProvider_07.01.00_Install.resources
 Install/Provider/SolpartMenuNavigationProvider_07.01.01_Install.resources
 Install/Provider/SolpartMenuNavigationProvider_07.01.02_Install.resources
 Install/Provider/SolpartMenuNavigationProvider_07.02.00_Install.resources
+App_Code/Admin/ModuleCreator/
