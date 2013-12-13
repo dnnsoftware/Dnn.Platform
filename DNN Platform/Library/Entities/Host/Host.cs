@@ -1389,8 +1389,27 @@ namespace DotNetNuke.Entities.Host
         public static string SMTPPassword
         {
             get
-            {
-                return HostController.Instance.GetEncryptedString("SMTPPassword",Config.GetDecryptionkey());
+            {              
+                string decryptedText;
+                try
+                {
+                    decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
+                }
+                catch (Exception)
+                {
+                    //fixes case where smtppassword failed to encrypt due to failing upgrade
+                    var current = HostController.Instance.GetString("SMTPPassword");
+                    if (!string.IsNullOrEmpty(current))
+                    {
+                        HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
+                        decryptedText = current;
+                    }
+                    else
+                    {
+                        decryptedText = string.Empty;
+                    }
+                }
+                return decryptedText;
             }
         }
 
