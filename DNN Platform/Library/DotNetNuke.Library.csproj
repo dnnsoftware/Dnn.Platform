@@ -263,9 +263,11 @@
     <Compile Include="Entities\Content\Workflow\ContentWorkflowState.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowStatePermission.cs" />
     <Compile Include="Entities\DataStructures\NTree.cs" />
+    <Compile Include="Entities\IBaseEntityInfo.cs" />
     <Compile Include="Entities\IPFilter\IIPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterInfo.cs" />
+    <Compile Include="Entities\Modules\IModuleInfo.cs" />
     <Compile Include="Entities\Modules\IShareable.cs" />
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
