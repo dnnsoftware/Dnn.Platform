@@ -447,23 +447,24 @@ namespace DotNetNuke.Services.Mail
                 smtpPassword = Host.SMTPPassword;
             }
 			
-            //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
-            mailTo = mailTo.Replace(";", ",");
-            cc = cc.Replace(";", ",");
-            bcc = bcc.Replace(";", ",");
-
             MailMessage mailMessage = null;
             mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
             if (!String.IsNullOrEmpty(mailTo))
             {
+                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                mailTo = mailTo.Replace(";", ",");
                 mailMessage.To.Add(mailTo);
             }
             if (!String.IsNullOrEmpty(cc))
             {
+                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                cc = cc.Replace(";", ",");
                 mailMessage.CC.Add(cc);
             }
             if (!String.IsNullOrEmpty(bcc))
             {
+                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                bcc = bcc.Replace(";", ",");
                 mailMessage.Bcc.Add(bcc);
             }
             if (replyTo != string.Empty)
