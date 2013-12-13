@@ -26,7 +26,7 @@ In addition to robust content management, the free, open source DNN Platform inc
 How to Contribute
 -----------------
 
-Help make DNN better by contributing code into this repository. What with the following initial setup:
+Help make DNN better by contributing code into this repository. Start with the following initial setup:
 
 * Fork this repository so you get a copy of your own.
 * Clone the forked repository on your development machine.
