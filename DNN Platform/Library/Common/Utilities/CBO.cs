@@ -410,7 +410,7 @@ namespace DotNetNuke.Common.Utilities
                             }
                             else if (coloumnValue is IConvertible)
                             {
-                                objPropertyInfo.SetValue(hydratedObject, Convert.ChangeType(coloumnValue, propType),
+                                objPropertyInfo.SetValue(hydratedObject, ChangeType(coloumnValue, propType),
                                                          null);
                             }
                             else
@@ -422,6 +422,39 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Changes type of an object, taking into account Nullable types
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        static object ChangeType(object obj, Type type)
+        {
+            Type u = Nullable.GetUnderlyingType(type);
+
+            if (u != null) {
+                if (obj == null)
+                    return GetDefault(type);
+
+                return Convert.ChangeType(obj, u);
+            } else {
+                return Convert.ChangeType(obj, type);
+            }
+        }
+
+        /// <summary>
+        /// Returns default value for a type - i.e. null for reference types and default value for value types
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        static object GetDefault(Type type)
+        {
+            if (type.IsValueType)
+                return Activator.CreateInstance(type);
+
+            return null;
         }
 
 		#endregion
