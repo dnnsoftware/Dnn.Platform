@@ -30,14 +30,14 @@ Help make DNN better by contributing code into this repository. Start with the f
 
 * Fork this repository so you get a copy of your own.
 * Clone the forked repository on your development machine.
-* Add a new remote for original DNN repository and name it "upstream" - this is useful for synchronizing periodically. You should now have 2 remotes: upstream (DNN repository) and origin (your fork).
+* Add a new remote for original DNN repository and name it *upstream* - this is useful for synchronizing periodically. You should now have 2 remotes: *upstream* (DNN repository) and *origin* (your fork).
 
 Time to start coding. For each story that you wish to contribute, follow the steps below:
 
 * Make sure there's a [JIRA](https://dnntracker.atlassian.net) ticket for your contribution.
-* Create a new branch starting from upstream/Development.
+* Create a new branch starting from *upstream/Development*.
 * Do your magic...
-* Commit and sync with origin with the new branch.
+* Commit and sync the new branch with *origin*.
 * Go to your fork on github and make a pull request from the newly created branch. Include the JIRA ticket number in the subject. For example: "(DNN-123) Something cool".
 
 
