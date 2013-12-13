@@ -72,7 +72,7 @@
         regionToToggleSelector: 'fieldset',
         selected: -1,
         cookieDays: 0,
-        cookieMilleseconds: 120000 // two minutes
+        cookieMilleseconds: 1200000 // twenty minutes
     };
 
 })(jQuery);
@@ -293,7 +293,7 @@
         validationGroup: '',
         panelSeparatorSelector: '.ui-tabs-panel',
         cookieDays: 0,
-        cookieMilleseconds: 120000 // two minutes
+        cookieMilleseconds: 1200000 // twenty minutes
     };
 
 })(jQuery);
