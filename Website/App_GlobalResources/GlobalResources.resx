@@ -966,9 +966,6 @@ Operation Completed:  [Custom:3]
   <data name="//Admin//Skins.String" xml:space="preserve">
     <value>Skins</value>
   </data>
-  <data name="//Host//FileManager.String" xml:space="preserve">
-    <value>File Manager</value>
-  </data>
   <data name="//Host//Vendors.String" xml:space="preserve">
     <value>Vendors</value>
   </data>
@@ -1114,7 +1111,7 @@ Sincerely,
   <data name="//Host//ProfessionalFeatures.String" xml:space="preserve">
     <value>Professional Features</value>
   </data>
-  <data name="//Host//ProfessionalFeatures//ActivateYourLicense.String" xml:space="preserve">
+  <data name="//Host//ProfessionalFeatures//ActivateyourLicense.String" xml:space="preserve">
     <value>Activate Your License</value>
   </data>
   <data name="//Host//ProfessionalFeatures//ApplicationIntegrity.String" xml:space="preserve">
