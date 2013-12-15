@@ -511,7 +511,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         {
             var roleController = new RoleController();
             var role = roleController.GetRole(groupId, portalSettings.PortalId);
-            if (role == null || role.SecurityMode != SecurityMode.SocialGroup)
+            if (role == null || role.SecurityMode == SecurityMode.SecurityRole)
             {
                 return null;
             }
