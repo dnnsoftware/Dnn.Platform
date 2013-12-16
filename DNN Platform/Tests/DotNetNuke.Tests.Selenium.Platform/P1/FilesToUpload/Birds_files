@@ -1,0 +1,9 @@
+2013-12-06 11:25:15,046 [Dev-Build3][Thread:44][ERROR] DotNetNuke.Services.Search.Internals.LuceneControllerImpl - Search Document error: Portal ID: 0, Tab ID: 0, Module ID: 0, Mod. Def.ID: 0, Url: , Unique Key: 161, Last Modified: 2013-12-06T11:23:30.3370000, Culture: 
+System.ObjectDisposedException: Cannot access a disposed object.
+Object name: 'LuceneController is disposed and cannot be used anymore'.
+   at DotNetNuke.Services.Search.Internals.LuceneControllerImpl.CheckDisposed()
+   at DotNetNuke.Services.Search.Internals.LuceneControllerImpl.get_Writer()
+   at DotNetNuke.Services.Search.Internals.LuceneControllerImpl.Delete(Query query)
+   at DotNetNuke.Services.Search.Internals.InternalSearchControllerImpl.DeleteSearchDocumentInternal(SearchDocument searchDocument, Boolean autoCommit)
+   at DotNetNuke.Services.Search.Internals.InternalSearchControllerImpl.AddSearchDocumentInternal(SearchDocument searchDocument, Boolean autoCommit)
+   at DotNetNuke.Services.Search.Internals.InternalSearchControllerImpl.AddSearchDocuments(IEnumerable`1 searchDocuments)
