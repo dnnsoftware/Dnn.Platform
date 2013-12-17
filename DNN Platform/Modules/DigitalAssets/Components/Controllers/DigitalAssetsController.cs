@@ -132,11 +132,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return ApplyOrder(folders.AsQueryable(), field, asc);
         } 
 
-        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, string orderingField, bool asc, bool recursive)
+        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, string orderingField, int startIndex, bool asc, bool recursive)
         {
             Requires.NotNull("folder", folder);
 
-            if (Host.EnableFileAutoSync)
+            if (Host.EnableFileAutoSync && startIndex==0)
             {
                 FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, false, true);
             }
@@ -429,7 +429,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
 
             var recursive = subfolderFilter == SubfolderFilter.IncludeSubfoldersFilesOnly;
-            var files = GetFiles(folder, sortProperties.Column == "ItemName" ? "FileName" : sortProperties.Column, sortProperties.Ascending, recursive).ToList();
+            var files = GetFiles(folder, sortProperties.Column == "ItemName" ? "FileName" : sortProperties.Column, startIndex, sortProperties.Ascending, recursive).ToList();
 
             IEnumerable<ItemViewModel> content;
             if (startIndex + numItems <= folders.Count())
