@@ -126,6 +126,51 @@ namespace DotNetNuke.Services.Sitemap
             }
             pageUrl.ChangeFrequency = SitemapChangeFrequency.Daily;
 
+            // support for alternate pages: https://support.google.com/webmasters/answer/2620865?hl=en
+            if (ps.ContentLocalizationEnabled && !objTab.IsNeutralCulture)
+            {
+                List<AlternateUrl> alternates = new List<AlternateUrl>();
+                TabInfo currentTab = objTab;
+
+                if (!objTab.IsDefaultLanguage)
+                    currentTab = objTab.DefaultLanguageTab;
+
+                foreach (TabInfo localized in currentTab.LocalizedTabs.Values)
+                {
+                    if ((!localized.IsDeleted && !localized.DisableLink && localized.TabType == TabType.Normal) &&
+                        (Null.IsNull(localized.StartDate) || localized.StartDate < DateTime.Now) &&
+                        (Null.IsNull(localized.EndDate) || localized.EndDate > DateTime.Now) &&
+                        (IsTabPublic(localized.TabPermissions)) &&
+                        (includeHiddenPages || localized.IsVisible))
+                    {
+                        string alternateUrl = Globals.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
+
+                        if (alternateUrl.ToLower().IndexOf(portalAlias.ToLower(), StringComparison.Ordinal) == -1)
+                        {
+                            // code to fix a bug in dnn5.1.2 for navigateurl
+                            if ((HttpContext.Current != null))
+                            {
+                                alternateUrl = Globals.AddHTTP(HttpContext.Current.Request.Url.Host + alternateUrl);
+                            }
+                            else
+                            {
+                                // try to use the portalalias
+                                alternateUrl = Globals.AddHTTP(portalAlias.ToLower()) + alternateUrl;
+                            }
+                        }
+                        alternates.Add(new AlternateUrl() { Url = alternateUrl, Language = localized.CultureCode });
+                    }
+                }
+
+                if (alternates.Count > 0)
+                {
+                    // add self to the list
+                    alternates.Add(new AlternateUrl() { Url = pageUrl.Url, Language = objTab.CultureCode });
+
+                    pageUrl.AlternateUrls = alternates;
+                }
+            }
+
             return pageUrl;
         }
 
@@ -150,7 +195,7 @@ namespace DotNetNuke.Services.Sitemap
                 }
                 else
                 {
-                    priority = Convert.ToSingle(1 - (objTab.Level*0.1));
+                    priority = Convert.ToSingle(1 - (objTab.Level * 0.1));
                 }
 
                 if (priority < minPagePriority)
@@ -173,7 +218,7 @@ namespace DotNetNuke.Services.Sitemap
             if ((roles != null))
             {
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(new[] {';'}))
+                foreach (string role in roles.Split(new[] { ';' }))
                 {
                     if (!string.IsNullOrEmpty(role))
                     {
