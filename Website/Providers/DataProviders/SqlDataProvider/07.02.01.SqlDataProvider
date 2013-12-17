@@ -244,7 +244,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesByPortal]
 	@Portald int
 AS
-	SELECT * FROM {databaseOwner}vw_TabModules tb		
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_TabModules tb		
 	WHERE tb.PortalID != tb.OwnerPortalID	
 	AND tb.OwnerPortalID = @Portald
 
@@ -257,7 +257,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesWithPortal]
 	@Portald int
 AS
-	SELECT * FROM {databaseOwner}vw_TabModules tb		
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_TabModules tb		
 	WHERE tb.PortalID != tb.OwnerPortalID	
 	AND tb.PortalID = @Portald
 
