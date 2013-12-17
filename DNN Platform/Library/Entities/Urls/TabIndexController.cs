@@ -213,10 +213,8 @@ namespace DotNetNuke.Entities.Urls
                                         checkForDupUrls,
                                         isDeleted);
                         //838 : disabled tabs with custom aliases - still load the settings page without redirect
-                        //disabled / not active by date / external url pages cannot navigate to settings page
-                        if (tab.DisableLink || !string.IsNullOrEmpty(tab.Url) ||
-                           (tab.EndDate < DateTime.Now && tab.EndDate > DateTime.MinValue) ||
-                           (tab.StartDate > DateTime.Now && tab.StartDate > DateTime.MinValue))
+                        //594 : disabled / external url pages cannot navigate to settings page
+                        if (tab.DisableLink || !string.IsNullOrEmpty(tab.Url))
                         {
                             string settingsUrl = tabPath + "/ctl/Tab";
                             string settingsRewritePath = CreateRewritePath(tab.TabID, redirect.CultureCode, "ctl=Tab");
@@ -331,11 +329,11 @@ namespace DotNetNuke.Entities.Urls
                             isDeleted);
         }
 
-        private static void AddSiteRootRedirects(PathSizes pathSizes,
-                                        SharedDictionary<string, string> tabIndex,
+        private static void AddSiteRootRedirects(PathSizes pathSizes, 
+                                        SharedDictionary<string, string> tabIndex, 
                                         IEnumerable<PortalAliasInfo> chosenAliases,
-                                        bool hasSiteRootRedirect,
-                                        Dictionary<string, DupKeyCheck> dupCheck,
+                                        bool hasSiteRootRedirect, 
+                                        Dictionary<string, DupKeyCheck> dupCheck, 
                                         ICollection<string> usingHttpAliases)
         {
             foreach (PortalAliasInfo alias in chosenAliases) //and that is once per portal alias per portal
@@ -453,8 +451,8 @@ namespace DotNetNuke.Entities.Urls
             //for deleted, expired or pages not enabled yet, direct to the home page if the setting is enabled
             //534 : tab is disabled, mark as deleted (don't want to cause duplicate tab warnings)
             bool isDeleted = (tab.IsDeleted || tab.DisableLink ||
-                             (tab.EndDate < DateTime.Now && tab.EndDate > DateTime.MinValue) ||
-                             (tab.StartDate > DateTime.Now && tab.StartDate > DateTime.MinValue));
+                              (tab.EndDate < DateTime.Now && tab.EndDate > DateTime.MinValue) ||
+                               (tab.StartDate > DateTime.Now && tab.StartDate > DateTime.MinValue));
             if (isDeleted)
             // don't care what setting is, redirect code will decide whether to redirect or 404 - just mark as page deleted && 
             // settings.DeletedTabHandlingValue == DeletedTabHandlingTypes.Do301RedirectToPortalHome)
@@ -581,10 +579,8 @@ namespace DotNetNuke.Entities.Urls
                                                     isDeleted);
             }
 
-            // disabled / not active by date / external url pages cannot navigate to settings page
-            if (tab.DisableLink || !string.IsNullOrEmpty(tab.Url) ||
-               (tab.EndDate < DateTime.Now && tab.EndDate > DateTime.MinValue) ||
-               (tab.StartDate > DateTime.Now && tab.StartDate > DateTime.MinValue))
+            //594 : disabled / external url pages cannot navigate to settings page
+            if (tab.DisableLink || !string.IsNullOrEmpty(tab.Url))
             {
                 string settingsUrl = tabPath.Replace("//", "/") + "/ctl/Tab";
                 string settingsRewritePath = CreateRewritePath(tab.TabID, "", "ctl=tab");
@@ -829,7 +825,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 DupKeyCheck foundTAb = dupCheckDict[dupKey];
                 if ((foundTAb.IsDeleted == false && isDeleted == false) //found is not deleted, this tab is not deleted
-                    && keyDupAction == UrlEnums.TabKeyPreference.TabOK
+                    && keyDupAction == UrlEnums.TabKeyPreference.TabOK 
                     && foundTAb.TabIdOriginal != "-1")
                 //-1 tabs are login, register, privacy etc
                 {
@@ -1300,11 +1296,11 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        private static string ManageCustomAliases(string tabCulture,
-                                            PortalInfo thisPortal,
-                                            TabInfo tab,
+        private static string ManageCustomAliases(string tabCulture, 
+                                            PortalInfo thisPortal, 
+                                            TabInfo tab, 
                                             List<string> httpAliases,
-                                            List<string> customHttpAliasesUsed,
+                                            List<string> customHttpAliasesUsed, 
                                             out bool customAliasUsed)
         {
             string customHttpAlias = "";
@@ -1533,7 +1529,7 @@ namespace DotNetNuke.Entities.Urls
             bool foundAlias = false;
 
             //Do a specified PortalAlias check first
-            PortalAliasInfo portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias == portalAlias.ToLower());
+            PortalAliasInfo portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias ==portalAlias.ToLower());
             if (portalAliasInfo != null)
             {
                 if (portalAliasInfo.PortalID == portalId)
@@ -1650,7 +1646,7 @@ namespace DotNetNuke.Entities.Urls
 
             //add log entry for cache clearance
             var elc = new EventLogController();
-            var logValue = new LogInfo { LogTypeKey = "HOST_ALERT" };
+            var logValue = new LogInfo {LogTypeKey = "HOST_ALERT"};
             try
             {
                 //817 : not clearing items correctly from dictionary

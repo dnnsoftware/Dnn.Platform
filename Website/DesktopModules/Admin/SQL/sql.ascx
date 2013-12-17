@@ -163,21 +163,6 @@
                             }
                         }--%>
                     ]
-                },
-                oLanguage: {
-                    "sInfo": "<%=Localization.GetSafeJSString(LocalizeString("sInfo"))%>",
-                    "sInfoFiltered": "<%=Localization.GetSafeJSString(LocalizeString("sInfoFiltered"))%>",
-                    "sInfoEmpty": "<%=Localization.GetSafeJSString(LocalizeString("sInfoEmpty"))%>",
-                    "sLengthMenu": "<%=Localization.GetSafeJSString(LocalizeString("sLengthMenu"))%>",
-                    "sLoadingRecords": "<%=Localization.GetSafeJSString(LocalizeString("sLoadingRecords"))%>",
-                    "sProcessing": "<%=Localization.GetSafeJSString(LocalizeString("sProcessing"))%>",
-                    "sSearch": "<%=Localization.GetSafeJSString(LocalizeString("sSearch"))%>",
-                    "oPaginate": {
-                        "sFirst": "<%=Localization.GetSafeJSString(LocalizeString("sFirst"))%>",
-                        "sLast": "<%=Localization.GetSafeJSString(LocalizeString("sLast"))%>",
-                        "sNext": "<%=Localization.GetSafeJSString(LocalizeString("sNext"))%>",
-                        "sPrevious": "<%=Localization.GetSafeJSString(LocalizeString("sPrevious"))%>"
-                    }
                 }
             });
             //new FixedHeader(oTable); 
