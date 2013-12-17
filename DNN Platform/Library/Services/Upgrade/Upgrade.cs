@@ -2810,6 +2810,9 @@ namespace DotNetNuke.Services.Upgrade
                 DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
             }
 
+            //ensure old codeplex module is uninstalled
+            UninstallPackage("DotNetNuke.Module Creator");
+
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
             AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ModuleCreator/CreateModule.ascx", "~/DesktopModules/Admin/ModuleCreator/icon.png", SecurityAccessLevel.Host, 0);
