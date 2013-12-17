@@ -1192,4 +1192,13 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="plDebugMode.Text" xml:space="preserve">
     <value>Debug Mode</value>
   </data>
+  <data name="Mb.Text" xml:space="preserve">
+    <value>Mb</value>
+  </data>
+  <data name="plMaxUploadSize.Help" xml:space="preserve">
+    <value>Maximum size of file that can be uploaded to the site. The minimum is 12 Mb.</value>
+  </data>
+  <data name="plMaxUploadSize.Text" xml:space="preserve">
+    <value>Max Upload Size</value>
+  </data>
 </root>

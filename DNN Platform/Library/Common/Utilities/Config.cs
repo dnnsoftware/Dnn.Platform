@@ -269,6 +269,37 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Sets the maximum file size allowed to be uploaded to the application in bytes
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void SetMaxUploadSize(long newSize)
+        {
+
+         if (newSize == null) { return; };
+         if (newSize < 12582912) { newSize = 12582912; }; // 12 Mb minimum
+
+         var configNav = Load();
+
+         var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ??
+      configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
+         if (httpNode != null)
+         {
+          httpNode.Attributes["maxRequestLength"].InnerText = (newSize / 1024).ToString("#");
+          httpNode.Attributes["requestLengthDiskThreshold"].InnerText = (newSize / 1024).ToString("#");
+         }
+
+         httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
+                    configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
+         if (httpNode != null)
+         {
+          httpNode.Attributes["maxAllowedContentLength"].InnerText = newSize.ToString("#");
+         }
+
+         Save(configNav);
+
+        }
+     /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the specified upgrade connection string
         /// </summary>
         /// <returns>The connection String</returns>
