@@ -205,7 +205,7 @@ dnn.singletonify = function(constructorFunc /*, args */) {
     };
 };
 
-dnn.extend = function(child, parent) {
+dnn.derive = function(child, parent) {
     var tempConstructor = function() {};
     tempConstructor.prototype = parent.prototype;
     child.prototype = new tempConstructor();
