@@ -174,5 +174,39 @@ namespace DNNSelenium.Common.BaseClasses
 			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
 			adminRecycleBinPage.EmptyRecycleBin();
 		}
+
+		public void CreateFolder(string folderType, string folderName)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Folder:'");
+
+			var adminFileManagementPage = new AdminFileManagementPage(_driver);
+			adminFileManagementPage.OpenUsingButtons(_baseUrl);
+
+			adminFileManagementPage.CreateFolder(folderType, folderName);
+		}
+
+		public void UploadFileToFolder(string rootFolderName, string folderName, string fileNameToUpload)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Upload File to Folder:'");
+
+			var adminFileManagementPage = new AdminFileManagementPage(_driver);
+			adminFileManagementPage.OpenUsingButtons(_baseUrl);
+
+			adminFileManagementPage.SelectFolderFromTreeView(rootFolderName, folderName);
+
+			//adminFileManagementPage.SetItemsPerPage("All");
+
+			adminFileManagementPage.UploadFileToFolder(folderName, fileNameToUpload);
+		}
+
+		public void DeleteFolder(string folderName)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Delete Folder from Treeview:'" + folderName);
+
+			var adminFileManagementPage = new AdminFileManagementPage(_driver);
+			adminFileManagementPage.OpenUsingButtons(_baseUrl);
+
+			adminFileManagementPage.DeleteFolderFromTreeView(folderName);
+		}
 	}
 }
