@@ -53,7 +53,7 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.responseError = function (xhr) {
         if (xhr) {
             if (xhr.status == '401') {
-                dnnModal.show(settings.loginUrl + '?popUp=true', true, 300, 650, true, '');
+                dnnModal.show(settings.loginUrl + (settings.loginUrl.indexOf('?') == -1 ? '?' : '&') + 'popUp=true', true, 300, 650, true, '');
             }
         }
     };
@@ -892,7 +892,7 @@ dnn.controlBar.init = function (settings) {
     $('a.ControlBar_PopupLink').click(function () {
         var href = $(this).attr('href');
         if (href) {
-            dnnModal.show(href + '?popUp=true', true, 550, 950, true, '');
+            dnnModal.show(href + (href.indexOf('?') == -1 ? '?' : '&') + 'popUp=true', true, 550, 950, true, '');
         }
         return false;
     });
@@ -913,7 +913,7 @@ dnn.controlBar.init = function (settings) {
                     // then popup
                     var href = $(that).attr('href');
                     if (href) {
-                        dnnModal.show(href + '?popUp=true', true, 550, 950, true, '');
+                        dnnModal.show(href + (href.indexOf('?') == -1 ? '?' : '&') + 'popUp=true', true, 550, 950, true, '');
                     }
                 },
                 error: function (xhr) {
@@ -923,7 +923,7 @@ dnn.controlBar.init = function (settings) {
         } else {
             var href = $(that).attr('href');
             if (href) {
-                dnnModal.show(href + '?popUp=true', true, 550, 950, true, '');
+                dnnModal.show(href + (href.indexOf('?') == -1 ? '?' : '&') + 'popUp=true', true, 550, 950, true, '');
             }
         }
         return false;

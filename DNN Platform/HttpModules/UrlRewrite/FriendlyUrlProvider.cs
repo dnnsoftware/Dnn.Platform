@@ -39,6 +39,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
 {
     public class DNNFriendlyUrlProvider : FriendlyUrlProvider
     {
+        internal const string ProviderName = "DNNFriendlyUrl";
         internal const string ProviderType = "friendlyUrl";
 
         private readonly ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
@@ -50,7 +51,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
         public DNNFriendlyUrlProvider()
         {
             //Read the configuration specific information for this provider
-            var objProvider = (Provider) _providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
+            var objProvider = (Provider)_providerConfiguration.Providers[ProviderName];
 
             if (!String.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
             {
