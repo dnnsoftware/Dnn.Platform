@@ -40,6 +40,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 		public static string ContextMenuCreateFolderOption = "//a[contains(@class, 'permission_ADD')]/span[text() = 'Create Folder']";
 		public static string ContextMenuDeleteFolderOption = "//a[contains(@class, 'permission_DELETE')]/span[text() = 'Delete Folder']";
+		public static string ContextMenuMoveFolderOption = "//a[contains(@class, 'permission_COPY')]/span[text() = 'Move']";
 		public static string ContextMenuMoveOption = "//a[contains(@class, 'permission_COPY')]/span[text() = 'Move']";
 		public static string ContextMenuCopyOption = "//a[contains(@class, ' permission_COPY onlyFiles')]/span[text() = 'Copy']";
 		public static string UploadFilesPopup = "//div[@aria-describedby = 'dnnModuleDigitalAssetsUploadFileModal']";
@@ -72,6 +73,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 			Thread.Sleep(1000);
 		}
 
+
 		public void CreateFolder(string folderType, string folderName)
 		{
 			Trace.WriteLine(TraceLevelPage + "Create Folder:" + folderName);
@@ -85,6 +87,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 			FillFolderInfo(folderType, folderName);
 		}
 
+
 		public void CreateSubFolder(string folderName, string subFolderType, string subFolderName)
 		{
 			Trace.WriteLine(TraceLevelComposite + "Create Subfolder:" + subFolderName);
@@ -97,6 +100,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 			FillFolderInfo(subFolderType, subFolderName);
 		}
+
 
 		public void TreeViewSelectFromContextMenu(string folderName, string option)
 		{
@@ -115,6 +119,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 			Click(By.XPath(option));
 		}
 
+
 		public void FileViewSelectFromContextMenu(string fileName, string option)
 		{
 			Trace.WriteLine(TraceLevelComposite + "Select from Context menu:");
@@ -131,6 +136,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 			Trace.WriteLine(TraceLevelPage + "Click on option: " + option);
 			WaitAndClick(By.XPath(option));
 		}
+
 
 		public void SelectSubFolderFromTreeView(string folderName, string subFolderName)
 		{
@@ -149,6 +155,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 			WaitForElement(By.XPath(FileViewItems + "[last()]"));
 		}
+
 
 		public void SelectFolderFromTreeView(string folderName, string subFolderName)
 		{
@@ -175,6 +182,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 		}
 
+
 		public void UploadFileToFolder(string folderName, string fileToUpload)
 		{
 			Trace.WriteLine(TraceLevelComposite + "Upload file: " + fileToUpload + " to folder " + folderName);
@@ -189,6 +197,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 			Click(By.XPath(CloseButton));
 		}
+
 
 		public void UploadZipFileToFolder(string folderName, string fileToUpload, By actionButton)
 		{
@@ -209,6 +218,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 			Click(By.XPath(CloseButton));
 		}
 
+
 		public void UploadNotAllowedFileType(string folderName, string fileToUpload)
 		{
 			Trace.WriteLine(TraceLevelComposite + "Upload file: " + fileToUpload + " to folder " + folderName);
@@ -223,6 +233,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 		}
 
+
 		public void SetItemsPerPage(string itemsPerPage)
 		{
 			Trace.WriteLine(TraceLevelComposite + "Set number of items per a page: " + itemsPerPage);
@@ -233,6 +244,23 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 			Thread.Sleep(1000);
 		}
+
+
+		public void MoveFolderFromTreeView(string folderName, string folderTo)
+		{
+			Trace.WriteLine(TraceLevelComposite + "Move folder: " + folderName);
+
+			TreeViewSelectFromContextMenu(folderName, ContextMenuMoveFolderOption);
+
+			WaitForConfirmationBox(15);
+
+			WaitForElement(By.XPath("//div[contains(@id, '_View_DestinationTreeView')]//span[contains(text(), '" + folderTo + "')]")).ScrollIntoView().Click();
+
+			FindElement(By.XPath(CopyFilesButton)).WaitTillEnabled().Click();
+
+			Thread.Sleep(2000);
+		}
+
 
 		public void DeleteFolderFromTreeView(string folderName)
 		{
@@ -246,6 +274,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 			Thread.Sleep(2000);
 		}
+
 
 		public void DeleteUsingToolBar(string folderName, string folderNameToDelete)
 		{
@@ -261,6 +290,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 			Thread.Sleep(2000);
 		}
+
 
 		public void RenameUsingToolBar(string folderName, string folderNameToEdit, string newName)
 		{
@@ -279,11 +309,12 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 			Thread.Sleep(1000);
 		}
 
+
 		public void MoveFile(string folderFrom, string folderTo, string fileToMove)
 		{
 			Trace.WriteLine(TraceLevelComposite + "MOVE the file " + fileToMove + " from folder " + folderFrom + " to folder " + folderTo);
 
-			SelectFolderFromTreeView("Root", folderFrom);
+			//SelectFolderFromTreeView("Root", folderFrom);
 
 			FileViewSelectFromContextMenu(fileToMove, ContextMenuMoveOption);
 
@@ -295,6 +326,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 			Thread.Sleep(1000);
 		}
+
 
 		public void CopyFile(string folderFrom, string folderTo, string fileToMove)
 		{
@@ -312,6 +344,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 
 			Thread.Sleep(1000);
 		}
+
 
 		public void SearchForFile(string fileToSearch)
 		{
