@@ -543,6 +543,16 @@ namespace DotNetNuke.Modules.Admin.Portals
                                 message = string.Format(Localization.GetString("SendMail.Error", LocalResourceFile), message, webUrl, closePopUpStr);
                                 messageType = ModuleMessage.ModuleMessageType.YellowWarning;
                             }
+
+                            //check if template contains disallowed extension types
+                            var result = template.TemplateFileExtensions.Split(',').Except(Host.AllowedExtensionWhitelist.ToStorageString().Split(','));
+                            string disallowedExtensionList = string.Join<string>(", ", result);
+                            if (!String.IsNullOrEmpty(disallowedExtensionList))
+                            {
+                                message += string.Format(Localization.GetString("DisallowedExtension.Warning", LocalResourceFile), disallowedExtensionList);
+                                messageType = ModuleMessage.ModuleMessageType.YellowWarning;
+                            }
+
                         }
                     }
                     UI.Skins.Skin.AddModuleMessage(this, "", message, messageType);
