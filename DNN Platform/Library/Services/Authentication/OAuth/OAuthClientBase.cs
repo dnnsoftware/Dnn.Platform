@@ -563,7 +563,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         #endregion
 
-        public void AuthenticateUser(UserData user, PortalSettings settings, string IPAddress, Action<NameValueCollection> addCustomProperties, Action<UserAuthenticatedEventArgs> onAuthenticated)
+        public virtual void AuthenticateUser(UserData user, PortalSettings settings, string IPAddress, Action<NameValueCollection> addCustomProperties, Action<UserAuthenticatedEventArgs> onAuthenticated)
         {
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
@@ -662,7 +662,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return GenerateSignatureUsingHash(signatureBase, hmacsha1);
         }
 
-        public TUserData GetCurrentUser<TUserData>() where TUserData : UserData
+        public virtual TUserData GetCurrentUser<TUserData>() where TUserData : UserData
         {
             LoadTokenCookie(String.Empty);
 
