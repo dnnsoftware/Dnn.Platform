@@ -1428,6 +1428,24 @@ CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LastModifiedOnDate ON {datab
 	(LastModifiedOnDate DESC) INCLUDE ([UserID], [IsSuperUser])
 GO
 
+-- DNN-4293: Optimized Index 
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_PropertyDefinitionID')
+DROP INDEX {databaseOwner}[{objectQualifier}UserProfile].[IX_{objectQualifier}UserProfile_PropertyDefinitionID]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserProfile_PropertyDefinitionID] ON {databaseOwner}[{objectQualifier}UserProfile]
+([PropertyDefinitionID] ASC) INCLUDE (ProfileId, UserId, PropertyValue)
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_LastUpdatedDate')
+DROP INDEX {databaseOwner}[{objectQualifier}UserProfile].[IX_{objectQualifier}UserProfile_LastUpdatedDate]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}UserProfile_LastUpdatedDate ON {databaseOwner}[{objectQualifier}UserProfile]
+	(LastUpdatedDate DESC) INCLUDE ([UserID])
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
