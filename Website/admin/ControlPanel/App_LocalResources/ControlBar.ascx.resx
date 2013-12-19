@@ -307,7 +307,7 @@
     <value>Common Settings</value>
   </data>
   <data name="Tool.SwitchLanguages.Text" xml:space="preserve">
-    <value>Switch Languages</value>
+    <value>Switch UI Language:</value>
   </data>
   <data name="Cancel.Text" xml:space="preserve">
     <value>Cancel</value>
