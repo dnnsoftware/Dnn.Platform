@@ -422,7 +422,6 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the results");
 			Assert.That(adminFileManagementPage.FindElements(By.XPath(FileManagementPage.FileViewItems + "[contains(@style, 'visibility: visible;')]")).Count, Is.EqualTo(results),
 				"The number of results is not correct");
-
 		}
 
 		[Test, Combinatorial]
@@ -562,6 +561,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			var adminFileManagementPage = new AdminFileManagementPage(_driver);
 			adminFileManagementPage.OpenUsingButtons(_baseUrl);
+			adminFileManagementPage.SelectFolderFromTreeView("Root", folderFrom);
 
 			adminFileManagementPage.MoveFile(folderFrom, folderTo, fullFileNameToMove);
 
