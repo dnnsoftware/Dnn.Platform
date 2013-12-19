@@ -1066,6 +1066,347 @@ AS
 
 GO
 
+-- DNN-4288: adding virtual roles to table for referential integrity:
+ALTER TABLE {databaseOwner}[{objectQualifier}Roles] ALTER COLUMN PortalId Int Null -- virtual roles are not assigned to a portal
+GO
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Roles] WHERE RoleId < 0)
+BEGIN
+    SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Roles] On
+
+    INSERT INTO {databaseOwner}[{objectQualifier}Roles] (RoleID, RoleGroupID, RoleName, PortalID, IsSystemRole, IsPublic, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+                SELECT -1, Null, 'All Users'              , Null, 1, 0, -1, GetDate(), -1, GetDate()
+      UNION ALL SELECT -2, Null, 'Superusers'             , Null, 1, 0, -1, GetDate(), -1, GetDate()
+      UNION ALL SELECT -3, Null, 'Unauthenticated Users'  , Null, 1, 0, -1, GetDate(), -1, GetDate()
+
+    SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Roles] Off
+END
+GO
+
+-- DNN-4288: make sure, portalId has to be specified, when adding non-system rows:
+IF EXISTS (SELECT * FROM Sys.Check_Constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'CK_{objectQualifier}Roles_PortalId')
+ALTER TABLE {databaseOwner}[{objectQualifier}Roles] DROP CONSTRAINT CK_{objectQualifier}Roles_PortalId
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Roles] WITH NOCHECK ADD CONSTRAINT [CK_{objectQualifier}Roles_PortalId] CHECK (PortalId is not null)
+GO
+
+-- DNN-4289: optimize roles indexes
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}Roles_RoleGroup')
+    DROP Index {databaseOwner}[{objectQualifier}Roles].[IX_{objectQualifier}Roles_RoleGroup]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Roles_RoleGroup ON {databaseOwner}[{objectQualifier}Roles] (RoleGroupID, RoleName) INCLUDE (RoleId)
+GO
+-- DNN-4289: optimize roles indexes
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}Roles_RoleName')
+    DROP Index {databaseOwner}[{objectQualifier}Roles].[IX_{objectQualifier}Roles_RoleName]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Roles_RoleName  ON {databaseOwner}[{objectQualifier}Roles] (PortalID,    RoleName) INCLUDE (RoleId)
+GO
+
+-- UserRoles: Delete Duplicates
+DELETE FROM {databaseOwner}[{objectQualifier}UserRoles] WHERE UserRoleId NOT IN (SELECT Min(UserRoleId) FROM {databaseOwner}[{objectQualifier}UserRoles] GROUP BY UserId, RoleId)
+GO
+
+-- DNN-4290: Remove existing indexes (and provide proper names)
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles')
+DROP INDEX [IX_{objectQualifier}UserRoles] ON {databaseOwner}[{objectQualifier}UserRoles]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_1')
+DROP INDEX [IX_{objectQualifier}UserRoles_1] ON {databaseOwner}[{objectQualifier}UserRoles]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_RoleUser')
+DROP INDEX [IX_{objectQualifier}UserRoles_RoleUser] ON {databaseOwner}[{objectQualifier}UserRoles]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_UserRole')
+DROP INDEX [IX_{objectQualifier}UserRoles_UserRole] ON {databaseOwner}[{objectQualifier}UserRoles]
+GO
+
+-- DNN-4290: Create Indexes
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles_RoleUser] ON {databaseOwner}[{objectQualifier}UserRoles] ([RoleID] ASC, [UserID] ASC)
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles_UserRole] ON {databaseOwner}[{objectQualifier}UserRoles] ([UserID] ASC, [RoleID] ASC)
+GO
+
+-- DNN-4288: UserRoles: don't allow users be assigned to virtual roles:
+IF EXISTS (SELECT * FROM Sys.Check_Constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'CK_{objectQualifier}UserRoles_RoleId')
+ALTER TABLE {databaseOwner}[{objectQualifier}UserRoles] DROP CONSTRAINT CK_{objectQualifier}UserRoles_RoleId
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}UserRoles] WITH NOCHECK ADD CONSTRAINT [CK_{objectQualifier}UserRoles_RoleId] CHECK (RoleId >= 0)
+GO
+
+-- DNN-4288, DNN-4291: make sure, table content meets new requirements:
+UPDATE {databaseOwner}[{objectQualifier}DesktopModulePermission] SET UserId = Null WHERE UserId = -1
+UPDATE {databaseOwner}[{objectQualifier}FolderPermission]        SET UserId = Null WHERE UserId = -1
+UPDATE {databaseOwner}[{objectQualifier}ModulePermission]        SET UserId = Null WHERE UserId = -1
+UPDATE {databaseOwner}[{objectQualifier}TabPermission]           SET UserId = Null WHERE UserId = -1
+GO
+-- DNN-4288:
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission] WHERE RoleId                Is Not Null AND NOT RoleId                IN (SELECT RoleId                FROM {databaseOwner}[{objectQualifier}Roles]               )
+DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]        WHERE RoleId                Is Not Null AND NOT RoleId                IN (SELECT RoleId                FROM {databaseOwner}[{objectQualifier}Roles]               )
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]        WHERE RoleId                Is Not Null AND NOT RoleId                IN (SELECT RoleId                FROM {databaseOwner}[{objectQualifier}Roles]               )
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]           WHERE RoleId                Is Not Null AND NOT RoleId                IN (SELECT RoleId                FROM {databaseOwner}[{objectQualifier}Roles]               )
+-- DNN-4291:
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission] WHERE UserId                Is Not Null AND NOT UserId                IN (SELECT UserId                FROM {databaseOwner}[{objectQualifier}Users]               )
+DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]        WHERE UserId                Is Not Null AND NOT UserId                IN (SELECT UserId                FROM {databaseOwner}[{objectQualifier}Users]               )
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]        WHERE UserId                Is Not Null AND NOT UserId                IN (SELECT UserId                FROM {databaseOwner}[{objectQualifier}Users]               )
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]           WHERE UserId                Is Not Null AND NOT UserId                IN (SELECT UserId                FROM {databaseOwner}[{objectQualifier}Users]               )
+-- should not exist, but doesn't harm:
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission] WHERE PortalDesktopModuleID Is Not Null AND NOT PortalDesktopModuleID IN (SELECT PortalDesktopModuleID FROM {databaseOwner}[{objectQualifier}PortalDesktopModules])
+DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]        WHERE FolderId              Is Not Null AND NOT FolderId              IN (SELECT FolderId              FROM {databaseOwner}[{objectQualifier}Folders]             )
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]        WHERE ModuleId              Is Not Null AND NOT ModuleId              IN (SELECT ModuleId              FROM {databaseOwner}[{objectQualifier}Modules]             )
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]           WHERE TabId                 Is Not Null AND NOT TabId                 IN (SELECT TabId                 FROM {databaseOwner}[{objectQualifier}Tabs]                )
+GO
+
+-- DNN-4288: add new FK references from permission tables onto roles:
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DesktopModulePermission]') AND name = N'FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Roles')
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission] DROP CONSTRAINT FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Roles
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ ADD CONSTRAINT FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Roles FOREIGN KEY (RoleId)
+ REFERENCES {databaseOwner}[{objectQualifier}Roles] (RoleId)
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION  -- cascade would be preferred, but is not possible. Enforced in DeleteRole procedure!
+GO
+-- DNN-4288
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FolderPermission]') AND name = N'FK_{objectQualifier}FolderPermission_{objectQualifier}Roles')
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Roles
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission]
+ ADD CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Roles FOREIGN KEY (RoleId)
+ REFERENCES {databaseOwner}[{objectQualifier}Roles] (RoleId)
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION
+GO
+-- DNN-4288
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModulePermission]') AND name = N'FK_{objectQualifier}ModulePermission_{objectQualifier}Roles')
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT FK_{objectQualifier}ModulePermission_{objectQualifier}Roles
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission]
+ ADD CONSTRAINT FK_{objectQualifier}ModulePermission_{objectQualifier}Roles FOREIGN KEY (RoleId)
+ REFERENCES {databaseOwner}[{objectQualifier}Roles] (RoleId)
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION
+GO
+-- DNN-4288
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabPermission]') AND name = N'FK_{objectQualifier}TabPermission_{objectQualifier}Roles')
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] DROP CONSTRAINT FK_{objectQualifier}TabPermission_{objectQualifier}Roles
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission]
+ ADD CONSTRAINT FK_{objectQualifier}TabPermission_{objectQualifier}Roles    FOREIGN KEY (RoleId)
+ REFERENCES {databaseOwner}[{objectQualifier}Roles] (RoleId)
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION
+GO
+
+-- DNN-4291: add new FK constraint from permission tables onto users, enforcing referential integrity (and adjust FK names to convention):
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DesktopModulePermission]')
+                                           AND Name = N'FK_{objectQualifier}DesktopModulePermission{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission] DROP CONSTRAINT FK_{objectQualifier}DesktopModulePermission{objectQualifier}Users
+GO
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DesktopModulePermission]')
+                                           AND Name = N'FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission] DROP CONSTRAINT FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Users
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ ADD CONSTRAINT FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Users FOREIGN KEY (UserId)
+ REFERENCES {databaseOwner}[{objectQualifier}Users] (UserId)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE
+GO
+
+-- DNN-4291
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FolderPermission]')
+                                           AND Name = N'FK_{objectQualifier}FolderPermission{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT FK_{objectQualifier}FolderPermission{objectQualifier}Users
+GO
+
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FolderPermission]')
+                                           AND Name = N'FK_{objectQualifier}FolderPermission_{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Users
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission]
+ ADD CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Users FOREIGN KEY (UserId)
+ REFERENCES {databaseOwner}[{objectQualifier}Users] (UserId)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE
+GO
+
+-- DNN-4291
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModulePermission]')
+                                           AND Name = N'FK_{objectQualifier}ModulePermission{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT FK_{objectQualifier}ModulePermission{objectQualifier}Users
+GO
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModulePermission]')
+                                           AND Name = N'FK_{objectQualifier}ModulePermission_{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT FK_{objectQualifier}ModulePermission_{objectQualifier}Users
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission]
+ ADD CONSTRAINT FK_{objectQualifier}ModulePermission_{objectQualifier}Users FOREIGN KEY (UserId)
+ REFERENCES {databaseOwner}[{objectQualifier}Users]  (UserId)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE
+GO
+
+-- DNN-4291
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabPermission]')
+                                           AND Name = N'FK_{objectQualifier}TabPermission{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission]    DROP CONSTRAINT FK_{objectQualifier}TabPermission{objectQualifier}Users
+GO
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabPermission]')
+                                           AND Name = N'FK_{objectQualifier}TabPermission_{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission]    DROP CONSTRAINT FK_{objectQualifier}TabPermission_{objectQualifier}Users
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission]
+ ADD CONSTRAINT FK_{objectQualifier}TabPermission_{objectQualifier}Users   FOREIGN KEY (UserId)
+ REFERENCES {databaseOwner}[{objectQualifier}Users]  (UserId)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE
+GO
+
+-- DNN-4309, using DNN-4288 and DNN-4291
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_DesktopModulePermissions'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_DesktopModulePermissions]
+GO
+
+-- use new FK
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_DesktopModulePermissions]
+AS
+SELECT  PP.DesktopModulePermissionID,
+        PP.PortalDesktopModuleID,
+        P.PermissionID,
+        PP.RoleID,
+        R.RoleName,
+        PP.AllowAccess,
+        PP.UserID,
+        U.Username,
+        U.DisplayName,
+        P.PermissionCode,
+        P.ModuleDefID,
+        P.PermissionKey,
+        P.PermissionName,
+        PP.CreatedByUserID,
+        PP.CreatedOnDate,
+        PP.LastModifiedByUserID,
+        PP.LastModifiedOnDate
+FROM        {databaseOwner}[{objectQualifier}DesktopModulePermission] AS PP
+ INNER JOIN {databaseOwner}[{objectQualifier}Permission]              AS P  ON PP.PermissionID = P.PermissionID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Roles]                   AS R  ON PP.RoleID = R.RoleID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Users]                   AS U  ON PP.UserID = U.UserID
+GO
+
+-- DNN-4309, using DNN-4288 and DNN-4291
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_FolderPermissions'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+GO
+
+-- use new FK
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+AS
+SELECT  FP.FolderPermissionID,
+        F.FolderID,
+        F.FolderPath,
+        F.PortalID,
+        P.PermissionID,
+        FP.RoleID,
+        R.RoleName,
+        FP.AllowAccess,
+        FP.UserID,
+        U.Username,
+        U.DisplayName,
+        P.PermissionCode,
+        P.ModuleDefID,
+        P.PermissionKey,
+        P.PermissionName,
+        FP.CreatedByUserID,
+        FP.CreatedOnDate,
+        FP.LastModifiedByUserID,
+        FP.LastModifiedOnDate
+FROM         {databaseOwner}[{objectQualifier}FolderPermission] AS FP
+ INNER JOIN  {databaseOwner}[{objectQualifier}Folders]          AS F ON FP.FolderID     = F.FolderID
+ INNER JOIN  {databaseOwner}[{objectQualifier}Permission]       AS P ON FP.PermissionID = P.PermissionID
+ LEFT  JOIN  {databaseOwner}[{objectQualifier}Roles]            AS R ON FP.RoleID       = R.RoleID
+ LEFT  JOIN  {databaseOwner}[{objectQualifier}Users]            AS U ON FP.UserID       = U.UserID
+GO
+
+-- DNN-4309, using DNN-4288 and DNN-4291
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_ModulePermissions'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+GO
+
+-- use new FK
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+AS
+SELECT  MP.ModulePermissionID,
+        MP.ModuleID,
+        MP.PortalID,
+        P.PermissionID,
+        MP.RoleID,
+        R.RoleName,
+        MP.AllowAccess,
+        MP.UserID,
+        U.Username,
+        U.DisplayName,
+        P.PermissionCode,
+        P.ModuleDefID,
+        P.PermissionKey,
+        P.PermissionName,
+        MP.CreatedByUserID,
+        MP.CreatedOnDate,
+        MP.LastModifiedByUserID,
+        MP.LastModifiedOnDate
+FROM        {databaseOwner}[{objectQualifier}ModulePermission] AS MP
+ INNER JOIN {databaseOwner}[{objectQualifier}Permission]       AS P  ON MP.PermissionID = P.PermissionID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Roles]            AS R  ON MP.RoleID       = R.RoleID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Users]            AS U  ON MP.UserID       = U.UserID
+GO
+
+-- DNN-4309, using DNN-4288 and DNN-4291
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_TabPermissions'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_TabPermissions]
+GO
+
+-- use new FK
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_TabPermissions]
+AS
+SELECT  TP.TabPermissionID,
+        T.TabID,
+        T.PortalId,
+        P.PermissionID,
+        TP.RoleID,
+        R.RoleName,
+        TP.AllowAccess,
+        TP.UserID,
+        U.Username,
+        U.DisplayName,
+        P.PermissionCode,
+        P.ModuleDefID,
+        P.PermissionKey,
+        P.PermissionName,
+        TP.CreatedByUserID,
+        TP.CreatedOnDate,
+        TP.LastModifiedByUserID,
+        TP.LastModifiedOnDate
+FROM        {databaseOwner}[{objectQualifier}TabPermission]    AS TP
+ INNER JOIN {databaseOwner}[{objectQualifier}Tabs]             AS T  ON TP.TabId        = T.TabId
+ INNER JOIN {databaseOwner}[{objectQualifier}Permission]       AS P  ON TP.PermissionID = P.PermissionID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Roles]            AS R  ON TP.RoleID       = R.RoleID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Users]            AS U  ON TP.UserID       = U.UserID
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
