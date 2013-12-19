@@ -85,5 +85,22 @@
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\KnockoutMapping.zip" />
 
     <Copy SourceFiles="@(ExternalModulePackages)" DestinationFolder="$(WebsiteInstallPath)\Module"/>
+
+    <XmlRead Prefix="n"
+            Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+            XPath="dotnetnuke/packages/package/@version"
+            XmlFileName="..\Components\Telerik\DotNetNuke.Telerik.Web.dnn">
+      <Output TaskParameter="Value" PropertyName="TelerikVersion" />
+    </XmlRead>
+    <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="..\Components\Telerik\Package\bin" />
+    <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="..\Components\Telerik\Package\bin" />
+    <Copy SourceFiles="..\Components\Telerik\DotNetNuke.Telerik.Web.dnn" DestinationFolder="..\Components\Telerik\Package" />
+    <Copy SourceFiles="..\Components\Telerik\Telerik_EULA.pdf" DestinationFolder="..\Components\Telerik\Package\Documentation" />
+    <CreateItem Include="..\Components\Telerik\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="TelerikContent" />
+    </CreateItem>
+    <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="Telerik_$(TelerikVersion)_Install.zip" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Telerik_$(TelerikVersion)_Install.zip" DestinationFolder="$(WebsiteInstallPath)\Module" />
+    <RemoveDir Directories ="..\Components\Telerik\Package" />
   </Target>
 </Project>
