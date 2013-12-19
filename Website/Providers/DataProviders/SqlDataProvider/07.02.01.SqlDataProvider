@@ -1408,6 +1408,26 @@ FROM        {databaseOwner}[{objectQualifier}TabPermission]    AS TP
  LEFT  JOIN {databaseOwner}[{objectQualifier}Users]            AS U  ON TP.UserID       = U.UserID
 GO
 
+-- DNN-4292: Optimize Index Users_IsDeleted_DisplayName
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_IsDeleted_DisplayName')
+DROP INDEX {databaseOwner}[{objectQualifier}Users].[IX_{objectQualifier}Users_IsDeleted_DisplayName]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_IsDeleted_DisplayName] ON {databaseOwner}[{objectQualifier}Users]
+    ([IsDeleted]   ASC,
+     [DisplayName] ASC)
+     INCLUDE ([UserId], [IsSuperUser], [Email])
+GO
+
+-- DNN-4292: Create Index on last modified date for search indexer (isSuperuser included for future improvements)
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_LastModifiedOnDate')
+DROP INDEX {databaseOwner}[{objectQualifier}Users].[IX_{objectQualifier}Users_LastModifiedOnDate]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LastModifiedOnDate ON {databaseOwner}[{objectQualifier}Users]
+	(LastModifiedOnDate DESC) INCLUDE ([UserID], [IsSuperUser])
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
