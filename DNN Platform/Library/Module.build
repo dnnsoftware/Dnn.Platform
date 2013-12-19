@@ -99,8 +99,7 @@
     <CreateItem Include="..\Components\Telerik\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="TelerikContent" />
     </CreateItem>
-    <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="Telerik_$(TelerikVersion)_Install.zip" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\Telerik_$(TelerikVersion)_Install.zip" DestinationFolder="$(WebsiteInstallPath)\Module" />
+    <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="$(WebsiteInstallPath)\Module\Telerik_$(TelerikVersion)_Install.zip" />
     <RemoveDir Directories ="..\Components\Telerik\Package" />
   </Target>
 </Project>
