@@ -1445,6 +1445,14 @@ CREATE NONCLUSTERED INDEX IX_{objectQualifier}UserProfile_LastUpdatedDate ON {da
 	(LastUpdatedDate DESC) INCLUDE ([UserID])
 GO
 
+-- DNN-4294: Create Index 
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserPortals]') AND name = N'IX_{objectQualifier}UserPortals_VanityUrl')
+DROP INDEX {databaseOwner}[{objectQualifier}UserPortals].[IX_{objectQualifier}UserPortals_VanityUrl]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}UserPortals_VanityUrl ON {databaseOwner}[{objectQualifier}UserPortals]
+    (VanityUrl) INCLUDE (UserID, PortalID)
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
