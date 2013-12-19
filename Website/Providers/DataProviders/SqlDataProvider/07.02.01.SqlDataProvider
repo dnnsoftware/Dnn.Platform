@@ -1454,6 +1454,26 @@ CREATE NONCLUSTERED INDEX IX_{objectQualifier}UserPortals_VanityUrl ON {database
     (VanityUrl) INCLUDE (UserID, PortalID)
 GO
 
+-- DNN-4295: Create Index 
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules_PortalId')
+DROP INDEX {databaseOwner}[{objectQualifier}Modules].[IX_{objectQualifier}Modules_PortalId]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Modules_PortalId ON {databaseOwner}[{objectQualifier}Modules]
+    (PortalId) 
+GO
+
+-- DNN-4295: Rename and optimize Index 		
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules')
+DROP INDEX {databaseOwner}[{objectQualifier}Modules].[IX_{objectQualifier}Modules]
+GO
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules_ModuleDefId')
+DROP INDEX {databaseOwner}[{objectQualifier}Modules].[IX_{objectQualifier}Modules_ModuleDefId]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Modules_ModuleDefId ON {databaseOwner}[{objectQualifier}Modules]
+    (ModuleDefId) INCLUDE (ModuleId)
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
