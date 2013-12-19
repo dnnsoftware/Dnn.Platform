@@ -1512,6 +1512,34 @@ UPDATE {databaseOwner}[{objectQualifier}TabUrls] SET PortalAliasId = Null
  WHERE PortalAliasId Not IN (SELECT PortalAliasID FROM {databaseOwner}[{objectQualifier}PortalAlias])
 GO
 
+-- DNN-4298: remove orphaned entries
+DELETE FROM {databaseOwner}[{objectQualifier}Lists] 
+WHERE (DefinitionID NOT IN (SELECT ModuleDefID FROM {databaseOwner}[{objectQualifier}ModuleDefinitions]) AND DefinitionID > 0)
+   OR (PortalID NOT IN (SELECT PortalID FROM {databaseOwner}[{objectQualifier}Portals]) AND PortalID >= 0)
+GO
+
+-- DNN-4298: ensure that there are no duplicates before creating the index
+DELETE FROM {databaseOwner}[{objectQualifier}Lists] WHERE EntryID NOT IN 
+(SELECT L.EntryID FROM {databaseOwner}[{objectQualifier}Lists] L 
+            INNER JOIN (SELECT Max(EntryID) Item, ParentId, ListName, [Value] FROM {databaseOwner}[{objectQualifier}Lists] GROUP BY ParentId, ListName, [Value]) S 
+			        ON L.EntryID = S.Item AND L.ParentId = S.ParentId AND L.ListName = S.ListName AND S.[Value] = L.[Value])
+GO
+
+-- DNN-4298: optimize index for performance and consistence
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]') AND name = N'IX_{objectQualifier}Lists_ParentID')
+DROP INDEX [IX_{objectQualifier}Lists_ParentID] ON {databaseOwner}[{objectQualifier}Lists]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Lists_ParentID ON {databaseOwner}[{objectQualifier}Lists] (ParentID, ListName, [Value]) INCLUDE (SortOrder, DefinitionID, Text)
+GO
+
+-- DNN-4298: add new index for performance
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]') AND name = N'IX_{objectQualifier}Lists_SortOrder')
+DROP INDEX [IX_{objectQualifier}Lists_SortOrder] ON {databaseOwner}[{objectQualifier}Lists]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_SortOrder] ON {databaseOwner}[{objectQualifier}Lists] (PortalID, ParentID, ListName, SortOrder) INCLUDE (DefinitionID, [Value], Text)
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
