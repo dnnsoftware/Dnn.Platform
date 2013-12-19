@@ -1491,6 +1491,28 @@ CREATE NONCLUSTERED INDEX IX_{objectQualifier}IX_Tabs_PortalID_ParentID ON {data
     (PortalId, ParentId, TabOrder)
 GO
 
+-- DNN-4297 make sure, no invalid records exist:
+DELETE FROM {databaseOwner}[{objectQualifier}TabUrls]
+ WHERE TabID Not IN (SELECT TabID FROM {databaseOwner}[{objectQualifier}Tabs])
+GO
+
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabUrls]')
+                                           AND Name = N'FK_{objectQualifier}TabUrls_Tabs')
+ALTER TABLE {databaseOwner}[{objectQualifier}TabUrls] DROP CONSTRAINT FK_{objectQualifier}TabUrls_Tabs
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}TabUrls] ADD CONSTRAINT FK_{objectQualifier}TabUrls_Tabs
+  FOREIGN KEY (TabId) REFERENCES {databaseOwner}[{objectQualifier}Tabs] (TabID) 
+     ON UPDATE  NO ACTION -- Identity, not applicable 
+	 ON DELETE  CASCADE 
+GO
+
+-- DNN-4297, make sure, no invalid records exist:
+UPDATE {databaseOwner}[{objectQualifier}TabUrls] SET PortalAliasId = Null
+ WHERE PortalAliasId Not IN (SELECT PortalAliasID FROM {databaseOwner}[{objectQualifier}PortalAlias])
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
