@@ -1474,6 +1474,23 @@ GO
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}Modules_ModuleDefId ON {databaseOwner}[{objectQualifier}Modules]
     (ModuleDefId) INCLUDE (ModuleId)
 GO
+
+-- DNN-4296: Rename and optimize Index
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_1')
+DROP INDEX {databaseOwner}[{objectQualifier}Tabs].[IX_{objectQualifier}IX_Tabs_1]
+GO
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_2')
+DROP INDEX {databaseOwner}[{objectQualifier}Tabs].[IX_{objectQualifier}IX_Tabs_2]
+GO
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_PortalID_ParentID')
+DROP INDEX {databaseOwner}[{objectQualifier}Tabs].[IX_{objectQualifier}IX_Tabs_PortalID_ParentID]
+GO
+
+-- note: not unique ATM, because during move two pages with same portal+parentID+TabOrder might exist (check API)
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}IX_Tabs_PortalID_ParentID ON {databaseOwner}[{objectQualifier}Tabs]
+    (PortalId, ParentId, TabOrder)
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
