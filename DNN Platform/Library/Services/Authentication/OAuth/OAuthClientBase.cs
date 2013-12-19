@@ -624,7 +624,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             onAuthenticated(eventArgs);
         }
 
-        public AuthorisationResult Authorize()
+        public virtual AuthorisationResult Authorize()
         {
             if (OAuthVersion == "1.0")
             {
