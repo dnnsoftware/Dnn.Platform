@@ -30,6 +30,6 @@ using System.Security;
 //      Revision
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("7.1.1.0")]
-[assembly: AssemblyFileVersion("7.1.1.0")]
+[assembly: AssemblyVersion("7.1.2.0")]
+[assembly: AssemblyFileVersion("7.1.2.0")]
 [assembly: SecurityRules(SecurityRuleSet.Level1)]
