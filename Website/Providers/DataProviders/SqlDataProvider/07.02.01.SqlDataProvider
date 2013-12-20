@@ -1408,6 +1408,40 @@ FROM        {databaseOwner}[{objectQualifier}TabPermission]    AS TP
  LEFT  JOIN {databaseOwner}[{objectQualifier}Users]            AS U  ON TP.UserID       = U.UserID
 GO
 
+-- DNN-4288: virtual role support
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRoles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoles]
+AS
+BEGIN
+    SELECT R.*,
+          (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}UserRoles] U WHERE U.RoleID = R.RoleID) AS UserCount
+     FROM {databaseOwner}[{objectQualifier}Roles] AS R
+     WHERE RoleID >= 0 -- ignore virtual roles. Note: might be removed, after controller has been adjusted
+END
+GO
+
+-- DNN-4288: suppress system roles
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+    @PortalId     Int -- Null: Host Roles
+AS
+BEGIN
+    SELECT R.*,
+          (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}UserRoles] U WHERE U.RoleID = R.RoleID) AS UserCount
+     FROM {databaseOwner}[{objectQualifier}Roles] R
+    WHERE (R.PortalId = @PortalId OR R.PortalId is null)
+      AND (R.RoleId >= 0) -- DNN-4288: hide system role atm to prevent duplicates. Might be removed, after API has been adopt
+    ORDER BY R.RoleName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN))
+END
+GO
+
 -- DNN-4292: Optimize Index Users_IsDeleted_DisplayName
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_IsDeleted_DisplayName')
 DROP INDEX {databaseOwner}[{objectQualifier}Users].[IX_{objectQualifier}Users_IsDeleted_DisplayName]
