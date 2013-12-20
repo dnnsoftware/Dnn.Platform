@@ -311,6 +311,11 @@ namespace DotNetNuke.UI.Containers
         {
             try
             {
+                if (this.ModuleControl == null)
+                {
+                    return;
+                }
+
                 ActionRoot.Actions.AddRange(Actions);
             }
             catch (Exception exc)
