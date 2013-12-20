@@ -22,11 +22,18 @@ using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Security.Permissions;
 
 namespace DotNetNuke.UI.WebControls.Internal
 {
     class PermissionTriStateTemplate : ITemplate
     {
+        private readonly PermissionInfo _permission;
+
+        public PermissionTriStateTemplate(PermissionInfo permission)
+        {
+            _permission = permission;
+        }
         public void InstantiateIn(Control container)
         {
             var triState = new PermissionTriState();
@@ -39,16 +46,13 @@ namespace DotNetNuke.UI.WebControls.Internal
             var triState = (PermissionTriState) sender;
             var dataRowView = ((DataRowView) ((DataGridItem)triState.NamingContainer).DataItem);
 
-            triState.Value = dataRowView[DataField].ToString();
-            triState.Locked = !bool.Parse(dataRowView[EnabledField].ToString());
+            triState.Value = dataRowView[_permission.PermissionName].ToString();
+            triState.Locked = !bool.Parse(dataRowView[_permission.PermissionName + "_Enabled"].ToString());
             triState.SupportsDenyMode = SupportDenyMode;
             triState.IsFullControl = IsFullControl;
             triState.IsView = IsView;
+            triState.PermissionKey = _permission.PermissionKey;
         }
-
-        public string DataField { get; set; }
-
-        public string EnabledField { get; set; }
 
         public bool IsFullControl { get; set; }
 

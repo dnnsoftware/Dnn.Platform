@@ -484,14 +484,12 @@ namespace DotNetNuke.Security.Permissions.Controls
             foreach (PermissionInfo permission in _permissions)
             {
                 var templateCol = new TemplateColumn();
-                var columnTemplate = new PermissionTriStateTemplate
-                                            {
-                                                DataField = permission.PermissionName,
-                                                EnabledField = permission.PermissionName + "_Enabled",
-                                                IsFullControl = IsFullControl(permission),
-                                                IsView = IsViewPermisison(permission),
-                                                SupportDenyMode = SupportsDenyPermissions(permission)
-                                            };
+                var columnTemplate = new PermissionTriStateTemplate(permission)
+                                                {
+                                                    IsFullControl = IsFullControl(permission),
+                                                    IsView = IsViewPermisison(permission),
+                                                    SupportDenyMode = SupportsDenyPermissions(permission)
+                                                };
                 templateCol.ItemTemplate = columnTemplate;
 
                 var locName = "";

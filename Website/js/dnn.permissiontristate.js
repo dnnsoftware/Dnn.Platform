@@ -54,9 +54,9 @@ dnn.controls.triStateManager = function (images, toolTips) {
             updateImage($hdn, state);
             
             //Check if View Permission is denied (can't do other tasks if can't view)
-            if ($hdn.hasClass('viewPermission')) {
+            if ($hdn.hasClass('view')) {
                 if (state === 'False') {
-                    var $notView = $collection.not('input.viewPermission');
+                    var $notView = $collection.not('input.view').not('input.navigate');
                     $notView.each(function (index, elem) {
                         var $elem = jQuery(elem);
                         if (!$elem.hasClass('lockedPerm')) {
@@ -69,15 +69,16 @@ dnn.controls.triStateManager = function (images, toolTips) {
             } else {
                 //if other permissions are set to true must have View
                 if (state === 'True') {
-                    var $view = $collection.filter('input.viewPermission');
-                    $view.each(function (index, elem) {
-                        var $elem = jQuery(elem);
-                        if (!$elem.hasClass('lockedPerm')) {
-                            elem.value = state;
-                            updateImage($elem, state);
-                        }
-                    });
-
+                    if (!$hdn.hasClass('navigate')) {
+                        var $view = $collection.filter('input.view');
+                        $view.each(function (index, elem) {
+                            var $elem = jQuery(elem);
+                            if (!$elem.hasClass('lockedPerm')) {
+                                elem.value = state;
+                                updateImage($elem, state);
+                            }
+                        });
+                    }
                 }
             }
             
