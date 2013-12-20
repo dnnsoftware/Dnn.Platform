@@ -1663,6 +1663,56 @@ BEGIN
 END
 GO
 
+--DNN-4288: suppress system roles (just for sure)
+-- TODO: doesn't take into account effective/expire datetimes
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetServices]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetServices]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetServices]
+    @PortalId  Int, -- pass Null for roles of all sites
+    @UserId    Int  -- not null!
+AS
+BEGIN
+    SELECT
+        R.*,
+        UR.IsOwner,
+        UR.UserRoleID,
+        UR.UserID,
+        UR.ExpiryDate,
+        UR.IsTrialUsed,
+        UR.EffectiveDate,
+        U.DisplayName,
+        U.Email
+    FROM         {databaseOwner}[{objectQualifier}Users]      U
+     INNER JOIN  {databaseOwner}[{objectQualifier}UserRoles] UR ON UR.UserID = U.UserID
+     RIGHT JOIN  {databaseOwner}[{objectQualifier}Roles]      R ON UR.RoleID = R.RoleID  AND UR.UserID = @UserId
+    WHERE (R.PortalId = @PortalId OR IsNull(@PortalId, -1) = -1)
+      AND  R.IsPublic = 1
+      AND  R.RoleId  >= 0  -- DNN-4288: hide system role atm to prevent duplicates. Might be removed, after API has been adopted
+    ORDER BY R.RoleName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN))
+END
+GO
+
+-- DNN-4288: ignore system roles, DNN-4291: add FK constraints to permission tables
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteRole]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteRole]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteRole]
+    @RoleId Int -- ID of role to delete. System Roles ignored (deletion of system roles not supported)
+AS
+BEGIN
+    IF @RoleId >= 0 BEGIN
+        DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission] WHERE RoleID = @RoleId
+        DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]        WHERE RoleID = @RoleId
+        DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]        WHERE RoleID = @RoleId
+        DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]           WHERE RoleID = @RoleId
+        DELETE FROM {databaseOwner}[{objectQualifier}Roles]                   WHERE RoleID = @RoleId
+    END
+END
+GO
 
 -- CONTENT-2131
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]') AND type in (N'P', N'PC'))
