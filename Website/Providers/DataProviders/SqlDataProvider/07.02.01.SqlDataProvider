@@ -1066,6 +1066,48 @@ AS
 
 GO
 
+-- DNN-4287
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PageLowerBound]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}PageLowerBound]
+GO
+
+-- new helperfunction for paging, replacing inefficient stored procedure
+CREATE FUNCTION {databaseOwner}[{objectQualifier}PageLowerBound]
+(
+    @PageIndex Int, -- Page number starting with 0 or Null for all
+    @PageSize  Int  -- number of items per page or Null for all
+) 
+	RETURNS    Int
+AS
+BEGIN
+    DECLARE @bound Int = 1
+    IF IsNull(@PageSize, -1) > 0 AND IsNull(@PageIndex, -1) >= 0 AND IsNull(@PageIndex, 0) <= (Cast(0x7fffffff AS Int) / IsNull(@PageSize, 1) -1)
+        SET @bound  = @PageSize * @PageIndex + 1
+    RETURN @bound
+END
+GO
+
+-- DNN-4287: 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PageUpperBound]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}PageUpperBound]
+GO
+
+-- new helper function for paging, replacing inefficient stored procedure
+CREATE FUNCTION {databaseOwner}[{objectQualifier}PageUpperBound]
+(
+    @PageIndex Int, -- Page number starting with 0 or Null for all
+    @PageSize  Int  -- number of items per page or Null for all
+) 
+	RETURNS    Int
+AS
+BEGIN
+    DECLARE @bound Int = Cast(0x7fffffff AS Int)
+    IF IsNull(@PageSize, -1) > 0 AND IsNull(@PageIndex, -1) >= 0 AND IsNull(@PageIndex, 0) <= (Cast(0x7fffffff AS Int) / IsNull(@PageSize, 1) -1)
+        SET @Bound = @PageSize * (@PageIndex + 1)
+    RETURN @Bound
+END
+GO
+
 -- DNN-4288: adding virtual roles to table for referential integrity:
 ALTER TABLE {databaseOwner}[{objectQualifier}Roles] ALTER COLUMN PortalId Int Null -- virtual roles are not assigned to a portal
 GO
