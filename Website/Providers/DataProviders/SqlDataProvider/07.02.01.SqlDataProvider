@@ -1617,6 +1617,53 @@ GO
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_SortOrder] ON {databaseOwner}[{objectQualifier}Lists] (PortalID, ParentID, ListName, SortOrder) INCLUDE (DefinitionID, [Value], Text)
 GO
 
+-- DNN-4330: optimized. utilizing DNN-4287: optimized paging, DNN-4288: role support
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRolesBasicSearch]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRolesBasicSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRolesBasicSearch]
+    @PortalID           Int,                    -- might be null for all portals
+    @PageIndex          Int,                    -- page number starting at 0
+    @PageSize           Int,                    -- number of items per page
+    @FilterBy           nVarChar(100)           -- pattern for role name, do not use preceding or trailing wildcards
+AS
+BEGIN
+    IF IsNull(@FilterBy, '') <> '' BEGIN
+        IF Substring(@FilterBy, 1, 1) = '%'
+            SET @FilterBy = Substring(@FilterBy, 2, Len(@FilterBy) - 1)
+        IF Substring(@FilterBy, Len(@FilterBy), 1) = '%'
+            SET @FilterBy = Substring(@FilterBy, 1, Len(@FilterBy) - 1)
+     END;
+
+	IF IsNull(@PageIndex,-1) >= 0 AND IsNull(@PageSize, 0) > 0 AND IsNull(@PageSize, 0) < Cast(0x7fffffff AS Int)
+		WITH OrderedRoles AS (
+			SELECT RoleID, PortalID, RoleName, [Description], ServiceFee, BillingFrequency, TrialPeriod, TrialFrequency, BillingPeriod, TrialFee,
+				   IsPublic, AutoAssignment, RoleGroupID, RSVPCode, {databaseOwner}{objectQualifier}FilePath(IconFile) AS IconFile, Status, SecurityMode,
+				   CreatedByUserID,CreatedOnDate,LastModifiedByUserID,LastModifiedOnDate,
+				   ROW_NUMBER() OVER (ORDER BY RoleName ASC, PortalID DESC) AS RowNum
+			 FROM {databaseOwner}[{objectQualifier}Roles]
+			 WHERE (RoleName LIKE '%' + @FilterBy + '%' OR IsNull(@FilterBy,'') = '')
+			   AND (PortalID = @PortalID OR IsNull(@PortalID, -1)  = -1)
+			   AND (RoleId  > 0) -- DNN-4288: ignore virtual roles
+			)
+		SELECT * FROM OrderedRoles WHERE RowNum >= {databaseOwner}{objectQualifier}PageLowerBound(@PageIndex, @Pagesize)
+									 AND RowNum <= {databaseOwner}{objectQualifier}PageUpperBound(@PageIndex, @Pagesize) ORDER BY RowNum
+		 OPTION (OPTIMIZE FOR (@PortalId UNKNOWN));
+	ELSE -- no paging
+        SELECT RoleID, PortalID, RoleName, [Description], ServiceFee, BillingFrequency, TrialPeriod, TrialFrequency, BillingPeriod, TrialFee,
+               IsPublic, AutoAssignment, RoleGroupID, RSVPCode, {databaseOwner}{objectQualifier}FilePath(IconFile) AS IconFile, Status, SecurityMode,
+               CreatedByUserID,CreatedOnDate,LastModifiedByUserID,LastModifiedOnDate,
+               ROW_NUMBER() OVER (ORDER BY RoleName ASC, PortalID DESC) AS RowNum
+         FROM {databaseOwner}[{objectQualifier}Roles]
+         WHERE (RoleName LIKE '%' + @FilterBy + '%' OR IsNull(@FilterBy,'') = '')
+           AND (PortalID = @PortalID OR IsNull(@PortalID, -1)  = -1)
+           AND (RoleId  > 0) -- DNN-4288: ignore virtual roles
+		 OPTION (OPTIMIZE FOR (@PortalId UNKNOWN))
+END
+GO
+
+
 -- CONTENT-2131
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
