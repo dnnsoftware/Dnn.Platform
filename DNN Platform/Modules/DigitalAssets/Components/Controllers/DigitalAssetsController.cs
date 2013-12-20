@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return ApplyOrder(folders.AsQueryable(), field, asc);
         } 
 
-        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, string orderingField, int startIndex, bool asc, bool recursive)
+        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
         {
             Requires.NotNull("folder", folder);
 
@@ -141,10 +141,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, false, true);
             }
 
-            // Set default sorting values
-            var field = string.IsNullOrEmpty(orderingField) ? "FileName" : orderingField;
-
-            return ApplyOrder(FolderManager.Instance.GetFiles(folder, recursive, true).AsQueryable(), field, asc);            
+            return SortFiles(FolderManager.Instance.GetFiles(folder, recursive, true), sortProperties);            
         }
 
         /// <summary>
@@ -429,7 +426,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
 
             var recursive = subfolderFilter == SubfolderFilter.IncludeSubfoldersFilesOnly;
-            var files = GetFiles(folder, sortProperties.Column == "ItemName" ? "FileName" : sortProperties.Column, startIndex, sortProperties.Ascending, recursive).ToList();
+            var files = GetFiles(folder, sortProperties, startIndex, recursive).ToList();
 
             IEnumerable<ItemViewModel> content;
             if (startIndex + numItems <= folders.Count())
@@ -472,17 +469,43 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var recursive = SettingsRepository.GetSubfolderFilter(moduleId) != SubfolderFilter.ExcludeSubfolders;
             var folder = GetFolderInfo(folderId);
 
-            var results = FolderManager.Instance.SearchFiles(folder, pattern, recursive).Select(GetItemViewModel);
-
+            var files = FolderManager.Instance.SearchFiles(folder, pattern, recursive);
             var sortProperties = SortProperties.Parse(sortExpression);
-            results = ApplyOrder(results.AsQueryable(), sortProperties.Column, sortProperties.Ascending);
-
+            var sortedFiles = SortFiles(files, sortProperties).ToList();
+            
             return new PageViewModel
                 {
                     Folder = GetFolderViewModel(folder),
-                    Items = results.Skip(startIndex).Take(numItems).ToList(),
-                    TotalCount = results.Count()
+                    Items = sortedFiles.Skip(startIndex).Take(numItems).Select(GetItemViewModel).ToList(),
+                    TotalCount = sortedFiles.Count()
                 };
+        }
+
+        private static IEnumerable<IFileInfo> SortFiles(IEnumerable<IFileInfo> files, SortProperties sortProperties)
+        {
+            switch (sortProperties.Column)
+            {
+                case "ItemName":
+                    return OrderBy(files, f => f.FileName, sortProperties.Ascending);
+                case "LastModifiedOnDate":
+                    return OrderBy(files, f => f.LastModifiedOnDate, sortProperties.Ascending);
+                case "Size":
+                    return OrderBy(files, f => f.Size, sortProperties.Ascending);
+                case "ParentFolder":
+                    return OrderBy(files, f => f.FolderId, new FolderPathComparer(), sortProperties.Ascending);
+                default:
+                    return files;
+            }
+        }
+
+        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, bool ascending)
+        {
+            return ascending ? source.OrderBy(keySelector) : source.OrderByDescending(keySelector);
+        }
+
+        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, bool ascending)
+        {
+            return ascending ? source.OrderBy(keySelector, comparer) : source.OrderByDescending(keySelector, comparer);
         }
 
         public FolderViewModel GetFolder(int folderID)
