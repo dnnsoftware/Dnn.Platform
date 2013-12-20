@@ -1541,6 +1541,139 @@ GO
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_SortOrder] ON {databaseOwner}[{objectQualifier}Lists] (PortalID, ParentID, ListName, SortOrder) INCLUDE (DefinitionID, [Value], Text)
 GO
 
+-- CONTENT-2131
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+	@PortalId int,
+	@UserId int,
+	@SubscriptionTypeID int
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	WHERE 
+			(( @PortalId is null and PortalId is null) or (PortalId = @PortalId))
+			AND UserId = @UserId
+			AND (@SubscriptionTypeID IS NULL OR SubscriptionTypeID = @SubscriptionTypeID)
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+	@PortalId int,
+	@SubscriptionTypeID int,
+	@ObjectKey NVARCHAR(255)
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	WHERE 
+		(( @PortalId is null and PortalId is null) or (PortalId = @PortalId))
+		AND SubscriptionTypeID = @SubscriptionTypeID
+		AND ObjectKey = @ObjectKey
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+	@UserId INT ,
+	@PortalId INT ,
+	@SubscriptionTypeId INT ,
+	@ObjectKey NVARCHAR(255) ,
+	@Description NVARCHAR(255),
+	@ModuleId INT ,
+	@TabId INT,
+	@ObjectData NVARCHAR(MAX)
+AS 
+	BEGIN
+        DECLARE @SubscriptionId INT = NULL   
+        
+        SELECT  TOP 1 @SubscriptionId = SubscriptionId
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		WHERE   UserId = @UserId
+				AND (( @PortalId is null and PortalId is null) or (PortalId = @PortalId))
+				AND SubscriptionTypeId = @SubscriptionTypeID
+				AND ObjectKey = @ObjectKey
+				AND ((@ModuleId is null and ModuleId is null ) or (ModuleId = @ModuleId))	
+				AND ((@TabId is null and TabId is null ) or (TabId = @TabId))
+		      
+        IF (@SubscriptionId IS NULL) 
+			BEGIN
+				INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+						( UserId ,
+							PortalId ,
+							SubscriptionTypeId ,
+							ObjectKey ,
+							Description,
+							CreatedOnDate ,
+							ModuleId ,
+							TabId,
+							ObjectData
+						)
+				VALUES  ( @UserId ,
+							@PortalId ,
+							@SubscriptionTypeId ,
+							@ObjectKey ,
+							@Description,
+							GETUTCDATE() ,
+							@ModuleId ,
+							@TabId,
+							@ObjectData
+						)
+
+				SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
+			END
+		ELSE 
+			BEGIN
+				UPDATE  {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+				SET     UserId = @UserId ,
+						PortalId = @PortalId ,
+						SubscriptionTypeId = @SubscriptionTypeId ,
+						ObjectKey = @ObjectKey ,
+						Description = @Description ,
+						ModuleId = @ModuleId ,
+						TabId = @TabId,
+						ObjectData = @ObjectData
+				WHERE   SubscriptionId = @SubscriptionId
+
+				SELECT  @SubscriptionId AS [SubscriptionId]
+			END
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+	@PortalId INT ,
+	@UserId INT ,
+	@SubscriptionTypeId INT ,
+	@ObjectKey NVARCHAR(255) ,
+	@ModuleId INT ,
+	@TabId INT
+AS 
+	BEGIN
+		SELECT  TOP 1 *
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		WHERE   UserId = @UserId
+				AND (( @PortalId is null and PortalId is null) or (PortalId = @PortalId))
+				AND SubscriptionTypeId = @SubscriptionTypeID
+				AND ObjectKey = @ObjectKey
+				AND ((@ModuleId is null and ModuleId is null ) or (ModuleId = @ModuleId))	
+				AND ((@TabId is null and TabId is null ) or (TabId = @TabId))
+	END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
