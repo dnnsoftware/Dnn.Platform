@@ -45,7 +45,7 @@ namespace DotNetNuke.Entities
     /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
-    public abstract class BaseEntityInfo
+    public abstract class BaseEntityInfo : DotNetNuke.Entities.IBaseEntityInfo
     {
         protected BaseEntityInfo()
         {

@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     [XmlRoot("module", IsNullable = false)]
     [Serializable]
-    public class ModuleInfo : ContentItem, IPropertyAccess
+    public class ModuleInfo : ContentItem, IPropertyAccess, DotNetNuke.Entities.Modules.IModuleInfo
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleInfo));
         private string _authorizedEditRoles;
