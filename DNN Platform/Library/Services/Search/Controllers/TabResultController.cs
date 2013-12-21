@@ -42,20 +42,13 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override bool HasViewPermission(SearchResult searchResult)
         {
-            var tabController = new TabController();
-            var viewable = false;
+            var viewable = true;
 
             if (searchResult.TabId > 0)
             {
+                var tabController = new TabController();
                 var tab = tabController.GetTab(searchResult.TabId, searchResult.PortalId, false);
-                if (!tab.IsDeleted && TabPermissionController.CanViewPage(tab))
-                {
-                    viewable = true;
-                }                    
-            }
-            else
-            {
-                viewable = true;
+                viewable = tab != null && !tab.IsDeleted && TabPermissionController.CanViewPage(tab);
             }
 
             return viewable;
