@@ -183,7 +183,7 @@
                     .fadeIn("slow", function () {
 
                         //update server
-                        completeMove(targetPane, ((moduleIndex * 2) + 4));
+                        completeMove(targetPane, ( 2 * moduleIndex + 2));
                     });
             });
         }
@@ -226,7 +226,7 @@
                     .insertBefore($("#dnn_" + targetPane).children()[moduleIndex - 1])
                     .fadeIn("slow", function () {
                         //update server
-                        completeMove(targetPane, (moduleIndex * 2) - 2);
+                        completeMove(targetPane, (2 * moduleIndex - 4));
                     });
             });
         }
