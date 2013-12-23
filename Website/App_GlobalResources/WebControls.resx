@@ -246,4 +246,19 @@
   <data name="FileUpload.ReplaceButton.Text" xml:space="preserve">
     <value>Replace</value>
   </data>
+  <data name="AllItemsCheckedString.Text" xml:space="preserve">
+    <value>All items checked</value>
+  </data>
+  <data name="CheckAllString.Text" xml:space="preserve">
+    <value>Check all</value>
+  </data>
+  <data name="ItemsCheckedString.Text" xml:space="preserve">
+    <value>items checked</value>
+  </data>
+  <data name="NoMatches.Text" xml:space="preserve">
+    <value>No matches</value>
+  </data>
+  <data name="ShowMoreFormatString.Text" xml:space="preserve">
+    <value>Items &lt;b&gt;1&lt;/b&gt;-&lt;b&gt;{0}&lt;/b&gt; out of &lt;b&gt;{1}&lt;/b&gt;</value>
+  </data>
 </root>

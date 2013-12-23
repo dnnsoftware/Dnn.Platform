@@ -44,6 +44,11 @@ namespace DotNetNuke.Web.UI.WebControls
             this.OnClientDropDownOpened = "$.dnnComboBoxScroll";
             this.MaxHeight = 240;
             this.ZIndex = 100010;
+            this.Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
+            this.Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
+            this.Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
+            this.Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
+            this.Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
         }
 
         public void AddItem(string text, string value)
