@@ -89,6 +89,8 @@ namespace DotNetNuke.Entities.Users
     /// -----------------------------------------------------------------------------
     public class UserController
     {
+        private const string DefaultUsersFoldersPath = "Users";
+
         #region Public Properties
 
         public string DisplayFormat { get; set; }
@@ -1431,9 +1433,16 @@ namespace DotNetNuke.Entities.Users
                 objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
                 //Delete userFolder - DNN-3787
-                var userFolder = FolderManager.Instance.GetUserFolder(user);
-                var notDeletedSubfolders = new List<IFolderInfo>();
-                FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
+                var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
+                var folderPath = PathUtils.Instance.FormatFolderPath(String.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
+                var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
+                var userFolder = FolderManager.Instance.GetFolder(folderPortalId, folderPath);
+                if (userFolder != null)
+                {
+                    FolderManager.Instance.Synchronize(folderPortalId, folderPath, true, true);
+                    var notDeletedSubfolders = new List<IFolderInfo>();
+                    FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
+                }
 
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);

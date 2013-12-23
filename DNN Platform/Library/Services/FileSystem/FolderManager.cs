@@ -1165,7 +1165,7 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual IFolderInfo AddUserFolder(UserInfo user)
         {
             //user _default portal for all super users
-            var portalId = user.IsSuperUser ? -1 : user.PortalID;
+            var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
 
             var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
 
