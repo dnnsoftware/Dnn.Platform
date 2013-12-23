@@ -452,6 +452,16 @@ namespace DotNetNuke.Modules.Admin.Users
             return retValue;
         }
 
+        public string DisplayDefaultVisibility(ProfilePropertyDefinition definition)
+        {
+            string retValue = Null.NullString;
+            if (!String.IsNullOrEmpty(definition.DefaultVisibility.ToString()))
+            {
+                retValue = LocalizeString(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
+            }
+            return retValue;
+        }
+
         public void Update()
         {
             try

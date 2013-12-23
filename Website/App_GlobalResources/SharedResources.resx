@@ -1842,4 +1842,7 @@
   <data name="Followers.Text" xml:space="preserve">
     <value>Followers</value>
   </data>
+  <data name="FriendsAndGroups.Text" xml:space="preserve">
+    <value>Friends and Groups</value>
+  </data>
 </root>
