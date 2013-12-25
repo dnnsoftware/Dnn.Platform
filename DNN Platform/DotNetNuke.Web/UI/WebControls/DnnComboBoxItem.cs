@@ -31,44 +31,44 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public DnnComboBoxItem()
         {
-            base.Load += new System.EventHandler(DnnComboBoxItem_Load);
         }       
 
         public DnnComboBoxItem(string text) : base(text)
         {
-            base.Load += new System.EventHandler(DnnComboBoxItem_Load);
         }
 
         public DnnComboBoxItem(string text, string value) : base(text, value)
         {
-            base.Load += new System.EventHandler(DnnComboBoxItem_Load);
         }
 
-        public string ResourceKey { get; set; }
+        public string ResourceKey { 
+            get
+            {
+                if (ViewState["ResourceKey"] != null)
+                {
+                    return ViewState["ResourceKey"].ToString();
+                }
 
+                return string.Empty;
+            }
+            set
+            {
+                ViewState["ResourceKey"] = value;
+            }
+        }
 
-        // try to load text from resource file if resourceKey exists
-        void DnnComboBoxItem_Load(object sender, System.EventArgs e)
+        protected override void OnLoad(System.EventArgs e)
         {
+            base.OnLoad(e);
+
             if (!string.IsNullOrEmpty(ResourceKey))
             {
                 string resourceFile = Utilities.GetLocalResourceFile(this);
                 if (!string.IsNullOrEmpty(resourceFile))
-                    this.Text = Localization.GetString(ResourceKey, resourceFile);
+                {
+                    Text = Localization.GetString(ResourceKey, resourceFile);
+                }
             }
         }
-
-        //protected override void Render(System.Web.UI.HtmlTextWriter writer)
-        //{
-        //    if (!string.IsNullOrEmpty(ResourceKey))
-        //    {
-        //        string resourceFile = Utilities.GetLocalResourceFile(this);
-        //        if (!string.IsNullOrEmpty(resourceFile))                
-        //            this.Text = Localization.GetString(ResourceKey, resourceFile);
-                
-        //    }
-
-        //    base.Render(writer);
-        //}
     }
 }
