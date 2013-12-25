@@ -23,7 +23,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.UI;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -71,6 +71,14 @@ namespace DotNetNuke.Modules.DigitalAssets
             get
             {
                 return string.Format(LocalizeString("DialogTitle"), folderViewModel.FolderName);
+            }
+        }
+
+        protected bool IsHostPortal
+        {
+            get
+            {
+                return IsHostMenu || controller.GetCurrentPortalId(ModuleId) == Null.NullInteger;
             }
         }
 
@@ -302,7 +310,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         private void SetupPermissionGrid()
         {
             PermissionsGrid.FolderPath = Folder.FolderPath;
-            PermissionsGrid.Visible = HasFullControl;
+            PermissionsGrid.Visible = HasFullControl && !IsHostPortal;
         }
     }
 }

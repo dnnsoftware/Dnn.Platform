@@ -102,7 +102,7 @@
         }, 
         {
             selectedTab: '<%=(!IsPostBack ? "0" : "-1")%>',
-            canAdminPermissions: '<%=Localization.GetSafeJSString(HasFullControl.ToString().ToLowerInvariant()) %>',
+            canAdminPermissions: '<%=Localization.GetSafeJSString((HasFullControl && !IsHostPortal).ToString().ToLowerInvariant()) %>',
             dialogTitle: '<%=Localization.GetSafeJSString(DialogTitle)%>'
         }
     );
