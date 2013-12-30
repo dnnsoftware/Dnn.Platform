@@ -43,7 +43,7 @@
         
         this.frequencyOptions = [
             { value: '0', text: that.getString('Instant') },
-            { value: '1', text: that.getString('Dialy') },
+            { value: '1', text: that.getString('Daily') },
             { value: '2', text: that.getString('Hourly') },
             { value: '3', text: that.getString('Weekly') },
             { value: '-1', text: that.getString('Never') }
