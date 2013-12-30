@@ -261,4 +261,10 @@
   <data name="ShowMoreFormatString.Text" xml:space="preserve">
     <value>Items &lt;b&gt;1&lt;/b&gt;-&lt;b&gt;{0}&lt;/b&gt; out of &lt;b&gt;{1}&lt;/b&gt;</value>
   </data>
+  <data name="FileUpload.TooManyFiles.Error" xml:space="preserve">
+    <value>You have selected too many files</value>
+  </data>
+  <data name="FileUpload.InvalidFileExtensions.Error" xml:space="preserve">
+    <value>Some selected files with invalid extensions are excluded from upload.</value>
+  </data>
 </root>

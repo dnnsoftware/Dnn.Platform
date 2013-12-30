@@ -72,18 +72,27 @@
                         $element("div", { 'class': 'dnnLeft' }).append(
                             $element("ul", { 'class': 'dnnButtonGroup' }).append(
                                 $element("li").append(
-                                    $element("a", { href: "javascript:void(0);", 'class': 'active' }).text(this.options.resources.uploadFileMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))),
+                                    $element("a", { href: "javascript:void(0);", 'class': 'active' }).text(this.options.resources.uploadFileMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))
+                                ),
                                 $element("li").append(
-                                    $element("a", { href: "javascript:void(0);" }).text(this.options.resources.uploadFromWebMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web)))),
-                            $element("span").append(
+                                    $element("a", { href: "javascript:void(0);" }).text(this.options.resources.uploadFromWebMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web))
+                                )
+                            ),
+                            this._$decompressOption = $element("span").append(
                                 $element("input", { type: 'checkbox', id: checkBoxId }),
-                                $element("label", { 'for': checkBoxId, 'class': 'fu-decompress-label' }).text(this.options.resources.decompressLabel))),
+                                $element("label", { 'for': checkBoxId, 'class': 'fu-decompress-label' }).text(this.options.resources.decompressLabel)
+                            )
+                        ),
                         $element("div", { 'class': 'fu-folder-picker-container dnnRight' }).append(
                             $element("label").text(this.options.resources.uploadToFolderLabel),
-                            this._folderPicker.$element.addClass("dnnLeftComboBox"))),
+                            this._folderPicker.$element.addClass("dnnLeftComboBox")
+                        )
+                    ),
                     $element("div", { 'class': 'fu-dialog-content-fileupload-local' }).append(
                         $element("div", { 'class': 'fu-dialog-drag-and-drop-area' }).append(
-                            $element("div", { 'class': 'fu-dialog-drag-and-drop-area-message' }))),
+                            $element("div", { 'class': 'fu-dialog-drag-and-drop-area-message' })
+                        )
+                    ),
                     $element("div", { style: 'display: none', 'class': 'fu-dialog-content-fileupload-web' }).append(
                         $element("table", { 'class': 'fu-dialog-url-upload-area' }).append(
                             $element("tbody").append(
@@ -93,11 +102,21 @@
                                             this._$url = $element("input", { type: 'text', title: this.options.resources.urlTooltip, placeholder: this.options.resources.urlTooltip })
                                                 .onEnter($.proxy(this._uploadByUrl, this))
                                                 .on("change keyup paste input propertychange", $.proxy(this._validateUrl, this))
-                                                .prefixInput({ prefix: "http" }))),
-                                $element("td").append(
-                                    $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text(this.options.resources.uploadFromWebButtonText).on("click", $.proxy(this._uploadByUrl, this))))))),
+                                                .prefixInput({ prefix: "http" })
+                                        )
+                                    ),
+                                    $element("td").append(
+                                        $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text(this.options.resources.uploadFromWebButtonText).on("click", $.proxy(this._uploadByUrl, this))
+                                    )
+                                )
+                            )
+                        )
+                    ),
                     $element("div", { style: 'display: none', 'class': 'fu-fileupload-statuses-container' }).append(
-                        $element("ul", { 'class': 'fu-fileupload-statuses' }))));
+                        $element("ul", { 'class': 'fu-fileupload-statuses' })
+                    )
+                )
+            );
 
             return dialog;
         },
@@ -110,6 +129,28 @@
             else {
                 this._$url.addClass("fu-dialog-url-error");
             }
+        },
+
+        _getFileExtension: function(filename) {
+            var parts = filename.split(".");
+            if (parts.length === 1 || (parts[0] === "" && parts.length === 2)) {
+                // If a.length is one, it's a visible file with no extension;
+                // If a[0] === "" and a.length === 2 it's a hidden file with no extension ie. .htaccess;
+                return "";
+            }
+            return parts.pop();
+        },
+
+        _isValidExtension: function (fileName, acceptableExtensions) {
+            if (typeof acceptableExtensions === "undefined" || acceptableExtensions === null || acceptableExtensions.length === 0) {
+                return true;
+            }
+            for (var i = 0; i < acceptableExtensions.length; i++) {
+                if (fileName.toLowerCase().endsWith(acceptableExtensions[i].toLowerCase())) {
+                    return true;
+                }
+            }
+            return false;
         },
 
         _uploadByUrl: function(eventObject) {
@@ -207,6 +248,28 @@
         _add: function (e, data) {
             if (!this._$fileUploadStatusesContainer.is(':visible')) {
                 this._$fileUploadStatusesContainer.show().jScrollbar("update");
+            }
+
+            var count = data.originalFiles.length;
+            if (!(typeof this.options.maxFiles === "undefined" || this.options.maxFiles === 0) && this.options.maxFiles < count) {
+                if (data.originalFiles[0] === data.files[0]) {
+                    alert(this.options.resources.tooManyFiles);
+                }
+                return;
+            }
+
+            if (data.originalFiles[count - 1] === data.files[0]) {
+                // last file in the list
+                for (var i = 0; i < count; i++) {
+                    if (!this._isValidExtension(data.originalFiles[i].name, this.options.extensions)) {
+                        alert(this.options.resources.invalidFileExtensions);
+                        break;
+                    }
+                }
+            }
+
+            if (!this._isValidExtension(data.files[0].name, this.options.extensions)) {
+                return;
             }
 
             var message;
@@ -313,11 +376,11 @@
             this._showFileUploadStatus($fileUploadStatus, { Message: message });
         },
 
-        _dragover: function () {
+        _dragover: function (e, data) {
             this._$dragAndDropArea.addClass("dragover");
         },
 
-        _drop: function () {
+        _drop: function (e, data) {
             this._$dragAndDropArea.removeClass("dragover");
         },
 
@@ -403,11 +466,18 @@
 
             this.$element = this._createLayout();
 
+            if (this._isValidExtension(".zip", this.options.extensions)) {
+                this._$decompressOption.show();
+            }
+            else {
+                this._$decompressOption.hide();
+            }
+
             this._$buttonGroup = this.$element.find(".fu-dialog-content-header ul.dnnButtonGroup");
             this._$fileUploadStatusesContainer = this.$element.find('.fu-fileupload-statuses-container').hide().jScrollbar();
             this._$fileUploadStatuses = this._$fileUploadStatusesContainer.find('.fu-fileupload-statuses').empty();
             this._$dragAndDropArea = this.$element.find('.fu-dialog-drag-and-drop-area');
-            this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: true, "data-text": this.options.resources.dragAndDropAreaTitle });
+            this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: typeof this.options.maxFiles === "undefined" || this.options.maxFiles === 0 || this.options.maxFiles > 1, "data-text": this.options.resources.dragAndDropAreaTitle });
             this._$extract = this.$element.find("." + "fu-dialog-content-header").find("input");
 
             this._$inputFileControl.appendTo(this._$dragAndDropArea.find('.fu-dialog-drag-and-drop-area-message')).dnnFileInput(
@@ -467,7 +537,9 @@
         width: 780,
         height: 630,
         serviceRoot: "InternalServices",
-        fileUploadMethod: "fileupload/postfile"
+        fileUploadMethod: "fileupload/postfile",
+        maxFiles: 1,
+        extensions: [".png", ".jpeg", ".jpg", ".bmp"]
     };
 
     FileUpload.defaults = function (settings) {

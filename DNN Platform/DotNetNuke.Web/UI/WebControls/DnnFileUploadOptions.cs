@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.Serialization;
 using DotNetNuke.Common.Utilities;
 
@@ -67,6 +68,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "replaceButtonText")]
         public string ReplaceButtonText;
+
+        [DataMember(Name = "tooManyFiles")]
+        public string TooManyFiles;
+
+        [DataMember(Name = "invalidFileExtensions")]
+        public string InvalidFileExtensions;
     }
 
     [DataContract]
@@ -79,6 +86,12 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "maxFileSize")]
         public int MaxFileSize;
 
+        [DataMember(Name = "maxFiles")]
+        public int MaxFiles = 0;
+
+        [DataMember(Name = "extensions")]
+        public List<string> Extensions;
+
         [DataMember(Name = "resources")]
         public DnnFileUploadResources Resources;
 
@@ -86,6 +99,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             FolderPicker = new DnnDropDownListOptions();
             MaxFileSize = (int)Config.GetMaxUploadSize();
+            Extensions = new List<string>();
             Resources = new DnnFileUploadResources
             {
                 Title = Utilities.GetLocalizedString("FileUpload.Title.Text"),
@@ -101,6 +115,8 @@ namespace DotNetNuke.Web.UI.WebControls
                 FileIsTooLarge = string.Format(Utilities.GetLocalizedString("FileUpload.FileIsTooLarge.Error") + " Kb", (MaxFileSize / 1024).ToString(CultureInfo.InvariantCulture)),
                 FileUploadCancelled = Utilities.GetLocalizedString("FileUpload.FileUploadCancelled.Error"),
                 FileUploadFailed = Utilities.GetLocalizedString("FileUpload.FileUploadFailed.Error"),
+                TooManyFiles = Utilities.GetLocalizedString("FileUpload.TooManyFiles.Error"),
+                InvalidFileExtensions = Utilities.GetLocalizedString("FileUpload.InvalidFileExtensions.Error"),
                 FileUploaded = Utilities.GetLocalizedString("FileUpload.FileUploaded.Text"),
                 EmptyFileUpload = Utilities.GetLocalizedString("FileUpload.EmptyFileUpload.Error"),
                 FileAlreadyExists = Utilities.GetLocalizedString("FileUpload.FileAlreadyExists.Error"),

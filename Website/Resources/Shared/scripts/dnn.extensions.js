@@ -104,6 +104,12 @@ if (typeof String.prototype.startsWith !== 'function') {
     };
 }
 
+if (typeof String.prototype.endsWith !== 'function') {
+    String.prototype.endsWith = function (suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+}
+
 if (typeof Array.prototype.insertAt !== "function") {
     Array.prototype.insertAt = function (index) {
         this.splice.apply(this, [index, 0].concat(

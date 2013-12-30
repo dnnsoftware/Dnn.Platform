@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private readonly Lazy<DnnFileUploadOptions> _options =
             new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
 
-        private DnnFileUploadOptions Options
+        public DnnFileUploadOptions Options
         {
             get
             {

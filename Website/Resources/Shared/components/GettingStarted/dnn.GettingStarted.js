@@ -104,24 +104,24 @@
                         $element("div").append(
                             $element("div", { "class": this._options.headerLeftTextCss }).append(
                                 $element("div").append(
-                                    $element("label", { 'for': signUpBoxId }).text(this._options.signUpLabel),
-                                    $element("span").text(this._options.signUpText)
+                                    $element("label", { 'for': signUpBoxId }).text(this._options.resources.signUpLabel),
+                                    $element("span").text(this._options.resources.signUpText)
                                 )
                             ),
                             $element("div", { "class": this._options.headerLeftInputCss }).append(
                                 $element("div").append(
                                     $element("div", { "class": this._options.inputboxWrapperCss }).append(
-                                        $element("input", { type: "text", "id": signUpBoxId, maxlength: "200", autocomplete: "off" }).text(this._options.signUpLabel)
+                                        $element("input", { type: "text", "id": signUpBoxId, maxlength: "200", autocomplete: "off" }).text(this._options.resources.signUpLabel)
                                     ),
-                                    $element("a", { href: "javascript:void(0);", title: this._options.signUpButton }).text(this._options.signUpButton)
+                                    $element("a", { href: "javascript:void(0);", title: this._options.resources.signUpButton }).text(this._options.resources.signUpButton)
                                 )
                             )
                         )
                     ),
                     $element("div", { "class": this._options.headerRightCss }).append(
                         $element("div").append(
-                            $element("a", { href: "javascript:void(0);", target: 'manual', title: this._options.downloadManualButton }).append(
-                                $element("span").text(this._options.downloadManualButton)
+                            $element("a", { href: "javascript:void(0);", target: 'manual', title: this._options.resources.downloadManualButton }).append(
+                                $element("span").text(this._options.resources.downloadManualButton)
                             )
                         )
                     )
@@ -137,11 +137,11 @@
                     ),
                     $element("div", { "class": this._options.footerLeftCss }).append(
                         $element("input", { type: "checkbox", id: checkBoxId, value: "notshowagain", name: "ShowDialog" }),
-                        $element("label", { "for": checkBoxId }).text(this._options.dontShowDialogLabel)
+                        $element("label", { "for": checkBoxId }).text(this._options.resources.dontShowDialogLabel)
                     ),
                     $element("div", { "class": this._options.footerRightCss }).append(
-                        $element("a", { href: "//twitter.com/dnncorp", target: "dnn-twitter", "class": this._options.twitterLinkCss, title: this._options.twitterLinkTooltip}),
-                        $element("a", { href: "//facebook.com/dotnetnuke", target: "dnn-facebook", "class": this._options.facebookLinkCss, title: this._options.facebookLinkTooltip})
+                        $element("a", { href: "//twitter.com/dnncorp", target: "dnn-twitter", "class": this._options.twitterLinkCss, title: this._options.resources.twitterLinkTooltip }),
+                        $element("a", { href: "//facebook.com/dotnetnuke", target: "dnn-facebook", "class": this._options.facebookLinkCss, title: this._options.resources.facebookLinkTooltip })
                     )
                 )
             );
@@ -174,14 +174,14 @@
             var isValid = this._isEmailValid(email);
             var self = this;
             if (!isValid) {
-                $.dnnAlert({ title: this._options.invalidEmailTitle, text: this._options.invalidEmailMessage, callback: function () { self._$emailBox.focus(); } });
+                $.dnnAlert({ title: this._options.resources.invalidEmailTitle, text: this._options.resources.invalidEmailMessage, callback: function () { self._$emailBox.focus(); } });
                 return;
             }
             this._controller.signUp(email, $.proxy(this._onSignUp, this));
         },
 
         _onSignUp: function () {
-            $.dnnAlert({ title: this._options.signUpTitle, text: this._options.signUpMessage });
+            $.dnnAlert({ title: this._options.resources.signUpTitle, text: this._options.resources.signUpMessage });
         },
 
         show: function () {
@@ -205,7 +205,7 @@
                 modal: true,
                 autoOpen: true,
                 dialogClass: "dnnFormPopup " + this._options.dialogCss,
-                title: this._options.title,
+                title: this._options.resources.title,
                 resizable: false,
                 width: this._options.width,
                 height: this._options.height,

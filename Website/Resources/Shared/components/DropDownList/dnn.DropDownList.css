@@ -360,21 +360,9 @@
     background: url(Images/tree-sprite.png) no-repeat 0 -2px;
 }
 
-/*
-.dnnDropDownList .dt-container .tv-nodes li a:hover.collapsed {
-    background: url(../../../../Resources/Shared/components/DropDownList/Images/tree2.png) no-repeat -16px -16px;
-}
-*/
-
 .dnnDropDownList .dt-container .tv-nodes li a.expanded {
     background: url(Images/tree-sprite.png) no-repeat 0 -18px;
 }
-
-/*
-.dnnDropDownList .dt-container .tv-nodes li a:hover.expanded {
-    background: url(../../../../Resources/Shared/components/DropDownList/Images/tree2.png) no-repeat 0 -16px;
-}
-*/
 
 .dnnDropDownList .dt-container .tv-nodes li a.empty {
     visibility: hidden;
