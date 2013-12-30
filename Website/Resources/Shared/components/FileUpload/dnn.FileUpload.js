@@ -162,7 +162,7 @@
 
             if (!this._isValidExtension(url, this.options.extensions)) {
                 this._$url.addClass("fu-dialog-url-error");
-                $.dnnAlert({ title: "Error", text: this.options.resources.invalidFileExtensions });
+                $.dnnAlert({ title: this.options.resources.errorDialogTitle || "Error", text: this.options.resources.invalidFileExtensions });
                 return;
             }
 
@@ -269,7 +269,7 @@
                 // last file in the list
                 for (var i = 0; i < count; i++) {
                     if (!this._isValidExtension(data.originalFiles[i].name, this.options.extensions)) {
-                        $.dnnAlert({ title: "Error", text: this.options.resources.invalidFileExtensions });
+                        $.dnnAlert({ title: this.options.resources.errorDialogTitle || "Error", text: this.options.resources.invalidFileExtensions });
                         break;
                     }
                 }

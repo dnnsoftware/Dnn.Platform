@@ -74,6 +74,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "invalidFileExtensions")]
         public string InvalidFileExtensions;
+
+        [DataMember(Name = "errorDialogTitle")]
+        public string ErrorDialogTitle;
     }
 
     [DataContract]
@@ -120,6 +123,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 FileUploaded = Utilities.GetLocalizedString("FileUpload.FileUploaded.Text"),
                 EmptyFileUpload = Utilities.GetLocalizedString("FileUpload.EmptyFileUpload.Error"),
                 FileAlreadyExists = Utilities.GetLocalizedString("FileUpload.FileAlreadyExists.Error"),
+                ErrorDialogTitle = Utilities.GetLocalizedString("FileUpload.ErrorDialogTitle.Text"),
                 UploadStopped = Utilities.GetLocalizedString("FileUpload.UploadStopped.Text"),
                 UrlTooltip = Utilities.GetLocalizedString("FileUpload.UrlTooltip.Text"),
                 KeepButtonText = Utilities.GetLocalizedString("FileUpload.KeepButton.Text"),

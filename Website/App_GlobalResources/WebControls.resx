@@ -267,4 +267,7 @@
   <data name="FileUpload.InvalidFileExtensions.Error" xml:space="preserve">
     <value>Some selected files with invalid extensions are excluded from upload.</value>
   </data>
+  <data name="FileUpload.ErrorDialogTitle.Text" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>
