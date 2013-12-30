@@ -56,6 +56,16 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
     /// -----------------------------------------------------------------------------
     public partial class AdvancedSettings : PortalModuleBase
     {
+        #region Private Properties
+
+        private const string DefaultExtensionImage = "icon_extensions_32px.png";
+        private const string DefaultAuthenicationImage = "icon_authentication.png";
+        private const string DefaultContainerImage = "icon_container.gif";
+        private const string DefaultSkinImage = "icon_skin.gif";
+        private const string DefaultProviderImage = "icon_provider.gif";
+
+        #endregion
+
         #region Private Members
 
         private string ReturnUrl
@@ -260,94 +270,14 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
         private void BindGrid(string type, DataGrid grid, HtmlGenericControl noItemsControl)
         {
             var installPath = Globals.ApplicationMapPath + "\\Install\\" + type;
-            var packages = new List<PackageInfo>();
+            var packages = new Dictionary<string, PackageInfo>();
             var invalidPackages = new List<string>();
 
             foreach (string file in Directory.GetFiles(installPath))
             {
                 if (file.ToLower().EndsWith(".zip") || file.ToLower().EndsWith(".resources"))
                 {
-                    Stream inputStream = new FileStream(file, FileMode.Open, FileAccess.Read);
-                    var unzip = new ZipInputStream(inputStream);
-
-                    try
-                    {
-                        ZipEntry entry = unzip.GetNextEntry();
-
-                        while (entry != null)
-                        {
-                            if (!entry.IsDirectory)
-                            {
-                                var fileName = entry.Name;
-                                string extension = Path.GetExtension(fileName);
-                                if (extension.ToLower() == ".dnn" || extension.ToLower() == ".dnn5")
-                                {
-                                    //Manifest
-                                    var manifestReader = new StreamReader(unzip);
-                                    var manifest = manifestReader.ReadToEnd();
-
-                                    var package = new PackageInfo();
-                                    package.Manifest = manifest;
-                                    if (!string.IsNullOrEmpty(manifest))
-                                    {
-                                        var doc = new XPathDocument(new StringReader(manifest));
-                                        XPathNavigator rootNav = doc.CreateNavigator().SelectSingleNode("dotnetnuke");
-                                        string packageType = String.Empty;
-                                        if (rootNav.Name == "dotnetnuke")
-                                        {
-                                            packageType = XmlUtils.GetAttributeValue(rootNav, "type");
-                                        }
-                                        else if (rootNav.Name.ToLower() == "languagepack")
-                                        {
-                                            packageType = "LanguagePack";
-                                        }
-                                        XPathNavigator nav = null;
-                                        switch (packageType.ToLower())
-                                        {
-                                            case "package":
-                                                nav = rootNav.SelectSingleNode("packages/package");
-                                                break;
-
-                                            case "languagepack":
-
-                                                //nav = Installer.ConvertLegacyNavigator(rootNav, new InstallerInfo()).SelectSingleNode("packages/package");
-                                                break;
-                                        }
-
-                                        if (nav != null)
-                                        {
-                                            package.Name = XmlUtils.GetAttributeValue(nav, "name");
-                                            package.PackageType = XmlUtils.GetAttributeValue(nav, "type");
-                                            package.IsSystemPackage = XmlUtils.GetAttributeValueAsBoolean(nav, "isSystem", false);
-                                            package.Version = new Version(XmlUtils.GetAttributeValue(nav, "version"));
-                                            package.FriendlyName = XmlUtils.GetNodeValue(nav, "friendlyName");
-                                            if (String.IsNullOrEmpty(package.FriendlyName))
-                                            {
-                                                package.FriendlyName = package.Name;
-                                            }
-
-                                            package.Description = XmlUtils.GetNodeValue(nav, "description");
-                                            package.FileName = file.Replace(installPath + "\\", "");
-
-                                            packages.Add(package);
-                                        }
-                                    }
-
-                                    break;
-                                }
-                            }
-                            entry = unzip.GetNextEntry();
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        invalidPackages.Add(file);
-                    }
-                    finally
-                    {
-                        unzip.Close();
-                        unzip.Dispose();
-                    }
+                    PackageController.ParsePackage(file, installPath, packages, invalidPackages);
                 }
             }
 
@@ -365,7 +295,7 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
             else
             {
                 noItemsControl.Visible = false;
-                grid.DataSource = packages;
+                grid.DataSource = packages.Values;
                 grid.DataBind();
             }            
         }
@@ -390,6 +320,27 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
                 retValue = package.Description;
             }
             return retValue;
+        }
+
+        protected string GetPackageIcon(object dataItem)
+        {
+            var package = dataItem as PackageInfo;
+            switch (package.PackageType)
+            {
+                case "Module":
+                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
+                case "Container":
+                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultContainerImage;
+                case "Skin":
+                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultSkinImage;
+                case "AuthenticationSystem":
+                case "Auth_System":
+                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultAuthenicationImage;
+                case "Provider":
+                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultProviderImage;
+                default:
+                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
+            }
         }
         
         protected string GetIconUrl(string icon)
