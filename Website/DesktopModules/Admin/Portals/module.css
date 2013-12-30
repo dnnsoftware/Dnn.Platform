@@ -48,7 +48,9 @@
     font-weight: normal;
     margin: 0;
 }
-
+.ssasPremiumModule .RadComboBox > table {
+    width: 100% !important;
+}
 .dnnSiteSettings div.dnnssStat {
     border-top: 1px #ccc solid;
     padding: 1em 0 4em;

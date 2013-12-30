@@ -379,7 +379,7 @@
                         </div>
                         <div class="dnnFormItem ssasPremiumModule">
                             <dnn:label id="plDesktopModules" runat="server" controlname="ctlDesktopModules" />
-                            <dnn:DnnComboBox CheckBoxes="true" id="ctlDesktopModules" runat="server" DataValueField="DesktopModuleID" DataTextField="FriendlyName" AutoPostBack="true"  Width="47%"/>
+                            <dnn:DnnComboBox CheckBoxes="True" id="ctlDesktopModules" runat="server" DataValueField="DesktopModuleID" DataTextField="FriendlyName" AutoPostBack="true" />
                         </div>
                     </fieldset>
                     <h2 id="dnnSitePanel-ClientResourceManagement" class="dnnFormSectionHead">
