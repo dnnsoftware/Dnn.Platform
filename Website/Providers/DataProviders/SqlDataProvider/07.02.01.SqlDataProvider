@@ -1870,6 +1870,105 @@ AS
 	END
 GO
 
+/* Add Dashboard_GetDashboardControlByKey Procedure */
+/****************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetDashboardControlByPackageId]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId  
+	@PackageID INT
+AS
+	
+	SELECT *
+	  FROM {databaseOwner}{objectQualifier}Dashboard_Controls
+		WHERE PackageID = @PackageID AND PackageID <> -1
+    
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_AddControl]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_AddControl
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_AddControl  
+
+	@PackageId							INT,
+	@DashboardControlKey 				NVARCHAR(50),
+	@IsEnabled							BIT,
+	@DashboardControlSrc				NVARCHAR(250),
+	@DashboardControlLocalResources 	NVARCHAR(250),
+	@ControllerClass					NVARCHAR(250),
+	@ViewOrder							INT
+
+AS
+	IF @ViewOrder = -1
+		SET @ViewOrder = (SELECT TOP 1 ViewOrder FROM {objectQualifier}Dashboard_Controls ORDER BY ViewOrder DESC) + 1
+
+    IF EXISTS(SELECT DashboardControlID FROM {databaseOwner}{objectQualifier}Dashboard_Controls WHERE ViewOrder = @ViewOrder)
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Dashboard_Controls SET ViewOrder = ViewOrder + 1 WHERE ViewOrder >= @ViewOrder
+	END
+
+	INSERT INTO {databaseOwner}{objectQualifier}Dashboard_Controls (
+		PackageId,
+		DashboardControlKey,
+		IsEnabled,
+		DashboardControlSrc,
+		DashboardControlLocalResources,
+		ControllerClass,
+		ViewOrder
+	)
+	VALUES (
+		@PackageId,
+		@DashboardControlKey,
+		@IsEnabled,
+		@DashboardControlSrc,
+		@DashboardControlLocalResources,
+		@ControllerClass,
+		@ViewOrder
+	)
+
+	SELECT SCOPE_IDENTITY()
+    
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_UpdateControl]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_UpdateControl
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_UpdateControl  
+
+	@DashboardControlID 				INT,
+	@DashboardControlKey 				NVARCHAR(50),
+	@IsEnabled							BIT,
+	@DashboardControlSrc				NVARCHAR(250),
+	@DashboardControlLocalResources 	NVARCHAR(250),
+	@ControllerClass					NVARCHAR(250),
+	@ViewOrder							INT
+
+AS
+    DECLARE @OldOrder INT
+    SELECT @OldOrder = ViewOrder FROM {databaseOwner}{objectQualifier}Dashboard_Controls WHERE DashboardControlID = @DashboardControlID
+	UPDATE {databaseOwner}{objectQualifier}Dashboard_Controls 
+		SET DashboardControlKey = @DashboardControlKey,
+			IsEnabled = @IsEnabled,
+			DashboardControlSrc = @DashboardControlSrc,
+			DashboardControlLocalResources = @DashboardControlLocalResources,
+			ControllerClass = @ControllerClass,
+			ViewOrder = @ViewOrder
+	WHERE DashboardControlID = @DashboardControlID
+
+    IF @OldOrder IS NOT NULL AND @OldOrder < @ViewOrder
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Dashboard_Controls SET ViewOrder = ViewOrder - 1 WHERE ViewOrder BETWEEN @OldOrder AND @ViewOrder AND DashboardControlID <> @DashboardControlID
+	END
+    ELSE IF @OldOrder IS NOT NULL AND @OldOrder > @ViewOrder
+    BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Dashboard_Controls SET ViewOrder = ViewOrder + 1 WHERE ViewOrder BETWEEN @ViewOrder AND @OldOrder AND DashboardControlID <> @DashboardControlID
+	END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
