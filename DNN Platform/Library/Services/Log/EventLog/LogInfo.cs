@@ -42,6 +42,7 @@ namespace DotNetNuke.Services.Log.EventLog
             LogPortalID = -1;
             LogPortalName = "";
             LogUserID = -1;
+            LogEventID = -1;
             LogUserName = "";
         }
 
@@ -61,6 +62,8 @@ namespace DotNetNuke.Services.Log.EventLog
         public string LogTypeKey { get; set; }
 
         public int LogUserID { get; set; }
+
+        public int LogEventID { get; set; }
 
         public string LogUserName { get; set; }
 
@@ -143,6 +146,9 @@ namespace DotNetNuke.Services.Log.EventLog
                         case "LogUserID":
                             LogUserID = reader.ReadContentAsInt();
                             break;
+                        case "LogEventID":
+                            LogEventID = reader.ReadContentAsInt();
+                            break;
                         case "LogUserName":
                             LogUserName = reader.ReadContentAsString();
                             break;
@@ -221,6 +227,7 @@ namespace DotNetNuke.Services.Log.EventLog
             str.Append("<p><strong>LogGUID:</strong>" + LogGUID + "</p>");
             str.Append("<p><strong>LogType:</strong>" + LogTypeKey + "</p>");
             str.Append("<p><strong>UserID:</strong>" + LogUserID + "</p>");
+            str.Append("<p><strong>EventID:</strong>" + LogEventID + "</p>");
             str.Append("<p><strong>Username:</strong>" + LogUserName + "</p>");
             str.Append("<p><strong>PortalID:</strong>" + LogPortalID + "</p>");
             str.Append("<p><strong>PortalName:</strong>" + LogPortalName + "</p>");
@@ -237,6 +244,7 @@ namespace DotNetNuke.Services.Log.EventLog
             writer.WriteAttributeString("LogFileID", LogFileID);
             writer.WriteAttributeString("LogTypeKey", LogTypeKey);
             writer.WriteAttributeString("LogUserID", LogUserID.ToString());
+            writer.WriteAttributeString("LogEventID", LogEventID.ToString());
             writer.WriteAttributeString("LogUserName", LogUserName);
             writer.WriteAttributeString("LogPortalID", LogPortalID.ToString());
             writer.WriteAttributeString("LogPortalName", LogPortalName);
