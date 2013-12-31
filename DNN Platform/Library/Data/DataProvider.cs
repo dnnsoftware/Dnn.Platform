@@ -2002,7 +2002,7 @@ namespace DotNetNuke.Data
 
         public virtual IDataReader GetRolesBasicSearch(int portalID, int pageSize, string filterBy)
         {
-            return ExecuteReader("GetRolesBasicSearch", portalID, pageSize, filterBy);
+            return ExecuteReader("GetRolesBasicSearch", portalID, 0, pageSize, filterBy);
         }
 
         public virtual IDataReader GetRoleSettings(int roleId)
