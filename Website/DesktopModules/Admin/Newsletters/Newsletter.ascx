@@ -164,7 +164,6 @@
                 });
             }
         });
-        $('.token-input-list-facebook').width($('#<%= txtEmail.ClientID %>').width() + 16);
     }
     $(document).ready(function () {
         setUpDnnNewsletter();
