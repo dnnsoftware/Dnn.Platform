@@ -101,8 +101,9 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                     var controller = new DesktopModuleController();
                     controller.DeleteDesktopModule(tempDesktopModule);
+
+                    Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
                 }
-                Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
             }
             catch (Exception ex)
             {

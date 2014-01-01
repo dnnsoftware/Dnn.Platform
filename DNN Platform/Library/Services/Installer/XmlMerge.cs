@@ -45,7 +45,13 @@ namespace DotNetNuke.Services.Installer
     /// -----------------------------------------------------------------------------
     public class XmlMerge
     {
-		#region "Constructors"
+        #region Private Properties
+
+        private IDictionary<string, XmlDocument> _pendingDocuments;
+
+        #endregion
+        
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -124,7 +130,7 @@ namespace DotNetNuke.Services.Installer
 		
 		#endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -180,6 +186,19 @@ namespace DotNetNuke.Services.Installer
         /// </history>
         /// -----------------------------------------------------------------------------
         public string Version { get; private set; }
+
+        public IDictionary<string, XmlDocument> PendingDocuments
+        {
+            get
+            {
+                if (_pendingDocuments == null)
+                {
+                    _pendingDocuments = new Dictionary<string, XmlDocument>();
+                }
+
+                return _pendingDocuments;
+            }
+        }
 
         #endregion
 
@@ -575,14 +594,21 @@ namespace DotNetNuke.Services.Installer
         /// 	[cnurse]	08/03/2007  created
         /// </history>
         /// -----------------------------------------------------------------------------
+
         public void UpdateConfigs()
+        {
+            UpdateConfigs(true);
+        }
+
+        public void UpdateConfigs(bool autoSave)
         {
             var nodes = SourceConfig.SelectNodes("/configuration/nodes");
             if (nodes != null)
+            {
                 foreach (XmlNode configNode in nodes)
                 {
                     Debug.Assert(configNode.Attributes != null, "configNode.Attributes != null");
-                    
+
                     //Attempt to load TargetFile property from configFile Atribute
                     TargetFileName = configNode.Attributes["configfile"].Value;
                     string targetProductName = "";
@@ -603,9 +629,23 @@ namespace DotNetNuke.Services.Installer
                     //The nodes definition is not correct so skip changes
                     if (TargetConfig != null && isAppliedToProduct)
                     {
-                        ProcessNodes(configNode.SelectNodes("node"), true);
+                        ProcessNodes(configNode.SelectNodes("node"), autoSave);
+
+                        if (!autoSave)
+                        {
+                            PendingDocuments.Add(TargetFileName, TargetConfig);
+                        }
                     }
                 }
+            }
+        }
+
+        public void SavePendingConfigs()
+        {
+            foreach (var key in PendingDocuments.Keys)
+            {
+                Config.Save(PendingDocuments[key], key);
+            }
         }
 
         #endregion

@@ -51,6 +51,7 @@ namespace DotNetNuke.Services.Installer.Installers
         private InstallFile _TargetFile;
         private string _UnInstallConfig = Null.NullString;
         private string _UninstallFileName = Null.NullString;
+        private XmlMerge _xmlMerge;
 
 		#endregion
 
@@ -141,9 +142,20 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				//Save the XmlDocument
-                Config.Save(TargetConfig, TargetFile.FullName);
-                Log.AddInfo(Util.CONFIG_Committed + " - " + TargetFile.Name);
+                if (string.IsNullOrEmpty(_FileName))
+                {
+                    //Save the XmlDocument
+                    Config.Save(TargetConfig, TargetFile.FullName);
+                    Log.AddInfo(Util.CONFIG_Committed + " - " + TargetFile.Name);
+                }
+                else
+                {
+                    _xmlMerge.SavePendingConfigs();
+                    foreach (var key in _xmlMerge.PendingDocuments.Keys)
+                    {
+                        Log.AddInfo(Util.CONFIG_Committed + " - " + key);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -187,14 +199,13 @@ namespace DotNetNuke.Services.Installer.Installers
                     if (File.Exists(strConfigFile))
                     {
 						//Create XmlMerge instance from config file source
-                        StreamReader stream = File.OpenText(strConfigFile);
-                        var merge = new XmlMerge(stream, Package.Version.ToString(3), Package.Name + " Install");
+                        using (var stream = File.OpenText(strConfigFile))
+                        {
+                            _xmlMerge = new XmlMerge(stream, Package.Version.ToString(3), Package.Name + " Install");
 
-                        //Process merge
-                        merge.UpdateConfigs();
-
-                        //Close stream
-                        stream.Close();
+                            //Process merge
+                            _xmlMerge.UpdateConfigs(false);
+                        }
 
                         Completed = true;
                         Log.AddInfo(Util.CONFIG_Updated);
