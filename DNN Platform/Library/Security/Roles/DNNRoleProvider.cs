@@ -145,7 +145,7 @@ namespace DotNetNuke.Security.Roles
 
         public override IList<RoleInfo> GetRolesBasicSearch(int portalID, int pageSize, string filterBy)
         {
-            return CBO.FillCollection<RoleInfo>(dataProvider.GetRolesBasicSearch(portalID, pageSize, filterBy));
+            return CBO.FillCollection<RoleInfo>(dataProvider.GetRolesBasicSearch(portalID, -1, pageSize, filterBy));
         }
 
         public override IDictionary<string, string> GetRoleSettings(int roleId)
