@@ -514,7 +514,7 @@ namespace DotNetNuke.Security.Permissions
                 var additionalPermissions = new FolderPermissionCollection();
                 foreach (FolderPermissionInfo folderPermission in folder.FolderPermissions)
                 {
-                    if (folderPermission.PermissionKey != "BROWSE" && folderPermission.PermissionKey != "READ")
+                    if (folderPermission.PermissionKey != "BROWSE" && folderPermission.PermissionKey != "READ" && folderPermission.AllowAccess)
                     {
                         //Try to add Read permission
                         var newFolderPerm = new FolderPermissionInfo(readPerm)
@@ -522,7 +522,7 @@ namespace DotNetNuke.Security.Permissions
                                                     FolderID = folderPermission.FolderID, 
                                                     RoleID = folderPermission.RoleID, 
                                                     UserID = folderPermission.UserID, 
-                                                    AllowAccess = folderPermission.AllowAccess
+                                                    AllowAccess = true
                                                 };
 
                         additionalPermissions.Add(newFolderPerm);
@@ -533,7 +533,7 @@ namespace DotNetNuke.Security.Permissions
                                                 FolderID = folderPermission.FolderID, 
                                                 RoleID = folderPermission.RoleID, 
                                                 UserID = folderPermission.UserID, 
-                                                AllowAccess = folderPermission.AllowAccess
+                                                AllowAccess = true
                                             };
 
                         additionalPermissions.Add(newFolderPerm);
