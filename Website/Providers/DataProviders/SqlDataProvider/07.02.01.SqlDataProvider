@@ -1969,6 +1969,18 @@ AS
 	END
 GO
 
+-- DNN-4498
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
+	@FileId				  Int, 		-- Not Null
+	@LastModificationTime DateTime  -- Null: Now
+AS
+BEGIN
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+    SET    LastModificationTime = IsNull(@LastModificationTime, GetDate())
+    WHERE  FileId = @FileId
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
