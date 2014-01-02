@@ -581,36 +581,54 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                                 AutoRegister = true
                                             };
 
-            var profileProperties = new NameValueCollection
-                                            {
-                                                {"FirstName", user.FirstName},
-                                                {"LastName", user.LastName},
-                                                {"Email", user.PreferredEmail},
-                                                {"DisplayName", user.DisplayName},
-                                                {"ProfileImage", user.ProfileImage},
-                                                {"Website", user.Website}
-                                            };
-
-            if (!String.IsNullOrEmpty(user.Locale))
+            var profileProperties = new NameValueCollection();
+            
+            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.FirstName) && !string.IsNullOrEmpty(user.FirstName)))
+            {
+                profileProperties.Add("FirstName", user.FirstName);
+            }
+            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.LastName) && !string.IsNullOrEmpty(user.LastName)))
+            {
+                profileProperties.Add("LastName", user.LastName);
+            }
+            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Email) && !string.IsNullOrEmpty(user.Email)))
+            {
+                profileProperties.Add("Email", user.PreferredEmail);
+            }
+            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.DisplayName) && !string.IsNullOrEmpty(user.DisplayName)))
+            {
+                profileProperties.Add("DisplayName", user.DisplayName);
+            }
+            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("ProfileImage")) && !string.IsNullOrEmpty(user.ProfileImage)))
+            {
+                profileProperties.Add("ProfileImage", user.ProfileImage);
+            }
+            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("Website")) && !string.IsNullOrEmpty(user.Website)))
+            {
+                profileProperties.Add("Website", user.Website);
+            }
+            if ((Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale")))) && !string.IsNullOrEmpty(user.Locale))
             {
                 profileProperties.Add("PreferredLocale", user.Locale.Replace('_', '-'));
             }
 
-            if (String.IsNullOrEmpty(user.TimeZoneInfo))
+            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone"))))
             {
-                int timeZone;
-                if (Int32.TryParse(user.Timezone, out timeZone))
+                if (String.IsNullOrEmpty(user.TimeZoneInfo))
                 {
-                    var timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(timeZone);
+                    int timeZone;
+                    if (Int32.TryParse(user.Timezone, out timeZone))
+                    {
+                        var timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(timeZone);
 
-                    profileProperties.Add("PreferredTimeZone", timeZoneInfo.Id);
+                        profileProperties.Add("PreferredTimeZone", timeZoneInfo.Id);
+                    }
+                }
+                else
+                {
+                    profileProperties.Add("PreferredTimeZone", user.TimeZoneInfo);
                 }
             }
-            else
-            {
-                profileProperties.Add("PreferredTimeZone", user.TimeZoneInfo);
-            }
-
 
             addCustomProperties(profileProperties);
 
