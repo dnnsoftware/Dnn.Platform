@@ -1970,6 +1970,10 @@ AS
 GO
 
 -- DNN-4498
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
+GO
+
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
 	@FileId				  Int, 		-- Not Null
 	@LastModificationTime DateTime  -- Null: Now
