@@ -2091,6 +2091,58 @@ AS
 	END
 GO
 
+-- DNN-4302
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FormattedString]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}FormattedString]
+GO
+
+-- added for easier string handling
+CREATE FUNCTION {databaseOwner}[{objectQualifier}FormattedString]
+(
+    @InputStr nVarChar(2000), -- might be null or empty, in this case an empty string is returned (format ignored)!
+    @Format   nVarChar(2000)  -- not null or empty, contains token @@@
+)
+	RETURNS   nVarChar(4000)  -- replaced string, e.g. FormattedString('World', 'Hello @0!') returns 'Hello World!' 
+AS
+BEGIN
+	DECLARE @RetVal AS nVarChar(4000) = ''
+	IF NOT IsNull(@InputStr,'') = ''
+		SET @retVal = REPLACE(@Format, N'@0', @InputStr)
+	RETURN @RetVal
+END
+GO
+
+-- DNN-4302
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TemplatedString]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}TemplatedString]
+GO
+
+-- added for easier string handling
+CREATE FUNCTION {databaseOwner}[{objectQualifier}TemplatedString]
+(
+    @template nVarChar(3500), -- use tokens @1, @2, @3, @4, @5 to be replaced by param1 .. param5
+    @param1   nVarChar( 100) = '', -- empty param values will just remove token!
+	@param2	  nVarChar( 100) = '',
+	@param3	  nVarChar( 100) = '',
+	@param4	  nVarChar( 100) = '',
+	@param5	  nVarChar( 100) = ''
+)
+	RETURNS   nVarChar(4000)
+AS
+BEGIN
+    RETURN REPLACE(
+			REPLACE(
+			 REPLACE(
+			  REPLACE(
+			   REPLACE(IsNull(@template, ''), 
+					   N'@1', IsNull(@param1,'')), 
+					  N'@2', IsNull(@param2,'')), 
+					 N'@3', IsNull(@param3,'')), 
+					N'@4', IsNull(@param4,'')), 
+				   N'@5', IsNull(@param5,''))
+END
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
