@@ -2004,6 +2004,24 @@ AS
 	END
 GO
 
+-- DNN-4299
+IF EXISTS (SELECT * FROM Sys.OBJECTS WHERE (name = N'{objectQualifier}AdministratorRoleId') AND TYPE = 'FN')
+	DROP FUNCTION {databaseOwner}[{objectQualifier}AdministratorRoleId]
+GO
+
+-- new function to return RoleID for Administrators of the Portal passed in as parameter
+CREATE FUNCTION {databaseOwner}[{objectQualifier}AdministratorRoleId](
+    @PortalId	 		 Int -- Needs to be >= 0, otherwise false is returned
+) 
+	RETURNS 			 int
+AS
+	BEGIN
+		DECLARE @adminRoleId int = 0
+		SELECT  @adminRoleId = AdministratorRoleId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalId
+		RETURN  @adminRoleId
+	END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
