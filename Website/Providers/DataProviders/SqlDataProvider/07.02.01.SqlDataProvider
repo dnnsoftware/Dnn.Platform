@@ -1989,6 +1989,21 @@ BEGIN
 END
 GO
 
+-- DNN-4500
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalSpaceUsed]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSpaceUsed]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSpaceUsed]
+	@PortalId Int     – Null|-1: Host files
+AS
+	BEGIN
+		SELECT SUM(CAST(Size as bigint)) AS SpaceUsed
+		FROM {databaseOwner}{objectQualifier}Files
+		WHERE (IsNull(PortalID, -1) = IsNull(@PortalId))
+	END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
