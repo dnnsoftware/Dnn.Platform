@@ -149,6 +149,11 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             get { return GetProfileProperty("Website"); }
         }
 
+        public string ProfileUrl
+        {
+            get { return Globals.UserProfileURL(MemberId); }
+        }
+
         /// <summary>
         /// This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string
         /// </summary>
