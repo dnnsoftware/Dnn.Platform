@@ -2143,6 +2143,50 @@ BEGIN
 END
 GO
 
+-- DNN-4303:
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSortFieldSQL]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}GetSortFieldSQL]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SortFieldSQL]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}SortFieldSQL]
+GO
+
+-- added, provides more flexibility, e.g. may be called again for multiple sort columns
+CREATE FUNCTION {databaseOwner}[{objectQualifier}SortFieldSQL]
+(
+    @SortBy        nVarChar(100), -- should be a field name
+    @SortAscending Bit,			  -- ascending or descending?
+    @Default       nVarChar(100)  -- name of field to be used if @sortby is empty
+)
+	RETURNS 	   nVarChar(110)
+AS
+	BEGIN
+		DECLARE @sortSql nVarChar(110) =  ''
+		IF IsNull(@SortBy, '') = ''
+			SET @SortBy = IsNull(@Default, '')
+		IF @SortBy <>  ''
+			SET @sortSql = N'[' + @SortBy + CASE WHEN IsNull(@SortAscending, 1) = 0 THEN N'] DESC' ELSE N'] ASC' END
+		RETURN @sortSql
+	END
+GO
+
+-- DNN-4303, using DNN-4302
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSortSQL]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}GetSortSQL]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetSortSQL]
+(   -- deprecated, please call SortFieldSQL and FormattedString instead
+    @SortBy        nVarChar(100),
+    @SortAscending Bit,
+    @Default       nVarChar(100)
+)
+	RETURNS 	   nVarChar(120)
+AS
+	BEGIN
+		RETURN {databaseOwner}[{objectQualifier}FormattedString]({databaseOwner}[{objectQualifier}SortFieldSQL](@SortBy, @SortAscending, @Default), N'ORDER BY @1')
+	END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
