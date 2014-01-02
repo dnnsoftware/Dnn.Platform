@@ -1720,20 +1720,24 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}CalculatePagingInformation]
--- this procedure is deprecated, please use more efficient functions pageLowerBound and pageUpperBound instead!
+-- this procedure is deprecated, please use more efficient functions pageLowerBound AND pageUpperBound instead!
 -- 2147483647 = Cast(0x7fffffff AS Int)
-	@pageIndex 		Int, 					 -- negative to return all rows!
-	@pageSize 		Int, 					 -- negative or 0 returns all rows
-	@rowsToReturn  	Int = 2147483647 output, -- row number of record AFTER last row (0 based) 
-	@pageLowerBound Int = 0			 output, -- row number of first record (0 based)
-	@pageUpperBound Int = 2147483647 output  -- row number of record AFTER last row (1 based)
+	@pageIndex 		Int, 	    -- negative to return all rows!
+	@pageSize 		Int, 		-- negative OR 0 returns all rows
+	@rowsToReturn  	Int output, -- row number of record AFTER last row (0 based) 
+	@pageLowerBound Int output, -- row number of first record (0 based)
+	@pageUpperBound Int output  -- row number of record AFTER last row (1 based)
 AS
 BEGIN 
 	IF IsNull(@pageSize, 2147483647) < 2147483647 AND IsNull(@PageIndex, -1) >= 0 BEGIN
 		SET @pageLowerBound = {databaseOwner}{objectQualifier}pageLowerBound(@pageIndex, @pageSize) - 1
 		SET @rowsToReturn   = {databaseOwner}{objectQualifier}pageUpperBound(@pageIndex, @pageSize) 
 		SET @pageUpperBound = @rowsToReturn + 1 
-	END 
+	END ELSE BEGIN
+		SET @pageLowerBound = 0
+		SET @rowsToReturn   = 2147483647 
+		SET @pageUpperBound = 2147483647 
+	END
 END
 GO
 
