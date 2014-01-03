@@ -2318,6 +2318,25 @@ AS
 	END
 GO
 
+-- DNN-4308
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserIsInRole]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}UserIsInRole]
+GO
+
+-- new helper function
+CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIsInRole]
+(
+	@UserId Int,
+	@RoleId Int
+)
+RETURNS 	Bit
+AS
+	BEGIN
+		RETURN CASE WHEN EXISTS (SELECT * FROM UserRoles WHERE UserID = @UserId AND RoleID = @RoleId 
+														   AND IsNull(EffectiveDate, GetDate()) >= GetDate() 
+														   AND IsNull(ExpiryDate, GetDate())    <= GetDate()) THEN 1 ELSE 0 END
+	END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
