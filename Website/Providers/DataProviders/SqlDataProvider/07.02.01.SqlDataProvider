@@ -2297,6 +2297,28 @@ AS
 	END
 GO
 
+-- DNN-4307
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserDisplayName]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}UserDisplayName]
+GO
+
+-- new helper function, returning Displayname for a userid
+CREATE FUNCTION {databaseOwner}[{objectQualifier}UserDisplayName]
+(
+	@userId Int
+)
+RETURNS 
+	nVarChar(255)
+AS
+	BEGIN
+		DECLARE @DisplayName AS nVarChar(255)
+
+		SELECT  @DisplayName = DisplayName FROM {databaseOwner}[{objectQualifier}Users] WHERE UserID = @UserId
+		RETURN  @DisplayName
+	END
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
