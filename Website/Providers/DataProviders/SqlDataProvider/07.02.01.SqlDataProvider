@@ -759,19 +759,6 @@ AS
     ORDER  BY StartDate DESC
 GO
 
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}GetTables
-AS
-    /* Be carefull when changing this procedure as the GetSearchTables() function 
-       in SearchDB.cs is only looking at the first column (to support databases that cannot return 
-       a TableName column name (like MySQL))
-    */
-    SELECT [name] AS 'TableName'
-    FROM   sysobjects 
-    WHERE  xtype = 'U'
-GO
-
-
 CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUrlLog
     @URLTrackingID INT,
     @StartDate     DATETIME,

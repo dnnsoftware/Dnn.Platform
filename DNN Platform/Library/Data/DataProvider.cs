@@ -2506,21 +2506,6 @@ namespace DotNetNuke.Data
 
         #endregion
 
-        #region Database
-
-        public virtual IDataReader GetFields(string TableName)
-        {
-            string SQL = "SELECT * FROM {objectQualifier}" + TableName + " WHERE 1 = 0";
-            return ExecuteSQL(SQL);
-        }
-
-        public virtual IDataReader GetTables()
-        {
-            return ExecuteReader("GetTables");
-        }
-
-        #endregion
-
         #region Vendors
 
         public virtual int AddVendor(int PortalId, string VendorName, string Unit, string Street, string City,
