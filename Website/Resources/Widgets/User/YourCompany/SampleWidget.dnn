@@ -4,10 +4,10 @@
       <friendlyName>Sample Widget</friendlyName>
       <description>The Sample Widget is a demonstration widget for DotNetNuke.</description>
       <owner>
-        <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="license.txt" />
       <releaseNotes src="releasenotes.txt" />

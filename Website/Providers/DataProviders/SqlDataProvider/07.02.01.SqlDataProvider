@@ -2201,6 +2201,18 @@ AS
 									WHERE PortalID = @PortalId) OR IsNull(@PortalId, -1) = -1)
 GO
 
+/***** Fix bug DNN-3146: Update installed system packages owner info *****/
+UPDATE {databaseOwner}[{objectQualifier}Packages] SET
+	Owner = 'DNN',
+	Organization = 'DNN Corp.',
+	Url = 'http://www.dnnsoftware.com',
+	Email = 'support@dnnsoftware.com'
+	WHERE Owner IN ('DotNetNuke', 'DotNetNuke Corporation', 'DotNetNuke RadEditor Provider', 'DNNCorp')
+	AND Organization IN ('DotNetNuke Corporation', 'DotNetNuke Corp')
+	AND Url IN ('www.dotnetnuke.com', 'http://www.dotnetnuke.com')
+	AND Email IN ('support@dotnetnuke.com', '')
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

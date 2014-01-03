@@ -240,12 +240,12 @@ namespace DotNetNuke.Services.Installer
                     }
                 }
             }
-            if (package.Owner == "DotNetNuke")
+            if (package.Owner == "DotNetNuke" || package.Owner == "DNN")
             {
                 package.License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile);
-                package.Organization = "DotNetNuke Corporation";
-                package.Url = "www.dotnetnuke.com";
-                package.Email = "support@dotnetnuke.com";
+                package.Organization = "DNN Corp.";
+                package.Url = "http://www.dnnsoftware.com";
+                package.Email = "support@dnnsoftware.com";
                 package.ReleaseNotes = "There are no release notes for this version.";
             }
             else

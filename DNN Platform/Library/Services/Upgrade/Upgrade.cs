@@ -316,10 +316,10 @@ namespace DotNetNuke.Services.Upgrade
                                       FriendlyName = desktopModuleName,
                                       Name = string.Concat("DotNetNuke.", desktopModuleName),
                                       PackageType = "Module",
-                                      Owner = "DotNetNuke",
-                                      Organization = "DotNetNuke Corporation",
-                                      Url = "www.dotnetnuke.com",
-                                      Email = "support@dotnetnuke.com"
+                                      Owner = "DNN",
+                                      Organization = "DNN Corp.",
+                                      Url = "http://www.dnnsoftware.com",
+                                      Email = "support@dnnsoftware.com"
                                   };
                 if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer" || desktopModuleName == "Dashboard")
                 {
@@ -1669,11 +1669,11 @@ namespace DotNetNuke.Services.Upgrade
                                   Description = "The Default UserName/Password Authentication System for DotNetNuke.",
                                   PackageType = "Auth_System",
                                   Version = new Version(1, 0, 0),
-                                  Owner = "DotNetNuke",
+                                  Owner = "DNN",
                                   License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile),
-                                  Organization = "DotNetNuke Corporation",
-                                  Url = "www.dotnetnuke.com",
-                                  Email = "support@dotnetnuke.com",
+                                  Organization = "DNN Corp.",
+                                  Url = "http://www.dnnsoftware.com",
+                                  Email = "support@dnnsoftware.com",
                                   ReleaseNotes = "There are no release notes for this version.",
                                   IsSystemPackage = true
                               };
