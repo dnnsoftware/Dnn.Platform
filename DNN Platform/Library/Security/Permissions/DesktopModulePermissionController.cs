@@ -236,7 +236,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModulePermissionsByUserID(UserInfo objUser)
         {
-            provider.DeleteDesktopModulePermissionsByUserID(objUser.UserID);
+            provider.DeleteDesktopModulePermissionsByUserID(objUser.UserID, objUser.PortalID);
             var objEventLog = new EventLogController();
             objEventLog.AddLog("UserID",
                                objUser.UserID.ToString(CultureInfo.InvariantCulture),

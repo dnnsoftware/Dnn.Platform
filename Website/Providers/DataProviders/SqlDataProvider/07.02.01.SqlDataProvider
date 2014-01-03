@@ -2210,6 +2210,21 @@ AS
 	END
 GO
 
+/*** DNN-3594: signature changed to support PortalId, which is required, if a user signs off from a single website only ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteDesktopModulePermissionsByUserID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteDesktopModulePermissionsByUserID]
+    @UserId   Int  -- required, not null!
+	@PortalId Int, -- Null affects all sites
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission]
+    WHERE UserID = @UserId
+     AND (PortalDesktopModuleID IN (SELECT PortalDesktopModuleID 
+									FROM {databaseOwner}[{objectQualifier}PortalDesktopModules] 
+									WHERE PortalID = @PortalId) OR IsNull(@PortalId, -1) = -1)
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

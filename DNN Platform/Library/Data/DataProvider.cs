@@ -1886,9 +1886,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeleteDesktopModulePermissionsByPortalDesktopModuleID", portalDesktopModuleID);
         }
 
-        public virtual void DeleteDesktopModulePermissionsByUserID(int userID)
+        public virtual void DeleteDesktopModulePermissionsByUserID(int userID, int portalID)
         {
-            ExecuteNonQuery("DeleteDesktopModulePermissionsByUserID", userID);
+            ExecuteNonQuery("DeleteDesktopModulePermissionsByUserID", userID, portalID);
         }
 
         public virtual IDataReader GetDesktopModulePermission(int desktopModulePermissionID)
