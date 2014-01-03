@@ -411,260 +411,303 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
   DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog9]
 GO
 
-
-create procedure {databaseOwner}{objectQualifier}GetSiteLog1
-
-@PortalID int,
-@PortalAlias nvarchar(50),
-@StartDate datetime,
-@EndDate datetime
-
-as
-
-select convert(varchar,DateTime,102) AS 'Date',
- count(*) AS 'Views',
- count(distinct {databaseOwner}{objectQualifier}SiteLog.UserHostAddress) AS 'Visitors',
- count(distinct {databaseOwner}{objectQualifier}SiteLog.UserId) 'Users'
-from {databaseOwner}{objectQualifier}SiteLog
-where PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-group by convert(varchar,DateTime,102)
-order by Date desc
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AdjustedReferrer]') AND OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+    DROP FUNCTION {databaseOwner}[{objectQualifier}AdjustedReferrer]
 GO
 
-create procedure {databaseOwner}{objectQualifier}GetSiteLog2
-
-@PortalID int,
-@PortalAlias nvarchar(50),
-@StartDate datetime,
-@EndDate datetime
-
-as
-
-select {databaseOwner}{objectQualifier}SiteLog.DateTime, 
- case
-when {databaseOwner}{objectQualifier}SiteLog.UserId is null then null
-else {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName
-end AS 'Name',
- case 
- when {databaseOwner}{objectQualifier}SiteLog.Referrer like '%' + @PortalAlias + '%' then null 
- else {databaseOwner}{objectQualifier}SiteLog.Referrer
- end AS 'Referrer', 
- case 
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/5%' then 'Netscape Navigator 6+'
- else {databaseOwner}{objectQualifier}SiteLog.UserAgent
- end 'UserAgent',
- {databaseOwner}{objectQualifier}SiteLog.UserHostAddress,
- {databaseOwner}{objectQualifier}Tabs.TabName
-from {databaseOwner}{objectQualifier}SiteLog
-left outer join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}SiteLog.UserId = {databaseOwner}{objectQualifier}Users.UserId 
-left outer join {databaseOwner}{objectQualifier}Tabs on {databaseOwner}{objectQualifier}SiteLog.TabId = {databaseOwner}{objectQualifier}Tabs.TabId 
-where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-order by {databaseOwner}{objectQualifier}SiteLog.DateTime desc
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}BrowserFromUserAgent]') AND OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+    DROP FUNCTION {databaseOwner}[{objectQualifier}BrowserFromUserAgent]
 GO
 
-create procedure {databaseOwner}{objectQualifier}GetSiteLog3
-
-	@PortalID int,
-	@PortalAlias nvarchar(50),
-	@StartDate datetime,
-	@EndDate datetime
-
-as
-
-select {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {databaseOwner}{objectQualifier}Users.LastName AS 'Name',
-	count(*) AS 'Requests',
-	max(DateTime) AS 'LastRequest'
-from {databaseOwner}{objectQualifier}SiteLog
-inner join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}SiteLog.UserId = {databaseOwner}{objectQualifier}Users.UserId
-where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-and {databaseOwner}{objectQualifier}SiteLog.UserId is not null
-group by {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {databaseOwner}{objectQualifier}Users.LastName
-order by Requests desc
+CREATE FUNCTION {databaseOwner}[{objectQualifier}BrowserFromUserAgent]
+	(@UserAgent nVarChar(2000))
+RETURNS nVarChar(2000)
+AS
+BEGIN
+	DECLARE @ident1		 nVarChar( 20) = '';
+	DECLARE @ident2		 nVarChar( 20) = '';
+	DECLARE @Browser     nVarChar(100) = '';
+	DECLARE @Version	 nVarChar( 10) = '';
+	DECLARE @Pos         Smallint = -1;
+	DECLARE @End		 Smallint =  0;
+	
+	-- Detect Browser family (Name|Version Prefix):
+	SET @Browser =	CASE
+		WHEN @UserAgent LIKE '%Opera Mini/%'	THEN 'Opera Mini|Opera Mini/|Version/'
+		WHEN @UserAgent LIKE '%Opera Mobi/%'	THEN 'Opera Mobile|Version/|Opera Mobi/'
+		WHEN @UserAgent LIKE '%Opera/%'			THEN 'Opera|Version/|Opera/'
+		WHEN @UserAgent LIKE '%Opera %'			THEN 'Opera|Opera '
+		WHEN @UserAgent LIKE '%Opera'			THEN 'Opera|Opera'
+		WHEN @UserAgent LIKE '%Firefox/%'		THEN 'Mozilla Firefox|Firefox/'
+		WHEN @UserAgent LIKE '%Firebird/%'		THEN 'Mozilla Firebird|Firebird/'
+		WHEN @UserAgent LIKE '%SeaMonkey/%'		THEN 'Mozilla SeaMonkey|SeaMonkey/'
+		WHEN @UserAgent LIKE '%Kindle/%'		THEN 'Amazon Kindle|Kindle/'
+		WHEN @UserAgent LIKE '%Kindle %'		THEN 'Amazon Kindle|Version/'
+		WHEN @UserAgent LIKE '%Silk/%'			THEN 'Amazon Kindle|Version/'
+		WHEN @UserAgent LIKE '%Chrome/%'		THEN 'Google Chrome|Chrome/'
+		WHEN @UserAgent Like '%Blackberry'		THEN 'Blackberry|Mobile Safari/'
+		WHEN @UserAgent LIKE '%Android%' 		THEN 'Android|Mobile Safari/'
+		WHEN @UserAgent LIKE '%Safari/%'		THEN 'Apple Safari|Safari/'
+		WHEN @UserAgent LIKE '%ChromePlus/%'	THEN 'ChromePlus|ChromePlus/'
+		WHEN @UserAgent LIKE '%AOL %'			THEN 'AOL Browser|AOL '
+		WHEN @USerAgent LIKE '%Crazy Browser %' THEN 'Crazy Browser|Crazy Browser '
+		WHEN @USerAgent LIKE '%Maxthon/%'		THEN 'Maxthon|Maxthon/'
+		WHEN @USerAgent LIKE '%IEMobile %'		THEN 'IE Mobile|IEMobile '
+		WHEN @USerAgent LIKE '%IEMobile/%'		THEN 'IE Mobile|IEMobile/'
+		WHEN @UserAgent LIKE '%MSIE %'      	THEN 'Internet Explorer|MSIE '
+		WHEN @UserAgent LIKE '%(IE %'      		THEN 'Internet Explorer|(IE '
+		WHEN @UserAgent LIKE '%Netscape/%' 		THEN 'Netscape Navigator|Netscape/'
+		WHEN @UserAgent LIKE '%Navigator/%'		THEN 'Netscape Navigator|Navigator/'
+		WHEN @UserAgent LIKE '%PLAYSTATION %' 	THEN 'Sony Playstation|PLAYSTATION '
+		WHEN @UserAgent LIKE '%WGet/%'			THEN 'WGet|WGet/'
+	END
+	IF @Browser <> '' -- separate elements:
+		SET @Pos = CharIndex('|', @Browser)
+		IF @Pos > 0 BEGIN	
+			SET @ident1  = SubString(@Browser, @Pos + 1, 100)
+			SET @Browser = Left(@Browser, @Pos - 1)
+			SET @Pos     = CharIndex('|', @ident1)
+			IF  @Pos > 0 BEGIN
+				SET @Ident2 = SubString(@Ident1, @Pos + 1, 100)
+				SET @Ident1 = Left(@Ident1, @Pos - 1)
+			END 
+			-- get major version number from UserAgent string:
+			SET @Pos = CharIndex(@ident1, @UserAgent) + Len(@ident1 + '|') - 1 -- correct to catch trailing space
+			IF @Pos = 0 SET @Pos = CharIndex(@ident2, @UserAgent) + Len(@ident2 + '|') - 1 -- again
+			IF @Pos > 0 BEGIN
+				WHILE SubString(@UserAgent, @Pos + @End, 1) >= '0' AND SubString(@UserAgent, @Pos + @End, 1) <= 9
+					SET @End = @End + 1
+				IF @End > 0 SET @Version = SubString(@UserAgent, @Pos, @End)
+			END
+		END
+	ELSE -- Search bots, ignore version
+		SET @Browser = CASE 
+		WHEN @UserAgent LIKE '%GoogleBot%'		THEN 'Google Bot'
+		WHEN @UserAgent LIKE 'BingBot%'			THEN 'Bing Bot'
+		WHEN @UserAgent LIKE 'MSNBot%'			THEN 'MSN Bot'
+		WHEN @UserAgent LIKE '%BaiduSpider%'	THEN 'Baidu Spider'
+		WHEN @UserAgent LIKE '%Arachmo%'		THEN 'Arachmo Bot'
+		WHEN @UserAgent LIKE '%NewsGator%'		THEN 'NewsGator Bot'
+		WHEN @UserAgent LIKE '%Seekbot%'		THEN 'SeekPort Bot'
+		WHEN @UserAgent LIKE '%Yahoo%'			THEN 'Yahoo Bot'
+		WHEN @UserAgent LIKE '%Yandex%'			THEN 'Yandex Bot'
+		WHEN @UserAgent LIKE '%Bot%'			THEN 'Other Bot'
+		ELSE 'Other'
+	END
+	RETURN RTRIM(@Browser + ' ' + @Version)
+END
 GO
 
-create procedure {databaseOwner}{objectQualifier}GetSiteLog4
-
-@PortalID int,
-@PortalAlias nvarchar(50),
-@StartDate datetime,
-@EndDate datetime
-
-as
-
-select Referrer,
- count(*) AS 'Requests',
- max(DateTime) AS 'LastRequest'
-from {databaseOwner}{objectQualifier}SiteLog
-where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-and Referrer is not null
-and Referrer not like '%' + @PortalAlias + '%'
-group by Referrer
-order by Requests desc
+CREATE FUNCTION {databaseOwner}[{objectQualifier}AdjustedReferrer](
+	@Referrer 	 nVarChar(2000),
+	@PortalAlias nVarChar( 255)
+	)
+RETURNS nVarChar(2000)
+AS
+BEGIN
+	RETURN CASE 
+		WHEN @Referrer LIKE '%' + @PortalAlias + '%' THEN Null 
+		ELSE @Referrer
+	END
+END
 GO
 
-create procedure {databaseOwner}{objectQualifier}GetSiteLog5
-
-@PortalID int,
-@PortalAlias nvarchar(50),
-@StartDate datetime,
-@EndDate datetime
-
-as
-
-select
- case 
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/5%' then 'Netscape Navigator 6+'
- else {databaseOwner}{objectQualifier}SiteLog.UserAgent
- end AS 'UserAgent',
- count(*) AS 'Requests',
- max(DateTime) AS 'LastRequest'
-from {databaseOwner}{objectQualifier}SiteLog
-where PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-group by case 
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 1%' then 'Internet Explorer 1'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 2%' then 'Internet Explorer 2'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 3%' then 'Internet Explorer 3'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 4%' then 'Internet Explorer 4'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 5%' then 'Internet Explorer 5'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE 6%' then 'Internet Explorer 6'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%MSIE%' then 'Internet Explorer'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/1%' then 'Netscape Navigator 1'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/2%' then 'Netscape Navigator 2'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/3%' then 'Netscape Navigator 3'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/4%' then 'Netscape Navigator 4'
- when {databaseOwner}{objectQualifier}SiteLog.UserAgent like '%Mozilla/5%' then 'Netscape Navigator 6+'
- else {databaseOwner}{objectQualifier}SiteLog.UserAgent
- end
-order by Requests desc
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog1
+	@PortalID 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+	BEGIN
+		SELECT Convert(VarChar, DateTime, 102)   AS 'Date',
+			   Count(*) 						 AS 'Views',
+			   Count(Distinct L.UserHostAddress) AS 'Visitors',
+			   Count(Distinct L.UserId)          AS 'Users'
+		FROM {databaseOwner}{objectQualifier}SiteLog L
+		WHERE PortalId = @PortalID
+		  AND L.DateTime BETWEEN @StartDate AND @EndDate
+		GROUP BY Convert(VarChar, DateTime, 102)
+		ORDER BY Date DESC
+	END
 GO
 
-create procedure {databaseOwner}{objectQualifier}GetSiteLog6
-
-@PortalID int,
-@PortalAlias nvarchar(50),
-@StartDate datetime,
-@EndDate datetime
-
-as
-
-select datepart(hour,DateTime) AS 'Hour',
- count(*) AS 'Views',
- count(distinct {databaseOwner}{objectQualifier}SiteLog.UserHostAddress) AS 'Visitors',
- count(distinct {databaseOwner}{objectQualifier}SiteLog.UserId) AS 'Users'
-from {databaseOwner}{objectQualifier}SiteLog
-where PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-group by datepart(hour,DateTime)
-order by Hour
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog2
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- Portal Alias to be eliminated FROM Referrer
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+	BEGIN
+		SELECT L.DateTime, 
+		U.DisplayName AS 'Name',
+		{databaseOwner}[{objectQualifier}AdjustedReferrer](L.Referrer, @PortalAlias) AS 'Referrer', 
+		{databaseOwner}[{objectQualifier}BrowserFromUserAgent](L.UserAgent) AS 'UserAgent',
+		L.UserHostAddress,
+		T.TabName
+		FROM      {databaseOwner}{objectQualifier}SiteLog L
+		LEFT JOIN {databaseOwner}{objectQualifier}Users   U ON L.UserId = U.UserId 
+		LEFT JOIN {databaseOwner}{objectQualifier}Tabs    T ON L.TabId  = T.TabId 
+		WHERE L.PortalId = @PortalId
+		  AND L.DateTime BETWEEN @StartDate AND @EndDate
+		ORDER BY L.DateTime DESC
+	END
 GO
 
-create procedure {databaseOwner}{objectQualifier}GetSiteLog7
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog3
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT U.DisplayName AS 'Name',
+           count(*)      AS 'Requests',
+           Max(DateTime) AS 'LastRequest'
+	FROM       {databaseOwner}{objectQualifier}SiteLog L
+	INNER JOIN {databaseOwner}{objectQualifier}Users   U on L.UserId = U.UserId
+	WHERE L.PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY U.DisplayName
+	ORDER BY Requests DESC
+END
+GO
 
-@PortalID int,
-@PortalAlias nvarchar(50),
-@StartDate datetime,
-@EndDate datetime
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog4
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- Portal Alias to be eliminated FROM Referrer
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT Referrer,
+	Count(*)      AS 'Requests',
+	Max(DateTime) AS 'LastRequest'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE L.PortalId = @PortalID
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	  AND L.Referrer IS Not Null
+	  AND L.Referrer Not Like '%' + @PortalAlias + '%'
+	GROUP BY Referrer
+	ORDER BY Requests DESC
+END
+GO
 
-as
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog5
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT {databaseOwner}[{objectQualifier}BrowserFromUserAgent](L.UserAgent) AS 'UserAgent',
+		   Count(*)      AS 'Requests',
+		   Max(DateTime) AS 'LastRequest'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY {databaseOwner}[{objectQualifier}BrowserFromUserAgent](L.UserAgent)
+	ORDER BY Requests DESC
+END
+GO
 
-select datepart(weekday,DateTime) AS 'WeekDay',
- count(*) AS 'Views',
- count(distinct {databaseOwner}{objectQualifier}SiteLog.UserHostAddress) AS 'Visitors',
- count(distinct {databaseOwner}{objectQualifier}SiteLog.UserId) AS 'Users'
-from {databaseOwner}{objectQualifier}SiteLog
-where PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-group by datepart(weekday,DateTime)
-order by WeekDay
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog6
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT
+		DatePart(Hour, DateTime)          AS 'Hour',
+		Count(*)                          AS 'Views',
+		Count(Distinct L.UserHostAddress) AS 'Visitors',
+		Count(Distinct L.UserId) 		  AS 'Users'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY DatePart(Hour, DateTime)
+	ORDER BY Hour
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog7
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT 
+		DatePart(weekday, DateTime) 	  AS 'WeekDay',
+		Count(*)                          AS 'Views',
+		Count(Distinct L.UserHostAddress) AS 'Visitors',
+		Count(Distinct L.UserId) 		  AS 'Users'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY DatePart(weekday, DateTime)
+	ORDER BY WeekDay
+END
 GO
 
 
-create procedure {databaseOwner}{objectQualifier}GetSiteLog8
-
-@PortalID int,
-@PortalAlias nvarchar(50),
-@StartDate datetime,
-@EndDate datetime
-
-as
-
-select datepart(month,DateTime) AS 'Month',
- count(*) AS 'Views',
- count(distinct {databaseOwner}{objectQualifier}SiteLog.UserHostAddress) AS 'Visitors',
- count(distinct {databaseOwner}{objectQualifier}SiteLog.UserId) AS 'Users'
-from {databaseOwner}{objectQualifier}SiteLog
-where PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-group by datepart(month,DateTime)
-order by Month
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog8
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS	
+BEGIN
+	SELECT 
+		DatePart(month, DateTime) 		  AS 'Month',
+		Count(*)                          AS 'Views',
+		Count(Distinct L.UserHostAddress) AS 'Visitors',
+		Count(Distinct L.UserId) 		  AS 'Users'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY datepart(Month, L.DateTime)
+	ORDER BY Month
+END
 GO
 
-create procedure {databaseOwner}{objectQualifier}GetSiteLog9
-
-@PortalID int,
-@PortalAlias nvarchar(50),
-@StartDate datetime,
-@EndDate datetime
-
-as
-
-select {databaseOwner}{objectQualifier}Tabs.TabName AS 'Page',
- count(*) AS 'Requests',
- max(DateTime) AS 'LastRequest'
-from {databaseOwner}{objectQualifier}SiteLog
-inner join {databaseOwner}{objectQualifier}Tabs on {databaseOwner}{objectQualifier}SiteLog.TabId = {databaseOwner}{objectQualifier}Tabs.TabId
-where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-and {databaseOwner}{objectQualifier}SiteLog.TabId is not null
-group by {databaseOwner}{objectQualifier}Tabs.TabName
-order by Requests desc
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog9
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS	
+BEGIN
+	SELECT 
+		T.TabName     AS 'Page',
+		Count(*)      AS 'Requests',
+		Max(DateTime) AS 'LastRequest'
+	FROM       {databaseOwner}{objectQualifier}SiteLog L
+	INNER JOIN {databaseOwner}{objectQualifier}Tabs    T ON L.TabId = T.TabId
+	WHERE L.PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY T.TabName
+	ORDER BY Requests DESC
+END
 GO
 
-create procedure {databaseOwner}{objectQualifier}GetSiteLog12
-
-@PortalID int,
-@PortalAlias nvarchar(50),
-@StartDate datetime,
-@EndDate datetime
-
-as
-
-select AffiliateId,
- count(*) AS 'Requests',
- max(DateTime) AS 'LastReferral'
-from {databaseOwner}{objectQualifier}SiteLog
-where {databaseOwner}{objectQualifier}SiteLog.PortalId = @PortalID
-and {databaseOwner}{objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
-and AffiliateId is not null
-group by AffiliateId
-order by Requests desc
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog12
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT AffiliateId,
+		Count(*) 		AS 'Requests',
+		Max(DateTime) 	AS 'LastReferral'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE L.PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	  AND AffiliateId Is NOT Null
+	GROUP BY AffiliateId
+	ORDER BY Requests DESC
+END
 GO
 
 /*DNN-3216 - String literals as column aliases in SP (not allowed in SQL Azure) */
