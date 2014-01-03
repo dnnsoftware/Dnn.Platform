@@ -673,10 +673,6 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
   DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAffiliates]
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalSpaceUsed]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSpaceUsed]
-GO
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTables]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
   DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTables]
 GO
@@ -703,81 +699,60 @@ GO
 
 
 
-create procedure {databaseOwner}{objectQualifier}GetAffiliates
-
-@VendorId int
-
-as
-
-select AffiliateId,
-       StartDate,
-       EndDate,
-       CPC,
-       Clicks,
-       Clicks * CPC AS 'CPCTotal',
-       CPA,
-       Acquisitions,
-       Acquisitions * CPA 'CPATotal'
-from   {databaseOwner}{objectQualifier}Affiliates
-where  VendorId = @VendorId
-order  by StartDate desc
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortalSpaceUsed
-	@PortalID int
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAffiliates
+    @VendorId INT
 AS
-
-SELECT SUM(CAST(Size as bigint)) AS 'SpaceUsed'
-FROM   {objectQualifier}Files
-WHERE  ((PortalId = @PortalID) OR (@PortalID is null and PortalId is null))
+    SELECT AffiliateId,
+           StartDate,
+           EndDate,
+           CPC,
+           Clicks,
+           Clicks * CPC AS 'CPCTotal',
+           CPA,
+           Acquisitions,
+           Acquisitions * CPA 'CPATotal'
+    FROM   {databaseOwner}{objectQualifier}Affiliates
+    WHERE  VendorId = @VendorId
+    ORDER  BY StartDate DESC
 GO
 
 
- create procedure {databaseOwner}{objectQualifier}GetTables
-
-as
-
-/* Be carefull when changing this procedure as the GetSearchTables() function 
-   in SearchDB.cs is only looking at the first column (to support databases that cannot return 
-   a TableName column name (like MySQL))
-*/
-
-select [name] AS 'TableName'
-from   sysobjects 
-where  xtype = 'U'
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetTables
+AS
+    /* Be carefull when changing this procedure as the GetSearchTables() function 
+       in SearchDB.cs is only looking at the first column (to support databases that cannot return 
+       a TableName column name (like MySQL))
+    */
+    SELECT [name] AS 'TableName'
+    FROM   sysobjects 
+    WHERE  xtype = 'U'
 GO
 
 
- create procedure {databaseOwner}{objectQualifier}GetUrlLog
-
-@URLTrackingID int,
-@StartDate     datetime,
-@EndDate       datetime
-
-as
-
-select {databaseOwner}{objectQualifier}UrlLog.*,
-       {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {databaseOwner}{objectQualifier}Users.LastName AS 'FullName'
-from   {databaseOwner}{objectQualifier}UrlLog
-inner join {databaseOwner}{objectQualifier}UrlTracking on {databaseOwner}{objectQualifier}UrlLog.UrlTrackingId = {databaseOwner}{objectQualifier}UrlTracking.UrlTrackingId
-left outer join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}UrlLog.UserId = {databaseOwner}{objectQualifier}Users.UserId
-where  {databaseOwner}{objectQualifier}UrlLog.UrlTrackingID = @UrlTrackingID
-and    ((ClickDate >= @StartDate) or @StartDate is null)
-and    ((ClickDate <= @EndDate) or @EndDate is null)
-order by ClickDate
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUrlLog
+    @URLTrackingID INT,
+    @StartDate     DATETIME,
+    @EndDate       DATETIME
+AS
+    SELECT {databaseOwner}{objectQualifier}UrlLog.*,
+           {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {databaseOwner}{objectQualifier}Users.LastName AS 'FullName'
+    FROM   {databaseOwner}{objectQualifier}UrlLog
+    INNER JOIN {databaseOwner}{objectQualifier}UrlTracking ON {databaseOwner}{objectQualifier}UrlLog.UrlTrackingId = {databaseOwner}{objectQualifier}UrlTracking.UrlTrackingId
+    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users ON {databaseOwner}{objectQualifier}UrlLog.UserId = {databaseOwner}{objectQualifier}Users.UserId
+    WHERE  {databaseOwner}{objectQualifier}UrlLog.UrlTrackingID = @UrlTrackingID
+    AND    ((ClickDate >= @StartDate) or @StartDate IS NULL)
+    AND    ((ClickDate <= @EndDate) or @EndDate IS NULL)
+    ORDER BY ClickDate
 GO
 
 
-create procedure {databaseOwner}{objectQualifier}GetVendorClassifications
-
-@VendorId  int
-
-as
-
-select ClassificationId,
-       ClassificationName,
-       case when exists ( select 1 from {databaseOwner}{objectQualifier}VendorClassification vc where vc.VendorId = @VendorId and vc.ClassificationId = {objectQualifier}Classification.ClassificationId ) then 1 else 0 end AS 'IsAssociated'
-from {databaseOwner}{objectQualifier}Classification
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetVendorClassifications
+    @VendorId  INT
+AS
+    SELECT ClassificationId,
+           ClassificationName,
+           CASE WHEN EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}VendorClassification vc WHERE vc.VendorId = @VendorId AND vc.ClassificationId = {objectQualifier}Classification.ClassificationId ) THEN 1 ELSE 0 END AS 'IsAssociated'
+    FROM {databaseOwner}{objectQualifier}Classification
 GO
 
 
@@ -1995,12 +1970,12 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSpaceUsed]
-	@PortalId Int     – Null|-1: Host files
+	@PortalId INT     -- Null|-1: Host files
 AS
 	BEGIN
 		SELECT SUM(CAST(Size as bigint)) AS SpaceUsed
 		FROM {databaseOwner}{objectQualifier}Files
-		WHERE (IsNull(PortalID, -1) = IsNull(@PortalId))
+		WHERE (IsNull(PortalID, -1) = IsNull(@PortalId, -1))
 	END
 GO
 
@@ -2212,12 +2187,12 @@ GO
 
 /*** DNN-3594: signature changed to support PortalId, which is required, if a user signs off from a single website only ***/
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteDesktopModulePermissionsByUserID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesByPortal]
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteDesktopModulePermissionsByUserID]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteDesktopModulePermissionsByUserID]
-    @UserId   Int  -- required, not null!
-	@PortalId Int, -- Null affects all sites
+    @UserId   INT,  -- required, not null!
+	@PortalId INT -- Null affects all sites
 AS
     DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission]
     WHERE UserID = @UserId
