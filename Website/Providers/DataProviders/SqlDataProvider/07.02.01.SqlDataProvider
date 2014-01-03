@@ -2244,6 +2244,27 @@ UPDATE {databaseOwner}[{objectQualifier}Packages] SET
 	AND Email IN ('support@dotnetnuke.com', '')
 GO
 
+-- DNN-4305
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}MasterPortalId]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}MasterPortalId]
+GO
+
+-- new helper function
+CREATE FUNCTION {databaseOwner}[{objectQualifier}MasterPortalId]
+(
+    @PortalId Int  -- ID of the portal or Null for Host
+) 
+	RETURNS   Int
+AS
+	BEGIN
+		DECLARE @MasterPortalId  Int = Null
+		IF IsNull(@PortalId, -1) >= 0
+			SELECT @MasterPortalId = MasterPortalId FROM {databaseOwner}[{objectQualifier}vw_MasterPortals] WHERE PortalId = @PortalId
+		RETURN @MasterPortalId
+	END
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
