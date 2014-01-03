@@ -46,11 +46,13 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			var manageRolesPage = new ManageRolesPage(_driver);
 			manageRolesPage.OpenUsingControlPanel(_baseUrl);
-			manageRolesPage.AddNewSecurityRole(_assignedRoleName);
+			manageRolesPage.AddNewSecurityRole(_assignedRoleName + "001");
+			manageRolesPage.AddNewSecurityRole(_assignedRoleName + "002");
 
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
-			manageUsersPage.AddNewUser(_userName, _userDisplayName, "user10@mail.com", "pAssword10");
+			manageUsersPage.AddNewUser(_userName + "001", _userDisplayName + "001", "user10@mail.com", "pAssword10");
+			manageUsersPage.AddNewUser(_userName + "002", _userDisplayName + "002", "user10@mail.com", "pAssword10");
 
 			_logContent = LogContent();
 		}
@@ -135,19 +137,38 @@ namespace DNNSelenium.Common.Tests.BVT
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 
-			manageUsersPage.ManageRoles(_userName);
+			manageUsersPage.ManageRoles(_userName + "001");
 
-			manageUsersPage.AssignRoleToUser(_assignedRoleName);
+			manageUsersPage.AssignRoleToUser(_assignedRoleName + "001");
 
 			var manageRolesPage = new ManageRolesPage(_driver);
 
 			manageRolesPage.OpenUsingControlPanel(_baseUrl);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of Users assigned to the Role");
-			Assert.That("1",
-			            Is.EqualTo(
-				            manageRolesPage.FindElement(By.XPath("//tr[td[text() = '" + _assignedRoleName + "']]/td[13]")).Text),
+			Assert.That(manageRolesPage.FindElement(By.XPath("//tr[td[text() = '" + _assignedRoleName + "001']]/td[13]")).Text,
+			            Is.EqualTo("1"),
 			            "The role is not assigned correctly to User");
+		}
+
+		[Test]
+		public void Test005_AssignUserToRole()
+		{
+			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Assign the User th Role'");
+
+			var adminSecurityRolesPage = new AdminSecurityRolesPage(_driver);
+			adminSecurityRolesPage.OpenUsingControlPanel(_baseUrl);
+
+			adminSecurityRolesPage.ManageUsers(_assignedRoleName + "002");
+
+			adminSecurityRolesPage.AssignRoleToUser(_userName + "002");
+
+			adminSecurityRolesPage.OpenUsingControlPanel(_baseUrl);
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of Users assigned to the Role");
+			Assert.That(adminSecurityRolesPage.FindElement(By.XPath("//tr[td[contains(string(), '" + _assignedRoleName + "002')]]/td[13]")).Text,
+						Is.EqualTo("1"),
+						"The role is not assigned correctly to User");
 		}
 	}
 }
