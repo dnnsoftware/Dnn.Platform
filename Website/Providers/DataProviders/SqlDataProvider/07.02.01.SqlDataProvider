@@ -777,12 +777,12 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUrlLog
     @StartDate     DATETIME,
     @EndDate       DATETIME
 AS
-    SELECT {databaseOwner}{objectQualifier}UrlLog.*,
-           {databaseOwner}{objectQualifier}Users.FirstName + ' ' + {databaseOwner}{objectQualifier}Users.LastName AS 'FullName'
-    FROM   {databaseOwner}{objectQualifier}UrlLog
-    INNER JOIN {databaseOwner}{objectQualifier}UrlTracking ON {databaseOwner}{objectQualifier}UrlLog.UrlTrackingId = {databaseOwner}{objectQualifier}UrlTracking.UrlTrackingId
-    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users ON {databaseOwner}{objectQualifier}UrlLog.UserId = {databaseOwner}{objectQualifier}Users.UserId
-    WHERE  {databaseOwner}{objectQualifier}UrlLog.UrlTrackingID = @UrlTrackingID
+    SELECT L.*,
+           U.DisplayName AS 'FullName'
+    FROM   {databaseOwner}{objectQualifier}UrlLog AS L
+    INNER JOIN {databaseOwner}{objectQualifier}UrlTracking AS T ON L.UrlTrackingId = T.UrlTrackingId
+    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON L.UserId = U.UserId
+    WHERE  L.UrlTrackingID = @UrlTrackingID
     AND    ((ClickDate >= @StartDate) or @StartDate IS NULL)
     AND    ((ClickDate <= @EndDate) or @EndDate IS NULL)
     ORDER BY ClickDate
