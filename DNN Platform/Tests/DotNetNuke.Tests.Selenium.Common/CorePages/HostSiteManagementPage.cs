@@ -31,6 +31,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string PortalsTable = "//div[contains(@id, '_Portals_grdPortals')]";
 		public static string PortalsList = "//tr[contains(@id, 'Portals_grdPortals')]";
 		public static string AddNewSiteButton = "//a[contains(@id, 'Portals_createSite')]";
+		public static string ExportSiteTemplateButton = "//a[contains(@id, 'Portals_exportSite')]";
 
 		public static string ParentSiteRadioButton = "dnn_ctr321_Signup_optType_0";
 		public static string ChildSiteRadioButton = "dnn_ctr321_Signup_optType_1";
@@ -43,6 +44,8 @@ namespace DNNSelenium.Common.CorePages
 		public static string PasswordTextBox = "//input[contains(@id, 'Signup_txtPassword')]";
 		public static string ConfirmTextBox = "//input[contains(@id, 'Signup_txtConfirm')]";
 		public static string EnableCurrentUserAsAdmin = "//input[contains(@id, 'Signup_useCurrent')]";
+		public static string TemplateArrow = "//a[contains(@id, 'Signup_cboTemplate_Arrow')]";
+		public static string TemplateDropDown = "//div[contains(@id, '_Signup_cboTemplate_DropDown')]";
 
 		public static string SiteNameDescriptionTextBox = "//textarea[contains(@id, 'SiteSettings_txtDescription')]";
 
@@ -56,6 +59,18 @@ namespace DNNSelenium.Common.CorePages
 
 		public static string BasicSettingsFrameTab = "//a[@href = '#ssBasicSettings']";
 		public static string AdvancedSettingsFrameTab = "//a[@href = '#erAdvancedSettings']";
+
+		public static string BasicConfigurationAccordion = "//h2[@id='H1']/a";
+		public static string AdvancedConfigurationAccordion = "//h2[@id='dnnSettings']/a";
+
+		public static string SiteArrow = "//a[contains(@id, 'Template_cboPortals_Arrow')]";
+		public static string SiteDropDown = "//div[contains(@id, 'Template_cboPortals_DropDown')]";
+		public static string TemplateFileNameTextBox = "//input[contains(@id, 'Template_txtTemplateName')]";
+		public static string TemplateDescriptionTextBox = "//textarea[contains(@id, 'Template_txtDescription')]";
+		public static string IncludeContentCheckBox = "//input[contains(@id, 'Template_chkContent')]";
+		public static string FilesCheckBox = "//input[contains(@id, 'Template_chkFiles')]";
+		public static string PagesList = "//div[contains(@id, 'Template_ctlPages')]";
+		public static string ExportTemplateButton = "//a[contains(@id, 'Template_cmdExport')]";
 
 		public void OpenUsingUrl(string baseUrl)
 		{
@@ -84,7 +99,7 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath(HostSiteManagementPage.PortalsTable));
 		}
 
-		public void AddNewChildSite(string baseUrl, string siteName, string title)
+		public void AddNewChildSite(string baseUrl, string siteName, string title, string template)
 		{
 			WaitAndClick(By.XPath(AddNewSiteButton));
 
@@ -99,13 +114,15 @@ namespace DNNSelenium.Common.CorePages
 			Type(By.XPath(SiteAliasTextBox), baseUrl + "/" + siteName);
 			Type(By.XPath(TitleTextBox), title);
 
+			SlidingSelect.SelectByValue(_driver, By.XPath(TemplateArrow), By.XPath(TemplateDropDown), template, SlidingSelect.SelectByValueType.Contains);
+
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Create Site' button:");
 			ClickOnButton(By.XPath(CreateSiteFrameButton));
 
 			WaitForElement(By.XPath(SiteCreatedConfirmationMessage), Settings.Default.WaitFactor * 60);
 		}
 
-		public void AddNewParentSite(string siteName, string title)
+		public void AddNewParentSite(string siteName, string title, string template)
 		{
 			WaitAndClick(By.XPath(AddNewSiteButton));
 
@@ -116,6 +133,8 @@ namespace DNNSelenium.Common.CorePages
 			Clear(By.XPath(SiteAliasTextBox));
 			Type(By.XPath(SiteAliasTextBox), siteName);
 			Type(By.XPath(TitleTextBox), title);
+
+			SlidingSelect.SelectByValue(_driver, By.XPath(TemplateArrow), By.XPath(TemplateDropDown), template, SlidingSelect.SelectByValueType.Contains);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Create Site' button:");
 			ClickOnButton(By.XPath(CreateSiteFrameButton));
@@ -164,6 +183,83 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Navigate to the site:");
 
 			Click(By.XPath("//span[contains(@id, 'Portals_grdPortals')]/a[contains(string(), '" + siteName + "')]"));
+
+			Thread.Sleep(1000);
+		}
+
+		public void ExportTemplateBasicConfiguration(string siteName, string templateFileName, string templateDescription)
+		{
+			WaitForElement(By.XPath(BasicConfigurationAccordion));
+
+			AccordionOpen(By.XPath(BasicConfigurationAccordion));
+
+			SlidingSelectByValue(By.XPath(SiteArrow), By.XPath(SiteDropDown), siteName);
+
+			Type(By.XPath(TemplateFileNameTextBox), templateFileName);
+
+			Type(By.XPath(TemplateDescriptionTextBox), templateDescription);
+		}
+
+		public void TemplateParameters(By checkBoxName, CheckBox.ActionType action)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Include Content");
+
+			AccordionOpen(By.XPath(AdvancedConfigurationAccordion));
+
+			WaitForElement(checkBoxName).ScrollIntoView();
+
+			if (action == CheckBox.ActionType.Check)
+			{
+				CheckBoxCheck(checkBoxName);
+			}
+
+			else
+			{
+				CheckBoxUncheck(checkBoxName);
+			}
+		}
+
+		public void ExportSiteTemplate(string siteName, string templateFileName, string templateDescription)
+		{
+			WaitAndClick(By.XPath(ExportSiteTemplateButton));
+
+			ExportTemplateBasicConfiguration(siteName, templateFileName, templateDescription);
+
+			ClickOnButton(By.XPath(ExportTemplateButton));
+
+			Thread.Sleep(1000);
+		}
+
+		public void ExportSiteTemplateWithContent(string siteName, string templateFileName, string templateDescription)
+		{
+			WaitAndClick(By.XPath(ExportSiteTemplateButton));
+
+			ExportTemplateBasicConfiguration(siteName, templateFileName, templateDescription);
+
+			TemplateParameters(By.XPath(IncludeContentCheckBox), CheckBox.ActionType.Check);
+
+			ClickOnButton(By.XPath(ExportTemplateButton));
+
+			Thread.Sleep(1000);
+		}
+
+		public void ExportSiteTemplateSomePages(string siteName, string templateFileName, string templateDescription)
+		{
+			WaitAndClick(By.XPath(ExportSiteTemplateButton));
+
+			ExportTemplateBasicConfiguration(siteName, templateFileName, templateDescription);
+
+			AccordionOpen(By.XPath(AdvancedConfigurationAccordion));
+
+			WaitAndClick(By.XPath("//div[span[text() = 'My Website']]/span[contains(@class, 'hecked')]"));
+
+			WaitAndClick(By.XPath("//div[span[contains(text(), 'Admin')]]/span[contains(@class, 'hecked')]"));
+
+			WaitAndClick(By.XPath("//div[span[contains(text(), 'Our Products')]]/span[contains(@class, 'hecked')]"));
+
+			WaitAndClick(By.XPath("//div[span[contains(text(), 'Contact Us')]]/span[contains(@class, 'hecked')]"));
+
+			ClickOnButton(By.XPath(ExportTemplateButton));
 
 			Thread.Sleep(1000);
 		}

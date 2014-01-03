@@ -69,7 +69,7 @@ namespace DNNSelenium.Common.Tests.Smoke
 
 			int originaltemNumber = hostSiteManagementPage.FindElements(By.XPath(HostSiteManagementPage.PortalsList)).Count;
 
-			hostSiteManagementPage.AddNewChildSite(_baseUrl, _siteAlias, _siteName);
+			hostSiteManagementPage.AddNewChildSite(_baseUrl, _siteAlias, _siteName, "Default Website");
 
 			hostSiteManagementPage.OpenUsingButtons(_baseUrl);
 

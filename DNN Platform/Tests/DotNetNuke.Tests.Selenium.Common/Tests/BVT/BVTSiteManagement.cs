@@ -64,11 +64,11 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			if (siteType == "ChildSite")
 			{
-				hostSiteManagementPage.AddNewChildSite(_baseUrl, siteAlias, siteTitle);
+				hostSiteManagementPage.AddNewChildSite(_baseUrl, siteAlias, siteTitle, "Default Website");
 			}
 			else
 			{
-				hostSiteManagementPage.AddNewParentSite(siteAlias + _baseUrl, siteTitle);
+				hostSiteManagementPage.AddNewParentSite(siteAlias + _baseUrl, siteTitle, "Default Website");
 			}
 
 			hostSiteManagementPage.OpenUsingButtons(_baseUrl);

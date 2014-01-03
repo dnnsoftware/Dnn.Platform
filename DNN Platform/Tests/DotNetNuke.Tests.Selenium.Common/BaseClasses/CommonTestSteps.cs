@@ -105,7 +105,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 			HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
 			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
-			hostSiteMgmtPage.AddNewChildSite(_baseUrl, childSiteName, childSiteTitle);
+			hostSiteMgmtPage.AddNewChildSite(_baseUrl, childSiteName, childSiteTitle, "Default Website");
 
 			DisablePopups(_baseUrl + "/" + childSiteName);
 		}
@@ -116,7 +116,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 			HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
 			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
-			hostSiteMgmtPage.AddNewParentSite(parentSiteName, parentSiteTitle);
+			hostSiteMgmtPage.AddNewParentSite(parentSiteName, parentSiteTitle, "Default Website");
 
 			LoginPage loginPage = new LoginPage(_driver);
 			loginPage.OpenUsingUrl(parentSiteName);
