@@ -388,7 +388,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             var folder = GetFolderInfo(folderId);
 
-            if (!(HasPermission(folder, "BROWSE") || HasPermission(folder, "READ")))
+            if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
             {
                 //The user cannot access the content
                 return new List<FolderViewModel>();
@@ -400,15 +400,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         {
             var folder = GetFolderInfo(folderId);
 
-            if (!(HasPermission(folder, "BROWSE") || HasPermission(folder, "READ")))
+            if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
             {
                 //The user cannot access the content               
                 return new PageViewModel
-                {
-                    Folder = GetFolderViewModel(folder),
-                    Items = new List<ItemViewModel>(),
-                    TotalCount = 0
-                };
+                                {
+                                    Folder = GetFolderViewModel(folder),
+                                    Items = new List<ItemViewModel>(),
+                                    TotalCount = 0
+                                };
             }
 
             var sortProperties = SortProperties.Parse(sortExpression);
@@ -455,7 +455,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         {
             var folder = GetFolderInfo(folderId);
 
-            if (!(HasPermission(folder, "BROWSE") || HasPermission(folder, "READ")))
+            if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
             {
                 //The user cannot access the content               
                 return;

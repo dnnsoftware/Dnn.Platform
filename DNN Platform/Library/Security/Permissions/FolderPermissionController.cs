@@ -51,7 +51,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanAddFolder(FolderInfo folder)
         {
-            return provider.CanAddFolder(folder) || CanAdminFolder(folder);
+            return provider.CanAddFolder(folder);
         }
 
         /// <summary>
@@ -65,13 +65,23 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>
+        /// Returns a flag indicating whether the current user can browse the folder
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanBrowseFolder(FolderInfo folder)
+        {
+            return provider.CanBrowseFolder(folder);
+        }
+
+        /// <summary>
         /// Returns a flag indicating whether the current user can copy a folder or file
         /// </summary>
         /// <param name="folder">The page</param>
         /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanCopyFolder(FolderInfo folder)
         {
-            return provider.CanCopyFolder(folder) || CanAdminFolder(folder);
+            return provider.CanCopyFolder(folder);
         }
 
         /// <summary>
@@ -81,7 +91,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanDeleteFolder(FolderInfo folder)
         {
-            return provider.CanDeleteFolder(folder) || CanAdminFolder(folder);
+            return provider.CanDeleteFolder(folder);
         }
 
         /// <summary>
@@ -91,7 +101,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanManageFolder(FolderInfo folder)
         {
-            return provider.CanManageFolder(folder) || CanAdminFolder(folder);
+            return provider.CanManageFolder(folder);
         }
 
         /// <summary>
@@ -101,7 +111,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanViewFolder(FolderInfo folder)
         {
-            return provider.CanViewFolder(folder) || CanAdminFolder(folder);
+            return provider.CanViewFolder(folder);
         }
 
         public static void DeleteFolderPermissionsByUser(UserInfo objUser)

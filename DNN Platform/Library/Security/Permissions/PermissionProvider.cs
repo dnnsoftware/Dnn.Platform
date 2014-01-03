@@ -48,6 +48,7 @@ namespace DotNetNuke.Security.Permissions
         //Folder Permission Keys
         private const string AdminFolderPermissionKey = "WRITE";
         private const string AddFolderPermissionKey = "WRITE";
+        private const string BrowseFolderPermissionKey = "BROWSE";
         private const string CopyFolderPermissionKey = "WRITE";
         private const string DeleteFolderPermissionKey = "WRITE";
         private const string ManageFolderPermissionKey = "WRITE";
@@ -288,6 +289,15 @@ namespace DotNetNuke.Security.Permissions
             return dic;
         }
 
+        private bool HasFolderPermission(FolderInfo folder, string permissionKey)
+        {
+            if (folder == null) return false;
+            return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
+                || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
+                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey))
+                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
+        }
+
         private bool HasPagePermission(TabInfo tab, string permissionKey)
         {
             return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
@@ -381,8 +391,21 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public virtual bool CanAddFolder(FolderInfo folder)
         {
+            return HasFolderPermission(folder, AddFolderPermissionKey);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can browse the folder
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public virtual bool CanBrowseFolder(FolderInfo folder)
+        {
             if (folder == null) return false;
-            return PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AddFolderPermissionKey));
+            return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(BrowseFolderPermissionKey))
+                || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(ViewFolderPermissionKey)))
+                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(BrowseFolderPermissionKey))
+                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(ViewFolderPermissionKey));
         }
 
         /// <summary>
@@ -403,8 +426,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public virtual bool CanCopyFolder(FolderInfo folder)
         {
-            if (folder == null) return false;
-            return PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(CopyFolderPermissionKey));
+            return HasFolderPermission(folder, CopyFolderPermissionKey);
         }
 
         /// <summary>
@@ -414,8 +436,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public virtual bool CanDeleteFolder(FolderInfo folder)
         {
-            if (folder == null) return false;
-            return PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(DeleteFolderPermissionKey));
+            return HasFolderPermission(folder, DeleteFolderPermissionKey);
         }
 
         /// <summary>
@@ -425,8 +446,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public virtual bool CanManageFolder(FolderInfo folder)
         {
-            if (folder == null) return false;
-            return PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(ManageFolderPermissionKey));
+            return HasFolderPermission(folder, ManageFolderPermissionKey);
         }
 
         /// <summary>
@@ -436,8 +456,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public virtual bool CanViewFolder(FolderInfo folder)
         {
-            if (folder == null) return false;
-            return PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(ViewFolderPermissionKey));
+            return HasFolderPermission(folder, ViewFolderPermissionKey);
         }
 
         public virtual void DeleteFolderPermissionsByUser(UserInfo objUser)
