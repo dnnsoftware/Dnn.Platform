@@ -492,10 +492,6 @@
                             <dnn:DnnFormTextBoxItem ID="DnnFormTextBoxItem4" runat="server" DataField="Security_EmailValidation" />
                         </Items>
                     </dnn:dnnformeditor>
-                    <div id="uniqueEmailRow" class="dnnFormItem">
-                        <dnn:label id="RequiresUniqueEmail" runat="server" controlname="RequiresUniqueEmailLabel" />
-                        <asp:Label runat="server" ID="RequiresUniqueEmailLabel" />
-                    </div>
                     <fieldset id="passwordRegistrationFieldSet">
                         <dnn:dnnformeditor id="passwordRegistrationSettings" runat="Server" formmode="Short">
                             <Items>
@@ -505,6 +501,22 @@
                         </dnn:dnnformeditor>
                     </fieldset>
                     <dnn:propertyeditorcontrol id="passwordSettings" runat="Server" valuedatafield="PropertyValue" namedatafield="Name" helpstyle-cssclass="dnnFormHelpContent dnnClear" sortmode="SortOrderAttribute" />
+                    <fieldset>
+                        <dnn:dnnformeditor id="otherRegistrationSettings" runat="Server" formmode="Short">
+                            <Items>
+                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem6" runat="server" DataField="Security_RequireValidProfile" />
+                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem7" runat="server" DataField="Security_CaptchaRegister" />
+                            </Items>
+                        </dnn:dnnformeditor>
+                    </fieldset>
+                    <div class="dnnFormItem">
+                        <dnn:label id="RedirectAfterRegistrationLabel" runat="server" controlname="cboHomeTabId" ResourceKey="Redirect_AfterRegistration"/>
+                        <dnn:DnnPageDropDownList ID="RedirectAfterRegistration" runat="server" />
+                    </div>
+                    <div id="uniqueEmailRow" class="dnnFormItem">
+                        <dnn:label id="RequiresUniqueEmail" runat="server" controlname="RequiresUniqueEmailLabel" />
+                        <asp:Label runat="server" ID="RequiresUniqueEmailLabel" />
+                    </div>
                     <div class="dnnFormItem" runat="server" id="PasswordFormatRow">
                         <dnn:label id="PasswordFormatTitle" runat="server" controlname="PasswordFormatLabel" />
                         <asp:Label runat="server" ID="PasswordFormatLabel" />
@@ -540,18 +552,6 @@
                     <div class="dnnFormItem" runat="server" id="PasswordAttemptWindowRow">
                         <dnn:label id="PasswordAttemptWindowTitle" runat="server" controlname="PasswordAttemptWindowLabel" />
                         <asp:Label runat="server" ID="PasswordAttemptWindowLabel" />
-                    </div>
-                    <fieldset>
-                        <dnn:dnnformeditor id="otherRegistrationSettings" runat="Server" formmode="Short">
-                            <Items>
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem6" runat="server" DataField="Security_RequireValidProfile" />
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem7" runat="server" DataField="Security_CaptchaRegister" />
-                            </Items>
-                        </dnn:dnnformeditor>
-                    </fieldset>
-                    <div class="dnnFormItem">
-                        <dnn:label id="RedirectAfterRegistrationLabel" runat="server" controlname="cboHomeTabId" ResourceKey="Redirect_AfterRegistration"/>
-                        <dnn:DnnPageDropDownList ID="RedirectAfterRegistration" runat="server" />
                     </div>
                 </div>
             </fieldset>
