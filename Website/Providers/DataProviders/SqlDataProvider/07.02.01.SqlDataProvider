@@ -2188,6 +2188,29 @@ AS
 	END
 GO
 
+-- DNN-4304
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetProfilePropertyDefinitionID]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}GetProfilePropertyDefinitionID]
+GO
+
+-- optimized
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetProfilePropertyDefinitionID]
+(   @PortalID     Int,         -- might be 0
+    @PropertyName nVarChar(50) -- required
+)   
+	RETURNS 	  Int
+AS
+	BEGIN
+		DECLARE @DefinitionID Int = -1
+		IF NOT IsNull(@PropertyName, '') = ''
+			SELECT @DefinitionID = PropertyDefinitionID
+			  FROM {databaseOwner}[{objectQualifier}ProfilePropertyDefinition]
+			  WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1) AND PropertyName = @PropertyName
+		RETURN @DefinitionID
+	END
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
