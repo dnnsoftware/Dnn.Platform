@@ -256,10 +256,13 @@ a.fu-fileupload-thumbnail:active {
     float: left;
     height: 76px;
     width: 76px;
-    background: none repeat scroll 0 0 #f0f0f0;
+    background: none repeat scroll 0 0 #E8F0FB;
     border: 1px solid #aaa;
-    border-color: #ccc #aaa #aaa #ccc;
+    /*border-color: #ccc #aaa #aaa #ccc;*/
     overflow: hidden;
+    border-color: #CED4E0;
+    border-radius: 4px;
+
 }
 
 a.fu-fileupload-thumbnail:hover {
