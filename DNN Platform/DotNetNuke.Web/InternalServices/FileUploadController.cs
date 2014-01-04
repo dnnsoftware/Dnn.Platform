@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -34,9 +35,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Http;
+using System.Web.UI.WebControls;
 using ClientDependency.Core;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -57,9 +61,7 @@ namespace DotNetNuke.Web.InternalServices
         public class FolderItemDTO
         {
             public string FolderPath { get; set; }
-
             public string FileFilter { get; set; }
-
             public bool Required { get; set; }
         }
 
@@ -187,7 +189,7 @@ namespace DotNetNuke.Web.InternalServices
                             
                         }
 
-                        if (string.IsNullOrEmpty(returnFilename))
+                        if (!string.IsNullOrEmpty(errorMessage))
                         {
                             /* Response Content Type cannot be application/json 
                              * because IE9 with iframe-transport manages the response 
@@ -201,8 +203,7 @@ namespace DotNetNuke.Web.InternalServices
                                 new
                                 {
                                     AlreadyExists = alreadyExists,
-                                    Message = errorMessage
-                                    //Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage)
+                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage)
                                 }, mediaTypeFormatter, "text/plain");
                         }
 
@@ -216,6 +217,111 @@ namespace DotNetNuke.Web.InternalServices
                             Content = new StringContent(returnFilename)
                         };
 
+                    });
+
+            return task; 
+        }
+
+        [HttpPost]
+        [IFrameSupportedValidateAntiForgeryToken]
+        public Task<HttpResponseMessage> UploadFromLocal()
+        {
+            HttpRequestMessage request = Request;
+
+            if (!request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType); 
+            }
+
+            var provider = new MultipartMemoryStreamProvider();
+
+            // local references for use in closure
+            var portalSettings = PortalSettings;
+            var currentSynchronizationContext = SynchronizationContext.Current;
+            var userInfo = UserInfo;
+            var task = request.Content.ReadAsMultipartAsync(provider)
+                .ContinueWith(o =>
+                    {
+                        string folder = string.Empty;
+                        string filter = string.Empty;
+                        string fileName = string.Empty;
+                        bool overwrite = false;
+                        bool isHostMenu = false;
+                        bool extract = false;
+                        Stream stream = null;
+                        string returnFilename = string.Empty;
+
+                        foreach (var item in provider.Contents)
+                        {
+                            var name = item.Headers.ContentDisposition.Name;
+                            switch (name.ToUpper())
+                            {
+                                case "\"FOLDER\"":
+                                    folder = item.ReadAsStringAsync().Result ?? "";
+                                    break;
+
+                                case "\"FILTER\"":
+                                    filter = item.ReadAsStringAsync().Result ?? "";
+                                    break;
+
+                                case "\"OVERWRITE\"":
+                                    bool.TryParse(item.ReadAsStringAsync().Result, out overwrite);
+                                    break;
+
+                                case "\"ISHOSTMENU\"":
+                                    bool.TryParse(item.ReadAsStringAsync().Result, out isHostMenu);
+                                    break;
+
+                                case "\"EXTRACT\"":
+                                    bool.TryParse(item.ReadAsStringAsync().Result, out extract);
+                                    break;
+
+                                case "\"POSTFILE\"":
+                                    fileName = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                    if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
+                                    {
+                                        fileName = Path.GetFileName(fileName);
+                                    }
+                                    stream = item.ReadAsStreamAsync().Result;
+                                    break;
+                            }
+                        }
+
+                        var errorMessage = "";
+                        var alreadyExists = false;
+                        if (!string.IsNullOrEmpty(fileName) && stream != null)
+                        {
+                            // Everything ready
+                            
+                            // The SynchronizationContext keeps the main thread context. Send method is synchronous
+                            currentSynchronizationContext.Send(
+                                delegate
+                                    {
+                                        returnFilename = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
+                                    },null
+                                );
+                            
+                        }
+
+                        var mediaTypeFormatter = new JsonMediaTypeFormatter();
+                        mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
+
+                        var root = AppDomain.CurrentDomain.BaseDirectory;
+                        returnFilename = returnFilename.Replace(root, "~/");
+
+                        var size = IsImage(returnFilename) ?
+                            ImageHeader.GetDimensions(HostingEnvironment.MapPath(returnFilename)) :
+                            Size.Empty;
+
+                        /* Response Content Type cannot be application/json 
+                         * because IE9 with iframe-transport manages the response 
+                         * as a file download 
+                         */
+                        return Request.CreateResponse(
+                            HttpStatusCode.OK,
+                            new UploadDto { AlreadyExists = alreadyExists, Message = errorMessage, Orientation = size.Orientation(), Path = VirtualPathUtility.ToAbsolute(returnFilename) },
+                            mediaTypeFormatter,
+                            "text/plain");
                     });
 
             return task; 
@@ -267,7 +373,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     errorMessage = GetLocalizedString("AlreadyExists");
                     alreadyExists = true;
-                    return string.Empty;
+                    return Path.Combine(folderInfo.PhysicalPath, fileName);
                 }
 
                 var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, FileManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
@@ -313,10 +419,17 @@ namespace DotNetNuke.Web.InternalServices
             return null;
         }
 
+        private static readonly List<string> ImageExtensions = new List<string> { "JPG", "JPE", "BMP", "GIF", "PNG", "JPEG", "ICO" }; 
+
         private static bool IsImageExtension(string extension)
         {
-            var imageExtensions = new List<string> { "JPG", "JPE", "BMP", "GIF", "PNG", "JPEG", "ICO" }; 
-            return imageExtensions.Contains(extension.ToUpper());
+            return ImageExtensions.Contains(extension.ToUpper());
+        }
+
+        private static bool IsImage(string fileName)
+        {
+            var name = fileName.ToUpper();
+            return ImageExtensions.Any(extension => name.EndsWith("." + extension));
         }
 
         private static bool IsAllowedExtension(string extension)
@@ -335,9 +448,25 @@ namespace DotNetNuke.Web.InternalServices
             public bool IsHostMenu { get; set; }
         }
 
+        [DataContract]
+        public class UploadDto
+        {
+            [DataMember(Name = "path")]
+            public string Path { get; set; }
+
+            [DataMember(Name = "orientation")]
+            public Orientation Orientation { get; set; }
+
+            [DataMember(Name = "alreadyExists")]
+            public bool AlreadyExists { get; set; }
+
+            [DataMember(Name = "message")]
+            public string Message { get; set; }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UploadByUrl(UploadByUrlDto dto)
+        public HttpResponseMessage UploadFromUrl(UploadByUrlDto dto)
         {
             WebResponse response = null;
             Stream responseStream = null;
@@ -372,33 +501,31 @@ namespace DotNetNuke.Web.InternalServices
                                                   fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip, out alreadyExists,
                                                   out errorMessage);
 
-                    if (string.IsNullOrEmpty(returnFilename))
-                    {
-                        /* Response Content Type cannot be application/json 
-                         * because IE9 with iframe-transport manages the response 
-                         * as a file download 
-                         */
-
-                        return Request.CreateResponse(HttpStatusCode.OK,
-                                                      new {AlreadyExists = alreadyExists, Message = errorMessage},
-                                                      mediaTypeFormatter, "text/plain");
-                    }
-
                     var root = AppDomain.CurrentDomain.BaseDirectory;
                     returnFilename = returnFilename.Replace(root, "~/");
-                    returnFilename = VirtualPathUtility.ToAbsolute(returnFilename);
 
-                    return new HttpResponseMessage
-                        {
-                            StatusCode = HttpStatusCode.OK,
-                            Content = new StringContent(returnFilename)
-                        };
+                    var size = IsImage(returnFilename) ?
+                        ImageHeader.GetDimensions(HostingEnvironment.MapPath(returnFilename)) :
+                        Size.Empty;
+
+                    /* Response Content Type cannot be application/json 
+                     * because IE9 with iframe-transport manages the response 
+                     * as a file download 
+                     */
+                    return Request.CreateResponse(
+                        HttpStatusCode.OK,
+                        new UploadDto { AlreadyExists = alreadyExists, Message = errorMessage, Orientation = size.Orientation(), Path = VirtualPathUtility.ToAbsolute(returnFilename) },
+                        mediaTypeFormatter,
+                        "text/plain");
                 }
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new {AlreadyExists = false, Message = ex.Message},
-                    mediaTypeFormatter, "text/plain");
+                return Request.CreateResponse(
+                    HttpStatusCode.OK,
+                    new UploadDto { AlreadyExists = false, Message = ex.Message },
+                    mediaTypeFormatter,
+                    "text/plain");
             }
             finally
             {

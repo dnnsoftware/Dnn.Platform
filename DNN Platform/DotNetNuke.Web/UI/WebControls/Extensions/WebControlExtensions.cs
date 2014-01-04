@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Web.UI.WebControls;
 
@@ -32,6 +33,13 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
                 control.CssClass = string.Join(" ", cssClasses.Where(@class => @class != cssClass).ToArray());
             }
         }
+
+        public static Orientation Orientation(this Size size)
+        {
+            return size.Width > size.Height ?
+                System.Web.UI.WebControls.Orientation.Horizontal : System.Web.UI.WebControls.Orientation.Vertical;
+        }
+
     }
 
 }

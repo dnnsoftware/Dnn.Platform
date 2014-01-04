@@ -205,6 +205,7 @@
     <Compile Include="Common\Utilities\PathUtils.cs" />
     <Compile Include="Common\Utilities\RetryableAction.cs" />
     <Compile Include="Common\Utilities\SessionVariable.cs" />
+    <Compile Include="Common\Utilities\SizeExtensions.cs" />
     <Compile Include="Common\Utilities\StateVariable.cs" />
     <Compile Include="Common\Utilities\StringExtensions.cs" />
     <Compile Include="Common\Utilities\UrlController.cs">

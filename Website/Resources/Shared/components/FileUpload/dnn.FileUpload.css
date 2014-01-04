@@ -216,7 +216,7 @@
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0, 0, 0, 0.1)), color-stop(1, transparent));
     background-image: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
-    width: 260px;
+    width: 200px;
     height: 24px;
     box-shadow: 0 1px white;
 }
@@ -226,6 +226,7 @@
     float: left;
     color: #777;
     padding: 0;
+    margin: 0 0 0 10px
 }
 
 .fu-file-already-exists-prompt {
@@ -245,6 +246,44 @@
 
 .fu-status-error .fu-file-already-exists-prompt .fu-status-message {
     color: #bd522c;
+}
+
+a.fu-fileupload-thumbnail,
+a.fu-fileupload-thumbnail:link,
+a.fu-fileupload-thumbnail:visited,
+a.fu-fileupload-thumbnail:hover,
+a.fu-fileupload-thumbnail:active {
+    float: left;
+    height: 76px;
+    width: 76px;
+    background: none repeat scroll 0 0 #f0f0f0;
+    border: 1px solid #aaa;
+    border-color: #ccc #aaa #aaa #ccc;
+    overflow: hidden;
+}
+
+a.fu-fileupload-thumbnail:hover {
+    background: none repeat scroll 0 0 #fff;
+}
+
+.fu-fileupload-thumbnail div {
+    padding: 0;
+    position: relative;
+    line-height: 76px;
+    text-align: center;
+}
+
+.fu-fileupload-thumbnail img {
+    border: none;
+}
+
+.fu-fileupload-thumbnail img.ls {
+    width: 100%;
+    vertical-align: middle;
+}
+
+.fu-fileupload-thumbnail img.pt {
+    height: 100%;
 }
 
 .fu-status-uploaded .fu-file-already-exists-prompt .fu-status-message {
@@ -298,7 +337,7 @@
     border-radius: 4px;
     box-shadow: 0 1px white, 0 2px 3px #999999 inset;
     margin: 6px 0 0 6px;
-    width: 225px;
+    width: 165px;
     height: 20px;
     display: inline-block;
 }
