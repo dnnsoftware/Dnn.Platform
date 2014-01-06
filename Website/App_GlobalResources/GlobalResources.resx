@@ -1558,4 +1558,7 @@ Sincerely,
   <data name="//Host//ProfessionalFeatures//AdvancedURLManagement.String" xml:space="preserve">
     <value>Advanced URL Management</value>
   </data>
+  <data name="//Admin//UserSwitcher.String" xml:space="preserve">
+    <value>User Switcher</value>
+  </data>
 </root>
