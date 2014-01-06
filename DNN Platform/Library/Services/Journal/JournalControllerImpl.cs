@@ -438,7 +438,7 @@ namespace DotNetNuke.Services.Journal
                     }
                 }
             }
-            journalItem.JournalId = _dataService.Journal_Save(journalItem.PortalId,
+            journalItem.JournalId = _dataService.Journal_Update(journalItem.PortalId,
                                                      journalItem.UserId,
                                                      journalItem.ProfileId,
                                                      journalItem.SocialGroupId,
