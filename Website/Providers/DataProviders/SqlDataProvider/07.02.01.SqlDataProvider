@@ -2220,7 +2220,7 @@ CREATE FUNCTION {databaseOwner}[{objectQualifier}GetSortSQL]
 	RETURNS 	   nVarChar(120)
 AS
 	BEGIN
-		RETURN {databaseOwner}[{objectQualifier}FormattedString]({databaseOwner}[{objectQualifier}SortFieldSQL](@SortBy, @SortAscending, @Default), N'ORDER BY @1')
+		RETURN {databaseOwner}[{objectQualifier}FormattedString]({databaseOwner}[{objectQualifier}SortFieldSQL](@SortBy, @SortAscending, @Default), N'ORDER BY @0')
 	END
 GO
 
