@@ -69,7 +69,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string TemplateDescriptionTextBox = "//textarea[contains(@id, 'Template_txtDescription')]";
 		public static string IncludeContentCheckBox = "//input[contains(@id, 'Template_chkContent')]";
 		public static string FilesCheckBox = "//input[contains(@id, 'Template_chkFiles')]";
-		public static string PagesList = "//div[contains(@id, 'Template_ctlPages')]";
+		public static string PagesList = "//div[contains(@id, 'ctlPages')]//ul[@class = 'rtUL']//li";
 		public static string ExportTemplateButton = "//a[contains(@id, 'Template_cmdExport')]";
 
 		public void OpenUsingUrl(string baseUrl)

@@ -25,11 +25,6 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
-		public static string PageDetailsFrameTab = "//li[contains(@id, 'ManageTabs_settingTab')]/a";
-		public static string CopyPageFrameTab = "//li[contains(@id, 'ManageTabs_copyTab')]/a";
-		public static string PermissionsFrameTab = "//li[contains(@id, 'ManageTabs_permissionsTab')]/a";
-		public static string AdvancedSettingsTab = "//li[contains(@id, 'ManageTabs_advancedTab')]/a";
-
 		public static string PageNameTextBox = "//input[contains(@id, 'ManageTabs_txtTabName')]";
 		public static string PageDescriptionTextBox = "//textarea[contains(@id, 'ManageTabs_txtDescription')]";
 		public static string PageTitleTextBox = "//input[contains(@id, 'ManageTabs_txtTitle')]";
@@ -78,7 +73,7 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new Page:");
 
-			WaitAndClick(By.XPath(PageDetailsFrameTab));
+			WaitAndClick(By.XPath(ControlPanelIDs.PageDetailsFrameTab));
 			Type(By.XPath(PageNameTextBox), pageName);
 
 			Click(By.XPath(AddPageFrameButton));
@@ -89,7 +84,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new Page:");
 
-			WaitAndClick(By.XPath(PageDetailsFrameTab));
+			WaitAndClick(By.XPath(ControlPanelIDs.PageDetailsFrameTab));
 			Type(By.XPath(PageNameTextBox), pageName);
 
 			Click(By.XPath(AddPageFrameButton));
@@ -126,7 +121,7 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Copy Page:");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Page Details' Tab:");
-			OpenTab(By.XPath(PageDetailsFrameTab));
+			OpenTab(By.XPath(ControlPanelIDs.PageDetailsFrameTab));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Enter page name in 'Page Name' text box:");
 			WaitAndClear(By.XPath(PageNameTextBox));
@@ -137,7 +132,7 @@ namespace DNNSelenium.Common.CorePages
 			FolderSelectByValue(By.XPath(ParentPageDropDown), parentPage);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Copy Page' Tab:");
-			OpenTab(By.XPath(CopyPageFrameTab));
+			OpenTab(By.XPath(ControlPanelIDs.CopyPageFrameTab));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Select 'Copy From Page':");
 
@@ -165,7 +160,7 @@ namespace DNNSelenium.Common.CorePages
 		public void EditPageTitle(string pageTitle)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Edit Page title:");
-			OpenTab(By.XPath(PageDetailsFrameTab));
+			OpenTab(By.XPath(ControlPanelIDs.PageDetailsFrameTab));
 			Clear(By.XPath(PageTitleTextBox));
 			Type(By.XPath(PageTitleTextBox), pageTitle);
 
@@ -209,7 +204,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Create Custom Url:");
 
-			OpenTab(By.XPath(AdvancedSettingsTab));
+			OpenTab(By.XPath(ControlPanelIDs.AdvancedSettingsTab));
 			AccordionOpen(By.XPath(URLManagementAccordion));
 
 			WaitAndClick(By.XPath(CreateButton));
@@ -231,7 +226,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Edit Custom Url:");
 
-			OpenTab(By.XPath(AdvancedSettingsTab));
+			OpenTab(By.XPath(ControlPanelIDs.AdvancedSettingsTab));
 			AccordionOpen(By.XPath(URLManagementAccordion));
 
 			WaitForElement(By.XPath("//table[@id = 'custom-urls']/tbody/tr/td//a[@data-bind = 'click: editUrl']")).WaitTillEnabled().Click();
@@ -253,7 +248,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Delete Custom Url:");
 
-			OpenTab(By.XPath(AdvancedSettingsTab));
+			OpenTab(By.XPath(ControlPanelIDs.AdvancedSettingsTab));
 			AccordionOpen(By.XPath(URLManagementAccordion));
 
 			WaitForElement(By.XPath("//table[@id = 'custom-urls']/tbody/tr/td//a[@data-bind = 'attachDeleteConfirmation: true']")).WaitTillEnabled().Click();

@@ -26,15 +26,15 @@ namespace DNNSelenium.Common.Tests.P1
 		private string _moveAfterWebPage;
 		private string _moveAfterHostPage;
 
-		private string _templateName;
-		private string _templateDescription;
+		public string _templateName;
+		public string _templateDescription;
 
-		private string _importedPageName;
-		private string _insertPageAfter;
+		public string _importedPageName;
+		public string _insertPageAfter;
 
-		private string _copiedPageName;
-		private string _parentPageName;
-		private string _copyFromPage;
+		public string _copiedPageName;
+		public string _parentPageName;
+		public string _copyFromPage;
 
 		protected abstract string DataFileLocation { get; }
 
@@ -82,7 +82,7 @@ namespace DNNSelenium.Common.Tests.P1
 			_logContent = LogContent();
 		}
 
-		[TestFixtureTearDown]
+		//[TestFixtureTearDown]
 		public void Cleanup()
 		{
 			VerifyLogs(_logContent);

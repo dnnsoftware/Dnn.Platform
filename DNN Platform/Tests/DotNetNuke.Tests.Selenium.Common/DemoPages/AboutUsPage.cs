@@ -11,6 +11,7 @@ namespace DNNSelenium.Common.DemoPages
 		public static string AboutUsUrl = "/About-Us";
 
 		public static string AboutUsLink = "//div[@class ='navbar']//a[contains(@href, 'About-Us')]";
+		public static string PageContent = "//div[contains(@id, '_HtmlModule_lblContent')]";
 
 		public override string PageTitleLabel
 		{

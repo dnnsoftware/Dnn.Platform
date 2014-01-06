@@ -96,7 +96,7 @@ namespace DNNSelenium.Common.Tests.P1
 			var adminLanguagesPage = new AdminLanguagesPage(_driver);
 			adminLanguagesPage.OpenUsingButtons(_baseUrl);
 
-			adminLanguagesPage.EnableLocalization();
+			adminLanguagesPage.EnableLocalization(CheckBox.ActionType.Uncheck);
 
 			adminLanguagesPage.WaitForElement(By.XPath(AdminLanguagesPage.LanguagesTable));
 			Trace.WriteLine(BasePage.TraceLevelPage + "The localization table should be present");

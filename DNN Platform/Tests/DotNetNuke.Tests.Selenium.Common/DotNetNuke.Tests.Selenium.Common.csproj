@@ -145,6 +145,8 @@
     <Compile Include="Tests\BVT\BVTUsers.cs" />
     <Compile Include="Tests\BVT\BVTZLogs.cs" />
     <Compile Include="Tests\Installer\InstallerTests.cs" />
+    <Compile Include="Tests\P1\P1HostSiteTemplates.cs" />
+    <Compile Include="Tests\P1\P1AdminSiteMap.cs" />
     <Compile Include="Tests\P1\P1AdminFileManagement.cs" />
     <Compile Include="Tests\P1\P1Journal.cs" />
     <Compile Include="Tests\P1\P1MessageCenter.cs" />

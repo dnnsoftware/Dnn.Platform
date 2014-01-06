@@ -4,14 +4,9 @@
   <settings 
     name="P1 CheckList"
     browser = "chrome"
-    baseURL = "CEP1.lvh.me"
     InstallerLanguage = "en"
     Template = "Default Template"
     Language = "en"
-    DatabaseSetup = "Custom"
-    DatabaseType = "Default"
-    DatabaseServerName = "(local)"
-    DatabaseName = "CEP1"
     DatabaseFilename = ""
     ObjectQualifier = "can_"
     Security = "Integrated"
@@ -116,5 +111,13 @@
   <adminFileManagement
    name = "Admin File Management"
   />
+
+  <adminSiteMap
+    name = "Admin Site Map"/>
+  
+  <hostSiteManagement
+    name = "Template for Site Management"
+    languagePackToDeploy= "fr"
+    childSiteName = "childsite"/>
 
 </Tests>

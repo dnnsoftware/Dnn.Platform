@@ -29,6 +29,7 @@ namespace DNNSelenium.Common.CorePages
 		}
 
 		public static string PageList = "//div[contains(@id, 'Tabs_ctlPages')]";
+		public static string Module = "//div[@id = 'dnn_ContentPane']/div[contains(@class, 'DnnModule-Tabs')]";
 
 		public static string WebsitePagesRadioButton = "//input[contains(@id, 'Tabs_rblMode_0')]";
 		public static string HostPagesRadioButton = "//input[contains(@id, 'Tabs_rblMode_1')]";

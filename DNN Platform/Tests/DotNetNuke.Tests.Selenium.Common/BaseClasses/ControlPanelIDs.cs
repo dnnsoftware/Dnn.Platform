@@ -38,7 +38,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string SearchBox = "//input[contains(@id,'dnnSearch_txtSearch')]";
 		public static string SearchButton = "//a[contains(@id, 'dnnSearch_cmdSearch')]";
 
-		public static string LanguageIcon = "//span[contains(@class, 'Language')]";
+		public static string LanguageIcon = "//div/span[contains(@class, 'Language')]";
 
 		public static string CopyrightNotice = "dnn_dnnCopyright_lblCopyright";
 		public static string CopyrightText = "Copyright 2013 by DNN Corp";
@@ -121,7 +121,12 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string ExportPageOption = "//a[contains(@href, 'ctl/ExportTab')]";
 		public static string DeletePageOption = "//a[@id = 'ControlBar_DeletePage']";
 
-		#endregion
+		public static string PageDetailsFrameTab = "//li[contains(@id, 'ManageTabs_settingTab')]/a";
+		public static string CopyPageFrameTab = "//li[contains(@id, 'ManageTabs_copyTab')]/a";
+		public static string PermissionsFrameTab = "//li[contains(@id, 'ManageTabs_permissionsTab')]/a";
+		public static string AdvancedSettingsTab = "//li[contains(@id, 'ManageTabs_advancedTab')]/a";
+		public static string LocalizationTab = "//li[contains(@id, 'ManageTabs_localizationTab')]/a";
 
+		#endregion
 	}
 }
