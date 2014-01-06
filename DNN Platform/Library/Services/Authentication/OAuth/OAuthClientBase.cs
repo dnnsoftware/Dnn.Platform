@@ -582,37 +582,37 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                             };
 
             var profileProperties = new NameValueCollection();
-            
-            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.FirstName) && !string.IsNullOrEmpty(user.FirstName)))
+
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.FirstName) && !string.IsNullOrEmpty(user.FirstName)))
             {
                 profileProperties.Add("FirstName", user.FirstName);
             }
-            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.LastName) && !string.IsNullOrEmpty(user.LastName)))
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.LastName) && !string.IsNullOrEmpty(user.LastName)))
             {
                 profileProperties.Add("LastName", user.LastName);
             }
-            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Email) && !string.IsNullOrEmpty(user.Email)))
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Email) && !string.IsNullOrEmpty(user.Email)))
             {
                 profileProperties.Add("Email", user.PreferredEmail);
             }
-            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.DisplayName) && !string.IsNullOrEmpty(user.DisplayName)))
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.DisplayName) && !string.IsNullOrEmpty(user.DisplayName)))
             {
                 profileProperties.Add("DisplayName", user.DisplayName);
             }
-            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("ProfileImage")) && !string.IsNullOrEmpty(user.ProfileImage)))
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("ProfileImage")) && !string.IsNullOrEmpty(user.ProfileImage)))
             {
                 profileProperties.Add("ProfileImage", user.ProfileImage);
             }
-            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("Website")) && !string.IsNullOrEmpty(user.Website)))
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("Website")) && !string.IsNullOrEmpty(user.Website)))
             {
                 profileProperties.Add("Website", user.Website);
             }
-            if ((Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale")))) && !string.IsNullOrEmpty(user.Locale))
+            if ((objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale")))) && !string.IsNullOrEmpty(user.Locale))
             {
                 profileProperties.Add("PreferredLocale", user.Locale.Replace('_', '-'));
             }
 
-            if (Mode == AuthMode.Register || (objUserInfo != null && string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone"))))
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone"))))
             {
                 if (String.IsNullOrEmpty(user.TimeZoneInfo))
                 {
