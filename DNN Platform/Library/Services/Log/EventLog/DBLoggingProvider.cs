@@ -127,6 +127,10 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     obj.LogUserID = Convert.ToInt32(dr["LogUserID"]);
                 }
+                if (dr["LogEventID"] != DBNull.Value)
+                {
+                    obj.LogEventID = Convert.ToInt32(dr["LogEventID"]);
+                }
                 obj.LogTypeKey = Convert.ToString(dr["LogTypeKey"]);
                 obj.LogUserName = Convert.ToString(dr["LogUserName"]);
                 obj.LogConfigID = Convert.ToString(dr["LogConfigID"]);
