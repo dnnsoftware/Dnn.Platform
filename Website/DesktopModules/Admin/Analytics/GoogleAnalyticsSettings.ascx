@@ -14,7 +14,7 @@
         </div>
         <div class="dnnFormItem">
             <dnn:label id="lblTrackForAdmin" runat="server" controlname="txtUrlParameter" suffix=":" />
-            <asp:CheckBox id="chkTrackForAdmin" runat="server" Checked="True" />
+            <asp:CheckBox id="chkTrackForAdmin" runat="server" Checked="False" />
         </div>
     </fieldset>
     <ul class="dnnActions dnnClear">
