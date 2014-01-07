@@ -2384,6 +2384,67 @@ FROM     {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients AS MR I
 WHERE  (MR.MessageID = @conversationId) AND (MR.UserID <> @userId) AND (U.IsDeleted <> 1)
 GO
 
+/*****  DNN-4075 *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]') AND type in (N'P', N'PC'))
+        DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+    @PortalId INT ,
+    @StartDate DATETIME ,
+        @startUserId INT = 0,
+    @numberOfUsers INT = 500
+AS 
+    BEGIN
+        WITH    ValidDataType
+                  AS ( SELECT   EntryID
+                       FROM     {databaseOwner}[{objectQualifier}Lists]
+                       WHERE    ListName = 'DataType'
+                                AND SystemList = 1
+                                AND Value IN ( 'Text', 'RichText' )
+                     ),
+                  ValidUsers AS 
+                  (
+                                      SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
+                         FROM ( SELECT DISTINCT
+                                            ( u.UserID )
+                                  FROM      {databaseOwner}[{objectQualifier}Users] u
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                                            LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                                  WHERE     (up.PortalId = @PortalId OR up.PortalId IS NULL)
+                                            AND (u.LastModifiedOnDate > @StartDate OR (p.LastUpdatedDate IS NOT NULL AND (p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)))
+                                            AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+                                ) AS T WHERE UserID > @startUserId) AS T
+                                WHERE rownumber <= @numberOfUsers
+                     ),
+                     FirstName AS (
+                                                SELECT UserID, PropertyValue FROM {databaseOwner}[{objectQualifier}UserProfile] p
+                                                INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+                                                WHERE pd.PropertyName = 'FirstName' AND pd.PortalID = @PortalID
+                                         )
+
+
+            SELECT  DISTINCT u.UserID ,
+                                        u.DisplayName,
+                    fn.PropertyValue AS FirstName,
+                    pd.PropertyName ,
+                    CASE WHEN (p.PropertyValue IS NULL) THEN p.PropertyText ELSE p.PropertyValue END AS PropertyValue,
+                    p.Visibility,
+                    p.ExtendedVisibility,
+                                        CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END AS 'ModifiedTime'
+            FROM    {databaseOwner}[{objectQualifier}Users] u
+                    INNER JOIN ValidUsers vu ON vu.UserId = u.UserID
+                    LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                    LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                    LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                    LEFT JOIN FirstName fn ON fn.UserID = u.UserID
+            WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+    END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
