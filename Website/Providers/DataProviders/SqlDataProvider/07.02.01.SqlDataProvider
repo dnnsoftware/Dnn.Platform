@@ -2445,6 +2445,299 @@ AS
     END
 GO
 
+/* ******************************************
+   Files Table: Cluster by FolderID, FileName
+   ****************************************** */
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FileVersions]') AND name = N'FK_{objectQualifier}FileVersions_{objectQualifier}Files')
+	ALTER TABLE {databaseOwner}[{objectQualifier}FileVersions]
+	DROP CONSTRAINT FK_{objectQualifier}FileVersions_{objectQualifier}Files
+GO
+
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FileVersions]') AND name = N'FK_{objectQualifier}FileVersions_Files')
+	ALTER TABLE {databaseOwner}[{objectQualifier}FileVersions]
+	DROP CONSTRAINT FK_{objectQualifier}FileVersions_Files
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FileName' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Files] DROP CONSTRAINT [IX_{objectQualifier}FileName] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_FolderID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	DROP INDEX [IX_{objectQualifier}Files_FolderID] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	DROP INDEX [IX_{objectQualifier}Files] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_PortalID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+DROP INDEX [IX_{objectQualifier}Files_PortalID] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_ContentID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	DROP INDEX [IX_{objectQualifier}Files_ContentID] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_FileID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	DROP INDEX [IX_{objectQualifier}Files_FileID] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'PK_{objectQualifier}File' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Files] DROP CONSTRAINT PK_{objectQualifier}File
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'PK_{objectQualifier}Files' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Files] DROP CONSTRAINT PK_{objectQualifier}Files
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Files]
+	ADD CONSTRAINT PK_{objectQualifier}Files PRIMARY KEY NONCLUSTERED 
+	(FileID)
+GO
+
+CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}Files_FolderID] ON {databaseOwner}[{objectQualifier}Files] 
+	([FolderID], [FileName])
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files_FileID] ON {databaseOwner}[{objectQualifier}Files] 
+	([FileID])
+	INCLUDE ([PortalID], [FolderID], [FileName], [PublishedVersion])
+	WHERE ContentItemId Is NOT Null
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Files_PortalID] ON {databaseOwner}[{objectQualifier}Files] 
+	([PortalID], [FolderID], [FileName])
+	INCLUDE ([FileID], [PublishedVersion])
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files_ContentID] ON {databaseOwner}[{objectQualifier}Files] 
+	([ContentItemID])
+	INCLUDE ([FileID], [FolderID], [FileName], [PublishedVersion])
+	WHERE ContentItemId Is NOT Null
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}FileVersions] ADD CONSTRAINT FK_{objectQualifier}FileVersions_{objectQualifier}Files 
+	FOREIGN KEY(FileID) 
+	REFERENCES {databaseOwner}[{objectQualifier}Files] (FileID) 
+	ON UPDATE  NO ACTION 
+	ON DELETE  CASCADE
+GO
+
+-- DNN-4339: optimized, Note: server side sorting and paging would be preferable
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+    SELECT
+        F.FileId,
+        F.PortalId,
+        F.[FileName],
+        F.Extension,
+        F.[Size],
+        F.Width,
+        F.Height,
+        F.ContentType,
+        F.FolderID,
+        FO.FolderPath AS 'Folder',
+        FO.StorageLocation,
+        FO.IsCached,
+        FO.FolderMappingID,
+        F.UniqueId,
+        F.VersionGuid,
+        F.SHA1Hash,
+        F.LastModificationTime,
+        F.Title,
+        F.EnablePublishPeriod,
+        F.StartDate,
+        F.EndDate,
+        F.CreatedByUserID,
+        F.CreatedOnDate,
+        F.LastModifiedByUserID,
+        F.LastModifiedOnDate,
+        F.PublishedVersion,
+        F.ContentItemID
+    FROM {databaseOwner}[{objectQualifier}Files] F
+    INNER JOIN {databaseOwner}[{objectQualifier}Folders] FO ON F.FolderID = FO.FolderID
+    WHERE F.FolderID = @FolderID
+        AND  ((@RetrieveUnpublishedFiles = 0)
+        OR    (EnablePublishPeriod = 0)
+        OR    ((StartDate <= GETDATE()) AND (GETDATE() <= IsNull(EndDate, GETDATE()))))
+    ORDER BY [FolderID], [FileName]
+GO
+
+ 
+/* **********************************************
+   Folders Table: cluster by PortalId, FolderPath
+   ********************************************** */
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FolderPermission]') AND name = N'FK_{objectQualifier}FolderPermission_{objectQualifier}Folders')
+	ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission]
+	DROP CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Folders
+GO
+
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Files]') AND name = N'FK_{objectQualifier}Files_{objectQualifier}Folders')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Files]
+	DROP CONSTRAINT FK_{objectQualifier}Files_{objectQualifier}Folders
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Folders_FolderPath' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Folders]'))
+	DROP INDEX IX_{objectQualifier}Folders_FolderPath ON {databaseOwner}[{objectQualifier}Folders]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Folders_FolderID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Folders]'))
+	DROP INDEX [IX_{objectQualifier}Folders_FolderID] ON {databaseOwner}[{objectQualifier}Folders]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Folders_ParentID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Folders]'))
+	DROP INDEX [IX_{objectQualifier}Folders_ParentID] ON {databaseOwner}[{objectQualifier}Folders] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'PK_{objectQualifier}Folders' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Folders]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP CONSTRAINT PK_{objectQualifier}Folders
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Folders]
+	ADD CONSTRAINT PK_{objectQualifier}Folders PRIMARY KEY NONCLUSTERED 
+	(FolderID)
+GO
+
+CREATE UNIQUE INDEX IX_{objectQualifier}Folders_FolderID ON {databaseOwner}[{objectQualifier}Folders]
+	(FolderID)
+	INCLUDE (PortalID, FolderPath, StorageLocation, isCached, FolderMappingID) 
+GO
+
+CREATE UNIQUE CLUSTERED INDEX IX_{objectQualifier}Folders_FolderPath ON {databaseOwner}[{objectQualifier}Folders]
+	(PortalID, FolderPath) 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Folders_ParentID] ON {databaseOwner}[{objectQualifier}Folders] 
+	([PortalID], [ParentID], [FolderPath])
+	INCLUDE ([FolderID])
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Files] ADD CONSTRAINT FK_{objectQualifier}Files_{objectQualifier}Folders 
+	FOREIGN KEY (FolderID) 
+	REFERENCES {databaseOwner}[{objectQualifier}Folders] (FolderID) 
+	ON UPDATE  NO ACTION 
+	ON DELETE  CASCADE
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] ADD CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Folders 
+	FOREIGN KEY(FolderID) 
+	REFERENCES {databaseOwner}[{objectQualifier}Folders] (FolderID) 
+	ON UPDATE  NO ACTION 
+	ON DELETE  CASCADE
+GO
+
+
+-- DNN-4497: Add Foreign Key Constraint
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Folders]') AND name = N'FK_{objectQualifier}Folders_{objectQualifier}FolderMappings')
+ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP CONSTRAINT FK_{objectQualifier}Folders_{objectQualifier}FolderMappings 
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}Folders]
+WHERE FolderMappingID NOT IN (SELECT FolderMappingID FROM {databaseOwner}[{objectQualifier}FolderMappings])
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Folders] ADD CONSTRAINT FK_{objectQualifier}Folders_{objectQualifier}FolderMappings 
+   FOREIGN KEY (FolderMappingID) 
+   REFERENCES {databaseOwner}[{objectQualifier}FolderMappings](FolderMappingID)
+   ON UPDATE  NO ACTION
+   ON DELETE  NO ACTION
+GO
+
+-- DNN-4533: Optimized to use proper index
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFolders]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolders]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolders]
+	@PortalID int -- Null|-1: Host Portal
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}Folders
+	WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1) 
+	ORDER BY PortalID, FolderPath -- include portalId to use proper index
+END
+GO
+
+-- DNN-3365, using DNN-4299, DNN-4308
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
+    @PortalId    Int,            -- Null|-1 retrieves host folders
+    @Permissions nVarChar(300),  -- list of permissions, to be required any of it, not the complete set. Use '*', '' OR Null for ANY.
+    @UserId      Int,            -- Id of the user to be inspected. Required
+    @FolderId    Int,            -- optional ID   of a single folder to check (or Null|-1 for all)
+    @FolderPath  nVarChar(300)   -- optional path of a single folder to check (or Null|'' for all)
+
+AS
+    DECLARE @IsSuperUser  Bit = 0
+    DECLARE @IsAdmin      Bit = 0
+    DECLARE @AllPerm      Int = 0
+    DECLARE @ReadPerm     Int = 0
+    DECLARE @WritePerm    Int = 0
+    DECLARE @BrowsePerm   Int = 0
+    DECLARE @AddPerm      Int = 0
+
+    -- Determine Admin or SuperUser
+    SELECT @IsSuperUser = IsSuperUser FROM {databaseOwner}[{objectQualifier}Users] WHERE UserId = @UserId;
+    IF @IsSuperUser <> 0
+        SET @IsAdmin = 1;
+     ELSE IF IsNull(@PortalId, -1) = -1
+        SET @IsAdmin = 0
+     ELSE IF {databaseOwner}[{objectQualifier}UserIsInRole](@UserId, {databaseOwner}[{objectQualifier}AdministratorRoleId](@PortalId)) <> 0
+        SET @IsAdmin = 1;
+		
+    IF (IsNull(@PortalId, -1) = -1 AND @IsSuperUser <> 0) OR (@IsAdmin <> 0)
+            SELECT F.*
+            FROM {databaseOwner}[{objectQualifier}Folders] F
+            WHERE ISNull(F.PortalID, -1) = IsNull(@PortalId, -1)
+                AND (F.FolderID = @FolderID OR IsNull(@FolderID, -1) = -1)
+                AND (F.FolderPath = @FolderPath OR IsNull(@FolderPath,'') = '')
+             ORDER BY F.PortalID, F.FolderPath -- include portalId to use proper index
+    ELSE BEGIN
+        --Retrieve Permission Ids
+            SELECT TOP 1 @AllPerm    = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = 'WRITE';
+        IF IsNull(@Permissions, '') LIKE '%WRITE%'  SET @WritePerm = @AllPerm -- always checked, because WRITE always rules all other permissions
+        IF IsNull(@Permissions, '') LIKE '%READ%'
+            SELECT TOP 1 @ReadPerm   = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = 'READ';
+        IF IsNull(@Permissions, '') LIKE '%BROWSE%'
+            SELECT TOP 1 @BrowsePerm = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = 'BROWSE';
+        IF IsNull(@Permissions, '') LIKE '%ADD%'
+            SELECT TOP 1 @AddPerm    = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = 'ADD';
+
+        SELECT * FROM {databaseOwner}[{objectQualifier}Folders]
+         WHERE (PortalID = IsNull(@PortalID, -1))
+            AND  (FolderPath = @FolderPath OR IsNull(@FolderPath,'') = '')
+            AND  (FolderID   = @FolderID   OR IsNull(@FolderID, -1) = -1)
+            AND  (FolderId IN -- granted folders
+            (SELECT DISTINCT FP.FolderId
+            FROM           {databaseOwner}[{objectQualifier}FolderPermission] FP
+                INNER JOIN {databaseOwner}[{objectQualifier}Permission]        P ON FP.PermissionID = P.PermissionID
+                LEFT  JOIN {databaseOwner}[{objectQualifier}UserRoles]        UR ON UR.RoleID = FP.RoleID
+            WHERE  (FP.UserID = @UserID OR UR.UserID = @UserID)
+              AND FP.PermissionID IN (@AddPerm, @ReadPerm, @BrowsePerm, @WritePerm)
+              AND  (FP.AllowAccess = 1)))
+            AND Not (FolderId IN -- denied folders
+            (SELECT DISTINCT FP.FolderId
+            FROM           {databaseOwner}[{objectQualifier}FolderPermission] FP
+                INNER JOIN {databaseOwner}[{objectQualifier}Permission]        P ON FP.PermissionID = P.PermissionID
+                LEFT  JOIN {databaseOwner}[{objectQualifier}UserRoles]        UR ON UR.RoleID = FP.RoleID
+            WHERE  (FP.UserID = @UserID OR UR.UserID = @UserID)
+            AND FP.PermissionID IN (@AddPerm, @ReadPerm, @BrowsePerm, @AllPerm)
+            AND  (FP.AllowAccess = 0)))
+         ORDER BY PortalID, FolderPath -- include portalId to use proper index
+		 OPTION (OPTIMIZE FOR (@FolderPath Unknown, @FolderId Unknown, @UserId Unknown));
+    END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
