@@ -760,9 +760,9 @@ AS
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUrlLog
-	@URLTrackingID Int,	 – not Null
-	@StartDate DateTime, – Null: all
-	@EndDate DateTime – Null: all
+	@URLTrackingID Int,
+	@StartDate DateTime,
+	@EndDate DateTime
 AS
 	BEGIN
 		SELECT 
