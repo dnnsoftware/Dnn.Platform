@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -82,6 +83,17 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), SharedConstants.RootFolder) : null
             };
+
+            if (Options.Extensions.Count > 0)
+            {
+                var extensionsText = Options.Extensions.Aggregate(string.Empty, (current, extension) => current.Append(extension, ", "));
+                Options.Resources.InvalidFileExtensions = string.Format(Options.Resources.InvalidFileExtensions, extensionsText);
+            }
+
+            if (Options.MaxFiles > 0)
+            {
+                Options.Resources.TooManyFiles = string.Format(Options.Resources.TooManyFiles, Options.MaxFiles.ToString(CultureInfo.InvariantCulture));
+            }
 
             Options.FolderPicker.Services.GetTreeMethod = "ItemListService/GetFolders";
             Options.FolderPicker.Services.GetNodeDescendantsMethod = "ItemListService/GetFolderDescendants";

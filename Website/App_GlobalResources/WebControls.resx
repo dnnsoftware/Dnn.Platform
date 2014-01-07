@@ -262,10 +262,10 @@
     <value>Items &lt;b&gt;1&lt;/b&gt;-&lt;b&gt;{0}&lt;/b&gt; out of &lt;b&gt;{1}&lt;/b&gt;</value>
   </data>
   <data name="FileUpload.TooManyFiles.Error" xml:space="preserve">
-    <value>You have selected too many files</value>
+    <value>You connot upload more than {0} file(s) at once.</value>
   </data>
   <data name="FileUpload.InvalidFileExtensions.Error" xml:space="preserve">
-    <value>Some selected files with invalid extensions are excluded from upload.</value>
+    <value>Some selected files with invalid extensions are excluded from upload.  You can only upload files with the following extensions: {0}.</value>
   </data>
   <data name="FileUpload.ErrorDialogTitle.Text" xml:space="preserve">
     <value>Error</value>
