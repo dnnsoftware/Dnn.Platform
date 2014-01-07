@@ -2368,6 +2368,22 @@ AS
 	END
 GO
 
+-- DNN-23950
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_CheckReplyHasRecipients]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CheckReplyHasRecipients]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_CheckReplyHasRecipients
+	@conversationId INT,
+	@userId INT
+AS 
+SELECT COUNT(MR.UserID)
+FROM     {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients AS MR INNER JOIN
+                  {databaseOwner}{objectQualifier}vw_Users AS U ON MR.UserID = U.UserID
+WHERE  (MR.MessageID = @conversationId) AND (MR.UserID <> @userId) AND (U.IsDeleted <> 1)
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
