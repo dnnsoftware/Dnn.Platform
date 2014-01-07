@@ -760,19 +760,21 @@ AS
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUrlLog
-    @URLTrackingID INT,
-    @StartDate     DATETIME,
-    @EndDate       DATETIME
+	@URLTrackingID Int,	 – not Null
+	@StartDate DateTime, – Null: all
+	@EndDate DateTime – Null: all
 AS
-    SELECT L.*,
-           U.DisplayName AS 'FullName'
-    FROM   {databaseOwner}{objectQualifier}UrlLog AS L
-    INNER JOIN {databaseOwner}{objectQualifier}UrlTracking AS T ON L.UrlTrackingId = T.UrlTrackingId
-    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON L.UserId = U.UserId
-    WHERE  L.UrlTrackingID = @UrlTrackingID
-    AND    ((ClickDate >= @StartDate) or @StartDate IS NULL)
-    AND    ((ClickDate <= @EndDate) or @EndDate IS NULL)
-    ORDER BY ClickDate
+	BEGIN
+		SELECT 
+			L.*,
+			{databaseOwner}[{objectQualifier}UserDisplayname](L.UserId) AS 'FullName'
+		FROM {databaseOwner}{objectQualifier}UrlLog L
+			INNER JOIN {databaseOwner} {objectQualifier}UrlTracking T ON L.UrlTrackingId = T.UrlTrackingId
+		WHERE L.UrlTrackingID = @UrlTrackingID
+			AND ((ClickDate >= @StartDate) OR @StartDate Is Null)
+			AND ((ClickDate <= @EndDate ) OR @EndDate Is Null)
+		ORDER BY ClickDate
+	END
 GO
 
 
