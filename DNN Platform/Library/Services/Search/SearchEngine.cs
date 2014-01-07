@@ -291,7 +291,7 @@ namespace DotNetNuke.Services.Search
             if (startDate < SqlDateTime.MinValue.Value ||
                 SearchHelper.Instance.IsReindexRequested(portalId, startDate))
             {
-                return SqlDateTime.MinValue.Value;
+                return SqlDateTime.MinValue.Value.AddDays(1);
             }
             return startDate;
         }
