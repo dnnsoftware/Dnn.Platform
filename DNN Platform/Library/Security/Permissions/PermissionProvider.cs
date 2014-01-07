@@ -404,8 +404,7 @@ namespace DotNetNuke.Security.Permissions
             if (folder == null) return false;
             return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(BrowseFolderPermissionKey))
                 || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(ViewFolderPermissionKey)))
-                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(BrowseFolderPermissionKey))
-                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(ViewFolderPermissionKey));
+                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(BrowseFolderPermissionKey));
         }
 
         /// <summary>
