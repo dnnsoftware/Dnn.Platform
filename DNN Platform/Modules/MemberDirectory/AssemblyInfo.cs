@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotNetNuke")]
 [assembly: AssemblyProduct("MemberDirectory")]
-[assembly: AssemblyCopyright("Copyright (c) 2002-2013")]
+[assembly: AssemblyCopyright("Copyright (c) 2002-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
