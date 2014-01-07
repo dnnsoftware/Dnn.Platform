@@ -32,6 +32,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -57,6 +58,7 @@ namespace DotNetNuke.Web.InternalServices
     public class FileUploadController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
+        private static Regex _userFolderEx = new Regex("users/\\d+/\\d+/(\\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public class FolderItemDTO
         {
@@ -74,15 +76,17 @@ namespace DotNetNuke.Web.InternalServices
                 folderItem.FolderPath = "";
             }
 
-            if (IsUserFolder(folderItem.FolderPath))
+            int userId;
+            if (IsUserFolder(folderItem.FolderPath, out userId))
             {
-                if (!UserInfo.IsSuperUser)
+                var user = UserController.GetUserById(effectivePortalId, userId);
+                if (user != null && user.IsSuperUser)
                 {
-                    effectivePortalId = PortalController.GetEffectivePortalId(effectivePortalId);
+                    effectivePortalId = Null.NullInteger;
                 }
                 else
                 {
-                    effectivePortalId = -1;
+                    effectivePortalId = PortalController.GetEffectivePortalId(effectivePortalId);
                 }
             }
 
@@ -348,17 +352,15 @@ namespace DotNetNuke.Web.InternalServices
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder
-                var effectivePortalId = isHostMenu ? -1 : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                var effectivePortalId = isHostMenu ? Null.NullInteger : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                int userId;
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
-                if (folder.ToLowerInvariant().StartsWith("users/") && folder.EndsWith(string.Format("/{0}/", userInfo.UserID)))
+                if (IsUserFolder(folder, out userId))
                 {
-                    // Make sure the user folder exists
-                    if (folderInfo == null)
+                    var user = UserController.GetUserById(effectivePortalId, userId);
+                    if (user != null)
                     {
-                        // Add User folder
-                        // fix user's portal id
-                        userInfo.PortalID = effectivePortalId;
-                        folderInfo = ((FolderManager)folderManager).AddUserFolder(userInfo);
+                        folderInfo = folderManager.GetUserFolder(user);
                     }
                 }
 
@@ -401,9 +403,12 @@ namespace DotNetNuke.Web.InternalServices
             return Localization.GetString(key, resourceFile);
         }
 
-        private bool IsUserFolder(string folderPath)
+        private static bool IsUserFolder(string folderPath, out int userId)
         {
-            return folderPath.ToLowerInvariant().StartsWith("users/") && folderPath.EndsWith(string.Format("/{0}/", UserInfo.UserID));
+            var match = _userFolderEx.Match(folderPath);
+            userId = match.Success ? int.Parse(match.Groups[1].Value) : Null.NullInteger;
+
+            return match.Success;
         }
 
         private static string ShowImage(int fileId)
