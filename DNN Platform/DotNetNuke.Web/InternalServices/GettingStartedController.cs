@@ -26,6 +26,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+
+using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
@@ -94,7 +96,9 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Scheme = request.Url.Scheme,
                 Host = "www.dnnsoftware.com",
-                Path = "DesktopModules/DNNCorp/GettingStarted/7.2.0.html"
+                Path = String.Format("DesktopModules/DNNCorp/GettingStarted/{0}/{1}.html", 
+                                            DotNetNukeContext.Current.Application.Name.Replace(".", "_"), 
+                                            DotNetNukeContext.Current.Application.Version)
             };
             var contentUrl = builder.Uri.AbsoluteUri;
 
