@@ -63,6 +63,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Components\GoogleClient.cs" />
     <Compile Include="Components\GoogleUserData.cs" />
     <Compile Include="Login.ascx.cs">

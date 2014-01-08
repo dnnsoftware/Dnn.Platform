@@ -74,6 +74,9 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Administration.ascx.cs">
       <DependentUpon>Administration.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

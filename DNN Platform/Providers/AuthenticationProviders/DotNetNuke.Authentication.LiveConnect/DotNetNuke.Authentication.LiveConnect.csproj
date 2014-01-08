@@ -61,6 +61,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Components\LiveClient.cs" />
     <Compile Include="Components\LiveUserData.cs" />
     <Compile Include="Login.ascx.cs">
