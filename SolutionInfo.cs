@@ -20,11 +20,8 @@
 #endregion
 #region Usings
 
-using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
-using DotNetNuke.Application;
 #endregion
 
 // General Information about an assembly is controlled through the following 

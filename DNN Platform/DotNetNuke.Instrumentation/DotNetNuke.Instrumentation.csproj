@@ -47,6 +47,9 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="DnnLog.cs" />
     <Compile Include="DnnLogger.cs" />
     <Compile Include="ILog.cs" />
