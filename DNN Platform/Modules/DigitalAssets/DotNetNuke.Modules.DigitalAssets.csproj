@@ -81,6 +81,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="ClientDialog.cs" />
     <Compile Include="Components\Controllers\DigitalAssetsSettingsRepository.cs" />
     <Compile Include="Components\Controllers\FolderPathComparer.cs" />

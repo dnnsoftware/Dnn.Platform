@@ -1,4 +1,4 @@
-#region Copyright
+﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
@@ -20,9 +20,11 @@
 #endregion
 #region Usings
 
+using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
+using DotNetNuke.Application;
 #endregion
 
 // General Information about an assembly is controlled through the following 
@@ -31,18 +33,10 @@ using System.Runtime.InteropServices;
 
 // Review the values of the assembly attributes
 
-[assembly: AssemblyTitle("DotNetNuke.Web.Razor")]
-[assembly: AssemblyDescription("Open Source Web Application Framework")]
-[assembly: AssemblyCompany("DotNetNuke Corporation")]
-[assembly: AssemblyProduct("http://www.dotnetnuke.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2014 by DotNetNuke Corporation. All Rights Reserved.")]
-[assembly: AssemblyTrademark("DotNetNuke")]
-[assembly: ComVisible(false)]
-
-//The following GUID is for the ID of the typelib if this project is exposed to COM
-
-[assembly: Guid("d396c63f-4cb7-4258-9ec6-7052f7d756cb")]
-
+[assembly: AssemblyCompany("DNN Corporation")]
+[assembly: AssemblyProduct("http://www.dnnsoftware.com")]
+[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2014 by DNN Corporation. All Rights Reserved.")]
+[assembly: AssemblyTrademark("DNN")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
@@ -52,11 +46,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// <Assembly: AssemblyVersion("1.0.*")> 
-
 [assembly: AssemblyVersion("7.2.2.0")]
-[assembly: AssemblyFileVersion("7.1.1.0")]
-
-[assembly: AssemblyDelaySign(false)]
-
-
+[assembly: AssemblyFileVersion("7.2.2.0")]

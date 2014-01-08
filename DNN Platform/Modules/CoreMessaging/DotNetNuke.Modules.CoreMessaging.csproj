@@ -67,6 +67,9 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Components\CoreMessagingBusinessController.cs" />
     <Compile Include="Services\FilesStatus.cs" />
     <Compile Include="Services\FileUploadController.cs" />
