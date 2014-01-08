@@ -107,6 +107,9 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\FeatureController.cs" />
     <Compile Include="Components\ImageInfo.cs" />
@@ -147,7 +150,6 @@
     <Compile Include="JournalSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SolutionInfo.cs" />
     <Compile Include="UserFolderHelper.cs" />
     <Compile Include="View.ascx.designer.cs">
       <DependentUpon>View.ascx</DependentUpon>
