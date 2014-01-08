@@ -274,6 +274,12 @@ namespace DNNSelenium.Common.BaseClasses
 			WaitForElement(locator).Click();
 		}
 
+		public void WaitScrollAndClick(By locator)
+		{
+			Trace.WriteLine(BasePage.TraceLevelElement + "Wait and Click: '" + locator + "'");
+            WaitForElement(locator).ScrollIntoView().Click();
+		}
+
 		public void WaitAndSwitchToFrame(int timeOutSeconds)
 		{
 			_driver.SwitchTo().DefaultContent();
@@ -380,8 +386,9 @@ namespace DNNSelenium.Common.BaseClasses
 			BasePage.WaitTillStopMoving(_driver, lastElement, lastElementStart);
 
 			_driver.FindElement(By.XPath(optionLocator)).Info();
-			_driver.FindElement(By.XPath(optionLocator)).WaitTillVisible().Click();
-
+			//_driver.FindElement(By.XPath(optionLocator)).WaitTillVisible().Click();
+            //BN:
+            _driver.FindElement(By.XPath(optionLocator)).WaitTillVisible().WaitTillEnabled().Click();
 			Thread.Sleep(1000);
 		}
 

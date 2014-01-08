@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Threading;
 using DNNSelenium.Common.BaseClasses;
@@ -47,6 +48,82 @@ namespace DNNSelenium.Common.CorePages
 			WaitAndClick(By.XPath(AdminBasePage.EventViewerLink));
 		}
 
+        public void EditLogSettings(string roleName)
+        {
+            Trace.WriteLine(BasePage.TraceLevelPage + "Edit the Log Settings:");
+            string xpath = "//tr[td[text() ='" + roleName + "']]/td/input[contains(@src, 'Edit')]";
+            //try
+            //{
+            //    WaitAndClick(By.XPath(xpath));
+            //}
+            //catch
+            //{
+            WaitScrollAndClick(By.XPath(xpath));
+            //}
+        }
+
+        public void EnableLogItem(string itemName)
+        {
+            EditLogSettings(itemName);
+            try
+            {
+                if (!ElementPresent(By.XPath("//span[contains(@class,'dnnCheckbox dnnCheckbox-checked')]")))
+                {
+                    string checkBoxName = "//input[contains(@id, '_EditLogTypes_chkIsActive')]";
+                    CheckBoxCheck(By.XPath(checkBoxName));
+                Thread.Sleep(500);
+                    ClickOnButton(By.XPath("//a[contains(@id, '_EditLogTypes_cmdUpdate')]"));
+                }
+                else { ClickOnButton(By.XPath("//a[contains(@id, '_EditLogTypes_cmdCancel')]")); }
+                Thread.Sleep(500);
+            }
+            catch
+            {
+                Trace.WriteLine("ELEMENT Not found");
+            }
+        }
+
+        public void DisableLogItem(string itemName)
+        {
+            EditLogSettings(itemName);
+            try
+            {
+                if (ElementPresent(By.XPath("//span[contains(@class,'dnnCheckbox dnnCheckbox-checked')]")))
+                {
+                    string checkBoxName = "//input[contains(@id, '_EditLogTypes_chkIsActive')]";
+                    CheckBoxUncheck(By.XPath(checkBoxName));
+                Thread.Sleep(500);
+                    ClickOnButton(By.XPath("//a[contains(@id, '_EditLogTypes_cmdUpdate')]"));
+                }
+                else { ClickOnButton(By.XPath("//a[contains(@id, '_EditLogTypes_cmdCancel')]")); }
+                Thread.Sleep(500);
+            }
+            catch
+            {
+                Trace.WriteLine("ELEMENT Not found");
+            }
+        }
+
+        public void SetupEventViewer(string[] logsettingitems, bool isdisabled = false)
+        {
+            ClickOnButton(By.Id("dnn_ctr455_LogViewer_editSettings"));
+            try
+            {
+                if (isdisabled)
+                {
+                    foreach (string item in logsettingitems) { DisableLogItem(item); }
+                }
+
+                foreach (string item in logsettingitems) { EnableLogItem(item); }
+            }
+            catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
+        }
+        public void ClearEventViewer()
+        {
+            ClickOnButton(By.XPath("//a[contains(@id, '_LogViewer_btnClear')]"));
+            WaitForConfirmationBox(15);
+            ClickYesOnConfirmationBox();
+        }
 		public void OpenUsingControlPanel(string baseUrl)
 		{
 			GoToUrl(baseUrl);

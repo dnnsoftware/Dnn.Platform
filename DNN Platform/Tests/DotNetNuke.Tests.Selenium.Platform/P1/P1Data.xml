@@ -4,9 +4,14 @@
   <settings 
     name="P1 CheckList"
     browser = "chrome"
+    baseURL = "CE070201v329.dnndev.me"
     InstallerLanguage = "en"
     Template = "Default Template"
     Language = "en"
+    DatabaseSetup = "Custom"
+    DatabaseType = "Default"
+    DatabaseServerName = "(local)"
+    DatabaseName = "CE070201v329"
     DatabaseFilename = ""
     ObjectQualifier = "can_"
     Security = "Integrated"
@@ -110,6 +115,9 @@
   
   <adminFileManagement
    name = "Admin File Management"
+  />
+  <adminEventViewer
+   name = "Admin Event Viewer"
   />
 
   <adminSiteMap

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing;
 using System.Reflection;
 using DNNSelenium.Common.CorePages;
 using NUnit.Framework;
@@ -46,12 +47,65 @@ namespace DNNSelenium.Common.BaseClasses
 			loginPage.LoginAsHost(_baseUrl);
 		}
 
-		public void CreateAdminAndLoginAsAdmin(string userName, string displayName, string email, string password)
+        #region BN added
+        public bool Login(string usrname, string password)
+        {
+            try
+            {
+                Trace.WriteLine(BasePage.TraceLevelComposite + "Login user: " + usrname);
+                var mainPage = new MainPage(_driver);
+                mainPage.OpenUsingUrl(_baseUrl);
+
+                LoginPage loginPage = new LoginPage(_driver);
+                loginPage.LoginUsingDirectUrl(_baseUrl, usrname, password);
+
+                string xpath = "//span[contains(text(), 'Login Failed.')]";
+                if (loginPage.ElementPresent(By.XPath(xpath))) { return false; }
+                var mp = new MainPage(_driver);
+                xpath = "//div[contains(@class, 'ui-dialog-content')]";
+                if(mp.ElementPresent(By.XPath(xpath)) && mp.FindElement(By.XPath(xpath)).Displayed)
+                {
+                    //BN: WRITE CODE LATER
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("ERROR in Login: " + usrname + "\n\r" + ex.ToString());
+                return false;
+            }
+            return true;
+        }
+
+        public void LoginCreateIfNeeded(string usrname, string password, string displayName, string email)
+        {
+            if(!Login(usrname,password))
+            {
+                OpenMainPageAndLoginAsHost();
+                System.Threading.Thread.Sleep(1000);
+                CreateAdminAndLoginAsAdmin(usrname, displayName, email, password);
+                LoginPage lp = new LoginPage(_driver);
+                lp.LetMeOut();
+                if (!Login(usrname, password))
+                {
+                    Trace.WriteLine("CANNOT create and login as " + usrname);
+                }
+            }
+        }
+
+        public void Logout()
+        {
+            LoginPage lp = new LoginPage(_driver);
+            lp.LetMeOut();
+        }
+        #endregion BN added
+
+        public void CreateAdminAndLoginAsAdmin(string userName, string displayName, string email, string password)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Admin User and Login as Admin user'");
 
 			ManageUsersPage manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
+
 			manageUsersPage.AddNewUser(userName, displayName, email, password);
 			manageUsersPage.ManageRoles(userName);
 			manageUsersPage.AssignRoleToUser("Administrators");
