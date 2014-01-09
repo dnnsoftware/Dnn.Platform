@@ -811,7 +811,7 @@
     <value>The application you are running</value>
   </data>
   <data name="FrameworkDownLevel.Text" xml:space="preserve">
-    <value>Note: You are running on an old version of the .NET Framework.  Future upgrades of the DotNetNuke platform will require .NET 3.5 SP1 or later. If you believe you are running .NET 3.5 SP1 already, please check your web.config file and ensure that the 3.5 or above versions of both System.Core and System.Data.Linq are referenced in the assemblies node.</value>
+    <value>Note: You are running on an old version of the .NET Framework.  Future upgrades of the DotNetNuke platform will require .NET 4.0 or later. If you believe you are running .NET 3.5 SP1 already, please check your web.config file and ensure that the 3.5 or above versions of both System.Core and System.Data.Linq are referenced in the assemblies node.</value>
   </data>
   <data name="plBetaNotice.Help" xml:space="preserve">
     <value>Check this box to display a message indicating that the running version is a Beta release.</value>
