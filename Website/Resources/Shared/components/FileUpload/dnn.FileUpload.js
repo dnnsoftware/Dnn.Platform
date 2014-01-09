@@ -131,8 +131,8 @@
             }
         },
 
-        _getFileExtension: function(filename) {
-            var parts = filename.split(".");
+        _getFileExtension: function(fileName) {
+            var parts = fileName.split(".");
             if (parts.length === 1 || (parts[0] === "" && parts.length === 2)) {
                 // If a.length is one, it's a visible file with no extension;
                 // If a[0] === "" and a.length === 2 it's a hidden file with no extension ie. .htaccess;
@@ -203,7 +203,7 @@
             var $status = $element("li").append(
                 $element("a", { href: "javascript:void(0);", "class": "fu-fileupload-thumbnail" }).append(
                     $element("div").append(
-                        $element("img", { "class": "pt", src: "/Icons/Sigma/ExtFile_32X32_Standard.png" })
+                        $element("img", { "class": "pt", src: "/Images/dnnanim.gif" })
                     )
                 ),
                 $element("div", { "class": "fu-fileupload-filename-container" }).append(
@@ -304,12 +304,19 @@
             var $fileUploadStatus = this._getInitializedStatusElement(statusData);
 
             if (message) {
-                this._showFileUploadStatus($fileUploadStatus, { message: message });
-                $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
+                this._showError($fileUploadStatus, message);
                 return;
             }
 
             setTimeout(function () { data.submit(); }, 25);
+        },
+
+        _showError: function($fileUploadStatus, errorMessage) {
+            this._showFileUploadStatus($fileUploadStatus, { message: errorMessage });
+            $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
+            var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
+            $img.removeClass().addClass("pt");
+            $img.prop("src", "/Images/no-content.png");
         },
 
         _getInitializedStatusElement: function(data) {
@@ -387,17 +394,20 @@
         },
 
         _showThumbnail: function ($fileUploadStatus, result) {
+            var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
+            $img.removeClass().addClass(result.orientation === 1 ? "pt" : "ls");
             if (this._isValidExtension(result.path, [".bmp", ".gif", ".png", ".jpg", ".jpeg", ".tiff"])) {
-                var img = $fileUploadStatus[0].firstChild.firstChild.firstChild;
-                $(img).prop("src", result.path).removeClass().addClass(result.orientation === 1 ? "pt" : "ls");
+                $img.prop("src", result.path);
+            }
+            else {
+                $img.prop("src", result.fileIconUrl);
             }
         },
 
         _fail: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
-            $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
             var message = data.errorThrown === "abort" ? this.options.resources.fileUploadCancelled : this.options.resources.fileUploadFailed;
-            this._showFileUploadStatus($fileUploadStatus, { message: message });
+            this._showError($fileUploadStatus, message);
         },
 
         _dragover: function (e, data) {

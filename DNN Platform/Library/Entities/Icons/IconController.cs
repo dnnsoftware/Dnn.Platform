@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Xml;
 
 using DotNetNuke.Collections.Internal;
@@ -115,12 +116,21 @@ namespace DotNetNuke.Entities.Icons
                 style = DefaultIconStyle;
 
             string fileName = string.Format("{0}/{1}_{2}_{3}.png", DefaultIconLocation, key, size, style);
-                      
+
             //In debug mode, we want to warn (onluy once) if icon is not present on disk
 #if DEBUG
             CheckIconOnDisk(fileName);
 #endif
             return Globals.ApplicationPath + "/" + fileName;
+        }
+
+        public static string GetFileIconUrl(string extension)
+        {
+            if (!string.IsNullOrEmpty(extension) && File.Exists(HostingEnvironment.MapPath(IconURL("Ext" + extension, "32x32", "Standard"))))
+            {
+                return IconURL("Ext" + extension, "32x32", "Standard");
+            }
+            return IconURL("ExtFile", "32x32", "Standard");
         }
 
         private static readonly SharedDictionary<string, bool> _iconsStatusOnDisk = new SharedDictionary<string, bool>();
