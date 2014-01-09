@@ -2364,7 +2364,7 @@ CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIsInRole]
 RETURNS 	Bit
 AS
 	BEGIN
-		RETURN CASE WHEN EXISTS (SELECT * FROM UserRoles WHERE UserID = @UserId AND RoleID = @RoleId 
+		RETURN CASE WHEN EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}UserRoles] WHERE UserID = @UserId AND RoleID = @RoleId 
 														   AND IsNull(EffectiveDate, GetDate()) >= GetDate() 
 														   AND IsNull(ExpiryDate, GetDate())    <= GetDate()) THEN 1 ELSE 0 END
 	END
