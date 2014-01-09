@@ -2724,7 +2724,7 @@ AS
             FROM           {databaseOwner}[{objectQualifier}FolderPermission] FP
                 INNER JOIN {databaseOwner}[{objectQualifier}Permission]        P ON FP.PermissionID = P.PermissionID
                 LEFT  JOIN {databaseOwner}[{objectQualifier}UserRoles]        UR ON UR.RoleID = FP.RoleID
-            WHERE  (FP.UserID = @UserID OR UR.UserID = @UserID)
+            WHERE  (FP.UserID = @UserID OR UR.UserID = @UserID OR (FP.UserID IS NULL AND @UserId IS NULL))
               AND FP.PermissionID IN (@AddPerm, @ReadPerm, @BrowsePerm, @WritePerm)
               AND  (FP.AllowAccess = 1)))
             AND Not (FolderId IN -- denied folders
@@ -2732,7 +2732,7 @@ AS
             FROM           {databaseOwner}[{objectQualifier}FolderPermission] FP
                 INNER JOIN {databaseOwner}[{objectQualifier}Permission]        P ON FP.PermissionID = P.PermissionID
                 LEFT  JOIN {databaseOwner}[{objectQualifier}UserRoles]        UR ON UR.RoleID = FP.RoleID
-            WHERE  (FP.UserID = @UserID OR UR.UserID = @UserID)
+            WHERE  (FP.UserID = @UserID OR UR.UserID = @UserID OR (FP.UserID IS NULL AND @UserId IS NULL))
             AND FP.PermissionID IN (@AddPerm, @ReadPerm, @BrowsePerm, @AllPerm)
             AND  (FP.AllowAccess = 0)))
          ORDER BY PortalID, FolderPath -- include portalId to use proper index
