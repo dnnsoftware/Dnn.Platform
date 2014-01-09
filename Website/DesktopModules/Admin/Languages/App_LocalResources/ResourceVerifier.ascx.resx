@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ModuleHelp.Text">
-    <value>&lt;P&gt;With this module you can verify all the installed language packs in the website and check their status against the default system language. The verificacion process will look at all the system default resource files and compare them to the localized version for all supported languages.&lt;/P&gt;
+    <value>&lt;P&gt;With this module you can verify all the installed language packs in the website and check their status against the default system language. The verification process will look at all the system default resource files and compare them to the localized version for all supported languages.&lt;/P&gt;
 &lt;P&gt;Once you get the report, and if any issues are found, you can use the &lt;STRONG&gt;Languages Localization Editor&lt;/STRONG&gt; to solve all the issues reported.&lt;/P&gt;
 &lt;P&gt;There are three different issues that can be found for any resource file:&lt;/P&gt;
 &lt;UL&gt;
