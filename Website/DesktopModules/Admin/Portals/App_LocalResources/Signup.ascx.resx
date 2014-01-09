@@ -325,6 +325,6 @@
     <value>There has a page which's name is same with your site alias, please change a site alias.</value>
   </data>
     <data name="DisallowedExtension.Warning" xml:space="preserve">
-    <value> There were files imported, but are not an authorized filetypes: {0}. Please check the Event Viewer for more information.</value>
+    <value>The template contains the following extensions that are not normally authorized – {0}.  As they are an integral part of the template they have been copied to your site.  For more information please check the Event Viewer.</value>
   </data>
 </root>
