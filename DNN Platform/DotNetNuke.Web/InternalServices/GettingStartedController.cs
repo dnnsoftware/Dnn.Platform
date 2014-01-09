@@ -98,10 +98,11 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Scheme = request.Url.Scheme,
                 Host = "www.dnnsoftware.com",
-                Path = String.Format("DesktopModules/DNNCorp/GettingStarted/{0}/{1}.html?locale={2}", 
+                Path = String.Format("DesktopModules/DNNCorp/GettingStarted/{0}/{1}/index.html", 
                                             DotNetNukeContext.Current.Application.Name.Replace(".", "_"), 
-                                            DotNetNukeContext.Current.Application.Version.ToString(3),
-                                            Thread.CurrentThread.CurrentUICulture)
+                                            DotNetNukeContext.Current.Application.Version.ToString(3)),
+                Query = String.Format("locale={0}", Thread.CurrentThread.CurrentUICulture)
+
             };
             var contentUrl = builder.Uri.AbsoluteUri;
 
