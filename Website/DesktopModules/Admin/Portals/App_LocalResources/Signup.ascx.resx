@@ -322,7 +322,7 @@
     <value>Site Alias is required.</value>
   </data>
   <data name="DuplicateWithTab.Text" xml:space="preserve">
-    <value>There has a page which's name is same with your site alias, please change a site alias.</value>
+    <value>There is already a page with the same name as you entered for the site alias for this site. Please change the site alias and try again.</value>
   </data>
     <data name="DisallowedExtension.Warning" xml:space="preserve">
     <value>The template contains the following extensions that are not normally authorized – {0}.  As they are an integral part of the template they have been copied to your site.  For more information please check the Event Viewer.</value>
