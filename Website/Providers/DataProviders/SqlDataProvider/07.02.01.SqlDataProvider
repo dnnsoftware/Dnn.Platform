@@ -2460,6 +2460,14 @@ IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{
 	DROP CONSTRAINT FK_{objectQualifier}FileVersions_Files
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}FileStatistics') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FileStatistics]') AND name = N'FK_{objectQualifier}FileStatistics_{objectQualifier}Files')
+			ALTER TABLE {databaseOwner}[{objectQualifier}FileStatistics]
+			DROP CONSTRAINT FK_{objectQualifier}FileStatistics_{objectQualifier}Files
+	END
+GO
+
 IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FileName' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
 	ALTER TABLE {databaseOwner}[{objectQualifier}Files] DROP CONSTRAINT [IX_{objectQualifier}FileName] 
 GO
@@ -2473,7 +2481,7 @@ IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files' AND
 GO
 
 IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_PortalID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
-DROP INDEX [IX_{objectQualifier}Files_PortalID] ON {databaseOwner}[{objectQualifier}Files] 
+	DROP INDEX [IX_{objectQualifier}Files_PortalID] ON {databaseOwner}[{objectQualifier}Files] 
 GO
 
 IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_ContentID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
@@ -2523,6 +2531,16 @@ ALTER TABLE {databaseOwner}[{objectQualifier}FileVersions] ADD CONSTRAINT FK_{ob
 	REFERENCES {databaseOwner}[{objectQualifier}Files] (FileID) 
 	ON UPDATE  NO ACTION 
 	ON DELETE  CASCADE
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}FileStatistics') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		ALTER TABLE {databaseOwner}[{objectQualifier}FileStatistics] ADD CONSTRAINT FK_{objectQualifier}FileStatistics_{objectQualifier}Files 
+			FOREIGN KEY(FileID) 
+			REFERENCES {databaseOwner}[{objectQualifier}Files] (FileID) 
+			ON UPDATE  NO ACTION 
+			ON DELETE  CASCADE
+	END
 GO
 
 -- DNN-4339: optimized, Note: server side sorting and paging would be preferable
@@ -2637,7 +2655,7 @@ GO
 
 -- DNN-4497: Add Foreign Key Constraint
 IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Folders]') AND name = N'FK_{objectQualifier}Folders_{objectQualifier}FolderMappings')
-ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP CONSTRAINT FK_{objectQualifier}Folders_{objectQualifier}FolderMappings 
+	ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP CONSTRAINT FK_{objectQualifier}Folders_{objectQualifier}FolderMappings 
 GO
 
 DELETE FROM {databaseOwner}[{objectQualifier}Folders]
