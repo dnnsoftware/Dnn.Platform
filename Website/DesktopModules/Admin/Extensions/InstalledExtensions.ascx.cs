@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNukeï¿½ - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
