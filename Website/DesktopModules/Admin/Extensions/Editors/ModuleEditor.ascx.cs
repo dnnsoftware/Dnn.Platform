@@ -497,6 +497,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, ModuleContext.PortalId));
 
                 dgPermissions.ResetPermissions();
+                Response.Redirect(Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
             }
         }
 
