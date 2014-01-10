@@ -645,18 +645,6 @@
   <data name="plUserQuota.Text" xml:space="preserve">
     <value>User Quota:</value>
   </data>
-  <data name="Deflate.Text" xml:space="preserve">
-    <value>Deflate Compression</value>
-  </data>
-  <data name="NoCompression.Text" xml:space="preserve">
-    <value>No Compression</value>
-  </data>
-  <data name="plCompression.Help" xml:space="preserve">
-    <value>Select the type of Http Compression to use.</value>
-  </data>
-  <data name="plCompression.Text" xml:space="preserve">
-    <value>Compression Setting:</value>
-  </data>
   <data name="Performance.Text" xml:space="preserve">
     <value>Performance Settings</value>
   </data>
@@ -674,9 +662,6 @@
   </data>
   <data name="plWhitespace.Text" xml:space="preserve">
     <value>Use Whitespace Filter:</value>
-  </data>
-  <data name="Compression.Text" xml:space="preserve">
-    <value>Compression Settings</value>
   </data>
   <data name="plExcludedPaths.Text" xml:space="preserve">
     <value>Excluded Paths:</value>
@@ -878,9 +863,6 @@
   </data>
   <data name="PreviewNoSelectionMessage.Text" xml:space="preserve">
     <value>Please select a skin and/or container to preview.</value>
-  </data>
-  <data name="DeprecateGzip.Text" xml:space="preserve">
-    <value>DotNetNuke's GZip compression is getting deprecated and removed in 6.2.0. We recommend using IIS compression to increase performance on your server.</value>
   </data>
   <data name="ClientResourceManagement.Text" xml:space="preserve">
     <value>Client Resource Management</value>
