@@ -263,6 +263,11 @@ a.fu-fileupload-thumbnail:active {
     border-color: #CED4E0;
     border-radius: 4px;
     opacity: 0.9;
+
+    -webkit-transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+       -moz-transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+         -o-transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 a.fu-fileupload-thumbnail:hover {
@@ -335,6 +340,11 @@ a.fu-fileupload-thumbnail:hover {
     margin: 0 4px;
     font-weight: bold;
     line-height: 12px;
+
+    -webkit-transition: color 0.3s ease-in-out;
+       -moz-transition: color 0.3s ease-in-out;
+         -o-transition: color 0.3s ease-in-out;
+            transition: color 0.3s ease-in-out;
 }
 
 .fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-replace {

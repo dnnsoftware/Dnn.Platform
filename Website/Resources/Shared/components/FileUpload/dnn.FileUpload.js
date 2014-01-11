@@ -381,9 +381,11 @@
             var result = this._getFileUploadResult(response);
             if (result.message) {
                 if (!result.alreadyExists) {
-                    $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
+                    this._showError($fileUploadStatus, result.message);
                 }
-                this._showFileUploadStatus($fileUploadStatus, result);
+                else {
+                    this._showFileUploadStatus($fileUploadStatus, result);
+                }
                 return;
             }
             this._showThumbnail($fileUploadStatus, result);
