@@ -8,9 +8,12 @@
 /*****                                                  *****/
 /************************************************************/
 
-/****** Object:  StoredProcedure [dbo].[dnn_Journal_GetSearchItems]    Script Date: 1/10/2014 8:51:51 AM ******/
+/****** Task DNN-3371: add sp Journal_GetSearchItems. ******/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_GetSearchItems]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_GetSearchItems
+GO
 
-CREATE PROCEDURE [dbo].[dnn_Journal_GetSearchItems]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_GetSearchItems]
 	@PortalId INT,
 	@ModuleId INT,
 	@StartDate DATETIME,
@@ -23,16 +26,14 @@ AS
 					SELECT *, ROW_NUMBER() OVER (ORDER BY JournalId) rownumber FROM (
 						SELECT  DISTINCT(j.JournalId)
 								
-						 FROM dbo.dnn_Journal j
-						INNER JOIN dbo.dnn_Journal_Security js ON js.JournalId = j.JournalId
-						INNER JOIN dbo.dnn_Users u ON u.UserID = j.UserId
-						INNER JOIN dbo.dnn_ContentItems ci ON ci.ContentItemID = j.ContentItemId
+						 FROM {databaseOwner}{objectQualifier}Journal j
+						INNER JOIN {databaseOwner}{objectQualifier}Journal_Security js ON js.JournalId = j.JournalId
+						INNER JOIN {databaseOwner}{objectQualifier}Users u ON u.UserID = j.UserId
+						INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID = j.ContentItemId
 						WHERE ci.ModuleID = @ModuleId
 						AND j.DateUpdated > @StartDate
 						AND j.JournalId > @StartJournalId) AS T
 				 ) AS T WHERE rownumber <= @NumbersOfResult )
-
-
 
 				 SELECT  j.JournalId,
 								JournalTypeId,
@@ -43,12 +44,11 @@ AS
 								u.DisplayName AS Title,
 								Summary,
 								js.SecurityKey
-						 FROM dbo.dnn_Journal j
-						INNER JOIN dbo.dnn_Journal_Security js ON js.JournalId = j.JournalId
+						 FROM {databaseOwner}{objectQualifier}Journal j
+						INNER JOIN {databaseOwner}{objectQualifier}Journal_Security js ON js.JournalId = j.JournalId
 						INNER JOIN ValidJournals vj ON vj.JournalId = j.JournalId
-						INNER JOIN dbo.dnn_Users u ON u.UserID = j.UserId
-
-                        GO
+						INNER JOIN {databaseOwner}{objectQualifier}Users u ON u.UserID = j.UserId
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
