@@ -93,6 +93,147 @@ END
 
 GO
 
+-- DNN-4537:
+-- Optimize Indexes on DesktopModulePermission table:
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopModulePermission' AND object_id = OBJECT_ID('{objectQualifier}DesktopModulePermission'))
+	ALTER TABLE	{databaseOwner}[{objectQualifier}DesktopModulePermission] DROP CONSTRAINT [IX_{objectQualifier}DesktopModulePermission] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopModulePermission_DesktopModules' AND object_id = OBJECT_ID('{objectQualifier}DesktopModulePermission'))
+	DROP INDEX [IX_{objectQualifier}DesktopModulePermission_DesktopModules] ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}DesktopModulePermission_DesktopModules ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+	(PortalDesktopModuleID, PermissionID, RoleID, UserID) 
+	INCLUDE (AllowAccess)
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopModulePermission_Users' AND object_id = OBJECT_ID('{objectQualifier}DesktopModulePermission'))
+	DROP INDEX [IX_{objectQualifier}DesktopModulePermission_Users] ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}DesktopModulePermission_Users ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+	(UserID, PortalDesktopModuleID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE UserID IS NOT Null
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopModulePermission_Roles' AND object_id = OBJECT_ID('{objectQualifier}DesktopModulePermission'))
+	DROP INDEX [IX_{objectQualifier}DesktopModulePermission_Roles] ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}DesktopModulePermission_Roles ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+	(RoleID, PortalDesktopModuleID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE RoleID IS NOT Null
+GO
+
+
+-- Optimize Indexes on FolderPermission table:
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FolderPermission' AND object_id = OBJECT_ID('{objectQualifier}FolderPermission'))
+	ALTER TABLE	{databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT [IX_{objectQualifier}FolderPermission] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FolderPermission_Folders' AND object_id = OBJECT_ID('{objectQualifier}FolderPermission'))
+	DROP INDEX [IX_{objectQualifier}FolderPermission_Folders] ON {databaseOwner}[{objectQualifier}FolderPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Folders ON {databaseOwner}[{objectQualifier}FolderPermission]
+	(FolderID, PermissionID, RoleID, UserID) 
+	INCLUDE (AllowAccess)
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FolderPermission_Users' AND object_id = OBJECT_ID('{objectQualifier}FolderPermission'))
+	DROP INDEX [IX_{objectQualifier}FolderPermission_Users] ON {databaseOwner}[{objectQualifier}FolderPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Users ON {databaseOwner}[{objectQualifier}FolderPermission]
+	(UserID, FolderID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE UserID IS NOT Null
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FolderPermission_Roles' AND object_id = OBJECT_ID('{objectQualifier}FolderPermission'))
+	DROP INDEX [IX_{objectQualifier}FolderPermission_Roles] ON {databaseOwner}[{objectQualifier}FolderPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Roles ON {databaseOwner}[{objectQualifier}FolderPermission]
+	(RoleID, FolderID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE RoleID IS NOT Null
+GO
+
+
+-- Optimize Indexes on ModulePermission table:
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	ALTER TABLE	{databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT [IX_{objectQualifier}ModulePermission] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Modules' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Modules] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Modules ON {databaseOwner}[{objectQualifier}ModulePermission]
+	(ModuleID, PermissionID, RoleID, UserID) 
+	INCLUDE (AllowAccess)
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Users' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Users] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Users ON {databaseOwner}[{objectQualifier}ModulePermission]
+	(UserID, ModuleID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE UserID IS NOT Null
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Roles' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Roles] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Roles ON {databaseOwner}[{objectQualifier}ModulePermission]
+	(RoleID, ModuleID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE RoleID IS NOT Null
+GO
+
+
+-- Optimize Indexes on TabPermission table: remove redundant index on tabPermission table, optimize indexes
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabPermission' AND object_id = OBJECT_ID('{objectQualifier}TabPermission'))
+	ALTER TABLE	{databaseOwner}[{objectQualifier}TabPermission] DROP CONSTRAINT [IX_{objectQualifier}TabPermission] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabPermission_Tabs' AND object_id = OBJECT_ID('{objectQualifier}TabPermission'))
+	DROP INDEX [IX_{objectQualifier}TabPermission_Tabs] ON {databaseOwner}[{objectQualifier}TabPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Tabs ON {databaseOwner}[{objectQualifier}TabPermission]
+	(TabID, PermissionID, RoleID, UserID) 
+	INCLUDE (AllowAccess)
+GO
+
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabPermission_Users' AND object_id = OBJECT_ID('{objectQualifier}TabPermission'))
+	DROP INDEX [IX_{objectQualifier}TabPermission_Users] ON {databaseOwner}[{objectQualifier}TabPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Users ON {databaseOwner}[{objectQualifier}TabPermission]
+	(UserID, TabID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE UserID IS NOT Null
+GO
+
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabPermission_Roles' AND object_id = OBJECT_ID('{objectQualifier}TabPermission'))
+	DROP INDEX [IX_{objectQualifier}TabPermission_Roles] ON {databaseOwner}[{objectQualifier}TabPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Roles ON {databaseOwner}[{objectQualifier}TabPermission]
+	(RoleID, TabID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE RoleID IS NOT Null
+GO
 
 
 /************************************************************/
