@@ -185,16 +185,16 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     {
                         var parameters = new string[2];
                         parameters[0] = "rtab=" + ModuleContext.TabId;
-                        parameters[1] = "packageId=KEYFIELD";
+                        parameters[1] = "packageId=keyfield";
                         var formatString = ModuleContext.NavigateUrl(ModuleContext.TabId, "UnInstall", false, parameters);                        
-                        formatString = formatString.Replace("KEYFIELD", "{0}");
+                        formatString = formatString.Replace("keyfield", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
                         imageColumn.Visible = UserController.GetCurrentUserInfo().IsSuperUser;
                     }
                     if (imageColumn.CommandName == "Edit")
                     {
-                        string formatString = ModuleContext.EditUrl("PackageID", "KEYFIELD", "Edit");
-                        formatString = formatString.Replace("KEYFIELD", "{0}");
+                        string formatString = ModuleContext.EditUrl("PackageID", "keyfield", "Edit");
+                        formatString = formatString.Replace("keyfield", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
                     }
                 }
