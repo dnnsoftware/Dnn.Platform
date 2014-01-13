@@ -246,6 +246,10 @@ namespace DotNetNuke.UI.Containers
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            if (this.ModuleControl == null)
+            {
+                return;
+            }
 
             foreach (ModuleAction action in ModuleActions)
             {
