@@ -22,7 +22,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using DotNetNuke.Services.Search.Entities;
 using Lucene.Net.Documents;
 using Lucene.Net.Search;
 
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <param name="luceneQuery">Search Parameters</param>
         /// <paramref name="totalHits">Total Hits found in Lucene</paramref>
         /// <returns>List of matching Documents</returns>
-        IEnumerable<LuceneResult> Search(LuceneQuery luceneQuery, out int totalHits, SecurityCheckerDelegate securityChecker = null);
+        IEnumerable<LuceneResult> Search(LuceneQuery luceneQuery, SearchQuery searchQuery, out int totalHits, SecurityCheckerDelegate securityChecker = null);
 
         /// <summary>
         /// Adds Lucene Document in Lucene Index

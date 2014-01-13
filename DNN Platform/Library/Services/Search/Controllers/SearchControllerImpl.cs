@@ -423,7 +423,7 @@ namespace DotNetNuke.Services.Search.Controllers
             //****************************************************************************
             if (searchQuery.PageSize > 0)
             {
-                var luceneResults = LuceneController.Instance.Search(luceneQuery, out totalHits, HasPermissionToViewDoc);
+                var luceneResults = LuceneController.Instance.Search(luceneQuery, searchQuery, out totalHits, HasPermissionToViewDoc);
                 results = luceneResults.Select(GetSearchResultFromLuceneResult).ToList();
 
                 //****************************************************************************
@@ -442,17 +442,17 @@ namespace DotNetNuke.Services.Search.Controllers
             return new Tuple<int, IList<SearchResult>>(totalHits, results);
         }
         
-        private bool HasPermissionToViewDoc(Document document)
+        private bool HasPermissionToViewDoc(Document document, SearchQuery searchQuery)
         {
             // others LuceneResult fields are not impotrant at this moment
-            var result = GetPartialSearchResult(document);
+            var result = GetPartialSearchResult(document, searchQuery);
             var resultController = GetSearchResultControllers().SingleOrDefault(sc => sc.Key == result.SearchTypeId).Value;
             return resultController != null && resultController.HasViewPermission(result);
         }
 
-        private static SearchResult GetPartialSearchResult(Document doc)
+        private static SearchResult GetPartialSearchResult(Document doc, SearchQuery searchQuery)
         {
-            var result = new SearchResult();
+            var result = new SearchResult {SearchContext = searchQuery.SearchContext};
             var localeField = doc.GetField(Constants.LocaleTag);
 
             if (localeField != null)

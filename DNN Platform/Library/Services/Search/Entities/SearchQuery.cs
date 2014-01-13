@@ -150,6 +150,12 @@ namespace DotNetNuke.Services.Search.Entities
         /// There can be performance implications with this setting turned on.</remarks>
         public bool WildCardSearch { get; set; }
 
+        /// <summary>
+        /// Context information such as the type of module that initiated the search can be stored here.
+        /// <remarks>This is key-value pair, e.g. "SearchSource","SiteSearch"</remarks>
+        /// </summary>
+        public IDictionary<string, string> SearchContext { get; set; }
+
         #region constructor
 
         public SearchQuery()
@@ -162,6 +168,7 @@ namespace DotNetNuke.Services.Search.Entities
             BodySnippetLength = 100;
             PageSize = 10;
             PageIndex = 1;
+            SearchContext = new Dictionary<string, string>();
         }
 
         #endregion 

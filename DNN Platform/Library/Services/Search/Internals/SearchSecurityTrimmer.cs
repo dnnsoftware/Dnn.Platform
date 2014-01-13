@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-
+using DotNetNuke.Services.Search.Entities;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
@@ -33,7 +33,7 @@ using Lucene.Net.Search;
 
 namespace DotNetNuke.Services.Search.Internals
 {
-    internal delegate bool SecurityCheckerDelegate(Document luceneResult);
+    internal delegate bool SecurityCheckerDelegate(Document luceneResult, SearchQuery searchQuery);
 
     internal class SearchSecurityTrimmer : Collector
     {
@@ -42,15 +42,17 @@ namespace DotNetNuke.Services.Search.Internals
 
         private Scorer _scorer;
         private int _docBase, _totalHits;
-        private readonly LuceneQuery _query;
+        private readonly LuceneQuery _luceneQuery;
+        private readonly SearchQuery _searchQuery;
         private readonly List<ScoreDoc> _hitDocs;
         private List<ScoreDoc> _scoreDocs;
 
-        public SearchSecurityTrimmer(IndexSearcher searcher, SecurityCheckerDelegate securityChecker, LuceneQuery luceneQuery)
+        public SearchSecurityTrimmer(IndexSearcher searcher, SecurityCheckerDelegate securityChecker, LuceneQuery luceneLuceneQuery, SearchQuery searchQuery)
         {
             _securityChecker = securityChecker;
             _searcher = searcher;
-            _query = luceneQuery;
+            _luceneQuery = luceneLuceneQuery;
+            _searchQuery = searchQuery;
             _hitDocs = new List<ScoreDoc>(16);
         }
 
@@ -110,20 +112,20 @@ namespace DotNetNuke.Services.Search.Internals
         {
             int skippedSoFar;
             var collectedSoFar = skippedSoFar = 0;
-            var pageSize = _query.PageSize;
-            var toSkip = _query.PageIndex <= 1 ? 0 : ((_query.PageIndex - 1) * pageSize);
+            var pageSize = _luceneQuery.PageSize;
+            var toSkip = _luceneQuery.PageIndex <= 1 ? 0 : ((_luceneQuery.PageIndex - 1) * pageSize);
             IEnumerable<ScoreDoc> tempDocs = new List<ScoreDoc>();
 
             _totalHits = _hitDocs.Count;
 
             var useRelevance = false;
-            if (ReferenceEquals(Sort.RELEVANCE, _query.Sort))
+            if (ReferenceEquals(Sort.RELEVANCE, _luceneQuery.Sort))
             {
                 useRelevance = true;
             }
             else
             {
-                var fields = _query.Sort.GetSort();
+                var fields = _luceneQuery.Sort.GetSort();
                 if (fields == null || fields.Count() != 1)
                 {
                     useRelevance = true;
@@ -168,7 +170,7 @@ namespace DotNetNuke.Services.Search.Internals
 
            foreach (var scoreDoc in tempDocs)
             {
-                if (_securityChecker == null || _securityChecker(_searcher.Doc(scoreDoc.Doc)))
+                if (_securityChecker == null || _securityChecker(_searcher.Doc(scoreDoc.Doc), _searchQuery))
                 {
                     if (skippedSoFar < toSkip)
                     {

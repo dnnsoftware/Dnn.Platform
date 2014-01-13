@@ -245,7 +245,7 @@ namespace DotNetNuke.Services.Search.Internals
         #endregion
 
         public IEnumerable<LuceneResult> Search(
-            LuceneQuery luceneQuery, out int totalHits, SecurityCheckerDelegate securityChecker = null)
+            LuceneQuery luceneQuery, SearchQuery searchQuery, out int totalHits, SecurityCheckerDelegate securityChecker = null)
         {
             Requires.NotNull("LuceneQuery", luceneQuery);
             Requires.NotNull("LuceneQuery.Query", luceneQuery.Query);
@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.Search.Internals
             var minResults = maxResults - luceneQuery.PageSize + 1;
 
             var searcher = GetSearcher();
-            var topDocs = new SearchSecurityTrimmer(searcher, securityChecker, luceneQuery);
+            var topDocs = new SearchSecurityTrimmer(searcher, securityChecker, luceneQuery, searchQuery);
             searcher.Search(luceneQuery.Query, null, topDocs);
             totalHits = topDocs.TotalHits;
 

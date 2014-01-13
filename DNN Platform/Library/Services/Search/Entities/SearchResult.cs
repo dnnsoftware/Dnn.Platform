@@ -68,6 +68,12 @@ namespace DotNetNuke.Services.Search.Entities
         public string DisplayScore { get; set; }
 
         /// <summary>
+        /// Context information such as the type of module that initiated the search can be stored here.
+        /// <remarks>This is key-value pair, e.g. "SearchSource","SiteSearch"</remarks>
+        /// </summary>
+        public IDictionary<string, string> SearchContext { get; set; }
+
+        /// <summary>
         /// Empty Constructor
         /// </summary>
         public SearchResult()
@@ -75,6 +81,7 @@ namespace DotNetNuke.Services.Search.Entities
             Tags = new string[0];
             NumericKeys = new Dictionary<string, int>();
             Keywords = new Dictionary<string, string>();
+            SearchContext = new Dictionary<string, string>();
         }
     }
 }
