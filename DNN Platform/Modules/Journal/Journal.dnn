@@ -1,76 +1,86 @@
 <dotnetnuke type="Package" version="5.0">
-  <packages>
-    <package name="Journal" type="Module" version="07.02.01" isSystem="true">
-      <friendlyName>Journal</friendlyName>
-      <description>DotNetNuke Corporation Journal module</description>
-      <iconFile>DesktopModules/Journal/Images/journal_32X32.png</iconFile>
-      <owner>
-        <name>DNN</name>
-        <organization>DNN Corp.</organization>
-        <url>http://www.dnnsoftware.com</url>
-        <email>support@dnnsoftware.com</email>
-      </owner>
-      <license src="License.txt"></license>
-      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
-      <azureCompatible>true</azureCompatible>
-      <dependencies>
-        <dependency type="CoreVersion">06.02.00</dependency>
-      </dependencies>
-      <components>
-        <component type="Module">
-          <desktopModule>
-            <moduleName>Journal</moduleName>
-            <foldername>Journal</foldername>
-            <shareable>Supported</shareable>
-            <businessControllerClass>DotNetNuke.Modules.Journal.Components.FeatureController</businessControllerClass>
-            <supportedFeatures />
-            <moduleDefinitions>
-              <moduleDefinition>
-                <friendlyName>Journal</friendlyName>
-                <defaultCacheTime>0</defaultCacheTime>
-                <moduleControls>
-                  <moduleControl>
-                    <controlKey />
-                    <controlSrc>DesktopModules/Journal/View.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Building Your Site/Installed Modules/Journal/About the Journal Module.html</helpUrl>
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>Settings</controlKey>
-                    <controlSrc>DesktopModules/Journal/Settings.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Journal Settings</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl></helpUrl>
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-                </moduleControls>
-              </moduleDefinition>
-            </moduleDefinitions>
-          </desktopModule>
-        </component>
-          <component type="ResourceFile">
-              <resourceFiles>
-                  <basePath>DesktopModules/Journal</basePath>
-                  <resourceFile>
-                      <name>Resources.zip</name>
-                  </resourceFile>
-              </resourceFiles>
-          </component>
-          <component type="Assembly">
-              <assemblies>
-                  <assembly>
-                      <path>bin</path>
-                      <name>DotNetNuke.Modules.Journal.dll</name>
-                  </assembly>
-              </assemblies>
-          </component>
-      </components>
-    </package>
-  </packages>
+    <packages>
+        <package name="Journal" type="Module" version="07.02.01" isSystem="true">
+            <friendlyName>Journal</friendlyName>
+            <description>DotNetNuke Corporation Journal module</description>
+            <iconFile>DesktopModules/Journal/Images/journal_32X32.png</iconFile>
+            <owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
+            <license src="License.txt"></license>
+            <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+            <azureCompatible>true</azureCompatible>
+            <dependencies>
+                <dependency type="CoreVersion">06.02.00</dependency>
+            </dependencies>
+            <components>
+                <component type="Module">
+                    <desktopModule>
+                        <moduleName>Journal</moduleName>
+                        <foldername>Journal</foldername>
+                        <shareable>Supported</shareable>
+                        <businessControllerClass>DotNetNuke.Modules.Journal.Components.FeatureController</businessControllerClass>
+                        <supportedFeatures />
+                        <moduleDefinitions>
+                            <moduleDefinition>
+                                <friendlyName>Journal</friendlyName>
+                                <defaultCacheTime>0</defaultCacheTime>
+                                <moduleControls>
+                                    <moduleControl>
+                                        <controlKey />
+                                        <controlSrc>DesktopModules/Journal/View.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle />
+                                        <controlType>View</controlType>
+                                        <iconFile />
+                                        <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Building Your Site/Installed Modules/Journal/About the Journal Module.html</helpUrl>
+                                        <viewOrder>0</viewOrder>
+                                    </moduleControl>
+                                    <moduleControl>
+                                        <controlKey>Settings</controlKey>
+                                        <controlSrc>DesktopModules/Journal/Settings.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle>Journal Settings</controlTitle>
+                                        <controlType>Edit</controlType>
+                                        <iconFile />
+                                        <helpUrl></helpUrl>
+                                        <viewOrder>0</viewOrder>
+                                    </moduleControl>
+                                </moduleControls>
+                            </moduleDefinition>
+                        </moduleDefinitions>
+                    </desktopModule>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>DesktopModules/Journal</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>DotNetNuke.Modules.Journal.dll</name>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="Script">
+                    <scripts>
+                        <basePath>DesktopModules\Journal</basePath>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>07.02.02.SqlDataProvider</name>
+                            <version>07.02.02</version>
+                        </script>
+                    </scripts>
+                </component>
+            </components>
+        </package>
+    </packages>
 </dotnetnuke>

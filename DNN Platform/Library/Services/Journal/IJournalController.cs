@@ -20,6 +20,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Services.Journal
 {
@@ -34,9 +35,10 @@ namespace DotNetNuke.Services.Journal
         JournalItem GetJournalItem(int portalId, int userId, int journalId);
         JournalItem GetJournalItem(int portalId, int userId, int journalId, bool includeAllItems);
         JournalItem GetJournalItem(int portalId, int userId, int journalId, bool includeAllItems, bool isDeleted);
+        JournalItem GetJournalItem(int portalId, int userId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck);
         IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId);
-        void SaveJournalItem(JournalItem journalItem, int tabId);
-        void UpdateJournalItem(JournalItem journalItem, int tabId);
+        void SaveJournalItem(JournalItem journalItem, ModuleInfo module);
+        void UpdateJournalItem(JournalItem journalItem, ModuleInfo module);
 
         // Delete Journal Items
         void DeleteJournalItem(int portalId, int userId, int journalId);

@@ -1,0 +1,55 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/****** Object:  StoredProcedure [dbo].[dnn_Journal_GetSearchItems]    Script Date: 1/10/2014 8:51:51 AM ******/
+
+CREATE PROCEDURE [dbo].[dnn_Journal_GetSearchItems]
+	@PortalId INT,
+	@ModuleId INT,
+	@StartDate DATETIME,
+	@StartJournalId INT,
+	@NumbersOfResult INT = 500
+AS
+	WITH ValidJournals AS (
+	SELECT	JournalId
+			FROM (
+					SELECT *, ROW_NUMBER() OVER (ORDER BY JournalId) rownumber FROM (
+						SELECT  DISTINCT(j.JournalId)
+								
+						 FROM dbo.dnn_Journal j
+						INNER JOIN dbo.dnn_Journal_Security js ON js.JournalId = j.JournalId
+						INNER JOIN dbo.dnn_Users u ON u.UserID = j.UserId
+						INNER JOIN dbo.dnn_ContentItems ci ON ci.ContentItemID = j.ContentItemId
+						WHERE ci.ModuleID = @ModuleId
+						AND j.DateUpdated > @StartDate
+						AND j.JournalId > @StartJournalId) AS T
+				 ) AS T WHERE rownumber <= @NumbersOfResult )
+
+
+
+				 SELECT  j.JournalId,
+								JournalTypeId,
+								j.UserId,
+								DateUpdated,
+								ProfileId,
+								GroupId,
+								u.DisplayName AS Title,
+								Summary,
+								js.SecurityKey
+						 FROM dbo.dnn_Journal j
+						INNER JOIN dbo.dnn_Journal_Security js ON js.JournalId = j.JournalId
+						INNER JOIN ValidJournals vj ON vj.JournalId = j.JournalId
+						INNER JOIN dbo.dnn_Users u ON u.UserID = j.UserId
+
+                        GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
