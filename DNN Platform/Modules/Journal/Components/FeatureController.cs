@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Journal.Components {
     /// -----------------------------------------------------------------------------
 
     //uncomment the interfaces to add the support.
-    public class FeatureController : ModuleSearchBase, IModuleSearchController
+    public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
         #region Optional Interfaces
 
