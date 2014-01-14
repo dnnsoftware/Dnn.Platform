@@ -224,15 +224,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _luceneController.Add(doc);
             _luceneController.Commit();
 
-            int totalHits;
-            var hits = _luceneController.Search(
-                new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) },
-                _mockSearchQuery.Object,
-                out totalHits).ToArray();
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery {Query = new TermQuery(new Term(fieldName, "fox"))}));
 
             //Assert
-            Assert.AreEqual(1, hits.Count());
-            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", hits.ElementAt(0).ContentSnippet);
+            Assert.AreEqual(1, hits.Results.Count());
+            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", hits.Results.ElementAt(0).ContentSnippet);
         }
 
         [Test]
@@ -252,15 +248,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _luceneController.Add(doc);
             _luceneController.Commit();
 
-            int totalHits;
-            var hits = _luceneController.Search(
-                new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) },
-                _mockSearchQuery.Object,
-                out totalHits).ToArray();
+            var hits = _luceneController.Search( CreateSearchContext(new LuceneQuery {Query = new TermQuery(new Term(fieldName, "fox"))}));
 
             //Assert
-            Assert.AreEqual(1, hits.Count());
-            Assert.AreEqual(expectedResult, hits.ElementAt(0).ContentSnippet);
+            Assert.AreEqual(1, hits.Results.Count());
+            Assert.AreEqual(expectedResult, hits.Results.ElementAt(0).ContentSnippet);
         }
 
         [Test]
@@ -278,11 +270,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // DONOT commit here to enable testing near-realtime of search writer
             //_luceneController.Commit();
 
-            int totalHits;
-            var hits = _luceneController.Search(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }, _mockSearchQuery.Object, out totalHits);
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
             //Assert
-            Assert.AreEqual(1, hits.Count());
+            Assert.AreEqual(1, hits.Results.Count());
         }
 
         #endregion
@@ -295,12 +286,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Arrange
             AddStandardDocs();
 
-            int totalHits;
-            var hits = _luceneController.Search(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")) }, _mockSearchQuery.Object, out totalHits);
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery {Query = new TermQuery(new Term(Constants.ContentTag, "fox"))}));
 
             //Assert
-            Assert.AreEqual(4, totalHits);
-            Assert.AreEqual(4, hits.Count());
+            Assert.AreEqual(4, hits.TotalHits);
+            Assert.AreEqual(4, hits.Results.Count());
         }
 
         [Test]
@@ -309,12 +299,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Arrange
             AddStandardDocs();
 
-            int totalHits;
-            var hits = _luceneController.Search(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 1 }, _mockSearchQuery.Object, out totalHits);
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 1 }));
 
             //Assert
-            Assert.AreEqual(4, totalHits);
-            Assert.AreEqual(1, hits.Count());
+            Assert.AreEqual(4, hits.TotalHits);
+            Assert.AreEqual(1, hits.Results.Count());
         }
 
         [Test]
@@ -323,12 +312,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Arrange
             AddStandardDocs();
 
-            int totalHits;
-            var hits = _luceneController.Search(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }, _mockSearchQuery.Object, out totalHits);
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
 
             //Assert
-            Assert.AreEqual(4, totalHits);
-            Assert.AreEqual(4, hits.Count());
+            Assert.AreEqual(4, hits.TotalHits);
+            Assert.AreEqual(4, hits.Results.Count());
         }
 
         [Test]
@@ -337,12 +325,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Arrange
             AddStandardDocs();
 
-            int totalHits;
-            var hits = _luceneController.Search(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }, _mockSearchQuery.Object, out totalHits);
-
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
+            
             //Assert
-            Assert.AreEqual(4, totalHits);
-            Assert.AreEqual(4, hits.Count());
+            Assert.AreEqual(4, hits.TotalHits);
+            Assert.AreEqual(4, hits.Results.Count());
         }
 
         [Test]
@@ -351,12 +338,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Arrange
             AddStandardDocs();
 
-            int totalHits;
-            var hits = _luceneController.Search(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 5, PageSize = 10 }, _mockSearchQuery.Object, out totalHits);
+            var hits = _luceneController.Search(CreateSearchContext(
+                new LuceneQuery{
+                        Query = new TermQuery(new Term(Constants.ContentTag, "fox")),
+                        PageIndex = 5,
+                        PageSize = 10
+                    }));
 
             //Assert
-            Assert.AreEqual(4, totalHits);
-            Assert.AreEqual(0, hits.Count());
+            Assert.AreEqual(4, hits.TotalHits);
+            Assert.AreEqual(0, hits.Results.Count());
         }
 
 
@@ -372,14 +363,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     Query = new TermQuery(new Term(Constants.ContentTag, "quick")), PageIndex = 2, PageSize = 1
                 };
 
-            var hits = _luceneController.Search(query, _mockSearchQuery.Object, out totalHits).ToArray();
+            var hits = _luceneController.Search(CreateSearchContext(query));
 
             //Assert
-            Assert.AreEqual(3, totalHits);
-            Assert.AreEqual(1, hits.Count());
+            Assert.AreEqual(3, hits.TotalHits);
+            Assert.AreEqual(1, hits.Results.Count());
             // for some reason, this search's docs have scoring as
             // Line1=0.3125, Line1=0.3125, Line2=0.3125, Line2=0.3750
-            Assert.AreEqual(Line1, hits.ElementAt(0).Document.GetField(Constants.ContentTag).StringValue);
+            Assert.AreEqual(Line1, hits.Results.ElementAt(0).Document.GetField(Constants.ContentTag).StringValue);
         }
 
         #endregion
@@ -416,9 +407,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _luceneController.Commit();
 
             var query = NumericRangeQuery.NewIntRange(fieldName, 2, 3, true, true);
-            int totalHits;
-            var hits = _luceneController.Search(new LuceneQuery { Query = query }, _mockSearchQuery.Object, out totalHits);
-            Assert.AreEqual(2, hits.Count());
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = query }));
+            Assert.AreEqual(2, hits.Results.Count());
         }
 
         [Test]
@@ -441,55 +431,40 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var futureTime = DateTime.Now.AddMinutes(1).ToString(Constants.DateTimeFormat);
             var query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(futureTime), long.Parse(futureTime), true, true);
 
-            int totalHits;
-            var hits = _luceneController.Search(new LuceneQuery { Query = query }, _mockSearchQuery.Object, out totalHits);
-            Assert.AreEqual(0, hits.Count());
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = query }));
+            Assert.AreEqual(0, hits.Results.Count());
 
             query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-1).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
-            hits = _luceneController.Search(new LuceneQuery { Query = query }, _mockSearchQuery.Object, out totalHits);
-            Assert.AreEqual(1, hits.Count());
+            hits = _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = query }));
+            Assert.AreEqual(1, hits.Results.Count());
 
             query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-368).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
-            hits = _luceneController.Search(new LuceneQuery { Query = query }, _mockSearchQuery.Object, out totalHits);
-            Assert.AreEqual(2, hits.Count());
+            hits = _luceneController.Search(CreateSearchContext(new LuceneQuery {Query = query}));
+            Assert.AreEqual(2, hits.Results.Count());
         }
 
         [Test]
         public void LuceneController_Search_Throws_On_Null_LuceneQuery()
         {
-            //Arrange          
-
-            //Act, Assert
-            int totalHits;
-            Assert.Throws<ArgumentNullException>(() => _luceneController.Search(null, _mockSearchQuery.Object, out totalHits));
+            Assert.Throws<ArgumentNullException>(() => _luceneController.Search(CreateSearchContext(null)));
         }
 
         [Test]
         public void LuceneController_Search_Throws_On_Null_Query()
         {
-            //Arrange          
-            int totalHits;
-            //Act, Assert
-            Assert.Throws<ArgumentNullException>(() => _luceneController.Search(new LuceneQuery(), _mockSearchQuery.Object, out totalHits));
+            Assert.Throws<ArgumentNullException>(() => _luceneController.Search(CreateSearchContext(new LuceneQuery())));
         }
 
         [Test]
         public void LuceneController_Search_Throws_On_Zero_PageSize()
         {
-            //Arrange          
-            int totalHits;
-
-            //Act, Assert
-            Assert.Throws<ArgumentException>(() => _luceneController.Search(new LuceneQuery { Query = new BooleanQuery(), PageSize = 0 }, _mockSearchQuery.Object, out totalHits));
+            Assert.Throws<ArgumentException>(() => _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = new BooleanQuery(), PageSize = 0 })));
         }
 
         [Test]
         public void LuceneController_Search_Throws_On_Zero_PageIndex()
         {
-            //Arrange          
-            int totalHits;
-            //Act, Assert
-            Assert.Throws<ArgumentException>(() => _luceneController.Search(new LuceneQuery { Query = new BooleanQuery(), PageIndex = 0 }, _mockSearchQuery.Object, out totalHits));
+            Assert.Throws<ArgumentException>(() => _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = new BooleanQuery(), PageIndex = 0 })));
         }
 
         #endregion
@@ -507,14 +482,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             AddLinesAsSearchDocs(docs);
 
-            int totalHits;
-
             //Act
             var luceneQuery = new LuceneQuery { Query = new FuzzyQuery(new Term(Constants.ContentTag, keyword)) };
-            var previews = _luceneController.Search(luceneQuery, _mockSearchQuery.Object, out totalHits);
+            var previews = _luceneController.Search(CreateSearchContext(luceneQuery));
 
             //Assert
-            Assert.AreEqual(2, previews.Count());
+            Assert.AreEqual(2, previews.Results.Count());
         }
 
         [Test]
@@ -543,11 +516,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             }
 
             var luceneQuery = new LuceneQuery { Query = finalQuery };
-            int totalHits;
-            var previews = _luceneController.Search(luceneQuery, _mockSearchQuery.Object, out totalHits);
+            var previews = _luceneController.Search(CreateSearchContext(luceneQuery));
 
             //Assert
-            Assert.AreEqual(3, previews.Count());
+            Assert.AreEqual(3, previews.Results.Count());
         }
         #endregion
 
@@ -772,6 +744,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         #endregion
+
+        private LuceneSearchContext CreateSearchContext(LuceneQuery luceneQuery)
+        {
+            return new LuceneSearchContext {LuceneQuery = luceneQuery, SearchQuery = _mockSearchQuery.Object };
+        }
     }
 }
 

@@ -47,12 +47,12 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly List<ScoreDoc> _hitDocs;
         private List<ScoreDoc> _scoreDocs;
 
-        public SearchSecurityTrimmer(IndexSearcher searcher, SecurityCheckerDelegate securityChecker, LuceneQuery luceneLuceneQuery, SearchQuery searchQuery)
+        public SearchSecurityTrimmer(SearchSecurityTrimmerContext searchContext)
         {
-            _securityChecker = securityChecker;
-            _searcher = searcher;
-            _luceneQuery = luceneLuceneQuery;
-            _searchQuery = searchQuery;
+            _securityChecker = searchContext.SecurityChecker;
+            _searcher = searchContext.Searcher;
+            _luceneQuery = searchContext.LuceneQuery;
+            _searchQuery = searchContext.SearchQuery;
             _hitDocs = new List<ScoreDoc>(16);
         }
 

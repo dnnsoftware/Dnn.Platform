@@ -423,8 +423,14 @@ namespace DotNetNuke.Services.Search.Controllers
             //****************************************************************************
             if (searchQuery.PageSize > 0)
             {
-                var luceneResults = LuceneController.Instance.Search(luceneQuery, searchQuery, out totalHits, HasPermissionToViewDoc);
-                results = luceneResults.Select(GetSearchResultFromLuceneResult).ToList();
+                var luceneResults = LuceneController.Instance.Search(new LuceneSearchContext
+                    {
+                        LuceneQuery = luceneQuery,
+                        SearchQuery = searchQuery,
+                        SecurityCheckerDelegate = HasPermissionToViewDoc
+                    });
+                results = luceneResults.Results.Select(GetSearchResultFromLuceneResult).ToList();
+                totalHits = luceneResults.TotalHits;
 
                 //****************************************************************************
                 //Adding URL Links to final trimmed results

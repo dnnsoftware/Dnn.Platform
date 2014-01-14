@@ -244,49 +244,56 @@ namespace DotNetNuke.Services.Search.Internals
 
         #endregion
 
-        public IEnumerable<LuceneResult> Search(
-            LuceneQuery luceneQuery, SearchQuery searchQuery, out int totalHits, SecurityCheckerDelegate securityChecker = null)
+        public LuceneResults Search(LuceneSearchContext searchContext)
         {
-            Requires.NotNull("LuceneQuery", luceneQuery);
-            Requires.NotNull("LuceneQuery.Query", luceneQuery.Query);
-            Requires.PropertyNotEqualTo("LuceneQuery", "PageSize", luceneQuery.PageSize, 0);
-            Requires.PropertyNotEqualTo("LuceneQuery", "PageIndex", luceneQuery.PageIndex, 0);
+            Requires.NotNull("LuceneQuery", searchContext.LuceneQuery);
+            Requires.NotNull("LuceneQuery.Query", searchContext.LuceneQuery.Query);
+            Requires.PropertyNotEqualTo("LuceneQuery", "PageSize", searchContext.LuceneQuery.PageSize, 0);
+            Requires.PropertyNotEqualTo("LuceneQuery", "PageIndex", searchContext.LuceneQuery.PageIndex, 0);
 
+            var luceneResults = new LuceneResults();
             //TODO - Explore simple highlighter as it does not give partial words
             var highlighter = FastHighlighter;
-            var fieldQuery = highlighter.GetFieldQuery(luceneQuery.Query);
+            var fieldQuery = highlighter.GetFieldQuery(searchContext.LuceneQuery.Query);
 
-            var maxResults = luceneQuery.PageIndex*luceneQuery.PageSize;
-            var minResults = maxResults - luceneQuery.PageSize + 1;
+            var maxResults = searchContext.LuceneQuery.PageIndex * searchContext.LuceneQuery.PageSize;
+            var minResults = maxResults - searchContext.LuceneQuery.PageSize + 1;
 
             var searcher = GetSearcher();
-            var topDocs = new SearchSecurityTrimmer(searcher, securityChecker, luceneQuery, searchQuery);
-            searcher.Search(luceneQuery.Query, null, topDocs);
-            totalHits = topDocs.TotalHits;
+            var searchSecurityTrimmer = new SearchSecurityTrimmer(new SearchSecurityTrimmerContext
+                {
+                    Searcher = searcher,
+                    SecurityChecker = searchContext.SecurityCheckerDelegate,
+                    LuceneQuery = searchContext.LuceneQuery,
+                    SearchQuery = searchContext.SearchQuery
+                });
+            searcher.Search(searchContext.LuceneQuery.Query, null, searchSecurityTrimmer);
+            luceneResults.TotalHits = searchSecurityTrimmer.TotalHits;
 
             if (Logger.IsDebugEnabled)
             {
-                var sb = GetSearcResultExplanation(luceneQuery, topDocs.ScoreDocs, searcher);
-		Logger.Trace(sb);
+                var sb = GetSearcResultExplanation(searchContext.LuceneQuery, searchSecurityTrimmer.ScoreDocs, searcher);
+		        Logger.Trace(sb);
             }
 
             //Page doesn't exist
-            if (totalHits < minResults)
-                return new List<LuceneResult>();
+            if (luceneResults.TotalHits < minResults)
+                return luceneResults;
 
-            return topDocs.ScoreDocs.Select(match =>
+            luceneResults.Results  = searchSecurityTrimmer.ScoreDocs.Select(match =>
                 new LuceneResult
                     {
                         Document = searcher.Doc(match.Doc),
                         Score = match.Score,
                         DisplayScore = GetDisplayScoreFromMatch(match.ToString()),
-                        TitleSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, luceneQuery.TitleSnippetLength),
-                        BodySnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, luceneQuery.BodySnippetLength),
-                        DescriptionSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, luceneQuery.TitleSnippetLength),
-                        TagSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, luceneQuery.TitleSnippetLength),
-                        AuthorSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, luceneQuery.TitleSnippetLength),
-                        ContentSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, luceneQuery.TitleSnippetLength)
+                        TitleSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, searchContext.LuceneQuery.TitleSnippetLength),
+                        BodySnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, searchContext.LuceneQuery.BodySnippetLength),
+                        DescriptionSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, searchContext.LuceneQuery.TitleSnippetLength),
+                        TagSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, searchContext.LuceneQuery.TitleSnippetLength),
+                        AuthorSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, searchContext.LuceneQuery.TitleSnippetLength),
+                        ContentSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength)
                     }).ToList();
+            return luceneResults;
         }
 
         private string GetHighlightedText(FastVectorHighlighter highlighter, FieldQuery fieldQuery, IndexSearcher searcher, ScoreDoc match, string tag, int length)

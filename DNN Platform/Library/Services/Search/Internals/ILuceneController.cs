@@ -35,10 +35,9 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Execute Search
         /// </summary>
-        /// <param name="luceneQuery">Search Parameters</param>
-        /// <paramref name="totalHits">Total Hits found in Lucene</paramref>
+        /// <param name="luceneSearchContext">Search Context</param>
         /// <returns>List of matching Documents</returns>
-        IEnumerable<LuceneResult> Search(LuceneQuery luceneQuery, SearchQuery searchQuery, out int totalHits, SecurityCheckerDelegate securityChecker = null);
+        LuceneResults Search(LuceneSearchContext luceneSearchContext);
 
         /// <summary>
         /// Adds Lucene Document in Lucene Index
