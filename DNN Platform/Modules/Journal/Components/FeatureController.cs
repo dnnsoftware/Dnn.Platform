@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDate)
         {
-            var searchDocuments = new Dictionary<int, SearchDocument>();
+            var searchDocuments = new Dictionary<string, SearchDocument>();
             int lastJournalId = Null.NullInteger;
             if (beginDate == DateTime.MinValue)
             {
@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                                              .ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID,
                                                             moduleInfo.TabModuleID, beginDate.ToUniversalTime(), lastJournalId,
                                                             Constants.SearchBatchSize);
-                    int rowsAffected = 0;
+                    var journalIds = new Dictionary<int, int>();
 
                     while (reader.Read())
                     {
@@ -137,39 +137,58 @@ namespace DotNetNuke.Modules.Journal.Components {
                         var title = reader["Title"].ToString();
                         var summary = reader["Summary"].ToString();
                         var securityKey = reader["SecurityKey"].ToString();
+                        var tabId = reader["TabId"].ToString();
+                        var tabModuleId = reader["ModuleId"].ToString();
 
-                        if (searchDocuments.ContainsKey(journalId))
+                        var key = string.Format("JI_{0}", journalId);
+                        if (searchDocuments.ContainsKey(key))
                         {
-                            searchDocuments[journalId].UniqueKey +=
+                            searchDocuments[key].UniqueKey +=
                                 string.Format(",{0}", securityKey);
                         }
                         else
                         {
                             var searchDocument = new SearchDocument()
                                                      {
-                                                         UniqueKey = journalId + "_" + securityKey,
+                                                         UniqueKey = string.Format("JI_{0}_{1}", journalId, securityKey),
                                                          Body = summary,
                                                          ModifiedTimeUtc = dateUpdated,
                                                          Title = title,
-                                                         AuthorUserId = userId
+                                                         AuthorUserId = userId,
+                                                         Keywords = new Dictionary<string, string>()
+                                                                        {
+                                                                            {"TabId", tabId},
+                                                                            {"TabModuleId", tabModuleId},
+                                                                            {"ProfileId", profileId},
+                                                                            {"GroupId", groupId}
+                                                                        }
                                                      };
 
-                            searchDocuments.Add(journalId, searchDocument);
+                            searchDocuments.Add(key, searchDocument);
                         }
 
                         if (journalId > lastJournalId)
                         {
                             lastJournalId = journalId;
                         }
-                        rowsAffected++;
+                        
+                        if (!journalIds.ContainsKey(journalId))
+                        {
+                            journalIds.Add(journalId, userId);
+                        }
                     }
 
                     //close the reader
                     reader.Close();
 
-                    if (rowsAffected == 0)
+                    if (journalIds.Count == 0)
                     {
                         break;
+                    }
+                    else
+                    {
+                        //index comments for this journal
+                        AddCommentItems(journalIds, searchDocuments);
                     }
                 }
             }
@@ -187,15 +206,10 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         public bool HasViewPermission(SearchResult searchResult)
         {
-            var securityKeys = searchResult.UniqueKey.Split('_')[1].Split(',');
+            var securityKeys = searchResult.UniqueKey.Split('_')[2].Split(',');
             var userInfo = UserController.GetCurrentUserInfo();
-            var targetUser = UserController.GetUserById(searchResult.PortalId, searchResult.AuthorUserId);
+            
             var selfKey = string.Format("U{0}", userInfo.UserID);
-
-            if (targetUser == null)
-            {
-                return false;
-            }
 
             if (securityKeys.Contains("E") || securityKeys.Contains(selfKey))
             {
@@ -220,7 +234,9 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             if (securityKeys.Any(s => s.StartsWith("F")))
             {
-                return targetUser.Social.Friend != null && targetUser.Social.Friend.Status == RelationshipStatus.Accepted;
+                var targetUser = UserController.GetUserById(searchResult.PortalId, searchResult.AuthorUserId);
+
+                return targetUser != null && targetUser.Social.Friend != null && targetUser.Social.Friend.Status == RelationshipStatus.Accepted;
             }
 
             return false;
@@ -229,35 +245,56 @@ namespace DotNetNuke.Modules.Journal.Components {
         public string GetDocUrl(SearchResult searchResult)
         {
             var url = string.Empty;
-            var userInfo = UserController.GetCurrentUserInfo();
             var portalSettings = PortalController.GetCurrentPortalSettings();
-            var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[0]);
-            var journalItem = JournalController.Instance.GetJournalItem(searchResult.PortalId, userInfo.UserID,
-                                                                        journalId);
+            var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
+            var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
+            var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);
+            var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
+            var profileId = Convert.ToInt32(searchResult.Keywords["ProfileId"]);
 
-            if (journalItem == null)
+            if (groupId > 0 && tabId > 0)
             {
-                return url;
-            }
-
-            if (journalItem.SocialGroupId > 0)
-            {
-                var tabModuleId = new ContentController().GetContentItem(journalItem.ContentItemId).ModuleID;
-                var module = new ModuleController().GetTabModule(tabModuleId);
-
-                url = Globals.NavigateURL(module.TabID, string.Empty, "GroupId=" + journalItem.SocialGroupId,
+                url = Globals.NavigateURL(tabId, string.Empty, "GroupId=" + groupId,
                                           "jid=" + journalId);
             }
-            else if (journalItem.ProfileId > 0)
+            else if (tabId == portalSettings.UserTabId)
             {
-                url = Globals.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", journalItem.ProfileId), "jid=" + journalId);
+                url = Globals.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", profileId), "jid=" + journalId);
             }
             else
             {
-                url = Globals.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", journalItem.UserId), "jid=" + journalId);
+                url = Globals.NavigateURL(tabId, string.Empty, "jid=" + journalId);
             }
 
             return url;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void AddCommentItems(Dictionary<int, int> journalIds, IDictionary<string, SearchDocument> searchDocuments)
+        {
+            var comments = JournalController.Instance.GetCommentsByJournalIds(journalIds.Keys.ToList());
+            foreach (var commentInfo in comments)
+            {
+                var key = string.Format("JC_{0}", commentInfo.JournalId);
+                var journalResult = searchDocuments[string.Format("JI_{0}", commentInfo.JournalId)];
+                if (!searchDocuments.ContainsKey(key))
+                {
+                    var searchDocument = new SearchDocument()
+                    {
+                        UniqueKey = journalResult.UniqueKey.Replace("JI_", "JC_"),
+                        Body = commentInfo.Comment,
+                        ModifiedTimeUtc = commentInfo.DateUpdated,
+                        Title = commentInfo.DisplayName,
+                        AuthorUserId = journalIds[commentInfo.JournalId],
+                        Keywords = journalResult.Keywords
+                    };
+
+                    searchDocuments.Add(key, searchDocument);
+                }
+            }
         }
 
         #endregion

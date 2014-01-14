@@ -30,8 +30,9 @@ AS
 						INNER JOIN {databaseOwner}{objectQualifier}Journal_Security js ON js.JournalId = j.JournalId
 						INNER JOIN {databaseOwner}{objectQualifier}Users u ON u.UserID = j.UserId
 						INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID = j.ContentItemId
+                        LEFT JOIN {databaseOwner}{objectQualifier}Journal_Comments jc ON jc.JournalId = j.JournalId
 						WHERE ci.ModuleID = @ModuleId
-						AND j.DateUpdated > @StartDate
+						AND (j.DateUpdated > @StartDate OR jc.DateUpdated > @StartDate)
 						AND j.JournalId > @StartJournalId) AS T
 				 ) AS T WHERE rownumber <= @NumbersOfResult )
 
@@ -43,11 +44,14 @@ AS
 								GroupId,
 								u.DisplayName AS Title,
 								Summary,
-								js.SecurityKey
+								js.SecurityKey,
+                                ci.TabID,
+								ci.ModuleID
 						 FROM {databaseOwner}{objectQualifier}Journal j
 						INNER JOIN {databaseOwner}{objectQualifier}Journal_Security js ON js.JournalId = j.JournalId
 						INNER JOIN ValidJournals vj ON vj.JournalId = j.JournalId
 						INNER JOIN {databaseOwner}{objectQualifier}Users u ON u.UserID = j.UserId
+                        INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID = j.ContentItemId
 GO
 
 /************************************************************/

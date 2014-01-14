@@ -128,51 +128,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
-        // Journal Items
-        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
-        {
-            return GetJournalItem(portalId, currentUserId, journalId, false, false);
-        }
-
-        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems)
-        {
-            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
-        }
-
-        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
-        {
-            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, isDeleted, false);
-        }
-
-        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
-        {
-            return CBO.FillObject<JournalItem>(_dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
-        }
-
-        public JournalItem GetJournalItemByKey(int portalId, string objectKey)
-        {
-            return GetJournalItemByKey(portalId, objectKey, false, false);
-        }
-
-        public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems)
-        {
-            return GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
-        }
-
-        public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
-        {
-            if (string.IsNullOrEmpty(objectKey))
-            {
-                return null;
-            }
-            return (JournalItem)CBO.FillObject(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted), typeof(JournalItem));
-        }
-
-        public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
+        public void SaveJournalItem(JournalItem journalItem, int tabId, int moduleId)
         {
             if (journalItem.UserId < 1)
             {
@@ -313,8 +269,6 @@ namespace DotNetNuke.Services.Journal
             journalItem.DateUpdated = updatedJournalItem.DateUpdated;
             var cnt = new Content();
 
-            var tabId = module != null ? module.TabID : Null.NullInteger;
-            var moduleId = module != null ? module.TabModuleID : Null.NullInteger;
             if (journalItem.ContentItemId > 0)
             {
                 cnt.UpdateContentItem(journalItem, tabId, moduleId);
@@ -339,7 +293,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
-        public void UpdateJournalItem(JournalItem journalItem, ModuleInfo module)
+        public void UpdateJournalItem(JournalItem journalItem, int tabId, int moduleId)
         {
             if (journalItem.UserId < 1)
             {
@@ -469,8 +423,6 @@ namespace DotNetNuke.Services.Journal
             journalItem.DateUpdated = updatedJournalItem.DateUpdated;
 
             var cnt = new Content();
-            var tabId = module != null ? module.TabID : Null.NullInteger;
-            var moduleId = module != null ? module.TabModuleID : Null.NullInteger;
             if (journalItem.ContentItemId > 0)
             {
                 cnt.UpdateContentItem(journalItem, tabId, moduleId);
@@ -493,6 +445,66 @@ namespace DotNetNuke.Services.Journal
                     Exceptions.Exceptions.LogException(exc);
                 }
             }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        // Journal Items
+        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
+        {
+            return GetJournalItem(portalId, currentUserId, journalId, false, false);
+        }
+
+        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems)
+        {
+            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
+        }
+
+        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
+        {
+            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, isDeleted, false);
+        }
+
+        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
+        {
+            return CBO.FillObject<JournalItem>(_dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
+        }
+
+        public JournalItem GetJournalItemByKey(int portalId, string objectKey)
+        {
+            return GetJournalItemByKey(portalId, objectKey, false, false);
+        }
+
+        public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems)
+        {
+            return GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
+        }
+
+        public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
+        {
+            if (string.IsNullOrEmpty(objectKey))
+            {
+                return null;
+            }
+            return (JournalItem)CBO.FillObject(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted), typeof(JournalItem));
+        }
+
+        public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
+        {
+            var tabId = module == null ? Null.NullInteger : module.TabID;
+            var tabModuleId = module == null ? Null.NullInteger : module.TabModuleID;
+
+            SaveJournalItem(journalItem, tabId, tabModuleId);
+        }
+
+        public void UpdateJournalItem(JournalItem journalItem, ModuleInfo module)
+        {
+            var tabId = module == null ? Null.NullInteger : module.TabID;
+            var tabModuleId = module == null ? Null.NullInteger : module.TabModuleID;
+
+            UpdateJournalItem(journalItem, tabId, tabModuleId);
         }
 
         public void DisableComments(int portalId, int journalId)
@@ -652,6 +664,22 @@ namespace DotNetNuke.Services.Journal
                                                                 DataCache.JournalTypesCachePriority, 
                                                                 portalId), 
                                             c => CBO.FillCollection<JournalTypeInfo>(_dataService.Journal_Types_List(portalId)));
+        }
+
+        #endregion
+
+        #region Obsolete Methods
+
+        [Obsolete("Deprecated in DNN 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo)")]
+        public void SaveJournalItem(JournalItem journalItem, int tabId)
+        {
+            SaveJournalItem(journalItem, tabId, Null.NullInteger);
+        }
+
+        [Obsolete("Deprecated in DNN 7.2.2. Use UpdateJournalItem(JournalItem, ModuleInfo)")]
+        public void UpdateJournalItem(JournalItem journalItem, int tabId)
+        {
+            UpdateJournalItem(journalItem, tabId, Null.NullInteger);
         }
 
         #endregion
