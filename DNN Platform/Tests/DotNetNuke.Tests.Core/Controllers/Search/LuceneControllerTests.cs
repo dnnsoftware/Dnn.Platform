@@ -357,7 +357,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Arrange
             AddStandardDocs();
 
-            int totalHits;
             var query = new LuceneQuery
                 {
                     Query = new TermQuery(new Term(Constants.ContentTag, "quick")), PageIndex = 2, PageSize = 1
