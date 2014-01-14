@@ -2552,10 +2552,6 @@ CREATE UNIQUE INDEX IX_{objectQualifier}Folders_FolderID ON {databaseOwner}[{obj
 	INCLUDE (PortalID, FolderPath, StorageLocation, isCached, FolderMappingID) 
 GO
 
-CREATE UNIQUE CLUSTERED INDEX IX_{objectQualifier}Folders_FolderPath ON {databaseOwner}[{objectQualifier}Folders]
-	(PortalID, FolderPath) 
-GO
-
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Folders_ParentID] ON {databaseOwner}[{objectQualifier}Folders] 
 	([PortalID], [ParentID], [FolderPath])
 	INCLUDE ([FolderID])
