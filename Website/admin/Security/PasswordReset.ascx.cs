@@ -93,10 +93,19 @@ namespace DotNetNuke.Modules.Admin.Security
                 return;
             }
 
+            if (UserController.ValidatePassword(txtPassword.Text)==false)
+            {
+                resetMessages.Visible = true;
+                var failed = Localization.GetString("PasswordResetFailed");
+                LogFailure(failed);
+                lblHelp.Text = failed;
+                return;    
+            }
+
             if (UserController.ChangePasswordByToken(PortalSettings.PortalId, txtUsername.Text, txtPassword.Text, ResetToken) == false)
             {
                 resetMessages.Visible = true;
-                var failed = Localization.GetString("FailedAttempt", LocalResourceFile);
+                var failed = Localization.GetString("PasswordResetFailed", LocalResourceFile);
                 LogFailure(failed);
                 lblHelp.Text = failed;
             }
