@@ -42,8 +42,9 @@
             this._uploadMethods = new dnn.Enum([{ key: 0, value: "undefined" }, { key: 1, value: "local" }, { key: 2, value: "web" }]);
             this._uploadMethod = this._uploadMethods.local;
 
-            this.show();
-
+            if (this.options.showOnStartup) {
+                this.show();
+            }
         },
 
         _selectUpload: function (uploadMethod, eventObject) {
@@ -311,14 +312,6 @@
             setTimeout(function () { data.submit(); }, 25);
         },
 
-        _showError: function($fileUploadStatus, errorMessage) {
-            this._showFileUploadStatus($fileUploadStatus, { message: errorMessage });
-            $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
-            var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
-            $img.removeClass().addClass("pt");
-            $img.prop("src", "/Images/no-content.png");
-        },
-
         _getInitializedStatusElement: function(data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.fileName);
             if (!$fileUploadStatus.length) {
@@ -380,11 +373,11 @@
             var $fileUploadStatus = this._getFileUploadStatusElement(fileName);
             var result = this._getFileUploadResult(response);
             if (result.message) {
-                if (!result.alreadyExists) {
-                    this._showError($fileUploadStatus, result.message);
+                if (result.alreadyExists) {
+                    this._showFileUploadStatus($fileUploadStatus, result);
                 }
                 else {
-                    this._showFileUploadStatus($fileUploadStatus, result);
+                    this._showError($fileUploadStatus, result.message);
                 }
                 return;
             }
@@ -410,7 +403,15 @@
                 $link.attr("href", "javascript:void(0);").removeAttr("target").addClass("fu-fileupload-thumbnail-inactive");
         },
 
-        _fail: function(e, data) {
+        _showError: function ($fileUploadStatus, errorMessage) {
+            this._showFileUploadStatus($fileUploadStatus, { message: errorMessage });
+            $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
+            var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
+            $img.removeClass().addClass("pt");
+            $img.prop("src", "/Images/no-content.png");
+        },
+
+        _fail: function (e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
             var message;
             if (data.errorThrown === "abort") {
@@ -519,11 +520,13 @@
                 this._$decompressOption.hide();
             }
 
+            var isMultiple = typeof this.options.maxFiles === "undefined" || this.options.maxFiles === 0 || this.options.maxFiles > 1;
+
             this._$buttonGroup = this.$element.find(".fu-dialog-content-header ul.dnnButtonGroup");
             this._$fileUploadStatusesContainer = this.$element.find('.fu-fileupload-statuses-container').hide().jScrollbar();
             this._$fileUploadStatuses = this._$fileUploadStatusesContainer.find('.fu-fileupload-statuses').empty();
             this._$dragAndDropArea = this.$element.find('.fu-dialog-drag-and-drop-area');
-            this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: typeof this.options.maxFiles === "undefined" || this.options.maxFiles === 0 || this.options.maxFiles > 1, "data-text": this.options.resources.dragAndDropAreaTitle });
+            this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: isMultiple, "data-text": this.options.resources.dragAndDropAreaTitle });
             this._$extract = this.$element.find("." + "fu-dialog-content-header").find("input");
 
             this._$inputFileControl.appendTo(this._$dragAndDropArea.find('.fu-dialog-drag-and-drop-area-message')).dnnFileInput(
@@ -554,6 +557,7 @@
 
             this._ensureDialog();
 
+            var self = this;
             this.$element.dialog({
                 modal: true,
                 autoOpen: true,
@@ -562,7 +566,10 @@
                 resizable: false,
                 width: this.options.width,
                 height: this.options.height,
-                close: $.proxy(this._onCloseDialog, this),
+                close: $.proxy(function () {
+                    self.$element.empty().remove();
+                    self._onCloseDialog();
+                }, this),
                 buttons: [ {
                     text: this.options.resources.closeButtonText,
                     click: function () { $(this).dialog("close"); },

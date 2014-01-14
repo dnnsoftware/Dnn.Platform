@@ -29,6 +29,11 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public bool ShowOnStartup
+        {
+            set { Options.ShowOnStartup = value; }
+        }
+
         public string Skin { get; set; }
 
         protected override void OnInit(EventArgs e)

@@ -83,6 +83,9 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFileUploadOptions
     {
 
+        [DataMember(Name = "showOnStartup")]
+        public bool ShowOnStartup;
+
         [DataMember(Name = "folderPicker")]
         public DnnDropDownListOptions FolderPicker;
 
