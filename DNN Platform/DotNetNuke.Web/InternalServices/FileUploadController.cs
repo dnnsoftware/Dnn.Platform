@@ -438,6 +438,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     result.Message = GetLocalizedString("AlreadyExists");
                     result.AlreadyExists = true;
+                    result.FileId = FileManager.Instance.GetFile(folderInfo, fileName, true).FileId;
                 }
                 else
                 {
@@ -446,6 +447,10 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         FileManager.Instance.UnzipFile(file);
                         FileManager.Instance.DeleteFile(file);
+                    }
+                    else
+                    {
+                        result.FileId = file.FileId;
                     }
                 }
 
@@ -459,7 +464,7 @@ namespace DotNetNuke.Web.InternalServices
                     new Size(32, 32);
 
                 result.Orientation = size.Orientation();
-                result.Path = VirtualPathUtility.ToAbsolute(path);
+                result.Path = result.FileId > 0 ? VirtualPathUtility.ToAbsolute(path) : string.Empty;
 
                 return result;
             }

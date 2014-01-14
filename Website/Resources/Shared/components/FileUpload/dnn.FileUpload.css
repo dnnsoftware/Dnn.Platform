@@ -254,6 +254,7 @@ a.fu-fileupload-thumbnail:visited,
 a.fu-fileupload-thumbnail:hover,
 a.fu-fileupload-thumbnail:active {
     float: left;
+    position: relative;
     height: 76px;
     width: 76px;
     background: none repeat scroll 0 0 #E8F0FB;
@@ -271,8 +272,14 @@ a.fu-fileupload-thumbnail:active {
 }
 
 a.fu-fileupload-thumbnail:hover {
-    background: none repeat scroll 0 0 #fff;
+    background-color: #fff;
     opacity: 1;
+}
+
+a.fu-fileupload-thumbnail-inactive:hover {
+    background-color: #E8F0FB;
+    opacity: 0.9;
+    cursor: default;
 }
 
 .fu-status-error a.fu-fileupload-thumbnail:hover {

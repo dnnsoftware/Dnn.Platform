@@ -398,17 +398,30 @@
         _showThumbnail: function ($fileUploadStatus, result) {
             var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
             $img.removeClass().addClass(result.orientation === 1 ? "pt" : "ls");
-            if (this._isValidExtension(result.path, [".bmp", ".gif", ".png", ".jpg", ".jpeg", ".tiff"])) {
-                $img.prop("src", result.path);
+            var path = result.path;
+            if (this._isValidExtension(path, [".bmp", ".gif", ".png", ".jpg", ".jpeg", ".tiff"])) {
+                $img.prop("src", path);
             }
             else {
                 $img.prop("src", result.fileIconUrl);
             }
+            var $link = $($fileUploadStatus[0].firstChild);
+            path ? $link.attr({ target: path, href: path }).removeClass("fu-fileupload-thumbnail-inactive") :
+                $link.attr("href", "javascript:void(0);").removeAttr("target").addClass("fu-fileupload-thumbnail-inactive");
         },
 
         _fail: function(e, data) {
             var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
-            var message = data.errorThrown === "abort" ? this.options.resources.fileUploadCancelled : this.options.resources.fileUploadFailed;
+            var message;
+            if (data.errorThrown === "abort") {
+                message = this.options.resources.fileUploadCancelled;
+            }
+            else if (data.errorThrown === "Unauthorized") {
+                message = "Unauthorized (401)";
+            }
+            else {
+                message = this.options.resources.fileUploadFailed;
+            }
             this._showError($fileUploadStatus, message);
         },
 
