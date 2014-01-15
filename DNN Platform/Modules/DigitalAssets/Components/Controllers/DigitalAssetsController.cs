@@ -1032,15 +1032,17 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         protected string GetFolderIconUrl(int portalId, int folderMappingID)
         {
-            var imageUrl = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingID).ImageUrl;
+            var imageUrl = IconController.IconURL("ExtClosedFolder", "32x32", "Standard");
 
-            if (File.Exists(HttpContext.Current.Server.MapPath(imageUrl)))
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingID);
+            if (folderMapping != null && File.Exists(HttpContext.Current.Server.MapPath(folderMapping.ImageUrl)))
             {
-                return imageUrl;
+                imageUrl = folderMapping.ImageUrl;
             }
 
-            return IconController.IconURL("ExtClosedFolder", "32x32", "Standard");
+            return imageUrl;
         }
+
         #endregion
         
         public string UpgradeModule(string version)
