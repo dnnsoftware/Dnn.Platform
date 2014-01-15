@@ -40,6 +40,7 @@ using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls.Config;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -271,10 +272,9 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, "");
                             }
-                            if (culture != portal.DefaultLanguage)
-                            {
-                                AddLanguageCodeToRewritePath(ref newUrl, culture);
-                            }
+
+                            //DNN-3789 always call this method as culture is defined by GetPageLocale
+                            AddLanguageCodeToRewritePath(ref newUrl, culture);
                             //add on language specified by current portal alias
                             reWritten = true;
                         }
@@ -1375,11 +1375,14 @@ namespace DotNetNuke.Entities.Urls
             {
                 //add the portal default language to the rewrite path
                 PortalInfo portal = CacheController.GetPortal(result.PortalId, false);
-                if (portal != null && !string.IsNullOrEmpty(portal.DefaultLanguage))
+                
+                //DNN-3789 - culture is defined by GetPageLocale
+                string currentLocale = Localization.GetPageLocale(new PortalSettings(result.TabId, result.PortalAlias)).Name;
+                if (portal != null && !string.IsNullOrEmpty(currentLocale))
                 {
-                    AddLanguageCodeToRewritePath(ref rewritePath, portal.DefaultLanguage);
-                    result.CultureCode = portal.DefaultLanguage;
-                    result.DebugMessages.Add("Portal Default Language code " + portal.DefaultLanguage + " added");
+                    AddLanguageCodeToRewritePath(ref rewritePath, currentLocale);
+                    result.CultureCode = currentLocale;
+                    result.DebugMessages.Add("Current Language code " + currentLocale + " added");
                 }
             }
             //set the rewrite path
