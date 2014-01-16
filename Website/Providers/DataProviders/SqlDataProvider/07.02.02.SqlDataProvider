@@ -409,6 +409,35 @@ BEGIN
 END
 GO
 
+-- DNN-4622:
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogConfigID' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+    DROP INDEX [IX_{objectQualifier}EventLog_LogConfigID] ON {databaseOwner}[{objectQualifier}EventLog] 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogConfigID] ON {databaseOwner}[{objectQualifier}EventLog] 
+	([LogConfigID], [LogNotificationPending], [LogCreateDate])
+	INCLUDE ([LogEventID])
+GO
+
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogCreateDate' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+	DROP INDEX [IX_{objectQualifier}EventLog_LogCreateDate] ON {databaseOwner}[{objectQualifier}EventLog] 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogCreateDate] ON {databaseOwner}[{objectQualifier}EventLog] 
+	([LogCreateDate])
+	INCLUDE ([LogConfigID])
+GO
+
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogType' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+	DROP INDEX [IX_{objectQualifier}EventLog_LogType] ON {databaseOwner}[{objectQualifier}EventLog] 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogType] ON {databaseOwner}[{objectQualifier}EventLog] 
+	([LogTypeKey], [LogPortalID])
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
