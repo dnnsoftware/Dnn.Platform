@@ -49,14 +49,25 @@ namespace DNNSelenium.Common.Tests.P1
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 			manageUsersPage.AddNewUser(_registeredUserName, _registeredUserDisplayName, "user10@mail.com", _registeredUserPassword);
 
+		}
+
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
 			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
-
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 			manageUsersPage.DeleteUser(_registeredUserName);
@@ -80,7 +91,7 @@ namespace DNNSelenium.Common.Tests.P1
 			userAccountPage.OpenUsingLink(_baseUrl);
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT avatar file is loaded correctly");
 
-			userAccountPage.WaitForElement(By.XPath(ManageUserProfilePage.ProfilePhoto)).Info();
+			//userAccountPage.WaitForElement(By.XPath(ManageUserProfilePage.ProfilePhoto)).Info();
 			Assert.That(manageUserProfilePage.WaitForElement(By.XPath(ManageUserProfilePage.ProfilePhoto)).GetAttribute("src"), Is.StringContaining(_avatarFileToUpload),
 						"The User Avatar is not added correctly");
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.CorePages;
@@ -28,14 +29,25 @@ namespace DNNSelenium.Common.Tests.BVT
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+		}
 
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
 			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
 		}
 
 		public void VerifyQuickSearch(BasePage currentPage)
@@ -128,11 +140,14 @@ namespace DNNSelenium.Common.Tests.BVT
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Quick Search On Page Settings frame'");
 
-			BlankPage blankPage = new BlankPage(_driver);
+			//BlankPage blankPage = new BlankPage(_driver);
+			//blankPage.SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PageSettingsOption);
+			var hostSchedulePage = new HostSchedulePage(_driver);
+			hostSchedulePage.OpenUsingButtons(_baseUrl);
 
-			blankPage.SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PageSettingsOption);
+			hostSchedulePage.SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PageSettingsOption);
 
-			VerifyQuickSearch(blankPage);
+			VerifyQuickSearch(hostSchedulePage);
 		}
 
 		[Test]
@@ -168,7 +183,6 @@ namespace DNNSelenium.Common.Tests.BVT
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Search Results on Page Settings frame'");
 
 			BlankPage blankPage = new BlankPage(_driver);
-
 			blankPage.SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PageSettingsOption);
 
 			VerifySearchResults(blankPage);

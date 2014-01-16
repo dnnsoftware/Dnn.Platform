@@ -33,8 +33,6 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
-			_logContent = LogContent();
-
 			_userWithPublicRegistration = testSettings.Attribute("userWithPublicRegistration").Value;
 			_userWithVerifiedRegistration = testSettings.Attribute("userWithVerifiedRegistration").Value;
 			_userWithPrivateRegistration = testSettings.Attribute("userWithPrivateRegistration").Value;
@@ -42,11 +40,23 @@ namespace DNNSelenium.Common.Tests.P1
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'" + testName + "'");
 		}
 
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
+			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
+		}
+
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
-
 			var module = new MessageCenterModule(_driver);
 			module.OpenNotificationsUsingIcon();
 			module.DismissNotification(MessageCenterModule.NotificationSubject);

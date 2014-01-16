@@ -130,18 +130,6 @@ namespace DNNSelenium.Common.CorePages
 			WaitAndClick(By.XPath("//tr[td[text() ='" + userName + "']]/td/a[contains(@href, 'Edit')]"));
 		}
 
-		/*public void OpenManageAccountTab()
-		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Manage Account' Tab:");
-			WaitAndClick(By.XPath(ManageAccountFrameTab));
-		}*/
-
-		/*public void OpenManageProfileTab()
-		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'Manage Profile' Tab:");
-			WaitAndClick(By.XPath(ManageProfileFrameTab));
-		}*/
-
 		public void AddPhoneNumber(string userName, string phoneNumber)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add phone number to SuperUser:");

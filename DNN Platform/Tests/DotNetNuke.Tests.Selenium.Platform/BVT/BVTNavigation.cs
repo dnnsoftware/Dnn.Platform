@@ -1,14 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.Xml.Linq;
+﻿using System.Diagnostics;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.BaseClasses.BasePages;
-using DNNSelenium.Common.CorePages;
 using DNNSelenium.Platform.CorePages;
 using DNNSelenium.Platform.Properties;
 using NUnit.Framework;
-using OpenQA.Selenium;
 
 namespace DNNSelenium.Platform.BVT
 {

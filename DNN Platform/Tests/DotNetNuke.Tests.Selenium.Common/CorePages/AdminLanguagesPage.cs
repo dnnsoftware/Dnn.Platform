@@ -32,6 +32,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string DisableLocalizedContent = "//a[contains(@id, '_languageEnabler_cmdDisableLocalization')]";
 		public static string TranslatePageCheckBox = "//input[contains(@id, '_EnableLocalizedContent_chkAllPagesTranslatable')]";
 		public static string EnableLocalizedContentUpdateButton = "//a[contains(@id, '_EnableLocalizedContent_updateButton')]";
+		public static string ProgressBar = "//div[contains(@id, '_EnableLocalizedContent_pageCreationProgressArea_Panel')]";
 		public static string LanguagesTable = "//table[contains(@id, 'languageEnabler_languagesGrid')]";
 		public static string LocalizationTable = LanguagesTable + "//th[5]/table[contains(@class, 'DnnGridNestedTable')]";
 
@@ -144,7 +145,16 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitAndClick(By.XPath(EnableLocalizedContentUpdateButton));
 
-			Thread.Sleep(1000);
+			FindElement(By.XPath(ProgressBar)).WaitTillVisible();
+
+			if (action == CheckBox.ActionType.Check)
+			{
+				WaitForElement(By.XPath(DisableLocalizedContent), 5*60).WaitTillVisible();
+			}
+			else
+			{
+				Thread.Sleep(1000);
+			}
 		}
 
 		public void DisableLocalization()

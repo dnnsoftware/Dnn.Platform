@@ -89,7 +89,7 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(TraceLevelPage + "Make the Reply link to appear:");
 			Actions builder = new Actions(_driver);
-			IWebElement element = WaitForElement(By.XPath("//ul[@id = 'inbox']//li[@class = 'ListCol-3']//a"));
+			IWebElement element = WaitForElement(By.XPath("//ul[@id = 'inbox']//li[@class = 'ListCol-3']//dt[@class = 'subject']/a"));
 			builder.MoveToElement(element).Perform();
 
 			Trace.WriteLine(TraceLevelPage + "Move mouse to displayed Reply link and Click on it:");

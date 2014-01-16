@@ -53,14 +53,25 @@ namespace DNNSelenium.Common.Tests.BVT
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 			manageUsersPage.AddNewUser(_userName + "001", _userDisplayName + "001", "user10@mail.com", "pAssword10");
 			manageUsersPage.AddNewUser(_userName + "002", _userDisplayName + "002", "user10@mail.com", "pAssword10");
+		}
 
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
 			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
 		}
 
 		[Test]

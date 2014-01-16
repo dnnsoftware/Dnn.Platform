@@ -56,15 +56,25 @@ namespace DNNSelenium.Common.Tests.P1
 			manageUsersPage.AddNewUser(_userNameNumberOne, _userDisplayNameNumberOne, "user10@mail.com", _password);
 			manageUsersPage.AddNewUser(_userNameNumberTwo, _userDisplayNameNumberTwo, "user10@mail.com", _password);
 			manageUsersPage.AddNewUser(_userNameNumberThree, _userDisplayNameNumberThree, "user10@mail.com", _password);
+		}
 
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
 			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
-
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 			manageUsersPage.DeleteUser(_userNameNumberOne);

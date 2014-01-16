@@ -271,7 +271,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public void WaitAndClick(By locator)
 		{
 			Trace.WriteLine(BasePage.TraceLevelElement + "Wait and Click: '" + locator + "'");
-			WaitForElement(locator).Click();
+			WaitForElement(locator).ScrollIntoView().Click();
 		}
 
 		public void WaitScrollAndClick(By locator)
@@ -425,8 +425,7 @@ namespace DNNSelenium.Common.BaseClasses
 			    ScrollIntoView(FindElement(tabName), 200).WaitTillVisible();
 			}
 
-			//ScrollIntoViewFromTop(FindElement(tabName), 200).WaitTillVisible();
-			WaitForElement(tabName).Click();
+			WaitAndClick(tabName);
 		}
 
 		public void ClickOnButton(By buttonName)
@@ -516,7 +515,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 			var wait = new DefaultWait<IWebElement>(element);
 			wait.Timeout = TimeSpan.FromSeconds(timeOutSeconds);
-				
+			wait.IgnoreExceptionTypes(new Type[] {typeof(StaleElementReferenceException) });
 			wait.Until(condition);
 
 			return element;

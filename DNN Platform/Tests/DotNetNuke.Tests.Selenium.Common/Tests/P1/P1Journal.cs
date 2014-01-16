@@ -78,29 +78,31 @@ namespace DNNSelenium.Common.Tests.P1
 			module.AddNewPostWithVisibilityPermission(_subject + " Everyone", "Everyone");
 
 			OpenMainPageAndLoginAsHost();
+		}
 
-			_logContent = LogContent(); 
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
+			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
 		}
 
 		[TestFixtureTearDown] 
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
-
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
 			manageUsersPage.DeleteUser(_userNameNumberOne);
 			manageUsersPage.DeleteUser(_userNameNumberTwo);
 			manageUsersPage.DeleteUser(_userNameNumberThree);
 			manageUsersPage.RemoveDeletedUsers();
-
-			/*var page = new BlankPage(_driver);
-			page.OpenUsingUrl(_baseUrl, _pageName);
-			page.DeletePage(_pageName);
-
-			var adminRecycleBinPage = new AdminRecycleBinPage(_driver);
-			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
-			adminRecycleBinPage.EmptyRecycleBin();*/
 
 			RemoveUsedPage(_pageName);
 		}

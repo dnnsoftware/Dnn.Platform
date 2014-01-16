@@ -194,7 +194,7 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Create Page' button:");
 			Click(By.XPath(CreatePageButton));
 
-			WaitForElement(By.XPath(OperationConfirmationMessage));
+			WaitForElement(By.XPath(OperationConfirmationMessage), 5 * 60);
 		}
 
 

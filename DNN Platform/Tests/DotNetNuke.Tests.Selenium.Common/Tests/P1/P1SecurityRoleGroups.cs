@@ -40,8 +40,6 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
-			_logContent = LogContent();
-
 			var manageRolesPage = new ManageRolesPage(_driver);
 			manageRolesPage.OpenUsingControlPanel(_baseUrl);
 			manageRolesPage.AddNewSecurityRole(_roleName);
@@ -50,10 +48,23 @@ namespace DNNSelenium.Common.Tests.P1
 			manageRolesPage.AddNewSecurityRoleGroup(_assignedRoleGroupName);
 		}
 
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
+			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
+		}
+
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
 		}
 
 		[Test]

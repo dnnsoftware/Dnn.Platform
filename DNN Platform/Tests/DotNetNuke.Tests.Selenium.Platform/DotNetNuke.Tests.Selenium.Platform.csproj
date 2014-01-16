@@ -74,7 +74,8 @@
     <Compile Include="CorePages\AdminGoogleAnalyticsPage.cs" />
     <Compile Include="CorePages\AdminPage.cs" />
     <Compile Include="CorePages\HostPage.cs" />
-    <Compile Include="P1\P1HostSiteTemplates.cs" />
+    <Compile Include="P1\P1Navigation.cs" />
+    <Compile Include="P1\P1ZSiteTemplates.cs" />
     <Compile Include="P1\P1AdminSiteMap.cs" />
     <Compile Include="P1\P1AdminFileManagement.cs" />
     <Compile Include="P1\P1Journal.cs" />
@@ -87,13 +88,13 @@
     <Compile Include="P1\P1AdminSiteSettings.cs" />
     <Compile Include="P1\P1FileUpload.cs" />
     <Compile Include="P1\P1HostExtensions.cs" />
-    <Compile Include="P1\P1Languages.cs" />
-    <Compile Include="P1\P1Modules.cs" />
-    <Compile Include="P1\P1Pages.cs" />
+    <Compile Include="P1\P1AdminLanguages.cs" />
+    <Compile Include="P1\P1ZModules.cs" />
+    <Compile Include="P1\P1AdminPages.cs" />
     <Compile Include="P1\P1Search.cs" />
     <Compile Include="P1\P1SecurityRoleGroups.cs" />
     <Compile Include="P1\P1SecurityRoles.cs" />
-    <Compile Include="P1\P1Taxonomy.cs" />
+    <Compile Include="P1\P1AdminTaxonomy.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="UpgradeTests\BVTSiteManagement.cs" />
@@ -221,6 +222,7 @@
     </Content>
     <Content Include="InstallerTests\InstallerLogData.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="InstallerTests\LayoutInstallerData.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

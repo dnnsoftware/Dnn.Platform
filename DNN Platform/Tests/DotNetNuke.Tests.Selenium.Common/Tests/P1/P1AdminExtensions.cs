@@ -36,15 +36,28 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
-			_logContent = LogContent();
+			CreateAdmin("Admin", "Admin", "admin@mail.com", "dnnadmin");
+		}
 
-			CreateAdminAndLoginAsAdmin("Admin", "Admin", "admin@mail.com", "dnnadmin");
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
+			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
+			var loginPage = new LoginPage(_driver);
+			loginPage.LoginAsHost(_baseUrl);
 
 			var manageUsersPage = new ManageUsersPage(_driver);
 			manageUsersPage.OpenUsingControlPanel(_baseUrl);
@@ -56,6 +69,9 @@ namespace DNNSelenium.Common.Tests.P1
 		public void Test001_EditAdminExtension()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Edit the Admin Extension'");
+
+			LoginPage loginPage = new LoginPage(_driver);
+			loginPage.LoginUsingLoginLink("Admin", "dnnadmin");
 
 			var adminExtensionsPage = new AdminExtensionsPage(_driver);
 			adminExtensionsPage.OpenUsingButtons(_baseUrl);
@@ -81,6 +97,10 @@ namespace DNNSelenium.Common.Tests.P1
 		public void Test002_VerifyAdminLimitedAccess()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Verify Admin limited access to Extensions'");
+
+
+			LoginPage loginPage = new LoginPage(_driver);
+			loginPage.LoginUsingLoginLink("Admin", "dnnadmin");
 
 			var adminExtensionsPage = new AdminExtensionsPage(_driver);
 			adminExtensionsPage.OpenUsingButtons(_baseUrl);

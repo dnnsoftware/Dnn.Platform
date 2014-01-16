@@ -263,5 +263,99 @@ namespace DNNSelenium.Common.CorePages
 
 			Thread.Sleep(1000);
 		}
+
+		public void ExportSiteTemplateWithLanguage(string siteName, string templateFileName, string templateDescription, string language)
+		{
+			WaitAndClick(By.XPath(ExportSiteTemplateButton));
+
+			ExportTemplateBasicConfiguration(siteName, templateFileName, templateDescription);
+
+			TemplateParameters(By.XPath(IncludeContentCheckBox), CheckBox.ActionType.Check);
+
+			ClickOnButton(By.XPath(ExportTemplateButton));
+
+			Thread.Sleep(1000);
+		}
+
+		public string SetLanguageName(string language)
+		{
+			string option = null;
+
+			switch (language)
+			{
+				case "en":
+					{
+						option = "en-US";
+						break;
+					}
+				case "de":
+					{
+						option = "de-DE";
+						break;
+					}
+				case "es":
+					{
+						option = "es-ES";
+						break;
+					}
+				case "fr":
+					{
+						option = "fr-FR";
+						break;
+					}
+				case "it":
+					{
+						option = "it-IT";
+						break;
+					}
+				case "nl":
+					{
+						option = "nl-NL";
+						break;
+					}
+			}
+
+			return option;
+		}
+
+		public void SelectLanguage(string language)
+		{
+			string[] languages = { "fr-FR", "de-DE", "es-ES", "nl-NL", "it-IT"};
+
+			foreach (var pack in languages)
+			{
+				string element =
+					"//table[contains(@id, '_Template_chkLanguages')]//input[@value = '" + pack + "']";
+
+				if (ElementPresent(By.XPath(element)))
+				{
+					FindElement(By.XPath(element)).ScrollIntoView();
+					CheckBoxUncheck(By.XPath(element));
+				}
+			}
+
+			string packToInclude =
+					"//table[contains(@id, '_Template_chkLanguages')]//input[@value = '" + language + "']";
+			if (ElementPresent(By.XPath(packToInclude)))
+			{
+				FindElement(By.XPath(packToInclude)).ScrollIntoView();
+				CheckBoxCheck(By.XPath(packToInclude));
+			}
+		}
+
+		public void ExportSiteTemplateWithContentAndLanguage(string siteName, string templateFileName, string templateDescription, string language)
+		{
+			WaitAndClick(By.XPath(ExportSiteTemplateButton));
+
+			ExportTemplateBasicConfiguration(siteName, templateFileName, templateDescription);
+
+			TemplateParameters(By.XPath(IncludeContentCheckBox), CheckBox.ActionType.Check);
+
+			SelectLanguage(SetLanguageName(language));
+
+			ClickOnButton(By.XPath(ExportTemplateButton));
+
+			Thread.Sleep(1000);
+		}
 	}
 }

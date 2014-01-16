@@ -294,7 +294,7 @@ namespace DNNSelenium.Common.BaseClasses
 		{
 			IWebElement accordion = BasePage.WaitForElement(_driver, _accordionId);
 
-			if (accordion.Displayed)
+			if (! accordion.Displayed)
 			{
 				accordion.ScrollIntoView().WaitTillVisible();
 			}

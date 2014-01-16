@@ -20,7 +20,7 @@ namespace DNNSelenium.Common.Tests.BVT
 		[TestFixtureSetUp]
 		public void LoginToSite()
 		{
-			XDocument doc = XDocument.Load(DataFileLocation);
+			XDocument doc = XDocument.Load(DataFileLocation); 
 
 			XElement settings = doc.Document.Element("Tests").Element("settings");
 			XElement testSettings = doc.Document.Element("Tests").Element("modules");
@@ -43,15 +43,25 @@ namespace DNNSelenium.Common.Tests.BVT
 			var blankPage = new BlankPage(_driver);
 			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
 			blankPage.AddNewPage(_pageName);
+		}
 
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
 			_logContent = LogContent();
+		}
 
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
 		}
 	}
 }

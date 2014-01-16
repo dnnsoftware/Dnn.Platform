@@ -28,13 +28,25 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
+		}
+
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
 			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
 		}
 
 		public void VerifyQuickSearch(BasePage currentPage)
@@ -202,11 +214,11 @@ namespace DNNSelenium.Common.Tests.P1
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Quick Search On Page Settings frame'");
 
-			var blankPage = new BlankPage(_driver);
+			var hostSchedulePage = new HostSchedulePage(_driver);
+			hostSchedulePage.OpenUsingButtons(_baseUrl);
+			hostSchedulePage.SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PageSettingsOption);
 
-			blankPage.SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PageSettingsOption);
-
-			VerifyQuickSearch(blankPage);
+			VerifyQuickSearch(hostSchedulePage);
 		}
 
 		[Test]

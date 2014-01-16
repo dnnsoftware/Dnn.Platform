@@ -125,7 +125,7 @@ namespace DNNSelenium.Common.CorePages
 			WaitForElement(By.XPath("//div/iframe[contains(@src, 'GettingStarted')]"), 60);
 			_driver.SwitchTo().Frame(0);
 
-			WaitForElement(By.XPath("//div/a[last()]"), 60).WaitTillVisible(60);
+			//WaitForElement(By.XPath("//div/div/a[contains(@class, 'rounded button')][last()]"), 60).WaitTillVisible(60);
 			
 			_driver.SwitchTo().DefaultContent();
 

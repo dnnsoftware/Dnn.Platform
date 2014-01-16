@@ -80,6 +80,7 @@ namespace DNNSelenium.Common.CorePages
 
 		public static string BasicSettingsTab = "//li[@aria-controls = 'basicSettings']/a";
 		public static string HostName = "//span[contains(@id, '_HostSettings_lblHostName')]";
+		public static string PhysicalPath = "//span[contains(@id, '_HostSettings_lblApplicationMapPath')]";
 
 		public static string OtherSettingsTab = "//li[@aria-controls = 'otherSettings']/a";
 		public static string AllowContentLocalizationCheckBox = "//input[contains(@id, '_chkEnableContentLocalization')]";

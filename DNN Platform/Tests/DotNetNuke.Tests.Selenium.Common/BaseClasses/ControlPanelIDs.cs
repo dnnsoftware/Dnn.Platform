@@ -41,7 +41,7 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string LanguageIcon = "//div/span[contains(@class, 'Language')]";
 
 		public static string CopyrightNotice = "dnn_dnnCopyright_lblCopyright";
-		public static string CopyrightText = "Copyright 2013 by DNN Corp";
+		public static string CopyrightText = "Copyright 2014 by DNN Corp";
 
 		#region Control Panel ID's
 

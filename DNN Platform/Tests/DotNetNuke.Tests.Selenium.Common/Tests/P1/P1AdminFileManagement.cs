@@ -36,14 +36,25 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
-			_logContent = LogContent();
-
 		}
 
-		//[TestFixtureTearDown]
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
+			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
+		}
+
+		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
 		}
 
 		public void Test_CreateFolder(string folderType, string folderName)
@@ -287,14 +298,12 @@ namespace DNNSelenium.Common.Tests.P1
 			adminFileManagementPage.OpenUsingButtons(_baseUrl);
 			adminFileManagementPage.SelectFolderFromTreeView("Root", folderName);
 
-			adminFileManagementPage.SetItemsPerPage("All");
-
 			adminFileManagementPage.UploadNotAllowedFileType(folderName, fileToUpload);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Verify the warning message is displayed");
 			Assert.That(adminFileManagementPage.WaitForElement(
 						By.XPath("//span[@class = 'dnnModuleDigitalAssetsErrorMessage']")).Text,
-						Is.EqualTo("File extension not allowed"),
+						Is.StringContaining("File extension not allowed"),
 						"The warning message is not displayed");
 		}
 

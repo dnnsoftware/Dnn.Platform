@@ -1,11 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System.Diagnostics;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
-using DNNSelenium.Common.BaseClasses.BasePages;
 using DNNSelenium.Common.CorePages;
-using DNNSelenium.Common.Properties;
 using NUnit.Framework;
 using OpenQA.Selenium;
 
@@ -30,14 +26,25 @@ namespace DNNSelenium.Common.Tests.BVT
 			Trace.WriteLine(BasePage.PreconditionsKeyWord);
 
 			OpenMainPageAndLoginAsHost();
+		}
 
+		[SetUp]
+		public void RunBeforeEachTest()
+		{
+			Trace.WriteLine("Run before each test");
 			_logContent = LogContent();
+		}
+
+		[TearDown]
+		public void CleanupAfterEachTest()
+		{
+			Trace.WriteLine("Run after each test");
+			VerifyLogs(_logContent);
 		}
 
 		[TestFixtureTearDown]
 		public void Cleanup()
 		{
-			VerifyLogs(_logContent);
 		}
 
 		public void VerifyStandardPageLayout(BasePage currentPage)
@@ -101,133 +108,55 @@ namespace DNNSelenium.Common.Tests.BVT
 				                            "Copyright notice is not present or contains wrong text message"));
 		}
 
-		[TestCase("Common", "CorePages.AdminAdvancedSettingsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminAdvancedSettingsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminAdvancedSettingsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminDevicePreviewManagementPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminDevicePreviewManagementPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminDevicePreviewManagementPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminEventViewerPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminEventViewerPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminEventViewerPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminExtensionsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminExtensionsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminExtensionsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminFileManagementPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminFileManagementPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminFileManagementPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminLanguagesPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminLanguagesPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminLanguagesPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminListsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminListsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminListsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminNewslettersPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminNewslettersPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminNewslettersPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminPageManagementPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminPageManagementPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminPageManagementPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminRecycleBinPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminRecycleBinPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminRecycleBinPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminSearchAdminPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminSearchAdminPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminSearchAdminPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminSearchEnginePage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminSearchEnginePage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminSearchEnginePage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminSecurityRolesPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminSecurityRolesPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminSecurityRolesPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminSiteLogPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminSiteLogPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminSiteLogPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminSiteRedirectionManagementPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminSiteRedirectionManagementPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminSiteRedirectionManagementPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminSiteSettingsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminSiteSettingsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminSiteSettingsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminSiteWizardPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminSiteWizardPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminSiteWizardPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminSkinsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminSkinsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminSkinsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminTaxonomyPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminTaxonomyPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminTaxonomyPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminUserAccountsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminUserAccountsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminUserAccountsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.AdminVendorsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.AdminVendorsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.AdminVendorsPage", "OpenUsingControlPanel")]
 		
-		[TestCase("Common", "CorePages.HostConfigurationManagerPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostConfigurationManagerPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostConfigurationManagerPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostDashboardPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostDashboardPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostDashboardPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostDeviceDetectionManagementPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostDeviceDetectionManagementPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostDeviceDetectionManagementPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostFileManagementPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostFileManagementPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostFileManagementPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostExtensionsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostExtensionsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostExtensionsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostSettingsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostHtmlEditorManagerPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostHtmlEditorManagerPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostHtmlEditorManagerPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostListsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostListsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostListsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostSchedulePage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostSchedulePage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostSchedulePage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostSiteManagementPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostSiteManagementPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostSiteManagementPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostSqlPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostSqlPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostSqlPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostSuperUserAccountsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostSuperUserAccountsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostSuperUserAccountsPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.HostVendorsPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.HostVendorsPage", "OpenUsingButtons")]
-		[TestCase("Common", "CorePages.HostVendorsPage", "OpenUsingControlPanel")]
 		
-		[TestCase("Common", "CorePages.FileUploadPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.FileUploadPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.PageImportPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.PageImportPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.PageExportPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.PageExportPage", "OpenUsingControlPanel")]
 
-		[TestCase("Common", "CorePages.ManageRolesPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.ManageRolesPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.ManageUsersPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.ManageUsersPage", "OpenUsingControlPanel")]
-		[TestCase("Common", "CorePages.UserAccountPage", "OpenUsingUrl")]
 		[TestCase("Common", "CorePages.UserAccountPage", "OpenUsingLink")]
 		[TestCase("Common", "CorePages.ManageUserProfilePage", "OpenUsingLink")]
 
 		[TestCase("Common", "DemoPages.AboutUsPage", "OpenUsingLink")]
-		[TestCase("Common", "DemoPages.AboutUsPage", "OpenUsingUrl")]
 		[TestCase("Common", "DemoPages.ContactUsPage", "OpenUsingLink")]
-		[TestCase("Common", "DemoPages.ContactUsPage", "OpenUsingUrl")]
 		[TestCase("Common", "DemoPages.HomePage", "OpenUsingLink")]
-		[TestCase("Common", "DemoPages.HomePage", "OpenUsingUrl")]
 		[TestCase("Common", "DemoPages.OurProductsPage", "OpenUsingLink")]
-		[TestCase("Common", "DemoPages.OurProductsPage", "OpenUsingUrl")]
 		//[TestCase("Common", "DemoPages.GettingStartedPage", "OpenUsingControlPanel")]
 		//[TestCase("Common", "DemoPages.GettingStartedPage", "OpenUsingUrl")]
 		public void NavigationToPage(string assyName, string pageClassName, string openMethod)

@@ -38,7 +38,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string UpdatePageFrameButton = "//a[contains(@id, 'ManageTabs_cmdUpdate')]";
 
 		public static string PermissionTable = "//table[@class = 'dnnPermissionsGrid']";
-		public static string UpdateButton = "//a[contains(@id, '_ManageTabs_cmdUpdate')]";
+		public static string UpdateButton = "//a[@id = 'dnn_ctr_ManageTabs_cmdUpdate']";
 
 		public static string URLManagementAccordion = "//h2[@id='dnnPanel-TabsUrlManagement-Extension']/a";
 		public static string CustomUrlTable = "//table[@id = 'custom-urls']";
@@ -89,7 +89,7 @@ namespace DNNSelenium.Common.CorePages
 
 			Click(By.XPath(AddPageFrameButton));
 
-			Thread.Sleep(Settings.Default.WaitFactor*4000);
+			Thread.Sleep(Settings.Default.WaitFactor * 5000);
 		}
 
 		public void CopyFromContactUsPage()
@@ -241,7 +241,7 @@ namespace DNNSelenium.Common.CorePages
 
 			ClickOnButton(By.XPath(UpdateButton));
 
-			Thread.Sleep(1000);
+			Thread.Sleep(3 * 1000);
 		}
 
 		public void DeleteCustomURL(string newUrl)
