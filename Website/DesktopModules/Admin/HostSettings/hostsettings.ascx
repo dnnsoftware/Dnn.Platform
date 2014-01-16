@@ -117,10 +117,7 @@
                             runat="server" ControlToValidate="txtHostEmail" Display="Dynamic" ResourceKey="HostEmail.Error" />
                     </div>
                 </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plHostDefaultDocType" controlname="cboHostDefaultDocType" runat="server" />
-                    <dnn:dnncombobox id="docTypeCombo" runat="server" datatextfield="Value" datavaluefield="Key" />
-                </div>
+
                 <div class="dnnFormItem">
                     <dnn:label id="plRememberMe" controlname="chkRemember" runat="server" />
                     <asp:CheckBox ID="chkRemember" runat="server" />
@@ -167,6 +164,10 @@
                         <a href="#" class="dnnSecondaryAction">
                             <%=LocalizeString("EditSkinPreview")%></a>
                     </div>
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plHostDefaultDocType" controlname="cboHostDefaultDocType" runat="server" />
+                    <dnn:dnncombobox id="docTypeCombo" runat="server" datatextfield="Value" datavaluefield="Key" />
                 </div>
             </fieldset>
             <h2 id="Panel-Payment" class="dnnFormSectionHead">
