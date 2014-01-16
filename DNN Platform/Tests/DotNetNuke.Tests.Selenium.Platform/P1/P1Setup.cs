@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace DNNSelenium.Platform.P1
 {
-	//[SetUpFixture]
+	[SetUpFixture]
 	[Category("P1")] 
 	public class P1Setup : Common.Tests.BVT.BVTSetup
 	{
