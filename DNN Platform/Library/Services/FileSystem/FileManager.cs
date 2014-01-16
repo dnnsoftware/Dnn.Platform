@@ -27,6 +27,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Web;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
@@ -42,7 +43,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Log.EventLog;
 using ICSharpCode.SharpZipLib.Zip;
 
 namespace DotNetNuke.Services.FileSystem
@@ -320,19 +320,9 @@ namespace DotNetNuke.Services.FileSystem
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
             }
 
-            //DNN-2949 If it is host user, then file should be copied and info logged into Event Viewer
-            if (!IsAllowedExtension(fileName) && !(UserController.GetCurrentUserInfo().IsSuperUser))
+            if (!IsAllowedExtension(fileName))
             {
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
-            }
-
-            if (!IsAllowedExtension(fileName) && (UserController.GetCurrentUserInfo().IsSuperUser))
-            {
-                var eventLogController = new EventLogController();
-                var logInfo = new LogInfo();
-                logInfo.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
-                logInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                eventLogController.AddLog(logInfo);
             }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);

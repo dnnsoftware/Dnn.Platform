@@ -2863,26 +2863,12 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
 
-            private string LoadTemplateFileExtensions()
-            {
-                XDocument xmlDoc;
-                using (var reader = PortalTemplateIO.Instance.OpenTextReader(TemplateFilePath))
-                {
-                    xmlDoc = XDocument.Load(reader);
-                }
-                var result = (from extension in xmlDoc.XPathSelectElements("/portal/folders/folder/files/file/extension") select extension.Value).Distinct().ToList();
-                return string.Join<string>(",", result);
-
-            }
             public string Name { get; private set; }
             public string CultureCode { get; private set; }
             public string TemplateFilePath { get; private set; }
             public string LanguageFilePath { get; private set; }
             public string Description { get; private set; }
-            public string TemplateFileExtensions
-            {
-                get { return LoadTemplateFileExtensions(); }
-            }
+
             public string ResourceFilePath
             {
                 get
