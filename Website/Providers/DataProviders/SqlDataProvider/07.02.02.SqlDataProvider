@@ -377,6 +377,21 @@ BEGIN
 		AND (PermissionID = @PermissionId OR IsNull(@PermissionId, -1) = -1)
 END
 GO
+
+-- DNN-4315: optimized to use a subquery
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFolderPermissionsByUserID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByUserID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByUserID]
+    @PortalId Int,  -- Null|-1 for Host menu tabs
+    @UserId   Int   -- Not Null
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]
+    WHERE UserID = @UserId
+     AND FolderID IN (SELECT FolderID FROM {databaseOwner}[{objectQualifier}Folders] 
+	                  WHERE (PortalID = @PortalId Or IsNull(@PortalId, -1) = IsNull(PortalID, -1)))
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
