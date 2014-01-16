@@ -40,6 +40,7 @@ using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Workflow;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Profile;
@@ -515,7 +516,7 @@ namespace DotNetNuke.Entities.Portals
             return dicSettings;
         }
 
-        private static void ParseFiles(XmlNodeList nodeFiles, int portalId, FolderInfo objFolder)
+        private static void ParseFiles(XmlNodeList nodeFiles, int portalId, FolderInfo folder)
         {
             var fileManager = FileManager.Instance;
 
@@ -524,11 +525,11 @@ namespace DotNetNuke.Entities.Portals
                 var fileName = XmlUtils.GetNodeValue(node.CreateNavigator(), "filename");
 
                 //First check if the file exists
-                var objInfo = fileManager.GetFile(objFolder, fileName);
+                var fileInfo = fileManager.GetFile(folder, fileName);
 
-                if (objInfo != null) continue;
+                if (fileInfo != null) continue;
 
-                objInfo = new FileInfo
+                fileInfo = new FileInfo
                 {
                     PortalId = portalId,
                     FileName = fileName,
@@ -538,8 +539,8 @@ namespace DotNetNuke.Entities.Portals
                     Height = XmlUtils.GetNodeValueInt(node, "height"),
                     ContentType = XmlUtils.GetNodeValue(node.CreateNavigator(), "contenttype"),
                     SHA1Hash = XmlUtils.GetNodeValue(node.CreateNavigator(), "sha1hash"),
-                    FolderId = objFolder.FolderID,
-                    Folder = objFolder.FolderPath,
+                    FolderId = folder.FolderID,
+                    Folder = folder.FolderPath,
                     Title = "",
                     StartDate = DateTime.Now,
                     EndDate = Null.NullDate,
@@ -550,12 +551,36 @@ namespace DotNetNuke.Entities.Portals
                 //Save new File
 	            try
 	            {
-					using (var fileContent = fileManager.GetFileContent(objInfo))
+	                var originalExtensionList = string.Empty;
+                    if (!Host.Host.AllowedExtensionWhitelist.IsAllowedExtension(fileInfo.Extension) &&
+                        UserController.GetCurrentUserInfo().IsSuperUser)
+                    {
+                        //if the file is not allowed in current instance and the user is host user, we need temporary allow this extension
+                        //and log warning message in event log, after file added, we need remove this extension immediately.
+                        originalExtensionList = Host.Host.AllowedExtensionWhitelist.ToStorageString();
+
+                        var toAdd = new List<string> { fileInfo.Extension };
+                        HostController.Instance.Update("FileExtensions", Host.Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
+
+                        var eventLogController = new EventLogController();
+                        var logInfo = new LogInfo();
+                        logInfo.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
+                        logInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
+                        eventLogController.AddLog(logInfo);
+                    }
+
+                    using (var fileContent = fileManager.GetFileContent(fileInfo))
 					{
-						objInfo.FileId = fileManager.AddFile(objFolder, fileName, fileContent, false).FileId;
+                        fileInfo.FileId = fileManager.AddFile(folder, fileName, fileContent, false).FileId;
 					}
 
-					fileManager.UpdateFile(objInfo);
+                    fileManager.UpdateFile(fileInfo);
+
+                    //if allow extension list has been changed, we need change back to original value immediately.
+                    if (!string.IsNullOrEmpty(originalExtensionList))
+                    {
+                        HostController.Instance.Update("FileExtensions", originalExtensionList);
+                    }
 	            }
 				catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
 	            {
