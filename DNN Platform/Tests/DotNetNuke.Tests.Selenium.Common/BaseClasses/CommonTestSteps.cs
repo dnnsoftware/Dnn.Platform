@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing;
+using System.IO;
 using System.Reflection;
 using DNNSelenium.Common.CorePages;
 using NUnit.Framework;
@@ -16,6 +17,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public const string DNNSeleniumPrefix = "DNNSelenium.";
 		public string _logContent;
+		public string _physicalPath = null;
 
 		public BasePage OpenPage(string assyName, string pageClassName, string openMethod)
 		{
@@ -100,6 +102,20 @@ namespace DNNSelenium.Common.BaseClasses
         #endregion BN added
 
         public void CreateAdminAndLoginAsAdmin(string userName, string displayName, string email, string password)
+
+		public void CreateAdmin(string userName, string displayName, string email, string password)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Admin User'");
+
+			ManageUsersPage manageUsersPage = new ManageUsersPage(_driver);
+			manageUsersPage.OpenUsingControlPanel(_baseUrl);
+			manageUsersPage.AddNewUser(userName, displayName, email, password);
+			manageUsersPage.ManageRoles(userName);
+			manageUsersPage.AssignRoleToUser("Administrators");
+
+		}
+
+		public void CreateAdminAndLoginAsAdmin(string userName, string displayName, string email, string password)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Admin User and Login as Admin user'");
 
@@ -119,7 +135,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public string LogContent()
 		{
-			HostSettingsPage hostSettingsPage = new HostSettingsPage(_driver);
+			/*HostSettingsPage hostSettingsPage = new HostSettingsPage(_driver);
 			hostSettingsPage.SetDictionary("en");
 			hostSettingsPage.OpenUsingUrl(_baseUrl);
 
@@ -130,18 +146,55 @@ namespace DNNSelenium.Common.BaseClasses
 													SlidingSelect.SelectByValueType.Contains);
 			hostSettingsPage.WaitForElement(By.XPath(HostSettingsPage.LogContent), 30);
 
-			return hostSettingsPage.FindElement(By.XPath(HostSettingsPage.LogContent)).Text.ToLower();
+			return hostSettingsPage.FindElement(By.XPath(HostSettingsPage.LogContent)).Text.ToLower();*/
+
+			if (_physicalPath == null)
+			{
+				var loginPage = new LoginPage(_driver);
+				loginPage.LoginAsHost(_baseUrl);
+
+				HostSettingsPage hostSettingsPage = new HostSettingsPage(_driver);
+				hostSettingsPage.OpenUsingButtons(_baseUrl);
+				_physicalPath = hostSettingsPage.FindElement(By.XPath(HostSettingsPage.PhysicalPath)).Text;
+			}
+
+			string[] file = Directory.GetFiles(_physicalPath + @"\Portals\_default\Logs", "*.log.resources", SearchOption.TopDirectoryOnly);
+
+			string fileName = Path.GetFileName(file[0]);
+
+			return new FileInfo(_physicalPath + @"\Portals\_default\Logs\" + fileName).Length.ToString();
 		}
 
 		public void VerifyLogs(string logContentBeforeTests)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "'Verify Logs on Host Settings page: '");
 
-			var loginPage = new LoginPage(_driver);
-			loginPage.LoginAsHost(_baseUrl);
-
 			string logContentAfterTests = LogContent();
-			StringAssert.AreEqualIgnoringCase(logContentAfterTests, logContentBeforeTests, "ERROR in the Log");
+
+			Trace.WriteLine("log Content Before Tests " + logContentBeforeTests);
+			Trace.WriteLine("log Content After Tests " + logContentAfterTests);
+			//StringAssert.AreEqualIgnoringCase(logContentBeforeTests, logContentAfterTests, "ERROR in the Log");
+
+			if (logContentBeforeTests != logContentAfterTests)
+			{
+				var loginPage = new LoginPage(_driver);
+				loginPage.LoginAsHost(_baseUrl);
+
+				HostSettingsPage hostSettingsPage = new HostSettingsPage(_driver);
+				hostSettingsPage.SetDictionary("en");
+				hostSettingsPage.OpenUsingUrl(_baseUrl);
+
+				hostSettingsPage.WaitAndClick(By.XPath(HostSettingsPage.LogsTab));
+				SlidingSelect.SelectByValue(_driver, By.XPath("//a[contains(@id, '" + HostSettingsPage.LogFilesDropDownArrow + "')]"),
+														By.XPath(HostSettingsPage.LogFilesDropDownList),
+														HostSettingsPage.OptionOne,
+														SlidingSelect.SelectByValueType.Contains);
+				hostSettingsPage.WaitForElement(By.XPath(HostSettingsPage.LogContent), 30);
+
+				Trace.WriteLine(hostSettingsPage.FindElement(By.XPath(HostSettingsPage.LogContent)).Text);
+				StringAssert.AreEqualIgnoringCase(logContentBeforeTests, logContentAfterTests, "ERROR in the Log");
+
+			}
 		}
 
 		public void DisablePopups(string url)
