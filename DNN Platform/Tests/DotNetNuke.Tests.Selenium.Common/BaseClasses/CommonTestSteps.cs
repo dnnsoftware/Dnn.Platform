@@ -101,8 +101,6 @@ namespace DNNSelenium.Common.BaseClasses
         }
         #endregion BN added
 
-        public void CreateAdminAndLoginAsAdmin(string userName, string displayName, string email, string password)
-
 		public void CreateAdmin(string userName, string displayName, string email, string password)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Admin User'");
