@@ -328,6 +328,21 @@ BEGIN
 END
 GO
 
+-- DNN-4319: Optimized
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]
+    @TabId Int -- Not Null!
+AS
+    SELECT MP.*
+    FROM        {databaseOwner}[{objectQualifier}Tabs]                 AS T
+    INNER JOIN  {databaseOwner}[{objectQualifier}TabModules]           AS TM ON TM.TabID    = T.TabID
+    INNER JOIN  {databaseOwner}[{objectQualifier}vw_ModulePermissions] AS MP ON TM.ModuleID = MP.ModuleID AND T.PortalID = MP.PortalID
+    WHERE T.TabID = @TabId
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
