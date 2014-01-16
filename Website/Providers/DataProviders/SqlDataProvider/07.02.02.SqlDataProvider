@@ -343,6 +343,18 @@ AS
     WHERE T.TabID = @TabId
 GO
 
+-- DNN-4318: view does contain all necessary columns
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModulePermissionsByPortal]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByPortal]
+    @PortalId Int -- Not Null!
+AS
+    SELECT *
+    FROM {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+    WHERE PortalID = @PortalID
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
