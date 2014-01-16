@@ -235,6 +235,26 @@ CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Roles ON {dat
 	WHERE RoleID IS NOT Null
 GO
 
+-- DNN-4331: optimized
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRolesByUser]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByUser]
+    @UserId        Int, -- not Null!
+    @PortalId      Int  -- not Null!
+AS
+BEGIN
+    SELECT RoleName,
+           RoleID
+    FROM {databaseOwner}[{objectQualifier}Vw_UserRoles]
+    WHERE  (UserID   = @UserId)
+      AND  (PortalID = @PortalId)
+      AND  (IsNull(EffectiveDate, GetDate()) <= GetDate())
+      AND  (IsNull(ExpiryDate,    GetDate()) >= GetDate())
+END
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
