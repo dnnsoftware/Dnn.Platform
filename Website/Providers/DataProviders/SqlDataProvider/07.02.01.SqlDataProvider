@@ -1172,14 +1172,14 @@ GO
 
 -- DNN-4289: optimize roles indexes
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}Roles_RoleGroup')
-    DROP Index {databaseOwner}[{objectQualifier}Roles].[IX_{objectQualifier}Roles_RoleGroup]
+    DROP INDEX [IX_{objectQualifier}Roles_RoleGroup] ON {databaseOwner}[{objectQualifier}Roles]
 GO
 
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}Roles_RoleGroup ON {databaseOwner}[{objectQualifier}Roles] (RoleGroupID, RoleName) INCLUDE (RoleId)
 GO
 -- DNN-4289: optimize roles indexes
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}Roles_RoleName')
-    DROP Index {databaseOwner}[{objectQualifier}Roles].[IX_{objectQualifier}Roles_RoleName]
+    DROP INDEX [IX_{objectQualifier}Roles_RoleName] ON {databaseOwner}[{objectQualifier}Roles]
 GO
 
 CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Roles_RoleName  ON {databaseOwner}[{objectQualifier}Roles] (PortalID,    RoleName) INCLUDE (RoleId)
@@ -1524,7 +1524,7 @@ GO
 
 -- DNN-4292: Optimize Index Users_IsDeleted_DisplayName
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_IsDeleted_DisplayName')
-DROP INDEX {databaseOwner}[{objectQualifier}Users].[IX_{objectQualifier}Users_IsDeleted_DisplayName]
+DROP INDEX [IX_{objectQualifier}Users_IsDeleted_DisplayName] ON {databaseOwner}[{objectQualifier}Users]
 GO
 
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_IsDeleted_DisplayName] ON {databaseOwner}[{objectQualifier}Users]
@@ -1535,7 +1535,7 @@ GO
 
 -- DNN-4292: Create Index on last modified date for search indexer (isSuperuser included for future improvements)
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_LastModifiedOnDate')
-DROP INDEX {databaseOwner}[{objectQualifier}Users].[IX_{objectQualifier}Users_LastModifiedOnDate]
+DROP INDEX [IX_{objectQualifier}Users_LastModifiedOnDate] ON {databaseOwner}[{objectQualifier}Users]
 GO
 
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LastModifiedOnDate ON {databaseOwner}[{objectQualifier}Users]
@@ -1544,7 +1544,7 @@ GO
 
 -- DNN-4293: Optimized Index 
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_PropertyDefinitionID')
-DROP INDEX {databaseOwner}[{objectQualifier}UserProfile].[IX_{objectQualifier}UserProfile_PropertyDefinitionID]
+DROP INDEX [IX_{objectQualifier}UserProfile_PropertyDefinitionID] ON {databaseOwner}[{objectQualifier}UserProfile]
 GO
 
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserProfile_PropertyDefinitionID] ON {databaseOwner}[{objectQualifier}UserProfile]
@@ -1552,7 +1552,7 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserProfile_PropertyDefinitionID]
 GO
 
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_LastUpdatedDate')
-DROP INDEX {databaseOwner}[{objectQualifier}UserProfile].[IX_{objectQualifier}UserProfile_LastUpdatedDate]
+DROP INDEX [IX_{objectQualifier}UserProfile_LastUpdatedDate] ON {databaseOwner}[{objectQualifier}UserProfile]
 GO
 
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}UserProfile_LastUpdatedDate ON {databaseOwner}[{objectQualifier}UserProfile]
@@ -1561,7 +1561,7 @@ GO
 
 -- DNN-4294: Create Index 
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserPortals]') AND name = N'IX_{objectQualifier}UserPortals_VanityUrl')
-DROP INDEX {databaseOwner}[{objectQualifier}UserPortals].[IX_{objectQualifier}UserPortals_VanityUrl]
+DROP INDEX [IX_{objectQualifier}UserPortals_VanityUrl] ON {databaseOwner}[{objectQualifier}UserPortals]
 GO
 
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}UserPortals_VanityUrl ON {databaseOwner}[{objectQualifier}UserPortals]
@@ -1570,7 +1570,7 @@ GO
 
 -- DNN-4295: Create Index 
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules_PortalId')
-DROP INDEX {databaseOwner}[{objectQualifier}Modules].[IX_{objectQualifier}Modules_PortalId]
+DROP INDEX [IX_{objectQualifier}Modules_PortalId] ON {databaseOwner}[{objectQualifier}Modules]
 GO
 
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}Modules_PortalId ON {databaseOwner}[{objectQualifier}Modules]
@@ -1579,10 +1579,10 @@ GO
 
 -- DNN-4295: Rename and optimize Index 		
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules')
-DROP INDEX {databaseOwner}[{objectQualifier}Modules].[IX_{objectQualifier}Modules]
+DROP INDEX [IX_{objectQualifier}Modules] ON {databaseOwner}[{objectQualifier}Modules]
 GO
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules_ModuleDefId')
-DROP INDEX {databaseOwner}[{objectQualifier}Modules].[IX_{objectQualifier}Modules_ModuleDefId]
+DROP INDEX [IX_{objectQualifier}Modules_ModuleDefId] ON {databaseOwner}[{objectQualifier}Modules]
 GO
 
 CREATE NONCLUSTERED INDEX IX_{objectQualifier}Modules_ModuleDefId ON {databaseOwner}[{objectQualifier}Modules]
@@ -1591,13 +1591,13 @@ GO
 
 -- DNN-4296: Rename and optimize Index
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_1')
-DROP INDEX {databaseOwner}[{objectQualifier}Tabs].[IX_{objectQualifier}IX_Tabs_1]
+DROP INDEX [IX_{objectQualifier}IX_Tabs_1] ON {databaseOwner}[{objectQualifier}Tabs]
 GO
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_2')
-DROP INDEX {databaseOwner}[{objectQualifier}Tabs].[IX_{objectQualifier}IX_Tabs_2]
+DROP INDEX [IX_{objectQualifier}IX_Tabs_2] ON {databaseOwner}[{objectQualifier}Tabs]
 GO
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_PortalID_ParentID')
-DROP INDEX {databaseOwner}[{objectQualifier}Tabs].[IX_{objectQualifier}IX_Tabs_PortalID_ParentID]
+DROP INDEX [IX_{objectQualifier}IX_Tabs_PortalID_ParentID] ON {databaseOwner}[{objectQualifier}Tabs]
 GO
 
 -- note: not unique ATM, because during move two pages with same portal+parentID+TabOrder might exist (check API)
