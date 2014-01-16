@@ -392,6 +392,23 @@ AS
      AND FolderID IN (SELECT FolderID FROM {databaseOwner}[{objectQualifier}Folders] 
 	                  WHERE (PortalID = @PortalId Or IsNull(@PortalId, -1) = IsNull(PortalID, -1)))
 GO
+
+-- DNN-4314: optimized to use a single statement
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFolderPermissionsByFolderPath]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByFolderPath]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByFolderPath]
+    @PortalId   Int,            -- Null for Host menu tabs
+    @FolderPath nVarChar(300)   -- must be a valid path
+AS
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]
+    WHERE FolderID IN (SELECT FolderID FROM {databaseOwner}[{objectQualifier}Folders]
+                                       WHERE FolderPath = @FolderPath AND (IsNull(PortalID, -1) = IsNull(@PortalId, -1)))
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
