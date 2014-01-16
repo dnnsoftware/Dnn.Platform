@@ -61,6 +61,10 @@
                         <dnn:label id="plGUID" controlname="lblGUID" runat="server" />
                         <asp:Label ID="lblGUID" runat="server" />
                     </div>
+                    <div class="dnnFormItem">
+                        <dnn:label id="plHomeDirectory" runat="server" controlname="lblHomeDirectory" />
+                        <asp:Label ID="lblHomeDirectory" runat="server" />
+                    </div>
                 </fieldset>
                 <h2 id="dnnSitePanel-Marketing" class="dnnFormSectionHead">
                     <a href=""><%=LocalizeString("Marketing")%></a>
@@ -173,10 +177,6 @@
                         <dnn:DnnComboBox ID="cboSearchTabId" runat="server" DataTextField="IndentedTabName" DataValueField="TabId" />
                     </div>
                     <dnnext:UserControlExtensionControl runat="server" ID="pagesExtensionPoint" Module="SiteSettings" Group="Pages"/>
-                    <div class="dnnFormItem">
-                        <dnn:label id="plHomeDirectory" runat="server" controlname="lblHomeDirectory" />
-                        <asp:Label ID="lblHomeDirectory" runat="server" />
-                    </div>
                 </fieldset>
                 <h2 id="dnnSitePanel-SecuritySettings" class="dnnFormSectionHead">
                     <a href=""><%=LocalizeString("SecuritySettings")%></a>
