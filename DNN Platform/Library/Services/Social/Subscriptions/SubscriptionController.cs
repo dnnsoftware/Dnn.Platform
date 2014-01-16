@@ -117,6 +117,14 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
             dataService.DeleteSubscription(subscriptionToDelete.SubscriptionId);
         }
+
+        public int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription)
+        {
+            Requires.NotNull("objectKey", objectKey);
+            Requires.NotNull("portalId", portalId);
+            Requires.NotNull("newDescription", newDescription);
+            return dataService.UpdateSubscriptionDescription(objectKey, portalId, newDescription);
+        }
         #endregion
     }
 }

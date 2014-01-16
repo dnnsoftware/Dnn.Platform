@@ -366,6 +366,25 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogType] ON {databaseOwn
 	([LogTypeKey], [LogPortalID])
 GO
 
+--Add stored procedure to update subscription descriptions
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_UpdateSubscriptionDescription]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_UpdateSubscriptionDescription
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_UpdateSubscriptionDescription]
+	@ObjectKey NVARCHAR(255), 
+    @PortalId INT,
+    @Description NVARCHAR(255)	
+AS 
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		SET [Description] = @Description
+		WHERE PortalId = @PortalId 
+		AND ObjectKey LIKE @ObjectKey		
+		SELECT @@ROWCOUNT AS [ResultStatus]      
+	END
+	
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
