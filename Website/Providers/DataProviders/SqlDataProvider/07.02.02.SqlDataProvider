@@ -255,6 +255,78 @@ BEGIN
 END
 GO
 
+-- DNN-4325: optimized
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByProfileProperty]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty] -- for admin use only (no property visibility check)
+    @PortalId       Int,            -- Null|-1: all Portals
+    @PropertyName   nVarChar(256),  -- name of profile property to search in
+    @PropertyValue  nVarChar(256),  -- pattern for property value, supports SQL wildcards
+    @PageIndex      Int,            -- Page number starting with 0
+    @PageSize       Int,            -- number of items per page
+    @IncludeDeleted Bit,            -- include soft deleted users
+    @SuperUsersOnly Bit             -- return host users only
+AS
+    DECLARE @MasterPortalId  Int
+BEGIN
+    SET @MasterPortalId = {databaseOwner}{objectQualifier}MasterPortalId(@PortalId) -- local variable prevents parameter sniffing!
+
+    DECLARE @DataTypeName   nVarChar(100) = Null
+    DECLARE @PropertyDefId  Int = Null -- In MasterPortal
+    SELECT TOP(1) @PropertyDefId = D.PropertyDefinitionId, @DataTypeName = L.Value
+        FROM {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] D INNER JOIN {databaseOwner}[{objectQualifier}Lists] L ON D.DataType = L.EntryID
+        WHERE PropertyName LIKE @PropertyName AND (IsNull(D.PortalID, -1) = IsNull(@MasterPortalId, -1) OR (IsNull(@PortalID, -1) = -1))
+        ORDER BY D.PortalID DESC; -- prefer portal specific properties
+
+    IF IsNull(@PropertyDefId,0) = 0 OR  IsNull(@DataTypeName,'') = '' -- property not found
+        SELECT Null
+     ELSE IF @DataTypeName Like 'List' BEGIN
+            WITH OrderedUsers AS (
+                SELECT U.*, UP.PropertyValue, ROW_NUMBER() OVER (ORDER BY U.DisplayName ASC, U.UserID ASC, U.PortalID DESC) AS RowNum
+                FROM       {databaseOwner}[{objectQualifier}vw_Users]     U 
+				INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] UP ON U.UserID = UP.UserID
+                INNER JOIN {databaseOwner}[{objectQualifier}Lists]        L ON UP.PropertyValue = L.Value AND L.ListName = @PropertyName
+                WHERE  ((L.Text LIKE @PropertyValue) OR (@PropertyValue Is Null))
+                    AND IsNull(IsDeleted,   0) <= @IncludeDeleted --less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+                    AND IsNull(IsSuperUser, 0) >= @SuperUsersOnly
+                    AND (U.PortalID = @MasterPortalId OR (IsNull(@MasterPortalId, -1) = -1))
+                    AND (UP.PropertyDefinitionID = @PropertyDefId))
+                SELECT * FROM OrderedUsers WHERE RowNum >= {databaseOwner}{objectQualifier}PageLowerBound(@PageIndex, @Pagesize)
+                                             AND RowNum <= {databaseOwner}{objectQualifier}PageUpperBound(@PageIndex, @Pagesize) ORDER BY RowNum;
+
+                SELECT  COUNT(1) AS TotalRecords
+                FROM    {databaseOwner}[{objectQualifier}vw_Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] UP ON U.UserID = UP.UserID
+                INNER JOIN {databaseOwner}[{objectQualifier}Lists] L ON UP.PropertyValue = L.Value AND L.ListName = @PropertyName
+                WHERE  ((UP.PropertyValue LIKE @PropertyValue) OR (@PropertyValue Is Null))
+                    AND IsNull(IsDeleted,   0) <= @IncludeDeleted
+                    AND IsNull(IsSuperUser, 0) >= @SuperUsersOnly
+                    AND (U.PortalID = @MasterPortalId OR (IsNull(@MasterPortalId, -1) = -1))
+                    AND (UP.PropertyDefinitionID = @PropertyDefId)
+            END
+         ELSE BEGIN
+            WITH OrderedUsers AS (
+                SELECT U.*, UP.PropertyValue, ROW_NUMBER() OVER (ORDER BY U.DisplayName ASC, U.UserID ASC, U.PortalID DESC) AS RowNum
+                FROM    {databaseOwner}[{objectQualifier}vw_Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] UP ON U.UserID = UP.UserID
+                WHERE  ((UP.PropertyValue LIKE @PropertyValue) OR (@PropertyValue Is Null))
+                    AND IsNull(IsDeleted,   0) <= @IncludeDeleted   --less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+                    AND IsNull(IsSuperUser, 0) >= @SuperUsersOnly
+                    AND (U.PortalId = @MasterPortalId OR (IsNull(@MasterPortalId, -1) = -1))
+                    AND (UP.PropertyDefinitionID = @PropertyDefId))
+                SELECT * FROM OrderedUsers WHERE RowNum >= {databaseOwner}{objectQualifier}PageLowerBound(@PageIndex, @Pagesize)
+                                             AND RowNum <= {databaseOwner}{objectQualifier}PageUpperBound(@PageIndex, @Pagesize) ORDER BY RowNum;
+
+                SELECT  COUNT(1) AS TotalRecords
+                FROM    {databaseOwner}[{objectQualifier}vw_Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] UP ON U.UserId = UP.UserId
+                WHERE  ((UP.PropertyValue LIKE @PropertyValue) OR (@PropertyValue Is Null))
+                    AND IsNull(IsDeleted,   0) <= @IncludeDeleted
+                    AND IsNull(IsSuperUser, 0) >= @SuperUsersOnly
+                    AND (U.PortalID = @MasterPortalId OR (IsNull(@MasterPortalId, -1) = -1))
+                    AND (UP.PropertyDefinitionID = @PropertyDefId)
+            END
+END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
