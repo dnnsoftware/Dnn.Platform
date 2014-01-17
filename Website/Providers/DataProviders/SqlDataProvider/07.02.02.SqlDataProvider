@@ -666,6 +666,73 @@ AS
         [TabPermissionID]      = @TabPermissionId
 GO
 
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] ALTER COLUMN Header nVarChar(Max)
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] ALTER COLUMN Footer nVarChar(Max)
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] DROP CONSTRAINT [IX_{objectQualifier}TabModules] 
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_TabID' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+	DROP INDEX [IX_{objectQualifier}TabModules_TabID] ON {databaseOwner}[{objectQualifier}TabModules]
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_ModuleID' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+	DROP INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules]
+
+	IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_ModuleOrder' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+	DROP INDEX [IX_{objectQualifier}TabModules_ModuleOrder] ON {databaseOwner}[{objectQualifier}TabModules]
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_TabID] ON {databaseOwner}[{objectQualifier}TabModules] 
+	([TabID], [ModuleID])
+	INCLUDE ([IsDeleted], CultureCode, ModuleTitle)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules] 
+	([ModuleID], [TabID])
+	INCLUDE ([IsDeleted], CultureCode, ModuleTitle)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleOrder] ON {databaseOwner}[{objectQualifier}TabModules] 
+	([TabID], [PaneName], [ModuleOrder])
+	INCLUDE ([TabModuleID], [ModuleID], [CacheTime], [Alignment], [Color], [Border], [IconFile], [Visibility], [ContainerSrc], 
+	         [DisplayTitle], [DisplayPrint], [DisplaySyndicate], [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL],
+			 [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsDeleted], [CacheMethod], [ModuleTitle],
+			 [Header], [Footer], [CultureCode], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid]
+)
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModules]
+	@TabId int -- not null!
+AS
+BEGIN
+	SELECT	* 
+	FROM {databaseOwner}{objectQualifier}vw_TabModules
+	WHERE  TabId = @TabId
+	ORDER BY TabId, PaneName, ModuleOrder -- optimized for index used
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabModuleOrder]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleOrder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleOrder]
+	@TabId    int, 			-- Not Null
+	@PaneName nvarchar(50)  -- Not Null
+AS
+BEGIN
+	SELECT *
+	FROM {objectQualifier}TabModules 
+	WHERE TabId    = @TabId 
+	  AND PaneName = @PaneName
+	ORDER BY TabId, PaneName, ModuleOrder -- optimized for index used
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
