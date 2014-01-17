@@ -566,6 +566,7 @@
                                 <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem8" runat="server" DataField="Security_CaptchaLogin" />
                                 <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem9" runat="server" DataField="Security_RequireValidProfileAtLogin" />
                                 <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem10" runat="server" DataField="Security_CaptchaRetrivePassword" />
+                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem12" runat="server" DataField="Security_CaptchaChangePassword" />
                             </Items>
                         </dnn:dnnformeditor>
                     </fieldset>

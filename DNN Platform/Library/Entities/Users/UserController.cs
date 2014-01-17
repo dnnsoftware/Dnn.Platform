@@ -338,6 +338,10 @@ namespace DotNetNuke.Entities.Users
             {
                 settings["Security_CaptchaRegister"] = false;
             }
+            if (settings["Security_CaptchaChangePassword"] == null)
+            {
+                settings["Security_CaptchaChangePassword"] = false;
+            }
             if (settings["Security_CaptchaRetrivePassword"] == null)
             {
                 settings["Security_CaptchaRetrivePassword"] = false;
