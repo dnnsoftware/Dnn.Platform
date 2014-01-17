@@ -733,6 +733,39 @@ BEGIN
 	ORDER BY TabId, PaneName, ModuleOrder -- optimized for index used
 END
 GO
+
+-- DNN-4310
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Lists'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_Lists]
+GO	
+-- optimized
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Lists]
+AS
+	SELECT  L.EntryID, 
+		L.ListName, 
+		L.[Value], 
+		L.Text, 
+		L.[Level], 
+		L.SortOrder, 
+		L.DefinitionID, 
+		L.ParentID, 
+		L.Description, 
+		L.PortalID, 
+		L.SystemList, 
+		{databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'ParentKey',  0) AS ParentKey, 
+		{databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'Parent',     0) AS Parent, 
+		{databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'ParentList', 0) AS ParentList,
+		S.MaxSortOrder,
+		S.EntryCount,
+		CASE WHEN EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}Lists] WHERE (ParentID = L.EntryID)) THEN 1 ELSE 0 END AS HasChildren, 
+		L.CreatedByUserID, 
+		L.CreatedOnDate, 
+		L.LastModifiedByUserID, 
+		L.LastModifiedOnDate
+	FROM {databaseOwner}[{objectQualifier}Lists] AS L
+	LEFT JOIN (SELECT ListName, ParentID, Max(SortOrder) AS MaxSortOrder, Count(1) AS EntryCount 
+			   FROM {databaseOwner}[{objectQualifier}Lists] GROUP BY ListName, ParentID) S 		ON L.ParentID = S.ParentId AND L.ListName = S.ListName
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
