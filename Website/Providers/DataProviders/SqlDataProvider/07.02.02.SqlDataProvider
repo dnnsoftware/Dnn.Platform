@@ -399,6 +399,273 @@ AS
     FROM {databaseOwner}[{objectQualifier}vw_FolderPermissions]
     WHERE IsNull(PortalID, -1) = IsNull(@PortalId, -1)
 GO	
+
+-- DNN-4313
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddDesktopModulePermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModulePermission]
+    @PortalDesktopModuleID Int, -- not null!
+    @PermissionId          Int, -- not null!
+    @RoleId                Int, -- might be negative for virtual roles
+    @AllowAccess           Bit, -- false: deny, true: grant
+    @UserId                Int, -- -1 is replaced by Null
+    @CreatedByUserId       Int  -- -1 is replaced by Null
+AS
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}DesktopModulePermission] (
+        [PortalDesktopModuleID],
+        [PermissionID],
+        [RoleID],
+        [AllowAccess],
+        [UserID],
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate]
+    ) VALUES (
+        @PortalDesktopModuleID,
+        @PermissionID,
+        @RoleId,
+        @AllowAccess,
+        CASE WHEN @UserId = -1 THEN Null ELSE @UserId END,
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate(),
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate()
+    )
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddFolderPermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFolderPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFolderPermission]
+    @FolderID           Int, -- not Null!
+    @PermissionId       Int, -- not Null!
+    @RoleId             Int, -- might be negative for virtual roles
+    @AllowAccess        Bit, -- false: deny, true: grant
+    @UserId             Int, -- -1 is replaced by Null
+    @CreatedByUserId    Int  -- -1 is replaced by Null
+AS
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}FolderPermission] (
+        [FolderID],
+        [PermissionID],
+        [RoleId],
+        [AllowAccess],
+        [UserId],
+        [CreatedByUserId],
+        [CreatedOnDate],
+        [LastModifiedByUserId],
+        [LastModifiedOnDate]
+    ) VALUES (
+        @FolderID,
+        @PermissionID,
+        @RoleId,
+        @AllowAccess,
+        CASE WHEN @UserId = -1 THEN Null ELSE @UserId END,
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate(),
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate()
+    )
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddModulePermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddModulePermission]
+    @ModuleID           Int, -- not null!
+    @PortalID           Int, -- not null!
+    @PermissionId       Int, -- not null!
+    @RoleId             Int, -- might be negative for virtual roles
+    @AllowAccess        Bit, -- false: deny, true: grant
+    @UserId             Int, -- -1 is replaced by Null
+    @CreatedByUserId    Int  -- -1 is replaced by Null
+AS
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}ModulePermission] (
+        [ModuleID],
+        [PortalID],
+        [PermissionID],
+        [RoleId],
+        [AllowAccess],
+        [UserId],
+        [CreatedByUserId],
+        [CreatedOnDate],
+        [LastModifiedByUserId],
+        [LastModifiedOnDate]
+    ) VALUES (
+        @ModuleID,
+        @PortalID,
+        @PermissionID,
+        @RoleId,
+        @AllowAccess,
+        CASE WHEN @UserId = -1 THEN Null ELSE @UserId END,
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate(),
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate()
+    )
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddTabPermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabPermission]
+    @TabID              Int, -- not null!
+    @PermissionId       Int, -- not null!
+    @RoleId             Int, -- might be negative for virtual roles
+    @AllowAccess        Bit, -- false: deny, true: grant
+    @UserId             Int, -- -1 is replaced by Null
+    @CreatedByUserId    Int  -- -1 is replaced by Null
+AS
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}TabPermission] (
+        [TabID],
+        [PermissionID],
+        [RoleId],
+        [AllowAccess],
+        [UserId],
+        [CreatedByUserId],
+        [CreatedOnDate],
+        [LastModifiedByUserId],
+        [LastModifiedOnDate]
+    ) VALUES (
+        @TabID,
+        @PermissionID,
+        @RoleId,
+        @AllowAccess,
+        CASE WHEN @UserId = -1 THEN Null ELSE @UserId END,
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate(),
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate()
+    )
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateDesktopModulePermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModulePermission]
+    @DesktopModulePermissionId Int, -- not null!
+    @PortalDesktopModuleId     Int, -- not null!
+    @PermissionId              Int, -- not null!
+    @RoleId                    Int, -- might be negative for virtual roles
+    @AllowAccess               Bit, -- false: deny, true: grant
+    @UserId                    Int, -- -1 is replaced by Null
+    @LastModifiedByUserId      Int  -- -1 is replaced by Null
+AS
+    UPDATE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+    SET
+        [PortalDesktopModuleId] = @PortalDesktopModuleId,
+        [PermissionId]          = @PermissionId,
+        [RoleId]                = @RoleId,
+        [AllowAccess]           = @AllowAccess,
+        [UserId]                = CASE WHEN @UserId = -1 THEN Null ELSE @UserId  END,
+        [LastModifiedByUserId]  = CASE WHEN @LastModifiedByUserId = -1 THEN Null ELSE @LastModifiedByUserId  END,
+        [LastModifiedOnDate]    = GetDate()
+    WHERE [DesktopModulePermissionId] = @DesktopModulePermissionId
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFolderPermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolderPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolderPermission]
+    @FolderPermissionID     Int, -- not null!
+    @FolderID               Int, -- not null!
+    @PermissionId           Int, -- not null!
+    @RoleId                 Int, -- might be negative for virtual roles
+    @AllowAccess            Bit, -- false: deny, true: grant
+    @UserId                 Int, -- -1 is replaced by Null
+    @LastModifiedByUserId   Int  -- -1 is replaced by Null
+AS
+    UPDATE {databaseOwner}[{objectQualifier}FolderPermission] SET
+        [FolderID]             = @FolderID,
+        [PermissionID]         = @PermissionID,
+        [RoleId]               = @RoleId,
+        [AllowAccess]          = @AllowAccess,
+        [UserId]               = CASE WHEN @UserId = -1 THEN Null ELSE @UserId  END,
+        [LastModifiedByUserId] = CASE WHEN @LastModifiedByUserId = -1 THEN Null ELSE @LastModifiedByUserId  END,
+        [LastModifiedOnDate]   = GetDate()
+    WHERE
+        [FolderPermissionID]   = @FolderPermissionID
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateModulePermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModulePermission]
+    @ModulePermissionId     Int, -- not null!
+    @PortalId               Int, -- not null!
+    @ModuleId               Int, -- not null!
+    @PermissionId           Int, -- not null!
+    @RoleId                 Int, -- might be negative for virtual roles
+    @AllowAccess            Bit, -- false: deny, true: grant
+    @UserId                 Int, -- -1 is replaced by Null
+    @LastModifiedByUserId   Int  -- -1 is replaced by Null
+AS
+    UPDATE {databaseOwner}[{objectQualifier}ModulePermission] SET
+        [ModuleId]             = @ModuleId,
+        [PortalId]             = @PortalId,
+        [PermissionId]         = @PermissionId,
+        [RoleId]               = @RoleId,
+        [AllowAccess]          = @AllowAccess,
+        [UserId]               = CASE WHEN @UserId = -1 THEN Null ELSE @UserId  END,
+        [LastModifiedByUserId] = CASE WHEN @LastModifiedByUserId = -1 THEN Null ELSE @LastModifiedByUserId  END,
+        [LastModifiedOnDate]   = GetDate()
+    WHERE
+        [ModulePermissionID]   = @ModulePermissionID
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateTabPermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabPermission]
+    @TabPermissionId        Int, -- not null!
+    @TabId                  Int, -- not null!
+    @PermissionId           Int, -- not null!
+    @RoleId                 Int, -- might be negative for virtual roles
+    @AllowAccess            Bit, -- false: deny, true: grant
+    @UserId                 Int, -- -1 is replaced by Null
+    @LastModifiedByUserId   Int  -- -1 is replaced by Null
+AS
+    UPDATE {databaseOwner}[{objectQualifier}TabPermission] SET
+        [TabID]                = @TabId,
+        [PermissionID]         = @PermissionId,
+        [RoleID]               = @RoleId,
+        [AllowAccess]          = @AllowAccess,
+        [UserID]               = CASE WHEN @UserId = -1 THEN Null ELSE @UserId  END,
+        [LastModifiedByUserId] = CASE WHEN @LastModifiedByUserId = -1 THEN Null ELSE @LastModifiedByUserId  END,
+        [LastModifiedOnDate]   = GetDate()
+    WHERE
+        [TabPermissionID]      = @TabPermissionId
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
