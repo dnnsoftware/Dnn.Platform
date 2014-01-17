@@ -3,9 +3,6 @@
 //  add support for minDnnVersion filtering
 //  finalized support for TagCloud/Type filtering
 
-if (typeof dnn === 'undefined') dnn = {};
-if (typeof dnn.log === 'undefined') dnn.log = function () { for (var a in arguments) { if (typeof console !== 'undefined' && typeof console.log !== 'undefined') console.log(arguments[a]); } }
-
 function Gallery(params) {
 
     //defaults
@@ -434,7 +431,7 @@ Gallery.prototype.getExtensions = function (callback) {
             return;
         }
     }
-    dnn.log(url);
+
     this.showLoading();
     this.eXHR = this.getXHR(url, "gotExtensions");
 }
@@ -576,8 +573,6 @@ Gallery.prototype.getCatalogs = function (completeCallback) {
 
     this.showLoading();
 
-    dnn.log(url);
-
     this.tagXHR = this.getXHR(url, "gotCatalogs");
 
     if (typeof (completeCallback) != "undefined" && $.isFunction(completeCallback)) {
@@ -604,8 +599,6 @@ Gallery.prototype.getTags = function (callback) {
     }
 
     this.showLoading();
-
-    dnn.log(url);
 
     this.tagXHR = this.getXHR(url, "gotTags");
 }
