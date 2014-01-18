@@ -8,6 +8,9 @@ namespace DotNetNuke.Web.UI.WebControls
     public class ItemListServicesOptions
     {
 
+        [DataMember(Name = "moduleId")]
+        public string ModuleId;
+
         [DataMember(Name = "serviceRoot")]
         public string ServiceRoot;
 

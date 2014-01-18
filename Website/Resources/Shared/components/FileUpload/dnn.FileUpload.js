@@ -177,7 +177,7 @@
         _submitUrl: function (status) {
             var serviceUrl = $.dnnSF().getServiceRoot("InternalServices");
             var serviceSettings = {
-                beforeSend: $.dnnSF().setModuleHeaders,
+                beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
                 url: serviceUrl + "FileUpload/UploadFromUrl",
                 type: "POST",
                 async: true,
@@ -435,10 +435,9 @@
         },
 
         _initFileUploadFromLocal: function () {
-
             this._$inputFileControl.fileupload({
                 url: this._uploadFromLocalUrl(),
-                beforeSend: $.dnnSF().setModuleHeaders,
+                beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
                 dropZone: this._$dragAndDropArea,
                 sequentialUpload: true,
                 progressInterval: 20,
@@ -457,8 +456,11 @@
             return this._$extract.is(':checked');
         },
 
-        _selectedPath: function() {
+        _selectedPath: function () {
             var selectedPathArray = this._folderPicker.selectedPath();
+            if (selectedPathArray.length === 0 && this.options.folderPath) {
+                return this.options.folderPath;
+            }
             var selectedPath = "";
             if (selectedPathArray.length > 1) {
                 for (var i = 1, size = selectedPathArray.length; i < size; i++) {
@@ -504,12 +506,13 @@
 
         _onCloseDialog: function () {
             this._isShown = false;
+            this.$this.trigger($.Event("onfileuploadclose"), [this]);
         },
 
         _ensureDialog: function () {
-            if (this.$element) {
-                return;
-            }
+            //if (this.$element) {
+            //    return;
+            //}
 
             this.$element = this._createLayout();
 
@@ -549,11 +552,13 @@
             return webResource.toPathAndQuery();
         },
 
-        show: function () {
+        show: function (options) {
             if (this._isShown) {
                 return;
             }
             this._isShown = true;
+
+            this.options = $.extend(this.options, options);
 
             this._ensureDialog();
 
@@ -609,7 +614,10 @@
 
 dnn.createFileUpload = function (options) {
     $(document).ready(function () {
-        var instance = dnn.FileUploadDialog.getInstance(options);
+        var instance = new dnn.FileUpload(options);
+        if (options.id) {
+            dnn[options.id] = instance;
+        }
     });
 };
 

@@ -596,16 +596,16 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 base.OnInit(e);
 
+                fileUpload.ModuleId = ModuleId;
+
                 ServicesFramework.Instance.RequestAjaxScriptSupport();
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
 
                 ClientResourceManager.RegisterScript(Page, "~/js/dnn.modalpopup.js", FileOrder.Js.DnnModalPopup);
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FileUpload.js", FileOrder.Js.DefaultPriority);
                 ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssetsController.js", FileOrder.Js.DefaultPriority);
 
-                int i = 1;
+                var i = 1;
                 foreach (var script in epm.GetScriptItemExtensionPoints("DigitalAssets"))
                 {
                     ClientResourceManager.RegisterScript(Page, script.ScriptName, FileOrder.Js.DefaultPriority + i++);
@@ -647,28 +647,27 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         protected void GridOnItemCreated(object sender, GridItemEventArgs e)
         {
-            if (e.Item is GridPagerItem)
-            {
-                var items = new[]
-                    {
-                        new RadComboBoxItem { Text = "10", Value = "10" },
-                        new RadComboBoxItem { Text = "25", Value = "25" },
-                        new RadComboBoxItem { Text = "50", Value = "50" },
-                        new RadComboBoxItem { Text = "100", Value = "100" },
-                        new RadComboBoxItem 
-                        { 
-                            Text = Localization.GetString("All", LocalResourceFile), 
-                            Value = int.MaxValue.ToString(CultureInfo.InvariantCulture) 
-                        }
-                    };
+            if (!(e.Item is GridPagerItem)) return;
 
-                var dropDown = (RadComboBox)e.Item.FindControl("PageSizeComboBox");
-                dropDown.Items.Clear();
-                foreach (var item in items)
-                {
-                    item.Attributes.Add("ownerTableViewId", e.Item.OwnerTableView.ClientID);
-                    dropDown.Items.Add(item);
-                }
+            var items = new[]
+            {
+                new RadComboBoxItem { Text = "10", Value = "10" },
+                new RadComboBoxItem { Text = "25", Value = "25" },
+                new RadComboBoxItem { Text = "50", Value = "50" },
+                new RadComboBoxItem { Text = "100", Value = "100" },
+                new RadComboBoxItem 
+                    { 
+                        Text = Localization.GetString("All", LocalResourceFile), 
+                        Value = int.MaxValue.ToString(CultureInfo.InvariantCulture) 
+                    }
+            };
+
+            var dropDown = (RadComboBox)e.Item.FindControl("PageSizeComboBox");
+            dropDown.Items.Clear();
+            foreach (var item in items)
+            {
+                item.Attributes.Add("ownerTableViewId", e.Item.OwnerTableView.ClientID);
+                dropDown.Items.Add(item);
             }
         }
     }

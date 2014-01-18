@@ -226,10 +226,10 @@
         <span><%=LocalizeString("GetFileUrlLabel") %></span>
         <input type="text" readonly="readonly" onclick="this.select()" title="<%=LocalizeString("GetUrlAltText") %>" />
     </div>
-
+    <dnnweb:DnnFileUpload ID="fileUpload" runat="server"/>
 </asp:Panel>
 <script type="text/javascript">
-    
+
     dnnModule.digitalAssets.init(
         $.ServicesFramework(<%=ModuleId %>),
         '<%= RootFolderViewModel != null ? RootFolderViewModel.FolderID : 0 %>',
@@ -242,9 +242,10 @@
             emptySpaceMenuId: '<%= EmptySpaceMenu.ClientID %>',
             comboBoxFolderTypeId: '<%= FolderTypeComboBox.ClientID %>',
             txtFolderNameId: '<%= FolderNameTextBox.ClientID %>',
-            txtMappedPathId: '<%= MappedPathTextBox.ClientID %>',            
+            txtMappedPathId: '<%= MappedPathTextBox.ClientID %>',
             mainToolBarId: 'dnnModuleDigitalAssetsMainToolbar',
-            selectionToolBarId: 'dnnModuleDigitalAssetsSelectionToolbar'
+            selectionToolBarId: 'dnnModuleDigitalAssetsSelectionToolbar',
+            fileUploadId: '<%= fileUpload.ClientID %>'
         },
         // Settings
         {

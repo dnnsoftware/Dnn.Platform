@@ -15,7 +15,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         setupDnnTabs();
         setupDnnMainMenuButtons();
 
-        fileUpload = new dnnModule.DigitalAssetsFileUpload($, sf, moduleSettings, resourcesSettings, refreshFolder, getCurrentFolderPath);
+        //fileUpload = new dnnModule.DigitalAssetsFileUpload($, sf, moduleSettings, resourcesSettings, refreshFolder, getCurrentFolderPath);
     }
 
     var fileUpload;
@@ -2369,8 +2369,30 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return settings.rootFolderPath + folderPath;
     }
 
+    function getFileUpload() {
+        if (typeof fileUpload === "undefined") {
+            fileUpload = dnn[controls.fileUploadId];
+            $(fileUpload).on("onfileuploadclose", function () { refreshFolder(); });
+        }
+        return fileUpload;
+    }
+
     function uploadFiles() {
-        fileUpload.uploadFiles();
+        var node = getCurrentNode();
+        var options = {
+            folderPath: getCurrentFolderPath(),
+            folderPicker: {
+                disabled: true,
+                initialState: {
+                    selectedItem: {
+                        key: node.get_value(),
+                        value: node.get_text()
+                    }
+                }
+            }
+        };
+        var instance = getFileUpload();
+        instance.show(options);
     }
 
     function deleteSelectedItems() {
@@ -2448,7 +2470,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                         }).fail(function (xhr) {
                             handledXhrError(xhr, resources.deleteItemsErrorTitle);
                         }).always(function () {
-                            enableLoadingPanel(false);                            
+                            enableLoadingPanel(false);
                         });
                     }
                 },
