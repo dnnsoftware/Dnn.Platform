@@ -391,7 +391,7 @@ namespace DotNetNuke.Web.InternalServices
                 string filter,
                 string fileName,
                 bool overwrite,
-                bool isHostMenu,
+                bool isHostPortal,
                 bool extract)
         {
             var result = new FileUploadDto();
@@ -415,7 +415,7 @@ namespace DotNetNuke.Web.InternalServices
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder
-                var effectivePortalId = isHostMenu ? Null.NullInteger : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                var effectivePortalId = isHostPortal ? Null.NullInteger : PortalController.GetEffectivePortalId(portalSettings.PortalId);
                 int userId;
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                 if (IsUserFolder(folder, out userId))
@@ -500,7 +500,7 @@ namespace DotNetNuke.Web.InternalServices
                     var filter = string.Empty;
                     var fileName = string.Empty;
                     var overwrite = false;
-                    var isHostMenu = false;
+                    var isHostPortal = false;
                     var extract = false;
                     Stream stream = null;
 
@@ -521,8 +521,8 @@ namespace DotNetNuke.Web.InternalServices
                                 bool.TryParse(item.ReadAsStringAsync().Result, out overwrite);
                                 break;
 
-                            case "\"ISHOSTMENU\"":
-                                bool.TryParse(item.ReadAsStringAsync().Result, out isHostMenu);
+                            case "\"ISHOSTPORTAL\"":
+                                bool.TryParse(item.ReadAsStringAsync().Result, out isHostPortal);
                                 break;
 
                             case "\"EXTRACT\"":
@@ -546,7 +546,7 @@ namespace DotNetNuke.Web.InternalServices
                         currentSynchronizationContext.Send(
                             delegate
                             {
-                                result = UploadFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract);
+                                result = UploadFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract);
                             },
                             null
                         );

@@ -87,7 +87,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public string Id;
 
         [DataMember(Name = "moduleId")]
-        public string ModuleId;
+        public string ModuleId = string.Empty;
 
         [DataMember(Name = "showOnStartup")]
         public bool ShowOnStartup;
@@ -106,6 +106,17 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "resources")]
         public DnnFileUploadResources Resources;
+
+        private Dictionary<string, string> _parameters;
+
+        [DataMember(Name = "parameters")]
+        public Dictionary<string, string> Parameters
+        {
+            get
+            {
+                return _parameters ?? (_parameters = new Dictionary<string, string>());
+            }
+        }
 
         public DnnFileUploadOptions()
         {

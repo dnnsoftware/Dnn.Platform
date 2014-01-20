@@ -184,7 +184,8 @@
                 success: $.proxy(this._onUploadByUrl, this, [status.fileName]),
                 error: $.onAjaxError
             };
-            serviceSettings.data = { Url: status.fileName, Folder: this._selectedPath(), Overwrite: status.overwrite, Unzip: this._extract(), Filter: "", IsHostMenu: false };
+            serviceSettings.data = { Url: status.fileName, Folder: this._selectedPath(), Overwrite: status.overwrite, Unzip: this._extract(), Filter: "" };
+            $.extend(serviceSettings.data, this.options.parameters);
             $.ajax(serviceSettings);
         },
 
@@ -347,6 +348,7 @@
                 extract: this._extract(),
                 overwrite: statusData.overwrite
             };
+            $.extend(data.formData, this.options.parameters);
             return true;
         },
 

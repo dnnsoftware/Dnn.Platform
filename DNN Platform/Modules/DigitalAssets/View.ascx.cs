@@ -597,6 +597,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 base.OnInit(e);
 
                 fileUpload.ModuleId = ModuleId;
+                fileUpload.Options.Parameters.Add("isHostPortal", IsHostPortal ? "true" : "false");
 
                 ServicesFramework.Instance.RequestAjaxScriptSupport();
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
