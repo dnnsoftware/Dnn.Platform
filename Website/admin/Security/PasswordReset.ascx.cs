@@ -102,6 +102,23 @@ namespace DotNetNuke.Modules.Admin.Security
                 return;    
             }
 
+            //Check New Password is not same as username or banned
+            var settings = new MembershipPasswordSettings(User.PortalID);
+
+            if (settings.EnableBannedList)
+            {
+                var m = new MembershipPasswordController();
+                if (m.FoundBannedPassword(txtPassword.Text) || txtUsername.Text == txtPassword.Text)
+                {
+                    resetMessages.Visible = true;
+                    var failed = Localization.GetString("PasswordResetFailed");
+                    LogFailure(failed);
+                    lblHelp.Text = failed;
+                    return;  
+                }
+
+            }
+
             if (UserController.ChangePasswordByToken(PortalSettings.PortalId, txtUsername.Text, txtPassword.Text, ResetToken) == false)
             {
                 resetMessages.Visible = true;
