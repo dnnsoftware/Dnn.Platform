@@ -494,17 +494,17 @@ namespace DotNetNuke.Services.Journal
         public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
         {
             var tabId = module == null ? Null.NullInteger : module.TabID;
-            var tabModuleId = module == null ? Null.NullInteger : module.TabModuleID;
+            var moduleId = module == null ? Null.NullInteger : module.ModuleID;
 
-            SaveJournalItem(journalItem, tabId, tabModuleId);
+            SaveJournalItem(journalItem, tabId, moduleId);
         }
 
         public void UpdateJournalItem(JournalItem journalItem, ModuleInfo module)
         {
             var tabId = module == null ? Null.NullInteger : module.TabID;
-            var tabModuleId = module == null ? Null.NullInteger : module.TabModuleID;
+            var moduleId = module == null ? Null.NullInteger : module.ModuleID;
 
-            UpdateJournalItem(journalItem, tabId, tabModuleId);
+            UpdateJournalItem(journalItem, tabId, moduleId);
         }
 
         public void DisableComments(int portalId, int journalId)
