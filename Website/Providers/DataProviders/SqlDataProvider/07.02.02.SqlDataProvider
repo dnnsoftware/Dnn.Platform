@@ -766,6 +766,228 @@ AS
 	LEFT JOIN (SELECT ListName, ParentID, Max(SortOrder) AS MaxSortOrder, Count(1) AS EntryCount 
 			   FROM {databaseOwner}[{objectQualifier}Lists] GROUP BY ListName, ParentID) S 		ON L.ParentID = S.ParentId AND L.ListName = S.ListName
 GO
+
+--DNN-4538
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ContentItems_TabID' AND object_id = OBJECT_ID('{objectQualifier}ContentItems'))
+	DROP INDEX IX_{objectQualifier}ContentItems_TabID ON {databaseOwner}[{objectQualifier}ContentItems]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ContentItems_ModuleID' AND object_id = OBJECT_ID('{objectQualifier}ContentItems'))
+	DROP INDEX IX_{objectQualifier}ContentItems_ModuleID ON {databaseOwner}[{objectQualifier}ContentItems]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ContentItems_ContentKey' AND object_id = OBJECT_ID('{objectQualifier}ContentItems'))
+	DROP INDEX IX_{objectQualifier}ContentItems_ContentKey ON {databaseOwner}[{objectQualifier}ContentItems]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ContentItems_ContentTypeID' AND object_id = OBJECT_ID('{objectQualifier}ContentItems'))
+	DROP INDEX IX_{objectQualifier}ContentItems_ContentTypeID ON {databaseOwner}[{objectQualifier}ContentItems]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ContentItems_ContentTypeID' AND object_id = OBJECT_ID('{objectQualifier}ContentItems'))
+	DROP INDEX IX_{objectQualifier}ContentItems_ContentTypeID ON {databaseOwner}[{objectQualifier}ContentItems]
+GO
+
+-- allow empty values:
+ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems] ALTER COLUMN TabID    Int Null
+ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems] ALTER COLUMN ModuleId Int Null
+GO
+
+-- clean orphaned data
+UPDATE {databaseOwner}[{objectQualifier}ContentItems] SET Content    = Null WHERE Content    = ''
+UPDATE {databaseOwner}[{objectQualifier}ContentItems] SET TabID      = Null WHERE TabID      = -1
+UPDATE {databaseOwner}[{objectQualifier}ContentItems] SET ModuleID   = Null WHERE ModuleID   = -1
+UPDATE {databaseOwner}[{objectQualifier}ContentItems] SET ContentKey = Null WHERE ContentKey = ''
+UPDATE {databaseOwner}[{objectQualifier}ContentItems] SET Indexed    = 0    WHERE Indexed    Is Null
+GO
+
+-- disallow empty bits
+ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems] ALTER COLUMN [Indexed] Bit NOT Null
+GO
+
+-- delete invalid references
+UPDATE {databaseOwner}[{objectQualifier}ContentItems]
+ SET ModuleID = Null 
+   WHERE ModuleID NOT IN (SELECT ModuleID FROM {databaseOwner}[{objectQualifier}Modules])
+     AND NOT ContentTypeID = 2
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}ContentItems]
+ SET TabID = Null 
+   WHERE TabID    NOT IN (SELECT TabID FROM {databaseOwner}[{objectQualifier}Tabs])
+     AND NOT ContentTypeID = 1
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}ContentItems]
+ SET StateID = Null 
+   WHERE StateID NOT IN (SELECT StateID FROM {databaseOwner}[{objectQualifier}ContentWorkflowStates])
+GO
+
+-- delete orphaned records
+DELETE FROM {databaseOwner}[{objectQualifier}ContentItems]
+	WHERE (ContentTypeID = 2 AND NOT ModuleID IN (SELECT ModuleID FROM {databaseOwner}[{objectQualifier}Modules]))
+	   OR (ContentTypeID = 1 AND NOT TabID    IN (SELECT TabID    FROM {databaseOwner}[{objectQualifier}Tabs]))
+GO
+
+-- Optimize Indexes on ContentItems
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_TabID] ON {databaseOwner}[{objectQualifier}ContentItems] 
+	([TabID])
+	INCLUDE ([ContentItemID], [Content], [ContentKey], [ContentTypeID], [ModuleID], [Indexed], [StateID])
+	WHERE [TabID] IS NOT Null
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_ModuleID] ON {databaseOwner}[{objectQualifier}ContentItems] 
+	([ModuleID])
+	INCLUDE ([ContentItemID], [Content], [ContentKey], [ContentTypeID], [TabID], [Indexed], [StateID])
+	WHERE [ModuleId] IS NOT Null
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_ContentKey] ON {databaseOwner}[{objectQualifier}ContentItems] 
+	([ContentKey])
+	INCLUDE ([ContentItemID], [Content], [ContentTypeID], [TabID], [ModuleID], [Indexed], [StateID])
+	WHERE [ContentKey] IS NOT Null
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_ContentTypeID] ON {databaseOwner}[{objectQualifier}ContentItems] 
+	([ContentTypeID])
+	INCLUDE (ContentItemID, [Content], [ContentKey], [TabId], [ModuleID], [Indexed], [StateID])
+	WHERE [ContentTypeID] IS NOT Null
+GO
+
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddContentItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddContentItem]
+GO
+
+-- fix null values:
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddContentItem] 
+	@Content			nvarchar(max), -- should not be empty, might be Null
+	@ContentTypeID		int,		   -- Not Null!
+	@TabID				int,		   -- Either null or a valid PageID
+	@ModuleID			int, 		   -- Either null or a valid ModuleID
+	@ContentKey			nvarchar(250), -- Either Null or a (non-empty) key for the value
+	@Indexed			bit,		   -- Should not be Null
+	@CreatedByUserID	int,		   -- Should be a valid userID
+	@StateID			int = NULL	   -- Should be valid WorkflowState or Null
+AS
+	INSERT INTO {databaseOwner}[{objectQualifier}ContentItems] (
+		Content,
+		ContentTypeID,
+		TabID,
+		ModuleID,
+		ContentKey,
+		Indexed,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		StateID
+	)
+	VALUES (
+		CASE WHEN @Content    = '' THEN Null ELSE @Content    END,
+		@ContentTypeID,
+		CASE WHEN @TabID      < 1  THEN Null ELSE @TabID      END,
+		CASE WHEN @ModuleID   < 1  THEN Null ELSE @ModuleID   END,
+		CASE WHEN @ContentKey = '' THEN Null ELSE @ContentKey END,
+		IsNull(@Indexed, 0),
+		@CreatedByUserID,
+		GetDate(),
+		@CreatedByUserID,
+		GetDate(),
+		CASE WHEN @StateID    < 1  THEN Null ELSE @StateID    END
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+-- fix null values:
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateContentItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateContentItem]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateContentItem] 
+	@ContentItemID			int,
+	@Content				nvarchar(max),
+	@ContentTypeID			int,
+	@TabID					int,
+	@ModuleID				int, 
+	@ContentKey				nvarchar(250),
+	@Indexed				bit,
+	@LastModifiedByUserID	int,
+	@StateID				int = NULL
+AS
+	UPDATE {databaseOwner}[{objectQualifier}ContentItems] 
+	SET 
+		Content              = CASE WHEN @Content    = '' THEN Null ELSE @Content    END,
+		ContentTypeID        = @ContentTypeID,
+		TabID                = CASE WHEN @TabID      < 1  THEN Null ELSE @TabID      END,
+		ModuleID             = CASE WHEN @ModuleID   < 1  THEN Null ELSE @ModuleID   END,
+		ContentKey           = CASE WHEN @ContentKey = '' THEN Null ELSE @ContentKey END,
+		Indexed              = IsNull(@Indexed, 0),
+		LastModifiedByUserID = @LastModifiedByUserID,
+		LastModifiedOnDate   = GetDate(),
+		StateID              = CASE WHEN @StateID    < 1  THEN Null ELSE @StateID    END
+	WHERE ContentItemId = @ContentItemId
+GO
+
+
+-- optimized stored procedure:
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentItemsByTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentItemsByTerm]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentItemsByTerm]
+	@Term nVarChar(250) -- Not Null or empty
+AS
+BEGIN
+	DECLARE @TermID 	  Int,
+			@TermLeft 	  Int,
+			@TermRight 	  Int,
+			@VocabularyID Int
+	SELECT
+	  @TermID = TermID,
+	  @TermLeft = TermLeft,
+	  @TermRight = TermRight,
+	  @VocabularyID = VocabularyID
+	FROM   {databaseOwner}[{objectQualifier}Taxonomy_Terms]
+	WHERE  Name = @Term
+
+	IF @TermLeft = 0 AND @TermRight = 0
+		-- Simple Term:
+		SELECT *
+		FROM {databaseOwner}{objectQualifier}ContentItems 
+		WHERE ContentItemID IN (SELECT ContentItemID 
+								FROM {databaseOwner}[{objectQualifier}ContentItems_Tags]
+								WHERE TermID = @TermID)
+	ELSE -- Hierarchical Term:
+		SELECT *
+		FROM {databaseOwner}{objectQualifier}ContentItems 
+		WHERE ContentItemID IN (SELECT ContentItemID 
+								FROM       {databaseOwner}{objectQualifier}ContentItems_Tags ct
+								INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms     t ON t.TermID = ct.TermID
+								WHERE t.TermLeft    >= @TermLeft
+								  AND t.TermRight   <= @TermRight
+								  AND t.VocabularyID = @VocabularyID)
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentItemsByVocabularyId]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentItemsByVocabularyId]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentItemsByVocabularyId] 
+	@VocabularyID int
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}ContentItems] 
+	WHERE ContentItemID IN (SELECT ContentItemID
+							FROM       {databaseOwner}{objectQualifier}ContentItems_Tags ct 
+							INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms     t ON t.TermID = ct.TermID
+							WHERE t.VocabularyID = @VocabularyID)
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
