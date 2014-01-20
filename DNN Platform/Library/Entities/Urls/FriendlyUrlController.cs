@@ -948,6 +948,43 @@ namespace DotNetNuke.Entities.Urls
             return (HttpContext.Current.Request.Browser != null) && (ClientCapabilityProvider.Instance() != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
         }
 
+        private static void CheckIllegalChars(string illegalChars, ref string ch, ref bool replacedUnwantedChars)
+        {
+            var resultingCh = new StringBuilder(ch.Length);
+            foreach (char c in ch) //ch could contain several chars from the pre-defined replacement list
+            {
+                if (illegalChars.ToLower().Contains(c.ToString().ToLower()))
+                {
+                    resultingCh.Append(""); //illegal character, removed from list
+                    replacedUnwantedChars = true;
+                }
+                else
+                {
+                    resultingCh.Append(c);
+                }
+            }
+            ch = resultingCh.ToString();
+        }
+
+        private static void CheckCharsForReplace(FriendlyUrlOptions options, ref string ch,
+            ref bool replacedUnwantedChars)
+        {
+            if (options.ReplaceChars.ToLower().Contains(ch.ToLower()))
+            {
+                if (ch != " ") // if not replacing spaces, which are implied
+                {
+                    replacedUnwantedChars = true;
+                }
+                ch = options.PunctuationReplacement; //in list of replacment chars
+
+                //If we still have a space ensure its encoded
+                if (ch == " ")
+                {
+                    ch = options.SpaceEncoding;
+                }
+            }
+        }
+
         #region Internal Methods
 
         internal static bool CanUseMobileDevice(HttpRequest request, HttpResponse response)
@@ -1053,10 +1090,8 @@ namespace DotNetNuke.Entities.Urls
                 options = new FriendlyUrlOptions();
             }
             bool convertDiacritics = options.ConvertDiacriticChars;
-            string regexMatch = options.RegexMatch;
-            string illegalChars = options.IllegalChars;
-            string replaceWith = options.PunctuationReplacement;
-            string replaceChars = options.ReplaceChars;
+            string regexMatch = options.RegexMatch;            
+            string replaceWith = options.PunctuationReplacement;            
             bool replaceDoubleChars = options.ReplaceDoubleChars;
             Dictionary<string, string> replacementChars = options.ReplaceCharWithChar;
 
@@ -1095,57 +1130,20 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
+                    //Check if ch is in the replace list
+                    CheckCharsForReplace(options, ref ch, ref replacedUnwantedChars);
+
                     //not in replacement list, check if valid char
                     if (Regex.IsMatch(ch, regexMatch, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-                    {
-                        //check replace character with the punctuation replacmenet
-                        if (replaceChars.ToLower().Contains(ch.ToLower()))
-                        {
-                            ch = replaceWith; //in list of replacment chars
-                            if (ch != " ") // if not replacing spaces, which are implied
-                            {
-                                replacedUnwantedChars = true;
-                            }
-                        }
-                        else
-                        {
-                            ch = ""; //not a replacement or allowed char, so doesn't go into Url
-                            replacedUnwantedChars = true;
-                            //if we are here, this character isn't going into the output Url
-                        }
-                    }
-                    else
-                    {
-                        //this char is allowed because it didn't match the regexMatch pattern
-                        //however we may still want to replace it in Urls
-                        if (illegalChars.ToLower().Contains(ch.ToLower()))
-                        {
-                            ch = ""; //illegal character, removed from list
-                            replacedUnwantedChars = true;
-                        }
-                        else
-                        {
-                            //but we also want to check the list of illegal chars - these must never be allowed,
-                            //even if the settings inadvertently let them through.  This is a double check
-                            //to prevent accidental modification to regex taking down a site
-                            if (replaceChars.ToLower().Contains(ch.ToLower()))
-                            {
-                                if (ch != " ") // if not replacing spaces, which are implied
-                                {
-                                    replacedUnwantedChars = true;
-                                }
-                                ch = replaceWith; //in list of replacment chars
-                                
-                                //If we still have a space ensure its encoded
-                                if (ch == " ")
-                                {
-                                    ch = options.SpaceEncoding;
-                                }
-                            }
-                        }
-                    }
+                    {                        
+                        ch = ""; //not a replacement or allowed char, so doesn't go into Url
+                        replacedUnwantedChars = true;
+                        //if we are here, this character isn't going into the output Url                        
+                    }                    
                 }
 
+                //Check if the final ch is an illegal char
+                CheckIllegalChars(options.IllegalChars, ref ch, ref replacedUnwantedChars);
                 if (i == last)
                 {
                     //834 : strip off last character if it is a '.'
