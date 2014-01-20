@@ -1099,6 +1099,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="file">The file to update.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when file is null.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.InvalidMetadataValuesException">Thrown when the file metadata are not valid.</exception>
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as the updated file.</returns>
         public virtual IFileInfo UpdateFile(IFileInfo file)
         {
@@ -1723,7 +1724,8 @@ namespace DotNetNuke.Services.FileSystem
                 return false;
             }
 
-            if (file.StartDate < file.CreatedOnDate.Date)
+            var savedFile = FileManager.Instance.GetFile(file.FileId);
+            if (file.StartDate < file.CreatedOnDate.Date && file.StartDate != savedFile.StartDate)
             {
                 exceptionMessage = Localization.Localization.GetExceptionMessage("StartDateMustNotBeInThePast", "The Start Date must not be in the past");
                 return false;
