@@ -83,11 +83,14 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFileUploadOptions
     {
 
-        [DataMember(Name = "id")]
-        public string Id;
+        [DataMember(Name = "clientId")]
+        public string ClientId;
 
         [DataMember(Name = "moduleId")]
         public string ModuleId = string.Empty;
+
+        [DataMember(Name = "parentClientId")]
+        public string ParentClientId;
 
         [DataMember(Name = "showOnStartup")]
         public bool ShowOnStartup;

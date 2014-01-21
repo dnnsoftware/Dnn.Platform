@@ -34,6 +34,11 @@ namespace DotNetNuke.Web.UI.WebControls
             set { Options.ShowOnStartup = value; }
         }
 
+        public string ParentClientId
+        {
+            set { Options.ParentClientId = value; }
+        }
+
         public int ModuleId
         {
             set
@@ -45,22 +50,6 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         public string Skin { get; set; }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            if (DesignMode)
-            {
-                return;
-            }
-/*
-            if (GetCurrent(Page) != null)
-            {
-                throw new InvalidOperationException("Only one instance of the DnnFileUpload can be contained by the page.");
-            }
-            Page.Items[typeof(DnnFileUpload)] = this;
-*/
-        }
 
         public static DnnFileUpload GetCurrent(Page page)
         {
@@ -95,7 +84,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RegisterStartupScript()
         {
-            Options.Id = ClientID;
+            Options.ClientId = ClientID;
 
             var folder = FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, string.Empty);
             Options.FolderPicker.InitialState = new DnnDropDownListState

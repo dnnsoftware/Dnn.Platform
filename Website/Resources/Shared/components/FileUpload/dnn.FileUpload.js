@@ -25,26 +25,24 @@
         };
     })();
 
-    var FileUpload = this.FileUpload = function (options) {
+    var FileUploadPanel = this.FileUploadPanel = function (options) {
         this.options = options;
         this.init();
     };
 
-    FileUpload.prototype = {
+    FileUploadPanel.prototype = {
 
-        constructor: FileUpload,
+        constructor: FileUploadPanel,
 
         init: function () {
-            this.options = $.extend({}, FileUpload.defaults(), this.options);
+            this.options = $.extend({}, FileUploadPanel.defaults(), this.options);
 
             this.$this = $(this);
 
             this._uploadMethods = new dnn.Enum([{ key: 0, value: "undefined" }, { key: 1, value: "local" }, { key: 2, value: "web" }]);
             this._uploadMethod = this._uploadMethods.local;
 
-            if (this.options.showOnStartup) {
-                this.show();
-            }
+            this._initPanel();
         },
 
         _selectUpload: function (uploadMethod, eventObject) {
@@ -506,16 +504,7 @@
             }
         },
 
-        _onCloseDialog: function () {
-            this._isShown = false;
-            this.$this.trigger($.Event("onfileuploadclose"), [this]);
-        },
-
-        _ensureDialog: function () {
-            //if (this.$element) {
-            //    return;
-            //}
-
+        _initPanel: function () {
             this.$element = this._createLayout();
 
             if (this._isValidExtension(".zip", this.options.extensions)) {
@@ -552,9 +541,51 @@
                 webResource.parameters().set("__RequestVerificationToken", antiForgeryToken);
             }
             return webResource.toPathAndQuery();
+        }
+
+    };
+
+    FileUploadPanel._defaults = {
+        statusErrorCss: "fu-status-error",
+        statusUploadedCss: "fu-status-uploaded",
+        statusCancelledCss: "fu-status-cancelled",
+        serviceRoot: "InternalServices",
+        fileUploadMethod: "FileUpload/UploadFromLocal",
+        maxFiles: 1,
+        extensions: [".png", ".jpeg", ".jpg", ".bmp"]
+    };
+
+    FileUploadPanel.defaults = function (settings) {
+        if (typeof settings !== "undefined") {
+            $.extend(FileUploadPanel._defaults, settings);
+        }
+        return FileUploadPanel._defaults;
+    };
+
+    //var FileUploadDialog = this.FileUploadDialog = dnn.singletonify(FileUpload);
+
+    var FileUploadDialog = this.FileUploadDialog = function (options) {
+        this.options = options;
+        this.init();
+    };
+
+    FileUploadDialog.prototype = {
+        constructor: FileUploadDialog,
+
+        init: function () {
+            this.options = $.extend({}, FileUploadDialog.defaults(), this.options);
+            this.$this = $(this);
+            if (this.options.showOnStartup) {
+                this.show();
+            }
         },
 
-        show: function (options) {
+        _onCloseDialog: function () {
+            this._isShown = false;
+            this.$this.trigger($.Event("onfileuploadclose"), [this]);
+        },
+
+        show: function(options) {
             if (this._isShown) {
                 return;
             }
@@ -562,10 +593,11 @@
 
             this.options = $.extend(this.options, options);
 
-            this._ensureDialog();
+            this._panel = new FileUploadPanel(this.options);
 
             var self = this;
-            this.$element.dialog({
+            var $panel = this._panel.$element;
+            $panel.dialog({
                 modal: true,
                 autoOpen: true,
                 dialogClass: "dnnFormPopup " + this.options.dialogCss,
@@ -573,52 +605,51 @@
                 resizable: false,
                 width: this.options.width,
                 height: this.options.height,
-                close: $.proxy(function () {
-                    self.$element.empty().remove();
+                close: $.proxy(function() {
+                    $panel.empty().remove();
                     self._onCloseDialog();
                 }, this),
-                buttons: [ {
-                    text: this.options.resources.closeButtonText,
-                    click: function () { $(this).dialog("close"); },
-                    "class": "dnnSecondaryAction"
+                buttons: [{
+                        text: this.options.resources.closeButtonText,
+                        click: function() { $(this).dialog("close"); },
+                        "class": "dnnSecondaryAction"
                     }
                 ]
             });
-
         }
-
     };
 
-    FileUpload._defaults = {
+    FileUploadDialog._defaults = {
         dialogCss: "fu-dialog",
-        statusErrorCss: "fu-status-error",
-        statusUploadedCss: "fu-status-uploaded",
-        statusCancelledCss: "fu-status-cancelled",
         width: 780,
-        height: 630,
-        serviceRoot: "InternalServices",
-        fileUploadMethod: "FileUpload/UploadFromLocal",
-        maxFiles: 1,
-        extensions: [".png", ".jpeg", ".jpg", ".bmp"]
+        height: 630
     };
 
-    FileUpload.defaults = function (settings) {
+    FileUploadDialog.defaults = function (settings) {
         if (typeof settings !== "undefined") {
-            $.extend(FileUpload._defaults, settings);
+            $.extend(FileUploadDialog._defaults, settings);
         }
-        return FileUpload._defaults;
+        return FileUploadDialog._defaults;
     };
-
-    var FileUploadDialog = this.FileUploadDialog = dnn.singletonify(FileUpload);
 
 }).apply(dnn, [jQuery, window, document]);
 
 
 dnn.createFileUpload = function (options) {
     $(document).ready(function () {
-        var instance = new dnn.FileUpload(options);
-        if (options.id) {
-            dnn[options.id] = instance;
+        var instance;
+        if (options.parentClientId) {
+            instance = new dnn.FileUploadPanel(options);
+            var $parent = $("#" + options.parentClientId);
+            if ($parent.length !== 0) {
+                $parent.append(instance.$element);
+            }
+        }
+        else {
+            instance = new dnn.FileUploadDialog(options);
+        }
+        if (options.clientId) {
+            dnn[options.clientId] = instance;
         }
     });
 };
