@@ -3814,11 +3814,9 @@ namespace DotNetNuke.Data
                                       FriendlyName);
         }
 
-        public virtual void UpdateScheduleHistory(int ScheduleHistoryID, DateTime EndDate, bool Succeeded,
-                                                  string LogNotes, DateTime NextStart)
+        public virtual void UpdateScheduleHistory(int ScheduleHistoryID, DateTime EndDate, bool Succeeded, string LogNotes, DateTime NextStart)
         {
-            ExecuteNonQuery("UpdateScheduleHistory", ScheduleHistoryID, GetNull(EndDate), GetNull(Succeeded), LogNotes,
-                            GetNull(NextStart));
+            ExecuteNonQuery("UpdateScheduleHistory", ScheduleHistoryID, FixDate(EndDate), GetNull(Succeeded), LogNotes, FixDate(NextStart));
         }
 
         #endregion
