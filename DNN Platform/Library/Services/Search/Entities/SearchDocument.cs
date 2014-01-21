@@ -136,7 +136,7 @@ namespace DotNetNuke.Services.Search.Entities
         ///     "!Translator (en-US);![3];[5];Administrators; ContentEditorRole"
         ///     ! -- identifies denied permission
         ///     [n] -- identifies UserId
-        ///Above example denies permission to Role “Translator (en-Us)” and UserId 3, but allows permission to Roles “Administrators” & “ContentEditorRole” and UserId</remarks>
+        ///Above example denies permission to Role “Translator (en-Us)” and UserId 3, but allows permission to Roles “Administrators” and “ContentEditorRole” and UserId</remarks>
         public string Permissions { get; set; }
 
         /// <summary>

@@ -63,7 +63,7 @@ namespace DotNetNuke.Security.Membership
     /// <remarks>
     /// </remarks>
     /// <history>
-    /// [skydnn] DNN4016 & DNN4133
+    /// [skydnn] DNN4016 and DNN4133
     /// </history>
     /// -----------------------------------------------------------------------------
     public class AspNetMembershipProvider : MembershipProvider

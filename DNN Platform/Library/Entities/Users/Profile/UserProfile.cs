@@ -348,6 +348,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// property will return the file path of the photo url (designed to be used when files are loaded via the filesystem e.g for caching)
         /// </summary>
+        [Obsolete("Obsolete in 7.2.2, Use PhotoUrl instead of it.")]
         public string PhotoURLFile
         {
             get

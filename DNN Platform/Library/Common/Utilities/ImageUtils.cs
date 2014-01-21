@@ -126,7 +126,57 @@ namespace DotNetNuke.Common.Utilities
             }
 
             File.Copy(sFile, tmp);
-            var original = new Bitmap(tmp);
+
+            using (var fileContent = File.OpenRead(tmp))
+            {
+                var content = CreateImage(fileContent, intHeight, intWidth, fi.Extension);
+
+                string sFileExt = fi.Extension;
+                string sFileNoExtension = Path.GetFileNameWithoutExtension(sFile);
+
+                sFile += sFileNoExtension + sFileExt;
+                if (FileWrapper.Instance.Exists(sFile))
+                {
+                    FileWrapper.Instance.SetAttributes(sFile, FileAttributes.Normal);
+                    FileWrapper.Instance.Delete(sFile);
+                }
+
+                var arrData = new byte[2048];
+                using (Stream outStream = FileWrapper.Instance.Create(sFile))
+                {
+                    long originalPosition = content.Position;
+                    content.Position = 0;
+
+                    try
+                    {
+                        int intLength = content.Read(arrData, 0, arrData.Length);
+
+                        while (intLength > 0)
+                        {
+                            outStream.Write(arrData, 0, intLength);
+                            intLength = content.Read(arrData, 0, arrData.Length);
+                        }
+                    }
+                    finally
+                    {
+                        content.Position = originalPosition;
+                    }
+                }
+            }
+            
+            if (FileWrapper.Instance.Exists(tmp))
+            {
+                FileWrapper.Instance.SetAttributes(tmp, FileAttributes.Normal);
+                FileWrapper.Instance.Delete(tmp);
+            }
+
+
+            return sFile;
+        }
+
+        public static Stream CreateImage(Stream stream, int intHeight, int intWidth, string extension)
+        {
+            var original = new Bitmap(stream);
 
             PixelFormat format = original.PixelFormat;
             if (format.ToString().Contains("Indexed"))
@@ -150,92 +200,45 @@ namespace DotNetNuke.Common.Utilities
                 _imgWidth = original.Width;
             }
 
-            string sFileExt = fi.Extension;
-            string sFileNoExtension = Path.GetFileNameWithoutExtension(sFile);
-            string sPath = Path.GetDirectoryName(sFile);
-            if (sPath != null)
-            {
-                sPath = sPath.Replace("/", "\\");
-            }
-            if (sPath != null && !sPath.EndsWith("\\"))
-            {
-                sPath += "\\";
-            }
-            Image img = Image.FromFile(tmp);
             var newImg = new Bitmap(_imgWidth, _imgHeight, format);
-            newImg.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+            newImg.SetResolution(original.HorizontalResolution, original.VerticalResolution);
 
             Graphics canvas = Graphics.FromImage(newImg);
             canvas.SmoothingMode = SmoothingMode.None;
             canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
             canvas.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-            if (sFileExt.ToLowerInvariant() != ".png")
+            if (extension.ToLowerInvariant() != ".png")
             {
                 canvas.Clear(Color.White);
                 canvas.FillRectangle(Brushes.White, 0, 0, imgSize.Width, imgSize.Height);
             }
-            canvas.DrawImage(img, 0, 0, imgSize.Width, imgSize.Height);
-            img.Dispose();
-            sFile = sPath;
 
-            sFile += sFileNoExtension + sFileExt;
-            if (FileWrapper.Instance.Exists(sFile))
-            {
-                FileWrapper.Instance.SetAttributes(sFile, FileAttributes.Normal);
-                FileWrapper.Instance.Delete(sFile);
-            }
+            canvas.DrawImage(original, 0, 0, imgSize.Width, imgSize.Height);
 
             //newImg.Save
-            var arrData = new byte[2048];
             Stream content = new MemoryStream();
             ImageFormat imgFormat = ImageFormat.Bmp;
-            if (sFileExt.ToLowerInvariant() == ".png")
+            if (extension.ToLowerInvariant() == ".png")
             {
                 imgFormat = ImageFormat.Png;
             }
-            else if (sFileExt.ToLowerInvariant() == ".gif")
+            else if (extension.ToLowerInvariant() == ".gif")
             {
                 imgFormat = ImageFormat.Gif;
             }
-            else if (sFileExt.ToLowerInvariant() == ".jpg")
+            else if (extension.ToLowerInvariant() == ".jpg")
             {
                 imgFormat = ImageFormat.Jpeg;
             }
+
             newImg.Save(content, imgFormat);
-            using (Stream outStream = FileWrapper.Instance.Create(sFile))
-            {
-                long originalPosition = content.Position;
-                content.Position = 0;
-
-                try
-                {
-                    int intLength = content.Read(arrData, 0, arrData.Length);
-
-                    while (intLength > 0)
-                    {
-                        outStream.Write(arrData, 0, intLength);
-                        intLength = content.Read(arrData, 0, arrData.Length);
-                    }
-                }
-                finally
-                {
-                    content.Position = originalPosition;
-                }
-            }
 
             newImg.Dispose();
             original.Dispose();
-
             canvas.Dispose();
-            if (FileWrapper.Instance.Exists(tmp))
-            {
-                FileWrapper.Instance.SetAttributes(tmp, FileAttributes.Normal);
-                FileWrapper.Instance.Delete(tmp);
-            }
 
-
-            return sFile;
+            return content;
         }
 
         /// <summary>

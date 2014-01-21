@@ -215,6 +215,10 @@ namespace DotNetNuke.Services.FileSystem
                                         context.Response.Redirect(Globals.AccessDeniedURL(), true);
                                     }
                                 }
+                                catch (ThreadAbortException) //if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
+                                {
+
+                                }
                                 catch (Exception ex)
                                 {
                                     Logger.Error(ex);
@@ -239,9 +243,8 @@ namespace DotNetNuke.Services.FileSystem
                             break;
                     }
                 }
-                catch (ThreadAbortException exc)
+                catch (ThreadAbortException)
                 {
-                    Logger.Error(exc);
                 }
                 catch (Exception)
                 {

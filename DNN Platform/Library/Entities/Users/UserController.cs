@@ -1437,7 +1437,9 @@ namespace DotNetNuke.Entities.Users
                 objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
                 //Delete userFolder - DNN-3787
+#pragma warning disable 618
                 var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
+#pragma warning restore 618
                 var folderPath = PathUtils.Instance.FormatFolderPath(String.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
                 var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
                 var userFolder = FolderManager.Instance.GetFolder(folderPortalId, folderPath);

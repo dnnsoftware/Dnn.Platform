@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Profile;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Log.EventLog;
 
@@ -562,7 +563,7 @@ namespace DotNetNuke.Entities.Profile
 					{
 						if (!string.IsNullOrEmpty(user.Profile.Photo) && int.Parse(user.Profile.Photo) > 0)
 						{
-							CreateThumbnails(user.Profile.PhotoURL);
+							CreateThumbnails(int.Parse(user.Profile.Photo));
 						}
 					}
 					catch (Exception ex)
@@ -580,26 +581,30 @@ namespace DotNetNuke.Entities.Profile
             return user;
         }
 
-		private static void CreateThumbnails(string imagePath)
+		private static void CreateThumbnails(int fileId)
 		{
-			if (!string.IsNullOrEmpty(imagePath))
-			{
-				imagePath = HttpContext.Current.Server.MapPath(imagePath);
-				CreateThumbnail(imagePath, "l", 64, 64);
-				CreateThumbnail(imagePath, "s", 50, 50);
-				CreateThumbnail(imagePath, "xs", 32, 32);
-			}
+            CreateThumbnail(fileId, "l", 64, 64);
+            CreateThumbnail(fileId, "s", 50, 50);
+            CreateThumbnail(fileId, "xs", 32, 32);
 		}
 
-		private static void CreateThumbnail(string imagePath, string type, int width, int height)
+		private static void CreateThumbnail(int fileId, string type, int width, int height)
 		{
-			var extension = Path.GetExtension(imagePath);
-			var path = imagePath.Replace(extension, "_" + type + extension);
-			if (!FileWrapper.Instance.Exists(path))
-			{
-				File.Copy(imagePath, path);
-				ImageUtils.CreateImage(path, height, width);
-			}
+		    var file = FileManager.Instance.GetFile(fileId);
+		    if (file != null)
+		    {
+		        var folder = FolderManager.Instance.GetFolder(file.FolderId);
+		        var sizedPhoto = file.FileName.Replace(file.Extension, "_" + type + "." + file.Extension);
+                if (!FileManager.Instance.FileExists(folder, sizedPhoto))
+                {
+                    using (var content = FileManager.Instance.GetFileContent(file))
+                    {
+                        var sizedContent = ImageUtils.CreateImage(content, height, width, "." + file.Extension);
+
+                        FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
+                    }
+                }
+		    }
 		}
 
         /// -----------------------------------------------------------------------------
