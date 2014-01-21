@@ -594,12 +594,13 @@ namespace DotNetNuke.Entities.Profile
 		    if (file != null)
 		    {
 		        var folder = FolderManager.Instance.GetFolder(file.FolderId);
-		        var sizedPhoto = file.FileName.Replace(file.Extension, "_" + type + "." + file.Extension);
+		        var extension = "." + file.Extension;
+                var sizedPhoto = file.FileName.Replace(extension, "_" + type + extension);
                 if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                 {
                     using (var content = FileManager.Instance.GetFileContent(file))
                     {
-                        var sizedContent = ImageUtils.CreateImage(content, height, width, "." + file.Extension);
+                        var sizedContent = ImageUtils.CreateImage(content, height, width, extension);
 
                         FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
                     }

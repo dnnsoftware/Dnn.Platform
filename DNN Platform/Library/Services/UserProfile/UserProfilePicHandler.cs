@@ -97,13 +97,13 @@ namespace DotNetNuke.Services.UserProfile
                 }
 
                 var folder = FolderManager.Instance.GetFolder(photoFile.FolderId);
-
-                var sizedPhoto = photoFile.FileName.Replace(photoFile.Extension, "_" + size + "." + photoFile.Extension);
+                var extension = "." + photoFile.Extension;
+                var sizedPhoto = photoFile.FileName.Replace(extension, "_" + size + extension);
                 if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                 {
                     using (var fileContent = FileManager.Instance.GetFileContent(photoFile))
                     {
-                        var sizedContent = ImageUtils.CreateImage(fileContent, height, width, "." + photoFile.Extension);
+                        var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension);
                         FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
                     }
                 }
