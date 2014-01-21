@@ -83,6 +83,7 @@ namespace DotNetNuke.Modules.Groups.Components
             else
                 Template = Utilities.ParseTokenWrapper(Template, "IsMember", false);
 
+            Template = Utilities.ParseTokenWrapper(Template, "AllowJoin", RoleInfo.IsPublic);
 
             Template = Template.Replace("[GROUPEDITBUTTON]", String.Empty);
 

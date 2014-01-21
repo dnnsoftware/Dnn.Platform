@@ -164,7 +164,9 @@
 [/IsNotOwner]
 [/IsMember]
 [IsNotMember]
+[AllowJoin]
  &lt;a href="#" id="JoinGroup-[groupitem:RoleId]" groupid="[groupitem:RoleId]" groupViewTabId ="[GroupViewTabId]"&gt;{resx:JoinGroup}&lt;/a&gt;
+[/AllowJoin]
 [/IsNotMember]
 [IsPendingMember]
  &lt;i&gt;Membership Pending&lt;/i&gt;
