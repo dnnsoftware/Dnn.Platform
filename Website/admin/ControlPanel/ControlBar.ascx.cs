@@ -58,6 +58,8 @@ namespace DotNetNuke.UI.ControlPanels
 {
     public partial class ControlBar : ControlPanelBase
     {
+        protected DnnFileUpload FileUploader;
+
         protected string CurrentUICulture { get; set; }
 
         protected string LoginUrl { get; set; }
@@ -91,6 +93,8 @@ namespace DotNetNuke.UI.ControlPanels
                     gettingStarted = new DnnGettingStarted();
                     Page.Form.Controls.Add(gettingStarted);
                 }
+                FileUploader = new DnnFileUpload {ID = "fileUploader"};
+                Page.Form.Controls.Add(FileUploader);
             }
         }
 
@@ -244,7 +248,7 @@ namespace DotNetNuke.UI.ControlPanels
             if ((!string.IsNullOrEmpty(navigateUrl)))
             {
                 return navigateUrl;
-            }            
+            }
 
             string returnValue = "javascript:void(0);";
             switch (toolName)
@@ -302,9 +306,6 @@ namespace DotNetNuke.UI.ControlPanels
                     {
                         returnValue = Globals.NavigateURL("Tab", "activeTab=settingTab");
                     }
-                    break;
-                case "UploadFile":
-					returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "WebUpload");
                     break;
                 default:
                     if ((!string.IsNullOrEmpty(moduleFriendlyName)))
