@@ -105,6 +105,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             .dnnTabs(options)
             .bind("tabsactivate", function (event, ui) {
                 currentTab = ui.newTab.index();
+                controller.leftPaneTabActivated(ui.newPanel[0].id);
                 if (currentTab == 0) {
                     treeViewRefreshScrollbars();
                 }
