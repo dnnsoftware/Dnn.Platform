@@ -392,7 +392,7 @@
             var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
             $img.removeClass().addClass(result.orientation === 1 ? "pt" : "ls");
             var path = result.path;
-            if (this._isValidExtension(path, [".bmp", ".gif", ".png", ".jpg", ".jpeg", ".tiff"])) {
+            if (this._isValidExtension(result.fileName, [".bmp", ".gif", ".png", ".jpg", ".jpeg"])) {
                 $img.prop("src", path);
             }
             else {
@@ -409,6 +409,8 @@
             var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
             $img.removeClass().addClass("pt");
             $img.prop("src", "/Images/no-content.png");
+            var $link = $($fileUploadStatus[0].firstChild);
+            $link.attr("href", "javascript:void(0);").removeAttr("target").addClass("fu-fileupload-thumbnail-inactive");
         },
 
         _fail: function (e, data) {

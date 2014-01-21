@@ -380,8 +380,16 @@ namespace DotNetNuke.Web.InternalServices
 
             [DataMember(Name = "fileId")]
             public int FileId { get; set; }
+
+            [DataMember(Name = "fileName")]
+            public string FileName { get; set; }
         }
 
+        public static string GetUrl(int fileId)
+        {
+            var file = FileManager.Instance.GetFile(fileId, true);
+            return FileManager.Instance.GetUrl(file);
+        }
 
         private static FileUploadDto UploadFile(
                 Stream stream,
@@ -395,6 +403,8 @@ namespace DotNetNuke.Web.InternalServices
                 bool extract)
         {
             var result = new FileUploadDto();
+            BinaryReader reader = null;
+            Stream fileContent = null;
             try
             {
                 var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", "");
@@ -415,7 +425,9 @@ namespace DotNetNuke.Web.InternalServices
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder
-                var effectivePortalId = isHostPortal ? Null.NullInteger : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                var effectivePortalId = isHostPortal
+                                            ? Null.NullInteger
+                                            : PortalController.GetEffectivePortalId(portalSettings.PortalId);
                 int userId;
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                 if (IsUserFolder(folder, out userId))
@@ -434,15 +446,20 @@ namespace DotNetNuke.Web.InternalServices
                     return result;
                 }
 
+                IFileInfo file;
+
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
                     result.Message = GetLocalizedString("AlreadyExists");
                     result.AlreadyExists = true;
-                    result.FileId = FileManager.Instance.GetFile(folderInfo, fileName, true).FileId;
+                    file = FileManager.Instance.GetFile(folderInfo, fileName, true);
+                    result.FileId = file.FileId;
                 }
                 else
                 {
-                    var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, FileManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
+                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false,
+                                                        FileManager.Instance.GetContentType(Path.GetExtension(fileName)),
+                                                        userInfo.UserID);
                     if (extract && extension.ToLower() == "zip")
                     {
                         FileManager.Instance.UnzipFile(file);
@@ -454,17 +471,18 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-                var path = Path.Combine(folderInfo.PhysicalPath, fileName);
+                fileContent = FileManager.Instance.GetFileContent(file);
+                reader = new BinaryReader(fileContent);
 
-                var root = AppDomain.CurrentDomain.BaseDirectory;
-                path = path.Replace(root, "~/");
+                var path = GetUrl(result.FileId);
 
-                var size = IsImage(path) ?
-                    ImageHeader.GetDimensions(HostingEnvironment.MapPath(path)) :
+                var size = IsImage(fileName) ?
+                    ImageHeader.GetDimensions(reader) :
                     new Size(32, 32);
 
                 result.Orientation = size.Orientation();
-                result.Path = result.FileId > 0 ? VirtualPathUtility.ToAbsolute(path) : string.Empty;
+                result.Path = result.FileId > 0 ? path : string.Empty;
+                result.FileName = fileName;
 
                 return result;
             }
@@ -473,6 +491,19 @@ namespace DotNetNuke.Web.InternalServices
                 Logger.Error(exe.Message);
                 result.Message = exe.Message;
                 return result;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+                if (fileContent != null)
+                {
+                    fileContent.Close();
+                    fileContent.Dispose();
+                }
             }
         }
 
