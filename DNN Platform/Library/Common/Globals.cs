@@ -3764,10 +3764,10 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Check whether the specific tab is a host tab.
+        /// Check whether the specific page is a host page.
         /// </summary>
-        /// <param name="tabId">tab id.</param>
-        /// <returns>if true means the tab is a host tab, otherwise means not a host page.</returns>
+        /// <param name="tabId">The tab ID.</param>
+        /// <returns>if <c>true</c> the tab is a host page; otherwise, it is not a host page.</returns>
         public static bool IsHostTab(int tabId)
         {
             bool isHostTab = false;

@@ -59,6 +59,11 @@ namespace DotNetNuke.Common.Internal
             return Globals.ResolveUrl(url);
         }
 
+        public bool IsHostTab(int tabId)
+        {
+            return Globals.IsHostTab(tabId);
+        }
+
         public string AddHTTP(string strURL)
         {
             return Globals.AddHTTP(strURL);

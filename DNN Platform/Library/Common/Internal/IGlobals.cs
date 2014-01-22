@@ -80,6 +80,13 @@ namespace DotNetNuke.Common.Internal
         string ResolveUrl(string url);
 
         /// <summary>
+        /// Check whether the specific page is a host page.
+        /// </summary>
+        /// <param name="tabId">The tab ID.</param>
+        /// <returns>if <c>true</c> the tab is a host page; otherwise, it is not a host page.</returns>
+        bool IsHostTab(int tabId);
+
+        /// <summary>
         /// Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified
         /// </summary>
         /// <param name="strURL">The URL</param>
