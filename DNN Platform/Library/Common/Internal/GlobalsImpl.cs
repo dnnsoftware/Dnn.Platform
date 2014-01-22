@@ -22,6 +22,8 @@ using System;
 using System.Text;
 using System.Web;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 
 namespace DotNetNuke.Common.Internal
 {
@@ -132,6 +134,86 @@ namespace DotNetNuke.Common.Internal
                 }
             }
             return domainName.ToString();
+        }
+
+        public string NavigateURL()
+        {
+            return Globals.NavigateURL();
+        }
+
+        public string NavigateURL(int tabID)
+        {
+            return Globals.NavigateURL(tabID);
+        }
+
+        public string NavigateURL(int tabID, bool isSuperTab)
+        {
+            return Globals.NavigateURL(tabID, isSuperTab);
+        }
+
+        public string NavigateURL(string controlKey)
+        {
+            return Globals.NavigateURL(controlKey);
+        }
+
+        public string NavigateURL(string controlKey, params string[] additionalParameters)
+        {
+            return Globals.NavigateURL(controlKey, additionalParameters);
+        }
+
+        public string NavigateURL(int tabID, string controlKey)
+        {
+            return Globals.NavigateURL(tabID, controlKey);
+        }
+
+        public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
+        {
+            return Globals.NavigateURL(tabID, controlKey, additionalParameters);
+        }
+
+        public string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
+        {
+            return Globals.NavigateURL(tabID, settings, controlKey, additionalParameters);
+        }
+
+        public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
+        {
+            return Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+        }
+
+        public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
+        {
+            return Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
+        }
+
+        public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
+        {
+            return Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+        }
+
+        public string FriendlyUrl(TabInfo tab, string path)
+        {
+            return Globals.FriendlyUrl(tab, path);
+        }
+
+        public string FriendlyUrl(TabInfo tab, string path, string pageName)
+        {
+            return Globals.FriendlyUrl(tab, path, pageName);
+        }
+
+        public string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
+        {
+            return Globals.FriendlyUrl(tab, path, settings);
+        }
+
+        public string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
+        {
+            return Globals.FriendlyUrl(tab, path, pageName, settings);
+        }
+
+        public string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
+        {
+            return Globals.FriendlyUrl(tab, path, pageName, portalAlias);
         }
     }
 }

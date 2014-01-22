@@ -2649,28 +2649,22 @@ namespace DotNetNuke.Common
             return AddHTTP(strURL);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates the correctly formatted friendly url.
+        /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
         /// Assumes Default.aspx, and that portalsettings are saved to Context
         /// </remarks>
         /// <param name="tab">The current tab</param>
         /// <param name="path">The path to format.</param>
-        /// <returns>The formatted (friendly) url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The formatted (friendly) URL</returns>
         public static string FriendlyUrl(TabInfo tab, string path)
         {
             return FriendlyUrl(tab, path, glbDefaultPage);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates the correctly formatted friendly url
+        /// Generates the correctly formatted friendly URL
         /// </summary>
         /// <remarks>
         /// This overload includes an optional page to include in the url.
@@ -2678,76 +2672,57 @@ namespace DotNetNuke.Common
         /// <param name="tab">The current tab</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page to include in the url.</param>
-        /// <returns>The formatted (friendly) url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The formatted (friendly) URL</returns>
         public static string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
             return FriendlyUrl(tab, path, pageName, _portalSettings);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates the correctly formatted friendly url
+        /// Generates the correctly formatted friendly URL
         /// </summary>
         /// <remarks>
         /// This overload includes the portal settings for the site
         /// </remarks>
         /// <param name="tab">The current tab</param>
         /// <param name="path">The path to format.</param>
-        /// <param name="settings">The portal Settings</param>
-        /// <returns>The formatted (friendly) url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
+        /// <param name="settings">The portal settings</param>
+        /// <returns>The formatted (friendly) URL</returns>
         public static string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
         {
             return FriendlyUrl(tab, path, glbDefaultPage, settings);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates the correctly formatted friendly url
+        /// Generates the correctly formatted friendly URL
         /// </summary>
         /// <remarks>
-        /// This overload includes an optional page to include in the url, and the portal 
+        /// This overload includes an optional page to include in the URL, and the portal 
         /// settings for the site
         /// </remarks>
         /// <param name="tab">The current tab</param>
         /// <param name="path">The path to format.</param>
-        /// <param name="pageName">The page to include in the url.</param>
-        /// <param name="settings">The portal Settings</param>
+        /// <param name="pageName">The page to include in the URL.</param>
+        /// <param name="settings">The portal settings</param>
         /// <returns>The formatted (friendly) url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
             return FriendlyUrlProvider.Instance().FriendlyUrl(tab, path, pageName, settings);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Generates the correctly formatted friendly url
         /// </summary>
         /// <remarks>
         /// This overload includes an optional page to include in the url, and the portal 
-        /// settings for the site
+        /// alias for the site
         /// </remarks>
         /// <param name="tab">The current tab</param>
         /// <param name="path">The path to format.</param>
-        /// <param name="pageName">The page to include in the url.</param>
-        /// <param name="portalAlias">The portal Alias for the site</param>
-        /// <returns>The formatted (friendly) url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageName">The page to include in the URL.</param>
+        /// <param name="portalAlias">The portal alias for the site</param>
+        /// <returns>The formatted (friendly) URL</returns>
         public static string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return FriendlyUrlProvider.Instance().FriendlyUrl(tab, path, pageName, portalAlias);
@@ -2914,9 +2889,9 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to the current page.
         /// </summary>
-        /// <returns>Formatted url.</returns>
+        /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL()
         {
@@ -2925,10 +2900,10 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to the given page.
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <returns>Formatted url.</returns>
+        /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(int tabID)
         {
@@ -2936,11 +2911,11 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to the given page.
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> [is super tab].</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(int tabID, bool isSuperTab)
         {
@@ -2950,10 +2925,10 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to show the control associated with the given control key.
         /// </summary>
-        /// <param name="controlKey">The control key.</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
+        /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(string controlKey)
         {
@@ -2969,11 +2944,11 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to show the control associated with the given control key.
         /// </summary>
-        /// <param name="controlKey">The control key.</param>
-        /// <param name="additionalParameters">The additional parameters.</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
+        /// <param name="additionalParameters">Any additional parameters, in <c>"key=value"</c> format.</param>
+        /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
@@ -2982,11 +2957,11 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to show the control associated with the given control key on the given page.
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="controlKey">The control key.</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
+        /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(int tabID, string controlKey)
         {
@@ -2995,12 +2970,12 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to show the given page.
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="controlKey">The control key.</param>
-        /// <param name="additionalParameters">The additional parameters.</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
+        /// <param name="additionalParameters">Any additional parameters.</param>
+        /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
@@ -3009,13 +2984,13 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to show the given page.
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="settings">The settings.</param>
-        /// <param name="controlKey">The control key.</param>
-        /// <param name="additionalParameters">The additional parameters.</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="settings">The portal settings.</param>
+        /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
+        /// <param name="additionalParameters">Any additional parameters.</param>
+        /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
@@ -3025,14 +3000,14 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to show the given page.
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> [is super tab].</param>
-        /// <param name="settings">The settings.</param>
-        /// <param name="controlKey">The control key.</param>
-        /// <param name="additionalParameters">The additional parameters.</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="settings">The portal settings.</param>
+        /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
+        /// <param name="additionalParameters">Any additional parameters.</param>
+        /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
@@ -3041,29 +3016,30 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to show the given page.
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> [is super tab].</param>
-        /// <param name="settings">The settings.</param>
-        /// <param name="controlKey">The control key.</param>
-        /// <param name="language">The language.</param>
-        /// <param name="additionalParameters">The additional parameters.</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="settings">The portal settings.</param>
+        /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
+        /// <param name="language">The language code.</param>
+        /// <param name="additionalParameters">Any additional parameters.</param>
+        /// <returns>Formatted URL.</returns>
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
             return NavigateURL(tabID, isSuperTab, settings, controlKey, language, glbDefaultPage, additionalParameters);
         }
 
         /// <summary>
-        /// Gets the navigates URL.
+        /// Gets the URL to show the given page.
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> [is super tab].</param>
-        /// <param name="settings">The settings.</param>
-        /// <param name="controlKey">The control key.</param>
-        /// <param name="language">The language.</param>
-        /// <param name="additionalParameters">The additional parameters.</param>
+        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="settings">The portal settings.</param>
+        /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
+        /// <param name="language">The language code.</param>
+        /// <param name="pageName">The page name to pass to <see cref="FriendlyUrl(DotNetNuke.Entities.Tabs.TabInfo,string,string)"/>.</param>
+        /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted url.</returns>
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
