@@ -1968,7 +1968,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var permissions = gridItem.get_dataItem().Permissions;
         checkPermissions(menuSelector, permissions, true, true);
         
-        contextMenu.show(event);
+        contextMenu.showAt(event.clientX, window.pageYOffset + event.clientY);
     }
 
     function gridOnRowContextMenu(sender, args) {
