@@ -2592,25 +2592,25 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Formats the help URL.
+        /// Formats the help URL, adding query-string parameters and a protocol (if missing).
         /// </summary>
         /// <param name="HelpUrl">The help URL.</param>
         /// <param name="objPortalSettings">The portal settings.</param>
-        /// <param name="Name">The name.</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="Name">The name of the module.</param>
+        /// <returns>Formatted URL.</returns>
         public static string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name)
         {
             return FormatHelpUrl(HelpUrl, objPortalSettings, Name, "");
         }
 
         /// <summary>
-        /// Formats the help URL.
+        /// Formats the help URL, adding query-string parameters and a protocol (if missing).
         /// </summary>
         /// <param name="HelpUrl">The help URL.</param>
         /// <param name="objPortalSettings">The portal settings.</param>
-        /// <param name="Name">The name.</param>
-        /// <param name="Version">The version.</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="Name">The name of the module.</param>
+        /// <param name="Version">The version of the module.</param>
+        /// <returns>Formatted URL.</returns>
         public static string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name, string Version)
         {
             string strURL = HelpUrl;

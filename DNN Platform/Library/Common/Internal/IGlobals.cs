@@ -118,6 +118,25 @@ namespace DotNetNuke.Common.Internal
         string GetDomainName(Uri requestedUri, bool parsePortNumber);
 
         /// <summary>
+        /// Formats the help URL, adding query-string parameters and a protocol (if missing).
+        /// </summary>
+        /// <param name="HelpUrl">The help URL.</param>
+        /// <param name="objPortalSettings">The portal settings.</param>
+        /// <param name="Name">The name of the module.</param>
+        /// <returns>Formatted URL.</returns>
+        string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name);
+
+        /// <summary>
+        /// Formats the help URL, adding query-string parameters and a protocol (if missing).
+        /// </summary>
+        /// <param name="HelpUrl">The help URL.</param>
+        /// <param name="objPortalSettings">The portal settings.</param>
+        /// <param name="Name">The name of the module.</param>
+        /// <param name="Version">The version of the module.</param>
+        /// <returns>Formatted URL.</returns>
+        string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name, string Version);
+
+        /// <summary>
         /// Get the URL to show the "access denied" message.
         /// </summary>
         /// <returns>URL to access denied view</returns>

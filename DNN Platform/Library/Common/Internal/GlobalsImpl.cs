@@ -24,6 +24,7 @@ using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Common.Internal
 {
@@ -149,6 +150,16 @@ namespace DotNetNuke.Common.Internal
                 }
             }
             return domainName.ToString();
+        }
+
+        public string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name)
+        {
+            return Globals.FormatHelpUrl(HelpUrl, objPortalSettings, Name);
+        }
+
+        public string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name, string Version)
+        {
+            return Globals.FormatHelpUrl(HelpUrl, objPortalSettings, Name, Version);
         }
 
         public string AccessDeniedURL()
