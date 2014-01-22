@@ -988,6 +988,86 @@ BEGIN
 END
 GO
 
+-- CONTENT-2224
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+	IF @RetrieveUnpublishedFiles = 0 
+	BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			FO.FolderPath AS 'Folder',
+			FO.StorageLocation,
+			FO.IsCached,
+			FO.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F
+			INNER JOIN {databaseOwner}[{objectQualifier}Folders] FO ON F.FolderID = FO.FolderID
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+	ELSE BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			FO.FolderPath AS 'Folder',
+			FO.StorageLocation,
+			FO.IsCached,
+			FO.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_Files] F
+			INNER JOIN {databaseOwner}[{objectQualifier}Folders] FO ON F.FolderID = FO.FolderID
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
