@@ -118,6 +118,19 @@ namespace DotNetNuke.Common.Internal
         string GetDomainName(Uri requestedUri, bool parsePortNumber);
 
         /// <summary>
+        /// Get the URL to show the "access denied" message.
+        /// </summary>
+        /// <returns>URL to access denied view</returns>
+        string AccessDeniedURL();
+
+        /// <summary>
+        /// Get the URL to show the "access denied" message.
+        /// </summary>
+        /// <param name="Message">The message to display.</param>
+        /// <returns>URL to access denied view</returns>
+        string AccessDeniedURL(string Message);
+
+        /// <summary>
         /// Gets the URL to the current page.
         /// </summary>
         /// <returns>Formatted URL.</returns>

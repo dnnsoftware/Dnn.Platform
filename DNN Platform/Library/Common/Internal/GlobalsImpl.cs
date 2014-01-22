@@ -151,6 +151,16 @@ namespace DotNetNuke.Common.Internal
             return domainName.ToString();
         }
 
+        public string AccessDeniedURL()
+        {
+            return Globals.AccessDeniedURL();
+        }
+
+        public string AccessDeniedURL(string Message)
+        {
+            return Globals.AccessDeniedURL(Message);
+        }
+
         public string NavigateURL()
         {
             return Globals.NavigateURL();

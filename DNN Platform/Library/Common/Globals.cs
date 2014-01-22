@@ -2482,19 +2482,19 @@ namespace DotNetNuke.Common
 
 
         /// <summary>
-        /// Get the path of page to show access denied message.
+        /// Get the URL to show the "access denied" message.
         /// </summary>
-        /// <returns>url of access denied</returns>
+        /// <returns>URL to access denied view</returns>
         public static string AccessDeniedURL()
         {
             return AccessDeniedURL("");
         }
 
         /// <summary>
-        /// Get the path of page to show access denied message.
+        /// Get the URL to show the "access denied" message.
         /// </summary>
-        /// <param name="Message">The message.</param>
-        /// <returns>url of access denied</returns>
+        /// <param name="Message">The message to display.</param>
+        /// <returns>URL to access denied view</returns>
         public static string AccessDeniedURL(string Message)
         {
             string strURL = "";
