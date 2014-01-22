@@ -2519,19 +2519,11 @@ namespace DotNetNuke.Common
             return strURL;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds HTTP to URL if no other protocol specified
+        /// Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="strURL">The url</param>
-        /// <returns>The formatted url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        ///     [cnurse]    05/06/2005  added chack for mailto: protocol
-        /// </history>
-        /// -----------------------------------------------------------------------------
+        /// <param name="strURL">The URL</param>
+        /// <returns>The formatted URL</returns>
         public static string AddHTTP(string strURL)
         {
             if (!String.IsNullOrEmpty(strURL))

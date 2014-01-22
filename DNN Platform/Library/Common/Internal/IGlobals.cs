@@ -80,6 +80,13 @@ namespace DotNetNuke.Common.Internal
         string ResolveUrl(string url);
 
         /// <summary>
+        /// Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified
+        /// </summary>
+        /// <param name="strURL">The URL</param>
+        /// <returns>The formatted URL</returns>
+        string AddHTTP(string strURL);
+
+        /// <summary>
         /// Gets the portal domain name.
         /// </summary>
         /// <param name="strPortalAlias">The portal alias.</param>
