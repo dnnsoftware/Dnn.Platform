@@ -26,6 +26,7 @@ using System.Globalization;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -258,11 +259,11 @@ namespace DotNetNuke.UI.Skins.Controls
                             break;
                         case TabType.Tab:
                             //alternate tab url                                
-                            fullurl = Globals.NavigateURL(Convert.ToInt32(localizedTab.Url));
+                            fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url));
                             break;
                         case TabType.File:
                             //file url
-                            fullurl = Globals.LinkClick(localizedTab.Url, localizedTab.TabID, Null.NullInteger);
+                            fullurl = TestableGlobals.Instance.LinkClick(localizedTab.Url, localizedTab.TabID, Null.NullInteger);
                             break;
                         case TabType.Url:
                             //external url
@@ -286,7 +287,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
             return
                 objSecurity.InputFilter(
-                    Globals.NavigateURL(tabId, objPortal.ActiveTab.IsSuperTab, objPortal, HttpContext.Current.Request.QueryString["ctl"], newLanguage, GetQsParams(newLocale.Code, islocalized)) +
+                    TestableGlobals.Instance.NavigateURL(tabId, objPortal.ActiveTab.IsSuperTab, objPortal, HttpContext.Current.Request.QueryString["ctl"], newLanguage, GetQsParams(newLocale.Code, islocalized)) +
                     rawQueryString,
                     PortalSecurity.FilterFlag.NoScripting);
         }

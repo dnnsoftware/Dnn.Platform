@@ -23,14 +23,12 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
 
 #endregion
@@ -97,7 +95,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override string GetDocUrl(SearchResult searchResult)
         {
-            var url = Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
+            var url = TestableGlobals.Instance.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
             return url;
         }
 

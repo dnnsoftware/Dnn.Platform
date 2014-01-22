@@ -25,14 +25,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
-using System.Web.Caching;
 
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.ClientCapability;
@@ -572,7 +571,7 @@ namespace DotNetNuke.Services.Mobile
                     var tab = tabController.GetTab(targetTabId, portalId, false);
                     if (tab != null && !tab.IsDeleted)
                     {
-                        redirectUrl = Globals.NavigateURL(targetTabId);
+                        redirectUrl = TestableGlobals.Instance.NavigateURL(targetTabId);
                     }
                 }
             }

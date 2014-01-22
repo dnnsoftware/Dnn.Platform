@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 
-using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
@@ -207,17 +207,17 @@ namespace DotNetNuke.Web.Mvp
 
         protected void RedirectToAccessDenied()
         {
-            Response.Redirect(Globals.AccessDeniedURL(), true);
+            Response.Redirect(TestableGlobals.Instance.AccessDeniedURL(), true);
         }
 
         protected void RedirectToCurrentPage()
         {
-            Response.Redirect(Globals.NavigateURL(), true);
+            Response.Redirect(TestableGlobals.Instance.NavigateURL(), true);
         }
 
         protected void RedirectToLogin()
         {
-            Response.Redirect(Globals.LoginURL(Request.RawUrl, false), true);
+            Response.Redirect(TestableGlobals.Instance.LoginURL(Request.RawUrl, false), true);
         }
 
         protected void ProcessModuleLoadException(Exception ex)

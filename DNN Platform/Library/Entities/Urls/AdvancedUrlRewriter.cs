@@ -37,6 +37,7 @@ using System.Web;
 using System.Web.Configuration;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
@@ -1094,7 +1095,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                             if (redirect)
                             {
-                                errUrl = Globals.NavigateURL();
+                                errUrl = TestableGlobals.Instance.NavigateURL();
                                 response.Redirect(errUrl, true); //redirect and end response.  
                                 //It will mean the user will have to postback again, but it will work the second time
                             }

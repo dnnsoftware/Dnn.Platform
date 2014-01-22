@@ -26,6 +26,7 @@ using System.Globalization;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -94,7 +95,7 @@ namespace DotNetNuke.Services.Sitemap
         private SitemapUrl GetPageUrl(TabInfo objTab, string language)
         {
             var pageUrl = new SitemapUrl();
-            pageUrl.Url = Globals.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
+            pageUrl.Url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
 
             string portalAlias = !String.IsNullOrEmpty(ps.DefaultPortalAlias)
                                 ? ps.DefaultPortalAlias
@@ -105,12 +106,12 @@ namespace DotNetNuke.Services.Sitemap
                 // code to fix a bug in dnn5.1.2 for navigateurl
                 if ((HttpContext.Current != null))
                 {
-                    pageUrl.Url = Globals.AddHTTP(HttpContext.Current.Request.Url.Host + pageUrl.Url);
+                    pageUrl.Url = TestableGlobals.Instance.AddHTTP(HttpContext.Current.Request.Url.Host + pageUrl.Url);
                 }
                 else
                 {
                     // try to use the portalalias
-                    pageUrl.Url = Globals.AddHTTP(portalAlias.ToLower()) + pageUrl.Url;
+                    pageUrl.Url = TestableGlobals.Instance.AddHTTP(portalAlias.ToLower()) + pageUrl.Url;
                 }
             }
 
