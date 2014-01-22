@@ -59,6 +59,11 @@ namespace DotNetNuke.Common.Internal
             return Globals.ResolveUrl(url);
         }
 
+        public string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP)
+        {
+            return Globals.GetPortalDomainName(strPortalAlias, Request, blnAddHTTP);
+        }
+
         public string GetDomainName(Uri requestedUri)
         {
             return GetDomainName(requestedUri, false);

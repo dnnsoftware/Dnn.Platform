@@ -80,6 +80,15 @@ namespace DotNetNuke.Common.Internal
         string ResolveUrl(string url);
 
         /// <summary>
+        /// Gets the portal domain name.
+        /// </summary>
+        /// <param name="strPortalAlias">The portal alias.</param>
+        /// <param name="Request">The request or <c>null</c>.</param>
+        /// <param name="blnAddHTTP">if set to <c>true</c> calls <see cref="AddHTTP"/> on the result.</param>
+        /// <returns>domain name</returns>
+        string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP);
+        
+        /// <summary>
         /// Gets the name of the domain.
         /// </summary>
         /// <param name="requestedUri">The requested Uri</param>
