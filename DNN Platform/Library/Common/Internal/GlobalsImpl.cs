@@ -161,6 +161,11 @@ namespace DotNetNuke.Common.Internal
             return Globals.AccessDeniedURL(Message);
         }
 
+        public string LoginURL(string returnURL, bool @override)
+        {
+            return Globals.LoginURL(returnURL, @override);
+        }
+
         public string NavigateURL()
         {
             return Globals.NavigateURL();

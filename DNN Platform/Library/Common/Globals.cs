@@ -2825,11 +2825,11 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets Login URL.
+        /// Gets the login URL.
         /// </summary>
-        /// <param name="returnURL">The return URL.</param>
-        /// <param name="override">if set to <c>true</c> [@override].</param>
-        /// <returns>Formatted url.</returns>
+        /// <param name="returnURL">The URL to redirect to after logging in.</param>
+        /// <param name="override">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
+        /// <returns>Formatted URL.</returns>
         public static string LoginURL(string returnURL, bool @override)
         {
             string strURL = "";

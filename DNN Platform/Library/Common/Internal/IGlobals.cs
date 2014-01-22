@@ -131,6 +131,14 @@ namespace DotNetNuke.Common.Internal
         string AccessDeniedURL(string Message);
 
         /// <summary>
+        /// Gets the login URL.
+        /// </summary>
+        /// <param name="returnURL">The URL to redirect to after logging in.</param>
+        /// <param name="override">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
+        /// <returns>Formatted URL.</returns>
+        string LoginURL(string returnURL, bool @override);
+
+        /// <summary>
         /// Gets the URL to the current page.
         /// </summary>
         /// <returns>Formatted URL.</returns>
