@@ -1068,6 +1068,61 @@ AS
 	END
 GO
 
+--DNN-4701
+ 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}vw_CoreMessaging_Messages') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}{objectQualifier}vw_CoreMessaging_Messages
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_CoreMessaging_Messages]
+AS
+	SELECT
+		M.MessageID, 
+		M.PortalID, 
+		M.NotificationTypeID, 
+		M.[To], 
+		M.[From],
+		M.Subject,
+		M.Body,
+		M.ConversationID, 
+		M.ReplyAllAllowed, 
+		M.SenderUserID,
+		M.ExpirationDate, 
+        M.Context, 
+		M.IncludeDismissAction,
+		M.CreatedByUserID, 
+		M.CreatedOnDate, 
+		M.LastModifiedByUserID, 
+		M.LastModifiedOnDate, 
+		MR.RecipientID,
+		MR.UserID, 
+        MR.[Read], 
+		MR.Archived, 
+		MR.EmailSent, 
+		MR.EmailSentDate, 
+		MR.EmailSchedulerInstance
+	FROM       {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] MR
+	INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages]          M ON mr.MessageID = m.MessageID
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_CheckReplyHasRecipients]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CheckReplyHasRecipients]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_CheckReplyHasRecipients
+	@ConversationId Int, -- Not Null
+	@UserId 		Int  -- Not Null
+AS 
+BEGIN
+	SELECT COUNT(M.UserID)
+	FROM       {databaseOwner}{objectQualifier}vw_CoreMessaging_Messages AS M
+	INNER JOIN {databaseOwner}{objectQualifier}vw_Users AS U ON M.UserID = U.UserID AND M.PortalID = IsNull(U.PortalID, M.PortalID)
+	WHERE (M.MessageID = @ConversationId) 
+	  AND (M.UserID   <> @UserId) 
+	  AND (U.IsDeleted = 0)
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
