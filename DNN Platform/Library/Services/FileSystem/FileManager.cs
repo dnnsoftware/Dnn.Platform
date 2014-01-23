@@ -59,7 +59,8 @@ namespace DotNetNuke.Services.FileSystem
         private event EventHandler<FileRenamedEventArgs> FileRenamed;
         private event EventHandler<FileMovedEventArgs> FileMoved;
         private event EventHandler<FileChangedEventArgs> FileOverwritten;
-        private event EventHandler<FileAddedEventArgs> FileAdded; 
+        private event EventHandler<FileAddedEventArgs> FileAdded;
+        private event EventHandler<FileChangedEventArgs> FileMetadataChanged;
         #endregion
 
         #region Properties
@@ -175,6 +176,7 @@ namespace DotNetNuke.Services.FileSystem
                 FileMoved += value.FileMoved;
                 FileAdded += value.FileAdded;
                 FileOverwritten += value.FileOverwritten;
+                FileMetadataChanged += value.FileMetadataChanged;
             }
         }
 
@@ -223,6 +225,18 @@ namespace DotNetNuke.Services.FileSystem
             if (FileOverwritten != null)
             {
                 FileOverwritten(this, new FileChangedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId
+                });
+            }
+        }
+
+        private void OnFileMetadataChanged(IFileInfo fileInfo, int userId)
+        {
+            if (FileMetadataChanged != null)
+            {
+                FileMetadataChanged(this, new FileChangedEventArgs
                 {
                     FileInfo = fileInfo,
                     UserId = userId
@@ -1680,6 +1694,8 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
         {
             Requires.NotNull("file", file);
+
+            OnFileMetadataChanged(file, GetCurrentUserID());
 
             DataProvider.Instance().UpdateFile(file.FileId,
                                                file.VersionGuid,
