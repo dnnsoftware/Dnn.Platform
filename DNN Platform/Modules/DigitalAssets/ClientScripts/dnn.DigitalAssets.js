@@ -1354,16 +1354,17 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         for (var i = 0; i < permissions.length; i++) {
             //Select all menu items that must check the current permission            
             var itemsSelector = selectorPattern + " .permission_" + permissions[i].Key;
+            $(itemsSelector).each(function() {
+                var $item = changeParent ? $(this).parent() : $(this);
 
-            var $item = changeParent ? $(itemsSelector).parent() : $(itemsSelector);
-
-            if (permissions[i].Value) {
-                $item.addClass("permission_granted");
-            } else {
-                if (!$item.hasClass("permission_granted")) {
-                    $item.addClass("permission_denied");
+                if (permissions[i].Value) {
+                    $item.addClass("permission_granted");
+                } else {
+                    if (!$item.hasClass("permission_granted")) {
+                        $item.addClass("permission_denied");
+                    }
                 }
-            }
+            });
         }
         $(selectorPattern + " .permission_granted").removeClass("permission_granted");       
     }

@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
                         Value = "Properties",
-                        CssClass = "permission_READ permission_BROWSE",
+                        CssClass = "permission_READ",
                         ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
                     },
             });
@@ -434,7 +434,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("ViewProperties", LocalResourceFile),
                         Value = "Properties",
-                        CssClass = "permission_READ permission_BROWSE singleItem",
+                        CssClass = "permission_READ singleItem",
                         ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
                     },                        
                 });
@@ -481,7 +481,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
                         Value = "Properties",
-                        CssClass = "permission_READ permission_BROWSE",
+                        CssClass = "permission_READ",
                         ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
                     },
             });
