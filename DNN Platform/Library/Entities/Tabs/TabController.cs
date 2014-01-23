@@ -33,6 +33,7 @@ using System.Web;
 using System.Xml;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
@@ -170,11 +171,11 @@ namespace DotNetNuke.Entities.Tabs
 
             if (settings != null && tab.TabID != settings.HomeTabId && tab.TabUrls.Count(u => u.HttpStatus == "200") == 0)
             {
-                var domainRoot = Globals.AddHTTP(settings.PortalAlias.HTTPAlias);
+                var domainRoot = TestableGlobals.Instance.AddHTTP(settings.PortalAlias.HTTPAlias);
 
                 if (!String.IsNullOrEmpty(domainRoot))
                 {
-                    var url = Globals.NavigateURL(tab.TabID);
+                    var url = TestableGlobals.Instance.NavigateURL(tab.TabID);
 
                     url = url.Replace(domainRoot, "");
 

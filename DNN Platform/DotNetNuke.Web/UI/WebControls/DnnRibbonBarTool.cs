@@ -27,6 +27,7 @@ using System.Web.UI;
 
 using DotNetNuke.Application;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -231,7 +232,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 case "DeletePage":
                     if ((HasToolPermissions("DeletePage")))
                     {
-                        string url = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
+                        string url = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
                         Page.Response.Redirect(url, true);                        
                     }
                     break;
@@ -466,19 +467,19 @@ namespace DotNetNuke.Web.UI.WebControls
             switch (ToolInfo.ToolName)
             {
                 case "PageSettings":
-                    returnValue =  Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit");
                     break;
 
                 case "CopyPage":
-                    returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=copy");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=copy");
                     break;
 
                 case "DeletePage":
-                    returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
                     break;
 
                 case "ImportPage":
-                    returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "ImportTab");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "ImportTab");
                     break;
 
                 case "ExportPage":
@@ -486,18 +487,18 @@ namespace DotNetNuke.Web.UI.WebControls
                     break;
 
                 case "NewPage":
-                    returnValue = Globals.NavigateURL("Tab");
+                    returnValue = TestableGlobals.Instance.NavigateURL("Tab");
                     break;
                 case "Help":
                     if (!string.IsNullOrEmpty(Host.HelpURL))
                     {
                         var version = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
-                        returnValue = Globals.FormatHelpUrl(Host.HelpURL, PortalSettings, "Home", version);
+                        returnValue = TestableGlobals.Instance.FormatHelpUrl(Host.HelpURL, PortalSettings, "Home", version);
                     }
                     break;
 				case "UploadFile":
 				case "HostUploadFile":
-					returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "WebUpload");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "WebUpload");
                     break;
                 default:
                     if ((!string.IsNullOrEmpty(ToolInfo.ModuleFriendlyName)))

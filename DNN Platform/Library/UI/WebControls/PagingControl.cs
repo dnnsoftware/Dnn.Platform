@@ -28,7 +28,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -195,8 +195,8 @@ namespace DotNetNuke.UI.WebControls
             {
                 case PagingControlMode.URL:
                     return !String.IsNullOrEmpty(QuerystringParams)
-                               ? (!String.IsNullOrEmpty(CurrentPage) ? Globals.NavigateURL(TabID, "", QuerystringParams, "currentpage=" + CurrentPage) : Globals.NavigateURL(TabID, "", QuerystringParams))
-                               : (!String.IsNullOrEmpty(CurrentPage) ? Globals.NavigateURL(TabID, "", "currentpage=" + CurrentPage) : Globals.NavigateURL(TabID));
+                               ? (!String.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(TabID, "", QuerystringParams, "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(TabID, "", QuerystringParams))
+                               : (!String.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(TabID, "", "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(TabID));
                 default:
                     return Page.ClientScript.GetPostBackClientHyperlink(this, "Page_" + CurrentPage, false);
             }

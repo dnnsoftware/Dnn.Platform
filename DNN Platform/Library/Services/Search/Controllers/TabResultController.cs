@@ -22,7 +22,7 @@
 
 using System;
 
-using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var tab = tabController.GetTab(searchResult.TabId, searchResult.PortalId, false);
             if (TabPermissionController.CanViewPage(tab))
             {
-                url = Globals.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
+                url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
             }
             
             return url;
