@@ -1369,13 +1369,13 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         $(selectorPattern + " .permission_granted").removeClass("permission_granted");       
     }
 
-    function checkPermissionsWhenItemSelectionChanged(items, selectorPattern) {
+    function checkPermissionsWhenItemSelectionChanged(items, selectorPattern, changeParent) {
         //Permission keys are an OR clausure: If any permission has granted an item, then no one more should deny it
-        $(selectorPattern + " .permission_denied", "#" + controls.scopeWrapperId).removeClass("permission_denied");
+        $(selectorPattern + " .permission_denied").removeClass("permission_denied");
         for (var j = 0; j < items.length; j++) {
             var item = items[j].get_dataItem();
             if (item) {
-                checkPermissions(selectorPattern, item.Permissions, false, false);
+                checkPermissions(selectorPattern, item.Permissions, false, changeParent);
             }
         }
     }
@@ -1937,6 +1937,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         var menuSelector = "#" + controls.gridMenuId + "_detached";
         $(menuSelector + " li.rmItem").css("display", "");
+        
+        checkPermissionsWhenItemSelectionChanged(grid.get_selectedItems(), menuSelector, true);
 
         if (items.length > 1) {
             hideMenuOptions(menuSelector + " a.rmLink.singleItem");            
@@ -1965,9 +1967,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
 
         controller.setupGridContextMenuExtension(contextMenu, grid.get_selectedItems());
-
-        var permissions = gridItem.get_dataItem().Permissions;
-        checkPermissions(menuSelector, permissions, true, true);
         
         contextMenu.showAt(event.clientX, window.pageYOffset + event.clientY);
     }
