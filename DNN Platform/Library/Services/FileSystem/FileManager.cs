@@ -1695,8 +1695,6 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            OnFileMetadataChanged(file, GetCurrentUserID());
-
             DataProvider.Instance().UpdateFile(file.FileId,
                                                file.VersionGuid,
                                                file.FileName,
@@ -1715,6 +1713,8 @@ namespace DotNetNuke.Services.FileSystem
                                                file.EndDate,
                                                file.EnablePublishPeriod,
                                                file.ContentItemID);
+
+            OnFileMetadataChanged(file, GetCurrentUserID());
 
             DataCache.RemoveCache("GetFileById" + file.FileId);
 
