@@ -376,11 +376,19 @@ namespace DotNetNuke.Modules.Admin.Users
             base.OnInit(e);
 
             cmdSearch.Click += OnSearchClick;
-            cmdDeleteUnAuthorized.Click += cmdDeleteUnAuthorized_Click;
-            cmdRemoveDeleted.Click += cmdRemoveDeleted_Click;
+            deleteUnAuthorizedButton.Click += DeleteUnAuthorizedButtonClick;
+            removeDeletedButton.Click += RemoveDeletedButtonClick;
             grdUsers.ItemDataBound += GrdUsersOnItemDataBound;
             grdUsers.ItemCommand += GrdUsersOnItemCommand;
             grdUsers.PreRender += GrdUsersOnPreRender;
+
+            addUserButton.NavigateUrl = EditUrl("Edit");
+            if (ModulePermissionController.CanAdminModule(this.ModuleConfiguration))
+            {
+                addUserButton.Visible = true;
+                removeDeletedButton.Visible = true;
+                deleteUnAuthorizedButton.Visible = true;
+            }
 
             if (!IsPostBack)
             {
@@ -427,14 +435,19 @@ namespace DotNetNuke.Modules.Admin.Users
                     var setting = UserModuleBase.GetSetting(UsersPortalId, settingKey);
                     isVisible = Convert.ToBoolean(setting);
                 }
-                if (ReferenceEquals(column.GetType(), typeof (DnnGridImageCommandColumn)))
+
+                if (ReferenceEquals(column.GetType(), typeof(DnnGridTemplateColumn)) && column.UniqueName == "DeleteActions")
+                {
+                    isVisible = ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT");
+                }
+                else if (ReferenceEquals(column.GetType(), typeof (DnnGridImageCommandColumn)))
                 {
                     isVisible = ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT");
 
                     var imageColumn = (DnnGridImageCommandColumn)column;
-					
-                	//Manage Edit Column NavigateURLFormatString
-                	if (imageColumn.CommandName == "Edit")
+
+                    //Manage Edit Column NavigateURLFormatString
+                    if (imageColumn.CommandName == "Edit")
                     {
                         //so first create the format string with a dummy value and then
                         //replace the dummy value with the FormatString place holder
@@ -442,7 +455,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         formatString = formatString.Replace("KEYFIELD", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
                     }
-					
+
                     //Manage Roles Column NavigateURLFormatString
                     if (imageColumn.CommandName == "UserRoles")
                     {
@@ -452,7 +465,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         }
                         else
                         {
-							//The Friendly URL parser does not like non-alphanumeric characters
+                            //The Friendly URL parser does not like non-alphanumeric characters
                             //so first create the format string with a dummy value and then
                             //replace the dummy value with the FormatString place holder
                             var formatString = EditUrl("UserId", "KEYFIELD", "User Roles", UserFilter(false));
@@ -460,8 +473,8 @@ namespace DotNetNuke.Modules.Admin.Users
                             imageColumn.NavigateURLFormatString = formatString;
                         }
                     }
-					
-					//Localize Image Column Text
+
+                    //Localize Image Column Text
                     if (!String.IsNullOrEmpty(imageColumn.CommandName))
                     {
                         imageColumn.Text = Localization.GetString(imageColumn.CommandName, LocalResourceFile);
@@ -522,12 +535,12 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        void cmdRemoveDeleted_Click(object sender, EventArgs e)
+        void RemoveDeletedButtonClick(object sender, EventArgs e)
         {
             RemoveDeletedUsers();
         }
 
-        void cmdDeleteUnAuthorized_Click(object sender, EventArgs e)
+        void DeleteUnAuthorizedButtonClick(object sender, EventArgs e)
         {
             DeleteUnAuthorizedUsers();
         }
@@ -740,19 +753,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     onlineControl.Visible = user.Membership.IsOnLine;
                     onlineControl.ToolTip = Localization.GetString("Online.Text", LocalResourceFile);
                 }
-            }
-        }
-
-        protected void SetupAddUserLink(object sender, EventArgs e)
-        {
-            if(IsEditable)
-            {
-                AddUserLink.Text = Localization.GetString(ModuleActionType.AddContent, LocalResourceFile);
-                AddUserLink.NavigateUrl = EditUrl();
-            }
-            else
-            {
-                AddUserLink.Visible = false;
             }
         }
 
