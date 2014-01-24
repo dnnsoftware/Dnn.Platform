@@ -163,8 +163,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     userNo += 1;
 
-                    //move user to master portal
-                    UserController.CopyUserToPortal(user, masterPortal, true, true);
+                    UserController.MoveUserToPortal(user, masterPortal, true);
 
                     OnUserAddedToSiteGroup(callback, portal, user, totalUsers, userNo);
                 }
@@ -325,8 +324,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     userNo += 1;
 
-                    //Copy user to portal
-                    UserController.CopyUserToPortal(masterUser, portal, false, false);
+                    UserController.CopyUserToPortal(masterUser, portal, false);
 
                     //Callback to update progress bar
                     args = new UserCopiedEventArgs
@@ -350,8 +348,7 @@ namespace DotNetNuke.Entities.Portals
 
                 foreach (var user in adminUsers)
                 {
-                    //Copy Administrator to portal
-                    UserController.CopyUserToPortal(user, portal, false, false);
+                    UserController.CopyUserToPortal(user, portal, false);
 
                     //Callback to update progress bar
                     args = new UserCopiedEventArgs
