@@ -1143,7 +1143,7 @@ AS
 		U.AffiliateId, 
 		U.UpdatePassword, 
 		UP.Authorised, 
-		IsNull(UP.IsDeleted, U.IsDeleted AS IsDeleted, 
+		IsNull(UP.IsDeleted, U.IsDeleted) AS IsDeleted, 
 		UP.RefreshRoles,
 		U.LastIPAddress, 
 		U.PasswordResetToken,
@@ -1154,7 +1154,7 @@ AS
 		U.LastModifiedOnDate, 
 		UP.VanityUrl
 	FROM {databaseOwner}{objectQualifier}Users AS U 
-		LEFT OUTER JOIN {databaseOwner}{objectQualifier}UserPortals AS UP ON CASE WHEN U.IsSuperuser THEN 0 ELSE U.UserID END = UP.UserId
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}UserPortals AS UP ON (CASE WHEN U.IsSuperuser = 0 THEN 0 ELSE U.UserID END) = UP.UserId
 GO
 
 /************************************************************/
