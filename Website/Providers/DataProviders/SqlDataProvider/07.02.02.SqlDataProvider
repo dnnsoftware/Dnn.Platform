@@ -1123,6 +1123,40 @@ BEGIN
 	  AND (U.IsDeleted = 0)
 END
 GO
+
+-- DNN-4311
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Users'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_Users]
+GO	
+-- optimized
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Users]
+AS
+	SELECT
+		U.UserID, 
+		UP.PortalId, 
+		U.Username, 
+		U.FirstName, 
+		U.LastName, 
+		U.DisplayName, 
+		U.IsSuperUser, 
+		U.Email, 
+		U.AffiliateId, 
+		U.UpdatePassword, 
+		UP.Authorised, 
+		IsNull(UP.IsDeleted, U.IsDeleted AS IsDeleted, 
+		UP.RefreshRoles,
+		U.LastIPAddress, 
+		U.PasswordResetToken,
+		U.PasswordResetExpiration,
+		U.CreatedByUserID, 
+		U.CreatedOnDate, 
+		U.LastModifiedByUserID, 
+		U.LastModifiedOnDate, 
+		UP.VanityUrl
+	FROM {databaseOwner}{objectQualifier}Users AS U 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}UserPortals AS UP ON CASE WHEN U.IsSuperuser THEN 0 ELSE U.UserID END = UP.UserId
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
