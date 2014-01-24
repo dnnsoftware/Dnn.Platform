@@ -72,18 +72,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                         }
                         break;
                     case "HostEmail":
-                        if (string.IsNullOrEmpty(settingValue))
+                        if (string.IsNullOrEmpty(settingValue)) //if not specific in the config, then use same email with super user.
                         {
-                            settingValue = "support@" + domainName;
-
-                            //Remove any folders
-                            settingValue = settingValue.Substring(0, settingValue.IndexOf("/"));
-
-                            //Remove port number
-                            if (settingValue.IndexOf(":") != -1)
-                            {
-                                settingValue = settingValue.Substring(0, settingValue.IndexOf(":"));
-                            }
+                            settingValue = installConfig.SuperUser.Email;
                         }
 
                         break;
