@@ -1673,36 +1673,42 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private bool IsPageUrlValid()
         {
-            if (_strAction != "edit")
+            var url = urlTextBox.Text;
+
+            if (string.IsNullOrEmpty(url))
             {
-                var url = urlTextBox.Text;
-
-                var urlPath = url.TrimStart('/');
-                bool modified;
-                //Clean Url
-                var options = UrlRewriterUtils.GetOptionsFromSettings(new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId));
-                urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
-                if (modified)
-                {
-                    ShowWarningMessage(Localization.GetString("UrlPathCleaned.Error", LocalResourceFile));
-                    urlTextBox.Text = '/' + urlPath;
-                    return false;
-                }
-
-                //Validate for uniqueness
-                int tabIdToValidate = -1;
-                if (_strAction == "edit")
-                {
-                    tabIdToValidate = Tab.TabID;
-                }
-                urlPath = FriendlyUrlController.ValidateUrl(urlPath, tabIdToValidate, PortalSettings, out modified);
-                if (modified)
-                {
-                    ShowWarningMessage(Localization.GetString("UrlPathNotUnique.Error", LocalResourceFile));
-                    urlTextBox.Text = '/' + urlPath;
-                    return false;
-                }
+                return true;
             }
+
+            var urlPath = url.TrimStart('/');
+            bool modified;
+            //Clean Url
+            var options = UrlRewriterUtils.GetOptionsFromSettings(new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId));
+            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
+            if (modified)
+            {
+                ShowWarningMessage(Localization.GetString("UrlPathCleaned.Error", LocalResourceFile));
+                urlTextBox.Text = '/' + urlPath;
+                return false;
+            }
+
+            //Validate for uniqueness
+            int tabIdToValidate = -1;
+            if (_strAction == "edit")
+            {
+                tabIdToValidate = Tab.TabID;
+            }
+            urlPath = FriendlyUrlController.ValidateUrl(urlPath, tabIdToValidate, PortalSettings, out modified);
+            if (modified)
+            {
+                ShowWarningMessage(Localization.GetString("UrlPathNotUnique.Error", LocalResourceFile));
+                urlTextBox.Text = '/' + urlPath;
+                return false;
+            }
+
+            //update the text field with update value, because space char may replaced but the modified flag will not change to true.
+            //in this case we should update the value back so that it can create tab with new path.
+            urlTextBox.Text = '/' + urlPath;
 
             return true;
         }
