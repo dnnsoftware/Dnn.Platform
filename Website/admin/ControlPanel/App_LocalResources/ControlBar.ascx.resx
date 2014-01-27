@@ -327,4 +327,22 @@
   <data name="Tool.CreateModule.Text" xml:space="preserve">
     <value>Create Module</value>
   </data>
+  <data name="Hotkey.EditMode.Description" xml:space="preserve">
+    <value>Enter/Exit Edit Mode.</value>
+  </data>
+  <data name="Hotkey.EditMode.Title" xml:space="preserve">
+    <value>Edit Mode</value>
+  </data>
+  <data name="Hotkey.LayoutMode.Description" xml:space="preserve">
+    <value>Enter/Exit Layout Mode.</value>
+  </data>
+  <data name="Hotkey.LayoutMode.Title" xml:space="preserve">
+    <value>Layout Mode</value>
+  </data>
+  <data name="Hotkey.PageSettings.Description" xml:space="preserve">
+    <value>Change current page settings.</value>
+  </data>
+  <data name="Hotkey.PageSettings.Title" xml:space="preserve">
+    <value>Page Settings</value>
+  </data>
 </root>

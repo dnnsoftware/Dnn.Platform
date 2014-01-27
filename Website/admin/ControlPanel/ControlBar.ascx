@@ -1,6 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanels.ControlBar"
     CodeFile="ControlBar.ascx.cs" %>
 <%@ Import Namespace="DotNetNuke.Security.Permissions" %>
+<%@ Import Namespace="DotNetNuke.UI.Utilities" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <!--SEO NOINDEX-->
 <asp:Panel ID="ControlPanel" runat="server">
@@ -385,19 +386,45 @@
     	visibilityComboId: '<%= VisibilityLst.ClientID %>',
     	makeCopyCheckboxId: 'ControlBar_Module_chkCopyModule',
 		pagePickerId: '<%= PageList.ClientID %>',
-        yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Yes.Text", Localization.SharedResourceFile)) %>',
-        noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile)) %>',
-        titleText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile)) %>',
+        yesText: '<%= ClientAPI.GetSafeJSString(Localization.GetString("Yes.Text", Localization.SharedResourceFile)) %>',
+        noText: '<%= ClientAPI.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile)) %>',
+        titleText: '<%= ClientAPI.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile)) %>',
         deleteText: '<%= GetButtonConfirmMessage("DeletePage") %>',
-        copyPermissionsToChildrenText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
+        copyPermissionsToChildrenText: '<%= ClientAPI.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
             
-        dragModuleToolTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("DragModuleToolTip.Text")) %>',
+        dragModuleToolTip: '<%= ClientAPI.GetSafeJSString(GetString("DragModuleToolTip.Text")) %>',
             
         loginUrl: '<%= LoginUrl %>',
 		
-        selectPageText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("SelectPage.Text")) %>',
-        moduleShareableTitle: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("ShareableWarningTitle")) %>',		
-        removeBookmarksTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.RemoveFromBookmarks.ToolTip")) %>'
+        selectPageText: '<%= ClientAPI.GetSafeJSString(GetString("SelectPage.Text")) %>',
+        moduleShareableTitle: '<%= ClientAPI.GetSafeJSString(GetString("ShareableWarningTitle")) %>',		
+        removeBookmarksTip: '<%= ClientAPI.GetSafeJSString(GetString("Tool.RemoveFromBookmarks.ToolTip")) %>',
+        hotkeys: [
+            {
+                key: 'e', 
+                title: '<%=ClientAPI.GetSafeJSString(GetString("Hotkey.EditMode.Title"))%>', 
+                description: '<%=ClientAPI.GetSafeJSString(GetString("Hotkey.EditMode.Description"))%>',
+                action: function() {
+                    $('a#ControlBar_EditPage').click();
+                }
+            },
+            {
+                key: 'l', 
+                title: '<%=ClientAPI.GetSafeJSString(GetString("Hotkey.LayoutMode.Title"))%>', 
+                description: '<%=ClientAPI.GetSafeJSString(GetString("Hotkey.LayoutMode.Description"))%>',
+                action: function() {
+                    $('#ControlBar_ViewInLayout').click();
+                }
+            },
+            {
+                key: 's', 
+                title: '<%=ClientAPI.GetSafeJSString(GetString("Hotkey.PageSettings.Title"))%>', 
+                description: '<%=ClientAPI.GetSafeJSString(GetString("Hotkey.PageSettings.Description"))%>',
+                action: function() {
+                    $('a.ControlBar_PopupLink:eq(4)').click();
+                }
+            }
+        ]
     };
     
     $(function() {

@@ -3368,3 +3368,10 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 	background-color: inherit;
 }
 div[id$=titleLabel_tb].visible ~ span{ margin-left: 32px;}
+
+/* Hot Keys Bar*/
+#HotkeysBar{ position: fixed;background-color: #fff;border-top: 2px solid #aaa;bottom: -120px;width: 100%;opacity: 0;height: 120px;z-index: 1100;}
+#HotkeysBar ul{ margin: 0;padding: 0;list-style: none;}
+#HotkeysBar ul li{ width: 78px;margin: 10px;float: left;}
+#HotkeysBar ul li span{ display: block;width: 60px;height: 60px;outline: 2px solid #ccc;margin: 0 auto;line-height: 60px;text-align: center;font-size: 48px;font-family: Avenir, "Helvetica Neue", "HelveticaNeue", Arial, Helvetica, sans-serif;color: #636363;}
+#HotkeysBar ul li p{text-align: center;line-height: 22px;}

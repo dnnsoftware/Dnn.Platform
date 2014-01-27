@@ -1157,6 +1157,16 @@ dnn.controlBar.init = function (settings) {
             }
         }
     }
+    
+    //Apply the hot key settings.
+	if (settings.hotkeys) {
+	    for (var i in settings.hotkeys) {
+	        if (!settings.hotkeys.hasOwnProperty(i)) continue;
+
+	        var item = settings.hotkeys[i];
+	        dnn.hotkeysManager.map(item.key, item.title, item.description, item.action);
+	    }
+	}
 };
 
 $(function () {
@@ -1189,5 +1199,5 @@ $(function () {
 	});
     
     //Set the checkbox in control bar as DNN style.
-    $('#ControlBar input[type="checkbox"]').dnnCheckbox();
+	$('#ControlBar input[type="checkbox"]').dnnCheckbox();
 });
