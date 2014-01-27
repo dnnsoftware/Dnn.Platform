@@ -15,17 +15,17 @@ dnn.hotkeysManager = dnn.hotkeysManager || {};
     };
 
     var $document = $(document.body);
-    var hotKeys = [];
+    var hotkeys = [];
 
     var targetAcceptInput = function(type) {
         return $.inArray(type, ["text", "password", "number", "email", "url", "range", "date", "month", "week", "time", "datetime", "datetime-local", "search", "color", "tel"]) > -1;
     };
 
     var buildMessageBar = function() {
-        var $bar = $('<div id="HotKeysBar"><ul></ul></div>');
+        var $bar = $('<div id="HotkeysBar"><ul></ul></div>');
         $bar.appendTo($document);
-        for (var i = 0; i < hotKeys.length; i++) {
-            var k = hotKeys[i];
+        for (var i = 0; i < hotkeys.length; i++) {
+            var k = hotkeys[i];
             var $item = $('<li title="' + k.description + '"><span>' + k.key + '</span><p>' + k.title + '</p></li>');
             $bar.find('ul').append($item);
         }
@@ -34,18 +34,18 @@ dnn.hotkeysManager = dnn.hotkeysManager || {};
     };
 
     var showMessageBar = function () {
-        if ($('#HotKeysBar').length > 0 || hotKeys.length == 0) {
+        
+        if ($('#HotkeysBar').length > 0 || hotkeys.length == 0) {
             return;
         }
-        
         var messageBar = buildMessageBar();
         messageBar.animate({ bottom: 0, opacity: 1 }, 'fast');
         $document.on('keyup', hideMessageBar);
     };
 
     var hideMessageBar = function (e) {
-        $('#HotKeysBar').animate({ opacity: 0 }, 'fast', function() {
-            $('#HotKeysBar').remove();
+        $('#HotkeysBar').animate({ opacity: 0 }, 'fast', function() {
+            $('#HotkeysBar').remove();
         });
         $document.off(e);
     };
@@ -56,13 +56,13 @@ dnn.hotkeysManager = dnn.hotkeysManager || {};
             e.stopImmediatePropagation();
         }
         
-        if (e.keyCode == dnn.hotKeysManager.specialKey.code) {
+        if (e.keyCode == dnn.hotkeysManager.specialKey.code) {
             showMessageBar();
         }
     });
 
     dnn.hotkeysManager.map = function (key, title, description, action) {
-        hotKeys.push({key: key, title: title, description: description});
+        hotkeys.push({key: key, title: title, description: description});
         $document.jkey(dnn.hotkeysManager.specialKey.name + "+" + key, function(e) {
             action.call();
         });
