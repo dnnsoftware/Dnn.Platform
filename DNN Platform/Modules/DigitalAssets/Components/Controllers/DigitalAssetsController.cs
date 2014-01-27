@@ -869,6 +869,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         public string GetUrl(int fileId)
         {
             var file = FileManager.Instance.GetFile(fileId, true);
+            if (file != null)
+            {
+                var folder = FolderManager.Instance.GetFolder(file.FolderId);
+                if (!HasPermission(folder, "READ"))
+                {
+                    throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToDownload.Error"));
+                }
+            }
             return FileManager.Instance.GetUrl(file);
         }
 
