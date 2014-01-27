@@ -1968,7 +1968,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         controller.setupGridContextMenuExtension(contextMenu, grid.get_selectedItems());
         
-        contextMenu.showAt(event.clientX, window.pageYOffset + event.clientY);
+        contextMenu.show(event);
     }
 
     function gridOnRowContextMenu(sender, args) {
