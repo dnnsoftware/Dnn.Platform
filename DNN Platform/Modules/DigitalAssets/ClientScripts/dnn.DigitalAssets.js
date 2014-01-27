@@ -1359,6 +1359,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
                 if (permissions[i].Value) {
                     $item.addClass("permission_granted");
+                    $item.removeClass("permission_denied");
                 } else {
                     if (!$item.hasClass("permission_granted")) {
                         $item.addClass("permission_denied");
@@ -1766,8 +1767,16 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             controller.onLoadFolder();
             clearSearchPattern();
             loadFolderFirstPage(dataItem.ItemID);
-        } else {            
-            self.window.open(setTimeStamp(getUrlAsync(dataItem.ItemID)));
+        } else {
+            $.each(dataItem.Permissions, function(index, p)
+            {
+                if (p.Key == "READ" && p.Value == true) {
+                    self.window.open(setTimeStamp(getUrlAsync(dataItem.ItemID)));
+                    return false;
+                }
+                return true;
+            });
+                        
         }
     }
 

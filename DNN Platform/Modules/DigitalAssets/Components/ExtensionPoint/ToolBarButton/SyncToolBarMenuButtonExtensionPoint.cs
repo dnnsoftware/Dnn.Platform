@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
         {
             get
             {
-                return "rightButton rightAligned permission_READ";
+                return "rightButton rightAligned permission_READ permission_BROWSE";
             }
         }
 

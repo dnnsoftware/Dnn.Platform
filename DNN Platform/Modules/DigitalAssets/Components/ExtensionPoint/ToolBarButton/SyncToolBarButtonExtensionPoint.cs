@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public string CssClass
         {
-            get { return "leftButton rightAligned permission_READ"; }
+            get { return "leftButton rightAligned permission_READ permission_BROWSE"; }
         }
 
         public string Action

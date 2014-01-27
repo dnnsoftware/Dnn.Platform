@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("RefreshFolder", LocalResourceFile),
                         Value = "RefreshFolder",
-                        CssClass = "permission_READ permission_BROWSE",
+                        CssClass = "permission_BROWSE permission_READ",
                         ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray")
                     },    
                 new DnnMenuItem
@@ -385,7 +385,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("Download", LocalResourceFile),
                         Value = "Download",
-                        CssClass = "permission_READ permission_BROWSE",
+                        CssClass = "permission_READ",
                         ImageUrl = IconController.IconURL("FileDownload", "16x16", "Black")
                     },    
                 new DnnMenuItem
@@ -420,14 +420,14 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("GetUrl", LocalResourceFile),
                         Value = "GetUrl",
-                        CssClass = "permission_READ permission_BROWSE singleItem onlyFiles",
+                        CssClass = "permission_READ singleItem onlyFiles",
                         ImageUrl = IconController.IconURL("FileLink", "16x16", "Black")
                     }, 
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("UnzipFile", LocalResourceFile),
                         Value = "UnzipFile",
-                        CssClass = "permission_READ permission_BROWSE singleItem onlyFiles",
+                        CssClass = "permission_MANAGE singleItem onlyFiles",
                         ImageUrl = IconController.IconURL("Unzip", "16x16", "Gray")
                     },
                 new DnnMenuItem
