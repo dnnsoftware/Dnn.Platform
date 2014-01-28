@@ -18,7 +18,7 @@ dnn.hotkeysManager = dnn.hotkeysManager || {};
     var hotkeys = [];
 
     var targetAcceptInput = function(type) {
-        return $.inArray(type, ["text", "password", "number", "email", "url", "range", "date", "month", "week", "time", "datetime", "datetime-local", "search", "color", "tel"]) > -1;
+        return $.inArray(type, ["text", "textarea", "password", "number", "email", "url", "range", "date", "month", "week", "time", "datetime", "datetime-local", "search", "color", "tel"]) > -1;
     };
 
     var buildMessageBar = function() {
@@ -52,8 +52,8 @@ dnn.hotkeysManager = dnn.hotkeysManager || {};
     
     $document.on('keydown', function(e) {
         if (targetAcceptInput(e.target.type)) {
-            console.log(e.target.type);
             e.stopImmediatePropagation();
+            return;
         }
         
         if (e.keyCode == dnn.hotkeysManager.specialKey.code) {
