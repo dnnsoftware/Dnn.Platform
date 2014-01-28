@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using DotNetNuke.Services.Search.Entities;
+using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Search;
 
@@ -94,5 +95,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <returns><see cref="SearchStatistics"/> object or null if the information can not be retrieved.</returns>
         SearchStatistics GetSearchStatistics();
+
+        Analyzer GetCustomAnalyzer();
     }
 }

@@ -1180,4 +1180,10 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="plShowCriticalErrors.Text" xml:space="preserve">
     <value>Show Critical Errors on screen?</value>
   </data>
+  <data name="lblCustomAnalyzer.Help" xml:space="preserve">
+    <value>&lt;p&gt;If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note: &lt;/b&gt;If you want exist content to index with new analyzer, you need visit "Admin &gt; Search Admin" in each site which you want re-index and click the "Re-Index Content" button.&lt;/p&gt;</value>
+  </data>
+  <data name="lblCustomAnalyzer.Text" xml:space="preserve">
+    <value>Custom Analyzer Type:</value>
+  </data>
 </root>

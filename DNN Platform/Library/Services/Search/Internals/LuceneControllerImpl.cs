@@ -29,10 +29,12 @@ using System.Text;
 using System.Threading;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Entities;
-
+using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
@@ -130,7 +132,7 @@ namespace DotNetNuke.Services.Search.Internals
 
                             CheckDisposed();
                             var writer = new IndexWriter(FSDirectory.Open(IndexFolder),
-                                new SynonymAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
+                                GetCustomAnalyzer() ?? new SynonymAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
                             _idxReader = writer.GetReader();
                             Thread.MemoryBarrier();
                             _writer = writer;
@@ -455,6 +457,37 @@ namespace DotNetNuke.Services.Search.Internals
                 DisposeWriter();
                 DisposeReaders();
             }
+        }
+
+        public Analyzer GetCustomAnalyzer()
+        {
+            var analyzer = DataCache.GetCache<Analyzer>("Search_CustomAnalyzer");
+            if (analyzer == null)
+            {
+                var customAnalyzerType = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
+                if (!string.IsNullOrEmpty(customAnalyzerType))
+                {
+                    try
+                    {
+                        var analyzerType = Reflection.CreateType(customAnalyzerType);
+                        analyzer = Reflection.CreateInstance(analyzerType) as Analyzer;
+                        if (analyzer == null)
+                        {
+                            throw new ArgumentException("The class'" + customAnalyzerType +
+                                                        "' can not created because it's invalid or is not an analyzer, will use default analyzer.");
+                        }
+
+                        DataCache.SetCache("Search_CustomAnalyzer", analyzer);
+                        return analyzer;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+                }
+            }
+
+            return analyzer;
         }
 
         private void DisposeWriter()

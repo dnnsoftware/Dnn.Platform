@@ -586,6 +586,7 @@ namespace DotNetNuke.Modules.Admin.Host
             var maxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
             txtIndexWordMinLength.Text = minWordLength.ToString(CultureInfo.InvariantCulture);
             txtIndexWordMaxLength.Text = maxWordLength.ToString(CultureInfo.InvariantCulture);
+            txtCustomAnalyzer.Text = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
         }
 
         private void EnableCompositeFilesChanged(object sender, EventArgs e)
@@ -961,6 +962,15 @@ namespace DotNetNuke.Modules.Admin.Host
                 }
             }
 
+            var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
+            var newAnalyzer = txtCustomAnalyzer.Text.Trim();
+            if (!oldAnalyzer.Equals(newAnalyzer))
+            {
+                HostController.Instance.Update("Search_CustomAnalyzer", newAnalyzer);
+                
+                //force the app restart to use new analyzer.
+                Config.Touch();
+            }
         }
     }
 }

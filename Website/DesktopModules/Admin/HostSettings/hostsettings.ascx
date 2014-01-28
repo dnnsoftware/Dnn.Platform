@@ -487,6 +487,10 @@
                     <asp:CompareValidator ID="validatorIndexWordMaxLengthCompared" runat="server" ControlToCompare="txtIndexWordMinLength" ControlToValidate="txtIndexWordMaxLength" CssClass="dnnFormMessage dnnFormError"
                         Operator="GreaterThan" Type="Integer" Display="Dynamic" EnableClientScript="True" resourceKey="valIndexWordMaxLengthCompare.Error"></asp:CompareValidator>
                 </div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="txtCustomAnalyzer" />
+                    <asp:TextBox runat="server" ID="txtCustomAnalyzer"></asp:TextBox>
+                </div>
                 <div class="dnnTableHeader">
                     <div class="dnnFormItem">
                         <dnn:label id="plSearchIndexPath" runat="server" resourcekey="lblSearchIndexPath" />

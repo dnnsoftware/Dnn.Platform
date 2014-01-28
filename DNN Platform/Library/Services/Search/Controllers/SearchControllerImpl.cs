@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch);
                     // don't use stemming analyzer for exact matches or non-analyzed fields (e.g. Tags)
-                    var analyzer = new SearchQueryAnalyzer(true);
+                    var analyzer = LuceneController.Instance.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
                     var nonStemmerAnalyzer = new SearchQueryAnalyzer(false);
                     var keywordQuery = new BooleanQuery();
                     foreach (var fieldToSearch in Constants.KeyWordSearchFields)
