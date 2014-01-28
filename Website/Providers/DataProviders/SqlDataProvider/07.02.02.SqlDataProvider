@@ -823,6 +823,19 @@ UPDATE {databaseOwner}[{objectQualifier}ContentItems]
    WHERE StateID NOT IN (SELECT StateID FROM {databaseOwner}[{objectQualifier}ContentWorkflowStates])
 GO
 
+--make sure, moduleID is properly populated:
+ MERGE INTO 
+{databaseOwner}[{objectQualifier}ContentItems] C USING {databaseOwner} 
+[{objectQualifier}Modules] M ON C.ContentItemID = M.ContentItemID
+ WHEN MATCHED AND IsNull(C.ModuleID, 0) <> M.ModuleID THEN UPDATE SET C.ModuleID = M.ModuleID;
+ GO
+
+-- make sure, tabID is properly populated:
+ MERGE INTO {databaseOwner}[{objectQualifier}ContentItems] C USING 
+{databaseOwner}[{objectQualifier}Tabs] T ON C.ContentItemID = T.ContentItemID
+ WHEN MATCHED AND IsNull(C.TabID, 0) <> T.TabID THEN UPDATE SET C.TabID = T.TabID;
+ GO 
+
 -- delete orphaned records
 DELETE FROM {databaseOwner}[{objectQualifier}ContentItems]
 	WHERE (ContentTypeID = 2 AND NOT ModuleID IN (SELECT ModuleID FROM {databaseOwner}[{objectQualifier}Modules]))
