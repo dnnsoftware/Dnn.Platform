@@ -56,18 +56,24 @@ namespace DotNetNuke.Web.UI.WebControls
             return page.Items[typeof(DnnFileUpload)] as DnnFileUpload;
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            jQuery.RegisterFileUpload(Page);
+        }
+
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
+
             RegisterClientScript(Page, Skin);
             RegisterStartupScript();
         }
 
         private static void RegisterClientScript(Page page, string skin)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RegisterFileUpload(page);
-
             DnnDropDownList.RegisterClientScript(page, skin);
 
             ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload.css");
@@ -78,7 +84,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.WebResourceUrl.js", FileOrder.Js.DefaultPriority + 2);
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 3);
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/jquery/jquery.fileupload.js", FileOrder.Js.DefaultPriority + 3);
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload.js", FileOrder.Js.DefaultPriority + 4);
         }
 
