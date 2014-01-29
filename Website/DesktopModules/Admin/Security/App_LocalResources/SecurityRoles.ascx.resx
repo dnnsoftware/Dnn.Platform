@@ -148,7 +148,7 @@
     <value>Specify The Date This Role Assignment Should Expire ( Optional ). Entering No Value Will Indicate No Expiry Date.</value>
   </data>
   <data name="SendNotification.Text" xml:space="preserve">
-    <value>Send Notification?</value>
+    <value>Send Email?</value>
   </data>
   <data name="cmdAdd.Text" xml:space="preserve">
     <value>Add Role</value>
