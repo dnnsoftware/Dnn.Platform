@@ -1162,14 +1162,6 @@ BEGIN
 END
 GO
 
--- DNN-4288: make sure, portalId has to be specified, when adding non-system rows:
-IF EXISTS (SELECT * FROM Sys.Check_Constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'CK_{objectQualifier}Roles_PortalId')
-ALTER TABLE {databaseOwner}[{objectQualifier}Roles] DROP CONSTRAINT CK_{objectQualifier}Roles_PortalId
-GO
-
-ALTER TABLE {databaseOwner}[{objectQualifier}Roles] WITH NOCHECK ADD CONSTRAINT [CK_{objectQualifier}Roles_PortalId] CHECK (PortalId is not null)
-GO
-
 -- DNN-4289: optimize roles indexes
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}Roles_RoleGroup')
     DROP INDEX [IX_{objectQualifier}Roles_RoleGroup] ON {databaseOwner}[{objectQualifier}Roles]
