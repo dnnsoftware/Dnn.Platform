@@ -1359,7 +1359,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
                 if (permissions[i].Value) {
                     $item.addClass("permission_granted");
-                    $item.removeClass("permission_denied");
+                    if (reset) {
+                        $item.removeClass("permission_denied");
+                    }
                 } else {
                     if (!$item.hasClass("permission_granted")) {
                         $item.addClass("permission_denied");
