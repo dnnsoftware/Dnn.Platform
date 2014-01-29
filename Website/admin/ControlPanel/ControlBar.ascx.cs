@@ -117,10 +117,6 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, "~/admin/ControlPanel/ControlBar.css");
                 jQuery.RegisterDnnJQueryPlugins(this.Page);
-
-                ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/jquery/jquery.jkey.js");
-                ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.hotkeysManager.js");
-
                 ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.controlBar.js");
 
                 // Is there more than one site in this group?
