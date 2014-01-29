@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1289,6 +1289,17 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        /// <summary>
+        /// display the text of errors injected via the error querystring parameter
+        /// </summary>
+        public static bool ShowCriticalErrors
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("ShowCriticalErrors", true);
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the Site Log Buffer size
@@ -1378,8 +1389,27 @@ namespace DotNetNuke.Entities.Host
         public static string SMTPPassword
         {
             get
-            {
-                return HostController.Instance.GetEncryptedString("SMTPPassword",Config.GetDecryptionkey());
+            {              
+                string decryptedText;
+                try
+                {
+                    decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
+                }
+                catch (Exception)
+                {
+                    //fixes case where smtppassword failed to encrypt due to failing upgrade
+                    var current = HostController.Instance.GetString("SMTPPassword");
+                    if (!string.IsNullOrEmpty(current))
+                    {
+                        HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
+                        decryptedText = current;
+                    }
+                    else
+                    {
+                        decryptedText = string.Empty;
+                    }
+                }
+                return decryptedText;
             }
         }
 

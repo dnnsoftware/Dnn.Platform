@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -190,6 +191,14 @@ namespace DesktopModules.Admin.Tabs
             }
         }
 
+        private string IconRedirect
+        {
+            get
+            {
+                return ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Redirect.png");
+            }
+        }
+
         private string SelectedNode
         {
             get
@@ -242,7 +251,7 @@ namespace DesktopModules.Admin.Tabs
 
             jQuery.RequestDnnPluginsRegistration();
 
-            ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
+            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
             ClientAPI.RegisterClientScriptBlock(Page, "dnn.controls.js");
             dgPermissions.RegisterScriptsForAjaxPanel();
         }
@@ -1098,17 +1107,20 @@ namespace DesktopModules.Admin.Tabs
 
         private string GetNodeStatusIcon(TabInfo tab)
         {
+            string s = "";
             if (tab.DisableLink)
             {
-                return "<img src=\"" + IconPageDisabled + "\" class=\"statusicon\" />";
+                s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageDisabled, LocalizeString("lblDisabled"));
             }
-
             if (tab.IsVisible == false)
             {
-                return "<img src=\"" + IconPageHidden + "\" class=\"statusicon\" />";
+                s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageHidden, LocalizeString("lblHidden"));
             }
-
-            return "";
+            if (tab.Url != "")
+            {
+                s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconRedirect, LocalizeString("lblRedirect"));
+            }
+            return s;
         }
 
         private bool IsAdminTab(TabInfo tab)
@@ -1198,6 +1210,7 @@ namespace DesktopModules.Admin.Tabs
             cmdExpandTree.Text = LocalizeString("ExpandAll");
             lblDisabled.Text = LocalizeString("lblDisabled");
             lblHidden.Text = LocalizeString("lblHidden");
+            lblRedirect.Text = LocalizeString("lblRedirect");
             lblHome.Text = LocalizeString("lblHome");
             lblSecure.Text = LocalizeString("lblSecure");
             lblEveryone.Text = LocalizeString("lblEveryone");

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,9 +44,19 @@ namespace DotNetNuke.Modules.SearchResults
         private IList<string> _searchContentSources;
         private IList<int> _searchPortalIds;
 
-        protected string SearchTerm
+        protected string SearchDisplayTerm
         {
             get { return Request.QueryString["Search"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Search"].Replace("\"", "")) : string.Empty; }
+        }
+
+        protected string SearchTerm
+        {
+            get { return Request.QueryString["Search"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Search"]) : string.Empty; }
+        }
+
+        protected string TagsQuery
+        {
+            get { return Request.QueryString["Tag"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Tag"].Replace("\"", "")) : string.Empty; }
         }
 
         protected string LinkTarget

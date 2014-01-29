@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -52,10 +52,12 @@ namespace DotNetNuke.Services.ModuleCache
         private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
         {
             byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            var md5 = new MD5CryptoServiceProvider();
-            hash = md5.ComputeHash(hash);
+            var sha256 = new SHA256CryptoServiceProvider();
+            hash = sha256.ComputeHash(hash);
             return tabModuleId + "_" + ByteArrayToString(hash);
         }
+
+
 
         private static string GetAttribFileName(int tabModuleId, string cacheKey)
         {

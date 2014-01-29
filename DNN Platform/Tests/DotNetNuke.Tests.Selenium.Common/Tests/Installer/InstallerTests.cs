@@ -233,18 +233,11 @@ namespace DNNSelenium.Common.Tests.Installer
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Set site language: '" + language + "'");
 			installerPage.SetDictionary(language);
 
-			Trace.WriteLine(BasePage.TraceLevelPage + "Verify frame title: '" + installerPage.CurrentFrameTitle() + "'");
-			Utilities.SoftAssert(() => StringAssert.AreEqualIgnoringCase(installerPage.Translate("WelcomeScreenTitle"), installerPage.CurrentFrameTitle(),
-								 "The Welcome Screen title is missing or incorrect"));
+			//Trace.WriteLine(BasePage.TraceLevelPage + "Verify frame title: '" + installerPage.CurrentFrameTitle() + "'");
+			//Utilities.SoftAssert(() => StringAssert.AreEqualIgnoringCase(installerPage.Translate("WelcomeScreenTitle"), installerPage.CurrentFrameTitle(),
+			//					 "The Welcome Screen title is missing or incorrect"));
 
-			installerPage.WaitAndSwitchToFrame(60);
-
-			installerPage.WaitForElement(By.Id(InstallerPage.IntroVideo), 60).WaitTillVisible(60);
-			installerPage.WaitForElement(By.Id(InstallerPage.WhatIsNew), 60).WaitTillVisible(60);
-
-			installerPage.WaitForElement(By.Id(InstallerPage.LetMeAtIn), 60).WaitTillEnabled().Click();
-
-			installerPage.WaitAndSwitchToWindow(60);
+			installerPage.WelcomeScreen();
 
 			LoginPage loginPage = new LoginPage(driver);
 
@@ -263,7 +256,7 @@ namespace DNNSelenium.Common.Tests.Installer
 						Assert.AreEqual(4, installerPage.FindElements(By.XPath("//ul[@class ='nav nav-pills']/li")).Count(),
 										"This is not a Default page or The number of options are incorrect");
 
-						loginPage.LoginUsingUrl(baseUrl, username, password);
+						loginPage.LoginUsingDirectUrl(baseUrl, username, password);
 						//default template; look for menu options, 4 options should be present
 						Trace.WriteLine("Assert current Template: Default: ");
 						Assert.AreEqual(4, installerPage.FindElements(By.XPath("//ul[@class = 'nav nav-pills']/li")).Count(),
@@ -285,14 +278,14 @@ namespace DNNSelenium.Common.Tests.Installer
 
 						//blank template; look for the "Home" option (only one option is present)
 						Trace.WriteLine("Assert current Template: Blank: ");
-						Assert.AreEqual(1, installerPage.FindElements(By.XPath("//ul[@id='dnn_pnav']/li")).Count(),
+						Assert.AreEqual(1, installerPage.FindElements(By.XPath("//ul[@class='nav nav-pills']/li")).Count(),
 										"This is not a Blank page or The number of options are incorrect");
 
-						loginPage.LoginUsingUrl(baseUrl, username, password);
+						loginPage.LoginUsingDirectUrl(baseUrl, username, password);
 
 						//blank template; look for the "Home" option (only one option is present)
 						Trace.WriteLine("Assert current Template: Blank: ");
-						Assert.AreEqual(1, installerPage.FindElements(By.XPath("//ul[@id='dnn_pnav']/li")).Count(),
+						Assert.AreEqual(1, installerPage.FindElements(By.XPath("//ul[@class='nav nav-pills']/li")).Count(),
 										"This is not a Blank page or The number of options are incorrect");
 						break;
 					}

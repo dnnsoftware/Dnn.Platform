@@ -138,16 +138,16 @@
                         htmlString += "<img src=\"" + action.Icon + "\"><span>" + action.Title + "</span>";
                     }
 
-                    $parent.find("#moduleActions-" + moduleId + "-Delete a").dnnConfirm({
-                        text: opts.deleteText,
-                        yesText: opts.yesText,
-                        noText: opts.noText,
-                        title: opts.confirmTitle
-                    });
-
                     $parent.append(htmlString);
                 }
             }
+
+            $parent.find("#moduleActions-" + moduleId + "-Delete a").dnnConfirm({
+                text: opts.deleteText,
+                yesText: opts.yesText,
+                noText: opts.noText,
+                title: opts.confirmTitle
+            });
         }
 
         function buildMenuRoot(root, rootText, rootClass) {
@@ -183,7 +183,7 @@
                     .fadeIn("slow", function () {
 
                         //update server
-                        completeMove(targetPane, ((moduleIndex * 2) + 4));
+                        completeMove(targetPane, ( 2 * moduleIndex + 2));
                     });
             });
         }
@@ -226,7 +226,7 @@
                     .insertBefore($("#dnn_" + targetPane).children()[moduleIndex - 1])
                     .fadeIn("slow", function () {
                         //update server
-                        completeMove(targetPane, (moduleIndex * 2) - 2);
+                        completeMove(targetPane, (2 * moduleIndex - 4));
                     });
             });
         }

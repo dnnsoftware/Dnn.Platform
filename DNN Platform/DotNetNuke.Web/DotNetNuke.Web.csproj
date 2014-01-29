@@ -150,6 +150,7 @@
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
     <Compile Include="InternalServices\GettingStartedController.cs" />
+    <Compile Include="InternalServices\ImageHeader.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
     <Compile Include="InternalServices\ItemListServiceController.cs" />
     <Compile Include="InternalServices\SearchServiceController.cs" />
@@ -183,6 +184,8 @@
     <Compile Include="Api\IServiceRouteMapper.cs" />
     <Compile Include="Api\Internal\ServicesRoutingManager.cs" />
     <Compile Include="Common\SharedConstants.cs" />
+    <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
+    <Compile Include="UI\WebControls\DnnFileUpload.cs" />
     <Compile Include="UI\WebControls\DnnPortalPageDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnDropDownListOptions.cs" />
     <Compile Include="UI\WebControls\DnnFolderDropDownList.cs" />
@@ -415,6 +418,10 @@
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
     <Import Include="System.Management" />
+    <ProjectReference Include="..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3B64E72E-63CC-4A90-ADFF-4B919EF17239}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>

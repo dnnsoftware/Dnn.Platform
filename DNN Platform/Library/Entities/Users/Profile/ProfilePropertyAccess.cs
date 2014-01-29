@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -91,7 +91,8 @@ namespace DotNetNuke.Entities.Users
                             {
                                 if (user.Social.UserRelationships.Any(userRelationship =>
                                                                           (userRelationship.RelationshipId == relationship.RelationshipId
-                                                                              && accessingUser.UserID == userRelationship.RelatedUserId)
+                                                                              && userRelationship.Status == RelationshipStatus.Accepted
+                                                                              && (accessingUser.UserID == userRelationship.RelatedUserId || user.UserID==userRelationship.RelatedUserId))
                                                                       ))
                                 {
                                     isVisible = true;

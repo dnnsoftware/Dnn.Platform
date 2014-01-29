@@ -26,7 +26,12 @@
             <dnn:textcolumn DataField="Length" HeaderText="Length" Width="50px" />
             <dnn:textcolumn DataField="DefaultValue" HeaderText="DefaultValue" Width="80px" />
             <dnn:textcolumn DataField="ValidationExpression" HeaderText="ValidationExpression" Width="100px" />
-            <dnn:textcolumn DataField="DefaultVisibility" HeaderText="DefaultVisibility" Width="100px" />
+            <asp:TemplateColumn HeaderText="DefaultVisibility">
+                <ItemStyle Width="100px"></ItemStyle>
+                <ItemTemplate>
+                    <asp:label id="lbDefaultVisibility" runat="server" Text='<%# DisplayDefaultVisibility((DotNetNuke.Entities.Profile.ProfilePropertyDefinition)Container.DataItem) %>'></asp:label>
+                </ItemTemplate>
+            </asp:TemplateColumn>
             <dnn:checkboxcolumn DataField="Required" HeaderText="Required" AutoPostBack="True" />
             <dnn:checkboxcolumn DataField="Visible" HeaderText="Visible" AutoPostBack="True" />
         </columns>

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1886,9 +1886,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeleteDesktopModulePermissionsByPortalDesktopModuleID", portalDesktopModuleID);
         }
 
-        public virtual void DeleteDesktopModulePermissionsByUserID(int userID)
+        public virtual void DeleteDesktopModulePermissionsByUserID(int userID, int portalID)
         {
-            ExecuteNonQuery("DeleteDesktopModulePermissionsByUserID", userID);
+            ExecuteNonQuery("DeleteDesktopModulePermissionsByUserID", userID, portalID);
         }
 
         public virtual IDataReader GetDesktopModulePermission(int desktopModulePermissionID)
@@ -2000,9 +2000,9 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetRoles");
         }
 
-        public virtual IDataReader GetRolesBasicSearch(int portalID, int pageSize, string filterBy)
+        public virtual IDataReader GetRolesBasicSearch(int portalID, int pageIndex, int pageSize, string filterBy)
         {
-            return ExecuteReader("GetRolesBasicSearch", portalID, pageSize, filterBy);
+            return ExecuteReader("GetRolesBasicSearch", portalID, pageIndex, pageSize, filterBy);
         }
 
         public virtual IDataReader GetRoleSettings(int roleId)
@@ -2502,21 +2502,6 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetSiteLogReports()
         {
             return ExecuteReader("GetSiteLogReports");
-        }
-
-        #endregion
-
-        #region Database
-
-        public virtual IDataReader GetFields(string TableName)
-        {
-            string SQL = "SELECT * FROM {objectQualifier}" + TableName + " WHERE 1 = 0";
-            return ExecuteSQL(SQL);
-        }
-
-        public virtual IDataReader GetTables()
-        {
-            return ExecuteReader("GetTables");
         }
 
         #endregion
@@ -3156,6 +3141,16 @@ namespace DotNetNuke.Data
         {
             return ExecuteScalar<int>("AddUserAuthentication", userID, authenticationType, authenticationToken,
                                       CreatedByUserID);
+        }
+
+        /// <summary>
+        /// Get a User Authentication record from slq database. DNN-4016
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>UserAuthentication record</returns>
+        public virtual IDataReader GetUserAuthentication(int userID)
+        {
+            return ExecuteReader("GetUserAuthentication", userID);
         }
 
         public virtual void DeleteAuthentication(int authenticationID)

@@ -169,7 +169,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             var combinedFiles = builder.ToString();
             combinedFiles = combinedFiles.TrimEnd(new[] { ';' });
 
-            var fileKey = (combinedFiles + version).GenerateMd5();
+            var fileKey = (combinedFiles + version).GenerateHash();
 
             var x = FindItem(fileKey, version);
             
@@ -308,7 +308,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         private string GetXmlMapPath()
         {
             var folder = _xmlMapFolder.FullName;
-            var folderMd5 = folder.GenerateMd5();
+            var folderMd5 = folder.GenerateHash();
             string machineName;
             //catch usecase where user is running with EnvironmentPermission
             try

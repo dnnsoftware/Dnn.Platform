@@ -1,14 +1,14 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="FiftyOneClientCapabilityProvider" type="Provider" version="07.02.00">
+    <package name="FiftyOneClientCapabilityProvider" type="Provider" version="07.02.01">
       <friendlyName>DotNetNuke Client Capability Provider</friendlyName>
       <description>Device Detection / Client Capability Provider</description>
       <iconFile>~/DesktopModules/Admin/FiftyOneClientCapabilityProvider/Images/mobiledevicedet_16X16.png</iconFile>
       <owner>
-        <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -319,7 +319,7 @@ namespace DotNetNuke.Entities.Urls
             UrlFormat = GetStringSetting(UrlFormatSetting, "advanced");
 
             //541 moved doNotRedirect and doNotRedirectRegex from under 'redirectUnfriendly' code
-			DoNotRedirectRegex = GetStringSetting(DoNotRedirectUrlRegexSetting, @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|/ProfilePic\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview");
+			DoNotRedirectRegex = GetStringSetting(DoNotRedirectUrlRegexSetting, @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview");
             DoNotRedirectSecureRegex = GetStringSetting(DoNotRedirectHttpsUrlRegexSetting, String.Empty);
 
             DoNotRewriteRegex = GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx");

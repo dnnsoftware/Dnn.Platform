@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -289,7 +289,7 @@ namespace DotNetNuke.Services.FileSystem
                 var newSubFolderPath = newFolderPath + subFolderPath.Substring(folderPath.Length);
                 AddFolderAndMoveFiles(subFolderPath, newSubFolderPath, folderMapping);
 
-                folderProvider.DeleteFolder(new FolderInfo { FolderPath = subFolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.FolderMappingID });
+                folderProvider.DeleteFolder(new FolderInfo { FolderPath = subFolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID });
             }
 
             folderProvider.DeleteFolder(new FolderInfo { FolderPath = folderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID });

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -68,6 +68,14 @@ namespace DotNetNuke.Modules.Admin.Modules
             get
             {
                 return _module ?? (_module = new ModuleController().GetModule(ModuleId, TabId, false));
+            }
+        }
+
+        private string ReturnURL
+        {
+            get
+            {
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
             }
         }
 
@@ -182,7 +190,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 }
                 if (!Page.IsPostBack)
                 {
-                    cmdCancel.NavigateUrl = Globals.NavigateURL();
+                    cmdCancel.NavigateUrl = ReturnURL;
 
                     cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
                     cboFolders.Services.Parameters.Add("permission", "ADD");
@@ -211,7 +219,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         var strMessage = ExportModule(ModuleId, strFile, folder);
                         if (String.IsNullOrEmpty(strMessage))
                         {
-                            Response.Redirect(Globals.NavigateURL(), true);
+                            Response.Redirect(ReturnURL, true);
                         }
                         else
                         {

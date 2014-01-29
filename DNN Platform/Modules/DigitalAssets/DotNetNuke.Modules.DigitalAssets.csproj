@@ -83,7 +83,7 @@
   <ItemGroup>
     <Compile Include="ClientDialog.cs" />
     <Compile Include="Components\Controllers\DigitalAssetsSettingsRepository.cs" />
-    <Compile Include="Components\Controllers\FileSizeFormatProvider.cs" />
+    <Compile Include="Components\Controllers\FolderPathComparer.cs" />
     <Compile Include="Components\Controllers\IDigitalAssetsControllerData.cs" />
     <Compile Include="Components\Controllers\Models\ExtractedItemViewModel.cs" />
     <Compile Include="Components\Controllers\Models\PreviewInfoViewModel.cs" />
@@ -213,11 +213,13 @@
     <Content Include="ClientScripts\dnn.DigitalAssets.js" />
     <Content Include="ClientScripts\dnn.DigitalAssets.SearchBox.js" />
     <Content Include="ClientScripts\dnn.DigitalAssetsController.js" />
+    <Content Include="ClientScripts\dnn.DigitalAssets.FilterViewSettings.js" />
     <Content Include="FileFieldsControl.ascx" />
     <Content Include="FolderProperties.ascx" />
     <Content Include="Images\down.png" />
     <Content Include="Images\indeterminate.gif" />
     <Content Include="Images\manageFolderTypes.png" />
+    <Content Include="Images\transparencyBG.jpg" />
     <Content Include="PreviewFieldsControl.ascx" />
     <Content Include="PreviewPanelControl.ascx" />
     <Content Include="EditFolderMapping.ascx" />

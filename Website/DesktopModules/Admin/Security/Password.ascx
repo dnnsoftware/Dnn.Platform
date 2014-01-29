@@ -5,6 +5,7 @@
     <fieldset>
 		<asp:Panel runat="server" ID="CannotChangePasswordMessage" CssClass="dnnFormMessage dnnFormWarning" Visible="False"><%=LocalizeString("CannotChangePassword") %></asp:Panel>
 		<asp:panel id="pnlChange" runat="server">
+		    <h2 class="dnnFormSectionHead"><asp:label id="lblChangePasswordHeading" runat="server" resourceKey="ChangePassword" /></h2>
             <div class="dnnFormItem"><p><asp:label id="lblChangeHelp" runat="server" /></p></div>
             <div id="oldPasswordRow" runat="server" class="dnnFormItem">
                 <dnn:label id="plOldPassword" runat="server" controlname="txtOldPassword" />
@@ -20,6 +21,9 @@
                 <dnn:label id="plNewConfirm" runat="server" controlname="txtNewConfirm" />
                 <asp:textbox id="txtNewConfirm" runat="server" textmode="Password" size="25" maxlength="128" CssClass="password-confirm" />
             </div>
+            <ul class="dnnActions dnnClear">
+                 <li><asp:LinkButton id="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="ChangePassword" /></li>
+                </ul>
 		</asp:panel>
        	<asp:panel id="pnlReset" runat="server">
             <h2 class="dnnFormSectionHead"><asp:label id="lblResetHeading" runat="server" resourceKey="ResetPassword" /></h2>
@@ -59,7 +63,6 @@
         </div>
     </fieldset>
     <ul class="dnnActions dnnClear">
-        <li><asp:LinkButton id="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="ChangePassword" /></li>
         <li><asp:LinkButton id="cmdReset" runat="server" CssClass="dnnPrimaryAction" resourcekey="ResetPassword" /></li>
         <li><asp:LinkButton id="cmdUserReset" runat="server" CssClass="dnnPrimaryAction" resourcekey="ResetPassword" Visible="False" /></li>
         <li><asp:LinkButton id="cmdUpdateQA" runat="server" CssClass="dnnSecondaryAction" resourcekey="SaveQA" /></li>

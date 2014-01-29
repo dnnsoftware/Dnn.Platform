@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Threading;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.BaseClasses.BasePages;
 using OpenQA.Selenium;
@@ -57,6 +58,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			SlidingSelectByValue( By.XPath("//a[contains(@id, '" + TypeDropDownArrow + "')]"), By.XPath(TypeDropDownList), type);
 
+			Thread.Sleep(1000);
 			WaitForElement(By.XPath("//div[contains(@class, 'dnnlvContent')]/div[last()]")).WaitTillEnabled();
 		}
 	}

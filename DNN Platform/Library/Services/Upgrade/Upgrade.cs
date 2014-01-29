@@ -2,7 +2,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -316,10 +316,10 @@ namespace DotNetNuke.Services.Upgrade
                                       FriendlyName = desktopModuleName,
                                       Name = string.Concat("DotNetNuke.", desktopModuleName),
                                       PackageType = "Module",
-                                      Owner = "DotNetNuke",
-                                      Organization = "DotNetNuke Corporation",
-                                      Url = "www.dotnetnuke.com",
-                                      Email = "support@dotnetnuke.com"
+                                      Owner = "DNN",
+                                      Organization = "DNN Corp.",
+                                      Url = "http://www.dnnsoftware.com",
+                                      Email = "support@dnnsoftware.com"
                                   };
                 if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer" || desktopModuleName == "Dashboard")
                 {
@@ -1669,11 +1669,11 @@ namespace DotNetNuke.Services.Upgrade
                                   Description = "The Default UserName/Password Authentication System for DotNetNuke.",
                                   PackageType = "Auth_System",
                                   Version = new Version(1, 0, 0),
-                                  Owner = "DotNetNuke",
+                                  Owner = "DNN",
                                   License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile),
-                                  Organization = "DotNetNuke Corporation",
-                                  Url = "www.dotnetnuke.com",
-                                  Email = "support@dotnetnuke.com",
+                                  Organization = "DNN Corp.",
+                                  Url = "http://www.dnnsoftware.com",
+                                  Email = "support@dnnsoftware.com",
                                   ReleaseNotes = "There are no release notes for this version.",
                                   IsSystemPackage = true
                               };
@@ -2810,6 +2810,9 @@ namespace DotNetNuke.Services.Upgrade
                 DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
             }
 
+            //ensure old codeplex module is uninstalled
+            UninstallPackage("DotNetNuke.Module Creator");
+
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
             AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ModuleCreator/CreateModule.ascx", "~/DesktopModules/Admin/ModuleCreator/icon.png", SecurityAccessLevel.Host, 0);
@@ -2867,6 +2870,102 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
+        private static void UpgradeToVersion721()
+        {
+            try
+            {
+                //the username maybe html encode when register in 7.1.2, it will caught unicode charactors changed, need use InputFilter to correct the value.
+                var portalSecurity = new PortalSecurity();
+                using (var reader = DataProvider.Instance().ExecuteSQL("SELECT UserId, Username FROM {databaseOwner}[{objectQualifier}Users] WHERE Username LIKE '%&%'"))
+                {
+                    while (reader.Read())
+                    {
+                        var userId = Convert.ToInt32(reader["UserId"]);
+                        var userName = reader["Username"].ToString();
+
+                        if (userName != HttpUtility.HtmlDecode(userName))
+                        {
+                            
+                            userName = HttpUtility.HtmlDecode(userName);
+                            userName = portalSecurity.InputFilter(userName,
+                                                                 PortalSecurity.FilterFlag.NoScripting |
+                                                                 PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                                 PortalSecurity.FilterFlag.NoMarkup);
+
+                            UserController.ChangeUsername(userId, userName);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+
+            AddManageUsersModulePermissions();
+        }
+
+        private static void AddManageUsersModulePermissions()
+        {
+           var permCtl = new PermissionController();
+           var desktopInfo = DesktopModuleController.GetDesktopModuleByModuleName("Security", Null.NullInteger);
+            //add new user dialog
+            var md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("User Account", desktopInfo.DesktopModuleID);
+               try
+                   {
+                   var pi = new PermissionInfo
+                   {
+                       ModuleDefID = md.ModuleDefID,
+                       PermissionCode = "SECURITY_MODULE",
+                       PermissionKey = "MANAGEUSER",
+                       PermissionName = "Manage User"
+                   };
+
+                       permCtl.AddPermission(pi);
+
+                     }
+                catch
+                {
+                    //suppress
+                }
+               md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("User Accounts", desktopInfo.DesktopModuleID);
+               try
+               {
+                   var pi = new PermissionInfo
+                   {
+                       ModuleDefID = md.ModuleDefID,
+                       PermissionCode = "SECURITY_MODULE",
+                       PermissionKey = "MANAGEUSERS",
+                       PermissionName = "Manage Users"
+                   };
+
+                   permCtl.AddPermission(pi);
+
+               }
+               catch
+               {
+                   //suppress
+               }
+               md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Security Roles", desktopInfo.DesktopModuleID);
+               try
+               {
+                   var pi = new PermissionInfo
+                   {
+                       ModuleDefID = md.ModuleDefID,
+                       PermissionCode = "SECURITY_MODULE",
+                       PermissionKey = "MANAGEROLES",
+                       PermissionName = "Manage Roles"
+                   };
+
+                   permCtl.AddPermission(pi);
+
+               }
+               catch
+               {
+                   //suppress
+               }
+            
+        }
 
         private static void AddDefaultContentWorkflows()
         {
@@ -4930,6 +5029,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.2.0":
                         UpgradeToVersion720();
+                        break;
+                    case "7.2.1":
+                        UpgradeToVersion721();
                         break;
                 }
             }

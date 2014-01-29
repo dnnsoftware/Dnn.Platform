@@ -1014,7 +1014,7 @@ dnn.extend(dnn.dom, {
         return false;
     },
 
-    setCookie: function (name, val, days, path, domain, isSecure) {
+    setCookie: function (name, val, days, path, domain, isSecure, milliseconds) {
         /// <summary>
         /// Sets a cookie
         /// </summary>
@@ -1041,6 +1041,12 @@ dnn.extend(dnn.dom, {
         if (days) {
             sExpires = new Date();
             sExpires.setTime(sExpires.getTime() + (days * 24 * 60 * 60 * 1000));
+        }
+        
+        if (milliseconds) {
+            sExpires = new Date();
+            sExpires.setTime(sExpires.getTime() + (milliseconds));
+
         }
         document.cookie = name + "=" + escape(val) + ((sExpires) ? "; expires=" + sExpires.toGMTString() : "") +
 				((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + ((isSecure) ? "; secure" : "");

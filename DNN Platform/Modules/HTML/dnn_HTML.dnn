@@ -1,14 +1,14 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_HTML" type="Module" version="07.02.00">
+    <package name="DNN_HTML" type="Module" version="07.02.01">
       <friendlyName>HTML</friendlyName>
       <description>This module renders a block of HTML or Text content. The Html/Text module allows authorized users to edit the content either inline or in a separate administration page. Optional tokens can be used that get replaced dynamically during display. All versions of content are stored in the database including the ability to rollback to an older version.</description>
       <iconFile>DesktopModules\HTML\Images\html.png</iconFile>
       <owner>
-        <name>DotNetNuke Corporation</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>http://www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="license.txt" />
       <releaseNotes src="releaseNotes.txt" />
@@ -82,11 +82,16 @@
               <name>05.05.00.SqlDataProvider</name>
               <version>05.05.00</version>
             </script>
-			<script type="Install">
-				<path>Providers\DataProviders\SqlDataProvider</path>
-				<name>06.01.00.SqlDataProvider</name>
-				<version>06.01.00</version>
-			</script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>06.01.00.SqlDataProvider</name>
+              <version>06.01.00</version>
+            </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>07.02.01.SqlDataProvider</name>
+              <version>07.02.01</version>
+            </script>
             <script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>Uninstall.SqlDataProvider</name>

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DotNetNuke.Authentication.Facebook")]
-[assembly: AssemblyCopyright("Copyright ©  2002-2013")]
+[assembly: AssemblyCopyright("Copyright ©  2002-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

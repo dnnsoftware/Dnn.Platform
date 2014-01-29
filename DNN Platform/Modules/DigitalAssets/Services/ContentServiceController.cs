@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -52,7 +51,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [HttpPost]
         public HttpResponseMessage GetFolderContent(GetFolderContentRequest r)
         {
-            var p = DigitalAssetsController.GetFolderContent(r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
+            var moduleId = Request.FindModuleId();
+            var p = DigitalAssetsController.GetFolderContent(moduleId, r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
             return Request.CreateResponse(HttpStatusCode.OK, p);
         }
 
@@ -60,7 +60,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage SearchFolderContent(SearchFolderContentRequest r)
         {
-            var p = DigitalAssetsController.SearchFolderContent(r.FolderId, r.Pattern, r.StartIndex, r.NumItems, r.SortExpression);
+            var moduleId = Request.FindModuleId();
+            var p = DigitalAssetsController.SearchFolderContent(moduleId, r.FolderId, r.Pattern, r.StartIndex, r.NumItems, r.SortExpression);
             return Request.CreateResponse(HttpStatusCode.OK, p);
         }
 
@@ -108,7 +109,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage GetSubFolders(GetSubFolderRequest request)
         {
-            var subFolders = DigitalAssetsController.GetFolders(request.FolderId);
+            var moduleId = Request.FindModuleId();
+            var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
             return Request.CreateResponse(HttpStatusCode.OK, subFolders);
         }
 

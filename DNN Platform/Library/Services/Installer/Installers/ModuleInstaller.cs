@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -101,8 +101,9 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                     var controller = new DesktopModuleController();
                     controller.DeleteDesktopModule(tempDesktopModule);
+
+                    Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
                 }
-                Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
             }
             catch (Exception ex)
             {

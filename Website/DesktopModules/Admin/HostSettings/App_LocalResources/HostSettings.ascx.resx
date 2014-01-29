@@ -304,7 +304,7 @@
     <value>Upgrade Log For Version</value>
   </data>
   <data name="EmailSentMessage.Text" xml:space="preserve">
-    <value>Email Sent Successfully</value>
+    <value>Email Sent Successfully from {0} to {0}</value>
   </data>
   <data name="SpecifyHostEmailMessage.Text" xml:space="preserve">
     <value>You Must Specify The Host Email Address</value>
@@ -1115,7 +1115,7 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
     <value>Cancel</value>
   </data>
   <data name="CompactIndexConfirmationMessage.Text" xml:space="preserve">
-    <value>Compacting Index can by CPU consuming and may require twice the space of the current Index Store for processing. Compacting is done by site search crawler and depends on it's scheduling frequency. Are you sure you want to continue?</value>
+    <value>Compacting Index can be CPU consuming and may require twice the space of the current Index Store for processing. Compacting is done by site search crawler and depends on it's scheduling frequency. Are you sure you want to continue?</value>
   </data>
   <data name="CompactIndexConfirmationTitle.Text" xml:space="preserve">
     <value>Confirm Compacting</value>
@@ -1187,9 +1187,15 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
     <value>Search Index Size:</value>
   </data>
   <data name="plDebugMode.Help" xml:space="preserve">
-    <value>If checked the installation runs in "debug mode", meaning that various parts of the application will write more verbose error logs etc. Note this may lead to performance degredation.</value>
+    <value>If checked the installation runs in "debug mode", meaning that various parts of the application will write more verbose error logs etc. Note this may lead to performance degradation.</value>
   </data>
   <data name="plDebugMode.Text" xml:space="preserve">
     <value>Debug Mode</value>
+  </data>
+  <data name="plShowCriticalErrors.Help" xml:space="preserve">
+    <value>This setting determines if error messages sent via the error querystring parameter should be shown inline in the page.</value>
+  </data>
+  <data name="plShowCriticalErrors.Text" xml:space="preserve">
+    <value>Show Critical Errors on screen?</value>
   </data>
 </root>

@@ -1,7 +1,7 @@
 ﻿; if (typeof window.dnn === "undefined" || window.dnn === null) { window.dnn = {}; }; //var dnn = dnn || {};
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // All Rights Reserved
 
@@ -317,9 +317,6 @@
 
             this._$itemListFooterElement = this.$element.find("." + this.options.footerCss);
             this._$resultValue = this._$itemListFooterElement.find("." + this.options.resultElementCss).children(":first");
-            this._$resizerElement = this._$itemListFooterElement.find("." + this.options.resizerElementCss);
-            this._resizer = new dnn.Resizer(this._$resizerElement[0], { container: this.$element });
-            $(this._resizer).bind("resized", $.proxy(this._onResize, this));
 
             this._$itemListContentElement = this.$element.find("." + this.options.contentCss);
 
@@ -429,9 +426,16 @@
         },
 
         show: function () {
+            /* the component is a part of DOM, the dimension is known at this point */
             this._itemListHeaderHeight = this._$itemListHeaderElement.outerHeight(true);
             this._itemListFooterHeight = this._$itemListFooterElement.outerHeight(true);
             this._$itemListContentElement.height(this.$element.height() - this._itemListHeaderHeight - this._itemListFooterHeight);
+
+            if (!this._resizer) {
+                var $resizerElement = this._$itemListFooterElement.find("." + this.options.resizerElementCss);
+                this._resizer = new dnn.Resizer($resizerElement[0], { container: this.$element });
+                $(this._resizer).bind("resized", $.proxy(this._onResize, this));
+            }
 
             this._showTree(this._selectedNodeId);
         },
@@ -628,11 +632,11 @@
         init: function() {
             this.options = $.extend({}, DynamicTreeViewController.defaults(), this.options);
             this._serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
-            this.parameters = dnn.KeyValueConverter.arrayToDictionary(this.options.parameters, "Key", "Value");
+            this.parameters = this.options.parameters;
         },
 
         _callGet: function (data, onLoadHandler, method) {
-            $.extend(data, this.parameters.entries());
+            $.extend(data, this.parameters);
             var serviceSettings = {
                 url: this._serviceUrl + method,
                 beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -60,6 +60,7 @@ namespace DotNetNuke.Entities.Urls
         SiteUrls_Config_Rule,
         Diacritic_Characters,
         Module_Provider_Rewrite_Redirect,
-        Module_Provider_Redirect
+        Module_Provider_Redirect,
+        Requested_SplashPage
     }
 }

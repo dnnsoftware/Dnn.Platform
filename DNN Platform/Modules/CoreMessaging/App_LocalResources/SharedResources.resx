@@ -153,20 +153,11 @@
   <data name="Searching.Text" xml:space="preserve">
     <value>Searching...</value>
   </data>
-  <data name="Dialy.Text" xml:space="preserve">
-    <value>Daily</value>
-  </data>
-  <data name="Hourly.Text" xml:space="preserve">
-    <value>Hourly</value>
-  </data>
   <data name="Instant.Text" xml:space="preserve">
     <value>Instant</value>
   </data>
   <data name="Never.Text" xml:space="preserve">
     <value>Never</value>
-  </data>
-  <data name="Weekly.Text" xml:space="preserve">
-    <value>Weekly</value>
   </data>
   <data name="ResultCount.Text" xml:space="preserve">
     <value>{0}</value>
@@ -197,5 +188,8 @@
   </data>
   <data name="ItemsPerPage.Text" xml:space="preserve">
     <value>Items per page:</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -88,7 +88,6 @@ namespace DotNetNuke.Services.Messaging
 
         #region "Obsolete Methods"
 
-        [Obsolete("Deprecated in DNN 6.2.0")]
         public static string DefaultMessagingURL(string ModuleFriendlyName)
         {
             TabInfo page = MessagingPage(ModuleFriendlyName);
@@ -102,7 +101,6 @@ namespace DotNetNuke.Services.Messaging
             }
         }
 
-        [Obsolete("Deprecated in DNN 6.2.0")]
         public static TabInfo MessagingPage(string ModuleFriendlyName)
         {
             if (((_MessagingPage != null)))
@@ -129,7 +127,6 @@ namespace DotNetNuke.Services.Messaging
             return _MessagingPage;
         }
 
-        [Obsolete("Deprecated in 6.2.0 - use DotNetNuke.Services.Social.Messaging.MessagingController.Instance(messageId)")]
         public Message GetMessageByID(int PortalID, int UserID, int messageId)
         {
             var coreMessage = InternalMessagingController.Instance.GetMessage(messageId);
@@ -137,34 +134,27 @@ namespace DotNetNuke.Services.Messaging
             return ConvertCoreMessageToServicesMessage(PortalID, UserID, coreMessageRecipient, coreMessage);
         }
 
-
-
-        [Obsolete("Deprecated in 6.2.0")]
         public List<Message> GetUserInbox(int PortalID, int UserID, int PageNumber, int PageSize)
         {
             return CBO.FillCollection<Message>(_DataService.GetUserInbox(PortalID, UserID, PageNumber, PageSize));
         }
 
-        [Obsolete("Deprecated in 6.2.0 - use DotNetNuke.Services.Social.Messaging.MessagingController.Instance.GetMessage(messageId)")]
         public int GetInboxCount(int PortalID, int UserID)
         {
             return InternalMessagingController.Instance.CountConversations(UserID, PortalID);
         }
 
-        [Obsolete("Deprecated in 6.2.0 - use InternalMessagingController.Instance.GetMessage(messageId)")]
         public int GetNewMessageCount(int PortalID, int UserID)
         {
             return InternalMessagingController.Instance.CountUnreadMessages(UserID, PortalID);
         }
 
-        [Obsolete("Deprecated in 6.2.0 - use InternalMessagingController.Instance.GetMessage(messageId)")]
         public Message GetNextMessageForDispatch(Guid SchedulerInstance)
         {
             //does not need to run as scheduled task name was updated 
             return null;
         }
 
-        [Obsolete("Deprecated in 6.2.0 - use InternalMessagingController.Instance.GetMessage(messageId)")]
         public void SaveMessage(Message message)
         {
             if ((PortalSettings.Current != null))
@@ -191,7 +181,6 @@ namespace DotNetNuke.Services.Messaging
             Social.Messaging.MessagingController.Instance.SendMessage(coremessage, emptyRoles, users, files);
         }
 
-        [Obsolete("Deprecated in 6.2.0 - use InternalMessagingController.Instance.GetMessage(messageId)")]
         public void UpdateMessage(Message message)
         {
             var user = UserController.GetCurrentUserInfo().UserID;
@@ -214,7 +203,6 @@ namespace DotNetNuke.Services.Messaging
             _DataService.UpdateMessage(message);
         }
 
-        [Obsolete("Deprecated in 6.2.0 - use InternalMessagingController.Instance.GetMessage(messageId)")]
         public void MarkMessageAsDispatched(int MessageID)
         {
             //does not need to run as scheduled task name was updated

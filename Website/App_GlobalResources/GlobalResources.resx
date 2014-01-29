@@ -966,9 +966,6 @@ Operation Completed:  [Custom:3]
   <data name="//Admin//Skins.String" xml:space="preserve">
     <value>Skins</value>
   </data>
-  <data name="//Host//FileManager.String" xml:space="preserve">
-    <value>File Manager</value>
-  </data>
   <data name="//Host//Vendors.String" xml:space="preserve">
     <value>Vendors</value>
   </data>
@@ -977,7 +974,7 @@ Operation Completed:  [Custom:3]
   </data>
   <data name="License.Text" xml:space="preserve">
     <value>&lt;p&gt;DotNetNuke&amp;reg; - http://www.dotnetnuke.com&lt;br /&gt;
-Copyright (c) 2002-2013&lt;br/&gt;
+Copyright (c) 2002-2014&lt;br/&gt;
     by DotNetNuke Corporation&lt;/p&gt;
     &lt;p&gt;Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -1114,7 +1111,7 @@ Sincerely,
   <data name="//Host//ProfessionalFeatures.String" xml:space="preserve">
     <value>Professional Features</value>
   </data>
-  <data name="//Host//ProfessionalFeatures//ActivateYourLicense.String" xml:space="preserve">
+  <data name="//Host//ProfessionalFeatures//ActivateyourLicense.String" xml:space="preserve">
     <value>Activate Your License</value>
   </data>
   <data name="//Host//ProfessionalFeatures//ApplicationIntegrity.String" xml:space="preserve">
@@ -1551,5 +1548,17 @@ Sincerely,
   </data>
   <data name="EMAIL_PASSWORD_UPDATED_SUBJECT.Text" xml:space="preserve">
     <value>[Portal:PortalName] Password Updated</value>
+  </data>
+  <data name="//Admin//SearchAdmin.String" xml:space="preserve">
+    <value>Search Admin</value>
+  </data>
+  <data name="//Host//FileManagement.String" xml:space="preserve">
+    <value>File Management</value>
+  </data>
+  <data name="//Host//ProfessionalFeatures//AdvancedURLManagement.String" xml:space="preserve">
+    <value>Advanced URL Management</value>
+  </data>
+  <data name="//Admin//UserSwitcher.String" xml:space="preserve">
+    <value>User Switcher</value>
   </data>
 </root>

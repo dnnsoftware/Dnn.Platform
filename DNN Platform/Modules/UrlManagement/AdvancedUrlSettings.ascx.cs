@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.UrlManagement
 
             UrlSettingsExtensionControl.BindAction(portalId, tabId, moduleId);
 
-            var settings = new FriendlyUrlSettings(portalId);
+            var settings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(portalId);
             if (settings.EnableCustomProviders == false)
             {
                 providersGrid.Visible = false;

@@ -43,7 +43,7 @@ namespace DNNSelenium.Common.Tests.P1
 			blankPage.AddNewPage("page");
 
 			//Delete Default HTML Module on page
-			blankPage.OpenUsingUrl(_baseUrl,"/page");
+			blankPage.OpenUsingUrl(_baseUrl,"page");
 			var module = new Modules(_driver);
 			Trace.WriteLine(BasePage.TraceLevelElement + "Find the Module number:");
 			string moduleNumber =
@@ -58,10 +58,14 @@ namespace DNNSelenium.Common.Tests.P1
 			//Create set of pages with New Default
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);
 			adminPageManagementPage.OpenUsingButtons(_baseUrl);
-			adminPageManagementPage.AddPagesInBulk("Page", 76, "Web", "Home");
+			adminPageManagementPage.AddPagesInBulk(">" + "Page", "P1Modules", 65, AdminPageManagementPage.PageType.Web, "Home");
+
+			//Create set of pages for Drag&Drop tests with New Default
+			adminPageManagementPage.OpenUsingButtons(_baseUrl);
+			adminPageManagementPage.AddPagesInBulk(">" + "Page", "P1ModulesDragDrop", 65, AdminPageManagementPage.PageType.Web, "Home");
 			
 			//Create a page with 4 HtmlModuleDictionary Modules on page
-			blankPage.OpenUsingUrl(_baseUrl, "Home/Page61");
+			blankPage.OpenUsingUrl(_baseUrl, "Home/P1Modules/Page61");
 			module.OpenModulePanelUsingControlPanel();
 			int i = 1;
 			while (i < 5)
@@ -69,11 +73,25 @@ namespace DNNSelenium.Common.Tests.P1
 				module.AddNewModuleUsingMenu(HtmlModuleDictionary.IdWhenOnBanner, HtmlModuleDictionary.IdWhenOnPage, "ContentPane");
 				i++;
 			}
+			
+			_logContent = LogContent(); 
 		}
 
-		//[TestFixtureTearDown]
+		[TestFixtureTearDown]
 		public void DeleteData()
 		{
+			VerifyLogs(_logContent);
+
+			var adminPageManagementPage = new AdminPageManagementPage(_driver);
+			adminPageManagementPage.OpenUsingButtons(_baseUrl);
+			adminPageManagementPage.DeletePage("P1Modules", AdminPageManagementPage.PageType.Web);
+
+			adminPageManagementPage.OpenUsingButtons(_baseUrl);
+			adminPageManagementPage.DeletePage("P1ModulesDragDrop", AdminPageManagementPage.PageType.Web);
+
+			var adminRecycleBinPage = new AdminRecycleBinPage(_driver);
+			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
+			adminRecycleBinPage.EmptyRecycleBin();
 		}
 
 		public void AddModuleToContentPaneOnNewPage(Dictionary<string, Modules.ModuleIDs> modulesDescription, string pageName, string moduleName, string location)
@@ -94,11 +112,18 @@ namespace DNNSelenium.Common.Tests.P1
 			string moduleNumber =
 				blankPage.WaitForElement(By.XPath(locationOnPage + "/div[last()]/a")).GetAttribute("name");
 
+			blankPage.CloseEditMode();
+
 			blankPage.OpenUsingUrl(_baseUrl, pageName);
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Module location: " + location + moduleName);
 			Assert.IsTrue(
 				blankPage.ElementPresent(By.XPath(locationOnPage + moduleNameOnPage + "/a[@name='" + moduleNumber + "']")),
 				"Module is not found");
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the Edit Mode is closed: ");
+			Assert.IsFalse(
+				blankPage.ElementPresent(By.XPath(ControlPanelIDs.PageInEditMode)),
+				"The Edit Mode is not closed");
 		}
 
 		public void AddHTMLModuleToPaneOnPage(Dictionary<string, Modules.ModuleIDs> modulesDescription, string pageName, string moduleName,
@@ -633,41 +658,40 @@ namespace DNNSelenium.Common.Tests.P1
 						   "The Module is not deleted correctly");
 		}
 
-		[TestCase("Home/Page1", "AccountLoginModule", "LeftPane")]
-		[TestCase("Home/Page2", "AccountRegistrationModule", "LeftPane")]
-		[TestCase("Home/Page4", "AdvancedSettingsModule", "LeftPane")]
-		[TestCase("Home/Page5", "BannersModule", "LeftPane")]
-		[TestCase("Home/Page7", "ConfigurationManagerModule", "LeftPane")]
-		[TestCase("Home/Page8", "ConsoleModule", "LeftPane")]
-		[TestCase("Home/Page9", "ContentListModule", "LeftPane")]
-		[TestCase("Home/Page10", "DashboardModule", "LeftPane")]
-		[TestCase("Home/Page11", "DDRMenuModule", "LeftPane")]
-		[TestCase("Home/Page12", "DigitalAssetManagementModule", "LeftPane")]
-		[TestCase("Home/Page15", "ExtensionsModule", "LeftPane")]
-		[TestCase("Home/Page17", "GoogleAnalyticsModule", "LeftPane")]
-		[TestCase("Home/Page20", "HtmlModule", "LeftPane")]
-		[TestCase("Home/Page21", "JournalModule", "LeftPane")]
-		[TestCase("Home/Page22", "LanguagesModule", "LeftPane")]
-		[TestCase("Home/Page24", "ListsModule", "LeftPane")]
-		[TestCase("Home/Page25", "LogViewerModule", "LeftPane")]
-		[TestCase("Home/Page26", "MemberDirectoryModule", "LeftPane")]
-		[TestCase("Home/Page27", "MessageCenterModule", "LeftPane")]
-		[TestCase("Home/Page29", "NewslettersModule", "LeftPane")]
-		[TestCase("Home/Page30", "PagesModule", "LeftPane")]
-		[TestCase("Home/Page31", "ProfessionalPreviewModule", "LeftPane")]
-		[TestCase("Home/Page33", "RazorHostModule", "LeftPane")]
-		[TestCase("Home/Page34", "RecycleBinModule", "LeftPane")]
-		[TestCase("Home/Page35", "SearchAdminModule", "LeftPane")]
-		[TestCase("Home/Page36", "SearchResultsModule", "LeftPane")]
-		[TestCase("Home/Page40", "SiteLogModule", "LeftPane")]
-		[TestCase("Home/Page41", "SiteWizardModule", "LeftPane")]
-		[TestCase("Home/Page42", "SiteMapModule", "LeftPane")]
-		[TestCase("Home/Page43", "SkinsModule", "LeftPane")]
-		[TestCase("Home/Page44", "SocialGroupsModule", "LeftPane")]
-		[TestCase("Home/Page45", "TaxonomyManagerModule", "LeftPane")]
-		[TestCase("Home/Page47", "VendorsModule", "LeftPane")]
-		[TestCase("Home/Page48", "ViewProfileModule", "LeftPane")]
-		[TestCase("Home/Page74", "ModuleCreator", "LeftPane")]
+		[TestCase("Home/P1Modules/Page1", "AccountLoginModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page2", "AccountRegistrationModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page4", "AdvancedSettingsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page5", "BannersModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page7", "ConfigurationManagerModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page8", "ConsoleModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page9", "ContentListModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page10", "DashboardModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page11", "DDRMenuModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page12", "DigitalAssetManagementModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page15", "ExtensionsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page17", "GoogleAnalyticsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page21", "JournalModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page22", "LanguagesModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page24", "ListsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page25", "LogViewerModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page26", "MemberDirectoryModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page27", "MessageCenterModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page29", "NewslettersModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page30", "PagesModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page31", "ProfessionalPreviewModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page33", "RazorHostModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page34", "RecycleBinModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page35", "SearchAdminModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page36", "SearchResultsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page40", "SiteLogModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page41", "SiteWizardModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page42", "SiteMapModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page43", "SkinsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page44", "SocialGroupsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page45", "TaxonomyManagerModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page47", "VendorsModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page48", "ViewProfileModule", "LeftPane")]
+		[TestCase("Home/P1Modules/Page64", "ModuleCreator", "LeftPane")]
 		public void Test016_DeleteModule(string pageName, string moduleName, string location)
 		{
 			DeleteModule(Modules.CommonModulesDescription, pageName, moduleName, location);

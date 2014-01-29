@@ -122,6 +122,8 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Accept CheckBox: ");
 			WaitForElement(By.XPath(AcceptCheckBox)).ScrollIntoView().WaitTillEnabled(30);
+
+			Thread.Sleep(100);
 			WaitForElement(By.XPath(AcceptCheckBox)).Info();
 			CheckBoxCheck(By.XPath(AcceptCheckBox));
 

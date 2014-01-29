@@ -48,14 +48,49 @@ namespace ClientDependency.Core
             return Encoding.Default.GetString(toDecodeAsBytes);
         }
 
+        /// <summary>
+        /// Generates a hash of a string based on the FIPS compliance setting.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GenerateHash(this string str)
+        {
+            try
+            {
+                return CryptoConfig.AllowOnlyFipsAlgorithms
+                    ? str.GenerateSha256Hash()
+                    : str.GenerateMd5();
+            }
+            catch (Exception)
+            {
+                //default to MD5
+                return str.GenerateMd5();
+            }
+        }
+
+        /// <summary>
+        /// Generate a SHA256 hash of a string
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GenerateSha256Hash(this string str)
+        {
+            using (var hasher = new SHA256CryptoServiceProvider())
+            {
+                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(str));
+                return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
+            }
+        }
+
         /// <summary>Generate a MD5 hash of a string
         /// </summary>
         public static string GenerateMd5(this string str)
         {
-            var md5 = new MD5CryptoServiceProvider();
-            var byteArray = Encoding.ASCII.GetBytes(str);
-            byteArray = md5.ComputeHash(byteArray);
-            return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
+            using (var hasher = new MD5CryptoServiceProvider())
+            {
+                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(str));
+                return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
+            }
         }
 
         /// <summary>
@@ -77,6 +112,11 @@ namespace ClientDependency.Core
                 }
             }
             return isExt;
+        }
+
+        public static string TextOrEmpty(this string text)
+        {
+            return text ?? string.Empty;
         }
 
     }

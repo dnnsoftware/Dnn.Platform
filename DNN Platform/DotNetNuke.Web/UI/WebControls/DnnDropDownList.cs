@@ -353,28 +353,28 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        private void RegisterClientScript(string skin)
+        internal static void RegisterClientScript(Page page, string skin)
         {
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css");
+            ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css");
             if (!string.IsNullOrEmpty(skin))
             {
-                ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList." + skin + ".css");
+                ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList." + skin + ".css");
             }
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css");
+            ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css");
 
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.extensions.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.DataStructures.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.extensions.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.DataStructures.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
         }
 
         private string GetPostBackScript()
         {
-            var script = "";
+            var script = string.Empty;
             if (HasAttributes)
             {
                 script = Attributes["onchange"];
@@ -400,7 +400,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            RegisterClientScript(Skin);
+            RegisterClientScript(Page, Skin);
 
             this.AddCssClass("dnnDropDownList");
 
@@ -411,13 +411,17 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RegisterStartupScript()
         {
-            Options.SelectedItemCss = "selected-item";
             Options.InternalStateFieldId = StateControl.ClientID;
 
             if (SelectedItem == null && UseUndefinedItem)
             {
                 SelectedItem = UndefinedItem;
             }
+
+            Options.InitialState = new DnnDropDownListState
+            {
+                SelectedItem = StateControl.TypedValue != null ? StateControl.TypedValue.SelectedItem : null
+            };
 
             SelectedValue.InnerText = (SelectedItem != null) ? SelectedItem.Text : Options.SelectItemDefaultText;
 

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,7 +37,7 @@ using DotNetNuke.Application;
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
 [assembly: AssemblyCompany("DotNetNuke Corporation")]
 [assembly: AssemblyProduct("http://www.dotnetnuke.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2013 by DotNetNuke Corporation. All Rights Reserved.")]
+[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2014 by DotNetNuke Corporation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DotNetNuke")]
 [assembly: CLSCompliant(true)]
 // Version information for an assembly consists of the following four values:
@@ -49,8 +49,8 @@ using DotNetNuke.Application;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("7.2.0.0")]
-[assembly: AssemblyFileVersion("7.2.0.0")]
+[assembly: AssemblyVersion("7.2.1.0")]
+[assembly: AssemblyFileVersion("7.2.1.0")]
 [assembly: AssemblyStatus(ReleaseMode.Stable)]
 // Allow internal variables to be visible to testing projects
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Core")]

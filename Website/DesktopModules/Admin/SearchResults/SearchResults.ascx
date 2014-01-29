@@ -4,7 +4,7 @@
 
 <div class="dnnSearchBoxPanel">
     <a href="javascript:void(0)" class="dnnSearchResultAdvancedTip"><%= LinkAdvancedTipText %></a>
-    <input type="text" id="dnnSearchResult_dnnSearchBox" value="<%= SearchTerm %>" />
+    <input type="text" id="dnnSearchResult_dnnSearchBox" value="<%= SearchDisplayTerm %>" />
     <div id="dnnSearchResult-advancedTipContainer">
         <%= AdvancedSearchHintText %>
     </div>
@@ -55,7 +55,7 @@
 <div id="dnnSearchResultAdvancedForm" class="dnnForm">
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedTags" runat="server" ResourceKey="lblAdvancedTags" />
-        <input type="text" id="advancedTagsCtrl" />
+        <input type="text" id="advancedTagsCtrl" value="<%=TagsQuery %>" />
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedDates" runat="server" ResourceKey="lblAdvancedDates" />

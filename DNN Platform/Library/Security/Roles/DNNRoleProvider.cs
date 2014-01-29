@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -145,7 +145,7 @@ namespace DotNetNuke.Security.Roles
 
         public override IList<RoleInfo> GetRolesBasicSearch(int portalID, int pageSize, string filterBy)
         {
-            return CBO.FillCollection<RoleInfo>(dataProvider.GetRolesBasicSearch(portalID, pageSize, filterBy));
+            return CBO.FillCollection<RoleInfo>(dataProvider.GetRolesBasicSearch(portalID, -1, pageSize, filterBy));
         }
 
         public override IDictionary<string, string> GetRoleSettings(int roleId)

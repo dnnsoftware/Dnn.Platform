@@ -1,14 +1,14 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="UrlManagement" type="Library" version="07.02.00" isSystem="true">
+    <package name="UrlManagement" type="Library" version="07.02.01" isSystem="true">
       <friendlyName>Url Management</friendlyName>
       <description>DotNetNuke Corporation URL Management module</description>
       <iconFile>~/Icons/Sigma/AdvancedUrlMngmt_32x32.png</iconFile>
       <owner>
-        <name>DotNetNuke Corporation</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>http://www.dotnetnuke.com</url>
-        <email>support@dnncorp.com</email>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>

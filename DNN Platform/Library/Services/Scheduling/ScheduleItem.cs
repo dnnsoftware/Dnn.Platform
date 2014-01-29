@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,14 +35,14 @@ namespace DotNetNuke.Services.Scheduling
     [Serializable]
     public class ScheduleItem : BaseEntityInfo, IHydratable
     {
-        #region "Private Members"
+        #region Private Members
 
-        private DateTime _NextStart;
+        private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
 
         #endregion
 
-        #region "Constructors"
+        #region Constructors
 
         public ScheduleItem()
         {
@@ -54,7 +54,6 @@ namespace DotNetNuke.Services.Scheduling
             RetryTimeLapseMeasurement = Null.NullString;
             ObjectDependencies = Null.NullString;
             RetainHistoryNum = Null.NullInteger;
-            _NextStart = Null.NullDate;
             CatchUpEnabled = Null.NullBoolean;
             Enabled = Null.NullBoolean;
             AttachToEvent = Null.NullString;
@@ -65,8 +64,7 @@ namespace DotNetNuke.Services.Scheduling
 
         #endregion
 
-
-        #region "Persisted Properties"
+        #region Persisted Properties
 
         public string AttachToEvent { get; set; }
 
@@ -80,11 +78,11 @@ namespace DotNetNuke.Services.Scheduling
         {
             get
             {
-                if (_NextStart == Null.NullDate)
+                if (!_NextStart.HasValue)
                 {
                     _NextStart = DateTime.Now;
                 }
-                return _NextStart;
+                return _NextStart.Value;
             }
             set
             {

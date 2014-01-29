@@ -115,8 +115,8 @@
                                 <asp:TemplateColumn ItemStyle-Width="200px"  HeaderText="Action" >
 									<ItemTemplate>
                                        
-										<asp:RadioButton ID="optNew" runat="server" GroupName="Copy" resourcekey="ModuleNew" Checked="True" />
-										<asp:RadioButton ID="optCopy" runat="server" GroupName="Copy" resourcekey="ModuleCopy" Enabled='<%# DataBinder.Eval(Container.DataItem, "IsPortable") %>' />
+										<asp:RadioButton ID="optNew" runat="server" GroupName="Copy" resourcekey="ModuleNew" />
+										<asp:RadioButton ID="optCopy" runat="server" GroupName="Copy" resourcekey="ModuleCopy" Enabled='<%# DataBinder.Eval(Container.DataItem, "IsPortable") %>' Checked="True" />
 										<asp:RadioButton ID="optReference" runat="server" GroupName="Copy" resourcekey="ModuleReference" Enabled='<%# Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ModuleID")) != -1  %>' />
                                      
 									</ItemTemplate>
@@ -292,15 +292,15 @@
 				</div>        
 				<div class="dnnFormItem">
 					<dnn:Label ID="plStartDate" runat="server" ControlName="txtStartDate" />
-					<dnn:DnnDatePicker ID="datepickerStartDate" runat="server"/>&nbsp;
-					<asp:CompareValidator ID="valtxtStartDate" resourcekey="valStartDate.ErrorMessage" Operator="DataTypeCheck" Type="Date" runat="server" Display="Dynamic" ControlToValidate="datepickerStartDate" />
+					<dnn:dnndatetimepicker ID="startDatePicker" runat="server"/>&nbsp;
 				</div>        
 				<div class="dnnFormItem">
 					<dnn:Label ID="plEndDate" runat="server" ControlName="txtEndDate" />
-					<dnn:DnnDatePicker ID="datepickerEndDate" runat="server"/>&nbsp;
-				    <asp:CompareValidator ID="valtxtEndDate" resourcekey="valEndDate.ErrorMessage" Operator="DataTypeCheck" Type="Date" runat="server" Display="Dynamic" ControlToValidate="datepickerEndDate" />
-					<asp:CompareValidator ID="val2txtEndDate" ControlToValidate="datepickerEndDate" ControlToCompare="datepickerStartDate" Operator="GreaterThanEqual" Type="Date" Runat="server" Display="Dynamic" resourcekey="valEndDate2.ErrorMessage" />
-				</div>        
+					<dnn:dnndatetimepicker ID="endDatePicker" runat="server"/>&nbsp;
+                    <asp:CustomValidator ID="CustomValidator1" runat="server" ControlToValidate="endDatePicker" ClientValidationFunction="compareDate" 
+						Display="Dynamic" resourcekey="valEndDate2.ErrorMessage" CompareControl="startDatePicker"
+                        CssClass="dnnFormMessage dnnFormError"></asp:CustomValidator>    
+				</div>
 				<div class="dnnFormItem">
 					<dnn:Label ID="plURL" runat="server" ResourceKey="Url" Suffix=":" HelpKey="UrlHelp" ControlName="ctlURL" />
 					<div class="dnnLeft"><dnn:URL ID="ctlURL" runat="server" Width="300" ShowNewWindow="True"
@@ -398,6 +398,14 @@
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
             setUpDnnManageTabs();
         });
+        
+        window.compareDate = function (source, arg) {
+            	var id = source.controltovalidate;
+            	var compareId = source.getAttribute("CompareControl");
+            	var time = $find(id).get_timeView().getTime();
+            	var compareTime = $find(id.substr(0, id.lastIndexOf("_") + 1) + compareId).get_timeView().getTime();
+            	arg.IsValid = compareTime == null || time > compareTime;
+            };
     });
 } (jQuery, window.Sys));
 </script>

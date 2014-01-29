@@ -635,6 +635,7 @@ body > .RadCalendarPopupShadows {
     color: #999;
     font-size: 12px;
     padding: 8px !important;
+    height: auto !important;
 }
 
 .RadPicker_Default .riTextBox:active {
@@ -844,7 +845,7 @@ body > .RadCalendarPopupShadows {
     border: none !important;
 }
 .RadCalendarTimeView.RadCalendarTimeView_Default {
-	    padding: 8px;
+	padding: 8px;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     background-color: #000;

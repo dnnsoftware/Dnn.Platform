@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using DNNSelenium.Common.BaseClasses;
-using DNNSelenium.Common.BaseClasses.BasePages;
 using DNNSelenium.Common.CorePages;
-using DNNSelenium.Common.Properties;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using InstallerPage = DNNSelenium.Common.CorePages.InstallerPage;
 
 namespace DNNSelenium.Common.BaseClasses
 {
@@ -96,25 +90,123 @@ namespace DNNSelenium.Common.BaseClasses
 			StringAssert.AreEqualIgnoringCase(logContentAfterTests, logContentBeforeTests, "ERROR in the Log");
 		}
 
-		public void CreateChildSiteAndPrepareSettings(string childSiteName)
+		public void DisablePopups(string url)
 		{
-			//create a child site
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Disable Popups: '");
+
+			var adminSiteSettingsPage = new AdminSiteSettingsPage(_driver);
+			adminSiteSettingsPage.OpenUsingButtons(url);
+			adminSiteSettingsPage.DisablePopups();
+		}
+
+		public void CreateChildSiteAndPrepareSettings(string childSiteName, string childSiteTitle)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Child Site And Prepare Settings: '");
+
 			HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
 			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
-			hostSiteMgmtPage.AddNewChildSite(_baseUrl, childSiteName, "Child Site");
+			hostSiteMgmtPage.AddNewChildSite(_baseUrl, childSiteName, childSiteTitle, "Default Website");
 
-			//navigate to child site
+			DisablePopups(_baseUrl + "/" + childSiteName);
+		}
+
+		public void CreateParentSiteAndPrepareSettings(string parentSiteName, string parentSiteTitle)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Parent Site And Prepare Settings: '");
+
+			HostSiteManagementPage hostSiteMgmtPage = new HostSiteManagementPage(_driver);
 			hostSiteMgmtPage.OpenUsingButtons(_baseUrl);
-			hostSiteMgmtPage.NavigateToChildSite(_baseUrl, childSiteName);
+			hostSiteMgmtPage.AddNewParentSite(parentSiteName, parentSiteTitle, "Default Website");
 
-			//close welcome screen on child site
-			var installerPage = new InstallerPage(_driver);
-			installerPage.WelcomeScreen();
+			LoginPage loginPage = new LoginPage(_driver);
+			loginPage.OpenUsingUrl(parentSiteName);
+			loginPage.DoLogin("host", "dnnhost");
+			
+			DisablePopups(parentSiteName);
+		}
 
-			//disable popups on child site
-			var adminSiteSettingsPage = new AdminSiteSettingsPage(_driver);
-			adminSiteSettingsPage.OpenUsingButtons(_baseUrl);
-			adminSiteSettingsPage.DisablePopups();
+		public void CreatePageAndSetViewPermission(string pageName, string option, string permissionOption)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create A Page And Set View Permissions: '");
+
+			var blankPage = new BlankPage(_driver);
+			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
+
+			blankPage.AddNewPage(pageName);
+
+			//blankPage.OpenUsingUrl(_baseUrl, pageName);
+			blankPage.SetPageViewPermissions(option, permissionOption);
+
+			//blankPage.CloseEditMode();
+		}
+
+		public void CreateNewPage(string pageName)
+		{
+			var blankPage = new BlankPage(_driver);
+			blankPage.OpenAddNewPageFrameUsingControlPanel(_baseUrl);
+			blankPage.AddNewPage(pageName);
+		}
+
+		public void AddModule(string pageName, Dictionary<string, Modules.ModuleIDs> modulesDescription, string moduleName, string pane)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Add a new Module to Page: '");
+
+			var blankPage = new BlankPage(_driver);
+			blankPage.OpenUsingUrl(_baseUrl, pageName);
+			
+			var module = new Modules(_driver);
+			string moduleNameOnPage = modulesDescription[moduleName].IdWhenOnPage;
+			string moduleNameOnBanner = modulesDescription[moduleName].IdWhenOnBanner;
+
+			module.OpenModulePanelUsingControlPanel();
+			module.AddNewModuleUsingMenu(moduleNameOnBanner, moduleNameOnPage, pane);
+
+			blankPage.CloseEditMode();
+		}
+
+		public void RemoveUsedPage(string pageName)
+		{
+			var page = new BlankPage(_driver);
+			page.OpenUsingUrl(_baseUrl, pageName);
+			page.DeletePage(pageName);
+
+			var adminRecycleBinPage = new AdminRecycleBinPage(_driver);
+			adminRecycleBinPage.OpenUsingButtons(_baseUrl);
+			adminRecycleBinPage.EmptyRecycleBin();
+		}
+
+		public void CreateFolder(string folderType, string folderName)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Create Folder:'");
+
+			var adminFileManagementPage = new AdminFileManagementPage(_driver);
+			adminFileManagementPage.OpenUsingButtons(_baseUrl);
+
+			adminFileManagementPage.CreateFolder(folderType, folderName);
+		}
+
+		public void UploadFileToFolder(string rootFolderName, string folderName, string fileNameToUpload)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Upload File to Folder:'");
+
+			var adminFileManagementPage = new AdminFileManagementPage(_driver);
+			adminFileManagementPage.OpenUsingButtons(_baseUrl);
+
+			adminFileManagementPage.SelectFolderFromTreeView(rootFolderName, folderName);
+
+			//adminFileManagementPage.SetItemsPerPage("All");
+
+			adminFileManagementPage.UploadFileToFolder(folderName, fileNameToUpload);
+		}
+
+		public void DeleteFolder(string folderName)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "'Delete Folder from Treeview:'" + folderName);
+
+			var adminFileManagementPage = new AdminFileManagementPage(_driver);
+			adminFileManagementPage.OpenUsingButtons(_baseUrl);
+
+			adminFileManagementPage.DeleteFolderFromTreeView(folderName);
 		}
 	}
 }

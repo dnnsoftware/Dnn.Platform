@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,12 +21,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Web.Client;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.DigitalAssets
 {
@@ -34,7 +36,30 @@ namespace DotNetNuke.Modules.DigitalAssets
     {
         private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
 
-        #region Base Method Implementations
+        private DigitalAssestsMode SelectedDigitalAssestsMode
+        {
+            get
+            {
+                DigitalAssestsMode mode;
+                Enum.TryParse(ModeComboBox.SelectedValue, true, out mode);
+                return mode;
+            }
+        }
+
+        private FilterCondition SelectedFilterCondition
+        {
+            get
+            {
+                FilterCondition filterCondition;
+                Enum.TryParse(FilterOptionsRadioButtonsList.SelectedValue, true, out filterCondition);
+                return filterCondition;
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FilterViewSettings.js", FileOrder.Js.DefaultPriority);
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -65,13 +90,9 @@ namespace DotNetNuke.Modules.DigitalAssets
                     DefaultFolderTypeComboBox.SelectedValue = defaultFolderTypeId.ToString();
                 }
 
-                GroupModeComboBox.SelectedValue = SettingsRepository.IsGroupMode(ModuleId).ToString(CultureInfo.InvariantCulture);
+                ModeComboBox.SelectedValue = SettingsRepository.GetMode(ModuleId).ToString();
 
-                var rootFolderId = SettingsRepository.GetRootFolderId(ModuleId);
-                if (rootFolderId.HasValue)
-                {                    
-                    RootFolderDropDownList.SelectedFolder = FolderManager.Instance.GetFolder(rootFolderId.Value);
-                }
+                LoadFilterViewSettings();
             }
             catch (Exception exc)
             {
@@ -86,11 +107,16 @@ namespace DotNetNuke.Modules.DigitalAssets
         /// -----------------------------------------------------------------------------
         public override void UpdateSettings()
         {
+            Page.Validate();
+            if (!Page.IsValid) return;
+
             try
             {
-                SettingsRepository.SaveDefaultFolderId(ModuleId, Convert.ToInt32(DefaultFolderTypeComboBox.SelectedValue));
-                SettingsRepository.SaveGroupMode(ModuleId, Convert.ToBoolean(GroupModeComboBox.SelectedValue));
-                SettingsRepository.SaveRootFolderId(ModuleId, RootFolderDropDownList.SelectedFolder.FolderID);
+                SettingsRepository.SaveDefaultFolderTypeId(ModuleId, Convert.ToInt32(DefaultFolderTypeComboBox.SelectedValue));
+                
+                SettingsRepository.SaveMode(ModuleId, SelectedDigitalAssestsMode);
+
+                UpdateFilterViewSettings();
             }
             catch (Exception exc)
             {
@@ -98,6 +124,51 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        #endregion
+        protected void ValidateFolderIsSelected(object source, ServerValidateEventArgs args)
+        {
+            if (SelectedFilterCondition == FilterCondition.FilterByFolder && FilterByFolderDropDownList.SelectedFolder == null)
+            {
+                args.IsValid = false;
+                return;
+            }
+
+            args.IsValid = true;
+        }
+
+        private void LoadFilterViewSettings()
+        {
+            FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(ModuleId).ToString();
+            SubfolderFilterRadioButtonList.SelectedValue = SettingsRepository.GetSubfolderFilter(ModuleId).ToString();
+
+            if (FilterOptionsRadioButtonsList.SelectedValue == FilterCondition.FilterByFolder.ToString())
+            {
+                var folderId = SettingsRepository.GetRootFolderId(ModuleId);
+                if (folderId.HasValue)
+                {
+                    var folder = FolderManager.Instance.GetFolder(folderId.Value);
+                    FilterByFolderDropDownList.SelectedFolder = folder;
+                }
+            }
+        }
+
+        private void UpdateFilterViewSettings()
+        {
+            var filterCondition = SelectedDigitalAssestsMode != DigitalAssestsMode.Normal ? FilterCondition.NotSet : SelectedFilterCondition;
+
+            SettingsRepository.SaveFilterCondition(ModuleId, filterCondition);
+
+            switch (filterCondition)
+            {
+                case FilterCondition.NotSet:
+                    SettingsRepository.SaveExcludeSubfolders(ModuleId, SubfolderFilter.IncludeSubfoldersFolderStructure);
+                    break;
+                case FilterCondition.FilterByFolder:
+                    SubfolderFilter subfolderFilter;
+                    Enum.TryParse(SubfolderFilterRadioButtonList.SelectedValue, true, out subfolderFilter);
+                    SettingsRepository.SaveExcludeSubfolders(ModuleId, subfolderFilter);
+                    SettingsRepository.SaveRootFolderId(ModuleId, FilterByFolderDropDownList.SelectedFolder.FolderID);
+                    break;
+            }
+        }
     }
 }

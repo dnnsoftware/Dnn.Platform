@@ -1,16 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Tests>
-
-  <settings name="P1 CheckList" browser="chrome" baseURL="ce720v1.dnndev.me" InstallerLanguage="en" UserName="host"
-            Password="dnnhost" WebsiteName="My Website" Template="Default Template" Language="en" DatabaseSetup="Default"
-            DatabaseType="" DatabaseServerName="" DatabaseName="" DatabaseFilename="" ObjectQualifier="" Security=""
-            DatabaseUserName="" DatabasePassword="" RunDatabaseAsDatabaseOwner="" />
+  <settings 
+    name="P1 CheckList"
+    browser = "chrome"
+    InstallerLanguage = "en"
+    Template = "Default Template"
+    Language = "en"
+    DatabaseFilename = ""
+    ObjectQualifier = "can_"
+    Security = "Integrated"
+    DatabaseUserName = ""
+    DatabasePassword = ""
+    RunDatabaseAsDatabaseOwner = "yes"
+    UserName = "host"
+    Password = "dnnhost"
+    WebsiteName = "My Website"
+    runWithDummyCachingProvider = "" />
 
   <securityRoleGroup name="Security Role Group P1" roleGroupName="Security Role Group P1"
                      roleGroupDescription="Security Role Group Description P1" roleName="Security Role P1"
                      assignedRoleGroupName="assigned Security Role Group P1" />
-  <securityRoles 
+  <securityRoles
     name = "Security Roles P1"
     roleNameWithServiceFee = "Security Role with Fee P1"
     serviceFee = "45.00"
@@ -55,5 +66,58 @@
                              optionalModuleToInstall= ""/>
 
   <modules name = "P1 Modules" dictionary = "Content"/>
+
+  <memberDirectory name= "Members Directory"
+                   userNameNumberOne = "User001"
+                   userNameNumberTwo = "User002"
+                   userNameNumberThree = "User003"
+                   userDisplayNameNumberOne = "UserDisplayName001"
+                   userDisplayNameNumberTwo = "UserDisplayName002"
+                   userDisplayNameNumberThree = "UserDisplayName003"
+                   pageName = "memberdirectory"
+                   password = "uSer1212"/>
   
+  <userProfile name = "User Profile" 
+               registeredUserName = "AuthorizedUser" 
+               registeredUserPassword = "pAssword10" 
+               newPassword = "pAss10word" 
+               registeredUserDisplayName = "AuthorizedUserDisplayName"
+               avatarFileToUpload = "owl.jpg"/>
+
+  <messageCenter name= "Message Center"
+          userNameNumberOne = "Message_User001"
+          userNameNumberTwo = "Message_User002"
+          userNameNumberThree = "Message_User003"
+          userDisplayNameNumberOne = "Message_UserDisplayName001"
+          userDisplayNameNumberTwo = "Message_UserDisplayName002"
+          userDisplayNameNumberThree = "Message_UserDisplayName003"
+          password = "uSer1212"
+          subject = "P1 test Message"/>
+
+  <journal name= "Journal"
+          userNameNumberOne = "Journal_User001"
+          userNameNumberTwo = "Journal_User002"
+          userNameNumberThree = "Journal_User003"
+          userDisplayNameNumberOne = "Journal_UserDisplayName001"
+          userDisplayNameNumberTwo = "Journal_UserDisplayName002"
+          userDisplayNameNumberThree = "Journal_UserDisplayName003"
+          password = "uSer1212"
+          subject = "P1 test Message"
+          comment = "P1 test Comment"
+          fileNameToAttach = "owls.txt"
+          pictureNameToAttach = "owl.jpg"
+          pageName = "journal"/>
+  
+  <adminFileManagement
+   name = "Admin File Management"
+  />
+
+  <adminSiteMap
+    name = "Admin Site Map"/>
+  
+  <hostSiteManagement
+    name = "Template for Site Management"
+    languagePackToDeploy= "fr"
+    childSiteName = "childsite"/>
+
 </Tests>

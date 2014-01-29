@@ -43,6 +43,10 @@ namespace DNNSelenium.Common.BaseClasses
 						FirefoxProfile firefoxProfile = new FirefoxProfile();
 						firefoxProfile.EnableNativeEvents = true;
 						firefoxProfile.AcceptUntrustedCertificates = true;
+						//firefoxProfile.SetPreference("browser.cache.disk.enable", false);
+						//firefoxProfile.SetPreference("browser.cache.memory.enable", false);
+						//firefoxProfile.SetPreference("browser.cache.offline.enable", false);
+						//firefoxProfile.SetPreference("network.http.use-cache", false);
 
 						driver = new FirefoxDriver(firefoxProfile);
 						break;
@@ -51,13 +55,14 @@ namespace DNNSelenium.Common.BaseClasses
 					{
 						ChromeOptions chromeOptions = new ChromeOptions();
 						chromeOptions.AddArgument("--disable-keep-alive");
+						//chromeOptions.AddArgument("--disable-application-cache");
 
 						driver = new ChromeDriver("Drivers", chromeOptions);
 						break;
 					}
 			}
 
-			//driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(3));
+			driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromMilliseconds(500));
 			driver.Manage().Window.Maximize();
 			return driver;
 		}

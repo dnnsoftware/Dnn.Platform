@@ -50,7 +50,7 @@ namespace DNNSelenium.Common.Tests.Smoke
 
 			loginPage.WaitAndSwitchToFrame(30);
 
-			loginPage.DoLoginUsingLoginLink("host", "dnnhost");
+			loginPage.DoLogin("host", "dnnhost");
 
 			loginPage.WaitAndSwitchToWindow(30);
 
@@ -69,7 +69,7 @@ namespace DNNSelenium.Common.Tests.Smoke
 
 			int originaltemNumber = hostSiteManagementPage.FindElements(By.XPath(HostSiteManagementPage.PortalsList)).Count;
 
-			hostSiteManagementPage.AddNewChildSite(_baseUrl, _siteAlias, _siteName);
+			hostSiteManagementPage.AddNewChildSite(_baseUrl, _siteAlias, _siteName, "Default Website");
 
 			hostSiteManagementPage.OpenUsingButtons(_baseUrl);
 
@@ -92,7 +92,7 @@ namespace DNNSelenium.Common.Tests.Smoke
 
 			int itemNumber = hostSiteManagementPage.FindElements(By.XPath(HostSiteManagementPage.PortalsList)).Count;
 
-			hostSiteManagementPage.DeleteSite(_baseUrl, _siteAlias);
+			hostSiteManagementPage.DeleteSite(_baseUrl + _siteAlias);
 
 			hostSiteManagementPage.OpenUsingButtons(_baseUrl);
 

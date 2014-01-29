@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -83,6 +83,10 @@ namespace DotNetNuke.Services.FileSystem
                     _contentTypes.Add("bmp", "image/bmp");
                     _contentTypes.Add("png", "image/png");
                     _contentTypes.Add("ico", "image/x-icon");
+                    _contentTypes.Add("svg", "image/svg+xml");
+                    _contentTypes.Add("ttf", "font/ttf");
+                    _contentTypes.Add("eot", "application/vnd.ms-fontobject");
+                    _contentTypes.Add("woff", "application/font-woff");
                     _contentTypes.Add("mp3", "audio/mpeg");
                     _contentTypes.Add("wma", "audio/x-ms-wma");
                     _contentTypes.Add("mpg", "video/mpeg");

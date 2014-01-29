@@ -224,6 +224,10 @@
 				<img runat="server" src="images/Icon_Disabled.png" alt="" />
 				<asp:Literal ID="lblDisabled" runat="server" />
 			</div>
+			<div class="dtlItem">
+				<img runat="server" src="images/Icon_Redirect.png" alt="" />
+				<asp:Literal ID="lblRedirect" runat="server" />
+			</div>
 		</div>
 	</div>        
 	<div class="tmTabContainer" runat="server" visible="false" id="pnlDetails">

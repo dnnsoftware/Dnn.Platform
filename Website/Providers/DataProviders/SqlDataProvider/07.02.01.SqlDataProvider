@@ -1,0 +1,2586 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+DELETE {databaseOwner}{objectQualifier}Folders
+FROM {databaseOwner}{objectQualifier}Folders f
+	LEFT JOIN {databaseOwner}{objectQualifier}FolderMappings fm ON F.FolderMappingID = fm.FolderMappingID
+WHERE fm.FolderMappingID IS NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Folders 
+ADD CONSTRAINT FK_Folders_FolderMappings 
+	FOREIGN KEY (FolderMappingID) 
+		REFERENCES {databaseOwner}{objectQualifier}FolderMappings (FolderMappingID)
+GO
+
+/*** Fix bug DNN-4064: Filter the user's portal id to limit users in current portal. ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch] 
+(
+    @PortalID int,                          -- portal                
+    @UserId int,                            -- for determining correct visibility permissions
+    @FilterUserId int,                      -- for filtering relationships on    
+    @FilterRoleId int,                      -- for filtering by roles
+    @RelationshipTypeId int,                -- for filtering by relationships
+    @IsAdmin bit,                           -- determines visibility
+    @PageSize int,                          -- page size
+    @PageIndex int,                         -- 0 based page index
+    @SortBy nvarchar(100),                  -- sort field
+    @SortAscending bit,                     -- sort flag indicating whether sort is asc or desc
+    @PropertyNames nvarchar(max),           -- list of property names to filter
+    @PropertyValues nvarchar(max)           -- list of property values to filter
+)
+AS
+    -- Setup Top XX
+    DECLARE @topSql nvarchar(20) SET @topSql = ''
+    IF @PageSize > -1 BEGIN SET @topSql = ' TOP ' + CONVERT(nvarchar(20), @PageSize) END
+                
+    -- Setup Specific Page
+    DECLARE @minRowNumberSql nvarchar(20) SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
+    -- Setup Pivot Field List
+    DECLARE @pivotSql nvarchar(max) SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
+
+    -- Get User specific columns
+    DECLARE @UserColumns TABLE(ColumnName NVARCHAR(100))
+    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}vw_Users'
+
+    -- Lists Filters names and values into tables
+    DECLARE @PropertyNamesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    DECLARE @PropertyValuesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    INSERT INTO @PropertyNamesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)                      
+    INSERT INTO @PropertyValuesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyValues)
+                
+    -- Gets filters that are on the User rather than Profile Properties
+    DECLARE @UserFiltersTable TABLE (RowNumber Int, RowValue NVARCHAR(MAX))
+    INSERT INTO @UserFiltersTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',',@PropertyNames) WHERE RowValue IN (SELECT * FROM @UserColumns)
+
+
+    DECLARE @sql nvarchar(max) SET @sql = ''
+    DECLARE @filterSql nvarchar(max)SET @filterSql = ''
+
+    -- ///////////////////////////////////////////////////
+    -- FILTERING by PROFILE PROPERTY or USER PROPERTY
+    -- ///////////////////////////////////////////////////
+    --IF @PropertyNames IS NOT NULL AND @PropertyNames <> ''
+    IF ((SELECT COUNT(*) FROM @PropertyNamesTable) > 0) AND ((SELECT COUNT(*) FROM @PropertyValuesTable)> 0) 
+	    BEGIN
+            DECLARE @propertyFilter nvarchar(max)
+            DECLARE @userFilter nvarchar(max)
+            DECLARE @userFilterJoin nvarchar(max) SET @userFilterJoin = ''
+            DECLARE @profilePropertyCount INT
+            DECLARE @userFilterCount INT
+            DECLARE @propertyAndUserFilter nvarchar(10) SET @propertyAndUserFilter = ''
+            DECLARE @groupBy NVARCHAR(300)
+
+            -- Filters on Profile Properties    
+            ;WITH CTE_PropertyNames(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyNamesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns)),
+            CTE_PropertyValues(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyValuesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns))
+
+            SELECT @propertyFilter = COALESCE(@propertyFilter + ' OR ' , ' ') 
+                                        + ' (PropertyName=''' + N.RowValue 
+                                        + ''' AND ((PropertyValue LIKE ''' + V.RowValue +'%'') OR (PropertyValue LIKE ''% ' + V.RowValue +'%'')))'
+            FROM CTE_PropertyNames AS N INNER JOIN CTE_PropertyValues AS V ON N.RowNumber = V.RowNumber
+                                
+            -- Filters on User Property                           
+            SELECT @userFilter = COALESCE(@userFilter + ' AND ', ' ')  
+										+ ' ((u.' + N.RowValue + ' LIKE ''' + V.RowValue +'%'') OR (u.' + N.RowValue + ' LIKE ''% ' + V.RowValue +'%'')) '
+            FROM @UserFiltersTable AS N  INNER JOIN @PropertyValuesTable AS V ON N.RowNumber = V.RowNumber
+                                
+            SELECT @userFilterCount = COUNT(*) FROM @UserFiltersTable
+            IF @userFilterCount > 0 BEGIN SET @userFilterJoin = ' INNER JOIN {objectQualifier}vw_Users u ON u.UserId = p.UserId ' END
+
+            -- Determining the Group By Clause -- dependant on types of filters used
+            SELECT @profilePropertyCount = COUNT(*) FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)
+            WHERE RowValue IN (SELECT PropertyName FROM {objectQualifier}ProfilePropertyDefinition WHERE PortalID = @PortalId)
+            AND RowValue NOT IN (SELECT ColumnName FROM @UserColumns)
+
+            IF @profilePropertyCount > 0
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) = ' + CONVERT(nvarchar(20),@profilePropertyCount ) END
+            ELSE
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) > 0 '     END
+
+            IF ( @profilePropertyCount > 0 AND @userFilterCount > 0)
+            BEGIN SET @propertyAndUserFilter = ' AND ' END
+
+            -- CREATE FINAL FILTER
+            SET @filterSql = ' DECLARE @MatchingUsers TABLE (UserID INT, Occurrances INT) INSERT INTO @MatchingUsers SELECT p.UserID, COUNT(*) AS occurances ' 
+                                        + ' FROM {databaseOwner}{objectQualifier}vw_profile p ' + @userFilterJoin
+                                        + ' WHERE ' + COALESCE(' ( ' + @propertyFilter + ') ', ' ') + @propertyAndUserFilter + COALESCE(@userFilter, ' ') 
+										+ ' AND ((Visibility = 0) OR (Visibility = 1 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) OR (Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1))' 
+                                        + @groupBy
+		END
+
+        -- ///////////////////////////////////////////////////      
+        -- SETUP ROLE AND RELATIONSHIP FILTERS
+        -- ///////////////////////////////////////////////////
+        DECLARE @roleAndRelationshipFilter nvarchar(1000)
+        DECLARE @roleFilter nvarchar(100) SET @roleFilter = ''
+        DECLARE @relationshipFilter nvarchar(1000) SET @relationshipFilter = ''
+        DECLARE @roleAndRelationshipFlag bit SET @roleAndRelationshipFlag  = 0
+        DECLARE @RoleAndRelationshipSelect nvarchar(100) SET @RoleAndRelationshipSelect = ''
+                                
+        -- Filter by Role
+        IF @FilterRoleId <> -1 
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @roleFilter = ' JOIN {objectQualifier}UserRoles UR ON U.UserID = UR.UserID AND UR.RoleID = ' + CONVERT(nvarchar(20), @FilterRoleId)
+            END
+
+        -- Filter by Relationship
+        IF @RelationshipTypeId <> -1  
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @relationshipFilter = ' JOIN {objectQualifier}Relationships REL ON REL.PortalID = ' + CONVERT(nvarchar(20), @PortalID)
+                                            + ' AND RelationshipTypeID = ' + CONVERT(nvarchar(20), @RelationshipTypeId) 
+                                            + ' JOIN {objectQualifier}UserRelationships UREL ON REL.RelationshipID = UREL.RelationshipID AND
+                                            ((UREL.UserID = ' + CONVERT(nvarchar(20), @FilterUserId) + ' AND UREL.RelatedUserID = U.UserID) OR
+                                            (UREL.UserID = U.UserID AND UREL.RelatedUserID = ' + CONVERT(nvarchar(20), @FilterUserId) + '))'
+                                            + ' WHERE UREL.Status = 2'
+            END 
+
+        IF @roleAndRelationshipFlag = 1 BEGIN SET @RoleAndRelationshipSelect = ' AND s.UserId IN (SELECT userID FROM  RoleAndRelationUsers) ' END
+
+        SET @roleAndRelationshipFilter =  ', RoleAndRelationUsers AS ( SELECT U.userId FROM {objectQualifier}vw_Users U ' + @roleFilter + @relationshipFilter + ' )' 
+
+        -- ///////////////////////////////////////////////////  
+        -- SET UP SORT
+        -- ///////////////////////////////////////////////////
+        DECLARE @sortSql nvarchar(1000) SET @sortSql = ''
+        DECLARE @propertySort nvarchar(1000) SET @propertySort = ''
+        DECLARE @filterJoin nvarchar(100) SET @filterJoin = ''
+        DECLARE @filterSortSql nvarchar(1000) SET @filterSortSql = ''
+        DECLARE @sortByUserProperty BIT         
+        SELECT @sortByUserProperty = COUNT(*) FROM @UserColumns WHERE ColumnName = @SortBy
+
+        IF ( @profilePropertyCount > 0 OR @userFilterCount > 0)
+	        BEGIN SET @filterJoin = ' INNER JOIN @MatchingUsers m ON m.UserID = s.UserID ' END
+
+        -- Determine the Type of Sort
+        IF (@SortBy IS NOT NULL AND @SortBy <> '') AND @sortByUserProperty <> 1
+	        BEGIN -- Sort By Profile Property
+                SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')
+                SET @propertySort = {databaseOwner}{objectQualifier}GetSortSql('PropertyValue',@SortAscending,'UserID')
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @propertySort + ' ) AS RowNumber, *  ' 
+                                                + ' FROM {objectQualifier}vw_Profile WHERE PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' AND PropertyName = ''' + @SortBy + ''' )'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+        ELSE
+		    BEGIN   
+                -- Sort By User Property
+                IF @sortByUserProperty = 1 BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')END
+                                
+                -- Default: Sort By UserID
+                ELSE BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql('UserID',@SortAscending,'UserID') END                        
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @sortSql + ' ) AS RowNumber, * '
+                                                + ' FROM {objectQualifier}vw_Users WHERE (PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR PortalID Is NULL) AND IsDeleted = 0)'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+
+		-- Check if any Profile Property Definitions exist for this portal
+		IF @pivotSql is not null
+			BEGIN
+				-- SELECT with PIVOT
+				SET @pivotSql = 'SELECT * FROM PivotedUsers PIVOT (MAX(PropertyValue) for PropertyName in (' + @pivotSql + ') ) as pivotTable '
+			END
+		ELSE
+			BEGIN
+				-- SELECT with DISTINCT
+				SET @pivotSql = 'SELECT distinct UserID, PortalID, Username, Email, DisplayName, IsSuperUser, IsDeleted, AffiliateID, UpdatePassword, Authorised FROM PivotedUsers '
+			END
+
+        -- ///////////////////////////////////////////////////
+        -- CREATE FINAL QUERY
+        -- ///////////////////////////////////////////////////
+        SET @sql = @filterSql
+                + ' DECLARE @TempUsers TABLE (SortOrder INT, UserID INT) '
+                + @filterSortSql
+                + @roleAndRelationshipFilter
+                + ' INSERT INTO @TempUsers SELECT ' + @topSql + ' * FROM (SELECT '
+                + ' ROW_NUMBER() OVER ( ORDER BY [RowNumber] ) AS RowNumber, s.UserId FROM MatchingSorted s ' 
+                + ' WHERE 1=1 ' + @roleAndRelationshipSelect
+				+ ') t WHERE RowNumber >= '+ @minRowNumberSql
+                + ' ;WITH PivotedUsers AS ( SELECT U.UserID, U.PortalID, U.Username, U.Email, U.DisplayName, U.IsSuperUser, U.IsDeleted, U.CreatedOnDate,        
+                                                U.AffiliateID, U.UpdatePassword, U.Authorised, Prop.PropertyName,
+                                                CASE
+                                                    WHEN (P.Visibility = 0) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 0 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) THEN P.PropertyValue
+                                                    WHEN U.UserID = ' + CONVERT(nvarchar(20), @UserId) + ' OR (P.Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    ELSE NULL
+                                                END AS PropertyValue
+                                            FROM   {objectQualifier}vw_Users AS U
+                                                INNER JOIN {objectQualifier}UserProfile AS P ON U.UserID = P.UserID
+                                                LEFT OUTER JOIN {objectQualifier}ProfilePropertyDefinition AS Prop ON 
+                                                (Prop.PropertyDefinitionID = P.PropertyDefinitionID and Prop.Deleted = 0 and Prop.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ')
+                                            WHERE U.UserId IN (SELECT UserId FROM @TempUsers) AND (U.PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalId IS NULL)
+                                            )' +
+                @pivotSql + @sortSql            
+
+        EXEC(@sql)
+GO
+
+/*** Fix bug CONTENT-1982 - Cross-site-Shared-Modules still sharing updates after deleting Site-Group ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSharedModulesByPortal]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesByPortal]
+	@Portald int
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_TabModules tb		
+	WHERE tb.PortalID != tb.OwnerPortalID	
+	AND tb.OwnerPortalID = @Portald
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSharedModulesWithPortal]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesWithPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSharedModulesWithPortal]
+	@Portald int
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_TabModules tb		
+	WHERE tb.PortalID != tb.OwnerPortalID	
+	AND tb.PortalID = @Portald
+
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
+@FileId int,
+@LastModificationTime datetime
+AS
+	UPDATE {databaseOwner}{objectQualifier}Files 
+	SET [LastModificationTime] = @LastModificationTime
+	WHERE [FileId] = @FileId
+GO
+
+/***** Fix bug DNN-3718: update sp UnRegisterAssembly to don't delete assembly which still exist in db. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UnRegisterAssembly]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UnRegisterAssembly
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UnRegisterAssembly
+	@PackageID     INT,
+	@AssemblyName   NVARCHAR(250)
+AS
+	DECLARE @ReturnCode BIT
+	SET @ReturnCode = 1 -- 1 = Can Delete Assembly, 0 = Cannot Delete Assembly
+
+	-- First remove the Assembly Reference for this Package
+	DELETE FROM {databaseOwner}{objectQualifier}Assemblies
+		WHERE PackageID = @PackageID
+			AND AssemblyName = @AssemblyName
+
+	IF EXISTS(SELECT TOP 1 PackageID FROM {databaseOwner}{objectQualifier}Assemblies WHERE AssemblyName = @AssemblyName)
+		-- Set ReturnCode = 0, so assembly is not deleted
+		SET @ReturnCode = 0
+
+	SELECT @ReturnCode
+GO
+
+/* update GetListParentKey for longer paths */
+/********************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetListParentKey]') and OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+	DROP FUNCTION {databaseOwner}[{objectQualifier}GetListParentKey]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetListParentKey]
+(
+	@ParentID AS int,
+	@ListName as nvarchar(500),
+	@Type as nvarchar(50),
+	@Count as int 
+)
+RETURNS nvarchar(2000)
+
+AS
+	BEGIN
+		DECLARE @KeyValue nvarchar(2000)
+		DECLARE @ListValue nvarchar(2000)
+		DECLARE @TextValue nvarchar(2000)
+		DECLARE @ReturnValue nvarchar(2000)
+		DECLARE @Key nvarchar(2000)
+		
+		IF @ParentID = 0
+			IF @Count = 0
+				SET @ReturnValue = ''
+			ELSE
+				SET @ReturnValue = @ListName
+		ELSE
+			BEGIN
+				SELECT	@KeyValue = ListName + '.' + [Value],
+						@TextValue = ListName + '.' + [Text], 
+						@ListValue = ListName, 
+						@ParentID = ParentID  
+					FROM {databaseOwner}{objectQualifier}Lists 
+					WHERE EntryID = @ParentID
+				If @Type = 'ParentKey' Or (@Type = 'ParentList' AND @Count > 0)
+					SET @ReturnValue = @KeyValue
+				ELSE 
+					IF @Type = 'ParentList'
+						SET @ReturnValue = @ListValue
+					ELSE
+						SET @ReturnValue = @TextValue
+				IF @Count > 0
+					If @Count = 1 AND @Type = 'ParentList'
+						SET @ReturnValue = @ReturnValue + ':' + @ListName
+					ELSE
+						SET @ReturnValue = @ReturnValue + '.' + @ListName
+				SET @ReturnValue = {databaseOwner}{objectQualifier}GetListParentKey(@ParentID, @ReturnValue, @Type, @Count+1)
+			END
+
+		RETURN    @ReturnValue
+	END
+GO
+
+/*DNN-3215 - drop unused legacy procedures */
+/*******************************************/
+ 
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetSkins]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSkins]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetSkin]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSkin]
+GO
+
+/*DNN-3214 - Modify GetSiteLogXX stored procedures to make them Azure compliant (Remove string literals as column aliases) */
+/**************************************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog1]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog1]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog12]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog12]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog2]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog2]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog3]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog3]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog4]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog4]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog5]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog5]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog6]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog6]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog7]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog7]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog8]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog8]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSiteLog9]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSiteLog9]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AdjustedReferrer]') AND OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+    DROP FUNCTION {databaseOwner}[{objectQualifier}AdjustedReferrer]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}BrowserFromUserAgent]') AND OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+    DROP FUNCTION {databaseOwner}[{objectQualifier}BrowserFromUserAgent]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}BrowserFromUserAgent]
+	(@UserAgent nVarChar(2000))
+RETURNS nVarChar(2000)
+AS
+BEGIN
+	DECLARE @ident1		 nVarChar( 20) = '';
+	DECLARE @ident2		 nVarChar( 20) = '';
+	DECLARE @Browser     nVarChar(100) = '';
+	DECLARE @Version	 nVarChar( 10) = '';
+	DECLARE @Pos         Smallint = -1;
+	DECLARE @End		 Smallint =  0;
+	
+	-- Detect Browser family (Name|Version Prefix):
+	SET @Browser =	CASE
+		WHEN @UserAgent LIKE '%Opera Mini/%'	THEN 'Opera Mini|Opera Mini/|Version/'
+		WHEN @UserAgent LIKE '%Opera Mobi/%'	THEN 'Opera Mobile|Version/|Opera Mobi/'
+		WHEN @UserAgent LIKE '%Opera/%'			THEN 'Opera|Version/|Opera/'
+		WHEN @UserAgent LIKE '%Opera %'			THEN 'Opera|Opera '
+		WHEN @UserAgent LIKE '%Opera'			THEN 'Opera|Opera'
+		WHEN @UserAgent LIKE '%Firefox/%'		THEN 'Mozilla Firefox|Firefox/'
+		WHEN @UserAgent LIKE '%Firebird/%'		THEN 'Mozilla Firebird|Firebird/'
+		WHEN @UserAgent LIKE '%SeaMonkey/%'		THEN 'Mozilla SeaMonkey|SeaMonkey/'
+		WHEN @UserAgent LIKE '%Kindle/%'		THEN 'Amazon Kindle|Kindle/'
+		WHEN @UserAgent LIKE '%Kindle %'		THEN 'Amazon Kindle|Version/'
+		WHEN @UserAgent LIKE '%Silk/%'			THEN 'Amazon Kindle|Version/'
+		WHEN @UserAgent LIKE '%Chrome/%'		THEN 'Google Chrome|Chrome/'
+		WHEN @UserAgent Like '%Blackberry'		THEN 'Blackberry|Mobile Safari/'
+		WHEN @UserAgent LIKE '%Android%' 		THEN 'Android|Mobile Safari/'
+		WHEN @UserAgent LIKE '%Safari/%'		THEN 'Apple Safari|Safari/'
+		WHEN @UserAgent LIKE '%ChromePlus/%'	THEN 'ChromePlus|ChromePlus/'
+		WHEN @UserAgent LIKE '%AOL %'			THEN 'AOL Browser|AOL '
+		WHEN @USerAgent LIKE '%Crazy Browser %' THEN 'Crazy Browser|Crazy Browser '
+		WHEN @USerAgent LIKE '%Maxthon/%'		THEN 'Maxthon|Maxthon/'
+		WHEN @USerAgent LIKE '%IEMobile %'		THEN 'IE Mobile|IEMobile '
+		WHEN @USerAgent LIKE '%IEMobile/%'		THEN 'IE Mobile|IEMobile/'
+		WHEN @UserAgent LIKE '%MSIE %'      	THEN 'Internet Explorer|MSIE '
+		WHEN @UserAgent LIKE '%(IE %'      		THEN 'Internet Explorer|(IE '
+		WHEN @UserAgent LIKE '%Netscape/%' 		THEN 'Netscape Navigator|Netscape/'
+		WHEN @UserAgent LIKE '%Navigator/%'		THEN 'Netscape Navigator|Navigator/'
+		WHEN @UserAgent LIKE '%PLAYSTATION %' 	THEN 'Sony Playstation|PLAYSTATION '
+		WHEN @UserAgent LIKE '%WGet/%'			THEN 'WGet|WGet/'
+	END
+	IF @Browser <> '' -- separate elements:
+		SET @Pos = CharIndex('|', @Browser)
+		IF @Pos > 0 BEGIN	
+			SET @ident1  = SubString(@Browser, @Pos + 1, 100)
+			SET @Browser = Left(@Browser, @Pos - 1)
+			SET @Pos     = CharIndex('|', @ident1)
+			IF  @Pos > 0 BEGIN
+				SET @Ident2 = SubString(@Ident1, @Pos + 1, 100)
+				SET @Ident1 = Left(@Ident1, @Pos - 1)
+			END 
+			-- get major version number from UserAgent string:
+			SET @Pos = CharIndex(@ident1, @UserAgent) + Len(@ident1 + '|') - 1 -- correct to catch trailing space
+			IF @Pos = 0 SET @Pos = CharIndex(@ident2, @UserAgent) + Len(@ident2 + '|') - 1 -- again
+			IF @Pos > 0 BEGIN
+				WHILE SubString(@UserAgent, @Pos + @End, 1) >= '0' AND SubString(@UserAgent, @Pos + @End, 1) <= 9
+					SET @End = @End + 1
+				IF @End > 0 SET @Version = SubString(@UserAgent, @Pos, @End)
+			END
+		END
+	ELSE -- Search bots, ignore version
+		SET @Browser = CASE 
+		WHEN @UserAgent LIKE '%GoogleBot%'		THEN 'Google Bot'
+		WHEN @UserAgent LIKE 'BingBot%'			THEN 'Bing Bot'
+		WHEN @UserAgent LIKE 'MSNBot%'			THEN 'MSN Bot'
+		WHEN @UserAgent LIKE '%BaiduSpider%'	THEN 'Baidu Spider'
+		WHEN @UserAgent LIKE '%Arachmo%'		THEN 'Arachmo Bot'
+		WHEN @UserAgent LIKE '%NewsGator%'		THEN 'NewsGator Bot'
+		WHEN @UserAgent LIKE '%Seekbot%'		THEN 'SeekPort Bot'
+		WHEN @UserAgent LIKE '%Yahoo%'			THEN 'Yahoo Bot'
+		WHEN @UserAgent LIKE '%Yandex%'			THEN 'Yandex Bot'
+		WHEN @UserAgent LIKE '%Bot%'			THEN 'Other Bot'
+		ELSE 'Other'
+	END
+	RETURN RTRIM(@Browser + ' ' + @Version)
+END
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}AdjustedReferrer](
+	@Referrer 	 nVarChar(2000),
+	@PortalAlias nVarChar( 255)
+	)
+RETURNS nVarChar(2000)
+AS
+BEGIN
+	RETURN CASE 
+		WHEN @Referrer LIKE '%' + @PortalAlias + '%' THEN Null 
+		ELSE @Referrer
+	END
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog1
+	@PortalID 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+	BEGIN
+		SELECT Convert(VarChar, DateTime, 102)   AS 'Date',
+			   Count(*) 						 AS 'Views',
+			   Count(Distinct L.UserHostAddress) AS 'Visitors',
+			   Count(Distinct L.UserId)          AS 'Users'
+		FROM {databaseOwner}{objectQualifier}SiteLog L
+		WHERE PortalId = @PortalID
+		  AND L.DateTime BETWEEN @StartDate AND @EndDate
+		GROUP BY Convert(VarChar, DateTime, 102)
+		ORDER BY Date DESC
+	END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog2
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- Portal Alias to be eliminated FROM Referrer
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+	BEGIN
+		SELECT L.DateTime, 
+		U.DisplayName AS 'Name',
+		{databaseOwner}[{objectQualifier}AdjustedReferrer](L.Referrer, @PortalAlias) AS 'Referrer', 
+		{databaseOwner}[{objectQualifier}BrowserFromUserAgent](L.UserAgent) AS 'UserAgent',
+		L.UserHostAddress,
+		T.TabName
+		FROM      {databaseOwner}{objectQualifier}SiteLog L
+		LEFT JOIN {databaseOwner}{objectQualifier}Users   U ON L.UserId = U.UserId 
+		LEFT JOIN {databaseOwner}{objectQualifier}Tabs    T ON L.TabId  = T.TabId 
+		WHERE L.PortalId = @PortalId
+		  AND L.DateTime BETWEEN @StartDate AND @EndDate
+		ORDER BY L.DateTime DESC
+	END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog3
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT U.DisplayName AS 'Name',
+           count(*)      AS 'Requests',
+           Max(DateTime) AS 'LastRequest'
+	FROM       {databaseOwner}{objectQualifier}SiteLog L
+	INNER JOIN {databaseOwner}{objectQualifier}Users   U on L.UserId = U.UserId
+	WHERE L.PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY U.DisplayName
+	ORDER BY Requests DESC
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog4
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- Portal Alias to be eliminated FROM Referrer
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT Referrer,
+	Count(*)      AS 'Requests',
+	Max(DateTime) AS 'LastRequest'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE L.PortalId = @PortalID
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	  AND L.Referrer IS Not Null
+	  AND L.Referrer Not Like '%' + @PortalAlias + '%'
+	GROUP BY Referrer
+	ORDER BY Requests DESC
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog5
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT {databaseOwner}[{objectQualifier}BrowserFromUserAgent](L.UserAgent) AS 'UserAgent',
+		   Count(*)      AS 'Requests',
+		   Max(DateTime) AS 'LastRequest'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY {databaseOwner}[{objectQualifier}BrowserFromUserAgent](L.UserAgent)
+	ORDER BY Requests DESC
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog6
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT
+		DatePart(Hour, DateTime)          AS 'Hour',
+		Count(*)                          AS 'Views',
+		Count(Distinct L.UserHostAddress) AS 'Visitors',
+		Count(Distinct L.UserId) 		  AS 'Users'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY DatePart(Hour, DateTime)
+	ORDER BY Hour
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog7
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT 
+		DatePart(weekday, DateTime) 	  AS 'WeekDay',
+		Count(*)                          AS 'Views',
+		Count(Distinct L.UserHostAddress) AS 'Visitors',
+		Count(Distinct L.UserId) 		  AS 'Users'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY DatePart(weekday, DateTime)
+	ORDER BY WeekDay
+END
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog8
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS	
+BEGIN
+	SELECT 
+		DatePart(month, DateTime) 		  AS 'Month',
+		Count(*)                          AS 'Views',
+		Count(Distinct L.UserHostAddress) AS 'Visitors',
+		Count(Distinct L.UserId) 		  AS 'Users'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY datepart(Month, L.DateTime)
+	ORDER BY Month
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog9
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS	
+BEGIN
+	SELECT 
+		T.TabName     AS 'Page',
+		Count(*)      AS 'Requests',
+		Max(DateTime) AS 'LastRequest'
+	FROM       {databaseOwner}{objectQualifier}SiteLog L
+	INNER JOIN {databaseOwner}{objectQualifier}Tabs    T ON L.TabId = T.TabId
+	WHERE L.PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	GROUP BY T.TabName
+	ORDER BY Requests DESC
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSiteLog12
+	@PortalId 	 Int,			-- not Null
+	@PortalAlias nVarChar(50),  -- ignored
+	@StartDate   DateTime,      -- Not Null
+	@EndDate 	 DateTime		-- Not Null
+AS
+BEGIN
+	SELECT AffiliateId,
+		Count(*) 		AS 'Requests',
+		Max(DateTime) 	AS 'LastReferral'
+	FROM {databaseOwner}{objectQualifier}SiteLog L
+	WHERE L.PortalId = @PortalId
+	  AND L.DateTime BETWEEN @StartDate AND @EndDate
+	  AND AffiliateId Is NOT Null
+	GROUP BY AffiliateId
+	ORDER BY Requests DESC
+END
+GO
+
+/*DNN-3216 - String literals as column aliases in SP (not allowed in SQL Azure) */
+/*******************************************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAffiliates]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAffiliates]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTables]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTables]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUrLLog]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUrLLog]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetVendorClassifications]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetVendorClassifications]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetVendors]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetVendors]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetVendorsByEmail]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetVendorsByEmail]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetVendorsByName]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetVendorsByName]
+GO
+
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAffiliates
+    @VendorId INT
+AS
+    SELECT AffiliateId,
+           StartDate,
+           EndDate,
+           CPC,
+           Clicks,
+           Clicks * CPC AS 'CPCTotal',
+           CPA,
+           Acquisitions,
+           Acquisitions * CPA 'CPATotal'
+    FROM   {databaseOwner}{objectQualifier}Affiliates
+    WHERE  VendorId = @VendorId
+    ORDER  BY StartDate DESC
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUrlLog
+	@URLTrackingID Int,
+	@StartDate DateTime,
+	@EndDate DateTime
+AS
+	BEGIN
+		SELECT 
+			L.*,
+			{databaseOwner}[{objectQualifier}UserDisplayname](L.UserId) AS 'FullName'
+		FROM {databaseOwner}{objectQualifier}UrlLog L
+			INNER JOIN {databaseOwner} {objectQualifier}UrlTracking T ON L.UrlTrackingId = T.UrlTrackingId
+		WHERE L.UrlTrackingID = @UrlTrackingID
+			AND ((ClickDate >= @StartDate) OR @StartDate Is Null)
+			AND ((ClickDate <= @EndDate ) OR @EndDate Is Null)
+		ORDER BY ClickDate
+	END
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetVendorClassifications
+    @VendorId  INT
+AS
+    SELECT ClassificationId,
+           ClassificationName,
+           CASE WHEN EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}VendorClassification vc WHERE vc.VendorId = @VendorId AND vc.ClassificationId = {objectQualifier}Classification.ClassificationId ) THEN 1 ELSE 0 END AS 'IsAssociated'
+    FROM {databaseOwner}{objectQualifier}Classification
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetVendors
+	@PortalID int,
+	@UnAuthorized bit,
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		VendorId	int
+	)
+
+	INSERT INTO #PageIndex (VendorId)
+	SELECT VendorId
+	FROM {objectQualifier}Vendors
+	WHERE ( ((Authorized = 0 AND @UnAuthorized = 1) OR @UnAuthorized = 0 ) AND ((PortalId = @PortalID) or (@PortalID is null and PortalId is null)) )
+	ORDER BY VendorId DESC
+
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+
+
+	SELECT {databaseOwner}{objectQualifier}Vendors.*,
+       		( select count(*) from {databaseOwner}{objectQualifier}Banners where {databaseOwner}{objectQualifier}Banners.VendorId = {databaseOwner}{objectQualifier}Vendors.VendorId ) AS 'Banners'
+	FROM {databaseOwner}{objectQualifier}Vendors
+	INNER JOIN #PageIndex PageIndex
+		ON {databaseOwner}{objectQualifier}Vendors.VendorId = PageIndex.VendorId
+	WHERE ( (PageIndex.IndexID > @PageLowerBound) OR @PageLowerBound is null )	
+		AND ( (PageIndex.IndexID < @PageUpperBound) OR @PageUpperBound is null )	
+	ORDER BY
+		PageIndex.IndexID
+GO
+
+ CREATE procedure {databaseOwner}{objectQualifier}GetVendorsByEmail
+	@Filter nvarchar(50),
+	@PortalID int,
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		VendorId	int
+	)
+
+	INSERT INTO #PageIndex (VendorId)
+	SELECT VendorId
+	FROM {databaseOwner}{objectQualifier}Vendors
+	WHERE ( (Email like @Filter + '%') AND ((PortalId = @PortalID) or (@PortalID is null and PortalId is null)) )
+	ORDER BY VendorId DESC
+
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+
+
+	SELECT {databaseOwner}{objectQualifier}Vendors.*,
+       		( select count(*) from {databaseOwner}{objectQualifier}Banners where {databaseOwner}{objectQualifier}Banners.VendorId = {databaseOwner}{objectQualifier}Vendors.VendorId ) AS 'Banners'
+	FROM {databaseOwner}{objectQualifier}Vendors
+	INNER JOIN #PageIndex PageIndex
+		ON {databaseOwner}{objectQualifier}Vendors.VendorId = PageIndex.VendorId
+	WHERE ( (PageIndex.IndexID > @PageLowerBound) OR @PageLowerBound is null )	
+		AND ( (PageIndex.IndexID < @PageUpperBound) OR @PageUpperBound is null )	
+	ORDER BY
+		PageIndex.IndexID
+GO
+
+
+ CREATE procedure {databaseOwner}{objectQualifier}GetVendorsByName
+	@Filter nvarchar(50),
+	@PortalID int,
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		VendorId	int
+	)
+
+	INSERT INTO #PageIndex (VendorId)
+	SELECT VendorId
+	FROM {databaseOwner}{objectQualifier}Vendors
+	WHERE ( (VendorName like @Filter + '%') AND ((PortalId = @PortalID) or (@PortalID is null and PortalId is null)) )
+	ORDER BY VendorId DESC
+
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+
+
+	SELECT {databaseOwner}{objectQualifier}Vendors.*,
+       		( select count(*) from {databaseOwner}{objectQualifier}Banners where {databaseOwner}{objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId ) AS 'Banners'
+	FROM {databaseOwner}{objectQualifier}Vendors
+	INNER JOIN #PageIndex PageIndex
+		ON {databaseOwner}{objectQualifier}Vendors.VendorId = PageIndex.VendorId
+	WHERE ( (PageIndex.IndexID > @PageLowerBound) OR @PageLowerBound is null )	
+		AND ( (PageIndex.IndexID < @PageUpperBound) OR @PageUpperBound is null )	
+	ORDER BY
+		PageIndex.IndexID
+GO
+
+/* DNN-3017 Add Indexes */
+/************************/
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_FolderID' AND object_id = OBJECT_ID('{objectQualifier}Files'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files_FolderID] ON {databaseOwner}[{objectQualifier}Files] 
+			(
+				[FolderID]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogConfigID' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogConfigID] ON {databaseOwner}[{objectQualifier}EventLog] 
+			(
+				[LogConfigID],
+				[LogNotificationPending],
+				[LogCreateDate]
+			)
+			INCLUDE 
+			(
+				[LogEventID]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogCreateDate' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogCreateDate] ON {databaseOwner}[{objectQualifier}EventLog] 
+			(
+				[LogCreateDate]
+			)
+			INCLUDE 
+			(
+				[LogConfigID]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}UrlTracking_Url_ModuleId' AND object_id = OBJECT_ID('{objectQualifier}UrlTracking'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UrlTracking_Url_ModuleId] ON {databaseOwner}[{objectQualifier}UrlTracking] 
+			(
+				[Url],
+				[ModuleId]
+			)
+			INCLUDE 
+			(
+				[TrackClicks],
+				[NewWindow]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}UrlTracking_ModuleId' AND object_id = OBJECT_ID('{objectQualifier}UrlTracking'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UrlTracking_ModuleId] ON {databaseOwner}[{objectQualifier}UrlTracking] 
+			(
+				[ModuleId]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ContentItems_TabID' AND object_id = OBJECT_ID('{objectQualifier}ContentItems'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_TabID] ON {databaseOwner}[{objectQualifier}ContentItems] 
+			(
+				[TabID]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Tabs_ParentId_IsDeleted' AND object_id = OBJECT_ID('{objectQualifier}Tabs'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted] ON {databaseOwner}[{objectQualifier}Tabs] 
+			(
+				[ParentId],
+				[IsDeleted]
+			)
+			INCLUDE 
+			(
+				[CreatedOnDate]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Tabs_ParentId_IsDeleted_2' AND object_id = OBJECT_ID('{objectQualifier}Tabs'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted_2] ON {databaseOwner}[{objectQualifier}Tabs] 
+			(
+				[ParentId],
+				[IsDeleted]
+			)
+			INCLUDE 
+			(
+				[TabID],
+				[TabOrder],
+				[PortalID],
+				[TabName],
+				[IsVisible],
+				[IconFile],
+				[DisableLink],
+				[Title],
+				[Description],
+				[KeyWords],
+				[Url],
+				[SkinSrc],
+				[ContainerSrc],
+				[StartDate],
+				[EndDate],
+				[RefreshInterval],
+				[PageHeadText],
+				[IsSecure],
+				[PermanentRedirect],
+				[SiteMapPriority],
+				[CreatedByUserID],
+				[CreatedOnDate],
+				[LastModifiedByUserID],
+				[LastModifiedOnDate],
+				[IconFileLarge],
+				[CultureCode],
+				[ContentItemID],
+				[UniqueId],
+				[VersionGuid],
+				[DefaultLanguageGuid],
+				[LocalizedVersionGuid],
+				[Level],
+				[TabPath]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_ModuleID' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules] 
+			(
+				[ModuleID]
+			)
+			INCLUDE 
+			(
+				[TabID]
+			)
+    END
+GO
+
+/***** Fix bug 4016: add stored procedure to find GetUserAuthentication records from dbo.userauthentication *****/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUserAuthentication]') AND type in (N'P', N'PC'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserAuthentication]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserAuthentication]
+  @UserID          int
+
+AS
+  select * from {databaseOwner}{objectQualifier}UserAuthentication
+     where UserId = @UserID
+
+GO
+
+-- DNN-4287
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PageLowerBound]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}PageLowerBound]
+GO
+
+-- new helperfunction for paging, replacing inefficient stored procedure
+CREATE FUNCTION {databaseOwner}[{objectQualifier}PageLowerBound]
+(
+    @PageIndex Int, -- Page number starting with 0 or Null for all
+    @PageSize  Int  -- number of items per page or Null for all
+) 
+	RETURNS    Int
+AS
+BEGIN
+    DECLARE @bound Int = 1
+    IF IsNull(@PageSize, -1) > 0 AND IsNull(@PageIndex, -1) >= 0 AND IsNull(@PageIndex, 0) <= (Cast(0x7fffffff AS Int) / IsNull(@PageSize, 1) -1)
+        SET @bound  = @PageSize * @PageIndex + 1
+    RETURN @bound
+END
+GO
+
+-- DNN-4287: 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PageUpperBound]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}PageUpperBound]
+GO
+
+-- new helper function for paging, replacing inefficient stored procedure
+CREATE FUNCTION {databaseOwner}[{objectQualifier}PageUpperBound]
+(
+    @PageIndex Int, -- Page number starting with 0 or Null for all
+    @PageSize  Int  -- number of items per page or Null for all
+) 
+	RETURNS    Int
+AS
+BEGIN
+    DECLARE @bound Int = Cast(0x7fffffff AS Int)
+    IF IsNull(@PageSize, -1) > 0 AND IsNull(@PageIndex, -1) >= 0 AND IsNull(@PageIndex, 0) <= (Cast(0x7fffffff AS Int) / IsNull(@PageSize, 1) -1)
+        SET @Bound = @PageSize * (@PageIndex + 1)
+    RETURN @Bound
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetEventLog]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetEventLog]
+GO
+
+-- DNN-4287: optimize paging
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetEventLog]
+    @PortalID   Int,            -- Might be Null for all sites
+    @LogTypeKey nVarChar(35),   -- Key of log type or Null for all
+    @PageSize   Int,            -- Number of items per page
+    @PageIndex  Int             -- Page number starting with 0
+AS
+BEGIN
+     WITH [eLog] AS (
+         SELECT ROW_NUMBER() OVER (ORDER BY E.LogCreateDate Desc) AS RowNumber, e.*
+          FROM {databaseOwner}{objectQualifier}EventLog e
+          WHERE (e.LogPortalID = @PortalID     OR IsNull(@PortalID,   -1) = -1)
+            AND (e.LogTypeKey LIKE @LogTypeKey OR IsNull(@LogTypeKey, '') = '')
+     )
+     SELECT * FROM [eLog]
+      WHERE RowNumber >= {databaseOwner}{objectQualifier}PageLowerBound(@PageIndex, @PageSize)
+        AND RowNumber <= {databaseOwner}{objectQualifier}PageUpperBound(@PageIndex, @PageSize)
+      ORDER BY RowNumber
+
+    SELECT COUNT(1) AS TotalRecords
+     FROM {databaseOwner}{objectQualifier}EventLog e
+     WHERE (e.LogPortalID = @PortalID     OR IsNull(@PortalID,   -1) = -1)
+       AND (e.LogTypeKey Like @LogTypeKey OR IsNull(@LogTypeKey, '') = '')
+
+END
+GO
+
+-- DNN-4288: adding virtual roles to table for referential integrity:
+ALTER TABLE {databaseOwner}[{objectQualifier}Roles] ALTER COLUMN PortalId Int Null -- virtual roles are not assigned to a portal
+GO
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Roles] WHERE RoleId < 0)
+BEGIN
+    SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Roles] On
+
+    INSERT INTO {databaseOwner}[{objectQualifier}Roles] (RoleID, RoleGroupID, RoleName, PortalID, IsSystemRole, IsPublic, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+                SELECT -1, Null, 'All Users'              , Null, 1, 0, -1, GetDate(), -1, GetDate()
+      UNION ALL SELECT -2, Null, 'Superusers'             , Null, 1, 0, -1, GetDate(), -1, GetDate()
+      UNION ALL SELECT -3, Null, 'Unauthenticated Users'  , Null, 1, 0, -1, GetDate(), -1, GetDate()
+
+    SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Roles] Off
+END
+GO
+
+-- DNN-4289: optimize roles indexes
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}Roles_RoleGroup')
+    DROP INDEX [IX_{objectQualifier}Roles_RoleGroup] ON {databaseOwner}[{objectQualifier}Roles]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Roles_RoleGroup ON {databaseOwner}[{objectQualifier}Roles] (RoleGroupID, RoleName) INCLUDE (RoleId)
+GO
+-- DNN-4289: optimize roles indexes
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}Roles_RoleName')
+    DROP INDEX [IX_{objectQualifier}Roles_RoleName] ON {databaseOwner}[{objectQualifier}Roles]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Roles_RoleName  ON {databaseOwner}[{objectQualifier}Roles] (PortalID,    RoleName) INCLUDE (RoleId)
+GO
+
+-- UserRoles: Delete Duplicates
+DELETE FROM {databaseOwner}[{objectQualifier}UserRoles] WHERE UserRoleId NOT IN (SELECT Min(UserRoleId) FROM {databaseOwner}[{objectQualifier}UserRoles] GROUP BY UserId, RoleId)
+GO
+
+-- DNN-4290: Remove existing indexes (and provide proper names)
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles')
+DROP INDEX [IX_{objectQualifier}UserRoles] ON {databaseOwner}[{objectQualifier}UserRoles]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_1')
+DROP INDEX [IX_{objectQualifier}UserRoles_1] ON {databaseOwner}[{objectQualifier}UserRoles]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_RoleUser')
+DROP INDEX [IX_{objectQualifier}UserRoles_RoleUser] ON {databaseOwner}[{objectQualifier}UserRoles]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_UserRole')
+DROP INDEX [IX_{objectQualifier}UserRoles_UserRole] ON {databaseOwner}[{objectQualifier}UserRoles]
+GO
+
+-- DNN-4290: Create Indexes
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles_RoleUser] ON {databaseOwner}[{objectQualifier}UserRoles] ([RoleID] ASC, [UserID] ASC)
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles_UserRole] ON {databaseOwner}[{objectQualifier}UserRoles] ([UserID] ASC, [RoleID] ASC)
+GO
+
+-- DNN-4288: UserRoles: don't allow users be assigned to virtual roles:
+IF EXISTS (SELECT * FROM Sys.Check_Constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'CK_{objectQualifier}UserRoles_RoleId')
+ALTER TABLE {databaseOwner}[{objectQualifier}UserRoles] DROP CONSTRAINT CK_{objectQualifier}UserRoles_RoleId
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}UserRoles] WITH NOCHECK ADD CONSTRAINT [CK_{objectQualifier}UserRoles_RoleId] CHECK (RoleId >= 0)
+GO
+
+-- DNN-4288, DNN-4291: make sure, table content meets new requirements:
+UPDATE {databaseOwner}[{objectQualifier}DesktopModulePermission] SET UserId = Null WHERE UserId = -1
+UPDATE {databaseOwner}[{objectQualifier}FolderPermission]        SET UserId = Null WHERE UserId = -1
+UPDATE {databaseOwner}[{objectQualifier}ModulePermission]        SET UserId = Null WHERE UserId = -1
+UPDATE {databaseOwner}[{objectQualifier}TabPermission]           SET UserId = Null WHERE UserId = -1
+GO
+-- DNN-4288:
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission] WHERE RoleId                Is Not Null AND NOT RoleId                IN (SELECT RoleId                FROM {databaseOwner}[{objectQualifier}Roles]               )
+DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]        WHERE RoleId                Is Not Null AND NOT RoleId                IN (SELECT RoleId                FROM {databaseOwner}[{objectQualifier}Roles]               )
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]        WHERE RoleId                Is Not Null AND NOT RoleId                IN (SELECT RoleId                FROM {databaseOwner}[{objectQualifier}Roles]               )
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]           WHERE RoleId                Is Not Null AND NOT RoleId                IN (SELECT RoleId                FROM {databaseOwner}[{objectQualifier}Roles]               )
+-- DNN-4291:
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission] WHERE UserId                Is Not Null AND NOT UserId                IN (SELECT UserId                FROM {databaseOwner}[{objectQualifier}Users]               )
+DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]        WHERE UserId                Is Not Null AND NOT UserId                IN (SELECT UserId                FROM {databaseOwner}[{objectQualifier}Users]               )
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]        WHERE UserId                Is Not Null AND NOT UserId                IN (SELECT UserId                FROM {databaseOwner}[{objectQualifier}Users]               )
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]           WHERE UserId                Is Not Null AND NOT UserId                IN (SELECT UserId                FROM {databaseOwner}[{objectQualifier}Users]               )
+-- should not exist, but doesn't harm:
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission] WHERE PortalDesktopModuleID Is Not Null AND NOT PortalDesktopModuleID IN (SELECT PortalDesktopModuleID FROM {databaseOwner}[{objectQualifier}PortalDesktopModules])
+DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]        WHERE FolderId              Is Not Null AND NOT FolderId              IN (SELECT FolderId              FROM {databaseOwner}[{objectQualifier}Folders]             )
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]        WHERE ModuleId              Is Not Null AND NOT ModuleId              IN (SELECT ModuleId              FROM {databaseOwner}[{objectQualifier}Modules]             )
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]           WHERE TabId                 Is Not Null AND NOT TabId                 IN (SELECT TabId                 FROM {databaseOwner}[{objectQualifier}Tabs]                )
+GO
+
+-- DNN-4288: add new FK references from permission tables onto roles:
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DesktopModulePermission]') AND name = N'FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Roles')
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission] DROP CONSTRAINT FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Roles
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ ADD CONSTRAINT FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Roles FOREIGN KEY (RoleId)
+ REFERENCES {databaseOwner}[{objectQualifier}Roles] (RoleId)
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION  -- cascade would be preferred, but is not possible. Enforced in DeleteRole procedure!
+GO
+-- DNN-4288
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FolderPermission]') AND name = N'FK_{objectQualifier}FolderPermission_{objectQualifier}Roles')
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Roles
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission]
+ ADD CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Roles FOREIGN KEY (RoleId)
+ REFERENCES {databaseOwner}[{objectQualifier}Roles] (RoleId)
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION
+GO
+-- DNN-4288
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModulePermission]') AND name = N'FK_{objectQualifier}ModulePermission_{objectQualifier}Roles')
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT FK_{objectQualifier}ModulePermission_{objectQualifier}Roles
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission]
+ ADD CONSTRAINT FK_{objectQualifier}ModulePermission_{objectQualifier}Roles FOREIGN KEY (RoleId)
+ REFERENCES {databaseOwner}[{objectQualifier}Roles] (RoleId)
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION
+GO
+-- DNN-4288
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabPermission]') AND name = N'FK_{objectQualifier}TabPermission_{objectQualifier}Roles')
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] DROP CONSTRAINT FK_{objectQualifier}TabPermission_{objectQualifier}Roles
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission]
+ ADD CONSTRAINT FK_{objectQualifier}TabPermission_{objectQualifier}Roles    FOREIGN KEY (RoleId)
+ REFERENCES {databaseOwner}[{objectQualifier}Roles] (RoleId)
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION
+GO
+
+-- DNN-4291: add new FK constraint from permission tables onto users, enforcing referential integrity (and adjust FK names to convention):
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DesktopModulePermission]')
+                                           AND Name = N'FK_{objectQualifier}DesktopModulePermission{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission] DROP CONSTRAINT FK_{objectQualifier}DesktopModulePermission{objectQualifier}Users
+GO
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DesktopModulePermission]')
+                                           AND Name = N'FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission] DROP CONSTRAINT FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Users
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ ADD CONSTRAINT FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Users FOREIGN KEY (UserId)
+ REFERENCES {databaseOwner}[{objectQualifier}Users] (UserId)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE
+GO
+
+-- DNN-4291
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FolderPermission]')
+                                           AND Name = N'FK_{objectQualifier}FolderPermission{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT FK_{objectQualifier}FolderPermission{objectQualifier}Users
+GO
+
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FolderPermission]')
+                                           AND Name = N'FK_{objectQualifier}FolderPermission_{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Users
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission]
+ ADD CONSTRAINT FK_{objectQualifier}FolderPermission_{objectQualifier}Users FOREIGN KEY (UserId)
+ REFERENCES {databaseOwner}[{objectQualifier}Users] (UserId)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE
+GO
+
+-- DNN-4291
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModulePermission]')
+                                           AND Name = N'FK_{objectQualifier}ModulePermission{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT FK_{objectQualifier}ModulePermission{objectQualifier}Users
+GO
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModulePermission]')
+                                           AND Name = N'FK_{objectQualifier}ModulePermission_{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT FK_{objectQualifier}ModulePermission_{objectQualifier}Users
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission]
+ ADD CONSTRAINT FK_{objectQualifier}ModulePermission_{objectQualifier}Users FOREIGN KEY (UserId)
+ REFERENCES {databaseOwner}[{objectQualifier}Users]  (UserId)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE
+GO
+
+-- DNN-4291
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabPermission]')
+                                           AND Name = N'FK_{objectQualifier}TabPermission{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission]    DROP CONSTRAINT FK_{objectQualifier}TabPermission{objectQualifier}Users
+GO
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabPermission]')
+                                           AND Name = N'FK_{objectQualifier}TabPermission_{objectQualifier}Users')
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission]    DROP CONSTRAINT FK_{objectQualifier}TabPermission_{objectQualifier}Users
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission]
+ ADD CONSTRAINT FK_{objectQualifier}TabPermission_{objectQualifier}Users   FOREIGN KEY (UserId)
+ REFERENCES {databaseOwner}[{objectQualifier}Users]  (UserId)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE
+GO
+
+-- DNN-4309, using DNN-4288 and DNN-4291
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_DesktopModulePermissions'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_DesktopModulePermissions]
+GO
+
+-- use new FK
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_DesktopModulePermissions]
+AS
+SELECT  PP.DesktopModulePermissionID,
+        PP.PortalDesktopModuleID,
+        P.PermissionID,
+        PP.RoleID,
+        R.RoleName,
+        PP.AllowAccess,
+        PP.UserID,
+        U.Username,
+        U.DisplayName,
+        P.PermissionCode,
+        P.ModuleDefID,
+        P.PermissionKey,
+        P.PermissionName,
+        PP.CreatedByUserID,
+        PP.CreatedOnDate,
+        PP.LastModifiedByUserID,
+        PP.LastModifiedOnDate
+FROM        {databaseOwner}[{objectQualifier}DesktopModulePermission] AS PP
+ INNER JOIN {databaseOwner}[{objectQualifier}Permission]              AS P  ON PP.PermissionID = P.PermissionID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Roles]                   AS R  ON PP.RoleID = R.RoleID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Users]                   AS U  ON PP.UserID = U.UserID
+GO
+
+-- DNN-4309, using DNN-4288 and DNN-4291
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_FolderPermissions'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+GO
+
+-- use new FK
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+AS
+SELECT  FP.FolderPermissionID,
+        F.FolderID,
+        F.FolderPath,
+        F.PortalID,
+        P.PermissionID,
+        FP.RoleID,
+        R.RoleName,
+        FP.AllowAccess,
+        FP.UserID,
+        U.Username,
+        U.DisplayName,
+        P.PermissionCode,
+        P.ModuleDefID,
+        P.PermissionKey,
+        P.PermissionName,
+        FP.CreatedByUserID,
+        FP.CreatedOnDate,
+        FP.LastModifiedByUserID,
+        FP.LastModifiedOnDate
+FROM         {databaseOwner}[{objectQualifier}FolderPermission] AS FP
+ INNER JOIN  {databaseOwner}[{objectQualifier}Folders]          AS F ON FP.FolderID     = F.FolderID
+ INNER JOIN  {databaseOwner}[{objectQualifier}Permission]       AS P ON FP.PermissionID = P.PermissionID
+ LEFT  JOIN  {databaseOwner}[{objectQualifier}Roles]            AS R ON FP.RoleID       = R.RoleID
+ LEFT  JOIN  {databaseOwner}[{objectQualifier}Users]            AS U ON FP.UserID       = U.UserID
+GO
+
+-- DNN-4309, using DNN-4288 and DNN-4291
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_ModulePermissions'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+GO
+
+-- use new FK
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+AS
+SELECT  MP.ModulePermissionID,
+        MP.ModuleID,
+        MP.PortalID,
+        P.PermissionID,
+        MP.RoleID,
+        R.RoleName,
+        MP.AllowAccess,
+        MP.UserID,
+        U.Username,
+        U.DisplayName,
+        P.PermissionCode,
+        P.ModuleDefID,
+        P.PermissionKey,
+        P.PermissionName,
+        MP.CreatedByUserID,
+        MP.CreatedOnDate,
+        MP.LastModifiedByUserID,
+        MP.LastModifiedOnDate
+FROM        {databaseOwner}[{objectQualifier}ModulePermission] AS MP
+ INNER JOIN {databaseOwner}[{objectQualifier}Permission]       AS P  ON MP.PermissionID = P.PermissionID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Roles]            AS R  ON MP.RoleID       = R.RoleID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Users]            AS U  ON MP.UserID       = U.UserID
+GO
+
+-- DNN-4309, using DNN-4288 and DNN-4291
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_TabPermissions'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_TabPermissions]
+GO
+
+-- use new FK
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_TabPermissions]
+AS
+SELECT  TP.TabPermissionID,
+        T.TabID,
+        T.PortalId,
+        P.PermissionID,
+        TP.RoleID,
+        R.RoleName,
+        TP.AllowAccess,
+        TP.UserID,
+        U.Username,
+        U.DisplayName,
+        P.PermissionCode,
+        P.ModuleDefID,
+        P.PermissionKey,
+        P.PermissionName,
+        TP.CreatedByUserID,
+        TP.CreatedOnDate,
+        TP.LastModifiedByUserID,
+        TP.LastModifiedOnDate
+FROM        {databaseOwner}[{objectQualifier}TabPermission]    AS TP
+ INNER JOIN {databaseOwner}[{objectQualifier}Tabs]             AS T  ON TP.TabId        = T.TabId
+ INNER JOIN {databaseOwner}[{objectQualifier}Permission]       AS P  ON TP.PermissionID = P.PermissionID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Roles]            AS R  ON TP.RoleID       = R.RoleID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Users]            AS U  ON TP.UserID       = U.UserID
+GO
+
+-- DNN-4288: virtual role support
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRoles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoles]
+AS
+BEGIN
+    SELECT R.*,
+          (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}UserRoles] U WHERE U.RoleID = R.RoleID) AS UserCount
+     FROM {databaseOwner}[{objectQualifier}Roles] AS R
+     WHERE RoleID >= 0 -- ignore virtual roles. Note: might be removed, after controller has been adjusted
+END
+GO
+
+-- DNN-4288: suppress system roles
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+    @PortalId     Int -- Null: Host Roles
+AS
+BEGIN
+    SELECT R.*,
+          (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}UserRoles] U WHERE U.RoleID = R.RoleID) AS UserCount
+     FROM {databaseOwner}[{objectQualifier}Roles] R
+    WHERE (R.PortalId = @PortalId OR R.PortalId is null)
+      AND (R.RoleId >= 0) -- DNN-4288: hide system role atm to prevent duplicates. Might be removed, after API has been adopt
+    ORDER BY R.RoleName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN))
+END
+GO
+
+-- DNN-4292: Optimize Index Users_IsDeleted_DisplayName
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_IsDeleted_DisplayName')
+DROP INDEX [IX_{objectQualifier}Users_IsDeleted_DisplayName] ON {databaseOwner}[{objectQualifier}Users]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_IsDeleted_DisplayName] ON {databaseOwner}[{objectQualifier}Users]
+    ([IsDeleted]   ASC,
+     [DisplayName] ASC)
+     INCLUDE ([UserId], [IsSuperUser], [Email])
+GO
+
+-- DNN-4292: Create Index on last modified date for search indexer (isSuperuser included for future improvements)
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_LastModifiedOnDate')
+DROP INDEX [IX_{objectQualifier}Users_LastModifiedOnDate] ON {databaseOwner}[{objectQualifier}Users]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LastModifiedOnDate ON {databaseOwner}[{objectQualifier}Users]
+	(LastModifiedOnDate DESC) INCLUDE ([UserID], [IsSuperUser])
+GO
+
+-- DNN-4293: Optimized Index 
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_PropertyDefinitionID')
+DROP INDEX [IX_{objectQualifier}UserProfile_PropertyDefinitionID] ON {databaseOwner}[{objectQualifier}UserProfile]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserProfile_PropertyDefinitionID] ON {databaseOwner}[{objectQualifier}UserProfile]
+([PropertyDefinitionID] ASC) INCLUDE (ProfileId, UserId, PropertyValue)
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_LastUpdatedDate')
+DROP INDEX [IX_{objectQualifier}UserProfile_LastUpdatedDate] ON {databaseOwner}[{objectQualifier}UserProfile]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}UserProfile_LastUpdatedDate ON {databaseOwner}[{objectQualifier}UserProfile]
+	(LastUpdatedDate DESC) INCLUDE ([UserID])
+GO
+
+-- DNN-4294: Create Index 
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserPortals]') AND name = N'IX_{objectQualifier}UserPortals_VanityUrl')
+DROP INDEX [IX_{objectQualifier}UserPortals_VanityUrl] ON {databaseOwner}[{objectQualifier}UserPortals]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}UserPortals_VanityUrl ON {databaseOwner}[{objectQualifier}UserPortals]
+    (VanityUrl) INCLUDE (UserID, PortalID)
+GO
+
+-- DNN-4295: Create Index 
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules_PortalId')
+DROP INDEX [IX_{objectQualifier}Modules_PortalId] ON {databaseOwner}[{objectQualifier}Modules]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Modules_PortalId ON {databaseOwner}[{objectQualifier}Modules]
+    (PortalId) 
+GO
+
+-- DNN-4295: Rename and optimize Index 		
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules')
+DROP INDEX [IX_{objectQualifier}Modules] ON {databaseOwner}[{objectQualifier}Modules]
+GO
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules_ModuleDefId')
+DROP INDEX [IX_{objectQualifier}Modules_ModuleDefId] ON {databaseOwner}[{objectQualifier}Modules]
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Modules_ModuleDefId ON {databaseOwner}[{objectQualifier}Modules]
+    (ModuleDefId) INCLUDE (ModuleId)
+GO
+
+-- DNN-4296: Rename and optimize Index
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_1')
+DROP INDEX [IX_{objectQualifier}IX_Tabs_1] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_2')
+DROP INDEX [IX_{objectQualifier}IX_Tabs_2] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_PortalID_ParentID')
+DROP INDEX [IX_{objectQualifier}IX_Tabs_PortalID_ParentID] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+-- note: not unique ATM, because during move two pages with same portal+parentID+TabOrder might exist (check API)
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}IX_Tabs_PortalID_ParentID ON {databaseOwner}[{objectQualifier}Tabs]
+    (PortalId, ParentId, TabOrder)
+GO
+
+-- DNN-4297 make sure, no invalid records exist:
+DELETE FROM {databaseOwner}[{objectQualifier}TabUrls]
+ WHERE TabID Not IN (SELECT TabID FROM {databaseOwner}[{objectQualifier}Tabs])
+GO
+
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabUrls]')
+                                           AND Name = N'FK_{objectQualifier}TabUrls_Tabs')
+ALTER TABLE {databaseOwner}[{objectQualifier}TabUrls] DROP CONSTRAINT FK_{objectQualifier}TabUrls_Tabs
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}TabUrls] ADD CONSTRAINT FK_{objectQualifier}TabUrls_Tabs
+  FOREIGN KEY (TabId) REFERENCES {databaseOwner}[{objectQualifier}Tabs] (TabID) 
+     ON UPDATE  NO ACTION -- Identity, not applicable 
+	 ON DELETE  CASCADE 
+GO
+
+-- DNN-4297, make sure, no invalid records exist:
+UPDATE {databaseOwner}[{objectQualifier}TabUrls] SET PortalAliasId = Null
+ WHERE PortalAliasId Not IN (SELECT PortalAliasID FROM {databaseOwner}[{objectQualifier}PortalAlias])
+GO
+
+-- DNN-4298: remove orphaned entries
+DELETE FROM {databaseOwner}[{objectQualifier}Lists] 
+WHERE (DefinitionID NOT IN (SELECT ModuleDefID FROM {databaseOwner}[{objectQualifier}ModuleDefinitions]) AND DefinitionID > 0)
+   OR (PortalID NOT IN (SELECT PortalID FROM {databaseOwner}[{objectQualifier}Portals]) AND PortalID >= 0)
+GO
+
+-- DNN-4298: ensure that there are no duplicates before creating the index
+DELETE FROM {databaseOwner}[{objectQualifier}Lists] WHERE EntryID NOT IN 
+(SELECT L.EntryID FROM {databaseOwner}[{objectQualifier}Lists] L 
+            INNER JOIN (SELECT Max(EntryID) Item, ParentId, ListName, [Value] FROM {databaseOwner}[{objectQualifier}Lists] GROUP BY ParentId, ListName, [Value]) S 
+			        ON L.EntryID = S.Item AND L.ParentId = S.ParentId AND L.ListName = S.ListName AND S.[Value] = L.[Value])
+GO
+
+-- DNN-4298: optimize index for performance and consistence
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]') AND name = N'IX_{objectQualifier}Lists_ParentID')
+DROP INDEX [IX_{objectQualifier}Lists_ParentID] ON {databaseOwner}[{objectQualifier}Lists]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Lists_ParentID ON {databaseOwner}[{objectQualifier}Lists] (ParentID, ListName, [Value]) INCLUDE (SortOrder, DefinitionID, Text)
+GO
+
+-- DNN-4298: add new index for performance
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]') AND name = N'IX_{objectQualifier}Lists_SortOrder')
+DROP INDEX [IX_{objectQualifier}Lists_SortOrder] ON {databaseOwner}[{objectQualifier}Lists]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_SortOrder] ON {databaseOwner}[{objectQualifier}Lists] (PortalID, ParentID, ListName, SortOrder) INCLUDE (DefinitionID, [Value], Text)
+GO
+
+-- DNN-4330: optimized. utilizing DNN-4287: optimized paging, DNN-4288: role support
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRolesBasicSearch]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRolesBasicSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRolesBasicSearch]
+    @PortalID           Int,                    -- might be null for all portals
+    @PageIndex          Int,                    -- page number starting at 0
+    @PageSize           Int,                    -- number of items per page
+    @FilterBy           nVarChar(100)           -- pattern for role name, do not use preceding or trailing wildcards
+AS
+BEGIN
+    IF IsNull(@FilterBy, '') <> '' BEGIN
+        IF Substring(@FilterBy, 1, 1) = '%'
+            SET @FilterBy = Substring(@FilterBy, 2, Len(@FilterBy) - 1)
+        IF Substring(@FilterBy, Len(@FilterBy), 1) = '%'
+            SET @FilterBy = Substring(@FilterBy, 1, Len(@FilterBy) - 1)
+     END;
+
+	IF IsNull(@PageIndex,-1) >= 0 AND IsNull(@PageSize, 0) > 0 AND IsNull(@PageSize, 0) < Cast(0x7fffffff AS Int)
+		WITH OrderedRoles AS (
+			SELECT RoleID, PortalID, RoleName, [Description], ServiceFee, BillingFrequency, TrialPeriod, TrialFrequency, BillingPeriod, TrialFee,
+				   IsPublic, AutoAssignment, RoleGroupID, RSVPCode, {databaseOwner}{objectQualifier}FilePath(IconFile) AS IconFile, Status, SecurityMode,
+				   CreatedByUserID,CreatedOnDate,LastModifiedByUserID,LastModifiedOnDate,
+				   ROW_NUMBER() OVER (ORDER BY RoleName ASC, PortalID DESC) AS RowNum
+			 FROM {databaseOwner}[{objectQualifier}Roles]
+			 WHERE (RoleName LIKE '%' + @FilterBy + '%' OR IsNull(@FilterBy,'') = '')
+			   AND (PortalID = @PortalID OR IsNull(@PortalID, -1)  = -1)
+			   AND (RoleId  > 0) -- DNN-4288: ignore virtual roles
+			)
+		SELECT * FROM OrderedRoles WHERE RowNum >= {databaseOwner}{objectQualifier}PageLowerBound(@PageIndex, @Pagesize)
+									 AND RowNum <= {databaseOwner}{objectQualifier}PageUpperBound(@PageIndex, @Pagesize) ORDER BY RowNum
+		 OPTION (OPTIMIZE FOR (@PortalId UNKNOWN));
+	ELSE -- no paging
+        SELECT RoleID, PortalID, RoleName, [Description], ServiceFee, BillingFrequency, TrialPeriod, TrialFrequency, BillingPeriod, TrialFee,
+               IsPublic, AutoAssignment, RoleGroupID, RSVPCode, {databaseOwner}{objectQualifier}FilePath(IconFile) AS IconFile, Status, SecurityMode,
+               CreatedByUserID,CreatedOnDate,LastModifiedByUserID,LastModifiedOnDate,
+               ROW_NUMBER() OVER (ORDER BY RoleName ASC, PortalID DESC) AS RowNum
+         FROM {databaseOwner}[{objectQualifier}Roles]
+         WHERE (RoleName LIKE '%' + @FilterBy + '%' OR IsNull(@FilterBy,'') = '')
+           AND (PortalID = @PortalID OR IsNull(@PortalID, -1)  = -1)
+           AND (RoleId  > 0) -- DNN-4288: ignore virtual roles
+		 OPTION (OPTIMIZE FOR (@PortalId UNKNOWN))
+END
+GO
+
+--DNN-4288: suppress system roles (just for sure)
+-- TODO: doesn't take into account effective/expire datetimes
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetServices]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetServices]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetServices]
+    @PortalId  Int, -- pass Null for roles of all sites
+    @UserId    Int  -- not null!
+AS
+BEGIN
+    SELECT
+        R.*,
+        UR.IsOwner,
+        UR.UserRoleID,
+        UR.UserID,
+        UR.ExpiryDate,
+        UR.IsTrialUsed,
+        UR.EffectiveDate,
+        U.DisplayName,
+        U.Email
+    FROM         {databaseOwner}[{objectQualifier}Users]      U
+     INNER JOIN  {databaseOwner}[{objectQualifier}UserRoles] UR ON UR.UserID = U.UserID
+     RIGHT JOIN  {databaseOwner}[{objectQualifier}Roles]      R ON UR.RoleID = R.RoleID  AND UR.UserID = @UserId
+    WHERE (R.PortalId = @PortalId OR IsNull(@PortalId, -1) = -1)
+      AND  R.IsPublic = 1
+      AND  R.RoleId  >= 0  -- DNN-4288: hide system role atm to prevent duplicates. Might be removed, after API has been adopted
+    ORDER BY R.RoleName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN))
+END
+GO
+
+-- DNN-4288: ignore system roles, DNN-4291: add FK constraints to permission tables
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteRole]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteRole]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteRole]
+    @RoleId Int -- ID of role to delete. System Roles ignored (deletion of system roles not supported)
+AS
+BEGIN
+    IF @RoleId >= 0 BEGIN
+        DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission] WHERE RoleID = @RoleId
+        DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]        WHERE RoleID = @RoleId
+        DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]        WHERE RoleID = @RoleId
+        DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]           WHERE RoleID = @RoleId
+        DELETE FROM {databaseOwner}[{objectQualifier}Roles]                   WHERE RoleID = @RoleId
+    END
+END
+GO
+
+-- DNN-4287: deprecated, but updated to use new functions
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CalculatePagingInformation]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CalculatePagingInformation]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CalculatePagingInformation]
+-- this procedure is deprecated, please use more efficient functions pageLowerBound AND pageUpperBound instead!
+-- 2147483647 = Cast(0x7fffffff AS Int)
+	@pageIndex 		Int, 	    -- negative to return all rows!
+	@pageSize 		Int, 		-- negative OR 0 returns all rows
+	@rowsToReturn  	Int output, -- row number of record AFTER last row (0 based) 
+	@pageLowerBound Int output, -- row number of first record (0 based)
+	@pageUpperBound Int output  -- row number of record AFTER last row (1 based)
+AS
+BEGIN 
+	IF IsNull(@pageSize, 2147483647) < 2147483647 AND IsNull(@PageIndex, -1) >= 0 BEGIN
+		SET @pageLowerBound = {databaseOwner}{objectQualifier}pageLowerBound(@pageIndex, @pageSize) - 1
+		SET @rowsToReturn   = {databaseOwner}{objectQualifier}pageUpperBound(@pageIndex, @pageSize) 
+		SET @pageUpperBound = @rowsToReturn + 1 
+	END ELSE BEGIN
+		SET @pageLowerBound = 0
+		SET @rowsToReturn   = 2147483647 
+		SET @pageUpperBound = 2147483647 
+	END
+END
+GO
+
+-- CONTENT-2131
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+	@PortalId int,
+	@UserId int,
+	@SubscriptionTypeID int
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	WHERE 
+			(( @PortalId is null and PortalId is null) or (PortalId = @PortalId))
+			AND UserId = @UserId
+			AND (@SubscriptionTypeID IS NULL OR SubscriptionTypeID = @SubscriptionTypeID)
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+	@PortalId int,
+	@SubscriptionTypeID int,
+	@ObjectKey NVARCHAR(255)
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	WHERE 
+		(( @PortalId is null and PortalId is null) or (PortalId = @PortalId))
+		AND SubscriptionTypeID = @SubscriptionTypeID
+		AND ObjectKey = @ObjectKey
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+	@UserId INT ,
+	@PortalId INT ,
+	@SubscriptionTypeId INT ,
+	@ObjectKey NVARCHAR(255) ,
+	@Description NVARCHAR(255),
+	@ModuleId INT ,
+	@TabId INT,
+	@ObjectData NVARCHAR(MAX)
+AS 
+	BEGIN
+        DECLARE @SubscriptionId INT = NULL   
+        
+        SELECT  TOP 1 @SubscriptionId = SubscriptionId
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		WHERE   UserId = @UserId
+				AND (( @PortalId is null and PortalId is null) or (PortalId = @PortalId))
+				AND SubscriptionTypeId = @SubscriptionTypeID
+				AND ObjectKey = @ObjectKey
+				AND ((@ModuleId is null and ModuleId is null ) or (ModuleId = @ModuleId))	
+				AND ((@TabId is null and TabId is null ) or (TabId = @TabId))
+		      
+        IF (@SubscriptionId IS NULL) 
+			BEGIN
+				INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+						( UserId ,
+							PortalId ,
+							SubscriptionTypeId ,
+							ObjectKey ,
+							Description,
+							CreatedOnDate ,
+							ModuleId ,
+							TabId,
+							ObjectData
+						)
+				VALUES  ( @UserId ,
+							@PortalId ,
+							@SubscriptionTypeId ,
+							@ObjectKey ,
+							@Description,
+							GETUTCDATE() ,
+							@ModuleId ,
+							@TabId,
+							@ObjectData
+						)
+
+				SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
+			END
+		ELSE 
+			BEGIN
+				UPDATE  {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+				SET     UserId = @UserId ,
+						PortalId = @PortalId ,
+						SubscriptionTypeId = @SubscriptionTypeId ,
+						ObjectKey = @ObjectKey ,
+						Description = @Description ,
+						ModuleId = @ModuleId ,
+						TabId = @TabId,
+						ObjectData = @ObjectData
+				WHERE   SubscriptionId = @SubscriptionId
+
+				SELECT  @SubscriptionId AS [SubscriptionId]
+			END
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+	@PortalId INT ,
+	@UserId INT ,
+	@SubscriptionTypeId INT ,
+	@ObjectKey NVARCHAR(255) ,
+	@ModuleId INT ,
+	@TabId INT
+AS 
+	BEGIN
+		SELECT  TOP 1 *
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		WHERE   UserId = @UserId
+				AND (( @PortalId is null and PortalId is null) or (PortalId = @PortalId))
+				AND SubscriptionTypeId = @SubscriptionTypeID
+				AND ObjectKey = @ObjectKey
+				AND ((@ModuleId is null and ModuleId is null ) or (ModuleId = @ModuleId))	
+				AND ((@TabId is null and TabId is null ) or (TabId = @TabId))
+	END
+GO
+
+/* Add Dashboard_GetDashboardControlByKey Procedure */
+/****************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetDashboardControlByPackageId]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId  
+	@PackageID INT
+AS
+	
+	SELECT *
+	  FROM {databaseOwner}{objectQualifier}Dashboard_Controls
+		WHERE PackageID = @PackageID AND PackageID <> -1
+    
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_AddControl]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_AddControl
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_AddControl  
+
+	@PackageId							INT,
+	@DashboardControlKey 				NVARCHAR(50),
+	@IsEnabled							BIT,
+	@DashboardControlSrc				NVARCHAR(250),
+	@DashboardControlLocalResources 	NVARCHAR(250),
+	@ControllerClass					NVARCHAR(250),
+	@ViewOrder							INT
+
+AS
+	IF @ViewOrder = -1
+		SET @ViewOrder = (SELECT TOP 1 ViewOrder FROM {objectQualifier}Dashboard_Controls ORDER BY ViewOrder DESC) + 1
+
+    IF EXISTS(SELECT DashboardControlID FROM {databaseOwner}{objectQualifier}Dashboard_Controls WHERE ViewOrder = @ViewOrder)
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Dashboard_Controls SET ViewOrder = ViewOrder + 1 WHERE ViewOrder >= @ViewOrder
+	END
+
+	INSERT INTO {databaseOwner}{objectQualifier}Dashboard_Controls (
+		PackageId,
+		DashboardControlKey,
+		IsEnabled,
+		DashboardControlSrc,
+		DashboardControlLocalResources,
+		ControllerClass,
+		ViewOrder
+	)
+	VALUES (
+		@PackageId,
+		@DashboardControlKey,
+		@IsEnabled,
+		@DashboardControlSrc,
+		@DashboardControlLocalResources,
+		@ControllerClass,
+		@ViewOrder
+	)
+
+	SELECT SCOPE_IDENTITY()
+    
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_UpdateControl]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_UpdateControl
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_UpdateControl  
+
+	@DashboardControlID 				INT,
+	@DashboardControlKey 				NVARCHAR(50),
+	@IsEnabled							BIT,
+	@DashboardControlSrc				NVARCHAR(250),
+	@DashboardControlLocalResources 	NVARCHAR(250),
+	@ControllerClass					NVARCHAR(250),
+	@ViewOrder							INT
+
+AS
+    DECLARE @OldOrder INT
+    SELECT @OldOrder = ViewOrder FROM {databaseOwner}{objectQualifier}Dashboard_Controls WHERE DashboardControlID = @DashboardControlID
+	UPDATE {databaseOwner}{objectQualifier}Dashboard_Controls 
+		SET DashboardControlKey = @DashboardControlKey,
+			IsEnabled = @IsEnabled,
+			DashboardControlSrc = @DashboardControlSrc,
+			DashboardControlLocalResources = @DashboardControlLocalResources,
+			ControllerClass = @ControllerClass,
+			ViewOrder = @ViewOrder
+	WHERE DashboardControlID = @DashboardControlID
+
+    IF @OldOrder IS NOT NULL AND @OldOrder < @ViewOrder
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Dashboard_Controls SET ViewOrder = ViewOrder - 1 WHERE ViewOrder BETWEEN @OldOrder AND @ViewOrder AND DashboardControlID <> @DashboardControlID
+	END
+    ELSE IF @OldOrder IS NOT NULL AND @OldOrder > @ViewOrder
+    BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Dashboard_Controls SET ViewOrder = ViewOrder + 1 WHERE ViewOrder BETWEEN @ViewOrder AND @OldOrder AND DashboardControlID <> @DashboardControlID
+	END
+GO
+
+-- DNN-4498
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileLastModificationTime]
+	@FileId				  Int, 		-- Not Null
+	@LastModificationTime DateTime  -- Null: Now
+AS
+BEGIN
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+    SET    LastModificationTime = IsNull(@LastModificationTime, GetDate())
+    WHERE  FileId = @FileId
+END
+GO
+
+-- DNN-4500
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalSpaceUsed]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSpaceUsed]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSpaceUsed]
+	@PortalId INT     -- Null|-1: Host files
+AS
+	BEGIN
+		SELECT SUM(CAST(Size as bigint)) AS SpaceUsed
+		FROM {databaseOwner}{objectQualifier}Files
+		WHERE (IsNull(PortalID, -1) = IsNull(@PortalId, -1))
+	END
+GO
+
+-- DNN-4299
+IF EXISTS (SELECT * FROM Sys.OBJECTS WHERE (name = N'{objectQualifier}AdministratorRoleId') AND TYPE = 'FN')
+	DROP FUNCTION {databaseOwner}[{objectQualifier}AdministratorRoleId]
+GO
+
+-- new function to return RoleID for Administrators of the Portal passed in as parameter
+CREATE FUNCTION {databaseOwner}[{objectQualifier}AdministratorRoleId](
+    @PortalId	 		 Int -- Needs to be >= 0, otherwise false is returned
+) 
+	RETURNS 			 int
+AS
+	BEGIN
+		DECLARE @adminRoleId int = 0
+		SELECT  @adminRoleId = AdministratorRoleId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalId
+		RETURN  @adminRoleId
+	END
+GO
+
+-- DNN-4300
+IF EXISTS (SELECT * FROM Sys.OBJECTS WHERE (name = N'{objectQualifier}FitsExtendedPropertyPermission') AND TYPE = 'FN')
+	DROP FUNCTION {databaseOwner}[{objectQualifier}FitsExtendedPropertyPermission]
+GO
+
+-- new function to determine, whether a user may view content of another users property,
+-- if extended permissions (per social group or relationship) are specified
+CREATE FUNCTION {databaseOwner}[{objectQualifier}FitsExtendedPropertyPermission](
+    @viewingUserId 		 Int,
+    @viewedUserID 		 Int,
+    @extendedPermissions nVarChar(2000)
+) 
+	RETURNS 			 Bit
+AS
+	BEGIN
+		DECLARE @rolesStr    nVarChar(2000) = ''
+		DECLARE @reltnStr    nVarChar(2000) = ''
+		DECLARE @gStartPos   Int
+		DECLARE @rStartPos   Int
+		DECLARE @recCount    Int = 0
+		DECLARE @SQL         Int
+		If (@viewedUserID > 0 and Len(IsNull(@extendedPermissions,'')) > 2) BEGIN
+			SET @gStartPos = CHARINDEX('G:',@extendedPermissions) + 2
+			SET @rStartPos = CHARINDEX('R:',@extendedPermissions) + 2
+			if @gStartPos > @rStartPos BEGIN
+				SET @rolesStr = SUBSTRING(@extendedPermissions, @gStartPos, Len(@extendedPermissions) - @gStartPos)
+				if @rStartPos > 0 SET @reltnStr = SUBSTRING(@extendedPermissions, @rStartPos, @gStartPos - @rStartPos - 1)
+			END
+			If @gStartPos < @rStartPos BEGIN
+				SET @reltnStr = SUBSTRING(@extendedPermissions, @rStartPos, Len(@extendedPermissions) - @rStartPos)
+				if @gStartPos > 0 SET @rolesStr = SUBSTRING(@extendedPermissions, @gStartPos, @rStartPos - @gStartPos - 1)
+			END
+			If @rolesStr <> '' BEGIN
+				SET @rolesStr = ',' + SUBSTRING(@rolesStr,1, Len(@rolesStr) - CASE WHEN RIGHT(@RolesStr,1) = ';' THEN 1 ELSE 0 END)
+				SELECT @recCount = COUNT(1) FROM {databaseOwner}[{objectQualifier}UserRoles] WHERE UserID = @viewingUserId AND @rolesStr LIKE '%,' + Convert(nVarChar(10),RoleId) + ',%'
+			END
+			If @recCount = 0 AND @reltnStr <> '' BEGIN
+				SET @reltnStr = ',' + SUBSTRING(@reltnStr,1, Len(@reltnStr) - CASE WHEN RIGHT(@reltnStr,1) = ';' THEN 1 ELSE 0 END)
+				SELECT @recCount = COUNT(1) FROM {databaseOwner}[{objectQualifier}vw_RelatedUsers] WHERE UserID = @viewingUserId AND relatedUserID = @viewedUserId AND @reltnStr LIKE '%,' + Convert(nVarChar(10),RelationShipID) + ',%' AND Status = 2
+			END
+		END
+		RETURN CASE WHEN IsNull(@RecCount, 0) > 0 THEN 1 ELSE 0 END
+	END
+GO
+
+-- DNN-4301
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetProfileFieldSql]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}GetProfileFieldSql]
+GO
+-- results order added
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetProfileFieldSQL]
+(
+    @PortalID 	 Int,
+    @TemplateSql nVarChar(max)
+)
+	RETURNS 	 nVarChar(max)
+AS
+	BEGIN
+		DECLARE @sql nVarChar(max);
+
+		SELECT @sql = COALESCE(@sql + ',','') + '[' + PropertyName + ']' + @TemplateSql
+		 FROM {databaseOwner}[{objectQualifier}ProfilePropertyDefinition]
+		 WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1)
+		   AND Deleted = 0
+		ORDER BY ViewOrder
+		RETURN (@sql)
+	END
+GO
+
+-- DNN-4302
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FormattedString]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}FormattedString]
+GO
+
+-- added for easier string handling
+CREATE FUNCTION {databaseOwner}[{objectQualifier}FormattedString]
+(
+    @InputStr nVarChar(2000), -- might be null or empty, in this case an empty string is returned (format ignored)!
+    @Format   nVarChar(2000)  -- not null or empty, contains token @@@
+)
+	RETURNS   nVarChar(4000)  -- replaced string, e.g. FormattedString('World', 'Hello @0!') returns 'Hello World!' 
+AS
+BEGIN
+	DECLARE @RetVal AS nVarChar(4000) = ''
+	IF NOT IsNull(@InputStr,'') = ''
+		SET @retVal = REPLACE(@Format, N'@0', @InputStr)
+	RETURN @RetVal
+END
+GO
+
+-- DNN-4302
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TemplatedString]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}TemplatedString]
+GO
+
+-- added for easier string handling
+CREATE FUNCTION {databaseOwner}[{objectQualifier}TemplatedString]
+(
+    @template nVarChar(3500), -- use tokens @1, @2, @3, @4, @5 to be replaced by param1 .. param5
+    @param1   nVarChar( 100) = '', -- empty param values will just remove token!
+	@param2	  nVarChar( 100) = '',
+	@param3	  nVarChar( 100) = '',
+	@param4	  nVarChar( 100) = '',
+	@param5	  nVarChar( 100) = ''
+)
+	RETURNS   nVarChar(4000)
+AS
+BEGIN
+    RETURN REPLACE(
+			REPLACE(
+			 REPLACE(
+			  REPLACE(
+			   REPLACE(IsNull(@template, ''), 
+					   N'@1', IsNull(@param1,'')), 
+					  N'@2', IsNull(@param2,'')), 
+					 N'@3', IsNull(@param3,'')), 
+					N'@4', IsNull(@param4,'')), 
+				   N'@5', IsNull(@param5,''))
+END
+GO
+
+-- DNN-4303:
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSortFieldSQL]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}GetSortFieldSQL]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SortFieldSQL]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}SortFieldSQL]
+GO
+
+-- added, provides more flexibility, e.g. may be called again for multiple sort columns
+CREATE FUNCTION {databaseOwner}[{objectQualifier}SortFieldSQL]
+(
+    @SortBy        nVarChar(100), -- should be a field name
+    @SortAscending Bit,			  -- ascending or descending?
+    @Default       nVarChar(100)  -- name of field to be used if @sortby is empty
+)
+	RETURNS 	   nVarChar(110)
+AS
+	BEGIN
+		DECLARE @sortSql nVarChar(110) =  ''
+		IF IsNull(@SortBy, '') = ''
+			SET @SortBy = IsNull(@Default, '')
+		IF @SortBy <>  ''
+			SET @sortSql = N'[' + @SortBy + CASE WHEN IsNull(@SortAscending, 1) = 0 THEN N'] DESC' ELSE N'] ASC' END
+		RETURN @sortSql
+	END
+GO
+
+-- DNN-4303, using DNN-4302
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSortSQL]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}GetSortSQL]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetSortSQL]
+(   -- deprecated, please call SortFieldSQL and FormattedString instead
+    @SortBy        nVarChar(100),
+    @SortAscending Bit,
+    @Default       nVarChar(100)
+)
+	RETURNS 	   nVarChar(120)
+AS
+	BEGIN
+		RETURN {databaseOwner}[{objectQualifier}FormattedString]({databaseOwner}[{objectQualifier}SortFieldSQL](@SortBy, @SortAscending, @Default), N'ORDER BY @0')
+	END
+GO
+
+-- DNN-4304
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetProfilePropertyDefinitionID]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}GetProfilePropertyDefinitionID]
+GO
+
+-- optimized
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetProfilePropertyDefinitionID]
+(   @PortalID     Int,         -- might be 0
+    @PropertyName nVarChar(50) -- required
+)   
+	RETURNS 	  Int
+AS
+	BEGIN
+		DECLARE @DefinitionID Int = -1
+		IF NOT IsNull(@PropertyName, '') = ''
+			SELECT @DefinitionID = PropertyDefinitionID
+			  FROM {databaseOwner}[{objectQualifier}ProfilePropertyDefinition]
+			  WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1) AND PropertyName = @PropertyName
+		RETURN @DefinitionID
+	END
+GO
+
+/*** DNN-3594: signature changed to support PortalId, which is required, if a user signs off from a single website only ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteDesktopModulePermissionsByUserID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteDesktopModulePermissionsByUserID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteDesktopModulePermissionsByUserID]
+    @UserId   INT,  -- required, not null!
+	@PortalId INT -- Null affects all sites
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission]
+    WHERE UserID = @UserId
+     AND (PortalDesktopModuleID IN (SELECT PortalDesktopModuleID 
+									FROM {databaseOwner}[{objectQualifier}PortalDesktopModules] 
+									WHERE PortalID = @PortalId) OR IsNull(@PortalId, -1) = -1)
+GO
+
+/***** Fix bug DNN-3146: Update installed system packages owner info *****/
+UPDATE {databaseOwner}[{objectQualifier}Packages] SET
+	Owner = 'DNN',
+	Organization = 'DNN Corp.',
+	Url = 'http://www.dnnsoftware.com',
+	Email = 'support@dnnsoftware.com'
+	WHERE Owner IN ('DotNetNuke', 'DotNetNuke Corporation', 'DotNetNuke RadEditor Provider', 'DNNCorp')
+	AND Organization IN ('DotNetNuke Corporation', 'DotNetNuke Corp')
+	AND Url IN ('www.dotnetnuke.com', 'http://www.dotnetnuke.com')
+	AND Email IN ('support@dotnetnuke.com', '')
+GO
+
+-- DNN-4305
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}MasterPortalId]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}MasterPortalId]
+GO
+
+-- new helper function
+CREATE FUNCTION {databaseOwner}[{objectQualifier}MasterPortalId]
+(
+    @PortalId Int  -- ID of the portal or Null for Host
+) 
+	RETURNS   Int
+AS
+	BEGIN
+		DECLARE @MasterPortalId  Int = Null
+		IF IsNull(@PortalId, -1) >= 0
+			SELECT @MasterPortalId = MasterPortalId FROM {databaseOwner}[{objectQualifier}vw_MasterPortals] WHERE PortalId = @PortalId
+		RETURN @MasterPortalId
+	END
+GO
+
+-- DNN-4306:
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SplitDelimitedIDs]') AND type = N'TF')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}SplitDelimitedIDs]
+GO
+
+-- new helper function to return a table with id's, passed as a single string with delimiter
+CREATE FUNCTION {databaseOwner}[{objectQualifier}SplitDelimitedIDs]
+(
+	@RecordIDList VarChar(2000),
+	@Delimiter    VarChar(   2) = ','
+)
+RETURNS 
+	@IntegerList Table (RecordID Int)
+AS
+	BEGIN
+		DECLARE @RecordID VarChar(10)
+		DECLARE @Start    Int        = 0
+		DECLARE @Pos      Int        = 1
+
+		SET @RecordIDList = @RecordIDList + @Delimiter
+		SET @Pos = CHARINDEX(@Delimiter, @RecordIDList, 1)
+
+		WHILE @Pos > 0 BEGIN
+			SET @RecordID = LTRIM(RTRIM(SUBSTRING(@RecordIDList, @Start, @Pos - @Start)))
+			IF @RecordID <> ''
+				INSERT INTO @IntegerList (RecordID) VALUES (CAST(@RecordID AS Int)) -- use appropriate conversion
+			SET @Start = @Pos + len(@Delimiter)
+			SET @Pos = CHARINDEX(@Delimiter, @RecordIDList, @Start)
+		END
+		RETURN
+	END
+GO
+
+-- DNN-4307
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserDisplayName]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}UserDisplayName]
+GO
+
+-- new helper function, returning Displayname for a userid
+CREATE FUNCTION {databaseOwner}[{objectQualifier}UserDisplayName]
+(
+	@userId Int
+)
+RETURNS 
+	nVarChar(255)
+AS
+	BEGIN
+		DECLARE @DisplayName AS nVarChar(255)
+
+		SELECT  @DisplayName = DisplayName FROM {databaseOwner}[{objectQualifier}Users] WHERE UserID = @UserId
+		RETURN  @DisplayName
+	END
+GO
+
+-- DNN-4308
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserIsInRole]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}UserIsInRole]
+GO
+
+-- new helper function
+CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIsInRole]
+(
+	@UserId Int,
+	@RoleId Int
+)
+RETURNS 	Bit
+AS
+	BEGIN
+		RETURN CASE WHEN EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}UserRoles] WHERE UserID = @UserId AND RoleID = @RoleId 
+														   AND IsNull(EffectiveDate, GetDate()) >= GetDate() 
+														   AND IsNull(ExpiryDate, GetDate())    <= GetDate()) THEN 1 ELSE 0 END
+	END
+GO
+
+-- DNN-23950
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_CheckReplyHasRecipients]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CheckReplyHasRecipients]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_CheckReplyHasRecipients
+	@conversationId INT,
+	@userId INT
+AS 
+SELECT COUNT(MR.UserID)
+FROM     {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients AS MR INNER JOIN
+                  {databaseOwner}{objectQualifier}vw_Users AS U ON MR.UserID = U.UserID
+WHERE  (MR.MessageID = @conversationId) AND (MR.UserID <> @userId) AND (U.IsDeleted <> 1)
+GO
+
+/*****  DNN-4075 *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]') AND type in (N'P', N'PC'))
+        DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+    @PortalId INT ,
+    @StartDate DATETIME ,
+        @startUserId INT = 0,
+    @numberOfUsers INT = 500
+AS 
+    BEGIN
+        WITH    ValidDataType
+                  AS ( SELECT   EntryID
+                       FROM     {databaseOwner}[{objectQualifier}Lists]
+                       WHERE    ListName = 'DataType'
+                                AND SystemList = 1
+                                AND Value IN ( 'Text', 'RichText' )
+                     ),
+                  ValidUsers AS 
+                  (
+                                      SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
+                         FROM ( SELECT DISTINCT
+                                            ( u.UserID )
+                                  FROM      {databaseOwner}[{objectQualifier}Users] u
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                                            LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                                  WHERE     (up.PortalId = @PortalId OR up.PortalId IS NULL)
+                                            AND (u.LastModifiedOnDate > @StartDate OR (p.LastUpdatedDate IS NOT NULL AND (p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)))
+                                            AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+                                ) AS T WHERE UserID > @startUserId) AS T
+                                WHERE rownumber <= @numberOfUsers
+                     ),
+                     FirstName AS (
+                                                SELECT UserID, PropertyValue FROM {databaseOwner}[{objectQualifier}UserProfile] p
+                                                INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+                                                WHERE pd.PropertyName = 'FirstName' AND pd.PortalID = @PortalID
+                                         )
+
+
+            SELECT  DISTINCT u.UserID ,
+                                        u.DisplayName,
+                    fn.PropertyValue AS FirstName,
+                    pd.PropertyName ,
+                    CASE WHEN (p.PropertyValue IS NULL) THEN p.PropertyText ELSE p.PropertyValue END AS PropertyValue,
+                    p.Visibility,
+                    p.ExtendedVisibility,
+                                        CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END AS 'ModifiedTime'
+            FROM    {databaseOwner}[{objectQualifier}Users] u
+                    INNER JOIN ValidUsers vu ON vu.UserId = u.UserID
+                    LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                    LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                    LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                    LEFT JOIN FirstName fn ON fn.UserID = u.UserID
+            WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+    END
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FileName' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Files] DROP CONSTRAINT [IX_{objectQualifier}FileName] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_FolderID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	DROP INDEX [IX_{objectQualifier}Files_FolderID] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	DROP INDEX [IX_{objectQualifier}Files] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_PortalID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	DROP INDEX [IX_{objectQualifier}Files_PortalID] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_ContentID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	DROP INDEX [IX_{objectQualifier}Files_ContentID] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Files_FileID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Files]'))
+	DROP INDEX [IX_{objectQualifier}Files_FileID] ON {databaseOwner}[{objectQualifier}Files] 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files_FileID] ON {databaseOwner}[{objectQualifier}Files] 
+	([FileID])
+	INCLUDE ([PortalID], [FolderID], [FileName], [PublishedVersion])
+	WHERE ContentItemId Is NOT Null
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Files_PortalID] ON {databaseOwner}[{objectQualifier}Files] 
+	([PortalID], [FolderID], [FileName])
+	INCLUDE ([FileID], [PublishedVersion])
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files_ContentID] ON {databaseOwner}[{objectQualifier}Files] 
+	([ContentItemID])
+	INCLUDE ([FileID], [FolderID], [FileName], [PublishedVersion])
+	WHERE ContentItemId Is NOT Null
+GO
+
+
+-- DNN-4339: optimized, Note: server side sorting and paging would be preferable
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+    SELECT
+        F.FileId,
+        F.PortalId,
+        F.[FileName],
+        F.Extension,
+        F.[Size],
+        F.Width,
+        F.Height,
+        F.ContentType,
+        F.FolderID,
+        FO.FolderPath AS 'Folder',
+        FO.StorageLocation,
+        FO.IsCached,
+        FO.FolderMappingID,
+        F.UniqueId,
+        F.VersionGuid,
+        F.SHA1Hash,
+        F.LastModificationTime,
+        F.Title,
+        F.EnablePublishPeriod,
+        F.StartDate,
+        F.EndDate,
+        F.CreatedByUserID,
+        F.CreatedOnDate,
+        F.LastModifiedByUserID,
+        F.LastModifiedOnDate,
+        F.PublishedVersion,
+        F.ContentItemID
+    FROM {databaseOwner}[{objectQualifier}Files] F
+    INNER JOIN {databaseOwner}[{objectQualifier}Folders] FO ON F.FolderID = FO.FolderID
+    WHERE F.FolderID = @FolderID
+        AND  ((@RetrieveUnpublishedFiles = 0)
+        OR    (EnablePublishPeriod = 0)
+        OR    ((StartDate <= GETDATE()) AND (GETDATE() <= IsNull(EndDate, GETDATE()))))
+    ORDER BY [FolderID], [FileName]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Folders_FolderPath' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Folders]'))
+	DROP INDEX IX_{objectQualifier}Folders_FolderPath ON {databaseOwner}[{objectQualifier}Folders]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Folders_FolderID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Folders]'))
+	DROP INDEX [IX_{objectQualifier}Folders_FolderID] ON {databaseOwner}[{objectQualifier}Folders]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}Folders_ParentID' AND object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Folders]'))
+	DROP INDEX [IX_{objectQualifier}Folders_ParentID] ON {databaseOwner}[{objectQualifier}Folders] 
+GO
+
+CREATE UNIQUE INDEX IX_{objectQualifier}Folders_FolderID ON {databaseOwner}[{objectQualifier}Folders]
+	(FolderID)
+	INCLUDE (PortalID, FolderPath, StorageLocation, isCached, FolderMappingID) 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Folders_ParentID] ON {databaseOwner}[{objectQualifier}Folders] 
+	([PortalID], [ParentID], [FolderPath])
+	INCLUDE ([FolderID])
+GO
+
+-- DNN-4497: Add Foreign Key Constraint
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Folders]') AND name = N'FK_{objectQualifier}Folders_{objectQualifier}FolderMappings')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP CONSTRAINT FK_{objectQualifier}Folders_{objectQualifier}FolderMappings 
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}Folders]
+WHERE FolderMappingID NOT IN (SELECT FolderMappingID FROM {databaseOwner}[{objectQualifier}FolderMappings])
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Folders] ADD CONSTRAINT FK_{objectQualifier}Folders_{objectQualifier}FolderMappings 
+   FOREIGN KEY (FolderMappingID) 
+   REFERENCES {databaseOwner}[{objectQualifier}FolderMappings](FolderMappingID)
+   ON UPDATE  NO ACTION
+   ON DELETE  NO ACTION
+GO
+
+-- DNN-4533: Optimized to use proper index
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFolders]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolders]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolders]
+	@PortalID int -- Null|-1: Host Portal
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}Folders
+	WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1) 
+	ORDER BY PortalID, FolderPath -- include portalId to use proper index
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

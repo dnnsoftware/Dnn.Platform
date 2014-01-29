@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -236,21 +236,21 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                     var positionTabId = Int32.Parse(cboPositionTab.SelectedItem.Value);
 
-                    var pc = new PermissionController();
+                    //var pc = new PermissionController();
 
-                    var permission = pc.GetPermissionByCodeAndKey("SYSTEM_TAB", "VIEW");
-                    if (permission.Count > 0)
-                    {
-                        var pid = ((PermissionInfo)permission[0]).PermissionID;
-                        objTab.TabPermissions.Add(new TabPermissionInfo { PermissionID = pid, AllowAccess = true, RoleID = 0 });
-                    }
+                    //var permission = pc.GetPermissionByCodeAndKey("SYSTEM_TAB", "VIEW");
+                    //if (permission.Count > 0)
+                    //{
+                    //    var pid = ((PermissionInfo)permission[0]).PermissionID;
+                    //    objTab.TabPermissions.Add(new TabPermissionInfo { PermissionID = pid, AllowAccess = true, RoleID = 0 });
+                    //}
 
-                    permission = pc.GetPermissionByCodeAndKey("SYSTEM_TAB", "EDIT");
-                    if (permission.Count > 0)
-                    {
-                        var pid = ((PermissionInfo)permission[0]).PermissionID;
-                        objTab.TabPermissions.Add(new TabPermissionInfo { PermissionID = pid, AllowAccess = true, RoleID = 0 });
-                    }
+                    //permission = pc.GetPermissionByCodeAndKey("SYSTEM_TAB", "EDIT");
+                    //if (permission.Count > 0)
+                    //{
+                    //    var pid = ((PermissionInfo)permission[0]).PermissionID;
+                    //    objTab.TabPermissions.Add(new TabPermissionInfo { PermissionID = pid, AllowAccess = true, RoleID = 0 });
+                    //}
 
                     var objEventLog = new EventLogController();
                     if (rbInsertPosition.SelectedValue == "After" && positionTabId > Null.NullInteger)

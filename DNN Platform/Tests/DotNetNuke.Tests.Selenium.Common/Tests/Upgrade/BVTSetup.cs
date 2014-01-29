@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.CorePages;
@@ -11,7 +7,6 @@ using OpenQA.Selenium;
 
 namespace DNNSelenium.Common.Tests.Upgrade
 {
-	[SetUpFixture]
 	public abstract class BVTSetup
 	{
 		protected abstract string DataFileLocation { get; }
@@ -49,17 +44,27 @@ namespace DNNSelenium.Common.Tests.Upgrade
 
 			LoginPage loginPage = new LoginPage(driver);
 
-			loginPage.WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 20).WaitTillVisible(20).Click();
+			loginPage.WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 60).WaitTillVisible(20).Click();
 
 			loginPage.WaitAndSwitchToFrame(30);
 
-			loginPage.DoLoginUsingLoginLink(userName, password);
+			loginPage.DoLogin(userName, password);
 
 			loginPage.WaitAndSwitchToWindow(30);
+
+			upgradePage.WelcomeScreen();
 
 			var adminSiteSettingsPage = new AdminSiteSettingsPage(driver);
 			adminSiteSettingsPage.OpenUsingButtons(baseUrl);
 			adminSiteSettingsPage.DisablePopups();
+
+			driver.Quit();
+		}
+
+		[TearDown]
+		public void RunAfterBVTTests()
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "BVT Teardown");
 		}
 	}
 }

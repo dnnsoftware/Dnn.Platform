@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,6 +29,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
@@ -101,6 +102,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             switch (jsname)
             {
                 case CommonJs.DnnPlugins:
+                    RequestRegistration(CommonJs.jQueryUI);
+                    RequestRegistration(CommonJs.HoverIntent);
+                    AddPreInstallorLegacyItemRequest(jsname);
+                    return;
                 case CommonJs.HoverIntent:
                 case CommonJs.jQueryFileUpload:
                     AddPreInstallorLegacyItemRequest(jsname);
@@ -272,6 +277,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static JavaScriptLibrary GetHighestVersionLibrary(String jsname)
         {
+            if (Globals.Status == Globals.UpgradeStatus.Install) //if in install process, then do not use JSL but all use the legacy versions.
+            {
+                return null;
+            }
             try
             {
                 IEnumerable<JavaScriptLibrary> librarys = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
@@ -473,7 +482,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         //such as call jQuery.RegisterDnnJQueryPlugins in Control.OnInit.
                         if (page.Form != null)
                         {
-                            ClientAPI.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
+                            
                         }
 
                         //register dependency
@@ -549,6 +558,37 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 scriptsrc = jQuery.JQueryFile(!jQuery.UseDebugScript);
             }
             return scriptsrc;
+        }
+
+        public static void RegisterClientReference(Page page, ClientAPI.ClientNamespaceReferences reference)
+        {
+            switch (reference)
+            {
+                case ClientAPI.ClientNamespaceReferences.dnn:
+                case ClientAPI.ClientNamespaceReferences.dnn_dom:
+                    if (HttpContext.Current.Items.Contains(LegacyPrefix + "dnn.js"))
+                    {
+                        break;
+                    }
+
+                    ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.js", 12);
+                    HttpContext.Current.Items.Add(LegacyPrefix + "dnn.js", true);
+
+                    if (!ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.SingleCharDelimiters))
+                    {
+                        ClientAPI.RegisterClientVariable(page, "__scdoff", "1", true);
+                    }
+
+                    if (!ClientAPI.UseExternalScripts)
+                    {
+                        ClientAPI.RegisterEmbeddedResource(page, "dnn.scripts.js", typeof (ClientAPI));
+                    }
+                    break;
+                case ClientAPI.ClientNamespaceReferences.dnn_dom_positioning:
+                    RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
+                    ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.dom.positioning.js", 13);
+                    break;
+            }
         }
 
         #endregion

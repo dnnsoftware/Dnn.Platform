@@ -46,15 +46,25 @@ namespace DNNSelenium.Common.Tests.P1
 		public void Cleanup()
 		{
 			VerifyLogs(_logContent);
+
+			var module = new MessageCenterModule(_driver);
+			module.OpenNotificationsUsingIcon();
+			module.DismissNotification(MessageCenterModule.NotificationSubject);
+			module.DismissNotification(MessageCenterModule.NotificationSubject);
+			module.DismissNotification(MessageCenterModule.NotificationSubject);
+
+			var manageUsersPage = new ManageUsersPage(_driver);
+			manageUsersPage.OpenUsingControlPanel(_baseUrl);
+			manageUsersPage.DeleteUser(_userWithPublicRegistration);
+			manageUsersPage.DeleteUser(_userWithVerifiedRegistration);
+			manageUsersPage.DeleteUser(_userWithPrivateRegistration);
+			manageUsersPage.RemoveDeletedUsers();
 		}
 
 		[Test]
 		public void Test001_VerifyNoneRegistration()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Verify 'None' registration option'");
-
-			var mainPage = new MainPage(_driver);
-			mainPage.OpenUsingUrl(_baseUrl);
 
 			var loginPage = new LoginPage(_driver);
 			loginPage.LoginAsHost(_baseUrl);
@@ -79,9 +89,6 @@ namespace DNNSelenium.Common.Tests.P1
 		public void Test002_VerifyPrivateRegistration()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Verify 'Private' registration option'");
-
-			var mainPage = new MainPage(_driver);
-			mainPage.OpenUsingUrl(_baseUrl);
 
 			var loginPage = new LoginPage(_driver);
 			loginPage.LoginAsHost(_baseUrl);
@@ -121,9 +128,6 @@ namespace DNNSelenium.Common.Tests.P1
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Verify 'Public' registration option'");
 
-			var mainPage = new MainPage(_driver);
-			mainPage.OpenUsingUrl(_baseUrl);
-
 			var loginPage = new LoginPage(_driver);
 			loginPage.LoginAsHost(_baseUrl);
 
@@ -159,9 +163,6 @@ namespace DNNSelenium.Common.Tests.P1
 		public void Test004_VerifyVerifiedRegistration()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Verify 'Verified' registration option'");
-
-			var mainPage = new MainPage(_driver);
-			mainPage.OpenUsingUrl(_baseUrl);
 
 			var loginPage = new LoginPage(_driver);
 			loginPage.LoginAsHost(_baseUrl);

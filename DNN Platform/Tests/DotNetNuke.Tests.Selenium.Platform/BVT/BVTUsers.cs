@@ -57,7 +57,7 @@ namespace DNNSelenium.Platform.BVT
 			loginPage.LetMeOut();
 
 			loginPage.OpenUsingUrl(_baseUrl);
-			loginPage.DoLoginUsingUrl(_registeredUserName, _registeredUserPassword);
+			loginPage.DoLogin(_registeredUserName, _registeredUserPassword);
 
 			var manageUserProfilePage = new ManageUserProfilePage(_driver);
 			manageUserProfilePage.OpenUsingLink(_baseUrl);

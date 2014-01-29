@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using DNNSelenium.Common.CorePages;
@@ -9,7 +10,6 @@ using OpenQA.Selenium;
 
 namespace DNNSelenium.Common.Tests.BVT
 {
-	[SetUpFixture]
 	public abstract class BVTSetup
 	{
 		protected abstract string DataFileLocation { get; }
@@ -49,7 +49,7 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			installerPage.ClickOnVisitWebsiteButton();
 
-			installerPage.WelcomeScreen();
+			installerPage.WelcomeScreen(); 
 
 			var adminSiteSettingsPage = new AdminSiteSettingsPage(driver);
 			adminSiteSettingsPage.OpenUsingButtons(baseUrl);

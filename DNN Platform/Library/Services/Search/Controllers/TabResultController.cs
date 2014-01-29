@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,20 +42,13 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override bool HasViewPermission(SearchResult searchResult)
         {
-            var tabController = new TabController();
-            var viewable = false;
+            var viewable = true;
 
             if (searchResult.TabId > 0)
             {
+                var tabController = new TabController();
                 var tab = tabController.GetTab(searchResult.TabId, searchResult.PortalId, false);
-                if (!tab.IsDeleted && TabPermissionController.CanViewPage(tab))
-                {
-                    viewable = true;
-                }                    
-            }
-            else
-            {
-                viewable = true;
+                viewable = tab != null && !tab.IsDeleted && TabPermissionController.CanViewPage(tab);
             }
 
             return viewable;

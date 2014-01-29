@@ -47,7 +47,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			OpenMainPageAndLoginAsHost();
 
-			//CreateChildSiteAndPrepareSettings(_childSiteName);
+			CreateChildSiteAndPrepareSettings(_childSiteName, "Child Site");
 			
 			_logContent = LogContent();
 		}

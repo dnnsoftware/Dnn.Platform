@@ -26,7 +26,7 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
-		public static string FolderDropDownId = "//div[contains(@id, 'Import_cboFolders')]/div/a";
+		public static string FolderDropDownId = "//div[@id = 'dnn_ctr_Import_cboFolders']";
 		public static string TemplateDropDownArrow = "Import_cboTemplate_Arrow";
 		public static string TemplateDropDownId = "//div[contains(@id, 'Import_cboTemplate_DropDown')]";
 
@@ -63,11 +63,15 @@ namespace DNNSelenium.Common.CorePages
 
 		public void ImportPage(string templateName, string pageName, string insertPageAfter)
 		{
-			WaitForElement(By.XPath(ControlPanelIDs.PageTitleID));
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Import the page:");
 
-			LoadableSelectByValue(By.XPath(FolderDropDownId), "Templates");
+			WaitForElement(By.XPath(FolderDropDownId));
 
-			SlidingSelectByValue( By.XPath("//a[contains(@id, '" + TemplateDropDownArrow + "')]"), By.XPath(TemplateDropDownId), templateName);
+			FolderSelectByValue(By.XPath(FolderDropDownId), "Templates");
+
+			WaitForElement(By.XPath("//a[contains(@id, '" + TemplateDropDownArrow + "')]"));
+
+			SlidingSelectByValue(By.XPath("//a[contains(@id, '" + TemplateDropDownArrow + "')]"), By.XPath(TemplateDropDownId), templateName);
 
 			RadioButtonSelect(By.XPath(CreateNewPageRadioButton));
 

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -54,6 +54,7 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -339,6 +340,7 @@ namespace DotNetNuke.Common
         private static string _installPath;
         private static Version _dataBaseVersion;
         private static UpgradeStatus _status = UpgradeStatus.Unknown;
+        private static string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; //this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
 
         /// <summary>
         /// Gets the application path.
@@ -745,8 +747,8 @@ namespace DotNetNuke.Common
         /// </returns>
         private static bool IsInstallationURL()
         {
-            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant();
-            return requestURL.Contains("\\install.aspx") || requestURL.Contains("\\installwizard.aspx");
+            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
+            return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
         }
 
         /// <summary>
@@ -2101,7 +2103,7 @@ namespace DotNetNuke.Common
                     //JH dnn.js mod
                     if (ClientAPI.ClientAPIDisabled() == false)
                     {
-                        ClientAPI.RegisterClientReference(control.Page, ClientAPI.ClientNamespaceReferences.dnn);
+                        JavaScript.RegisterClientReference(control.Page, ClientAPI.ClientNamespaceReferences.dnn);
                         DNNClientAPI.SetInitialFocus(control.Page, control);
                     }
                     else
@@ -3522,26 +3524,26 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="ParentId">The Id of the Parent Tab</param>
-        /// <param name="TabName">The Name of the current Tab</param>
+        /// <param name="parentId">The Id of the Parent Tab</param>
+        /// <param name="tabName">The Name of the current Tab</param>
         /// <returns>The TabPath</returns>
         /// <history>
         ///		[cnurse]	1/28/2005	documented
         ///                             modified to remove characters not allowed in urls
         /// </history>
         /// -----------------------------------------------------------------------------
-        public static string GenerateTabPath(int ParentId, string TabName)
+        public static string GenerateTabPath(int parentId, string tabName)
         {
             string strTabPath = "";
             var objTabs = new TabController();
 
-            if (!Null.IsNull(ParentId))
+            if (!Null.IsNull(parentId))
             {
                 string strTabName;
-                var objTab = objTabs.GetTab(ParentId, Null.NullInteger, false);
+                var objTab = objTabs.GetTab(parentId, Null.NullInteger, false);
                 while (objTab != null)
                 {
-                    strTabName = HtmlUtils.StripNonWord(objTab.TabName, false);
+                    strTabName = Regex.Replace(objTab.TabName, _tabPathInvalidCharsEx, string.Empty);
                     strTabPath = "//" + strTabName + strTabPath;
                     if (Null.IsNull(objTab.ParentId))
                     {
@@ -3554,7 +3556,7 @@ namespace DotNetNuke.Common
                 }
             }
 
-            strTabPath = strTabPath + "//" + HtmlUtils.StripNonWord(TabName, false);
+            strTabPath = strTabPath + "//" + Regex.Replace(tabName, _tabPathInvalidCharsEx, string.Empty); ;
             return strTabPath;
         }
 

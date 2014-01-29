@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
@@ -33,7 +34,7 @@ namespace DotNetNuke.Modules.Groups
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DotNetNuke.Framework.jQuery.RegisterDnnJQueryPlugins(this.Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             imgGroup.Src = Page.ResolveUrl("~/DesktopModules/SocialGroups/Images/") + "sample-group-profile.jpg";
             if (!Page.IsPostBack && GroupId > 0)

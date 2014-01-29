@@ -30,6 +30,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string LanguagesTab = "//a[@href = '#Languages']";
 		public static string EnableLocalizedContent = "//a[contains(@id, '_languageEnabler_cmdEnableLocalizedContent')]";
 		public static string DisableLocalizedContent = "//a[contains(@id, '_languageEnabler_cmdDisableLocalization')]";
+		public static string TranslatePageCheckBox = "//input[contains(@id, '_EnableLocalizedContent_chkAllPagesTranslatable')]";
 		public static string EnableLocalizedContentUpdateButton = "//a[contains(@id, '_EnableLocalizedContent_updateButton')]";
 		public static string LanguagesTable = "//table[contains(@id, 'languageEnabler_languagesGrid')]";
 		public static string LocalizationTable = LanguagesTable + "//th[5]/table[contains(@class, 'DnnGridNestedTable')]";
@@ -100,7 +101,7 @@ namespace DNNSelenium.Common.CorePages
 		{
 			OpenTab(By.XPath(LanguagesTab));
 
-			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']"));
+			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']")).Info();
 
 			CheckBoxCheck(By.XPath("//tr[td//span[text() = '" + packName + "']]/td/input"));
 
@@ -111,18 +112,35 @@ namespace DNNSelenium.Common.CorePages
 		{
 			OpenTab(By.XPath(LanguagesTab));
 
-			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']"));
+			WaitForElement(By.XPath(LanguagesTable + "//span[text() = '" + packName + "']")).Info();
 
 			CheckBoxUncheck(By.XPath("//tr[td//span[text() = '" + packName + "']]/td/input"));
 
 			Thread.Sleep(1000);
 		}
 
-		public void EnableLocalization()
+		public void PageTranslation(By checkBoxName, CheckBox.ActionType action)
+		{
+			WaitForElement(checkBoxName);
+
+			if (action == CheckBox.ActionType.Check)
+			{
+				CheckBoxCheck(checkBoxName);
+			}
+
+			else
+			{
+				CheckBoxUncheck(checkBoxName);
+			}
+		}
+
+		public void EnableLocalization(CheckBox.ActionType action)
 		{
 			OpenTab(By.XPath(LanguagesTab));
 
 			WaitAndClick(By.XPath(EnableLocalizedContent));
+
+			PageTranslation(By.XPath(TranslatePageCheckBox), action);
 
 			WaitAndClick(By.XPath(EnableLocalizedContentUpdateButton));
 

@@ -348,6 +348,9 @@
   <data name="ActionPerformed.Text" xml:space="preserve">
     <value>The action has been performed successfully.</value>
   </data>
+  <data name="ReplyHasNoRecipients.Text" xml:space="preserve">
+    <value>The message no longer has any valid recipients so replies have been disabled.</value>
+  </data>
   <data name="ServerError.Text" xml:space="preserve">
     <value>An error occurred while processing the request. Please try again later.</value>
   </data>

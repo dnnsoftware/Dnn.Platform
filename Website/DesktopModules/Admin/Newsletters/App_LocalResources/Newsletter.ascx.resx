@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BasicSettings.Text" xml:space="preserve">
     <value>Basic Settings</value>
@@ -124,10 +124,10 @@
     <value>Addressees</value>
   </data>
   <data name="plRoles.Text" xml:space="preserve">
-    <value>User Role(s)</value>
+    <value>Send To Users or Roles</value>
   </data>
   <data name="plRoles.Help" xml:space="preserve">
-    <value>Select the User Roles that are to receive this message, e.g. 'Administrators', or 'Registered Users'.</value>
+    <value>Select the User or Roles that are to receive this message, e.g. 'User1', 'Administrators' or 'Registered Users'.</value>
   </data>
   <data name="plLanguages.Text" xml:space="preserve">
     <value>Language Filter</value>

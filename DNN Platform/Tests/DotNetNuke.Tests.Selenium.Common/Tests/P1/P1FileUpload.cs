@@ -64,8 +64,7 @@ namespace DNNSelenium.Common.Tests.P1
 
 			Assert.IsTrue(
 				adminFileManagementPage.ElementPresent(
-					By.XPath("//div[contains(@class, 'dnnModuleDigitalAssetItemName')]//span/font[text() = '" + _smallFileToUpload +
-					         "']")));
+					By.XPath("//div[contains(@class, 'dnnModuleDigitalAssetItemName')]//span/font[text() = '" + _smallFileToUpload + "']")));
 		}
 
 		[Test]

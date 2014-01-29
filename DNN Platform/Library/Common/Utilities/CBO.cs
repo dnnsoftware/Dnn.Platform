@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -410,8 +410,7 @@ namespace DotNetNuke.Common.Utilities
                             }
                             else if (coloumnValue is IConvertible)
                             {
-                                objPropertyInfo.SetValue(hydratedObject, Convert.ChangeType(coloumnValue, propType),
-                                                         null);
+                                objPropertyInfo.SetValue(hydratedObject, ChangeType(coloumnValue, propType), null);
                             }
                             else
                             {
@@ -424,6 +423,43 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+         /// <summary>
+         /// Changes type of an object, taking into account Nullable types
+         /// </summary>
+         /// <param name="obj"></param>
+         /// <param name="type"></param>
+         /// <returns></returns>
+         static object ChangeType(object obj, Type type)
+         {
+             Type u = Nullable.GetUnderlyingType(type);
+ 
+             if (u != null) 
+             {
+                 if (obj == null)
+                 {
+                     return GetDefault(type);
+                 }
+ 
+                 return Convert.ChangeType(obj, u);
+             }
+             return Convert.ChangeType(obj, type);
+         }
+ 
+         /// <summary>
+         /// Returns default value for a type - i.e. null for reference types and default value for value types
+         /// </summary>
+         /// <param name="type"></param>
+         /// <returns></returns>
+         static object GetDefault(Type type)
+         {
+             if (type.IsValueType)
+             {
+                 return Activator.CreateInstance(type);
+             }
+ 
+             return null;
+         }
+ 
 		#endregion
 
 		#region Object Mapping Helper Methods

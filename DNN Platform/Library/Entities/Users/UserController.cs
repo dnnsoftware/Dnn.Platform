@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -47,6 +47,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
@@ -88,6 +89,8 @@ namespace DotNetNuke.Entities.Users
     /// -----------------------------------------------------------------------------
     public class UserController
     {
+        private const string DefaultUsersFoldersPath = "Users";
+
         #region Public Properties
 
         public string DisplayFormat { get; set; }
@@ -174,6 +177,37 @@ namespace DotNetNuke.Entities.Users
 
             //Delete Tab Permissions
             TabPermissionController.DeleteTabPermissionsByUser(user);
+        }
+
+        private static void RestoreUserPermissions(UserInfo user)
+        {
+            //restore user's folder permission
+            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
+            var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
+            var userFolder = FolderManager.Instance.GetFolder(portalId, userFolderPath);
+
+            if (userFolder != null)
+            {
+                foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
+                {
+                    if (permission.PermissionKey.ToUpper() == "READ" 
+                            || permission.PermissionKey.ToUpper() == "WRITE" 
+                            || permission.PermissionKey.ToUpper() == "BROWSE")
+                    {
+                        var folderPermission = new FolderPermissionInfo(permission)
+                                                   {
+                                                       FolderID = userFolder.FolderID,
+                                                       UserID = user.UserID,
+                                                       RoleID = Null.NullInteger,
+                                                       AllowAccess = true
+                                                   };
+
+                        userFolder.FolderPermissions.Add(folderPermission, true);
+                    }
+                }
+
+                FolderPermissionController.SaveFolderPermissions((FolderInfo) userFolder);
+            }
         }
 
         private static void FixMemberPortalId(UserInfo user, int portalId)
@@ -1398,6 +1432,18 @@ namespace DotNetNuke.Entities.Users
                 var objEventLog = new EventLogController();
                 objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
+                //Delete userFolder - DNN-3787
+                var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
+                var folderPath = PathUtils.Instance.FormatFolderPath(String.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
+                var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
+                var userFolder = FolderManager.Instance.GetFolder(folderPortalId, folderPath);
+                if (userFolder != null)
+                {
+                    FolderManager.Instance.Synchronize(folderPortalId, folderPath, true, true);
+                    var notDeletedSubfolders = new List<IFolderInfo>();
+                    FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
+                }
+
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);
             }
@@ -1485,6 +1531,9 @@ namespace DotNetNuke.Entities.Users
 
             if ((retValue))
             {
+                //restore user permissions
+                RestoreUserPermissions(user);
+
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.GetCurrentPortalSettings();
 

@@ -63,12 +63,12 @@ namespace DNNSelenium.Common.Tests.BVT
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT The Message Link or Message Link bubble-help is present");
 			Utilities.SoftAssert(
-				() => Assert.IsNotEmpty(currentPage.FindElement(By.Id(CorePacket.TheInstance.MessageLink)).GetAttribute("title"),
+				() => Assert.IsNotEmpty(currentPage.FindElement(By.XPath(ControlPanelIDs.MessageLink)).GetAttribute("title"),
 				                        "The Message Link or Message Link bubble-help is missing."));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT The Notification Link or Notification Link bubble-help is present");
 			Utilities.SoftAssert(
-				() => Assert.IsNotEmpty(currentPage.FindElement(By.Id(ControlPanelIDs.NotificationLink)).GetAttribute("title"),
+				() => Assert.IsNotEmpty(currentPage.FindElement(By.XPath(ControlPanelIDs.NotificationLink)).GetAttribute("title"),
 				                        "The Notification Link or Notification Link bubble-help is missing."));
 
 			Trace.WriteLine(BasePage.TraceLevelPage +
@@ -235,7 +235,7 @@ namespace DNNSelenium.Common.Tests.BVT
 			VerifyStandardPageLayout(OpenPage(assyName, pageClassName, openMethod));
 		}
 
-		[Test]
+		//[Test]
 		public void NavigationToLoginPage()
 		{
 			Trace.WriteLine(BasePage.RunningTestKeyWord + "'Navigation To Login Page'");
@@ -264,14 +264,14 @@ namespace DNNSelenium.Common.Tests.BVT
 			Utilities.SoftAssert(
 				() => StringAssert.Contains(ControlPanelIDs.CopyrightText, loginPage.FindElement(By.Id(ControlPanelIDs.CopyrightNotice)).Text,
 				                            "Copyright notice is not present or contains wrong text message"));
-
-			loginPage.DoLoginUsingLoginLink("host", "dnnhost");
 		}
 
 		public void NumberOfLinksOnPage(BasePage currentPage, string featureList, int numberOfLinks)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the number of links on page: " +
 							numberOfLinks);
+
+			currentPage.WaitForElement(By.XPath(featureList + "/div[last()]"));
 			Assert.That(currentPage.FindElements(By.XPath(featureList)).Count,
 						Is.EqualTo(numberOfLinks),
 						"The number of links on page is not correct");

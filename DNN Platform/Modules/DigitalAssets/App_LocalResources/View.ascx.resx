@@ -297,7 +297,7 @@
   <data name="GetUrlAltText.Text" xml:space="preserve">
     <value>Click and press CTRL+C to copy...</value>
   </data>
-  <data name="GetUrlLabel.Text" xml:space="preserve">
+  <data name="GetFileUrlLabel.Text" xml:space="preserve">
     <value>File URL Is:</value>
   </data>
   <data name="GetUrlError.Title" xml:space="preserve">
@@ -443,5 +443,8 @@
   </data>
   <data name="InvalidGroup.Error" xml:space="preserve">
     <value>The group ID is not set. Please go back to the groups page and select the desired group.</value>
+  </data>
+  <data name="InvalidUser.Error" xml:space="preserve">
+    <value>The module is configured as User mode, it cannot be used with unauthenticated user</value>
   </data>
 </root>

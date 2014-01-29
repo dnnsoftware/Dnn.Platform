@@ -56,7 +56,6 @@
                     <asp:RadioButtonList ID="rblLegacySkin" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="dnnFormRadioButtons">
                         <asp:ListItem Value="Skin" resourcekey="Skin" />
                         <asp:ListItem Value="Container" resourcekey="Container" />
-                        <asp:ListItem Value="None" Selected="True" resourcekey="None" />
                     </asp:RadioButtonList>
                 </asp:Panel>
                 <asp:Panel ID="pnlWhitelist" runat = "server" Visible="false">
@@ -119,6 +118,14 @@
 				}
 
 				actionLinks.addClass("dnnDisabledAction");
+			    //show the loading icon
+				var loading = $("<div class=\"dnnLoading\"></div>");
+			    var container = $('#dnnInstallExtension');
+			    loading.css({
+			        width: container.width(),
+			        height: container.height()
+			    });
+			    container.prepend(loading);
 			});
 		}
 		

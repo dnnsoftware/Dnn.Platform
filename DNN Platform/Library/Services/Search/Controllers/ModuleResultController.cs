@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
@@ -47,6 +48,8 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public class ModuleResultController : BaseResultController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
+
         #region Abstract Class Implmentation
 
         public override bool HasViewPermission(SearchResult searchResult)
@@ -105,9 +108,17 @@ namespace DotNetNuke.Services.Search.Controllers
                 var tab = tabController.GetTab(module.TabID, searchResult.PortalId, false);
                 if (TabPermissionController.CanViewPage(tab) && ModulePermissionController.CanViewModule(module))
                 {
-	                var portalSettings = new PortalSettings(searchResult.PortalId);
-	                portalSettings.PortalAlias = TestablePortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
-                    url = Globals.NavigateURL(module.TabID, portalSettings, string.Empty, searchResult.QueryString);
+                    try
+                    {
+                        var portalSettings = new PortalSettings(searchResult.PortalId);
+	                    portalSettings.PortalAlias = TestablePortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
+                        url = Globals.NavigateURL(module.TabID, portalSettings, string.Empty, searchResult.QueryString);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+
                     break;
                 }
             }

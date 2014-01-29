@@ -31,7 +31,7 @@ namespace DNNSelenium.Common.CorePages
 		public static string UsersTable = "//div[contains(@id, '_Users_grdUsers')]";
 		public static string UsersList = "//tr[contains(@id, 'Users_grdUsers')]";
 		public static string AddNewUserButton = "//a[contains(@id, '_Users_addUser')]";
-		public static string RemoveDeletedUsers = "//a[contains(@id, '_Users_cmdRemoveDeleted')]";
+		public static string RemoveDeletedUsersButton = "//a[contains(@id, '_Users_cmdRemoveDeleted')]";
 
 		public static string UserNameTextBox = "//input[contains(@id, '_userName_TextBox')]";
 		public static string DisplayNameTextBox = "//input[contains(@id, '_displayName_TextBox')]";
@@ -102,9 +102,20 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Delete the User:");
 
-			Click(By.XPath("//tr[td[text() = '" + userName + "']]/td/input[contains(@id, '_Delete')]"));
+			WaitAndClick(By.XPath("//tr[td[text() = '" + userName + "']]/td/input[contains(@id, '_Delete')]"));
 			WaitForConfirmationBox(60);
 			ClickYesOnConfirmationBox();
+		}
+
+		public void RemoveDeletedUsers()
+		{
+			Trace.WriteLine(BasePage.TraceLevelPage + "Remove Deleted Users:");
+			WaitAndClick(By.XPath(RemoveDeletedUsersButton));
+
+			WaitForConfirmationBox(15);
+			ClickYesOnConfirmationBox();
+
+			Thread.Sleep(1000);
 		}
 
 		public void RemoveDeletedUser(string userName)
@@ -150,6 +161,8 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitForElement(By.XPath("//a[contains(@id, '" + SecurityRolesArrow + "')]")).WaitTillVisible();
 			SlidingSelectByValue( By.XPath("//a[contains(@id, '" + SecurityRolesArrow + "')]"), By.XPath(SecurityRolesDropdown), roleName);
+
+			Thread.Sleep(1000);
 
 			WaitAndClick(By.XPath(AddRoleToUserFrameButton));
 

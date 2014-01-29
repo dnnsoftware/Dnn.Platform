@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,15 +24,16 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.Dashboard.Components;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
-
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -71,7 +72,8 @@ namespace DotNetNuke.Modules.Admin.Dashboard
         {
             var dashboardControl = DashboardControlList[index];
 
-            Response.Redirect(Util.UnInstallURL(TabId, dashboardControl.PackageID, Server.UrlEncode(Globals.NavigateURL(TabId, "DashboardControls", "mid=" + ModuleId))), true);
+            var returnUrl = Server.UrlEncode(UrlUtils.PopUpUrl(Globals.NavigateURL(TabId, "DashboardControls", "mid=" + ModuleId), this, PortalSettings, false, true));
+            Response.Redirect(Util.UnInstallURL(TabId, dashboardControl.PackageID, returnUrl), true);
         }
 
         private void MoveControl(int index, int destIndex)
@@ -168,7 +170,7 @@ namespace DotNetNuke.Modules.Admin.Dashboard
 				//assign vieworder
                 for (var i = 0; i <= aryNewOrder.Length - 1; i++)
                 {
-                    DashboardControlList[Convert.ToInt32(aryNewOrder[i])].ViewOrder = i;
+                    DashboardControlList[Convert.ToInt32(aryNewOrder[i])].ViewOrder = i + 1;
                 }
                 DashboardControlList.Sort();
             }
@@ -219,6 +221,8 @@ namespace DotNetNuke.Modules.Admin.Dashboard
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             foreach (DataGridColumn column in grdDashboardControls.Columns)
             {

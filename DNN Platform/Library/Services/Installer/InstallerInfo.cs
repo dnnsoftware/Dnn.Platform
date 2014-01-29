@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -50,8 +50,6 @@ namespace DotNetNuke.Services.Installer
     {
 		#region Private Members
 
-        private readonly string _PhysicalSitePath = Null.NullString;
-
         #endregion
 
 		#region Constructors
@@ -63,6 +61,7 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallerInfo()
         {
+            PhysicalSitePath = Null.NullString;
             Initialize();
         }
 
@@ -78,7 +77,7 @@ namespace DotNetNuke.Services.Installer
         {
             Initialize();
             TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            _PhysicalSitePath = sitePath;
+            PhysicalSitePath = sitePath;
             InstallMode = mode;
         }
 
@@ -94,7 +93,7 @@ namespace DotNetNuke.Services.Installer
         {
             Initialize();
             TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            _PhysicalSitePath = sitePath;
+            PhysicalSitePath = sitePath;
 
             //Read the Zip file into its component entries
             ReadZipStream(inputStream, false);
@@ -114,7 +113,7 @@ namespace DotNetNuke.Services.Installer
         {
             Initialize();
             TempInstallFolder = tempFolder;
-            _PhysicalSitePath = sitePath;
+            PhysicalSitePath = sitePath;
             if (!string.IsNullOrEmpty(manifest))
             {
                 ManifestFile = new InstallFile(manifest, this);
@@ -131,7 +130,7 @@ namespace DotNetNuke.Services.Installer
         public InstallerInfo(PackageInfo package, string sitePath)
         {
             Initialize();
-            _PhysicalSitePath = sitePath;
+            PhysicalSitePath = sitePath;
             TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
             InstallMode = InstallMode.UnInstall;
             ManifestFile = new InstallFile(Path.Combine(TempInstallFolder, package.Name + ".dnn"));
@@ -283,13 +282,7 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
-        public string PhysicalSitePath
-        {
-            get
-            {
-                return _PhysicalSitePath;
-            }
-        }
+        public string PhysicalSitePath { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -386,7 +379,11 @@ namespace DotNetNuke.Services.Installer
                             }
                             else
                             {
-                                if (file.Extension == "dnn6" && (ManifestFile.Extension == "dnn" || ManifestFile.Extension == "dnn5"))
+                                if (file.Extension == "dnn7" && (ManifestFile.Extension == "dnn" || ManifestFile.Extension == "dnn5" || ManifestFile.Extension == "dnn6"))
+                                {
+                                    ManifestFile = file;
+                                }
+                                else if (file.Extension == "dnn6" && (ManifestFile.Extension == "dnn" || ManifestFile.Extension == "dnn5"))
                                 {
                                    ManifestFile = file; 
                                 }

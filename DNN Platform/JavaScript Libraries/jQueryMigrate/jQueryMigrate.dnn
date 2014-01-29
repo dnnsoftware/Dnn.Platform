@@ -5,10 +5,10 @@
       <description>jQuery Migrate is a JavaScript library that is used to mintain jQuery backwards compatability.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
       <owner>
-        <name>DotNetNuke Corporation</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>http://www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="jQuery (MIT).txt" />
       <releaseNotes src="releaseNotes.txt" />

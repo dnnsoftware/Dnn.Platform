@@ -118,7 +118,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Default Template", "Default Template"},
 				                                                {"Mobile Template", "Mobile Template"},
 																{"Blank Template", "Blank Template"},
-																{"WelcomeScreenTitle", "Welcome to Your Installation"},
+																{"WelcomeScreenTitle", "Welcome to your website"},
 																{"PageTitle", "Installation"},
 																{"InstallationLog", "No Installation Log"},
 															};
@@ -128,7 +128,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Default Template", "Standard-Vorlage"},
 				                                                {"Mobile Template", "Vorlage für mobile Geräte"},
 																{"Blank Template", "leere Vorlage"},
-																{"WelcomeScreenTitle", "Willkommen in Ihrer neuen Website"},
+																{"WelcomeScreenTitle", "Welcome to your website"},
 																{"PageTitle", "Installation"},
 																{"InstallationLog", "Es gibt kein Installationsprotokoll"},
 															};
@@ -148,7 +148,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Default Template", "Modèle par défaut"},
 				                                                {"Mobile Template", "Modèle pour mobile"},
 																{"Blank Template", "Modèle vierge"},
-																{"WelcomeScreenTitle", "Bienvenue dans votre installation"},
+																{"WelcomeScreenTitle", "Bienvenue sur votre site Internet"},
 																{"PageTitle", "Installation"},
 																{"InstallationLog", "Aucun journal d'Installation"},
 															};
@@ -158,7 +158,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Default Template", "Template di Default"},
 				                                                {"Mobile Template", "Template Mobile"},
 																{"Blank Template", "Template Vuoto"},
-																{"WelcomeScreenTitle", "Benvenuto nella nuova installazione"},
+																{"WelcomeScreenTitle", "Benvenuto al suto sito web"},
 																{"PageTitle", "Installazione"},
 																{"InstallationLog", "Nessuna installazione Log"},
 															};
@@ -168,7 +168,7 @@ namespace DNNSelenium.Common.BaseClasses.BasePages
 				                                                {"Default Template", "Standaard website"},
 				                                                {"Mobile Template", "Mobiele website"},
 																{"Blank Template", "Lege website"},
-																{"WelcomeScreenTitle", "Welkom bij uw installatie"},
+																{"WelcomeScreenTitle", "Welkom op je website"},
 																{"PageTitle", "Installatie"},
 																{"InstallationLog", "Geen installatie log"},
 															};

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -554,7 +554,8 @@ namespace DesktopModules.Admin.Portals
 
                 var tabs = listTabs.Where(t => t.DisableLink == false).ToList();
 
-                var redirectTab = settings.GetValueOrDefault<int>("Redirect_AfterRegistration", -1);
+                //using values from current portal
+                var redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterRegistration", portal.PortalID, 0);
                 if (redirectTab > 0)
                 {
                     RedirectAfterRegistration.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
@@ -575,14 +576,17 @@ namespace DesktopModules.Admin.Portals
                 loginSettings.DataSource = settings;
                 loginSettings.DataBind();
 
-                redirectTab = settings.GetValueOrDefault<int>("Redirect_AfterLogin", -1);
+                //using values from current portal
+                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogin", portal.PortalID, 0);
                 if (redirectTab > 0)
                 {
                     RedirectAfterLogin.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
                 }
                 RedirectAfterLogin.PortalId = portal.PortalID;
 
-                redirectTab = settings.GetValueOrDefault<int>("Redirect_AfterLogout", -1);
+                //using values from current portal
+                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogout", portal.PortalID, 0);
+
                 if (redirectTab > 0)
                 {
                     RedirectAfterLogout.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
@@ -1321,7 +1325,7 @@ namespace DesktopModules.Admin.Portals
                                         : "-1";
                     PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogout", redirectTabId);
 
-                    PortalController.UpdatePortalSetting(_portalId, FriendlyUrlSettings.VanityUrlPrefixSetting, vanilyUrlPrefixTextBox.Text, false);
+                    PortalController.UpdatePortalSetting(_portalId, DotNetNuke.Entities.Urls.FriendlyUrlSettings.VanityUrlPrefixSetting, vanilyUrlPrefixTextBox.Text, false);
                     foreach (DnnFormItemBase item in profileSettings.Items)
                     {
                         PortalController.UpdatePortalSetting(_portalId, item.DataField,
@@ -1334,6 +1338,9 @@ namespace DesktopModules.Admin.Portals
                     profileDefinitions.Update();
 
                     DataCache.ClearPortalCache(PortalId, false);
+
+                    //Because portal info changed, we need update current portal setting to load the correct value.
+                    HttpContext.Current.Items["PortalSettings"] = new PortalSettings(TabId, PortalSettings.PortalAlias);
 
                     //Redirect to this site to refresh only if admin skin changed or either of the images have changed
                     if (refreshPage)

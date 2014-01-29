@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -152,6 +152,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             {
                 throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
             }
+
 
             //Profanity Filter
             var profanityFilterSetting = GetPortalSetting("MessagingProfanityFilters", sender.PortalID, "NO");
@@ -327,6 +328,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         #endregion
 
         #region Counter APIs
+
+        public virtual int CheckReplyHasRecipients(int conversationId, int userId)
+        {
+            return _dataService.CheckReplyHasRecipients(conversationId, userId);
+        }
 
         public virtual int CountArchivedMessagesByConversation(int conversationId)
         {

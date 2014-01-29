@@ -1,6 +1,9 @@
 using System.Diagnostics;
+using System.IO;
+using System.Threading;
 using DNNSelenium.Common.BaseClasses;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace DNNSelenium.Common.CorePages
 {
@@ -43,14 +46,45 @@ namespace DNNSelenium.Common.CorePages
 
 		public void OpenUsingLink(string baseUrl)
 		{
-			GoToUrl(baseUrl);
 			Trace.WriteLine(BasePage.TraceLevelPage + "Open 'User Account' page:");
+			GoToUrl(baseUrl);
 			WaitAndClick(By.XPath(ControlPanelIDs.RegisterLink));
+
+			Thread.Sleep(1000);
 		}
 
 		public void OpenMyProfileInfo()
 		{
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Profile' button:");
 			WaitAndClick(By.XPath(MyProfileLink));
 		}
+
+		public void OpenFriendsLink(string baseUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Open 'Friends' Link:");
+			OpenUsingLink(baseUrl);
+			WaitAndClick(By.XPath(UserAccountPage.FriendsLink));
+
+			Thread.Sleep(1000);
+		}
+
+		public void OpenMessagesLink(string baseUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Open 'Messages' Link:");
+			OpenUsingLink(baseUrl);
+			WaitAndClick(By.XPath(UserAccountPage.MessagesLink));
+
+			Thread.Sleep(1000);
+		}
+
+		public void OpenActivityFeedLink(string baseUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Open 'Activity Feed' Link:");
+			OpenUsingLink(baseUrl);
+			WaitAndClick(By.XPath(UserAccountPage.ActivityFeedLink));
+
+			Thread.Sleep(1000);
+		}
+
 	}
 }

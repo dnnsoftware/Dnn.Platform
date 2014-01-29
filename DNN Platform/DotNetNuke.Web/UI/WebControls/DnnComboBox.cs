@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,7 +22,7 @@
 
 using System;
 using DotNetNuke.Framework;
-using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Framework.JavaScriptLibraries;
 
 using Telerik.Web.UI;
 
@@ -38,12 +38,17 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
             base.EnableEmbeddedBaseStylesheet = false;
             Utilities.ApplySkin(this);
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/dnn.jquery.js");
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             this.OnClientLoad = "$.dnnComboBoxLoaded";
             this.OnClientFocus = "$.dnnComboBoxHack";
             this.OnClientDropDownOpened = "$.dnnComboBoxScroll";
             this.MaxHeight = 240;
             this.ZIndex = 100010;
+            this.Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
+            this.Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
+            this.Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
+            this.Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
+            this.Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
         }
 
         public void AddItem(string text, string value)

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -182,7 +182,7 @@ namespace DotNetNuke.Security.Roles
                 user = new UserInfo() {UserID = -1, PortalID = portalId};
             }
 
-            return new ArrayList(GetUserRoles(user, includePrivate).ToArray());
+            return (user == null) ? new ArrayList() : new ArrayList(GetUserRoles(user, includePrivate).ToArray());
         }
 
         [Obsolete("Deprecated in DotNetNuke 6.2. Replaced by GetUserRoles overload that returns IList")]

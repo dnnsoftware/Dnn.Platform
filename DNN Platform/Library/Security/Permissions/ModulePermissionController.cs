@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,7 +29,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 
 #endregion
@@ -44,15 +43,12 @@ namespace DotNetNuke.Security.Permissions
     /// <summary>
     /// ModulePermissionController provides the Business Layer for Module Permissions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ModulePermissionController
     {
         #region Private Members
 
-        private static readonly PermissionProvider Provider = PermissionProvider.Instance();
+        private static readonly PermissionProvider _provider = PermissionProvider.Instance();
 
         #endregion
 
@@ -65,60 +61,78 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearModulePermissionsCache(objModule.TabID);
         }
 
-        private static bool CanAddContentToPage(ModuleInfo objModule)
-        {
-            TabInfo objTab = new TabController().GetTab(objModule.TabID, objModule.PortalID, false);
-            return TabPermissionController.CanAddContentToPage(objTab);
-        }
-
         #endregion
 
         #region Public Methods
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can administer a module
+        /// </summary>
+        /// <param name="module">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanAdminModule(ModuleInfo module)
         {
-            return Provider.CanAdminModule(module);
+            return _provider.CanAdminModule(module);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can delete a module
+        /// </summary>
+        /// <param name="module">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanDeleteModule(ModuleInfo module)
         {
-            return CanAddContentToPage(module) || Provider.CanDeleteModule(module);
+            return _provider.CanDeleteModule(module);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can edit module content
+        /// </summary>
+        /// <param name="module">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanEditModuleContent(ModuleInfo module)
         {
-            return CanAddContentToPage(module) || Provider.CanEditModuleContent(module);
+            return _provider.CanEditModuleContent(module);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can export a module
+        /// </summary>
+        /// <param name="module">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanExportModule(ModuleInfo module)
         {
-            return Provider.CanExportModule(module);
+            return _provider.CanExportModule(module);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can import a module
+        /// </summary>
+        /// <param name="module">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanImportModule(ModuleInfo module)
         {
-            return Provider.CanImportModule(module);
+            return _provider.CanImportModule(module);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can manage a module's settings
+        /// </summary>
+        /// <param name="module">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanManageModule(ModuleInfo module)
         {
-            return CanAddContentToPage(module) || Provider.CanManageModule(module);
+            return _provider.CanManageModule(module);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can view a module
+        /// </summary>
+        /// <param name="module">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanViewModule(ModuleInfo module)
         {
-            bool canView;
-            if (module.InheritViewPermissions)
-            {
-                TabInfo objTab = new TabController().GetTab(module.TabID, module.PortalID, false);
-                canView = TabPermissionController.CanViewPage(objTab);
-            }
-            else
-            {
-                canView = Provider.CanViewModule(module);
-            }
-
-            return canView;
+            return _provider.CanViewModule(module);
         }
 
         /// -----------------------------------------------------------------------------
@@ -126,13 +140,10 @@ namespace DotNetNuke.Security.Permissions
         /// DeleteModulePermissionsByUser deletes a user's Module Permission in the Database
         /// </summary>
         /// <param name="user">The user</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteModulePermissionsByUser(UserInfo user)
         {
-            Provider.DeleteModulePermissionsByUser(user);
+            _provider.DeleteModulePermissionsByUser(user);
             DataCache.ClearModulePermissionsCachesByPortal(user.PortalID);
         }
 
@@ -140,15 +151,12 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>
         /// GetModulePermissions gets a ModulePermissionCollection
         /// </summary>
-        /// <param name="moduleID">The ID of the module</param>
-        /// <param name="tabID">The ID of the tab</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
+        /// <param name="moduleId">The ID of the module</param>
+        /// <param name="tabId">The ID of the tab</param>
         /// -----------------------------------------------------------------------------
-        public static ModulePermissionCollection GetModulePermissions(int moduleID, int tabID)
+        public static ModulePermissionCollection GetModulePermissions(int moduleId, int tabId)
         {
-            return Provider.GetModulePermissions(moduleID, tabID);
+            return _provider.GetModulePermissions(moduleId, tabId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -159,29 +167,10 @@ namespace DotNetNuke.Security.Permissions
         /// true if the user has any one of the permissions.</remarks>
         /// <param name="modulePermissions">The Permissions for the Module</param>
         /// <param name="permissionKey">The Permission to check</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool HasModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
         {
-            bool hasPermission = Null.NullBoolean;
-            if (permissionKey.Contains(","))
-            {
-                foreach (string permission in permissionKey.Split(','))
-                {
-                    if (Provider.HasModulePermission(modulePermissions, permission))
-                    {
-                        hasPermission = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                hasPermission = Provider.HasModulePermission(modulePermissions, permissionKey);
-            }
-            return hasPermission;
+            return _provider.HasModulePermission(modulePermissions, permissionKey);
         }
 
         ///-----------------------------------------------------------------------------
@@ -200,63 +189,7 @@ namespace DotNetNuke.Security.Permissions
         ///-----------------------------------------------------------------------------
         public static bool HasModuleAccess(SecurityAccessLevel accessLevel, string permissionKey, ModuleInfo moduleConfiguration)
         {
-            bool isAuthorized = false;
-            UserInfo userInfo = UserController.GetCurrentUserInfo();
-            if (userInfo != null && userInfo.IsSuperUser)
-            {
-                isAuthorized = true;
-            }
-            else
-            {
-                switch (accessLevel)
-                {
-                    case SecurityAccessLevel.Anonymous:
-                        isAuthorized = true;
-                        break;
-                    case SecurityAccessLevel.View:
-                        if (CanViewModule(moduleConfiguration))
-                        {
-                            isAuthorized = true;
-                        }
-                        break;
-                    case SecurityAccessLevel.ViewPermissions:
-                        isAuthorized = TabPermissionController.CanAddContentToPage();
-                        break;
-                    case SecurityAccessLevel.Edit:
-                        if (moduleConfiguration != null && !((moduleConfiguration.IsShared && moduleConfiguration.IsShareableViewOnly)
-                                && TabPermissionController.CanAddContentToPage()))
-                        {
-                            if (TabPermissionController.CanAddContentToPage())
-                            {
-                                isAuthorized = true;
-                            }
-                            else
-                            {
-                                if (string.IsNullOrEmpty(permissionKey))
-                                {
-                                    permissionKey = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
-                                }
-                                if (CanViewModule(moduleConfiguration) &&
-                                    (HasModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
-                                        || HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT")))
-                                {
-                                    isAuthorized = true;
-                                }
-                            }
-                        }
-                        break;
-                    case SecurityAccessLevel.Admin:
-                        if (moduleConfiguration != null && !((moduleConfiguration.IsShared && moduleConfiguration.IsShareableViewOnly)
-                                && TabPermissionController.CanAddContentToPage()))
-                        {
-                            isAuthorized = TabPermissionController.CanAddContentToPage();
-                        }
-                        break;
-                    case SecurityAccessLevel.Host:
-                        break;
-                }
-            }
-            return isAuthorized;
+            return _provider.HasModuleAccess(accessLevel, permissionKey, moduleConfiguration);
         }
 
         /// -----------------------------------------------------------------------------
@@ -264,13 +197,10 @@ namespace DotNetNuke.Security.Permissions
         /// SaveModulePermissions updates a Module's permissions
         /// </summary>
         /// <param name="module">The Module to update</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SaveModulePermissions(ModuleInfo module)
         {
-            Provider.SaveModulePermissions(module);
+            _provider.SaveModulePermissions(module);
             DataCache.ClearModulePermissionsCache(module.TabID);
         }
 
@@ -388,7 +318,7 @@ namespace DotNetNuke.Security.Permissions
         public string GetRoleNamesFromRoleIDs(string roles)
         {
             string strRoles = "";
-            if (roles.IndexOf(";") > 0)
+            if (roles.IndexOf(";", StringComparison.Ordinal) > 0)
             {
                 string[] arrRoles = roles.Split(';');
                 for (int i = 0; i <= arrRoles.Length - 1; i++)

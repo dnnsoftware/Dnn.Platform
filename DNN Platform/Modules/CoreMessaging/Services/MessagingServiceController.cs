@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -275,6 +275,21 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, notificationsViewModel);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage CheckReplyHasRecipients(int conversationId)
+        {
+            try
+            {
+                var recipientCount = InternalMessagingController.Instance.CheckReplyHasRecipients(conversationId, UserController.GetCurrentUserInfo().UserID);
+                return Request.CreateResponse(HttpStatusCode.OK, recipientCount);
             }
             catch (Exception exc)
             {

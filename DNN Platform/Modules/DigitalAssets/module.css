@@ -968,6 +968,7 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
 {
     position: relative;
     display: inline-block;
+    background-image: url("Images/transparencyBG.jpg");
 }
 
 .dnnModuleDigitalAssetsPreviewInfoZoomOut {
@@ -1288,4 +1289,18 @@ div.moving .dnnModuleDigitalAssetsGrid tr.rgRow, div.moving .dnnModuleDigitalAss
 div.EditFolderMappingContent .dnnFormItem .dnnLeft {
     float: left;
     width: 50%;
+}
+
+.dnnDigitalAssetsSettingControlBox {
+    background: none repeat scroll 0 0 #E3E3E5;
+    display: inline-block;
+    margin: 0 0 14px;
+    padding: 8px;
+    position: relative;
+    white-space: normal;
+}
+
+#FilterByFolderOptions .dnnDropDownList {
+    margin-bottom: 0;
+    width: 98%;
 }

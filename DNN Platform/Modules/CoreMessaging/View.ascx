@@ -186,7 +186,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="dnnCoreMessagingFooter">
+                <div class="dnnCoreMessagingFooter" data-bind="visible:replyHasRecipients">
                     <textarea name="replyMessage" id="replyMessage" data-bind="hasfocus: isReplySelected"></textarea>
                     <a href="#" class="dnnPrimaryAction" data-bind="click: $root.reply"><%=LocalizeString("Reply")%></a>
                     <div class="dnnClear"></div>
@@ -254,6 +254,7 @@
             notificationConfirmNoText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmNo"))%>',
             actionPerformedText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ActionPerformed"))%>',
             actionNotPerformedText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ActionNotPerformed"))%>',
+            replyHasNoRecipientsText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReplyHasNoRecipients"))%>',
             serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
             serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>'
         }, {

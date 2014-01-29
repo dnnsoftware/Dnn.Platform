@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("DotNetNuke's Instrumentation Framework")]
 [assembly: AssemblyCompany("DotNetNuke Corporation")]
 [assembly: AssemblyProduct("http://www.dotnetnuke.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2013 by DotNetNuke Corporation. All Rights Reserved.")]
+[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2014 by DotNetNuke Corporation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DotNetNuke")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

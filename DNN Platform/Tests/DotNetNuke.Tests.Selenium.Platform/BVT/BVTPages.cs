@@ -30,7 +30,7 @@ namespace DNNSelenium.Platform.BVT
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "ASSERT the user redirected to newly created page: " + "http://" +
 							_baseUrl.ToLower() + "/" + _pageName);
-			Assert.That(blankPage.CurrentWindowUrl(), Is.EqualTo("http://" + _baseUrl.ToLower() + "/" + _pageName),
+			Assert.That(blankPage.CurrentWindowUrl(), Is.StringStarting("http://" + _baseUrl.ToLower() + "/" + _pageName),
 						"The page URL is not correct");
 
 			var adminPageManagementPage = new AdminPageManagementPage(_driver);

@@ -179,6 +179,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.05.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.02.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\06.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Upgrade.SqlDataProvider" />

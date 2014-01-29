@@ -220,4 +220,158 @@
 
     };
 
+
+    var MinHeap = this.MinHeap = function(array, comparator) {
+
+        this.heap = array || [];
+
+        /**
+         * Default comparator used if an override is not provided.
+         * @private
+         */
+        this.compare = comparator || function(one, another) {
+            return one == another ? 0 : one < another ? -1 : 1;
+        };
+
+        /**
+         * Retrieve the index of the left child of the node at index i.
+         */
+        this._left = function(index) {
+            return 2 * index + 1;
+        };
+
+        /**
+         * Retrieve the index of the right child of the node at index i.
+         */
+        this._right = function(index) {
+            return 2 * index + 2;
+        };
+
+        /**
+         * Retrieve the index of the parent of the node at index i.
+         */
+        this._parent = function (index) {
+            return index > 0 ? (index - 1) >> 1 : -1; // (i - 1) / 2
+        };
+
+        /**
+         * Ensure that the contents of the heap don't violate the constraint.
+         */
+        this._heapify = function(i) {
+            var lIdx = this._left(i);
+            var rIdx = this._right(i);
+            var smallest;
+            if (lIdx < this.heap.length && this.compare(this.heap[lIdx], this.heap[i]) < 0) {
+                smallest = lIdx;
+            }
+            else {
+                smallest = i;
+            }
+            if (rIdx < this.heap.length && this.compare(this.heap[rIdx], this.heap[smallest]) < 0) {
+                smallest = rIdx;
+            }
+            if (i != smallest) {
+                var temp = this.heap[smallest];
+                this.heap[smallest] = this.heap[i];
+                this.heap[i] = temp;
+                this._heapify(smallest);
+            }
+        };
+
+        /**
+         * Starting with the node at index i, move up the heap until parent value
+         * is less than the node.
+         */
+        this.siftUp = function(i) {
+            var p = this._parent(i);
+            if (p >= 0 && this.compare(this.heap[p], this.heap[i]) > 0) {
+                var temp = this.heap[p];
+                this.heap[p] = this.heap[i];
+                this.heap[i] = temp;
+                this.siftUp(p);
+            }
+        };
+
+        /**
+         * Heapify the contents of an array.
+         * This function is called when an array is provided.
+         * @private
+         */
+        this.heapifyArray = function() {
+            // for loop starting from floor size/2 going up and heapify each.
+            var i = Math.floor(this.heap.length / 2) - 1;
+            for (; i >= 0; i--) {
+                //	jstestdriver.console.log("i: ", i);
+                this._heapify(i);
+            }
+        };
+
+        // If an initial array was provided, then heapify the array.
+        if (array != null) {
+            this.heapifyArray();
+        };
+    };
+
+    /**
+     * Place an item in the heap.
+     */
+    MinHeap.prototype.push = function (item) {
+        this.heap.push(item);
+        this.siftUp(this.heap.length - 1);
+    };
+
+    /**
+     * Insert an item into the heap.
+     */
+    MinHeap.prototype.insert = function (item) {
+        this.push(item);
+    };
+
+    /**
+     * Pop the minimum valued item off of the heap. The heap is then updated 
+     * to float the next smallest item to the top of the heap.
+     * @returns the minimum value contained within the heap.
+     * @function
+     */
+    MinHeap.prototype.pop = function () {
+        var value;
+        if (this.heap.length > 1) {
+            value = this.heap[0];
+            // Put the bottom element at the top and let it drift down.
+            this.heap[0] = this.heap.pop();
+            this._heapify(0);
+        }
+        else {
+            value = this.heap.pop();
+        }
+        return value;
+    };
+
+    /**
+     * Remove the minimum item from the heap.
+     * @returns the minimum value contained within the heap.
+     */
+    MinHeap.prototype.remove = function () {
+        return this.pop();
+    };
+
+    /**
+     * Returns the minimum value contained within the heap.  This will
+     * not remove the value from the heap.
+     * @returns the minimum value within the heap.
+     * @function
+     */
+    MinHeap.prototype.getMin = function () {
+        return this.heap[0];
+    };
+
+    /**
+     * Return the current number of elements within the heap.
+     * @returns size of the heap.
+     * @function
+     */
+    MinHeap.prototype.size = function () {
+        return this.heap.length;
+    };
+
 }).apply(dnn, [jQuery, window, document]);

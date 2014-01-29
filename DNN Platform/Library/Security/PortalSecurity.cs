@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,6 +41,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Services.Personalization;
 
 #endregion
@@ -156,11 +157,11 @@ namespace DotNetNuke.Security
             if (TempInput.Contains("&gt;") && TempInput.Contains("&lt;"))
             {
 				//text is encoded, so decode and try again
-                TempInput = HttpContext.Current.Server.HtmlDecode(TempInput);
+                TempInput = HttpUtility.HtmlDecode(TempInput);
                 TempInput = listStrings.Aggregate(TempInput, (current, s) => Regex.Replace(current, s, replacement, options));
 
                 //Re-encode
-                TempInput = HttpContext.Current.Server.HtmlEncode(TempInput);
+                TempInput = HttpUtility.HtmlEncode(TempInput);
             }
             else
             {
@@ -284,160 +285,22 @@ namespace DotNetNuke.Security
 
         public string Decrypt(string strKey, string strData)
         {
-            if (String.IsNullOrEmpty(strData))
-            {
-                return "";
-            }
-            string strValue = "";
-            if (!String.IsNullOrEmpty(strKey))
-            {
-				//convert key to 16 characters for simplicity
-                if (strKey.Length < 16)
-                {
-                    strKey = strKey + "XXXXXXXXXXXXXXXX".Substring(0, 16 - strKey.Length);
-                }
-                else
-                {
-                    strKey = strKey.Substring(0, 16);
-                }
-				
-                //create encryption keys
-                byte[] byteKey = Encoding.UTF8.GetBytes(strKey.Substring(0, 8));
-                byte[] byteVector = Encoding.UTF8.GetBytes(strKey.Substring(strKey.Length - 8, 8));
-
-                //convert data to byte array and Base64 decode
-                var byteData = new byte[strData.Length];
-                try
-                {
-                    byteData = Convert.FromBase64String(strData);
-                }
-                catch //invalid length
-                {
-                    strValue = strData;
-                }
-                if (String.IsNullOrEmpty(strValue))
-                {
-                    try
-                    {
-						//decrypt
-                        var objDES = new DESCryptoServiceProvider();
-                        var objMemoryStream = new MemoryStream();
-                        var objCryptoStream = new CryptoStream(objMemoryStream, objDES.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write);
-                        objCryptoStream.Write(byteData, 0, byteData.Length);
-                        objCryptoStream.FlushFinalBlock();
-
-                        //convert to string
-                        Encoding objEncoding = Encoding.UTF8;
-                        strValue = objEncoding.GetString(objMemoryStream.ToArray());
-                    }
-                    catch //decryption error
-                    {
-                        strValue = "";
-                    }
-                }
-            }
-            else
-            {
-                strValue = strData;
-            }
-            return strValue;
+            return CryptographyProvider.Instance().DecryptParameter(strData, strKey);
         }
 
         public string DecryptString(string message, string passphrase)
         {
-            byte[] results;
-            var utf8 = new UTF8Encoding();
-
-            //hash the passphrase using MD5 to create 128bit byte array
-            var hashProvider = new MD5CryptoServiceProvider();
-            byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
-
-            var tdesAlgorithm = new TripleDESCryptoServiceProvider {Key = tdesKey, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7};
-
-
-            byte[] dataToDecrypt = Convert.FromBase64String(message);
-            try
-            {
-                ICryptoTransform decryptor = tdesAlgorithm.CreateDecryptor();
-                results = decryptor.TransformFinalBlock(dataToDecrypt, 0, dataToDecrypt.Length);
-            }
-            finally
-            {
-                // Clear the TripleDes and Hashprovider services of any sensitive information 
-                tdesAlgorithm.Clear();
-                hashProvider.Clear();
-            }
-
-            return utf8.GetString(results);
+            return CryptographyProvider.Instance().DecryptString(message, passphrase);
         }
 
         public string Encrypt(string key, string data)
         {
-            string value;
-            if (!String.IsNullOrEmpty(key))
-            {
-                //convert key to 16 characters for simplicity
-                if (key.Length < 16)
-                {
-                    key = key + "XXXXXXXXXXXXXXXX".Substring(0, 16 - key.Length);
-                }
-                else
-                {
-                    key = key.Substring(0, 16);
-                }
-				
-                //create encryption keys
-                byte[] byteKey = Encoding.UTF8.GetBytes(key.Substring(0, 8));
-                byte[] byteVector = Encoding.UTF8.GetBytes(key.Substring(key.Length - 8, 8));
-
-                //convert data to byte array
-                byte[] byteData = Encoding.UTF8.GetBytes(data);
-
-                //encrypt 
-                var objDES = new DESCryptoServiceProvider();
-                var objMemoryStream = new MemoryStream();
-                var objCryptoStream = new CryptoStream(objMemoryStream, objDES.CreateEncryptor(byteKey, byteVector), CryptoStreamMode.Write);
-                objCryptoStream.Write(byteData, 0, byteData.Length);
-                objCryptoStream.FlushFinalBlock();
-
-                //convert to string and Base64 encode
-                value = Convert.ToBase64String(objMemoryStream.ToArray());
-            }
-            else
-            {
-                value = data;
-            }
-            return value;
+            return CryptographyProvider.Instance().EncryptParameter(data, key);
         }
 
         public string EncryptString(string message, string passphrase)
         {
-            byte[] results;
-            var utf8 = new UTF8Encoding();
-
-            //hash the passphrase using MD5 to create 128bit byte array
-            var hashProvider = new MD5CryptoServiceProvider();
-            byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
-
-            var tdesAlgorithm = new TripleDESCryptoServiceProvider {Key = tdesKey, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7};
-
-
-            byte[] dataToEncrypt = utf8.GetBytes(message);
-
-            try
-            {
-                ICryptoTransform encryptor = tdesAlgorithm.CreateEncryptor();
-                results = encryptor.TransformFinalBlock(dataToEncrypt, 0, dataToEncrypt.Length);
-            }
-            finally
-            {
-                // Clear the TripleDes and Hashprovider services of any sensitive information 
-                tdesAlgorithm.Clear();
-                hashProvider.Clear();
-            }
-
-            //Return the encrypted string as a base64 encoded string 
-            return Convert.ToBase64String(results);
+            return CryptographyProvider.Instance().EncryptString(message, passphrase);
         }
 
         ///-----------------------------------------------------------------------------
@@ -834,6 +697,51 @@ namespace DotNetNuke.Security
             return cookieDomain;
         }
 
+        public static bool IsDenied(string roles)
+        {
+            UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            return IsDenied(objUserInfo, settings, roles);
+        }
+
+        public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
+        {
+            //super user always has full access
+            if (objUserInfo.IsSuperUser)
+            {
+                return false;
+            }
+
+            bool isDenied = false;
+
+            if (roles != null)
+            {
+                //permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+                foreach (string role in roles.Split(new[] { ';' }))
+                {
+                    if (!String.IsNullOrEmpty(role))
+                    {
+                        //Deny permission
+                        if (role.StartsWith("!"))
+                        {
+                            //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
+                            if (!(settings.PortalId == objUserInfo.PortalID && settings.AdministratorId == objUserInfo.UserID))
+                            {
+                                string denyRole = role.Replace("!", "");
+                                if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))
+                                {
+                                    isDenied = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return isDenied;
+        }
+
         public static bool IsInRole(string role)
         {
             UserInfo objUserInfo = UserController.GetCurrentUserInfo();
@@ -848,17 +756,16 @@ namespace DotNetNuke.Security
         public static bool IsInRoles(string roles)
         {
             UserInfo objUserInfo = UserController.GetCurrentUserInfo();
-            //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
             PortalSettings settings = PortalController.GetCurrentPortalSettings();
             return IsInRoles(objUserInfo, settings, roles);            
         }
-        
+
         public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
             //super user always has full access
-            bool blnIsInRoles = objUserInfo.IsSuperUser;
+            bool isInRoles = objUserInfo.IsSuperUser;
 
-            if (!blnIsInRoles)
+            if (!isInRoles)
             {
                 if (roles != null)
                 {
@@ -884,7 +791,7 @@ namespace DotNetNuke.Security
                             {
                                 if (role == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(role))
                                 {
-                                    blnIsInRoles = true;
+                                    isInRoles = true;
                                     break;
                                 }
                             }
@@ -892,7 +799,7 @@ namespace DotNetNuke.Security
                     }
                 }
             }
-            return blnIsInRoles;
+            return isInRoles;
         }
 		
 		#endregion

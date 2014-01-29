@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -429,45 +429,40 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// StartScheduler starts the Scheduler
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static void StartScheduler()
+        {
+            var scheduler = SchedulingProvider.Instance();
+            scheduler.RunEventSchedule(EventName.APPLICATION_START);
+
+            //instantiate APPLICATION_START scheduled jobs
+            if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
+            {
+                Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
+                var newThread = new Thread(scheduler.Start)
+                {
+                    IsBackground = true,
+                    Name = "Scheduler Thread"
+                };
+                newThread.Start();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// StopScheduler stops the Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/28/2005   Moved back to App_End from Scheduling Module
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void StopScheduler()
         {
             //stop scheduled jobs
             SchedulingProvider.Instance().Halt("Stopped by Application_End");
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// StartScheduler starts the Scheduler
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/27/2005   Moved back to App_Start from Scheduling Module
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static void StartScheduler()
-        {
-            //instantiate APPLICATION_START scheduled jobs
-            if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
-            {
-                Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
-                var scheduler = SchedulingProvider.Instance();
-                scheduler.RunEventSchedule(EventName.APPLICATION_START);
-                var newThread = new Thread(scheduler.Start)
-                    {
-                        IsBackground = true,
-                        Name = "Scheduler Thread"
-                    };
-                newThread.Start();
-            }
         }
     }
 }

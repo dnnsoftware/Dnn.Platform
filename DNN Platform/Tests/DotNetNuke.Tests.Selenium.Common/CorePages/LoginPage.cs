@@ -56,20 +56,28 @@ namespace DNNSelenium.Common.CorePages
 			GoToUrl(baseUrl + LoginPageUrl);
 		}
 
-		public void DoLoginUsingLoginLink(string userName, string password)
+		public void DoLogin(string username, string password)
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Login using user credentials:");
 
-			Trace.WriteLine(BasePage.TraceLevelElement + "Set '" + userName + "' in input field [id: " + LoginUserNameTextbox + "]");
-			WaitForElement(By.Id(LoginUserNameTextbox)).SendKeys(userName);
+			WaitAndType(By.Id(LoginUserNameTextbox), username);
 
-			Trace.WriteLine(BasePage.TraceLevelElement + "Set '" + password + "' in input field [id: " + LoginPasswordTextbox + "]");
-			WaitForElement(By.Id(LoginPasswordTextbox)).SendKeys(password);
+			WaitAndType(By.Id(LoginPasswordTextbox), password);
 
-			Trace.WriteLine(BasePage.TraceLevelElement + "Click on button [id: " + LoginButton + "]");
-			WaitForElement(By.Id(LoginButton)).Click();
+			Click(By.Id(LoginButton));
 
 			Thread.Sleep(1000);
+		}
+
+		public void LoginUsingDirectUrl(string baseUrl, string username, string password)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Login using url:");
+
+			LetMeOut();
+
+			OpenUsingUrl(baseUrl);
+
+			DoLogin(username, password);
 		}
 
 		public void LoginUsingLoginLink(string userName, string password)
@@ -77,8 +85,10 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Login using 'Login' link:");
 			LetMeOut();
 
+			Trace.WriteLine(BasePage.TraceLevelElement + "Click on Link with User Name:");
 			FindElement(By.XPath(ControlPanelIDs.LoginLink)).Click();
-			DoLoginUsingLoginLink(userName, password);
+
+			DoLogin(userName, password);
 		}
 
 		public void LoginUsingLoginLinkAndFrame(string userName, string password)
@@ -106,53 +116,31 @@ namespace DNNSelenium.Common.CorePages
 			{
 				Trace.WriteLine(BasePage.TraceLevelElement + "Click on : " + ControlPanelIDs.SocialUserLink + "]");
 				FindElement(By.XPath(ControlPanelIDs.SocialLoginLink)).Click();
-			} 
+			}
 
 			WaitAndSwitchToFrame(30);
-			
-			DoLoginUsingLoginLink(userName, password);
+
+			DoLogin(userName, password);
 
 			WaitAndSwitchToWindow(30);
-		}
-
-		public void DoLoginUsingUrl(string username, string password)
-		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Login using user credentials:");
-
-			WaitAndType(By.Id(LoginUserNameTextbox), username);
-			WaitAndType(By.Id(LoginPasswordTextbox), password);
-
-			Click(By.Id(LoginButton));
-
-			Thread.Sleep(1000);
-		}
-
-		public void LoginUsingUrl(string baseUrl, string username, string password)
-		{
-			Trace.WriteLine(BasePage.TraceLevelComposite + "Login using url:");
-
-			//OpenUsingUrl(baseUrl);
-
-			LetMeOut();
-
-			LoginUsingLoginLink(username, password);
 		}
 
 		public void LoginAsHost(string baseUrl)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Login as default host:");
 			GoToUrl(baseUrl);
-			LoginUsingUrl(baseUrl, "host", "dnnhost");
+			LoginUsingDirectUrl(baseUrl, "host", "dnnhost");
 		}
 
 		public void LetMeOut()
 		{
-			Trace.WriteLine(BasePage.TraceLevelPage + "Logout");
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Logout :");
 
 			string selector = null;
 
 			if (ElementPresent(By.XPath(ControlPanelIDs.CompanyLogo)))
 			{
+				Trace.WriteLine(BasePage.TraceLevelPage + "Detect the Skin type:");
 				selector = WaitForElement(By.XPath(ControlPanelIDs.CompanyLogo)).GetAttribute("src");
 			}
 			
@@ -160,12 +148,12 @@ namespace DNNSelenium.Common.CorePages
 
 			if (selector == null || selector.EndsWith(ControlPanelIDs.AwesomeCycles))
 			{
-				WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 20).Info();
+				WaitForElement(By.Id(ControlPanelIDs.LogoutLinkID), 60).Info();
 
 				Trace.WriteLine(BasePage.TraceLevelElement + "Click on button: " + ControlPanelIDs.LogoutLink + "]");
 				if (ElementPresent(By.XPath(ControlPanelIDs.LogoutLink)))
 				{
-					FindElement(By.XPath(ControlPanelIDs.LogoutLink)).Click();
+					ScrollIntoView(FindElement(By.XPath(ControlPanelIDs.LogoutLink)), 100).Click();
 					WaitForElement(By.XPath(ControlPanelIDs.LoginLink), 20).WaitTillVisible(20);
 				}
 			}
@@ -224,6 +212,8 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Register using 'Register' link:");
 			LetMeOut();
 			DoRegisterUsingRegisterLink(userName, displayName, emailAddress, password);
+
+			_driver.Navigate().Refresh();
 		}
 
 	}

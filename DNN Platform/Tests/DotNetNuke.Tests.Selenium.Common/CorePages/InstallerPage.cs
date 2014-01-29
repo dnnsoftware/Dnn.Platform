@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using System.Xml.Linq;
 using DNNSelenium.Common.BaseClasses;
 using OpenQA.Selenium;
@@ -27,10 +28,6 @@ namespace DNNSelenium.Common.CorePages
 		public static string FrenchIconId = "lang_fr_FR";
 		public static string ItalianIconId = "lang_it_IT";
 		public static string HollandIconId = "lang_nl_NL";
-
-		public static string IntroVideo = "introVideo";
-		public static string WhatIsNew = "whatsNewVideo";
-		public static string LetMeAtIn = "btnLetMeAtIn";
 
 		#endregion
 
@@ -125,18 +122,24 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitForElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
 
-			//WaitForElement(By.Id(IntroVideo), 60).WaitTillVisible(60);
-			//WaitForElement(By.Id(WhatIsNew), 60).WaitTillVisible(60);
+			WaitForElement(By.XPath("//div/iframe[contains(@src, 'GettingStarted')]"), 60);
+			_driver.SwitchTo().Frame(0);
+
+			WaitForElement(By.XPath("//div/a[last()]"), 60).WaitTillVisible(60);
+			
+			_driver.SwitchTo().DefaultContent();
+
+			WaitForElement(By.XPath("//div[contains(@class, 'footer-left-side')]/label")).WaitTillEnabled(30);
 
 			Actions action = new Actions(_driver);
 			action.MoveToElement(FindElement(By.XPath("//div[contains(@class, 'footer-left-side')]/label"))).Click().Build().Perform();
 
-			//WaitForElement(By.Id(LetMeAtIn), 60).ScrollIntoView().WaitTillEnabled().Click();
+			//WaitAndClick(By.XPath("//div[contains(@style,'display: block;')]//button[@role = 'button' and @title = 'close']"));
 
-			Click(By.XPath("//div[contains(@style,'display: block;')]//button[@role = 'button' and @title = 'close']"));
+			//WaitForElementNotPresent(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]"), 30);
 
-			WaitAndSwitchToWindow(60);
-
+			FindElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style,'display: block;')]")).SendKeys(
+				Keys.Escape);
 		}
 
 		public void SetWebSiteLanguage(string language)

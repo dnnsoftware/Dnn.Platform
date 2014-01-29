@@ -1,13 +1,13 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.RadEditorProvider" type="Provider" version="07.02.00">
+    <package name="DotNetNuke.RadEditorProvider" type="Provider" version="07.02.01">
       <friendlyName>RadEditor Manager</friendlyName>
       <description>A module used to configure toolbar items, behavior, and other options used in the DotNetNuke RadEditor Provider.</description>
       <owner>
-        <name>DotNetNuke RadEditor Provider</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>http://www.dotnetnuke.com</url>
-        <email />
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>

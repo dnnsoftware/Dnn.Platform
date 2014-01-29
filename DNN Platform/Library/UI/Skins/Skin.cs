@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,6 +39,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Communications;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -511,7 +512,25 @@ namespace DotNetNuke.UI.Skins
             {
                 slaveModule.ModuleControlId = moduleControl.ModuleControlID;
                 slaveModule.IconFile = moduleControl.IconFile;
-                if (ModulePermissionController.HasModuleAccess(slaveModule.ModuleControl.ControlType, Null.NullString, slaveModule))
+                
+                string permissionKey;
+                switch (slaveModule.ModuleControl.ControlSrc)
+                {
+                    case "Admin/Modules/ModuleSettings.ascx":
+                        permissionKey = "MANAGE";
+                        break;
+                    case "Admin/Modules/Import.ascx":
+                        permissionKey = "IMPORT";
+                        break;
+                    case "Admin/Modules/Export.ascx":
+                        permissionKey = "EXPORT";
+                        break;
+                    default:
+                        permissionKey = "CONTENT";
+                        break;
+                }
+
+                if (ModulePermissionController.HasModuleAccess(slaveModule.ModuleControl.ControlType, permissionKey, slaveModule))
                 {
                     success = InjectModule(pane, slaveModule);
                 }
@@ -552,7 +571,7 @@ namespace DotNetNuke.UI.Skins
             InjectControlPanel();
 
             //Register any error messages on the Skin
-            if (Request.QueryString["error"] != null)
+            if (Request.QueryString["error"] != null && Host.ShowCriticalErrors)
             {
                 AddPageMessage(this, Localization.GetString("CriticalError.Error"), Server.HtmlEncode(Request.QueryString["error"]), ModuleMessage.ModuleMessageType.RedError);
             }
@@ -611,7 +630,7 @@ namespace DotNetNuke.UI.Skins
             if(TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !HttpContext.Current.Request.Url.ToString().Contains("popUp=true"))
             {
                 //Register Drag and Drop plugin
-                jQuery.RegisterDnnJQueryPlugins(Page);
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 ClientResourceManager.RegisterStyleSheet(Page, "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder.Css.FeatureCss);
                 ClientResourceManager.RegisterScript(Page, "~/resources/shared/scripts/dnn.dragDrop.js");
 

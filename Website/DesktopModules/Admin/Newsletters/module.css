@@ -15,9 +15,6 @@
     padding: 0 15px 0 5px;
     text-align: right;
 }
-.dnnTextEditor td {
-    padding: 10px 0;
-}
 .dnnTextEditor .dnnFormItem .dnnTooltip {
     width: 34%;
 }
@@ -89,3 +86,5 @@ span.dnnNewsletterRadios label {
 }
 
 .dnnNewsletters .newMessage .dnnFormItem textarea.noResize{ resize: none;}
+
+.dnnNewsletters ul.token-input-list-facebook{ width: 40%;margin-bottom: 18px;}

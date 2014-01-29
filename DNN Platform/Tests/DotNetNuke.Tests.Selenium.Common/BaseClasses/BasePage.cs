@@ -60,7 +60,8 @@ namespace DNNSelenium.Common.BaseClasses
 			{
 				Trace.WriteLine(TraceLevelPage + "Set the Page to Edit mode:");
 				SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.EditThisPageButton);
-				WaitForElement(By.XPath("//a[@class = 'controlBar_editPageInEditMode']"));
+				//WaitForElement(By.XPath("//a[@class = 'controlBar_editPageInEditMode']"));
+				WaitForElement(By.XPath(ControlPanelIDs.PageInEditMode));
 			}
 			else
 			{
@@ -68,11 +69,24 @@ namespace DNNSelenium.Common.BaseClasses
 			}
 		}
 
-		public void CloseEditMode(string pageName)
+		public void CloseEditMode()
 		{
 			Trace.WriteLine(TraceLevelPage + "Close Page Edit mode:");
 			SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.CloseEditModeButton);
-			FindElement(By.XPath(ControlPanelIDs.PageInEditMode)).WaitTillNotVisible();
+			//FindElement(By.XPath(ControlPanelIDs.PageInEditMode)).WaitTillNotVisible();
+		}
+
+		public void ClearCache()
+		{
+			Trace.WriteLine(TraceLevelPage + "Select menu option: '" + ControlPanelIDs.ControlPanelToolsOption + "'");
+
+			Click(By.XPath(ControlPanelIDs.ControlPanelToolsOption));
+
+			FindElement(By.XPath(ControlPanelIDs.ToolsGoButton)).WaitTillVisible();
+
+			FindElement(By.XPath(ControlPanelIDs.ToolsClearCacheOption)).WaitTillVisible().Click();
+
+			Thread.Sleep(5000);
 		}
 
 		/*
@@ -100,6 +114,7 @@ namespace DNNSelenium.Common.BaseClasses
 			Trace.WriteLine("\r\n\t\t\tMax waiting time: " + timeOutSeconds + " sec");
 
 			WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeOutSeconds));
+			wait.IgnoreExceptionTypes(new Type[] { typeof(NoSuchElementException), typeof(StaleElementReferenceException) });
 			return wait.Until(d => d.FindElement(locator));
 		}
 
@@ -147,7 +162,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 				//Trace.WriteLine("Waiting for move to start.");
 
-				Thread.Sleep(100);
+				Thread.Sleep(50);
 			}
 
 			Point lastPos = startPos;
@@ -165,7 +180,7 @@ namespace DNNSelenium.Common.BaseClasses
 				}
 
 				lastPos = curPos;
-				Thread.Sleep(100);
+				Thread.Sleep(50);
 			}
 			while (true);
 		}
@@ -205,6 +220,14 @@ namespace DNNSelenium.Common.BaseClasses
 		{
 			Trace.WriteLine(TraceLevelLow + "Looking for element: '" + locator + "'");
 			//Trace.WriteLine(TraceLevelLow + _driver.FindElement(locator).Info());
+
+			IWebElement element = BasePage.WaitForElement(_driver, locator);
+			int locationOnPage = element.Location.Y;
+
+			if (element.Displayed && locationOnPage < 100)
+			{
+				ScrollIntoView(element, 200).WaitTillVisible();
+			}
 			return _driver.FindElement(locator);
 		}
 
@@ -277,7 +300,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public string CurrentFrameTitle()
 		{
-			WaitForElement(By.XPath("//div[@aria-describedby = 'iPopUp']"), 60);
+			//WaitForElement(By.XPath("//div[@aria-describedby = 'iPopUp']"), 60);
 
 			string _title = WaitForElement(By.XPath("//div[contains(@class, 'dnnFormPopup') and contains(@style, 'display: block;')]//span[contains(@class, '-dialog-title')]"), 30).Text;
 
@@ -357,7 +380,7 @@ namespace DNNSelenium.Common.BaseClasses
 			BasePage.WaitTillStopMoving(_driver, lastElement, lastElementStart);
 
 			_driver.FindElement(By.XPath(optionLocator)).Info();
-			Click(By.XPath(optionLocator));
+			_driver.FindElement(By.XPath(optionLocator)).WaitTillVisible().Click();
 
 			Thread.Sleep(1000);
 		}
@@ -379,8 +402,8 @@ namespace DNNSelenium.Common.BaseClasses
 			{
 				Trace.WriteLine(BasePage.TraceLevelElement + "The HTTP request to the remote WebDriver server for URL timed out");
 			}
-
-			Thread.Sleep(1000);
+		
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
 		}
 
 		public void OpenTab(By tabName)
@@ -388,12 +411,15 @@ namespace DNNSelenium.Common.BaseClasses
 			Trace.WriteLine(BasePage.TraceLevelElement + "Click on Tab:");
 
 			IWebElement tab = BasePage.WaitForElement(_driver, tabName);
-			if (!tab.Displayed)
+			int locationOnPage = tab.Location.Y;
+
+			if ((!tab.Displayed) || (tab.Displayed && locationOnPage < 100))
 			{
-				ScrollIntoView(FindElement(tabName), 200).WaitTillVisible();
+			    ScrollIntoView(FindElement(tabName), 200).WaitTillVisible();
 			}
 
-			FindElement(tabName).Click();
+			//ScrollIntoViewFromTop(FindElement(tabName), 200).WaitTillVisible();
+			WaitForElement(tabName).Click();
 		}
 
 		public void ClickOnButton(By buttonName)
@@ -420,6 +446,13 @@ namespace DNNSelenium.Common.BaseClasses
 			return element;
 		}
 
+		public IWebElement ScrollIntoViewFromTop(IWebElement element, int offset)
+		{
+			((IJavaScriptExecutor)_driver).ExecuteScript("window.scrollTo(0,0);");
+
+			return ScrollIntoView(element, offset);
+		}
+
 		#region Page Control Helpers
 
 		public void RadioButtonSelect(By buttonId)
@@ -440,6 +473,11 @@ namespace DNNSelenium.Common.BaseClasses
 		public void SlidingSelectByValue(By arrowId, By listDropDownId, string value)
 		{
 			new SlidingSelect(_driver, arrowId, listDropDownId).SelectByValue(value);
+		}
+
+		public void SlidingSelectWithCheckBox(By arrowId, By listDropDownId, string value)
+		{
+			new SlidingSelect(_driver, arrowId, listDropDownId).SelectCheckBoxByValue(value);
 		}
 
 		public void LoadableSelectByValue(By dropDownId, string value)
@@ -509,7 +547,7 @@ namespace DNNSelenium.Common.BaseClasses
 	{
 		public static bool ElementPresent (this IWebDriver driver, By locator)
 		{
-			Trace.WriteLine(BasePage.TraceLevelLow + "Looking for element: " );
+			Trace.WriteLine(BasePage.TraceLevelLow + "Looking for element: " + locator);
 			return driver.FindElements(locator).Count > 0;
 		}
 	}

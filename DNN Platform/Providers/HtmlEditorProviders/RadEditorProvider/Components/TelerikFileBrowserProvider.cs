@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -633,7 +633,12 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		    }
 
 		    var dnnParentFolder = FolderManager.Instance.GetFolder(PortalSettings.PortalId, parentFolderPath);
-            var dnnChildFolders = FolderManager.Instance.GetFolders(dnnParentFolder).Where(folder => (FileSystemValidation.HasPermission(folder, "BROWSE,READ")));
+		    if (!DNNValidator.CanViewFilesInFolder(dnnParentFolder.FolderPath))
+		    {
+		        return null;
+		    }
+
+		    var dnnChildFolders = FolderManager.Instance.GetFolders(dnnParentFolder).Where(folder => (FileSystemValidation.HasPermission(folder, "BROWSE,READ")));
             var radDirectories = new List<DirectoryItem>();
             foreach (var dnnChildFolder in dnnChildFolders)
             {
@@ -648,7 +653,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
                 }
             }
 
-            if (parentFolderPath == "")
+            radDirectory.Files = IncludeFilesForCurrentFolder(dnnParentFolder);
+
+		    if (parentFolderPath == "")
             {
                 var userFolder = FolderManager.Instance.GetUserFolder(PortalSettings.UserInfo);
                 if (userFolder.PortalID == PortalSettings.PortalId)
@@ -659,14 +666,34 @@ namespace DotNetNuke.Providers.RadEditorProvider
                     radDirectories.Add(radUserFolder);
                 }
             }
-
-
+            
 		    radDirectory.Directories = radDirectories.ToArray();
-
             return radDirectory;
-
-
 		}
+
+	    private FileItem[] IncludeFilesForCurrentFolder(IFolderInfo dnnParentFolder)
+	    {
+	        var files = FolderManager.Instance.GetFiles(dnnParentFolder).Where(f => CheckSearchPatterns(f.FileName, SearchPatterns));
+            var folderPermissions = FileSystemValidation.TelerikPermissions(dnnParentFolder);
+
+	        return (from file in files
+                    select new FileItem(file.FileName, file.Extension, file.Size, "", GetFileUrl(file), "", folderPermissions)).ToArray();
+	    }
+
+	    private string GetFileUrl(IFileInfo file)
+        {
+            var url = FileManager.Instance.GetUrl(file);
+            if (NotUseRelativeUrl)
+            {
+                url = string.Format("{0}{1}{2}{3}",
+                                    (HttpContext.Current.Request.IsSecureConnection ? "https://" : "http://"),
+                                    HttpContext.Current.Request.Url.Host,
+                                    (!HttpContext.Current.Request.Url.IsDefaultPort ? ":" + HttpContext.Current.Request.Url.Port : string.Empty),
+                                    url);
+            }
+
+            return url;
+        }
 
         private IDictionary<string, Services.FileSystem.FileInfo> GetDNNFiles(int dnnFolderID)
 		{
@@ -701,8 +728,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			var visibleFileCount = 0;
 			foreach (Services.FileSystem.FileInfo fileItem in files.Values)
 			{
-				string[] tempVar = SearchPatterns;
-				if (CheckSearchPatterns(fileItem.FileName, ref tempVar))
+                if (CheckSearchPatterns(fileItem.FileName, SearchPatterns))
 				{
 					visibleFileCount = visibleFileCount + 1;
 				}
@@ -813,7 +839,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 #region Search Patterns
 
-		private bool CheckSearchPatterns(string dnnFileName, ref string[] searchPatterns)
+		private bool CheckSearchPatterns(string dnnFileName, string[] searchPatterns)
 		{
 			if (searchPatterns == null | searchPatterns.Length < 1)
 			{

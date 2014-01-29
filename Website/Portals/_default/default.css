@@ -323,6 +323,10 @@ img {
     vertical-align: middle;
 }
 
+#dnn_dnnLOGO_imgLogo {
+     border: 0;
+}
+
 /*-------------------------------------*/
 /* lIST STYLES */
 /*-------------------------------------*/

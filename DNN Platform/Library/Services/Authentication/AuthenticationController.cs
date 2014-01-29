@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -98,17 +98,50 @@ namespace DotNetNuke.Services.Authentication
         /// <param name="authenticationToken">The authentication token</param>
         /// <history>
         /// 	[cnurse]	07/12/2007  Created
+        /// 	[skydnn]    11/14/2013  DNN-4016
         /// </history>
         /// -----------------------------------------------------------------------------
         public static int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
         {
             var objEventLog = new EventLogController();
-            objEventLog.AddLog("userID/authenticationType",
-                               userID + "/" + authenticationType,
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
-            return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.GetCurrentUserInfo().UserID);
+
+            UserAuthenticationInfo userAuth = GetUserAuthentication(userID);
+
+            if (userAuth == null || String.IsNullOrEmpty(userAuth.AuthenticationType))
+            {
+                objEventLog.AddLog("userID/authenticationType",
+                                   userID + "/" + authenticationType,
+                                   PortalController.GetCurrentPortalSettings(),
+                                   UserController.GetCurrentUserInfo().UserID,
+                                   EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
+                return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.GetCurrentUserInfo().UserID);
+            }
+            else
+            {
+
+                objEventLog.AddLog("userID/authenticationType already exists",
+                   userID + "/" + authenticationType,
+                   PortalController.GetCurrentPortalSettings(),
+                   UserController.GetCurrentUserInfo().UserID,
+                   EventLogController.EventLogType.AUTHENTICATION_USER_UPDATED);
+
+                return userAuth.UserAuthenticationID;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves authentication information for an user.
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        /// <history>
+        ///    [skydnn]  11/11/2013 DNN-4016
+        /// </history>
+        public static UserAuthenticationInfo GetUserAuthentication(int userID)
+        {
+            //Go to database
+            return CBO.FillObject<UserAuthenticationInfo>(provider.GetUserAuthentication(userID));
+
         }
 
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
@@ -293,14 +326,14 @@ namespace DotNetNuke.Services.Authentication
                 if (TabPermissionController.CanViewPage())
                 {
 					//redirect to current page (or home page if current page is a profile page to reduce redirects)
-		    if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
-		    {
-			_RedirectURL = Globals.NavigateURL(settings.HomeTabId);
-		    }
-		    else
-		    {
-			_RedirectURL = Globals.NavigateURL(settings.ActiveTab.TabID);
-		    }
+		            if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
+		            {
+			            _RedirectURL = Globals.NavigateURL(settings.HomeTabId);
+		            }
+		            else
+		            {
+			            _RedirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : Globals.NavigateURL(settings.ActiveTab.TabID);
+		            }
 
                 }
                 else if (settings.HomeTabId != -1)

@@ -66,6 +66,14 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
+        private string ReturnURL
+        {
+            get
+            {
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -467,8 +475,8 @@ namespace DotNetNuke.Modules.Admin.Modules
 
             if (Page.IsPostBack == false)
             {
-                cmdCancel1.NavigateUrl = Globals.NavigateURL();
-                cmdCancel2.NavigateUrl = Globals.NavigateURL();
+                cmdCancel1.NavigateUrl = ReturnURL;
+                cmdCancel2.NavigateUrl = ReturnURL;
 
                 var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
                 if (objModuleControl != null)

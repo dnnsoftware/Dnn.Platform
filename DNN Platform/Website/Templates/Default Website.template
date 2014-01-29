@@ -8733,42 +8733,6 @@
               <definition>SearchResults</definition>
               <moduledefinition>Search Results</moduledefinition>
             </module>
-            <module>
-              <contentKey />
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>[Tab.SearchResultsCE.ContentPane.ResultsModule.Title.Text]</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulesettings />
-              <tabmodulesettings />
-              <definition>ContentList</definition>
-              <moduledefinition>Content List</moduledefinition>
-            </module>
           </modules>
         </pane>
       </panes>

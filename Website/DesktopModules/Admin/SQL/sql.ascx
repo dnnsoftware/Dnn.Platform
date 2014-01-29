@@ -163,13 +163,37 @@
                             }
                         }--%>
                     ]
+                },
+                oLanguage: {
+                    "sInfo": "<%=Localization.GetSafeJSString(LocalizeString("sInfo"))%>",
+                    "sInfoFiltered": "<%=Localization.GetSafeJSString(LocalizeString("sInfoFiltered"))%>",
+                    "sInfoEmpty": "<%=Localization.GetSafeJSString(LocalizeString("sInfoEmpty"))%>",
+                    "sLengthMenu": "<%=Localization.GetSafeJSString(LocalizeString("sLengthMenu"))%>",
+                    "sLoadingRecords": "<%=Localization.GetSafeJSString(LocalizeString("sLoadingRecords"))%>",
+                    "sProcessing": "<%=Localization.GetSafeJSString(LocalizeString("sProcessing"))%>",
+                    "sSearch": "<%=Localization.GetSafeJSString(LocalizeString("sSearch"))%>",
+                    "oPaginate": {
+                        "sFirst": "<%=Localization.GetSafeJSString(LocalizeString("sFirst"))%>",
+                        "sLast": "<%=Localization.GetSafeJSString(LocalizeString("sLast"))%>",
+                        "sNext": "<%=Localization.GetSafeJSString(LocalizeString("sNext"))%>",
+                        "sPrevious": "<%=Localization.GetSafeJSString(LocalizeString("sPrevious"))%>"
+                    }
                 }
             });
             //new FixedHeader(oTable); 
             //new FixedColumns(oTable);
         });
 
-        $('#<%=pnlResults.ClientID%>').dnnTabs();
+        var resultsPane = $('#<%=pnlResults.ClientID%>');
+        resultsPane.dnnTabs();
+        var originActivateEvent = resultsPane.tabs("option", "activate");
+        resultsPane.tabs("option", "activate", function (ui, event) {
+            originActivateEvent.call(this, ui, event);
+		    var tools = TableTools.fnGetMasters();
+		    for (var i = 0; i < tools.length; i++) {
+			    tools[i].fnResizeButtons();
+		    }
+	    });
 
         var editor = CodeMirror.fromTextArea($("textarea[id$='txtQuery']")[0], {
             lineNumbers: true,

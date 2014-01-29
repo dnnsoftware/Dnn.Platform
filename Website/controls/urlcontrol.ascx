@@ -51,8 +51,8 @@
         <asp:Label ID="lblMessage" runat="server" EnableViewState="False" CssClass="dnnFormError" />
     </asp:Panel>
     <div class="dnnClear">
-        <asp:CheckBox ID="chkTrack" resourcekey="Track" runat="server" Text="Track?" TextAlign="Right" />
-        <asp:CheckBox ID="chkLog" resourcekey="Log" runat="server" Text="Log?" TextAlign="Right" />
-        <asp:CheckBox ID="chkNewWindow" resourcekey="NewWindow" runat="server" Text="New Window?" TextAlign="Right" Visible="False" />
+        <asp:CheckBox ID="chkTrack" resourcekey="Track" runat="server" Text="Track?" TextAlign="Right" /><br/>
+        <asp:CheckBox ID="chkLog" resourcekey="Log" runat="server" Text="Log?" TextAlign="Right" /><br/>
+        <asp:CheckBox ID="chkNewWindow" resourcekey="NewWindow" runat="server" Text="New Window?" TextAlign="Right" Visible="False" /><br/>
     </div>
 </div>

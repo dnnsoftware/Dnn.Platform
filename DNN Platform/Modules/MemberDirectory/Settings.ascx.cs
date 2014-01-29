@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -134,8 +134,11 @@ namespace DotNetNuke.Modules.MemberDirectory
                     filterBySelector.Items.FindByValue("Group").Enabled = false;
                 }
 
-                relationShipList.DataSource = Model.Relationships;
-                relationShipList.DataBind();
+                foreach (var rel in Model.Relationships)
+                {
+                    relationShipList.AddItem(Localization.GetString(rel.Name,Localization.SharedResourceFile),rel.RelationshipId.ToString());
+                }
+
 
                 var profileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 

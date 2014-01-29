@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,6 +34,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Modules.Admin.Security;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Profile;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -350,10 +351,13 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (Request.IsAuthenticated)
                 {
-                    if (!PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
+                    if (!PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName) )
                     {
-                        //Display current user's profile
-                        Response.Redirect(Globals.NavigateURL(PortalSettings.UserTabId, "", "UserID=" + UserInfo.UserID), true);
+                        if (HasManageUsersModulePermission() == false)
+                        {
+                            //Display current user's profile
+                            Response.Redirect(Globals.NavigateURL(PortalSettings.UserTabId, "", "UserID=" + UserInfo.UserID), true);
+                        }
                     }
                 }
                 else
@@ -595,6 +599,11 @@ namespace DotNetNuke.Modules.Admin.Users
             Response.Redirect(Globals.NavigateURL(), true);
         }
 
+        private bool HasManageUsersModulePermission()
+        {
+            return ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "MANAGEUSER");
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdRegister_Click runs when the Register button is clicked
@@ -607,7 +616,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
-            if (IsAdmin == false)
+            if (IsAdmin == false && HasManageUsersModulePermission() == false)
             {
                 return;
             }

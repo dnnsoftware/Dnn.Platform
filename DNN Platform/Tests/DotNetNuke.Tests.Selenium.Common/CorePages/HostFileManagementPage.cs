@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 
 namespace DNNSelenium.Common.CorePages
 {
-	class HostFileManagementPage : BasePage
+	class HostFileManagementPage : FileManagementPage
 	{
 		public HostFileManagementPage(IWebDriver driver) : base(driver) { }
 

@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FileProperties.ascx.cs" Inherits="DotNetNuke.Modules.DigitalAssets.FileProperties" %>
 <%@ Import Namespace="DotNetNuke.UI.Utilities" %>
-
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <asp:Panel ID="ScopeWrapper" runat="server">
@@ -83,8 +83,8 @@
         },
         {
             selectedTab: '<%=(!IsPostBack ? "0" : "-1")%>',            
-            canAdminPermissions: '<%=ClientAPI.GetSafeJSString(CanManageFolder.ToString().ToLowerInvariant()) %>',
-            dialogTitle: '<%=ClientAPI.GetSafeJSString(DialogTitle)%>'
+            canAdminPermissions: '<%=Localization.GetSafeJSString(CanManageFolder.ToString().ToLowerInvariant()) %>',
+            dialogTitle: '<%=Localization.GetSafeJSString(DialogTitle)%>'
         }
     );
 </script>

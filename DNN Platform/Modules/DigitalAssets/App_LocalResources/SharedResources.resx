@@ -282,18 +282,6 @@
   <data name="FolderFileNameIsReserved.Error" xml:space="preserve">
     <value>The name is reserved. Try a different name</value>
   </data>
-  <data name="SizeB.Text" xml:space="preserve">
-    <value>B</value>
-  </data>
-  <data name="SizeGb.Text" xml:space="preserve">
-    <value>GB</value>
-  </data>
-  <data name="SizeKb.Text" xml:space="preserve">
-    <value>KB</value>
-  </data>
-  <data name="SizeMb.Text" xml:space="preserve">
-    <value>MB</value>
-  </data>
   <data name="RefreshMenuItemExtensionPoint.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
@@ -332,5 +320,8 @@
   </data>
   <data name="FileDoesNotExists.Error" xml:space="preserve">
     <value>The file does not exist</value>
+  </data>
+  <data name="MyFolder.Text" xml:space="preserve">
+    <value>My Folder</value>
   </data>
 </root>

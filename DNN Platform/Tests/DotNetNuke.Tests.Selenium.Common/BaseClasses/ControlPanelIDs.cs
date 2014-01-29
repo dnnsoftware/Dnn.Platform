@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using OpenQA.Selenium;
@@ -30,14 +31,14 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string SocialEditProfile = "//a[@id = 'dnn_userLogin_editProfileLink']";
 		public static string SocialEditAccount = "//a[@id = 'dnn_userLogin_accountLink']";
 
-		public static string MessageLink = "dnn_dnnUser_messageLink";
-		public static string NotificationLink = "dnn_dnnUser_notificationLink";
+		public static string MessageLink = "//a[@id = 'dnn_dnnUser_messageLink']";
+		public static string NotificationLink = "//a[@id = 'dnn_dnnUser_notificationLink']";
 		public static string UserAvatar = "dnn_dnnUser_avatar";
 
 		public static string SearchBox = "//input[contains(@id,'dnnSearch_txtSearch')]";
 		public static string SearchButton = "//a[contains(@id, 'dnnSearch_cmdSearch')]";
 
-		public static string LanguageIcon = "//span[contains(@class, 'Language')]";
+		public static string LanguageIcon = "//div/span[contains(@class, 'Language')]";
 
 		public static string CopyrightNotice = "dnn_dnnCopyright_lblCopyright";
 		public static string CopyrightText = "Copyright 2013 by DNN Corp";
@@ -97,6 +98,7 @@ namespace DNNSelenium.Common.BaseClasses
 
 		public static string ToolsGoButton = "//input[@id = 'controlBar_SwitchSiteButton']";
 		public static string ToolsFileUploadOption = "//a[contains(text(), 'Upload File')]";
+		public static string ToolsClearCacheOption = "//a[@id = 'controlBar_ClearCache']";
 
 		public static string HelpGettingStartedOption = "//li[@id = 'ControlBar_gettingStartedLink']/a";
 
@@ -115,8 +117,15 @@ namespace DNNSelenium.Common.BaseClasses
 		public static string CloseEditModeButton = "//a[@id = 'ControlBar_EditPage' and contains(text(), 'Close Edit Mode')]";
 		public static string PageInEditMode = "//a[@class = 'controlBar_editPageInEditMode']";
 		public static string PageSettingsOption = "//a[contains(@href, 'edit/activeTab/settingTab')]";
+		public static string PagePermissionsOption = "//a[contains(@href, 'edit/activeTab/permissionsTab')]";
 		public static string ExportPageOption = "//a[contains(@href, 'ctl/ExportTab')]";
 		public static string DeletePageOption = "//a[@id = 'ControlBar_DeletePage']";
+
+		public static string PageDetailsFrameTab = "//li[contains(@id, 'ManageTabs_settingTab')]/a";
+		public static string CopyPageFrameTab = "//li[contains(@id, 'ManageTabs_copyTab')]/a";
+		public static string PermissionsFrameTab = "//li[contains(@id, 'ManageTabs_permissionsTab')]/a";
+		public static string AdvancedSettingsTab = "//li[contains(@id, 'ManageTabs_advancedTab')]/a";
+		public static string LocalizationTab = "//li[contains(@id, 'ManageTabs_localizationTab')]/a";
 
 		#endregion
 	}

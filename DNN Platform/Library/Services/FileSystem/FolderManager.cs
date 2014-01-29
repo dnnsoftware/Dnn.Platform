@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1165,7 +1165,7 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual IFolderInfo AddUserFolder(UserInfo user)
         {
             //user _default portal for all super users
-            var portalId = user.IsSuperUser ? -1 : user.PortalID;
+            var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
 
             var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
 
@@ -2142,8 +2142,16 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("newFolderPath", newFolderPath);
 
-            var parentFolderPath = newFolderPath.Substring(0, newFolderPath.Substring(0, newFolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
-            return MoveFolder(folder, GetFolder(folder.PortalID, parentFolderPath));
+            var nameCharIndex = newFolderPath.Substring(0, newFolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1;
+            var parentFolder = GetFolder(folder.PortalID, newFolderPath.Substring(0, nameCharIndex));
+            if (parentFolder.FolderID == folder.ParentID)
+            {
+                var newFolderName = newFolderPath.Substring(nameCharIndex, newFolderPath.Length - nameCharIndex - 1);
+                RenameFolder(folder, newFolderName);
+                return folder;
+            }
+
+            return MoveFolder(folder, parentFolder);
         }
 
         #endregion

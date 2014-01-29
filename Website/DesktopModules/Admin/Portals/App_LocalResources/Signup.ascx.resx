@@ -324,4 +324,7 @@
   <data name="DuplicateWithTab.Text" xml:space="preserve">
     <value>There has a page which's name is same with your site alias, please change a site alias.</value>
   </data>
+    <data name="DisallowedExtension.Warning" xml:space="preserve">
+    <value> There were files imported, but are not an authorized filetypes: {0}. Please check the Event Viewer for more information.</value>
+  </data>
 </root>

@@ -1,14 +1,14 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Journal" type="Module" version="07.02.00" isSystem="true">
+    <package name="Journal" type="Module" version="07.02.01" isSystem="true">
       <friendlyName>Journal</friendlyName>
       <description>DotNetNuke Corporation Journal module</description>
       <iconFile>DesktopModules/Journal/Images/journal_32X32.png</iconFile>
       <owner>
-        <name>DotNetNuke Corporation</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>http://www.dotnetnuke.com</url>
-        <email>training@dotnetnuke.com</email>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>

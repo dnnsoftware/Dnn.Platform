@@ -1,13 +1,13 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNNCorp.RazorHost" type="Module" version="07.02.00">
+    <package name="DNNCorp.RazorHost" type="Module" version="07.02.01">
       <friendlyName>Razor Host</friendlyName>
       <description>The Razor Host module allows developers to host Razor Scripts.</description>
       <owner>
-        <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="license.txt"/>
       <releaseNotes src="releaseNotes.txt" />

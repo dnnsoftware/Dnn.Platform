@@ -41,6 +41,7 @@ namespace DNNSelenium.Common.Tests.BVT
 			OpenMainPageAndLoginAsHost();
 
 			_logContent = LogContent();
+
 		}
 
 		[TestFixtureTearDown]

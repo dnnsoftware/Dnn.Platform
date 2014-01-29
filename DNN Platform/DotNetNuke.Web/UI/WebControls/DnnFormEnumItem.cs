@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,6 +23,7 @@
 
 using System;
 using System.Linq;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -41,7 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 _enumType = value;
                 // ReSharper disable AssignNullToNotNullAttribute
                 ListSource = (from object enumValue in Enum.GetValues(Type.GetType(_enumType))
-                              select new { Name = Enum.GetName(Type.GetType(_enumType), enumValue), Value = (int)enumValue })
+                              select new { Name = Localization.GetString(Enum.GetName(Type.GetType(_enumType), enumValue)) ?? Enum.GetName(Type.GetType(_enumType), enumValue), Value = (int)enumValue })
                                 .ToList();
                 // ReSharper restore AssignNullToNotNullAttribute
             }

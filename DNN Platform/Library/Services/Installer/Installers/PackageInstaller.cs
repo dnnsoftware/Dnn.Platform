@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -367,6 +367,7 @@ namespace DotNetNuke.Services.Installer.Installers
             //Add Event Message
             if (_eventMessage != null && !String.IsNullOrEmpty(_eventMessage.Attributes["UpgradeVersionsList"]))
             {
+                _eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
                 EventQueueController.SendMessage(_eventMessage, "Application_Start");
             }
 

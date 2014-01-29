@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -202,7 +202,6 @@ namespace DotNetNuke.Services.Install
         private void UpgradeApplication()
         {
             var databaseVersion = DataProvider.Instance().GetVersion();
-            var installVersion = DataProvider.Instance().GetInstallVersion();
 
             //Start Timer
             Upgrade.Upgrade.StartTimer();
@@ -263,6 +262,8 @@ namespace DotNetNuke.Services.Install
                         Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
                     }
 
+                    //calling GetInstallVersion after SQL scripts exection to ensure sp GetDatabaseInstallVersion exists
+                    var installVersion = DataProvider.Instance().GetInstallVersion();
                     string strError = Config.UpdateInstallVersion(installVersion);
                     if (!string.IsNullOrEmpty(strError))
                     {

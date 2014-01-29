@@ -1,7 +1,7 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -381,6 +381,7 @@ namespace DotNetNuke.Modules.Admin.Host
             chkAutoSync.Checked = Entities.Host.Host.EnableFileAutoSync;
             chkEnableContentLocalization.Checked = Entities.Host.Host.EnableContentLocalization;
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
+            chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
 			txtAsyncTimeout.Text = Entities.Host.Host.AsyncTimeout.ToString();
 
@@ -709,7 +710,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     }
                     else
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, "", Localization.GetString("EmailSentMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                        UI.Skins.Skin.AddModuleMessage(this, "", String.Format(Localization.GetString("EmailSentMessage", LocalResourceFile), txtHostEmail.Text), ModuleMessage.ModuleMessageType.GreenSuccess);
                     }
                 }
                 else
@@ -860,6 +861,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("HelpURL", txtHelpURL.Text, false);
                     HostController.Instance.Update("EnableContentLocalization", chkEnableContentLocalization.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("DebugMode", chkDebugMode.Checked ? "Y" : "N", false);
+                    HostController.Instance.Update("ShowCriticalErrors", chkCriticalErrors.Checked ? "Y" : "N", true);
                     HostController.Instance.Update("MessageSchedulerBatchSize", txtBatch.Text, false);
                     
                     HostController.Instance.Update("EventLogBuffer", chkLogBuffer.Checked ? "Y" : "N", false);

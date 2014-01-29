@@ -25,22 +25,27 @@ namespace DNNSelenium.Common.CorePages
 			get { return ""; }
 		}
 
-		public static string PageDetailsFrameTab = "//li[contains(@id, 'ManageTabs_settingTab')]/a";
-		public static string CopyPageFrameTab = "//li[contains(@id, 'ManageTabs_copyTab')]/a";
-		public static string PermissionsFrameTab = "//li[contains(@id, 'ManageTabs_permissionsTab')]/a";
-		public static string AdvancedSettings = "//li[contains(@id, 'ManageTabs_advancedTab')]/a";
-
 		public static string PageNameTextBox = "//input[contains(@id, 'ManageTabs_txtTabName')]";
 		public static string PageDescriptionTextBox = "//textarea[contains(@id, 'ManageTabs_txtDescription')]";
 		public static string PageTitleTextBox = "//input[contains(@id, 'ManageTabs_txtTitle')]";
 		public static string ParentPageArrow = "cboParentTab_Arrow";
-		public static string ParentPageDropDown = "//div[contains(@id, 'ManageTabs_cboParentTab')]/div/a";
+		public static string ParentPageDropDown = "//div[@id = 'dnn_ctr_ManageTabs_cboParentTab']";
 
 		public static string CopyFromPageArrow = "cboCopyPage_Arrow";
-		public static string CopyFromPageDropDown = "//div[contains(@id, 'ManageTabs_cboCopyPage')]/div/a";
+		public static string CopyFromPageDropDown = "//div[@id = 'dnn_ctr_ManageTabs_cboCopyPage']";
 
 		public static string AddPageFrameButton = "//a[contains(@id, 'ManageTabs_cmdUpdate')]";
 		public static string UpdatePageFrameButton = "//a[contains(@id, 'ManageTabs_cmdUpdate')]";
+
+		public static string PermissionTable = "//table[@class = 'dnnPermissionsGrid']";
+		public static string UpdateButton = "//a[contains(@id, '_ManageTabs_cmdUpdate')]";
+
+		public static string URLManagementAccordion = "//h2[@id='dnnPanel-TabsUrlManagement-Extension']/a";
+		public static string CustomUrlTable = "//table[@id = 'custom-urls']";
+		public static string OriginalUrlTable = "//table[@id = 'system-generated-urls']";
+		public static string CreateButton = "//a[contains(@data-bind, 'createCustomUrl')]";
+		public static string URLPathTextbox = "//input[contains(@data-bind, 'value: path')]";
+		public static string SaveButton = "//a[contains(@data-bind, 'click: save')]";
 
 		public void OpenUsingUrl(string baseUrl, string pageName)
 		{
@@ -68,7 +73,7 @@ namespace DNNSelenium.Common.CorePages
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new Page:");
 
-			WaitAndClick(By.XPath(PageDetailsFrameTab));
+			WaitAndClick(By.XPath(ControlPanelIDs.PageDetailsFrameTab));
 			Type(By.XPath(PageNameTextBox), pageName);
 
 			Click(By.XPath(AddPageFrameButton));
@@ -79,13 +84,12 @@ namespace DNNSelenium.Common.CorePages
 		{
 			Trace.WriteLine(BasePage.TraceLevelPage + "Add a new Page:");
 
-			WaitAndClick(By.XPath(PageDetailsFrameTab));
+			WaitAndClick(By.XPath(ControlPanelIDs.PageDetailsFrameTab));
 			Type(By.XPath(PageNameTextBox), pageName);
 
 			Click(By.XPath(AddPageFrameButton));
 
-			Thread.Sleep(Settings.Default.WaitFactor * 2000);
-
+			Thread.Sleep(Settings.Default.WaitFactor*4000);
 		}
 
 		public void CopyFromContactUsPage()
@@ -117,21 +121,22 @@ namespace DNNSelenium.Common.CorePages
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Copy Page:");
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Page Details' Tab:");
-			OpenTab(By.XPath(PageDetailsFrameTab));
+			OpenTab(By.XPath(ControlPanelIDs.PageDetailsFrameTab));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Enter page name in 'Page Name' text box:");
+			WaitAndClear(By.XPath(PageNameTextBox));
 			Type(By.XPath(PageNameTextBox), pageName);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Select Parent Page:");
 
-			LoadableSelectByValue(By.XPath(ParentPageDropDown), parentPage);
+			FolderSelectByValue(By.XPath(ParentPageDropDown), parentPage);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Copy Page' Tab:");
-			OpenTab(By.XPath(CopyPageFrameTab));
+			OpenTab(By.XPath(ControlPanelIDs.CopyPageFrameTab));
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Select 'Copy From Page':");
 
-			LoadableSelectByValue(By.XPath(CopyFromPageDropDown), copyFromPage);
+			FolderSelectByValue(By.XPath(CopyFromPageDropDown), copyFromPage);
 
 			CopyFromContactUsPage();
 
@@ -149,20 +154,110 @@ namespace DNNSelenium.Common.CorePages
 
 			WaitForConfirmationBox(60);
 			ClickYesOnConfirmationBox();
+
 		}
 
 		public void EditPageTitle(string pageTitle)
 		{
 			Trace.WriteLine(BasePage.TraceLevelComposite + "Edit Page title:");
-			OpenTab(By.XPath(PageDetailsFrameTab));
+			OpenTab(By.XPath(ControlPanelIDs.PageDetailsFrameTab));
 			Clear(By.XPath(PageTitleTextBox));
 			Type(By.XPath(PageTitleTextBox), pageTitle);
 
 			Trace.WriteLine(BasePage.TraceLevelPage + "Click on 'Update Page' button:");
 			ClickOnButton(By.XPath(UpdatePageFrameButton));
 
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
+		}
+
+		public void SetPageViewPermissions(string option, string allow)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Set Page View Permissions:");
+
+			SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PagePermissionsOption);
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Permission table: ");
+			WaitForElement(By.XPath(PermissionTable + "//tr[td[text() = '" + option + "'" + "]]/td[2]/img")).Click();
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Update Button: ");
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
+		}
+
+		public void SetPageEditPermissions(string option, string allow)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Set Page View Permissions:");
+
+			SelectMenuOption(ControlPanelIDs.ControlPanelEditPageOption, ControlPanelIDs.PagePermissionsOption);
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Permission table: ");
+			WaitForElement(By.XPath(PermissionTable + "//tr[td[text() = '" + option + "'" + "]]/td[3]/img")).Click();
+
+			Trace.WriteLine(BasePage.TraceLevelPage + "Click on Update Button: ");
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(Settings.Default.WaitFactor * 1000);
+		}
+
+		public void CreateCustomURL(string newUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Create Custom Url:");
+
+			OpenTab(By.XPath(ControlPanelIDs.AdvancedSettingsTab));
+			AccordionOpen(By.XPath(URLManagementAccordion));
+
+			WaitAndClick(By.XPath(CreateButton));
+
+			WaitForElement(By.XPath(URLPathTextbox)).WaitTillEnabled();
+
+			Type(By.XPath(URLPathTextbox), newUrl);
+
+			Click(By.XPath(SaveButton));
+
+			Thread.Sleep(1000);
+
+			ClickOnButton(By.XPath(UpdateButton));
+
 			Thread.Sleep(1000);
 		}
 
+		public void EditCustomURL(string oldUrl, string modifiedUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Edit Custom Url:");
+
+			OpenTab(By.XPath(ControlPanelIDs.AdvancedSettingsTab));
+			AccordionOpen(By.XPath(URLManagementAccordion));
+
+			WaitForElement(By.XPath("//table[@id = 'custom-urls']/tbody/tr/td//a[@data-bind = 'click: editUrl']")).WaitTillEnabled().Click();
+
+			WaitForElement(By.XPath(URLPathTextbox)).WaitTillEnabled();
+
+			Clear(By.XPath(URLPathTextbox));
+
+			Type(By.XPath(URLPathTextbox), modifiedUrl);
+
+			Click(By.XPath(SaveButton));
+
+			ClickOnButton(By.XPath(UpdateButton));
+
+			Thread.Sleep(1000);
+		}
+
+		public void DeleteCustomURL(string newUrl)
+		{
+			Trace.WriteLine(BasePage.TraceLevelComposite + "Delete Custom Url:");
+
+			OpenTab(By.XPath(ControlPanelIDs.AdvancedSettingsTab));
+			AccordionOpen(By.XPath(URLManagementAccordion));
+
+			WaitForElement(By.XPath("//table[@id = 'custom-urls']/tbody/tr/td//a[@data-bind = 'attachDeleteConfirmation: true']")).WaitTillEnabled().Click();
+
+			WaitForConfirmationBox(15);
+
+			ClickYesOnConfirmationBox();
+
+			Thread.Sleep(1000);
+		}
 	}
 }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,6 +51,8 @@ namespace DotNetNuke.Entities.Users
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (UserOnlineController));
         private static readonly MembershipProvider memberProvider = MembershipProvider.Instance();
+        private static readonly object Locker = new object();
+        private static readonly string CacheKey = "OnlineUserList";
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -89,13 +91,18 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public Hashtable GetUserList()
         {
-            string key = "OnlineUserList";
-            var userList = (Hashtable) DataCache.GetCache(key);
-            if ((userList == null))
+            var userList = (Hashtable)DataCache.GetCache(CacheKey);
+            if (userList == null)
             {
-            	//Do we have the Hashtable?
-                userList = new Hashtable();
-                DataCache.SetCache(key, userList);
+                lock (Locker)
+                {
+                    userList = (Hashtable)DataCache.GetCache(CacheKey);
+                    if (userList == null)
+                    {
+                        userList = Hashtable.Synchronized(new Hashtable());
+                        DataCache.SetCache(CacheKey, userList);
+                    }
+                }
             }
             return userList;
         }
@@ -141,8 +148,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public void SetUserList(Hashtable userList)
         {
-            string key = "OnlineUserList";
-            DataCache.SetCache(key, userList);
+            DataCache.SetCache(CacheKey, userList);
         }
 
         /// -----------------------------------------------------------------------------

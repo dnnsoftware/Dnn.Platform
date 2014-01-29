@@ -20,12 +20,6 @@
         <div class="dnnFormItem timeMeasurement">
             <dnn:Label ID="plTimeLapse" runat="server" ControlName="txtTimeLapse" />
             <asp:TextBox ID="txtTimeLapse" runat="server" MaxLength="10" CssClass="dnnSmallSizeComboBox" />
-         <%--   <asp:DropDownList ID="ddlTimeLapseMeasurement" runat="server">
-                <asp:ListItem resourcekey="Seconds" Value="s" />
-                <asp:ListItem resourcekey="Minutes" Value="m" />
-                <asp:ListItem resourcekey="Hours" Value="h" />
-                <asp:ListItem resourcekey="Days" Value="d" />
-            </asp:DropDownList>--%>
             <dnn:DnnComboBox ID="ddlTimeLapseMeasurement" runat="server" CssClass="dnnSmallSizeComboBox">
                 <Items>
                     <dnn:DnnComboBoxItem resourcekey="Seconds" Value="s" />
@@ -38,12 +32,6 @@
         <div class="dnnFormItem timeMeasurement">
             <dnn:Label ID="plRetryTimeLapse" runat="server" ControlName="txtRetryTimeLapse" />
             <asp:TextBox ID="txtRetryTimeLapse" runat="server" MaxLength="10" CssClass="dnnSmallSizeComboBox" />
-          <%--  <asp:DropDownList ID="ddlRetryTimeLapseMeasurement" runat="server">
-               <asp:ListItem resourcekey="Seconds" Value="s" />
-                <asp:ListItem resourcekey="Minutes" Value="m" />
-                <asp:ListItem resourcekey="Hours" Value="h" />
-                <asp:ListItem resourcekey="Days" Value="d" />
-            </asp:DropDownList>--%>
             <dnn:DnnComboBox ID="ddlRetryTimeLapseMeasurement" runat="server" CssClass="dnnSmallSizeComboBox">
                 <Items>
                     <dnn:DnnComboBoxItem resourcekey="Seconds" Value="s" />
@@ -55,18 +43,6 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="plRetainHistoryNum" runat="server" ControlName="ddlRetainHistoryNum" />
-           <%-- <asp:DropDownList ID="ddlRetainHistoryNum" runat="server">
-                <asp:ListItem Value="0" resourcekey="None" />
-                <asp:ListItem Value="1">1</asp:ListItem>
-                <asp:ListItem Value="5">5</asp:ListItem>
-                <asp:ListItem Value="10">10</asp:ListItem>
-                <asp:ListItem Value="25">25</asp:ListItem>
-                <asp:ListItem Value="50">50</asp:ListItem>
-                <asp:ListItem Value="100">100</asp:ListItem>
-                <asp:ListItem Value="250">250</asp:ListItem>
-                <asp:ListItem Value="500">500</asp:ListItem>
-                <asp:ListItem Value="-1" resourcekey="All" />
-            </asp:DropDownList>--%>
             <dnn:DnnComboBox ID="ddlRetainHistoryNum" runat="server">
                 <Items>
                     <dnn:DnnComboBoxItem Value="0" resourcekey="None" />
@@ -84,10 +60,6 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="plAttachToEvent" runat="server" ControlName="ddlAttachToEvent" />
-          <%--  <asp:DropDownList ID="ddlAttachToEvent" runat="server" >
-                <asp:ListItem resourcekey="None" Value="" />
-                <asp:ListItem resourcekey="APPLICATION_START" Value="APPLICATION_START" />
-            </asp:DropDownList>--%>
             <dnn:DnnComboBox ID="ddlAttachToEvent" runat="server" >
                 <Items>
                     <dnn:DnnComboBoxItem resourcekey="None" Value="" />
