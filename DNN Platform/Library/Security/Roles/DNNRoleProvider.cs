@@ -86,6 +86,8 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override bool CreateRole(RoleInfo role)
         {
+            Requires.NotNegative("PortalId", role.PortalID);
+
             try
             {
                 role.RoleID =

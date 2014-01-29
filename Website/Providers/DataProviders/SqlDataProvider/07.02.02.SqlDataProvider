@@ -8,6 +8,11 @@
 /*****                                                  *****/
 /************************************************************/
 
+-- DNN-4740
+IF EXISTS (SELECT * FROM Sys.Check_Constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'CK_{objectQualifier}Roles_PortalId')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Roles] DROP CONSTRAINT CK_{objectQualifier}Roles_PortalId
+GO
+
 /***** Task DNN-DNN-3371: update sp Journal_Get to can check security setting, also update func Journal_User_Permissions to get correct role info. *****/
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
   DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Get
