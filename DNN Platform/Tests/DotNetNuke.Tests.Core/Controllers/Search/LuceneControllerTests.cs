@@ -33,6 +33,7 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
+using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 
 using Moq;
@@ -59,6 +60,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 	    private const string Line2 = "the quick gold fox jumped over the lazy black dog";
 	    private const string Line3 = "the quick fox jumps over the black dog";
 	    private const string Line4 = "the red fox jumped over the lazy dark gray dog";
+        private const string Line_Chinese = "这里是中文的内容";
+
+        private const string SearchKeyword_Line1 = "fox";
+        private const string SearchKeyword_Chinese = "中文";
+
+	    private const string EmptyCustomAnalyzer = "";
+	    private const string InvalidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseInvalidAnalyzer";
+        private const string ValidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseAnalyzer, Lucene.Net.Contrib.Analyzers";
 
         private Mock<IHostController> _mockHostController;
         private LuceneControllerImpl _luceneController;
@@ -464,6 +473,78 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void LuceneController_Search_Throws_On_Zero_PageIndex()
         {
             Assert.Throws<ArgumentException>(() => _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = new BooleanQuery(), PageIndex = 0 })));
+        }
+
+        [Test]
+        [TestCase(EmptyCustomAnalyzer)]
+        [TestCase(InvalidCustomAnalyzer)]
+        [TestCase(ValidCustomAnalyzer)]
+        public void LuceneController_Search_With_Chinese_Chars_And_Custom_Analyzer(string customAlalyzer = "")
+        {
+            _mockHostController.Setup(c => c.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
+            //Arrange
+            const string fieldName = "content";
+            const string fieldValue = Line_Chinese;
+
+            //Act 
+            var field = new Field(fieldName, fieldValue, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+            var doc = new Document();
+            doc.Add(field);
+
+            _luceneController.Add(doc);
+            _luceneController.Commit();
+
+            var analyzer = _luceneController.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
+            var keywordQuery = new BooleanQuery();
+            var parserContent = new QueryParser(Constants.LuceneVersion, fieldName, analyzer);
+            var parsedQueryContent = parserContent.Parse(SearchKeyword_Chinese);
+            keywordQuery.Add(parsedQueryContent, Occur.SHOULD);
+
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = keywordQuery }));
+
+            //Assert
+            if (customAlalyzer == ValidCustomAnalyzer)
+            {
+                Assert.AreEqual(1, hits.Results.Count());
+                Assert.AreEqual(Line_Chinese.Replace(SearchKeyword_Chinese, string.Format("<b>{0}</b>", SearchKeyword_Chinese)), hits.Results.ElementAt(0).ContentSnippet);
+            }
+            else
+            {
+                Assert.AreEqual(0, hits.Results.Count());
+            }
+        }
+
+        [Test]
+        [TestCase(EmptyCustomAnalyzer)]
+        [TestCase(InvalidCustomAnalyzer)]
+        [TestCase(ValidCustomAnalyzer)]
+        public void LuceneController_Search_With_English_Chars_And_Custom_Analyzer(string customAlalyzer = "")
+        {
+            _mockHostController.Setup(c => c.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
+            //Arrange
+            const string fieldName = "content";
+            const string fieldValue = Line1;
+
+            //Act 
+            var field = new Field(fieldName, fieldValue, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+            var doc = new Document();
+            doc.Add(field);
+
+            _luceneController.Add(doc);
+            _luceneController.Commit();
+
+            var analyzer = _luceneController.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
+            var keywordQuery = new BooleanQuery();
+            var parserContent = new QueryParser(Constants.LuceneVersion, fieldName, analyzer);
+            var parsedQueryContent = parserContent.Parse(SearchKeyword_Line1);
+            keywordQuery.Add(parsedQueryContent, Occur.SHOULD);
+
+            var hits = _luceneController.Search(CreateSearchContext(new LuceneQuery { Query = keywordQuery }));
+
+            //Assert
+            Assert.AreEqual(1, hits.Results.Count());
+            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", hits.Results.ElementAt(0).ContentSnippet);
+
         }
 
         #endregion

@@ -59,6 +59,7 @@ using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
 #endregion
@@ -586,7 +587,44 @@ namespace DotNetNuke.Modules.Admin.Host
             var maxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
             txtIndexWordMinLength.Text = minWordLength.ToString(CultureInfo.InvariantCulture);
             txtIndexWordMaxLength.Text = maxWordLength.ToString(CultureInfo.InvariantCulture);
-            txtCustomAnalyzer.Text = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
+
+            var noneSpecified = "<" + Localization.GetString("None_Specified") + ">";
+
+            cbCustomAnalyzer.DataSource = GetAvailableAnalyzers();
+            cbCustomAnalyzer.DataBind();
+            cbCustomAnalyzer.Items.Insert(0, new DnnComboBoxItem(noneSpecified, string.Empty));
+            cbCustomAnalyzer.Select(HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty), false);
+        }
+
+        private IList<string> GetAvailableAnalyzers()
+        {
+            var analyzers = new List<string>();
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                try
+                {
+                    analyzers.AddRange(from t in assembly.GetTypes() where IsAnalyzerType(t) && IsAllowType(t) select string.Format("{0}, {1}", t.FullName, assembly.GetName().Name));
+                }
+                catch (Exception)
+                {
+                    //do nothing but just ignore the error.
+                }
+                    
+            }
+
+
+            return analyzers;
+        }
+
+        private bool IsAnalyzerType(Type type)
+        {
+            return type != null && type.FullName != null && (type.FullName.Contains("Lucene.Net.Analysis.Analyzer") || IsAnalyzerType(type.BaseType));
+        }
+
+        private bool IsAllowType(Type type)
+        {
+            return !type.FullName.Contains("Lucene.Net.Analysis.Analyzer") && !type.FullName.Contains("DotNetNuke");
         }
 
         private void EnableCompositeFilesChanged(object sender, EventArgs e)
@@ -963,7 +1001,7 @@ namespace DotNetNuke.Modules.Admin.Host
             }
 
             var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
-            var newAnalyzer = txtCustomAnalyzer.Text.Trim();
+            var newAnalyzer = cbCustomAnalyzer.SelectedValue.Trim();
             if (!oldAnalyzer.Equals(newAnalyzer))
             {
                 HostController.Instance.Update("Search_CustomAnalyzer", newAnalyzer);

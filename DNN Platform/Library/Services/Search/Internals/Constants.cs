@@ -104,6 +104,7 @@ namespace DotNetNuke.Services.Search.Internals
         internal const string SearchReindexSettingName = "Search_ReindexRequestedOn";
         internal const string SearchLastSuccessIndexName = "Search_LastSuccessfulIndexedOn";
         internal const string SearchoptimizeFlagName = "Search_OptimizeIndex";
+        internal const string SearchCustomAnalyzer = "Search_CustomAnalyzer";
 
         // misc.
         internal const string TlsSearchInfo = "TLS_SEARCH_INFO";

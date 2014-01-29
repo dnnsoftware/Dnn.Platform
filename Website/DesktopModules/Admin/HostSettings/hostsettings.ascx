@@ -489,7 +489,7 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="txtCustomAnalyzer" />
-                    <asp:TextBox runat="server" ID="txtCustomAnalyzer"></asp:TextBox>
+                    <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>
                 </div>
                 <div class="dnnTableHeader">
                     <div class="dnnFormItem">

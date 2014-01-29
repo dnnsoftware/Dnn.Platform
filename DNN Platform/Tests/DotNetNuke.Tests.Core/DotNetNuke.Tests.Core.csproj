@@ -63,6 +63,9 @@
     <Reference Include="Lucene.Net">
       <HintPath>..\..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
     </Reference>
+    <Reference Include="Lucene.Net.Contrib.Analyzers">
+      <HintPath>..\..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.Analyzers.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net.Contrib.FastVectorHighlighter, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.FastVectorHighlighter.dll</HintPath>
