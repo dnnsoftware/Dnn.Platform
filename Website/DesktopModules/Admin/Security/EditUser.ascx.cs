@@ -466,6 +466,10 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 AddModuleMessage("UserDeleteError", ModuleMessage.ModuleMessageType.RedError, true);
             }
+            
+            //DNN-26777 
+            new PortalSecurity().SignOut();
+            Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId));
         }
 
         protected void cmdUpdate_Click(object sender, EventArgs e)

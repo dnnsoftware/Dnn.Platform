@@ -15,7 +15,14 @@
     (function ($, Sys) {
         function setUpDnnEditUser() {
             $('#dnnEditUser').dnnTabs().dnnPanels();
-
+            //DNN-26777
+            $('#<%= cmdDelete.ClientID %>').dnnConfirm({
+                text: '<%= ClientAPI.GetSafeJSString(LocalizeString("DeletetUser")) %>',
+                            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+                            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+                            title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+                            isButton: false
+                        });
             var serviceFramework = $.ServicesFramework(<%=ModuleId %>);
 
             var closeText = '<%= ClientAPI.GetSafeJSString(LocalizeString("Close")) %>';
