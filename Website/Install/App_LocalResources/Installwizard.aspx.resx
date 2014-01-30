@@ -520,16 +520,4 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
   <data name="InstallVersion.Text" xml:space="preserve">
     <value>Adding InstallVersion</value>
   </data>
-  <data name="Email.Help" xml:space="preserve">
-    <value>The email address for the SuperUser account.</value>
-  </data>
-  <data name="Email.Invalid" xml:space="preserve">
-    <value>The email address is not valid.</value>
-  </data>
-  <data name="Email.Required" xml:space="preserve">
-    <value>Email is required.</value>
-  </data>
-  <data name="Email.Text" xml:space="preserve">
-    <value>Email</value>
-  </data>
 </root>
