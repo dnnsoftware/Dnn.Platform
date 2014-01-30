@@ -936,6 +936,14 @@ dnn.controlBar.init = function (settings) {
         title: settings.titleText
     });
 
+
+    $('a#ControlBar_PublishPage').dnnConfirm({
+        text: settings.publishText,
+        yesText: settings.yesText,
+        noText: settings.noText,
+        title: settings.titleText
+    });
+
     $('a#shareableWarning_cmdConfirm').click(function () {
         dnn.controlBar.hideShareableWarning();
         if (dnn.controlBar.addModuleDataVar) {

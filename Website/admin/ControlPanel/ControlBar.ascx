@@ -281,6 +281,11 @@
                         <li><a href="<%= BuildToolUrl("DeletePage", false, "", "", "", true) %>" id="ControlBar_DeletePage">
                             <%= GetString("Tool.DeletePage.Text") %></a></li>
                         <% } %>
+                        <% if (TabPermissionController.CanAdminPage())
+                           {%>
+                        <li><a href="<%= BuildToolUrl("PublishPage", false, "", "", "", true) %>" id="ControlBar_PublishPage">
+                            <%= GetString("Tool.PublishPage.Text")/* TODO Create the PublishPage URL */ %></a></li>
+                        <% } %>
                        
                     </ul>
                     <div class="dnnClear">
@@ -388,7 +393,8 @@
         yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Yes.Text", Localization.SharedResourceFile)) %>',
         noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile)) %>',
         titleText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile)) %>',
-        deleteText: '<%= GetButtonConfirmMessage("DeletePage") %>',
+        deleteText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString( GetButtonConfirmMessage("DeletePage") )%>',
+        publishText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString( GetButtonConfirmMessage("PublishPage") )%>',
         copyPermissionsToChildrenText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
             
         dragModuleToolTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("DragModuleToolTip.Text")) %>',
