@@ -280,8 +280,10 @@
     <Compile Include="Entities\Portals\Internal\PortalTemplateIOImpl.cs" />
     <Compile Include="Entities\Portals\Internal\TestablePortalAliasController.cs" />
     <Compile Include="Entities\Portals\Internal\TestablePortalController.cs" />
+    <Compile Include="Entities\Tabs\ITabPublishingController.cs" />
     <Compile Include="Entities\Tabs\TabAliasSkinInfo.cs" />
     <Compile Include="Entities\Tabs\TabExtensions.cs" />
+    <Compile Include="Entities\Tabs\TabPublishingController.cs" />
     <Compile Include="Entities\Tabs\TabUrlInfo.cs" />
     <Compile Include="Entities\Tabs\PortalAliasUsageType.cs" />
     <Compile Include="Entities\Urls\ActionType.cs" />

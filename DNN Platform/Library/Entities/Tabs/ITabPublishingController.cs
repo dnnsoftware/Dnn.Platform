@@ -19,30 +19,15 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using DotNetNuke.Common;
-
-namespace DotNetNuke.Web.Api.Internal
+namespace DotNetNuke.Entities.Tabs
 {
-    public sealed class DnnPagePermissionAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
+    public interface ITabPublishingController
     {
-        private string permissionKey = "EDIT";
-
-        public string PermissionKey
-        {
-            get
-            {
-                return permissionKey;
-            }
-            set
-            {
-                permissionKey = value;
-            }
-        }
-        public override bool IsAuthorized(AuthFilterContext context)
-        {
-            Requires.NotNull("context", context);
-
-            return PagePermissionsAttributesHelper.HasTabPermission(PermissionKey);
-        }
+        /// <summary>
+        /// Publish a page. Set VIEW permission to All Users
+        /// </summary>
+        /// <param name="tabID">Tab Id from the tab to be published</param>
+        /// <param name="portalID">Portal Id from the portal where the tab exists</param>
+        void PublishTab(int tabID, int portalID);
     }
 }

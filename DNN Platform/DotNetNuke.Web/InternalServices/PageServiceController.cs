@@ -61,9 +61,9 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage PublishPage()
         {
             var tabId = Request.FindTabId();
-            //TODO - Call PagePublishingController to apply the Publishing logic
+            TabPublishingController.Instance.PublishTab(tabId, PortalId);
             
-            return Request.CreateResponse(HttpStatusCode.OK, tabId);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
         
         [HttpPost]
