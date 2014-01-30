@@ -20,6 +20,7 @@
 
 #endregion
 
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -51,6 +52,18 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 return _portalId.Value;
             }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnPagePermission]
+        public HttpResponseMessage PublishPage()
+        {
+            var tabId = Request.FindTabId();
+            //TODO - Call PagePublishingController to apply the Publishing logic
+            
+            return Request.CreateResponse(HttpStatusCode.OK, tabId);
         }
         
         [HttpPost]

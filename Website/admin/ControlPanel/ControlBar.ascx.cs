@@ -308,9 +308,9 @@ namespace DotNetNuke.UI.ControlPanels
                     }
                     break;
                 case "PublishPage":
-                    if (TabPermissionController.CanAddPage())
+                    if (TabPermissionController.CanAdminPage())
                     {
-                        returnValue = Globals.NavigateURL("Tab", "activeTab=settingTab");
+                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID);
                     }
                     break;
                 default:
