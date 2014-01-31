@@ -33,13 +33,13 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Workflow;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Profile;
@@ -51,16 +51,12 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Client;
-
 using ICSharpCode.SharpZipLib.Zip;
-
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 #endregion
@@ -559,7 +555,7 @@ namespace DotNetNuke.Entities.Portals
 	            }
 				catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
 	            {
-		            Logger.Error(ex.Message);
+                    Logger.Error(ex.Message);
 	            }
             }
         }
@@ -635,61 +631,73 @@ namespace DotNetNuke.Entities.Portals
             var folderMappingController = FolderMappingController.Instance;
             FolderMappingInfo folderMapping = null;
 
-            foreach (XmlNode node in nodeFolders.SelectNodes("//folder"))
+            //DNN-2949 set ignorewhitelist to true to allow files with not allowed extensions to be added during portal creation
+            HostController.Instance.Update("IgnoreWhiteList", "Y", true);
+            try
             {
-                folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
-
-                //First check if the folder exists
-                objInfo = folderManager.GetFolder(PortalId, folderPath);
-
-                if (objInfo == null)
+                foreach (XmlNode node in nodeFolders.SelectNodes("//folder"))
                 {
-                    isProtected = PathUtils.Instance.IsDefaultProtectedPath(folderPath);
+                    folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
 
-                    if (isProtected)
-                    {
-                        //protected folders must use insecure storage
-                        folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
-                    }
-                    else
-                    {
-                        storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(node, "storagelocation", "0"));
+                    //First check if the folder exists
+                    objInfo = folderManager.GetFolder(PortalId, folderPath);
 
-                        switch (storageLocation)
+                    if (objInfo == null)
+                    {
+                        isProtected = PathUtils.Instance.IsDefaultProtectedPath(folderPath);
+
+                        if (isProtected)
                         {
-                            case (int)FolderController.StorageLocationTypes.InsecureFileSystem:
-                                folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
-                                break;
-                            case (int)FolderController.StorageLocationTypes.SecureFileSystem:
-                                folderMapping = folderMappingController.GetFolderMapping(PortalId, "Secure");
-                                break;
-                            case (int)FolderController.StorageLocationTypes.DatabaseSecure:
-                                folderMapping = folderMappingController.GetFolderMapping(PortalId, "Database");
-                                break;
-                            default:
-                                break;
+                            //protected folders must use insecure storage
+                            folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
                         }
+                        else
+                        {
+                            storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(node, "storagelocation", "0"));
 
-                        isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
+                            switch (storageLocation)
+                            {
+                                case (int) FolderController.StorageLocationTypes.InsecureFileSystem:
+                                    folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
+                                    break;
+                                case (int) FolderController.StorageLocationTypes.SecureFileSystem:
+                                    folderMapping = folderMappingController.GetFolderMapping(PortalId, "Secure");
+                                    break;
+                                case (int) FolderController.StorageLocationTypes.DatabaseSecure:
+                                    folderMapping = folderMappingController.GetFolderMapping(PortalId, "Database");
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
+                        }
+                        //Save new folder
+                        objInfo = folderManager.AddFolder(folderMapping, folderPath);
+                        objInfo.IsProtected = isProtected;
+
+                        folderManager.UpdateFolder(objInfo);
                     }
-                    //Save new folder
-                    objInfo = folderManager.AddFolder(folderMapping, folderPath);
-                    objInfo.IsProtected = isProtected;
 
-                    folderManager.UpdateFolder(objInfo);
+                    var nodeFolderPermissions = node.SelectNodes("folderpermissions/permission");
+                    ParseFolderPermissions(nodeFolderPermissions, PortalId, (FolderInfo) objInfo);
+
+                    var nodeFiles = node.SelectNodes("files/file");
+
+                    if (!String.IsNullOrEmpty(folderPath))
+                    {
+                        folderPath += "/";
+                    }
+
+                    ParseFiles(nodeFiles, PortalId, (FolderInfo) objInfo);
                 }
-
-                var nodeFolderPermissions = node.SelectNodes("folderpermissions/permission");
-                ParseFolderPermissions(nodeFolderPermissions, PortalId, (FolderInfo)objInfo);
-
-                var nodeFiles = node.SelectNodes("files/file");
-
-                if (!String.IsNullOrEmpty(folderPath))
-                {
-                    folderPath += "/";
-                }
-
-                ParseFiles(nodeFiles, PortalId, (FolderInfo)objInfo);
+                //DNN-2949 set ignorewhitelist to false right away after ParseFiles was executed on all folders in template nodes
+                HostController.Instance.Update("IgnoreWhiteList", "N", true);
+            }
+            catch(Exception e)
+            {
+                //DNN-2949 ensure ignorewhitelist is set back to false in case of any exceptions during files parsing/adding
+                HostController.Instance.Update("IgnoreWhiteList", "N", true);
             }
         }
 
