@@ -335,7 +335,7 @@ namespace DotNetNuke.Entities.Urls
             ForceLowerCaseRegex = GetStringSetting(PreventLowerCaseUrlRegexSetting, String.Empty);
 
             RedirectWrongCase = GetBooleanSetting(RedirectMixedCaseSetting, false);
-            SSLClientRedirect = GetBooleanSetting("sslClientRedirect", true);
+            SSLClientRedirect = GetBooleanSetting("sslClientRedirect", false);
             LogCacheMessages = GetBooleanSetting(LogCacheMessagesSetting, false);
 
             //791 : use threadlocking option
