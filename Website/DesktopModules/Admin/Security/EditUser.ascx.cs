@@ -432,6 +432,13 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlServices.ID = "MemberServices";
             ctlServices.ModuleConfiguration = ModuleConfiguration;
             ctlServices.UserId = UserId;
+
+            //Define DisplayName filed Enabled Property:
+            object setting = GetSetting(UserPortalID, "Security_DisplayNameFormat");
+            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+            {
+                displayName.Enabled = false;
+            }
         }
 
         /// -----------------------------------------------------------------------------
