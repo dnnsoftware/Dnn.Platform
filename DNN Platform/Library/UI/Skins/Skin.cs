@@ -285,7 +285,7 @@ namespace DotNetNuke.UI.Skins
         private void InjectControlPanel()
         {
             //if querystring dnnprintmode=true, controlpanel will not be shown
-            if (Request.QueryString["dnnprintmode"] != "true" && Request.QueryString["popUp"] != "true")
+            if (Request.QueryString["dnnprintmode"] != "true" && Request.QueryString["popUp"] != "true" && Request.QueryString["hidecommandbar"] != "true")
             {
                 if ((ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
                 {
