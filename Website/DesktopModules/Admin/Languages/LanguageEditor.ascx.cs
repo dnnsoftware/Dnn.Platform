@@ -904,26 +904,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     }
                     break;
                 case "Global Resources":
-                    node = new RadTreeNode();
-                    node.Text = LocalizeString("Exceptions");
-                    node.Value = Server.MapPath("~/App_GlobalResources/Exceptions");
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = Path.GetFileNameWithoutExtension(Localization.GlobalResourceFile);
-                    node.Value = Server.MapPath(Localization.GlobalResourceFile);
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = Path.GetFileNameWithoutExtension(Localization.SharedResourceFile);
-                    node.Value = Server.MapPath(Localization.SharedResourceFile);
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = LocalizeString("Template");
-                    node.Value = Server.MapPath("~/App_GlobalResources/Template");
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = LocalizeString("WebControls");
-                    node.Value = Server.MapPath("~/App_GlobalResources/WebControls");
-                    e.Node.Nodes.Add(node);
+                    GetResxFiles(Server.MapPath("~/App_GlobalResources"), e);
                     break;
                 case "Site Templates":
                     GetResxFiles(Server.MapPath("~/Portals/_default"), e);
