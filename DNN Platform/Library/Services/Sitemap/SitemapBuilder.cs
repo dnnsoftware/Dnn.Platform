@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Sitemap
                     // check if we should override the priorities
                     isProviderPriorityOverrided = bool.Parse(PortalController.GetPortalSetting(_provider.Name + "Override", PortalSettings.PortalId, "False"));
                     // stored as an integer (pr * 100) to prevent from translating errors with the decimal point
-                    providerPriorityValue = float.Parse(PortalController.GetPortalSetting(_provider.Name + "Value", PortalSettings.PortalId, "50"))/100;
+                    providerPriorityValue = float.Parse(PortalController.GetPortalSetting(_provider.Name + "Value", PortalSettings.PortalId, "50")) / 100;
 
                     // Get all urls from provider
                     List<SitemapUrl> urls = _provider.GetUrls(PortalSettings.PortalId, PortalSettings, SITEMAP_VERSION);
@@ -130,17 +130,17 @@ namespace DotNetNuke.Services.Sitemap
 
                 // create all the files
                 int index = 0;
-                int numFiles = (allUrls.Count/SITEMAP_MAXURLS) + 1;
-                int elementsInFile = allUrls.Count/numFiles;
+                int numFiles = (allUrls.Count / SITEMAP_MAXURLS) + 1;
+                int elementsInFile = allUrls.Count / numFiles;
 
                 for (index = 1; index <= numFiles; index++)
                 {
-                    int lowerIndex = elementsInFile*(index - 1);
+                    int lowerIndex = elementsInFile * (index - 1);
                     int elements = 0;
                     if (index == numFiles)
                     {
                         // last file
-                        elements = allUrls.Count - (elementsInFile*(numFiles - 1));
+                        elements = allUrls.Count - (elementsInFile * (numFiles - 1));
                     }
                     else
                     {
@@ -220,6 +220,7 @@ namespace DotNetNuke.Services.Sitemap
             // build header
             writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION);
             writer.WriteAttributeString("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
+            writer.WriteAttributeString("xmlns", "xhtml", null, "http://www.w3.org/1999/xhtml");
             var schemaLocation = "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION;
             writer.WriteAttributeString("xsi", "schemaLocation", null, string.Format("{0} {0}/sitemap.xsd", schemaLocation));
 
@@ -300,6 +301,18 @@ namespace DotNetNuke.Services.Sitemap
             writer.WriteElementString("lastmod", sitemapUrl.LastModified.ToString("yyyy-MM-dd"));
             writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLower());
             writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
+
+            if (sitemapUrl.AlternateUrls != null)
+            {
+                foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
+                {
+                    writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
+                    writer.WriteAttributeString("rel", "alternate");
+                    writer.WriteAttributeString("hreflang", alternate.Language);
+                    writer.WriteAttributeString("href", alternate.Url);
+                    writer.WriteEndElement();
+                }
+            }
             writer.WriteEndElement();
         }
 
@@ -355,7 +368,7 @@ namespace DotNetNuke.Services.Sitemap
 
             if (arr.Count > 0)
             {
-                var portalAlias = (PortalAliasInfo) arr[0];
+                var portalAlias = (PortalAliasInfo)arr[0];
                 portalName = Globals.GetPortalDomainName(ps.PortalAlias.HTTPAlias, null, true);
                 if (portalAlias.HTTPAlias.IndexOf("/") > -1)
                 {
