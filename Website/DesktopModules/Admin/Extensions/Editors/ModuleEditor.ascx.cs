@@ -333,6 +333,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             cmdDeleteDefinition.Click += cmdDeleteDefinition_Click;
             cmdUpdate.Click += cmdUpdate_Click;
             cmdUpdateDefinition.Click += cmdUpdateDefinition_Click;
+            cmdCancelDefinition.Click += cmdCancelDefinition_Click;
             grdControls.DeleteCommand += grdControls_DeleteCommand;
             grdControls.ItemDataBound += grdControls_ItemDataBound;
 
@@ -352,6 +353,11 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     }
                 }
             }
+        }
+
+        private void cmdCancelDefinition_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
         }
 
         protected override void OnLoad(EventArgs e)
