@@ -463,26 +463,29 @@ namespace DotNetNuke.Web.InternalServices
                     if (extract && extension.ToLower() == "zip")
                     {
                         FileManager.Instance.UnzipFile(file);
-                        FileManager.Instance.DeleteFile(file);
                     }
-                    else
-                    {
-                        result.FileId = file.FileId;
-                    }
+                    result.FileId = file.FileId;
                 }
 
                 fileContent = FileManager.Instance.GetFileContent(file);
-                reader = new BinaryReader(fileContent);
 
                 var path = GetUrl(result.FileId);
+                using (reader = new BinaryReader(fileContent))
+                {
+                    var size = IsImage(fileName) ?
+                        ImageHeader.GetDimensions(reader) :
+                        new Size(32, 32);
 
-                var size = IsImage(fileName) ?
-                    ImageHeader.GetDimensions(reader) :
-                    new Size(32, 32);
+                    result.Orientation = size.Orientation();
+                }
 
-                result.Orientation = size.Orientation();
                 result.Path = result.FileId > 0 ? path : string.Empty;
                 result.FileName = fileName;
+
+                if (extract && extension.ToLower() == "zip")
+                {
+                    FileManager.Instance.DeleteFile(file);
+                }
 
                 return result;
             }

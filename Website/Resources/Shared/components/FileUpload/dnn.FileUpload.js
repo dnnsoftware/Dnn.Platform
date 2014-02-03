@@ -193,7 +193,9 @@
 
         _createFileUploadStatusElement: function (status) {
             status.overwrite = false;
+            status.path = this._selectedPath();
             var fileName = status.fileName;
+            var path = status.path;
             var cancelUpload = status.data ? function () {
                 var xhr = status.data.jqXHR;
                 if (xhr && xhr.readyState !== 4) {
@@ -207,7 +209,7 @@
                     )
                 ),
                 $element("div", { "class": "fu-fileupload-filename-container" }).append(
-                    $element("span", { "class": "fu-fileupload-filename", title: fileName }).text(fileName)
+                    $element("span", { "class": "fu-fileupload-filename", title: fileName }).text(path + fileName)
                 ),
                 $element("div", { "class": "fu-fileupload-progressbar-container" }).append(
                     $element("div", { "class": "fu-fileupload-progressbar ui-progressbar" }).append(
@@ -489,7 +491,10 @@
         },
 
         _getFileUploadStatusElement: function (fileName) {
-            return this._$fileUploadStatuses.children().filter(function (index) { return $(this).data("status").fileName == fileName; });
+            var path = this._selectedPath();
+            return this._$fileUploadStatuses.children().filter(function(index) {
+                return $(this).data("status").fileName == fileName && $(this).data("status").path == path;
+            });
         },
 
         _setProgress: function ($fileUploadStatus, percent) {
