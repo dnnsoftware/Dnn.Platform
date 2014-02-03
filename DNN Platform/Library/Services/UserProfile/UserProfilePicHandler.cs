@@ -77,8 +77,8 @@ namespace DotNetNuke.Services.UserProfile
                 Exceptions.Exceptions.ProcessHttpException(context.Request);
             }
 
-            if (height > 64) {height = 64;}
-            if (width > 64) { width = 64; }
+            if (height > 128) { height = 128; }
+            if (width > 128) { width = 128; }
 
            
             CalculateSize(ref height, ref width, ref size);
@@ -211,6 +211,12 @@ namespace DotNetNuke.Services.UserProfile
                 height = 64;
                 width = 64;
                 size = "l";
+            }
+            else if (height > 64 && height <= 128)
+            {
+                height = 128;
+                width = 128;
+                size = "xl";
             }
             //set a default if unprocessed
             if (String.IsNullOrEmpty(size))
