@@ -23,6 +23,8 @@ using System;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs.Events;
 using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
@@ -39,23 +41,33 @@ namespace DotNetNuke.Entities.Tabs
                 //TODO: Decide if a custom exception should be thrown
                 return;
             }
-            var allUsersroleId = Int32.Parse(Globals.glbRoleAllUsers);
+            var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
 
-            if (HasAlreadyPermission(tab, "VIEW", allUsersroleId))
+            if (HasAlreadyPermission(tab, "VIEW", allUsersRoleId))
             {
                 return;
             }
-            tab.TabPermissions.Add(GetTabPermissionByRole(tab.TabID, "VIEW", allUsersroleId));            
+            tab.TabPermissions.Add(GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));            
             TabPermissionController.SaveTabPermissions(tab);
+            ClearTabCache(tab);
+        }
+        
+        #region private Methods
+
+        private void ClearTabCache(TabInfo tabInfo)
+        {
+            new TabController().ClearCache(tabInfo.PortalID);
+            //Clear the Tab's Cached modules
+            DataCache.ClearModuleCache(tabInfo.TabID);
         }
 
-        private bool HasAlreadyPermission(TabInfo tab, string permissionKey, int allUsersroleId)
+        private bool HasAlreadyPermission(TabInfo tab, string permissionKey, int roleId)
         {
             var permission = PermissionController.GetPermissionsByTab().Cast<PermissionInfo>().SingleOrDefault<PermissionInfo>(p => p.PermissionKey == permissionKey);
 
             return
                 tab.TabPermissions.Cast<TabPermissionInfo>()
-                    .Any(tp => tp.AllowAccess && tp.RoleID == allUsersroleId && tp.PermissionID == permission.PermissionID);
+                    .Any(tp => tp.AllowAccess && tp.RoleID == roleId && tp.PermissionID == permission.PermissionID);
         }
 
         private TabPermissionInfo GetTabPermissionByRole(int tabID, string permissionKey, int roleID)
@@ -73,6 +85,7 @@ namespace DotNetNuke.Entities.Tabs
                         };
             return tabPermission;
         }
+        #endregion
 
         protected override Func<ITabPublishingController> GetFactory()
         {
