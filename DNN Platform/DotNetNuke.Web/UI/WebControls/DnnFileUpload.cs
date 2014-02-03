@@ -18,8 +18,7 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFileUpload : Control, INamingContainer
     {
 
-        private readonly Lazy<DnnFileUploadOptions> _options =
-            new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
+        private readonly Lazy<DnnFileUploadOptions> _options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
 
         public DnnFileUploadOptions Options
         {
@@ -92,9 +91,10 @@ namespace DotNetNuke.Web.UI.WebControls
             Options.ClientId = ClientID;
 
             var folder = FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, string.Empty);
+            var rootFolder = (PortalSettings.Current.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
             Options.FolderPicker.InitialState = new DnnDropDownListState
             {
-                SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), SharedConstants.RootFolder) : null
+                SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), rootFolder) : null
             };
 
             if (Options.Extensions.Count > 0)
