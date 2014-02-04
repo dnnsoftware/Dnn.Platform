@@ -33,12 +33,13 @@
         </FinishNavigationTemplate>
         <WizardSteps>
             <asp:WizardStep ID="Step0" runat="Server" Title="Introduction" StepType="Start" AllowReturn="false">
-                <div class="dnnForm">
+                <div class="dnnForm" id="fileUploadPanel">
                     <div class="dnnFormItem"><asp:Label ID="lblBrowseFileHelp" runat="server" resourcekey="BrowseFileHelp" /></div>
-                    <div class="dnnFormItem dnnClear">
+                    <div class="dnnFormItem dnnClear" style="visibility: hidden">
                         <input id="cmdBrowse" type="file" size="50" name="cmdBrowse" runat="server" />
                         <asp:Label ID="lblLoadMessage" runat="server" CssClass="dnnFormMessage dnnFormValidationSummary" Visible="false" />
                     </div>
+                    <dnn:DnnFileUpload ID="fileUpload" runat="server" ShowOnStartup="true" ParentClientId="fileUploadPanel"/>
                 </div>
                 <div class="dnnFormMessage dnnFormInfo">
                     <asp:Label id="maxSizeWarningLabel" runat="server" />

@@ -25,7 +25,6 @@
                 <dnn:DnnComboBox runat="server" ID="ddlConfig" AutoPostBack="True" />
             </div>
             <div class="dnnFormItem">
-                <%--<dnn:Label ID="fileLabel" runat="server" ControlName="txtConfiguration" />--%>
                 <asp:TextBox ID="txtConfiguration" runat="server" TextMode="MultiLine" Rows="20" Columns="75" EnableViewState="True" Enabled="false" />
             </div>
             <ul class="dnnActions dnnClear">
@@ -42,7 +41,6 @@
                 <asp:LinkButton ID="cmdUpload" resourcekey="cmdUpload" EnableViewState="False" CssClass="dnnSecondaryAction" runat="server" />
             </div>
             <div class="dnnFormItem">
-                <%--<dnn:Label ID="scriptLabel" runat="server" ControlName="txtScript" />--%>
                 <asp:TextBox ID="txtScript" runat="server" TextMode="MultiLine" Rows="20" Columns="75" EnableViewState="False" />
             </div>
             <ul class="dnnActions dnnClear">
