@@ -344,6 +344,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (canSend)
                     {
                         LogSuccess();
+                        pnlRecover.Visible = false;
                     }
                     else
                     {
