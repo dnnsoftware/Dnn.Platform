@@ -17,13 +17,24 @@ namespace DotNetNuke.Common.Utilities
 
         public static DateTime GetDatabaseTime()
         {
-            if (DateTime.UtcNow >= _lastUpdate + TimeSpan.FromMinutes(5))
+            DateTime result;
+            try
+            {
+                //Also We check that drift is not the initial value and it is not out of the maximum UTC offset
+                if (DateTime.UtcNow >= _lastUpdate + TimeSpan.FromMinutes(5) || !(TimeSpan.FromHours(-26) <= _drift && _drift <= TimeSpan.FromHours(26)) || _drift == TimeSpan.MinValue)
+                {
+                    _lastUpdate = DateTime.UtcNow;
+                    _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
+                }
+                result = DateTime.UtcNow + _drift;
+            }
+            catch (ArgumentOutOfRangeException ex)
             {
                 _lastUpdate = DateTime.UtcNow;
                 _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
+                result = DateTime.UtcNow + _drift;
             }
-
-            return DateTime.UtcNow + _drift;
+            return result;
         }
 
         /// <summary>
