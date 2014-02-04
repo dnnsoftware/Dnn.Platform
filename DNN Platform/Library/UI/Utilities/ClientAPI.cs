@@ -146,9 +146,8 @@ namespace DotNetNuke.UI.Utilities
         {
             if (ClientAPI.ClientAPIDisabled() == false && ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.Positioning))
             {
-#pragma warning disable 612,618
-                AddBodyOnloadEventHandler(objTitle.Page, "__dnn_enableDragDrop()");
-#pragma warning restore 612,618
+                EnableDragDrop(objTitle.Page);
+
                 JavaScript.RegisterClientReference(objTitle.Page, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
                 ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_dragDrop", objContainer.ClientID + " " + objTitle.ClientID + " " + ModuleID + ";", false);
                 string strPanes = "";
