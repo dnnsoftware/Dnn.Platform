@@ -919,6 +919,10 @@ AS
 			ON CASE WHEN U.IsSuperuser = 1 THEN 0 ELSE U.UserId END = UP.UserId
 GO
 
+--DNN-4518
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetCurrencies]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetCurrencies
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
