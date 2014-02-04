@@ -21,7 +21,6 @@
 #region Usings
 
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Web;
@@ -55,18 +54,22 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// </summary>
     /// <remarks>
     /// </remarks>
+    /// <history>
+    ///     [cnurse]   07/26/2007    Created
+    /// </history>
     /// -----------------------------------------------------------------------------
     partial class Install : ModuleUserControlBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Install));
+		#region "Members"
 
-		#region Private Members
-
+        private Installer _Installer;
+        private PackageInfo _Package;
         private PackageType _PackageType;
 		
 		#endregion
 
-		#region Protected Properties
+		#region "Protected Properties"
 
         protected bool DeleteFile
         {
@@ -80,10 +83,14 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the FileName for the Uploade file
         /// </summary>
+        /// <history>
+        ///     [cnurse]   01/20/2009    Created
+        /// </history>
         /// -----------------------------------------------------------------------------
         protected string FileName
         {
@@ -101,13 +108,25 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets and sets the Installer
         /// </summary>
+        /// <history>
+        ///     [cnurse]   08/13/2007    Created
+        /// </history>
         /// -----------------------------------------------------------------------------
-        protected Installer Installer { get; private set; }
+        protected Installer Installer
+        {
+            get
+            {
+                return _Installer;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Path to the Manifest File
         /// </summary>
+        /// <history>
+        ///     [cnurse]   08/13/2007    Created
+        /// </history>
         /// -----------------------------------------------------------------------------
         protected string ManifestFile
         {
@@ -125,13 +144,25 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets and sets the Package
         /// </summary>
+        /// <history>
+        ///     [cnurse]   08/13/2007    Created
+        /// </history>
         /// -----------------------------------------------------------------------------
-        protected PackageInfo Package { get; private set; }
+        protected PackageInfo Package
+        {
+            get
+            {
+                return _Package;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Package Type
         /// </summary>
+        /// <history>
+        ///     [cnurse]   07/26/2007    Created
+        /// </history>
         /// -----------------------------------------------------------------------------
         protected PackageType PackageType
         {
@@ -167,6 +198,9 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets the Return Url
         /// </summary>
+        /// <history>
+        ///     [cnurse]   07/26/2007    Created
+        /// </history>
         /// -----------------------------------------------------------------------------
         protected string ReturnURL
         {
@@ -192,6 +226,9 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets and sets the Temporary Installation Folder
         /// </summary>
+        /// <history>
+        ///     [cnurse]   08/13/2007    Created
+        /// </history>
         /// -----------------------------------------------------------------------------
         protected string TempInstallFolder
         {
@@ -207,28 +244,36 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
 		#endregion
 
-		#region Private Methods
+		#region "Private Methods"
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This routine binds the package to the Property Editor
+        /// </summary>
+        /// <history>
+        ///     [cnurse]   07/26/2007    Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
         private void BindPackage()
         {
             CreateInstaller();
             if (Installer.IsValid)
             {
-                if (Installer.Packages.Count > 0)
+                if (_Installer.Packages.Count > 0)
                 {
-                    Package = Installer.Packages[0].Package;
+                    _Package = _Installer.Packages[0].Package;
                 }
                 
 				//Bind Package Info
-				packageForm.DataSource = Package;
+				packageForm.DataSource = _Package;
                 packageForm.DataBind();
 
                 //Bind License Info
-                licenseForm.DataSource = Package;
+                licenseForm.DataSource = _Package;
                 licenseForm.DataBind();
 
                 //Bind ReleaseNotes Info
-                releaseNotesForm.DataSource = Package;
+                releaseNotesForm.DataSource = _Package;
                 releaseNotesForm.DataBind();
             }
             else
@@ -249,6 +294,14 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This routine checks the Access Security
+        /// </summary>
+        /// <history>
+        ///     [cnurse]   07/26/2007    Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
             if (!ModuleContext.PortalSettings.UserInfo.IsSuperUser)
@@ -257,10 +310,18 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This routine creates the Installer
+        /// </summary>
+        /// <history>
+        ///     [cnurse]   07/26/2007    Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
         private void CreateInstaller()
         {
             CheckSecurity();
-            Installer = new Installer(TempInstallFolder, ManifestFile, Request.MapPath("."), false);
+            _Installer = new Installer(TempInstallFolder, ManifestFile, Request.MapPath("."), false);
 
             //The Installer is created automatically with a SecurityAccessLevel of Host
             //Check if the User has lowere Security and update as neccessary
@@ -317,6 +378,14 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This routine installs the uploaded package
+        /// </summary>
+        /// <history>
+        ///     [cnurse]   07/26/2007    Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
         private void InstallPackage(WizardNavigationEventArgs e)
         {
             CreateInstaller();
@@ -404,7 +473,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                         (Path.GetExtension(FileName.ToLower()) == ".zip"
                             || Path.GetExtension(FileName.ToLower()) == ".resources"))
                 {
-                    Installer = new Installer(new FileStream(FileName, FileMode.Open, FileAccess.Read), 
+                    _Installer = new Installer(new FileStream(FileName, FileMode.Open, FileAccess.Read), 
                                                     Globals.ApplicationMapPath, 
                                                     true, 
                                                     false);
@@ -598,7 +667,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
 		#endregion
 
-		#region Protected Methods
+		#region "Protected Methods"
 
         protected string GetText(string type)
         {
@@ -616,7 +685,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
 		#endregion
 
-		#region Event Handlers
+		#region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -647,8 +716,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 CheckSecurity();
 
                 maxSizeWarningLabel.Text = String.Format(Localization.GetString("FileSizeRestriction", LocalResourceFile), (Config.GetMaxUploadSize() / (1024 * 1024)));
-
-                fileUpload.Options.Extensions = new List<string>() { ".zip" };
 
                 if(!Page.IsPostBack)
                 {
@@ -791,7 +858,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     }
                     if (string.IsNullOrEmpty(strMessage))
                     {
-                        Installer = new Installer(postedFile.InputStream, Request.MapPath("."), true, false);
+                        _Installer = new Installer(postedFile.InputStream, Request.MapPath("."), true, false);
                         TempInstallFolder = Installer.TempInstallFolder;
                         if (Installer.InstallerInfo.ManifestFile != null)
                         {

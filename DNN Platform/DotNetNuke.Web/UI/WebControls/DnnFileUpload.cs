@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Web.Services.Description;
 using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -29,6 +28,16 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public bool ShowOnStartup
+        {
+            set { Options.ShowOnStartup = value; }
+        }
+
+        public string ParentClientId
+        {
+            set { Options.ParentClientId = value; }
+        }
+
         public int ModuleId
         {
             set
@@ -39,19 +48,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        public string ParentClientId
-        {
-            set { Options.ParentClientId = value; }
-        }
-
-        public bool ShowOnStartup
-        {
-            set { Options.ShowOnStartup = value; }
-        }
-
         public string Skin { get; set; }
-
-        public bool SupportHost { get; set; }
 
         public static DnnFileUpload GetCurrent(Page page)
         {
@@ -93,11 +90,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             Options.ClientId = ClientID;
 
-            var portalSettings = PortalSettings.Current;
-
-            var folder = FolderManager.Instance.GetFolder(portalSettings.PortalId, string.Empty);
-            var rootFolder = (SupportHost && portalSettings.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
-
+            var folder = FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, string.Empty);
+            var rootFolder = (PortalSettings.Current.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
             Options.FolderPicker.InitialState = new DnnDropDownListState
             {
                 SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), rootFolder) : null
@@ -114,10 +108,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 Options.Resources.TooManyFiles = string.Format(Options.Resources.TooManyFiles, Options.MaxFiles.ToString(CultureInfo.InvariantCulture));
             }
 
-            if (!SupportHost)
-            {
-                Options.FolderPicker.Services.Parameters["portalId"] = portalSettings.PortalId.ToString();
-            }
             Options.FolderPicker.Services.GetTreeMethod = "ItemListService/GetFolders";
             Options.FolderPicker.Services.GetNodeDescendantsMethod = "ItemListService/GetFolderDescendants";
             Options.FolderPicker.Services.SearchTreeMethod = "ItemListService/SearchFolders";
