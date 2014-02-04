@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.Skins.Controls
             get {
                 var userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(Request.Params["UserId"])) {
-                    userId = Int32.Parse(Request.Params["UserId"]);
+                    if (!Int32.TryParse(Request.Params["UserId"], out userId)) userId = Null.NullInteger;
                 }
                 return userId;
             }
