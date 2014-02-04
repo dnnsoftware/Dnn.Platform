@@ -149,6 +149,12 @@ namespace DotNetNuke.Modules.Admin.Users
             return item;
         }
 
+        private void InitializeGrid()
+        {
+            grdUsers.MasterTableView.PagerStyle.PageSizeLabelText = LocalizeString("PagerPageSize.Text");
+            grdUsers.MasterTableView.PagerStyle.PagerTextFormat = LocalizeString("PagerTextFormat.Text");
+        }
+
         private void SetGridDataSource()
         {
             var searchText = Filter;
@@ -389,6 +395,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 removeDeletedButton.Visible = true;
                 deleteUnAuthorizedButton.Visible = true;
             }
+            
+            InitializeGrid();
 
             if (!IsPostBack)
             {
