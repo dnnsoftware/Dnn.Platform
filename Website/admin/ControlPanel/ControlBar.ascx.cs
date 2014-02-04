@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.ControlPanels
                     gettingStarted = new DnnGettingStarted();
                     Page.Form.Controls.Add(gettingStarted);
                 }
-                FileUploader = new DnnFileUpload {ID = "fileUploader"};
+                FileUploader = new DnnFileUpload {ID = "fileUploader", SupportHost = false};
                 Page.Form.Controls.Add(FileUploader);
             }
         }
