@@ -919,6 +919,183 @@ AS
 			ON CASE WHEN U.IsSuperuser = 1 THEN 0 ELSE U.UserId END = UP.UserId
 GO
 
+--DNN-4518
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetCurrencies]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetCurrencies
+GO
+
+--DNN-4539
+
+-- Rename and optimize Index (updates solution from DNN-4296 as well)
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_1')
+	DROP INDEX [IX_{objectQualifier}IX_Tabs_1] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_2')
+	DROP INDEX [IX_{objectQualifier}IX_Tabs_2] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_PortalID_ParentID')
+	DROP INDEX [IX_{objectQualifier}IX_Tabs_PortalID_ParentID] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_1' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_1] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_2' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_2] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_ParentId_IsDeleted' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_ParentId_IsDeleted_2' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted_2] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_IX_{objectQualifier}Tabs_PortalID_ParentID' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_IX_{objectQualifier}Tabs_PortalID_ParentID] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_PortalID_ParentID' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_PortalID_ParentID] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_ContentID' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_ContentID] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+                                                   
+                                                   
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_PortalLevelParentOrder' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_PortalLevelParentOrder] ON {databaseOwner}[{objectQualifier}Tabs] 
+GO
+
+-- should be unique, but - who knows 
+-- Note: this index need to be adopted, when columns of tabs table are added or renamed
+-- Remark: an alternative would be clustering the table by this index, however, there are a number of 3rd party modules which placed an FK on TabID
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_PortalLevelParentOrder] ON {databaseOwner}[{objectQualifier}Tabs] 
+	([PortalID], [Level], [ParentId], [TabOrder], [IsDeleted])
+	INCLUDE ([TabID], [TabName], [IsVisible], [IconFile], [DisableLink], [Title], [Description], [KeyWords], [Url], [SkinSrc],
+			 [ContainerSrc], [StartDate], [EndDate], [RefreshInterval], [PageHeadText], [IsSecure], [PermanentRedirect], [SiteMapPriority],
+			 [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IconFileLarge], [CultureCode], [ContentItemID],
+			 [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid], [TabPath])
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Tabs_ContentID ON {databaseOwner}[{objectQualifier}Tabs] 
+	(ContentItemID ASC)
+	INCLUDE (TabId, TabName, Title, IsVisible, IsDeleted, [UniqueID], CultureCode)
+	WHERE ContentItemId Is NOT Null
+GO
+
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted] ON {databaseOwner}[{objectQualifier}Tabs] 
+   ([ParentId], [IsDeleted])
+   INCLUDE ([CreatedOnDate])
+GO
+
+
+-- DNN-4338: optimized
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTab]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+    @TabId Int  -- ID of tab to delete; Not Null and > 0
+AS
+BEGIN
+    DECLARE @TabOrder Int
+    DECLARE @ParentId Int
+    DECLARE @ContentItemId Int
+    SELECT @TabOrder = TabOrder, @ParentId = ParentID, @ContentItemID = ContentItemID FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId
+
+    -- Delete Tab --
+    DELETE FROM {databaseOwner}[{objectQualifier}Tabs] WHERE  TabID = @TabId
+
+    -- Update TabOrder of remaining Tabs --
+    UPDATE {databaseOwner}[{objectQualifier}Tabs]
+        SET TabOrder = TabOrder - 2
+        WHERE IsNull(ParentID, -1) = IsNull(@ParentId , -1) AND TabOrder > @TabOrder
+
+    -- Delete Content Item --
+    DELETE FROM {databaseOwner}[{objectQualifier}ContentItems] WHERE ContentItemID = @ContentItemId
+END
+GO
+
+
+-- DNN-4343: optimized by simplification, due to FK constraint and parent tabs are tabs as well
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetCustomAliasesForTabs]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetCustomAliasesForTabs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetCustomAliasesForTabs] 
+AS
+	SELECT HttpAlias
+	FROM  {databaseOwner}[{objectQualifier}PortalAlias] pa 
+	WHERE PortalAliasId IN (SELECT PortalAliasId FROM {databaseOwner}[{objectQualifier}TabUrls])
+	ORDER BY HttpAlias
+GO
+
+
+-- optimized
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabs]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabs]
+	@PortalID Int  -- Null|-1 for host pages
+AS
+	SELECT *
+	FROM   {databaseOwner}[{objectQualifier}vw_Tabs]
+	WHERE  IsNull(PortalId, -1) = IsNull(@PortalID, -1)
+	ORDER BY PortalId, [Level], ParentID, TabOrder -- PortalId added for query optimization
+GO
+
+
+-- optimized
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabsByModuleID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByModuleID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByModuleID]
+	@ModuleID Int -- NOT Null
+AS
+BEGIN
+	SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs] T
+	WHERE IsDeleted = 0
+	  AND TabID IN (SELECT TabID FROM {databaseOwner}[{objectQualifier}TabModules]
+					WHERE ModuleID = @ModuleID AND IsDeleted = 0)
+	ORDER BY PortalId, Level, ParentID, TabOrder -- PortalId added for query optimization
+END
+GO
+
+
+-- DNN-4342: optimized code
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabsByPackageID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+    @PortalId  Int, -- Null for Host menu items
+    @PackageId Int, -- Not Null!
+    @ForHost   Bit  -- 0: Get pages for a specific portal (or host pages only)
+                    -- 1: Get all host pages and portal pages
+AS
+BEGIN
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs]
+     WHERE (IsNull(PortalId, -1) = IsNull(@PortalId, -1) Or @ForHost = 1)
+       AND IsDeleted = 0
+       AND TabId IN (SELECT TabId FROM {databaseOwner}[{objectQualifier}vw_Modules] M
+                      INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules] DM ON M.DesktopModuleID = DM.DesktopModuleID
+                      WHERE DM.PackageID = @PackageId AND M.IsDeleted = 0)
+    ORDER BY PortalID, TabName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN, @PackageId UNKNOWN, @ForHost UNKNOWN));
+END
+GO
+
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
