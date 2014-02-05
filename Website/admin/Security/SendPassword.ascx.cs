@@ -344,13 +344,13 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (canSend)
                     {
                         LogSuccess();
-                        pnlRecover.Visible = false;
                     }
                     else
                     {
                         LogFailure(message);
                     }
-
+                    //always hide panel so as to not reveal if username exists.
+                    pnlRecover.Visible = false;
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
 
                     liLogin.Visible = true;
