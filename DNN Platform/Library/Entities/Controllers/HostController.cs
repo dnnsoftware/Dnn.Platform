@@ -310,7 +310,8 @@ namespace DotNetNuke.Entities.Controllers
 
             if ((clearCache))
             {
-                DataCache.ClearHostCache(false);
+                //DataCache.ClearHostCache(false);
+                DataCache.RemoveCache(DataCache.HostSettingsCacheKey);
             }
         }
 
