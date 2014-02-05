@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.Admin.Security
             var isEnabled = true;
 
             //both retrieval and reset now use password token resets
-            if (MembershipProviderConfig.PasswordRetrievalEnabled)
+            if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
                 lblHelp.Text = Localization.GetString("ResetTokenHelp", LocalResourceFile);
                 cmdSendPassword.Text = Localization.GetString("ResetToken", LocalResourceFile);
