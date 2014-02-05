@@ -139,6 +139,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
                 cmdDeleteDefinition.Visible = false;
                 cmdUpdateDefinition.Text = Localization.GetString("cmdCreateDefinition", LocalResourceFile);
+                cmdCancelDefinition.Visible = true;
                 pnlDefinition.Visible = true;
                 pnlControls.Visible = false;
             	definitionSelectRow.Visible = false;
