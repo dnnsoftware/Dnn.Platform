@@ -76,6 +76,8 @@
                         </ItemTemplate>
                     </dnn:DnnGridTemplateColumn>
                 </Columns>
+                <PagerStyle AlwaysVisible="true" PageButtonCount="6" Mode="NextPrevAndNumeric"/>
+
             </MasterTableView>
         </dnn:DNNGrid>
     </div>
