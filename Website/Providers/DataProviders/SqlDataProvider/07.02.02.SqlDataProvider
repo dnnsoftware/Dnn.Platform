@@ -1094,7 +1094,16 @@ BEGIN
 END
 GO
 
+--DNN-21164
+ 
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_Visibility')
+	DROP INDEX {databaseOwner}[{objectQualifier}UserProfile].[IX_{objectQualifier}UserProfile_Visibility]
+GO
 
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserProfile_Visibility] ON {databaseOwner}[{objectQualifier}UserProfile]
+	([UserID] ASC,[ProfileID] ASC)
+ INCLUDE ( [PropertyDefinitionID],[PropertyValue],[PropertyText],[Visibility],[LastUpdatedDate],[ExtendedVisibility])
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
