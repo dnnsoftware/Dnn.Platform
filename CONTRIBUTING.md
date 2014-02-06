@@ -11,7 +11,7 @@ so that we can have a chance of keeping on top of things.
 
 * Make sure you have a [DNN Tracker account](https://dnntracker.atlassian.net/secure/Signup!default.jspa)
 * Make sure you have a [GitHub account](https://github.com/signup/free)
-* [Submit a ticket](https://dnntracker.atlassian.net/secure/CreateIssue!default.jspa) for your issue, assuming one does not already exist.
+* [Submit a ticket](https://dnntracker.atlassian.net/secure/CreateIssue!default.jspa) for your issue, assuming one does not already exist. You should assign yourself to the issue and click 'start progress' to indicate that the issue is underway. After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
   * Clearly describe the issue including steps to reproduce when it is a bug.
   * Make sure you fill in the earliest version that you know has the issue.
 * Fork the repository on GitHub
