@@ -56,13 +56,13 @@ namespace DotNetNuke.Modules.Admin.Sitemap
 			//core settings
 			chkLevelPriority.Checked = bool.Parse(PortalController.GetPortalSetting("SitemapLevelMode", PortalId, "False"));
             var minPriority = float.Parse(PortalController.GetPortalSetting("SitemapMinPriority", PortalId, "0.1"), NumberFormatInfo.InvariantInfo);
-            txtMinPagePriority.Text = minPriority.ToString();
+            txtMinPagePriority.Text = minPriority.ToString(CultureInfo.InvariantCulture);
 
             chkIncludeHidden.Checked = bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", PortalId, "False"));
 
             //General settings
             var excludePriority = float.Parse(PortalController.GetPortalSetting("SitemapExcludePriority", PortalId, "0.1"), NumberFormatInfo.InvariantInfo);
-            txtExcludePriority.Text = excludePriority.ToString();
+            txtExcludePriority.Text = excludePriority.ToString(CultureInfo.InvariantCulture);
 
             cmbDaysToCache.SelectedIndex = Int32.Parse(PortalController.GetPortalSetting("SitemapCacheDays", PortalId, "1"));
         }
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
                 txtMinPagePriority.Text = "0";
             }
 
-            var minPriority = float.Parse(txtMinPagePriority.Text);
+            var minPriority = float.Parse(txtMinPagePriority.Text, NumberFormatInfo.InvariantInfo);
 
             PortalController.UpdatePortalSetting(PortalId, "SitemapMinPriority", minPriority.ToString(NumberFormatInfo.InvariantInfo));
         }
@@ -225,7 +225,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
 
             PortalController.UpdatePortalSetting(PortalId, "SitemapIncludeHidden", chkIncludeHidden.Checked.ToString());
 
-            float excludePriority = float.Parse(txtExcludePriority.Text);
+            float excludePriority = float.Parse(txtExcludePriority.Text, NumberFormatInfo.InvariantInfo);
             PortalController.UpdatePortalSetting(PortalId, "SitemapExcludePriority", excludePriority.ToString(NumberFormatInfo.InvariantInfo));
 
             if ((cmbDaysToCache.SelectedIndex == 0))
