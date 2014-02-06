@@ -23,23 +23,27 @@ using System;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.Events;
 using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Tabs
 {
     public class TabPublishingController: ServiceLocator<ITabPublishingController,TabPublishingController>, ITabPublishingController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabPublishingController));
+
         public void PublishTab(int tabID, int portalID)
         {
             var tab = TestableTabController.Instance.GetTab(tabID, portalID);
             if (!TabPermissionController.CanAdminPage(tab))
             {
-                //TODO: Decide if a custom exception should be thrown
-                return;
+                var errorMessage = Localization.GetExceptionMessage("PublishPagePermissionsNotMet", "Permissions are not met. The page has not been published.");
+                var permissionsNotMetExc =  new PermissionsNotMetException(tabID, errorMessage );
+                Logger.Error(errorMessage, permissionsNotMetExc);
+                throw permissionsNotMetExc;
             }
             var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
 

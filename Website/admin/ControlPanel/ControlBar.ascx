@@ -284,7 +284,7 @@
                         <% if (TabPermissionController.CanAdminPage())
                            {%>
                         <li><a href="<%= BuildToolUrl("PublishPage", false, "", "", "", true) %>" id="ControlBar_PublishPage">
-                            <%= GetString("Tool.PublishPage.Text")/* TODO Create the PublishPage URL */ %></a></li>
+                            <%= GetString("Tool.PublishPage.Text") %></a></li>
                         <% } %>
                        
                     </ul>

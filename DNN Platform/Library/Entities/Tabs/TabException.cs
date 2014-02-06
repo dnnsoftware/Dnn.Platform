@@ -26,11 +26,13 @@ using System;
 
 namespace DotNetNuke.Entities.Tabs
 {
-    public class TabExistsException : TabException
+    public class TabException : Exception
     {
-        public TabExistsException(int tabId, string message) : base(tabId, message)
-        {            
+        public TabException(int tabId, string message) : base(message)
+        {
+            TabId = tabId;
         }
 
+        public int TabId { get; private set; }
     }
 }

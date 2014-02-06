@@ -297,4 +297,7 @@
   <data name="CannotMoveFolderBetweenFolderType.Text" xml:space="preserve">
     <value>The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed</value>
   </data>
+  <data name="PublishPagePermissionsNotMet" xml:space="preserve">
+    <value>Permissions are not met. The page has not been published.</value>
+  </data>
 </root>
