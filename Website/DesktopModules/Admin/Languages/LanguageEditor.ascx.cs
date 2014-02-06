@@ -792,6 +792,11 @@ namespace DotNetNuke.Modules.Admin.Languages
                         break;
                 }
                 string selectedFile = SelectedResourceFile.Replace(Server.MapPath(Globals.ApplicationPath + "/"), "");
+
+                UI.Skins.Skin.AddModuleMessage(this,
+                                string.Format(Localization.GetString("Updated", LocalResourceFile), ResourceFile(Locale, rbMode.SelectedValue)),
+                                ModuleMessage.ModuleMessageType.GreenSuccess);
+
                 BindGrid(true);
             }
             catch (Exception exc)
