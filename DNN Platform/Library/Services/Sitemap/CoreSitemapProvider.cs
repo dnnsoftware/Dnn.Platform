@@ -80,7 +80,6 @@ namespace DotNetNuke.Services.Sitemap
                 }
             }
 
-
             return urls;
         }
 
@@ -96,25 +95,6 @@ namespace DotNetNuke.Services.Sitemap
         {
             var pageUrl = new SitemapUrl();
             pageUrl.Url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
-
-            string portalAlias = !String.IsNullOrEmpty(ps.DefaultPortalAlias)
-                                ? ps.DefaultPortalAlias
-                                : ps.PortalAlias.HTTPAlias;
-
-            if (pageUrl.Url.ToLower().IndexOf(portalAlias.ToLower(), StringComparison.Ordinal) == -1)
-            {
-                // code to fix a bug in dnn5.1.2 for navigateurl
-                if ((HttpContext.Current != null))
-                {
-                    pageUrl.Url = TestableGlobals.Instance.AddHTTP(HttpContext.Current.Request.Url.Host + pageUrl.Url);
-                }
-                else
-                {
-                    // try to use the portalalias
-                    pageUrl.Url = TestableGlobals.Instance.AddHTTP(portalAlias.ToLower()) + pageUrl.Url;
-                }
-            }
-
             pageUrl.Priority = GetPriority(objTab);
             pageUrl.LastModified = objTab.LastModifiedOnDate;
             var modCtrl = new ModuleController();
@@ -126,6 +106,46 @@ namespace DotNetNuke.Services.Sitemap
                 }
             }
             pageUrl.ChangeFrequency = SitemapChangeFrequency.Daily;
+
+            // support for alternate pages: https://support.google.com/webmasters/answer/2620865?hl=en
+            if (ps.ContentLocalizationEnabled && !objTab.IsNeutralCulture)
+            {
+                List<AlternateUrl> alternates = new List<AlternateUrl>();
+                TabInfo currentTab = objTab;
+
+                if (!objTab.IsDefaultLanguage)
+                    currentTab = objTab.DefaultLanguageTab;
+
+                foreach (TabInfo localized in currentTab.LocalizedTabs.Values)
+                {
+                    if ((!localized.IsDeleted && !localized.DisableLink && localized.TabType == TabType.Normal) &&
+                        (Null.IsNull(localized.StartDate) || localized.StartDate < DateTime.Now) &&
+                        (Null.IsNull(localized.EndDate) || localized.EndDate > DateTime.Now) &&
+                        (IsTabPublic(localized.TabPermissions)) &&
+                        (includeHiddenPages || localized.IsVisible))
+                    {
+                        string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
+                        alternates.Add(new AlternateUrl() 
+                        { 
+                            Url = alternateUrl, 
+                            Language = localized.CultureCode 
+                        });
+                    }
+                }
+
+                if (alternates.Count > 0)
+                {
+                    // add default language to the list
+                    string alternateUrl = TestableGlobals.Instance.NavigateURL(currentTab.TabID, currentTab.IsSuperTab, ps, "", currentTab.CultureCode);
+                    alternates.Add(new AlternateUrl()
+                    {
+                        Url = alternateUrl,
+                        Language = currentTab.CultureCode
+                    });
+                    
+                    pageUrl.AlternateUrls = alternates;
+                }
+            }
 
             return pageUrl;
         }
@@ -151,7 +171,7 @@ namespace DotNetNuke.Services.Sitemap
                 }
                 else
                 {
-                    priority = Convert.ToSingle(1 - (objTab.Level*0.1));
+                    priority = Convert.ToSingle(1 - (objTab.Level * 0.1));
                 }
 
                 if (priority < minPagePriority)
@@ -174,7 +194,7 @@ namespace DotNetNuke.Services.Sitemap
             if ((roles != null))
             {
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(new[] {';'}))
+                foreach (string role in roles.Split(new[] { ';' }))
                 {
                     if (!string.IsNullOrEmpty(role))
                     {
