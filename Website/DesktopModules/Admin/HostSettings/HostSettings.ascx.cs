@@ -384,6 +384,7 @@ namespace DotNetNuke.Modules.Admin.Host
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
             chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
+            txtMaxUploadSize.Text = (Config.GetMaxUploadSize() / (1024 * 1024)).ToString();
 			txtAsyncTimeout.Text = Entities.Host.Host.AsyncTimeout.ToString();
 
             chkBannedList.Checked = Entities.Host.Host.EnableBannedList;
@@ -918,6 +919,14 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("CDNEnabled", chkEnableCDN.Checked ? "Y" : "N", false);
 					HostController.Instance.Update("TelerikCDNBasicUrl", txtTelerikBasicUrl.Text, false);
 					HostController.Instance.Update("TelerikCDNSecureUrl", txtTelerikSecureUrl.Text, false);
+                    var maxUpload = 12;
+                    if (int.TryParse(txtMaxUploadSize.Text, out maxUpload))
+                    {
+                        if (Config.GetMaxUploadSize() != (maxUpload * 1024 * 1024))
+                        {
+                            Config.SetMaxUploadSize(maxUpload * 1024 * 1024);
+                        }
+                    };
 					HostController.Instance.Update("AsyncTimeout", txtAsyncTimeout.Text, false);
                     HostController.Instance.Update(ClientResourceSettings.EnableCompositeFilesKey, chkCrmEnableCompositeFiles.Checked.ToString(CultureInfo.InvariantCulture));
                     HostController.Instance.Update(ClientResourceSettings.MinifyCssKey, chkCrmMinifyCss.Checked.ToString(CultureInfo.InvariantCulture));
