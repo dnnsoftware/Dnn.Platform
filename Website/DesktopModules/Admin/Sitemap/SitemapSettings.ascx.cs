@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
         {
             PortalController.UpdatePortalSetting(PortalId, "SitemapLevelMode", chkLevelPriority.Checked.ToString());
 
-            if (float.Parse(txtMinPagePriority.Text) < 0)
+            if (float.Parse(txtMinPagePriority.Text, NumberFormatInfo.InvariantInfo) < 0)
             {
                 txtMinPagePriority.Text = "0";
             }
