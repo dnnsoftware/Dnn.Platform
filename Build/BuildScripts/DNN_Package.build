@@ -54,8 +54,8 @@
   <Target Name="Compile">
     <Message Text="$(MSBuildProjectDirectory)" />
 
-    <MSBuild Projects="$(PlatformRoot)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Rebuild" />
-    <Message Text="DotNetNuke Compile finished" />
+    <MSBuild Projects="$(PlatformRoot)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Rebuild"/>
+    <Message Text="DotNetNuke Compile finished" Importance="high" />
     
   </Target>
 
@@ -65,19 +65,15 @@
       <InstallPackage Include="$(WebsitePath)\**\*.*" Exclude="@(InstallExclude)" />
     </ItemGroup>
 
-    <Zip Files="@(InstallPackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PackageName)_Install.zip" />
-    <Message Text="Creating Install Package" />
-
-    <Copy SourceFiles="$(PackageName)_Install.zip" DestinationFiles="$(PlatformRoot)\$(PackageName)_Install.zip" />
+    <Zip Files="@(InstallPackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PlatformRoot)\$(PackageName)_Install.zip" />
+    <Message Text="Creating Install Package" Importance="high" />
   </Target>
 
   <Target Name="CreateUpgrade" DependsOnTargets="Compile">
     <ItemGroup>
       <UpgradePackage Include="$(WebsitePath)\**\*.*" Exclude="@(UpgradeExclude);" />
     </ItemGroup>
-    <Zip Files="@(UpgradePackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PackageName)_Upgrade.zip" />
-    <Message Text="Creating Upgrade Package" />
-
-    <Copy SourceFiles="$(PackageName)_Upgrade.zip" DestinationFiles="$(PlatformRoot)\$(PackageName)_Upgrade.zip" />
+    <Zip Files="@(UpgradePackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PlatformRoot)\$(PackageName)_Upgrade.zip" />
+    <Message Text="Creating Upgrade Package" Importance="high"/>
   </Target>
 </Project>
