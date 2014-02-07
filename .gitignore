@@ -69,6 +69,8 @@ UpgradeLog*.XML
 
 # Ignore artifacts from deployed/installed site
 
+DNN_*.zip
+
 !DNN [Pp]latform/[Cc]omponents
 !DNN [Pp]latform/[Cc]ontrols
 DNN [Pp]latform/[Cc]omponents/[Cc]lient[Dd]ependency/[Ss]ource/[Bb]in
