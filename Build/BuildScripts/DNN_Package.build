@@ -54,6 +54,7 @@
   <Target Name="Compile">
     <Message Text="$(MSBuildProjectDirectory)" />
 
+    <MSBuild Projects="$(PlatformRoot)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Clean"/>
     <MSBuild Projects="$(PlatformRoot)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Rebuild"/>
     <Message Text="DotNetNuke Compile finished" Importance="high" />
     
