@@ -1105,6 +1105,10 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserProfile_Visibility] ON {datab
  INCLUDE ( [PropertyDefinitionID],[PropertyValue],[PropertyText],[Visibility],[LastUpdatedDate],[ExtendedVisibility])
 GO
 
+--DNN-4804 - force upgrade of iconbar (deprecated April 2010)
+UPDATE {databaseOwner}{objectQualifier}HostSettings Set SettingValue='Admin/ControlPanel/ControlBar.ascx' WHERE SettingName='ControlPanel' AND SettingValue='Admin/ControlPanel/IconBar.ascx'
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
