@@ -1627,7 +1627,7 @@ namespace DotNetNuke.Security.Membership
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
-            string vanityUrl = HttpUtility.HtmlEncode(user.VanityUrl);
+            
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
@@ -1647,7 +1647,7 @@ namespace DotNetNuke.Security.Membership
                                      user.IsSuperUser,
                                      email,
                                      displayName,
-                                     vanityUrl,
+                                     user.VanityUrl,
                                      updatePassword,
                                      isApproved,
                                      false,
