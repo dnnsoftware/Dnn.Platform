@@ -17,7 +17,7 @@
             $('#dnnEditUser').dnnTabs().dnnPanels();
             //DNN-26777
             $('#<%= cmdDelete.ClientID %>').dnnConfirm({
-                text: '<%= ClientAPI.GetSafeJSString(LocalizeString("DeletetUser")) %>',
+                text: '<%= ClientAPI.GetSafeJSString(LocalizeString("UnregisterUser")) %>',
                             yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
                             noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
                             title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
