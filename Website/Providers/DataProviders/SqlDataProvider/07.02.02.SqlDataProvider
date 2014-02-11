@@ -1109,6 +1109,13 @@ GO
 UPDATE {databaseOwner}{objectQualifier}HostSettings Set SettingValue='Admin/ControlPanel/ControlBar.ascx' WHERE SettingName='ControlPanel' AND SettingValue='Admin/ControlPanel/IconBar.ascx'
 GO
 
+--DNN-3185
+IF EXISTS (SELECT * FROM dbo.sysconstraints WHERE id = OBJECT_ID(N'{objectQualifier}ModuleDefinitions') AND constid = OBJECT_ID(N'IX_{objectQualifier}ModuleDefinitions'))
+ ALTER TABLE {databaseOwner}{objectQualifier}ModuleDefinitions
+ DROP CONSTRAINT IX_{objectQualifier}ModuleDefinitions
+ GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
