@@ -193,7 +193,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     }
                     if (imageColumn.CommandName == "Edit")
                     {
-                        string formatString = ModuleContext.EditUrl("PackageID", "keyfield", "Edit");
+                        string formatString = ModuleContext.EditUrl("packageid", "keyfield", "Edit");
                         formatString = formatString.Replace("keyfield", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
                     }

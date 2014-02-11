@@ -51,7 +51,7 @@
                             <ItemTemplate><asp:Label ID="lblUpgrade" runat="server" Text='<%# UpgradeService((Version)DataBinder.Eval(Container.DataItem,"Version"),DataBinder.Eval(Container.DataItem,"PackageType").ToString(),DataBinder.Eval(Container.DataItem,"Name").ToString()) %>' ></asp:Label></ItemTemplate>
                         </asp:TemplateColumn>
                         <dnn:imagecommandcolumn headerStyle-width="18px" CommandName="Edit" IconKey="Edit" EditMode="URL" KeyField="PackageID" HeaderStyle-CssClass="dnnGridHeaderTD-NoBorder" />
-                        <dnn:imagecommandcolumn headerStyle-width="18px" commandname="Delete" IconKey="Delete" EditMode="URL" keyfield="PackageID" />
+                        <dnn:imagecommandcolumn headerStyle-width="18px" commandname="Delete" IconKey="Delete" EditMode="URL" keyfield="packageid" />
                     </Columns>
                 </asp:DataGrid>
                 <asp:Label ID="noResultsLabel" runat="server" resourcekey="NoResults" Visible="false" />
