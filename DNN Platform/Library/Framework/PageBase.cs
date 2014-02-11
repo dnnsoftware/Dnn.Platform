@@ -32,6 +32,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
@@ -213,6 +214,24 @@ namespace DotNetNuke.Framework
             }
         }
 
+        private void Handle404Exception()
+        {
+            if (PortalSettings.ErrorPage404 > Null.NullInteger)
+            {
+                Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+            }
+            else
+            {
+                Response.ClearContent();
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 404;
+                Response.Status = "404 Not Found";
+                Response.Write("404 Not Found");
+                Response.End();
+            }
+            
+        }
+
         #endregion
 
         #region Protected Methods
@@ -234,6 +253,13 @@ namespace DotNetNuke.Framework
             string strURL = Globals.ApplicationURL();
             if (exc is HttpException && !IsViewStateFailure(exc))
             {
+                //if the exception's status code set to 404, we need display 404 page if defined or show no found info.
+                var statusCode = (exc as HttpException).GetHttpCode();
+                if (statusCode == 404)
+                {
+                    Handle404Exception();
+                }
+
                 if (PortalSettings.ErrorPage500 != -1)
                 {
                     string url = GetErrorUrl("~/Default.aspx?tabid=" + PortalSettings.ErrorPage500, exc, false);
