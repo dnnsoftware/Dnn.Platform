@@ -15,6 +15,10 @@ FROM {databaseOwner}{objectQualifier}Folders f
 WHERE fm.FolderMappingID IS NULL
 GO
 
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Folders]') AND name = N'FK_Folders_FolderMappings')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP CONSTRAINT [FK_Folders_FolderMappings]
+GO
+
 ALTER TABLE {databaseOwner}{objectQualifier}Folders 
 ADD CONSTRAINT FK_Folders_FolderMappings 
 	FOREIGN KEY (FolderMappingID) 
@@ -2550,6 +2554,11 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Folders_ParentID] ON {databaseOwn
 GO
 
 -- DNN-4497: Add Foreign Key Constraint
+
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Folders]') AND name = N'FK_Folders_FolderMappings')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP CONSTRAINT [FK_Folders_FolderMappings]
+GO
+
 IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Folders]') AND name = N'FK_{objectQualifier}Folders_{objectQualifier}FolderMappings')
 	ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP CONSTRAINT FK_{objectQualifier}Folders_{objectQualifier}FolderMappings 
 GO
