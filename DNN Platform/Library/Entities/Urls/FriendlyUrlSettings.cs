@@ -96,7 +96,6 @@ namespace DotNetNuke.Entities.Urls
 
         #region Public Properties
 
-        internal bool AllowReporting { get; set; }
 
         public bool AllowDebugCode { get; set; }
 
@@ -240,8 +239,6 @@ namespace DotNetNuke.Entities.Urls
 
         public string UseBaseFriendlyUrls { get; set; }
 
-        public string UseMobileAlias { get; set; }
-
         public string UseSiteUrlsRegex { get; set; }
 
         public string ValidExtensionlessUrlsRegex { get; set; }
@@ -384,11 +381,6 @@ namespace DotNetNuke.Entities.Urls
 
             //703 default debug code to false
             AllowDebugCode = GetBooleanSetting(AllowDebugCodeSetting, false);
-            //allow reporting value for checking for updates and reporting usage data
-            AllowReporting = GetBooleanSetting("allowReporting", true);
-
-            //737 : integrate mobile alias
-            UseMobileAlias = GetStringSetting("useMobileAlias", null);
 
             VanityUrlPrefix = GetStringSetting(VanityUrlPrefixSetting, "users");
 
