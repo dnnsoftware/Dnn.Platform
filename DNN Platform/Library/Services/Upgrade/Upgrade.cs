@@ -2905,6 +2905,11 @@ namespace DotNetNuke.Services.Upgrade
             AddManageUsersModulePermissions();
         }
 
+        private static void UpgradeToVersion722()
+        {
+            UninstallPackage("DotNetNuke.Messaging");  
+        }
+
         private static void AddManageUsersModulePermissions()
         {
            var permCtl = new PermissionController();
@@ -5032,6 +5037,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.2.1":
                         UpgradeToVersion721();
+                        break;
+                    case "7.2.2":
+                        UpgradeToVersion722();
                         break;
                 }
             }
