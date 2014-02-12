@@ -278,21 +278,14 @@ namespace DotNetNuke.Modules.Journal.Components {
             var comments = JournalController.Instance.GetCommentsByJournalIds(journalIds.Keys.ToList());
             foreach (var commentInfo in comments)
             {
-                var key = string.Format("JC_{0}", commentInfo.JournalId);
                 var journalResult = searchDocuments[string.Format("JI_{0}", commentInfo.JournalId)];
-                if (!searchDocuments.ContainsKey(key))
+                if (journalResult != null)
                 {
-                    var searchDocument = new SearchDocument()
+                    journalResult.Body += string.Format(" {0}", commentInfo.Comment);
+                    if (commentInfo.DateCreated > journalResult.ModifiedTimeUtc)
                     {
-                        UniqueKey = journalResult.UniqueKey.Replace("JI_", "JC_"),
-                        Body = commentInfo.Comment,
-                        ModifiedTimeUtc = commentInfo.DateUpdated,
-                        Title = commentInfo.DisplayName,
-                        AuthorUserId = journalIds[commentInfo.JournalId],
-                        Keywords = journalResult.Keywords
-                    };
-
-                    searchDocuments.Add(key, searchDocument);
+                        journalResult.ModifiedTimeUtc = commentInfo.DateUpdated;
+                    }
                 }
             }
         }

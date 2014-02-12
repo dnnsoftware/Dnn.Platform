@@ -32,7 +32,7 @@ AS
 						INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID = j.ContentItemId
                         LEFT JOIN {databaseOwner}{objectQualifier}Journal_Comments jc ON jc.JournalId = j.JournalId
 						WHERE ci.ModuleID = @ModuleId
-						AND (j.DateUpdated > @StartDate OR jc.DateUpdated > @StartDate)
+						AND (j.DateUpdated > @StartDate OR jc.DateUpdated > @StartDate) --check the update time both for journal item and journal comment
 						AND j.JournalId > @StartJournalId
                         AND j.JournalTypeId IN (1,2,3,4)) AS T
 				 ) AS T WHERE rownumber <= @NumbersOfResult )
