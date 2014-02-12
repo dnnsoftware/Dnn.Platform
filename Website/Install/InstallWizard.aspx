@@ -113,14 +113,8 @@
                             <asp:RequiredFieldValidator ID="valWebsiteName" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="WebsiteName.Required" Display="Dynamic" ControlToValidate="txtWebsiteName"  />
                         </div>
                         <div class="dnnFormItem">
-                            <dnn:Label ID="lblTemplate" runat="server" ControlName="ddlTemplate" ResourceKey="WebsiteTemplate" />                      
-                            <dnn:DnnComboBox ID="templateList" runat="server">
-                                <Items>
-                                    <dnn:DnnComboBoxItem ResourceKey="TemplateDefault" Value="Default Website.template"/>
-                                    <dnn:DnnComboBoxItem ResourceKey="TemplateMobile" Value="Mobile Website.template"/>
-                                    <dnn:DnnComboBoxItem ResourceKey="TemplateBlank" Value="Blank Website.template" />
-                                </Items>
-                            </dnn:DnnComboBox>
+                            <dnn:Label ID="lblTemplate" runat="server" ControlName="ddlTemplate" ResourceKey="WebsiteTemplate" />
+                            <dnn:DnnComboBox id="templateList"  runat="server" CausesValidation="False" />
                         </div>
                         <div class="dnnFormItem">
                             <dnn:Label ID="lblLanguage" runat="server" ControlName="ddlLanguage" ResourceKey="Language" />

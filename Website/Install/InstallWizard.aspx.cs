@@ -50,6 +50,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using Telerik.Web.UI;
 using Globals = DotNetNuke.Common.Globals;
+using DotNetNuke.Entities.Portals.Internal;
 
 #endregion
 
@@ -92,7 +93,7 @@ namespace DotNetNuke.Services.Install
         private static int _installerProgress;
         //private static bool _isValidConnection = false;
         //private static bool _isValidInput = false;
-        
+
         #endregion
 
 		#region Private Properties
@@ -747,6 +748,17 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+        void BindTemplates()
+        {
+            var templates = TestablePortalController.Instance.GetAvailablePortalTemplates();
+
+            foreach (var template in templates)
+            {
+                templateList.AddItem(template.Name, Path.GetFileName(template.TemplateFilePath));
+            }
+        }
+
+
         private static void VisitSiteClick(object sender, EventArgs eventArgs)
         {    
             //Delete the status file.
@@ -909,7 +921,8 @@ namespace DotNetNuke.Services.Install
                 {
                     SetupDatabaseInfo();
                     BindLanguageList();
-                    
+                    BindTemplates();
+
                     if (CheckDatabaseConnection())
                     {
                         Initialise();
