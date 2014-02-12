@@ -33,9 +33,6 @@ namespace DotNetNuke.Common.Utilities
 {
     public class ImageUtils
     {
-        private static int _imgHeight;
-        private static int _imgWidth;
-
         public static Size GetSize(string sPath)
         {
             Image g = Image.FromFile(sPath);
@@ -78,7 +75,9 @@ namespace DotNetNuke.Common.Utilities
         public static int GetHeightFromStream(Stream sFile)
         {
             Image g = Image.FromStream(sFile, true);
-            return g.Height;
+            int h = g.Height; 
+            g.Dispose();
+            return h;
         }
 
         /// <summary>
@@ -177,7 +176,7 @@ namespace DotNetNuke.Common.Utilities
         public static Stream CreateImage(Stream stream, int intHeight, int intWidth, string extension)
         {
             var original = new Bitmap(stream);
-
+            int imgHeight, imgWidth;
             PixelFormat format = original.PixelFormat;
             if (format.ToString().Contains("Indexed"))
             {
@@ -190,17 +189,17 @@ namespace DotNetNuke.Common.Utilities
             if (original.Width > newWidth || original.Height > newHeight)
             {
                 imgSize = NewImageSize(original.Width, original.Height, newWidth, newHeight);
-                _imgHeight = imgSize.Height;
-                _imgWidth = imgSize.Width;
+                imgHeight = imgSize.Height;
+                imgWidth = imgSize.Width;
             }
             else
             {
                 imgSize = new Size(original.Width, original.Height);
-                _imgHeight = original.Height;
-                _imgWidth = original.Width;
+                imgHeight = original.Height;
+                imgWidth = original.Width;
             }
 
-            var newImg = new Bitmap(_imgWidth, _imgHeight, format);
+            var newImg = new Bitmap(imgWidth, imgHeight, format);
             newImg.SetResolution(original.HorizontalResolution, original.VerticalResolution);
 
             Graphics canvas = Graphics.FromImage(newImg);
@@ -253,7 +252,8 @@ namespace DotNetNuke.Common.Utilities
             Graphics bmpOutput = Graphics.FromImage(img);
             bmpOutput.InterpolationMode = InterpolationMode.HighQualityBicubic;
             bmpOutput.SmoothingMode = SmoothingMode.HighQuality;
-            var compressionRectange = new Rectangle(0, 0, _imgWidth, _imgHeight);
+            var compressionRectange = new Rectangle(0, 0, img.Width, img.Height);
+
             bmpOutput.DrawImage(img, compressionRectange);
 
             ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/jpeg");
@@ -291,7 +291,8 @@ namespace DotNetNuke.Common.Utilities
         {
             var newStream = new MemoryStream();
             Image g = Image.FromStream(sFile);
-            //Dim thisFormat = g.RawFormat
+            int imgHeight, imgWidth;
+            
             if (intHeight > 0 & intWidth > 0)
             {
                 int newHeight = intHeight;
@@ -299,26 +300,26 @@ namespace DotNetNuke.Common.Utilities
                 if (g.Width > newWidth | g.Height > newHeight)
                 {
                     Size imgSize = NewImageSize(g.Width, g.Height, newWidth, newHeight);
-                    _imgHeight = imgSize.Height;
-                    _imgWidth = imgSize.Width;
+                    imgHeight = imgSize.Height;
+                    imgWidth = imgSize.Width;
                 }
                 else
                 {
-                    _imgHeight = g.Height;
-                    _imgWidth = g.Width;
+                    imgHeight = g.Height;
+                    imgWidth = g.Width;
                 }
             }
             else
             {
-                _imgWidth = g.Width;
-                _imgHeight = g.Height;
+                imgWidth = g.Width;
+                imgHeight = g.Height;
             }
 
-            var imgOutput1 = new Bitmap(g, _imgWidth, _imgHeight);
+            var imgOutput1 = new Bitmap(g, imgWidth, imgHeight);
             Graphics bmpOutput = Graphics.FromImage(imgOutput1);
             bmpOutput.InterpolationMode = InterpolationMode.HighQualityBicubic;
             bmpOutput.SmoothingMode = SmoothingMode.HighQuality;
-            var compressionRectange = new Rectangle(0, 0, _imgWidth, _imgHeight);
+            var compressionRectange = new Rectangle(0, 0, imgWidth, imgHeight);
             bmpOutput.DrawImage(g, compressionRectange);
             ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/jpeg");
             Encoder myEncoder = Encoder.Quality;
