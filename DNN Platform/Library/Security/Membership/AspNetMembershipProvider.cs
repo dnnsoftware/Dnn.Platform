@@ -851,7 +851,7 @@ namespace DotNetNuke.Security.Membership
         {
             UserCreateStatus createStatus = ValidateForProfanity(user);
             EventLogController aLog = new EventLogController();
-            string service = HttpContext.Current.Request.Params["state"];
+            string service = HttpContext.Current != null ? HttpContext.Current.Request.Params["state"] : string.Empty;
 
             //DNN-4016
             //the username exists, first we check to see if this is an OAUTH user
