@@ -432,13 +432,17 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 var tabList = GetTabs(true, true, false, true);
                 var selectedParentTab = tabList.SingleOrDefault(t => t.TabID == PortalSettings.ActiveTab.TabID);
-                cboParentTab.SelectedPage = selectedParentTab;
+                cboParentTab.SelectedPage = selectedParentTab;                   
             }
             else
             {
                 var tabList = GetTabs(true, true, true, true);
                 var selectedParentTab = tabList.SingleOrDefault(t => t.TabID == PortalSettings.ActiveTab.ParentId);
-                cboParentTab.SelectedPage = selectedParentTab;
+
+                if (selectedParentTab != null && (selectedParentTab.TabPath.StartsWith("//Admin")==false && selectedParentTab.TabPath.StartsWith("//Host") == false))
+                {
+                    cboParentTab.SelectedPage = selectedParentTab;
+                }
             }
 
             if (string.IsNullOrEmpty(_strAction) || _strAction == "add" || _strAction == "copy")
