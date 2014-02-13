@@ -414,7 +414,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                                   jsl.FileName));
                 if (scriptloader != null)
                 {
-                    scriptloader.Controls.Add(fallback);
+                    //add the fallback control after script loader.
+                    var index = scriptloader.Parent.Controls.IndexOf(scriptloader);
+                    scriptloader.Parent.Controls.AddAt(index + 1, fallback);
                 }
             }
         }
