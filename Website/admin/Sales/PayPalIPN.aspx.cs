@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Web;
@@ -195,7 +196,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             objEventLogInfo.LogPortalID = intPortalID;
                             objEventLogInfo.LogPortalName = PortalSettings.PortalName;
                             objEventLogInfo.LogUserID = intUserID;
-                            objEventLogInfo.LogTypeKey = "POTENTIAL PAYPAL PAYMENT FRAUD";
+                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString();
                             objEventLog.AddLog(objEventLogInfo);
                         }
                     }
@@ -216,7 +217,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             objEventLogInfo.LogPortalID = intPortalID;
                             objEventLogInfo.LogPortalName = PortalSettings.PortalName;
                             objEventLogInfo.LogUserID = intUserID;
-                            objEventLogInfo.LogTypeKey = "POTENTIAL PAYPAL PAYMENT FRAUD";
+                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString();
                             objEventLog.AddLog(objEventLogInfo);
                         }
                     }
