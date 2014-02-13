@@ -2907,7 +2907,23 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion722()
         {
-            UninstallPackage("DotNetNuke.Messaging");  
+            UninstallPackage("DotNetNuke.Messaging");
+
+            //add event log type:POTENTIAL_PAYPAL_PAYMENT_FRAUD
+            if (!DoesLogTypeExists(EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()))
+            {
+                var logController = new LogController();
+                var logTypeInfo = new LogTypeInfo
+                                      {
+                                          LogTypeKey =
+                                              EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString(),
+                                          LogTypeFriendlyName = "Potential Paypal Payment Fraud",
+                                          LogTypeDescription = "",
+                                          LogTypeCSSClass = "OperationFailure",
+                                          LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                                      };
+                logController.AddLogType(logTypeInfo);
+            }
         }
 
         private static void AddManageUsersModulePermissions()
@@ -3337,6 +3353,19 @@ namespace DotNetNuke.Services.Upgrade
                     }
                 }
             }
+        }
+
+        private static bool DoesLogTypeExists(string logTypeKey)
+        {
+            var logController = new LogController();
+            LogTypeInfo logType;
+            Dictionary<string, LogTypeInfo> logTypeDictionary = logController.GetLogTypeInfoDictionary();
+            logTypeDictionary.TryGetValue(logTypeKey, out logType);
+            if (logType == null)
+            {
+                return false;
+            }
+            return true;
         }
 
         #endregion
