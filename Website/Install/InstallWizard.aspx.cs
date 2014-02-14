@@ -756,6 +756,7 @@ namespace DotNetNuke.Services.Install
             {
                 templateList.AddItem(template.Name, Path.GetFileName(template.TemplateFilePath));
             }
+            templateList.SelectedIndex = templateList.FindItemByValue("Default Website.template").Index;
         }
 
 
