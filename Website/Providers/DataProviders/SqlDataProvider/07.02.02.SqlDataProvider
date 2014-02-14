@@ -1164,6 +1164,280 @@ GO
     WHERE FriendlyName  = 'DarkKnightMobile' AND PackageType = 'Container'
 GO
 
+/* Fix bug DNN-4147: Add Custom404TabId, Custom500TabId to PortalLocalization Table */
+/*************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}PortalLocalization' AND COLUMN_NAME='Custom404TabId')
+	BEGIN
+		-- Add new SearchTabId Column
+		ALTER TABLE {databaseOwner}{objectQualifier}PortalLocalization
+			ADD Custom404TabId int NULL
+	END
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}PortalLocalization' AND COLUMN_NAME='Custom500TabId')
+	BEGIN
+		-- Add new SearchTabId Column
+		ALTER TABLE {databaseOwner}{objectQualifier}PortalLocalization
+			ADD Custom500TabId int NULL
+	END
+GO
+
+--update the value from portal settings to portal localization table
+UPDATE {databaseOwner}{objectQualifier}PortalLocalization SET Custom404TabId = SettingValue
+    FROM {databaseOwner}{objectQualifier}PortalLocalization pl
+    INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps ON ps.PortalID = pl.PortalID AND ps.SettingName = 'AUM_ErrorPage404'
+GO
+
+DELETE FROM dbo.PortalSettings WHERE SettingName = 'AUM_ErrorPage404'
+GO
+
+UPDATE {databaseOwner}{objectQualifier}PortalLocalization SET Custom500TabId = SettingValue
+    FROM {databaseOwner}{objectQualifier}PortalLocalization pl
+    INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps ON ps.PortalID = pl.PortalID AND ps.SettingName = 'AUM_ErrorPage500'
+GO
+
+DELETE FROM dbo.PortalSettings WHERE SettingName = 'AUM_ErrorPage500'
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Portals]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+AS
+    SELECT
+        P.PortalID,
+        P.PortalGroupID,
+        PL.PortalName,
+        {databaseOwner}{objectQualifier}FilePath(PL.LogoFile) AS LogoFile,
+        PL.FooterText,
+        P.ExpiryDate,
+        P.UserRegistration,
+        P.BannerAdvertising,
+        P.AdministratorId,
+        P.Currency,
+        P.HostFee,
+        P.HostSpace,
+        P.PageQuota,
+        P.UserQuota,
+        P.AdministratorRoleId,
+        P.RegisteredRoleId,
+        PL.Description,
+        PL.KeyWords,
+        {databaseOwner}{objectQualifier}FilePath(PL.BackgroundFile) AS BackgroundFile,
+        P.GUID,
+        P.PaymentProcessor,
+        P.ProcessorUserId,
+        P.ProcessorPassword,
+        P.SiteLogHistory,
+        U.Email,
+        P.DefaultLanguage,
+        P.TimezoneOffset,
+        PL.AdminTabId,
+        P.HomeDirectory,
+        PL.SplashTabId,
+        PL.HomeTabId,
+        PL.LoginTabId,
+        PL.RegisterTabId,
+        PL.UserTabId,
+        PL.SearchTabId,
+        PL.Custom404TabId,
+        PL.Custom500TabId,
+        {databaseOwner}{objectQualifier}SuperUserTabID() AS SuperTabId,
+        P.CreatedByUserID,
+        P.CreatedOnDate,
+        P.LastModifiedByUserID,
+        P.LastModifiedOnDate,
+        PL.CultureCode
+    FROM       {databaseOwner}{objectQualifier}Portals            AS P
+    INNER JOIN {databaseOwner}{objectQualifier}PortalLocalization AS PL ON P.PortalID = PL.PortalID
+    LEFT  JOIN {databaseOwner}{objectQualifier}Users              AS U  ON P.AdministratorId = U.UserID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalInfo]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
+	@PortalID				INT,
+	@PortalGroupID			INT,
+	@PortalName				NVARCHAR(128),
+	@LogoFile				NVARCHAR(50),
+	@FooterText				NVARCHAR(100),
+	@ExpiryDate				DATETIME,
+	@UserRegistration		INT,
+	@BannerAdvertising		INT,
+	@Currency				CHAR(3),
+	@AdministratorId		INT,
+	@HostFee				MONEY,
+	@HostSpace				INT,
+	@PageQuota				INT,
+	@UserQuota				INT,
+	@PaymentProcessor		NVARCHAR(50),
+	@ProcessorUserId		NVARCHAR(50),
+	@ProcessorPassword		NVARCHAR(50),
+	@Description			NVARCHAR(500),
+	@KeyWords				NVARCHAR(500),
+	@BackgroundFile			NVARCHAR(50),
+	@SiteLogHistory			INT,
+	@SplashTabId			INT,
+	@HomeTabId				INT,
+	@LoginTabId				INT,
+	@RegisterTabId			INT,
+	@UserTabId				INT,
+	@SearchTabId			INT,
+    @Custom404TabId			INT,
+    @Custom500TabId			INT,
+	@DefaultLanguage		NVARCHAR(10),
+	@HomeDirectory			VARCHAR(100),
+	@LastModifiedByUserID	INT,
+	@CultureCode			NVARCHAR(50)
+
+AS
+
+	UPDATE {databaseOwner}{objectQualifier}Portals
+		SET    
+		   PortalGroupID		= @PortalGroupID,
+		   ExpiryDate			= @ExpiryDate,
+		   UserRegistration		= @UserRegistration,
+		   BannerAdvertising	= @BannerAdvertising,
+		   Currency				= @Currency,
+		   AdministratorId		= @AdministratorId,
+		   HostFee				= @HostFee,
+		   HostSpace			= @HostSpace,
+		   PageQuota			= @PageQuota,
+		   UserQuota			= @UserQuota,
+		   PaymentProcessor		= @PaymentProcessor,
+		   ProcessorUserId		= @ProcessorUserId,
+		   ProcessorPassword	= @ProcessorPassword,
+		   SiteLogHistory		= @SiteLogHistory,
+		   DefaultLanguage		= @DefaultLanguage,
+		   HomeDirectory		= @HomeDirectory,
+		   LastModifiedByUserID = @LastModifiedByUserID,
+		   LastModifiedOnDate	= GETDATE()
+	WHERE  PortalId = @PortalID
+
+    IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE PortalId = @PortalID AND CultureCode = @CultureCode)
+	BEGIN 
+		UPDATE {databaseOwner}{objectQualifier}PortalLocalization
+			SET
+				PortalName				= @PortalName,
+				LogoFile				= @LogoFile,
+				FooterText				= @FooterText,
+				Description				= @Description,
+				KeyWords				= @KeyWords,
+				BackgroundFile			= @BackgroundFile,
+				HomeTabId				= @HomeTabId,
+				LoginTabId				= @LoginTabId,
+				RegisterTabId			= @RegisterTabId,
+				UserTabId				= @UserTabId,
+				SplashTabId				= @SplashTabId,
+				SearchTabId				= @SearchTabId,
+                Custom404TabId			= @Custom404TabId,
+                Custom500TabId			= @Custom500TabId,
+				LastModifiedByUserID	= @LastModifiedByUserID,
+				LastModifiedOnDate		= GETDATE()
+		WHERE	PortalId = @PortalID 
+			AND CultureCode = @CultureCode
+	END 
+ELSE
+	BEGIN 
+		DECLARE @AdminTabId int
+		SET @AdminTabId = (SELECT AdminTabId 
+								FROM {databaseOwner}{objectQualifier}PortalLocalization 
+								WHERE PortalID = @PortalID AND CultureCode='en-US')
+
+		INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+			[PortalID],
+			[CultureCode],
+			[PortalName],
+			[LogoFile],
+			[FooterText],
+			[Description],
+			[KeyWords],
+			[BackgroundFile],
+			[HomeTabId],
+			[LoginTabId],
+			[UserTabId],
+			[AdminTabId],
+			[SplashTabId],
+			[SearchTabId],
+            [Custom404TabId],
+            [Custom500TabId],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate]
+		)
+		VALUES (
+			@PortalID,
+			@CultureCode,
+			@PortalName,
+			@LogoFile, 
+			@FooterText,
+			@Description,
+			@KeyWords,
+			@BackgroundFile,
+			@HomeTabId ,
+			@LoginTabId ,
+			@UserTabId,
+			@AdminTabid,
+			@SplashTabId,
+			@SearchTabId,
+            @Custom404TabId,
+            @Custom500TabId,
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+		)
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalSetup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalSetup
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalSetup
+	@PortalId				INT,
+	@AdministratorId		INT,
+	@AdministratorRoleId	INT,
+	@RegisteredRoleId		INT,
+	@SplashTabId			INT,
+	@HomeTabId				INT,
+	@LoginTabId				INT,
+	@RegisterTabId			INT,
+	@UserTabId				INT,
+	@SearchTabId            INT,
+    @Custom404TabId         INT,
+    @Custom500TabId         INT,
+	@AdminTabId				INT,
+	@CultureCode			NVARCHAR(50)
+
+AS
+	UPDATE {databaseOwner}{objectQualifier}Portals
+		SET    
+			AdministratorId = @AdministratorId, 
+			AdministratorRoleId = @AdministratorRoleId, 
+			RegisteredRoleId = @RegisteredRoleId
+	WHERE  PortalId = @PortalId
+
+	UPDATE {databaseOwner}{objectQualifier}PortalLocalization
+		SET 
+			HomeTabId = @HomeTabId,
+			LoginTabId = @LoginTabId,
+			UserTabId = @UserTabId,
+			RegisterTabId = @RegisterTabId,
+			AdminTabId = @AdminTabId,
+			SplashTabId = @SplashTabId,
+			SearchTabId = @SearchTabId,
+            Custom404TabId = @Custom404TabId,
+            Custom500TabId = @Custom500TabId
+      WHERE portalID = @PortalID
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

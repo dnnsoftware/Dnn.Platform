@@ -563,7 +563,7 @@ namespace DotNetNuke.Data
                                              string processorPassword, string description, string keyWords,
                                              string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId,
                                              int loginTabId,
-                                             int registerTabId, int userTabId, int searchTabId, string defaultLanguage,
+                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, string defaultLanguage,
                                              string homeDirectory, int lastModifiedByUserID, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalInfo",
@@ -594,36 +594,40 @@ namespace DotNetNuke.Data
                                       GetNull(registerTabId),
                                       GetNull(userTabId),
                                       GetNull(searchTabId),
+                                      GetNull(custom404TabId),
+                                      GetNull(custom500TabId),
                                       GetNull(defaultLanguage),
                                       homeDirectory,
                                       lastModifiedByUserID,
                                       cultureCode);
         }
 
-        public virtual void UpdatePortalSetting(int PortalId, string SettingName, string SettingValue, int UserID,
-                                                string CultureCode)
+        public virtual void UpdatePortalSetting(int portalId, string settingName, string settingValue, int userId,
+                                                string cultureCode)
         {
-            ExecuteNonQuery("UpdatePortalSetting", PortalId, SettingName, SettingValue, UserID, CultureCode);
+            ExecuteNonQuery("UpdatePortalSetting", portalId, settingName, settingValue, userId, cultureCode);
         }
 
-        public virtual void UpdatePortalSetup(int PortalId, int AdministratorId, int AdministratorRoleId,
-                                              int RegisteredRoleId, int SplashTabId, int HomeTabId, int LoginTabId,
-                                              int RegisterTabId,
-                                               int UserTabId, int SearchTabId, int AdminTabId, string CultureCode)
+        public virtual void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId,
+                                              int registeredRoleId, int splashTabId, int homeTabId, int loginTabId,
+                                              int registerTabId,
+                                               int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int adminTabId, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalSetup",
-                                      PortalId,
-                                      AdministratorId,
-                                      AdministratorRoleId,
-                                      RegisteredRoleId,
-                                      SplashTabId,
-                                      HomeTabId,
-                                      LoginTabId,
-                                      RegisterTabId,
-                                      UserTabId,
-                                      SearchTabId,
-                                      AdminTabId,
-                                      CultureCode);
+                                      portalId,
+                                      administratorId,
+                                      administratorRoleId,
+                                      registeredRoleId,
+                                      splashTabId,
+                                      homeTabId,
+                                      loginTabId,
+                                      registerTabId,
+                                      userTabId,
+                                      searchTabId,
+                                      custom404TabId,
+                                      custom500TabId,
+                                      adminTabId,
+                                      cultureCode);
         }
 
         #endregion

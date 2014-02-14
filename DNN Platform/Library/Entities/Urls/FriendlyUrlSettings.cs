@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 
 using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 
@@ -62,8 +63,6 @@ namespace DotNetNuke.Entities.Urls
 
         // Settings Keys
         public const string DeletedTabHandlingTypeSetting = "AUM_DeletedTabHandlingType";
-        public const string ErrorPage404Setting = "AUM_ErrorPage404";
-        public const string ErrorPage500Setting = "AUM_ErrorPage500";
         public const string ForceLowerCaseSetting = "AUM_ForceLowerCase";
         public const string PageExtensionSetting = "AUM_PageExtension";
         public const string PageExtensionUsageSetting = "AUM_PageExtensionUsage";
@@ -356,12 +355,13 @@ namespace DotNetNuke.Entities.Urls
             CheckForDuplicateUrls = GetBooleanSetting(CheckForDuplicatedUrlsSetting, true);
 
             /* 454 New 404 error handling */
+            var portal = new PortalController().GetPortal(portalId);
             Regex404 = GetStringSetting("regex404", String.Empty);
-            TabId404 = PortalController.GetPortalSettingAsInteger(ErrorPage404Setting, PortalId, -1);
+            TabId404 = portal != null ? portal.Custom404TabId : Null.NullInteger;
             Url404 = GetStringSetting("url404", String.Empty);
 
             //get the 500 error values, if not supplied, use the 404 values
-            TabId500 = PortalController.GetPortalSettingAsInteger(ErrorPage500Setting, PortalId, -1);
+            TabId500 = portal != null ? portal.Custom404TabId : Null.NullInteger;
             if (TabId500 == -1)
             {
                 TabId500 = TabId404;
