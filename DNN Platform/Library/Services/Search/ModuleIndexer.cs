@@ -361,12 +361,14 @@ namespace DotNetNuke.Services.Search
         {
             try
             {
-                var message = string.Format("Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4}) ",
-                                                  module.DesktopModule.BusinessControllerClass,
-                                                  module.DesktopModule.ModuleName,
-                                                  module.ModuleID,
-                                                  module.TabID,
-                                                  module.PortalID);
+                var message = string.Format(
+                        Localization.Localization.GetExceptionMessage("ErrorCreatingBusinessControllerClass",
+                            "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
+                        module.DesktopModule.BusinessControllerClass,
+                        module.DesktopModule.ModuleName,
+                        module.ModuleID,
+                        module.TabID,
+                        module.PortalID);
                 throw new Exception(message, ex);
             }
             catch (Exception ex1)
@@ -393,7 +395,7 @@ namespace DotNetNuke.Services.Search
                     //Only index modules on tabs that are set to be Indexed.
                     if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
                     {
-                        //Check if the business controller is in the Hashtable
+                        //Check if the business controller is in the Hashtable                        
                         var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
                         if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
                         {
