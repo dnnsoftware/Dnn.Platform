@@ -632,6 +632,9 @@
                     <dnn:label id="plMaxUploadSize" controlname="txtMaxUploadSize" runat="server" />
                     <asp:TextBox ID="txtMaxUploadSize" runat="server" />
                     <asp:Label ID="Label1" runat="server" resourcekey="Mb" />
+                    <asp:RangeValidator runat="server" ID="rangeUploadSize" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" 
+        ControlToValidate="txtMaxUploadSize"  MinimumValue="1"
+        MaximumValue="99" Type="Integer" ></asp:RangeValidator>
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plAsyncTimeout" controlname="txtAsyncTimeout" runat="server" />

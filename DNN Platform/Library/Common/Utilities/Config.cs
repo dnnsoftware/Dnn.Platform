@@ -276,6 +276,31 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Returns the maximum file size allowed to be uploaded based on the request filter limit
+        /// </summary>
+        /// <returns>Size in megabytes</returns>
+        /// -----------------------------------------------------------------------------
+        public static long GetRequestFilterSize()
+        {
+            var configNav = Load();
+            const int defaultRequestFilter = 30000000/1024/1024;
+            var httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
+                       configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
+            if (httpNode == null && Iis7AndAbove())
+            {
+                return defaultRequestFilter;
+            }
+
+            if (httpNode != null)
+            {
+                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 0);
+                return maxAllowedContentLength / 1024 / 1024;
+            }
+            return defaultRequestFilter;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Sets the maximum file size allowed to be uploaded to the application in bytes
         /// </summary>
         /// -----------------------------------------------------------------------------

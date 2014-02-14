@@ -11,7 +11,7 @@
     associated with the data types.
     
     Example:
-    
+    m
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -1194,5 +1194,8 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   </data>
   <data name="plMaxUploadSize.Text" xml:space="preserve">
   <value>Max Upload Size</value>
+</data>
+  <data name="maxUploadSize.Error" xml:space="preserve">
+  <value>Maximum Upload Size must be between 12 and {0}</value>
 </data>
 </root>

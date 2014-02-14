@@ -565,6 +565,10 @@ namespace DotNetNuke.Modules.Admin.Host
                 {
                     BindData();
                     BindSearchIndex();
+                   
+                    rangeUploadSize.MaximumValue = Config.GetRequestFilterSize().ToString();
+                    rangeUploadSize.Text = String.Format(Localization.GetString("maxUploadSize.Error", LocalResourceFile),rangeUploadSize.MaximumValue);
+                    rangeUploadSize.ErrorMessage = String.Format(Localization.GetString("maxUploadSize.Error", LocalResourceFile), rangeUploadSize.MaximumValue);
 
                     if(Request.QueryString["smtpwarning"] != null)
                     {
@@ -922,9 +926,11 @@ namespace DotNetNuke.Modules.Admin.Host
                     var maxUpload = 12;
                     if (int.TryParse(txtMaxUploadSize.Text, out maxUpload))
                     {
-                        if (Config.GetMaxUploadSize() != (maxUpload * 1024 * 1024))
+                        var maxCurrentRequest = Config.GetMaxUploadSize();
+                        var maxUploadByMb = (maxUpload*1024*1024);
+                        if (maxCurrentRequest != maxUploadByMb)
                         {
-                            Config.SetMaxUploadSize(maxUpload * 1024 * 1024);
+                            Config.SetMaxUploadSize(maxUpload * 1024 * 1024);  
                         }
                     };
 					HostController.Instance.Update("AsyncTimeout", txtAsyncTimeout.Text, false);
