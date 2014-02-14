@@ -1437,6 +1437,11 @@ AS
       WHERE portalID = @PortalID
 GO
 
+--DNN-4745
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRolesByUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByUser]
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
