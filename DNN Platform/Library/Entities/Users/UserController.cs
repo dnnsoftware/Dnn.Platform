@@ -1679,7 +1679,16 @@ namespace DotNetNuke.Entities.Users
 				var objEventLog = new EventLogController();
 
                 //if the httpcontext is null, then get portal settings by portal id.
-			    var portalSettings = PortalController.GetCurrentPortalSettings() ?? new PortalSettings(portalId);
+                PortalSettings portalSettings = null;
+                if (HttpContext.Current != null)
+                {
+                    portalSettings = PortalController.GetCurrentPortalSettings();
+                }
+                else if (portalId > Null.NullInteger)
+                {
+                    portalSettings = new PortalSettings(portalId);
+                }
+
 			    objEventLog.AddLog(user, portalSettings, GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
 			}
 			//Remove the UserInfo from the Cache, as it has been modified
