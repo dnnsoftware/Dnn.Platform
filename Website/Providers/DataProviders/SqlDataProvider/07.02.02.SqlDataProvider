@@ -1189,7 +1189,7 @@ UPDATE {databaseOwner}{objectQualifier}PortalLocalization SET Custom404TabId = S
     INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps ON ps.PortalID = pl.PortalID AND ps.SettingName = 'AUM_ErrorPage404'
 GO
 
-DELETE FROM dbo.PortalSettings WHERE SettingName = 'AUM_ErrorPage404'
+DELETE FROM {databaseOwner}{objectQualifier}PortalSettings WHERE SettingName = 'AUM_ErrorPage404'
 GO
 
 UPDATE {databaseOwner}{objectQualifier}PortalLocalization SET Custom500TabId = SettingValue
@@ -1197,7 +1197,7 @@ UPDATE {databaseOwner}{objectQualifier}PortalLocalization SET Custom500TabId = S
     INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps ON ps.PortalID = pl.PortalID AND ps.SettingName = 'AUM_ErrorPage500'
 GO
 
-DELETE FROM dbo.PortalSettings WHERE SettingName = 'AUM_ErrorPage500'
+DELETE FROM {databaseOwner}{objectQualifier}PortalSettings WHERE SettingName = 'AUM_ErrorPage500'
 GO
 
 IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Portals]') AND OBJECTPROPERTY(id, N'IsView') = 1)
