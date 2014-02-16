@@ -45,9 +45,9 @@
                                             Visible='<%# PortalSettings.ContentLocalizationEnabled %>' />
                                     </HeaderTemplate>
                                     <ItemTemplate>
-                                        <dnn:DnnCheckBox ID="enabledCheckbox" runat="server" AutoPostBack="True" CommandArgument='<%# Eval("LanguageId") %>'
-                                            Enabled='<%# CanEnableDisable(Eval("Code").ToString()) %>' Checked='<%# IsLanguageEnabled(Eval("Code").ToString())%>'
-                                            OnCheckedChanged="enabledCheckbox_CheckChanged" />
+                                        <asp:CheckBox ID="enabledCheckbox" runat="server" AutoPostBack="True" CommandArgument='<%# Eval("LanguageId") %>'
+                                            Enabled='<%# CanEnableDisable(Eval("Code").ToString()) %>' 
+                                            OnCheckedChanged="enabledCheckbox_CheckChanged" CssClass="normalCheckBox" />
                                     </ItemTemplate>
                                 </dnn:DnnGridTemplateColumn>
                                 <dnn:DnnGridTemplateColumn ItemStyle-Width="80px">
@@ -191,10 +191,10 @@
                                                     <span style="font-size: 0.8em"><%# GetTranslatedStatus(Eval("Code").ToString())%></span>
                                                 </td>
                                                 <td style="width: 50px; text-align: center">
-                                                    <dnn:DnnCheckBox ID="publishedCheckbox" runat="server" AutoPostBack="True" CommandArgument='<%# Eval("LanguageId") %>'
+                                                    <asp:CheckBox ID="publishedCheckbox" runat="server" AutoPostBack="True" 
                                                         Enabled='<%# IsLanguageEnabled(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) %>'
-                                                        Checked='<%# IsLanguagePublished(Eval("Code").ToString()) %>' OnCheckedChanged="publishedCheckbox_CheckChanged"
-                                                        Visible='<%# IsLocalized(Eval("Code").ToString()) %>' />
+                                                        OnCheckedChanged="publishedCheckbox_CheckChanged"
+                                                        Visible='<%# IsLocalized(Eval("Code").ToString()) %>' CssClass="normalCheckBox" />
                                                 </td>
                                                 <td style="width: 50px;">
                                                     <asp:LinkButton ID="publishButton" runat="server" CommandArgument='<%# Eval("LanguageId") %>' Visible='<%# IsLanguagePublished(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' OnClick="PublishPages" CausesValidation="False" ToolTip='<%# LocalizeString("PublishTranslatedPages") %>'>

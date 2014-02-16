@@ -324,4 +324,10 @@
   <data name="NeutralMessage.Text" xml:space="preserve">
     <value>This is a "Language Neutral" page, which means that the page will be visible in every language of the site. Language Neutral pages cannot be translated.</value>
   </data>
+  <data name="Disable.Confirm" xml:space="preserve">
+    <value>Are you sure you would like to disable the language {0}?</value>
+  </data>
+  <data name="Unpublish.Confirm" xml:space="preserve">
+    <value>Are you sure you would like to deactivate the language {0}?</value>
+  </data>
 </root>
