@@ -44,6 +44,8 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.UI.WebControls;
 
 using Telerik.Web.UI;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Framework.JavaScriptLibraries;
 
 #endregion
 
@@ -162,6 +164,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             }
             return status;
         }
+
         protected string GetLocalizablePages(string code)
         {
             int count = 0;
@@ -274,28 +277,28 @@ namespace DotNetNuke.Modules.Admin.Languages
             var tabInfo = ddlPages.SelectedPage;
             if (tabInfo != null)
             {
-            if (String.IsNullOrEmpty(tabInfo.CultureCode))
-            {
-                CLControl1.Visible = false;
-                if (UserInfo.IsSuperUser || UserInfo.IsInRole("Administrators"))
+                if (String.IsNullOrEmpty(tabInfo.CultureCode))
                 {
-                    MakeTranslatable.Visible = true;
+                    CLControl1.Visible = false;
+                    if (UserInfo.IsSuperUser || UserInfo.IsInRole("Administrators"))
+                    {
+                        MakeTranslatable.Visible = true;
+                    }
+                    NeutralMessage.Visible = true;
                 }
-                NeutralMessage.Visible = true;
-            }
-            else
-            {
-                CLControl1.Visible = true;
-                CLControl1.enablePageEdit = true;
-                    CLControl1.BindAll(tabInfo.TabID);
-                cmdUpdate.Visible = true;
-
-                if (UserInfo.IsSuperUser || UserInfo.IsInRole("Administrators"))
+                else
                 {
-                    // only show "Convert to neutral" if page has no child pages
-                    MakeNeutral.Visible = (TabController.GetTabsByPortal(PortalId).WithParentId(tabInfo.TabID).Count == 0);
+                    CLControl1.Visible = true;
+                    CLControl1.enablePageEdit = true;
+                    CLControl1.BindAll(tabInfo.TabID);
+                    cmdUpdate.Visible = true;
 
-                    // only show "add missing languages" if not all languages are available
+                    if (UserInfo.IsSuperUser || UserInfo.IsInRole("Administrators"))
+                    {
+                        // only show "Convert to neutral" if page has no child pages
+                        MakeNeutral.Visible = (TabController.GetTabsByPortal(PortalId).WithParentId(tabInfo.TabID).Count == 0);
+
+                        // only show "add missing languages" if not all languages are available
                         AddMissing.Visible = TabController.HasMissingLanguages(PortalId, tabInfo.TabID);
                     }
                 }
@@ -318,8 +321,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             cmdEnableLocalizedContent.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "EnableContent", false, "mid=" + ModuleContext.ModuleId);
 
             AJAX.RegisterScriptManager();
-            jQuery.RequestRegistration();
-
+            JavaScript.RequestRegistration(CommonJs.jQuery);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -328,6 +330,10 @@ namespace DotNetNuke.Modules.Admin.Languages
 
             Locale enabledLanguage;
             LocaleController.Instance.GetLocales(ModuleContext.PortalId).TryGetValue("en-US", out enabledLanguage);
+
+            DotNetNuke.Framework.JavaScriptLibraries.JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport();
+            DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             try
             {
@@ -661,14 +667,28 @@ namespace DotNetNuke.Modules.Admin.Languages
 
         protected void PublishPages(object sender, EventArgs eventArgs)
         {
-
             var cmdPublishPages = (LinkButton)sender;
             int languageId = int.Parse(cmdPublishPages.CommandArgument);
             var locale = new LocaleController().GetLocale(languageId);
             LocaleController.Instance.PublishLanguage(PortalId, locale.Code, true);
-
+            
             //Redirect to refresh page (and skinObjects)
             Response.Redirect(Globals.NavigateURL(), true);
+        }
+
+        protected void MarkAllPagesTranslated(object sender, EventArgs eventArgs)
+        {
+            var cmdTranslateAll = (LinkButton)sender;
+            int languageId = int.Parse(cmdTranslateAll.CommandArgument);
+            var locale = new LocaleController().GetLocale(languageId);
+
+            var nonTranslated = (from t in TabController.GetTabsByPortal(PortalId).WithCulture(locale.Code, false).Values where !t.IsTranslated && !t.IsDeleted select t);
+            foreach (TabInfo page in nonTranslated)
+            {
+                page.LocalizedVersionGuid = page.DefaultLanguageTab.LocalizedVersionGuid;
+                TabController.UpdateTab(page);
+            }
+            BindGrid();
         }
 
         protected void updateButton_Click(object sender, EventArgs e)
@@ -778,7 +798,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             if (ddlPages.SelectedPage != null)
             {
                 var pageCookie = new HttpCookie(PageSelectorCookieName) { Value = ddlPages.SelectedPage.TabID.ToString(CultureInfo.InvariantCulture) };
-            Response.Cookies.Add(pageCookie);
+                Response.Cookies.Add(pageCookie);
             }
             BindCLControl();
         }

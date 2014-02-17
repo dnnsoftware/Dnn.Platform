@@ -139,12 +139,10 @@
                                                 <%# LocalizeString("Content.Header")%></caption>
                                             <tr>
                                                 <td style="width: 50px;">
-                                                    <dnn:DnnImage ID="pagesImage" runat="server" IconKey="Languages"
-                                                        resourcekey="LocalizePages" />
+                                                    <%# LocalizeString("Pages.Header")%>
                                                 </td>
                                                 <td style="width: 50px;">
-                                                    <dnn:DnnImage ID="translatedImage" runat="server" IconKey="Translated"
-                                                        resourcekey="TranslatedPages" />
+                                                    <%# LocalizeString("Translated.Header")%>
                                                 </td>
                                                 <td style="width: 50px;">
                                                     <%# LocalizeString("Active.Header")%>
@@ -156,14 +154,16 @@
                                                     <asp:Label ID="Label1" runat="server" CssClass="NormalRed" Text="*"
                                                         Visible='<%# PortalSettings.ContentLocalizationEnabled %>' />
                                                 </td>
-                                                <td style="width: 50px;">&nbsp;</td>
+                                                <td style="width: 50px;">
+                                                     <%# LocalizeString("Delete.Header")%>
+                                                </td>
                                             </tr>
                                         </table>
                                     </HeaderTemplate>
                                     <ItemTemplate>
                                         <table class="DnnGridNestedTable" style="width: 400px;">
                                             <tr>
-                                                <td style="width: 50px; border-width: 0">
+                                                <td style="width: 50px; border-width: 0;vertical-align:bottom">
                                                     <asp:PlaceHolder ID="PlaceHolder1" runat="server" Visible='<%# IsDefaultLanguage(Eval("Code").ToString()) %>'>
                                                         <span title="<%# LocalizeString("LocalizablePages")%>"><%# GetLocalizablePages(Eval("Code").ToString())%></span>
                                                     </asp:PlaceHolder>
@@ -171,8 +171,7 @@
                                                         <div>
                                                             <div style="display: inline-block; ">
                                                                 <span><%# GetLocalizedPages(Eval("Code").ToString())%></span>
-                                                                <br />
-                                                                <span style="font-size: 0.8em"><%# GetLocalizedStatus(Eval("Code").ToString()) %></span>
+                                                                <span style="font-size: 0.8em">(<%# GetLocalizedStatus(Eval("Code").ToString()) %>)</span><br /><br />
                                                             </div>
                                                             <div style="display: inline-block; float:right;">
                                                                 <asp:HyperLink ID="localizeLinkAlt" runat="server" Visible='<%# CanLocalize(Eval("Code").ToString()) %>'>
@@ -185,23 +184,31 @@
                                                         <asp:Image ID="localizeImage" runat="server" ImageAlign="Middle" IconKey="Languages" ResourceKey="CreateLocalizedPages" />
                                                     </asp:HyperLink>
                                                 </td>
-                                                <td style="width: 50px;">
+                                                <td style="width: 50px;vertical-align:bottom">
                                                     <span><%# GetTranslatedPages(Eval("Code").ToString())%></span>
-                                                    <br />
-                                                    <span style="font-size: 0.8em"><%# GetTranslatedStatus(Eval("Code").ToString())%></span>
+                                                    <span style="font-size: 0.8em">(<%# GetTranslatedStatus(Eval("Code").ToString())%>)</span><br />
+                                                    <asp:HyperLink ID="hyp" runat="server" NavigateUrl='<%# "javascript:getNonTranslatedPages(\"" + Eval("Code").ToString() + "\",\"" + Eval("NativeName").ToString() + "\");"%>'
+                                                        Visible='<%# !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' 
+                                                        ToolTip='<%# LocalizeString("GetNonTranslatedPages") %>'>
+                                                        <dnn:DnnImage ID="DnnImage1" runat="server" ResourceKey="GetNonTranslatedPages" IconKey="Translate" />
+                                                    </asp:HyperLink>
+                                                    &nbsp;&nbsp;
+                                                   <asp:LinkButton ID="cmdTranslateAll" runat="server" CommandArgument='<%# Eval("LanguageId") %>' Visible='<%# !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' OnClick="MarkAllPagesTranslated" CausesValidation="False" ToolTip='<%# LocalizeString("MarkAllPagesTranslated") %>'>
+                                                        <dnn:DnnImage ID="DnnImage2" runat="server" ResourceKey="MarkAllPagesTranslated" IconKey="Grant" />
+                                                    </asp:LinkButton>
                                                 </td>
-                                                <td style="width: 50px; text-align: center">
+                                                <td style="width: 50px; text-align: center;vertical-align:bottom">
                                                     <asp:CheckBox ID="publishedCheckbox" runat="server" AutoPostBack="True" 
                                                         Enabled='<%# IsLanguageEnabled(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) %>'
                                                         OnCheckedChanged="publishedCheckbox_CheckChanged"
                                                         Visible='<%# IsLocalized(Eval("Code").ToString()) %>' CssClass="normalCheckBox" />
                                                 </td>
-                                                <td style="width: 50px;">
+                                                <td style="width: 50px;vertical-align:bottom">
                                                     <asp:LinkButton ID="publishButton" runat="server" CommandArgument='<%# Eval("LanguageId") %>' Visible='<%# IsLanguagePublished(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' OnClick="PublishPages" CausesValidation="False" ToolTip='<%# LocalizeString("PublishTranslatedPages") %>'>
                                                         <dnn:DnnImage ID="imgPublish" runat="server" ResourceKey="PublishTranslatedPages" IconKey="PublishLanguage" />
                                                     </asp:LinkButton>
                                                 </td>
-                                                <td style="width: 50px;">
+                                                <td style="width: 50px;vertical-align:bottom">
                                                     <asp:LinkButton ID="cmdDeleteTranslation" runat="server" CommandArgument='<%# Eval("LanguageId") %>' OnClick="cmdDeleteTranslation_Click" CausesValidation="False" Visible='<%# IsLocalized(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) %>' ToolTip='<%# LocalizeString("cmdDeleteTranslation") %>'>
                                                         <dnn:DnnImage ID="imgDeleteTranslation" runat="server" ResourceKey="cmdDeleteTranslation" IconKey="Delete" />
                                                     </asp:LinkButton>
@@ -296,6 +303,39 @@
 </div>
 
 <script type="text/javascript">
+    var serviceFramework;
+    var baseServicepath;
+    var closeText = '<%= LocalizeString("Close")%>';
+    var titleText = '<%= LocalizeString("NonLocalizedPagesTitle")%> ';
+    var view = '<%= LocalizeString("ViewPage")%> ';
+    var edit = '<%= LocalizeString("EditPage")%> ';
+
+    function getNonTranslatedPages(code, lang) {
+        $.ajax({
+            url: baseServicepath + 'GetNonTranslatedPages',
+            type: 'GET',
+            data: 'languageCode=' + code,
+            beforeSend: serviceFramework.setModuleHeaders
+        }).done(function (result) {
+            debugger;
+            var pages ="";
+            $.each(result, function () {
+                pages = pages + "<li>" + this.Name + " <a href='" + this.ViewUrl + "'>"+ view + "</a> - <a href='" + this.EditUrl + "'>" + edit + "</a></li>"
+            });
+            $.dnnAlert({
+                okText: closeText,
+                title: titleText + lang,
+                text: "<div class=\"pages\"><ul>" + pages + "</ul></div>"
+            });
+        }).fail(function (xhr, status, error) {
+            $.dnnAlert({
+                okText: closeText,
+                title: titleText + lang,
+                text: error
+            });
+        });
+    }
+
     /*globals jQuery, window, Sys */
     (function ($, Sys) {
         function setupLanguageEnabler() {
@@ -307,14 +347,19 @@
             <%= BuildConfirmationJS("cmdDeleteTranslation", "DeleteTranslations.Confirm") %>
             
                 <%= BuildConfirmationJS("publishButton", "Publish.Confirm") %>
-
         }
+
+
         $(document).ready(function () {
+
+            serviceFramework = $.ServicesFramework(<%=ModuleContext.ModuleId %>);
+            baseServicepath = serviceFramework.getServiceRoot('InternalServices') + 'LanguageService/';
 
             setupLanguageEnabler();
             Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
                 setupLanguageEnabler();
             });
+            
         });
     }(jQuery, window.Sys));
 </script>
