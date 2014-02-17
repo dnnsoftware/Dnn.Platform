@@ -1451,6 +1451,56 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByUser]
 GO
 
+/* Fix bug DNN-4845: the CommentXml column may update as an empty string but not null, need check whether root element exists. */
+/****************************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Comment_Like]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Comment_Like
+GO
+	CREATE PROCEDURE {databaseOwner}{objectQualifier}Journal_Comment_Like
+		@JournalId int,
+		@CommentId int,
+		@UserId int,
+		@UserName nvarchar(50)
+	AS
+	DECLARE @cxml xml
+	SET @cxml = (SELECT CommentXML FROM {databaseOwner}{objectQualifier}Journal_Comments WHERE CommentId = @CommentId AND JournalId = @JournalId)
+	IF @cxml IS NULL OR @cxml.exist('/root') = 0
+		BEGIN
+		DECLARE @x xml
+			SET @x = '<root></root>';
+			UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+				SET CommentXML = @x
+				WHERE JournalId = @JournalId AND CommentId = @CommentId
+		END
+	IF EXISTS(SELECT CommentId
+				FROM {databaseOwner}{objectQualifier}Journal_Comments
+				WHERE JournalId = @JournalId AND CommentId = @CommentId
+				AND CommentXML.exist('/root/likes/u[@uid=sql:variable("@userid")]') = 1)
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+				SET CommentXML.modify('delete (/root/likes/u[@uid=sql:variable("@UserId")])')
+				WHERE JournalId = @JournalId AND CommentId = @CommentId
+				AND CommentXML.exist('/root/likes/u[@uid=sql:variable("@UserId")]') = 1
+		END
+	ELSE
+		BEGIN
+			BEGIN
+				IF NOT EXISTS(SELECT CommentId FROM {databaseOwner}{objectQualifier}Journal_Comments
+								WHERE JournalId = @JournalId AND CommentId = @CommentID
+								AND CommentXML.exist('/root/likes') = 1)
+					BEGIN
+						UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+						SET CommentXML.modify('insert <likes /> as last into (/root)[1]') 
+						WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root') = 1
+					END
+			END
+			BEGIN
+				UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+				SET CommentXML.modify('insert <u uid="{xs:string(sql:variable("@UserId"))}" un="{xs:string(sql:variable("@UserName"))}" /> as last into (/root/likes)[1]')
+				WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root/likes') = 1
+			END
+		END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
