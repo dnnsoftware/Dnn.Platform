@@ -605,6 +605,13 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 manifestFile = Installer.InstallerInfo.ManifestFile.TempFileName;
             }
+            if (PackageType!=null)
+            {
+		        if (PackageType.PackageType == "CoreLanguagePack" || PackageType.PackageType == "ExtensionLanguagePack")
+		        {
+		            compact = true;
+		        }
+            }
             if (!IsAzureDatabase())
             {
                 compact = true;
