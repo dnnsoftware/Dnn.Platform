@@ -1255,6 +1255,15 @@ AS
     LEFT  JOIN {databaseOwner}{objectQualifier}Users              AS U  ON P.AdministratorId = U.UserID
 GO
 
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+AS
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Portals] WHERE CultureCode = DefaultLanguage
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalInfo]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
 GO
