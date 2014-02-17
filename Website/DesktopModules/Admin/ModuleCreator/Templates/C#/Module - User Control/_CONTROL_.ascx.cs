@@ -14,10 +14,10 @@ using DotNetNuke.Entities.Modules;
 
 #endregion
 
-namespace [OWNER].[MODULE]
+namespace _OWNER_._MODULE_
 {
 
-	public partial class [CONTROL] : PortalModuleBase
+	public partial class _CONTROL_ : PortalModuleBase
 	{
 
 		#region Event Handlers

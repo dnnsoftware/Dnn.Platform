@@ -1,12 +1,12 @@
 ﻿/*
    SQL Database Uninstall Script
-   for [MODULE] Module
-   Copyright (c) [YEAR]
-   by [OWNER]
+   for _MODULE_ Module
+   Copyright (c) _YEAR_
+   by _OWNER_
 */
 
-ALTER TABLE [dbo].[OWNER]_[MODULE]s DROP CONSTRAINT [FK_[OWNER]_[MODULE]s_Modules]
+ALTER TABLE [dbo]._OWNER___MODULE_s DROP CONSTRAINT [FK__OWNER___MODULE_s_Modules]
 GO
 
-DROP TABLE [dbo].[OWNER]_[MODULE]s
+DROP TABLE [dbo]._OWNER___MODULE_s
 GO

@@ -14,12 +14,12 @@ Imports DotNetNuke.Entities.Modules
 
 #End Region
 
-Namespace [OWNER].[MODULE]
+Namespace _OWNER_._MODULE_
 
-    Public Partial Class [CONTROL]
+    Partial Public Class _CONTROL_
         Inherits PortalModuleBase
 
-        #Region "Event Handlers"
+#Region "Event Handlers"
 
         Protected Overrides Sub OnInit(e As EventArgs)
             MyBase.OnInit(e)
@@ -43,7 +43,7 @@ Namespace [OWNER].[MODULE]
 
         End Sub
 
-        #End Region
+#End Region
 
     End Class
 

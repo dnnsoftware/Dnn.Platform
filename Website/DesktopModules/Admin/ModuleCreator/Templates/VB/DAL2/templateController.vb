@@ -1,8 +1,8 @@
 ﻿#Region "Copyright"
 
 ' 
-' Copyright (c) [YEAR]
-' by [OWNER]
+' Copyright (c) _YEAR_
+' by _OWNER_
 ' 
 
 #End Region
@@ -14,46 +14,46 @@ Imports DotNetNuke.Data
 
 #End Region
 
-Namespace [OWNER].[MODULE]
-    Public Class [MODULE]Controller
-        Public Sub Add[MODULE]([MODULE] As [MODULE]Info)
+Namespace _OWNER_._MODULE_
+    Public Class _MODULE_Controller
+        Public Sub Add_MODULE_(_MODULE_ As _MODULE_Info)
             Using ctx As IDataContext = DataContext.Instance()
-                Dim rep = ctx.GetRepository(Of [MODULE]Info)()
-                rep.Insert([MODULE])
+                Dim rep = ctx.GetRepository(Of _MODULE_Info)()
+                rep.Insert(_MODULE_)
             End Using
         End Sub
 
-        Public Sub Delete[MODULE]([MODULE] As [MODULE]Info)
+        Public Sub Delete_MODULE_(_MODULE_ As _MODULE_Info)
             Using ctx As IDataContext = DataContext.Instance()
-                Dim rep = ctx.GetRepository(Of [MODULE]Info)()
-                rep.Delete([MODULE])
+                Dim rep = ctx.GetRepository(Of _MODULE_Info)()
+                rep.Delete(_MODULE_)
             End Using
         End Sub
 
-        Public Function Get[MODULE]s(moduleId As Integer) As IEnumerable(Of [MODULE]Info)
-            Dim [MODULE]s As IEnumerable(Of [MODULE]Info)
+        Public Function Get_MODULE_s(moduleId As Integer) As IEnumerable(Of _MODULE_Info)
+            Dim _MODULE_s As IEnumerable(Of _MODULE_Info)
 
             Using ctx As IDataContext = DataContext.Instance()
-                Dim rep = ctx.GetRepository(Of [MODULE]Info)()
-                [MODULE]s = rep.[Get](moduleId)
+                Dim rep = ctx.GetRepository(Of _MODULE_Info)()
+                _MODULE_s = rep.[Get](moduleId)
             End Using
-            Return [MODULE]s
+            Return _MODULE_s
         End Function
 
-        Public Function Get[MODULE]([MODULE]Id As Integer, moduleId As Integer) As [MODULE]Info
-            Dim [MODULE] As [MODULE]Info
+        Public Function Get_MODULE_(_MODULE_Id As Integer, moduleId As Integer) As _MODULE_Info
+            Dim _MODULE_ As _MODULE_Info
 
             Using ctx As IDataContext = DataContext.Instance()
-                Dim rep = ctx.GetRepository(Of [MODULE]Info)()
-                [MODULE] = rep.GetById([MODULE]Id, moduleId)
+                Dim rep = ctx.GetRepository(Of _MODULE_Info)()
+                _MODULE_ = rep.GetById(_MODULE_Id, moduleId)
             End Using
-            Return [MODULE]
+            Return _MODULE_
         End Function
 
-        Public Sub Update[MODULE]([MODULE] As [MODULE]Info)
+        Public Sub Update_MODULE_(_MODULE_ As _MODULE_Info)
             Using ctx As IDataContext = DataContext.Instance()
-                Dim rep = ctx.GetRepository(Of [MODULE]Info)()
-                rep.Update([MODULE])
+                Dim rep = ctx.GetRepository(Of _MODULE_Info)()
+                rep.Update(_MODULE_)
             End Using
         End Sub
     End Class

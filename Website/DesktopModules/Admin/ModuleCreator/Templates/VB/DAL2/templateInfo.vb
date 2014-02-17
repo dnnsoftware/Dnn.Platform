@@ -1,8 +1,8 @@
 ﻿#Region "Copyright"
 
 ' 
-' Copyright (c) [YEAR]
-' by [OWNER]
+' Copyright (c) _YEAR_
+' by _OWNER_
 ' 
 
 #End Region
@@ -15,22 +15,22 @@ Imports DotNetNuke.ComponentModel.DataAnnotations
 
 #End Region
 
-Namespace [OWNER].[MODULE]
+Namespace _OWNER_._MODULE_
 
-    <TableName("[OWNER]_[MODULE]s")> _
-    <PrimaryKey("[MODULE]ID")> _
+    <TableName("_OWNER___MODULE_s")> _
+    <PrimaryKey("_MODULE_ID")> _
     <Scope("ModuleID")> _
-    <Cacheable("[MODULE]s", CacheItemPriority.[Default], 20)> _
-    Public Class [MODULE]Info
-        Public Property [MODULE]ID() As Integer
+    <Cacheable("_MODULE_s", CacheItemPriority.[Default], 20)> _
+    Public Class _MODULE_Info
+        Public Property _MODULE_ID() As Integer
             Get
-                Return m_[MODULE]ID
+                Return m__MODULE_ID
             End Get
             Set
-                m_[MODULE]ID = Value
+                m__MODULE_ID = Value
             End Set
         End Property
-        Private m_[MODULE]ID As Integer
+        Private m__MODULE_ID As Integer
         Public Property ModuleID() As Integer
             Get
                 Return m_ModuleID
