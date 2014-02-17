@@ -1359,7 +1359,7 @@ namespace DotNetNuke.Common
         /// Gets the portal domain name.
         /// </summary>
         /// <param name="strPortalAlias">The portal alias.</param>
-        /// <param name="Request">The request or <c>null</c>.</param>.</param>
+        /// <param name="Request">The request or <c>null</c>.</param>
         /// <param name="blnAddHTTP">if set to <c>true</c> calls <see cref="AddHTTP"/> on the result.</param>
         /// <returns>domain name</returns>
         public static string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP)

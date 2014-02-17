@@ -28,7 +28,7 @@ namespace DotNetNuke.Common.Utilities
                 }
                 result = DateTime.UtcNow + _drift;
             }
-            catch (ArgumentOutOfRangeException ex)
+            catch (ArgumentOutOfRangeException)
             {
                 _lastUpdate = DateTime.UtcNow;
                 _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();

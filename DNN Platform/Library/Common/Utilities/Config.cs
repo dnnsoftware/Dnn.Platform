@@ -261,8 +261,8 @@ namespace DotNetNuke.Common.Utilities
 
             if (httpNode == null && Iis7AndAbove())
             {
-                const int DefaultMaxAllowedContentLenght = 30000000;
-                return Math.Min(maxRequestLength, DefaultMaxAllowedContentLenght);
+                const int DefaultMaxAllowedContentLength = 30000000;
+                return Math.Min(maxRequestLength, DefaultMaxAllowedContentLength);
             }
 
             if (httpNode != null)
@@ -306,13 +306,12 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static void SetMaxUploadSize(long newSize)
         {
-            if (newSize == null) { return; };
             if (newSize < 12582912) { newSize = 12582912; }; // 12 Mb minimum
 
             var configNav = Load();
 
             var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ??
-         configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
+                            configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
             if (httpNode != null)
             {
                 httpNode.Attributes["maxRequestLength"].InnerText = (newSize / 1024).ToString("#");

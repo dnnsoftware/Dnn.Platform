@@ -694,7 +694,7 @@ namespace DotNetNuke.Entities.Portals
                 //DNN-2949 set ignorewhitelist to false right away after ParseFiles was executed on all folders in template nodes
                 HostController.Instance.Update("IgnoreWhiteList", "N", true);
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 //DNN-2949 ensure ignorewhitelist is set back to false in case of any exceptions during files parsing/adding
                 HostController.Instance.Update("IgnoreWhiteList", "N", true);
