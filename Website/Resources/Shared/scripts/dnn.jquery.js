@@ -1865,15 +1865,20 @@
             minChars: 0,
             maxChars: 50,
             maxTags: 16,
-
+            lessThanMinCharsErrorText: 'A tag cannot be less than {0} characters long',
+            lessThanMinCharsErrorTitle: 'Tag Length Not Reached',
+            moreThanMaxCharsErrorText: 'A tag cannot be more than {0} characters long',
+            moreThanMaxCharsErrorTitle: 'Tag Length Exceeded',
+            moreThanMaxTagsErrorText: 'A maximum of {0} tags can be attached here',
+            moreThanMaxTagsErrorTitle: 'Tags limit exceeded',
             onErrorLessThanMinChars: function () { // can be customised by module dev
-                $.dnnAlert({ text: 'You can only input more than 0 chars per tag', title: 'Input Tag Error' });
+                $.dnnAlert({ text: String.format(settings.lessThanMinCharsErrorText, settings.minChars), title: settings.lessThanMinCharsErrorTitle });
             },
             onErrorMoreThanMaxChars: function () { // can be customised by module dev
-                $.dnnAlert({ text: 'You can only input less than 50 chars per tag', title: 'Input Tag Error' });
+                $.dnnAlert({ text: String.format(settings.moreThanMaxCharsErrorText, settings.maxChars), title: settings.moreThanMaxCharsErrorTitle });
             },
             onErrorMoreThanMaxTags: function () { // can be customised by module dev
-                $.dnnAlert({ text: 'You can only provide no more than 16 tags', title: 'Input Tag Error' });
+                $.dnnAlert({ text: String.format(settings.moreThanMaxTagsErrorText, settings.maxTags), title: settings.moreThanMaxTagsErrorTitle });
             },
 
             width: '45%',
