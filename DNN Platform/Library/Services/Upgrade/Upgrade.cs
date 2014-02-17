@@ -2924,6 +2924,63 @@ namespace DotNetNuke.Services.Upgrade
                                       };
                 logController.AddLogType(logTypeInfo);
             }
+
+            //AdvancedSettings module needs to be made a system package
+            var pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.AdvancedSettings");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //Site Wizard module needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.SiteWizard");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //Site Log module needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.SiteLog");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //Module Creator module needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Module Creator");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //Telerik.Web module needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Telerik.Web");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //jQuery needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "jQuery");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //jQuery-Migrate needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "jQuery-Migrate");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
         }
 
         private static void AddManageUsersModulePermissions()
