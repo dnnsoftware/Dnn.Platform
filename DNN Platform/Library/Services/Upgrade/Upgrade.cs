@@ -2981,6 +2981,10 @@ namespace DotNetNuke.Services.Upgrade
                 PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
+            //Make ConfigurationManager Premium
+            MakeModulePremium(@"ConfigurationManager");
+
+
         }
 
         private static void AddManageUsersModulePermissions()
@@ -3303,6 +3307,18 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
         }
+
+        public static void MakeModulePremium(string moduleName)
+        {
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, -1);
+            desktopModule.IsAdmin = true;
+            desktopModule.IsPremium = true;
+            DesktopModuleController.SaveDesktopModule(desktopModule, false, false);
+
+            //Add Portal/Module to PortalDesktopModules
+            DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+        }
+
 
         private static void MovePhotoProperty()
         {
