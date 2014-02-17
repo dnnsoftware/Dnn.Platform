@@ -68,7 +68,10 @@ namespace DotNetNuke.Modules.Admin.Security
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
+            if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
+            {
+                Response.Redirect(Globals.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
+            }
             cmdChangePassword.Click +=cmdChangePassword_Click;
             
             hlCancel.NavigateUrl = Globals.NavigateURL();
