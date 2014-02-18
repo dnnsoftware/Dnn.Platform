@@ -2014,8 +2014,12 @@
                                     triggerOnError(event.data.onErrorMoreThanMaxTags);
                                 $(data.fake_input).val('');
                             }
-                            else
-                                $(event.data.real_input).dnnAddTag($(event.data.fake_input).val(), { focus: true, unique: (settings.unique) });
+                            else{
+								var tags = $(event.data.fake_input).val().split(delimiter[id]);
+								for(var i = 0; i < tags.length; i++){
+									$(event.data.real_input).dnnAddTag(tags[i], { focus: true, unique: (settings.unique) });
+								}
+							}
                         } else {
                             $(event.data.fake_input).val($(event.data.fake_input).attr('data-default'));
                             $(event.data.fake_input).css('color', settings.placeholderColor);
@@ -2047,8 +2051,12 @@
                                 triggerOnError(event.data.onErrorMoreThanMaxTags);
                             $(data.fake_input).val('');
                         }
-                        else
-                            $(event.data.real_input).dnnAddTag($(event.data.fake_input).val(), { focus: true, unique: (settings.unique) });
+                        else{
+							var tags = $(event.data.fake_input).val().split(delimiter[id]);
+							for(var i = 0; i < tags.length; i++){
+								$(event.data.real_input).dnnAddTag(tags[i], { focus: true, unique: (settings.unique) });
+							}
+						}
 
                         $(event.data.fake_input).dnnResetAutosize(settings);
                         return false;
