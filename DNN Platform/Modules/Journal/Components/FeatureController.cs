@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                 {
                     var reader = DataProvider.Instance()
                                              .ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID,
-                                                            moduleInfo.ModuleID, beginDate.ToUniversalTime(), lastJournalId,
+                                                            moduleInfo.TabModuleID, beginDate.ToUniversalTime(), lastJournalId,
                                                             Constants.SearchBatchSize);
                     var journalIds = new Dictionary<int, int>();
 
@@ -137,8 +137,8 @@ namespace DotNetNuke.Modules.Journal.Components {
                         var title = reader["Title"].ToString();
                         var summary = reader["Summary"].ToString();
                         var securityKey = reader["SecurityKey"].ToString();
-                        var tabId = Convert.ToInt32(reader["TabId"]);
-                        var itemData = reader["ItemData"].ToString();
+                        var tabId = reader["TabId"].ToString();
+                        var tabModuleId = reader["ModuleId"].ToString();
 
                         var key = string.Format("JI_{0}", journalId);
                         if (searchDocuments.ContainsKey(key))
@@ -157,17 +157,12 @@ namespace DotNetNuke.Modules.Journal.Components {
                                                          AuthorUserId = userId,
                                                          Keywords = new Dictionary<string, string>()
                                                                         {
-                                                                            {"TabId", tabId.ToString()},
+                                                                            {"TabId", tabId},
+                                                                            {"TabModuleId", tabModuleId},
                                                                             {"ProfileId", profileId},
                                                                             {"GroupId", groupId}
                                                                         }
                                                      };
-
-                            //if tabid is null, we need gernerate url from item data.
-                            if (tabId == Null.NullInteger)
-                            {
-                                searchDocument.Url = GenerateUrl(itemData, journalId);
-                            }
 
                             searchDocuments.Add(key, searchDocument);
                         }
@@ -254,6 +249,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
             var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
             var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);
+            var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
             var profileId = Convert.ToInt32(searchResult.Keywords["ProfileId"]);
 
             if (groupId > 0 && tabId > 0)
@@ -299,22 +295,6 @@ namespace DotNetNuke.Modules.Journal.Components {
                     searchDocuments.Add(key, searchDocument);
                 }
             }
-        }
-
-        private string GenerateUrl(string itemData, int journalId)
-        {
-            if (string.IsNullOrEmpty(itemData))
-            {
-                return string.Empty;
-            }
-
-            var item = itemData.FromJson<ItemData>();
-            if (!string.IsNullOrEmpty(item.Url))
-            {
-                return string.Format("{0}{1}jid={2}", item.Url, (item.Url.Contains("?") ? "&" : "?"), journalId);
-            }
-
-            return string.Empty;
         }
 
         #endregion

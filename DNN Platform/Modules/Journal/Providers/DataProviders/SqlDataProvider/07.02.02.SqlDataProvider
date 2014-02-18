@@ -20,28 +20,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_GetSearchItems]
 	@StartJournalId INT,
 	@NumbersOfResult INT = 500
 AS
-    DECLARE @IncludeOutside BIT = 0
-    DECLARE @TopModuleID INT = 0
-    DECLARE @JournalDefID INT = 0
-
-	SELECT  TOP 1 @TopModuleID = ModuleID, @JournalDefID = M.ModuleDefID
-	FROM {databaseOwner}{objectQualifier}vw_Modules M
-		INNER JOIN {databaseOwner}{objectQualifier}Tabs T ON T.TabId = M.TabId
-		INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID = M.ModuleDefID AND md.FriendlyName = 'Journal'
-	WHERE  M.IsDeleted = 0  
-		AND T.IsDeleted = 0  
-		AND M.IsAdmin = 0
-		AND (M.SupportedFeatures & 2 = 2)
-		AND (T.EndDate > GETDATE() or T.EndDate IS NULL) 
-		AND (T.StartDate <= GETDATE() or T.StartDate IS NULL) 
-		AND (M.StartDate <= GETDATE() or M.StartDate IS NULL) 
-		AND (M.EndDate > GETDATE() or M.EndDate IS NULL) 
-		AND (NOT (M.BusinessControllerClass IS NULL))
-
-	IF @ModuleId = @TopModuleID
-		SELECT @IncludeOutside = 1
-
-	;WITH ValidJournals AS (
+	WITH ValidJournals AS (
 	SELECT	JournalId
 			FROM (
 					SELECT *, ROW_NUMBER() OVER (ORDER BY JournalId) rownumber FROM (
@@ -52,8 +31,7 @@ AS
 						INNER JOIN {databaseOwner}{objectQualifier}Users u ON u.UserID = j.UserId
 						INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID = j.ContentItemId
                         LEFT JOIN {databaseOwner}{objectQualifier}Journal_Comments jc ON jc.JournalId = j.JournalId
-                        LEFT JOIN {databaseOwner}{objectQualifier}vw_Modules vm ON vm.ModuleID = ci.ModuleID
-						WHERE ((ci.ModuleID = @ModuleId) OR (@IncludeOutside = 1 AND (ci.ModuleID <= 0 OR (vm.ModuleDefID <> @JournalDefId AND vm.SupportedFeatures & 2 <> 2 ) ) ) )
+						WHERE ci.ModuleID = @ModuleId
 						AND (j.DateUpdated > @StartDate OR jc.DateUpdated > @StartDate)
 						AND j.JournalId > @StartJournalId) AS T
 				 ) AS T WHERE rownumber <= @NumbersOfResult )
@@ -65,8 +43,7 @@ AS
 								ProfileId,
 								GroupId,
 								u.DisplayName AS Title,
-								CASE WHEN Summary IS NOT NULL AND Summary <> '' THEN Summary ELSE Title END AS Summary,
-                                ItemData,
+								Summary,
 								js.SecurityKey,
                                 ci.TabID,
 								ci.ModuleID
