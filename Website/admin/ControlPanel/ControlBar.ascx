@@ -19,14 +19,14 @@
                     <%= GetString("Tool.Admin.Text") %></a>
                     <div class="subNav advanced">
                         <ul class="subNavToggle">
-                            <li class="active BasicToggle"><a href="#controlbar_admin_basic" title="<%= GetString("Tool.CommonSettings.Text") %>">
+                            <li class="<%: AdminBookmarkItems.Any() ? string.Empty : "active " %>BasicToggle"><a href="#controlbar_admin_basic" title="<%= GetString("Tool.CommonSettings.Text") %>">
                                 <span></span></a></li>
                             <li class="AdvancedToggle"><a href="#controlbar_admin_advanced" title="<%= GetString("Tool.AdvancedSettings.Text") %>">
                                 <span></span></a></li>
-                            <li class="BookmarkToggle"><a href="#controlbar_admin_bookmarked" title="<%= GetString("Tool.BookmarkedSettings.Text") %>">
+                            <li class="<%: AdminBookmarkItems.Any() ? "active " : string.Empty %>BookmarkToggle"><a href="#controlbar_admin_bookmarked" title="<%= GetString("Tool.BookmarkedSettings.Text") %>">
                                 <span></span></a></li>
                         </ul>
-                        <dl id="controlbar_admin_basic" class="active">
+                        <dl id="controlbar_admin_basic" class="<%: AdminBookmarkItems.Any() ? string.Empty : "active" %>">
                             <dd>
                                 <ul>
                                     <%= GetAdminBaseMenu() %>
@@ -40,7 +40,7 @@
                                 </ul>
                             </dd>
                         </dl>
-                        <dl id="controlbar_admin_bookmarked">
+                        <dl id="controlbar_admin_bookmarked" class="<%: AdminBookmarkItems.Any() ? "active" : string.Empty %>">
                             <dd>
                                 <ul>
                                     <%= GetBookmarkItems("admin") %>
@@ -56,14 +56,14 @@
                     <%= GetString("Tool.Host.Text") %></a>
                     <div class="subNav advanced">
                         <ul class="subNavToggle">
-                            <li class="active BasicToggle"><a href="#controlbar_host_basic" title="<%= GetString("Tool.CommonSettings.Text") %>">
+                            <li class="<%: HostBookmarkItems.Any() ? string.Empty : "active " %>BasicToggle"><a href="#controlbar_host_basic" title="<%= GetString("Tool.CommonSettings.Text") %>">
                                 <span></span></a></li>
                             <li class="AdvancedToggle"><a href="#controlbar_host_advanced" title="<%= GetString("Tool.AdvancedSettings.Text") %>">
                                 <span></span></a></li>
-                            <li class="BookmarkToggle"><a href="#controlbar_host_bookmarked" title="<%= GetString("Tool.BookmarkedSettings.Text") %>">
+                            <li class="<%: HostBookmarkItems.Any() ? "active " : string.Empty %>BookmarkToggle"><a href="#controlbar_host_bookmarked" title="<%= GetString("Tool.BookmarkedSettings.Text") %>">
                                 <span></span></a></li>
                         </ul>
-                        <dl id="controlbar_host_basic" class="active">
+                        <dl id="controlbar_host_basic" class="<%: HostBookmarkItems.Any() ? string.Empty : "active" %>">
                             <dd>
                                 <ul>
                                     <%= GetHostBaseMenu() %>
@@ -77,7 +77,7 @@
                                 </ul>
                             </dd>
                         </dl>
-                        <dl id="controlbar_host_bookmarked">
+                        <dl id="controlbar_host_bookmarked" class="<%: HostBookmarkItems.Any() ? "active" : string.Empty %>">
                             <dd>
                                 <ul>
                                     <%= GetBookmarkItems("host") %>

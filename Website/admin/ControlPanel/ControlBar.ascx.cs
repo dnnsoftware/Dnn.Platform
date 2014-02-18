@@ -875,7 +875,7 @@ namespace DotNetNuke.UI.ControlPanels
                     var bookmarkItems = personalization.Profile["ControlBar:admin" + PortalSettings.PortalId];
                     
                     if (bookmarkItems != null)
-                        _adminBookmarkItems = bookmarkItems.ToString().Split(',').ToList();
+                        _adminBookmarkItems = bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList();
                     else
                         _adminBookmarkItems = new List<string>();
                 }
@@ -896,7 +896,7 @@ namespace DotNetNuke.UI.ControlPanels
                     var bookmarkItems = personalization.Profile["ControlBar:host" + PortalSettings.PortalId];
 
                     if (bookmarkItems != null)
-                        _hostBookmarkItems = bookmarkItems.ToString().Split(',').ToList();
+                        _hostBookmarkItems = bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList();
                     else
                         _hostBookmarkItems = new List<string>();
                 }
