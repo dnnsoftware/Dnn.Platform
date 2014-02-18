@@ -38,6 +38,7 @@
             </file>
           </files>
         </component>
+        <component type="Cleanup" version="02.02.01" fileName ="02.02.01.txt" />
       </components>
     </package>
   </packages>

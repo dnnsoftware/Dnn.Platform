@@ -146,6 +146,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JavaScript Libraries", "Jav
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{6308FA00-5E1A-4924-98C1-4B4010AD2BEB}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\Knockout\02.02.01.txt = DNN Platform\JavaScript Libraries\Knockout\02.02.01.txt
 		DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt = DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt
 		DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn = DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn
 		DNN Platform\JavaScript Libraries\Knockout\knockout.js = DNN Platform\JavaScript Libraries\Knockout\knockout.js
@@ -166,6 +167,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Authentica
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery", "jQuery", "{4E0EBB54-3987-461C-85C5-9281AC49C72B}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQuery\01.09.01.txt = DNN Platform\JavaScript Libraries\jQuery\01.09.01.txt
 		DNN Platform\JavaScript Libraries\jQuery\jQuery (MIT).txt = DNN Platform\JavaScript Libraries\jQuery\jQuery (MIT).txt
 		DNN Platform\JavaScript Libraries\jQuery\jQuery.dnn = DNN Platform\JavaScript Libraries\jQuery\jQuery.dnn
 		DNN Platform\JavaScript Libraries\jQuery\jquery.js = DNN Platform\JavaScript Libraries\jQuery\jquery.js
@@ -175,6 +177,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery", "jQuery", "{4E0EBB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryUI", "jQueryUI", "{6040AAC4-8533-4EBF-8918-2173B5400415}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQueryUI\01.10.03.txt = DNN Platform\JavaScript Libraries\jQueryUI\01.10.03.txt
 		DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt = DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt
 		DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js = DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js
 		DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn = DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn
@@ -183,6 +186,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryUI", "jQueryUI", "{60
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryMigrate", "jQueryMigrate", "{2D3D39C2-142A-4382-9EF1-2AC14ACAAAE0}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQueryMigrate\01.02.01.txt = DNN Platform\JavaScript Libraries\jQueryMigrate\01.02.01.txt
 		DNN Platform\JavaScript Libraries\jQueryMigrate\jQuery (MIT).txt = DNN Platform\JavaScript Libraries\jQueryMigrate\jQuery (MIT).txt
 		DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.js = DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.js
 		DNN Platform\JavaScript Libraries\jQueryMigrate\jQueryMigrate.dnn = DNN Platform\JavaScript Libraries\jQueryMigrate\jQueryMigrate.dnn
@@ -191,6 +195,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryMigrate", "jQueryMigr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KnockoutMapping", "KnockoutMapping", "{96F739AA-D737-4A48-B423-326B4ED37425}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\KnockoutMapping\02.04.01.txt = DNN Platform\JavaScript Libraries\KnockoutMapping\02.04.01.txt
 		DNN Platform\JavaScript Libraries\KnockoutMapping\Knockout Mapping (MIT).txt = DNN Platform\JavaScript Libraries\KnockoutMapping\Knockout Mapping (MIT).txt
 		DNN Platform\JavaScript Libraries\KnockoutMapping\knockout.mapping.js = DNN Platform\JavaScript Libraries\KnockoutMapping\knockout.mapping.js
 		DNN Platform\JavaScript Libraries\KnockoutMapping\KnockoutMapping.dnn = DNN Platform\JavaScript Libraries\KnockoutMapping\KnockoutMapping.dnn
