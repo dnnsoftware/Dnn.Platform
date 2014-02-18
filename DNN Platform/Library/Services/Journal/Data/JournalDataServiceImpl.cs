@@ -103,13 +103,12 @@ namespace DotNetNuke.Services.Journal
         {
             _provider.ExecuteNonQuery("Journal_UpdateContentItemId", journalId, contentItemId);
         }
-        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId) 
-        {
-            return Journal_Get(portalId, currentUserId, journalId, false, false, false);
+        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId) {
+            return Journal_Get(portalId, currentUserId, journalId, false, false);
         }
-        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
+        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
         {
-            return _provider.ExecuteReader("Journal_Get", portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck);
+            return _provider.ExecuteReader("Journal_Get", portalId, currentUserId, journalId, includeAllItems, isDeleted);
         }
         public IDataReader Journal_GetByKey(int portalId, string objectKey) {
             return Journal_GetByKey(portalId, objectKey, false, false);

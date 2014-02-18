@@ -33,7 +33,6 @@ using System.Xml;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
@@ -145,12 +144,7 @@ namespace DotNetNuke.Services.Journal
 
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
         {
-            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, isDeleted, false);
-        }
-
-        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
-        {
-            return CBO.FillObject<JournalItem>(_dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
+            return CBO.FillObject<JournalItem>(_dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted));
         }
 
         public JournalItem GetJournalItemByKey(int portalId, string objectKey)
@@ -172,7 +166,7 @@ namespace DotNetNuke.Services.Journal
             return (JournalItem)CBO.FillObject(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted), typeof(JournalItem));
         }
 
-        public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
+        public void SaveJournalItem(JournalItem journalItem, int tabId)
         {
             if (journalItem.UserId < 1)
             {
@@ -312,17 +306,14 @@ namespace DotNetNuke.Services.Journal
             journalItem.DateCreated = updatedJournalItem.DateCreated;
             journalItem.DateUpdated = updatedJournalItem.DateUpdated;
             var cnt = new Content();
-
-            var tabId = module != null ? module.TabID : Null.NullInteger;
-            var moduleId = module != null ? module.TabModuleID : Null.NullInteger;
             if (journalItem.ContentItemId > 0)
             {
-                cnt.UpdateContentItem(journalItem, tabId, moduleId);
+                cnt.UpdateContentItem(journalItem, tabId);
                 _dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
             }
             else
             {
-                ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
+                ContentItem ci = cnt.CreateContentItem(journalItem, tabId);
                 _dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }
@@ -339,7 +330,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
-        public void UpdateJournalItem(JournalItem journalItem, ModuleInfo module)
+        public void UpdateJournalItem(JournalItem journalItem, int tabId)
         {
             if (journalItem.UserId < 1)
             {
@@ -469,16 +460,15 @@ namespace DotNetNuke.Services.Journal
             journalItem.DateUpdated = updatedJournalItem.DateUpdated;
 
             var cnt = new Content();
-            var tabId = module != null ? module.TabID : Null.NullInteger;
-            var moduleId = module != null ? module.TabModuleID : Null.NullInteger;
+
             if (journalItem.ContentItemId > 0)
             {
-                cnt.UpdateContentItem(journalItem, tabId, moduleId);
+                cnt.UpdateContentItem(journalItem, tabId);
                 _dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
             }
             else
             {
-                ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
+                ContentItem ci = cnt.CreateContentItem(journalItem, tabId);
                 _dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }

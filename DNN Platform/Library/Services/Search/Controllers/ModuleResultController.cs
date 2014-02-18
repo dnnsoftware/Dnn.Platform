@@ -32,7 +32,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -50,8 +49,6 @@ namespace DotNetNuke.Services.Search.Controllers
     public class ModuleResultController : BaseResultController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
-
-        private static Hashtable _moduleSearchControllers = new Hashtable();
 
         #region Abstract Class Implmentation
 
@@ -73,7 +70,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     if (!module.IsDeleted && !tab.IsDeleted && TabPermissionController.CanViewPage(tab))
                     {
                         //Check If authorised to View Module
-                        if (ModulePermissionController.CanViewModule(module) && HasModuleSearchPermission(module, searchResult))
+                        if (ModulePermissionController.CanViewModule(module))
                         {
                             //Verify against search document permissions
                             if (string.IsNullOrEmpty(searchResult.Permissions) || PortalSecurity.IsInRoles(searchResult.Permissions))
@@ -81,12 +78,7 @@ namespace DotNetNuke.Services.Search.Controllers
                                 viewable = true;
                                 if (string.IsNullOrEmpty(searchResult.Url))
                                 {
-                                    searchResult.Url = GetModuleSearchUrl(module, searchResult);
-                                    if (string.IsNullOrEmpty(searchResult.Url))
-                                    {
-                                        searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty,
-                                                                               searchResult.QueryString);
-                                    }
+                                    searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty, searchResult.QueryString);
                                 }
                                 break;
                             }
@@ -120,15 +112,9 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     try
                     {
-                        url = GetModuleSearchUrl(module, searchResult);
-
-                        if (string.IsNullOrEmpty(url))
-                        {
-                            var portalSettings = new PortalSettings(searchResult.PortalId);
-                            portalSettings.PortalAlias =
-                                TestablePortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
-                            url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty,
-                                                      searchResult.QueryString);
+						var portalSettings = new PortalSettings(searchResult.PortalId);
+                        portalSettings.PortalAlias = TestablePortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
+                        url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty, searchResult.QueryString);
                         }
                     }
                     catch (Exception ex)
@@ -154,49 +140,6 @@ namespace DotNetNuke.Services.Search.Controllers
             return CBO.GetCachedObject<ArrayList>(
                 new CacheItemArgs(cacheKey, ModuleByIdCacheTimeOut, ModuleByIdCachePriority, moduleID),
                 (args) => CBO.FillCollection(DataProvider.Instance().GetModule(moduleID, Null.NullInteger), typeof(ModuleInfo)));
-        }
-
-        private bool HasModuleSearchPermission(ModuleInfo module, SearchResult searchResult)
-        {
-            var canView = true;
-
-            var moduleSearchController = GetModuleSearchController(module);
-            if (moduleSearchController != null)
-            {
-                canView = moduleSearchController.HasViewPermission(searchResult);
-            }
-
-            return canView;
-        }
-        
-        private string GetModuleSearchUrl(ModuleInfo module, SearchResult searchResult)
-        {
-            var url = string.Empty;
-            var moduleSearchController = GetModuleSearchController(module);
-            if (moduleSearchController != null)
-            {
-                url = moduleSearchController.GetDocUrl(searchResult);
-            }
-
-            return url;
-        }
-
-        private IModuleSearchController GetModuleSearchController(ModuleInfo module)
-        {
-            if (string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
-            {
-                return null;
-            }
-
-            if (_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
-            {
-                return _moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchController;
-            }
-
-            var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchController;
-            _moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
-
-            return controller;
         }
 
         #endregion

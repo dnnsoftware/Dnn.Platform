@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Journal {
         /// </summary>
         /// <returns>The newly created ContentItemID from the data store.</returns>
         /// <remarks>This is for the first question in the thread. Not for replies or items with ParentID > 0.</remarks>
-        internal ContentItem CreateContentItem(JournalItem objJournalItem, int tabId, int moduleId) {
+        internal ContentItem CreateContentItem(JournalItem objJournalItem, int tabId) {
             var typeController = new ContentTypeController();
             string contentTypeName = "DNNCorp_JournalProfile";
             if (objJournalItem.SocialGroupId > 0) {
@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Journal {
                 ContentTypeId = contentTypeID,
                 Indexed = false,
                 ContentKey = "journalid=" + objJournalItem.JournalId,
-                ModuleID = moduleId,
+                ModuleID = -1,
                 TabID = tabId
             };
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Journal {
         /// <summary>
         /// This is used to update the content in the ContentItems table. Should be called when a question is updated.
         /// </summary>
-        internal void UpdateContentItem(JournalItem objJournalItem, int tabId, int moduleId) {
+        internal void UpdateContentItem(JournalItem objJournalItem, int tabId) {
             var objContent = Util.GetContentController().GetContentItem(objJournalItem.ContentItemId);
 
             if (objContent == null) return;
@@ -81,7 +81,6 @@ namespace DotNetNuke.Services.Journal {
             {
                 objContent.Content = GetContentBody(objJournalItem);
                 objContent.TabID = tabId;
-                objContent.ModuleID = moduleId;
                 objContent.ContentKey = "journalid=" + objJournalItem.JournalId; // we reset this just in case the page changed.
 
                 Util.GetContentController().UpdateContentItem(objContent);
