@@ -82,11 +82,16 @@ namespace DotNetNuke.UI.WebControls
             if ((BooleanValue))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, "1");
             }
             else
             {
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, "");
             }
+
+            writer.AddAttribute("onclick", "this.value = this.checked ? '1' : '';");
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }
@@ -98,9 +103,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }
-            else
-            {
-            }
+
             writer.AddAttribute(HtmlTextWriterAttribute.Disabled, "disabled");
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
