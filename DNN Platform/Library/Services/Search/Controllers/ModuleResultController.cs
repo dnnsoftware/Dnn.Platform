@@ -181,7 +181,7 @@ namespace DotNetNuke.Services.Search.Controllers
             return url;
         }
 
-        private IModuleSearchResultController GetModuleSearchController(ModuleInfo module)
+        private IModuleSearchController GetModuleSearchController(ModuleInfo module)
         {
             if (string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
             {
@@ -190,10 +190,10 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
             {
-                return _moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
+                return _moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchController;
             }
 
-            var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchResultController;
+            var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchController;
             _moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
 
             return controller;

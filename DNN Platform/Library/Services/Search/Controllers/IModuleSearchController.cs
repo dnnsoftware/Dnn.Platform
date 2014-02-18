@@ -6,11 +6,7 @@ using DotNetNuke.Services.Search.Entities;
 
 namespace DotNetNuke.Services.Search.Controllers
 {
-    /// <summary>
-    /// Module can optionally specify custom behavior to provide Permission and Url Services. 
-    /// </summary>
-    /// <remarks>This is needed only when Module wants additional capabilities on top of what Core already performs.</remarks>
-    public interface IModuleSearchResultController
+    public interface IModuleSearchController
     {
         /// <summary>
         /// Does the user in the Context have View Permission on the Document
