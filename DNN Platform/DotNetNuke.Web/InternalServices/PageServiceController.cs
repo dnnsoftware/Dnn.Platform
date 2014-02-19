@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.InternalServices
                     new
                     {
                         Success = false,
-                        ErrorMessage = Localization.GetString("UrlPathCleaned.Error", Localization.GlobalResourceFile),
+                        ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error", Localization.GlobalResourceFile),
                         SuggestedUrlPath = "/" + urlPath
                     });
             }
