@@ -23,6 +23,7 @@
             <businessControllerClass />
             <supportedFeatures />
             <isPremium>true</isPremium>
+            <isAdmin>true</isAdmin>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>RadEditor Manager</friendlyName>

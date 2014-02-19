@@ -2984,7 +2984,11 @@ namespace DotNetNuke.Services.Upgrade
             //Make ConfigurationManager Premium
             MakeModulePremium(@"ConfigurationManager");
 
+            //Make ConfigurationManager Premium
+            MakeModulePremium(@"Dashboard");
 
+            //Make ProfessionalPreview Premium
+            MakeModulePremium(@"ProfessionalPreview");
         }
 
         private static void AddManageUsersModulePermissions()
@@ -3313,9 +3317,9 @@ namespace DotNetNuke.Services.Upgrade
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, -1);
             desktopModule.IsAdmin = true;
             desktopModule.IsPremium = true;
-            DesktopModuleController.SaveDesktopModule(desktopModule, false, false);
+            DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
 
-            //Add Portal/Module to PortalDesktopModules
+            //Remove Portal/Module to PortalDesktopModules
             DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
         }
 
