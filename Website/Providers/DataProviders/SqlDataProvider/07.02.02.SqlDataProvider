@@ -42,6 +42,10 @@ IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopMod
 	DROP INDEX [IX_{objectQualifier}DesktopModulePermission_Roles] ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
 GO
 
+--Correct error data
+UPDATE {databaseOwner}[{objectQualifier}FolderPermission] SET RoleID = NULL WHERE UserID IS NOT NULL
+GO
+
 CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}DesktopModulePermission_Roles ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
 	(RoleID, PortalDesktopModuleID, PermissionID) 
 	INCLUDE (AllowAccess)
