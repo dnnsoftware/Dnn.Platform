@@ -67,11 +67,11 @@ namespace DotNetNuke.Modules.Admin.Vendors
             CreateLetterSearch();
 
             bool isUnauthorized = false;
-            if (_searchFilter == Localization.GetString("All"))
+            if (_searchFilter.Equals(Localization.GetString("All"), StringComparison.InvariantCultureIgnoreCase))
             {
                 _searchFilter = "";
             }
-            else if (_searchFilter == Localization.GetString("Unauthorized"))
+            else if (_searchFilter.Equals(Localization.GetString("Unauthorized"), StringComparison.InvariantCultureIgnoreCase))
             {
                 _searchFilter = "";
                 isUnauthorized = true;

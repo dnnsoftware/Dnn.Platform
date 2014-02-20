@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
 		    int totalRecords = 0;
 		    ArrayList portals;
-            if (Filter == Localization.GetString("Expired", LocalResourceFile))
+            if (Filter.Equals(Localization.GetString("Expired", LocalResourceFile), StringComparison.InvariantCultureIgnoreCase))
             {
                 portals = PortalController.GetExpiredPortals();
                 totalRecords = portals.Count;
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     Filter = Request.QueryString["filter"];
                 }
-                if (Filter == Localization.GetString("All"))
+                if (Filter.Equals(Localization.GetString("All"), StringComparison.InvariantCultureIgnoreCase))
                 {
                     Filter = "";
                 }
