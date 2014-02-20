@@ -87,6 +87,18 @@ namespace DotNetNuke.Entities.Portals
                         .ThenByDescending(a => a.CultureCode)
                         .FirstOrDefault();
 
+			//JIRA DNN-4882 : DevPCI fix bug with url Mobile -> Search alias with culture code
+			// START DNN-4882
+            if (foundAlias == null)
+            {
+                foundAlias = aliasList.Where(a => (String.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || String.IsNullOrEmpty(a.CultureCode))
+                                           && a.PortalID == portalId)
+					   .OrderByDescending(a => a.IsPrimary)
+					   .ThenByDescending(a => a.CultureCode)
+					   .FirstOrDefault();
+            }
+            // END DNN-4882
+		
             if (foundAlias != null)
             {
                 if(result !=null && result.PortalAlias != null)
