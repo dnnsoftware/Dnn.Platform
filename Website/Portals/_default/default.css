@@ -2247,7 +2247,11 @@ ul.dnnButtonGroup {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.65);
-	z-index: 9999;
+    z-index: 9999;
+}
+
+.ui-dialog {
+    z-index: 100000;
 }
 
 .dnnFormPopup {
@@ -2256,8 +2260,8 @@ ul.dnnButtonGroup {
     background: #fff;
     -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.75);
     box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.75);
-	z-index: 100000;
 }
+
     /* Popup header */
     .dnnFormPopup .ui-dialog-titlebar {
         position: relative;
