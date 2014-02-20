@@ -27,10 +27,10 @@
                     };
                 })(cookieId);
             } else {
-                showEvent = function() {
+                showEvent = function () {
                 };
             }
-            
+
             $wrap.tabs({
                 activate: showEvent,
                 active: opts.selected,
@@ -40,7 +40,7 @@
                     duration: opts.duration
                 }
             });
-            
+
             if (window.location.hash && window.location.hash != '#') {
                 $('a[href="' + window.location.hash + '"]', $wrap).trigger('click');
             }
@@ -200,20 +200,22 @@
 
         $wrap.each(function () {
             var $this = $(this);
-            if (typeof(opts.onExpand) === "function") {
+            if (typeof (opts.onExpand) === "function") {
                 $this.bind('onExpand', opts.onExpand);
             }
-            if (typeof(opts.onHide) === "function") {
+            if (typeof (opts.onHide) === "function") {
                 $this.bind('onHide', opts.onHide);
             }
             // wire up click event to perform slide toggle
             $this.find(opts.clickToToggleSelector).click(function (e) {
                 var toggle = $(this).toggleClass(opts.toggleClass).parent().next(opts.regionToToggleSelector).slideToggle(function () {
-                    var id = $(toggle.context.parentNode).attr("id");
-                    var cookieId = id ? id.replace(/[^a-zA-Z0-9\-]+/g, "") : '';
                     var visible = $(this).is(':visible');
-                    if (cookieId) {
-                        dnn.dom.setCookie(cookieId, visible, opts.cookieDays, '/', '', false, opts.cookieMilleseconds);
+                    if (opts.saveState) {
+                        var id = $(toggle.context.parentNode).attr("id");
+                        var cookieId = id ? id.replace(/[^a-zA-Z0-9\-]+/g, "") : '';
+                        if (cookieId) {
+                            dnn.dom.setCookie(cookieId, visible, opts.cookieDays, '/', '', false, opts.cookieMilleseconds);
+                        }
                     }
                     if (visible) {
                         $(this).trigger("onExpand");
@@ -251,16 +253,27 @@
                     $parentSeparator = $self.parents(opts.panelSeparatorSelector),
                     groupPanelIndex = $parentSeparator.find(opts.sectionHeadSelector).index($self);
 
-                if (cookieValue == "false") { // cookie explicitly set to false
-                    collapsePanel($clicker, $region);
+                // default value
+                var isOpen = false;
+                if ((indexInArray === 0 && opts.defaultState == "first") || // cookie set to true OR first panel
+                    ($parentSeparator.size() > 0 && groupPanelIndex === 0 && opts.defaultState == "first") || // grouping is used & its the first panel in its group
+                    (opts.defaultState == "open"))  // default open
+                {
+                    isOpen = true;
                 }
-                else if (cookieValue == "true" || indexInArray === 0) { // cookie set to true OR first panel
+                if (opts.saveState) {
+                    if (cookieValue == "true") {
+                        isOpen = true;
+                    }
+                    else if (cookieValue == "false") {
+                        isOpen = false;
+                    }
+                }
+
+                if (isOpen) {
                     expandPanel($clicker, $region);
                 }
-                else if ($parentSeparator.size() > 0 && groupPanelIndex === 0) { // grouping is used & its the first panel in its group
-                    expandPanel($clicker, $region);
-                }
-                else { // nada...
+                else {
                     collapsePanel($clicker, $region);
                 }
             });
@@ -293,7 +306,9 @@
         validationGroup: '',
         panelSeparatorSelector: '.ui-tabs-panel',
         cookieDays: 0,
-        cookieMilleseconds: 1200000 // twenty minutes
+        cookieMilleseconds: 1200000, // twenty minutes
+        saveState: true,
+        defaultState: 'first' // open | closed | first
     };
 
 })(jQuery);
@@ -409,7 +424,7 @@
             $this.parent().css({ position: 'relative' });
             $this.css({ position: 'absolute', right: '-29%' });
             var hoverOnToolTip = false, hoverOnPd = false;
-            
+
             dnnFormHelp.hoverIntent({
                 over: function () {
                     hoverOnPd = true;
@@ -436,7 +451,7 @@
             });
 
             var pinHelper = helpSelector.find(opts.pinSelector);
-            
+
             pinHelper.on('click', function (e) {
                 e.preventDefault();
                 if ($this.hasClass(opts.pinnedClass)) {
@@ -446,7 +461,7 @@
                     $this.removeClass(opts.pinnedClass);
                 }
                 else {
-                    
+
                     $this.addClass(opts.pinnedClass);
                     if ($.isFunction($().draggable)) {
                         helpSelector.draggable();
@@ -482,7 +497,7 @@
             , labelClass: 'dnnBoxLabel'
         };
         settings = $.extend(settings, options || {});
-        
+
         var addEvents = function (object) {
             var checked = object.checked,
                 disabled = object.disabled,
@@ -504,18 +519,18 @@
         };
 
         return this.each(function () {
-        	var ch = this;
-	        
-			if ($(ch).data("checkBoxWrapped")) {
-				return;
-			}
-	        $(ch).data("checkBoxWrapped", true);
+            var ch = this;
+
+            if ($(ch).data("checkBoxWrapped")) {
+                return;
+            }
+            $(ch).data("checkBoxWrapped", true);
 
             if ($(this).hasClass('normalCheckBox') || $(this).hasClass('normalRadioButton')) return;
             var parentCheckBoxHolder = $(this).closest('.normalCheckBox');
             var parentRadioButtonHolder = $(this).closest('.normalRadioButton');
             if (parentCheckBoxHolder.length || parentRadioButtonHolder.length) return;
-            var $ch = addEvents(ch); 
+            var $ch = addEvents(ch);
             if (ch.wrapper) ch.wrapper.remove();
             ch.wrapper = $('<span class="' + settings.cls + '"><span class="mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFAAAAAAAApWe5zwAAAAF0Uk5TAEDm2GYAAAAMSURBVHjaYmAACDAAAAIAAU9tWeEAAAAASUVORK5CYII=" /></span></span>');
             ch.wrapperInner = ch.wrapper.children('span:eq(0)');
@@ -523,21 +538,21 @@
                 function (e) { ch.wrapperInner.addClass(settings.cls + '-hover'); cb(e); },
                 function (e) { ch.wrapperInner.removeClass(settings.cls + '-hover'); cb(e); }
             );
-            
+
             $ch.css({ position: 'absolute', zIndex: -1, opacity: 0 }).after(ch.wrapper);
-            
+
             var label, parentLabel = false;
             label = $ch.closest('label');
             if (!label.length)
                 label = false;
             else
                 parentLabel = true;
-            
+
             if (!label && $ch.attr('id')) {
                 label = $('label[for="' + $ch.attr('id') + '"]');
                 if (!label.length) label = false;
             }
-            
+
             if (label) {
                 label.addClass(settings.labelClass);
                 if (!parentLabel) {
@@ -576,7 +591,7 @@
 
             $ch.bind('disable', function () { ch.wrapperInner.addClass(settings.cls + '-disabled'); }).bind('enable', function () { ch.wrapperInner.removeClass(settings.cls + '-disabled'); });
             $ch.bind('check', function () { ch.wrapper.addClass(settings.cls + '-checked'); }).bind('uncheck', function () { ch.wrapper.removeClass(settings.cls + '-checked'); });
-	        $ch.bind('focus', function (e) { if(!e.isTrigger) ch.wrapper.addClass(settings.cls + '-focus'); }).bind('blur', function () { ch.wrapper.removeClass(settings.cls + '-focus'); });
+            $ch.bind('focus', function (e) { if (!e.isTrigger) ch.wrapper.addClass(settings.cls + '-focus'); }).bind('blur', function () { ch.wrapper.removeClass(settings.cls + '-focus'); });
 
             /* Applying checkbox state */
             if (ch.checked)
@@ -608,7 +623,7 @@
             var pd = this,
                 $pd = $(this);
             if (pd.tooltipWrapper) pd.tooltipWrapper.remove();
-            
+
             pd.tooltipWrapper = $('<div class="' + settings.cls + '" data-tipholder="' + settings.holderId + '"> <div class="dnnFormHelpContent dnnClear"><span class="dnnHelpText">' + settings.helpContent + '</span></div></div>');
             $('body').append(pd.tooltipWrapper);
             pd.tooltipWrapper.css({ position: 'absolute' });
@@ -737,7 +752,7 @@
         else {
             inputControl.addClass('dnnSpinnerInput');
         }
-        
+
         var strContainerDiv = '';
         strContainerDiv += '<div class="dnnSpinner">';
         strContainerDiv += '<div class="dnnSpinnerDisplay"></div>';
@@ -987,7 +1002,7 @@
         if (urlAppend.length) {
             url += url.indexOf('?') === -1 ? '?' : '&';
             url += urlAppend.join('&');
-        }        
+        }
         return url;
     };
 
@@ -1265,7 +1280,7 @@
                 self.dom.$elem.removeClass(self.options.loadingClass);
                 callback(parsed);
             };
-            
+
             this.dom.$elem.addClass(this.options.loadingClass);
             // DNN service framework attached if needed
             var services = self.options.moduleId ? ($.dnnSF ? $.dnnSF(self.options.moduleId) : null) : null;
@@ -1342,7 +1357,7 @@
 
         for (i = 0; i < results.length; i++) {
             result = sanitizeResult(results[i]);
-            if (this.filterResult(result, filter)) {                           
+            if (this.filterResult(result, filter)) {
                 filtered.push(result);
             }
         }
@@ -1840,7 +1855,7 @@
     $.fn.dnnTagExist = function (val) {
         var id = $(this).attr('id'),
             tagslist = $(this).val().split(delimiter[id]);
-        return (jQuery.inArray(val, tagslist) >= 0); 
+        return (jQuery.inArray(val, tagslist) >= 0);
     };
 
     $.fn.dnnImportTags = function (str) {
@@ -2085,7 +2100,7 @@
         $(obj).val(tagslist.join(delimiter[id]));
     };
 
-    $.fn.dnnTagsInput.importTags = function(obj, val) {
+    $.fn.dnnTagsInput.importTags = function (obj, val) {
         $(obj).val('');
         var id = $(obj).attr('id');
         var tags = val.split(delimiter[id]);
@@ -2378,7 +2393,7 @@
             return this.unbind("mousewheel", fn);
         }
     });
-    
+
     function handler(event) {
         var orgEvent = event || window.event,
             args = [].slice.call(arguments, 1),
@@ -2413,7 +2428,7 @@
 })(jQuery);
 
 (function ($) {
-	$.fn.dnnFileInput = function (options) {
+    $.fn.dnnFileInput = function (options) {
         var opts = $.extend({}, $.fn.dnnFileInput.defaultOptions, options);
 
         return this.each(function () {
@@ -2421,11 +2436,11 @@
             if ($ctrl.hasClass('normalFileUpload')) return;
 
             if (this.wrapper)
-            	return;
-	        
-        	//ignore decoration for elements in rad control.
-	        if ($ctrl.parents().hasClass("RadUpload"))
-		        return;
+                return;
+
+            //ignore decoration for elements in rad control.
+            if ($ctrl.parents().hasClass("RadUpload"))
+                return;
 
             // if this.wrapper is undefined, then we check if parent node is a wrapper
             if (this.parentNode && this.parentNode.tagName.toLowerCase() == 'span' && $ctrl.parent().hasClass('dnnInputFileWrapper')) {
@@ -2437,7 +2452,7 @@
             text = text || 'Choose File';
             this.wrapper.text(text);
             $ctrl.wrap(this.wrapper);
-	        $ctrl.data("wrapper", $ctrl.parent());
+            $ctrl.data("wrapper", $ctrl.parent());
 
             if (opts.showSelectedFileNameAsButtonText) {
                 $ctrl.change(function () {
@@ -2516,7 +2531,7 @@
                         $(img).css({ 'max-width': 180, 'max-height': 150 }).insertBefore($('#' + settings.dropZoneId + ' span'));
                     });
                     var src;
-                    if (data.dataType && typeof(data.result) == "object" && data.result.length) {
+                    if (data.dataType && typeof (data.result) == "object" && data.result.length) {
                         data.result = data.result.text();
                     }
                     var testContent = $('<pre>' + data.result + '</pre>');
@@ -4035,7 +4050,7 @@
 })(jQuery);
 
 // please keep this func at last of this file, thanks
-(function ($) { 
+(function ($) {
     /* Start customised controls */
     var inputFocusFix = function () {
         var errorMsg = $(this).next();
@@ -4048,25 +4063,25 @@
             clearTimeout(throttle);
             throttle = null;
         }
-        throttle = setTimeout(function() {
+        throttle = setTimeout(function () {
             $('.dnnForm input[type="checkbox"]').dnnCheckbox();
             $('.dnnForm input[type="radio"]').dnnCheckbox({ cls: 'dnnRadiobutton' });
             $('.dnnTooltip').dnnTooltip();
             $('.dnnForm input[type="text"], .dnnForm input[type="password"]').unbind('focus', inputFocusFix).bind('focus', inputFocusFix);
             $('.dnnForm :file').dnnFileInput();
         }, 200);
-    	//change the window confirm style to DNN style
-        $("*[onclick*='return confirm']").each(function() {
-	        var instance = $(this);
-	    	var isButton = this.nodeName.toLowerCase() == "img" || this.nodeName.toLowerCase() == "input";
-	    	var script = /return confirm\((['"])([\s\S]*?)\1\)/g.exec(instance.attr("onclick"));
-	        if (script != null) {
-	        	var confirmContent = script[2];
-		        instance.attr("onclick", instance.attr("onclick").replace(script[0], "void(0)")).dnnConfirm({
-			        text: confirmContent,
-			        isButton: isButton
-		        });
-	        }
+        //change the window confirm style to DNN style
+        $("*[onclick*='return confirm']").each(function () {
+            var instance = $(this);
+            var isButton = this.nodeName.toLowerCase() == "img" || this.nodeName.toLowerCase() == "input";
+            var script = /return confirm\((['"])([\s\S]*?)\1\)/g.exec(instance.attr("onclick"));
+            if (script != null) {
+                var confirmContent = script[2];
+                instance.attr("onclick", instance.attr("onclick").replace(script[0], "void(0)")).dnnConfirm({
+                    text: confirmContent,
+                    isButton: isButton
+                });
+            }
         });
     };
     var saveRgDataDivScrollTop = function () {
