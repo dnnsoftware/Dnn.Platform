@@ -1687,7 +1687,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             var urlPath = url.TrimStart('/');
             bool modified;
             //Clean Url
-            var options = UrlRewriterUtils.GetOptionsFromSettings(new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId));
+            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs( UrlRewriterUtils.GetOptionsFromSettings(new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId)) );
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)
             {
