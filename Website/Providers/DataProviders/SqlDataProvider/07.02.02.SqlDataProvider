@@ -1016,7 +1016,7 @@ GO
 --DNN-21164
  
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_Visibility')
-	DROP INDEX {databaseOwner}[{objectQualifier}UserProfile].[IX_{objectQualifier}UserProfile_Visibility]
+	DROP INDEX [IX_{objectQualifier}UserProfile_Visibility] ON {databaseOwner}[{objectQualifier}UserProfile]
 GO
 
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserProfile_Visibility] ON {databaseOwner}[{objectQualifier}UserProfile]
@@ -1028,11 +1028,17 @@ GO
 UPDATE {databaseOwner}{objectQualifier}HostSettings Set SettingValue='Admin/ControlPanel/ControlBar.ascx' WHERE SettingName='ControlPanel' AND SettingValue='Admin/ControlPanel/IconBar.ascx'
 GO
 
---DNN-3185
-IF EXISTS (SELECT * FROM dbo.sysconstraints WHERE id = OBJECT_ID(N'{objectQualifier}ModuleDefinitions') AND constid = OBJECT_ID(N'IX_{objectQualifier}ModuleDefinitions'))
- ALTER TABLE {databaseOwner}{objectQualifier}ModuleDefinitions
- DROP CONSTRAINT IX_{objectQualifier}ModuleDefinitions
- GO
+--DNN-3185: IX_ModuleDefinitions maybe a constraint or index in 6.x or 7.x, so we need handle both type and remove it, then create new on on DefinitionName column.
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModuleDefinitions]') AND name = N'IX_{objectQualifier}ModuleDefinitions' AND is_unique_constraint = 1)
+    ALTER TABLE {databaseOwner}{objectQualifier}ModuleDefinitions DROP CONSTRAINT IX_{objectQualifier}ModuleDefinitions
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModuleDefinitions]') AND name = N'IX_{objectQualifier}ModuleDefinitions' AND is_unique_constraint = 0)
+    DROP INDEX [IX_{objectQualifier}ModuleDefinitions] ON {databaseOwner}[{objectQualifier}ModuleDefinitions]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModuleDefinitions ON {databaseOwner}[{objectQualifier}ModuleDefinitions](DefinitionName)
+GO
 
  /***** Fix bug DNN-4770: update default skin packages as normal package to allow delete it. *****/
  UPDATE {databaseOwner}{objectQualifier}Packages SET 
