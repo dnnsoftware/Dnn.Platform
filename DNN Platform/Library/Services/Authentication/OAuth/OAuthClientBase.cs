@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         //oAuth 1 and 2
         protected Uri AuthorizationEndpoint { get; set; }
-        protected string AuthToken { get; private set; }
+        protected string AuthToken { get; set; }
         protected TimeSpan AuthTokenExpiry { get; set; }
         protected Uri MeGraphEndpoint { get; set; }
         protected Uri TokenEndpoint { get; set; }
