@@ -1622,7 +1622,350 @@ AS
     END
 GO
 
+/******* Fix bug CONTENT-2289 - Document Viewer issue *******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Files]') AND type in (N'V'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Files]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Files]
+AS
+	SELECT	fi.FileId, 
+			fi.PortalId, 
+			fi.FileName, 
+			fi.Extension, 
+			fi.Size, 
+			fi.Width, 
+			fi.Height, 
+			fi.ContentType, 
+			fi.FolderID, 
+			fi.[Content], 
+			fi.CreatedByUserID, 
+			fi.CreatedOnDate, 
+			fi.LastModifiedByUserID, 
+			fi.LastModifiedOnDate, 
+			fi.UniqueId, 
+			fi.VersionGuid, 
+			fi.SHA1Hash, 
+			fi.LastModificationTime, 
+			fi.Title, 
+			fi.StartDate, 
+			fi.EnablePublishPeriod, 
+			fi.EndDate, 
+			fi.ContentItemID, 
+			fi.PublishedVersion, 
+			fo.FolderPath AS Folder,
+			fo.IsCached,
+			fo.FolderMappingID,
+			fo.StorageLocation
+	FROM         {databaseOwner}[{objectQualifier}Files] AS fi 
+	INNER JOIN {databaseOwner}[{objectQualifier}Folders] AS fo 
+		ON fi.FolderID = fo.FolderID
+GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_PublishedFiles]') AND type in (N'V'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+AS
+	SELECT     
+	   fi.[FileId]
+      ,fi.[PortalId]
+      ,fi.[FileName]
+      ,fi.[Extension]
+      ,fi.[Size]
+      ,fi.[Width]
+      ,fi.[Height]
+      ,fi.[ContentType]
+      ,fi.[FolderID]
+      ,fi.[Content]
+      ,fi.[CreatedByUserID]
+      ,fi.[CreatedOnDate]
+      ,fi.[LastModifiedByUserID]
+      ,fi.[LastModifiedOnDate]
+      ,fi.[UniqueId]
+      ,fi.[VersionGuid]
+      ,fi.[SHA1Hash]
+      ,fi.[LastModificationTime]
+      ,fi.[Title]
+      ,fi.[StartDate]
+      ,fi.[EnablePublishPeriod]
+      ,fi.[EndDate]
+      ,fi.[ContentItemID]
+      ,fi.[PublishedVersion]
+	  ,fi.[Folder]
+	  ,fi.[IsCached]
+	  ,fi.[StorageLocation]
+	  ,fi.[FolderMappingID]
+	FROM       {databaseOwner}[{objectQualifier}vw_Files] fi
+	  WHERE [EnablePublishPeriod] = 0 
+		 OR ([StartDate] <= GETDATE()
+			AND ([EndDate] IS NULL OR GETDATE() <= [EndDate]))
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllFiles]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+AS
+BEGIN
+	SELECT   
+	  FileId,  
+	  PortalId,  
+	  [FileName],  
+	  Extension,  
+	  Size,  
+	  Width,  
+	  Height,  
+	  ContentType,  
+	  FolderID,  
+	  Folder,  
+	  StorageLocation,  
+	  IsCached,
+	  UniqueId,
+	  VersionGuid,
+	  SHA1Hash,
+	  FolderMappingID,  
+	  LastModificationTime,  
+	  Title,  
+	  EnablePublishPeriod,  
+	  StartDate,  
+	  EndDate,  
+	  CreatedByUserID,  
+	  CreatedOnDate,  
+	  LastModifiedByUserID,  
+	  LastModifiedOnDate,  
+	  PublishedVersion,  
+	  ContentItemID
+	FROM {databaseOwner}[{objectQualifier}vw_Files] 	
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+	@FileName nvarchar(246),
+	@FolderID int,
+	@RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+	IF @RetrieveUnpublishedFiles = 0 BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,	   
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   ContentItemID,
+			   PublishedVersion
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] 			
+		WHERE [FileName] = @FileName AND FolderID = @FolderID
+	END
+	ELSE BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,	   
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   ContentItemID,
+			   PublishedVersion
+		FROM {databaseOwner}[{objectQualifier}vw_Files]
+		WHERE [FileName] = @FileName AND FolderID = @FolderID
+	END
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFileById]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+	@FileId int	,
+	@RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+	IF @RetrieveUnpublishedFiles = 0 BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   PublishedVersion,
+			   ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+		WHERE FileId = @FileId
+	END
+	ELSE BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   [UniqueId],
+			   [VersionGuid],
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   PublishedVersion,
+			   ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_Files] 
+		WHERE FileId = @FileId
+	END	
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+	IF @RetrieveUnpublishedFiles = 0 
+	BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			F.Folder,
+			F.StorageLocation,
+			F.IsCached,
+			F.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F			
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+	ELSE BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			F.Folder,
+			F.StorageLocation,
+			F.IsCached,
+			F.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_Files] F			
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
