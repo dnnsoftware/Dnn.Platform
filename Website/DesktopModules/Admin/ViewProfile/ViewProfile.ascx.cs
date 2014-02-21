@@ -183,6 +183,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     sb.Append("\"");
                     value = Localization.GetSafeJSString(Server.HtmlDecode(value));
                     value = value.Replace("\r", string.Empty).Replace("\n",  " ");
+                    value = value.Replace(";", string.Empty).Replace("//",string.Empty);
                     sb.Append(value + "\"" + ");");
                     sb.Append('\n');
                     sb.Append("self['" + clientName + "Text'] = '");
@@ -196,6 +197,8 @@ namespace DotNetNuke.Modules.Admin.Users
 			                       : String.Empty;
 
                 sb.Append("self.Email = ko.observable('");
+                email = Localization.GetSafeJSString(Server.HtmlDecode(email));
+                email = email.Replace(";", string.Empty).Replace("//", string.Empty);
                 sb.Append(email + "');");
                 sb.Append('\n');
                 sb.Append("self.EmailText = '");
