@@ -1710,10 +1710,10 @@ namespace DotNetNuke.Services.Localization
             string controlTitle = moduleControl.ModuleContext.Configuration.ModuleTitle;
             string controlKey = moduleControl.ModuleContext.Configuration.ModuleControl.ControlKey.ToLower();
 
-            if (!string.IsNullOrEmpty(controlTitle) && !string.IsNullOrEmpty(controlKey))
-            {
-                controlTitle = moduleControl.ModuleContext.Configuration.ModuleControl.ControlTitle;
-            }
+            //if (!string.IsNullOrEmpty(controlTitle) && !string.IsNullOrEmpty(controlKey))
+            //{
+            //    controlTitle = moduleControl.ModuleContext.Configuration.ModuleControl.ControlTitle;
+            //}
 
             if (!string.IsNullOrEmpty(controlKey))
             {
@@ -1724,6 +1724,16 @@ namespace DotNetNuke.Services.Localization
                     controlTitle = moduleControl.ModuleContext.Configuration.ModuleControl.ControlTitle;
                 }
                 else
+                {
+                    controlTitle = localizedvalue;
+                }
+            }
+            else
+            {
+                // if (IsAdminPage && IsNeutral)
+                string reskey = "ControlTitle_.Text";
+                string localizedvalue = GetString(reskey, moduleControl.LocalResourceFile);
+                if (!string.IsNullOrEmpty(localizedvalue))
                 {
                     controlTitle = localizedvalue;
                 }
