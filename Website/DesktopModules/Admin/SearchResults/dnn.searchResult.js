@@ -5,6 +5,7 @@
     dnn.searchResult.defaultSettings = {
         comboAdvancedDates: '',
         comboAdvancedScope: '',
+        defaultText: 'Enter Search Term',
         noresultsText: 'No Results Found',
         advancedText: 'Advanced',
         sourceText: 'Source:',
@@ -339,6 +340,7 @@
         // search box
         dnn.searchResult.searchInput = $('#dnnSearchResult_dnnSearchBox').dnnSearchBox({
             id: 'dnnSearchResult_dnnSearchBox',
+            defaultText: dnn.searchResult.defaultSettings.defaultText,
             advancedText: dnn.searchResult.defaultSettings.advancedText,
             showAdvanced: true,
             advancedId: 'dnnSearchResultAdvancedForm',
