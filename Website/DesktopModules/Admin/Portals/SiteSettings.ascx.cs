@@ -70,6 +70,8 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DesktopModules.Admin.Portals
 {
+    using DotNetNuke.Services.Mail;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SiteSettings PortalModuleBase is used to edit the main settings for a 
@@ -363,6 +365,34 @@ namespace DesktopModules.Admin.Portals
 
                 BindMessaging(portal);
 
+                var objSMTPmode = PortalController.GetPortalSetting("SMTPmode", portal.PortalID, string.Empty);
+
+                if (objSMTPmode.Length == 0)
+                {
+                    //setting not stored, set host as default don't pull any settings... 
+                    rblSMTPmode.Items.FindByValue("h").Selected = true;
+                    SmtpSettings.Visible = false;
+                }
+                else if (objSMTPmode.Length == 1)
+                {
+                    //settings have been stored, lets fill the form... 
+                    switch (objSMTPmode.ToLower())
+                    {
+                        case "h":
+                            //host selected
+                            SmtpSettings.Visible = false;
+                            break;
+                        case "p":
+                            //portal selected
+                            SmtpSettings.Visible = true;
+                            this.BindSmtpSettings(portal.PortalID);
+                            break;
+                    }
+
+                    if ((rblSMTPmode.Items.FindByValue(objSMTPmode) != null))
+                        rblSMTPmode.Items.FindByValue(objSMTPmode).Selected = true;
+                }
+
                 var roleController = new RoleController();
                 cboAdministratorId.DataSource = roleController.GetUserRoles(portalId, null, portal.AdministratorRoleName);
                 cboAdministratorId.DataBind(portal.AdministratorId.ToString());
@@ -401,6 +431,27 @@ namespace DesktopModules.Admin.Portals
             }
 
             BindUserAccountSettings(portal, activeLanguage);
+        }
+
+        private void BindSmtpSettings(int portalId)
+        {
+            txtSMTPServer.Text = Convert.ToString(PortalController.GetPortalSetting("SMTPServer", portalId, String.Empty));
+
+            optSMTPAuthentication.Items.FindByValue(PortalController.GetPortalSetting("SMTPAuthentication", portalId, "0").ToString()).Selected = true;
+
+
+            if (PortalController.GetPortalSetting("SMTPEnableSSL", portalId, String.Empty) == "Y")
+            {
+                chkSMTPEnableSSL.Checked = true;
+            }
+            else
+            {
+                chkSMTPEnableSSL.Checked = false;
+            }
+
+            txtSMTPUsername.Text = Convert.ToString(PortalController.GetPortalSetting("SMTPUsername", portalId, String.Empty));
+
+            txtSMTPPassword.Attributes.Add("value", Convert.ToString(PortalController.GetPortalSetting("SMTPPassword", portalId, String.Empty)));
         }
 
         private void BindClientResourceManagementUi(int portalId, bool overrideDefaultSettings)
@@ -791,6 +842,8 @@ namespace DesktopModules.Admin.Portals
             jQuery.RequestDnnPluginsRegistration();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
+            cmdEmail.Click += TestEmail;
+            rblSMTPmode.SelectedIndexChanged += OnSmtpModeChanged;
             chkPayPalSandboxEnabled.CheckedChanged += OnChkPayPalSandboxChanged;
             IncrementCrmVersionButton.Click += IncrementCrmVersion;
             chkOverrideDefaultSettings.CheckedChanged += OverrideDefaultSettingsChanged;
@@ -966,6 +1019,75 @@ namespace DesktopModules.Admin.Portals
                 }
             }
             catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void TestEmail(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(Host.HostEmail) && !String.IsNullOrEmpty(PortalSettings.UserInfo.Email))
+                {
+                    txtSMTPPassword.Attributes.Add("value", txtSMTPPassword.Text);
+
+                    string strMessage;
+
+                    if (SmtpSettings.Visible)
+                    {
+                        //portal mode
+                        strMessage = Mail.SendMail(
+                            Host.HostEmail,
+                            PortalSettings.UserInfo.Email,
+                            "",
+                            "",
+                            MailPriority.Normal,
+                            Localization.GetSystemMessage(PortalSettings, "EMAIL_SMTP_TEST_SUBJECT"),
+                            MailFormat.Text,
+                            Encoding.UTF8,
+                            "",
+                            "",
+                            txtSMTPServer.Text,
+                            optSMTPAuthentication.SelectedItem.Value,
+                            txtSMTPUsername.Text,
+                            txtSMTPPassword.Text,
+                            chkSMTPEnableSSL.Checked);
+                    }
+                    else
+                    {
+                        strMessage = Mail.SendMail(
+                            Host.HostEmail,
+                            PortalSettings.UserInfo.Email,
+                            "",
+                            "",
+                            MailPriority.Normal,
+                            Localization.GetSystemMessage(PortalSettings, "EMAIL_SMTP_TEST_SUBJECT"),
+                            MailFormat.Text,
+                            Encoding.UTF8,
+                            "",
+                            "",
+                            Host.SMTPServer,
+                            Host.SMTPAuthentication,
+                            Host.SMTPUsername,
+                            Host.SMTPPassword,
+                            Host.EnableSMTPSSL);
+                    }
+                    if (!String.IsNullOrEmpty(strMessage))
+                    {
+                        Skin.AddModuleMessage(this, "", String.Format(Localization.GetString("EmailErrorMessage", LocalResourceFile), strMessage), ModuleMessage.ModuleMessageType.RedError);
+                    }
+                    else
+                    {
+                        Skin.AddModuleMessage(this, "", String.Format(Localization.GetString("EmailSentMessage", LocalResourceFile), Host.HostEmail, PortalSettings.UserInfo.Email), ModuleMessage.ModuleMessageType.GreenSuccess);
+                    }
+                }
+                else
+                {
+                    Skin.AddModuleMessage(this, "", Localization.GetString("SpecifyHostEmailMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                }
+            }
+            catch (Exception exc) //Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -1227,6 +1349,13 @@ namespace DesktopModules.Admin.Portals
 					PortalController.UpdatePortalSetting(_portalId, "HideLoginControl", chkHideLoginControl.Checked.ToString(), false);
 					PortalController.UpdatePortalSetting(_portalId, "EnableRegisterNotification", chkEnableRegisterNotification.Checked.ToString(), false);
 
+                    PortalController.UpdatePortalSetting(_portalId, "SMTPmode", rblSMTPmode.SelectedValue);
+                    PortalController.UpdatePortalSetting(_portalId, "SMTPServer", txtSMTPServer.Text);
+                    PortalController.UpdatePortalSetting(_portalId, "SMTPAuthentication", optSMTPAuthentication.SelectedItem.Value);
+                    PortalController.UpdatePortalSetting(_portalId, "SMTPUsername", txtSMTPUsername.Text);
+                    PortalController.UpdateEncryptedString(_portalId, "SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());
+                    PortalController.UpdatePortalSetting(_portalId, "SMTPEnableSSL", chkSMTPEnableSSL.Checked ? "Y" : "N");
+
                     pagesExtensionPoint.SaveAction(_portalId, -1, -1);
 
                     SiteSettingAdvancedSettingExtensionControl.SaveAction(_portalId, TabId, ModuleId);
@@ -1396,6 +1525,22 @@ namespace DesktopModules.Admin.Portals
         protected void OnChkPayPalSandboxChanged(object sender, EventArgs e)
         {
             processorLink.NavigateUrl = chkPayPalSandboxEnabled.Checked ? "https://developer.paypal.com" : Globals.AddHTTP(processorCombo.SelectedItem.Value);
+        }
+
+        protected void OnSmtpModeChanged(object sender, EventArgs e)
+        {
+            switch (rblSMTPmode.SelectedValue.ToLower())
+            {
+                case "h":
+                    //host
+                    SmtpSettings.Visible = false;
+                    break;
+                case "p":
+                    //portal
+                    SmtpSettings.Visible = true;
+                    this.BindSmtpSettings(_portalId);
+                    break;
+            }
         }
 
         #endregion

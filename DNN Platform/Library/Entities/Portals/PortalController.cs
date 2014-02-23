@@ -3368,6 +3368,22 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
+        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value
+        /// </summary>
+        /// <param name="settingName">the setting to read</param>
+        /// <param name="passPhrase">the pass phrase used for encryption/decryption</param>
+        /// <returns></returns>
+        public static string GetEncryptedString(string settingName, int portalID, string passPhrase)
+        {
+            Requires.NotNullOrEmpty("key", settingName);
+            Requires.NotNullOrEmpty("passPhrase", passPhrase);
+
+            var cipherText = GetPortalSetting(settingName, portalID, string.Empty);
+
+            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Entities.Host.Host.GUID);
+        }
+
+        /// <summary>
         /// Gets the portal setting.
         /// </summary>
         /// <param name="settingName">Name of the setting.</param>
@@ -3448,6 +3464,24 @@ namespace DotNetNuke.Entities.Portals
                 Logger.Error(exc);
             }
             return retValue;
+        }
+
+        /// <summary>
+        /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">host settings key</param>
+        /// <param name="settingValue">host settings value</param>
+        /// <param name="passPhrase">pass phrase to allow encryption/decryption</param>
+        public static void UpdateEncryptedString(int portalID, string settingName, string settingValue, string passPhrase)
+        {
+            Requires.NotNullOrEmpty("key", settingName);
+            Requires.NotNull("value", settingValue);
+            Requires.NotNullOrEmpty("passPhrase", passPhrase);
+
+            var cipherText = Security.FIPSCompliant.EncryptAES(settingValue, passPhrase, Entities.Host.Host.GUID);
+
+            UpdatePortalSetting(portalID, settingName, cipherText);
         }
 
         /// <summary>
