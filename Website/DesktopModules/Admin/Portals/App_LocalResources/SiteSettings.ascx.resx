@@ -1158,7 +1158,7 @@ The host-level settings are currently set as follows:
     <value>There has been an error trying to send the test email. The error is:&lt;br /&gt;{0}</value>
   </data>
   <data name="EmailSentMessage.Text" xml:space="preserve">
-    <value>Email Sent Successfully from {0} to {0}</value>
+    <value>Email Sent Successfully from {0} to {1}</value>
   </data>
   <data name="EmailTest.Text" xml:space="preserve">
     <value>Test SMTP Settings</value>

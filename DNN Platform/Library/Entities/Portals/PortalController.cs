@@ -3380,7 +3380,7 @@ namespace DotNetNuke.Entities.Portals
 
             var cipherText = GetPortalSetting(settingName, portalID, string.Empty);
 
-            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Entities.Host.Host.GUID);
+            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Host.Host.GUID);
         }
 
         /// <summary>
