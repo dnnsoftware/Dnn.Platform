@@ -1394,9 +1394,17 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                var objSMTPmode = PortalController.GetPortalSetting("SMTPmode", PortalController.GetCurrentPortalSettings().PortalId, Null.NullString);
+                var portalSettings = PortalController.GetCurrentPortalSettings();
+               
+                //we don't want to load the portal smtp server when on a host tab. 
+                if (portalSettings.ActiveTab.PortalID == Null.NullInteger)
+                {
+                    return false;
+                }
 
-                switch (objSMTPmode.ToLower())
+                var currentSmtpMode = PortalController.GetPortalSetting("SMTPmode", portalSettings.PortalId, Null.NullString);
+
+                switch (currentSmtpMode.ToLower())
                 {
                     case "p":
                         //portal enabled
@@ -1404,7 +1412,6 @@ namespace DotNetNuke.Entities.Host
                     default:
                         return false;
                 }
-
             }
         }
 
