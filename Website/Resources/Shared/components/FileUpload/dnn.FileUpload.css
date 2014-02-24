@@ -82,6 +82,12 @@
     margin: 0 6px 0 0;
 }
 
+.fu-container .fu-dialog-content-header > .dnnRight > span {    
+    line-height: 36px;
+    float: left;
+    width: 200px;
+}
+
 .fu-container .fu-dialog-content-header > .dnnRight > .dnnDropDownList {
     width: 200px;
     float: left;

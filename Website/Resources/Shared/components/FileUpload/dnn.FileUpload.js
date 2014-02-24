@@ -84,7 +84,7 @@
                         ),
                         $element("div", { 'class': 'fu-folder-picker-container dnnRight' }).append(
                             $element("label").text(this.options.resources.uploadToFolderLabel),
-                            this._folderPicker.$element.addClass("dnnLeftComboBox")
+                            !(this.options.folderPicker.disabled) ? this._folderPicker.$element.addClass("dnnLeftComboBox") : $element("span").append(this.options.folderPicker.initialState.selectedItem.value)
                         )
                     ),
                     $element("div", { 'class': 'fu-dialog-content-fileupload-local' }).append(
