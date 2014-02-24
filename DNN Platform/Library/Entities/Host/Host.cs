@@ -1377,7 +1377,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return SMTPportalEnabled ? PortalController.GetPortalSetting("SMTPAuthentication", PortalController.GetCurrentPortalSettings().PortalId, Null.NullString) : HostController.Instance.GetString("SMTPAuthentication");
+                return GetSmtpSetting("SMTPAuthentication");
             }
         }
 
@@ -1390,12 +1390,18 @@ namespace DotNetNuke.Entities.Host
         ///     [ohine]	    02/22/2014   converted to c#
         /// </history>
         /// -----------------------------------------------------------------------------
-        private static bool SMTPportalEnabled
+        private static bool SMTPPortalEnabled
         {
             get
             {
                 var portalSettings = PortalController.GetCurrentPortalSettings();
-               
+
+                if (portalSettings == null)
+                {
+                    //without portal settings, we can't continue
+                    return false;
+                }
+
                 //we don't want to load the portal smtp server when on a host tab. 
                 if (portalSettings.ActiveTab.PortalID == Null.NullInteger)
                 {
@@ -1404,15 +1410,18 @@ namespace DotNetNuke.Entities.Host
 
                 var currentSmtpMode = PortalController.GetPortalSetting("SMTPmode", portalSettings.PortalId, Null.NullString);
 
-                switch (currentSmtpMode.ToLower())
-                {
-                    case "p":
-                        //portal enabled
-                        return true;
-                    default:
-                        return false;
-                }
+                return currentSmtpMode.Equals("P", StringComparison.OrdinalIgnoreCase);
             }
+        }
+
+        private static string GetSmtpSetting(string settingName)
+        {
+            if (SMTPPortalEnabled)
+            {
+                return PortalController.GetPortalSetting(settingName, PortalSettings.Current.PortalId, Null.NullString);
+            }
+
+            return HostController.Instance.GetString(settingName);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1428,7 +1437,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                if (SMTPportalEnabled)
+                if (SMTPPortalEnabled)
                 {
                     return PortalController.GetEncryptedString("SMTPPassword", PortalController.GetCurrentPortalSettings().PortalId, Config.GetDecryptionkey());
                 }
@@ -1471,7 +1480,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return SMTPportalEnabled ? PortalController.GetPortalSetting("SMTPServer", PortalController.GetCurrentPortalSettings().PortalId, string.Empty) : HostController.Instance.GetString("SMTPServer");
+                return GetSmtpSetting("SMTPServer");
             }
         }
 
@@ -1488,7 +1497,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return SMTPportalEnabled ? PortalController.GetPortalSetting("SMTPUsername", PortalController.GetCurrentPortalSettings().PortalId, string.Empty) : HostController.Instance.GetString("SMTPUsername");
+                return GetSmtpSetting("SMTPUsername");
             }
         }
 
