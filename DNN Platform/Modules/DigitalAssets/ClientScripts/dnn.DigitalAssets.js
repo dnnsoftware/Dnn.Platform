@@ -3082,7 +3082,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         if (dataItem) {
             var target = dataItem.get_element();
-            if (event.target.tagName == "INPUT" && event.target.type == "checkbox") {                
+            var eventTarget = event.target || event.srcElement; //Compliant with IE8
+            if (eventTarget.tagName == "INPUT" && eventTarget.type == "checkbox") {                
                 toggleGridItemSelection(dataItem);
             } else if (event.ctrlKey) {
                 triggerMouseClick(target, true, false, false);
