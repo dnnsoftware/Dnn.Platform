@@ -21,8 +21,6 @@
 #region Usings
 
 using System;
-using System.Activities.Expressions;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -107,29 +105,6 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
             }
         }
 
-        private void BindSourceFolders()
-        {
-            IEnumerable<string> desktopfolders = GetSubdirectories(Request.MapPath(Globals.ApplicationPath + "/DesktopModules"));
-            IEnumerable<string> adminfolders = GetSubdirectories(Request.MapPath(Globals.ApplicationPath + "/Admin"));
-            IEnumerable<string> combinedfolders = adminfolders.Concat(desktopfolders).ToArray();
-
-            foreach (string folder in combinedfolders)
-            {
-                  var moduleControls = Directory.EnumerateFiles(folder, "*.*", SearchOption.TopDirectoryOnly).Count(s => s.EndsWith(".ascx") || s.EndsWith(".cshtml")|| s.EndsWith(".vbhtml"));
-                    if (moduleControls > 0)
-                    {
-                        var shortFolder =folder.Substring(Request.MapPath(Globals.ApplicationPath).Length + 1).Replace('\\', '/');
-                        cboSourceFolder.AddItem(shortFolder, shortFolder.ToLower());
-                    }                
-            }
-        }
-
-        private IEnumerable<string> GetSubdirectories(string path)
-        {
-            return from subdirectory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories)
-                   select subdirectory;
-        }
-
         private void LoadIcons()
         {
             string root;
@@ -187,8 +162,6 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                     var moduleControl = ModuleControlController.GetModuleControl(ModuleControlId);
                     BindControlList("DesktopModules", true);
                     BindControlList("Admin/Skins", false);
-                    BindSourceFolders();
-
                     //cboSource.Items.Insert(0, new ListItem("<" + Localization.GetString("None_Specified") + ">", ""));
                     cboSource.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "");
                     if (!Null.IsNull(ModuleControlId))
@@ -197,15 +170,8 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                         {
                             txtKey.Text = moduleControl.ControlKey;
                             txtTitle.Text = moduleControl.ControlTitle;
-                           
-                            
                             if (cboSource.FindItemByValue(moduleControl.ControlSrc.ToLower()) != null)
                             {
-                                string srcFolder = Path.GetDirectoryName(moduleControl.ControlSrc.ToLower()).Replace('\\', '/');
-                                if (cboSourceFolder.FindItemByValue(srcFolder) != null)
-                                {
-                                    cboSourceFolder.FindItemByValue(srcFolder).Selected = true;
-                                }
                                 cboSource.FindItemByValue(moduleControl.ControlSrc.ToLower()).Selected = true;
                                 LoadIcons();
                             }
