@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -18,19 +18,31 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System;
+using DotNetNuke.Common;
 
-#endregion
-
-namespace DotNetNuke.Entities.Tabs
+namespace DotNetNuke.Web.Api.Internal
 {
-    public class TabExistsException : TabException
+    public sealed class DnnPagePermissionAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        public TabExistsException(int tabId, string message) : base(tabId, message)
-        {            
-        }
+        private string permissionKey = "EDIT";
 
+        public string PermissionKey
+        {
+            get
+            {
+                return permissionKey;
+            }
+            set
+            {
+                permissionKey = value;
+            }
+        }
+        public override bool IsAuthorized(AuthFilterContext context)
+        {
+            Requires.NotNull("context", context);
+
+            return PagePermissionsAttributesHelper.HasTabPermission(PermissionKey);
+        }
     }
 }

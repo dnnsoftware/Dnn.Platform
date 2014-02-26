@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -18,19 +18,30 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System;
+using System.Threading;
+using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 
-#endregion
-
-namespace DotNetNuke.Entities.Tabs
+namespace DotNetNuke.Web.Api.Internal
 {
-    public class TabExistsException : TabException
+    public class PagePermissionsAttributesHelper
     {
-        public TabExistsException(int tabId, string message) : base(tabId, message)
-        {            
-        }
+        public static bool HasTabPermission(string permissionKey)
+        {
+            var principal = Thread.CurrentPrincipal;
+            if(!principal.Identity.IsAuthenticated)
+            {
+                return false;
+            }
 
+            var currentPortal = TestablePortalController.Instance.GetCurrentPortalSettings();
+
+            bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
+            if (isAdminUser) return true;
+
+            return TabPermissionController.HasTabPermission(permissionKey);
+        }
     }
 }

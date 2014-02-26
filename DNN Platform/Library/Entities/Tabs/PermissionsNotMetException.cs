@@ -26,9 +26,9 @@ using System;
 
 namespace DotNetNuke.Entities.Tabs
 {
-    public class TabExistsException : TabException
+    public class PermissionsNotMetException : TabException
     {
-        public TabExistsException(int tabId, string message) : base(tabId, message)
+        public PermissionsNotMetException(int tabId, string message) : base(tabId, message)
         {            
         }
 

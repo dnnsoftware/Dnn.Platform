@@ -307,6 +307,12 @@ namespace DotNetNuke.UI.ControlPanels
                         returnValue = Globals.NavigateURL("Tab", "activeTab=settingTab");
                     }
                     break;
+                case "PublishPage":
+                    if (TabPermissionController.CanAdminPage())
+                    {
+                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID);
+                    }
+                    break;
                 default:
                     if ((!string.IsNullOrEmpty(moduleFriendlyName)))
                     {
@@ -541,12 +547,18 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetButtonConfirmMessage(string toolName)
         {
-            if (toolName == "DeletePage")
+            switch (toolName)
             {
-                return ClientAPI.GetSafeJSString(Localization.GetString("Tool.DeletePage.Confirm", LocalResourceFile));
+                case "DeletePage":
+                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.DeletePage.Confirm", LocalResourceFile));
+                    break;
+                case "PublishPage":
+                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.PublishPage.Confirm", LocalResourceFile));
+                    break;
+                default:
+                    return string.Empty;
+                    break;
             }
-
-            return string.Empty;
         }    
 
         protected IEnumerable<string[]> LoadPortalsList()

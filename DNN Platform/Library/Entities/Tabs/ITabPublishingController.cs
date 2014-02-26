@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -18,19 +18,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
-
-using System;
-
-#endregion
 
 namespace DotNetNuke.Entities.Tabs
 {
-    public class TabExistsException : TabException
+    public interface ITabPublishingController
     {
-        public TabExistsException(int tabId, string message) : base(tabId, message)
-        {            
-        }
-
+        /// <summary>
+        /// Publish a page. Set VIEW permission to All Users
+        /// </summary>
+        /// <param name="tabID">Tab Id from the tab to be published</param>
+        /// <param name="portalID">Portal Id from the portal where the tab exists</param>
+        void PublishTab(int tabID, int portalID);
     }
 }

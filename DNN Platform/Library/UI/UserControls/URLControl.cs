@@ -1423,7 +1423,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     fileManager.AddFile(folder, fileName, txtFile.PostedFile.InputStream, true, true, ((FileManager)fileManager).GetContentType(Path.GetExtension(fileName)));
                 }
-                catch (PermissionsNotMetException)
+                catch (Services.FileSystem.PermissionsNotMetException)
                 {
                     lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
                     ErrorRow.Visible = true;

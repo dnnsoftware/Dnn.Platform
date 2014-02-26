@@ -17,6 +17,12 @@ dnn.controlBar.init = function (settings) {
         service = service || dnn.controlBar.getService();
         return service.getServiceRoot('internalservices') + 'controlbar/';
     };
+    
+    dnn.controlBar.getPageServiceUrl = function (service) {
+        service = service || dnn.controlBar.getService();
+        return service.getServiceRoot('internalservices') + 'PageService/';
+    };
+
     dnn.controlBar.getSiteRoot = function () {
         return dnn.getVar("sf_siteRoot", "/");
     };
@@ -253,6 +259,23 @@ dnn.controlBar.init = function (settings) {
         var serviceUrl = dnn.controlBar.getServiceUrl(service);
         $.ajax({
             url: serviceUrl + 'CopyPermissionsToChildren',
+            type: 'POST',
+            beforeSend: service.setModuleHeaders,
+            success: function () {
+                window.location.href = window.location.href.split('#')[0];
+            },
+            error: function (xhr) {
+                dnn.controlBar.responseError(xhr);
+            }
+        });
+
+    };
+
+    dnn.controlBar.publishPage = function () {
+        var service = dnn.controlBar.getService();
+        var serviceUrl = dnn.controlBar.getPageServiceUrl(service);
+        $.ajax({
+            url: serviceUrl + 'PublishPage',
             type: 'POST',
             beforeSend: service.setModuleHeaders,
             success: function () {
@@ -934,6 +957,17 @@ dnn.controlBar.init = function (settings) {
         yesText: settings.yesText,
         noText: settings.noText,
         title: settings.titleText
+    });
+
+
+    $('a#ControlBar_PublishPage').dnnConfirm({
+        text: settings.publishText,
+        yesText: settings.yesText,
+        noText: settings.noText,
+        title: settings.titleText,
+        callbackTrue: function () {
+            dnn.controlBar.publishPage();
+        }
     });
 
     $('a#shareableWarning_cmdConfirm').click(function () {

@@ -130,6 +130,7 @@
     <Compile Include="Api\HttpConfigurationExtensions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
     <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
+    <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
     <Compile Include="Api\Internal\IAntiForgery.cs" />
     <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Api\Internal\Auth\AuthMessageHandlerBase.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Api\Internal\DnnActionFilterProvider.cs" />
     <Compile Include="Api\Internal\DnnContextMessageHandler.cs" />
     <Compile Include="Api\Internal\DnnPageEditorAttribute.cs" />
+    <Compile Include="Api\Internal\PagePermissionsAttributesHelper.cs" />
     <Compile Include="Api\IPortalAliasRouteManager.cs" />
     <Compile Include="Api\ITabAndModuleInfoProvider.cs" />
     <Compile Include="Api\PortalAliasRouteManager.cs" />
