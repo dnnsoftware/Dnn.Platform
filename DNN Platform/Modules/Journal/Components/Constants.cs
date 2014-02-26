@@ -1,4 +1,6 @@
-﻿namespace DotNetNuke.Modules.Journal.Components {
+﻿using DotNetNuke.Services.Search.Internals;
+
+namespace DotNetNuke.Modules.Journal.Components {
     public class Constants {
         internal const string SharedResourcesPath = "~/DesktopModules/Journal/App_LocalResources/SharedResources.resx";
         internal const string DefaultPageSize = "Journal_PageSize";
@@ -11,5 +13,6 @@
         internal const string JournalFilterMode = "Journal_Mode";
         internal const string JournalEditorEnabled = "Journal_EditorEnabled";
 
+        internal const int SearchBatchSize = 500;
     }
 }

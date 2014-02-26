@@ -1,4 +1,4 @@
-/************************************************************/
+﻿/************************************************************/
 /*****              SqlDataProvider                     *****/
 /*****                                                  *****/
 /*****                                                  *****/
@@ -11,6 +11,91 @@
 -- DNN-4740
 IF EXISTS (SELECT * FROM Sys.Check_Constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'CK_{objectQualifier}Roles_PortalId')
 	ALTER TABLE {databaseOwner}[{objectQualifier}Roles] DROP CONSTRAINT CK_{objectQualifier}Roles_PortalId
+GO
+
+/***** Task DNN-DNN-3371: update sp Journal_Get to can check security setting, also update func Journal_User_Permissions to get correct role info. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Get
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+	@PortalId int,
+	@CurrentUserId int,
+	@JournalId int,
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0,
+    @SecurityCheck BIT = 0
+	AS
+	SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM       	{databaseOwner}[{objectQualifier}Journal] AS j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] AS js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey OR @SecurityCheck = 0
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId 
+				LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID 
+				LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE		((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) 
+				OR 
+				((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_User_Permissions]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Journal_User_Permissions]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Journal_User_Permissions]
+(
+	@PortalId int,
+	@UserId int,
+	@RegisteredRoleId int
+)
+RETURNS 
+@tmp TABLE (seckey nvarchar(200))
+
+AS
+BEGIN
+IF @UserId > 0
+		BEGIN
+            IF @RegisteredRoleId = 1
+				SELECT @RegisteredRoleId = RegisteredRoleId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalId
+			INSERT INTO @tmp (seckey) VALUES ('U' + Cast(@UserId as nvarchar(200)))
+			INSERT INTO @tmp (seckey) VALUES ('P' + Cast(@UserId as nvarchar(200)))
+			INSERT INTO @tmp (seckey) VALUES ('F' + Cast(@UserId as nvarchar(200)))
+			IF EXISTS(SELECT RoleId FROM {databaseOwner}[{objectQualifier}UserRoles] WHERE UserID = @UserId AND RoleId = @RegisteredRoleId
+						AND    (EffectiveDate <= getdate() or EffectiveDate is null)
+						AND    (ExpiryDate >= getdate() or ExpiryDate is null))
+					INSERT INTO @tmp (seckey) VALUES ('C')
+			
+		END
+		
+	INSERT INTO @tmp (seckey) VALUES ('E')
+	
+	INSERT INTO @tmp (seckey)
+	SELECT 'R' + CAST(ur.RoleId as nvarchar(200)) 
+		FROM {databaseOwner}[{objectQualifier}UserRoles] as ur
+			INNER JOIN {databaseOwner}[{objectQualifier}Users] as u on ur.UserId = u.UserId
+			INNER JOIN {databaseOwner}[{objectQualifier}Roles] as r on ur.RoleId = r.RoleId
+		WHERE  u.UserId = @UserId
+			AND    r.PortalId = @PortalId
+			AND    (EffectiveDate <= getdate() or EffectiveDate is null)
+			AND    (ExpiryDate >= getdate() or ExpiryDate is null)
+	INSERT INTO @tmp (seckey)
+		SELECT (SELECT CASE WHEN @UserID = ur.UserId 
+						THEN 'F' + CAST(RelatedUserID as nvarchar(200))
+						ELSE 'F' + CAST(ur.UserId as nvarchar(200)) END) 
+		FROM {databaseOwner}[{objectQualifier}UserRelationships] ur
+		INNER JOIN {databaseOwner}[{objectQualifier}Relationships] r ON ur.RelationshipID = r.RelationshipID AND r.RelationshipTypeID = 1
+		WHERE (ur.UserId = @UserId OR RelatedUserID = @UserId) AND Status = 2
+	RETURN 
+END
+
 GO
 
 -- DNN-4537:

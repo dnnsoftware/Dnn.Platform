@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Journal;
@@ -25,23 +26,45 @@ namespace DotNetNuke.Modules.Journal.Controls {
                 return PortalController.GetCurrentPortalSettings();
             }
         }
+
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UserInfo userInfo {
             get {
                 return UserController.GetCurrentUserInfo();
             }
         }
+
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int JournalId
+        {
+            get
+            {
+                if (HttpContext.Current != null && !string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["jid"]))
+                {
+                    return Convert.ToInt32(HttpContext.Current.Request.QueryString["jid"]);
+                }
+
+                return Null.NullInteger;
+            }
+        }
+
         public int ProfileId { get; set; }
+
         public int ModuleId { get; set; }
+
         public int SocialGroupId { get; set; }
+
         public int PageSize { get; set; }
+
         public int CurrentIndex { get; set; }
-        protected override void Render(HtmlTextWriter output) {
+
+        protected override void Render(HtmlTextWriter output) 
+        {
             if (Enabled) {
                 if (CurrentIndex < 0) {
                     CurrentIndex = 0;
                 }
-                JournalParser jp = new JournalParser(portalSettings, ModuleId, ProfileId, SocialGroupId, userInfo);
+                JournalParser jp = new JournalParser(portalSettings, ModuleId, ProfileId, SocialGroupId, userInfo){JournalId = JournalId};
                 output.Write(jp.GetList(CurrentIndex, PageSize));
             }
             

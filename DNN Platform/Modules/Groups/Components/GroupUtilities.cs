@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.Groups.Components
                 journalItem.SecuritySet += "E,";
             
             
-            journalController.SaveJournalItem(journalItem, -1);
+            journalController.SaveJournalItem(journalItem, null);
         }
     }
 }

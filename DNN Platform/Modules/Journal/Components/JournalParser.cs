@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.Journal.Components
         int ModuleId { get; set; }
 		UserInfo CurrentUser { get; set; }
         int OwnerPortalId { get; set; }
+        public int JournalId { get; set; }
         private readonly string url = "";
         private bool isAdmin;
 	    private bool isUnverifiedUser;
@@ -79,11 +80,26 @@ namespace DotNetNuke.Modules.Journal.Components
             string comment = Localization.GetString("comment", ResxPath);
             
             IList<JournalItem> journalList;
-            if (ProfileId > 0) {
+            if (JournalId > 0)
+            {
+                var journal = JournalController.Instance.GetJournalItem(PortalSettings.PortalId, CurrentUser.UserID,
+                                                                        JournalId, false, false, true);
+                journalList = new List<JournalItem>();
+                if (journal != null)
+                {
+                    journalList.Add(journal);
+                }
+            }
+            else if (ProfileId > 0) 
+            {
                 journalList = journalControllerInternal.GetJournalItemsByProfile(OwnerPortalId, ModuleId, CurrentUser.UserID, ProfileId, currentIndex, rows);
-            } else if (SocialGroupId > 0) {
+            } 
+            else if (SocialGroupId > 0) 
+            {
                 journalList = journalControllerInternal.GetJournalItemsByGroup(OwnerPortalId, ModuleId, CurrentUser.UserID, SocialGroupId, currentIndex, rows);
-            } else {
+            } 
+            else 
+            {
                 journalList = journalControllerInternal.GetJournalItems(OwnerPortalId, ModuleId, CurrentUser.UserID, currentIndex, rows);
             }
 

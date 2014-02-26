@@ -70,6 +70,16 @@
                         </assembly>
                     </assemblies>
                 </component>
+                <component type="Script">
+                    <scripts>
+                        <basePath>DesktopModules\Journal</basePath>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>07.02.02.SqlDataProvider</name>
+                            <version>07.02.02</version>
+                        </script>
+                    </scripts>
+                </component>
             </components>
         </package>
     </packages>
