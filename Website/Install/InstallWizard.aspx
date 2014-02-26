@@ -637,7 +637,6 @@
                     if (installWizard.confirmPasswords()) {
                         installWizard.installInfo = {
                             username: $('#<%= txtUsername.ClientID %>')[0].value,
-                            email: $('#<%= txtEmail.ClientID %>')[0].value,
                             password: $('#<%= txtPassword.ClientID %>')[0].value,
                             confirmPassword: $('#<%= txtConfirmPassword.ClientID %>')[0].value,
                             websiteName: $('#<%= txtWebsiteName.ClientID %>')[0].value,

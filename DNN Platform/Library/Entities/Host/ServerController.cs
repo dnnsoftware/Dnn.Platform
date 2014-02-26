@@ -112,7 +112,7 @@ namespace DotNetNuke.Entities.Host
 
         public static void UpdateServer(ServerInfo server)
         {
-            DataProvider.Instance().UpdateServer(server.ServerID, server.Url, server.Enabled);
+            DataProvider.Instance().UpdateServer(server.ServerID, server.Url, server.Enabled, server.ServerGroup);
             ClearCachedServers();
         }
 

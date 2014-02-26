@@ -1106,6 +1106,16 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objec
 		ALTER TABLE {databaseOwner}{objectQualifier}PortalLocalization
 			ADD Custom500TabId int NULL
 	END
+/* CONTENT-2259 Web Server Groups */
+/**********************************/
+
+IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = '{objectQualifier}WebServers' 
+           AND  COLUMN_NAME = 'ServerGroup')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}WebServers ADD
+            ServerGroup nvarchar(200) NULL
+    END 
 GO
 
 --update the value from portal settings to portal localization table
@@ -1189,11 +1199,8 @@ AS
     SELECT * FROM {databaseOwner}[{objectQualifier}vw_Portals] WHERE CultureCode = DefaultLanguage
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalInfo]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
 	@PortalID				INT,
 	@PortalGroupID			INT,
 	@PortalName				NVARCHAR(128),
@@ -1201,8 +1208,6 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
 	@FooterText				NVARCHAR(100),
 	@ExpiryDate				DATETIME,
 	@UserRegistration		INT,
-	@BannerAdvertising		INT,
-	@Currency				CHAR(3),
 	@AdministratorId		INT,
 	@HostFee				MONEY,
 	@HostSpace				INT,
@@ -1314,8 +1319,6 @@ ELSE
 			@KeyWords,
 			@BackgroundFile,
 			@HomeTabId ,
-			@LoginTabId ,
-			@UserTabId,
 			@AdminTabid,
 			@SplashTabId,
 			@SearchTabId,
@@ -1350,7 +1353,6 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalSetup
 	@CultureCode			NVARCHAR(50)
 
 AS
-	UPDATE {databaseOwner}{objectQualifier}Portals
 		SET    
 			AdministratorId = @AdministratorId, 
 			AdministratorRoleId = @AdministratorRoleId, 
@@ -1580,7 +1582,6 @@ AS
                        WHERE    ListName = 'DataType'
                                 AND SystemList = 1
                                 AND Value IN ( 'Text', 'RichText' )
-                     ),
                   ValidUsers AS 
                   (
                                       SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
@@ -1728,8 +1729,6 @@ BEGIN
 	  FolderMappingID,  
 	  LastModificationTime,  
 	  Title,  
-	  EnablePublishPeriod,  
-	  StartDate,  
 	  EndDate,  
 	  CreatedByUserID,  
 	  CreatedOnDate,  
@@ -1854,7 +1853,6 @@ BEGIN
 			   PublishedVersion,
 			   ContentItemID
 		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles]
-		WHERE FileId = @FileId
 	END
 	ELSE BEGIN
 		SELECT FileId,
