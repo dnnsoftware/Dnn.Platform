@@ -8,6 +8,35 @@
 /*****                                                  *****/
 /************************************************************/
 
+/* CONTENT-2259 Web Server Groups */
+/**********************************/
+
+IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = '{objectQualifier}WebServers' 
+           AND  COLUMN_NAME = 'ServerGroup')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}WebServers ADD
+            ServerGroup nvarchar(200) NULL
+    END 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateServer]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateServer]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateServer]
+    @ServerID            int,
+    @URL                nvarchar(255),
+    @Enabled            bit,
+    @Group                nvarchar(200)
+AS
+    UPDATE {databaseOwner}{objectQualifier}WebServers
+        SET 
+            URL = @URL,
+            Enabled = @Enabled,
+            ServerGroup = @Group
+        WHERE  ServerID = @ServerID
+GO
 
 
 /************************************************************/

@@ -1191,16 +1191,6 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objec
 		ALTER TABLE {databaseOwner}{objectQualifier}PortalLocalization
 			ADD Custom500TabId int NULL
 	END
-/* CONTENT-2259 Web Server Groups */
-/**********************************/
-
-IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
-            WHERE TABLE_NAME = '{objectQualifier}WebServers' 
-           AND  COLUMN_NAME = 'ServerGroup')
-   BEGIN
-        ALTER TABLE {databaseOwner}{objectQualifier}WebServers ADD
-            ServerGroup nvarchar(200) NULL
-    END 
 GO
 
 --update the value from portal settings to portal localization table
