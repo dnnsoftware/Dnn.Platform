@@ -58,6 +58,10 @@
                 <asp:ListItem Value="DESC" resourcekey="Descending"/>
             </asp:DropDownList>
         </div>        
+        <div class="dnnFormItem">
+            <dnn:label id="ExcludeHostUsersLabel" runat="server" controlname="ExcludeHostUsersCheckBox" />
+            <asp:CheckBox ID="ExcludeHostUsersCheckBox" runat="server" />
+        </div>            
    </fieldset>
     <h2 id="H1" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Search")%></a></h2>
     <fieldset>

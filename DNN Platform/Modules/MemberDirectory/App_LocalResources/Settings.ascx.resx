@@ -267,4 +267,10 @@
   <data name="DisplaySearch_Simple.Text" xml:space="preserve">
     <value>Simple Search</value>
   </data>
+  <data name="ExcludeHostUsersLabel.Help" xml:space="preserve">
+    <value>If checked, Host Users will not appear in search results</value>
+  </data>
+  <data name="ExcludeHostUsersLabel.Text" xml:space="preserve">
+    <value>Exclude Host Users:</value>
+  </data>
 </root>
