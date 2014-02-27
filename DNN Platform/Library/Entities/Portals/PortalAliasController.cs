@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal Alias Info.</returns>
         public PortalAliasInfo GetPortalAlias(string PortalAlias, int PortalID)
         {
-            return (PortalAliasInfo)CBO.FillObject(DataProvider.Instance().GetPortalAlias(PortalAlias, PortalID), typeof(PortalAliasInfo));
+            return TestablePortalAliasController.Instance.GetPortalAliases().SingleOrDefault(pa => pa.Key == PortalAlias && pa.Value.PortalID == PortalID).Value;
         }
 
         /// <summary>
