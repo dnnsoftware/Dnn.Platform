@@ -22,6 +22,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -195,8 +196,8 @@ namespace DotNetNuke.Common.Utilities
             //if the ssloffloadheader variable has been set check to see if a request header with that type exists
             if (!string.IsNullOrEmpty(ssloffloadheader))
             {
-                string ssloffload = request.Headers[ssloffloadheader];
-                if (!string.IsNullOrEmpty(ssloffload))
+                //string ssloffload = request.Headers[ssloffloadheader];
+                if (request.Headers.AllKeys.Contains(ssloffloadheader))
                 {
                     if (checkPage)
                     {
@@ -210,8 +211,12 @@ namespace DotNetNuke.Common.Utilities
                     {
                         return true;
                     }
-                    
                 }
+                //if (!string.IsNullOrEmpty(ssloffload))
+                //{
+                    
+                    
+                //}
             }
             return false;
         }
