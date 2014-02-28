@@ -9,7 +9,11 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.isMouseDown = false;
     dnn.controlBar.hideModuleLocationMenu = true;
     dnn.controlBar.showSelectedModule = false;
-    dnn.controlBar.status = null;
+    dnn.controlBar.status = null;    
+    dnn.controlBar.moduleLoadingIndex = 0;
+    dnn.controlBar.moduleLoadingInitialSize = 15;
+    dnn.controlBar.moduleLoadingSize = 7;
+    dnn.controlBar.allModulesLoaded = false;
     dnn.controlBar.getService = function () {
         return $.dnnSF();
     };
@@ -117,23 +121,56 @@ dnn.controlBar.init = function (settings) {
             messageContainer.hide();
         }
     };
+
+    dnn.controlBar.getModuleLoadingStartIndex = function() {
+        if (dnn.controlBar.moduleLoadingIndex == 0) {
+            return 0;
+        } else {
+            return dnn.controlBar.moduleLoadingInitialSize + (dnn.controlBar.moduleLoadingSize * (dnn.controlBar.moduleLoadingIndex -1));
+        }
+    };
+    
+    dnn.controlBar.getModuleLoadingCurrentSize = function () {
+        if (dnn.controlBar.moduleLoadingIndex == 0) {
+            return dnn.controlBar.moduleLoadingInitialSize;            
+        } else {
+            return dnn.controlBar.moduleLoadingSize;
+        }
+    };
+
     dnn.controlBar.getDesktopModulesForNewModule = function (category) {
+        if (dnn.controlBar.allModulesLoaded) {
+            return;
+        }
         var service = dnn.controlBar.getService();
         var serviceUrl = dnn.controlBar.getServiceUrl(service);
-        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule');
+        //if (dnn.controlBar.moduleLoadingIndex == 0) {
+            dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule');
+        //}
         $.ajax({
             url: serviceUrl + 'GetPortalDesktopModules',
             type: 'GET',
-            data: 'category=' + category,
+            data: 'category=' + category + '&loadingStartIndex='+ dnn.controlBar.getModuleLoadingStartIndex() +'&loadingSize='+dnn.controlBar.getModuleLoadingCurrentSize(),
             beforeSend: service.setModuleHeaders,
             success: function (d) {
                 if (d && d.length) {
-                    dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
-                    var containerId = '#ControlBar_ModuleListHolder_NewModule';
+                    //if (dnn.controlBar.moduleLoadingIndex == 0) {
+                        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
+                    //}
+                    var containerId = '#ControlBar_ModuleListHolder_NewModule';                    
                     dnn.controlBar.renderModuleList(containerId, d);
+                    dnn.controlBar.moduleLoadingIndex = dnn.controlBar.moduleLoadingIndex + 1;
+                    if (d.length < dnn.controlBar.moduleLoadingSize) {
+                        dnn.controlBar.allModulesLoaded = true;
+                    }
                 }
                 else {
-                    dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true, true);
+                    if (dnn.controlBar.moduleLoadingIndex == 0) {
+                        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true, true);
+                    } else {
+                        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
+                        dnn.controlBar.allModulesLoaded = true;
+                    }
                 }
             },
             error: function (xhr) {
@@ -368,18 +405,24 @@ dnn.controlBar.init = function (settings) {
 
     dnn.controlBar.renderModuleList = function (containerId, moduleList) {
 
+        var currentModuleIndex = dnn.controlBar.moduleLoadingIndex;
         var container = $(containerId);
         var scrollContainer = container.next();
-        var api = scrollContainer.data('jsp');
-        if (api) {
-            api.scrollToX(0, null);
-            api.destroy();
+        
+        if (dnn.controlBar.moduleLoadingIndex == 0) {
+            var api = scrollContainer.data('jsp');
+            if (api) {
+                api.scrollToX(0, null);
+                api.destroy();
+            }
+            scrollContainer = container.next(); // reinit because api destroy...    
         }
-        scrollContainer = container.next(); // reinit because api destroy...
-
+        
         $(containerId).css('overflow', 'hidden');
         var ul = $('ul.ControlBar_ModuleList', container);
-        ul.empty().css('left', 1000);
+        if (dnn.controlBar.moduleLoadingIndex == 0) {
+            ul.empty().css('left', 1000);
+        }
         var windowWidth = $(window).width();
         var margin = Math.round((windowWidth - 980) / 2);
 
@@ -387,38 +430,71 @@ dnn.controlBar.init = function (settings) {
         for (var i = 0; i < moduleList.length; i++) {
             ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
         }
-        var ulWidth = moduleList.length * 160;
+        var oldUlWidth = ul.css('width');
+        var ulWidth = (dnn.controlBar.getModuleLoadingStartIndex() * 160) + moduleList.length * 160;
         ul.css('width', ulWidth + 'px');
         // some math here
         var dummyScrollWidth = Math.round((980 * (ulWidth + margin)) / windowWidth);
-        var ulLeft = margin;
+        var ulLeft = margin;        
         var oldX = 0;
+        var reloading = false;
         var modulesInitFunc = function () {
             $('div.controlBar_ModuleListScrollDummy_Content', scrollContainer).css('width', dummyScrollWidth);
-            scrollContainer.jScrollPane();
-            scrollContainer.bind('jsp-scroll-x', function (e, x, isAtleft, isAtRight) {
+            if (currentModuleIndex == 0) {
+                scrollContainer.jScrollPane({ stickToRight: true });
+            } else {
+                var jspapi = scrollContainer.data('jsp');
+                if (jspapi) {
+                    jspapi.reinitialise();
+                }
+            }
+            scrollContainer.unbind('jsp-scroll-x');
+            scrollContainer.bind('jsp-scroll-x', function (e, x, isAtleft, isAtRight) {                
                 var xOffset, leftOffset;
                 if (isAtleft) {
                     oldX = 0;
                     ulLeft = margin;
+                    reloading = false;                    
                 } else if (isAtRight) {
-                    oldX = Math.round((980 * (ulWidth + margin)) / windowWidth) - 980;
-                    ulLeft = -(ulWidth - windowWidth);
-                } else {
-                    if (x > oldX) {
+                    var justAtRight = (oldX == x);
+                    oldX = Math.round((980 * (ulWidth + margin)) / windowWidth) - 980;                         
+                    if (moduleList.length != 0 && justAtRight && !reloading) {
+                        //oldX = Math.round((980 * (oldUlWidth + margin)) / windowWidth) - 980;
+                        reloading = true;
+                        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory());
+                        ulLeft = -(ulWidth - windowWidth);
+                    } else {
+                        //ulLeft = -(oldUlWidth - windowWidth);
+                        return;
+                    }
+                } else {                    
+                    if (x > oldX) {                        
                         // scroll to right
                         xOffset = x - oldX;
-                        leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
+                        if (reloading) {
+                            leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
+                            reloading = false;
+                        } else {
+                            leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
+                        }
                         ulLeft -= Math.abs(leftOffset);
-                    } else {
+                    } else {                        
                         // scroll to left
                         xOffset = oldX - x;
-                        leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
+                        if (reloading) {
+                            leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
+                            reloading = false;
+                        } else {
+                            leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
+                        }
                         ulLeft += Math.abs(leftOffset);
                     }
                     oldX = x;
                 }
-                ul.css('left', ulLeft);
+                
+                //if (!reloading) {
+                    ul.css('left', ulLeft+"px");
+                //}
             });
 
             $('div.ControlBar_ModuleDiv', ul).each(function () {
@@ -578,16 +654,41 @@ dnn.controlBar.init = function (settings) {
             });
         };
         setTimeout(modulesInitFunc, 0);
-        ul.animate({ left: margin }, 300);
+        if (dnn.controlBar.moduleLoadingIndex == 0) {
+            ul.animate({ left: margin }, 300);
+        }
+    };
+
+    dnn.controlBar.initializeModuleSearch = function() {
+        dnn.controlBar.moduleLoadingIndex = 0;
+        dnn.controlBar.allModulesLoaded = false;
+    };
+
+    dnn.controlBar.getSelectedCategory = function () {
+        var category = null;
+        if (dnn.controlBar.status && dnn.controlBar.status.addNewModule) {
+            var selectedCategory = dnn.controlBar.status.category;
+            if (selectedCategory) {
+                $find(settings.categoryComboId).findItemByValue(selectedCategory).select();
+                category = selectedCategory;
+                dnn.controlBar.removeStatus();
+            }
+        } else {
+            category = $find(settings.categoryComboId).get_value();
+        }
+
+        return category;
     };
 
     dnn.controlBar.ControlBar_Module_CategoryList_Changed = function (sender, e) {
         var item = e.get_item();
         if (item) {
+            //Reset module search
+            dnn.controlBar.initializeModuleSearch();
             dnn.controlBar.getDesktopModulesForNewModule(item.get_value());
         }
     };
-
+    
     dnn.controlBar.ControlBar_Module_PageList_Changed = function (selectedNode) {
         if (!selectedNode.key)
             dnn.controlBar.selectedPage = null;
@@ -760,19 +861,21 @@ dnn.controlBar.init = function (settings) {
             return false;
         }
 
-        var category = null;
-        if (dnn.controlBar.status && dnn.controlBar.status.addNewModule) {
-            var selectedCategory = dnn.controlBar.status.category;
-            if (selectedCategory) {
-                $find(settings.categoryComboId).findItemByValue(selectedCategory).select();
-                category = selectedCategory;
-                dnn.controlBar.removeStatus();
-            }
-        } else {
-            category = $find(settings.categoryComboId).get_value();
-        }
+        //var category = null;
+        //if (dnn.controlBar.status && dnn.controlBar.status.addNewModule) {
+        //    var selectedCategory = dnn.controlBar.status.category;
+        //    if (selectedCategory) {
+        //        $find(settings.categoryComboId).findItemByValue(selectedCategory).select();
+        //        category = selectedCategory;
+        //        dnn.controlBar.removeStatus();
+        //    }
+        //} else {
+        //    category = $find(settings.categoryComboId).get_value();
+        //}
 
-        dnn.controlBar.getDesktopModulesForNewModule(category);
+        //Reset module search
+        dnn.controlBar.initializeModuleSearch();
+        dnn.controlBar.getDesktopModulesForNewModule( dnn.controlBar.getSelectedCategory() );
         dnn.controlBar.addNewModule = true;
         toggleModulePane($('#ControlBar_Module_AddNewModule'), true);
         $('#ControlBar_Action_Menu').addClass('onActionMenu');
