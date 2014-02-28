@@ -3797,7 +3797,7 @@ namespace DotNetNuke.Common
                 avatarUrl = HttpContext.Current.Request.Url.Host;
             }
             avatarUrl = string.Format("{0}://{1}{2}",
-                                      UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request,false) ? "https" : "http",
+                                      UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
                                       avatarUrl,
                                       !HttpContext.Current.Request.Url.IsDefaultPort && !avatarUrl.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
 
