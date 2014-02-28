@@ -22,7 +22,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -183,20 +182,16 @@ namespace DotNetNuke.Common.Utilities
             //if the ssloffloadheader variable has been set check to see if a request header with that type exists
             if (!string.IsNullOrEmpty(ssloffloadheader))
             {
-                //string ssloffload = request.Headers[ssloffloadheader];
-                if (request.Headers.AllKeys.Contains(ssloffloadheader))
+                string ssloffload = request.Headers[ssloffloadheader];
+                if (!string.IsNullOrEmpty(ssloffload))
                 {
                     PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
                     if (portalSettings.ActiveTab.IsSecure)
                     {
                         return true;
                     }
+                    
                 }
-                //if (!string.IsNullOrEmpty(ssloffload))
-                //{
-                    
-                    
-                //}
             }
             return false;
         }
