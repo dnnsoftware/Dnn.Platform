@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.User" CodeFile="User.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.User" CodeFile="User.ascx.cs" ViewStateMode="Disabled" %>
 <asp:HyperLink ID="registerLink" runat="server" CssClass="SkinObject" />
 <div class="registerGroup" runat="server" id="registerGroup">
     <ul class="buttonGroup">
