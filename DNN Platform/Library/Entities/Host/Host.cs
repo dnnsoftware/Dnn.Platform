@@ -1414,6 +1414,14 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Get's the SMTP setting, if portal smtp is configured, it will return items from the portal settings collection.
+        /// </summary>
+        /// <history>
+        /// 	[ohine]	    02/24/2014   created
+        /// </history>
+        /// -----------------------------------------------------------------------------
         private static string GetSmtpSetting(string settingName)
         {
             if (SMTPPortalEnabled)
