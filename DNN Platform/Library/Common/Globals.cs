@@ -3806,6 +3806,20 @@ namespace DotNetNuke.Common
             return avatarUrl;
         }
 
+
+        /// <summary>
+        /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
+        /// </summary>        
+        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} 
+        /// </returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
+        /// </remarks>
+        public static string UserProfilePicRelativeUrl()
+        {
+            return Globals.ApplicationPath + "/profilepic.ashx?userId={0}&h={1}&w={2}";
+        }
+
         #region "Obsolete - retained for Binary Compatability"
 
         // TODO:  These constants are deprecated but cannot be removed until the next batch of breaking change
