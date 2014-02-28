@@ -40,6 +40,8 @@ using DotNetNuke.UI.Skins;
 
 namespace DotNetNuke.Entities.Host
 {
+    using DotNetNuke.Entities.Portals;
+
     using Web.Client;
 
     /// <summary>
@@ -1368,14 +1370,66 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <history>
         ///   [cnurse]	01/28/2008   Created
+        ///   [ohine]	02/01/2009   modifed for portal based smtp
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPAuthentication
         {
             get
             {
-                return HostController.Instance.GetString("SMTPAuthentication");
+                return GetSmtpSetting("SMTPAuthentication");
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the SMTP mode (portal|host)
+        /// </summary>
+        /// <history>
+        /// 	[ohine]	    02/01/2009   created
+        ///     [ohine]	    02/22/2014   converted to c#
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        private static bool SMTPPortalEnabled
+        {
+            get
+            {
+                var portalSettings = PortalController.GetCurrentPortalSettings();
+
+                if (portalSettings == null)
+                {
+                    //without portal settings, we can't continue
+                    return false;
+                }
+
+                //we don't want to load the portal smtp server when on a host tab. 
+                if (portalSettings.ActiveTab.PortalID == Null.NullInteger)
+                {
+                    return false;
+                }
+
+                var currentSmtpMode = PortalController.GetPortalSetting("SMTPmode", portalSettings.PortalId, Null.NullString);
+
+                return currentSmtpMode.Equals("P", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Get's the SMTP setting, if portal smtp is configured, it will return items from the portal settings collection.
+        /// </summary>
+        /// <history>
+        /// 	[ohine]	    02/24/2014   created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        private static string GetSmtpSetting(string settingName)
+        {
+            if (SMTPPortalEnabled)
+            {
+                return PortalController.GetPortalSetting(settingName, PortalSettings.Current.PortalId, Null.NullString);
+            }
+
+            return HostController.Instance.GetString(settingName);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1384,32 +1438,40 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <history>
         ///   [cnurse]	01/28/2008   Created
+        ///   [ohine]	02/01/2009   modifed for portal based smtp
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPPassword
         {
             get
-            {              
-                string decryptedText;
-                try
+            {
+                if (SMTPPortalEnabled)
                 {
-                    decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
+                    return PortalController.GetEncryptedString("SMTPPassword", PortalController.GetCurrentPortalSettings().PortalId, Config.GetDecryptionkey());
                 }
-                catch (Exception)
+                else
                 {
-                    //fixes case where smtppassword failed to encrypt due to failing upgrade
-                    var current = HostController.Instance.GetString("SMTPPassword");
-                    if (!string.IsNullOrEmpty(current))
+                    string decryptedText;
+                    try
                     {
-                        HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
-                        decryptedText = current;
+                        decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
                     }
-                    else
+                    catch (Exception)
                     {
-                        decryptedText = string.Empty;
+                        //fixes case where smtppassword failed to encrypt due to failing upgrade
+                        var current = HostController.Instance.GetString("SMTPPassword");
+                        if (!string.IsNullOrEmpty(current))
+                        {
+                            HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
+                            decryptedText = current;
+                        }
+                        else
+                        {
+                            decryptedText = string.Empty;
+                        }
                     }
+                    return decryptedText;
                 }
-                return decryptedText;
             }
         }
 
@@ -1419,13 +1481,14 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <history>
         ///   [cnurse]	01/28/2008   Created
+        ///   [ohine]	02/01/2009   modifed for portal based smtp
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPServer
         {
             get
             {
-                return HostController.Instance.GetString("SMTPServer");
+                return GetSmtpSetting("SMTPServer");
             }
         }
 
@@ -1435,13 +1498,14 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <history>
         ///   [cnurse]	01/28/2008   Created
+        ///   [ohine]	02/01/2009   modifed for portal based smtp
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPUsername
         {
             get
             {
-                return HostController.Instance.GetString("SMTPUsername");
+                return GetSmtpSetting("SMTPUsername");
             }
         }
 

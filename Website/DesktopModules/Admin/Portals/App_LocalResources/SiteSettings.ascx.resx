@@ -1154,4 +1154,67 @@ The host-level settings are currently set as follows:
   <data name="VanityUrlPrefixHeader.Text" xml:space="preserve">
     <value>Enter a prefix for Vanity URLs</value>
   </data>
+  <data name="EmailErrorMessage.Text" xml:space="preserve">
+    <value>There has been an error trying to send the test email. The error is:&lt;br /&gt;{0}</value>
+  </data>
+  <data name="EmailSentMessage.Text" xml:space="preserve">
+    <value>Email Sent Successfully from {0} to {1}</value>
+  </data>
+  <data name="EmailTest.Text" xml:space="preserve">
+    <value>Test SMTP Settings</value>
+  </data>
+  <data name="plSMTPAuthentication.Help" xml:space="preserve">
+    <value>Enter the SMTP Server Authentication method ( default = Anonymous )</value>
+  </data>
+  <data name="plSMTPAuthentication.Text" xml:space="preserve">
+    <value>SMTP Authentication:</value>
+  </data>
+  <data name="plSMTPEnableSSL.Help" xml:space="preserve">
+    <value>Used for SMTP services that require secure connection (usually not needed)</value>
+  </data>
+  <data name="plSMTPEnableSSL.Text" xml:space="preserve">
+    <value>SMTP Enable SSL:</value>
+  </data>
+  <data name="plSMTPMode.Help" xml:space="preserve">
+    <value>Select the mode for this portal's SMTP configuration. You can either select the default host server, or provide a custom account for just this portal. </value>
+  </data>
+  <data name="plSMTPMode.Text" xml:space="preserve">
+    <value>SMTP Mode:</value>
+  </data>
+  <data name="plSMTPPassword.Help" xml:space="preserve">
+    <value>Enter the Password for the SMTP Server</value>
+  </data>
+  <data name="plSMTPPassword.Text" xml:space="preserve">
+    <value>SMTP Password:</value>
+  </data>
+  <data name="plSMTPServer.Help" xml:space="preserve">
+    <value>Enter the SMTP Server Address. You can also specify an alternate port by adding a colon and the port number (e.g. smtp.googlemail.com:587). Enter the SMTP server name only to use default port number (25)</value>
+  </data>
+  <data name="plSMTPServer.Text" xml:space="preserve">
+    <value>SMTP Server and port:</value>
+  </data>
+  <data name="plSMTPUsername.Help" xml:space="preserve">
+    <value>Enter the Username for the SMTP Server</value>
+  </data>
+  <data name="plSMTPUsername.Text" xml:space="preserve">
+    <value>SMTP Username:</value>
+  </data>
+  <data name="SMTP.Text" xml:space="preserve">
+    <value>SMTP Server Settings</value>
+  </data>
+  <data name="SMTPAnonymous.Text" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
+  <data name="SMTPBasic.Text" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="SMTPNTLM.Text" xml:space="preserve">
+    <value>NTLM</value>
+  </data>
+  <data name="SmtpServerWarning.Text" xml:space="preserve">
+    <value>You are try to use a custom SMTP port with your install instance running under medium trust, you need contact your host provider to make sure this setting can work correctly on the server.</value>
+  </data>
+  <data name="SpecifyHostEmailMessage.Text" xml:space="preserve">
+    <value>You Must Specify The Host Email Address</value>
+  </data>
 </root>
