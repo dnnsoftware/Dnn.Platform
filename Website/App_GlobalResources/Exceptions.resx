@@ -330,4 +330,7 @@
   <data name="UnableToCreateLuceneWriter.Text" xml:space="preserve">
     <value>Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock.</value>
   </data>
+  <data name="PublishPagePermissionsNotMet" xml:space="preserve">
+    <value>Permissions are not met. The page has not been published.</value>
+  </data>
 </root>

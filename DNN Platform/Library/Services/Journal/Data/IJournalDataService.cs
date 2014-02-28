@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Journal
         void Journal_SoftDeleteByGroupId(int portalId, int groupId);
 
         IDataReader Journal_Get(int portalId, int currentUserId, int journalId);
-        IDataReader Journal_Get(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted);
+        IDataReader Journal_Get(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck);
         IDataReader Journal_GetByKey(int portalId, string objectKey);
         IDataReader Journal_GetByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted);
         int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,

@@ -18,30 +18,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System.Reflection;
-
-#endregion
-
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-
-// Review the values of the assembly attributes
-
-[assembly: AssemblyCompany("DNN Corporation")]
-[assembly: AssemblyProduct("http://www.dnnsoftware.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2014 by DNN Corporation. All Rights Reserved.")]
-[assembly: AssemblyTrademark("DNN")]
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-[assembly: AssemblyVersion("7.3.0.0")]
-[assembly: AssemblyFileVersion("7.3.0.0")]
+namespace DotNetNuke.Entities.Tabs
+{
+    public interface ITabPublishingController
+    {
+        /// <summary>
+        /// Publish a page. Set VIEW permission to All Users
+        /// </summary>
+        /// <param name="tabID">Tab Id from the tab to be published</param>
+        /// <param name="portalID">Portal Id from the portal where the tab exists</param>
+        void PublishTab(int tabID, int portalID);
+    }
+}

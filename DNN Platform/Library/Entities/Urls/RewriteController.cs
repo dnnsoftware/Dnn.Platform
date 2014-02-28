@@ -183,10 +183,12 @@ namespace DotNetNuke.Entities.Urls
                         bool customTabAlias = false;
                         //check for culture-specific aliases
                         string culture = null;
-                        var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
+                        var primaryAliases =
+                            TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
+                                                         .Where(a => a.IsPrimary).ToList();
                         //if there are chosen portal aliases, check to see if the found alias is one of them
                         //if not, then will check for a custom alias per tab
-                        if (primaryAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias) == false)
+                        if (!primaryAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias))
                         {
                             checkForCustomAlias = true;
                         }

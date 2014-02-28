@@ -42,6 +42,7 @@ namespace DotNetNuke.Entities.Host
         {
             IISAppName = Globals.IISAppName;
             ServerName = Globals.ServerName;
+            ServerGroup = String.Empty;
             CreatedDate = created;
             LastActivityDate = lastactivity;
         }
@@ -49,6 +50,8 @@ namespace DotNetNuke.Entities.Host
         public int ServerID { get; set; }
 
         public string IISAppName { get; set; }
+
+        public string ServerGroup { get; set; }
 
         public string ServerName { get; set; }
 
@@ -76,6 +79,7 @@ namespace DotNetNuke.Entities.Host
             ServerID = Null.SetNullInteger(dr["ServerID"]);
             IISAppName = Null.SetNullString(dr["IISAppName"]);
             ServerName = Null.SetNullString(dr["ServerName"]);
+            ServerGroup = Null.SetNullString(dr["ServerGroup"]);
             Url = Null.SetNullString(dr["URL"]);
             Enabled = Null.SetNullBoolean(dr["Enabled"]);
             CreatedDate = Null.SetNullDateTime(dr["CreatedDate"]);

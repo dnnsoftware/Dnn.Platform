@@ -467,9 +467,9 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetServers");
         }
 
-        public virtual void UpdateServer(int ServerId, string Url, bool Enabled)
+        public virtual void UpdateServer(int serverId, string url, bool enabled, string group)
         {
-            ExecuteNonQuery("UpdateServer", ServerId, Url, Enabled);
+            ExecuteNonQuery("UpdateServer", serverId, url, enabled, group);
         }
 
         public virtual void UpdateServerActivity(string ServerName, string IISAppName, DateTime CreatedDate,

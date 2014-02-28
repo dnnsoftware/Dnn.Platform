@@ -604,7 +604,7 @@ namespace DotNetNuke.Services.Install
             _installConfig.SuperUser.Password = installInfo["password"];
             _installConfig.SuperUser.Locale = _culture;
             // Defaults
-            _installConfig.SuperUser.Email = "host@change.me";
+            _installConfig.SuperUser.Password = installInfo["email"];
             _installConfig.SuperUser.FirstName = "SuperUser";
             _installConfig.SuperUser.LastName = "Account";
 
@@ -973,11 +973,13 @@ namespace DotNetNuke.Services.Install
                     if (synchConnectionString.Status == StepStatus.AppRestart) Response.Redirect(HttpContext.Current.Request.RawUrl, true);
 
                     txtUsername.Text = _installConfig.SuperUser.UserName;
+                    txtEmail.Text = _installConfig.SuperUser.Email;
                     if (_installConfig.Portals.Count > 0)
                     {
                         txtWebsiteName.Text = _installConfig.Portals[0].PortalName;
                         //TODO Language and Template
                     }
+                    valEmailValid.ValidationExpression = Globals.glbEmailRegEx;
                 }
             }
 
@@ -1129,7 +1131,8 @@ namespace DotNetNuke.Services.Install
 		    var errorMsg=string.Empty;
             
             // Check Required Fields
-			if (installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty || installInfo["websiteName"] == string.Empty)
+            if (installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty
+                 || installInfo["websiteName"] == string.Empty || installInfo["email"] == string.Empty)
             {
                 result = false;
 		        errorMsg = LocalizeStringStatic("InputErrorMissingRequiredFields");

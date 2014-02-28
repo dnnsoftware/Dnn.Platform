@@ -412,6 +412,11 @@ namespace DotNetNuke.Services.Installer.Packages
                                     switch (package.PackageType)
                                     {
                                         case "Module":
+                                            //In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
+                                            //To ensure that FolderName is DesktopModules...
+                                            var folderNameValue = GetSpecificFolderName(nav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
+                                            if (!String.IsNullOrEmpty(folderNameValue)) package.FolderName = folderNameValue.Replace('\\', '/');
+                                            break;
                                         case "Auth_System":
                                             foldernameNav = nav.SelectSingleNode("components/component/files");
                                             if (foldernameNav != null) package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
@@ -472,7 +477,25 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
+        internal static string GetSpecificFolderName(XPathNavigator manifestNav, string xpath, string elementName, string startWith)
+        {
+            string result = String.Empty;
+            var foldernameNav = manifestNav.Select(xpath);
 
+            if (foldernameNav != null)
+            {
+                while (foldernameNav.MoveNext())
+                {
+                    var elementValue = Util.ReadElement(foldernameNav.Current, elementName);
+                    if (!String.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith))
+                    {
+                        result = elementValue;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
 
         #endregion
 
