@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.CoreMess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.DigitalAssets", "DNN Platform\Modules\DigitalAssets\DotNetNuke.Modules.DigitalAssets.csproj", "{1A0646A3-CB4A-4E8E-A497-2C677DE320FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.DDRMenu", "DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj", "{A86EBC44-2BC8-4C4A-997B-2708E4AAC345}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Groups", "DNN Platform\Modules\Groups\DotNetNuke.Modules.Groups.csproj", "{839E7C68-1867-4B99-8507-FB50CE45EB10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Html", "DNN Platform\Modules\HTML\DotNetNuke.Modules.Html.csproj", "{CD8732D8-B4DD-435D-BF21-A90C2964ABA4}"
