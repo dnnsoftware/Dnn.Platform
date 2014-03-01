@@ -324,6 +324,9 @@ namespace DotNetNuke.UI.Modules
                     new ExceptionLogController().AddLog(exc);
                 }
             }
+            
+            //Enable ViewState
+            _control.ViewStateMode = ViewStateMode.Enabled;
         }
 
         private void LoadAjaxPanel()

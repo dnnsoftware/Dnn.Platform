@@ -3797,13 +3797,27 @@ namespace DotNetNuke.Common
                 avatarUrl = HttpContext.Current.Request.Url.Host;
             }
             avatarUrl = string.Format("{0}://{1}{2}",
-                                      UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request,false) ? "https" : "http",
+                                      UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
                                       avatarUrl,
                                       !HttpContext.Current.Request.Url.IsDefaultPort && !avatarUrl.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
 
             avatarUrl += "/profilepic.ashx?userId={0}&h={1}&w={2}";            
 
             return avatarUrl;
+        }
+
+
+        /// <summary>
+        /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
+        /// </summary>        
+        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} 
+        /// </returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
+        /// </remarks>
+        public static string UserProfilePicRelativeUrl()
+        {
+            return Globals.ApplicationPath + "/profilepic.ashx?userId={0}&h={1}&w={2}";
         }
 
         #region "Obsolete - retained for Binary Compatability"

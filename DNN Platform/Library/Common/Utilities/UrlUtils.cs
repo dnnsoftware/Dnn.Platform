@@ -169,23 +169,10 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// check if connection is HTTPS
         /// or is HTTP but with ssloffload enabled on a secure page
-        /// this overload is intended for page checks 
         /// </summary>
         /// <param name="request">current request</param>
         /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequest request)
-        {
-            return IsSecureConnectionOrSslOffload(request, true);
-        }
-
-        /// <summary>
-        /// check if connection is HTTPS
-        /// or is HTTP but with ssloffload enabled on a secure page
-        /// </summary>
-        /// <param name="request">current request</param>
-        /// <param name="checkPage">Check the current page - not needed for resources such as images/files</param>
-        /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise</returns>
-        public static bool IsSecureConnectionOrSslOffload(HttpRequest request, bool checkPage)
         {
             if (request.IsSecureConnection)
             {
@@ -198,15 +185,8 @@ namespace DotNetNuke.Common.Utilities
                 string ssloffload = request.Headers[ssloffloadheader];
                 if (!string.IsNullOrEmpty(ssloffload))
                 {
-                    if (checkPage)
-                    {
-                        PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
-                        if (portalSettings.ActiveTab.IsSecure)
-                        {
-                            return true;
-                        }
-                    }
-                    else //a resource file so existance of header is sufficent
+                    PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+                    if (portalSettings.ActiveTab.IsSecure)
                     {
                         return true;
                     }

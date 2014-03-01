@@ -98,7 +98,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpGet]
         [DnnPageEditor]
-        public HttpResponseMessage GetPortalDesktopModules(string category)
+        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingSize)
         {
             if (string.IsNullOrEmpty(category))
                 category = "All";
@@ -112,6 +112,9 @@ namespace DotNetNuke.Web.InternalServices
             
             portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
                 .Where(Filter)
+                .OrderBy(c => c.Key)
+                .Skip(loadingStartIndex)
+                .Take(loadingSize)
                 .OrderBy(c => c.Key);
             
 
