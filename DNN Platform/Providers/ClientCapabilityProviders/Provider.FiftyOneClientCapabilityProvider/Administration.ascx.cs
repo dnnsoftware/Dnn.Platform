@@ -31,6 +31,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
     using FiftyOne.Foundation.Mobile.Detection;
     using FiftyOne.Foundation.UI;
     using FiftyOne.Foundation.UI.Web;
+    using FiftyOne.Foundation.Mobile.Detection.Entities;
 /// <summary>
     /// Administration control is used as the main control off the hosts
     /// page to activate 51Degrees.mobi.
@@ -160,7 +161,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             var premiumLabel = e.Item.FindControl("Premium") as HtmlGenericControl;
             if (premiumLabel != null)
             {
-                premiumLabel.Visible = property.IsPremium;
+                premiumLabel.Visible = DataProvider.GetIsPremium(property);
             }
 
             var values = e.Item.FindControl("Values") as HtmlGenericControl;
@@ -189,10 +190,10 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             }
             else
             {
-                var device = DataProvider.Provider.GetDeviceInfo(this.SearchTextBox.Text);
-                if (device != null)
+                var deviceId = DataProvider.GetDeviceID(this.SearchTextBox.Text);
+                if (deviceId != null)
                 {
-                    additionalParams = "DeviceID=" + device.DeviceId;
+                    additionalParams = "DeviceID=" + deviceId;
                 }
             }
             
