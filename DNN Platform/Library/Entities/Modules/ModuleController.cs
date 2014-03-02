@@ -679,6 +679,87 @@ namespace DotNetNuke.Entities.Modules
         /// Deserializes the module.
         /// </summary>
         /// <param name="nodeModule">The node module.</param>
+        /// <param name="module">ModuleInfo of current module</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="tabId">The tab id.</param>
+        public static void DeserializeModule(XmlNode nodeModule, ModuleInfo module, int portalId, int tabId)
+        {
+            var moduleController = new ModuleController();
+            var moduleDefinition = GetModuleDefinition(nodeModule);
+
+            // Create dummy pane node for private DeserializeModule method
+            XmlDocument docPane = new XmlDocument();
+            docPane.LoadXml(String.Format("<pane><name>{0}</name></pane>", module.PaneName));
+
+            // Create ModuleInfo of Xml
+            ModuleInfo sourceModule = DeserializeModule(nodeModule, docPane.DocumentElement, portalId, tabId, moduleDefinition.ModuleDefID);
+
+            // Copy properties from sourceModule to given (actual) module
+            module.ModuleTitle = sourceModule.ModuleTitle;
+            module.ModuleDefID = sourceModule.ModuleDefID;
+            module.CacheTime = sourceModule.CacheTime;
+            module.CacheMethod = sourceModule.CacheMethod;
+            module.Alignment = sourceModule.Alignment;
+            module.IconFile = sourceModule.IconFile;
+            module.AllTabs = sourceModule.AllTabs;
+            module.Visibility = sourceModule.Visibility;
+            module.Color = sourceModule.Color;
+            module.Border = sourceModule.Border;
+            module.Header = sourceModule.Header;
+            module.Footer = sourceModule.Footer;
+            module.InheritViewPermissions = sourceModule.InheritViewPermissions;
+            module.IsShareable = sourceModule.IsShareable;
+            module.IsShareableViewOnly = sourceModule.IsShareableViewOnly;
+            module.StartDate = sourceModule.StartDate;
+            module.EndDate = sourceModule.EndDate;
+            module.ContainerSrc = sourceModule.ContainerSrc;
+            module.DisplayTitle = sourceModule.DisplayTitle;
+            module.DisplayPrint = sourceModule.DisplayPrint;
+            module.DisplaySyndicate = sourceModule.DisplaySyndicate;
+            module.IsWebSlice = sourceModule.IsWebSlice;
+            
+            if (module.IsWebSlice)
+            {
+                module.WebSliceTitle = sourceModule.WebSliceTitle;
+                module.WebSliceExpiryDate = sourceModule.WebSliceExpiryDate;
+                module.WebSliceTTL = sourceModule.WebSliceTTL;
+            }
+
+            // DNN-24983 get culture from page
+            var tabInfo = new TabController().GetTab(tabId, portalId, false);
+            if (tabInfo != null)
+            {
+                module.CultureCode = tabInfo.CultureCode;
+            }
+
+            // save changes
+            moduleController.UpdateModule(module);
+
+            //deserialize Module's settings
+            XmlNodeList nodeModuleSettings = nodeModule.SelectNodes("modulesettings/modulesetting");
+            DeserializeModuleSettings(nodeModuleSettings, module);
+
+            XmlNodeList nodeTabModuleSettings = nodeModule.SelectNodes("tabmodulesettings/tabmodulesetting");
+            DeserializeTabModuleSettings(nodeTabModuleSettings, module);
+
+            //deserialize Content (if included)
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "content")))
+            {
+                GetModuleContent(nodeModule, module.ModuleID, tabId, portalId);
+            }
+
+            //deserialize Permissions
+            XmlNodeList nodeModulePermissions = nodeModule.SelectNodes("modulepermissions/permission");
+            DeserializeModulePermissions(nodeModulePermissions, portalId, module);
+
+            //Persist the permissions to the Data base
+            ModulePermissionController.SaveModulePermissions(module);
+        }
+        
+        /// <summary>
+        /// Deserializes the module.
+        /// </summary>
+        /// <param name="nodeModule">The node module.</param>
         /// <param name="nodePane">The node pane.</param>
         /// <param name="portalId">The portal id.</param>
         /// <param name="tabId">The tab id.</param>
