@@ -604,7 +604,7 @@ namespace DotNetNuke.Services.Install
             _installConfig.SuperUser.Password = installInfo["password"];
             _installConfig.SuperUser.Locale = _culture;
             // Defaults
-            _installConfig.SuperUser.Password = installInfo["email"];
+            _installConfig.SuperUser.Email = installInfo["email"];
             _installConfig.SuperUser.FirstName = "SuperUser";
             _installConfig.SuperUser.LastName = "Account";
 
