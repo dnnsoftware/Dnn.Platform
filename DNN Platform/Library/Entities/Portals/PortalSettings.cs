@@ -745,6 +745,17 @@ namespace DotNetNuke.Entities.Portals
 		    }
 	    }
 
+        /// <summary>
+        /// Website Administrator whether receive the notification email when new user register.
+        /// </summary>
+        public string DefaultAuthProvider
+        {
+            get
+            {
+                return PortalController.GetPortalSetting("DefaultAuthProvider", PortalId, "DNN");
+            }
+        }
+
         #endregion
 
         #region IPropertyAccess Members

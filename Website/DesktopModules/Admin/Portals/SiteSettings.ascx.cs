@@ -46,6 +46,8 @@ using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Authentication;
+using DotNetNuke.Services.Authentication.OAuth;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Localization;
@@ -367,6 +369,7 @@ namespace DesktopModules.Admin.Portals
                 cboAdministratorId.DataSource = roleController.GetUserRoles(portalId, null, portal.AdministratorRoleName);
                 cboAdministratorId.DataBind(portal.AdministratorId.ToString());
 
+                
                 //PortalSettings for portal being edited
                 var portalSettings = new PortalSettings(portal);
 
@@ -603,6 +606,15 @@ namespace DesktopModules.Admin.Portals
                 userVisiblity.EnumType = "DotNetNuke.Entities.Users.UserVisibilityMode, DotNetNuke";
                 profileSettings.DataSource = settings;
                 profileSettings.DataBind();
+
+                //Bind auth providers - only providers that have forms authentication and require a tab are added
+                var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
+                var authProviders = (from authProvider in authSystems let authLoginControl = (AuthenticationLoginBase) LoadControl("~/" + authProvider.LoginControlSrc) let oAuthLoginControl = authLoginControl as OAuthLoginBase where oAuthLoginControl == null select authProvider.AuthenticationType).ToList();
+                authProviderCombo.DataSource = authProviders;
+                authProviderCombo.DataBind();
+
+                var defaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", portal.PortalID, "DNN");
+                authProviderCombo.Select(defaultAuthProvider, true);
             }
             else
             {
@@ -1324,6 +1336,11 @@ namespace DesktopModules.Admin.Portals
                                         RedirectAfterLogout.SelectedItem.Value
                                         : "-1";
                     PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogout", redirectTabId);
+
+                    var defaultAuthProvider = !String.IsNullOrEmpty(authProviderCombo.SelectedItem.Value) ?
+                                        authProviderCombo.SelectedItem.Value
+                                        : "DNN";
+                    PortalController.UpdatePortalSetting(_portalId, "DefaultAuthProvider", defaultAuthProvider);
 
                     PortalController.UpdatePortalSetting(_portalId, DotNetNuke.Entities.Urls.FriendlyUrlSettings.VanityUrlPrefixSetting, vanilyUrlPrefixTextBox.Text, false);
                     foreach (DnnFormItemBase item in profileSettings.Items)

@@ -571,6 +571,10 @@
                         </dnn:dnnformeditor>
                     </fieldset>
                     <div class="dnnFormItem">
+                        <dnn:label id="DefaultAuthProviderLabel" runat="server" controlname="authProviderCombo" ResourceKey="DefaultAuthProvider"/>
+                        <dnn:DnnComboBox ID="authProviderCombo" runat="server" />
+                    </div>
+                    <div class="dnnFormItem">
                         <dnn:label id="RedirectAfterLoginLabel" runat="server" controlname="cboHomeTabId" ResourceKey="Redirect_AfterLogin"/>
                         <dnn:DnnPageDropDownList ID="RedirectAfterLogin" runat="server" />
                     </div>
