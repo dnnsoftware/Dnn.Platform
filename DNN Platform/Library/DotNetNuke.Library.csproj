@@ -81,6 +81,9 @@
       <HintPath>..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\Components\SharpZipLib\bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
     </Reference>
@@ -100,10 +103,6 @@
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SharpZipLib">
-      <HintPath>..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
