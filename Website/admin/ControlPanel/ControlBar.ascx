@@ -276,7 +276,7 @@
                         <li><a href="<%= BuildToolUrl("ExportPage", false, "", "", "", true) %>" class="ControlBar_PopupLink">
                             <%= GetString("Tool.ExportPage.Text") %></a></li>
                         <% } %>
-                        <% if (TabPermissionController.CanDeletePage())
+                        <% if (TabPermissionController.CanDeletePage() && !TabController.IsSpecialTab(TabController.CurrentPage.TabID, PortalSettings.PortalId))
                            {%>
                         <li><a href="<%= BuildToolUrl("DeletePage", false, "", "", "", true) %>" id="ControlBar_DeletePage">
                             <%= GetString("Tool.DeletePage.Text") %></a></li>
