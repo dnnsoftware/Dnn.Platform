@@ -228,7 +228,11 @@ namespace DotNetNuke.Modules.Html
             {
                 portalRoot = "/" + portalRoot;
             }
-            content = content.Replace(PortalRootToken, portalRoot);
+            if (!portalRoot.EndsWith("/"))
+            {
+                portalRoot = portalRoot + "/";
+            }
+            content = Regex.Replace(content, PortalRootToken + "\\/{0,1}", portalRoot, RegexOptions.IgnoreCase);
 
             return content;
         }
@@ -242,6 +246,10 @@ namespace DotNetNuke.Modules.Html
             if (!portalRoot.StartsWith("/"))
             {
                 portalRoot = "/" + portalRoot;
+            }
+            if (!portalRoot.EndsWith("/"))
+            {
+                portalRoot = portalRoot + "/";
             }
             Regex exp = new Regex(portalRoot, RegexOptions.IgnoreCase);
             content = exp.Replace(content, PortalRootToken);
