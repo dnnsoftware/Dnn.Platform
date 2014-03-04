@@ -1195,7 +1195,8 @@ namespace DesktopModules.Admin.Portals
                                                 HomeDirectory = lblHomeDirectory.Text,
                                                 CultureCode = SelectedCultureCode
                                             };
-                    portalController.UpdatePortalInfo(portal);
+                    //portalController.UpdatePortalInfo(portal);
+                    PortalController.Instance.UpdatePortalInfo(portal);
 
                     if (!refreshPage)
                     {
