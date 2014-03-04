@@ -606,14 +606,15 @@ namespace DesktopModules.Admin.Portals
                 profileSettings.DataSource = settings;
                 profileSettings.DataBind();
 
-                //Bind auth providers - only providers that have forms authentication and require a tab are added
+                //Bind auth providers
                 var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
-                var authProviders = (from authProvider in authSystems let authLoginControl = (AuthenticationLoginBase) LoadControl("~/" + authProvider.LoginControlSrc) let oAuthLoginControl = authLoginControl as OAuthLoginBase where oAuthLoginControl == null select authProvider.AuthenticationType).ToList();
+                var authProviders = (from authProvider in authSystems let authLoginControl = (AuthenticationLoginBase)LoadControl("~/" + authProvider.LoginControlSrc) let oAuthLoginControl = authLoginControl as OAuthLoginBase where oAuthLoginControl ==null && authLoginControl.Enabled select authProvider.AuthenticationType).ToList();
                 authProviderCombo.DataSource = authProviders;
                 authProviderCombo.DataBind();
+                authProviderCombo.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "");
 
                 var defaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", portal.PortalID, "DNN");
-                authProviderCombo.Select(defaultAuthProvider, true);
+                authProviderCombo.Select(defaultAuthProvider ?? "<" + Localization.GetString("None_Specified") + ">", true);
             }
             else
             {

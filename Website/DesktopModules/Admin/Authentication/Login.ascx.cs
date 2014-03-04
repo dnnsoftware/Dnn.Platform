@@ -426,13 +426,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
                     else
                     {
+                        //if there are social authprovider only
+                        if (_oAuthControls.Count == 0)
                         //Portal has no login controls enabled so load default DNN control
                         DisplayLoginControl(defaultLoginControl, false, false);
                     }
                     break;
                 case 1:
                     //We don't want the control to render with tabbed interface
-                    DisplayLoginControl(_defaultauthLogin.Count == 1 ? _defaultauthLogin[0] : _loginControls[0], false,
+                    DisplayLoginControl(_defaultauthLogin.Count == 1 ? _defaultauthLogin[0] : _loginControls.Count == 1 ? _loginControls[0] : _oAuthControls[0], false,
                                         false);
                     break;
                 default:
