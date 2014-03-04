@@ -301,6 +301,13 @@
             <div class="ControlModuleContainer">
                 <dnn:DnnComboBox ID="CategoryList" runat="server" DataTextField="Name" DataValueField="Name"  Skin="DnnBlack"
                     OnClientSelectedIndexChanged="dnn.controlBar.ControlBar_Module_CategoryList_Changed" />
+                <div class="search-container">
+                    <div class="search-input-container">
+                        <input type="text" id="ControlBar_SearchModulesInput" class="search-input"/>                    
+                    </div>
+                    <a href="javascript:void(0);" title="<%= GetString("DropDownList.SearchButtonTooltip") %>" class="search-button"></a>
+                    <a href="javascript:void(0);" title="<%= GetString("DropDownList.ClearButtonTooltip") %>" class="clear-button"></a>                    
+                </div>
                 <a class="controlBar_CloseAddModules"><%= GetString("Cancel.Text") %></a>
             </div>
             <div id="ControlBar_ModuleListMessage_NewModule" class="ControlBar_ModuleListMessage">
@@ -387,6 +394,7 @@
     dnn.controlBarSettings = {
         currentUserMode: '<%= GetModeForAttribute() %>',
         categoryComboId: '<%= CategoryList.ClientID %>',
+        searchInputId: 'ControlBar_SearchModulesInput',
     	visibilityComboId: '<%= VisibilityLst.ClientID %>',
     	makeCopyCheckboxId: 'ControlBar_Module_chkCopyModule',
 		pagePickerId: '<%= PageList.ClientID %>',

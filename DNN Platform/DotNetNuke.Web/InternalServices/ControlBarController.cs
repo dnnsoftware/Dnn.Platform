@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -98,30 +99,28 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpGet]
         [DnnPageEditor]
-        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingSize)
+        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingSize, string searchTerm)
         {
             if (string.IsNullOrEmpty(category))
-                category = "All";
-
-            IOrderedEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList;
+            {
+                category = "All";                
+            }
+            var formattedSearchTerm = String.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
 
             Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter = category == "All"
-                                        ? (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => true)
-                                         : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == category);
+                                        ? (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => true && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm))
+                                         : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == category && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
             
-            
-            portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
+            IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
                 .Where(Filter)
                 .OrderBy(c => c.Key)
                 .Skip(loadingStartIndex)
-                .Take(loadingSize)
-                .OrderBy(c => c.Key);
-            
-
+                .Take(loadingSize);
+                
             Dictionary<int, string> resultDict = portalModulesList.ToDictionary(portalModule => portalModule.Value.DesktopModuleID,
                                                     portalModule => portalModule.Key);
 
-            List<ModuleDefDTO> result = new List<ModuleDefDTO>();
+            var result = new List<ModuleDefDTO>();
             foreach (var kvp in resultDict)
             {
                 string imageUrl = GetDeskTopModuleImage(kvp.Key);

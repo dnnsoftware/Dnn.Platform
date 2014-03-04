@@ -9,11 +9,21 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.isMouseDown = false;
     dnn.controlBar.hideModuleLocationMenu = true;
     dnn.controlBar.showSelectedModule = false;
-    dnn.controlBar.status = null;    
+    dnn.controlBar.status = null;
+    
+    //Lazy loading settings
     dnn.controlBar.moduleLoadingIndex = 0;
     dnn.controlBar.moduleLoadingInitialSize = 15;
     dnn.controlBar.moduleLoadingSize = 7;
     dnn.controlBar.allModulesLoaded = false;
+    dnn.controlBar.forceLoadingPane = false;
+    
+    //Search Module settings
+    dnn.controlBar.minInputLength = 2;
+    dnn.controlBar.inputDelay = 400;    
+    dnn.controlBar.lastVal = '';
+    dnn.controlBar.searchTimeout = null;
+    
     dnn.controlBar.getService = function () {
         return $.dnnSF();
     };
@@ -138,29 +148,27 @@ dnn.controlBar.init = function (settings) {
         }
     };
 
-    dnn.controlBar.getDesktopModulesForNewModule = function (category) {
+    dnn.controlBar.getDesktopModulesForNewModule = function (category, val) {
         if (dnn.controlBar.allModulesLoaded) {
             return;
         }
         var service = dnn.controlBar.getService();
-        var serviceUrl = dnn.controlBar.getServiceUrl(service);
-        //if (dnn.controlBar.moduleLoadingIndex == 0) {
-            dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule');
-        //}
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);        
+        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule');
+        
         $.ajax({
             url: serviceUrl + 'GetPortalDesktopModules',
             type: 'GET',
-            data: 'category=' + category + '&loadingStartIndex='+ dnn.controlBar.getModuleLoadingStartIndex() +'&loadingSize='+dnn.controlBar.getModuleLoadingCurrentSize(),
+            data: 'category=' + category + '&loadingStartIndex='+ dnn.controlBar.getModuleLoadingStartIndex() +'&loadingSize='+dnn.controlBar.getModuleLoadingCurrentSize() + '&searchTerm=' +val,
             beforeSend: service.setModuleHeaders,
             success: function (d) {
                 if (d && d.length) {
-                    //if (dnn.controlBar.moduleLoadingIndex == 0) {
-                        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
-                    //}
+                    dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
+                    dnn.controlBar.forceLoadingPane = false;
                     var containerId = '#ControlBar_ModuleListHolder_NewModule';                    
                     dnn.controlBar.renderModuleList(containerId, d);
                     dnn.controlBar.moduleLoadingIndex = dnn.controlBar.moduleLoadingIndex + 1;
-                    if (d.length < dnn.controlBar.moduleLoadingSize) {
+                    if ((dnn.controlBar.moduleLoadingIndex == 0 && d.length < dnn.controlBar.moduleLoadingInitialSize) || (dnn.controlBar.moduleLoadingIndex > 0 && d.length < dnn.controlBar.moduleLoadingSize)) {
                         dnn.controlBar.allModulesLoaded = true;
                     }
                 }
@@ -178,6 +186,54 @@ dnn.controlBar.init = function (settings) {
             }
         });
     };
+
+    dnn.controlBar.getSearchTermValue = function() {
+        var $searchInput = $("#" + settings.searchInputId);
+        return $searchInput.val();
+    };
+
+    dnn.controlBar.initModuleSearch = function() {
+        var $searchInput = $("#" + settings.searchInputId);
+        $searchInput.mouseup(function () {
+            return false;
+        }).keypress(function (e) {
+            if (e.keyCode == 13) {
+                var val = $(this).val();
+                clearTimeout(dnn.controlBar.searchTimeout);
+                dnn.controlBar.searchModules(val);                
+                return false;
+            }
+        }).keyup(function (e) {
+            var val = $(this).val();
+            if (dnn.controlBar.lastVal.length != val.length &&
+                (val.length == 0 || val.length >= dnn.controlBar.minInputLength)) {
+                clearTimeout(dnn.controlBar.searchTimeout);
+                dnn.controlBar.searchTimeout = setTimeout(function () {
+                    dnn.controlBar.searchModules(val);
+                }, dnn.controlBar.inputDelay);
+            }
+            dnn.controlBar.lastVal = val;
+        });
+
+        var $searchButton = $("#ControlBar_Module_AddNewModule .search-container .search-button");
+        $searchButton.click(function() {
+            dnn.controlBar.searchModules(dnn.controlBar.getSearchTermValue());
+        });
+
+        var $clearButton = $("#ControlBar_Module_AddNewModule .search-container .clear-button");
+        $clearButton.click(function() {
+            dnn.controlBar.resetModuleSearch();
+            dnn.controlBar.searchModules(dnn.controlBar.getSearchTermValue());
+        });
+    };
+    dnn.controlBar.initModuleSearch();
+
+    dnn.controlBar.searchModules = function (val) {
+        dnn.controlBar.moduleLoadingIndex = 0;
+        dnn.controlBar.allModulesLoaded = false;
+        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), val);
+    };
+    
     dnn.controlBar.getTabModules = function (tab) {
         var service = dnn.controlBar.getService();
         var serviceUrl = dnn.controlBar.getServiceUrl(service);
@@ -438,19 +494,28 @@ dnn.controlBar.init = function (settings) {
         var ulLeft = margin;        
         var oldX = 0;
         var reloading = false;
+        var scrollTrigger = true;
         var modulesInitFunc = function () {
             $('div.controlBar_ModuleListScrollDummy_Content', scrollContainer).css('width', dummyScrollWidth);
             if (currentModuleIndex == 0) {
-                scrollContainer.jScrollPane({ stickToRight: true });
+                scrollContainer.jScrollPane(/*{ stickToRight: true }*/);
             } else {
                 var jspapi = scrollContainer.data('jsp');
                 if (jspapi) {
+                    scrollTrigger = false;
                     jspapi.reinitialise();
+                    scrollTrigger = true;
                 }
             }
+            var $searchInput = $("#" + settings.searchInputId);
+            $searchInput.focus();
+            
             scrollContainer.unbind('jsp-scroll-x');
             scrollContainer.bind('jsp-scroll-x', function (e, x, isAtleft, isAtRight) {                
                 var xOffset, leftOffset;
+                if (!scrollTrigger) {
+                    return;
+                }
                 if (isAtleft) {
                     oldX = 0;
                     ulLeft = margin;
@@ -461,32 +526,29 @@ dnn.controlBar.init = function (settings) {
                     if (moduleList.length != 0 && justAtRight && !reloading) {
                         //oldX = Math.round((980 * (oldUlWidth + margin)) / windowWidth) - 980;
                         reloading = true;
-                        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory());
-                        ulLeft = -(ulWidth - windowWidth);
-                    } else {
-                        //ulLeft = -(oldUlWidth - windowWidth);
-                        return;
+                        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
                     }
-                } else {                    
+                    ulLeft = -(ulWidth - windowWidth);
+                } else {
+                    reloading = false;
                     if (x > oldX) {                        
                         // scroll to right
                         xOffset = x - oldX;
-                        if (reloading) {
-                            leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
-                            reloading = false;
-                        } else {
+                        //if (reloading) {
+                        //    leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
+                        //} else {
                             leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
-                        }
+                        //}
                         ulLeft -= Math.abs(leftOffset);
                     } else {                        
                         // scroll to left
                         xOffset = oldX - x;
-                        if (reloading) {
-                            leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
-                            reloading = false;
-                        } else {
+                        //if (reloading) {
+                        //    leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
+                        //    reloading = false;
+                        //} else {
                             leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
-                        }
+                        //}
                         ulLeft += Math.abs(leftOffset);
                     }
                     oldX = x;
@@ -659,7 +721,9 @@ dnn.controlBar.init = function (settings) {
         }
     };
 
-    dnn.controlBar.initializeModuleSearch = function() {
+    dnn.controlBar.resetModuleSearch = function () {
+        var $searchInput = $("#" + settings.searchInputId);
+        $searchInput.val('').focus();
         dnn.controlBar.moduleLoadingIndex = 0;
         dnn.controlBar.allModulesLoaded = false;
     };
@@ -684,8 +748,8 @@ dnn.controlBar.init = function (settings) {
         var item = e.get_item();
         if (item) {
             //Reset module search
-            dnn.controlBar.initializeModuleSearch();
-            dnn.controlBar.getDesktopModulesForNewModule(item.get_value());
+            dnn.controlBar.resetModuleSearch();
+            dnn.controlBar.getDesktopModulesForNewModule(item.get_value(), dnn.controlBar.getSearchTermValue());
         }
     };
     
@@ -874,8 +938,8 @@ dnn.controlBar.init = function (settings) {
         //}
 
         //Reset module search
-        dnn.controlBar.initializeModuleSearch();
-        dnn.controlBar.getDesktopModulesForNewModule( dnn.controlBar.getSelectedCategory() );
+        dnn.controlBar.resetModuleSearch();
+        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());        
         dnn.controlBar.addNewModule = true;
         toggleModulePane($('#ControlBar_Module_AddNewModule'), true);
         $('#ControlBar_Action_Menu').addClass('onActionMenu');
