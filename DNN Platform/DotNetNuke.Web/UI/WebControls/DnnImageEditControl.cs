@@ -18,13 +18,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using DotNetNuke.Common;
+
 namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnImageEditControl : DnnFileEditControl
     {
         public DnnImageEditControl()
         {
-            FileFilter = "jpg,jpeg,gif,png";
+            FileFilter = Globals.glbImageFileTypes;
         }
     }
 }
