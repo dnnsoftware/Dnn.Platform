@@ -1432,8 +1432,7 @@ namespace DotNetNuke.Common
             }
             else
             {
-                var objPortals = new PortalController();
-                PortalInfo objPortal = objPortals.GetPortal(portalId);
+                PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
                 ParentFolderName = objPortal.HomeDirectoryMapPath.Replace("/", "\\");
             }
             string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf("\\") + 1);

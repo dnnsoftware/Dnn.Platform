@@ -311,7 +311,7 @@ namespace DotNetNuke.Security.Roles
 
         private void GetRoleType()
         {
-            PortalInfo portal = new PortalController().GetPortal(PortalID);
+            var portal = PortalController.Instance.GetPortal(PortalID);
             if (RoleID == portal.AdministratorRoleId)
             {
                 _RoleType = RoleType.Administrator;

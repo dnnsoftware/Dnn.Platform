@@ -129,7 +129,7 @@ namespace DesktopModules.Admin.Portals
             //else
             //{
                 autoAddAlias.Visible = true;
-                if (new PortalController().GetPortals().Count > 1)
+                if (PortalController.Instance.GetPortals().Count > 1)
                 {
                     chkAutoAddPortalAlias.Enabled = false;
                     chkAutoAddPortalAlias.Checked = false;
@@ -330,8 +330,7 @@ namespace DesktopModules.Admin.Portals
 
         private void BindPortal(int portalId, string activeLanguage)
         {
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(portalId, activeLanguage);
+            var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);
 
             if (Page.IsPostBack == false)
             {
@@ -936,8 +935,7 @@ namespace DesktopModules.Admin.Portals
         {
             try
             {
-                var objPortalController = new PortalController();
-                PortalInfo objPortalInfo = objPortalController.GetPortal(_portalId);
+                PortalInfo objPortalInfo = PortalController.Instance.GetPortal(_portalId);
                 if (objPortalInfo != null)
                 {
                     string strMessage = PortalController.DeletePortal(objPortalInfo, Globals.GetAbsoluteServerPath(Request));
@@ -998,8 +996,7 @@ namespace DesktopModules.Admin.Portals
         {
             try
             {
-                var portalController = new PortalController();
-                PortalInfo portal = portalController.GetPortal(_portalId);
+                PortalInfo portal = PortalController.Instance.GetPortal(_portalId);
                 if (portal != null)
                 {
                     if (File.Exists(portal.HomeDirectoryMapPath + "portal.css"))
@@ -1039,8 +1036,7 @@ namespace DesktopModules.Admin.Portals
             {
                 string strUploadDirectory = "";
 
-                var objPortalController = new PortalController();
-                PortalInfo objPortal = objPortalController.GetPortal(_portalId);
+                PortalInfo objPortal = PortalController.Instance.GetPortal(_portalId);
                 if (objPortal != null)
                 {
                     strUploadDirectory = objPortal.HomeDirectoryMapPath;
@@ -1099,8 +1095,7 @@ namespace DesktopModules.Admin.Portals
             {
                 try
                 {
-                    var portalController = new PortalController();
-                    PortalInfo existingPortal = portalController.GetPortal(_portalId);
+                    PortalInfo existingPortal = PortalController.Instance.GetPortal(_portalId);
 
                     string logo = String.Format("FileID={0}", ctlLogo.FileID);
                     string background = String.Format("FileID={0}", ctlBackground.FileID);

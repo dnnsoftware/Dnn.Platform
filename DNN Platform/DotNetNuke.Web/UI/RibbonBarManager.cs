@@ -476,8 +476,7 @@ namespace DotNetNuke.Web.UI
                         roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
                         break;
                     default:
-                        var portalController = new PortalController();
-                        var portal = portalController.GetPortal(tab.PortalID);
+                        var portal = PortalController.Instance.GetPortal(tab.PortalID);
                         var role = TestableRoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == roleName);
                         if (role != null)
                         {

@@ -306,8 +306,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
         private void SetupSettings()
         {
-            var portalController = new PortalController();
-            var portalInfo = portalController.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
+            var portalInfo = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
 
             Dictionary<string, string> settingsDictionary = PortalController.GetPortalSettingsDictionary(portalInfo.PortalID);
             string setting;
@@ -633,10 +632,9 @@ namespace DotNetNuke.Modules.Admin.Portals
             {
                 if (!Page.IsPostBack)
                 {
-                    var objportals = new PortalController();
                     cboPortals.DataTextField = "PortalName";
                     cboPortals.DataValueField = "PortalId";
-                    cboPortals.DataSource = objportals.GetPortals();
+                    cboPortals.DataSource = PortalController.Instance.GetPortals();
                     cboPortals.DataBind();
                     cboPortals.SelectedValue = PortalId.ToString(CultureInfo.InvariantCulture);
                     SetupSettings();
@@ -737,19 +735,17 @@ namespace DotNetNuke.Modules.Admin.Portals
                 writer.WriteElementString("description", Server.HtmlEncode(txtDescription.Text));
 
                 //Serialize portal settings
-                PortalInfo objportal;
-                var objportals = new PortalController();
-                objportal = objportals.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
+                var portal = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
 
                 writer.WriteStartElement("settings");
 
-                writer.WriteElementString("logofile", objportal.LogoFile);
-                writer.WriteElementString("footertext", objportal.FooterText);
-                writer.WriteElementString("userregistration", objportal.UserRegistration.ToString());
-                writer.WriteElementString("banneradvertising", objportal.BannerAdvertising.ToString());
-                writer.WriteElementString("defaultlanguage", objportal.DefaultLanguage);
+                writer.WriteElementString("logofile", portal.LogoFile);
+                writer.WriteElementString("footertext", portal.FooterText);
+                writer.WriteElementString("userregistration", portal.UserRegistration.ToString());
+                writer.WriteElementString("banneradvertising", portal.BannerAdvertising.ToString());
+                writer.WriteElementString("defaultlanguage", portal.DefaultLanguage);
 
-                Dictionary<string, string> settingsDictionary = PortalController.GetPortalSettingsDictionary(objportal.PortalID);
+                Dictionary<string, string> settingsDictionary = PortalController.GetPortalSettingsDictionary(portal.PortalID);
 
                 string setting = "";
                 settingsDictionary.TryGetValue("DefaultPortalSkin", out setting);
@@ -791,14 +787,14 @@ namespace DotNetNuke.Modules.Admin.Portals
                     writer.WriteElementString("timezone", setting);
                 }
 
-                writer.WriteElementString("hostspace", objportal.HostSpace.ToString());
-                writer.WriteElementString("userquota", objportal.UserQuota.ToString());
-                writer.WriteElementString("pagequota", objportal.PageQuota.ToString());
+                writer.WriteElementString("hostspace", portal.HostSpace.ToString());
+                writer.WriteElementString("userquota", portal.UserQuota.ToString());
+                writer.WriteElementString("pagequota", portal.PageQuota.ToString());
 
                 //End Portal Settings
                 writer.WriteEndElement();
 
-                var enabledLocales = LocaleController.Instance.GetLocales(objportal.PortalID);
+                var enabledLocales = LocaleController.Instance.GetLocales(portal.PortalID);
                 if (enabledLocales.Count > 1)
                 {
                     writer.WriteStartElement("locales");
@@ -827,23 +823,23 @@ namespace DotNetNuke.Modules.Admin.Portals
                 if (chkProfile.Checked)
                 {
                     //Serialize Profile Definitions
-                    SerializeProfileDefinitions(writer, objportal);
+                    SerializeProfileDefinitions(writer, portal);
                 }
 
                 if (chkModules.Checked)
                 {
                     //Serialize Portal Desktop Modules
-                    DesktopModuleController.SerializePortalDesktopModules(writer, objportal.PortalID);
+                    DesktopModuleController.SerializePortalDesktopModules(writer, portal.PortalID);
                 }
 
                 if (chkRoles.Checked)
                 {
                     //Serialize Roles
-                    RoleController.SerializeRoleGroups(writer, objportal.PortalID);
+                    RoleController.SerializeRoleGroups(writer, portal.PortalID);
                 }
 
                 //Serialize tabs
-                SerializeTabs(writer, objportal);
+                SerializeTabs(writer, portal);
 
                 if (chkFiles.Checked)
                 {
@@ -852,7 +848,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                     resourcesFile.SetLevel(6);
 
                     //Serialize folders (while adding files to zip file)
-                    SerializeFolders(writer, objportal, ref resourcesFile);
+                    SerializeFolders(writer, portal, ref resourcesFile);
 
                     //Finish and Close Zip file
                     resourcesFile.Finish();
@@ -877,8 +873,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
         protected void chkMultilanguage_OnCheckedChanged(object sender, EventArgs e)
         {
-            var portalController = new PortalController();
-            var portalInfo = portalController.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
+            var portalInfo = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
 
             BindLocales(portalInfo);
             BindTree(portalInfo);
@@ -889,8 +884,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
         protected void languageComboBox_OnItemChanged(object sender, EventArgs e)
         {
-            var portalController = new PortalController();
-            var portalInfo = portalController.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
+            var portalInfo = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
             BindTree(portalInfo);
         }
     }

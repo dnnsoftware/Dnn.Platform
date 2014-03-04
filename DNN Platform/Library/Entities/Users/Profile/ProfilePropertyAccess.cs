@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Users
                     //Is Administrator
                     if (String.IsNullOrEmpty(administratorRoleName))
                     {
-                        PortalInfo ps = new PortalController().GetPortal(user.PortalID);
+                        PortalInfo ps = PortalController.Instance.GetPortal(user.PortalID);
                         administratorRoleName = ps.AdministratorRoleName;
                     }
 

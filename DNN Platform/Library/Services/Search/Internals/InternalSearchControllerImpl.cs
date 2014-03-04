@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Search.Internals
         private object SearchDocumentTypeDisplayNameCallBack(CacheItemArgs cacheItem)
         {
             var data = new Dictionary<string, string>();
-            foreach (PortalInfo portal in new PortalController().GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var searchContentSources = GetSearchContentSourceList(portal.PortalID);
                 foreach (var searchContentSource in searchContentSources)

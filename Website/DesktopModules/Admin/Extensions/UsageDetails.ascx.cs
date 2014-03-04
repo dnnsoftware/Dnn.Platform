@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if (_Portals == null)
                 {
                     _Portals = new Dictionary<int, PortalInfo>();
-                    ArrayList items = new PortalController().GetPortals();
+                    var items = PortalController.Instance.GetPortals();
                     foreach (PortalInfo item in items)
                     {
                         _Portals.Add(item.PortalID, item);

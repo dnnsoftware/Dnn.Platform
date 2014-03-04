@@ -46,14 +46,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                 switch (Version)
                 {
                     case "06.02.00":
-                        var portalController = new PortalController();
                         var moduleController = new ModuleController();
                         var tabController = new TabController();
 
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
                         if (moduleDefinition != null)
                         {
-                            var portals = portalController.GetPortals();
+                            var portals = PortalController.Instance.GetPortals();
                             foreach (PortalInfo portal in portals)
                             {
                                 if (portal.UserTabId > Null.NullInteger)

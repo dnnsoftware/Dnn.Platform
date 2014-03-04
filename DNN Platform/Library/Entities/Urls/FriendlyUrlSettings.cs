@@ -361,7 +361,7 @@ namespace DotNetNuke.Entities.Urls
             TabId404 = Null.NullInteger;
             if (portalId > -1)
             {
-                var portal = new PortalController().GetPortal(portalId);
+                var portal = PortalController.Instance.GetPortal(portalId);
                 TabId500 = portal.Custom404TabId;
                 TabId404 = portal.Custom404TabId;
             }

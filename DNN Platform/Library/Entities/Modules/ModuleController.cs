@@ -402,8 +402,7 @@ namespace DotNetNuke.Entities.Modules
                 content = content.Substring(9, content.Length - 12);
                 if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && !String.IsNullOrEmpty(content))
                 {
-                    var portalController = new PortalController();
-                    PortalInfo portal = portalController.GetPortal(PortalId);
+                    var portal = PortalController.Instance.GetPortal(PortalId);
 
                     content = HttpContext.Current.Server.HtmlDecode(content);
 
@@ -1004,7 +1003,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="includeSettings">if set to <c>true</c> include settings.</param>
         public void CopyModule(ModuleInfo sourceModule, TabInfo destinationTab, string toPaneName, bool includeSettings)
         {
-            PortalInfo portal = new PortalController().GetPortal(destinationTab.PortalID);
+            PortalInfo portal = PortalController.Instance.GetPortal(destinationTab.PortalID);
 
             //Clone Module
             ModuleInfo destinationModule = sourceModule.Clone();

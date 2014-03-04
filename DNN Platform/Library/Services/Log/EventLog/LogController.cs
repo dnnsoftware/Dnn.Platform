@@ -50,7 +50,6 @@ namespace DotNetNuke.Services.Log.EventLog
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (LogController));
         private const int WriterLockTimeout = 10000; //milliseconds
         private static readonly ReaderWriterLock LockLog = new ReaderWriterLock();
-        private static readonly PortalController portalController = new PortalController();
 
         #region Private Methods
 
@@ -203,7 +202,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     //Get portal name if name isn't set
                     if (logInfo.LogPortalID != Null.NullInteger && String.IsNullOrEmpty(logInfo.LogPortalName))
                     {
-                        logInfo.LogPortalName = portalController.GetPortal(logInfo.LogPortalID).PortalName;
+                        logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
                     }
 
 	                if (LoggingProvider.Instance() != null)

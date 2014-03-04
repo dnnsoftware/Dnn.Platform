@@ -563,8 +563,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected IEnumerable<string[]> LoadPortalsList()
         {
-            var portalCtrl = new PortalController();
-            ArrayList portals = portalCtrl.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
 
             List<string[]> result = new List<string[]>();
             foreach (var portal in portals)
@@ -772,9 +771,7 @@ namespace DotNetNuke.UI.ControlPanels
             // Are we in a group of one?
             if (result == null || result.Length == 0)
             {
-                var portalController = new PortalController();
-
-                result = new[] { portalController.GetPortal(PortalSettings.Current.PortalId) };
+                result = new[] { PortalController.Instance.GetPortal(PortalSettings.Current.PortalId) };
             }
 
             return result;

@@ -115,7 +115,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public Locale GetDefaultLocale(int portalId)
         {
-            PortalInfo portal = new PortalController().GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
             Locale locale = null;
             if (portal != null)
             {

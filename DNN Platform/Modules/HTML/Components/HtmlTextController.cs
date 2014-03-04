@@ -220,9 +220,7 @@ namespace DotNetNuke.Modules.Html
 
         private string DeTokeniseLinks(string content, int portalId)
         {
-
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
             var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
             if (!portalRoot.StartsWith("/"))
             {
@@ -240,8 +238,7 @@ namespace DotNetNuke.Modules.Html
         private string TokeniseLinks(string content, int portalId)
         {
             //Replace any relative portal root reference by a token "{{PortalRoot}}"
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
             var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
             if (!portalRoot.StartsWith("/"))
             {

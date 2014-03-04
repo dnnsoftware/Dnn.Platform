@@ -77,9 +77,8 @@ namespace DotNetNuke.Security.Roles
             var roleController = new RoleController();
             var user = UserController.GetUserById(portalId, userId);
             var userRole = roleController.GetUserRole(portalId, userId, roleId);
-            var portalController = new PortalController();
             bool delete = true;
-            var portal = portalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
             if (portal != null && userRole != null)
             {
                 if (CanRemoveUserFromRole(portal, userId, roleId))

@@ -659,7 +659,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         }
 
                         //Get the Portal
-                        PortalInfo portal = new PortalController().GetPortal(portalID);
+                        PortalInfo portal = PortalController.Instance.GetPortal(portalID);
                         string requestQuery = app.Request.Url.Query;
                         if (!string.IsNullOrEmpty(requestQuery))
                         {

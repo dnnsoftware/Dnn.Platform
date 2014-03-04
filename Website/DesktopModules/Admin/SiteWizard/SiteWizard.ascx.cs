@@ -31,7 +31,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -186,7 +185,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// -----------------------------------------------------------------------------
         private void GetTemplates()
         {
-            var templates = TestablePortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalController.Instance.GetAvailablePortalTemplates();
             templates = templates.OrderBy(x => x, new TemplateDisplayComparer()).ToList();
 
             foreach (var template in templates)
@@ -287,8 +286,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                     GetSkins();
 
                     //Get Details for Page 4
-                    var objPortalController = new PortalController();
-                    var objPortal = objPortalController.GetPortal(PortalId);
+                    var objPortal = PortalController.Instance.GetPortal(PortalId);
                     txtPortalName.Text = objPortal.PortalName;
                     txtDescription.Text = objPortal.Description;
                     txtKeyWords.Text = objPortal.KeyWords;
@@ -390,7 +388,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             var values = lstTemplate.SelectedItem.Value.Split('|');
 
-            return TestablePortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
+            return PortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
         }
 
         /// -----------------------------------------------------------------------------
@@ -425,15 +423,13 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// -----------------------------------------------------------------------------
         protected void OnWizardFinishedClick(object sender, WizardNavigationEventArgs e)
         {
-            var objPortalController = new PortalController();
-
             //use Portal Template to update portal content pages
             if (lstTemplate.SelectedIndex != -1)
             {
                 var template = LoadPortalTemplateInfoForSelectedItem();
 
                 //process zip resource file if present
-                objPortalController.ProcessResourceFileExplicit(PortalSettings.HomeDirectoryMapPath, template.ResourceFilePath);
+                PortalController.Instance.ProcessResourceFileExplicit(PortalSettings.HomeDirectoryMapPath, template.ResourceFilePath);
 
                 //Process Template
                 switch (optMerge.SelectedValue)

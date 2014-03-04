@@ -354,11 +354,10 @@ namespace DesktopModules.Admin.Tabs
                 case "makehome":
                     if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
                     {
-                        var portalController = new PortalController();
-                        PortalInfo portalInfo = portalController.GetPortal(PortalId);
+                        var portalInfo = PortalController.Instance.GetPortal(PortalId);
                         portalInfo.HomeTabId = objTab.TabID;
                         PortalSettings.HomeTabId = objTab.TabID;
-                        portalController.UpdatePortalInfo(portalInfo);                        
+                        PortalController.Instance.UpdatePortalInfo(portalInfo);                        
                         DataCache.ClearPortalCache(PortalId, false);
                         BindTreeAndShowTab(objTab.TabID);
                         ShowSuccessMessage(string.Format(Localization.GetString("TabMadeHome", LocalResourceFile), objTab.TabName));
@@ -838,8 +837,7 @@ namespace DesktopModules.Admin.Tabs
 
         private void BindSkinsAndContainers()
         {
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(PortalSettings.PortalId);
+            var portal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
 
             var skins = SkinController.GetSkins(portal, SkinController.RootSkin, SkinScope.All)
                                          .ToDictionary(skin => skin.Key, skin => skin.Value);

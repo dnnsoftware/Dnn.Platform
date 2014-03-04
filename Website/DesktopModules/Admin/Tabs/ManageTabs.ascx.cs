@@ -317,8 +317,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private void BindSkins()
         {
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(Tab.PortalID);
+            var portal = PortalController.Instance.GetPortal(Tab.PortalID);
             var skins = SkinController.GetSkins(portal, SkinController.RootSkin, SkinScope.All)
                                                      .ToDictionary(skin => skin.Key, skin => skin.Value);
             var containers = SkinController.GetSkins(portal, SkinController.RootContainer, SkinScope.All)

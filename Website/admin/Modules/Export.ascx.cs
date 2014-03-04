@@ -107,9 +107,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                                           Module.DesktopModule.Version + "\">" + content + "</content>";
 
                                 //First check the Portal limits will not be exceeded (this is approximate)
-                                var objPortalController = new PortalController();
                                 var strFile = PortalSettings.HomeDirectoryMapPath + folder.FolderPath + fileName;
-                                if (objPortalController.HasSpaceAvailable(PortalId, content.Length))
+                                if (PortalController.Instance.HasSpaceAvailable(PortalId, content.Length))
                                 {
                                     //add file to Files table
 									using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content)))

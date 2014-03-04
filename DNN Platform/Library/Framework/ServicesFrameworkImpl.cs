@@ -66,7 +66,7 @@ namespace DotNetNuke.Framework
 
         public void RegisterAjaxScript(Page page)
         {
-            var portalSettings = TestablePortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings == null) return;
             var path = portalSettings.PortalAlias.HTTPAlias;
             int index = path.IndexOf('/');

@@ -48,7 +48,7 @@ namespace DotNetNuke.Entities.Portals
         #region Constructors
 
         public PortalGroupController()
-            : this(DataService.Instance, new PortalController())
+            : this(DataService.Instance, PortalController.Instance)
         {
         }
 
@@ -283,8 +283,7 @@ namespace DotNetNuke.Entities.Portals
 
         public IEnumerable<PortalInfo> GetPortalsByGroup(int portalGroupId)
         {
-            var controller = new PortalController();
-            var portals = controller.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
 
             return portals.Cast<PortalInfo>()
                             .Where(portal => portal.PortalGroupID == portalGroupId)

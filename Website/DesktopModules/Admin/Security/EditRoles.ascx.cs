@@ -160,8 +160,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     _roleID = Int32.Parse(Request.QueryString["RoleID"]);
                 }
-                var objPortalController = new PortalController();
-                var objPortalInfo = objPortalController.GetPortal(PortalSettings.PortalId);
+                var objPortalInfo = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                 if ((objPortalInfo == null || string.IsNullOrEmpty(objPortalInfo.ProcessorUserId)))
                 {
                     //Warn users about fee based roles if we have a Processor Id

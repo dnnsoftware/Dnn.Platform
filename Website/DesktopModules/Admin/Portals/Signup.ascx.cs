@@ -35,7 +35,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -176,7 +175,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
         void BindTemplates()
         {
-            var templates = TestablePortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalController.Instance.GetAvailablePortalTemplates();
             templates = templates.OrderBy(x => x, new TemplateDisplayComparer()).ToList();
 
             foreach (var template in templates)
@@ -303,8 +302,6 @@ namespace DotNetNuke.Modules.Admin.Portals
                     string strChildPath = string.Empty;
                     var closePopUpStr = string.Empty;
 
-                    var objPortalController = new PortalController();
-
                     //check template validity
                     var messages = new ArrayList();
                     string schemaFilename = Server.MapPath(string.Concat(AppRelativeTemplateSourceDirectory, "portal.template.xsd"));
@@ -423,7 +420,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                             if (useCurrent.Checked)
                             {
                                 adminUser = UserInfo;
-                                intPortalId = objPortalController.CreatePortal(txtPortalName.Text,
+                                intPortalId = PortalController.Instance.CreatePortal(txtPortalName.Text,
                                                                            adminUser.UserID,
                                                                            txtDescription.Text,
                                                                            txtKeyWords.Text,
@@ -458,7 +455,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                                                         }
                                                 };
 
-                                intPortalId = objPortalController.CreatePortal(txtPortalName.Text,
+                                intPortalId = PortalController.Instance.CreatePortal(txtPortalName.Text,
                                                                            adminUser,
                                                                            txtDescription.Text,
                                                                            txtKeyWords.Text,
@@ -479,7 +476,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                         if (intPortalId != -1)
                         {
                             //Create a Portal Settings object for the new Portal
-                            PortalInfo objPortal = objPortalController.GetPortal(intPortalId);
+                            PortalInfo objPortal = PortalController.Instance.GetPortal(intPortalId);
                             var newSettings = new PortalSettings { PortalAlias = new PortalAliasInfo { HTTPAlias = strPortalAlias }, PortalId = intPortalId, DefaultLanguage = objPortal.DefaultLanguage };
                             string webUrl = Globals.AddHTTP(strPortalAlias);
                             try
@@ -521,7 +518,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                                 message = string.Format(Localization.GetString("UnknownSendMail.Error", LocalResourceFile), webUrl, closePopUpStr);
                             }
                             var objEventLog = new EventLogController();
-                            objEventLog.AddLog(objPortalController.GetPortal(intPortalId), PortalSettings, UserId, "", EventLogController.EventLogType.PORTAL_CREATED);
+                            objEventLog.AddLog(PortalController.Instance.GetPortal(intPortalId), PortalSettings, UserId, "", EventLogController.EventLogType.PORTAL_CREATED);
 
                             // mark default language as published if content localization is enabled
                             bool ContentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", PortalId, false);
@@ -633,7 +630,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             var values = cboTemplate.SelectedItem.Value.Split('|');
 
-            return TestablePortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
+            return PortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
         }
 
         private void useCurrent_CheckedChanged(object sender, EventArgs e)

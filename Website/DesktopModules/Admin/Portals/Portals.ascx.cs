@@ -291,8 +291,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             try
             {
-                var objPortalController = new PortalController();
-                var portal = objPortalController.GetPortal(Int32.Parse(e.CommandArgument.ToString()));
+                var portal = PortalController.Instance.GetPortal(Int32.Parse(e.CommandArgument.ToString()));
                 if (portal != null)
                 {
                     var strMessage = PortalController.DeletePortal(portal, Globals.GetAbsoluteServerPath(Request));

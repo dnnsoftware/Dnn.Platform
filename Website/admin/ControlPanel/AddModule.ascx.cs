@@ -605,9 +605,7 @@ namespace DotNetNuke.UI.ControlPanel
             // Are we in a group of one?
             if (result == null || result.Length == 0)
             {
-                var portalController = new PortalController();
-
-                result = new[] { portalController.GetPortal(PortalSettings.Current.PortalId) };
+                result = new[] { PortalController.Instance.GetPortal(PortalSettings.Current.PortalId) };
             }
 
             return result;
@@ -825,9 +823,7 @@ namespace DotNetNuke.UI.ControlPanel
             if (SiteListPanel.Visible)
             {
                 // Get a list of portals in this SiteGroup.
-                var controller = new PortalController();
-
-                var portals = controller.GetPortals().Cast<PortalInfo>().ToArray();
+                var portals = PortalController.Instance.GetPortals().Cast<PortalInfo>().ToArray();
 
                 SiteList.DataSource = portals.Select(
                     x => new {Value = x.PortalID, Name = x.PortalName, GroupID = x.PortalGroupID}).ToList();

@@ -189,10 +189,9 @@ namespace DotNetNuke.Services.FileSystem
                     if (portalSettings == null || portalSettings.PortalId != PortalID)
                     {
                         //Get the PortalInfo  based on the Portalid
-                        var objPortals = new PortalController();
-                        PortalInfo objPortal = objPortals.GetPortal(PortalID);
+                        var portal = PortalController.Instance.GetPortal(PortalID);
 
-                        physicalPath = objPortal.HomeDirectoryMapPath + FolderPath;
+                        physicalPath = portal.HomeDirectoryMapPath + FolderPath;
                     }
                     else
                     {

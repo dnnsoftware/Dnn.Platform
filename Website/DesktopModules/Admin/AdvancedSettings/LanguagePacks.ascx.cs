@@ -276,8 +276,7 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
                     int portalID = Convert.ToInt32(DataBinder.Eval(dataItem, "PortalID"));
                     if ((portalID != Null.NullInteger && portalID != int.MinValue))
                     {
-                        var controller = new PortalController();
-                        PortalInfo portal = controller.GetPortal(portalID);
+                        var portal = PortalController.Instance.GetPortal(portalID);
                         returnValue = string.Format(Localization.GetString("InstalledOnPortal.Tooltip", LocalResourceFile), portal.PortalName);
                     }
                     else

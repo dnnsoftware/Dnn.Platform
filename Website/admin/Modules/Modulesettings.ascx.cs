@@ -225,8 +225,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private void BindContainers()
         {
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(PortalId);
+            var portal = PortalController.Instance.GetPortal(PortalId);
             var containers = SkinController.GetSkins(portal, SkinController.RootContainer, SkinScope.All)
                                     .ToDictionary(skin => skin.Key, skin => skin.Value);
 
@@ -310,8 +309,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var tab = dataItem as TabInfo;
             if (tab != null)
             {
-                var portalController = new PortalController();
-                var portal = portalController.GetPortal(tab.PortalID);
+                var portal = PortalController.Instance.GetPortal(tab.PortalID);
                 if (portal != null)
                 {
                     returnValue = portal.PortalName;

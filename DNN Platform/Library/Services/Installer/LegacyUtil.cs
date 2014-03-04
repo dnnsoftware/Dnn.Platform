@@ -319,7 +319,7 @@ namespace DotNetNuke.Services.Installer
             }
 			
             //Process Portal Locales files
-            foreach (PortalInfo portal in new PortalController().GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 int portalID = portal.PortalID;
                 filePath = string.Format(Globals.ApplicationMapPath + Localization.Localization.ApplicationResourceDirectory.Substring(1).Replace("/", "\\") + "\\Locales.Portal-{0}.xml", portalID);

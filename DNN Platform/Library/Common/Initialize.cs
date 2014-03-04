@@ -71,8 +71,7 @@ namespace DotNetNuke.Common
             //This code is only retained for binary compatability.
 #pragma warning disable 612,618
             var objFolderController = new FolderController();
-            var objPortalController = new PortalController();
-            ArrayList arrPortals = objPortalController.GetPortals();
+            ArrayList arrPortals = PortalController.Instance.GetPortals();
             int i;
             for (i = 0; i <= arrPortals.Count - 1; i++)
             {

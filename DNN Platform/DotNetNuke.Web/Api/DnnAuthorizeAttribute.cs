@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Web.Api
 {
@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.Api
 
             if(_denyRolesSplit.Any())
             {
-                var currentUser = TestablePortalController.Instance.GetCurrentPortalSettings().UserInfo;
+                var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
                 if (!currentUser.IsSuperUser && _denyRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.Api
 
             if (_staticRolesSplit.Any())
             {
-                var currentUser = TestablePortalController.Instance.GetCurrentPortalSettings().UserInfo;
+                var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
                 if (!_staticRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;

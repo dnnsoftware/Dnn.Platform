@@ -248,9 +248,8 @@ namespace DotNetNuke.Entities.Tabs
                         roleID = Convert.ToInt32(Globals.glbRoleUnauthUser);
                         break;
                     default:
-                        var portalController = new PortalController();
-                        PortalInfo portal = portalController.GetPortal(tab.PortalID);
-                        RoleInfo role = TestableRoleController.Instance.GetRole(portal.PortalID,
+                        var portal = PortalController.Instance.GetPortal(tab.PortalID);
+                        var role = TestableRoleController.Instance.GetRole(portal.PortalID,
                                                                                 r => r.RoleName == roleName);
                         if (role != null)
                         {
@@ -1931,11 +1930,10 @@ namespace DotNetNuke.Entities.Tabs
         public static bool IsSpecialTab(int tabId, int portalId)
         {
             Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalId);
-            var portalController = new PortalController();
             bool isSpecial = false;
             foreach (Locale locale in locales.Values)
             {
-                PortalInfo portal = portalController.GetPortal(portalId, locale.Code);
+                PortalInfo portal = PortalController.Instance.GetPortal(portalId, locale.Code);
                 var portalSettings = new PortalSettings(portal);
                 isSpecial = IsSpecialTab(tabId, portalSettings);
 
@@ -2295,8 +2293,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 //Copy Permissions from original Tab for Admins only
-                var portalCtrl = new PortalController();
-                PortalInfo portal = portalCtrl.GetPortal(originalTab.PortalID);
+                PortalInfo portal = PortalController.Instance.GetPortal(originalTab.PortalID);
                 localizedCopy.TabPermissions.AddRange(
                     originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
 

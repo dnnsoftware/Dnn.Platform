@@ -288,8 +288,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private bool IsPortalAdministrator(int userId)
 		{
-			var portalController = new PortalController();
-			var groupId = portalController.GetPortal(PortalSettings.PortalId).PortalGroupID;
+            var groupId = PortalController.Instance.GetPortal(PortalSettings.PortalId).PortalGroupID;
 			if (groupId != Null.NullInteger)
 			{
 				return PortalGroupController.Instance.GetPortalsByGroup(groupId).Any(p => p.AdministratorId == userId);

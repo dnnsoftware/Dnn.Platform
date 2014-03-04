@@ -382,7 +382,7 @@ namespace DotNetNuke.Entities.Urls
             //hard coded page paths - using 'tabDeleted' in case there is a clash with an existing page (ie, someone has created a page that takes place of the standard page, created page has preference)
             
             //need check custom login/register page set in portal and redirect to the specific page.
-            var portal = new PortalController().GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
             var loginRewritePath = portalRewritePath + "&ctl=Login" + cultureRewritePath;
             var loginPreference = UrlEnums.TabKeyPreference.TabDeleted;
             var loginTabId = Null.NullInteger;

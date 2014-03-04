@@ -187,14 +187,13 @@ namespace DotNetNuke.Entities.Urls
             else
             {
                 //no portal specific name in the root folder
-                if (portalId > -1) // at this point, only interested if a specific portal is requested
+                if (portalId > Null.NullInteger) // at this point, only interested if a specific portal is requested
                 {
-                    var pc = new PortalController();
-                    PortalInfo portal = pc.GetPortal(portalId);
+                    var portal = PortalController.Instance.GetPortal(portalId);
                     if (portal != null)
                     {
                         //looking for the file in the portal folder
-                        string portalPath = portal.HomeDirectoryMapPath;
+                        var portalPath = portal.HomeDirectoryMapPath;
                         filePath = portalPath + fileName; // just the pathname
                         if (File.Exists(filePath))
                         {
@@ -826,15 +825,14 @@ namespace DotNetNuke.Entities.Urls
                     try
                     {
                         //if not found, get from database
-                        var pc = new PortalController();
-                        pi = pc.GetPortal(portalId);
+                        pi = PortalController.Instance.GetPortal(portalId);
 
                         if (pi == null)
                         {
                             // Home page redirect loop when using default language not en-US and first request with secondary language
                             //calls get portal using culture code to support
                             string cultureCode = PortalController.GetActivePortalLanguage(portalId);
-                            pi = pc.GetPortal(portalId, cultureCode);
+                            pi = PortalController.Instance.GetPortal(portalId, cultureCode);
                         }
                         if (pi != null)
                         {
@@ -847,7 +845,7 @@ namespace DotNetNuke.Entities.Urls
                                 //portal culture code and default culture code are not the same.
                                 //this means we will get the incorrect home page tab id
                                 //call back and get the correct one as per the default language
-                                PortalInfo defaultLangPortal = pc.GetPortal(portalId, pi.DefaultLanguage);
+                                PortalInfo defaultLangPortal = PortalController.Instance.GetPortal(portalId, pi.DefaultLanguage);
                                 if (defaultLangPortal != null)
                                 {
                                     pi = defaultLangPortal;

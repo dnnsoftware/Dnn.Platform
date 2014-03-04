@@ -114,8 +114,7 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalSettings(int tabID, int portalID)
         {
-            var controller = new PortalController();
-            var portal = controller.GetPortal(portalID);
+            var portal = PortalController.Instance.GetPortal(portalID);
             GetPortalSettings(tabID, portal);
         }
 
@@ -138,8 +137,7 @@ namespace DotNetNuke.Entities.Portals
             ActiveTab = new TabInfo();
             PortalId = objPortalAliasInfo.PortalID;
             PortalAlias = objPortalAliasInfo;
-            var controller = new PortalController();
-            var portal = controller.GetPortal(PortalId);
+            var portal = PortalController.Instance.GetPortal(PortalId);
             if (portal != null)
             {
                 GetPortalSettings(tabID, portal);

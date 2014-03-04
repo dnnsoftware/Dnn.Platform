@@ -48,8 +48,7 @@ namespace DotNetNuke.Entities.Portals
                 string portalName = String.Empty;
                 if (MasterPortalId > -1)
                 {
-                    var portalController = new PortalController();
-                    var portal = portalController.GetPortal(MasterPortalId);
+                    var portal = PortalController.Instance.GetPortal(MasterPortalId);
                     if (portal != null)
                     {
                         portalName = portal.PortalName;

@@ -24,6 +24,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Portals.Internal
 {
+    [Obsolete]
     public class TestablePortalController : ServiceLocator<IPortalController, TestablePortalController>
     {
         protected override Func<IPortalController> GetFactory()

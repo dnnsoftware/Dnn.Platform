@@ -50,7 +50,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             _mockPortalController = new Mock<IPortalController>();
             _portalController = _mockPortalController.Object;
-            TestablePortalController.SetTestableInstance(_portalController);
+            PortalController.SetTestableInstance(_portalController);
         }
 
         [Test]

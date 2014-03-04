@@ -141,8 +141,7 @@ namespace DotNetNuke.Modules.Admin.Host
 
         private void BindHostDetails()
         {
-            var objPortals = new PortalController();
-            hostPortalsCombo.DataSource = objPortals.GetPortals();
+            hostPortalsCombo.DataSource = PortalController.Instance.GetPortals();
             hostPortalsCombo.DataBind(Entities.Host.Host.HostPortalID.ToString());
 
             txtHostTitle.Text = Entities.Host.Host.HostTitle;

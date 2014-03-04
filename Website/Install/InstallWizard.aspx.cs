@@ -37,6 +37,7 @@ using System.Xml.XPath;
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization.Internal;
@@ -50,7 +51,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using Telerik.Web.UI;
 using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Entities.Portals.Internal;
 
 #endregion
 
@@ -750,7 +750,7 @@ namespace DotNetNuke.Services.Install
 
         void BindTemplates()
         {
-            var templates = TestablePortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
             foreach (var template in templates)
             {

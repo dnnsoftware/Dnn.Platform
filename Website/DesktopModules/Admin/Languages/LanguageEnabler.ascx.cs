@@ -676,10 +676,9 @@ namespace DotNetNuke.Modules.Admin.Languages
                     }
 
                     // update portal default language
-                    var objPortalController = new PortalController();
-                    PortalInfo objPortal = objPortalController.GetPortal(PortalId);
-                    objPortal.DefaultLanguage = newDefaultLanguage;
-                    objPortalController.UpdatePortalInfo(objPortal);
+                    var portal = PortalController.Instance.GetPortal(PortalId);
+                    portal.DefaultLanguage = newDefaultLanguage;
+                    PortalController.Instance.UpdatePortalInfo(portal);
 
                     _PortalDefault = newDefaultLanguage;
 
@@ -707,7 +706,7 @@ namespace DotNetNuke.Modules.Admin.Languages
 
                     TabController.DeleteTranslatedTabs(PortalId, locale.Code, false);
 
-                    new PortalController().RemovePortalLocalization(PortalId, locale.Code, false);
+                    PortalController.Instance.RemovePortalLocalization(PortalId, locale.Code, false);
 
                     LocaleController.Instance.PublishLanguage(PortalId, locale.Code, false);
 
@@ -728,8 +727,6 @@ namespace DotNetNuke.Modules.Admin.Languages
         {
             try
             {
-                var portalController = new PortalController();
-
                 foreach (Locale locale in LocaleController.Instance.GetLocales(PortalSettings.PortalId).Values)
                 {
                     if (!IsDefaultLanguage(locale.Code))
@@ -737,7 +734,7 @@ namespace DotNetNuke.Modules.Admin.Languages
 
                         LocaleController.Instance.PublishLanguage(PortalId, locale.Code, false);
                         TabController.DeleteTranslatedTabs(PortalId, locale.Code, false);
-                        portalController.RemovePortalLocalization(PortalId, locale.Code, false);
+                        PortalController.Instance.RemovePortalLocalization(PortalId, locale.Code, false);
 
                     }
                 }

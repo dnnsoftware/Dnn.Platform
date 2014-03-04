@@ -20,7 +20,7 @@
 #endregion
 
 using System.Threading;
-using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 
@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Api.Internal
                 return false;
             }
 
-            var currentPortal = TestablePortalController.Instance.GetCurrentPortalSettings();
+            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
 
             bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
             if (isAdminUser) return true;

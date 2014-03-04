@@ -75,8 +75,7 @@ namespace DotNetNuke.Modules.MobileManagement
 			var defaultRedirect = HomePageRedirectExists();
 
             // Populating Portals dropdown
-            var portalController = new PortalController();
-        	var portals = portalController.GetPortals().Cast<PortalInfo>().Where(p => p.PortalID != ModuleContext.PortalId).ToList();
+            var portals = PortalController.Instance.GetPortals().Cast<PortalInfo>().Where(p => p.PortalID != ModuleContext.PortalId).ToList();
             if (portals.Count > 0)
             {
                 cboPortal.DataSource = portals;
