@@ -432,7 +432,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
                 case 1:
                     //We don't want the control to render with tabbed interface
-                    DisplayLoginControl(_loginControls[0], false, false);
+                    DisplayLoginControl(_defaultauthLogin.Count == 1 ? _defaultauthLogin[0] : _loginControls[0], false,
+                                        false);
                     break;
                 default:
                     //make sure defaultAuth provider control is diplayed first
