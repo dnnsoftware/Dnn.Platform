@@ -20,6 +20,10 @@
             <dnn:label id="plTitle" controlname="txtTitle" runat="server" />
             <asp:textbox id="txtTitle" columns="30" maxlength="50" runat="server" />
         </div>
+         <div class="dnnFormItem">
+            <dnn:label id="plSourceFolder" controlname="cboSourceFolder" runat="server" />
+            <dnn:DnnComboBox id="cboSourceFolder" runat="server" autopostback="True" />
+        </div>
         <div class="dnnFormItem">
             <dnn:label id="plSource" controlname="cboSource" runat="server" />
             <%--<asp:dropdownlist id="cboSource" runat="server" autopostback="True" />--%>
