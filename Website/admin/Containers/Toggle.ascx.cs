@@ -25,6 +25,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Skins;
 
 #endregion
@@ -85,7 +86,8 @@ namespace DotNetNuke.UI.Containers.Controls
 
 		protected override void OnPreRender(EventArgs e)
 		{
-			jQuery.RegisterJQuery(Page);
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
 			var toggleScript = string.Format("<script type=\"text/javascript\">(function($){{$(\"#{0}\").find(\"a.toggleHandler\").click(function(e){{$(\"#{1}\").slideToggle();$(this).toggleClass('collapsed');e.preventDefault();}});}})(jQuery);</script>",
 			                                 ClientID,
