@@ -152,8 +152,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             switch (specific)
             {
                 case SpecificVersion.Latest:
-                    library = GetHighestVersionLibrary(jsname);
-                    AddItemRequest(library.JavaScriptLibraryID);
+                    RequestRegistration(jsname);
                     isProcessed = true;
                     break;
                 case SpecificVersion.LatestMajor:
@@ -163,15 +162,20 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     if (library != null)
                     {
                         AddItemRequest(library.JavaScriptLibraryID);
+                        isProcessed = true;
                     }
                     else
                     {
                         //unable to find a higher major version
                         library = GetHighestVersionLibrary(jsname);
-                        AddItemRequest(library.JavaScriptLibraryID);
-                        LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
+                        if (library != null)
+                        {
+                            AddItemRequest(library.JavaScriptLibraryID);
+                            LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
+                            isProcessed = true;
+                        }
                     }
-                    isProcessed = true;
+
                     break;
                 case SpecificVersion.LatestMinor:
                     library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
@@ -180,15 +184,20 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     if (library != null)
                     {
                         AddItemRequest(library.JavaScriptLibraryID);
+                        isProcessed = true;
                     }
                     else
                     {
                         //unable to find a higher minor version
                         library = GetHighestVersionLibrary(jsname);
-                        AddItemRequest(library.JavaScriptLibraryID);
-                        LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
+                        if (library != null)
+                        {
+                            AddItemRequest(library.JavaScriptLibraryID);
+                            LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
+                            isProcessed = true;
+                        }
                     }
-                    isProcessed = true;
+
                     break;
             }
             if (isProcessed == false)
