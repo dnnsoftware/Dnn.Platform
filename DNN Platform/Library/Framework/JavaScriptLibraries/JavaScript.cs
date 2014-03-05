@@ -91,9 +91,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return library != null ? Convert.ToString(library.Version) : String.Empty;
         }
 
-        /// <summary>
-        ///     adds a request for a script into the page items collection
-        /// </summary>
+        /// <summary>Requests a script to be added to the page</summary>
         /// <param name="jsname">the library name</param>
         public static void RequestRegistration(String jsname)
         {
@@ -123,10 +121,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        /// <summary>
-        ///     adds a request for a script into the page items collection
-        /// </summary>
+        /// <summary>Requests a script to be added to the page</summary>
         /// <param name="jsname">the library name</param>
+        /// <param name="version">the library's version</param>
         public static void RequestRegistration(String jsname, Version version)
         {
             JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase) && l.Version == version);
@@ -141,10 +138,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        /// <summary>
-        ///     adds a request for a script into the page items collection
-        /// </summary>
+        /// <summary>Requests a script to be added to the page</summary>
         /// <param name="jsname">the library name</param>
+        /// <param name="version">the library's version</param>
+        /// <param name="specfic">how much of the <paramref name="version"/> to pay attention to.</param>
         public static void RequestRegistration(String jsname, Version version, SpecificVersion specific)
         {
             JavaScriptLibrary library;
