@@ -7,4 +7,4 @@
     	<li class="userDisplayName"><asp:HyperLink ID="enhancedRegisterLink" runat="server"/></li>
         <li class="userProfileImg" runat="server" ID="avatarGroup"><asp:HyperLink ID="avatar" runat="server"/></li>                                       
     </ul>
-</div><!--close registerGroup-->
+</div>
