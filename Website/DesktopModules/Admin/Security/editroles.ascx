@@ -17,7 +17,7 @@
                     <asp:TextBox ID="txtRoleName" runat="server" MaxLength="50" />
                     <asp:Label ID="lblRoleName" Visible="False" runat="server" />
                     <asp:RequiredFieldValidator ID="valRoleName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName" ControlToValidate="txtRoleName" Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="valRoleName2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName2" ControlToValidate="txtRoleName" Display="Dynamic" ValidationExpression="[A-Za-z0-9\.\s_-]*" />
+                    <asp:RegularExpressionValidator ID="valRoleName2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName2" ControlToValidate="txtRoleName" Display="Dynamic" ValidationExpression="[^&\$\+,/?~#<>\(\)¿¡«»!\.:\*'\[\]]*" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="plDescription" runat="server" ResourceKey="Description" ControlName="txtDescription" />
