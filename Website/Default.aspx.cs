@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -644,7 +645,7 @@ namespace DotNetNuke.Framework
                 ctlSkin = IsPopUp ? UI.Skins.Skin.GetPopUpSkin(this) : UI.Skins.Skin.GetSkin(this);
 
                 //register popup js
-                jQuery.RegisterJQueryUI(Page);
+                JavaScript.RequestRegistration(CommonJs.jQueryUI);
 
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
@@ -741,7 +742,10 @@ namespace DotNetNuke.Framework
             //add skin to page
             SkinPlaceHolder.Controls.Add(ctlSkin);
 
-            ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
+            if (PortalSettings.IncludePortalCss)
+            {
+                ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
+            }
 
             //add Favicon
             ManageFavicon();

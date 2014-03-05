@@ -657,12 +657,13 @@ namespace DesktopModules.Admin.Portals
         /// 	[cnurse]	9/8/2004	Created
         /// </history>
         /// -----------------------------------------------------------------------------
-        private void LoadStyleSheet(PortalInfo portalInfo)
+        private void LoadStyleSheet(PortalInfo portal)
         {
             string uploadDirectory = "";
-            if (portalInfo != null)
+            if (portal != null)
             {
-                uploadDirectory = portalInfo.HomeDirectoryMapPath;
+                uploadDirectory = portal.HomeDirectoryMapPath;
+                chkIncludePortalCss.Checked = PortalController.GetPortalSettingAsBoolean("IncludePortalCss", portal.PortalID, false);
             }
 
             //read CSS file
@@ -673,6 +674,7 @@ namespace DesktopModules.Admin.Portals
                     txtStyleSheet.Text = text.ReadToEnd();
                 }
             }
+
         }
 
         #endregion
@@ -1235,6 +1237,7 @@ namespace DesktopModules.Admin.Portals
 
 					PortalController.UpdatePortalSetting(_portalId, "HideLoginControl", chkHideLoginControl.Checked.ToString(), false);
 					PortalController.UpdatePortalSetting(_portalId, "EnableRegisterNotification", chkEnableRegisterNotification.Checked.ToString(), false);
+                    PortalController.UpdatePortalSetting(_portalId, "IncludePortalCss", chkIncludePortalCss.Checked.ToString(), false);
 
                     pagesExtensionPoint.SaveAction(_portalId, -1, -1);
 

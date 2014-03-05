@@ -1160,4 +1160,10 @@ The host-level settings are currently set as follows:
   <data name="DefaultAuthProvider.Help" xml:space="preserve">
     <value>You can select a default auth provider for user login. Only providers that support forms authentication can be selected.</value>
   </data>
+  <data name="IncludePortalCssLabel.Help" xml:space="preserve">
+    <value>You can optionally include a portal level stylesheet.  However for performance you shouldn't include it unless you have made some changes to the default file.</value>
+  </data>
+  <data name="IncludePortalCssLabel.Text" xml:space="preserve">
+    <value>Include Portal Stylesheet:</value>
+  </data>
 </root>
