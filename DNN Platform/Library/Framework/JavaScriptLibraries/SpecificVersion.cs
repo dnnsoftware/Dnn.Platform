@@ -26,8 +26,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     /// </summary>
     public enum SpecificVersion
     {
+        /// <summary>The most recent version</summary>
         Latest,
+        /// <summary>Match the major version</summary>
         LatestMajor,
+        /// <summary>Match the major and minor versions</summary>
         LatestMinor
     }
 }

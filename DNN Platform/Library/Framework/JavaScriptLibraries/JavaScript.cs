@@ -141,7 +141,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <summary>Requests a script to be added to the page</summary>
         /// <param name="jsname">the library name</param>
         /// <param name="version">the library's version</param>
-        /// <param name="specfic">how much of the <paramref name="version"/> to pay attention to.</param>
+        /// <param name="specfic">
+        /// how much of the <paramref name="version"/> to pay attention to.
+        /// When <see cref="SpecificVersion.Latest"/> is passed, ignore the <paramref name="version"/>.
+        /// When <see cref="SpecificVersion.LatestMajor"/> is passed, match the major version.
+        /// When <see cref="SpecificVersion.LatestMinor"/> is passed, match the major and minor versions.
+        /// </param>
         public static void RequestRegistration(String jsname, Version version, SpecificVersion specific)
         {
             JavaScriptLibrary library;
@@ -155,7 +160,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 case SpecificVersion.LatestMajor:
                     library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
                                                                   .OrderByDescending(l => l.Version)
-                                                                  .FirstOrDefault(l => l.Version.Major >= version.Major);
+                                                                  .FirstOrDefault(l => l.Version.Major == version.Major && l.Version.Minor >= version.Minor);
                     if (library != null)
                     {
                         AddItemRequest(library.JavaScriptLibraryID);
@@ -177,7 +182,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 case SpecificVersion.LatestMinor:
                     library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
                                                                   .OrderByDescending(l => l.Version)
-                                                                  .FirstOrDefault(l => l.Version.Major == version.Major && l.Version.Minor >= version.Minor);
+                                                                  .FirstOrDefault(l => l.Version.Major == version.Major && l.Version.Minor == version.Minor && l.Version.Build >= version.Build);
                     if (library != null)
                     {
                         AddItemRequest(library.JavaScriptLibraryID);
