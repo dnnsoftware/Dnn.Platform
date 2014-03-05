@@ -171,8 +171,25 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         PortalInfo GetPortal(int portalId);
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets information of a portal
+        /// </summary>
+        /// <param name = "portalId">Id of the portal</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <returns>PortalInfo object with portal definition</returns>
+        /// <remarks>
+        /// </remarks>
+        /// <history>
+        /// </history>
+        /// -----------------------------------------------------------------------------
         PortalInfo GetPortal(int portalId, string cultureCode);
 
+        /// <summary>
+        /// Get portals in specific culture.
+        /// </summary>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <returns></returns>
         List<PortalInfo> GetPortalList(string cultureCode);
 
         /// -----------------------------------------------------------------------------
@@ -284,6 +301,24 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Processess a template file for the new portal. This method will be called twice: for the portal template and for the admin template
+        /// </summary>
+        /// <param name="portalId">PortalId of the new portal</param>
+        /// <param name="templatePath">Path for the folder where templates are stored</param>
+        /// <param name="templateFile">Template file to process</param>
+        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user</param>
+        /// <param name="mergeTabs">Flag to determine whether Module content is merged.</param>
+        /// <param name="isNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
+        /// <param name="localeCollection">Fill with the enabled locales from template.</param>
+        /// <remarks>
+        /// The roles and settings nodes will only be processed on the portal template file.
+        /// </remarks>
+        /// <history>
+        /// 	[VMasanas]	27/08/2004	Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
         void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection);
 
         /// <summary>
