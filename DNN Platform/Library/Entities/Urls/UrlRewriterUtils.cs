@@ -80,7 +80,7 @@ namespace DotNetNuke.Entities.Urls
                 SpaceEncoding = options.SpaceEncoding,
                 MaxUrlPathLength = options.MaxUrlPathLength,
                 ConvertDiacriticChars = options.ConvertDiacriticChars,
-                RegexMatch = options.RegexMatch.Replace("[^", "[^/"),
+                RegexMatch = options.RegexMatch.Replace("[^", "[^./"),
                 IllegalChars = options.IllegalChars.Replace("/", ""),
                 ReplaceChars = options.ReplaceChars.Replace("/", ""),
                 ReplaceDoubleChars = options.ReplaceDoubleChars,
