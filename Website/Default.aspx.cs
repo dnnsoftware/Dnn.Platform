@@ -266,15 +266,13 @@ namespace DotNetNuke.Framework
             if (Host.DisplayCopyright)
             {
                 Comment += string.Concat(Environment.NewLine,
-                                         "<!--************************************************************************************-->",
+                                         "<!--*********************************************-->",
                                          Environment.NewLine,
-                                         "<!-- DNN Platform - http://www.dnnsoftware.com                                        -->",
+                                         "<!-- DNN Platform - http://www.dnnsoftware.com   -->",
                                          Environment.NewLine,
-                                         "<!-- Copyright (c) 2002-2014                                                          -->",
+                                         "<!-- Copyright (c) 2002-2014, by DNN Corporation -->",
                                          Environment.NewLine,
-                                         "<!-- by DNN Corporation                                                               -->",
-                                         Environment.NewLine,
-                                         "<!--**********************************************************************************-->",
+                                         "<!--*********************************************-->",
                                          Environment.NewLine);
             }
             Page.Header.Controls.AddAt(0, new LiteralControl(Comment));

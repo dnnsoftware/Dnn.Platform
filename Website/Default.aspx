@@ -16,12 +16,9 @@
     <meta id="MetaGenerator" runat="Server" name="GENERATOR"/>
     <meta id="MetaAuthor" runat="Server" name="AUTHOR"/>
     <meta name="RESOURCE-TYPE" content="DOCUMENT" />
-    <meta name="DISTRIBUTION" content="GLOBAL" />
     <meta id="MetaRobots" runat="server" name="ROBOTS" />
     <meta name="REVISIT-AFTER" content="1 DAYS" />
     <meta name="RATING" content="GENERAL" />
-    <meta http-equiv="PAGE-ENTER" content="RevealTrans(Duration=0,Transition=1)" />
-    <style type="text/css" id="StylePlaceholder" runat="server"></style>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
     <asp:placeholder id="CSS" runat="server" />
