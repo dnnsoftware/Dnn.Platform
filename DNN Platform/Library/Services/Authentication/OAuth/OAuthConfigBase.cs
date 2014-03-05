@@ -29,6 +29,8 @@ using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
+    using DotNetNuke.Entities.Controllers;
+
     /// <summary>
     /// The Config class provides a central area for management of Module Configuration Settings.
     /// </summary>
@@ -42,9 +44,20 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             Service = service;
 
-            APIKey = PortalController.GetPortalSetting(Service + "_APIKey", portalId, "");
-            APISecret = PortalController.GetPortalSetting(Service + "_APISecret", portalId, "");
-            Enabled = PortalController.GetPortalSettingAsBoolean(Service + "_Enabled", portalId, false);
+            HostConfig = PortalController.GetPortalSettingAsBoolean(Service + "_HostConfig", portalId, false);
+
+            if (HostConfig)
+            {
+                APIKey = HostController.Instance.GetString(Service + "_APIKey", string.Empty);
+                APISecret = HostController.Instance.GetString(Service + "_APISecret", "");
+                Enabled = HostController.Instance.GetBoolean(Service + "_Enabled", false);
+            }
+            else
+            {
+                APIKey = PortalController.GetPortalSetting(Service + "_APIKey", portalId, "");
+                APISecret = PortalController.GetPortalSetting(Service + "_APISecret", portalId, "");
+                Enabled = PortalController.GetPortalSettingAsBoolean(Service + "_Enabled", portalId, false);
+            }
         }
 
         protected string Service { get; set; }
@@ -54,6 +67,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
         public string APISecret { get; set; }
 
         public bool Enabled { get; set; }
+
+        private bool HostConfig { get; set; }
 
         private static string GetCacheKey(string service, int portalId)
         {
@@ -69,6 +84,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             string key = GetCacheKey(service, portalId);
             var config = (OAuthConfigBase)DataCache.GetCache(key);
+
             if (config == null)
             {
                 config = new OAuthConfigBase(service, portalId);
@@ -77,12 +93,39 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return config;
         }
 
+        public static void SwitchToHostConfig(string service, int portalId, bool enabled)
+        {
+            if (enabled)
+            {
+                PortalController.UpdatePortalSetting(portalId, service + "_HostConfig", true.ToString());
+            }
+            else
+            {
+                PortalController.DeletePortalSetting(portalId, service + "_HostConfig");
+            }
+
+            ClearConfig(service, portalId);
+        }
+
         public static void UpdateConfig(OAuthConfigBase config)
         {
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APIKey", config.APIKey);
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APISecret", config.APISecret);
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture));
+            if (config.HostConfig)
+            {
+                //host settings
+                HostController.Instance.Update(config.Service + "_APIKey", config.APIKey, true);
+                HostController.Instance.Update(config.Service + "_APISecret", config.APISecret, true);
+                HostController.Instance.Update(config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture), true);
+            }
+            else
+            {
+                // portal settings
+                PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APIKey", config.APIKey);
+                PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APISecret", config.APISecret);
+                PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture));
+            }
+
             ClearConfig(config.Service, config.PortalID);
+            
         }
     }
 }
