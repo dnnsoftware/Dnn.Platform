@@ -99,7 +99,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpGet]
         [DnnPageEditor]
-        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingSize, string searchTerm)
+        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm)
         {
             if (string.IsNullOrEmpty(category))
             {
@@ -115,7 +115,7 @@ namespace DotNetNuke.Web.InternalServices
                 .Where(Filter)
                 .OrderBy(c => c.Key)
                 .Skip(loadingStartIndex)
-                .Take(loadingSize);
+                .Take(loadingPageSize);
                 
             Dictionary<int, string> resultDict = portalModulesList.ToDictionary(portalModule => portalModule.Value.DesktopModuleID,
                                                     portalModule => portalModule.Key);

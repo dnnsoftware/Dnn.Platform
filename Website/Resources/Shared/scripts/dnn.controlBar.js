@@ -12,8 +12,8 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.status = null;
     
     //Lazy loading settings
-    dnn.controlBar.moduleLoadingIndex = 0;
-    dnn.controlBar.moduleLoadingInitialSize = 15;
+    dnn.controlBar.moduleLoadingPageIndex = 0;
+    dnn.controlBar.moduleLoadingInitialPageSize = 15;
     dnn.controlBar.moduleLoadingSize = 7;
     dnn.controlBar.allModulesLoaded = false;
     dnn.controlBar.forceLoadingPane = false;
@@ -102,6 +102,19 @@ dnn.controlBar.init = function (settings) {
             }
         });
     };
+
+    dnn.controlBar.showModuleListLoading = function(containerId, showPanel, showNoResultMessage) {
+        var loadingContainer = $(containerId);
+        var shouldShowMessage = showNoResultMessage;
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            loadingContainer.removeClass("NextElements");
+        } else {
+            loadingContainer.addClass("NextElements");
+            shouldShowMessage = shouldShowMessage && false;
+        }
+        dnn.controlBar.setModuleListLoading(containerId, !showPanel, shouldShowMessage);
+    };
+
     dnn.controlBar.setModuleListLoading = function (containerId, hideLoading, showNoResultMessage) {
         var loadingContainer = $(containerId);
         var messageContainer = loadingContainer.prev();
@@ -125,27 +138,43 @@ dnn.controlBar.init = function (settings) {
                 messageContainer.hide();
             }
         } else {
-            listContainer.hide();
+            if (dnn.controlBar.isFirstModuleLoadingPage()) {
+                listContainer.hide();
+            } else {
+                listContainer.show();
+            }
             scrollContainer.hide();
             loadingContainer.show();
             messageContainer.hide();
         }
     };
 
-    dnn.controlBar.getModuleLoadingStartIndex = function() {
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
+    dnn.controlBar.getModuleLoadingCurrentIndex = function() {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
             return 0;
         } else {
-            return dnn.controlBar.moduleLoadingInitialSize + (dnn.controlBar.moduleLoadingSize * (dnn.controlBar.moduleLoadingIndex -1));
+            return dnn.controlBar.moduleLoadingInitialPageSize + (dnn.controlBar.moduleLoadingSize * (dnn.controlBar.moduleLoadingPageIndex -1));
         }
     };
     
-    dnn.controlBar.getModuleLoadingCurrentSize = function () {
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
-            return dnn.controlBar.moduleLoadingInitialSize;            
+    dnn.controlBar.getModuleLoadingCurrentPageSize = function () {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            return dnn.controlBar.moduleLoadingInitialPageSize;            
         } else {
             return dnn.controlBar.moduleLoadingSize;
         }
+    };
+
+    dnn.controlBar.isFirstModuleLoadingPage = function() {
+        return (dnn.controlBar.moduleLoadingPageIndex == 0);
+    };
+
+    dnn.controlBar.getWaitingTime = function(startDate) {
+        var minimumTimeToLoading = 300;
+        var elapsedTime = new Date() - startDate;
+        var waitingTime = elapsedTime > minimumTimeToLoading ? 0 : minimumTimeToLoading - elapsedTime;
+
+        return waitingTime;
     };
 
     dnn.controlBar.getDesktopModulesForNewModule = function (category, val) {
@@ -153,33 +182,32 @@ dnn.controlBar.init = function (settings) {
             return;
         }
         var service = dnn.controlBar.getService();
-        var serviceUrl = dnn.controlBar.getServiceUrl(service);        
-        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule');
-        
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);                
+        dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
+        var startDate = new Date();
         $.ajax({
             url: serviceUrl + 'GetPortalDesktopModules',
             type: 'GET',
-            data: 'category=' + category + '&loadingStartIndex='+ dnn.controlBar.getModuleLoadingStartIndex() +'&loadingSize='+dnn.controlBar.getModuleLoadingCurrentSize() + '&searchTerm=' +val,
+            data: 'category=' + category + '&loadingStartIndex='+ dnn.controlBar.getModuleLoadingCurrentIndex() +'&loadingPageSize='+dnn.controlBar.getModuleLoadingCurrentPageSize() + '&searchTerm=' +val,
             beforeSend: service.setModuleHeaders,
             success: function (d) {
-                if (d && d.length) {
-                    dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
-                    dnn.controlBar.forceLoadingPane = false;
-                    var containerId = '#ControlBar_ModuleListHolder_NewModule';                    
-                    dnn.controlBar.renderModuleList(containerId, d);
-                    dnn.controlBar.moduleLoadingIndex = dnn.controlBar.moduleLoadingIndex + 1;
-                    if ((dnn.controlBar.moduleLoadingIndex == 0 && d.length < dnn.controlBar.moduleLoadingInitialSize) || (dnn.controlBar.moduleLoadingIndex > 0 && d.length < dnn.controlBar.moduleLoadingSize)) {
+                
+                setTimeout(function() {
+                    if (d && d.length) {                        
+                        dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false);
+                        dnn.controlBar.forceLoadingPane = false;
+                        var containerId = '#ControlBar_ModuleListHolder_NewModule';
+                        dnn.controlBar.renderModuleList(containerId, d);
+                        if ((dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingInitialPageSize) || (!dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingSize)) {
+                            dnn.controlBar.allModulesLoaded = true;
+                        }
+                        dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
+                    } else {                        
+                        dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false, true);
                         dnn.controlBar.allModulesLoaded = true;
                     }
-                }
-                else {
-                    if (dnn.controlBar.moduleLoadingIndex == 0) {
-                        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true, true);
-                    } else {
-                        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
-                        dnn.controlBar.allModulesLoaded = true;
-                    }
-                }
+                }, dnn.controlBar.getWaitingTime(startDate));
+
             },
             error: function (xhr) {
                 dnn.controlBar.responseError(xhr);
@@ -229,14 +257,15 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.initModuleSearch();
 
     dnn.controlBar.searchModules = function (val) {
-        dnn.controlBar.moduleLoadingIndex = 0;
+        dnn.controlBar.moduleLoadingPageIndex = 0;
         dnn.controlBar.allModulesLoaded = false;
         dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), val);
     };
     
     dnn.controlBar.getTabModules = function (tab) {
+        dnn.controlBar.resetModuleSearch();        
         var service = dnn.controlBar.getService();
-        var serviceUrl = dnn.controlBar.getServiceUrl(service);
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);        
         dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule');
         $.ajax({
             url: serviceUrl + 'GetTabModules',
@@ -248,10 +277,12 @@ dnn.controlBar.init = function (settings) {
                     dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule', true);
                     var containerId = '#ControlBar_ModuleListHolder_ExistingModule';
                     dnn.controlBar.renderModuleList(containerId, d);
+                    dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
                 }
                 else {
                     dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule', true, true);
                 }
+                dnn.controlBar.allModulesLoaded = true;
             },
             error: function (xhr) {
                 dnn.controlBar.responseError(xhr);
@@ -459,13 +490,22 @@ dnn.controlBar.init = function (settings) {
         $('#shareableWarning').dialog('close');
     };
 
+    dnn.controlBar.fillModuleList = function(ul, moduleList) {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            ul.empty().css('left', 1000);
+        }
+        for (var i = 0; i < moduleList.length; i++) {
+            ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
+        }
+    };
+
     dnn.controlBar.renderModuleList = function (containerId, moduleList) {
 
-        var currentModuleIndex = dnn.controlBar.moduleLoadingIndex;
+        var currentModuleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex;
         var container = $(containerId);
         var scrollContainer = container.next();
         
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
             var api = scrollContainer.data('jsp');
             if (api) {
                 api.scrollToX(0, null);
@@ -474,22 +514,15 @@ dnn.controlBar.init = function (settings) {
             scrollContainer = container.next(); // reinit because api destroy...    
         }
         
-        $(containerId).css('overflow', 'hidden');
         var ul = $('ul.ControlBar_ModuleList', container);
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
-            ul.empty().css('left', 1000);
-        }
-        var windowWidth = $(window).width();
-        var margin = Math.round((windowWidth - 980) / 2);
-
+        dnn.controlBar.fillModuleList(ul, moduleList);
+        
         $('#ControlBar_Module_ModulePosition').hide();
-        for (var i = 0; i < moduleList.length; i++) {
-            ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
-        }
-        var oldUlWidth = ul.css('width');
-        var ulWidth = (dnn.controlBar.getModuleLoadingStartIndex() * 160) + moduleList.length * 160;
+        var ulWidth = (dnn.controlBar.getModuleLoadingCurrentIndex() * 160) + moduleList.length * 160;
         ul.css('width', ulWidth + 'px');
         // some math here
+        var windowWidth = $(window).width();
+        var margin = Math.round((windowWidth - 980) / 2);
         var dummyScrollWidth = Math.round((980 * (ulWidth + margin)) / windowWidth);
         var ulLeft = margin;        
         var oldX = 0;
@@ -497,8 +530,8 @@ dnn.controlBar.init = function (settings) {
         var scrollTrigger = true;
         var modulesInitFunc = function () {
             $('div.controlBar_ModuleListScrollDummy_Content', scrollContainer).css('width', dummyScrollWidth);
-            if (currentModuleIndex == 0) {
-                scrollContainer.jScrollPane(/*{ stickToRight: true }*/);
+            if (currentModuleLoadingPageIndex == 0) {
+                scrollContainer.jScrollPane();
             } else {
                 var jspapi = scrollContainer.data('jsp');
                 if (jspapi) {
@@ -523,8 +556,7 @@ dnn.controlBar.init = function (settings) {
                 } else if (isAtRight) {
                     var justAtRight = (oldX == x);
                     oldX = Math.round((980 * (ulWidth + margin)) / windowWidth) - 980;                         
-                    if (moduleList.length != 0 && justAtRight && !reloading) {
-                        //oldX = Math.round((980 * (oldUlWidth + margin)) / windowWidth) - 980;
+                    if (moduleList.length != 0 && justAtRight && !reloading) {                        
                         reloading = true;
                         dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
                     }
@@ -534,29 +566,17 @@ dnn.controlBar.init = function (settings) {
                     if (x > oldX) {                        
                         // scroll to right
                         xOffset = x - oldX;
-                        //if (reloading) {
-                        //    leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
-                        //} else {
-                            leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
-                        //}
+                        leftOffset = ((ulWidth + margin) / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
                         ulLeft -= Math.abs(leftOffset);
                     } else {                        
                         // scroll to left
                         xOffset = oldX - x;
-                        //if (reloading) {
-                        //    leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
-                        //    reloading = false;
-                        //} else {
-                            leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
-                        //}
+                        leftOffset = ((ulWidth + margin) / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
                         ulLeft += Math.abs(leftOffset);
                     }
                     oldX = x;
-                }
-                
-                //if (!reloading) {
-                    ul.css('left', ulLeft+"px");
-                //}
+                }                                
+                ul.css('left', ulLeft+"px");                
             });
 
             $('div.ControlBar_ModuleDiv', ul).each(function () {
@@ -716,7 +736,7 @@ dnn.controlBar.init = function (settings) {
             });
         };
         setTimeout(modulesInitFunc, 0);
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
             ul.animate({ left: margin }, 300);
         }
     };
@@ -724,7 +744,7 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.resetModuleSearch = function () {
         var $searchInput = $("#" + settings.searchInputId);
         $searchInput.val('').focus();
-        dnn.controlBar.moduleLoadingIndex = 0;
+        dnn.controlBar.moduleLoadingPageIndex = 0;
         dnn.controlBar.allModulesLoaded = false;
     };
 
@@ -923,21 +943,7 @@ dnn.controlBar.init = function (settings) {
             });
 
             return false;
-        }
-
-        //var category = null;
-        //if (dnn.controlBar.status && dnn.controlBar.status.addNewModule) {
-        //    var selectedCategory = dnn.controlBar.status.category;
-        //    if (selectedCategory) {
-        //        $find(settings.categoryComboId).findItemByValue(selectedCategory).select();
-        //        category = selectedCategory;
-        //        dnn.controlBar.removeStatus();
-        //    }
-        //} else {
-        //    category = $find(settings.categoryComboId).get_value();
-        //}
-
-        //Reset module search
+        }        
         dnn.controlBar.resetModuleSearch();
         dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());        
         dnn.controlBar.addNewModule = true;
@@ -973,7 +979,7 @@ dnn.controlBar.init = function (settings) {
                 dnn.controlBar.selectedPage = { id: parseInt(selectedPageId, 10), name: dnn.controlBar.status.pageName };
                 dnn[settings.pagePickerId].selectedItem({ key: selectedPageId, value: dnn.controlBar.status.pageName });
                 var visibilityCombo = $find(settings.visibilityComboId);
-                var makeCopyCheckbox = $("#" + settings.makeCopyCheckboxId);
+                var makeCopyCheckbox = $("#" + settings.makeCopyCheckboxId);                
                 dnn.controlBar.getTabModules(selectedPageId);
                 visibilityCombo.enable();
                 makeCopyCheckbox.attr("disabled", false).parent().removeClass("disabled");

@@ -826,6 +826,19 @@ div.ControlBar_ModuleListWaiter {
         text-shadow: none;
     }
 
+    div.ControlBar_ModuleListWaiter.NextElements {
+        background-position: 90% 50%;
+        width: 100%;
+        opacity: 0.6;
+        position: absolute;
+        margin-top: 0px;
+        z-index: 10;
+    }
+
+    div.ControlBar_ModuleListWaiter.NextElements > p {
+        display: none;
+    }
+
 div.ControlBar_ModuleListMessage > p {
     margin-top: 85px;
 }

@@ -333,4 +333,10 @@
   <data name="Tool.PublishPage.Text" xml:space="preserve">
     <value>Publish Page</value>
   </data>
+  <data name="ClearSearchModules.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="SearchModules.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

@@ -305,8 +305,8 @@
                     <div class="search-input-container">
                         <input type="text" id="ControlBar_SearchModulesInput" class="search-input"/>                    
                     </div>
-                    <a href="javascript:void(0);" title="<%= GetString("DropDownList.SearchButtonTooltip") %>" class="search-button"></a>
-                    <a href="javascript:void(0);" title="<%= GetString("DropDownList.ClearButtonTooltip") %>" class="clear-button"></a>                    
+                    <a href="javascript:void(0);" title="<%= GetString("SearchModules.Text") %>" class="search-button"></a>
+                    <a href="javascript:void(0);" title="<%= GetString("ClearSearchModules.Text") %>" class="clear-button"></a>                    
                 </div>
                 <a class="controlBar_CloseAddModules"><%= GetString("Cancel.Text") %></a>
             </div>
@@ -319,7 +319,7 @@
                 <p>
                     <%= GetString("LoadingModule.Text")%>
                 </p>
-            </div>
+            </div>            
             <div id="ControlBar_ModuleListHolder_NewModule" class="ControlBar_ModuleListHolder">
                 <ul class="ControlBar_ModuleList">
                 </ul>
