@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 		#region Private Members
 
 		private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
+        private readonly  List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
         private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
 
 		#endregion
@@ -363,6 +364,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             List<AuthenticationInfo> authSystems = AuthenticationController.GetEnabledAuthenticationServices();
             AuthenticationLoginBase defaultLoginControl = null;
+            var defaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", PortalId, "DNN");
             foreach (AuthenticationInfo authSystem in authSystems)
             {
                 try
@@ -395,6 +397,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             }
                             else
                             {
+                                if (authLoginControl.AuthenticationType == defaultAuthProvider)
+                                    _defaultauthLogin.Add(authLoginControl);
+                                else
                                 //Add Login Control to List
                                 _loginControls.Add(authLoginControl);
                             }
@@ -406,7 +411,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     Exceptions.LogException(ex);
                 }
             }
-            int authCount = _loginControls.Count;
+            int authCount = _loginControls.Count + _defaultauthLogin.Count;
             switch (authCount)
             {
                 case 0:
@@ -421,15 +426,20 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
                     else
                     {
+                        //if there are social authprovider only
+                        if (_oAuthControls.Count == 0)
                         //Portal has no login controls enabled so load default DNN control
                         DisplayLoginControl(defaultLoginControl, false, false);
                     }
                     break;
                 case 1:
                     //We don't want the control to render with tabbed interface
-                    DisplayLoginControl(_loginControls[0], false, false);
+                    DisplayLoginControl(_defaultauthLogin.Count == 1 ? _defaultauthLogin[0] : _loginControls.Count == 1 ? _loginControls[0] : _oAuthControls[0], false,
+                                        false);
                     break;
                 default:
+                    //make sure defaultAuth provider control is diplayed first
+                    if (_defaultauthLogin.Count>0) DisplayTabbedLoginControl(_defaultauthLogin[0], tsLogin.Tabs);
                     foreach (AuthenticationLoginBase authLoginControl in _loginControls)
                     {
                         DisplayTabbedLoginControl(authLoginControl, tsLogin.Tabs);
@@ -552,8 +562,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private void DisplayTabbedLoginControl(AuthenticationLoginBase authLoginControl, TabStripTabCollection Tabs)
         {
             var tab = new DNNTab(Localization.GetString("Title", authLoginControl.LocalResourceFile)) { ID = authLoginControl.AuthenticationType };
+            
             tab.Controls.Add(authLoginControl);
             Tabs.Add(tab);
+            
             tsLogin.Visible = true;
         }
 

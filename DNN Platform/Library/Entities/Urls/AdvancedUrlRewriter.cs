@@ -1041,8 +1041,7 @@ namespace DotNetNuke.Entities.Urls
                                     //results when iis is configured to handle portal alias, but 
                                     //DNN isn't.  This always returns 404 because a multi-portal site
                                     //can't just show the 404 page of the host site.
-                                    var pc = new PortalController();
-                                    ArrayList portals = pc.GetPortals();
+                                    ArrayList portals = PortalController.Instance.GetPortals();
                                     if (portals != null && portals.Count == 1)
                                     {
                                         //single portal install, load up portal settings for this portal
@@ -2104,8 +2103,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         //this might end up in a double redirect if the path of the Url is for a specific language as opposed
                         //to a path belonging to the default language domain
-                        var pc = new PortalController();
-                        PortalInfo portal = pc.GetPortal(result.PortalId);
+                        PortalInfo portal = PortalController.Instance.GetPortal(result.PortalId);
                         if (portal != null)
                         {
                             requestCultureCode = portal.DefaultLanguage;

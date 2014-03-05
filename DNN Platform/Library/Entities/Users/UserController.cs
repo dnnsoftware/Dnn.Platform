@@ -125,8 +125,7 @@ namespace DotNetNuke.Entities.Users
         private static void AutoAssignUsersToRoles(UserInfo user, int portalId)
         {
             var roleController = new RoleController();
-            var portalController = new PortalController();
-            var thisPortal = portalController.GetPortal(portalId);
+            var thisPortal = PortalController.Instance.GetPortal(portalId);
 
             if (IsMemberOfPortalGroup(portalId))
             {
@@ -356,7 +355,7 @@ namespace DotNetNuke.Entities.Users
             }
             if (settings["Security_UsersControl"] == null)
             {
-                var portal = new PortalController().GetPortal(portalId);
+                var portal = PortalController.Instance.GetPortal(portalId);
 
                 if (portal != null && portal.Users > 1000)
                 {

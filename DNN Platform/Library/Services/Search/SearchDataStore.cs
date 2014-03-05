@@ -137,11 +137,10 @@ namespace DotNetNuke.Services.Search
             bool hasExcluded = Null.NullBoolean;
             bool hasMandatory = Null.NullBoolean;
 
-            var objPortalController = new PortalController();
-            PortalInfo objPortal = objPortalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
 
             //Get the Settings for this Portal
-            var portalSettings = new PortalSettings(objPortal);
+            var portalSettings = new PortalSettings(portal);
 
             //We will assume that the content is in the locale of the Portal
             Hashtable commonWords = GetCommonWords(portalSettings.DefaultLanguage);

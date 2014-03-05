@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="jQuery-UI" type="JavaScript_Library" version="01.10.03">
+    <package name="jQuery-UI" type="JavaScript_Library" version="01.10.03" isSystem="true">
       <friendlyName>jQueryUI JavaScript Library</friendlyName>
       <description>jQueryUI is a JavaScript library that is used to extend jQuery to provide UI widgets.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>

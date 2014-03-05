@@ -380,23 +380,45 @@ namespace DotNetNuke.Entities.Urls
                 cultureRewritePath += "&language=" + cultureCode;
             }
             //hard coded page paths - using 'tabDeleted' in case there is a clash with an existing page (ie, someone has created a page that takes place of the standard page, created page has preference)
+            
+            //need check custom login/register page set in portal and redirect to the specific page.
+            var portal = PortalController.Instance.GetPortal(portalId);
+            var loginRewritePath = portalRewritePath + "&ctl=Login" + cultureRewritePath;
+            var loginPreference = UrlEnums.TabKeyPreference.TabDeleted;
+            var loginTabId = Null.NullInteger;
+            if (portal != null && portal.LoginTabId > Null.NullInteger && Globals.ValidateLoginTabID(portal.LoginTabId))
+            {
+                loginTabId = portal.LoginTabId;
+                loginPreference = UrlEnums.TabKeyPreference.TabOK;
+                loginRewritePath = CreateRewritePath(loginTabId, cultureCode);
+            }
             AddToTabDict(tabIndex,
                             dupCheck,
                             httpAlias,
                             "login",
-                            portalRewritePath + "&ctl=Login" + cultureRewritePath,
-                            -1,
-                            UrlEnums.TabKeyPreference.TabDeleted,
+                            loginRewritePath,
+                            loginTabId,
+                            loginPreference,
                             ref tabDepth,
                             false,
                             false);
+
+            var registerRewritePath = portalRewritePath + "&ctl=Register" + cultureRewritePath;
+            var registerPreference = UrlEnums.TabKeyPreference.TabDeleted;
+            var registerTabId = Null.NullInteger;
+            if (portal != null && portal.RegisterTabId > Null.NullInteger)
+            {
+                registerTabId = portal.RegisterTabId;
+                registerPreference = UrlEnums.TabKeyPreference.TabOK;
+                registerRewritePath = CreateRewritePath(registerTabId, cultureCode);
+            }
             AddToTabDict(tabIndex,
                             dupCheck,
                             httpAlias,
                             "register",
-                            portalRewritePath + "&ctl=Register" + cultureRewritePath,
-                            -1,
-                            UrlEnums.TabKeyPreference.TabDeleted,
+                            registerRewritePath,
+                            registerTabId,
+                            registerPreference,
                             ref tabDepth,
                             false,
                             false);

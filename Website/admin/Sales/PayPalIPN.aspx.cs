@@ -70,7 +70,6 @@ namespace DotNetNuke.Modules.Admin.Sales
                 bool blnCancel = false;
                 string strPayPalID = Null.NullString;
                 var objRoles = new RoleController();
-                var objPortalController = new PortalController();
                 string strPost = "cmd=_notify-validate";
                 foreach (string strName in Request.Form)
                 {
@@ -173,7 +172,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     int intAdministratorRoleId = 0;
                     string strProcessorID = Null.NullString;
-                    PortalInfo objPortalInfo = objPortalController.GetPortal(intPortalID);
+                    PortalInfo objPortalInfo = PortalController.Instance.GetPortal(intPortalID);
                     if (objPortalInfo != null)
                     {
                         intAdministratorRoleId = objPortalInfo.AdministratorRoleId;
@@ -187,7 +186,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         float portalPrice = objPortalInfo.HostFee;
                         if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLower()) == strProcessorID))
                         {
-                            objPortalController.UpdatePortalExpiry(intPortalID);
+                            PortalController.Instance.UpdatePortalExpiry(intPortalID);
                         }
                         else
                         {

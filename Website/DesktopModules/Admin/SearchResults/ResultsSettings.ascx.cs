@@ -198,8 +198,7 @@ namespace DotNetNuke.Modules.SearchResults
 
         protected IEnumerable<string> LoadSeachContentSourcesList()
         {
-            var portalCtrl = new PortalController();
-            var portals = portalCtrl.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
 
             var result = new List<string>();
             foreach (var portal in portals)

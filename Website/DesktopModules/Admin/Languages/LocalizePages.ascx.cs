@@ -139,8 +139,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     tabCtrl.CreateLocalizedCopy(currentTab, locale, false);
 
                 }
-                var portalCtl = new PortalController();
-                portalCtl.MapLocalizedSpecialPages(PortalId, locale.Code);
+                PortalController.Instance.MapLocalizedSpecialPages(PortalId, locale.Code);
 
             }
             catch (Exception exc)
@@ -229,7 +228,6 @@ namespace DotNetNuke.Modules.Admin.Languages
         protected void updateButton_Click(object sender, EventArgs e)
         {
             var tabCtrl = new TabController();
-            var portalCtrl = new PortalController();
             var locale = LocaleController.Instance.GetLocale(Locale);
             List<TabInfo> pageList = GetTabsToLocalize(PortalId, Locale);
 
@@ -243,7 +241,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             ProcessLanguage(pageList, locale, 0, 1);
 
             //Map special pages
-            portalCtrl.MapLocalizedSpecialPages(PortalSettings.PortalId, locale.Code);
+            PortalController.Instance.MapLocalizedSpecialPages(PortalSettings.PortalId, locale.Code);
 
             //clear cache
             DataCache.ClearPortalCache(PortalId, true);

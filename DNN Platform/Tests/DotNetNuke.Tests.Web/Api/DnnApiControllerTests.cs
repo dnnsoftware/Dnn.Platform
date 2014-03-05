@@ -69,7 +69,7 @@ namespace DotNetNuke.Tests.Web.Api
             var mockPortalController = new Mock<IPortalController>();
             var expectedPortalSettings = new PortalSettings();
             mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(expectedPortalSettings);
-            TestablePortalController.SetTestableInstance(mockPortalController.Object);
+            PortalController.SetTestableInstance(mockPortalController.Object);
 
             //Act
             var result = controller.PortalSettings;

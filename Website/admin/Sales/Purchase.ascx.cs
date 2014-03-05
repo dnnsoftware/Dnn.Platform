@@ -155,8 +155,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
                 if (Page.IsValid)
                 {
-                    var objPortalController = new PortalController();
-                    PortalInfo objPortalInfo = objPortalController.GetPortal(PortalSettings.PortalId);
+                    PortalInfo objPortalInfo = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                     if (objPortalInfo != null)
                     {
                         strPaymentProcessor = objPortalInfo.PaymentProcessor;

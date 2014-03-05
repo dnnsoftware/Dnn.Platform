@@ -76,7 +76,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             MockComponentProvider.CreateEventLogController();
 
             _portalController = new Mock<IPortalController>();
-            TestablePortalController.SetTestableInstance(_portalController.Object);
+            PortalController.SetTestableInstance(_portalController.Object);
 
             _portalGroupController = new Mock<IPortalGroupController>();
             PortalGroupController.RegisterInstance(_portalGroupController.Object);

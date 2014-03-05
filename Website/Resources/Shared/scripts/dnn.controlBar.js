@@ -10,6 +10,20 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.hideModuleLocationMenu = true;
     dnn.controlBar.showSelectedModule = false;
     dnn.controlBar.status = null;
+    
+    //Lazy loading settings
+    dnn.controlBar.moduleLoadingPageIndex = 0;
+    dnn.controlBar.moduleLoadingInitialPageSize = 15;
+    dnn.controlBar.moduleLoadingSize = 7;
+    dnn.controlBar.allModulesLoaded = false;
+    dnn.controlBar.forceLoadingPane = false;
+    
+    //Search Module settings
+    dnn.controlBar.minInputLength = 2;
+    dnn.controlBar.inputDelay = 400;    
+    dnn.controlBar.lastVal = '';
+    dnn.controlBar.searchTimeout = null;
+    
     dnn.controlBar.getService = function () {
         return $.dnnSF();
     };
@@ -17,6 +31,12 @@ dnn.controlBar.init = function (settings) {
         service = service || dnn.controlBar.getService();
         return service.getServiceRoot('internalservices') + 'controlbar/';
     };
+    
+    dnn.controlBar.getPageServiceUrl = function (service) {
+        service = service || dnn.controlBar.getService();
+        return service.getServiceRoot('internalservices') + 'PageService/';
+    };
+
     dnn.controlBar.getSiteRoot = function () {
         return dnn.getVar("sf_siteRoot", "/");
     };
@@ -82,6 +102,19 @@ dnn.controlBar.init = function (settings) {
             }
         });
     };
+
+    dnn.controlBar.showModuleListLoading = function(containerId, showPanel, showNoResultMessage) {
+        var loadingContainer = $(containerId);
+        var shouldShowMessage = showNoResultMessage;
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            loadingContainer.removeClass("NextElements");
+        } else {
+            loadingContainer.addClass("NextElements");
+            shouldShowMessage = shouldShowMessage && false;
+        }
+        dnn.controlBar.setModuleListLoading(containerId, !showPanel, shouldShowMessage);
+    };
+
     dnn.controlBar.setModuleListLoading = function (containerId, hideLoading, showNoResultMessage) {
         var loadingContainer = $(containerId);
         var messageContainer = loadingContainer.prev();
@@ -105,39 +138,134 @@ dnn.controlBar.init = function (settings) {
                 messageContainer.hide();
             }
         } else {
-            listContainer.hide();
+            if (dnn.controlBar.isFirstModuleLoadingPage()) {
+                listContainer.hide();
+            } else {
+                listContainer.show();
+            }
             scrollContainer.hide();
             loadingContainer.show();
             messageContainer.hide();
         }
     };
-    dnn.controlBar.getDesktopModulesForNewModule = function (category) {
+
+    dnn.controlBar.getModuleLoadingCurrentIndex = function() {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            return 0;
+        } else {
+            return dnn.controlBar.moduleLoadingInitialPageSize + (dnn.controlBar.moduleLoadingSize * (dnn.controlBar.moduleLoadingPageIndex -1));
+        }
+    };
+    
+    dnn.controlBar.getModuleLoadingCurrentPageSize = function () {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            return dnn.controlBar.moduleLoadingInitialPageSize;            
+        } else {
+            return dnn.controlBar.moduleLoadingSize;
+        }
+    };
+
+    dnn.controlBar.isFirstModuleLoadingPage = function() {
+        return (dnn.controlBar.moduleLoadingPageIndex == 0);
+    };
+
+    dnn.controlBar.getWaitingTime = function(startDate) {
+        var minimumTimeToLoading = 300;
+        var elapsedTime = new Date() - startDate;
+        var waitingTime = elapsedTime > minimumTimeToLoading ? 0 : minimumTimeToLoading - elapsedTime;
+
+        return waitingTime;
+    };
+
+    dnn.controlBar.getDesktopModulesForNewModule = function (category, val) {
+        if (dnn.controlBar.allModulesLoaded) {
+            return;
+        }
         var service = dnn.controlBar.getService();
-        var serviceUrl = dnn.controlBar.getServiceUrl(service);
-        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule');
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);                
+        dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
+        var startDate = new Date();
         $.ajax({
             url: serviceUrl + 'GetPortalDesktopModules',
             type: 'GET',
-            data: 'category=' + category,
+            data: 'category=' + category + '&loadingStartIndex='+ dnn.controlBar.getModuleLoadingCurrentIndex() +'&loadingPageSize='+dnn.controlBar.getModuleLoadingCurrentPageSize() + '&searchTerm=' +val,
             beforeSend: service.setModuleHeaders,
             success: function (d) {
-                if (d && d.length) {
-                    dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
-                    var containerId = '#ControlBar_ModuleListHolder_NewModule';
-                    dnn.controlBar.renderModuleList(containerId, d);
-                }
-                else {
-                    dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true, true);
-                }
+                
+                setTimeout(function() {
+                    if (d && d.length) {                        
+                        dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false);
+                        dnn.controlBar.forceLoadingPane = false;
+                        var containerId = '#ControlBar_ModuleListHolder_NewModule';
+                        dnn.controlBar.renderModuleList(containerId, d);
+                        if ((dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingInitialPageSize) || (!dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingSize)) {
+                            dnn.controlBar.allModulesLoaded = true;
+                        }
+                        dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
+                    } else {                        
+                        dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false, true);
+                        dnn.controlBar.allModulesLoaded = true;
+                    }
+                }, dnn.controlBar.getWaitingTime(startDate));
+
             },
             error: function (xhr) {
                 dnn.controlBar.responseError(xhr);
             }
         });
     };
+
+    dnn.controlBar.getSearchTermValue = function() {
+        var $searchInput = $("#" + settings.searchInputId);
+        return $searchInput.val();
+    };
+
+    dnn.controlBar.initModuleSearch = function() {
+        var $searchInput = $("#" + settings.searchInputId);
+        $searchInput.mouseup(function () {
+            return false;
+        }).keypress(function (e) {
+            if (e.keyCode == 13) {
+                var val = $(this).val();
+                clearTimeout(dnn.controlBar.searchTimeout);
+                dnn.controlBar.searchModules(val);                
+                return false;
+            }
+        }).keyup(function (e) {
+            var val = $(this).val();
+            if (dnn.controlBar.lastVal.length != val.length &&
+                (val.length == 0 || val.length >= dnn.controlBar.minInputLength)) {
+                clearTimeout(dnn.controlBar.searchTimeout);
+                dnn.controlBar.searchTimeout = setTimeout(function () {
+                    dnn.controlBar.searchModules(val);
+                }, dnn.controlBar.inputDelay);
+            }
+            dnn.controlBar.lastVal = val;
+        });
+
+        var $searchButton = $("#ControlBar_Module_AddNewModule .search-container .search-button");
+        $searchButton.click(function() {
+            dnn.controlBar.searchModules(dnn.controlBar.getSearchTermValue());
+        });
+
+        var $clearButton = $("#ControlBar_Module_AddNewModule .search-container .clear-button");
+        $clearButton.click(function() {
+            dnn.controlBar.resetModuleSearch();
+            dnn.controlBar.searchModules(dnn.controlBar.getSearchTermValue());
+        });
+    };
+    dnn.controlBar.initModuleSearch();
+
+    dnn.controlBar.searchModules = function (val) {
+        dnn.controlBar.moduleLoadingPageIndex = 0;
+        dnn.controlBar.allModulesLoaded = false;
+        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), val);
+    };
+    
     dnn.controlBar.getTabModules = function (tab) {
+        dnn.controlBar.resetModuleSearch();        
         var service = dnn.controlBar.getService();
-        var serviceUrl = dnn.controlBar.getServiceUrl(service);
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);        
         dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule');
         $.ajax({
             url: serviceUrl + 'GetTabModules',
@@ -149,10 +277,12 @@ dnn.controlBar.init = function (settings) {
                     dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule', true);
                     var containerId = '#ControlBar_ModuleListHolder_ExistingModule';
                     dnn.controlBar.renderModuleList(containerId, d);
+                    dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
                 }
                 else {
                     dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule', true, true);
                 }
+                dnn.controlBar.allModulesLoaded = true;
             },
             error: function (xhr) {
                 dnn.controlBar.responseError(xhr);
@@ -265,6 +395,23 @@ dnn.controlBar.init = function (settings) {
 
     };
 
+    dnn.controlBar.publishPage = function () {
+        var service = dnn.controlBar.getService();
+        var serviceUrl = dnn.controlBar.getPageServiceUrl(service);
+        $.ajax({
+            url: serviceUrl + 'PublishPage',
+            type: 'POST',
+            beforeSend: service.setModuleHeaders,
+            success: function () {
+                window.location.href = window.location.href.split('#')[0];
+            },
+            error: function (xhr) {
+                dnn.controlBar.responseError(xhr);
+            }
+        });
+
+    };
+
     dnn.controlBar.recycleAppPool = function () {
         var service = dnn.controlBar.getService();
         var serviceUrl = dnn.controlBar.getServiceUrl(service);
@@ -343,59 +490,93 @@ dnn.controlBar.init = function (settings) {
         $('#shareableWarning').dialog('close');
     };
 
-    dnn.controlBar.renderModuleList = function (containerId, moduleList) {
-
-        var container = $(containerId);
-        var scrollContainer = container.next();
-        var api = scrollContainer.data('jsp');
-        if (api) {
-            api.scrollToX(0, null);
-            api.destroy();
+    dnn.controlBar.fillModuleList = function(ul, moduleList) {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            ul.empty().css('left', 1000);
         }
-        scrollContainer = container.next(); // reinit because api destroy...
-
-        $(containerId).css('overflow', 'hidden');
-        var ul = $('ul.ControlBar_ModuleList', container);
-        ul.empty().css('left', 1000);
-        var windowWidth = $(window).width();
-        var margin = Math.round((windowWidth - 980) / 2);
-
-        $('#ControlBar_Module_ModulePosition').hide();
         for (var i = 0; i < moduleList.length; i++) {
             ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
         }
-        var ulWidth = moduleList.length * 160;
+    };
+
+    dnn.controlBar.renderModuleList = function (containerId, moduleList) {
+
+        var currentModuleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex;
+        var container = $(containerId);
+        var scrollContainer = container.next();
+        
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            var api = scrollContainer.data('jsp');
+            if (api) {
+                api.scrollToX(0, null);
+                api.destroy();
+            }
+            scrollContainer = container.next(); // reinit because api destroy...    
+        }
+        
+        var ul = $('ul.ControlBar_ModuleList', container);
+        dnn.controlBar.fillModuleList(ul, moduleList);
+        
+        $('#ControlBar_Module_ModulePosition').hide();
+        var ulWidth = (dnn.controlBar.getModuleLoadingCurrentIndex() * 160) + moduleList.length * 160;
         ul.css('width', ulWidth + 'px');
         // some math here
+        var windowWidth = $(window).width();
+        var margin = Math.round((windowWidth - 980) / 2);
         var dummyScrollWidth = Math.round((980 * (ulWidth + margin)) / windowWidth);
-        var ulLeft = margin;
+        var ulLeft = margin;        
         var oldX = 0;
+        var reloading = false;
+        var scrollTrigger = true;
         var modulesInitFunc = function () {
             $('div.controlBar_ModuleListScrollDummy_Content', scrollContainer).css('width', dummyScrollWidth);
-            scrollContainer.jScrollPane();
-            scrollContainer.bind('jsp-scroll-x', function (e, x, isAtleft, isAtRight) {
+            if (currentModuleLoadingPageIndex == 0) {
+                scrollContainer.jScrollPane();
+            } else {
+                var jspapi = scrollContainer.data('jsp');
+                if (jspapi) {
+                    scrollTrigger = false;
+                    jspapi.reinitialise();
+                    scrollTrigger = true;
+                }
+            }
+            var $searchInput = $("#" + settings.searchInputId);
+            $searchInput.focus();
+            
+            scrollContainer.unbind('jsp-scroll-x');
+            scrollContainer.bind('jsp-scroll-x', function (e, x, isAtleft, isAtRight) {                
                 var xOffset, leftOffset;
+                if (!scrollTrigger) {
+                    return;
+                }
                 if (isAtleft) {
                     oldX = 0;
                     ulLeft = margin;
+                    reloading = false;                    
                 } else if (isAtRight) {
-                    oldX = Math.round((980 * (ulWidth + margin)) / windowWidth) - 980;
+                    var justAtRight = (oldX == x);
+                    oldX = Math.round((980 * (ulWidth + margin)) / windowWidth) - 980;                         
+                    if (moduleList.length != 0 && justAtRight && !reloading) {                        
+                        reloading = true;
+                        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
+                    }
                     ulLeft = -(ulWidth - windowWidth);
                 } else {
-                    if (x > oldX) {
+                    reloading = false;
+                    if (x > oldX) {                        
                         // scroll to right
                         xOffset = x - oldX;
-                        leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
+                        leftOffset = ((ulWidth + margin) / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
                         ulLeft -= Math.abs(leftOffset);
-                    } else {
+                    } else {                        
                         // scroll to left
                         xOffset = oldX - x;
-                        leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
+                        leftOffset = ((ulWidth + margin) / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
                         ulLeft += Math.abs(leftOffset);
                     }
                     oldX = x;
-                }
-                ul.css('left', ulLeft);
+                }                                
+                ul.css('left', ulLeft+"px");                
             });
 
             $('div.ControlBar_ModuleDiv', ul).each(function () {
@@ -555,16 +736,43 @@ dnn.controlBar.init = function (settings) {
             });
         };
         setTimeout(modulesInitFunc, 0);
-        ul.animate({ left: margin }, 300);
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            ul.animate({ left: margin }, 300);
+        }
+    };
+
+    dnn.controlBar.resetModuleSearch = function () {
+        var $searchInput = $("#" + settings.searchInputId);
+        $searchInput.val('').focus();
+        dnn.controlBar.moduleLoadingPageIndex = 0;
+        dnn.controlBar.allModulesLoaded = false;
+    };
+
+    dnn.controlBar.getSelectedCategory = function () {
+        var category = null;
+        if (dnn.controlBar.status && dnn.controlBar.status.addNewModule) {
+            var selectedCategory = dnn.controlBar.status.category;
+            if (selectedCategory) {
+                $find(settings.categoryComboId).findItemByValue(selectedCategory).select();
+                category = selectedCategory;
+                dnn.controlBar.removeStatus();
+            }
+        } else {
+            category = $find(settings.categoryComboId).get_value();
+        }
+
+        return category;
     };
 
     dnn.controlBar.ControlBar_Module_CategoryList_Changed = function (sender, e) {
         var item = e.get_item();
         if (item) {
-            dnn.controlBar.getDesktopModulesForNewModule(item.get_value());
+            //Reset module search
+            dnn.controlBar.resetModuleSearch();
+            dnn.controlBar.getDesktopModulesForNewModule(item.get_value(), dnn.controlBar.getSearchTermValue());
         }
     };
-
+    
     dnn.controlBar.ControlBar_Module_PageList_Changed = function (selectedNode) {
         if (!selectedNode.key)
             dnn.controlBar.selectedPage = null;
@@ -735,21 +943,9 @@ dnn.controlBar.init = function (settings) {
             });
 
             return false;
-        }
-
-        var category = null;
-        if (dnn.controlBar.status && dnn.controlBar.status.addNewModule) {
-            var selectedCategory = dnn.controlBar.status.category;
-            if (selectedCategory) {
-                $find(settings.categoryComboId).findItemByValue(selectedCategory).select();
-                category = selectedCategory;
-                dnn.controlBar.removeStatus();
-            }
-        } else {
-            category = $find(settings.categoryComboId).get_value();
-        }
-
-        dnn.controlBar.getDesktopModulesForNewModule(category);
+        }        
+        dnn.controlBar.resetModuleSearch();
+        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());        
         dnn.controlBar.addNewModule = true;
         toggleModulePane($('#ControlBar_Module_AddNewModule'), true);
         $('#ControlBar_Action_Menu').addClass('onActionMenu');
@@ -783,7 +979,7 @@ dnn.controlBar.init = function (settings) {
                 dnn.controlBar.selectedPage = { id: parseInt(selectedPageId, 10), name: dnn.controlBar.status.pageName };
                 dnn[settings.pagePickerId].selectedItem({ key: selectedPageId, value: dnn.controlBar.status.pageName });
                 var visibilityCombo = $find(settings.visibilityComboId);
-                var makeCopyCheckbox = $("#" + settings.makeCopyCheckboxId);
+                var makeCopyCheckbox = $("#" + settings.makeCopyCheckboxId);                
                 dnn.controlBar.getTabModules(selectedPageId);
                 visibilityCombo.enable();
                 makeCopyCheckbox.attr("disabled", false).parent().removeClass("disabled");
@@ -934,6 +1130,17 @@ dnn.controlBar.init = function (settings) {
         yesText: settings.yesText,
         noText: settings.noText,
         title: settings.titleText
+    });
+
+
+    $('a#ControlBar_PublishPage').dnnConfirm({
+        text: settings.publishText,
+        yesText: settings.yesText,
+        noText: settings.noText,
+        title: settings.titleText,
+        callbackTrue: function () {
+            dnn.controlBar.publishPage();
+        }
     });
 
     $('a#shareableWarning_cmdConfirm').click(function () {

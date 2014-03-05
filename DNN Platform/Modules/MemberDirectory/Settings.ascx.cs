@@ -190,6 +190,8 @@ namespace DotNetNuke.Modules.MemberDirectory
                 searchField2List.Select(GetTabModuleSetting("SearchField2", _defaultSearchField2));
                 searchField3List.Select(GetTabModuleSetting("SearchField3", _defaultSearchField3));
                 searchField4List.Select(GetTabModuleSetting("SearchField4", _defaultSearchField4));
+
+                ExcludeHostUsersCheckBox.Checked = Boolean.Parse(GetTabModuleSetting("ExcludeHostUsers", "false"));
             }
         }
 
@@ -264,6 +266,8 @@ namespace DotNetNuke.Modules.MemberDirectory
 
             Model.TabModuleSettings["DisablePaging"] = disablePager.Checked.ToString(CultureInfo.InvariantCulture);
             Model.TabModuleSettings["PageSize"] = pageSize.Text;
+            
+            Model.TabModuleSettings["ExcludeHostUsers"] = ExcludeHostUsersCheckBox.Checked.ToString(CultureInfo.InvariantCulture);
 
             base.OnSavingSettings();
         }

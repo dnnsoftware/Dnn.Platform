@@ -1432,8 +1432,7 @@ namespace DotNetNuke.Common
             }
             else
             {
-                var objPortals = new PortalController();
-                PortalInfo objPortal = objPortals.GetPortal(portalId);
+                PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
                 ParentFolderName = objPortal.HomeDirectoryMapPath.Replace("/", "\\");
             }
             string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf("\\") + 1);
@@ -3804,6 +3803,20 @@ namespace DotNetNuke.Common
             avatarUrl += "/profilepic.ashx?userId={0}&h={1}&w={2}";            
 
             return avatarUrl;
+        }
+
+
+        /// <summary>
+        /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
+        /// </summary>        
+        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} 
+        /// </returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
+        /// </remarks>
+        public static string UserProfilePicRelativeUrl()
+        {
+            return Globals.ApplicationPath + "/profilepic.ashx?userId={0}&h={1}&w={2}";
         }
 
         #region "Obsolete - retained for Binary Compatability"

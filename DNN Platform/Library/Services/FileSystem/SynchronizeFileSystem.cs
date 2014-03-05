@@ -71,17 +71,13 @@ namespace DotNetNuke.Services.FileSystem
             var folderManager = FolderManager.Instance;
             
             folderManager.Synchronize(Null.NullInteger);
-            
-            PortalInfo objPortal;
 
-            var objPortals = new PortalController();
-            var arrPortals = objPortals.GetPortals();
-
+            var portals = PortalController.Instance.GetPortals();
             //Sync Portals
-			for (int intIndex = 0; intIndex <= arrPortals.Count - 1; intIndex++)
+			for (var intIndex = 0; intIndex <= portals.Count - 1; intIndex++)
             {
-                objPortal = (PortalInfo) arrPortals[intIndex];
-                folderManager.Synchronize(objPortal.PortalID);
+                var portal = (PortalInfo) portals[intIndex];
+                folderManager.Synchronize(portal.PortalID);
             }
         }
     }

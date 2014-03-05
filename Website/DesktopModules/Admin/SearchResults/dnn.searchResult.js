@@ -254,7 +254,7 @@
             for (var i = 0; i < tags.length; i++) {
                 if (advancedTerm)
                     advancedTerm += ' ';
-                advancedTerm += '[' + tags[i] + ']';
+                advancedTerm += '[' + tags[i].replace(/[<>]/g, '') + ']';
             }
         }
 

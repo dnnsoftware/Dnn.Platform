@@ -104,7 +104,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var mockPortalController = new Mock<IPortalController>();
             var portalSettings = new PortalSettings { PortalId = 0, AdministratorId = 1 };
             mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(portalSettings);
-            TestablePortalController.SetTestableInstance(mockPortalController.Object);
+            PortalController.SetTestableInstance(mockPortalController.Object);
             return portalSettings;
         }
 

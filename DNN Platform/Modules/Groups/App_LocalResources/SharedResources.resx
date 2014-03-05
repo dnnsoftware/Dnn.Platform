@@ -323,6 +323,6 @@
     <value>Search term required.</value>
   </data>
   <data name="GroupName.Invalid" xml:space="preserve">
-    <value>The Name is invalid - roles can only contain the following characters A-Za-z0-9_- and spaces</value>
+    <value>The Name is invalid - roles can not contain the following characters: &amp; $ + , / ? ~ # &lt; &gt; ( ) ¿ ¡ « » !  . :  * ' [ ]</value>
   </data>
 </root>

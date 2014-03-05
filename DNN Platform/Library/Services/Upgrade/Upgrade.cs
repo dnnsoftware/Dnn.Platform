@@ -159,11 +159,10 @@ namespace DotNetNuke.Services.Upgrade
         private static void AddAdminRoleToPage(string tabPath)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddAdminRoleToPage:" + tabPath);
-            var portalController = new PortalController();
             var tabController = new TabController();
             TabInfo tab;
 
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 int tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
                 if ((tabID != Null.NullInteger))
@@ -514,9 +513,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void AddSearchResults(int moduleDefId)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddSearchResults:" + moduleDefId);
-            var portalController = new PortalController();
-            PortalInfo portal;
-            var portals = portalController.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
             int intPortal;
 
             //Add Page to Admin Menu of all configured Portals
@@ -524,7 +521,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 var tabPermissions = new TabPermissionCollection();
 
-                portal = (PortalInfo)portals[intPortal];
+                var portal = (PortalInfo)portals[intPortal];
 
                 AddPagePermission(tabPermissions, "View", Convert.ToInt32(Globals.glbRoleAllUsers));
                 AddPagePermission(tabPermissions, "View", Convert.ToInt32(portal.AdministratorRoleId));
@@ -1104,15 +1101,12 @@ namespace DotNetNuke.Services.Upgrade
                     }
                     break;
                 case "Admin":
-                    var portalController = new PortalController();
-                    PortalInfo portal;
-
-                    var portals = portalController.GetPortals();
+                    var portals = PortalController.Instance.GetPortals();
 
                     //Iterate through the Portals to remove the Module from the Tab
                     for (int intPortal = 0; intPortal <= portals.Count - 1; intPortal++)
                     {
-                        portal = (PortalInfo)portals[intPortal];
+                        var portal = (PortalInfo)portals[intPortal];
                         moduleDefId = RemoveModule(desktopModuleName, tabName, portal.AdminTabId, removeTab);
                     }
                     break;
@@ -1221,7 +1215,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "FavIconsToPortalSettings");
             const string fileName = "favicon.ico";
-            var portals = new PortalController().GetPortals().Cast<PortalInfo>();
+            var portals = PortalController.Instance.GetPortals().Cast<PortalInfo>();
 
             foreach (var portalInfo in portals)
             {
@@ -1279,8 +1273,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion440()
         {
             // remove module cache files with *.htm extension ( they are now securely named *.resources )
-            var portalController = new PortalController();
-            var portals = portalController.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo objPortal in portals)
             {
                 if (Directory.Exists(Globals.ApplicationMapPath + "\\Portals\\" + objPortal.PortalID + "\\Cache\\"))
@@ -1299,8 +1292,7 @@ namespace DotNetNuke.Services.Upgrade
             string hostTemplateFile = Globals.HostMapPath + "Templates\\Default.page.template";
             if (File.Exists(hostTemplateFile))
             {
-                var portalController = new PortalController();
-                ArrayList portals = portalController.GetPortals();
+                ArrayList portals = PortalController.Instance.GetPortals();
                 foreach (PortalInfo portal in portals)
                 {
                     string portalTemplateFolder = portal.HomeDirectoryMapPath + "Templates\\";
@@ -1331,8 +1323,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion500()
         {
-            var portalController = new PortalController();
-            ArrayList portals = portalController.GetPortals();
+            ArrayList portals = PortalController.Instance.GetPortals();
             var tabController = new TabController();
 
             //Add Edit Permissions for Admin Tabs to legacy portals
@@ -1463,7 +1454,6 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion510()
         {
-            var portalController = new PortalController();
             var tabController = new TabController();
             var moduleController = new ModuleController();
             int moduleDefId;
@@ -1622,7 +1612,7 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             //add module to all admin pages
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 tabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin", Null.NullString);
                 if ((tabId != Null.NullInteger))
@@ -1762,8 +1752,7 @@ namespace DotNetNuke.Services.Upgrade
             if (File.Exists(hostTemplateFile))
             {
                 var tabController = new TabController();
-                var portalController = new PortalController();
-                ArrayList portals = portalController.GetPortals();
+                ArrayList portals = PortalController.Instance.GetPortals();
                 foreach (PortalInfo portal in portals)
                 {
                     properties = ProfileController.GetPropertyDefinitionsByPortal(portal.PortalID);
@@ -1779,10 +1768,10 @@ namespace DotNetNuke.Services.Upgrade
                     }
 
                     //Update Default profile template in every portal
-                    portalController.CopyPageTemplate("Default.page.template", portal.HomeDirectoryMapPath);
+                    PortalController.Instance.CopyPageTemplate("Default.page.template", portal.HomeDirectoryMapPath);
 
                     //Add User profile template to every portal
-                    portalController.CopyPageTemplate("UserProfile.page.template", portal.HomeDirectoryMapPath);
+                    PortalController.Instance.CopyPageTemplate("UserProfile.page.template", portal.HomeDirectoryMapPath);
 
                     //Synchronize the Templates folder to ensure the templates are accessible
                     FolderManager.Instance.Synchronize(portal.PortalID, "Templates/", false, true);
@@ -1815,7 +1804,7 @@ namespace DotNetNuke.Services.Upgrade
                             portal.UserTabId = userTab.TabID;
                         }
                     }
-                    portalController.UpdatePortalInfo(portal);
+                    PortalController.Instance.UpdatePortalInfo(portal);
 
                     //Add Users folder to every portal
                     string usersFolder = string.Format("{0}Users\\", portal.HomeDirectoryMapPath);
@@ -1868,12 +1857,11 @@ namespace DotNetNuke.Services.Upgrade
             AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ContentList/ContentList.ascx", "", SecurityAccessLevel.View, 0);
 
             //Update registration page
-            var portalController = new PortalController();
-            ArrayList portals = portalController.GetPortals();
+            ArrayList portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
             {
                 //objPortal.RegisterTabId = objPortal.UserTabId;
-                portalController.UpdatePortalInfo(portal);
+                PortalController.Instance.UpdatePortalInfo(portal);
 
                 //Add ContentList to Search Results Page
                 var tabController = new TabController();
@@ -1923,8 +1911,7 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             //Fix the permission for User Folders
-            var portalController = new PortalController();
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 foreach (FolderInfo folder in FolderManager.Instance.GetFolders(portal.PortalID))
                 {
@@ -1965,7 +1952,7 @@ namespace DotNetNuke.Services.Upgrade
             }
 
 
-            foreach (PortalInfo portal in new PortalController().GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //fix issue where portal default language may be disabled
                 string defaultLanguage = portal.DefaultLanguage;
@@ -2206,8 +2193,7 @@ namespace DotNetNuke.Services.Upgrade
                 ProfileController.DeletePropertyDefinition(ppdHostTimeZone);
             }
 
-            var portalController = new PortalController();
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //update timezoneinfo
 #pragma warning disable 612,618
@@ -2278,8 +2264,7 @@ namespace DotNetNuke.Services.Upgrade
                     var permission = permissions[0] as PermissionInfo;
                     if (permission != null)
                     {
-                        var portalController = new PortalController();
-                        foreach (PortalInfo portal in portalController.GetPortals())
+                        foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                         {
                             //ensure desktop module is not present in the portal
                             var pdmi = DesktopModuleController.GetPortalDesktopModule(portal.PortalID, desktopModule.DesktopModuleID);
@@ -2306,8 +2291,7 @@ namespace DotNetNuke.Services.Upgrade
             HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(exts));
 
             //Fix the icons for SiteMap page
-            var portalController = new PortalController();
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var tabController = new TabController();
                 var siteMap = tabController.GetTabByName("Search Engine SiteMap", portal.PortalID);
@@ -2450,8 +2434,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion613()
         {
             //Rename admin pages page's title to 'Page Management'.
-            var portalController = new PortalController();
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var tabController = new TabController();
                 var pagesTabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin//Pages", Null.NullString);
@@ -2485,8 +2468,7 @@ namespace DotNetNuke.Services.Upgrade
             listController.AddListEntry(entry);
 
             //add same list to each portal
-            var portalController = new PortalController();
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 entry.PortalID = portal.PortalID;
                 entry.SystemList = false;
@@ -2522,9 +2504,8 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion621()
         {
             //update administrators' role description.
-            var portalController = new PortalController();
             var moduleController = new ModuleController();
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //update about me's template
                 var myProfileTabId = TabController.GetTabByTabPath(portal.PortalID, "//ActivityFeed//MyProfile", string.Empty);
@@ -2632,8 +2613,7 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             //add list to each portal and update primary alias
-            var portalController = new PortalController();
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 entry.PortalID = portal.PortalID;
                 entry.SystemList = false;
@@ -2772,9 +2752,8 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion712()
         {
             //update console module in Admin/Host page to set OrderTabsByHierarchy setting to true.
-            var portalController = new PortalController();
             var moduleController = new ModuleController();
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var tabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin", Null.NullString);
                 if (tabId != Null.NullInteger)
@@ -2984,7 +2963,11 @@ namespace DotNetNuke.Services.Upgrade
             //Make ConfigurationManager Premium
             MakeModulePremium(@"ConfigurationManager");
 
+            //Make ConfigurationManager Premium
+            MakeModulePremium(@"Dashboard");
 
+            //Make ProfessionalPreview Premium
+            MakeModulePremium(@"ProfessionalPreview");
         }
 
         private static void AddManageUsersModulePermissions()
@@ -3051,7 +3034,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void AddDefaultContentWorkflows()
         {
-            foreach (PortalInfo portal in TestablePortalController.Instance.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 ContentWorkflowController.Instance.CreateDefaultWorkflows(portal.PortalID);
             }
@@ -3274,14 +3257,13 @@ namespace DotNetNuke.Services.Upgrade
         private static void ReplaceMessagingModule()
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "ReplaceMessagingModule");
-            var portalController = new PortalController();
             var moduleController = new ModuleController();
             var tabController = new TabController();
 
             var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
             if (moduleDefinition == null) return;
 
-            var portals = portalController.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
             {
                 if (portal.UserTabId > Null.NullInteger)
@@ -3313,9 +3295,9 @@ namespace DotNetNuke.Services.Upgrade
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, -1);
             desktopModule.IsAdmin = true;
             desktopModule.IsPremium = true;
-            DesktopModuleController.SaveDesktopModule(desktopModule, false, false);
+            DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
 
-            //Add Portal/Module to PortalDesktopModules
+            //Remove Portal/Module to PortalDesktopModules
             DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
         }
 
@@ -3323,8 +3305,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void MovePhotoProperty()
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "MovePhotoProperty");
-            var portalController = new PortalController();
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var properties = ProfileController.GetPropertyDefinitionsByPortal(portal.PortalID).Cast<ProfilePropertyDefinition>();
                 var propPhoto = properties.FirstOrDefault(p => p.PropertyName == "Photo");
@@ -3403,7 +3384,7 @@ namespace DotNetNuke.Services.Upgrade
             //copy getting started css to portals folder.
             var hostGettingStartedFile = string.Format("{0}GettingStarted.css", Globals.HostMapPath);
             var tabController = new TabController();
-            foreach (PortalInfo portal in new PortalController().GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
 
                 if (File.Exists(hostGettingStartedFile))
@@ -3464,16 +3445,15 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
-            var portalController = new PortalController();
-            ArrayList portals = portalController.GetPortals();
+            ArrayList portals = PortalController.Instance.GetPortals();
 
             //Add Page to Admin Menu of all configured Portals
-            for (int intPortal = 0; intPortal <= portals.Count - 1; intPortal++)
+            for (var index = 0; index <= portals.Count - 1; index++)
             {
-                var portal = (PortalInfo)portals[intPortal];
+                var portal = (PortalInfo)portals[index];
 
                 //Create New Admin Page (or get existing one)
-                TabInfo newPage = AddAdminPage(portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
+                var newPage = AddAdminPage(portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
 
                 //Add Module To Page
                 AddModuleToPage(newPage, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
@@ -3674,16 +3654,15 @@ namespace DotNetNuke.Services.Upgrade
 
         public static void AddModuleToPages(string tabPath, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
-            var objPortalController = new PortalController();
-            var objTabController = new TabController();
+            var tabController = new TabController();
 
-            ArrayList portals = objPortalController.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
             {
                 int tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
                 if ((tabID != Null.NullInteger))
                 {
-                    TabInfo tab = objTabController.GetTab(tabID, portal.PortalID, true);
+                    var tab = tabController.GetTab(tabID, portal.PortalID, true);
                     if ((tab != null))
                     {
                         AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
@@ -3725,7 +3704,6 @@ namespace DotNetNuke.Services.Upgrade
                     }
                 }
 
-                var portalController = new PortalController();
                 XmlNode adminNode = node.SelectSingleNode("administrator");
                 if (adminNode != null)
                 {
@@ -3775,7 +3753,7 @@ namespace DotNetNuke.Services.Upgrade
                     var userInfo = CreateUserInfo(firstName, lastName, username, password, email);
 
                     //Create Portal
-                    portalId = portalController.CreatePortal(portalName,
+                    portalId = PortalController.Instance.CreatePortal(portalName,
                                                              userInfo,
                                                              description,
                                                              keyWords,
@@ -3802,13 +3780,13 @@ namespace DotNetNuke.Services.Upgrade
                                             HtmlUtils.WriteFeedback(HttpContext.Current.Response, indent, "Creating Site Alias: " + portalAlias.InnerText + "<br>");
                                         }
                                     }
-                                    portalController.AddPortalAlias(portalId, portalAlias.InnerText);
+                                    PortalController.Instance.AddPortalAlias(portalId, portalAlias.InnerText);
                                 }
                             }
                         }
 
                         //Force Administrator to Update Password on first log in
-                        PortalInfo portal = portalController.GetPortal(portalId);
+                        PortalInfo portal = PortalController.Instance.GetPortal(portalId);
                         UserInfo adminUser = UserController.GetUserById(portalId, portal.AdministratorId);
                         adminUser.Membership.UpdatePassword = true;
                         UserController.UpdateUser(portalId, adminUser);
@@ -3855,7 +3833,7 @@ namespace DotNetNuke.Services.Upgrade
 
         internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName)
         {
-            var templates = TestablePortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
             //Load Template
             var installTemplate = new XmlDocument();
@@ -4877,13 +4855,12 @@ namespace DotNetNuke.Services.Upgrade
         public static void RemoveAdminPages(string tabPath)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveAdminPages:" + tabPath);
-            var portalController = new PortalController();
             var tabController = new TabController();
 
-            ArrayList portals = portalController.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
             {
-                int tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
+                var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
                 if ((tabID != Null.NullInteger))
                 {
                     tabController.DeleteTab(tabID, portal.PortalID);
@@ -5386,7 +5363,7 @@ namespace DotNetNuke.Services.Upgrade
                         url += "&email=" + HttpUtility.UrlEncode(HostController.Instance.GetString("NewsletterSubscribeEmail"));
                     }
 
-                    var portals = new PortalController().GetPortals();
+                    var portals = PortalController.Instance.GetPortals();
                     url += "&no=" + portals.Count;
                     url += "&os=" + Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, "");
                     url += "&net=" + Globals.FormatVersion(Globals.NETFrameworkVersion, "00", 2, "");

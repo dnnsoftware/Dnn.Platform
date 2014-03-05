@@ -456,7 +456,7 @@ namespace DotNetNuke.Services.Mobile
 
             //remove rules for deleted target portals
             redirects = GetRedirectionsByPortal(portalId); //fresh get of rules in case some were deleted above                       
-            var allPortals = new PortalController().GetPortals();            
+            var allPortals = PortalController.Instance.GetPortals();            
             foreach (var r in redirects.Where(r => r.TargetType == TargetType.Portal))
             {
                 bool found = false;
@@ -581,8 +581,7 @@ namespace DotNetNuke.Services.Mobile
                 if (targetPortalId != portalId) //ensure it's not redirecting to itself
                 {
                     //check whethter the target portal still exists
-                    var portalController = new PortalController();
-                    if (portalController.GetPortals().Cast<PortalInfo>().Any(p => p.PortalID == targetPortalId))
+                    if (PortalController.Instance.GetPortals().Cast<PortalInfo>().Any(p => p.PortalID == targetPortalId))
                     {
                         var portalSettings = new PortalSettings(targetPortalId);
                         if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId) //ensure it's not redirecting to itself

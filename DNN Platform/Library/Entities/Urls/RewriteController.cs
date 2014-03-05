@@ -183,10 +183,12 @@ namespace DotNetNuke.Entities.Urls
                         bool customTabAlias = false;
                         //check for culture-specific aliases
                         string culture = null;
-                        var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
+                        var primaryAliases =
+                            TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
+                                                         .Where(a => a.IsPrimary).ToList();
                         //if there are chosen portal aliases, check to see if the found alias is one of them
                         //if not, then will check for a custom alias per tab
-                        if (primaryAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias) == false)
+                        if (!primaryAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias))
                         {
                             checkForCustomAlias = true;
                         }
@@ -384,7 +386,7 @@ namespace DotNetNuke.Entities.Urls
                             userParam = "UserId=" + user.UserID.ToString();
 
                             //Get the User profile Tab
-                            var portal = new PortalController().GetPortal(result.PortalId);
+                            var portal = PortalController.Instance.GetPortal(result.PortalId);
                             var profilePage = new TabController().GetTab(portal.UserTabId, result.PortalId, false);
 
                             FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
@@ -1508,7 +1510,7 @@ namespace DotNetNuke.Entities.Urls
                 int lastParmToProcessTo;
 
                 string userIdParm = null;
-                PortalInfo thisPortal = new PortalController().GetPortal(result.PortalId);
+                var thisPortal = PortalController.Instance.GetPortal(result.PortalId);
 
                 //check if there is more than one parm, and keep the value of the primary (first) parm
                 if (thisPortal.UserTabId == result.TabId || thisPortal.UserTabId == -1)

@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 text = name;
             }
             var item = new DnnComboBoxItem(text, name);
-            if (name == propertyName)
+            if (name.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase))
             {
                 item.Selected = true;
             }
@@ -164,40 +164,40 @@ namespace DotNetNuke.Modules.Admin.Users
 
             int totalRecords = 0;
 
-            if (searchText == Localization.GetString("Unauthorized"))
+            if (searchText.Equals(Localization.GetString("Unauthorized"), StringComparison.InvariantCultureIgnoreCase))
             {
                 Users = UserController.GetUnAuthorizedUsers(UsersPortalId, true, IsSuperUser);
 				totalRecords = Users.Count;
             }
-            else if (searchText == Localization.GetString("Deleted"))
+            else if (searchText.Equals(Localization.GetString("Deleted"), StringComparison.InvariantCultureIgnoreCase))
             {
                 Users = UserController.GetDeletedUsers(UsersPortalId);
 				totalRecords = Users.Count;
             }
-            else if (searchText == Localization.GetString("OnLine"))
+            else if (searchText.Equals(Localization.GetString("OnLine"), StringComparison.InvariantCultureIgnoreCase))
             {
                 Users = UserController.GetOnlineUsers(UsersPortalId);
 	            totalRecords = Users.Count;
             }
-            else if (searchText == Localization.GetString("All"))
+            else if (searchText.Equals(Localization.GetString("All"), StringComparison.InvariantCultureIgnoreCase))
             {
                 Users = UserController.GetUsers(UsersPortalId, grdUsers.CurrentPageIndex, grdUsers.PageSize, ref totalRecords, true, IsSuperUser);                
             }
-            else if (searchText != "None")
+            else if (!searchText.Equals("None", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (searchText.Length > 1)
                 {
                     searchText = "%" + searchText;
                 }
-                switch (searchField)
+                switch (searchField.ToLowerInvariant())
                 {
-                    case "Email":
+                    case "email":
                         Users = UserController.GetUsersByEmail(UsersPortalId, searchText + "%", grdUsers.CurrentPageIndex, grdUsers.PageSize, ref totalRecords, true, IsSuperUser);
                         break;
-                    case "Username":
+                    case "username":
                         Users = UserController.GetUsersByUserName(UsersPortalId, searchText + "%", grdUsers.CurrentPageIndex, grdUsers.PageSize, ref totalRecords, true, IsSuperUser);
                         break;
-					case "DisplayName":
+					case "displayname":
 						Users = UserController.GetUsersByDisplayName(UsersPortalId, searchText + "%", grdUsers.CurrentPageIndex, grdUsers.PageSize, ref totalRecords, true, IsSuperUser);
                         break;
                     default:
@@ -288,8 +288,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private bool IsPortalAdministrator(int userId)
 		{
-			var portalController = new PortalController();
-			var groupId = portalController.GetPortal(PortalSettings.PortalId).PortalGroupID;
+            var groupId = PortalController.Instance.GetPortal(PortalSettings.PortalId).PortalGroupID;
 			if (groupId != Null.NullInteger)
 			{
 				return PortalGroupController.Instance.GetPortalsByGroup(groupId).Any(p => p.AdministratorId == userId);
@@ -533,7 +532,11 @@ namespace DotNetNuke.Modules.Admin.Users
 					if ((!String.IsNullOrEmpty(Filter) && Filter.ToUpper() != "NONE") && !String.IsNullOrEmpty(FilterProperty))
                     {
                         txtSearch.Text = Filter;
-                        ddlSearchType.SelectedValue = FilterProperty;
+                        var findedItem = ddlSearchType.Items.FindItemByValue(FilterProperty, true);
+                        if (findedItem != null)
+                        {
+                            findedItem.Selected = true;
+                        }
                     }
                 }
             }

@@ -276,10 +276,15 @@
                         <li><a href="<%= BuildToolUrl("ExportPage", false, "", "", "", true) %>" class="ControlBar_PopupLink">
                             <%= GetString("Tool.ExportPage.Text") %></a></li>
                         <% } %>
-                        <% if (TabPermissionController.CanDeletePage())
+                        <% if (TabPermissionController.CanDeletePage() && !TabController.IsSpecialTab(TabController.CurrentPage.TabID, PortalSettings.PortalId))
                            {%>
                         <li><a href="<%= BuildToolUrl("DeletePage", false, "", "", "", true) %>" id="ControlBar_DeletePage">
                             <%= GetString("Tool.DeletePage.Text") %></a></li>
+                        <% } %>
+                        <% if (TabPermissionController.CanAdminPage())
+                           {%>
+                        <li><a href="<%= BuildToolUrl("PublishPage", false, "", "", "", true) %>" id="ControlBar_PublishPage">
+                            <%= GetString("Tool.PublishPage.Text") %></a></li>
                         <% } %>
                        
                     </ul>
@@ -296,6 +301,13 @@
             <div class="ControlModuleContainer">
                 <dnn:DnnComboBox ID="CategoryList" runat="server" DataTextField="Name" DataValueField="Name"  Skin="DnnBlack"
                     OnClientSelectedIndexChanged="dnn.controlBar.ControlBar_Module_CategoryList_Changed" />
+                <div class="search-container">
+                    <div class="search-input-container">
+                        <input type="text" id="ControlBar_SearchModulesInput" class="search-input"/>                    
+                    </div>
+                    <a href="javascript:void(0);" title="<%= GetString("SearchModules.Text") %>" class="search-button"></a>
+                    <a href="javascript:void(0);" title="<%= GetString("ClearSearchModules.Text") %>" class="clear-button"></a>                    
+                </div>
                 <a class="controlBar_CloseAddModules"><%= GetString("Cancel.Text") %></a>
             </div>
             <div id="ControlBar_ModuleListMessage_NewModule" class="ControlBar_ModuleListMessage">
@@ -307,7 +319,7 @@
                 <p>
                     <%= GetString("LoadingModule.Text")%>
                 </p>
-            </div>
+            </div>            
             <div id="ControlBar_ModuleListHolder_NewModule" class="ControlBar_ModuleListHolder">
                 <ul class="ControlBar_ModuleList">
                 </ul>
@@ -382,13 +394,15 @@
     dnn.controlBarSettings = {
         currentUserMode: '<%= GetModeForAttribute() %>',
         categoryComboId: '<%= CategoryList.ClientID %>',
+        searchInputId: 'ControlBar_SearchModulesInput',
     	visibilityComboId: '<%= VisibilityLst.ClientID %>',
     	makeCopyCheckboxId: 'ControlBar_Module_chkCopyModule',
 		pagePickerId: '<%= PageList.ClientID %>',
         yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Yes.Text", Localization.SharedResourceFile)) %>',
         noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile)) %>',
         titleText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile)) %>',
-        deleteText: '<%= GetButtonConfirmMessage("DeletePage") %>',
+        deleteText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString( GetButtonConfirmMessage("DeletePage") )%>',
+        publishText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString( GetButtonConfirmMessage("PublishPage") )%>',
         copyPermissionsToChildrenText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
             
         dragModuleToolTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("DragModuleToolTip.Text")) %>',

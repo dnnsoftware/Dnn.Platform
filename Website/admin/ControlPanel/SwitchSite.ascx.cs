@@ -125,8 +125,7 @@ namespace DotNetNuke.UI.ControlPanel
 
         private void LoadPortalsList()
         {
-            var portalCtrl = new PortalController();
-            ArrayList portals = portalCtrl.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
 
             SitesLst.ClearSelection();
             SitesLst.Items.Clear();

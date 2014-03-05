@@ -591,9 +591,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
             }
-            //Log Event to Event Log
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(newUser, PortalSettings, UserId, newUser.Username, EventLogController.EventLogType.USER_CREATED);
+           
             return strMessage;
         }
 

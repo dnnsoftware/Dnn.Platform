@@ -354,14 +354,18 @@ namespace DotNetNuke.Entities.Urls
             //793 : checkforDupUrls not being read
             CheckForDuplicateUrls = GetBooleanSetting(CheckForDuplicatedUrlsSetting, true);
 
-            /* 454 New 404 error handling */
-            var portal = new PortalController().GetPortal(portalId);
             Regex404 = GetStringSetting("regex404", String.Empty);
-            TabId404 = portal != null ? portal.Custom404TabId : Null.NullInteger;
             Url404 = GetStringSetting("url404", String.Empty);
 
-            //get the 500 error values, if not supplied, use the 404 values
-            TabId500 = portal != null ? portal.Custom404TabId : Null.NullInteger;
+            TabId500 = Null.NullInteger;
+            TabId404 = Null.NullInteger;
+            if (portalId > -1)
+            {
+                var portal = PortalController.Instance.GetPortal(portalId);
+                TabId500 = portal.Custom404TabId;
+                TabId404 = portal.Custom404TabId;
+            }
+
             if (TabId500 == -1)
             {
                 TabId500 = TabId404;

@@ -126,8 +126,7 @@ namespace DotNetNuke.Entities.Modules
                     desktopModule.IsUpgradeable = (objController is IUpgradeable);
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, false, false);
 
-                    var portalController = new PortalController();
-                    foreach (PortalInfo portal in portalController.GetPortals())
+                    foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                     {
                         DataCache.RemoveCache(String.Format(DataCache.DesktopModuleCacheKey, portal.PortalID));
                         DataCache.RemoveCache(String.Format(DataCache.PortalDesktopModuleCacheKey, portal.PortalID));

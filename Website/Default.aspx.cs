@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -265,15 +266,13 @@ namespace DotNetNuke.Framework
             if (Host.DisplayCopyright)
             {
                 Comment += string.Concat(Environment.NewLine,
-                                         "<!--************************************************************************************-->",
+                                         "<!--*********************************************-->",
                                          Environment.NewLine,
-                                         "<!-- DNN Platform - http://www.dnnsoftware.com                                        -->",
+                                         "<!-- DNN Platform - http://www.dnnsoftware.com   -->",
                                          Environment.NewLine,
-                                         "<!-- Copyright (c) 2002-2014                                                          -->",
+                                         "<!-- Copyright (c) 2002-2014, by DNN Corporation -->",
                                          Environment.NewLine,
-                                         "<!-- by DNN Corporation                                                               -->",
-                                         Environment.NewLine,
-                                         "<!--**********************************************************************************-->",
+                                         "<!--*********************************************-->",
                                          Environment.NewLine);
             }
             Page.Header.Controls.AddAt(0, new LiteralControl(Comment));
@@ -644,7 +643,7 @@ namespace DotNetNuke.Framework
                 ctlSkin = IsPopUp ? UI.Skins.Skin.GetPopUpSkin(this) : UI.Skins.Skin.GetSkin(this);
 
                 //register popup js
-                jQuery.RegisterJQueryUI(Page);
+                JavaScript.RequestRegistration(CommonJs.jQueryUI);
 
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
@@ -741,7 +740,10 @@ namespace DotNetNuke.Framework
             //add skin to page
             SkinPlaceHolder.Controls.Add(ctlSkin);
 
-            ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
+            if (PortalSettings.IncludePortalCss)
+            {
+                ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
+            }
 
             //add Favicon
             ManageFavicon();

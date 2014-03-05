@@ -74,16 +74,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     case "HostEmail":
                         if (string.IsNullOrEmpty(settingValue))
                         {
-                            settingValue = "support@" + domainName;
-
-                            //Remove any folders
-                            settingValue = settingValue.Substring(0, settingValue.IndexOf("/"));
-
-                            //Remove port number
-                            if (settingValue.IndexOf(":") != -1)
-                            {
-                                settingValue = settingValue.Substring(0, settingValue.IndexOf(":"));
-                            }
+                            settingValue = installConfig.SuperUser.Email;
                         }
 
                         break;

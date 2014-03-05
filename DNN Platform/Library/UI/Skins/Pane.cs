@@ -82,6 +82,8 @@ namespace DotNetNuke.UI.Skins
         public Pane(HtmlContainerControl pane)
         {
             PaneControl = pane;
+            //Disable ViewState (we enable it later in the process)
+            PaneControl.ViewStateMode = ViewStateMode.Disabled;
             Name = pane.ID;
         }
 

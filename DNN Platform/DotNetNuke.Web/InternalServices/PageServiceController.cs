@@ -20,6 +20,7 @@
 
 #endregion
 
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -52,6 +53,18 @@ namespace DotNetNuke.Web.InternalServices
                 return _portalId.Value;
             }
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnPagePermission]
+        public HttpResponseMessage PublishPage()
+        {
+            var tabId = Request.FindTabId();
+            TabPublishingController.Instance.PublishTab(tabId, PortalId);
+            
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -60,11 +73,8 @@ namespace DotNetNuke.Web.InternalServices
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
             bool modified;
             //Clean Url
-            var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(PortalSettings.PortalId));
-            //custom urls are special in that they can contain the / character to create path levels
-            options.ReplaceChars = options.ReplaceChars.Replace("/", "");
-            options.IllegalChars = options.IllegalChars.Replace("/", "");
-            options.RegexMatch = options.RegexMatch.Replace("[^", "[^/");
+            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs( UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(PortalSettings.PortalId)) );
+            
             //now clean the path
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)
@@ -73,7 +83,7 @@ namespace DotNetNuke.Web.InternalServices
                     new
                     {
                         Success = false,
-                        ErrorMessage = Localization.GetString("UrlPathCleaned.Error", Localization.GlobalResourceFile),
+                        ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error", Localization.GlobalResourceFile),
                         SuggestedUrlPath = "/" + urlPath
                     });
             }

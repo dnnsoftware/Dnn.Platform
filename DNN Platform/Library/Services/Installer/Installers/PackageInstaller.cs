@@ -270,26 +270,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
         }
-		
-        private string getSpecificFolderName(XPathNavigator manifestNav, string xpath, string elementName,string startWith)
-        {
-            string result = String.Empty;
-            var foldernameNav = manifestNav.Select(xpath);
-            
-            if (foldernameNav != null)
-            {
-                while(foldernameNav.MoveNext())
-                {
-                    var elementValue = Util.ReadElement(foldernameNav.Current, elementName);
-                    if(!String.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith))
-                    {
-                        result = elementValue;                        
-                        break;
-                    }
-                }
-            }
-            return result;
-        }
 
         private void ReadEventMessageNode(XPathNavigator manifestNav)
         {
@@ -533,7 +513,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 case "Module":
                     //In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
                     //To ensure that FolderName is DesktopModules...
-                    var folderNameValue = getSpecificFolderName(manifestNav, "components/component/files", "basePath", "DesktopModules");
+                    var folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
                     if (!String.IsNullOrEmpty(folderNameValue)) Package.FolderName = folderNameValue.Replace('\\', '/');
                     break;
                 case "Auth_System":
@@ -563,6 +543,10 @@ namespace DotNetNuke.Services.Installer.Installers
                     if (iconFileNav.Value.StartsWith("~/"))
                     {
                         Package.IconFile = iconFileNav.Value;
+                    }
+                    else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        Package.IconFile = string.Format("~/{0}", iconFileNav.Value);
                     }
                     else
                     {

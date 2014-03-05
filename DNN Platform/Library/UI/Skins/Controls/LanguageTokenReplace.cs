@@ -245,7 +245,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 islocalized = true;
                 if (localizedTab.IsDeleted || !TabPermissionController.CanViewPage(localizedTab))
                 {
-                    PortalInfo localizedPortal = new PortalController().GetPortal(objPortal.PortalId, newLocale.Code);
+                    PortalInfo localizedPortal = PortalController.Instance.GetPortal(objPortal.PortalId, newLocale.Code);
                     tabId = localizedPortal.HomeTabId;
                 }
                 else

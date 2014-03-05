@@ -88,7 +88,7 @@
 				<div id="copyPanel" runat="server">
 					<div class="dnnFormItem">
 						<dnn:Label ID="plCopyPage" runat="server" ResourceKey="CopyModules" Suffix=":" HelpKey="CopyModulesHelp" ControlName="cboCopyPage" />
-                        <dnn:DnnPageDropDownList ID="cboCopyPage" runat="server" AutoPostBack="True" CausesValidation="False" />
+                        <dnn:DnnPageDropDownList ID="cboCopyPage" runat="server" AutoPostBack="True" CausesValidation="False" IncludeAllTabTypes="True" />
 					</div>    	
 					<div id="modulesRow" runat="server" class="dnnFormItem">
 						<dnn:Label ID="plModules" runat="server" ResourceKey="CopyContent" Suffix=":" HelpKey="CopyContentHelp" ControlName="grdModules" />

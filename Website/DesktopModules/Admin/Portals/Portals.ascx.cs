@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
 		    int totalRecords = 0;
 		    ArrayList portals;
-            if (Filter == Localization.GetString("Expired", LocalResourceFile))
+            if (Filter.Equals(Localization.GetString("Expired", LocalResourceFile), StringComparison.InvariantCultureIgnoreCase))
             {
                 portals = PortalController.GetExpiredPortals();
                 totalRecords = portals.Count;
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     Filter = Request.QueryString["filter"];
                 }
-                if (Filter == Localization.GetString("All"))
+                if (Filter.Equals(Localization.GetString("All"), StringComparison.InvariantCultureIgnoreCase))
                 {
                     Filter = "";
                 }
@@ -291,8 +291,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             try
             {
-                var objPortalController = new PortalController();
-                var portal = objPortalController.GetPortal(Int32.Parse(e.CommandArgument.ToString()));
+                var portal = PortalController.Instance.GetPortal(Int32.Parse(e.CommandArgument.ToString()));
                 if (portal != null)
                 {
                     var strMessage = PortalController.DeletePortal(portal, Globals.GetAbsoluteServerPath(Request));

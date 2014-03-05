@@ -112,9 +112,8 @@ namespace DotNetNuke.Modules.Admin.LogViewer
             {
                 //ddlPortalid.Items.Add(new ListItem(Localization.GetString("All"), "-1"));
                 ddlPortalid.AddItem(Localization.GetString("All"), "-1");
-                var objPortalController = new PortalController();
 
-                foreach (PortalInfo portal in objPortalController.GetPortals().Cast<PortalInfo>()
+                foreach (PortalInfo portal in PortalController.Instance.GetPortals().Cast<PortalInfo>()
                                                 .OrderBy(p => p.PortalName)
                                                 .ToList())
                 {

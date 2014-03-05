@@ -65,9 +65,8 @@ namespace DotNetNuke.Modules.MemberDirectory.Components
 		private void UpdateDisplaySearchSettings()
 		{
             var moduleController = new ModuleController();
-            var portalController = new PortalController();
 
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
 				foreach (ModuleInfo module in moduleController.GetModulesByDefinition(portal.PortalID, "Member Directory"))
 	            {

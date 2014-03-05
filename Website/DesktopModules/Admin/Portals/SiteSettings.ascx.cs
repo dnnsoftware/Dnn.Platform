@@ -46,6 +46,8 @@ using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Authentication;
+using DotNetNuke.Services.Authentication.OAuth;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Localization;
@@ -127,7 +129,7 @@ namespace DesktopModules.Admin.Portals
             //else
             //{
                 autoAddAlias.Visible = true;
-                if (new PortalController().GetPortals().Count > 1)
+                if (PortalController.Instance.GetPortals().Count > 1)
                 {
                     chkAutoAddPortalAlias.Enabled = false;
                     chkAutoAddPortalAlias.Checked = false;
@@ -328,8 +330,7 @@ namespace DesktopModules.Admin.Portals
 
         private void BindPortal(int portalId, string activeLanguage)
         {
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(portalId, activeLanguage);
+            var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);
 
             if (Page.IsPostBack == false)
             {
@@ -367,6 +368,7 @@ namespace DesktopModules.Admin.Portals
                 cboAdministratorId.DataSource = roleController.GetUserRoles(portalId, null, portal.AdministratorRoleName);
                 cboAdministratorId.DataBind(portal.AdministratorId.ToString());
 
+                
                 //PortalSettings for portal being edited
                 var portalSettings = new PortalSettings(portal);
 
@@ -603,6 +605,16 @@ namespace DesktopModules.Admin.Portals
                 userVisiblity.EnumType = "DotNetNuke.Entities.Users.UserVisibilityMode, DotNetNuke";
                 profileSettings.DataSource = settings;
                 profileSettings.DataBind();
+
+                //Bind auth providers
+                var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
+                var authProviders = (from authProvider in authSystems let authLoginControl = (AuthenticationLoginBase)LoadControl("~/" + authProvider.LoginControlSrc) let oAuthLoginControl = authLoginControl as OAuthLoginBase where oAuthLoginControl ==null && authLoginControl.Enabled select authProvider.AuthenticationType).ToList();
+                authProviderCombo.DataSource = authProviders;
+                authProviderCombo.DataBind();
+                authProviderCombo.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "");
+
+                var defaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", portal.PortalID, "DNN");
+                authProviderCombo.Select(defaultAuthProvider ?? "<" + Localization.GetString("None_Specified") + ">", true);
             }
             else
             {
@@ -645,12 +657,13 @@ namespace DesktopModules.Admin.Portals
         /// 	[cnurse]	9/8/2004	Created
         /// </history>
         /// -----------------------------------------------------------------------------
-        private void LoadStyleSheet(PortalInfo portalInfo)
+        private void LoadStyleSheet(PortalInfo portal)
         {
             string uploadDirectory = "";
-            if (portalInfo != null)
+            if (portal != null)
             {
-                uploadDirectory = portalInfo.HomeDirectoryMapPath;
+                uploadDirectory = portal.HomeDirectoryMapPath;
+                chkIncludePortalCss.Checked = PortalController.GetPortalSettingAsBoolean("IncludePortalCss", portal.PortalID, false);
             }
 
             //read CSS file
@@ -661,6 +674,7 @@ namespace DesktopModules.Admin.Portals
                     txtStyleSheet.Text = text.ReadToEnd();
                 }
             }
+
         }
 
         #endregion
@@ -924,8 +938,7 @@ namespace DesktopModules.Admin.Portals
         {
             try
             {
-                var objPortalController = new PortalController();
-                PortalInfo objPortalInfo = objPortalController.GetPortal(_portalId);
+                PortalInfo objPortalInfo = PortalController.Instance.GetPortal(_portalId);
                 if (objPortalInfo != null)
                 {
                     string strMessage = PortalController.DeletePortal(objPortalInfo, Globals.GetAbsoluteServerPath(Request));
@@ -986,8 +999,7 @@ namespace DesktopModules.Admin.Portals
         {
             try
             {
-                var portalController = new PortalController();
-                PortalInfo portal = portalController.GetPortal(_portalId);
+                PortalInfo portal = PortalController.Instance.GetPortal(_portalId);
                 if (portal != null)
                 {
                     if (File.Exists(portal.HomeDirectoryMapPath + "portal.css"))
@@ -1027,8 +1039,7 @@ namespace DesktopModules.Admin.Portals
             {
                 string strUploadDirectory = "";
 
-                var objPortalController = new PortalController();
-                PortalInfo objPortal = objPortalController.GetPortal(_portalId);
+                PortalInfo objPortal = PortalController.Instance.GetPortal(_portalId);
                 if (objPortal != null)
                 {
                     strUploadDirectory = objPortal.HomeDirectoryMapPath;
@@ -1087,8 +1098,7 @@ namespace DesktopModules.Admin.Portals
             {
                 try
                 {
-                    var portalController = new PortalController();
-                    PortalInfo existingPortal = portalController.GetPortal(_portalId);
+                    PortalInfo existingPortal = PortalController.Instance.GetPortal(_portalId);
 
                     string logo = String.Format("FileID={0}", ctlLogo.FileID);
                     string background = String.Format("FileID={0}", ctlBackground.FileID);
@@ -1188,7 +1198,8 @@ namespace DesktopModules.Admin.Portals
                                                 HomeDirectory = lblHomeDirectory.Text,
                                                 CultureCode = SelectedCultureCode
                                             };
-                    portalController.UpdatePortalInfo(portal);
+                    //portalController.UpdatePortalInfo(portal);
+                    PortalController.Instance.UpdatePortalInfo(portal);
 
                     if (!refreshPage)
                     {
@@ -1226,6 +1237,7 @@ namespace DesktopModules.Admin.Portals
 
 					PortalController.UpdatePortalSetting(_portalId, "HideLoginControl", chkHideLoginControl.Checked.ToString(), false);
 					PortalController.UpdatePortalSetting(_portalId, "EnableRegisterNotification", chkEnableRegisterNotification.Checked.ToString(), false);
+                    PortalController.UpdatePortalSetting(_portalId, "IncludePortalCss", chkIncludePortalCss.Checked.ToString(), false);
 
                     pagesExtensionPoint.SaveAction(_portalId, -1, -1);
 
@@ -1324,6 +1336,11 @@ namespace DesktopModules.Admin.Portals
                                         RedirectAfterLogout.SelectedItem.Value
                                         : "-1";
                     PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogout", redirectTabId);
+
+                    var defaultAuthProvider = !String.IsNullOrEmpty(authProviderCombo.SelectedItem.Value) ?
+                                        authProviderCombo.SelectedItem.Value
+                                        : "DNN";
+                    PortalController.UpdatePortalSetting(_portalId, "DefaultAuthProvider", defaultAuthProvider);
 
                     PortalController.UpdatePortalSetting(_portalId, DotNetNuke.Entities.Urls.FriendlyUrlSettings.VanityUrlPrefixSetting, vanilyUrlPrefixTextBox.Text, false);
                     foreach (DnnFormItemBase item in profileSettings.Items)

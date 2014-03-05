@@ -190,6 +190,7 @@ namespace DotNetNuke.Common.Utilities
                     {
                         return true;
                     }
+                    
                 }
             }
             return false;

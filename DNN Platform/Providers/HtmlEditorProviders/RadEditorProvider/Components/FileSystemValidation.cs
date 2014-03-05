@@ -828,8 +828,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		{
 			try
 			{
-				var portalCtrl = new PortalController(); 
-				if (! (portalCtrl.HasSpaceAvailable(PortalController.GetCurrentPortalSettings().PortalId, contentLength)))
+                if (!PortalController.Instance.HasSpaceAvailable(PortalController.GetCurrentPortalSettings().PortalId, contentLength))
 				{
 					return string.Format(Localization.GetString("DiskSpaceExceeded"), ToEndUserPath(virtualPathAndName));
 				}

@@ -46,6 +46,7 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
+using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
@@ -70,9 +71,18 @@ namespace DotNetNuke.Entities.Portals
 	/// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites, 
 	/// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
 	/// </remarks>
-    public class PortalController : IPortalController
+    public class PortalController : ServiceLocator<IPortalController, PortalController>, IPortalController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PortalController));
+
+        #region ServiceLocator Implement
+
+        protected override Func<IPortalController> GetFactory()
+        {
+            return () => new PortalController();
+        }
+
+        #endregion
 
         #region const values
 
@@ -429,10 +439,9 @@ namespace DotNetNuke.Entities.Portals
 
         }
 
-        private static PortalInfo GetPortalInternal(int portalID, string cultureCode)
+        private static PortalInfo GetPortalInternal(int portalId, string cultureCode)
         {
-            var controller = new PortalController();
-            return controller.GetPortalList(cultureCode).SingleOrDefault(p => p.PortalID == portalID);
+            return PortalController.Instance.GetPortalList(cultureCode).SingleOrDefault(p => p.PortalID == portalId);
         }
 
         private static object GetPortalDefaultLanguageCallBack(CacheItemArgs cacheItemArgs)
@@ -1551,7 +1560,7 @@ namespace DotNetNuke.Entities.Portals
                                 string templateFile, string homeDirectory, string portalAlias,
                                 string serverPath, string childPath, bool isChildPortal)
         {
-            var template = TestablePortalController.Instance.GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
+            var template = GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
 
             return CreatePortal(portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias,
                                 serverPath, childPath, isChildPortal);
@@ -2275,6 +2284,18 @@ namespace DotNetNuke.Entities.Portals
             return portal;
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets information of a portal
+        /// </summary>
+        /// <param name = "portalId">Id of the portal</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <returns>PortalInfo object with portal definition</returns>
+        /// <remarks>
+        /// </remarks>
+        /// <history>
+        /// </history>
+        /// -----------------------------------------------------------------------------
         public PortalInfo GetPortal(int portalId, string cultureCode)
         {
             PortalInfo portal = GetPortalInternal(portalId, cultureCode);
@@ -2325,6 +2346,11 @@ namespace DotNetNuke.Entities.Portals
             return new ArrayList(portals);
         }
 
+        /// <summary>
+        /// Get portals in specific culture.
+        /// </summary>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <returns></returns>
         public List<PortalInfo> GetPortalList(string cultureCode)
         {
             string cacheKey = String.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
@@ -2568,12 +2594,12 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Processess a template file for the new portal. This method will be called twice: for the portal template and for the admin template
         /// </summary>
-        /// <param name="PortalId">PortalId of the new portal</param>
-        /// <param name="TemplatePath">Path for the folder where templates are stored</param>
-        /// <param name="TemplateFile">Template file to process</param>
-        /// <param name="AdministratorId">UserId for the portal administrator. This is used to assign roles to this user</param>
+        /// <param name="portalId">PortalId of the new portal</param>
+        /// <param name="templatePath">Path for the folder where templates are stored</param>
+        /// <param name="templateFile">Template file to process</param>
+        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user</param>
         /// <param name="mergeTabs">Flag to determine whether Module content is merged.</param>
-        /// <param name="IsNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
+        /// <param name="isNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
         /// <remarks>
         /// The roles and settings nodes will only be processed on the portal template file.
         /// </remarks>
@@ -2581,38 +2607,56 @@ namespace DotNetNuke.Entities.Portals
         /// 	[VMasanas]	27/08/2004	Created
         /// </history>
         /// -----------------------------------------------------------------------------
-        public void ParseTemplate(int PortalId, string TemplatePath, string TemplateFile, int AdministratorId, PortalTemplateModuleAction mergeTabs, bool IsNewPortal)
+        public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             LocaleCollection localeCollection;
-            ParseTemplate(PortalId, TemplatePath, TemplateFile, AdministratorId, mergeTabs, IsNewPortal, out localeCollection);
+            ParseTemplate(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
         }
 
-        public void ParseTemplate(int PortalId, string TemplatePath, string TemplateFile, int AdministratorId, PortalTemplateModuleAction mergeTabs, bool IsNewPortal, out LocaleCollection localeCollection)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Processess a template file for the new portal. This method will be called twice: for the portal template and for the admin template
+        /// </summary>
+        /// <param name="portalId">PortalId of the new portal</param>
+        /// <param name="templatePath">Path for the folder where templates are stored</param>
+        /// <param name="templateFile">Template file to process</param>
+        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user</param>
+        /// <param name="mergeTabs">Flag to determine whether Module content is merged.</param>
+        /// <param name="isNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
+        /// <param name="localeCollection">Fill with the enabled locales from template.</param>
+        /// <remarks>
+        /// The roles and settings nodes will only be processed on the portal template file.
+        /// </remarks>
+        /// <history>
+        /// 	[VMasanas]	27/08/2004	Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
         {
-            XmlDocument xmlPortal = new XmlDocument();
+            var xmlPortal = new XmlDocument();
             IFolderInfo objFolder;
             XmlNode node;
             try
             {
-                xmlPortal.Load(Path.Combine(TemplatePath, TemplateFile));
+                xmlPortal.Load(Path.Combine(templatePath, templateFile));
             }
             catch(Exception ex)
             {
 				Logger.Error(ex);
             }
             node = xmlPortal.SelectSingleNode("//portal/settings");
-            if (node != null && IsNewPortal)
+            if (node != null && isNewPortal)
             {
-                ParsePortalSettings(node, PortalId);
+                ParsePortalSettings(node, portalId);
             }
             node = xmlPortal.SelectSingleNode("//locales");
-            if (node != null && IsNewPortal)
+            if (node != null && isNewPortal)
             {
-               localeCollection = ParseEnabledLocales(node, PortalId);
+               localeCollection = ParseEnabledLocales(node, portalId);
             }
             else
             {
-                var portalInfo = new PortalController().GetPortal(PortalId);
+                var portalInfo = PortalController.Instance.GetPortal(portalId);
                 var defaultLocale = LocaleController.Instance.GetLocale(portalInfo.DefaultLanguage);
                 if (defaultLocale == null)
                 {
@@ -2624,36 +2668,36 @@ namespace DotNetNuke.Entities.Portals
             node = xmlPortal.SelectSingleNode("//portal/rolegroups");
             if (node != null)
             {
-                ParseRoleGroups(node.CreateNavigator(), PortalId, AdministratorId);
+                ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
             }
             node = xmlPortal.SelectSingleNode("//portal/roles");
             if (node != null)
             {
-                ParseRoles(node.CreateNavigator(), PortalId, AdministratorId);
+                ParseRoles(node.CreateNavigator(), portalId, administratorId);
             }
             node = xmlPortal.SelectSingleNode("//portal/portalDesktopModules");
             if (node != null)
             {
-                ParsePortalDesktopModules(node.CreateNavigator(), PortalId);
+                ParsePortalDesktopModules(node.CreateNavigator(), portalId);
             }
             node = xmlPortal.SelectSingleNode("//portal/folders");
             if (node != null)
             {
-                ParseFolders(node, PortalId);
+                ParseFolders(node, portalId);
             }
 
-            var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(PortalId);
+            var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
 
-            if (FolderManager.Instance.GetFolder(PortalId, "") == null)
+            if (FolderManager.Instance.GetFolder(portalId, "") == null)
             {
                 objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, "");
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
-                AddFolderPermissions(PortalId, objFolder.FolderID);
+                AddFolderPermissions(portalId, objFolder.FolderID);
             }
 
-            if (FolderManager.Instance.GetFolder(PortalId, "Templates/") == null)
+            if (FolderManager.Instance.GetFolder(portalId, "Templates/") == null)
             {
                 objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, "Templates/");
                 objFolder.IsProtected = true;
@@ -2663,7 +2707,7 @@ namespace DotNetNuke.Entities.Portals
             }
 
             // force creation of users folder if not present on template
-            if (FolderManager.Instance.GetFolder(PortalId, "Users/") == null)
+            if (FolderManager.Instance.GetFolder(portalId, "Users/") == null)
             {
                 objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, "Users/");
                 objFolder.IsProtected = true;
@@ -2676,7 +2720,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 TabController objTabs = new TabController();
                 TabInfo objTab;
-                foreach (KeyValuePair<int, TabInfo> tabPair in objTabs.GetTabsByPortal(PortalId))
+                foreach (KeyValuePair<int, TabInfo> tabPair in objTabs.GetTabsByPortal(portalId))
                 {
                     objTab = tabPair.Value;
                     objTab.TabName = objTab.TabName + "_old";
@@ -2701,12 +2745,12 @@ namespace DotNetNuke.Entities.Portals
                     XmlDocument xmlAdmin = new XmlDocument();
                     try
                     {
-                        string path = Path.Combine(TemplatePath, "admin.template");
+                        string path = Path.Combine(templatePath, "admin.template");
                         if(!File.Exists(path))
                         {
                             //if the template is a merged copy of a localized templte the
                             //admin.template may be one director up
-                            path = Path.Combine(TemplatePath, "..\admin.template");
+                            path = Path.Combine(templatePath, "..\admin.template");
                         }
 
                         xmlAdmin.Load(path);
@@ -2722,24 +2766,8 @@ namespace DotNetNuke.Entities.Portals
 						Logger.Error(ex);
 					}
                 }
-                ParseTabs(node, PortalId, false, mergeTabs, IsNewPortal);
+                ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
             }
-        }
-
-        /// <summary>
-        /// Processes the resource file for the template file selected
-        /// </summary>
-        /// <param name="portalPath">New portal's folder</param>
-        /// <param name="TemplateFile">Selected template file</param>
-        /// <remarks>
-        /// The resource file is a zip file with the same name as the selected template file and with
-        /// an extension of .resources (to disable this file being downloaded).
-        /// For example: for template file "portal.template" a resource file "portal.template.resources" can be defined.
-        /// </remarks>
-        [Obsolete("Deprecated in DNN 6.2.0 use ProcessResourceFileExplicit instead")]
-        public void ProcessResourceFile(string portalPath, string TemplateFile)
-        {
-            ProcessResourceFileExplicit(portalPath, TemplateFile + ".resources");
         }
 
         /// <summary>
@@ -2806,6 +2834,7 @@ namespace DotNetNuke.Entities.Portals
         /// Updates basic portal information
         /// </summary>
         /// <param name="portal"></param>
+        /// <param name="clearCache">Whether clear cache after update portal info.</param>
         /// <remarks>
         /// </remarks>
         /// <history>
@@ -3106,11 +3135,10 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>If the method executed successful, it will return NullString, otherwise return error message.</returns>
         public static string DeletePortal(PortalInfo portal, string serverPath)
         {
-            var portalController = new PortalController();
             string message = string.Empty;
 
             //check if this is the last portal
-            int portalCount = portalController.GetPortals().Count;
+            int portalCount = PortalController.Instance.GetPortals().Count;
             if (portalCount > 1)
             {
                 if (portal != null)
@@ -3144,7 +3172,7 @@ namespace DotNetNuke.Entities.Portals
                         }
                     }
                     //remove database references
-                    portalController.DeletePortalInfo(portal.PortalID);
+                    PortalController.Instance.DeletePortalInfo(portal.PortalID);
                 }
             }
             else
@@ -3257,9 +3285,7 @@ namespace DotNetNuke.Entities.Portals
         {
             if (portalId > Null.NullInteger && Globals.Status != Globals.UpgradeStatus.Upgrade)
             {
-                //var portalController = new PortalController();
-                var portalController = TestablePortalController.Instance;
-                var portal = portalController.GetPortal(portalId);
+                var portal = PortalController.Instance.GetPortal(portalId);
                 var portalGroup = (from p in PortalGroupController.Instance.GetPortalGroups()
                                    where p.PortalGroupId == portal.PortalGroupID
                                    select p)
@@ -3314,9 +3340,7 @@ namespace DotNetNuke.Entities.Portals
 
         public static bool IsMemberOfPortalGroup(int portalId)
         {
-            //var portalController = new PortalController();
-            var portalController = TestablePortalController.Instance;
-            var portal = portalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
 
 			return portal != null && portal.PortalGroupID > Null.NullInteger;
         }
@@ -3658,7 +3682,7 @@ namespace DotNetNuke.Entities.Portals
 
         public static void IncrementOverridingPortalsCrmVersion()
         {
-            foreach (PortalInfo portal in new PortalController().GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 string setting = GetPortalSetting(ClientResourceSettings.OverrideDefaultSettingsKey, portal.PortalID, "False");
                 bool overriden;
@@ -3784,6 +3808,21 @@ namespace DotNetNuke.Entities.Portals
             UpdatePortalInfo(portal);
         }
 
+        /// <summary>
+        /// Processes the resource file for the template file selected
+        /// </summary>
+        /// <param name="portalPath">New portal's folder</param>
+        /// <param name="TemplateFile">Selected template file</param>
+        /// <remarks>
+        /// The resource file is a zip file with the same name as the selected template file and with
+        /// an extension of .resources (to disable this file being downloaded).
+        /// For example: for template file "portal.template" a resource file "portal.template.resources" can be defined.
+        /// </remarks>
+        [Obsolete("Deprecated in DNN 6.2.0 use ProcessResourceFileExplicit instead")]
+        public void ProcessResourceFile(string portalPath, string TemplateFile)
+        {
+            ProcessResourceFileExplicit(portalPath, TemplateFile + ".resources");
+        }
 
         #endregion
 	}

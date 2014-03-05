@@ -220,15 +220,17 @@ namespace DotNetNuke.Modules.Html
 
         private string DeTokeniseLinks(string content, int portalId)
         {
-
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
             var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
             if (!portalRoot.StartsWith("/"))
             {
                 portalRoot = "/" + portalRoot;
             }
-            content = content.Replace(PortalRootToken, portalRoot);
+            if (!portalRoot.EndsWith("/"))
+            {
+                portalRoot = portalRoot + "/";
+            }
+            content = Regex.Replace(content, PortalRootToken + "\\/{0,1}", portalRoot, RegexOptions.IgnoreCase);
 
             return content;
         }
@@ -236,12 +238,15 @@ namespace DotNetNuke.Modules.Html
         private string TokeniseLinks(string content, int portalId)
         {
             //Replace any relative portal root reference by a token "{{PortalRoot}}"
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
             var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
             if (!portalRoot.StartsWith("/"))
             {
                 portalRoot = "/" + portalRoot;
+            }
+            if (!portalRoot.EndsWith("/"))
+            {
+                portalRoot = portalRoot + "/";
             }
             Regex exp = new Regex(portalRoot, RegexOptions.IgnoreCase);
             content = exp.Replace(content, PortalRootToken);

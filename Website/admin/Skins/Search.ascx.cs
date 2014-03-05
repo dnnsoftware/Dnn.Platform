@@ -466,7 +466,6 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
                         
-            Framework.jQuery.RegisterDnnJQueryPlugins(this.Page);
             Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Search/SearchSkinObjectPreview.css");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Search/SearchSkinObjectPreview.js");

@@ -1331,8 +1331,8 @@ Please do not reply to this email.</value>
   <data name="//Admin//FileManagement.String" xml:space="preserve">
     <value>File Management</value>
   </data>
-  <data name="UrlPathCleaned.Error" xml:space="preserve">
-    <value>The Page URL entered contains characters which cannot be used in a URL.   These characters have been removed.  Click the 'Update' button again to accept the modified URL.</value>
+  <data name="CustomUrlPathCleaned.Error" xml:space="preserve">
+    <value>The Page URL entered contains characters which cannot be used in a URL or are illegal characters for a URL.   These characters have been removed.  Click the 'Update' button again to accept the modified URL.&lt;br&gt;[NOTE: The illegal characters list is the following: &lt;&gt;\?:&amp;=+|%# ]</value>
   </data>
   <data name="UrlPathNotUnique.Error" xml:space="preserve">
     <value>The submitted URL is not available.  If you wish to accept the suggested alternative, please click Save.</value>

@@ -66,19 +66,15 @@ namespace DotNetNuke.Services.Log.SiteLog
 
         private void DoPurgeSiteLog()
         {
-            var objSiteLog = new SiteLogController();
-            var objPortals = new PortalController();
-            ArrayList arrPortals = objPortals.GetPortals();
-            PortalInfo objPortal;
-            DateTime PurgeDate;
-            int intIndex;
-            for (intIndex = 0; intIndex <= arrPortals.Count - 1; intIndex++)
+            var siteLogController = new SiteLogController();
+            var portals = PortalController.Instance.GetPortals();
+            for (var index = 0; index <= portals.Count - 1; index++)
             {
-                objPortal = (PortalInfo) arrPortals[intIndex];
-                if (objPortal.SiteLogHistory > 0)
+                var portal = (PortalInfo) portals[index];
+                if (portal.SiteLogHistory > 0)
                 {
-                    PurgeDate = DateTime.Now.AddDays(-(objPortal.SiteLogHistory));
-                    objSiteLog.DeleteSiteLog(PurgeDate, objPortal.PortalID);
+                    var purgeDate = DateTime.Now.AddDays(-(portal.SiteLogHistory));
+                    siteLogController.DeleteSiteLog(purgeDate, portal.PortalID);
                 }
             }
         }

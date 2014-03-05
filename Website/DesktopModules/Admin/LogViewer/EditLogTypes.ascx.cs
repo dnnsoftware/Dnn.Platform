@@ -80,10 +80,9 @@ namespace DotNetNuke.Modules.Admin.LogViewer
 
         private void BindDetailData()
         {
-            var pc = new PortalController();
             cboLogTypePortalID.DataTextField = "PortalName";
             cboLogTypePortalID.DataValueField = "PortalID";
-            cboLogTypePortalID.DataSource = pc.GetPortals();
+            cboLogTypePortalID.DataSource = PortalController.Instance.GetPortals();
             cboLogTypePortalID.DataBind();
 
 // ReSharper disable LocalizableElement

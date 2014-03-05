@@ -114,8 +114,7 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalSettings(int tabID, int portalID)
         {
-            var controller = new PortalController();
-            var portal = controller.GetPortal(portalID);
+            var portal = PortalController.Instance.GetPortal(portalID);
             GetPortalSettings(tabID, portal);
         }
 
@@ -138,8 +137,7 @@ namespace DotNetNuke.Entities.Portals
             ActiveTab = new TabInfo();
             PortalId = objPortalAliasInfo.PortalID;
             PortalAlias = objPortalAliasInfo;
-            var controller = new PortalController();
-            var portal = controller.GetPortal(PortalId);
+            var portal = PortalController.Instance.GetPortal(PortalId);
             if (portal != null)
             {
                 GetPortalSettings(tabID, portal);
@@ -497,6 +495,14 @@ namespace DotNetNuke.Entities.Portals
 
         public string HomeDirectoryMapPath { get; private set; }
 
+        public bool IncludePortalCss
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("IncludePortalCss", PortalId, false);
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the Inline Editor is enabled
@@ -744,6 +750,17 @@ namespace DotNetNuke.Entities.Portals
 				return PortalController.GetPortalSettingAsBoolean("EnableRegisterNotification", PortalId, true);
 		    }
 	    }
+
+        /// <summary>
+        /// Website Administrator whether receive the notification email when new user register.
+        /// </summary>
+        public string DefaultAuthProvider
+        {
+            get
+            {
+                return PortalController.GetPortalSetting("DefaultAuthProvider", PortalId, "DNN");
+            }
+        }
 
         #endregion
 

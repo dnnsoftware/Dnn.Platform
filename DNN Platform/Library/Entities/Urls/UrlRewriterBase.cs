@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Urls
         protected static bool CanAutoAddPortalAlias()
         {
             bool autoAddPortalAlias = HostController.Instance.GetBoolean("AutoAddPortalAlias");
-            autoAddPortalAlias = autoAddPortalAlias && (new PortalController().GetPortals().Count == 1);
+            autoAddPortalAlias = autoAddPortalAlias && (PortalController.Instance.GetPortals().Count == 1);
             return autoAddPortalAlias;
         }
     }

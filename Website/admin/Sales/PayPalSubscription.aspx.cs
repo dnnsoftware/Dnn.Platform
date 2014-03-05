@@ -73,8 +73,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     intRoleId = int.Parse(Request.QueryString["roleid"]);
                 }
                 string strProcessorUserId = "";
-                var objPortalController = new PortalController();
-                PortalInfo objPortalInfo = objPortalController.GetPortal(PortalSettings.PortalId);
+                PortalInfo objPortalInfo = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                 if (objPortalInfo != null)
                 {
                     strProcessorUserId = objPortalInfo.ProcessorUserId;

@@ -307,6 +307,12 @@ namespace DotNetNuke.UI.ControlPanels
                         returnValue = Globals.NavigateURL("Tab", "activeTab=settingTab");
                     }
                     break;
+                case "PublishPage":
+                    if (TabPermissionController.CanAdminPage())
+                    {
+                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID);
+                    }
+                    break;
                 default:
                     if ((!string.IsNullOrEmpty(moduleFriendlyName)))
                     {
@@ -541,18 +547,23 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetButtonConfirmMessage(string toolName)
         {
-            if (toolName == "DeletePage")
+            switch (toolName)
             {
-                return ClientAPI.GetSafeJSString(Localization.GetString("Tool.DeletePage.Confirm", LocalResourceFile));
+                case "DeletePage":
+                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.DeletePage.Confirm", LocalResourceFile));
+                    break;
+                case "PublishPage":
+                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.PublishPage.Confirm", LocalResourceFile));
+                    break;
+                default:
+                    return string.Empty;
+                    break;
             }
-
-            return string.Empty;
         }    
 
         protected IEnumerable<string[]> LoadPortalsList()
         {
-            var portalCtrl = new PortalController();
-            ArrayList portals = portalCtrl.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
 
             List<string[]> result = new List<string[]>();
             foreach (var portal in portals)
@@ -760,9 +771,7 @@ namespace DotNetNuke.UI.ControlPanels
             // Are we in a group of one?
             if (result == null || result.Length == 0)
             {
-                var portalController = new PortalController();
-
-                result = new[] { portalController.GetPortal(PortalSettings.Current.PortalId) };
+                result = new[] { PortalController.Instance.GetPortal(PortalSettings.Current.PortalId) };
             }
 
             return result;

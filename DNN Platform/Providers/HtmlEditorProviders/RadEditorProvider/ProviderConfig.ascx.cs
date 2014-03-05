@@ -1611,8 +1611,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 							{
 								try
 								{
-									PortalController pc = new PortalController();
-									PortalInfo p = pc.GetPortal(Convert.ToInt32(strTargetTab.ToLower().Replace("portalid.", "")));
+                                    PortalInfo p = PortalController.Instance.GetPortal(Convert.ToInt32(strTargetTab.ToLower().Replace("portalid.", "")));
 									if (p != null)
 									{
 										if (p.PortalID != PortalSettings.PortalId)

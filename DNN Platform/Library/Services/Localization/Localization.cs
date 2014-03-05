@@ -440,7 +440,7 @@ namespace DotNetNuke.Services.Localization
                                        UserController.GetCurrentUserInfo().UserID,
                                        EventLogController.EventLogType.LANGUAGETOPORTAL_CREATED);
 
-                    var portalInfo = new PortalController().GetPortal(portalID);
+                    var portalInfo = PortalController.Instance.GetPortal(portalID);
                     if (portalInfo != null && newLocale.Code != portalInfo.DefaultLanguage)
                     {
                         // check to see if this is the first extra language being added to the portal
@@ -468,7 +468,7 @@ namespace DotNetNuke.Services.Localization
             if (Config.GetFriendlyUrlProvider() == "advanced")
             {
                 // create new HTTPAlias for language
-                var portalInfo = new PortalController().GetPortal(portalId);
+                var portalInfo = PortalController.Instance.GetPortal(portalId);
                 PortalAliasInfo currentAlias = null;
                 string httpAlias = null;
 
@@ -565,8 +565,7 @@ namespace DotNetNuke.Services.Localization
 
         public static void AddLanguageToPortals(int languageID)
         {
-            var controller = new PortalController();
-            foreach (PortalInfo portal in controller.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portal.PortalID, languageID, false);
@@ -1873,7 +1872,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     // only do this with Advanced URL Management
 
-                    var portalInfo = new PortalController().GetPortal(portalID);
+                    var portalInfo = PortalController.Instance.GetPortal(portalID);
                     if (portalInfo != null)
                     {
                         // check to see if this is the last extra language being added to the portal
@@ -1916,20 +1915,19 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        public static void RemoveLanguageFromPortals(int languageID)
+        public static void RemoveLanguageFromPortals(int languageId)
         {
-            var controller = new PortalController();
-            foreach (PortalInfo portal in controller.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                RemoveLanguageFromPortal(portal.PortalID, languageID);
+                RemoveLanguageFromPortal(portal.PortalID, languageId);
             }
         }
 
-        public static void RemoveLanguagesFromPortal(int portalID)
+        public static void RemoveLanguagesFromPortal(int portalId)
         {
-            foreach (Locale locale in LocaleController.Instance.GetLocales(portalID).Values)
+            foreach (Locale locale in LocaleController.Instance.GetLocales(portalId).Values)
             {
-                RemoveLanguageFromPortal(portalID, locale.LanguageId);
+                RemoveLanguageFromPortal(portalId, locale.LanguageId);
             }
         }
 

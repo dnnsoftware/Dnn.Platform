@@ -91,8 +91,7 @@ namespace DotNetNuke.Services.ModuleCache
                 }
             }
 
-            var portalController = new PortalController();
-            PortalInfo portalInfo = portalController.GetPortal(portalId);
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
 
             string homeDirectoryMapPath = portalInfo.HomeDirectoryMapPath;
 

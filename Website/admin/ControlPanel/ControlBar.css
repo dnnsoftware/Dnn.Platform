@@ -826,6 +826,19 @@ div.ControlBar_ModuleListWaiter {
         text-shadow: none;
     }
 
+    div.ControlBar_ModuleListWaiter.NextElements {
+        background-position: 90% 50%;
+        width: 100%;
+        opacity: 0.6;
+        position: absolute;
+        margin-top: 0px;
+        z-index: 10;
+    }
+
+    div.ControlBar_ModuleListWaiter.NextElements > p {
+        display: none;
+    }
+
 div.ControlBar_ModuleListMessage > p {
     margin-top: 85px;
 }
@@ -1136,6 +1149,71 @@ ul#ControlBar_Module_ModulePosition {
 
 #ControlBar_ControlPanel .dnnDropDownList .dt-container .sort-button.asc span {
     background-position: 100% -12px;
+}
+
+
+#ControlBar_Module_AddNewModule .search-container {
+    position: absolute;
+    margin-left: 10px;
+    display: inline;
+}
+
+#ControlBar_Module_AddNewModule .search-container .search-input-container {
+    background: #252525;
+    background: -moz-linear-gradient(top, #252525 1%, #464547 60%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#252525), color-stop(60%,#464547));
+    background: -webkit-linear-gradient(top, #252525 1%,#464547 60%);
+    background: -o-linear-gradient(top, #252525 1%,#464547 60%);
+    background: -ms-linear-gradient(top, #252525 1%,#464547 60%);
+    background: linear-gradient(to bottom, #252525 1%,#464547 60%);
+    border: 1px solid #222;
+    box-shadow: 0px 2px 3px -2px #ccc, 0px 3px 10px 1px #101010 inset;  
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height: 32px;
+    width: 134px;
+    padding: 0 33px 1px 33px;
+    margin: 0;    
+    position: relative;
+    top: -1px;
+}
+
+#ControlBar_Module_AddNewModule .search-container input.search-input {
+    background: transparent;
+    color: #999;
+    padding: 8px 1px 7px 1px;
+    width: 100%;
+    max-width: none;
+    display: block;    
+    border: none;
+    margin: 0;
+    box-shadow: none !important;
+    outline: none;
+}
+
+#ControlBar_Module_AddNewModule .search-container .clear-button,
+#ControlBar_Module_AddNewModule .search-container .search-button {
+    display: block;
+    position: absolute;
+    width: 22px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-position: center center;    
+    cursor: pointer;
+}
+
+#ControlBar_Module_AddNewModule .search-container .search-button {
+    left: 8px;
+    top: 8px;
+    background-image: url("images/controlbar_search.png");
+    background-color: transparent;
+}
+
+#ControlBar_Module_AddNewModule .search-container .clear-button {
+    right: 8px;
+    top: 8px;
+    background-image: url("images/controlbar_cleartext.png");
+    background-color: transparent;
 }
 
 #ControlBar_ControlPanel .dnnBlackDropDown .dt-container .search-container .search-input-container {

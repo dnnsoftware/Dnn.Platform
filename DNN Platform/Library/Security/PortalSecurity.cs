@@ -147,7 +147,9 @@ namespace DotNetNuke.Security
                                       "javascript:",
                                       "vbscript:",
                                       "unescape",
-                                      "alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?"
+                                      "alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?",
+                                      @"eval*.\(",
+                                      "onload"
                                   };
 
             const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;

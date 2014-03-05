@@ -202,7 +202,6 @@ namespace DotNetNuke.Modules.Admin.Languages
         protected void updateButton_Click(object sender, EventArgs e)
         {
             var tabCtrl = new TabController();
-            var portalCtrl = new PortalController();
             int languageCount = LocaleController.Instance.GetLocales(PortalSettings.PortalId).Count;
             List<TabInfo> pageList = tabCtrl.GetDefaultCultureTabList(PortalId);
 
@@ -233,7 +232,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     ProcessLanguage(pageList, locale, languageCounter, languageCount);
 
                     //Map special pages
-                    portalCtrl.MapLocalizedSpecialPages(PortalSettings.PortalId, locale.Code);
+                    PortalController.Instance.MapLocalizedSpecialPages(PortalSettings.PortalId, locale.Code);
                 }
             }
             //Restore Script Timeout

@@ -180,6 +180,7 @@
     <Content Include="Module.build" />
     <None Include="module.css" />
     <Content Include="packages.config" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.02.02.SqlDataProvider" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
   </ItemGroup>

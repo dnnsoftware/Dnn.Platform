@@ -1,2 +1,2 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.LinkToFullSite" CodeFile="LinkToFullSite.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.LinkToFullSite" CodeFile="LinkToFullSite.ascx.cs" ViewStateMode="Disabled" %>
 <asp:HyperLink ID="lnkPortal" runat="server" CssClass="SkinObject" />

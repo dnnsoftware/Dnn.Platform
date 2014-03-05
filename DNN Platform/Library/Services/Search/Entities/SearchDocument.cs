@@ -131,6 +131,12 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>
         /// A string representation of roles and users who have view (or denied view) permissions
         /// </summary>
+        /// <remarks>The Permission property is same as how it’s implement internally in the Platform. Allow or Deny permission can be specified for RoleNamess and / or UserIds. 
+        /// A semicolon must be specified to separate two RoleName or UserId.
+        ///     "!Translator (en-US);![3];[5];Administrators; ContentEditorRole"
+        ///     ! -- identifies denied permission
+        ///     [n] -- identifies UserId
+        ///Above example denies permission to Role “Translator (en-Us)” and UserId 3, but allows permission to Roles “Administrators” and “ContentEditorRole” and UserId</remarks>
         public string Permissions { get; set; }
 
         /// <summary>

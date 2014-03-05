@@ -339,8 +339,7 @@ namespace DotNetNuke.Modules.Admin.Security
             RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
             if (objRole.IsPublic)
             {
-                var objPortals = new PortalController();
-                PortalInfo objPortal = objPortals.GetPortal(PortalSettings.PortalId);
+                PortalInfo objPortal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                 if (objRole.ServiceFee == 0.0)
                 {
                     showSubscribe = true;

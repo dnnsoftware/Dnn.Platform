@@ -87,7 +87,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install/launchautoinstall", "").Replace("/install", "").Replace("/runinstall", "");
             }
 
-            var portalController = new PortalController();
             var serverPath = Globals.ApplicationMapPath + "\\";
 
             //Get the Portal Alias
@@ -135,7 +134,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 childPath = portalAlias.Substring(portalAlias.LastIndexOf("/") + 1);
             
             //Create Portal
-            var portalId = portalController.CreatePortal(portal.PortalName,
+            var portalId = PortalController.Instance.CreatePortal(portal.PortalName,
                                                      userInfo,
                                                      portal.Description,
                                                      portal.Keywords,
@@ -150,7 +149,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             {
                 foreach (var alias in portal.PortAliases)
                 {
-                    portalController.AddPortalAlias(portalId, alias);
+                    PortalController.Instance.AddPortalAlias(portalId, alias);
                 }
             }
 

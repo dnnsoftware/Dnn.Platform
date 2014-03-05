@@ -42,6 +42,10 @@ IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopMod
 	DROP INDEX [IX_{objectQualifier}DesktopModulePermission_Roles] ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
 GO
 
+--Correct error data
+UPDATE {databaseOwner}[{objectQualifier}FolderPermission] SET RoleID = NULL WHERE UserID IS NOT NULL
+GO
+
 CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}DesktopModulePermission_Roles ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
 	(RoleID, PortalDesktopModuleID, PermissionID) 
 	INCLUDE (AllowAccess)
@@ -1012,7 +1016,7 @@ GO
 --DNN-21164
  
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_Visibility')
-	DROP INDEX {databaseOwner}[{objectQualifier}UserProfile].[IX_{objectQualifier}UserProfile_Visibility]
+	DROP INDEX [IX_{objectQualifier}UserProfile_Visibility] ON {databaseOwner}[{objectQualifier}UserProfile]
 GO
 
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserProfile_Visibility] ON {databaseOwner}[{objectQualifier}UserProfile]
@@ -1024,11 +1028,17 @@ GO
 UPDATE {databaseOwner}{objectQualifier}HostSettings Set SettingValue='Admin/ControlPanel/ControlBar.ascx' WHERE SettingName='ControlPanel' AND SettingValue='Admin/ControlPanel/IconBar.ascx'
 GO
 
---DNN-3185
-IF EXISTS (SELECT * FROM dbo.sysconstraints WHERE id = OBJECT_ID(N'{objectQualifier}ModuleDefinitions') AND constid = OBJECT_ID(N'IX_{objectQualifier}ModuleDefinitions'))
- ALTER TABLE {databaseOwner}{objectQualifier}ModuleDefinitions
- DROP CONSTRAINT IX_{objectQualifier}ModuleDefinitions
- GO
+--DNN-3185: IX_ModuleDefinitions maybe a constraint or index in 6.x or 7.x, so we need handle both type and remove it, then create new on on DefinitionName column.
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModuleDefinitions]') AND name = N'IX_{objectQualifier}ModuleDefinitions' AND is_unique_constraint = 1)
+    ALTER TABLE {databaseOwner}{objectQualifier}ModuleDefinitions DROP CONSTRAINT IX_{objectQualifier}ModuleDefinitions
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModuleDefinitions]') AND name = N'IX_{objectQualifier}ModuleDefinitions' AND is_unique_constraint = 0)
+    DROP INDEX [IX_{objectQualifier}ModuleDefinitions] ON {databaseOwner}[{objectQualifier}ModuleDefinitions]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModuleDefinitions ON {databaseOwner}[{objectQualifier}ModuleDefinitions](DefinitionName)
+GO
 
  /***** Fix bug DNN-4770: update default skin packages as normal package to allow delete it. *****/
  UPDATE {databaseOwner}{objectQualifier}Packages SET 
@@ -1551,7 +1561,411 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 	DROP TABLE {databaseOwner}[{objectQualifier}SearchWord]
 GO
 
+/*****  DNN-4862: when user doesn't have profile, return default visibility mode and user's update date. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]') AND type in (N'P', N'PC'))
+        DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+GO
 
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+    @PortalId INT ,
+    @StartDate DATETIME ,
+        @startUserId INT = 0,
+    @numberOfUsers INT = 500
+AS 
+    BEGIN
+        WITH    ValidDataType
+                  AS ( SELECT   EntryID
+                       FROM     {databaseOwner}[{objectQualifier}Lists]
+                       WHERE    ListName = 'DataType'
+                                AND SystemList = 1
+                                AND Value IN ( 'Text', 'RichText' )
+                     ),
+                  ValidUsers AS 
+                  (
+                                      SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
+                         FROM ( SELECT DISTINCT
+                                            ( u.UserID )
+                                  FROM      {databaseOwner}[{objectQualifier}Users] u
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                                            LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                                  WHERE     (up.PortalId = @PortalId OR up.PortalId IS NULL)
+                                            AND (u.LastModifiedOnDate > @StartDate OR (p.LastUpdatedDate IS NOT NULL AND (p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)))
+                                            AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+                                ) AS T WHERE UserID > @startUserId) AS T
+                                WHERE rownumber <= @numberOfUsers
+                     ),
+                     FirstName AS (
+                                                SELECT UserID, PropertyValue FROM {databaseOwner}[{objectQualifier}UserProfile] p
+                                                INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+                                                WHERE pd.PropertyName = 'FirstName' AND pd.PortalID = @PortalID
+                                         )
+
+
+            SELECT  DISTINCT u.UserID ,
+                                        u.DisplayName,
+                    fn.PropertyValue AS FirstName,
+                    pd.PropertyName ,
+                    CASE WHEN (p.PropertyValue IS NULL) THEN p.PropertyText ELSE p.PropertyValue END AS PropertyValue,
+                    CASE WHEN (p.Visibility IS NULL) THEN 0 ELSE p.Visibility END AS Visibility,
+                    p.ExtendedVisibility,
+                    CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate OR p.LastUpdatedDate IS NULL THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END AS 'ModifiedTime'
+            FROM    {databaseOwner}[{objectQualifier}Users] u
+                    INNER JOIN ValidUsers vu ON vu.UserId = u.UserID
+                    LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                    LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                    LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                    LEFT JOIN FirstName fn ON fn.UserID = u.UserID
+            WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+    END
+GO
+
+/******* Fix bug CONTENT-2289 - Document Viewer issue *******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Files]') AND type in (N'V'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Files]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Files]
+AS
+	SELECT	fi.FileId, 
+			fi.PortalId, 
+			fi.FileName, 
+			fi.Extension, 
+			fi.Size, 
+			fi.Width, 
+			fi.Height, 
+			fi.ContentType, 
+			fi.FolderID, 
+			fi.[Content], 
+			fi.CreatedByUserID, 
+			fi.CreatedOnDate, 
+			fi.LastModifiedByUserID, 
+			fi.LastModifiedOnDate, 
+			fi.UniqueId, 
+			fi.VersionGuid, 
+			fi.SHA1Hash, 
+			fi.LastModificationTime, 
+			fi.Title, 
+			fi.StartDate, 
+			fi.EnablePublishPeriod, 
+			fi.EndDate, 
+			fi.ContentItemID, 
+			fi.PublishedVersion, 
+			fo.FolderPath AS Folder,
+			fo.IsCached,
+			fo.FolderMappingID,
+			fo.StorageLocation
+	FROM         {databaseOwner}[{objectQualifier}Files] AS fi 
+	INNER JOIN {databaseOwner}[{objectQualifier}Folders] AS fo 
+		ON fi.FolderID = fo.FolderID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_PublishedFiles]') AND type in (N'V'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+AS
+	SELECT     
+	   fi.[FileId]
+      ,fi.[PortalId]
+      ,fi.[FileName]
+      ,fi.[Extension]
+      ,fi.[Size]
+      ,fi.[Width]
+      ,fi.[Height]
+      ,fi.[ContentType]
+      ,fi.[FolderID]
+      ,fi.[Content]
+      ,fi.[CreatedByUserID]
+      ,fi.[CreatedOnDate]
+      ,fi.[LastModifiedByUserID]
+      ,fi.[LastModifiedOnDate]
+      ,fi.[UniqueId]
+      ,fi.[VersionGuid]
+      ,fi.[SHA1Hash]
+      ,fi.[LastModificationTime]
+      ,fi.[Title]
+      ,fi.[StartDate]
+      ,fi.[EnablePublishPeriod]
+      ,fi.[EndDate]
+      ,fi.[ContentItemID]
+      ,fi.[PublishedVersion]
+	  ,fi.[Folder]
+	  ,fi.[IsCached]
+	  ,fi.[StorageLocation]
+	  ,fi.[FolderMappingID]
+	FROM       {databaseOwner}[{objectQualifier}vw_Files] fi
+	  WHERE [EnablePublishPeriod] = 0 
+		 OR ([StartDate] <= GETDATE()
+			AND ([EndDate] IS NULL OR GETDATE() <= [EndDate]))
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllFiles]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+AS
+BEGIN
+	SELECT   
+	  FileId,  
+	  PortalId,  
+	  [FileName],  
+	  Extension,  
+	  Size,  
+	  Width,  
+	  Height,  
+	  ContentType,  
+	  FolderID,  
+	  Folder,  
+	  StorageLocation,  
+	  IsCached,
+	  UniqueId,
+	  VersionGuid,
+	  SHA1Hash,
+	  FolderMappingID,  
+	  LastModificationTime,  
+	  Title,  
+	  EnablePublishPeriod,  
+	  StartDate,  
+	  EndDate,  
+	  CreatedByUserID,  
+	  CreatedOnDate,  
+	  LastModifiedByUserID,  
+	  LastModifiedOnDate,  
+	  PublishedVersion,  
+	  ContentItemID
+	FROM {databaseOwner}[{objectQualifier}vw_Files] 	
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+	@FileName nvarchar(246),
+	@FolderID int,
+	@RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+	IF @RetrieveUnpublishedFiles = 0 BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,	   
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   ContentItemID,
+			   PublishedVersion
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] 			
+		WHERE [FileName] = @FileName AND FolderID = @FolderID
+	END
+	ELSE BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,	   
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   ContentItemID,
+			   PublishedVersion
+		FROM {databaseOwner}[{objectQualifier}vw_Files]
+		WHERE [FileName] = @FileName AND FolderID = @FolderID
+	END
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFileById]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+	@FileId int	,
+	@RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+	IF @RetrieveUnpublishedFiles = 0 BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   PublishedVersion,
+			   ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+		WHERE FileId = @FileId
+	END
+	ELSE BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   [UniqueId],
+			   [VersionGuid],
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   PublishedVersion,
+			   ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_Files] 
+		WHERE FileId = @FileId
+	END	
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+	IF @RetrieveUnpublishedFiles = 0 
+	BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			F.Folder,
+			F.StorageLocation,
+			F.IsCached,
+			F.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F			
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+	ELSE BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			F.Folder,
+			F.StorageLocation,
+			F.IsCached,
+			F.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_Files] F			
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

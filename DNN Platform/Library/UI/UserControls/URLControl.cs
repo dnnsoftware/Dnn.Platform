@@ -1216,14 +1216,13 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                var objPortals = new PortalController();
                 if ((Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.GetCurrentUserInfo().IsSuperUser))
                 {
-                    _objPortal = objPortals.GetPortal(Int32.Parse(Request.QueryString["pid"]));
+                    _objPortal = PortalController.Instance.GetPortal(Int32.Parse(Request.QueryString["pid"]));
                 }
                 else
                 {
-                    _objPortal = objPortals.GetPortal(PortalSettings.PortalId);
+                    _objPortal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                 }
                 if (ViewState["IsUrlControlLoaded"] == null)
                 {
@@ -1423,7 +1422,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     fileManager.AddFile(folder, fileName, txtFile.PostedFile.InputStream, true, true, ((FileManager)fileManager).GetContentType(Path.GetExtension(fileName)));
                 }
-                catch (PermissionsNotMetException)
+                catch (Services.FileSystem.PermissionsNotMetException)
                 {
                     lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
                     ErrorRow.Visible = true;

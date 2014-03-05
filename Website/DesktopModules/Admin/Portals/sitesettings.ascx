@@ -24,12 +24,12 @@
     <dnnext:EditPageTabExtensionControl runat="server"  ID="SiteSettingsTabExtensionControl" 
             Module="SiteSettings" Group="SiteSettingsTabExtensions"
             TabControlId="siteSettingsTabs" PanelControlId="siteSettingsPanes" />
-    <ul id="siteSettingsTabs" runat="Server" class="dnnAdminTabNav dnnClear">
-        <li><a href="#ssBasicSettings"><asp:Label id="basicSettingsLink" runat="server" resourcekey="BasicSettings" /></a></li>
-        <li><a href="#ssAdvancedSettings"><asp:Label id="advancedSettingsLink" runat="server" resourcekey="AdvancedSettings" /></a></li>
-        <li><a href="#ssUserAccountSettings"><asp:Label id="userSettingsLink" runat="server" resourcekey="UserAccountSettings" /></a></li>
-        <li><a href="#ssStylesheetEditor"><asp:Label id="stylesheetLink" runat="server" resourcekey="StylesheetEditor" /></a></li>
-    </ul>
+        <ul id="siteSettingsTabs" runat="Server" class="dnnAdminTabNav dnnClear">
+            <li><a href="#ssBasicSettings"><asp:Label id="basicSettingsLink" runat="server" resourcekey="BasicSettings" /></a></li>
+            <li><a href="#ssAdvancedSettings"><asp:Label id="advancedSettingsLink" runat="server" resourcekey="AdvancedSettings" /></a></li>
+            <li><a href="#ssUserAccountSettings"><asp:Label id="userSettingsLink" runat="server" resourcekey="UserAccountSettings" /></a></li>
+            <li><a href="#ssStylesheetEditor"><asp:Label id="stylesheetLink" runat="server" resourcekey="StylesheetEditor" /></a></li>
+        </ul>
         <div class="ssBasicSettings dnnClear" id="ssBasicSettings">
             <div class="dnnFormExpandContent">
                 <a href=""><%=Localization.GetString("ExpandAll", Localization.SharedResourceFile)%></a>
@@ -571,6 +571,10 @@
                         </dnn:dnnformeditor>
                     </fieldset>
                     <div class="dnnFormItem">
+                        <dnn:label id="DefaultAuthProviderLabel" runat="server" controlname="authProviderCombo" ResourceKey="DefaultAuthProvider"/>
+                        <dnn:DnnComboBox ID="authProviderCombo" runat="server" />
+                    </div>
+                    <div class="dnnFormItem">
                         <dnn:label id="RedirectAfterLoginLabel" runat="server" controlname="cboHomeTabId" ResourceKey="Redirect_AfterLogin"/>
                         <dnn:DnnPageDropDownList ID="RedirectAfterLogin" runat="server" />
                     </div>
@@ -615,17 +619,16 @@
         <div class="ssStylesheetEditor dnnClear" id="ssStylesheetEditor">
             <div class="ssseContent dnnClear">
                 <fieldset>
+                    <div class="dnnFormItem">
+                        <dnn:label id="IncludePortalCssLabel" runat="server" controlname="chkIncludePortalCss" />
+                        <asp:CheckBox runat="server" ID="chkIncludePortalCss" />
+                    </div>
                     <div class="editor">
-                        <asp:TextBox ID="txtStyleSheet" runat="server" Rows="30" TextMode="MultiLine" Wrap="False"
-                            Columns="100" />
+                        <asp:TextBox ID="txtStyleSheet" runat="server" Rows="30" TextMode="MultiLine" Wrap="False" Columns="100" />
                     </div>
                     <ul class="dnnActions dnnClear">
-                        <li>
-                            <asp:LinkButton ID="cmdSave" CssClass="dnnPrimaryAction" runat="server" resourcekey="SaveStyleSheet"
-                                EnableViewState="False" /></li>
-                        <li>
-                            <asp:LinkButton ID="cmdRestore" CssClass="dnnSecondaryAction" runat="server" resourcekey="RestoreDefaultStyleSheet"
-                                EnableViewState="False" /></li>
+                        <li><asp:LinkButton ID="cmdSave" CssClass="dnnPrimaryAction" runat="server" resourcekey="SaveStyleSheet" EnableViewState="False" /></li>
+                        <li><asp:LinkButton ID="cmdRestore" CssClass="dnnSecondaryAction" runat="server" resourcekey="RestoreDefaultStyleSheet" EnableViewState="False" /></li>
                     </ul>
                 </fieldset>
             </div>

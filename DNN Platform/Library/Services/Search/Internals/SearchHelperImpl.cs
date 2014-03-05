@@ -290,7 +290,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <returns></returns>
         public IEnumerable<int> GetPortalsToReindex(DateTime startDate)
         {
-            var portals2Reindex = new PortalController().GetPortals().Cast<PortalInfo>()
+            var portals2Reindex = PortalController.Instance.GetPortals().Cast<PortalInfo>()
                 .Where(portal => IsReindexRequested(portal.PortalID, startDate))
                 .Select(portal => portal.PortalID);
 
@@ -576,7 +576,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (PortalController.GetPortalSetting(setting, portalId, "false") != "false") return;
             
             //Portal may not be present, especially during installation
-            if (new PortalController().GetPortal(portalId) == null) return;
+            if (PortalController.Instance.GetPortal(portalId) == null) return;
 
             foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
             {

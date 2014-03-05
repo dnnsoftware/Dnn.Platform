@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Portals
 {
@@ -48,16 +49,12 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         void AddPortalAlias(int portalId, string portalAlias);
 
-
-
         /// <summary>
         /// Copies the page template.
         /// </summary>
         /// <param name="templateFile">The template file.</param>
         /// <param name="mappedHomeDirectory">The mapped home directory.</param>
         void CopyPageTemplate(string templateFile, string mappedHomeDirectory);
-
-
 
         /// <summary>
         /// Creates the portal.
@@ -77,6 +74,22 @@ namespace DotNetNuke.Entities.Portals
         int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, string templatePath, string templateFile, string homeDirectory, string portalAlias,
                          string serverPath, string childPath, bool isChildPortal);
 
+        /// <summary>
+        /// Creates the portal.
+        /// </summary>
+        /// <param name="portalName">Name of the portal.</param>
+        /// <param name="adminUserId">The obj admin user.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="keyWords">The key words.</param>
+        /// <param name="template"> </param>
+        /// <param name="homeDirectory">The home directory.</param>
+        /// <param name="portalAlias">The portal alias.</param>
+        /// <param name="serverPath">The server path.</param>
+        /// <param name="childPath">The child path.</param>
+        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <returns>Portal id.</returns>
+        int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalController.PortalTemplateInfo template,
+                                         string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -145,8 +158,6 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         void DeletePortalInfo(int portalId);
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets information of a portal
@@ -160,8 +171,25 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         PortalInfo GetPortal(int portalId);
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets information of a portal
+        /// </summary>
+        /// <param name = "portalId">Id of the portal</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <returns>PortalInfo object with portal definition</returns>
+        /// <remarks>
+        /// </remarks>
+        /// <history>
+        /// </history>
+        /// -----------------------------------------------------------------------------
         PortalInfo GetPortal(int portalId, string cultureCode);
 
+        /// <summary>
+        /// Get portals in specific culture.
+        /// </summary>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <returns></returns>
         List<PortalInfo> GetPortalList(string cultureCode);
 
         /// -----------------------------------------------------------------------------
@@ -226,6 +254,34 @@ namespace DotNetNuke.Entities.Portals
         /// </remarks>
         void MapLocalizedSpecialPages(int portalId, string cultureCode);
 
+        /// <summary>
+        /// Removes the related PortalLocalization record from the database
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
+        void RemovePortalLocalization(int portalId, string cultureCode);
+
+        /// <summary>
+        /// Removes the related PortalLocalization record from the database, adds optional clear cache
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
+        /// <param name="clearCache"></param>
+        void RemovePortalLocalization(int portalId, string cultureCode, bool clearCache);
+
+        /// <summary>
+        /// Processess a template file for the new portal.
+        /// </summary>
+        /// <param name="portalId">PortalId of the new portal</param>
+        /// <param name="template">The template</param>
+        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user</param>
+        /// <param name="mergeTabs">Flag to determine whether Module content is merged.</param>
+        /// <param name="isNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
+        /// <remarks>
+        /// The roles and settings nodes will only be processed on the portal template file.
+        /// </remarks>
+        void ParseTemplate(int portalId, PortalController.PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Processess a template file for the new portal. This method will be called twice: for the portal template and for the admin template
@@ -244,6 +300,38 @@ namespace DotNetNuke.Entities.Portals
         /// </history>
         /// -----------------------------------------------------------------------------
         void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Processess a template file for the new portal. This method will be called twice: for the portal template and for the admin template
+        /// </summary>
+        /// <param name="portalId">PortalId of the new portal</param>
+        /// <param name="templatePath">Path for the folder where templates are stored</param>
+        /// <param name="templateFile">Template file to process</param>
+        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user</param>
+        /// <param name="mergeTabs">Flag to determine whether Module content is merged.</param>
+        /// <param name="isNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
+        /// <param name="localeCollection">Fill with the enabled locales from template.</param>
+        /// <remarks>
+        /// The roles and settings nodes will only be processed on the portal template file.
+        /// </remarks>
+        /// <history>
+        /// 	[VMasanas]	27/08/2004	Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection);
+
+        /// <summary>
+        /// Processes the resource file for the template file selected
+        /// </summary>
+        /// <param name="portalPath">New portal's folder</param>
+        /// <param name="resoureceFile">full path to the resource file</param>
+        /// <remarks>
+        /// The resource file is a zip file with the same name as the selected template file and with
+        /// an extension of .resources (to disable this file being downloaded).
+        /// For example: for template file "portal.template" a resource file "portal.template.resources" can be defined.
+        /// </remarks>
+        void ProcessResourceFileExplicit(string portalPath, string resoureceFile);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -290,6 +378,20 @@ namespace DotNetNuke.Entities.Portals
         /// </history>
         /// -----------------------------------------------------------------------------
         void UpdatePortalInfo(PortalInfo portal);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Updates basic portal information
+        /// </summary>
+        /// <param name="portal"></param>
+        /// <param name="clearCache">Whether clear cache after update portal info.</param>
+        /// <remarks>
+        /// </remarks>
+        /// <history>
+        /// 	[cnurse]	10/13/2004	created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        void UpdatePortalInfo(PortalInfo portal, bool clearCache);
 
         /// <summary>
         /// Gets the current portal settings.

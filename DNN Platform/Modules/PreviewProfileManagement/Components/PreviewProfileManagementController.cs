@@ -54,9 +54,7 @@ namespace DotNetNuke.Modules.PreviewProfileManagement.Components
             var moduleController = new ModuleController();
             TabInfo newTab;
 
-            var portalController = new PortalController();
-
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //Update Site Redirection management page
                 var tabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin//DevicePreviewManagement", Null.NullString);

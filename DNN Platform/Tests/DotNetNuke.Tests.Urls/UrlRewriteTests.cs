@@ -717,8 +717,7 @@ namespace DotNetNuke.Tests.Urls
 
         private int UpdateHomeTab(int homeTabId)
         {
-            var portalController = new PortalController();
-            var portalInfo = portalController.GetPortal(PortalId);
+            var portalInfo = PortalController.Instance.GetPortal(PortalId);
             int oldHomeTabId = portalInfo.HomeTabId;
             portalInfo.HomeTabId = homeTabId;
 

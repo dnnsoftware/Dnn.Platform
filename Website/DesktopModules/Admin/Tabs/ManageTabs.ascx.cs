@@ -317,8 +317,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private void BindSkins()
         {
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(Tab.PortalID);
+            var portal = PortalController.Instance.GetPortal(Tab.PortalID);
             var skins = SkinController.GetSkins(portal, SkinController.RootSkin, SkinScope.All)
                                                      .ToDictionary(skin => skin.Key, skin => skin.Value);
             var containers = SkinController.GetSkins(portal, SkinController.RootContainer, SkinScope.All)
@@ -1687,7 +1686,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             var urlPath = url.TrimStart('/');
             bool modified;
             //Clean Url
-            var options = UrlRewriterUtils.GetOptionsFromSettings(new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId));
+            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs( UrlRewriterUtils.GetOptionsFromSettings(new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId)) );
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)
             {

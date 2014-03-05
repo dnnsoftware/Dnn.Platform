@@ -68,6 +68,29 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
+        /// Return an extended FriendlyUrlOptions object for Custom URLs checkings
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static FriendlyUrlOptions ExtendOptionsForCustomURLs(FriendlyUrlOptions options)
+        {
+            var result = new FriendlyUrlOptions
+            {
+                PunctuationReplacement = options.PunctuationReplacement,
+                SpaceEncoding = options.SpaceEncoding,
+                MaxUrlPathLength = options.MaxUrlPathLength,
+                ConvertDiacriticChars = options.ConvertDiacriticChars,
+                RegexMatch = options.RegexMatch.Replace("[^", "[^./"),
+                IllegalChars = options.IllegalChars.Replace("/", ""),
+                ReplaceChars = options.ReplaceChars.Replace("/", ""),
+                ReplaceDoubleChars = options.ReplaceDoubleChars,
+                ReplaceCharWithChar = options.ReplaceCharWithChar,
+                PageExtension = options.PageExtension
+            };
+            return result;
+        }
+
+        /// <summary>
         /// Logs the 404 error to a table for later checking 
         /// </summary>
         /// <param name="request"></param>

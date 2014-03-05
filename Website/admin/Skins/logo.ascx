@@ -1,2 +1,2 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.Logo" CodeFile="Logo.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.Logo" CodeFile="Logo.ascx.cs" ViewStateMode="Disabled" %>
 <asp:hyperlink id="hypLogo" runat="server"><asp:image id="imgLogo" runat="server" enableviewstate="False" /></asp:hyperlink>
