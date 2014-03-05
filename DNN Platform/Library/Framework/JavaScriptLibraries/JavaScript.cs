@@ -180,7 +180,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 case SpecificVersion.LatestMinor:
                     library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
                                                                   .OrderByDescending(l => l.Version)
-                                                                  .FirstOrDefault(l => l.Version.Minor >= version.Minor);
+                                                                  .FirstOrDefault(l => l.Version.Major == version.Major && l.Version.Minor >= version.Minor);
                     if (library != null)
                     {
                         AddItemRequest(library.JavaScriptLibraryID);
