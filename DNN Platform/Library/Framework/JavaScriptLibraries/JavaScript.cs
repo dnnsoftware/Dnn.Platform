@@ -63,7 +63,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns></returns>
         public static bool IsInstalled(String jsname)
         {
-            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == jsname);
+            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase));
             return library != null;
         }
 
@@ -87,7 +87,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns></returns>
         public static string Version(String jsname)
         {
-            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == jsname);
+            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase));
             return library != null ? Convert.ToString(library.Version) : String.Empty;
         }
 
@@ -129,7 +129,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="jsname">the library name</param>
         public static void RequestRegistration(String jsname, Version version)
         {
-            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version == version);
+            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase) && l.Version == version);
             if (library != null)
             {
                 AddItemRequest(library.JavaScriptLibraryID);
@@ -157,9 +157,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     isProcessed = true;
                     break;
                 case SpecificVersion.LatestMajor:
-                    library =
-                        JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
-                            .OrderByDescending(l => l.Version).FirstOrDefault(l => l.Version.Major >= version.Major);
+                    library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
+                                                                  .OrderByDescending(l => l.Version)
+                                                                  .FirstOrDefault(l => l.Version.Major >= version.Major);
                     if (library != null)
                     {
                         AddItemRequest(library.JavaScriptLibraryID);
@@ -174,9 +174,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     isProcessed = true;
                     break;
                 case SpecificVersion.LatestMinor:
-                    library =
-                        JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
-                            .OrderByDescending(l => l.Version).FirstOrDefault(l => l.Version.Minor >= version.Minor);
+                    library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
+                                                                  .OrderByDescending(l => l.Version)
+                                                                  .FirstOrDefault(l => l.Version.Minor >= version.Minor);
                     if (library != null)
                     {
                         AddItemRequest(library.JavaScriptLibraryID);
@@ -246,7 +246,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         l => l.JavaScriptLibraryID.ToString(CultureInfo.InvariantCulture) == item);
 
                 JavaScriptLibrary existingLatestLibrary =
-                    finalScripts.FindAll(lib => lib.LibraryName == processingLibrary.LibraryName)
+                    finalScripts.FindAll(lib => lib.LibraryName.Equals(processingLibrary.LibraryName, StringComparison.OrdinalIgnoreCase))
                         .OrderByDescending(l => l.Version)
                         .SingleOrDefault();
                 if (existingLatestLibrary != null)
@@ -280,19 +280,15 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
             try
             {
-                IEnumerable<JavaScriptLibrary> librarys = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
-                    .OrderByDescending(l => l.Version);
-                if (librarys.Any())
-                {
-                    return librarys.First();
-                }
+                return JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
+                                                           .OrderByDescending(l => l.Version)
+                                                           .FirstOrDefault(); 
             }
             catch (Exception)
             {
                 //no library found (install or upgrade)
                 return null;
             }
-            return null;
         }
 
         private static string GetScriptPath(JavaScriptLibrary js)
