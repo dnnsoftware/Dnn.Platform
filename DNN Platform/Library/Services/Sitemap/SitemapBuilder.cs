@@ -33,7 +33,6 @@ using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 
 #endregion
 
@@ -363,7 +362,7 @@ namespace DotNetNuke.Services.Sitemap
         {
             bool isChild = false;
             string portalName = null;
-            var arr = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
+            var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
             string serverPath = Globals.GetAbsoluteServerPath(context.Request);
 
             if (arr.Count > 0)

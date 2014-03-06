@@ -41,7 +41,6 @@ using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
@@ -2178,9 +2177,9 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns></returns>
         public static bool IsDuplicateWithPortalAlias(int portalId, string tabPath)
         {
-            IEnumerable<PortalAliasInfo> aliasLookup = TestablePortalAliasController.Instance.GetPortalAliases().Values;
+            IEnumerable<PortalAliasInfo> aliasLookup = PortalAliasController.Instance.GetPortalAliases().Values;
 
-            foreach (PortalAliasInfo alias in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId))
+            foreach (PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId))
             {
                 string checkAlias = string.Format("{0}{1}", alias.HTTPAlias, tabPath.Replace("//", "/"));
                 if (aliasLookup.Any(a => a.HTTPAlias.Equals(checkAlias, StringComparison.InvariantCultureIgnoreCase)))

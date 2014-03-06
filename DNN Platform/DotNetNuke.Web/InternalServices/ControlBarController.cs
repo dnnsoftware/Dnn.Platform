@@ -34,7 +34,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -373,7 +372,7 @@ namespace DotNetNuke.Web.InternalServices
                     if ((!string.IsNullOrEmpty(dto.Site)))
                     {
                         int selectedPortalID = int.Parse(dto.Site);
-                        var portalAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
+                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
 
                         if ((portalAliases.Count > 0 && (portalAliases[0] != null)))
                         {

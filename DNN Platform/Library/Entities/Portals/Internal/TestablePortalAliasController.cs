@@ -24,6 +24,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Portals.Internal
 {
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalAliasController instead")]
     public class TestablePortalAliasController : ServiceLocator<IPortalAliasController, TestablePortalAliasController>
     {
         protected override Func<IPortalAliasController> GetFactory()

@@ -28,7 +28,6 @@ using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Entities.Users.Social.Data;

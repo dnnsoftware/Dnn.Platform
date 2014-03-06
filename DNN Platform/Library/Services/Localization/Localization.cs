@@ -42,7 +42,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -472,7 +471,7 @@ namespace DotNetNuke.Services.Localization
                 PortalAliasInfo currentAlias = null;
                 string httpAlias = null;
 
-                var portalAliasses = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+                var portalAliasses = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
                 var portalAliasInfos = portalAliasses as IList<PortalAliasInfo> ?? portalAliasses.ToList();
                 if (portalAliasses != null && portalAliasInfos.Any())
                 {
@@ -503,7 +502,7 @@ namespace DotNetNuke.Services.Localization
                                 HTTPAlias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant())
                             };
 
-                        TestablePortalAliasController.Instance.AddPortalAlias(newAlias);
+                        PortalAliasController.Instance.AddPortalAlias(newAlias);
                     }
                 }
             }
@@ -537,7 +536,7 @@ namespace DotNetNuke.Services.Localization
                 if (isValid)
                 {
                     PortalAliasInfo existingAlias;
-                    TestablePortalAliasController.Instance.GetPortalAliases().TryGetValue(alias, out existingAlias);
+                    PortalAliasController.Instance.GetPortalAliases().TryGetValue(alias, out existingAlias);
 
                     isValid = (existingAlias == null);
                 }
@@ -1878,17 +1877,17 @@ namespace DotNetNuke.Services.Localization
                         // check to see if this is the last extra language being added to the portal
                         var lastLanguage = LocaleController.Instance.GetLocales(portalID).Count == 2;
 
-                        var portalAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalID);
+                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalID);
                         foreach (var portalAliasInfo in portalAliases)
                         {
                             if (portalAliasInfo.CultureCode == language.Code)
                             {
-                                TestablePortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
+                                PortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
                             }
 
                             if (lastLanguage && portalAliasInfo.CultureCode == portalInfo.DefaultLanguage)
                             {
-                                TestablePortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
+                                PortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
                             }
                         }
                     }

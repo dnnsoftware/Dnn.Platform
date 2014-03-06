@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Data;
 
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Tests.Utilities;
 
 using NUnit.Framework;
@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Urls
 
         protected void GetDefaultAlias()
         {
-            foreach (var alias in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
+            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
             {
                 if (alias.IsPrimary)
                 {
@@ -100,12 +100,12 @@ namespace DotNetNuke.Tests.Urls
 
         protected void SetDefaultAlias(string defaultAlias)
         {
-            foreach (var alias in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
+            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
             {
                 if (alias.HTTPAlias == defaultAlias)
                 {
                     alias.IsPrimary = true;
-                    TestablePortalAliasController.Instance.UpdatePortalAlias(alias);
+                    PortalAliasController.Instance.UpdatePortalAlias(alias);
                     break;
                 }
             }

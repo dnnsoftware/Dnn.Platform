@@ -30,7 +30,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -126,7 +125,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         {
                             var portalSettings = new PortalSettings(searchResult.PortalId);
                             portalSettings.PortalAlias =
-                                TestablePortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
+                                PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
                             url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty,
                                                       searchResult.QueryString);
                         }

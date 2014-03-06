@@ -37,7 +37,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
@@ -348,7 +348,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                foreach (var alias in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).Where(alias => alias.IsPrimary))
+                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).Where(alias => alias.IsPrimary))
                 {
                     return alias.HTTPAlias;
                 }
@@ -1433,7 +1433,7 @@ namespace DotNetNuke.Entities.Portals
         public static PortalAliasCollection GetPortalAliasLookup()
         {
             var portalAliasCollection = new PortalAliasCollection();
-            foreach (var kvp in TestablePortalAliasController.Instance.GetPortalAliases())
+            foreach (var kvp in PortalAliasController.Instance.GetPortalAliases())
             {
                 portalAliasCollection.Add(kvp.Key, kvp.Value);
             }

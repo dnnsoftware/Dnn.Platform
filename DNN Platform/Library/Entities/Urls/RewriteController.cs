@@ -36,7 +36,6 @@ using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls.Config;
 using DotNetNuke.Entities.Users;
@@ -184,7 +183,7 @@ namespace DotNetNuke.Entities.Urls
                         //check for culture-specific aliases
                         string culture = null;
                         var primaryAliases =
-                            TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
+                            PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
                                                          .Where(a => a.IsPrimary).ToList();
                         //if there are chosen portal aliases, check to see if the found alias is one of them
                         //if not, then will check for a custom alias per tab
@@ -442,7 +441,7 @@ namespace DotNetNuke.Entities.Urls
                 url = url.Replace(langParms, "") + langParms;
                 result.CultureCode = langMatch.Groups["code"].Value; //get the culture code in the requested url
 
-                var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
                 if (primaryAliases.Count > 0)
                 {
                     string aliasCulture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);

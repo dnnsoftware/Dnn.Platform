@@ -27,7 +27,6 @@ using System.Web.Http.Routing;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 
 namespace DotNetNuke.Web.Api
 {
@@ -110,7 +109,7 @@ namespace DotNetNuke.Web.Api
 
                 foreach (PortalInfo portal in portals)
                 {
-                    IEnumerable<string> aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Select(x => x.HTTPAlias);
+                    IEnumerable<string> aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Select(x => x.HTTPAlias);
 
                     aliases = StripApplicationPath(aliases);
 

@@ -41,7 +41,6 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.EventQueue;
@@ -343,7 +342,7 @@ namespace DotNetNuke.Entities.Urls
                         //check the identified portal alias details for any extra rewrite information required
                         //this includes the culture and the skin, which can be placed into the rewrite path
                         //This logic is here because it will catch any Urls which are excluded from rewriting
-                        var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                        var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
                         if (result.PortalId > -1 && result.HttpAlias != null)
                         {
@@ -828,7 +827,7 @@ namespace DotNetNuke.Entities.Urls
                 if (portalId > Null.NullInteger)
                 {
                     //Get all the existing aliases
-                    var aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+                    var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
 
                     bool autoaddAlias;
                     bool isPrimary = false;
@@ -859,7 +858,7 @@ namespace DotNetNuke.Entities.Urls
                                                       HTTPAlias = result.RewritePath,
                                                       IsPrimary = isPrimary
                                                   };
-                        TestablePortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
+                        PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
 
                         context.Response.Redirect(context.Request.Url.ToString(), true);
                     }
@@ -1047,7 +1046,7 @@ namespace DotNetNuke.Entities.Urls
                                         //single portal install, load up portal settings for this portal
                                         var singlePortal = (PortalInfo) portals[0];
                                         //list of aliases from database
-                                        var aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(singlePortal.PortalID).ToList();
+                                        var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(singlePortal.PortalID).ToList();
                                         //list of aliases from Advanced Url settings
                                         List<string> chosen = aliases.GetAliasesForPortalId(singlePortal.PortalID);
                                         PortalAliasInfo useFor404 = null;
@@ -1619,7 +1618,7 @@ namespace DotNetNuke.Entities.Urls
             //if (result.RedirectAllowed && result.PortalId > -1)
             if (result.PortalId > -1) //portal has been identified
             {
-                var portalAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
                 if (queryStringCol != null && queryStringCol["forceAlias"] != "true")
                 {
@@ -1767,7 +1766,7 @@ namespace DotNetNuke.Entities.Urls
             if (customAliasesForTabs != null && customAliasesForTabs.Count > 0)
             {
                 //remove any customAliases that are also primary aliases.
-                foreach (var cpa in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId))
+                foreach (var cpa in PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId))
                 {
                     if (cpa.IsPrimary == true && customAliasesForTabs.Contains(cpa.HTTPAlias))
                     {
@@ -2048,7 +2047,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     result.PortalId = Host.Host.HostPortalID;
                     // use the host portal, but replaced to the host portal home page
-                    var aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                    var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
                     if (aliases.Count > 0)
                     {
                         string alias = null;
@@ -2093,7 +2092,7 @@ namespace DotNetNuke.Entities.Urls
                 //here because the portal alias matched, but no tab was found, and because there are custom tab aliases used for this portal
                 //need to redirect back to the chosen portal alias and keep the current path.
                 string wrongAlias = result.HttpAlias; //it's a valid alias, but only for certain tabs
-                var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
                 if (primaryAliases != null && result.PortalId > -1)
                 {
                     //going to look for the correct alias based on the culture of the request
@@ -2159,7 +2158,7 @@ namespace DotNetNuke.Entities.Urls
         {
             string culture = null;
             //look for specific alias to rewrite language parameter
-            var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+            var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
             if (result.PortalId > -1 && result.HttpAlias != null)
             {
                 culture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
@@ -2642,7 +2641,7 @@ namespace DotNetNuke.Entities.Urls
                                 string rawUrlLowerCase = StripDebugParameter(requestUri.AbsoluteUri.ToLower());
 
                                 //check to see if just an alias redirect of an internal alias
-                                var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
                                 if (settings.InternalAliasList != null && settings.InternalAliasList.Count > 0 && primaryAliases.Count > 0)
                                 {

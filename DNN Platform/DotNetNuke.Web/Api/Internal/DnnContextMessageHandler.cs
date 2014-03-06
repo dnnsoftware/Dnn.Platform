@@ -25,7 +25,6 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Localization.Internal;
@@ -54,7 +53,7 @@ namespace DotNetNuke.Web.Api.Internal
         private static PortalSettings SetupPortalSettings(HttpRequestMessage request)
         {
             var domainName = TestableGlobals.Instance.GetDomainName(request.RequestUri);
-            var alias = TestablePortalAliasController.Instance.GetPortalAlias(domainName);
+            var alias = PortalAliasController.Instance.GetPortalAlias(domainName);
 
             int tabId;
             ValidateTabAndModuleContext(request, alias.PortalID, out tabId);

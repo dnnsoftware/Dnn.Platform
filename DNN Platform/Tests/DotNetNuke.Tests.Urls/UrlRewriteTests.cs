@@ -29,7 +29,6 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
@@ -162,7 +161,7 @@ namespace DotNetNuke.Tests.Urls
             }
             if (_primaryAlias != null)
             {
-                TestablePortalAliasController.Instance.DeletePortalAlias(_primaryAlias);
+                PortalAliasController.Instance.DeletePortalAlias(_primaryAlias);
             }
 
             SetDefaultAlias(DefaultAlias);
@@ -199,7 +198,7 @@ namespace DotNetNuke.Tests.Urls
                                         HTTPAlias = fields[0],
                                         PortalID = PortalId
                                     };
-                                    TestablePortalAliasController.Instance.AddPortalAlias(alias);
+                                    PortalAliasController.Instance.AddPortalAlias(alias);
                                 }
                             });
             TestUtil.ReadStream(String.Format("{0}", "Users"), (line, header) =>
@@ -220,7 +219,7 @@ namespace DotNetNuke.Tests.Urls
                             {
                                 string[] fields = line.Split(',');
                                 var alias = aliasController.GetPortalAlias(fields[0], PortalId);
-                                TestablePortalAliasController.Instance.DeletePortalAlias(alias);
+                                PortalAliasController.Instance.DeletePortalAlias(alias);
                             });
             TestUtil.ReadStream(String.Format("{0}", "Users"), (line, header) =>
                             {
@@ -617,7 +616,7 @@ namespace DotNetNuke.Tests.Urls
                                         Skin = skin,
                                         IsPrimary = true
                                     };
-                _primaryAlias.PortalAliasID = TestablePortalAliasController.Instance.AddPortalAlias(_primaryAlias);
+                _primaryAlias.PortalAliasID = PortalAliasController.Instance.AddPortalAlias(_primaryAlias);
                 ExecuteTest(settings, testFields, true);
             }
             else

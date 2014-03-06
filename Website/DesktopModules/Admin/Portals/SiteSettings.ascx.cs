@@ -38,7 +38,6 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
@@ -788,7 +787,7 @@ namespace DesktopModules.Admin.Portals
                 if (objPortalAlias == null)
                 {
                     objPortalAlias = new PortalAliasInfo { PortalID = portalID, HTTPAlias = portalAlias };
-                    TestablePortalAliasController.Instance.AddPortalAlias(objPortalAlias);
+                    PortalAliasController.Instance.AddPortalAlias(objPortalAlias);
                 }
             }
             return portalAlias;

@@ -35,7 +35,6 @@ using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Log.EventLog;
 
@@ -69,7 +68,7 @@ namespace DotNetNuke.Entities.Urls
             string newRewritePath = rewritePath;
             string aliasCulture = null;
             //get the culture for this alias
-            var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID).ToList();
+            var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID).ToList();
 
             if (primaryAliases.Count > 0)
             {
@@ -920,7 +919,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static OrderedDictionary BuildPortalAliasesRegexDictionary()
         {
-            IDictionary<string, PortalAliasInfo> aliases = TestablePortalAliasController.Instance.GetPortalAliases();
+            IDictionary<string, PortalAliasInfo> aliases = PortalAliasController.Instance.GetPortalAliases();
             //create a new OrderedDictionary.  We use this because we
             //want to key by the correct regex pattern and return the
             //portalAlias that matches, and we want to preserve the
@@ -1299,10 +1298,10 @@ namespace DotNetNuke.Entities.Urls
             useAliases = new List<PortalAliasInfo>();
             aliasCultures = new Dictionary<string, string>();
             //761 : return list of chosen aliases as well, so that Urls can be d
-            var aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
             //list of portal aliases for this portal
             List<string> chosenAliases = null;
-            var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+            var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
             if (primaryAliases.Count > 0)
             {
                 chosenAliases = primaryAliases.GetAliasesForPortalId(portalId);
@@ -1550,7 +1549,7 @@ namespace DotNetNuke.Entities.Urls
             PortalAliasInfo retValue = null;
 
             //get the portal alias collection from the cache
-            var portalAliasCollection = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+            var portalAliasCollection = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
 
             bool foundAlias = false;
 

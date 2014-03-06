@@ -23,18 +23,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -49,14 +46,15 @@ namespace DotNetNuke.Entities.Portals
 	/// When a request is recieved by DotNetNuke from IIS, it extracts the domain name portion and does a comparison against 
 	/// the list of portal aliases and then redirects to the relevant portal to load the approriate page. 
 	/// </remarks>
-    public class PortalAliasController
+    public class PortalAliasController : ServiceLocator<IPortalAliasController, PortalAliasController>
     {
+        protected override Func<IPortalAliasController> GetFactory()
+        {
+            return () => new PortalAliasControllerImpl();
+        }
+
         #region Private Methods
 
-        private static object GetPortalAliasLookupCallBack(CacheItemArgs cacheItemArgs)
-        {
-	        return TestablePortalAliasController.Instance.GetPortalAliases();
-        }
 
         private static bool ValidateAlias(string portalAlias, bool ischild, bool isDomain)
         {
@@ -97,7 +95,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal Alias Info.</returns>
         public PortalAliasInfo GetPortalAlias(string PortalAlias, int PortalID)
         {
-            return TestablePortalAliasController.Instance.GetPortalAliases().SingleOrDefault(pa => pa.Key == PortalAlias && pa.Value.PortalID == PortalID).Value;
+            return Instance.GetPortalAliases().SingleOrDefault(pa => pa.Key == PortalAlias && pa.Value.PortalID == PortalID).Value;
         }
 
         /// <summary>
@@ -135,7 +133,7 @@ namespace DotNetNuke.Entities.Portals
             string retValue = "";
 
             //get the portal alias collection from the cache
-            var portalAliasCollection = TestablePortalAliasController.Instance.GetPortalAliases();
+            var portalAliasCollection = Instance.GetPortalAliases();
             string httpAlias;
             bool foundAlias = false;
 
@@ -278,7 +276,7 @@ namespace DotNetNuke.Entities.Portals
             if (portalAlias == null)
             {
                 //check if this is a fresh install ( no alias values in collection )
-                var portalAliases = TestablePortalAliasController.Instance.GetPortalAliases();
+                var portalAliases = Instance.GetPortalAliases();
                 if (portalAliases.Keys.Count == 0 || (portalAliases.Count == 1 && portalAliases.ContainsKey("_default")))
                 {
                     //relate the PortalAlias to the default portal on a fresh database installation
@@ -307,10 +305,10 @@ namespace DotNetNuke.Entities.Portals
         public static PortalAliasInfo GetPortalAliasLookup(string httpAlias)
         {
             PortalAliasInfo alias = null;
-            var aliases = TestablePortalAliasController.Instance.GetPortalAliases();
+            var aliases = Instance.GetPortalAliases();
             if (aliases.ContainsKey(httpAlias))
             {
-                alias = TestablePortalAliasController.Instance.GetPortalAliases()[httpAlias];
+                alias = Instance.GetPortalAliases()[httpAlias];
             }
             return alias;
         }
@@ -341,13 +339,13 @@ namespace DotNetNuke.Entities.Portals
 
         #region Obsolete Methods
 
-        [Obsolete("Deprecated in version 7.1.  Replaced by TestablePortalAliasController.Instance.AddPortalAlias")]
+        [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.AddPortalAlias")]
         public int AddPortalAlias(PortalAliasInfo portalAlias)
         {
-            return TestablePortalAliasController.Instance.AddPortalAlias(portalAlias);
+            return Instance.AddPortalAlias(portalAlias);
         }
 
-        [Obsolete("Deprecated in version 7.1.  Replaced by TestablePortalAliasController.Instance.DeletePortalAlias")]
+        [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.DeletePortalAlias")]
         public void DeletePortalAlias(int portalAliasId)
         {
 
@@ -363,13 +361,13 @@ namespace DotNetNuke.Entities.Portals
             DataCache.RemoveCache(DataCache.PortalAliasCacheKey);
         }
 
-        [Obsolete("Deprecated in version 7.1.  Replaced by TestablePortalAliasController.Instance.GetPortalAliasesByPortalId")]
+        [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.GetPortalAliasesByPortalId")]
         public ArrayList GetPortalAliasArrayByPortalID(int PortalID)
         {
-            return new ArrayList(TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(PortalID).ToArray());
+            return new ArrayList(Instance.GetPortalAliasesByPortalId(PortalID).ToArray());
         }
 
-        [Obsolete("Deprecated in version 7.1.  Replaced by TestablePortalAliasController.Instance.GetPortalAliasesByPortalId")]
+        [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.GetPortalAliasesByPortalId")]
         public PortalAliasCollection GetPortalAliasByPortalID(int PortalID)
         {
             var portalAliasCollection = new PortalAliasCollection();
@@ -382,11 +380,11 @@ namespace DotNetNuke.Entities.Portals
             return portalAliasCollection;
         }
 
-        [Obsolete("Deprecated in version 7.1.  Replaced by TestablePortalAliasController.Instance.GetPortalAliases")]
+        [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.GetPortalAliases")]
         public PortalAliasCollection GetPortalAliases()
         {
             var portalAliasCollection = new PortalAliasCollection();
-            foreach (var kvp in TestablePortalAliasController.Instance.GetPortalAliases())
+            foreach (var kvp in Instance.GetPortalAliases())
             {
                 portalAliasCollection.Add(kvp.Key, kvp.Value);
             }
@@ -394,11 +392,11 @@ namespace DotNetNuke.Entities.Portals
             return portalAliasCollection;
         }
 
-        [Obsolete("Deprecated in version 7.1.  Replaced by TestablePortalAliasController.Instance.GetPortalAliases")]
+        [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.GetPortalAliases")]
         public static PortalAliasCollection GetPortalAliasLookup()
         {
             var portalAliasCollection = new PortalAliasCollection();
-            foreach (var kvp in TestablePortalAliasController.Instance.GetPortalAliases())
+            foreach (var kvp in Instance.GetPortalAliases())
             {
                 portalAliasCollection.Add(kvp.Key, kvp.Value);
             }
@@ -406,10 +404,10 @@ namespace DotNetNuke.Entities.Portals
             return portalAliasCollection;
         }
 
-        [Obsolete("Deprecated in version 7.1.  Replaced by TestablePortalAliasController.Instance.UpdatePortalAlias")]
+        [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.UpdatePortalAlias")]
         public void UpdatePortalAliasInfo(PortalAliasInfo portalAlias)
         {
-            TestablePortalAliasController.Instance.UpdatePortalAlias(portalAlias);
+            Instance.UpdatePortalAlias(portalAlias);
         }
 
         #endregion

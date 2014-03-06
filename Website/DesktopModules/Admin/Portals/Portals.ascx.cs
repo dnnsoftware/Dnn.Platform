@@ -31,7 +31,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -185,7 +184,7 @@ namespace DotNetNuke.Modules.Admin.Portals
             var str = new StringBuilder();
             try
             {
-                var arr = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
+                var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
                 foreach ( PortalAliasInfo portalAliasInfo in arr)
                 {
                     var httpAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);

@@ -35,7 +35,6 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 
 #endregion
@@ -476,7 +475,7 @@ namespace DotNetNuke.Entities.Urls
             if (alias == null)
             {
                 //no match between alias and portal id
-                var aliasArray = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+                var aliasArray = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
                 if (aliasArray.Count > 0)
                 {
                     alias = aliasArray[0]; //nab the first one here
@@ -548,7 +547,7 @@ namespace DotNetNuke.Entities.Urls
                     //get the portal alias mapping for this portal, which tells whether to enforce a primary portal alias or not
                     PortalSettings.PortalAliasMapping aliasMapping = PortalSettings.GetPortalAliasMappingMode(portalId);
                     //check to see if we should be specifying this based on the culture code
-                    var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+                    var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
 
                     //799: if there was no culture code in the path and the portal settings culture was supplied, then use that
                     //essentially we are ignoring the portal alias of the portal settings object and driving the alias from the supplied portal settings culture code

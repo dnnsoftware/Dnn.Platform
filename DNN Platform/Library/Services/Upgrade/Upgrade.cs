@@ -48,7 +48,6 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -2623,10 +2622,10 @@ namespace DotNetNuke.Services.Upgrade
                 var defaultAlias = PortalController.GetPortalSetting("DefaultPortalAlias", portal.PortalID, String.Empty);
                 if (!String.IsNullOrEmpty(defaultAlias))
                 {
-                    foreach (var alias in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Where(alias => alias.HTTPAlias == defaultAlias))
+                    foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Where(alias => alias.HTTPAlias == defaultAlias))
                     {
                         alias.IsPrimary = true;
-                        TestablePortalAliasController.Instance.UpdatePortalAlias(alias);
+                        PortalAliasController.Instance.UpdatePortalAlias(alias);
                     }
                 }
             }
@@ -3330,7 +3329,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateChildPortalsDefaultPage");
             //Update Child Portal subHost.aspx
-            foreach (PortalAliasInfo aliasInfo in TestablePortalAliasController.Instance.GetPortalAliases().Values)
+            foreach (PortalAliasInfo aliasInfo in PortalAliasController.Instance.GetPortalAliases().Values)
             {
                 //For the alias to be for a child it must be of the form ...../child
                 int intChild = aliasInfo.HTTPAlias.IndexOf("/");

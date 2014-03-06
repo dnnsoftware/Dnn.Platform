@@ -1513,7 +1513,7 @@ namespace DotNetNuke.Entities.Portals
             if (portalAliasInfo == null)
             {
                 portalAliasInfo = new PortalAliasInfo {PortalID = portalId, HTTPAlias = portalAlias, IsPrimary = true};
-                TestablePortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
+                PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
             }
         }
 
@@ -3147,7 +3147,7 @@ namespace DotNetNuke.Entities.Portals
                     Globals.DeleteFilesRecursive(serverPath, ".Portal-" + portal.PortalID + ".resx");
 
                     //If child portal delete child folder
-                    var arr = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
+                    var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
                     if (arr.Count > 0)
                     {
                         var portalAliasInfo = (PortalAliasInfo)arr[0];
@@ -3321,7 +3321,7 @@ namespace DotNetNuke.Entities.Portals
         {
             bool isChild = Null.NullBoolean;
             string portalName;
-            var arr = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
+            var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
             if (arr.Count > 0)
             {
                 PortalAliasInfo portalAlias = (PortalAliasInfo)arr[0];
