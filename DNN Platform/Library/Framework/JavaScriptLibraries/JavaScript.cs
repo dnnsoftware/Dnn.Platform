@@ -123,11 +123,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <summary>Requests a script to be added to the page</summary>
         /// <param name="jsname">the library name</param>
         /// <param name="version">the library's version</param>
-        /// <param name="specfic">
+        /// <param name="specific">
         /// how much of the <paramref name="version"/> to pay attention to.
         /// When <see cref="SpecificVersion.Latest"/> is passed, ignore the <paramref name="version"/>.
         /// When <see cref="SpecificVersion.LatestMajor"/> is passed, match the major version.
         /// When <see cref="SpecificVersion.LatestMinor"/> is passed, match the major and minor versions.
+        /// When <see cref="SpecificVersion.Exact"/> is passed, match all parts of the version.
         /// </param>
         public static void RequestRegistration(string jsname, Version version, SpecificVersion specific)
         {
