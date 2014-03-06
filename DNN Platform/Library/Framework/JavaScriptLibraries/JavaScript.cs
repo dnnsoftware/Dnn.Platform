@@ -51,7 +51,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     public class JavaScript
     {
-        private const string ScriptPreix = "JSL.";
+        private const string ScriptPrefix = "JSL.";
         private const string LegacyPrefix = "LEGACY.";
 
         #region Public Methods
@@ -238,7 +238,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static void AddItemRequest(int javaScriptLibraryId)
         {
-            HttpContext.Current.Items[ScriptPreix + javaScriptLibraryId] = true;
+            HttpContext.Current.Items[ScriptPrefix + javaScriptLibraryId] = true;
         }
 
         private static void AddPreInstallorLegacyItemRequest(string jsl)
@@ -332,7 +332,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private static IEnumerable<string> GetScriptVersions()
         {
             List<string> orderedScripts = (from object item in HttpContext.Current.Items.Keys
-                                           where item.ToString().StartsWith(ScriptPreix)
+                                           where item.ToString().StartsWith(ScriptPrefix)
                                            select item.ToString().Substring(4)).ToList();
             orderedScripts.Sort();
             List<string> finalScripts = orderedScripts.ToList();
@@ -352,7 +352,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         foreach (PackageDependencyInfo dependency in package.Dependencies)
                         {
                             JavaScriptLibrary dependantlibrary = GetHighestVersionLibrary(dependency.PackageName);
-                            if (HttpContext.Current.Items[ScriptPreix + "." + dependantlibrary.JavaScriptLibraryID] ==
+                            if (HttpContext.Current.Items[ScriptPrefix + "." + dependantlibrary.JavaScriptLibraryID] ==
                                 null)
                             {
                                 finalScripts.Add(dependantlibrary.JavaScriptLibraryID.ToString());
