@@ -93,7 +93,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         /// <summary>Requests a script to be added to the page</summary>
         /// <param name="jsname">the library name</param>
-        public static void RequestRegistration(String jsname)
+        public static void RequestRegistration(string jsname)
         {
             //handle case where script has no javascript library
             switch (jsname)
@@ -109,33 +109,15 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     return;
             }
 
-            JavaScriptLibrary library = GetHighestVersionLibrary(jsname);
-            if (library != null)
-            {
-                AddItemRequest(library.JavaScriptLibraryID);
-            }
-            else
-            {
-                //covers case where upgrading to 7.2.0 and JSL's are not installed
-                AddPreInstallorLegacyItemRequest(jsname);
-            }
+            RequestRegistration(jsname, null, SpecificVersion.Latest);
         }
-
+        
         /// <summary>Requests a script to be added to the page</summary>
         /// <param name="jsname">the library name</param>
         /// <param name="version">the library's version</param>
-        public static void RequestRegistration(String jsname, Version version)
+        public static void RequestRegistration(string jsname, Version version)
         {
-            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase) && l.Version == version);
-            if (library != null)
-            {
-                AddItemRequest(library.JavaScriptLibraryID);
-            }
-            else
-            {
-                //this will only occur if a specific library is requested and not available
-                LogCollision(String.Format("Missing Library request - {0} : {1}", jsname, version));
-            }
+            RequestRegistration(jsname, version, SpecificVersion.Exact);
         }
 
         /// <summary>Requests a script to be added to the page</summary>
@@ -147,66 +129,28 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// When <see cref="SpecificVersion.LatestMajor"/> is passed, match the major version.
         /// When <see cref="SpecificVersion.LatestMinor"/> is passed, match the major and minor versions.
         /// </param>
-        public static void RequestRegistration(String jsname, Version version, SpecificVersion specific)
+        public static void RequestRegistration(string jsname, Version version, SpecificVersion specific)
         {
-            JavaScriptLibrary library;
-            bool isProcessed = false;
             switch (specific)
             {
                 case SpecificVersion.Latest:
-                    RequestRegistration(jsname);
-                    isProcessed = true;
-                    break;
+                    RequestHighestVersionLibraryRegistration(jsname);
+                    return;
                 case SpecificVersion.LatestMajor:
-                    library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
-                                                                  .OrderByDescending(l => l.Version)
-                                                                  .FirstOrDefault(l => l.Version.Major == version.Major && l.Version.Minor >= version.Minor);
-                    if (library != null)
-                    {
-                        AddItemRequest(library.JavaScriptLibraryID);
-                        isProcessed = true;
-                    }
-                    else
-                    {
-                        //unable to find a higher major version
-                        library = GetHighestVersionLibrary(jsname);
-                        if (library != null)
-                        {
-                            AddItemRequest(library.JavaScriptLibraryID);
-                            LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
-                            isProcessed = true;
-                        }
-                    }
-
-                    break;
                 case SpecificVersion.LatestMinor:
-                    library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
-                                                                  .OrderByDescending(l => l.Version)
-                                                                  .FirstOrDefault(l => l.Version.Major == version.Major && l.Version.Minor == version.Minor && l.Version.Build >= version.Build);
-                    if (library != null)
+                    if (RequestLooseVersionLibraryRegistration(jsname, version, specific)) 
                     {
-                        AddItemRequest(library.JavaScriptLibraryID);
-                        isProcessed = true;
-                    }
-                    else
-                    {
-                        //unable to find a higher minor version
-                        library = GetHighestVersionLibrary(jsname);
-                        if (library != null)
-                        {
-                            AddItemRequest(library.JavaScriptLibraryID);
-                            LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
-                            isProcessed = true;
-                        }
+                        return;
                     }
 
                     break;
+                case SpecificVersion.Exact:
+                    RequestSpecificVersionLibraryRegistration(jsname, version);
+                    return;
             }
-            if (isProcessed == false)
-            {
-                //this should only occur if packages are incorrect or a RequestRegistration call has a typo
-                LogCollision(String.Format("Missing specific version library - {0},{1},{2}", jsname, version, specific));
-            }
+
+            //this should only occur if packages are incorrect or a RequestRegistration call has a typo
+            LogCollision(String.Format("Missing specific version library - {0},{1},{2}", jsname, version, specific));
         }
 
         /// <summary>
@@ -236,6 +180,60 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         #endregion
 
         #region Private Methods
+
+        private static void RequestHighestVersionLibraryRegistration(string jsname)
+        {
+            var library = GetHighestVersionLibrary(jsname);
+            if (library != null)
+            {
+                AddItemRequest(library.JavaScriptLibraryID);
+            }
+            else
+            {
+                //covers case where upgrading to 7.2.0 and JSL's are not installed
+                AddPreInstallorLegacyItemRequest(jsname);
+            }
+        }
+
+        private static bool RequestLooseVersionLibraryRegistration(string jsname, Version version, SpecificVersion specific) 
+        {
+            Func<JavaScriptLibrary, bool> isValidLibrary = specific == SpecificVersion.LatestMajor
+                ? (Func<JavaScriptLibrary, bool>)(l => l.Version.Major == version.Major && l.Version.Minor >= version.Minor)
+                : l => l.Version.Major == version.Major && l.Version.Minor == version.Minor && l.Version.Build >= version.Build;
+            var library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
+                                                              .OrderByDescending(l => l.Version)
+                                                              .FirstOrDefault(isValidLibrary);
+            if (library != null)
+            {
+                AddItemRequest(library.JavaScriptLibraryID);
+                return true;
+            }
+
+            //unable to find a higher major version
+            library = GetHighestVersionLibrary(jsname);
+            if (library != null)
+            {
+                AddItemRequest(library.JavaScriptLibraryID);
+                LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void RequestSpecificVersionLibraryRegistration(string jsname, Version version)
+        {
+            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase) && l.Version == version);
+            if (library != null)
+            {
+                AddItemRequest(library.JavaScriptLibraryID);
+            }
+            else
+            {
+                //this will only occur if a specific library is requested and not available
+                LogCollision(String.Format("Missing Library request - {0} : {1}", jsname, version));
+            }
+        }
 
         private static void AddItemRequest(int javaScriptLibraryId)
         {

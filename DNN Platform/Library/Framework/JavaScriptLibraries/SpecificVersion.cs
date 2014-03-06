@@ -31,6 +31,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <summary>Match the major version</summary>
         LatestMajor,
         /// <summary>Match the major and minor versions</summary>
-        LatestMinor
+        LatestMinor,
+        /// <summary>Match version exactly</summary>
+        Exact,
     }
 }
