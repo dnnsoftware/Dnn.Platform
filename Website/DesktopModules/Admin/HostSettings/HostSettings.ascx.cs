@@ -279,6 +279,9 @@ namespace DotNetNuke.Modules.Admin.Host
         private void BindSmtpServer()
         {
             txtSMTPServer.Text = Entities.Host.Host.SMTPServer;
+            txtConnectionLimit.Text = Entities.Host.Host.SMTPConnectionLimit.ToString(CultureInfo.InvariantCulture);
+            txtMaxIdleTime.Text = Entities.Host.Host.SMTPMaxIdleTime.ToString(CultureInfo.InvariantCulture);
+
             if (!string.IsNullOrEmpty(Entities.Host.Host.SMTPAuthentication))
             {
                 optSMTPAuthentication.Items.FindByValue(Entities.Host.Host.SMTPAuthentication).Selected = true;
@@ -881,6 +884,8 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("WebRequestTimeout", txtWebRequestTimeout.Text, false);
                     // TODO: Refactor: call smtpServerSettings.Update(); This code/functionality has been copied to ..\AdvancedSettings\SmtpServerSettings.aspx) 
                     HostController.Instance.Update("SMTPServer", txtSMTPServer.Text, false);
+                    HostController.Instance.Update("SMTPConnectionLimit", txtConnectionLimit.Text, false);
+                    HostController.Instance.Update("SMTPMaxIdleTime", txtMaxIdleTime.Text, false);
                     HostController.Instance.Update("SMTPAuthentication", optSMTPAuthentication.SelectedItem.Value, false);
                     HostController.Instance.Update("SMTPUsername", txtSMTPUsername.Text, false);
                     HostController.Instance.UpdateEncryptedString("SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());

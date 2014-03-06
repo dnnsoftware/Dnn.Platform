@@ -1447,6 +1447,36 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Gets the SMTP Connection Limit
+        /// </summary>
+        /// <history>
+        ///   [evi]	03/05/2014   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int SMTPConnectionLimit
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("SMTPConnectionLimit", 1);
+            }
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the SMTP MaxIdleTime
+        /// </summary>
+        /// <history>
+        ///   [evi]	03/05/2014   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int SMTPMaxIdleTime
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("SMTPMaxIdleTime", 0);
+            }
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Gets whether Exceptions are rethrown
         /// </summary>
         /// <remarks>
