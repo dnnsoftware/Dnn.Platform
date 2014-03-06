@@ -1191,6 +1191,10 @@ ul#ControlBar_Module_ModulePosition {
     outline: none;
 }
 
+    #ControlBar_Module_AddNewModule .search-container input.search-input::-ms-clear {
+        display: none;
+    }
+
 #ControlBar_Module_AddNewModule .search-container .clear-button,
 #ControlBar_Module_AddNewModule .search-container .search-button {
     display: block;
