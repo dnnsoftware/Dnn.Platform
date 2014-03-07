@@ -29,12 +29,11 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using DotNetNuke.Application;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
@@ -77,7 +76,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             {
                 return false;
             }
-            return HttpContext.Current.IsDebuggingEnabled;
+            return HttpContextSource.Current.IsDebuggingEnabled;
         }
 
         /// <summary>
@@ -238,12 +237,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static void AddItemRequest(int javaScriptLibraryId)
         {
-            HttpContext.Current.Items[ScriptPrefix + javaScriptLibraryId] = true;
+            HttpContextSource.Current.Items[ScriptPrefix + javaScriptLibraryId] = true;
         }
 
         private static void AddPreInstallorLegacyItemRequest(string jsl)
         {
-            HttpContext.Current.Items[LegacyPrefix + jsl] = true;
+            HttpContextSource.Current.Items[LegacyPrefix + jsl] = true;
         }
 
         private static IEnumerable<JavaScriptLibrary> GetFinalScripts(IEnumerable<string> scripts)
@@ -331,7 +330,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static IEnumerable<string> GetScriptVersions()
         {
-            List<string> orderedScripts = (from object item in HttpContext.Current.Items.Keys
+            List<string> orderedScripts = (from object item in HttpContextSource.Current.Items.Keys
                                            where item.ToString().StartsWith(ScriptPrefix)
                                            select item.ToString().Substring(4)).ToList();
             orderedScripts.Sort();
@@ -352,7 +351,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         foreach (PackageDependencyInfo dependency in package.Dependencies)
                         {
                             JavaScriptLibrary dependantlibrary = GetHighestVersionLibrary(dependency.PackageName);
-                            if (HttpContext.Current.Items[ScriptPrefix + "." + dependantlibrary.JavaScriptLibraryID] ==
+                            if (HttpContextSource.Current.Items[ScriptPrefix + "." + dependantlibrary.JavaScriptLibraryID] ==
                                 null)
                             {
                                 finalScripts.Add(dependantlibrary.JavaScriptLibraryID.ToString());
@@ -374,7 +373,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 UserController.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.SCRIPT_COLLISION);
             string strMessage = Localization.GetString("ScriptCollision", Localization.SharedResourceFile);
-            var page = HttpContext.Current.Handler as Page;
+            var page = HttpContextSource.Current.Handler as Page;
             if (page != null)
             {
                 Skin.AddPageMessage(page, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
@@ -442,9 +441,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static void HandlePreInstallorLegacyItemRequests(Page page)
         {
-            List<string> legacyScripts = (from object item in HttpContext.Current.Items.Keys
-                where item.ToString().StartsWith(LegacyPrefix)
-                select item.ToString().Substring(7)).ToList();
+            List<string> legacyScripts = (from object item in HttpContextSource.Current.Items.Keys
+                                          where item.ToString().StartsWith(LegacyPrefix)
+                                          select item.ToString().Substring(7)).ToList();
             foreach (string legacyScript in legacyScripts)
             {
                 switch (legacyScript)
@@ -569,13 +568,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             {
                 case ClientAPI.ClientNamespaceReferences.dnn:
                 case ClientAPI.ClientNamespaceReferences.dnn_dom:
-                    if (HttpContext.Current.Items.Contains(LegacyPrefix + "dnn.js"))
+                    if (HttpContextSource.Current.Items.Contains(LegacyPrefix + "dnn.js"))
                     {
                         break;
                     }
 
                     ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.js", 12);
-                    HttpContext.Current.Items.Add(LegacyPrefix + "dnn.js", true);
+                    HttpContextSource.Current.Items.Add(LegacyPrefix + "dnn.js", true);
 
                     if (!ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.SingleCharDelimiters))
                     {
