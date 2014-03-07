@@ -317,20 +317,19 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private void BindSkins()
         {
-            var portal = PortalController.Instance.GetPortal(Tab.PortalID);
-            var skins = SkinController.GetSkins(portal, SkinController.RootSkin, SkinScope.All)
-                                                     .ToDictionary(skin => skin.Key, skin => skin.Value);
-            var containers = SkinController.GetSkins(portal, SkinController.RootContainer, SkinScope.All)
-                                                    .ToDictionary(skin => skin.Key, skin => skin.Value);
-            pageSkinCombo.DataSource = skins;
-            pageSkinCombo.DataBind(Tab.SkinSrc);
-            pageSkinCombo.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "");
-            pageSkinCombo.Select(Tab.SkinSrc, false);
+            pageSkinCombo.PortalId = Tab.PortalID;
+            pageSkinCombo.RootPath = SkinController.RootSkin;
+            pageSkinCombo.Scope = SkinScope.All;
+            pageSkinCombo.IncludeNoneSpecificItem = true;
+            pageSkinCombo.NoneSpecificText = "<" + Localization.GetString("None_Specified") + ">";
+            pageSkinCombo.SelectedValue =Tab.SkinSrc;
 
-            pageContainerCombo.DataSource = containers;
-            pageContainerCombo.DataBind();
-            pageContainerCombo.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "");
-            pageContainerCombo.Select(Tab.ContainerSrc, false);
+            pageContainerCombo.PortalId = Tab.PortalID;
+            pageContainerCombo.RootPath = SkinController.RootContainer;
+            pageContainerCombo.Scope = SkinScope.All;
+            pageContainerCombo.IncludeNoneSpecificItem = true;
+            pageContainerCombo.NoneSpecificText = "<" + Localization.GetString("None_Specified") + ">";
+            pageContainerCombo.SelectedValue = Tab.ContainerSrc;
         }
 
         private void BindTab()

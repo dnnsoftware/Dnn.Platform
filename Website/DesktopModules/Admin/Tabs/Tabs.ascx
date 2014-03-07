@@ -356,13 +356,11 @@
 			<fieldset>
 				<div class="dnnFormItem">
 					<dnn:Label ID="lblSkin" runat="server" suffix=":" />
-					<%--<asp:DropDownList ID="drpSkin" runat="server" DataTextField="Key" DataValueField ="Value" />--%>
-                    <dnnweb:DnnComboBox ID="drpSkin" runat="server" DataTextField="Key" DataValueField ="Value" />
+                    <dnnweb:DnnSkinComboBox ID="drpSkin" runat="server" />
 				</div>
 				<div class="dnnFormItem">
 					<dnn:Label ID="lblContainer" runat="server" suffix=":" />
-					<%--<asp:DropDownList ID="drpContainer" runat="server" DataTextField="Key" DataValueField ="Value"  />--%>
-                    <dnnweb:DnnComboBox ID="drpContainer" runat="server" DataTextField="Key" DataValueField ="Value"  />
+                    <dnnweb:DnnSkinComboBox ID="drpContainer" runat="server"  />
 					
 				</div>
                 <div class="dnnFormItem">

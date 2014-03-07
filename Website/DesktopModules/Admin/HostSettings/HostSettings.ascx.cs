@@ -252,21 +252,21 @@ namespace DotNetNuke.Modules.Admin.Host
 
         private void BindSkins()
         {
-            var skins = SkinController.GetSkins(null, SkinController.RootSkin, SkinScope.Host)
-                                                     .ToDictionary(skin => skin.Key, skin => skin.Value);
-            var containers = SkinController.GetSkins(null, SkinController.RootContainer, SkinScope.Host)
-                                                    .ToDictionary(skin => skin.Key, skin => skin.Value);
-            hostSkinCombo.DataSource = skins;
-            hostSkinCombo.DataBind(Entities.Host.Host.DefaultPortalSkin);
+            hostSkinCombo.RootPath = SkinController.RootSkin;
+            hostSkinCombo.Scope = SkinScope.Host;
+            hostSkinCombo.SelectedValue = Entities.Host.Host.DefaultPortalSkin;
 
-            hostContainerCombo.DataSource = containers;
-            hostContainerCombo.DataBind(Entities.Host.Host.DefaultPortalContainer);
+            hostContainerCombo.RootPath = SkinController.RootContainer;
+            hostContainerCombo.Scope = SkinScope.Host;
+            hostContainerCombo.SelectedValue = Entities.Host.Host.DefaultPortalContainer;
 
-            editSkinCombo.DataSource = skins;
-            editSkinCombo.DataBind(Entities.Host.Host.DefaultAdminSkin);
+            editSkinCombo.RootPath = SkinController.RootSkin;
+            editSkinCombo.Scope = SkinScope.Host;
+            editSkinCombo.SelectedValue = Entities.Host.Host.DefaultAdminSkin;
 
-            editContainerCombo.DataSource = containers;
-            editContainerCombo.DataBind(Entities.Host.Host.DefaultAdminContainer);
+            editContainerCombo.RootPath = SkinController.RootContainer;
+            editContainerCombo.Scope = SkinScope.Host;
+            editContainerCombo.SelectedValue = Entities.Host.Host.DefaultAdminContainer;
 
             uploadSkinLink.NavigateUrl = Util.InstallURL(ModuleContext.TabId, "");
 

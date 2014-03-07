@@ -213,6 +213,7 @@
     <Compile Include="UI\WebControls\DnnMemberListControl.cs" />
     <Compile Include="UI\WebControls\DnnPageDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnPaswordStrengthOptions.cs" />
+    <Compile Include="UI\WebControls\DnnSkinComboBox.cs" />
     <Compile Include="UI\WebControls\DnnToolTip.cs" />
     <Compile Include="UI\WebControls\DnnTreeNode.cs" />
     <Compile Include="Mvp\IWebServiceViewOfT.cs" />

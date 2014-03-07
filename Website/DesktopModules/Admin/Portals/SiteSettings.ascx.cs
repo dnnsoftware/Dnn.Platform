@@ -450,21 +450,25 @@ namespace DesktopModules.Admin.Portals
 
         private void BindSkins(PortalInfo portal)
         {
-            var skins = SkinController.GetSkins(portal, SkinController.RootSkin, SkinScope.All)
-                                                     .ToDictionary(skin => skin.Key, skin => skin.Value);
-            var containers = SkinController.GetSkins(portal, SkinController.RootContainer, SkinScope.All)
-                                                    .ToDictionary(skin => skin.Key, skin => skin.Value);
-            portalSkinCombo.DataSource = skins;
-            portalSkinCombo.DataBind(PortalController.GetPortalSetting("DefaultPortalSkin", portal.PortalID, Host.DefaultPortalSkin));
+            portalSkinCombo.PortalId = PortalId;
+            portalSkinCombo.RootPath = SkinController.RootSkin;
+            portalSkinCombo.Scope = SkinScope.All;
+            portalSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalSkin", portal.PortalID, Host.DefaultPortalSkin);
 
-            portalContainerCombo.DataSource = containers;
-            portalContainerCombo.DataBind(PortalController.GetPortalSetting("DefaultPortalContainer", portal.PortalID, Host.DefaultPortalContainer));
+            portalContainerCombo.PortalId = PortalId;
+            portalContainerCombo.RootPath = SkinController.RootContainer;
+            portalContainerCombo.Scope = SkinScope.All;
+            portalContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalContainer", portal.PortalID, Host.DefaultPortalContainer);
 
-            editSkinCombo.DataSource = skins;
-            editSkinCombo.DataBind(PortalController.GetPortalSetting("DefaultAdminSkin", portal.PortalID, Host.DefaultAdminSkin));
+            editSkinCombo.PortalId = PortalId;
+            editSkinCombo.RootPath = SkinController.RootSkin;
+            editSkinCombo.Scope = SkinScope.All;
+            editSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminSkin", portal.PortalID, Host.DefaultAdminSkin);
 
-            editContainerCombo.DataSource = containers;
-            editContainerCombo.DataBind(PortalController.GetPortalSetting("DefaultAdminContainer", portal.PortalID, Host.DefaultAdminContainer));
+            editContainerCombo.PortalId = PortalId;
+            editContainerCombo.RootPath = SkinController.RootContainer;
+            editContainerCombo.Scope = SkinScope.All;
+            editContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminContainer", portal.PortalID, Host.DefaultAdminContainer);
 
             if (ModuleContext.PortalSettings.UserInfo.IsSuperUser)
             {

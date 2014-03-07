@@ -225,15 +225,12 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private void BindContainers()
         {
-            var portal = PortalController.Instance.GetPortal(PortalId);
-            var containers = SkinController.GetSkins(portal, SkinController.RootContainer, SkinScope.All)
-                                    .ToDictionary(skin => skin.Key, skin => skin.Value);
-
-            moduleContainerCombo.DataSource = containers;
-            moduleContainerCombo.DataBind();
-            moduleContainerCombo.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "");
-            moduleContainerCombo.Select(Module.ContainerSrc, false);
-
+            moduleContainerCombo.PortalId = PortalId;
+            moduleContainerCombo.RootPath = SkinController.RootContainer;
+            moduleContainerCombo.Scope = SkinScope.All;
+            moduleContainerCombo.IncludeNoneSpecificItem = true;
+            moduleContainerCombo.NoneSpecificText = "<" + Localization.GetString("None_Specified") + ">";
+            moduleContainerCombo.SelectedValue = Module.ContainerSrc;
         }
 
         private void BindModuleCacheProviderList()

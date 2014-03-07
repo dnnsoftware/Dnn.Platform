@@ -44,6 +44,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI;
 
 using Telerik.Web.UI;
@@ -252,7 +253,7 @@ namespace DesktopModules.Admin.Tabs
             jQuery.RequestDnnPluginsRegistration();
 
             JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
-            ClientAPI.RegisterClientScriptBlock(Page, "dnn.controls.js");
+            ClientResourceManager.RegisterScript(Page, ClientAPI.ScriptPath + "dnn.controls.js", 14);
             dgPermissions.RegisterScriptsForAjaxPanel();
         }
 
@@ -837,24 +838,17 @@ namespace DesktopModules.Admin.Tabs
 
         private void BindSkinsAndContainers()
         {
-            var portal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+            drpSkin.PortalId = PortalId;
+            drpSkin.RootPath = SkinController.RootSkin;
+            drpSkin.Scope = SkinScope.All;
+            drpSkin.IncludeNoneSpecificItem = true;
+            drpSkin.NoneSpecificText = Localization.GetString("DefaultSkin", LocalResourceFile);
 
-            var skins = SkinController.GetSkins(portal, SkinController.RootSkin, SkinScope.All)
-                                         .ToDictionary(skin => skin.Key, skin => skin.Value);
-            var containers = SkinController.GetSkins(portal, SkinController.RootContainer, SkinScope.All)
-                                                    .ToDictionary(skin => skin.Key, skin => skin.Value);
-
-            drpSkin.Items.Clear();
-            drpSkin.DataSource = skins;
-            drpSkin.DataBind();
-            //drpSkin.Items.Insert(0, new ListItem(Localization.GetString("DefaultSkin", LocalResourceFile), ""));
-            drpSkin.InsertItem(0, Localization.GetString("DefaultSkin", LocalResourceFile), "");
-
-            drpContainer.Items.Clear();
-            drpContainer.DataSource = containers;
-            drpContainer.DataBind();
-            //drpContainer.Items.Insert(0, new ListItem(Localization.GetString("DefaultContainer", LocalResourceFile), ""));
-            drpContainer.InsertItem(0, Localization.GetString("DefaultContainer", LocalResourceFile), "");
+            drpContainer.PortalId = PortalId;
+            drpContainer.RootPath = SkinController.RootContainer;
+            drpContainer.Scope = SkinScope.All;
+            drpContainer.IncludeNoneSpecificItem = true;
+            drpContainer.NoneSpecificText = Localization.GetString("DefaultContainer", LocalResourceFile);
         }
 
         private void BindTab(int tabId)

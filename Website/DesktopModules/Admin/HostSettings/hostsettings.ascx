@@ -144,11 +144,11 @@
                 <div id="hostSkinSettings">
                     <div class="dnnFormItem">
                         <dnn:label id="plHostSkin" controlname="hostSkinCombo" runat="server" />
-                        <dnn:dnncombobox id="hostSkinCombo" runat="Server" datatextfield="Key" datavaluefield="Value" />
+                        <dnn:DnnSkinComboBox id="hostSkinCombo" runat="Server" />
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plHostContainer" controlname="hostContainerCombo" runat="server" />
-                        <dnn:dnncombobox id="hostContainerCombo" runat="Server" datatextfield="Key" datavaluefield="Value" cssclass="dnnFixedSizeComboBox" />
+                        <dnn:DnnSkinComboBox id="hostContainerCombo" runat="Server" cssclass="dnnFixedSizeComboBox" />
                         <a href="#" class="dnnSecondaryAction">
                             <%=LocalizeString("SkinPreview")%></a>
                     </div>
@@ -156,11 +156,11 @@
                 <div id="adminSkinSettings">
                     <div class="dnnFormItem">
                         <dnn:label id="plAdminSkin" controlname="editSkinCombo" runat="server" />
-                        <dnn:dnncombobox id="editSkinCombo" runat="Server" datatextfield="Key" datavaluefield="Value" />
+                        <dnn:DnnSkinComboBox id="editSkinCombo" runat="Server" />
                     </div>
                     <div class="dnnFormItem" id="adminContainerPreview">
                         <dnn:label id="plAdminContainer" controlname="editContainerCombo" runat="server" />
-                        <dnn:dnncombobox id="editContainerCombo" runat="Server" datatextfield="Key" datavaluefield="Value" cssclass="dnnFixedSizeComboBox" />
+                        <dnn:DnnSkinComboBox id="editContainerCombo" runat="Server" cssclass="dnnFixedSizeComboBox" />
                         <a href="#" class="dnnSecondaryAction">
                             <%=LocalizeString("EditSkinPreview")%></a>
                     </div>

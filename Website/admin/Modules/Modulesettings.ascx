@@ -217,8 +217,7 @@
                 </div>
                 <div class="dnnFormItem dnnContainerPreview">
                     <dnn:label id="plModuleContainer" runat="server" controlname="ctlModuleContainer" />
-                    <%--<asp:DropDownList ID="moduleContainerCombo" runat="server" DataTextField="Key" DataValueField="Value" />--%>
-                    <dnn:DnnComboBox ID="moduleContainerCombo" runat="server" DataTextField="Key" DataValueField="Value" />
+                    <dnn:DnnSkinComboBox ID="moduleContainerCombo" runat="server" />
                     <a href="#" class="dnnSecondaryAction">
                         <%=LocalizeString("ContainerPreview")%></a>
                 </div>

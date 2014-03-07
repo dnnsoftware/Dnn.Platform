@@ -121,22 +121,22 @@
                     <div id="siteSkinSettings">
                         <div class="dnnFormItem">
                             <dnn:label id="plPortalSkin" controlname="portalSkinCombo" runat="server" />
-                            <dnn:DnnComboBox ID="portalSkinCombo" runat="Server" Width="300px" DataTextField="Key" DataValueField="Value" />
+                            <dnn:DnnSkinComboBox ID="portalSkinCombo" runat="Server" Width="300px" />
                         </div>
                         <div class="dnnFormItem">
                             <dnn:label id="plPortalContainer" controlname="portalContainerCombo" runat="server" />
-                            <dnn:DnnComboBox ID="portalContainerCombo" runat="Server" Width="300px" DataTextField="Key" DataValueField="Value" CssClass="dnnFixedSizeComboBox" />
+                            <dnn:DnnSkinComboBox ID="portalContainerCombo" runat="Server" Width="300px" CssClass="dnnFixedSizeComboBox" />
                             <a href="#" class="dnnSecondaryAction"><%=LocalizeString("SkinPreview")%></a>
                         </div>
                     </div>
                     <div id="editSkinSettings">
                         <div class="dnnFormItem">
                             <dnn:label id="plAdminSkin" controlname="editSkinCombo" runat="server" />
-                            <dnn:DnnComboBox ID="editSkinCombo" runat="Server" Width="300px" DataTextField="Key" DataValueField="Value" />
+                            <dnn:DnnSkinComboBox ID="editSkinCombo" runat="Server" Width="300px" />
                         </div>
                         <div class="dnnFormItem">
                             <dnn:label id="plAdminContainer" controlname="editContainerCombo" runat="server" />
-                            <dnn:DnnComboBox ID="editContainerCombo" runat="Server" Width="300px" DataTextField="Key" DataValueField="Value" CssClass="dnnFixedSizeComboBox" />
+                            <dnn:DnnSkinComboBox ID="editContainerCombo" runat="Server" Width="300px" CssClass="dnnFixedSizeComboBox" />
                             <a href="#" class="dnnSecondaryAction"><%=LocalizeString("EditSkinPreview")%></a>
                         </div>
                     </div>

@@ -197,11 +197,11 @@
 				<div id="tabSkinSettings">
 					<div class="dnnFormItem">
 						<dnn:Label ID="plSkin" ControlName="pageSkinCombo" runat="server" />
-                        <dnn:DnnComboBox ID="pageSkinCombo" runat="Server" DataTextField="Key" DataValueField ="Value" />
+                        <dnn:DnnSkinComboBox ID="pageSkinCombo" runat="Server" />
 					</div>
 					<div class="dnnFormItem">
 						<dnn:Label ID="plContainer" ControlName="pageContainerCombo" runat="server" />
-                        <dnn:DnnComboBox ID="pageContainerCombo" runat="Server" DataTextField="Key" DataValueField ="Value" />
+                        <dnn:DnnSkinComboBox ID="pageContainerCombo" runat="Server" />
                     </div>
 					<div class="dnnFormItem">
 						<dnn:Label ID="plCustomStylesheet" ControlName="txtCustomStylesheet" runat="server" />
