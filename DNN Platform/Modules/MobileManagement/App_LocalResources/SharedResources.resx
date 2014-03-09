@@ -291,4 +291,7 @@
   <data name="SmartPhone.Text" xml:space="preserve">
     <value>Smart Phone</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Site Redirection Management</value>
+  </data>
 </root>
