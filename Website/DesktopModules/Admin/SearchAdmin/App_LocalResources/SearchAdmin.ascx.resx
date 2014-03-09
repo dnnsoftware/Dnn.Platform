@@ -198,4 +198,7 @@
   <data name="DefaultSynonymGroup.Text" xml:space="preserve">
     <value>dnn,dotnetnuke</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Search Admin</value>
+  </data>
 </root>

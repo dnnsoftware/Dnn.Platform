@@ -183,4 +183,7 @@
   <data name="scriptLabel.Text" xml:space="preserve">
     <value>Script:</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Configuration Manager</value>
+  </data>
 </root>

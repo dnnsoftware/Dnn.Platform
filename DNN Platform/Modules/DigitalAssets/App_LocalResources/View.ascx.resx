@@ -447,4 +447,7 @@
   <data name="InvalidUser.Error" xml:space="preserve">
     <value>The module is configured as User mode, it cannot be used with unauthenticated user</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>File Management</value>
+  </data>
 </root>

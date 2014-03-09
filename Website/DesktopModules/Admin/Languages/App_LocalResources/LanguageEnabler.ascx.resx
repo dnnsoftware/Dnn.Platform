@@ -354,4 +354,7 @@
   <data name="ViewPage.Text" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Language Management</value>
+  </data>
 </root>
