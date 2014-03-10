@@ -370,6 +370,12 @@ namespace DotNetNuke.UI.Skins
                         case "div":
                         case "span":
                         case "p":
+                        case "section":
+                        case "header":
+                        case "footer":
+                        case "main":
+                        case "article":
+                        case "aside":
                             //content pane
                             if (objPaneControl.ID.ToLower() != "controlpanel")
                             {
