@@ -551,13 +551,21 @@ dnn.controlBar.init = function (settings) {
         }
     };
 
+    dnn.controlBar.getBookmarkTooltip = function(bookmarkClass) {
+        if (bookmarkClass.indexOf('removeBookmark') >= 0) {
+            return settings.removeBookmarksTip;
+        }
+        return settings.addToBookmarksTip;
+    };
+
     dnn.controlBar.fillModuleList = function(ul, moduleList) {
         if (dnn.controlBar.isFirstModuleLoadingPage()) {
             ul.empty().css('left', 1000);
         }
         for (var i = 0; i < moduleList.length; i++) {
             var bookmarkClass = dnn.controlBar.getBookmarkClass(moduleList[i].Bookmarked, moduleList[i].ExistsInBookmarkCategory);
-            ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><a href="javascript:void(0)" class="'+bookmarkClass+'"/><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
+            var bookmarkTooltip = dnn.controlBar.getBookmarkTooltip(bookmarkClass);
+            ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><a href="javascript:void(0)" class="' + bookmarkClass + '" title="' + bookmarkTooltip + '"/><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
         }
     };
 
@@ -646,6 +654,19 @@ dnn.controlBar.init = function (settings) {
                 var bookmarTitle = "module";
                 var bookmarkModules = dnn.controlBar.addBookmarkModule(moduleId);
                 dnn.controlBar.saveBookmarkModules(bookmarTitle, bookmarkModules, $(this));
+            }).hover(function() {
+                $(this).addClass("highlight");
+                var $self = $(this).parent();
+                $self.dnnHelperTipDestroy();
+            }, function() {
+                $(this).removeClass("highlight");
+                var holderId = $(this).parent().attr('id');;
+                var $self = $(this).parent();
+                $self.dnnHelperTip({
+                    helpContent: settings.dragModuleToolTip,
+                    holderId: holderId,
+                    show: true
+                });
             });
 
 
@@ -654,7 +675,20 @@ dnn.controlBar.init = function (settings) {
                 var bookmarTitle = "module";
                 var bookmarkModules = dnn.controlBar.removeBookmarkModule(moduleId);
                 dnn.controlBar.saveBookmarkModules(bookmarTitle, bookmarkModules, $(this), moduleId);
-            });
+            }).hover(function () {
+                $(this).addClass("highlight");
+                var $self = $(this).parent();
+                $self.dnnHelperTipDestroy();
+            }, function () {
+                $(this).removeClass("highlight");
+                var holderId = $(this).parent().attr('id');;
+                var $self = $(this).parent();
+                $self.dnnHelperTip({
+                    helpContent: settings.dragModuleToolTip,
+                    holderId: holderId,
+                    show: true
+                });
+            });;
 
             $('div.ControlBar_ModuleDiv', ul).each(function () {
                 if (!this.id)
