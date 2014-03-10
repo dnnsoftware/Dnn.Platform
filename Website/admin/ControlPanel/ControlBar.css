@@ -1334,7 +1334,7 @@ ul#ControlBar_Module_ModulePosition {
 }
 
 #ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark.highlight,
-#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark.hightlight {
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark.highlight {
     background-image: url(controlbarimages/bookmarkThisModule_white.png);
 }
 

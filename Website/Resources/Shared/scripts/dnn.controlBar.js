@@ -654,7 +654,10 @@ dnn.controlBar.init = function (settings) {
                 var bookmarTitle = "module";
                 var bookmarkModules = dnn.controlBar.addBookmarkModule(moduleId);
                 dnn.controlBar.saveBookmarkModules(bookmarTitle, bookmarkModules, $(this));
-            }).hover(function() {
+            }).hover(function () {
+                if ($(this).attr("class").indexOf("hideBookmark") > 0) {
+                    return; // The button is hidden
+                }
                 $(this).addClass("highlight");
                 var $self = $(this).parent();
                 $self.dnnHelperTipDestroy();
@@ -676,6 +679,9 @@ dnn.controlBar.init = function (settings) {
                 var bookmarkModules = dnn.controlBar.removeBookmarkModule(moduleId);
                 dnn.controlBar.saveBookmarkModules(bookmarTitle, bookmarkModules, $(this), moduleId);
             }).hover(function () {
+                if ($(this).attr("class").indexOf("hideBookmark") > 0) {
+                    return; // The button is hidden
+                }
                 $(this).addClass("highlight");
                 var $self = $(this).parent();
                 $self.dnnHelperTipDestroy();
