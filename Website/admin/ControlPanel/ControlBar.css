@@ -1311,4 +1311,25 @@ ul#ControlBar_Module_ModulePosition {
     background: url("images/controlbar_loading.png") no-repeat 0 0;
 }
 
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark,
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 34px;
+    width: 25px;
+    background: url(controlbarimages/bookmarkThisModule.png) no-repeat 4px 5px;
+    opacity: 0.5;
+}
+
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark {
+    background: url(controlbarimages/bookmarkThisModule.png) no-repeat 4px -45px;
+}
+
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark.hideBookmark, 
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark.hideBookmark {
+    background: none;
+    cursor: default;
+}
 

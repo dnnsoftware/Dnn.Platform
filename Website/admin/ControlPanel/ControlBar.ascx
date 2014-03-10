@@ -411,7 +411,10 @@
 		
         selectPageText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("SelectPage.Text")) %>',
         moduleShareableTitle: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("ShareableWarningTitle")) %>',		
-        removeBookmarksTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.RemoveFromBookmarks.ToolTip")) %>'
+        removeBookmarksTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.RemoveFromBookmarks.ToolTip")) %>',
+
+        bookmarkModuleCategory: '<%= BookmarkModuleCategory%>',
+        bookmarkedModuleKeys: '<%= BookmarkedModuleKeys%>'
     };
     
     $(function() {

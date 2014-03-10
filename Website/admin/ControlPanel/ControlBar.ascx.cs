@@ -66,6 +66,30 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string LoadTabModuleMessage { get; set; }
 
+        protected string BookmarkModuleCategory 
+        {
+            get
+            {
+                //TOO Return the category appropriately
+                return "Common";
+            }
+        }
+
+        protected string BookmarkedModuleKeys
+        {
+            get
+            {
+                var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
+                var personalization = personalizationController.LoadProfile(UserController.GetCurrentUserInfo().UserID, PortalSettings.PortalId);
+                var bookmarkModules = personalization.Profile["ControlBar:module" + PortalSettings.PortalId];
+                if (bookmarkModules == null)
+                {
+                    return string.Empty;
+                }
+                return bookmarkModules.ToString();
+            }
+        }
+
         public override bool IsDockable { get; set; }
 
         public override bool IncludeInControlHierarchy

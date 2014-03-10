@@ -61,6 +61,7 @@ namespace DotNetNuke.Web.InternalServices
             public int ModuleID { get; set; }
             public string ModuleName { get; set; }
             public string ModuleImage { get; set; }
+            public bool Bookmarked { get; set; }
         }
 
         public class PageDefDTO
@@ -109,24 +110,48 @@ namespace DotNetNuke.Web.InternalServices
             Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter = category == "All"
                                         ? (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => true && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm))
                                          : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == category && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
-            
-            IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
-                .Where(Filter)
+            IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId).Where(Filter);
+
+            string bookmarCategory = GetBookmarkCategory(PortalSettings.Current.PortalId);
+            IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> bookmarkedModules = GetBookmarkedModules(PortalSettings.Current.PortalId, UserController.GetCurrentUserInfo().UserID)
+                .Where( kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
+            var isBookmarkCategory = (bookmarCategory == category);
+            if (isBookmarkCategory)
+            {                
+                portalModulesList = portalModulesList.Union(bookmarkedModules).Distinct();
+            }
+
+            var filteredList = portalModulesList
                 .OrderBy(c => c.Key)
                 .Skip(loadingStartIndex)
                 .Take(loadingPageSize);
-                
-            Dictionary<int, string> resultDict = portalModulesList.ToDictionary(portalModule => portalModule.Value.DesktopModuleID,
-                                                    portalModule => portalModule.Key);
-
-            var result = new List<ModuleDefDTO>();
-            foreach (var kvp in resultDict)
-            {
-                string imageUrl = GetDeskTopModuleImage(kvp.Key);
-                result.Add(new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = GetModuleName(kvp.Value), ModuleImage = imageUrl });
-            }
-
+            
+            var result = filteredList.Select(kvp => new ModuleDefDTO {ModuleID = kvp.Value.DesktopModuleID, ModuleName = kvp.Key, ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID), Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key)}).ToList();
             return Request.CreateResponse(HttpStatusCode.OK, result);
+        }
+
+        private IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetBookmarkedModules(int portalId, int userId)
+        {
+            //TODO Ensure the BookmarkedModules list
+            
+            var personalizationController = new Services.Personalization.PersonalizationController();
+            var personalization = personalizationController.LoadProfile(userId, portalId);
+            var bookmarkItems = personalization.Profile["ControlBar:module" + portalId];
+            if (bookmarkItems == null)
+            {
+                return new List<KeyValuePair<string, PortalDesktopModuleInfo>>();
+            }
+            var bookmarkItemsKeys = bookmarkItems.ToString().Split(',').ToList();
+            var bookmarkedModules = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
+                                        .Where(dm => bookmarkItemsKeys.Contains(dm.Value.DesktopModuleID.ToString()));
+
+            return bookmarkedModules;
+        }
+
+        private string GetBookmarkCategory(int p)
+        {
+            //TODO Get the bookmark category apropriately
+            return "Common";
         }
 
         [HttpGet]
