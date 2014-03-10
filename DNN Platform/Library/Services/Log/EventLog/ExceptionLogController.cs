@@ -21,8 +21,10 @@
 #region Usings
 
 using System;
-
+using System.Web;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.UI.Utilities;
 
 #endregion
 
@@ -78,12 +80,12 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
-        public void AddLog(Exception objException, ExceptionLogType LogType)
+        public void AddLog(Exception objException, ExceptionLogType logType)
         {
             var objLogController = new LogController();
             var objLogInfo = new LogInfo();
-            objLogInfo.LogTypeKey = LogType.ToString();
-            if (LogType == ExceptionLogType.SEARCH_INDEXER_EXCEPTION)
+            objLogInfo.LogTypeKey = logType.ToString();
+            if (logType == ExceptionLogType.SEARCH_INDEXER_EXCEPTION)
             {
 				//Add SearchException Properties
                 var objSearchException = (SearchException) objException;
@@ -93,7 +95,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 objLogInfo.LogProperties.Add(new LogDetailInfo("SearchKey", objSearchException.SearchItem.SearchKey));
                 objLogInfo.LogProperties.Add(new LogDetailInfo("GUID", objSearchException.SearchItem.GUID));
             }
-            else if (LogType == ExceptionLogType.MODULE_LOAD_EXCEPTION)
+            else if (logType == ExceptionLogType.MODULE_LOAD_EXCEPTION)
             {
 				//Add ModuleLoadException Properties
                 var objModuleLoadException = (ModuleLoadException) objException;
@@ -102,7 +104,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 objLogInfo.LogProperties.Add(new LogDetailInfo("FriendlyName", objModuleLoadException.FriendlyName));
                 objLogInfo.LogProperties.Add(new LogDetailInfo("ModuleControlSource", objModuleLoadException.ModuleControlSource));
             }
-            else if (LogType == ExceptionLogType.SECURITY_EXCEPTION)
+            else if (logType == ExceptionLogType.SECURITY_EXCEPTION)
             {
 				//Add SecurityException Properties
                 var objSecurityException = (SecurityException) objException;
@@ -135,6 +137,13 @@ namespace DotNetNuke.Services.Log.EventLog
             objLogInfo.LogProperties.Add(new LogDetailInfo("Source", objBasePortalException.Source));
             objLogInfo.LogPortalID = objBasePortalException.PortalID;
             objLogController.AddLog(objLogInfo);
+
+            //when current user is host user and exception is PageLoadException, try to log the log guid into cookies.
+            //so that this log can be picked and do more action on it later.
+            if (logType == ExceptionLogType.PAGE_LOAD_EXCEPTION && HttpContext.Current != null && UserController.GetCurrentUserInfo().IsSuperUser)
+            {
+                HttpContext.Current.Response.Cookies.Add(new HttpCookie("LogGUID", objLogInfo.LogGUID){HttpOnly = false});
+            }
         }
     }
 }

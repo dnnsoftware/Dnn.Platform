@@ -154,6 +154,7 @@
     <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
+    <Compile Include="InternalServices\EventLogServiceController.cs" />
     <Compile Include="InternalServices\GettingStartedController.cs" />
     <Compile Include="InternalServices\ImageHeader.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />

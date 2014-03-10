@@ -3256,3 +3256,6 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 	background-color: inherit;
 }
 div[id$=titleLabel_tb].visible ~ span{ margin-left: 32px;}
+
+/*Critical Error Popup*/
+div.errorWin p{ margin: 0 0 10px 0;}
