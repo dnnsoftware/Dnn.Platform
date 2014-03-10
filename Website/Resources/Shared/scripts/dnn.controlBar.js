@@ -539,7 +539,11 @@ dnn.controlBar.init = function (settings) {
         return (dnn.controlBar.getSelectedCategory() == dnn.controlBar.bookmarkModuleCategory);
     };
 
-    dnn.controlBar.getBookmarkClass = function(bookmarked) {
+    dnn.controlBar.getBookmarkClass = function (bookmarked, existsInBookmarkCategory) {
+        if (existsInBookmarkCategory) {
+            return 'bookmark hideBookmark'; //Modules in Common/Bookmark category must not be bookmarked
+        }
+
         if (!dnn.controlBar.isBookmarkModuleCategorySelected()) {
             return bookmarked ? 'bookmark hideBookmark' : 'bookmark';
         } else {
@@ -552,7 +556,7 @@ dnn.controlBar.init = function (settings) {
             ul.empty().css('left', 1000);
         }
         for (var i = 0; i < moduleList.length; i++) {
-            var bookmarkClass = dnn.controlBar.getBookmarkClass(moduleList[i].Bookmarked);
+            var bookmarkClass = dnn.controlBar.getBookmarkClass(moduleList[i].Bookmarked, moduleList[i].ExistsInBookmarkCategory);
             ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><a href="javascript:void(0)" class="'+bookmarkClass+'"/><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
         }
     };

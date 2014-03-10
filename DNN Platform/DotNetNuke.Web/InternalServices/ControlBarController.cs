@@ -28,7 +28,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using System.Web.Http.Controllers;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -53,8 +53,13 @@ namespace DotNetNuke.Web.InternalServices
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ControlBarController));
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
-
+        private readonly Components.Controllers.IControlBarController Controller;
 		private IDictionary<string, string> _nameDics;
+
+        public ControlBarController()
+        {
+            Controller = Components.Controllers.ControlBarController.Instance;
+        }
 
         public class ModuleDefDTO
         {
@@ -62,6 +67,7 @@ namespace DotNetNuke.Web.InternalServices
             public string ModuleName { get; set; }
             public string ModuleImage { get; set; }
             public bool Bookmarked { get; set; }
+            public bool ExistsInBookmarkCategory { get; set; }
         }
 
         public class PageDefDTO
@@ -104,56 +110,26 @@ namespace DotNetNuke.Web.InternalServices
             if (string.IsNullOrEmpty(category))
             {
                 category = "All";                
-            }
-            var formattedSearchTerm = String.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
+            }            
+            var bookmarCategory = Controller.GetBookmarkCategory(PortalSettings.Current.PortalId);
+            var bookmarkedModules = Controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.GetCurrentUserInfo().UserID, searchTerm);
+            var bookmarkCategoryModules = Controller.GetCategoryDesktopModules(PortalSettings.PortalId, bookmarCategory, searchTerm);
 
-            Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter = category == "All"
-                                        ? (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => true && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm))
-                                         : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == category && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
-            IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId).Where(Filter);
+            var filteredList = bookmarCategory == category ? bookmarkCategoryModules.OrderBy(m => m.Key).Union(bookmarkedModules.OrderBy(m => m.Key)).Distinct() 
+                                            : Controller.GetCategoryDesktopModules(PortalSettings.PortalId, category, searchTerm).OrderBy(m => m.Key);
 
-            string bookmarCategory = GetBookmarkCategory(PortalSettings.Current.PortalId);
-            IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> bookmarkedModules = GetBookmarkedModules(PortalSettings.Current.PortalId, UserController.GetCurrentUserInfo().UserID)
-                .Where( kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
-            var isBookmarkCategory = (bookmarCategory == category);
-            if (isBookmarkCategory)
-            {                
-                portalModulesList = portalModulesList.Union(bookmarkedModules).Distinct();
-            }
-
-            var filteredList = portalModulesList
-                .OrderBy(c => c.Key)
+            filteredList = filteredList
                 .Skip(loadingStartIndex)
                 .Take(loadingPageSize);
             
-            var result = filteredList.Select(kvp => new ModuleDefDTO {ModuleID = kvp.Value.DesktopModuleID, ModuleName = kvp.Key, ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID), Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key)}).ToList();
+            var result = filteredList.Select(kvp => new ModuleDefDTO {ModuleID = kvp.Value.DesktopModuleID, 
+                                                                    ModuleName = kvp.Key, 
+                                                                    ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID), 
+                                                                    Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key), 
+                                                                    ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key)}).ToList();
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
-
-        private IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetBookmarkedModules(int portalId, int userId)
-        {
-            //TODO Ensure the BookmarkedModules list
-            
-            var personalizationController = new Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(userId, portalId);
-            var bookmarkItems = personalization.Profile["ControlBar:module" + portalId];
-            if (bookmarkItems == null)
-            {
-                return new List<KeyValuePair<string, PortalDesktopModuleInfo>>();
-            }
-            var bookmarkItemsKeys = bookmarkItems.ToString().Split(',').ToList();
-            var bookmarkedModules = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
-                                        .Where(dm => bookmarkItemsKeys.Contains(dm.Value.DesktopModuleID.ToString()));
-
-            return bookmarkedModules;
-        }
-
-        private string GetBookmarkCategory(int p)
-        {
-            //TODO Get the bookmark category apropriately
-            return "Common";
-        }
-
+        
         [HttpGet]
         [DnnPageEditor]
         public HttpResponseMessage GetPageList(string portal)
@@ -473,11 +449,9 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage SaveBookmark(BookmarkDTO bookmark)
         {
             if (string.IsNullOrEmpty(bookmark.Bookmark)) bookmark.Bookmark = string.Empty;
-            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(UserInfo.UserID, PortalSettings.PortalId);
-            personalization.Profile["ControlBar:" + bookmark.Title + PortalSettings.PortalId] = bookmark.Bookmark;
-            personalization.IsModified = true;
-            personalizationController.SaveProfile(personalization);
+            
+            Controller.SaveBookMark(PortalSettings.PortalId, UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
+            
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

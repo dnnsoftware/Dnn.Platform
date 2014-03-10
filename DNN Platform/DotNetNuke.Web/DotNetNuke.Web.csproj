@@ -153,6 +153,8 @@
     <Compile Include="Api\UrlHelperExtensions.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
+    <Compile Include="Components\Controllers\ControlBarController.cs" />
+    <Compile Include="Components\Controllers\IControlBarController.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
     <Compile Include="InternalServices\EventLogServiceController.cs" />
     <Compile Include="InternalServices\GettingStartedController.cs" />
