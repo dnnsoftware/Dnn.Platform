@@ -28,7 +28,7 @@ using System.Text;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules.Internal;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
@@ -317,7 +317,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override ArrayList GetPermissions()
         {
-            var moduleInfo = TestableModuleController.Instance.GetModule(ModuleID, TabId);
+            var moduleInfo = ModuleController.Instance.GetModule(ModuleID, TabId);
 
             var permissionController = new PermissionController();
             var permissions = permissionController.GetPermissionsByModuleID(ModuleID);

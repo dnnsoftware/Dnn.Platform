@@ -23,8 +23,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
-
-using DotNetNuke.Entities.Modules.Internal;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Web.Mvp
 {
@@ -83,7 +82,7 @@ namespace DotNetNuke.Web.Mvp
 
         protected virtual void SaveSettings()
         {
-            var controller = TestableModuleController.Instance;
+            var controller = ModuleController.Instance;
 
             foreach (var setting in View.Model.ModuleSettings)
             {

@@ -23,7 +23,7 @@ using System.Threading;
 using System.Web.Http;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules.Internal;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Services.Localization;
@@ -86,7 +86,7 @@ namespace DotNetNuke.Web.Api.Internal
 
                 if (moduleId != Null.NullInteger)
                 {
-                    var module = TestableModuleController.Instance.GetModule(moduleId, tabId);
+                    var module = ModuleController.Instance.GetModule(moduleId, tabId);
                     if (module == null)
                     {
                         throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("TabModuleNotExist", Localization.ExceptionsResourceFile)));

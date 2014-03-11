@@ -19,7 +19,7 @@ using System;
 
 namespace DotNetNuke.Entities.Modules.Internal
 {
-    internal class ModuleControllerImpl : IModuleController
+    internal class ModuleControllerImpl 
     {
         readonly ModuleController _legacyController = new ModuleController();
 

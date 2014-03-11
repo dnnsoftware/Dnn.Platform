@@ -24,11 +24,12 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Modules.Internal
 {
+     [Obsolete("This class has been obsoleted in 7.3.0 - please use ModuleController instead")]
     public class TestableModuleController : ServiceLocator<IModuleController, TestableModuleController>
     {
         protected override Func<IModuleController> GetFactory()
         {
-            return () => new ModuleControllerImpl();
+            return () => new ModuleController();
         }
     }
 }

@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -67,10 +68,15 @@ namespace DotNetNuke.Entities.Modules
     /// 	[cnurse]	01/14/2008   Documented
     /// </history>
     /// -----------------------------------------------------------------------------
-    public class ModuleController
+    public class ModuleController : ServiceLocator<IModuleController, ModuleController>, IModuleController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleController));
         private static readonly DataProvider dataProvider = DataProvider.Instance();
+
+        protected override Func<IModuleController> GetFactory()
+        {
+            return () => new ModuleController();
+        }
 
         #region Private Methods
 

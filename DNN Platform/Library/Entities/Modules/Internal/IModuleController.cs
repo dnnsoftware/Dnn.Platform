@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using System.Collections.Generic;
+using DotNetNuke.Entities.Tabs;
 
 namespace DotNetNuke.Entities.Modules.Internal
 {
@@ -53,5 +55,65 @@ namespace DotNetNuke.Entities.Modules.Internal
         /// <param name="settingValue">value of the setting (String).</param>
         /// <remarks>Empty SettingValue will remove the setting</remarks>
         void UpdateTabModuleSetting(int tabModuleId, string settingName, string settingValue);
+
+        /// <summary>
+        /// add a module to a page
+        /// </summary>
+        /// <param name="module">moduleInfo for the module to create</param>
+        /// <returns>ID of the created module</returns>
+        int AddModule(ModuleInfo module);
+
+        /// <summary>
+        /// Clears the module cache based on the page (tabid)
+        /// </summary>
+        /// <param name="TabId">The tab id.</param>
+        void ClearCache(int TabId);
+
+        /// <summary>
+        /// Copies the module to a new page.
+        /// </summary>
+        /// <param name="sourceModule">The source module.</param>
+        /// <param name="destinationTab">The destination tab.</param>
+        /// <param name="toPaneName">Name of to pane.</param>
+        /// <param name="includeSettings">if set to <c>true</c> include settings.</param>
+        void CopyModule(ModuleInfo sourceModule, TabInfo destinationTab, string toPaneName, bool includeSettings);
+
+        /// <summary>
+        /// Copies all modules in source page to a new page.
+        /// </summary>
+        /// <param name="sourceTab">The source tab.</param>
+        /// <param name="destinationTab">The destination tab.</param>
+        /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
+        void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference);
+
+         /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// CopyTabModuleSettings copies the TabModuleSettings from one instance to another
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        ///	<param name="fromModule">The module to copy from</param>
+        ///	<param name="toModule">The module to copy to</param>
+        void CopyTabModuleSettings(ModuleInfo fromModule, ModuleInfo toModule);
+
+        /// <summary>
+        /// This method provides two functions:
+        /// 1. Check and ensure that the "Module" content item type exists - if not create it
+        /// 2. add a content item
+        /// </summary>
+        /// <param name = "module">the module to add a content item for</param>
+        void CreateContentItem(ModuleInfo module);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DeleteAllModules deletes all instances of a Module (from a collection).  This overload
+        /// soft deletes the instances
+        /// </summary>
+        ///	<param name="moduleId">The Id of the module to copy</param>
+        ///	<param name="tabId">The Id of the current tab</param>
+        ///	<param name="fromTabs">An ArrayList of TabItem objects</param>
+        void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs);
+
+
     }
 }
