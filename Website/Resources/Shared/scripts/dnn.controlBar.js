@@ -878,6 +878,7 @@ dnn.controlBar.init = function (settings) {
         $searchInput.val('').focus();
         dnn.controlBar.moduleLoadingPageIndex = 0;
         dnn.controlBar.allModulesLoaded = false;
+        dnn.controlBar.mousedown = false;
     };
 
     dnn.controlBar.getSelectedCategory = function () {
@@ -1396,8 +1397,7 @@ dnn.controlBar.init = function (settings) {
     $(document.body).on('click', 'div.subNav a.removeBookmark', function () {
         var $this = $(this);
         var li = $this.parent();
-        var tabname = li.attr('data-tabname');
-        console.log(tabname);
+        var tabname = li.attr('data-tabname');        
         var wrapper = $this.closest('dl');
         var title = wrapper.attr('id').indexOf('host') > 0 ? 'host' : 'admin';
         var outerWrapper = wrapper.parent();
@@ -1444,6 +1444,8 @@ dnn.controlBar.init = function (settings) {
     var initAction = dnn.dom.getCookie('ControlBarInit');
     if (initAction) {
         dnn.dom.setCookie('ControlBarInit', '', -1);
+        // load status
+        dnn.controlBar.loadStatus();
         switch (initAction) {
             case 'AddNewModule':
                 setTimeout(function () {
