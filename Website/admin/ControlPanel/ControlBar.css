@@ -1330,7 +1330,7 @@ ul#ControlBar_Module_ModulePosition {
 #ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark.hideBookmark, 
 #ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark.hideBookmark {
     background: none;
-    cursor: default;
+    cursor: move;
 }
 
 #ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark.highlight,
