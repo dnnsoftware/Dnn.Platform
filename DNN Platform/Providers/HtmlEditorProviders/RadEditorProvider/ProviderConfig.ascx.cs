@@ -699,6 +699,22 @@ namespace DotNetNuke.Providers.RadEditorProvider
 							}
 							break;
 						}
+                        case "language":
+                        {
+                            var ctl = (DnnLanguageComboBox)(FindControlRecursive(plhConfig, "ctl_rc_" + objConfig.Key));
+
+                            if (ctl != null)
+                            {
+                                try
+                                {
+                                    setting = ctl.SelectedValue;
+                                }
+                                catch
+                                {
+                                }
+                            }
+                            break;
+                        }
 						default:
 						{
 							TextBox ctl = (TextBox)(FindControlRecursive(plhConfig, "ctl_rc_" + objConfig.Key));
@@ -1058,7 +1074,24 @@ namespace DotNetNuke.Providers.RadEditorProvider
 								}
 								break;
 							}
-							default:
+                            case "language":
+						    {
+                                var ctl = (DnnLanguageComboBox)(FindControlRecursive(plhConfig, "ctl_rc_" + objConfig.Key));
+
+                                if (ctl != null)
+                                {
+                                    try
+                                    {
+                                        ctl.BindData(true);
+                                        ctl.SetLanguage(objConfig.Value);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                }
+						        break;
+						    }
+						    default:
 							{
 								TextBox ctl = (TextBox)(FindControlRecursive(plhConfig, "ctl_rc_" + objConfig.Key));
 
@@ -1377,7 +1410,17 @@ namespace DotNetNuke.Providers.RadEditorProvider
 							pnlRow.Controls.Add(ctl);
 							break;
 						}
-						default:
+                        case "language":
+					    {
+					        var ctl = new DnnLanguageComboBox();
+					        ctl.ID = "ctl_rc_" + key;
+                            ctl.LanguagesListType = LanguagesListType.All;
+					        ctl.IncludeNoneSpecified = true;
+					        ctl.CssClass = "languageComboBox";
+                            pnlRow.Controls.Add(ctl);
+					        break;
+					    }
+					    default:
 						{
 							TextBox ctl = new TextBox();
 							ctl.ID = "ctl_rc_" + key;
