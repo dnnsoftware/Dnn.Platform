@@ -2,7 +2,16 @@
     if (typeof dnn === 'undefined') dnn = {};
     dnn.logViewer = dnn.logViewer || {};
 
+    //handle window unload event, when window in unload process, then don't remove the cookie.
+    var windowUnloaded = false;
+    $(window).bind('beforeunload', function () {
+        windowUnloaded = true;
+    });
+    
     dnn.logViewer.init = function () {
+        if (windowUnloaded) {
+            return;
+        }
         var handler = this;
         var serviceFramework = $.ServicesFramework();
         var guid = dnn.dom.getCookie('LogGUID');
