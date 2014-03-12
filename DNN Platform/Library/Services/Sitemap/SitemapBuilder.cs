@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Sitemap
                         {
                             url.Priority = providerPriorityValue;
                         }
-                        if (url.Priority >= excludePriority)
+                        if (url.Priority > 0 && url.Priority >= excludePriority) //#RS# a valid sitemap needs priorities larger then 0, otherwise the sitemap will be rejected by google as invalid
                         {
                             allUrls.Add(url);
                         }
