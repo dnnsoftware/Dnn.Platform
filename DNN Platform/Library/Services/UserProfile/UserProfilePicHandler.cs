@@ -40,6 +40,12 @@ namespace DotNetNuke.Services.UserProfile
 {
     public class UserProfilePicHandler : IHttpHandler
     {
+        #region Private Fields
+
+        private static object _locker = new object();
+
+        #endregion
+
         #region IHttpHandler Members
 
         public void ProcessRequest(HttpContext context)
@@ -101,10 +107,16 @@ namespace DotNetNuke.Services.UserProfile
                 var sizedPhoto = photoFile.FileName.Replace(extension, "_" + size + extension);
                 if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                 {
-                    using (var fileContent = FileManager.Instance.GetFileContent(photoFile))
+                    lock (_locker)
                     {
-                        var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension);
-                        FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
+                        if (!FileManager.Instance.FileExists(folder, sizedPhoto))
+                        {
+                            using (var fileContent = FileManager.Instance.GetFileContent(photoFile))
+                            {
+                                var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension);
+                                FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
+                            }
+                        }
                     }
                 }
 
@@ -135,6 +147,7 @@ namespace DotNetNuke.Services.UserProfile
 
             if (!photoLoaded)
             {
+                context.Response.ContentType = "image/gif";
                 context.Response.WriteFile(context.Request.MapPath("~/images/no_avatar.gif"));
             }
 
