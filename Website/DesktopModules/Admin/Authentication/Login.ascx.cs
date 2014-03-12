@@ -169,57 +169,60 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				var redirectURL = "";
 
 				var setting = GetSetting(PortalId, "Redirect_AfterLogin");
-
-				if (Convert.ToInt32(setting) == Null.NullInteger)
+                
+                //first we need to check if there is a returnurl
+				if (Request.QueryString["returnurl"] != null)
 				{
-					if (Request.QueryString["returnurl"] != null)
+					//return to the url passed to signin
+                    redirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+					//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+					if (redirectURL.Contains("://"))
 					{
-						//return to the url passed to signin
-                        redirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-						//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-						if (redirectURL.Contains("://"))
-						{
-							redirectURL = "";
-						}
+						redirectURL = "";
 					}
-                    if (Request.Cookies["returnurl"] != null)
+				}
+                if (Request.Cookies["returnurl"] != null)
+                {
+                    //return to the url passed to signin
+                    redirectURL = HttpUtility.UrlDecode(Request.Cookies["returnurl"].Value);
+                    //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+                    if (redirectURL.Contains("://"))
                     {
-                        //return to the url passed to signin
-                        redirectURL = HttpUtility.UrlDecode(Request.Cookies["returnurl"].Value);
-                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                        if (redirectURL.Contains("://"))
+                        redirectURL = "";
+                    }
+                }
+                if (Request.Params["appctx"] != null)
+				{
+					//HACK return to the url passed to signin (LiveID) 
+					redirectURL = HttpUtility.UrlDecode(Request.Params["appctx"]);
+					//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+					if (redirectURL.Contains("://"))
+					{
+						redirectURL = "";
+					}
+				}
+                if (String.IsNullOrEmpty(redirectURL) || redirectURL=="/")
+				{
+                    if (Convert.ToInt32(setting) != Null.NullInteger)
+                    {
+                        redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                    }
+                    else
+                    {
+                        if (PortalSettings.LoginTabId != -1 && PortalSettings.HomeTabId != -1)
                         {
-                            redirectURL = "";
+                            //redirect to portal home page specified
+                            redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
+                        }
+                        else
+                        {
+                            //redirect to current page 
+                            redirectURL = Globals.NavigateURL();
                         }
                     }
-                    if (Request.Params["appctx"] != null)
-					{
-						//HACK return to the url passed to signin (LiveID) 
-						redirectURL = HttpUtility.UrlDecode(Request.Params["appctx"]);
-						//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-						if (redirectURL.Contains("://"))
-						{
-							redirectURL = "";
-						}
-					}
-					if (String.IsNullOrEmpty(redirectURL))
-					{
-						if (PortalSettings.LoginTabId != -1 && PortalSettings.HomeTabId != -1)
-						{
-							//redirect to portal home page specified
-							redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
-						}
-						else
-						{
-							//redirect to current page 
-							redirectURL = Globals.NavigateURL();
-						}
-					}
+
 				}
-				else //redirect to after login page
-				{
-					redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
-				}
+
 				
 				//replace language parameter in querystring, to make sure that user will see page in correct language
 				if (UserId != -1 && User != null)
