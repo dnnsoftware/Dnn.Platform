@@ -280,15 +280,25 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 var index = 0;
                 TabCtrl.PopulateBreadCrumbs(ref tab);
+                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID)
+                                        .OrderByDescending(a => a.IsPrimary)
+                                        .FirstOrDefault();
+                var portalSettings = new PortalSettings(tab.PortalID)
+                                         {
+                                             PortalAlias = defaultAlias
+                                         };
+
+                var tabUrl = Globals.NavigateURL(tab.TabID, portalSettings, string.Empty);
+
                 foreach (TabInfo t in tab.BreadCrumbs)
                 {
-                    if ((index > 0))
+                    if (index > 0)
                     {
                         returnValue.Append(" > ");
                     }
-                    if ((tab.BreadCrumbs.Count - 1 == index))
+                    if (tab.BreadCrumbs.Count - 1 == index)
                     {
-                        returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", t.FullUrl, t.LocalizedTabName);
+                        returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", tabUrl, t.LocalizedTabName);
                     }
                     else
                     {
