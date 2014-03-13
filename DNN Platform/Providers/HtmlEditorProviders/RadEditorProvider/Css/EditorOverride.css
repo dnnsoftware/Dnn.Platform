@@ -375,7 +375,7 @@ div.modaldialogbacgkround
 }
 
 
-.RadEditor ul li, .reDropDownBody ul li
+.reDropDownBody ul li
 {list-style: none !important;}
 .RadEditor a, .reDropDownBody a
 {text-decoration: none !important;}
