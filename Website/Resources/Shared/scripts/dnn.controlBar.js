@@ -29,6 +29,10 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.bookmarkModuleCategory = settings.bookmarkModuleCategory;
     dnn.controlBar.bookmarkedModuleKeys = settings.bookmarkedModuleKeys.split(',');
     
+    //Scrolling when dragging
+    dnn.controlBar.initialDragPosition = null;
+    dnn.controlBar.initialScrollPosition = null;
+
     dnn.controlBar.getService = function () {
         return $.dnnSF();
     };
@@ -780,6 +784,20 @@ dnn.controlBar.init = function (settings) {
                     dnn.controlBar.dragdropAddExistingModule = !dnn.controlBar.addNewModule;
                     return dragTip;
                 },
+                drag: function (e, ui) {
+                    var container = $(containerId);
+                    if (dnn.controlBar.isCursorOutsideY(e, container)) {
+                        return;
+                    }
+                    var xOffset = dnn.controlBar.initialDragPosition.X - e.pageX; 
+                    var scrollNewX = dnn.controlBar.initialScrollPosition.X + (((980 * (ulWidth + margin)) / windowWidth) * xOffset) / (ulWidth + margin);
+                    
+                    var scrollContainer = container.next();
+                    var jspapi = scrollContainer.data('jsp');                    
+                    if (jspapi) {
+                        jspapi.scrollToX(scrollNewX);
+                    }
+                },
                 cursorAt: { left: 10, top: 30 },
                 connectToSortable: '.dnnSortable',
                 stop: function (event, ui) {
@@ -795,6 +813,7 @@ dnn.controlBar.init = function (settings) {
                     $('div.actionMenu').show();
                 },
                 start: function (event, ui) {
+                    dnn.controlBar.setInitialPositions(event, containerId);
                     $('div.actionMenu').hide();
                 }
             });
@@ -861,6 +880,31 @@ dnn.controlBar.init = function (settings) {
             ul.animate({ left: margin }, 300);
         }
     };
+
+    dnn.controlBar.setInitialPositions = function(dragEvent, containerId) {
+        dnn.controlBar.initialDragPosition = { "X": dragEvent.pageX, "Y": dragEvent.pageY };
+        
+        var container = $(containerId);
+        var scrollContainer = container.next();
+        var jspapi = scrollContainer.data('jsp');
+        var scrollX = 0;
+        if (jspapi) {            
+            var scrollPosX = parseInt(jspapi.getContentPositionX()); //getContentPosition can return a NaN value
+            if (scrollPosX) {
+                scrollX = scrollPosX;
+            }
+        }
+        dnn.controlBar.initialScrollPosition = { "X": scrollX, "Y": 0 };
+    };
+
+    dnn.controlBar.isCursorOutsideY = function(dragEvent, $container) {
+        var containerOffSet = $container.offset();
+        if (dragEvent.pageY > containerOffSet.top + $container.height()) {
+            return true;
+        }
+        return false;
+    };
+
 
     dnn.controlBar.unselectModule = function($selectedModule) {
         $selectedModule.removeClass('ControlBar_Module_Selected');
