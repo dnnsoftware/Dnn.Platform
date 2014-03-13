@@ -18,7 +18,8 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.allModulesLoaded = false;
     dnn.controlBar.forceLoadingPane = false;
     dnn.controlBar.forceCategorySelection = false;
-    
+    dnn.controlBar.scrollTrigger = true;
+
     //Search Module settings
     dnn.controlBar.minInputLength = 2;
     dnn.controlBar.inputDelay = 400;    
@@ -32,7 +33,10 @@ dnn.controlBar.init = function (settings) {
     //Scrolling when dragging
     dnn.controlBar.initialDragPosition = null;
     dnn.controlBar.initialScrollPosition = null;
-
+    dnn.controlBar.arrowScrollingContainer = null;
+    dnn.controlBar.arrowScrollingButtonSpeed = 10;
+    dnn.controlBar.arrowScrollingRepeatFreq = 100;
+    
     dnn.controlBar.getService = function () {
         return $.dnnSF();
     };
@@ -216,6 +220,9 @@ dnn.controlBar.init = function (settings) {
         if (dnn.controlBar.allModulesLoaded) {
             return;
         }
+        if (!dnn.controlBar.isFirstModuleLoadingPage()) {
+            dnn.controlBar.scrollTrigger = false;
+        }
         var service = dnn.controlBar.getService();
         var serviceUrl = dnn.controlBar.getServiceUrl(service);                
         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
@@ -246,6 +253,9 @@ dnn.controlBar.init = function (settings) {
             },
             error: function (xhr) {
                 dnn.controlBar.responseError(xhr);
+                if (!dnn.controlBar.isFirstModuleLoadingPage()) {
+                    dnn.controlBar.scrollTrigger = true;
+                }
             }
         });
     };
@@ -525,6 +535,29 @@ dnn.controlBar.init = function (settings) {
         $('#shareableWarning').dialog('close');
     };
 
+    dnn.controlBar.initialiseArrowScrolling = function(container) {
+        dnn.controlBar.arrowScrollingContainer = container;
+    };
+
+    dnn.controlBar.isValidArrowScrollingContainer = function() {
+        if (dnn.controlBar.arrowScrollingContainer && dnn.controlBar.arrowScrollingContainer.is(":visible")) {
+            return true;
+        }
+        return false;
+    };
+
+    dnn.controlBar.moveArrowScrollingContainer = function (keyCode) {
+        if (!dnn.controlBar.scrollTrigger) {
+            return;
+        }
+        var xOffset = keyCode == 37 ? dnn.controlBar.arrowScrollingButtonSpeed * (-1) : (keyCode == 39 ? dnn.controlBar.arrowScrollingButtonSpeed : 0);
+        var scrollContainer = dnn.controlBar.arrowScrollingContainer.next();
+        var jspapi = scrollContainer.data('jsp');        
+        if (jspapi && xOffset != 0) {
+            jspapi.scrollByX(xOffset);
+        }
+    };
+    
     dnn.controlBar.addBookmarkModule = function(moduleId) {
         if (dnn.controlBar.bookmarkedModuleKeys.indexOf(moduleId) < 0) {
             dnn.controlBar.bookmarkedModuleKeys.push(moduleId);
@@ -578,8 +611,9 @@ dnn.controlBar.init = function (settings) {
 
         var currentModuleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex;
         var container = $(containerId);
-        var scrollContainer = container.next();
-        
+        dnn.controlBar.initialiseArrowScrolling(container);
+
+        var scrollContainer = container.next();        
         if (dnn.controlBar.isFirstModuleLoadingPage()) {
             var api = scrollContainer.data('jsp');
             if (api) {
@@ -602,17 +636,16 @@ dnn.controlBar.init = function (settings) {
         var ulLeft = margin;        
         var oldX = 0;
         var reloading = false;
-        var scrollTrigger = true;
         var modulesInitFunc = function () {
             $('div.controlBar_ModuleListScrollDummy_Content', scrollContainer).css('width', dummyScrollWidth);
             if (currentModuleLoadingPageIndex == 0) {
-                scrollContainer.jScrollPane();
+                scrollContainer.jScrollPane({'arrowButtonSpeed': dnn.controlBar.arrowScrollingButtonSpeed, 'arrowRepeatFreq': dnn.controlBar.arrowScrollingRepeatFreq});
             } else {
                 var jspapi = scrollContainer.data('jsp');
-                if (jspapi) {
-                    scrollTrigger = false;
+                if (jspapi) {                    
+                    dnn.controlBar.scrollTrigger = false;
                     jspapi.reinitialise();
-                    scrollTrigger = true;
+                    dnn.controlBar.scrollTrigger = true;                    
                 }
             }
             var $searchInput = $("#" + settings.searchInputId);
@@ -621,7 +654,7 @@ dnn.controlBar.init = function (settings) {
             scrollContainer.unbind('jsp-scroll-x');
             scrollContainer.bind('jsp-scroll-x', function (e, x, isAtleft, isAtRight) {                
                 var xOffset, leftOffset;
-                if (!scrollTrigger) {
+                if (!dnn.controlBar.scrollTrigger) {
                     return;
                 }
                 if (isAtleft) {
@@ -632,7 +665,7 @@ dnn.controlBar.init = function (settings) {
                     var justAtRight = (oldX == x);
                     oldX = Math.round((980 * (ulWidth + margin)) / windowWidth) - 980;                         
                     if (moduleList.length != 0 && justAtRight && !reloading) {                        
-                        reloading = true;
+                        reloading = true;                        
                         dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
                     }
                     ulLeft = -(ulWidth - windowWidth);
@@ -784,15 +817,13 @@ dnn.controlBar.init = function (settings) {
                     dnn.controlBar.dragdropAddExistingModule = !dnn.controlBar.addNewModule;
                     return dragTip;
                 },
-                drag: function (e, ui) {
-                    var container = $(containerId);
+                drag: function (e, ui) {                    
                     if (dnn.controlBar.isCursorOutsideY(e, container)) {
                         return;
                     }
                     var xOffset = dnn.controlBar.initialDragPosition.X - e.pageX; 
                     var scrollNewX = dnn.controlBar.initialScrollPosition.X + (((980 * (ulWidth + margin)) / windowWidth) * xOffset) / (ulWidth + margin);
                     
-                    var scrollContainer = container.next();
                     var jspapi = scrollContainer.data('jsp');                    
                     if (jspapi) {
                         jspapi.scrollToX(scrollNewX);
@@ -813,7 +844,7 @@ dnn.controlBar.init = function (settings) {
                     $('div.actionMenu').show();
                 },
                 start: function (event, ui) {
-                    dnn.controlBar.setInitialPositions(event, containerId);
+                    dnn.controlBar.setInitialPositions(event, scrollContainer);
                     $('div.actionMenu').hide();
                 }
             });
@@ -881,19 +912,21 @@ dnn.controlBar.init = function (settings) {
         }
     };
 
-    dnn.controlBar.setInitialPositions = function(dragEvent, containerId) {
-        dnn.controlBar.initialDragPosition = { "X": dragEvent.pageX, "Y": dragEvent.pageY };
-        
-        var container = $(containerId);
-        var scrollContainer = container.next();
-        var jspapi = scrollContainer.data('jsp');
+    dnn.controlBar.getCurrentScrollPositionX = function(jspapi) {
         var scrollX = 0;
-        if (jspapi) {            
+        if (jspapi) {
             var scrollPosX = parseInt(jspapi.getContentPositionX()); //getContentPosition can return a NaN value
             if (scrollPosX) {
                 scrollX = scrollPosX;
             }
         }
+        return scrollX;
+    };
+
+    dnn.controlBar.setInitialPositions = function(dragEvent, $scrollContainer) {
+        dnn.controlBar.initialDragPosition = { "X": dragEvent.pageX, "Y": dragEvent.pageY };
+               
+        var scrollX = dnn.controlBar.getCurrentScrollPositionX($scrollContainer.data("jsp"));
         dnn.controlBar.initialScrollPosition = { "X": scrollX, "Y": 0 };
     };
 
@@ -1435,6 +1468,13 @@ dnn.controlBar.init = function (settings) {
             dnn.controlBar.saveBookmark(title, ul);
             // focus on bookmark tab
             $('li.BookmarkToggle > a', outerWrapper).click();
+        }
+    });
+        
+    $(document.body).on('keydown', function (e) {
+        if ((e.keyCode == 37 || e.keyCode == 39) && dnn.controlBar.isValidArrowScrollingContainer())
+        {        
+            dnn.controlBar.moveArrowScrollingContainer(e.keyCode);
         }
     });
 
