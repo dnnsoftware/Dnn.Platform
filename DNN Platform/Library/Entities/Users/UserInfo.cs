@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-
+using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -64,7 +64,8 @@ namespace DotNetNuke.Entities.Users
         private string _fullName;
         private UserMembership _membership;
         private UserProfile _profile;
-        private IDictionary<int, UserSocial> _social;
+        //private IDictionary<int, UserSocial> _social;
+        private readonly SharedDictionary<int, UserSocial> _social = new SharedDictionary<int, UserSocial>();
 
         #endregion
 
@@ -279,17 +280,23 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-				if (_social == null)
-				{
-					_social = new Dictionary<int, UserSocial>();
-				}
+                UserSocial userSocial;
+                var exists = false;
+                using (_social.GetReadLock())
+                {
+                    exists = _social.TryGetValue(PortalID, out userSocial);
+                }
 
-				if (!_social.ContainsKey(PortalID))
-				{
-					_social.Add(PortalID, new UserSocial(this));
-				}
+                if (!exists)
+                {
+                    using (_social.GetWriteLock())
+                    {
+                        userSocial = new UserSocial(this);
+                        _social.Add(PortalID, userSocial);
+                    }
+                }
 
-                return _social[PortalID];
+                return userSocial;
             }
         }
 
