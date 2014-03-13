@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using DotNetNuke.Web.Components.Controllers;
+
 #region Usings
 
 using System;
@@ -70,8 +73,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             get
             {
-                //TOO Return the category appropriately
-                return "Common";
+                return ControlBarController.Instance.GetBookmarkCategory(PortalSettings.PortalId);
             }
         }
 

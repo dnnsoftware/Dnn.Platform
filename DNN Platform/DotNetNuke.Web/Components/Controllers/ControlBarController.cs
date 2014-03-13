@@ -33,6 +33,7 @@ namespace DotNetNuke.Web.Components.Controllers
     public class ControlBarController: ServiceLocator<IControlBarController, ControlBarController>, IControlBarController
     {
         private const string BookmarkModulesTitle = "module";
+        private const string BookmarkCategoryProperty = "ControlBar_BookmarkCategory";
         public IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(int portalId, string category, string searchTerm = "")
         {
             var formattedSearchTerm = String.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
@@ -72,14 +73,19 @@ namespace DotNetNuke.Web.Components.Controllers
 
         public string GetBookmarkCategory(int portalId)
         {
-            //TODO Get the bookmark category apropriately
-            return "Common";
+            var bookmarkCategory = PortalController.GetPortalSetting(BookmarkCategoryProperty, portalId, "");
+            if (String.IsNullOrEmpty(bookmarkCategory))
+            {
+                PortalController.UpdatePortalSetting(portalId, BookmarkCategoryProperty, "Common");
+                return "Common";
+            }
+            return bookmarkCategory;
         }
 
         private string EnsureBookmarkValue(int portalId, string bookmarkValue)
         {
             var bookmarkCategoryModules = GetCategoryDesktopModules(portalId, GetBookmarkCategory(portalId));            
-            var ensuredModules = bookmarkValue.Split(',').Where(desktopModuleId => !bookmarkCategoryModules.Any(m => m.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture) == desktopModuleId)).ToList();
+            var ensuredModules = bookmarkValue.Split(',').Where(desktopModuleId => bookmarkCategoryModules.All(m => m.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture) != desktopModuleId)).ToList();
             return String.Join(",", ensuredModules.Distinct());
         }
 
@@ -94,7 +100,7 @@ namespace DotNetNuke.Web.Components.Controllers
             }
             var bookmarkItemsKeys = bookmarkItems.ToString().Split(',').ToList();
             var bookmarkedModules = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
-                                        .Where(dm => bookmarkItemsKeys.Contains(dm.Value.DesktopModuleID.ToString()));
+                                        .Where(dm => bookmarkItemsKeys.Contains(dm.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture)));
 
             return bookmarkedModules;
         }
