@@ -34,6 +34,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
@@ -45,6 +46,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
+using IUserController = DotNetNuke.Entities.Users.Internal.IUserController;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 namespace DotNetNuke.Entities.Users
@@ -77,9 +79,14 @@ namespace DotNetNuke.Entities.Users
     /// </remarks>
     /// <seealso cref="DotNetNuke.Security.Membership.MembershipProvider"/>
     /// -----------------------------------------------------------------------------
-    public class UserController
+    public class UserController : ServiceLocator<DotNetNuke.Entities.Users.Internal.IUserController, UserController>, DotNetNuke.Entities.Users.Internal.IUserController
     {
         private const string DefaultUsersFoldersPath = "Users";
+
+        protected override Func<DotNetNuke.Entities.Users.Internal.IUserController> GetFactory()
+        {
+            return () => new UserController();
+        }
 
         #region Public Properties
 
@@ -985,6 +992,8 @@ namespace DotNetNuke.Entities.Users
         {
             return GetUnAuthorizedUsers(portalId, false, false);
         }
+
+      
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1953,6 +1962,34 @@ namespace DotNetNuke.Entities.Users
             ApproveUser(user);
         }
 
+        #endregion
+
+        #region "Public instance methods suitable for testing"
+        public UserInfo GetUserByDisplayname(int portalId, string displayName)
+        {
+            return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
+        }
+
+        UserInfo IUserController.GetUserById(int portalId, int userId)
+        {
+            return GetUserById(portalId, userId);
+        }
+
+        public IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
+            bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames,
+            string propertyValues)
+        {
+            return MembershipProvider.Instance().GetUsersAdvancedSearch(PortalController.GetEffectivePortalId(portalId), userId, filterUserId, filterRoleId, relationTypeId,
+                                                      isAdmin, pageIndex, pageSize, sortColumn,
+                                                      sortAscending, propertyNames, propertyValues);
+        }
+
+        public IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending,
+            string propertyName, string propertyValue)
+        {
+            return MembershipProvider.Instance().GetUsersBasicSearch(PortalController.GetEffectivePortalId(portalId), pageIndex, pageSize, sortColumn,
+                                                       sortAscending, propertyName, propertyValue);
+        }
         #endregion
 
         #region "Obsoleted Methods, retained for Binary Compatability"

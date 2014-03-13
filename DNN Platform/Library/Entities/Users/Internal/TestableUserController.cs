@@ -31,11 +31,12 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Users.Internal
 {
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use UserController instead")]
     public class TestableUserController : ServiceLocator<IUserController, TestableUserController>
     {
         protected override Func<IUserController> GetFactory()
         {
-            return () => new UserControllerImpl();
+            return () => new UserController();
         }
     }
 }

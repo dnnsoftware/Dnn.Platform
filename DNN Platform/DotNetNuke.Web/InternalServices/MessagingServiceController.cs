@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.InternalServices
                 q = q.Replace(",", "").Replace("'", "");
                 if (q.Length == 0) return Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
 
-                var results = TestableUserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
+                var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
                     .Select(user => new SearchResult
                     {
                         id = "user-" + user.UserID,

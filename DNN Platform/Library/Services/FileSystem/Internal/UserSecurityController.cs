@@ -21,7 +21,6 @@
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 
@@ -40,7 +39,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             {
                 return false;
             }
-            var user = TestableUserController.Instance.GetUserById(portalId, userId);
+            var user = UserController.Instance.GetUserById(portalId, userId);
             return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(PortalControllerWrapper.Instance.GetPortal(portalId).AdministratorRoleName);
         }
 

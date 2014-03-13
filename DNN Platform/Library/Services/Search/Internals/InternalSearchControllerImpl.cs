@@ -37,7 +37,7 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users.Internal;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Search.Entities;
 
@@ -439,7 +439,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (searchDocument.AuthorUserId > 0)
             {
-                var user = TestableUserController.Instance.GetUserById(searchDocument.PortalId, searchDocument.AuthorUserId);
+                var user = UserController.Instance.GetUserById(searchDocument.PortalId, searchDocument.AuthorUserId);
                 if (user != null && !string.IsNullOrEmpty(user.DisplayName))
                 {
                     var field = new Field(Constants.AuthorNameTag, user.DisplayName, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
