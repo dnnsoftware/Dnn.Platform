@@ -275,6 +275,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
             txtDescription.Text = Tab.Description;
             txtKeyWords.Text = Tab.KeyWords;
 
+            pageUrlPanel.Visible = !Tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced");
+            doNotRedirectPanel.Visible = (Config.GetFriendlyUrlProvider() == "advanced");
+
             if (_strAction != "copy")
             {
                 txtTabName.Text = Tab.TabName;
@@ -302,9 +305,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                     urlTextBox.Text = path.Replace(Globals.AddHTTP(PortalAlias.HTTPAlias), "");
                 }
-                pageUrlPanel.Visible = !Tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced");
-                doNotRedirectPanel.Visible = (Config.GetFriendlyUrlProvider() == "advanced");
-
                 string tabPath = (Tab.TabPath.Replace("//", "/") + ";").ToLower();
                 if (friendlyUrlSettings.UseBaseFriendlyUrls.ToLower().Contains(tabPath))
                 {
