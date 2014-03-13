@@ -871,14 +871,14 @@ dnn.controlBar.init = function (settings) {
                         	if (dnn.controlBar.hideModuleLocationMenu) {
                         		$this.removeClass('ModuleLocator_Hover');
                             	$('#ControlBar_Module_ModulePosition').slideUp('fast', function () {
-                                	if (dnn.controlBar.selectedModule && dnn.controlBar.selectedModule.data("module") != $this.parent().data("module")) {
-                                		$this.parent().removeClass('ControlBar_Module_Selected');
+                                	if (dnn.controlBar.selectedModule && dnn.controlBar.selectedModule.data("module") != $this.parent().data("module")) {                                	    
+                                	    dnn.controlBar.unselectModule($this.parent());
                                 	}
                                 });
                             }
 
-                            if (!dnn.controlBar.showSelectedModule && dnn.controlBar.selectedModule) {
-                                dnn.controlBar.selectedModule.removeClass('ControlBar_Module_Selected');
+                            if (!dnn.controlBar.showSelectedModule && dnn.controlBar.selectedModule) {                                
+                                dnn.controlBar.unselectModule(dnn.controlBar.selectedModule);
                             }
                         }, 200);
                     });
@@ -888,20 +888,19 @@ dnn.controlBar.init = function (settings) {
 
             }, function () {
                 var $this = $(this);
-                dnn.controlBar.showSelectedModule = false;
                 dnn.controlBar.hideModuleLocationMenu = true;
                 setTimeout(function () {
                     if (dnn.controlBar.hideModuleLocationMenu) {
                         $this.removeClass('ModuleLocator_Hover');
                         $('#ControlBar_Module_ModulePosition').slideUp('fast', function() {
                         	if (dnn.controlBar.selectedModule && dnn.controlBar.selectedModule.data("module") != $this.parent().data("module")) {
-                        		$this.parent().removeClass('ControlBar_Module_Selected');
+                        	    dnn.controlBar.unselectModule($this.parent());
                         	}
                         });
                     }
 
                     if (!dnn.controlBar.showSelectedModule && dnn.controlBar.selectedModule) {
-                        dnn.controlBar.selectedModule.removeClass('ControlBar_Module_Selected');
+                        dnn.controlBar.unselectModule(dnn.controlBar.selectedModule);
                     }
                 }, 200);
             });
