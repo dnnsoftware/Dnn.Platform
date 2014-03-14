@@ -146,15 +146,15 @@ fieldset .dnnForm {
 
 
 /* clean some form style */
-span.CommandButton input[type="image"]{
+.dnnSiteSettings span.CommandButton input[type="image"]{
     display: none;
 }
 
-span.CommandButton{
+.dnnSiteSettings span.CommandButton{
     border: none;
 }
 
-a.CommandButton{
+.dnnSiteSettings a.CommandButton{
     background: whiteSmoke;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,whiteSmoke), color-stop(100%,#DFDFDF));
     -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
