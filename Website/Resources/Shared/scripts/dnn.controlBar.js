@@ -535,6 +535,18 @@ dnn.controlBar.init = function (settings) {
         $('#shareableWarning').dialog('close');
     };
 
+    dnn.controlBar.isActiveElementEmpty = function() {
+        var $activeElement = $(document.activeElement);
+        if ($activeElement && $activeElement.length > 0 && ($activeElement.get(0).tagName == "INPUT" || $activeElement.get(0).tagName == "TEXTAREA")) {
+            if ($activeElement.val().length == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    };
+
     dnn.controlBar.initialiseArrowScrolling = function(container) {
         dnn.controlBar.arrowScrollingContainer = container;
     };
@@ -1471,6 +1483,9 @@ dnn.controlBar.init = function (settings) {
     });
         
     $(document.body).on('keydown', function (e) {
+        if (!dnn.controlBar.isActiveElementEmpty()) {
+            return;
+        }
         if ((e.keyCode == 37 || e.keyCode == 39) && dnn.controlBar.isValidArrowScrollingContainer())
         {        
             dnn.controlBar.moveArrowScrollingContainer(e.keyCode);
