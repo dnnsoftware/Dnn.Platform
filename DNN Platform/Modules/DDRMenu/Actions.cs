@@ -64,7 +64,8 @@ namespace DotNetNuke.Web.DDRMenu
 
 				try
 				{
-					BindMenu(Navigation.GetActionNodes(ActionRoot, this, -1));
+                    navProvider.TemplateArguments = TemplateArguments;
+                    BindMenu(Navigation.GetActionNodes(ActionRoot, this, -1));
 				}
 				catch (Exception exc)
 				{
