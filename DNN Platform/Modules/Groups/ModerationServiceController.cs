@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                if (UserInfo.UserID >= 0 && postData.RoleId > 0)
+                if (UserInfo.UserID >= 0 && postData.RoleId > -1)
                 {
                     var roleController = new RoleController();
                     _roleInfo = roleController.GetRole(postData.RoleId, PortalSettings.PortalId);
