@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             get
             {
-                if (_Package == null)
+                if (ViewState["Package"] == null)
                 {
                     if (PackageID == Null.NullInteger)
                     {
@@ -103,8 +103,10 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     {
                         _Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
                     }
+
+                    ViewState["Package"] = _Package;
                 }
-                return _Package;
+                return ViewState["Package"] as PackageInfo;
             }
         }
 
