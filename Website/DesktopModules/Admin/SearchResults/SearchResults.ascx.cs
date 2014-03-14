@@ -143,6 +143,11 @@ namespace DotNetNuke.Modules.SearchResults
 
         private const string MyFileName = "SearchResults.ascx";
 
+        protected string DefaultText
+        {
+            get { return Localization.GetSafeJSString("DefaultText", Localization.GetResourceFile(this, MyFileName)); }
+        }
+
         protected string NoResultsText
         {
             get { return Localization.GetSafeJSString("NoResults", Localization.GetResourceFile(this, MyFileName)); }
