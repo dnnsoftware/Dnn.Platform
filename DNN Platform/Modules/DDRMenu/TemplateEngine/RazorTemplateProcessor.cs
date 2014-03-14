@@ -38,7 +38,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 model.ManifestPath = resolver.Resolve("/", PathResolver.RelativeTo.Manifest);
                 model.PortalPath = resolver.Resolve("/", PathResolver.RelativeTo.Portal);
                 model.SkinPath = resolver.Resolve("/", PathResolver.RelativeTo.Skin);
-
+                var modelDictionary = model as IDictionary<string, object>;
+                liveDefinition.TemplateArguments.ForEach(a => modelDictionary.Add(a.Name, a.Value));
 
                 var razorEngine = new RazorEngine(liveDefinition.TemplateVirtualPath, null, null);
                 var writer = new StringWriter();
