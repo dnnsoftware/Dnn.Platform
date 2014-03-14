@@ -113,7 +113,6 @@ span.labelCacheInherited{
 }
 
 .dnnContainerPreview .RadComboBox_Default{
-    width: 200px !important;
     float: left;
     margin-right: 15px;
 }
