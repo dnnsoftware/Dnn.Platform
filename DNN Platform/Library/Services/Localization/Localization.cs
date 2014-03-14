@@ -130,7 +130,10 @@ namespace DotNetNuke.Services.Localization
         #endregion
 
         #region Public Shared Properties
-
+        
+        /// <summary>
+        /// Returns ~/App_GlobalResources
+        /// </summary>
         public static string ApplicationResourceDirectory
         {
             get
@@ -139,6 +142,9 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
+        /// <summary>
+        /// Returns ~/App_GlobalResources/Exceptions.resx
+        /// </summary>
         public static string ExceptionsResourceFile
         {
             get
@@ -147,6 +153,9 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
+        /// <summary>
+        /// Returns ~/App_GlobalResources/GlobalResources.resx
+        /// </summary>
         public static string GlobalResourceFile
         {
             get
