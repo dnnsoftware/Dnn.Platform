@@ -293,17 +293,19 @@ namespace DotNetNuke.Security.Permissions
         {
             if (folder == null) return false;
             return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
-                || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
-                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey))
-                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
+                    || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
+                   && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
+            //Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
+            //&& !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
         }
 
         private bool HasPagePermission(TabInfo tab, string permissionKey)
         {
             return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
-                || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
-                && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey))
-                && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+                    || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
+                   && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
+            //Deny on Edit permission on page shouldn't take away any other explicitly Allowed
+            //&&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
         }
 
         private bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
