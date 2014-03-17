@@ -95,9 +95,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
         public UpgradeIndicatorViewModel GetUpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
         {
-            //TODO Remove fake version
-            var fakeVersion = new Version(7, 0, 0);
-            var imageUrl = Upgrade.UpgradeIndicator(fakeVersion, isLocal, isSecureConnection);
+            var imageUrl = Upgrade.UpgradeIndicator(version, isLocal, isSecureConnection);
             UpgradeIndicatorViewModel upgradeIndicator = null;
             if (!string.IsNullOrEmpty(imageUrl))
             {
