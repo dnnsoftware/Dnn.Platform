@@ -7,8 +7,7 @@
     <div id="ControlBar">
         <div class="ControlContainer">
             <div class="ServiceIcon professional">
-                <asp:Image ID="conrolbar_logo" runat="server" ImageUrl="~/admin/controlpanel/controlbarimages/dnnLogo.png"
-                    AlternateText="DNNlogo" />
+                <asp:Image ID="conrolbar_logo" runat="server" AlternateText="DNNlogo" />                
                 <%= GetUpgradeIndicator() %>
             </div>
             <!-- close ServiceIcon -->
@@ -293,6 +292,8 @@
                 </li>
             </ul>
              <%}%>
+            <ul id="ExtensionPointItems" runat="server">                
+            </ul>
         </div>
         
          <% if (TabPermissionController.HasTabPermission("EDIT,CONTENT,MANAGE"))

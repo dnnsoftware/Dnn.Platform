@@ -20,8 +20,10 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Web.Components.Controllers.Models;
 
 namespace DotNetNuke.Web.Components.Controllers
 {
@@ -62,5 +64,20 @@ namespace DotNetNuke.Web.Components.Controllers
         /// <param name="portalId">Portal Id where modules are installed</param>
         /// <returns>The name of the bookmark category</returns>
         string GetBookmarkCategory(int portalId);
+
+        /// <summary>
+        /// Returns the upgrade indicator model
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="isLocal"></param>
+        /// <param name="isSecureConnection"></param>
+        /// <returns>An instance of the view model UpgradeIndicator</returns>
+        UpgradeIndicatorViewModel GetUpgradeIndicator(Version version, bool isLocal, bool isSecureConnection);
+
+        /// <summary>
+        /// Get the current Logo URL shown in Control Bar
+        /// </summary>
+        /// <returns>The URL of the Control Bar Logo</returns>
+        string GetControlBarLogoURL();
     }
 }

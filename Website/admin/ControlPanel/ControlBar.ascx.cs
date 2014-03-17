@@ -20,6 +20,7 @@
 #endregion
 
 using DotNetNuke.Web.Components.Controllers;
+using DotNetNuke.Web.Components.Controllers.Models;
 
 #region Usings
 
@@ -153,6 +154,7 @@ namespace DotNetNuke.UI.ControlPanels
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             var multipleSite = false;
 
+            conrolbar_logo.ImageUrl = ControlBarController.Instance.GetControlBarLogoURL();
             if (!IsPostBack)
             {
                 LoadCategoryList();
@@ -182,19 +184,22 @@ namespace DotNetNuke.UI.ControlPanels
            
             if (objUser != null && objUser.IsSuperUser)
             {
-                var imageUrl = Upgrade.UpgradeIndicator(DotNetNukeContext.Current.Application.Version, Request.IsLocal, Request.IsSecureConnection);
-                if (!string.IsNullOrEmpty(imageUrl))
+                var upgradeIndicator = ControlBarController.Instance.GetUpgradeIndicator(DotNetNukeContext.Current.Application.Version,
+                    Request.IsLocal, Request.IsSecureConnection);
+                if (upgradeIndicator == null)
                 {
-                    var alt = Localization.GetString("Upgrade.Text", LocalResourceFile);
-                    var toolTip = Localization.GetString("Upgrade.ToolTip", LocalResourceFile);
-                    var navigateUrl = Upgrade.UpgradeRedirect();
-
-                    return string.Format("<a href='{0}' id='ServiceImg'><img src='{1}' alt='{2}' title='{3}'/></a>", 
-                        ResolveClientUrl(navigateUrl), ResolveClientUrl(imageUrl), alt, toolTip);
+                    return String.Empty;
                 }
+                return GetUpgradeIndicatorButton(upgradeIndicator);
             }
 
             return string.Empty;
+        }
+
+        private string GetUpgradeIndicatorButton(UpgradeIndicatorViewModel upgradeIndicator)
+        {            
+            return string.Format("<a id=\"{0}\" href=\"#\" onclick=\"{1}\" class=\"{2}\"><img src=\"{3}\" alt=\"{4}\" title=\"{5}\"/></a>",
+                upgradeIndicator.ID, upgradeIndicator.WebAction, upgradeIndicator.CssClass, ResolveClientUrl(upgradeIndicator.ImageUrl), upgradeIndicator.AltText, upgradeIndicator.ToolTip);
         }
 
 		protected string PreviewPopup()

@@ -127,6 +127,15 @@ namespace DotNetNuke.ExtensionPoints
                    select e.Value;                
         }
 
+        public IToolBarButtonExtensionPoint GetToolBarButtonExtensionPointFirstByPriority(string module, string name)
+        {
+            return (from e in _toolbarButtonExtensionPoints
+                    where e.Metadata.Module == module && e.Metadata.Name == name
+                    orderby e.Metadata.Priority
+                    select e.Value).FirstOrDefault();            
+        }
+
+
         public IEnumerable<IScriptItemExtensionPoint> GetScriptItemExtensionPoints(string module)
         {
             return GetScriptItemExtensionPoints(module, null);

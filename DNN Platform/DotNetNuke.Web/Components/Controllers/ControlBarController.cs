@@ -24,9 +24,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Framework;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Upgrade;
+using DotNetNuke.Web.Components.Controllers.Models;
 
 namespace DotNetNuke.Web.Components.Controllers
 {
@@ -34,6 +39,12 @@ namespace DotNetNuke.Web.Components.Controllers
     {
         private const string BookmarkModulesTitle = "module";
         private const string BookmarkCategoryProperty = "ControlBar_BookmarkCategory";
+        private readonly ExtensionPointManager mef;
+
+        public ControlBarController()
+        {
+            mef = new ExtensionPointManager();
+        }
         public IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(int portalId, string category, string searchTerm = "")
         {
             var formattedSearchTerm = String.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
@@ -80,6 +91,56 @@ namespace DotNetNuke.Web.Components.Controllers
                 return "Common";
             }
             return bookmarkCategory;
+        }
+
+        public UpgradeIndicatorViewModel GetUpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
+        {
+            //TODO Remove fake version
+            var fakeVersion = new Version(7, 0, 0);
+            var imageUrl = Upgrade.UpgradeIndicator(fakeVersion, isLocal, isSecureConnection);
+            UpgradeIndicatorViewModel upgradeIndicator = null;
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                var upgradeIndicatorExtensionPoint = mef.GetToolBarButtonExtensionPointFirstByPriority("ControlBar", "UpgradeIndicatorButton");
+                upgradeIndicator = upgradeIndicatorExtensionPoint != null ? GetUpgradeIndicatorFromExtensionPoint(upgradeIndicatorExtensionPoint, imageUrl) 
+                                                                            : GetDefaultUpgradeIndicator(imageUrl);
+            }
+            return upgradeIndicator;
+        }
+
+        public string GetControlBarLogoURL()
+        {
+            return HostController.Instance.GetString("ControlBarLogoURL", "~/admin/controlpanel/controlbarimages/dnnLogo.png");
+        }
+
+        private static UpgradeIndicatorViewModel GetDefaultUpgradeIndicator(string imageUrl)
+        {
+            var alt = LocalizationHelper.GetControlBarString("Upgrade.Text");
+            var toolTip = LocalizationHelper.GetControlBarString("Upgrade.ToolTip");
+            var navigateUrl = Upgrade.UpgradeRedirect();
+
+            return new UpgradeIndicatorViewModel
+            {
+                ID = "ServiceImg",
+                ImageUrl = imageUrl,
+                WebAction = "location.href='" + navigateUrl + "'; return false;",
+                AltText = alt,
+                ToolTip = toolTip,
+                CssClass = ""
+            };            
+        }
+
+        private UpgradeIndicatorViewModel GetUpgradeIndicatorFromExtensionPoint(IToolBarButtonExtensionPoint upgradeIndicatorExtensionPoint, string imageUrl)
+        {
+            return new UpgradeIndicatorViewModel
+            {
+                ID = upgradeIndicatorExtensionPoint.ButtonId,
+                ImageUrl = imageUrl,
+                WebAction = upgradeIndicatorExtensionPoint.Action,
+                AltText = upgradeIndicatorExtensionPoint.AltText,
+                ToolTip = upgradeIndicatorExtensionPoint.Text,
+                CssClass = upgradeIndicatorExtensionPoint.CssClass
+            };
         }
 
         private string EnsureBookmarkValue(int portalId, string bookmarkValue)
