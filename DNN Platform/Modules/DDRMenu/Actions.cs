@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
@@ -64,8 +64,8 @@ namespace DotNetNuke.Web.DDRMenu
 
 				try
 				{
-                    navProvider.TemplateArguments = TemplateArguments;
-                    BindMenu(Navigation.GetActionNodes(ActionRoot, this, -1));
+					navProvider.TemplateArguments = TemplateArguments;
+					BindMenu(Navigation.GetActionNodes(ActionRoot, this, -1));
 				}
 				catch (Exception exc)
 				{

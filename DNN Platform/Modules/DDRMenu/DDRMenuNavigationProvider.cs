@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web.UI;
@@ -186,7 +186,7 @@ namespace DotNetNuke.Web.DDRMenu
 			                           	ExcludeNodes = GetCustomAttribute("ExcludeNodes"),
 			                           	NodeManipulator = GetCustomAttribute("NodeManipulator"),
 			                           	ClientOptions = clientOptions,
-                                        TemplateArguments = TemplateArguments,
+			                           	TemplateArguments = TemplateArguments,
 			                           };
 		}
 
