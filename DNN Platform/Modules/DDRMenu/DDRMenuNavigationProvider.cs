@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web.UI;
@@ -102,6 +102,8 @@ namespace DotNetNuke.Web.DDRMenu
 
 		public string MenuStyle { get; set; }
 
+		public List<TemplateArgument> TemplateArguments { get; set; }
+
 		public override void Initialize()
 		{
 			menuControl = new DDRMenuControl {ID = ControlID, EnableViewState = false};
@@ -183,7 +185,8 @@ namespace DotNetNuke.Web.DDRMenu
 										IncludeNodes = GetCustomAttribute("IncludeNodes"),
 			                           	ExcludeNodes = GetCustomAttribute("ExcludeNodes"),
 			                           	NodeManipulator = GetCustomAttribute("NodeManipulator"),
-			                           	ClientOptions = clientOptions
+			                           	ClientOptions = clientOptions,
+			                           	TemplateArguments = TemplateArguments,
 			                           };
 		}
 
