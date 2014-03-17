@@ -515,7 +515,7 @@ dnn.extend(dnn.dom, {
         /// Reference to the function that will react to event
         /// </param>
         /// <returns type="Boolean" />		
-        if (dnn.dom.browser.isType(dnn.dom.browser.InternetExplorer) == false) {
+        if (ctl.addEventListener) {
             var name = type.substring(2);
             ctl.addEventListener(name, function (evt) { dnn.dom.event = new dnn.dom.eventObject(evt, evt.target); return fHandler(); }, false);
         }
