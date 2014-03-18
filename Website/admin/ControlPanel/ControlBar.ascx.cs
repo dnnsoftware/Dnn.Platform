@@ -19,7 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.UI.HtmlControls;
+
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Components.Controllers;
 using DotNetNuke.Web.Components.Controllers.Models;
 
@@ -83,9 +84,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             get
             {
-                var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-                var personalization = personalizationController.LoadProfile(UserController.GetCurrentUserInfo().UserID, PortalSettings.PortalId);
-                var bookmarkModules = personalization.Profile["ControlBar:module" + PortalSettings.PortalId];
+                var bookmarkModules = Personalization.GetProfile("ControlBar", "module" + PortalSettings.PortalId);
                 if (bookmarkModules == null)
                 {
                     return string.Empty;
@@ -929,14 +928,11 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 if (_adminBookmarkItems == null)
                 {
-                    var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-                    var personalization = personalizationController.LoadProfile(UserController.GetCurrentUserInfo().UserID, PortalSettings.PortalId);
-                    var bookmarkItems = personalization.Profile["ControlBar:admin" + PortalSettings.PortalId];
-                    
-                    if (bookmarkItems != null)
-                        _adminBookmarkItems = bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    else
-                        _adminBookmarkItems = new List<string>();
+                    var bookmarkItems = Personalization.GetProfile("ControlBar", "admin" + PortalSettings.PortalId);
+
+                    _adminBookmarkItems = bookmarkItems != null 
+                                                ? bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList() 
+                                                : new List<string>();
                 }
 
                 return _adminBookmarkItems;
@@ -950,14 +946,11 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 if(_hostBookmarkItems == null)
                 {
-                    var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-                    var personalization = personalizationController.LoadProfile(UserController.GetCurrentUserInfo().UserID, PortalSettings.PortalId);
-                    var bookmarkItems = personalization.Profile["ControlBar:host" + PortalSettings.PortalId];
+                    var bookmarkItems = Personalization.GetProfile("ControlBar", "host" + PortalSettings.PortalId);
 
-                    if (bookmarkItems != null)
-                        _hostBookmarkItems = bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    else
-                        _hostBookmarkItems = new List<string>();
+                    _hostBookmarkItems = bookmarkItems != null 
+                                            ? bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList() 
+                                            : new List<string>();
                 }
 
                 return _hostBookmarkItems;
