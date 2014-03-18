@@ -23,6 +23,7 @@ using System;
 
 using DotNetNuke.Data;
 using DotNetNuke.Services.Localization;
+
 #endregion
 
 namespace DotNetNuke.Common.Utilities
@@ -46,12 +47,13 @@ namespace DotNetNuke.Common.Utilities
             DateTime result;
             try
             {
-                //Also We check that drift is not the initial value and it is not out of the maximum UTC offset
+                // Also We check that drift is not the initial value and it is not out of the maximum UTC offset
                 if (DateTime.UtcNow >= _lastUpdate + TimeSpan.FromMinutes(5) || !(TimeSpan.FromHours(-26) <= _drift && _drift <= TimeSpan.FromHours(26)) || _drift == TimeSpan.MinValue)
                 {
                     _lastUpdate = DateTime.UtcNow;
                     _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
                 }
+
                 result = DateTime.UtcNow + _drift;
             }
             catch (ArgumentOutOfRangeException)
@@ -60,14 +62,15 @@ namespace DotNetNuke.Common.Utilities
                 _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
                 result = DateTime.UtcNow + _drift;
             }
+
             return result;
         }
 
         /// <summary>
         /// Returns a string with the pretty printed amount of time since the specified date.
         /// </summary>
-        /// <param name="date">DateTime in Utc</param>
-        /// <returns>Strign representing the required date for display</returns>
+        /// <param name="date">DateTime in UTC</param>
+        /// <returns>String representing the required date for display</returns>
         public static string CalculateDateForDisplay(DateTime date)
         {
             var utcTimeDifference = GetDatabaseTime() - date;
