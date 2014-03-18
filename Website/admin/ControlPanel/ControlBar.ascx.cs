@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Web.UI.HtmlControls;
 
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Components.Controllers;
