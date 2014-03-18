@@ -296,7 +296,7 @@
              <%}%>            
         </div>
         
-         <% if (TabPermissionController.HasTabPermission("EDIT,CONTENT,MANAGE"))
+         <% if (TabPermissionController.HasTabPermission("EDIT,CONTENT,MANAGE") && PortalSettings.UserMode == PortalSettings.Mode.Edit)
             {%>
         <div id="ControlBar_Module_AddNewModule" class="ControlModulePanel">
             <div class="ControlModuleContainer">
@@ -373,6 +373,8 @@
         <% } %>
     </div>
     <!--close ControlBar	-->
+    <% if (TabPermissionController.HasTabPermission("EDIT,CONTENT,MANAGE") && PortalSettings.UserMode == PortalSettings.Mode.Edit)
+    {%>
     <div id="shareableWarning">
         <h3>
             <%= GetString("ShareableWarningHeader") %></h3>
@@ -389,6 +391,7 @@
 		    <li><a href="javascript:void(0)" id="shareableWarning_cmdCancel" class="dnnSecondaryAction"><%= GetString("cmdCancelAdd") %></a></li>
 	    </ul>
     </div>
+    <% } %>
 </asp:Panel>
 <script type="text/javascript">
     if (typeof dnn === 'undefined') dnn = {};
