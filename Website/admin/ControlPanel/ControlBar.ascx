@@ -7,7 +7,7 @@
     <div id="ControlBar">
         <div class="ControlContainer">
             <div class="ServiceIcon professional">
-                <asp:Image ID="conrolbar_logo" runat="server" AlternateText="DNNlogo" />                
+                <asp:Image ID="conrolbar_logo" runat="server" AlternateText="DNNlogo" ViewStateMode="Disabled" />                
                 <%= GetUpgradeIndicator() %>
             </div>
             <!-- close ServiceIcon -->
@@ -106,7 +106,7 @@
                                         <div id="ControlBar_SiteSelector">
                                             <p>
                                                 <%= GetString("Tool.SwitchSites.Text") %></p>
-											<dnn:DnnComboBox runat="server" ID="controlBar_SwitchSite" ClientIDMode="Static" Skin="DnnBlack"/>
+											<dnn:DnnComboBox runat="server" ID="controlBar_SwitchSite" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
                                             <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchSiteButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
@@ -116,7 +116,7 @@
                                         <div id="ControlBar_LanguageSelector">
                                             <p>
                                                <%= GetString("Tool.SwitchLanguages.Text") %></p>
-											<dnn:DnnComboBox runat="server" ID="controlBar_SwitchLanguage" ClientIDMode="Static" Skin="DnnBlack"/>
+											<dnn:DnnComboBox runat="server" ID="controlBar_SwitchLanguage" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
                                             <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchLanguageButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
@@ -134,7 +134,7 @@
                         <dl>
                             <dd>
                                 <ul>
-                                    <asp:Literal ID="helpLink" runat="server"></asp:Literal>
+                                    <asp:Literal ID="helpLink" runat="server" ViewStateMode="Disabled"></asp:Literal>
                                     <% if (UserController.GetCurrentUserInfo().IsSuperUser)
                                        {%>
                                         <li id="gettingStartedLink" runat="server"><a href="javascript:dnn.GettingStartedDialog.getInstance().show();">
@@ -301,7 +301,7 @@
         <div id="ControlBar_Module_AddNewModule" class="ControlModulePanel">
             <div class="ControlModuleContainer">
                 <dnn:DnnComboBox ID="CategoryList" runat="server" DataTextField="Name" DataValueField="Name"  Skin="DnnBlack"
-                    OnClientSelectedIndexChanged="dnn.controlBar.ControlBar_Module_CategoryList_Changed" />
+                    OnClientSelectedIndexChanged="dnn.controlBar.ControlBar_Module_CategoryList_Changed" ViewStateMode="Disabled" />
                 <div class="search-container">
                     <div class="search-input-container">
                         <input type="text" id="ControlBar_SearchModulesInput" class="search-input"/>                    
@@ -332,7 +332,7 @@
         <div id="ControlBar_Module_AddExistingModule" class="ControlModulePanel">
             <div class="ControlModuleContainer">
                 <dnn:DnnPageDropDownList ID="PageList" runat="server" CssClass="dnnLeftComboBox dnnBlackDropDown" IncludeAllTabTypes="True" IncludeDisabledTabs="True" />
-                <dnn:DnnComboBox ID="VisibilityLst" runat="server" CssClass="dnnLeftComboBox" Enabled="false" Skin="DnnBlack" />
+                <dnn:DnnComboBox ID="VisibilityLst" runat="server" CssClass="dnnLeftComboBox" Enabled="false" Skin="DnnBlack" ViewStateMode="Disabled" />
                 <div class="ControlBar_chckCopyModule">
                     <input type="checkbox" id="ControlBar_Module_chkCopyModule" /><label for="ControlBar_Module_chkCopyModule"><%= GetString("Tool.MakeCopy.Text") %></label></div>
                 <a class="controlBar_CloseAddModules"><%= GetString("Cancel.Text") %></a>
