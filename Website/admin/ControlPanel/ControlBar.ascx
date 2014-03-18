@@ -228,6 +228,8 @@
                 </li>
                 <% } %>
             </ul>
+            <ul id="CustomMenuItems" runat="server">                
+            </ul>
            <% if (TabPermissionController.CanAddContentToPage() || TabPermissionController.CanManagePage() || TabPermissionController.CanAdminPage() ||
                   TabPermissionController.CanExportPage() || TabPermissionController.CanDeletePage()  || IsModuleAdmin())
            { %>
@@ -291,9 +293,7 @@
                     </div>
                 </li>
             </ul>
-             <%}%>
-            <ul id="ExtensionPointItems" runat="server">                
-            </ul>
+             <%}%>            
         </div>
         
          <% if (TabPermissionController.HasTabPermission("EDIT,CONTENT,MANAGE"))

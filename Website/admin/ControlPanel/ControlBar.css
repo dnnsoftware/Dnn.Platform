@@ -430,25 +430,28 @@
 }
 
 /* Control Action Menu -- List */
-#ControlBar #ControlActionMenu {
-    display: inline-block; /*fix child float*/
-    margin: -1px 0 0 30px;
-    border-left: 1px solid #111;
-    border-right: 1px solid #333;
-}
+    #ControlBar #ControlBar_CustomMenuItems,
+    #ControlBar #ControlActionMenu {
+        display: inline-block; /*fix child float*/
+        margin: -1px 0 0 30px;
+        border-left: 1px solid #111;
+        border-right: 1px solid #333;
+    }
 
-#ControlActionMenu > li {
-    position: relative;
-    margin-top: -1px;
-    margin-bottom: 0;
-    border-top: 1px solid #5b5b5b;
-    border-right: 1px solid #111;
-    border-left: 1px solid #333;
-    float: left;
-    list-style: none;
-    background: rgba(255,255,255,0.03);
-}
+    #ControlBar_CustomMenuItems > li,
+    #ControlActionMenu > li {
+        position: relative;
+        margin-top: -1px;
+        margin-bottom: 0;
+        border-top: 1px solid #5b5b5b;
+        border-right: 1px solid #111;
+        border-left: 1px solid #333;
+        float: left;
+        list-style: none;
+        background: rgba(255,255,255,0.03);
+    }
 
+    #ControlBar_CustomMenuItems > li > a,
     #ControlActionMenu > li > a {
         display: block;
         padding: 12px 12px 0 12px;
@@ -461,30 +464,34 @@
         cursor: default;
     }
 
-        #ControlActionMenu > li > a:after {
-            content: '';
-            display: inline-block;
-            margin-left: 6px;
-            height: 5px;
-            width: 8px;
-            background: url(controlbarimages/menuArrow.png) no-repeat 0px 0px;
-        }
+    #ControlBar_CustomMenuItems > li > a:after, 
+    #ControlActionMenu > li > a:after {
+        content: '';
+        display: inline-block;
+        margin-left: 6px;
+        height: 5px;
+        width: 8px;
+        background: url(controlbarimages/menuArrow.png) no-repeat 0px 0px;
+    }
 
+    #ControlBar_CustomMenuItems > li:hover,
     #ControlActionMenu > li:hover {
         border-top: 1px solid #777;
     }
 
-        #ControlActionMenu > li:hover > a, #ControlActionMenu > li.active > a {
-            color: #ddd;
-            background: #505050; /* Old browsers */
-            background: -moz-linear-gradient(top, #505050 0%, #272727 99%); /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#505050), color-stop(99%,#272727)); /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, #505050 0%,#272727 99%); /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, #505050 0%,#272727 99%); /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, #505050 0%,#272727 99%); /* IE10+ */
-            background: linear-gradient(to bottom, #505050 0%,#272727 99%); /* W3C */
-        }
+    #ControlBar_CustomMenuItems > li:hover > a, #ControlActionMenu > li.active > a,
+    #ControlActionMenu > li:hover > a, #ControlActionMenu > li.active > a {
+        color: #ddd;
+        background: #505050; /* Old browsers */
+        background: -moz-linear-gradient(top, #505050 0%, #272727 99%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#505050), color-stop(99%,#272727)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #505050 0%,#272727 99%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #505050 0%,#272727 99%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, #505050 0%,#272727 99%); /* IE10+ */
+        background: linear-gradient(to bottom, #505050 0%,#272727 99%); /* W3C */
+    }
 
+    #ControlBar_CustomMenuItems > li > a.onActionMenu,
     #ControlActionMenu > li > a.onActionMenu {
         color: #ddd;
         background: #3693eb; /* Old browsers */
@@ -500,6 +507,7 @@
         color: #fff;
     }
 
+    #ControlBar_CustomMenuItems > li ul, 
     #ControlActionMenu > li ul {
         display: none;
         position: absolute;
@@ -521,28 +529,32 @@
         border-top: 1px solid #444;
     }
 
-        #ControlActionMenu > li ul li {
-            list-style: none;
-            padding-bottom: 3px;
-            margin: 0;
-            line-height: 18px;
-            margin-bottom: 3px;
-        }
+    #ControlBar_CustomMenuItems > li ul li, 
+    #ControlActionMenu > li ul li {
+        list-style: none;
+        padding-bottom: 3px;
+        margin: 0;
+        line-height: 18px;
+        margin-bottom: 3px;
+    }
 
-            #ControlActionMenu > li ul li a {
-                text-decoration: none;
-                color: #aaa;
-                white-space: nowrap;
-            }
+    #ControlBar_CustomMenuItems > li ul li a,
+    #ControlActionMenu > li ul li a {
+        text-decoration: none;
+        color: #aaa;
+        white-space: nowrap;
+    }
+            
+    #ControlBar_CustomMenuItems > li ul li:hover a,
+    #ControlActionMenu > li ul li:hover a {
+        color: #4e89e3; /*blue*/
+    }
 
-            #ControlActionMenu > li ul li:hover a {
-                color: #4e89e3; /*blue*/
-            }
-
-#ControlActionMenu .separator {
-    border-top: 1px solid #666;
-    margin: 15px 0;
-}
+    #ControlBar_CustomMenuItems .separator,
+    #ControlActionMenu .separator {
+        border-top: 1px solid #666;
+        margin: 15px 0;
+    }
 
 /* Control Edit Page --- list
 ******************************************/

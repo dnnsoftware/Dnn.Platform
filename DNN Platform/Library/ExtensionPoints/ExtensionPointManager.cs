@@ -196,10 +196,10 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IUserControlExtensionPoint> GetUserControlExtensionPoints(string module, string group)
         {
-            return from e in _userControlExtensionPoints 
-                   where e.Metadata.Module == module && e.Metadata.Group == @group
-                   orderby e.Value.Order
-                   select e.Value;
+            return from e in _userControlExtensionPoints
+                where e.Metadata.Module == module && e.Metadata.Group == @group
+                orderby e.Value.Order
+                select e.Value;
         }
 
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module)

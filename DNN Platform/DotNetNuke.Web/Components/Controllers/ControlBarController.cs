@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
@@ -111,7 +112,13 @@ namespace DotNetNuke.Web.Components.Controllers
             return HostController.Instance.GetString("ControlBarLogoURL", "~/admin/controlpanel/controlbarimages/dnnLogo.png");
         }
 
-        private static UpgradeIndicatorViewModel GetDefaultUpgradeIndicator(string imageUrl)
+        public IEnumerable<MenuItemViewModel> GetCustomMenuItems()
+        {
+            var menuItemsExtensionPoints = mef.GetUserControlExtensionPoints("ControlBar", "CustomMenuItems");
+            return menuItemsExtensionPoints.Select(GetMenuItemFromExtensionPoint);
+        }
+
+        private UpgradeIndicatorViewModel GetDefaultUpgradeIndicator(string imageUrl)
         {
             var alt = LocalizationHelper.GetControlBarString("Upgrade.Text");
             var toolTip = LocalizationHelper.GetControlBarString("Upgrade.ToolTip");
@@ -126,6 +133,17 @@ namespace DotNetNuke.Web.Components.Controllers
                 ToolTip = toolTip,
                 CssClass = ""
             };            
+        }
+
+        private MenuItemViewModel GetMenuItemFromExtensionPoint(IUserControlExtensionPoint userControlExtensionPoint)
+        {
+            return new MenuItemViewModel
+            {
+                ID = Path.GetFileNameWithoutExtension(userControlExtensionPoint.UserControlSrc),
+                Text = userControlExtensionPoint.Text,
+                Source = userControlExtensionPoint.UserControlSrc,
+                Order = userControlExtensionPoint.Order
+            };
         }
 
         private UpgradeIndicatorViewModel GetUpgradeIndicatorFromExtensionPoint(IToolBarButtonExtensionPoint upgradeIndicatorExtensionPoint, string imageUrl)

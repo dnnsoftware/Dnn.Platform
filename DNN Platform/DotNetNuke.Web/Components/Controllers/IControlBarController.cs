@@ -79,5 +79,11 @@ namespace DotNetNuke.Web.Components.Controllers
         /// </summary>
         /// <returns>The URL of the Control Bar Logo</returns>
         string GetControlBarLogoURL();
+
+        /// <summary>
+        /// Gets all custom Menu item available in the system
+        /// </summary>
+        /// <returns>All custom Menu Items</returns>
+        IEnumerable<MenuItemViewModel> GetCustomMenuItems();
     }
 }

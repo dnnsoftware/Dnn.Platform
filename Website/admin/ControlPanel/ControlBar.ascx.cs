@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Web.UI.HtmlControls;
 using DotNetNuke.Web.Components.Controllers;
 using DotNetNuke.Web.Components.Controllers.Models;
 
@@ -122,6 +123,8 @@ namespace DotNetNuke.UI.ControlPanels
                 }
                 FileUploader = new DnnFileUpload {ID = "fileUploader", SupportHost = false};
                 Page.Form.Controls.Add(FileUploader);
+
+                LoadCustomMenuItems();
             }
         }
 
@@ -194,6 +197,22 @@ namespace DotNetNuke.UI.ControlPanels
             }
 
             return string.Empty;
+        }
+
+        private void LoadCustomMenuItems()
+        {
+            foreach (var menuItem in ControlBarController.Instance.GetCustomMenuItems())
+            {
+                var liElement = new HtmlGenericControl("li");                
+                liElement.Attributes.Add("id", menuItem.ID + "_tab");
+
+                var control = Page.LoadControl(menuItem.Source);
+                control.ID = menuItem.ID;
+                            
+                liElement.Controls.Add(control);
+                
+                CustomMenuItems.Controls.Add(liElement);
+            }
         }
 
         private string GetUpgradeIndicatorButton(UpgradeIndicatorViewModel upgradeIndicator)

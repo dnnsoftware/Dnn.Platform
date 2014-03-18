@@ -155,6 +155,7 @@
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
     <Compile Include="Components\Controllers\ControlBarController.cs" />
     <Compile Include="Components\Controllers\IControlBarController.cs" />
+    <Compile Include="Components\Controllers\Models\MenuItemViewModel.cs" />
     <Compile Include="Components\Controllers\Models\UpgradeIndicatorViewModel.cs" />
     <Compile Include="Components\LocalizationHelper.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
