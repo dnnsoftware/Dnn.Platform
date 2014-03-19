@@ -3449,7 +3449,7 @@ namespace DotNetNuke.Common
             }
             if (htRoles == null)
             {
-                var roles = TestableRoleController.Instance.GetRoles(Null.NullInteger, r => r.SecurityMode != SecurityMode.SocialGroup);
+                var roles = RoleController.Instance.GetRoles(Null.NullInteger, r => r.SecurityMode != SecurityMode.SocialGroup);
                 htRoles = new Hashtable();
                 int i;
                 for (i = 0; i <= roles.Count - 1; i++)

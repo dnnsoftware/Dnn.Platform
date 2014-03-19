@@ -477,7 +477,7 @@ namespace DotNetNuke.Web.UI
                         break;
                     default:
                         var portal = PortalController.Instance.GetPortal(tab.PortalID);
-                        var role = TestableRoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == roleName);
+                        var role = RoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == roleName);
                         if (role != null)
                         {
                             roleId = role.RoleID;

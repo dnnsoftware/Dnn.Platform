@@ -24,11 +24,12 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Security.Roles.Internal
 {
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use RoleController instead")]
     public class TestableRoleController : ServiceLocator<IRoleController, TestableRoleController>
     {
         protected override Func<IRoleController> GetFactory()
         {
-            return () => new RoleControllerImpl();
+            return () => new RoleController();
         }
     }
 }

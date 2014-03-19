@@ -206,7 +206,7 @@ namespace DotNetNuke.HttpModules.Membership
                 //check for RSVP code
                 if (request.QueryString["rsvp"] != null && !string.IsNullOrEmpty(request.QueryString["rsvp"]))
                 {
-                    foreach (var role in TestableRoleController.Instance.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
+                    foreach (var role in RoleController.Instance.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
                     {
                         if (role.RSVPCode == request.QueryString["rsvp"])
                         {

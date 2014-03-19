@@ -122,8 +122,8 @@ namespace DotNetNuke.Modules.Groups
                         roleInfo.Settings["ReviewMembers"] = chkMemberApproved.Checked.ToString();
                     else
                         roleInfo.Settings.Add("ReviewMembers", chkMemberApproved.Checked.ToString());
-                    
-                    TestableRoleController.Instance.UpdateRoleSettings(roleInfo, true);
+
+                    RoleController.Instance.UpdateRoleSettings(roleInfo, true);
                     roleController.UpdateRole(roleInfo);
 
                     if (inpFile.PostedFile.ContentLength > 0)

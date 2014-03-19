@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.Dashboard.Components.Portals
             {
                 if (_Roles < 0)
                 {
-                    _Roles = TestableRoleController.Instance.GetRoles(PortalID, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).Count;
+                    _Roles = RoleController.Instance.GetRoles(PortalID, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).Count;
                 }
                 return _Roles;
             }

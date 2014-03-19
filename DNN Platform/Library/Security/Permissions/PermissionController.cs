@@ -191,7 +191,7 @@ namespace DotNetNuke.Security.Permissions
                             RoleID = Convert.ToInt32(Globals.glbRoleUnauthUser);
                             break;
                         default:
-                            RoleInfo _role = TestableRoleController.Instance.GetRole(portalId, r => r.RoleName == permission.RoleName);
+                            RoleInfo _role = RoleController.Instance.GetRole(portalId, r => r.RoleName == permission.RoleName);
                             if ((_role != null))
                             {
                                 RoleID = _role.RoleID;

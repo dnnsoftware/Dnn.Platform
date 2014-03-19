@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.Html
                         if (Null.IsNull(permission.UserID))
                         {
                             int roleId = permission.RoleID;
-                            RoleInfo objRole = TestableRoleController.Instance.GetRole(objHtmlText.PortalID, r => r.RoleID == roleId);
+                            RoleInfo objRole = RoleController.Instance.GetRole(objHtmlText.PortalID, r => r.RoleID == roleId);
                             if ((objRole != null))
                             {
                                 foreach (UserRoleInfo objUserRole in objRoles.GetUserRoles(objHtmlText.PortalID, null, objRole.RoleName))

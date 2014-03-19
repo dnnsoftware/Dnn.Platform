@@ -42,7 +42,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Console.Components;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
@@ -222,7 +222,7 @@ namespace DesktopModules.Admin.Console
                         canShowTab = (UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == GroupId && ur.IsOwner) != null);
                         break;
                     case "Members":
-                        var group = TestableRoleController.Instance.GetRole(PortalId, (r) => r.RoleID == GroupId);
+                        var group = RoleController.Instance.GetRole(PortalId, (r) => r.RoleID == GroupId);
                         canShowTab = (group != null) && UserInfo.IsInRole(group.RoleName);
                         break;
                     case "Friends":

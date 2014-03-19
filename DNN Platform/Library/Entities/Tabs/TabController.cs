@@ -248,7 +248,7 @@ namespace DotNetNuke.Entities.Tabs
                         break;
                     default:
                         var portal = PortalController.Instance.GetPortal(tab.PortalID);
-                        var role = TestableRoleController.Instance.GetRole(portal.PortalID,
+                        var role = RoleController.Instance.GetRole(portal.PortalID,
                                                                                 r => r.RoleName == roleName);
                         if (role != null)
                         {
@@ -2393,7 +2393,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     var translatePermisison = (PermissionInfo)permissionsList[0];
                     string roleName = translatorRole;
-                    RoleInfo role = TestableRoleController.Instance.GetRole(localizedTab.PortalID,
+                    RoleInfo role = RoleController.Instance.GetRole(localizedTab.PortalID,
                                                                             r => r.RoleName == roleName);
                     if (role != null)
                     {

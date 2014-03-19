@@ -171,7 +171,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (masterUsers.Count > 0)
             {
-                var autoAssignRoles = TestableRoleController.Instance.GetRoles(portal.PortalID,
+                var autoAssignRoles = RoleController.Instance.GetRoles(portal.PortalID,
                                                                                role =>
                                                                                role.AutoAssignment &&
                                                                                role.Status == RoleStatus.Approved);

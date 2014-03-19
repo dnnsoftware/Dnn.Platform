@@ -586,7 +586,7 @@ namespace DotNetNuke.Services.Localization
         {
             //Create new Translator Role
             string roleName = string.Format("Translator ({0})", language.Code);
-            RoleInfo role = TestableRoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
+            RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
             if (role == null)
             {
@@ -597,7 +597,7 @@ namespace DotNetNuke.Services.Localization
                 role.Description = string.Format("A role for {0} translators", language.EnglishName);
                 role.SecurityMode = SecurityMode.SecurityRole;
                 role.Status = RoleStatus.Approved;
-                TestableRoleController.Instance.AddRole(role);
+                RoleController.Instance.AddRole(role);
             }
 
             string roles = string.Format("Administrators;{0}", string.Format("Translator ({0})", language.Code));
@@ -1904,11 +1904,11 @@ namespace DotNetNuke.Services.Localization
 
                 //Get Translator Role
                 string roleName = string.Format("Translator ({0})", language.Code);
-                RoleInfo role = TestableRoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
+                RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
                 if (role != null)
                 {
-                    TestableRoleController.Instance.DeleteRole(role);
+                    RoleController.Instance.DeleteRole(role);
                 }
 
                 DataProvider.Instance().DeletePortalLanguages(portalID, languageID);

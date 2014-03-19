@@ -35,9 +35,8 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Web.Api;
@@ -83,7 +82,7 @@ namespace DotNetNuke.Web.InternalServices
                 var fileIdsList = string.IsNullOrEmpty(postData.FileIds) ? null : postData.FileIds.FromJson<IList<int>>();
 
                 var roles = roleIdsList != null && roleIdsList.Count > 0
-                    ? roleIdsList.Select(id => TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == id)).Where(role => role != null).ToList()
+                    ? roleIdsList.Select(id => RoleController.Instance.GetRole(portalId, r => r.RoleID == id)).Where(role => role != null).ToList()
                     : null;
 
                 List<UserInfo> users = null;
@@ -126,7 +125,7 @@ namespace DotNetNuke.Web.InternalServices
                     }).ToList();
 
                 //Roles should be visible to Administrators or User in the Role.
-                var roles = TestableRoleController.Instance.GetRolesBasicSearch(portalId, numResults, q);
+                var roles = RoleController.Instance.GetRolesBasicSearch(portalId, numResults, q);
                 results.AddRange(from roleInfo in roles
                                     where
                                         isAdmin ||

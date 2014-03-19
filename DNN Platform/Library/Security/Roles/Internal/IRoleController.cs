@@ -1,4 +1,5 @@
 ﻿#region Copyright
+
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
@@ -17,10 +18,13 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Security.Roles.Internal
 {
@@ -28,24 +32,24 @@ namespace DotNetNuke.Security.Roles.Internal
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds a role
+        ///     Adds a role
         /// </summary>
         /// <param name="role">The Role to Add</param>
         /// <returns>The Id of the new role</returns>
         /// -----------------------------------------------------------------------------
         int AddRole(RoleInfo role);
 
-		/// <summary>
-		/// Adds a role
-		/// </summary>
-		/// <param name="role">The Role to Add</param>
-		/// <param name="addToExistUsers">Add this role on all exist users if auto assignment is true.</param>
-		/// <returns>The Id of the new role</returns>
-		int AddRole(RoleInfo role, bool addToExistUsers);
+        /// <summary>
+        ///     Adds a role
+        /// </summary>
+        /// <param name="role">The Role to Add</param>
+        /// <param name="addToExistUsers">Add this role on all exist users if auto assignment is true.</param>
+        /// <returns>The Id of the new role</returns>
+        int AddRole(RoleInfo role, bool addToExistUsers);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes a role
+        ///     Deletes a role
         /// </summary>
         /// <param name="role">The Role to delete</param>
         /// -----------------------------------------------------------------------------
@@ -53,7 +57,7 @@ namespace DotNetNuke.Security.Roles.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fetch a single role based on a predicate
+        ///     Fetch a single role based on a predicate
         /// </summary>
         /// <param name="portalId">Id of the portal</param>
         /// <param name="predicate">The predicate (criteria) required</param>
@@ -63,7 +67,7 @@ namespace DotNetNuke.Security.Roles.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Obtains a list of roles from the cache (or for the database if the cache has expired)
+        ///     Obtains a list of roles from the cache (or for the database if the cache has expired)
         /// </summary>
         /// <param name="portalId">The id of the portal</param>
         /// <returns>The list of roles</returns>
@@ -71,7 +75,7 @@ namespace DotNetNuke.Security.Roles.Internal
         IList<RoleInfo> GetRoles(int portalId);
 
         /// <summary>
-        /// get a list of roles based on progressive search
+        ///     get a list of roles based on progressive search
         /// </summary>
         /// <param name="portalID">the id of the portal</param>
         /// <param name="pageSize">the number of items to return</param>
@@ -81,7 +85,7 @@ namespace DotNetNuke.Security.Roles.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get the roles based on a predicate
+        ///     Get the roles based on a predicate
         /// </summary>
         /// <param name="portalId">Id of the portal</param>
         /// <param name="predicate">The predicate (criteria) required</param>
@@ -91,7 +95,7 @@ namespace DotNetNuke.Security.Roles.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the settings for a role
+        ///     Gets the settings for a role
         /// </summary>
         /// <param name="roleId">Id of the role</param>
         /// <returns>A Dictionary of settings</returns>
@@ -100,22 +104,22 @@ namespace DotNetNuke.Security.Roles.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Persists a role to the Data Store
+        ///     Persists a role to the Data Store
         /// </summary>
         /// <param name="role">The role to persist</param>
         /// -----------------------------------------------------------------------------
         void UpdateRole(RoleInfo role);
 
-		/// <summary>
-		/// Persists a role to the Data Store
-		/// </summary>
-		/// <param name="role">The role to persist</param>
-		/// <param name="addToExistUsers">Add this role on all exist users if auto assignment is true.</param>
-		void UpdateRole(RoleInfo role, bool addToExistUsers);
+        /// <summary>
+        ///     Persists a role to the Data Store
+        /// </summary>
+        /// <param name="role">The role to persist</param>
+        /// <param name="addToExistUsers">Add this role on all exist users if auto assignment is true.</param>
+        void UpdateRole(RoleInfo role, bool addToExistUsers);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Update the role settings
+        ///     Update the role settings
         /// </summary>
         /// <param name="role">The Role</param>
         /// <param name="clearCache">A flag that indicates whether the cache should be cleared</param>
@@ -123,9 +127,160 @@ namespace DotNetNuke.Security.Roles.Internal
         void UpdateRoleSettings(RoleInfo role, bool clearCache);
 
         /// <summary>
-        /// Clears Roles cache for the passed portal ID and for the default ID (-1) as well.
+        ///     Clears Roles cache for the passed portal ID and for the default ID (-1) as well.
         /// </summary>
         /// <param name="portalId">Id of the portal</param>
         void ClearRoleCache(int portalId);
+
+        /// <summary>
+        ///     get portal roles where role is a security role and approved
+        /// </summary>
+        /// <param name="portalId">id of the portal</param>
+        /// <returns>arraylist of RoleInfo objects</returns>
+        ArrayList GetPortalRoles(int portalId);
+
+        /// <summary>
+        ///     Fetch a single role
+        /// </summary>
+        /// <param name="roleId">the roleid</param>
+        /// <param name="portalId">the portalid</param>
+        /// <returns>>A RoleInfo object</returns>
+        RoleInfo GetRole(int roleId, int portalId);
+
+        /// <summary>
+        ///     Fetch a role by rolename and portal id
+        /// </summary>
+        /// <param name="portalId">the portalid</param>
+        /// <param name="roleName">the role name</param>
+        /// <returns>>A RoleInfo object</returns>
+        RoleInfo GetRoleByName(int portalId, string roleName);
+
+        /// <summary>
+        ///     get all portal roles where role is a security role and approved
+        /// </summary>
+        /// <returns>arraylist of RoleInfo objects</returns>
+        ArrayList GetRoles();
+
+        /// <summary>
+        ///     get all portal roles where role is a security role and approved and role is within a rolegroup
+        /// </summary>
+        /// <param name="portalId">the portalid</param>
+        /// <param name="roleGroupId">the role group id</param>
+        /// <returns>arraylist of RoleInfo objects</returns>
+        ArrayList GetRolesByGroup(int portalId, int roleGroupId);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///     Adds a User to a Role
+        /// </summary>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="userId">The Id of the User</param>
+        /// <param name="roleId">The Id of the Role</param>
+        /// <param name="expiryDate">The expiry Date of the Role membership</param>
+        /// -----------------------------------------------------------------------------
+        void AddUserRole(int portalId, int userId, int roleId, DateTime expiryDate);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///     Adds a User to a Role
+        /// </summary>
+        /// <remarks>Overload adds Effective Date</remarks>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="userId">The Id of the User</param>
+        /// <param name="roleId">The Id of the Role</param>
+        /// <param name="effectiveDate">The expiry Date of the Role membership</param>
+        /// <param name="expiryDate">The expiry Date of the Role membership</param>
+        /// -----------------------------------------------------------------------------
+        void AddUserRole(int portalId, int userId, int roleId, DateTime effectiveDate, DateTime expiryDate);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///     Adds a User to a Role
+        /// </summary>
+        /// <remarks>Overload adds Effective Date</remarks>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="userId">The Id of the User</param>
+        /// <param name="roleId">The Id of the Role</param>
+        /// <param name="status">The status of the Role</param>
+        /// <param name="isOwner">If the user is the owner of the Role</param>
+        /// <param name="effectiveDate">The expiry Date of the Role membership</param>
+        /// <param name="expiryDate">The expiry Date of the Role membership</param>
+        /// -----------------------------------------------------------------------------
+        void AddUserRole(int portalId, int userId, int roleId, RoleStatus status, bool isOwner, DateTime effectiveDate,
+            DateTime expiryDate);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///     Gets a User/Role
+        /// </summary>
+        /// <param name="PortalID">The Id of the Portal</param>
+        /// <param name="UserId">The Id of the user</param>
+        /// <param name="RoleId">The Id of the Role</param>
+        /// <returns>A UserRoleInfo object</returns>
+        /// -----------------------------------------------------------------------------
+        UserRoleInfo GetUserRole(int PortalID, int UserId, int RoleId);
+
+        /// <summary>
+        ///     Gets a list of UserRoles for the user
+        /// </summary>
+        /// <param name="user">A UserInfo object representaing the user</param>
+        /// <param name="includePrivate">Include private roles.</param>
+        /// <returns>A list of UserRoleInfo objects</returns>
+        IList<UserRoleInfo> GetUserRoles(UserInfo user, bool includePrivate);
+
+        /// <summary>
+        ///     Gets a list of UserRoles for the user
+        /// </summary>
+        /// <param name="portalID">Id of the portal</param>
+        /// <param name="userName">The user to fetch roles for</param>
+        /// <param name="roleName">The role to fetch users for</param>
+        /// <returns>A list of UserRoleInfo objects</returns>
+        IList<UserRoleInfo> GetUserRoles(int portalID, string userName, string roleName);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///     Get the users in a role (as User objects)
+        /// </summary>
+        /// <param name="portalId">
+        ///     Id of the portal (If -1 all roles for all portals are
+        ///     retrieved.
+        /// </param>
+        /// <param name="roleName">The role to fetch users for</param>
+        /// <returns>An ArrayList of UserInfo objects</returns>
+        ArrayList GetUsersByRoleName(int portalId, string roleName);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///     Updates a Service (UserRole)
+        /// </summary>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="userId">The Id of the User</param>
+        /// <param name="roleId">The Id of the Role</param>
+        /// -----------------------------------------------------------------------------
+        void UpdateUserRole(int portalId, int userId, int roleId);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///     Updates a Service (UserRole)
+        /// </summary>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="userId">The Id of the User</param>
+        /// <param name="roleId">The Id of the Role</param>
+        /// <param name="cancel">A flag that indicates whether to cancel (delete) the userrole</param>
+        /// -----------------------------------------------------------------------------
+        void UpdateUserRole(int portalId, int userId, int roleId, bool cancel);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///     Updates a Service (UserRole)
+        /// </summary>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="userId">The Id of the User</param>
+        /// <param name="roleId">The Id of the Role</param>
+        /// <param name="status">The status of the Role</param>
+        /// <param name="isOwner">If the user is the owner of the Role</param>
+        /// <param name="cancel">A flag that indicates whether to cancel (delete) the userrole</param>
+        /// -----------------------------------------------------------------------------
+        void UpdateUserRole(int portalId, int userId, int roleId, RoleStatus status, bool isOwner, bool cancel);
     }
 }

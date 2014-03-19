@@ -45,6 +45,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -182,7 +183,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 var modulePermission = new ModulePermissionInfo(permission);
 // ReSharper disable ImplicitlyCapturedClosure
-                var role = TestableRoleController.Instance.GetRole(portalId, r => (r.RoleName == roleName));
+                var role = RoleController.Instance.GetRole(portalId, r => (r.RoleName == roleName));
 // ReSharper restore ImplicitlyCapturedClosure
                 if (role != null)
                 {
@@ -316,7 +317,7 @@ namespace DotNetNuke.Entities.Modules
                         roleID = Convert.ToInt32(Globals.glbRoleUnauthUser);
                         break;
                     default:
-                        var role = TestableRoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
+                        var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
                         if (role != null)
                         {
                             roleID = role.RoleID;

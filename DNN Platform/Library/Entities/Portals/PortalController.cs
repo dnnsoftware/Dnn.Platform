@@ -238,10 +238,10 @@ namespace DotNetNuke.Entities.Portals
             int roleId = Null.NullInteger;
 
             //First check if the role exists
-            objRoleInfo = TestableRoleController.Instance.GetRole(role.PortalID, r => r.RoleName == role.RoleName);
+            objRoleInfo = RoleController.Instance.GetRole(role.PortalID, r => r.RoleName == role.RoleName);
             if (objRoleInfo == null)
             {
-                roleId = TestableRoleController.Instance.AddRole(role);
+                roleId = RoleController.Instance.AddRole(role);
             }
             else
             {
@@ -596,7 +596,7 @@ namespace DotNetNuke.Entities.Portals
                         roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
                         break;
                     default:
-                        RoleInfo objRole = TestableRoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
+                        RoleInfo objRole = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
                         if (objRole != null)
                         {
                             roleId = objRole.RoleID;
@@ -743,7 +743,7 @@ namespace DotNetNuke.Entities.Portals
                             string rolename = XmlUtils.GetNodeValue(permissionNav, "rolename");
                             if (!string.IsNullOrEmpty(rolename))
                             {
-                                RoleInfo role = TestableRoleController.Instance.GetRole(portalID, r => r.RoleName == rolename);
+                                RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == rolename);
                                 if (role != null)
                                 {
                                     desktopModulePermission.RoleID = role.RoleID;

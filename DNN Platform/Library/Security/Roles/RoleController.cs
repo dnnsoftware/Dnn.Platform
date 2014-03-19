@@ -25,11 +25,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
@@ -49,8 +53,172 @@ namespace DotNetNuke.Security.Roles
     ///     [cnurse]    05/23/2005  made compatible with .NET 2.0
     /// </history>
     /// -----------------------------------------------------------------------------
-    public class RoleController
+    public class RoleController : ServiceLocator<IRoleController, RoleController>, IRoleController
     {
+        protected override Func<IRoleController> GetFactory()
+        {
+            return () => new RoleController();
+        }
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RoleController));
+        #region Private Methods
+
+        private void AddMessage(RoleInfo roleInfo, EventLogController.EventLogType logType)
+        {
+            var eventLogController = new EventLogController();
+            eventLogController.AddLog(roleInfo,
+                                PortalController.GetCurrentPortalSettings(),
+                                UserController.GetCurrentUserInfo().UserID,
+                                "",
+                                logType);
+
+        }
+
+        private void AutoAssignUsers(RoleInfo role)
+        {
+            if (role.AutoAssignment)
+            {
+                //loop through users for portal and add to role
+                var arrUsers = UserController.GetUsers(role.PortalID);
+                foreach (UserInfo objUser in arrUsers)
+                {
+                    try
+                    {
+                        var legacyRoleController = new RoleController();
+                        legacyRoleController.AddUserRole(role.PortalID, objUser.UserID, role.RoleID, Null.NullDate, Null.NullDate);
+                    }
+                    catch (Exception exc)
+                    {
+                        //user already belongs to role
+                        Logger.Error(exc);
+                    }
+                }
+            }
+        }
+
+        public void ClearRoleCache(int portalId)
+        {
+            DataCache.RemoveCache(String.Format(DataCache.RolesCacheKey, portalId));
+            if (portalId != Null.NullInteger)
+            {
+                DataCache.RemoveCache(String.Format(DataCache.RolesCacheKey, Null.NullInteger));
+            }
+        }
+
+        #endregion
+        #region "Public instance methods suitable for testing"
+        int IRoleController.AddRole(RoleInfo role)
+        {
+            return Instance.AddRole(role, true);
+        }
+
+        int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
+        {
+            Requires.NotNull("role", role);
+
+            var roleId = -1;
+            if (provider.CreateRole(role))
+            {
+                AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
+                if (addToExistUsers)
+                {
+                    AutoAssignUsers(role);
+                }
+                roleId = role.RoleID;
+
+                ClearRoleCache(role.PortalID);
+            }
+
+            return roleId;
+        }
+
+        public void DeleteRole(RoleInfo role)
+        {
+            Requires.NotNull("role", role);
+
+            AddMessage(role, EventLogController.EventLogType.ROLE_DELETED);
+
+            if (role.SecurityMode != SecurityMode.SecurityRole)
+            {
+                //remove group artifacts
+                var portalSettings = PortalController.GetCurrentPortalSettings();
+
+                IFileManager _fileManager = FileManager.Instance;
+                IFolderManager _folderManager = FolderManager.Instance;
+
+                IFolderInfo groupFolder = _folderManager.GetFolder(portalSettings.PortalId, "Groups/" + role.RoleID);
+                if (groupFolder != null)
+                {
+                    _fileManager.DeleteFiles(_folderManager.GetFiles(groupFolder));
+                    _folderManager.DeleteFolder(groupFolder);
+                }
+                JournalController.Instance.SoftDeleteJournalItemByGroupId(portalSettings.PortalId, role.RoleID);
+            }
+
+            provider.DeleteRole(role);
+
+            ClearRoleCache(role.PortalID);
+        }
+
+        public RoleInfo GetRole(int portalId, Func<RoleInfo, bool> predicate)
+        {
+            return GetRoles(portalId).Where(predicate).FirstOrDefault();
+        }
+
+        public IList<RoleInfo> GetRoles(int portalId)
+        {
+            var cacheKey = String.Format(DataCache.RolesCacheKey, portalId);
+            return CBO.GetCachedObject<IList<RoleInfo>>(
+                new CacheItemArgs(cacheKey, DataCache.RolesCacheTimeOut, DataCache.RolesCachePriority),
+                c => provider.GetRoles(portalId).Cast<RoleInfo>().ToList());
+        }
+
+        public IList<RoleInfo> GetRoles(int portalId, Func<RoleInfo, bool> predicate)
+        {
+            return GetRoles(portalId).Where(predicate).ToList();
+        }
+
+        public IList<RoleInfo> GetRolesBasicSearch(int portalID, int pageSize, string filterBy)
+        {
+            return provider.GetRolesBasicSearch(portalID, pageSize, filterBy);
+        }
+
+        public IDictionary<string, string> GetRoleSettings(int roleId)
+        {
+            return provider.GetRoleSettings(roleId);
+        }
+
+        void IRoleController.UpdateRole(RoleInfo role)
+        {
+            UpdateRole(role, true);
+        }
+
+        public void UpdateRole(RoleInfo role, bool addToExistUsers)
+        {
+            Requires.NotNull("role", role);
+
+            provider.UpdateRole(role);
+            AddMessage(role, EventLogController.EventLogType.ROLE_UPDATED);
+
+            if (addToExistUsers)
+            {
+                AutoAssignUsers(role);
+            }
+
+            ClearRoleCache(role.PortalID);
+        }
+
+        public void UpdateRoleSettings(RoleInfo role, bool clearCache)
+        {
+            provider.UpdateRoleSettings(role);
+
+            if (clearCache)
+            {
+                ClearRoleCache(role.PortalID);
+            }
+        }
+
+        #endregion
+
         #region Private Nested Type: UserRoleActions
 
         private enum UserRoleActions
@@ -89,7 +257,7 @@ namespace DotNetNuke.Security.Roles
 
                     //Remove the UserInfo from the Cache, as it has been modified
                     DataCache.ClearUserCache(portalId, user.Username);
-                    TestableRoleController.Instance.ClearRoleCache(portalId);
+                    RoleController.Instance.ClearRoleCache(portalId);
                 }
                 else
                 {
@@ -152,46 +320,46 @@ namespace DotNetNuke.Security.Roles
 
         public int AddRole(RoleInfo role)
         {
-            return TestableRoleController.Instance.AddRole(role);
+            return RoleController.Instance.AddRole(role);
         }
 
         public void DeleteRole(int roleId, int portalId)
         {
-            RoleInfo role = TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
+            RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
             if (role != null)
             {
-                TestableRoleController.Instance.DeleteRole(role);
+                Instance.DeleteRole(role);
             }
         }
 
         public ArrayList GetPortalRoles(int portalId)
         {
-            return new ArrayList(TestableRoleController.Instance.GetRoles(portalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
+            return new ArrayList(Instance.GetRoles(portalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
         }
 
         public RoleInfo GetRole(int roleId, int portalId)
         {
-            return TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
+            return Instance.GetRole(portalId, r => r.RoleID == roleId);
         }
 
         public RoleInfo GetRoleByName(int portalId, string roleName)
         {
-            return TestableRoleController.Instance.GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName);
+            return Instance.GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName);
         }
 
         public ArrayList GetRoles()
         {
-            return new ArrayList(TestableRoleController.Instance.GetRoles(Null.NullInteger, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
+            return new ArrayList(Instance.GetRoles(Null.NullInteger, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
         }
 
         public ArrayList GetRolesByGroup(int portalId, int roleGroupId)
         {
-            return new ArrayList(TestableRoleController.Instance.GetRoles(portalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
+            return new ArrayList(Instance.GetRoles(portalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
         }
 
         public void UpdateRole(RoleInfo role)
         {
-            TestableRoleController.Instance.UpdateRole(role);
+            Instance.UpdateRole(role);
         }
 
         #endregion
@@ -261,7 +429,7 @@ namespace DotNetNuke.Security.Roles
 
             //Remove the UserInfo and Roles from the Cache, as they have been modified
             DataCache.ClearUserCache(portalId, user.Username);
-            TestableRoleController.Instance.ClearRoleCache(portalId);
+            Instance.ClearRoleCache(portalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -506,7 +674,7 @@ namespace DotNetNuke.Security.Roles
                     ExpiryDate = userRole.ExpiryDate;
                     IsTrialUsed = userRole.IsTrialUsed;
                 }
-                RoleInfo role = TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
+                RoleInfo role = Instance.GetRole(portalId, r => r.RoleID == roleId);
                 if (role != null)
                 {
                     if (IsTrialUsed == false && role.TrialFrequency != "N")
@@ -572,7 +740,7 @@ namespace DotNetNuke.Security.Roles
 
             //Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(portalId, user.Username);
-            TestableRoleController.Instance.ClearRoleCache(portalId);
+            Instance.ClearRoleCache(portalId);
         }
 
         #endregion
@@ -726,7 +894,7 @@ namespace DotNetNuke.Security.Roles
             {
                 foreach (RoleInfo role in roleGroup.Roles.Values)
                 {
-                    TestableRoleController.Instance.UpdateRole(role);
+                    Instance.UpdateRole(role);
                     objEventLog.AddLog(role, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.ROLE_UPDATED);
                 }
             }
@@ -741,7 +909,7 @@ namespace DotNetNuke.Security.Roles
         {
             role.SecurityMode = SecurityMode.SecurityRole;
             role.Status = RoleStatus.Approved;
-            return TestableRoleController.Instance.AddRole(role);
+            return RoleController.Instance.AddRole(role);
         }
 
         [Obsolete("Deprecated in DotNetNuke 6.2.")]
@@ -754,7 +922,7 @@ namespace DotNetNuke.Security.Roles
         [Obsolete("Deprecated in DotNetNuke 6.2.")]
         public static bool DeleteUserRole(int roleId, UserInfo user, PortalSettings portalSettings, bool notifyUser)
         {
-            RoleInfo role = TestableRoleController.Instance.GetRole(portalSettings.PortalId, r => r.RoleID == roleId);
+            RoleInfo role = RoleController.Instance.GetRole(portalSettings.PortalId, r => r.RoleID == roleId);
             return DeleteUserRole(user, role, portalSettings, notifyUser);
         }
 
@@ -774,7 +942,7 @@ namespace DotNetNuke.Security.Roles
         public string[] GetRoleNames(int portalId)
         {
             string[] roles = { };
-            var roleList = TestableRoleController.Instance.GetRoles(portalId, role => role.SecurityMode != SecurityMode.SocialGroup && role.Status == RoleStatus.Approved);
+            var roleList = RoleController.Instance.GetRoles(portalId, role => role.SecurityMode != SecurityMode.SocialGroup && role.Status == RoleStatus.Approved);
             var strRoles = roleList.Aggregate("", (current, role) => current + (role.RoleName + "|"));
             if (strRoles.IndexOf("|", StringComparison.Ordinal) > 0)
             {
@@ -852,7 +1020,7 @@ namespace DotNetNuke.Security.Roles
         {
             //Serialize Global Roles
             writer.WriteStartElement("roles");
-            foreach (RoleInfo role in TestableRoleController.Instance.GetRoles(portalId, r => r.RoleGroupID == Null.NullInteger))
+            foreach (RoleInfo role in RoleController.Instance.GetRoles(portalId, r => r.RoleGroupID == Null.NullInteger))
             {
                 CBO.SerializeObject(role, writer);
             }

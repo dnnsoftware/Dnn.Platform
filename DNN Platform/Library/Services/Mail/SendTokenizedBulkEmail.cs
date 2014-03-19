@@ -443,7 +443,7 @@ namespace DotNetNuke.Services.Mail
             foreach (string roleName in _addressedRoles)
             {
                 string role = roleName;
-                var roleInfo = TestableRoleController.Instance.GetRole(_portalSettings.PortalId, r => r.RoleName == role);
+                var roleInfo = RoleController.Instance.GetRole(_portalSettings.PortalId, r => r.RoleName == role);
 
                 foreach (UserInfo objUser in roleController.GetUsersByRoleName(_portalSettings.PortalId, roleName))
                 {

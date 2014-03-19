@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     if (RoleID != -1)
                     {
-                        RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == RoleID);
+                        RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == RoleID);
 
                         if (objRole.RoleID != -1)
                         {

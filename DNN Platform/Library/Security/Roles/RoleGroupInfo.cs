@@ -320,7 +320,7 @@ namespace DotNetNuke.Security.Roles
         private void GetRoles()
         {
             _Roles = new Dictionary<string, RoleInfo>();
-            foreach (var role in TestableRoleController.Instance.GetRoles(PortalID, r => r.RoleGroupID == RoleGroupID))
+            foreach (var role in RoleController.Instance.GetRoles(PortalID, r => r.RoleGroupID == RoleGroupID))
             {
                 _Roles[role.RoleName] = role;
             }

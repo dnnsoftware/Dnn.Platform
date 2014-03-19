@@ -202,7 +202,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     else
                     {
 						//user subscription
-                        RoleInfo objRoleInfo = TestableRoleController.Instance.GetRole(intPortalID, r => r.RoleID == intRoleID);
+                        RoleInfo objRoleInfo = RoleController.Instance.GetRole(intPortalID, r => r.RoleID == intRoleID);
                         float rolePrice = objRoleInfo.ServiceFee;
                         float trialPrice = objRoleInfo.TrialFee;
                         if ((rolePrice.ToString() == dblAmount.ToString() || trialPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLower()) == strProcessorID))

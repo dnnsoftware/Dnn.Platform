@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     else
                     {
                         strPayPalURL += "cmd=_ext-enter";
-                        RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == intRoleId);
+                        RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == intRoleId);
                         if (objRole.RoleID != -1)
                         {
                             int intTrialPeriod = 1;

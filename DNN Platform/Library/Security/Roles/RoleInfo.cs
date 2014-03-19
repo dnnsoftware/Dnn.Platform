@@ -229,7 +229,7 @@ namespace DotNetNuke.Security.Roles
             {
                 return _settings ?? (_settings = (RoleID == Null.NullInteger)
                                                      ? new Dictionary<string, string>()
-                                                     : TestableRoleController.Instance.GetRoleSettings(RoleID) as
+                                                     : RoleController.Instance.GetRoleSettings(RoleID) as
                                                        Dictionary<string, string>);
             }
         }

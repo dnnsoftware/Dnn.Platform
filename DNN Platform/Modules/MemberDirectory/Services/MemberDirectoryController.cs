@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         private bool CanViewGroupMembers(int portalId, int groupId)
         {
-            var group = TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
+            var group = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
             if(group == null)
             {
                 return false;

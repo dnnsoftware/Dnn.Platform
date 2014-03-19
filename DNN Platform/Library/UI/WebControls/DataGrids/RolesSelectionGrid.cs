@@ -307,8 +307,8 @@ namespace DotNetNuke.UI.WebControls
 			}
 
 			_roles = roleGroupId > -2
-                    ? TestableRoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
-                    : TestableRoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+                    ? RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                    : RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 
 			if (roleGroupId < 0)
 			{

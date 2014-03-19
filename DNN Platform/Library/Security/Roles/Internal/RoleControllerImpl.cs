@@ -35,7 +35,7 @@ using DotNetNuke.Services.Journal;
 
 namespace DotNetNuke.Security.Roles.Internal
 {
-    internal class RoleControllerImpl : IRoleController
+    internal class RoleControllerImpl 
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RoleControllerImpl));
         #region Private Members
