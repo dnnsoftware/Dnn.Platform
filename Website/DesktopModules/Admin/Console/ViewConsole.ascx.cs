@@ -360,25 +360,23 @@ namespace DesktopModules.Admin.Console
 			base.OnLoad(e);
 			try
 			{
-				if ((!IsPostBack))
+                IconSize.Visible = AllowSizeChange;
+                View.Visible = AllowViewChange;
+
+                foreach (string val in ConsoleController.GetSizeValues())
+                {
+                    IconSize.Items.Add(new ListItem(Localization.GetString(val + ".Text", LocalResourceFile), val));
+                }
+                foreach (string val in ConsoleController.GetViewValues())
+                {
+                    View.Items.Add(new ListItem(Localization.GetString(val + ".Text", LocalResourceFile), val));
+                }
+                IconSize.SelectedValue = DefaultSize;
+                View.SelectedValue = DefaultView;
+                
+                if ((!IsPostBack))
 				{
-					IconSize.Visible = AllowSizeChange;
-					View.Visible = AllowViewChange;
-
-					foreach (string val in ConsoleController.GetSizeValues())
-					{
-						IconSize.Items.Add(new ListItem(Localization.GetString(val + ".Text", LocalResourceFile), val));
-                        //IconSize.AddItem(Localization.GetString(val + ".Text", LocalResourceFile), val);
-					}
-					foreach (string val in ConsoleController.GetViewValues())
-					{
-						View.Items.Add(new ListItem(Localization.GetString(val + ".Text", LocalResourceFile), val));
-                        //View.AddItem(Localization.GetString(val + ".Text", LocalResourceFile), val);
-					}
-					IconSize.SelectedValue = DefaultSize;
-					View.SelectedValue = DefaultView;
-
-					SettingsBreak.Visible = (IconSize.Visible && View.Visible);
+                    SettingsBreak.Visible = (AllowSizeChange && AllowViewChange);
 
 				    List<TabInfo> tempTabs = (IsHostTab())
 										? TabController.GetTabsBySortOrder(Null.NullInteger).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList()
