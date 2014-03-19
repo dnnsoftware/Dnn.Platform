@@ -83,17 +83,14 @@ namespace DotNetNuke.Services.Mail
                 try
                 {
                     //to workaround problem in 4.0 need to specify host name
-                    using (var smtpClient = new SmtpClient(Host.SMTPServer))
+                    using (var smtpClient = new SmtpClient())
                     {
-                        smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
-                        smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
-
                         var smtpHostParts = smtpServer.Split(':');
                         smtpClient.Host = smtpHostParts[0];
-                        if (smtpHostParts.Length > 1)
-                        {
-                            smtpClient.Port = Convert.ToInt32(smtpHostParts[1]);
-                        }
+                        smtpClient.Port = smtpHostParts.Length > 1 ? Convert.ToInt32(smtpHostParts[1]) : 25;
+
+                        smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
+                        smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
 
                         switch (smtpAuthentication)
                         {
