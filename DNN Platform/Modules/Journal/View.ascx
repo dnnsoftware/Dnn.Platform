@@ -6,10 +6,10 @@
 
 <div id="userFileManager"></div>
 
-<dnn:DnnJsInclude runat="server" PathNameAlias="SharedScripts" FilePath="knockout.js" />
-<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/jquery.dnnUserFileUpload.js" Priority="102" />
-<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.js" Priority="105"></dnn:DnnJsInclude>
-<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.css"></dnn:DnnCssInclude>
+<dnn:DnnJsInclude runat="server" PathNameAlias="SharedScripts" FilePath="knockout.js" AddTag="false" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/jquery.dnnUserFileUpload.js" Priority="102" AddTag="false" />
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.js" Priority="105" AddTag="false"></dnn:DnnJsInclude>
+<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.css" AddTag="false"></dnn:DnnCssInclude>
 
 <% if (ShowEditor) {  %>
 <div class="journalTools">
@@ -24,7 +24,7 @@
             <% if (AllowPhotos) {  %>
             <span id="tbar-photo"></span>
             <%}%>
-        <div class="securityMenu dnnClear">
+            <div class="securityMenu dnnClear">
                 <div class="handle"></div>
                 <ul>
                     <li><b><%= LocalizeString("WhoWillSee.Text") %></b></li>
@@ -33,21 +33,13 @@
                     <li><input type="radio" name="privacy" value="F" /><%= LocalizeString("Friends.Text") %></li>
                     <li><input type="radio" name="privacy" value="U" /><%= LocalizeString("Private.Text") %></li>
                 </ul>
-                
-                
-                
-                
             </div>
-
         </div>
-         
         <a href="#" id="btnShare"><%= LocalizeString("Share.Text") %></a>
         <div id="journalPlaceholder"><%= LocalizeString("SharePlaceHolder.Text") %></div>
-        
         <div class="dnnClear"></div>
     </div>
     <div id="journalOptionArea">
-      
         <% if (AllowFiles || AllowPhotos) { %>
         <div class="fileUploadArea">
             <div class="jpa" id="tbar-attach-Area">
@@ -102,7 +94,6 @@
 
 <%} %>
 
-
 <div id="journalItems">
 <dnnj:JournalListControl ID="ctlJournalList" runat="server"></dnnj:JournalListControl>
 </div>
@@ -124,7 +115,7 @@
 </script>
 
 <script type="text/javascript">
-    <asp:literal id="litScripts" runat="server" />
+    <asp:literal id="litScripts" runat="server" ViewStateMode="Disabled" />
     $(document).ready(function () {
         var sf = $.ServicesFramework(<%=ModuleId %>);
         var journalServiceBase = sf.getServiceRoot('Journal');
@@ -205,6 +196,7 @@
             $(this).empty().append(data.LikeList).fadeIn();
         });
     };
+    
     var commentOpts = {};
     commentOpts.servicesFramework = $.ServicesFramework(<%=ModuleId %>);
     
