@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFilePickerUploader: UserControl
 	{
 		#region Private Fields
+        
         private const string MyFileName = "filepickeruploader.ascx";
 	    private int? _portalId = null;
 
@@ -68,6 +69,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		#region Public Properties
 
 		public bool UsePersonalFolder { get; set; }
+        
         public string FilePath
         {
             get 
@@ -97,6 +99,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
         }
+        
         public int FileID
         {
             get
@@ -118,14 +121,15 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-
         public string FolderPath 
         { 
             get { return FoldersComboBox.SelectedFolder != null ? FoldersComboBox.SelectedFolder.FolderPath : string.Empty; }
         }
 
         public string FileFilter { get; set; }
+        
         public bool Required { get; set; }
+        
         public UserInfo User { get; set; }
 
 	    public int PortalId
@@ -142,8 +146,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        protected void Page_Load(object sender, EventArgs e)
+        #region Event Handlers
+
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             FoldersComboBox.SelectItemDefaultText = "Site Root";
             FoldersComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Folders_Changed");
             FoldersComboBox.Options.Services.Parameters.Add("permission", "READ,ADD");
@@ -158,17 +166,35 @@ namespace DotNetNuke.Web.UI.WebControls
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
+        protected override void OnPreRender(EventArgs e)
+        {
+            if (FoldersComboBox.SelectedFolder != null && FoldersComboBox.SelectedFolder.FolderPath.StartsWith("Users/", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var userFolder = FolderManager.Instance.GetUserFolder(User ?? UserController.GetCurrentUserInfo());
+                if (FoldersComboBox.SelectedFolder.FolderID == userFolder.FolderID)
+                {
+                    FoldersComboBox.SelectedItem = new ListItem
+                                                   {
+                                                       Text = FolderManager.Instance.MyFolderName, 
+                                                       Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture)
+                                                   };
+                }
+            }
+
+            base.OnPreRender(e);
+        }
+
+        #endregion
+
+        #region Private Methods
+
         private void LoadFolders()
         {
             if (UsePersonalFolder)
             {
                 var user = User ?? UserController.GetCurrentUserInfo();
                 var userFolder = FolderManager.Instance.GetUserFolder(user);
-                FoldersComboBox.SelectedItem = new ListItem
-                                                   {
-                                                       Text = FolderManager.Instance.MyFolderName, 
-                                                       Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture)
-                                                   };
+                FoldersComboBox.SelectedFolder = userFolder;
                 FoldersComboBox.Enabled = false;
             }
             else
@@ -195,5 +221,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
         }
+
+        #endregion
     }
 }
