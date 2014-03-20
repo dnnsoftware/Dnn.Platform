@@ -798,6 +798,7 @@ dnn.controlBar.init = function (settings) {
                     // this special code is for you -- IE8
                     this.className = this.className;
                 });
+                $(this).addClass("grabbing");
             })
             .mouseup(function () {
                 $('.dnnDropEmptyPanes').each(function () {
@@ -807,15 +808,19 @@ dnn.controlBar.init = function (settings) {
                     // this special code is for you -- IE8
                     this.className = this.className;
                 });
+                $('div.ControlBar_ModuleDiv', ul).removeClass("grabbing");
             })
             .draggable({
                 dropOnEmpty: true,
                 cursor: 'move',
                 placeholder: "dnnDropTarget",
                 helper: function (event, ui) {
-                    var dragTip = $('<div class="dnnDragdropTip"></div>');
+                    var dragTip = $('<div class="dnnDragdropTip helperGrabbing"></div>');
                     var title = $('span', this).html();
                     dragTip.html(title);
+                    dragTip.mouseup(function() {
+                        $('div.ControlBar_ModuleDiv', ul).removeClass("grabbing");
+                    });
                     $('body').append(dragTip);
 
                     // destroy tooltip
@@ -831,8 +836,10 @@ dnn.controlBar.init = function (settings) {
                 },
                 drag: function (e, ui) {                    
                     if (dnn.controlBar.isCursorOutsideY(e, container)) {
+                        $("div.helperGrabbing").removeClass("helperGrabbing");
                         return;
                     }
+                    $("div.dnnDragdropTip").addClass("helperGrabbing");
                     var xOffset = dnn.controlBar.initialDragPosition.X - e.pageX; 
                     var scrollNewX = dnn.controlBar.initialScrollPosition.X + (((980 * (ulWidth + margin)) / windowWidth) * xOffset) / (ulWidth + margin);
                     
@@ -982,7 +989,12 @@ dnn.controlBar.init = function (settings) {
                 }
             }
         } else {
-            category = $find(settings.categoryComboId).get_value();
+            var $categoryCombo = $find(settings.categoryComboId);
+            if ($categoryCombo) {
+                category = $categoryCombo.get_value();
+            } else {
+                category = settings.defaultCategoryValue;
+            }
         }
 
         return category;

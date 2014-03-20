@@ -420,7 +420,8 @@
         addToBookmarksTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.AddToBookmarks.ToolTip")) %>',
         
         bookmarkModuleCategory: '<%= BookmarkModuleCategory%>',
-        bookmarkedModuleKeys: '<%= BookmarkedModuleKeys%>'
+        bookmarkedModuleKeys: '<%= BookmarkedModuleKeys%>',
+        defaultCategoryValue: 'All'
     };
     
     $(function() {
