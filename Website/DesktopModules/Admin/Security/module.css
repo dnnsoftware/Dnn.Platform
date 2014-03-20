@@ -164,6 +164,9 @@ p.dnnFormRequired span
     float: left;
     width: 300px;
 }
+.dnnProfileDetails .dnnFormItem .dnnDropDownList input[type="text"] {
+    float: none;
+}
 .dnnProfileDetails .RadPicker .riTextBox {
 	height: auto;
 }

@@ -74,8 +74,9 @@ namespace DotNetNuke.Web.InternalServices
 
         #endregion
 
-        #region Web Method
+        #region Web Methods
 
+        #region Page Methods
         [HttpGet]
         public HttpResponseMessage GetPageDescendants(string parentId = null, int sortOrder = 0, string searchText = "", int portalId = -1, bool includeDisabled = false, bool includeAllTypes = false)
         {
@@ -163,6 +164,46 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
+        public HttpResponseMessage GetPageDescendantsInPortalGroup(string parentId = null, int sortOrder = 0, string searchText = "", bool includeDisabled = false, bool includeAllTypes = false)
+        {
+            var response = new
+            {
+                Success = true,
+                Items = GetPageDescendantsInPortalGroupInternal(parentId, sortOrder, searchText, includeDisabled, includeAllTypes)
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetTreePathForPageInPortalGroup(string itemId, int sortOrder = 0, bool includeDisabled = false, bool includeAllTypes = false)
+        {
+            var response = new
+            {
+                Success = true,
+                Tree = GetTreePathForPageInternal(itemId, sortOrder, true, includeDisabled, includeAllTypes),
+                IgnoreRoot = true
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage SearchPagesInPortalGroup(string searchText, int sortOrder = 0, bool includeDisabled = false, bool includeAllTypes = false)
+        {
+            var response = new
+            {
+                Success = true,
+                Tree = string.IsNullOrEmpty(searchText) ? GetPagesInPortalGroupInternal(sortOrder)
+                        : SearchPagesInPortalGroupInternal(searchText, sortOrder, includeDisabled, includeAllTypes),
+                IgnoreRoot = true
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        #endregion
+
+        #region Folder Methods
+
+        [HttpGet]
         public HttpResponseMessage GetFolderDescendants(string parentId = null, int sortOrder = 0, string searchText = "", string permission = null, int portalId = -1)
         {
             var response = new
@@ -221,41 +262,58 @@ namespace DotNetNuke.Web.InternalServices
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        #endregion
+
+        #region File Methods
+
         [HttpGet]
-		public HttpResponseMessage GetPageDescendantsInPortalGroup(string parentId = null, int sortOrder = 0, string searchText = "", bool includeDisabled = false, bool includeAllTypes = false)
+        public HttpResponseMessage GetFilesDescendants(int parentId, string filter, int sortOrder = 0, string searchText = "", string permission = null, int portalId = -1)
         {
             var response = new
             {
                 Success = true,
-                Items = GetPageDescendantsInPortalGroupInternal(parentId, sortOrder, searchText, includeDisabled , includeAllTypes)
+                Items = GetFilesDescendantsInternal(portalId, parentId, filter, sortOrder, searchText, permission)
             };
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpGet]
-		public HttpResponseMessage GetTreePathForPageInPortalGroup(string itemId, int sortOrder = 0, bool includeDisabled = false, bool includeAllTypes = false)
+        public HttpResponseMessage GetFiles(int parentId, string filter, int sortOrder = 0, string permission = null, int portalId = -1)
         {
             var response = new
             {
                 Success = true,
-                Tree = GetTreePathForPageInternal(itemId, sortOrder, true, includeDisabled, includeAllTypes),
+                Tree = GetFilesInternal(portalId, parentId, filter, string.Empty, sortOrder, permission),
                 IgnoreRoot = true
             };
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpGet]
-		public HttpResponseMessage SearchPagesInPortalGroup(string searchText, int sortOrder = 0, bool includeDisabled = false, bool includeAllTypes = false)
+        public HttpResponseMessage SortFiles(int parentId, string filter, int sortOrder = 0, string searchText = "", string permission = null, int portalId = -1)
         {
             var response = new
             {
                 Success = true,
-                Tree = string.IsNullOrEmpty(searchText) ? GetPagesInPortalGroupInternal(sortOrder)
-						: SearchPagesInPortalGroupInternal(searchText, sortOrder, includeDisabled, includeAllTypes),
+                Tree = string.IsNullOrEmpty(searchText) ? SortFilesInternal(portalId, parentId, filter, sortOrder, permission) : GetFilesInternal(portalId, parentId, filter, searchText, sortOrder, permission),
                 IgnoreRoot = true
             };
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
+        [HttpGet]
+        public HttpResponseMessage SearchFiles(int parentId, string filter, string searchText, int sortOrder = 0, string permission = null, int portalId = -1)
+        {
+            var response = new
+            {
+                Success = true,
+                Tree = GetFilesInternal(portalId, parentId, filter, searchText, sortOrder, permission),
+                IgnoreRoot = true
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        #endregion
 
         #endregion
 
@@ -1070,6 +1128,83 @@ namespace DotNetNuke.Web.InternalServices
                     (HasPermission(folder, permission))
                 )
             );
+        }
+
+        #endregion
+
+        #region Files List
+
+        private NTree<ItemDto> GetFilesInternal(int portalId, int parentId, string filter, string searchText, int sortOrder, string permissions)
+        {
+            var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
+            var children = ApplySort(GetFilesDescendantsInternal(portalId, parentId, filter, sortOrder, searchText, permissions), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            tree.Children = children;
+            return tree;
+        }
+
+        private NTree<ItemDto> SortFilesInternal(int portalId, int parentId, string filter, int sortOrder, string permissions)
+        {
+            var sortedTree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
+            var children = ApplySort(GetFilesDescendantsInternal(portalId, parentId, filter, sortOrder, string.Empty, permissions), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            sortedTree.Children = children;
+            return sortedTree;
+        }
+
+        private IEnumerable<ItemDto> GetFilesDescendantsInternal(int portalId, int parentId, string filter, int sortOrder, string searchText, string permission)
+        {
+            if (portalId > -1)
+            {
+                if (!IsPortalIdValid(portalId)) return new List<ItemDto>();
+            }
+            else
+            {
+                portalId = GetActivePortalId();
+            }
+            var parentFolder = parentId > -1 ? FolderManager.Instance.GetFolder(parentId) : FolderManager.Instance.GetFolder(portalId, "");
+
+            if (parentFolder == null)
+            {
+                return new List<ItemDto>();
+            }
+
+            var hasPermission = string.IsNullOrEmpty(permission) ?
+                (HasPermission(parentFolder, "BROWSE") || HasPermission(parentFolder, "READ")) :
+                HasPermission(parentFolder, permission.ToUpper());
+            if (!hasPermission) return new List<ItemDto>();
+
+            if (parentId < 1)
+            {
+                return new List<ItemDto>();
+            }
+
+            var files = GetFiles(parentFolder, filter, searchText);
+
+            var filesDto = files.Select(f => new ItemDto
+            {
+                Key = f.FileId.ToString(CultureInfo.InvariantCulture),
+                Value = f.FileName,
+                HasChildren = false,
+                Selectable = true
+            });
+
+            return ApplySort(filesDto, sortOrder);
+        }
+
+        private IEnumerable<IFileInfo> GetFiles(IFolderInfo parentFolder, string filter, string searchText)
+        {
+            Func<IFileInfo, bool> searchFunc;
+            var filterList = string.IsNullOrEmpty(filter) ? null : filter.ToLowerInvariant().Split(',').ToList();
+            if (String.IsNullOrEmpty(searchText))
+            {
+                searchFunc = f => filterList == null || filterList.Contains(f.Extension.ToLowerInvariant());
+            }
+            else
+            {
+                searchFunc = f => f.FileName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1
+                                    && (filterList == null || filterList.Contains(f.Extension.ToLowerInvariant()));
+            }
+
+            return FolderManager.Instance.GetFiles(parentFolder).Where(f => searchFunc(f));
         }
 
         #endregion

@@ -44,6 +44,22 @@ namespace DotNetNuke.Web.UI.WebControls
 			Services.Parameters.Add("includeAllTypes", IncludeAllTabTypes.ToString().ToLowerInvariant());
 
             base.OnPreRender(e);
+
+            //add the selected folder's level path so that it can expand to the selected node in client side.
+            var selectedPage = SelectedPage;
+            if (selectedPage != null && selectedPage.ParentId > Null.NullInteger)
+            {
+                var tabLevel = string.Empty;
+                var tabController = new TabController();
+                var parentTab = tabController.GetTab(selectedPage.ParentId, PortalId, false);
+                while (parentTab != null)
+                {
+                    tabLevel = string.Format("{0},{1}", parentTab.TabID, tabLevel);
+                    parentTab = tabController.GetTab(parentTab.ParentId, PortalId, false);
+                }
+
+                ExpandPath = tabLevel.TrimEnd(',');
+            }
         }
 
 		/// <summary>

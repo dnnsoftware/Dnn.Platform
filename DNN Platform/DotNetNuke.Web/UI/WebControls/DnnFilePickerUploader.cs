@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Common;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Common.Utilities;
@@ -12,6 +14,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Web.Common;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -25,10 +28,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
 		#region protected properties
 
-		protected HiddenField dnnFileUploadFilePath;
-        protected HiddenField dnnFileUploadFileId;
-        protected DnnComboBox FilesComboBox;
-        protected DnnComboBox FoldersComboBox;
+        protected DnnFileDropDownList FilesComboBox;
+        protected DnnFolderDropDownList FoldersComboBox;
 
         protected string FolderLabel
         {
@@ -69,15 +70,31 @@ namespace DotNetNuke.Web.UI.WebControls
 		public bool UsePersonalFolder { get; set; }
         public string FilePath
         {
-            get
+            get 
             {
                 EnsureChildControls();
-                return dnnFileUploadFilePath.Value;
+
+                var path = string.Empty;
+                if (FoldersComboBox.SelectedFolder != null && FilesComboBox.SelectedFile != null)
+                {
+                    path = FilesComboBox.SelectedFile.RelativePath;
+                }
+
+                return path;
             }
+
             set
             {
                 EnsureChildControls();
-                dnnFileUploadFilePath.Value = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var file = FileManager.Instance.GetFile(PortalId, value);
+                    if (file != null)
+                    {
+                        FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(file.FolderId);
+                        FilesComboBox.SelectedFile = file;
+                    }
+                }
             }
         }
         public int FileID
@@ -85,31 +102,28 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 EnsureChildControls();
-                try
-                {
-                    return int.Parse(dnnFileUploadFileId.Value);
-                }
-                catch
-                {
-                    return 0;
-                }
+                
+                return FilesComboBox.SelectedFile != null ? FilesComboBox.SelectedFile.FileId : Null.NullInteger;
             }
+
             set
             {
                 EnsureChildControls();
-                dnnFileUploadFileId.Value = value.ToString();
-
-                // set select item
-                var fileSelectedItem = FilesComboBox.FindItemByValue(value.ToString());
-                if (fileSelectedItem != null)
+                var file = FileManager.Instance.GetFile(value);
+                if (file != null)
                 {
-                    fileSelectedItem.Selected = true;
+                    FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(file.FolderId);
+                    FilesComboBox.SelectedFile = file;
                 }
             }
         }
 
 
-        public string FolderPath { get; set; }
+        public string FolderPath 
+        { 
+            get { return FoldersComboBox.SelectedFolder != null ? FoldersComboBox.SelectedFolder.FolderPath : string.Empty; }
+        }
+
         public string FileFilter { get; set; }
         public bool Required { get; set; }
         public UserInfo User { get; set; }
@@ -130,123 +144,55 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            FoldersComboBox.SelectItemDefaultText = "Site Root";
+            FoldersComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Folders_Changed");
+            FoldersComboBox.Options.Services.Parameters.Add("permission", "READ,ADD");
+
+            FilesComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Files_Changed");
+            FilesComboBox.SelectItemDefaultText = "<" + Localization.GetString("None_Specified") + ">";
+            FilesComboBox.Services.Parameters.Add("filter", FileFilter);
+
             LoadFolders();
             jQuery.RegisterFileUpload(Page);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-            if (!IsPostBack && FileID == 0)
-            {
-                // set file id
-                if (!string.IsNullOrEmpty(FilesComboBox.SelectedValue))
-                {
-                    FileID = int.Parse(FilesComboBox.SelectedValue);
-                }
-                else FileID = 0;
-            }
         }
 
         private void LoadFolders()
         {
-            UserInfo user = User ?? UserController.GetCurrentUserInfo();
-            FoldersComboBox.Items.Clear();
-
-            //Add Personal Folder
             if (UsePersonalFolder)
             {
-                var userFolder = FolderManager.Instance.GetUserFolder(user).FolderPath;                
-                FoldersComboBox.AddItem(FolderManager.Instance.MyFolderName , userFolder);
+                var user = User ?? UserController.GetCurrentUserInfo();
+                var userFolder = FolderManager.Instance.GetUserFolder(user);
+                FoldersComboBox.SelectedItem = new ListItem
+                                                   {
+                                                       Text = FolderManager.Instance.MyFolderName, 
+                                                       Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture)
+                                                   };
+                FoldersComboBox.Enabled = false;
             }
             else
             {
-                var folders = FolderManager.Instance.GetFolders(PortalId, "READ,ADD", user.UserID);
-                foreach (FolderInfo folder in folders)
+                //select folder
+                string fileName;
+                string folderPath;
+                if (!string.IsNullOrEmpty(FilePath))
                 {
-                    var folderItem = new ListItem
-                    {
-                        Text =
-                            folder.FolderPath == Null.NullString
-                                ? "Site Root"
-                                : folder.DisplayPath,
-                        Value = folder.FolderPath
-                    };
-                    FoldersComboBox.AddItem(folderItem.Text, folderItem.Value);
+                    fileName = FilePath.Substring(FilePath.LastIndexOf("/") + 1);
+                    folderPath = string.IsNullOrEmpty(fileName) ? FilePath : FilePath.Replace(fileName, "");
                 }
-            }
-
-            //select folder
-            string fileName;
-            string folderPath;
-            if (!string.IsNullOrEmpty(FilePath))
-            {
-                fileName = FilePath.Substring(FilePath.LastIndexOf("/") + 1);
-                folderPath = string.IsNullOrEmpty(fileName) ? FilePath : FilePath.Replace(fileName, "");
-            }
-            else
-            {
-                fileName = FilePath;
-                folderPath = string.Empty;
-
-                if(UsePersonalFolder)
+                else
                 {
-                    folderPath = FolderManager.Instance.GetUserFolder(user).FolderPath;
-                    FilePath = folderPath;
+                    fileName = FilePath;
+                    folderPath = string.Empty;
                 }
-            }
 
-            if (FoldersComboBox.FindItemByValue(folderPath) != null)
-            {
-                FoldersComboBox.FindItemByValue(folderPath).Selected = true;
-            }
+                FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(PortalId, folderPath);
 
-            FolderPath = folderPath;
-
-            //select file
-            LoadFiles();
-
-            var fileSelectedItem = FilesComboBox.FindItemByText(fileName);
-            if (fileSelectedItem != null)
-            {
-                fileSelectedItem.Selected = true;
-            }
-        }
-
-        private void LoadFiles()
-        {
-            int effectivePortalId = PortalId;
-            var user = User ?? UserController.GetCurrentUserInfo();
-            if (IsUserFolder(FoldersComboBox.SelectedItem.Value))
-            {
-                if (!user.IsSuperUser)
-                    effectivePortalId = PortalController.GetEffectivePortalId(effectivePortalId);
-                else effectivePortalId = -1;
-
-            }
-            FilesComboBox.DataSource = DotNetNuke.Common.Globals.GetFileList(effectivePortalId, FileFilter, Required, FoldersComboBox.SelectedItem.Value);
-            FilesComboBox.DataBind();
-        }
-
-        private bool IsUserFolder(string folderPath)
-        {
-            UserInfo user = UserController.GetCurrentUserInfo();
-            return (folderPath.ToLowerInvariant().StartsWith("users/") && folderPath.EndsWith(string.Format("/{0}/", user.UserID)));
-        }
-
-        private void SetFilePath(string fileName)
-        {
-            if (FoldersComboBox.SelectedItem == null || string.IsNullOrEmpty(FoldersComboBox.SelectedItem.Value))
-            {
-                FilePath = fileName;
-            }
-            else
-            {
-                FilePath = (FoldersComboBox.SelectedItem.Value + "/") + fileName;
-            }
-
-            var fileSelectedItem = FilesComboBox.FindItemByText(fileName);
-            if (fileSelectedItem != null)
-            {
-                fileSelectedItem.Selected = true;
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    FilesComboBox.SelectedFile = FileManager.Instance.GetFile(FoldersComboBox.SelectedFolder, fileName);
+                }
             }
         }
     }

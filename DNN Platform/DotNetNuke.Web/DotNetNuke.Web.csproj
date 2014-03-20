@@ -195,6 +195,7 @@
     <Compile Include="Api\IServiceRouteMapper.cs" />
     <Compile Include="Api\Internal\ServicesRoutingManager.cs" />
     <Compile Include="Common\SharedConstants.cs" />
+    <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
     <Compile Include="UI\WebControls\DnnFileUpload.cs" />
     <Compile Include="UI\WebControls\DnnPortalPageDropDownList.cs" />

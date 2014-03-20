@@ -2804,7 +2804,12 @@ span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
         text-align: left;
     }
 
-    .dnnFileUploadScope .dnnFormItem .RadComboBox_Default {
+    .dnnFileUploadScope .dnnFormItem .dnnDropDownList span {
+        margin: 0;
+        width: auto;
+    }
+
+    .dnnFileUploadScope .dnnFormItem .RadComboBox_Default,  .dnnFileUploadScope .dnnFormItem .dnnDropDownList{
         width: 180px;
         margin: 0;
         float: none;

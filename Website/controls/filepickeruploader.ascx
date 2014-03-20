@@ -3,10 +3,10 @@
 <asp:Panel runat="server" ID="dnnFileUploadScope" CssClass="dnnFileUploadScope">
     <div class="dnnLeft">
         <div class="dnnFormItem dnnFileUploadFolder">
-            <span><%= FolderLabel  %></span><dnn:DnnComboBox runat="server" ID="FoldersComboBox" OnClientSelectedIndexChanged="dnn.dnnFileUpload.Folders_Changed"/>
+            <span><%= FolderLabel  %></span><dnn:DnnFolderDropDownList runat="server" ID="FoldersComboBox" />
         </div>
         <div class="dnnFormItem">
-            <span><%= FileLabel  %></span><dnn:DnnComboBox runat="server" ID="FilesComboBox" OnClientSelectedIndexChanged="dnn.dnnFileUpload.Files_Changed" DataTextField="Text" DataValueField="Value"/>
+            <span><%= FileLabel  %></span><dnn:DnnFileDropDownList runat="server" ID="FilesComboBox" />
         </div>
         <div class="dnnFormItem">
             <input type="file" name="postfile" multiple data-text="<%= UploadFileLabel  %>" />
@@ -23,8 +23,6 @@
              <div class="ui-progressbar-value"></div>
          </asp:Panel>
     </div>
-    <asp:HiddenField runat="server" ID="dnnFileUploadFilePath" />
-    <asp:HiddenField runat="server" ID="dnnFileUploadFileId" />
 </asp:Panel>
 <script type="text/javascript">
     (function($) {
@@ -35,8 +33,7 @@
                 foldersComboId: '<%= FoldersComboBox.ClientID %>',
                 filesComboId: '<%= FilesComboBox.ClientID %>',
                 folder: '<%= FolderPath %>',
-                filePathId: '<%= dnnFileUploadFilePath.ClientID %>',
-                fileIdId: '<%= dnnFileUploadFileId.ClientID %>',
+                selectedFolderId: <%=FoldersComboBox.SelectedFolder != null ? FoldersComboBox.SelectedFolder.FolderID : -1 %>,
                 progressBarId: '<%= dnnFileUploadProgressBar.ClientID %>',
                 dropZoneId: '<%= dnnFileUploadDropZone.ClientID %>'
             };

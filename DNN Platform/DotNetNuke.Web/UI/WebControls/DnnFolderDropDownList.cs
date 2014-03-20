@@ -8,6 +8,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -32,6 +33,22 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             this.AddCssClass("folder");
             base.OnPreRender(e);
+
+            //add the selected folder's level path so that it can expand to the selected node in client side.
+            var selectedFolder = SelectedFolder;
+            if (selectedFolder != null && selectedFolder.ParentID > Null.NullInteger)
+            {
+                var folderLevel = string.Empty;
+                var parentFolder = FolderManager.Instance.GetFolder(selectedFolder.ParentID);
+                while (parentFolder != null)
+                {
+                    folderLevel = string.Format("{0},{1}", parentFolder.FolderID, folderLevel);
+                    parentFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
+                }
+
+                ExpandPath = folderLevel.TrimEnd(',');
+            }
+            
         }
 
         /// <summary>

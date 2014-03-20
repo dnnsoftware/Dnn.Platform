@@ -55,6 +55,9 @@
 
             var onCreateNodeElementHandler = $.proxy(this._onCreateNodeElement, this);
             $(this._tree).on("oncreatenode", onCreateNodeElementHandler);
+            
+            var onShowChildrenHandler = $.proxy(this._onShowChildren, this);
+            $(this._tree).on("onshowchildren", onShowChildrenHandler);
 
             this._onNodeIconClickHandler = $.proxy(this._onNodeIconClick, this);
             this._onNodeTextClickHandler = $.proxy(this._onNodeTextClick, this);
@@ -173,6 +176,10 @@
             this.updateLayout();
             $(this).trigger($.Event("onredrawtree"));
         },
+        
+        _onShowChildren: function () {
+            $(this).trigger($.Event("onshowchildren"));
+        },
 
         updateLayout: function () {
             if (this.options.scroll) {
@@ -194,11 +201,26 @@
             if (typeof id === "undefined") {
                 return this._selectedNodeId;
             }
+            
             if (id !== this._selectedNodeId || !this.selectedNode()) {
                 var node = this._getNodeById(id);
                 this.selectedNode(node);
             }
             return this._selectedNodeId = id;
+        },
+        
+        scrollToSelectedNode: function() {               
+            //if node selected, we need scoll tree to show the selected node.
+            var node = this.selectedNode();
+            if (!node) {
+                return;
+            }
+            if (this.options.scroll && node) {
+                var $nodeElement = this._tree.getNodeElement(node);
+                var offset = $nodeElement.position().top - $nodeElement.parentsUntil('div', 'ul[class*="' + this._tree.options.nodeListCss + '"][class*="' + this._tree.options.rootCss + '"]').position().top;
+                this.$element.scrollTop(offset);
+                this.updateLayout();
+            }
         },
 
         selectedPath: function () {
@@ -328,6 +350,7 @@
             this._dynamicTree = new DynamicTreeView(this._$itemListContentElement[0], this.options);
             var $dynamicTree = $(this._dynamicTree);
             $dynamicTree.on("onredrawtree", $.proxy(this._onRedrawTree, this));
+            $dynamicTree.on("onshowchildren", $.proxy(this._onShowChildren, this));
             $dynamicTree.on("onexpandnode", $.proxy(this._onExpandNode, this));
             $dynamicTree.on("oncollapsenode", $.proxy(this._onCollapseNode, this));
             $dynamicTree.on("onselectnode", $.proxy(this._onSelectNode, this));
@@ -367,6 +390,11 @@
         _onLoadChildren: function (nodeContext, children) {
             this._dynamicTree.showChildren(nodeContext, children);
             this._updateResult(this._dynamicTree.count());
+            
+            $(this).trigger($.Event('onloadchildren'), [nodeContext]);
+        },
+        _onShowChildren: function(nodeContext) {
+            $(this).trigger($.Event('onshowchildren'), [nodeContext]);
         },
 
         _updateResult: function (resultText) {
@@ -423,6 +451,8 @@
             this._dynamicTree.rootNode(rootNode);
             this._updateResult(this._dynamicTree.count());
             this._loading(false);
+            
+            $(this).trigger($.Event('ontreeloaded'));
         },
 
         show: function () {

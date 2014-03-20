@@ -2544,10 +2544,12 @@
                         $(img).css({ 'max-width': 180, 'max-height': 150 }).insertBefore($('#' + settings.dropZoneId + ' span'));
                     });
                     var src;
-                    if (data.dataType && typeof (data.result) == "object" && data.result.length) {
-                        data.result = data.result.text();
+                    if (data.dataType && typeof(data.result) == "object" && data.result.length) {
+                        data.result = JSON.parse(data.result.text());
+                    } else {
+                        data.result = JSON.parse(data.result);
                     }
-                    var testContent = $('<pre>' + data.result + '</pre>');
+                    var testContent = $('<pre>' + data.result.FilePath + '</pre>');
                     if (testContent.length) {
                         src = testContent.text();
                     }
@@ -2556,38 +2558,13 @@
 
                     if (src && $.trim(src)) {
                         img.src = src;
-
-                        // set updated files into combo
-                        var foldersCombo = $find(settings.foldersComboId);
-                        var folderPath = foldersCombo.get_value();
-                        url = service.getServiceRoot('internalservices') + 'fileupload/loadfiles';
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            data: { FolderPath: folderPath, FileFilter: settings.fileFilter, Required: false },
-                            beforeSend: service.setModuleHeaders,
-                            success: function (d) {
-                                var combo = $find(settings.filesComboId);
-                                combo.clearItems();
-                                for (var i = 0; i < d.length; i++) {
-                                    var txt = d[i].Text;
-                                    var val = d[i].Value;
-
-                                    var comboItem = new window.Telerik.Web.UI.RadComboBoxItem();
-                                    comboItem.set_text(txt);
-                                    comboItem.set_value(val);
-                                    combo.get_items().add(comboItem);
-                                    if (src.indexOf(txt) > 0) {
-                                        comboItem.select();
-                                        $('#' + settings.fileIdId).val(val);
-                                        var path = folderPath ? folderPath + '/' + txt : txt;
-                                        $('#' + settings.filePathId).val(path);
-                                    }
-                                }
-                            },
-                            error: function () {
-                            }
-                        });
+                        var fileName = data.result.FilePath.replace('\\', '/');
+                        if (fileName.indexOf('/') > -1) {
+                            fileName = fileName.split('/')[fileName.split('/').length - 1];
+                        }
+                        
+                        dnn[settings.filesComboId].refresh(dnn[settings.foldersComboId].selectedItem().key);
+                        dnn[settings.filesComboId].selectedItem({ key: data.result.FileId, value: fileName});
                     }
                 },
                 fail: function (e, data) {
@@ -2599,8 +2576,9 @@
 
             // set initial thumb image
             setTimeout(function () {
-                var filesCombo = $find(settings.filesComboId);
-                var selectedFileId = filesCombo.get_value();
+                dnn[settings.filesComboId].options.services.parameters.parentId = settings.selectedFolderId;
+                var filesCombo = dnn[settings.filesComboId];
+                var selectedFileId = filesCombo.selectedItem() ? filesCombo.selectedItem().key : null;
                 url = service.getServiceRoot('internalservices') + 'fileupload/loadimage';
                 if (selectedFileId) {
                     $.ajax({
@@ -2620,7 +2598,6 @@
                     });
                 }
             }, 500);
-
         });
     };
 
@@ -2631,57 +2608,38 @@
         window.dnn.dnnFileUpload.settings[scope] = settings;
     };
     window.dnn.dnnFileUpload.getSettings = function (sender) {
-        var senderId = sender.get_id();
-        var scope = $('#' + senderId).closest('.dnnFileUploadScope').attr('id');
+        var scope = sender.closest('.dnnFileUploadScope').attr('id');
         return window.dnn.dnnFileUpload.settings[scope];
     };
-    window.dnn.dnnFileUpload.Folders_Changed = function (sender, e) {
+    window.dnn.dnnFileUpload.Folders_Changed = function (node, sender) {
         var settings = window.dnn.dnnFileUpload.getSettings(sender);
-        if (!settings) return;
+        if (!settings) return false;
 
-        var item = e.get_item();
-        if (item) {
-            var folderPath = item.get_value();
-            settings.folder = folderPath;
-            var service = $.dnnSF();
-            var url = service.getServiceRoot('internalservices') + 'fileupload/loadfiles';
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: { FolderPath: folderPath, FileFilter: settings.fileFilter, Required: false },
-                beforeSend: service.setModuleHeaders,
-                success: function (d) {
-                    var combo = $find(settings.filesComboId);
-                    combo.clearItems();
-                    for (var i = 0; i < d.length; i++) {
-                        var txt = d[i].Text;
-                        var val = d[i].Value;
-                        var comboItem = new window.Telerik.Web.UI.RadComboBoxItem();
-                        comboItem.set_text(txt);
-                        comboItem.set_value(val);
-                        combo.get_items().add(comboItem);
-                        if (i == 0) {
-                            comboItem.select();
-                        }
-                    }
-                },
-                error: function () {
+        if (node) {
+            //get the selected folder path
+            var selectedPathArray = dnn[settings.foldersComboId].selectedPath();
+            if (selectedPathArray.length === 0 && this.options.folder) {
+                return this.options.folder;
+            }
+            var selectedPath = "";
+            if (selectedPathArray.length > 1) {
+                for (var i = 1, size = selectedPathArray.length; i < size; i++) {
+                    selectedPath += selectedPathArray[i].name + "/";
                 }
-            });
+            } 
+            settings.folder = selectedPath;
+
+            dnn[settings.filesComboId].refresh(node.key);
+            dnn[settings.filesComboId].selectedItem(null);
+            window.dnn.dnnFileUpload.Files_Changed({ key: null }, $('#' + settings.filesComboId));
         }
     };
-    window.dnn.dnnFileUpload.Files_Changed = function (sender, e) {
+    window.dnn.dnnFileUpload.Files_Changed = function (node, sender) {
         var settings = window.dnn.dnnFileUpload.getSettings(sender);
         if (!settings) return;
 
-        var item = e.get_item();
-        if (item) {
-            var fileId = item.get_value();
-            $('#' + settings.fileIdId).val(fileId);
-            var fileName = item.get_text();
-            var folderPath = settings.folder;
-            var path = folderPath ? folderPath + '/' + fileName : fileName;
-            $('#' + settings.filePathId).val(path);
+        if (node) {
+            var fileId = node.key;
             var service = $.dnnSF();
             var url = service.getServiceRoot('internalservices') + 'fileupload/loadimage';
             if (fileId) {
