@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using FiftyOne.Foundation.Mobile.Detection;
 
 using System.Web;
+using FiftyOne.Foundation.UI;
 
 namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 {
@@ -42,9 +43,9 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// All the properties used are non-lists and therefore the first
         /// item contained in the values list contains the only available value.
         /// </summary>
-        public FiftyOneClientCapability(BaseDeviceInfo device)
+        public FiftyOneClientCapability(Device device)
         {
-            Initialise(device.GetAllProperties());
+            Initialise(device.GetPropertyValuesAsStrings());
             UserAgent = device.UserAgent;
         }
 

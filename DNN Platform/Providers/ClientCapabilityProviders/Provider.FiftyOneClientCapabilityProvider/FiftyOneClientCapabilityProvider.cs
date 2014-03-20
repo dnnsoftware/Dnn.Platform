@@ -77,7 +77,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                         {
                             var capabilities = new List<IClientCapability>();
 
-                            foreach (var device in Factory.ActiveProvider.Devices)
+                            foreach (var device in DataProvider.Devices)
                             {
                                 capabilities.Add(new FiftyOneClientCapability(device));
                             }
@@ -102,7 +102,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                         {
                             _allClientCapabilityValues = new Dictionary<string, List<string>>();
 
-                            foreach (var property in Factory.ActiveProvider.Properties.Values)
+                            foreach (var property in DataProvider.Properties)
                             {
                                 var values = new List<string>();
                                 foreach (var value in property.Values)
@@ -178,7 +178,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             {
                 // The useragent has not already been processed. Therefore process it now
                 // and then set the properties.
-                var deviceInfo = Factory.ActiveProvider.GetDeviceInfo(userAgent);
+                var deviceInfo = DataProvider.GetDevice(userAgent);
                 if (deviceInfo != null)
                 {
                     return new FiftyOneClientCapability(deviceInfo);
@@ -197,7 +197,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         {
             Requires.NotNullOrEmpty("deviceId", deviceId);
 
-            var device = Factory.ActiveProvider.GetDeviceInfoByID(deviceId);
+            var device = DataProvider.GetDeviceFromDeviceID(deviceId);
             
 			if(device == null)
 			{
