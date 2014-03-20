@@ -175,9 +175,9 @@ namespace DotNetNuke.Modules.Journal {
                 litScripts.Text = "var pagesize=" + PageSize.ToString();
                 litScripts.Text += ";var profilePage='" + Common.Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx" }) + "'";
                 litScripts.Text += ";var maxlength=" + MaxMessageLength.ToString();
-                litScripts.Text += ";var baseUrl='" + path + "'"; 
-                litScripts.Text += ";var resxLike='" + Utilities.GetSharedResource("{resx:like}") + "'";
-                litScripts.Text += ";var resxUnLike='" + Utilities.GetSharedResource("{resx:unlike}") + "'";
+                litScripts.Text += ";var baseUrl='" + path + "'";
+                litScripts.Text += ";var resxLike='" + DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("{resx:like}")) + "'";
+                litScripts.Text += ";var resxUnLike='" + DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("{resx:unlike}")) + "'";
                 if (!String.IsNullOrEmpty(Request.QueryString["userId"])) 
                 {
                     litScripts.Text += ";var pid=" + Convert.ToInt32(Request.QueryString["userId"]).ToString();
