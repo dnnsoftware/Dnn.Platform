@@ -12,6 +12,7 @@
 
 using System;
 
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
@@ -38,6 +39,12 @@ namespace DotNetNuke.Modules.Journal {
         public bool CanRender = true;
         public bool ShowEditor = true;
         public bool CanComment = true;
+        public string BaseUrl;
+        public string ProfilePage;
+        public int Gid = -1;
+        public int Pid = -1;
+        public long MaxUploadSize = Config.GetMaxUploadSize();
+
         #region Event Handlers
 
         override protected void OnInit(EventArgs e) 
@@ -168,34 +175,26 @@ namespace DotNetNuke.Modules.Journal {
         private void Page_Load(object sender, EventArgs e) {
             try 
             {
-                var path = Common.Globals.ApplicationPath;
-                path = path.EndsWith("/") ? path : path + "/";
-                path += "DesktopModules/Journal/";
+                BaseUrl = Common.Globals.ApplicationPath;
+                BaseUrl = BaseUrl.EndsWith("/") ? BaseUrl : BaseUrl + "/";
+                BaseUrl += "DesktopModules/Journal/";
 
-                litScripts.Text = "var pagesize=" + PageSize.ToString();
-                litScripts.Text += ";var profilePage='" + Common.Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx" }) + "'";
-                litScripts.Text += ";var maxlength=" + MaxMessageLength.ToString();
-                litScripts.Text += ";var baseUrl='" + path + "'"; 
-                litScripts.Text += ";var resxLike='" + Utilities.GetSharedResource("{resx:like}") + "'";
-                litScripts.Text += ";var resxUnLike='" + Utilities.GetSharedResource("{resx:unlike}") + "'";
+                ProfilePage = Common.Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=xxx"});
+
                 if (!String.IsNullOrEmpty(Request.QueryString["userId"])) 
                 {
-                    litScripts.Text += ";var pid=" + Convert.ToInt32(Request.QueryString["userId"]).ToString();
-                    litScripts.Text += ";var gid=-1";
-                    ctlJournalList.ProfileId = Convert.ToInt32(Request.QueryString["userId"]);
+                    Pid = Convert.ToInt32(Request.QueryString["userId"]);
+                    ctlJournalList.ProfileId = Pid;
                     ctlJournalList.PageSize = PageSize;
                 } 
                 else if (GroupId > 0) 
                 {
-                    litScripts.Text += ";var pid=-1";
-                    litScripts.Text += ";var gid=" + GroupId.ToString();
+                    Gid = GroupId;
                     ctlJournalList.SocialGroupId = GroupId;
                     ctlJournalList.PageSize = PageSize;
                 } 
                 else 
                 {
-                    litScripts.Text += ";var pid=-1";
-                    litScripts.Text += ";var gid=-1";
                 }
             } 
             catch (Exception exc) //Module failed to load

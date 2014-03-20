@@ -391,6 +391,10 @@ namespace DotNetNuke.Entities.Modules
             return Localization.GetString(key, LocalResourceFile);
         }
 
+        protected string LocalizeSafeJsString(string key)
+        {
+            return Localization.GetSafeJSString(key, LocalResourceFile);
+        }
 
 
         public int GetNextActionID()

@@ -12,7 +12,6 @@ namespace DotNetNuke.Modules.Journal {
     
     public partial class View {
         
-        
         /// <summary>
         /// ctlJournalList control.
         /// </summary>
@@ -21,14 +20,5 @@ namespace DotNetNuke.Modules.Journal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.Journal.Controls.JournalListControl ctlJournalList;
-        
-        /// <summary>
-        /// litScripts control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litScripts;
     }
 }
