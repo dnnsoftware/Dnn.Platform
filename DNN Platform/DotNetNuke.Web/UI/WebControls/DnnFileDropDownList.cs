@@ -23,7 +23,6 @@ namespace DotNetNuke.Web.UI.WebControls
             Services.GetTreeMethod = "ItemListService/GetFiles";
             Services.GetNodeDescendantsMethod = "ItemListService/GetFilesDescendants";
             Services.SearchTreeMethod = "ItemListService/SearchFiles";
-            Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForFile";
             Services.SortTreeMethod = "ItemListService/SortFiles";
             Services.ServiceRoot = "InternalServices";
             Services.Parameters.Add("parentId", Null.NullInteger.ToString());
