@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.Journal.Components
             url = PortalSettings.DefaultPortalAlias;
             OwnerPortalId = portalSettings.PortalId;
             var moduleController = new ModuleController();
-            ModuleInfo moduleInfo = moduleController.GetModule(moduleId);
+            ModuleInfo moduleInfo = moduleController.GetModule(moduleId, PortalSettings.ActiveTab.TabID);
             if (moduleInfo.OwnerPortalID != portalSettings.PortalId)
             {
                 OwnerPortalId = moduleInfo.OwnerPortalID;
