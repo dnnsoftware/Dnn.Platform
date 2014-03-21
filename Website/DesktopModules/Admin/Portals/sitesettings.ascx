@@ -500,7 +500,6 @@
                             </Items>
                         </dnn:dnnformeditor>
                     </fieldset>
-                    <dnn:propertyeditorcontrol id="passwordSettings" runat="Server" valuedatafield="PropertyValue" namedatafield="Name" helpstyle-cssclass="dnnFormHelpContent dnnClear" sortmode="SortOrderAttribute" />
                     <fieldset>
                         <dnn:dnnformeditor id="otherRegistrationSettings" runat="Server" formmode="Short">
                             <Items>

@@ -466,6 +466,7 @@
                     <dnn:label id="plEnableIPChecking" controlname="chkIPChecking" runat="server" />
                     <asp:CheckBox ID="chkIPChecking" runat="server" />
                 </div>
+                <dnn:propertyeditorcontrol id="passwordSettings" runat="Server" valuedatafield="PropertyValue" namedatafield="Name" helpstyle-cssclass="dnnFormHelpContent dnnClear" sortmode="SortOrderAttribute" />
             </fieldset>
             <h2 id="Panel-IPFilters" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("IPFilters")%></a></h2>
             <fieldset class="asContentIPFilters">

@@ -1211,4 +1211,16 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="plConnectionLimit.Help" xml:space="preserve">
     <value>The maximum number of connections allowed on this ServicePoint object. Max value is 2147483647. Default is 1. </value>
   </data>
+  <data name="PasswordConfig_PasswordExpiry.Help" xml:space="preserve">
+    <value>The number of days before a User must change their password (value of 0 means the password never expires)</value>
+  </data>
+  <data name="PasswordConfig_PasswordExpiry.Text" xml:space="preserve">
+    <value>Password Expiry (in days):</value>
+  </data>
+  <data name="PasswordConfig_PasswordExpiryReminder.Help" xml:space="preserve">
+    <value>The number of days warning the user will recieve that their password is about to expire.</value>
+  </data>
+  <data name="PasswordConfig_PasswordExpiryReminder.Text" xml:space="preserve">
+    <value>Password Expiry Reminder (in days):</value>
+  </data>
 </root>

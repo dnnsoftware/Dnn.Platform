@@ -46,6 +46,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
@@ -58,6 +59,7 @@ using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Web.UI.WebControls.Extensions;
@@ -582,6 +584,10 @@ namespace DotNetNuke.Modules.Admin.Host
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+            passwordSettings.EditMode = PropertyEditorMode.Edit ;
+            passwordSettings.LocalResourceFile = LocalResourceFile;
+            passwordSettings.DataSource = new PasswordConfig();
+            passwordSettings.DataBind();
         }
 
         private void BindSearchIndex()

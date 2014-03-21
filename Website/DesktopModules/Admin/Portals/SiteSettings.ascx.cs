@@ -623,10 +623,6 @@ namespace DesktopModules.Admin.Portals
             {
                 CustomRegistrationFields = BuildCustomRegistrationFields(registrationFields.Text);
             }
-            passwordSettings.EditMode = UserInfo.IsSuperUser ? PropertyEditorMode.Edit : PropertyEditorMode.View;
-            passwordSettings.LocalResourceFile = LocalResourceFile;
-            passwordSettings.DataSource = new PasswordConfig();
-            passwordSettings.DataBind();
 
         }
 
