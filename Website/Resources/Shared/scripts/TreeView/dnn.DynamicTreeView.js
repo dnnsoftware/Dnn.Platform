@@ -331,8 +331,9 @@
             this._$searchButton = this._$itemListHeaderElement.find("." + this.options.searchButtonCss);
             this._$searchButton.on("click.drop-down-list", $.proxy(this._onSearchClick, this));
             var onSortHandler = $.proxy(this._onSortClick, this);
+            var onSearchHandler = $.proxy(this._onSearchClick, this);
             this._$searchContainer = this._$itemListHeaderElement.find("." + this.options.searchContainerCss);
-            this._$searchInput = this._$itemListHeaderElement.find("." + this.options.searchInputCss).onEnter(onSortHandler).on("keyup.drop-down-list", $.proxy(this._displayClearButton, this));
+            this._$searchInput = this._$itemListHeaderElement.find("." + this.options.searchInputCss).onEnter(onSearchHandler).on("keyup.drop-down-list", $.proxy(this._displayClearButton, this));
             this._displayClearButton();
             this._$sortButton = this._$itemListHeaderElement.find("." + this.options.sortButtonCss);
             this._$sortButton.on("click.drop-down-list", onSortHandler);

@@ -179,6 +179,16 @@ namespace DotNetNuke.Web.UI.WebControls
                                                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture)
                                                    };
                 }
+                else if (UsePersonalFolder) //if UserPersonalFolder is true, make sure the file is under the user folder.
+                {
+                    FoldersComboBox.SelectedItem = new ListItem
+                                                    {
+                                                        Text = FolderManager.Instance.MyFolderName,
+                                                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture)
+                                                    };
+
+                    FilesComboBox.SelectedFile = null;
+                }
             }
 
             base.OnPreRender(e);

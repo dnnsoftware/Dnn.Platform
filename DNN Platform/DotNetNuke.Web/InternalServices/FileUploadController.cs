@@ -219,7 +219,7 @@ namespace DotNetNuke.Web.InternalServices
                         if (!string.IsNullOrEmpty(errorMessage))
                         {
                             return Request.CreateResponse(
-                                HttpStatusCode.OK,
+                                HttpStatusCode.BadRequest,
                                 new
                                 {
                                     AlreadyExists = alreadyExists,
