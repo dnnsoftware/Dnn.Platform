@@ -893,7 +893,7 @@ ul.ControlBar_ModuleList {
             background: -ms-linear-gradient(top, #4a4a4a 1%,#363636 100%); /* IE10+ */
             background: linear-gradient(to bottom, #4a4a4a 1%,#363636 100%); /* W3C */
             cursor: move;
-            cursor: url(/admin/controlpanel/images/icon_cursor_grab.cur), move;
+            cursor: url(/images/icon_cursor_grab.cur), move;
             color: #999;
             -webkit-box-shadow: inset 0px 1px 0px 0px #666, 0px 0px 3px 0px #000;
             box-shadow: inset 0px 1px 0px 0px #666, 0px 0px 3px 0px #000;
@@ -908,12 +908,12 @@ ul.ControlBar_ModuleList {
 
         ul.ControlBar_ModuleList > li > div.grabbing {
             cursor: move;            
-            cursor: url(/admin/controlpanel/images/icon_cursor_grabbing.cur), move;
+            cursor: url(/images/icon_cursor_grabbing.cur), move;
         }
 
         .helperGrabbing {
             cursor: move;            
-            cursor: url(/admin/controlpanel/images/icon_cursor_grabbing.cur), move;
+            cursor: url(/images/icon_cursor_grabbing.cur), move;
         }
 
             ul.ControlBar_ModuleList > li > div:hover {
