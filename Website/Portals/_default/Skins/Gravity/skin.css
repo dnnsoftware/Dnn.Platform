@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 @import url('./bootstrap/css/bootstrap.min.css');
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -2201,3 +2201,22 @@ ul.footerConnect {
         .status-expanded-container .profile-topContainer > .dnnRight > ul.profile-statistics{ width:200px;}
         .dnnSocialLink .profile-link {margin-top:50px;}
 }
+
+/* Container styles */
+
+.DNNContainer_Title_h2 h2 .TitleH2 {
+	display: block;
+	margin-bottom: 25px;
+}
+
+.DNNContainer_Title_h3 h3 .TitleH3 {
+	display: block;
+	padding-bottom: 10px;
+	margin-bottom: 25px;
+	border-bottom: solid 1px #c0c0c0;
+}
+
+.DNNContainer_Title_h4 h4 .TitleH4 {
+	display: block;
+	margin-bottom: 25px;
+} 
