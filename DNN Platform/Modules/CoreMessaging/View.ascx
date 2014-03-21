@@ -242,7 +242,7 @@
 <script type="text/javascript">
 	jQuery(document).ready(function ($) {		
         var sm = new CoreMessaging($, ko, {
-            profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicFormattedUrl() %>',
+            profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicRelativeUrl() %>',
             conversationSetAsReadText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsRead"))%>',
             conversationSetAsUnreadText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsUnread"))%>',
             loadingText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Loading"))%>',

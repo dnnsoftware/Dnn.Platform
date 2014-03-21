@@ -3788,6 +3788,7 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicFormattedUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
+        [Obsolete("Obsoleted in DNN 7.3.0 as it causes issues in SSL-offloading scenarios - please use UserProfilePicRelativeUrl instead.")]
         public static string UserProfilePicFormattedUrl()
         {
             var avatarUrl = PortalController.GetCurrentPortalSettings().DefaultPortalAlias;

@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         From = notification.From,
                         Body = notification.Body,
                         DisplayDate = Common.Utilities.DateUtils.CalculateDateForDisplay(notification.CreatedOnDate),
-                        SenderAvatar = string.Format(Globals.UserProfilePicFormattedUrl(), notification.SenderUserID, 64, 64),
+                        SenderAvatar = string.Format(Globals.UserProfilePicRelativeUrl(), notification.SenderUserID, 64, 64),
                         SenderProfileUrl = Globals.UserProfileURL(notification.SenderUserID),
                         Actions = new List<NotificationActionViewModel>()
                     };

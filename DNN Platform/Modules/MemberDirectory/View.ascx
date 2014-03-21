@@ -78,7 +78,7 @@
             pageSize: <% = PageSize %>,
             profileUrl: "<% = ViewProfileUrl %>",
             profileUrlUserToken: "<% = ProfileUrlUserToken %>",
-            profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicFormattedUrl() %>',
+            profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicRelativeUrl() %>',
             addFriendText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("AddFriend")) %>',
             acceptFriendText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("AcceptFriend")) %>',
             friendPendingText:'<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("FriendPending")) %>',

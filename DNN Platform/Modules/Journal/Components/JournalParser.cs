@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.Journal.Components
 
         internal string GetCommentRow(JournalItem journal, CommentInfo comment) {
             var sb = new StringBuilder();
-            string pic = string.Format(Globals.UserProfilePicFormattedUrl(), comment.UserId, 32, 32);
+            string pic = string.Format(Globals.UserProfilePicRelativeUrl(), comment.UserId, 32, 32);
             sb.AppendFormat("<li id=\"cmt-{0}\">", comment.CommentId);
             if (comment.UserId == CurrentUser.UserID || journal.UserId == CurrentUser.UserID || isAdmin) {
                 sb.Append("<div class=\"miniclose\"></div>");
