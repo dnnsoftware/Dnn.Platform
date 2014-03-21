@@ -239,10 +239,10 @@ dnn.controlBar.init = function (settings) {
                         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false);
                         dnn.controlBar.forceLoadingPane = false;
                         var containerId = '#ControlBar_ModuleListHolder_NewModule';
-                        dnn.controlBar.renderModuleList(containerId, d);
                         if ((dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingInitialPageSize) || (!dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingSize)) {
                             dnn.controlBar.allModulesLoaded = true;
                         }
+                        dnn.controlBar.renderModuleList(containerId, d);
                         dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
                     } else {                        
                         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false, true);
@@ -321,6 +321,7 @@ dnn.controlBar.init = function (settings) {
                 if (d && d.length) {
                     dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule', true);
                     var containerId = '#ControlBar_ModuleListHolder_ExistingModule';
+                    dnn.controlBar.allModulesLoaded = true;
                     dnn.controlBar.renderModuleList(containerId, d);
                     dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
                 }
@@ -612,10 +613,17 @@ dnn.controlBar.init = function (settings) {
         if (dnn.controlBar.isFirstModuleLoadingPage()) {
             ul.empty().css('left', 1000);
         }
+        $('li.moreModules', ul).remove();
         for (var i = 0; i < moduleList.length; i++) {
             var bookmarkClass = dnn.controlBar.getBookmarkClass(moduleList[i].Bookmarked, moduleList[i].ExistsInBookmarkCategory);
             var bookmarkTooltip = dnn.controlBar.getBookmarkTooltip(bookmarkClass);
             ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><a href="javascript:void(0)" class="' + bookmarkClass + '" title="' + bookmarkTooltip + '"/><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
+        }
+        if (!dnn.controlBar.allModulesLoaded) {
+            ul.append('<li class="moreModules"><div class="moreModules" title="'+settings.getNextModulesTip+'"></div></li>');
+            $('li.moreModules', ul).click(function() {
+                dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
+            });
         }
     };
 
@@ -639,7 +647,7 @@ dnn.controlBar.init = function (settings) {
         dnn.controlBar.fillModuleList(ul, moduleList);
         
         $('#ControlBar_Module_ModulePosition').hide();
-        var ulWidth = (dnn.controlBar.getModuleLoadingCurrentIndex() * 160) + moduleList.length * 160;
+        var ulWidth = (dnn.controlBar.getModuleLoadingCurrentIndex() * 160) + moduleList.length * 160 + (dnn.controlBar.allModulesLoaded ? 0 : 60);
         ul.css('width', ulWidth + 'px');
         // some math here
         var windowWidth = $(window).width();
@@ -834,13 +842,13 @@ dnn.controlBar.init = function (settings) {
                     dnn.controlBar.dragdropAddExistingModule = !dnn.controlBar.addNewModule;
                     return dragTip;
                 },
-                drag: function (e, ui) {                    
+                drag: function (e, ui) {
                     if (dnn.controlBar.isCursorOutsideY(e, container)) {
                         $("div.helperGrabbing").removeClass("helperGrabbing");
                         return;
                     }
                     $("div.dnnDragdropTip").addClass("helperGrabbing");
-                    var xOffset = dnn.controlBar.initialDragPosition.X - e.pageX; 
+                    var xOffset = dnn.controlBar.initialDragPosition.X - e.pageX;
                     var scrollNewX = dnn.controlBar.initialScrollPosition.X + (((980 * (ulWidth + margin)) / windowWidth) * xOffset) / (ulWidth + margin);
                     
                     var jspapi = scrollContainer.data('jsp');                    

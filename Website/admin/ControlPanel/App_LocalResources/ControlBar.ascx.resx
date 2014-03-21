@@ -339,4 +339,7 @@
   <data name="SearchModules.Text" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="GetNextModules.ToolTip" xml:space="preserve">
+    <value>Get the next modules</value>
+  </data>
 </root>

@@ -421,7 +421,8 @@
         
         bookmarkModuleCategory: '<%= BookmarkModuleCategory%>',
         bookmarkedModuleKeys: '<%= BookmarkedModuleKeys%>',
-        defaultCategoryValue: 'All'
+        defaultCategoryValue: 'All',
+        getNextModulesTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("GetNextModules.ToolTip")) %>'
     };
     
     $(function() {

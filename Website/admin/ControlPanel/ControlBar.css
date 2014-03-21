@@ -880,10 +880,10 @@ ul.ControlBar_ModuleList {
         height: 150px;
         width: 150px;
     }
-
+    
         ul.ControlBar_ModuleList > li > div {
             width: 150px;
-            height: 150px;
+            height: 147px;
             position: relative;
             background: #4a4a4a; /* Old browsers */
             background: -moz-linear-gradient(top, #4a4a4a 1%, #363636 100%); /* FF3.6+ */
@@ -974,6 +974,25 @@ ul.ControlBar_ModuleList {
             ul.ControlBar_ModuleList > li > div.ControlBar_Module_Selected > div {
                 display: block;
             }
+
+    ul.ControlBar_ModuleList > li.moreModules {
+        width: 27px;
+        height: 147px;
+        background-color: #434343;
+
+    }
+
+    ul.ControlBar_ModuleList > li > div.moreModules {
+        width: 25px;
+        height: 145px;
+        margin: 1px 0 0 1px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        background: #303030 url(/images/menu_right.gif) no-repeat center center;        
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        cursor: pointer;
+    }
 
 div.ModuleLocator_Menu.ModuleLocator_Hover {
     background: #FFF url(controlbarimages/icons.png) no-repeat -47px 3px;
