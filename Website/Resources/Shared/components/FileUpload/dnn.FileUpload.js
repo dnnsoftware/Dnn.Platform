@@ -63,6 +63,7 @@
         _createLayout: function () {
             var checkBoxId = dnn.uid("fu_");
             this._folderPicker = new dnn.DropDownList(null, this.options.folderPicker);
+            dnn[this._folderPicker.id()] = this._folderPicker;
 
             var dialog = $element('div', { tabindex: '-1', 'class': 'fu-container', role: 'dialog' }).append(
                 $element('h5', { 'class': 'fu-dialog-header' }).text(this.options.resources.dialogHeader),
@@ -189,6 +190,8 @@
 
         _onUploadByUrl: function (url, data, textStatus, jqXhr) {
             this._processResponse(url[0], data);
+            
+            this.$element.trigger($.Event("onfileuploadcomplete"), [data]);
         },
 
         _createFileUploadStatusElement: function (status) {
@@ -369,6 +372,8 @@
 
         _done: function (e, data) {
             this._processResponse(data.files[0].name, data.result);
+            
+            this.$element.trigger($.Event("onfileuploadcomplete"), [data.result]);
         },
 
         _processResponse: function (fileName, response) {

@@ -21,11 +21,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
             SelectItemDefaultText = Localization.GetString("DropDownList.SelectFileDefaultText", Localization.SharedResourceFile);
             Services.GetTreeMethod = "ItemListService/GetFiles";
-            Services.GetNodeDescendantsMethod = "ItemListService/GetFilesDescendants";
             Services.SearchTreeMethod = "ItemListService/SearchFiles";
             Services.SortTreeMethod = "ItemListService/SortFiles";
             Services.ServiceRoot = "InternalServices";
             Services.Parameters.Add("parentId", Null.NullInteger.ToString());
+            Options.ItemList.DisableUnspecifiedOrder = true;
         }
 
         protected override void OnPreRender(EventArgs e)

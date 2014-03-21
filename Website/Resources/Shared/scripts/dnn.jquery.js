@@ -2574,6 +2574,36 @@
                 }
             });
 
+            $('#' + scope + ' input[name=uploadFileButton]').click(function() {
+                var instance = dnn[settings.fileUploadId];
+                
+                var options = instance.options;
+                if (dnn[settings.foldersComboId].selectedItem() != null) {
+                    instance.options.folderPicker.initialState.selectedItem = dnn[settings.foldersComboId].selectedItem();
+                    instance.options.folderPath = window.dnn.dnnFileUpload.getSelectedPath(dnn[settings.foldersComboId]);
+                }
+                instance.options.folderPicker.onSelectionChangedBackScript = function() {
+                    dnn[settings.foldersComboId].selectedItem(this.selectedItem());
+
+                    window.dnn.dnnFileUpload.updateExpandPath(this, settings.foldersComboId);
+                };
+
+                instance.show(options);
+                
+                window.dnn.dnnFileUpload.updateExpandPath(dnn[settings.foldersComboId], instance._panel._folderPicker.id());
+                
+                instance._panel.$element.on("onfileuploadcomplete", function (event, data) {
+                    if (typeof data == "string") {
+                        data = JSON.parse(data);
+                    }
+                    if (data && data.fileId) {
+                        dnn[settings.filesComboId].refresh(dnn[settings.foldersComboId].selectedItem().key);
+                        dnn[settings.filesComboId].selectedItem({ key: data.fileId.toString(), value: data.fileName });
+                        window.dnn.dnnFileUpload.Files_Changed(dnn[settings.filesComboId].selectedItem(), dnn[settings.filesComboId].$element);
+                    }
+                });
+            });
+
             // set initial thumb image
             setTimeout(function () {
                 dnn[settings.filesComboId].options.services.parameters.parentId = settings.selectedFolderId;
@@ -2618,7 +2648,7 @@
         if (node) {
             //get the selected folder path
             var selectedPathArray = dnn[settings.foldersComboId].selectedPath();
-            if (selectedPathArray.length === 0 && this.options.folder) {
+            if (selectedPathArray.length === 0 && settings.folder) {
                 return this.options.folder;
             }
             var selectedPath = "";
@@ -2663,7 +2693,41 @@
                 $('#' + settings.dropZoneId + ' img').remove();
         }
     };
-
+    window.dnn.dnnFileUpload.updateExpandPath = function(dropDownList, targetId) {
+        //set expand path
+        var selectedPaths = dropDownList.selectedPath();
+        var expandPath = "";
+        if (selectedPaths.length == 0) { //which means the tree view hasn't opened.
+            expandPath = dnn.getVar(dropDownList.id() + '_expandPath');
+        }
+        else if (selectedPaths.length > 1) {
+            for (var i = 0; i < selectedPaths.length - 1; i++) {
+                if (expandPath == "") {
+                    expandPath = selectedPaths[i].id;
+                } else {
+                    expandPath = expandPath + "," + selectedPaths[i].id;
+                }
+            }
+        }
+        
+        if (expandPath != "") {
+            dnn.setVar(targetId + '_expandPath', expandPath);
+        }
+    };
+    window.dnn.dnnFileUpload.getSelectedPath = function(dropDownList) {
+        var selectedPathArray = dropDownList.selectedPath();
+        var settings = window.dnn.dnnFileUpload.getSettings(dropDownList.$element);
+        if (selectedPathArray.length === 0 && settings.folder) {
+            return settings.folder;
+        }
+        var selectedPath = "";
+        if (selectedPathArray.length > 1) {
+            for (var i = 1, size = selectedPathArray.length; i < size; i++) {
+                selectedPath += selectedPathArray[i].name + "/";
+            }
+        }
+        return selectedPath;
+    };
 })(jQuery);
 
 (function ($) {

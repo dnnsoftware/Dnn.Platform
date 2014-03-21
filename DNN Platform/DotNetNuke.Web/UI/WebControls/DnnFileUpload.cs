@@ -95,13 +95,16 @@ namespace DotNetNuke.Web.UI.WebControls
 
             var portalSettings = PortalSettings.Current;
 
-            var folder = FolderManager.Instance.GetFolder(portalSettings.PortalId, string.Empty);
-            var rootFolder = (SupportHost && portalSettings.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
-
-            Options.FolderPicker.InitialState = new DnnDropDownListState
+            if (Options.FolderPicker.InitialState == null)
             {
-                SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), rootFolder) : null
-            };
+                var folder = FolderManager.Instance.GetFolder(portalSettings.PortalId, string.Empty);
+                var rootFolder = (SupportHost && portalSettings.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
+
+                Options.FolderPicker.InitialState = new DnnDropDownListState
+                {
+                    SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), rootFolder) : null
+                };
+            }
 
             if (Options.Extensions.Count > 0)
             {

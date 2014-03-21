@@ -211,8 +211,10 @@
         
         scrollToSelectedNode: function() {               
             //if node selected, we need scoll tree to show the selected node.
-            var node = this.selectedNode();
+            var node = this._getNodeById(this.selectedId());
             if (!node) {
+                //if node is not exist, we should pop a node expand request to make sure its load by expand parents nodes.
+                $(this).trigger($.Event("onrequestexpand"));
                 return;
             }
             if (this.options.scroll && node) {
@@ -356,6 +358,7 @@
             $dynamicTree.on("oncollapsenode", $.proxy(this._onCollapseNode, this));
             $dynamicTree.on("onselectnode", $.proxy(this._onSelectNode, this));
             $dynamicTree.on("onchangenode", $.proxy(this._onChangeNode, this));
+            $dynamicTree.on("onrequestexpand", $.proxy(this._onRequestExpand, this));
 
             this._sortOrder(dnn.SortOrder.unspecified);
 
@@ -396,6 +399,9 @@
         },
         _onShowChildren: function(nodeContext) {
             $(this).trigger($.Event('onshowchildren'), [nodeContext]);
+        },
+        _onRequestExpand: function(nodeContext) {
+            $(this).trigger($.Event('onrequestexpand'), [nodeContext]);
         },
 
         _updateResult: function (resultText) {
@@ -542,6 +548,13 @@
 
         _getNextSortOrder: function() {
             var order = this._sortOrder();
+            if (this.options.disableUnspecifiedOrder) {
+                if (order === dnn.SortOrder.ascending) {
+                    return dnn.SortOrder.descending;
+                }
+                
+                return dnn.SortOrder.ascending;
+            }
             if (order === dnn.SortOrder.unspecified) {
                 return dnn.SortOrder.ascending;
             }

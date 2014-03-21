@@ -121,6 +121,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        [DataMember(Name = "folderPath")]
+        public string FolderPath;
+
         public DnnFileUploadOptions()
         {
             FolderPicker = new DnnDropDownListOptions();

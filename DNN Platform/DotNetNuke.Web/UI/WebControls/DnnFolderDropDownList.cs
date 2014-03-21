@@ -6,9 +6,11 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -27,6 +29,8 @@ namespace DotNetNuke.Web.UI.WebControls
             Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForFolder";
             Services.SortTreeMethod = "ItemListService/SortFolders";
             Services.ServiceRoot = "InternalServices";
+
+            Options.ItemList.DisableUnspecifiedOrder = true;
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -64,7 +68,13 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                SelectedItem = (value != null) ? new ListItem() { Text = value.FolderName, Value = value.FolderID.ToString(CultureInfo.InvariantCulture) } : null;
+                var folderName = value != null ? value.FolderName : null;
+                if (folderName == string.Empty)
+                {
+                    folderName = PortalSettings.Current.ActiveTab.IsSuperTab ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
+                }
+
+                SelectedItem = (value != null) ? new ListItem() { Text = folderName, Value = value.FolderID.ToString(CultureInfo.InvariantCulture) } : null;
             }
         }
 

@@ -267,17 +267,6 @@ namespace DotNetNuke.Web.InternalServices
         #region File Methods
 
         [HttpGet]
-        public HttpResponseMessage GetFilesDescendants(int parentId, string filter, int sortOrder = 0, string searchText = "", string permission = null, int portalId = -1)
-        {
-            var response = new
-            {
-                Success = true,
-                Items = GetFilesDescendantsInternal(portalId, parentId, filter, sortOrder, searchText, permission)
-            };
-            return Request.CreateResponse(HttpStatusCode.OK, response);
-        }
-
-        [HttpGet]
         public HttpResponseMessage GetFiles(int parentId, string filter, int sortOrder = 0, string permission = null, int portalId = -1)
         {
             var response = new
@@ -1137,7 +1126,7 @@ namespace DotNetNuke.Web.InternalServices
         private NTree<ItemDto> GetFilesInternal(int portalId, int parentId, string filter, string searchText, int sortOrder, string permissions)
         {
             var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            var children = ApplySort(GetFilesDescendantsInternal(portalId, parentId, filter, sortOrder, searchText, permissions), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            var children = GetFileItemsDto(portalId, parentId, filter, searchText, permissions, sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             tree.Children = children;
             return tree;
         }
@@ -1145,12 +1134,12 @@ namespace DotNetNuke.Web.InternalServices
         private NTree<ItemDto> SortFilesInternal(int portalId, int parentId, string filter, int sortOrder, string permissions)
         {
             var sortedTree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            var children = ApplySort(GetFilesDescendantsInternal(portalId, parentId, filter, sortOrder, string.Empty, permissions), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            var children = GetFileItemsDto(portalId, parentId, filter, string.Empty, permissions, sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             sortedTree.Children = children;
             return sortedTree;
         }
 
-        private IEnumerable<ItemDto> GetFilesDescendantsInternal(int portalId, int parentId, string filter, int sortOrder, string searchText, string permission)
+        private IEnumerable<ItemDto> GetFileItemsDto(int portalId, int parentId, string filter, string searchText, string permission, int sortOrder)
         {
             if (portalId > -1)
             {
@@ -1185,9 +1174,20 @@ namespace DotNetNuke.Web.InternalServices
                 Value = f.FileName,
                 HasChildren = false,
                 Selectable = true
+            }).ToList();
+
+            var sortedList = ApplySort(filesDto, sortOrder).ToList();
+
+            //add the none specific item
+            sortedList.Insert(0, new ItemDto
+            {
+                Key = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
+                Value = SharedConstants.Unspecified,
+                HasChildren = false,
+                Selectable = true
             });
 
-            return ApplySort(filesDto, sortOrder);
+            return sortedList;
         }
 
         private IEnumerable<IFileInfo> GetFiles(IFolderInfo parentFolder, string filter, string searchText)

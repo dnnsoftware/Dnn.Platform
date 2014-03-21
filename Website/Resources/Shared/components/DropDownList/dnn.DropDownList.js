@@ -69,6 +69,10 @@
                         .append($("<a href='javascript:void(0);' class='" + this.options.selectedValueCss + "'/>")));
             return layout;
         },
+        
+        id: function() {
+            return this.$element.attr('id');
+        },
 
         selectedItem: function (item) {
             if (typeof item === "undefined") {
@@ -82,6 +86,7 @@
             if (this._treeView) {
                 this._treeView.selectedId(item ? item.key : null);
             }
+            
             return item;
         },
 
@@ -176,12 +181,14 @@
             var onChangeNodeHandler = $.proxy(this._onChangeNode, this);
             var onSelectNodeHandler = $.proxy(this._onSelectNode, this);
             var onTreeLoadedHandler = $.proxy(this._onTreeLoaded, this);
-            var onShowChildrenHanlder = $.proxy(this._onShowChildren, this);
+            var onShowChildrenHandler = $.proxy(this._onShowChildren, this);
+            var onRequestExpandHandler = $.proxy(this._onRequestExpand, this);
             $(treeView).on("onchangenode", onChangeNodeHandler)
                        .on("onselectnode", onSelectNodeHandler)
                        .on("ontreeloaded", onTreeLoadedHandler)
                        .on("onloadchildren", onTreeLoadedHandler)
-                       .on("onshowchildren", onShowChildrenHanlder);
+                       .on("onshowchildren", onShowChildrenHandler)
+                       .on("onrequestexpand", onRequestExpandHandler);
             var item = this.selectedItem();
             treeView.selectedId(item ? item.key : null);
             return treeView;
@@ -230,6 +237,10 @@
                     $(this._treeView).off("onshowchildren");
                 }
             }
+        },
+        
+        _onRequestExpand: function() {
+            this._onTreeLoaded();
         },
 
         _onSelectNode: function(eventObject, node) {

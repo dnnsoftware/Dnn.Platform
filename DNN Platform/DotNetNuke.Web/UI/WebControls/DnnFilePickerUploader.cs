@@ -25,12 +25,15 @@ namespace DotNetNuke.Web.UI.WebControls
         private const string MyFileName = "filepickeruploader.ascx";
 	    private int? _portalId = null;
 
+        private string _fileFilter;
+
 		#endregion
 
 		#region protected properties
 
         protected DnnFileDropDownList FilesComboBox;
         protected DnnFolderDropDownList FoldersComboBox;
+        protected DnnFileUpload FileUploadControl;
 
         protected string FolderLabel
         {
@@ -126,7 +129,25 @@ namespace DotNetNuke.Web.UI.WebControls
             get { return FoldersComboBox.SelectedFolder != null ? FoldersComboBox.SelectedFolder.FolderPath : string.Empty; }
         }
 
-        public string FileFilter { get; set; }
+        public string FileFilter
+        {
+            get
+            {
+                return _fileFilter;
+            }
+            set
+            {
+                _fileFilter = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    FileUploadControl.Options.Extensions.AddRange(value.Split(',').ToList());
+                }
+                else
+                {
+                    FileUploadControl.Options.Extensions.RemoveAll(t => true);
+                }
+            }
+        }
         
         public bool Required { get; set; }
         
@@ -144,6 +165,12 @@ namespace DotNetNuke.Web.UI.WebControls
 			}
 	    }
 
+        public bool SupportHost
+        {
+            get { return FileUploadControl.SupportHost; }
+            set { FileUploadControl.SupportHost = value; }
+        }
+
         #endregion
 
         #region Event Handlers
@@ -152,12 +179,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnLoad(e);
 
-            FoldersComboBox.SelectItemDefaultText = "Site Root";
+            FoldersComboBox.SelectItemDefaultText = (SupportHost && PortalSettings.Current.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
             FoldersComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Folders_Changed");
             FoldersComboBox.Options.Services.Parameters.Add("permission", "READ,ADD");
 
             FilesComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Files_Changed");
-            FilesComboBox.SelectItemDefaultText = "<" + Localization.GetString("None_Specified") + ">";
+            FilesComboBox.SelectItemDefaultText = SharedConstants.Unspecified;
             FilesComboBox.Services.Parameters.Add("filter", FileFilter);
 
             LoadFolders();
@@ -189,6 +216,20 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     FilesComboBox.SelectedFile = null;
                 }
+            }
+
+            FileUploadControl.Options.FolderPicker.Disabled = UsePersonalFolder;
+            if (FileUploadControl.Options.FolderPicker.Disabled && FoldersComboBox.SelectedFolder != null)
+            {
+                var selectedItem = new SerializableKeyValuePair<string, string>(
+                    FoldersComboBox.SelectedItem.Value, FoldersComboBox.SelectedItem.Text);
+
+                FileUploadControl.Options.FolderPicker.InitialState = new DnnDropDownListState
+                                                                          {
+                                                                              SelectedItem = selectedItem
+                                                                                  
+                                                                          };
+                FileUploadControl.Options.FolderPath = FoldersComboBox.SelectedFolder.FolderPath;
             }
 
             base.OnPreRender(e);

@@ -9,7 +9,9 @@
             <span><%= FileLabel  %></span><dnn:DnnFileDropDownList runat="server" ID="FilesComboBox" />
         </div>
         <div class="dnnFormItem">
-            <input type="file" name="postfile" multiple data-text="<%= UploadFileLabel  %>" />
+            <input type="file" name="postfile" multiple style="display: none" class="normalFileUpload" />
+            <input type="button" name="uploadFileButton" value="<%= UploadFileLabel  %>"/>
+            <dnn:DnnFileUpload runat="server" ID="FileUploadControl"></dnn:DnnFileUpload>
         </div>
     </div>
     <div class="dnnLeft">
@@ -32,6 +34,7 @@
                 required: <%= Required? "true":"false" %>,
                 foldersComboId: '<%= FoldersComboBox.ClientID %>',
                 filesComboId: '<%= FilesComboBox.ClientID %>',
+                fileUploadId: '<%=FileUploadControl.ClientID%>',
                 folder: '<%= FolderPath %>',
                 selectedFolderId: <%=FoldersComboBox.SelectedFolder != null ? FoldersComboBox.SelectedFolder.FolderID : -1 %>,
                 progressBarId: '<%= dnnFileUploadProgressBar.ClientID %>',
