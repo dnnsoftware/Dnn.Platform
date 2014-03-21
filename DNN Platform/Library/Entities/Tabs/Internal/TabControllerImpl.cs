@@ -31,7 +31,7 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Entities.Tabs.Internal
 {
-    internal class TabControllerImpl : ITabController
+    internal class TabControllerImpl 
     {
         readonly TabController _legacyController = new TabController();
 

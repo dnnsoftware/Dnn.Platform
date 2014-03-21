@@ -27,7 +27,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void Setup()
         {
             RegisterMock(ModuleController.SetTestableInstance, out _mockModuleController, out _moduleController);
-            RegisterMock(TestableTabController.SetTestableInstance, out _mockTabController, out _tabController);
+            RegisterMock(TabController.SetTestableInstance, out _mockTabController, out _tabController);
         }
 
         private void RegisterMock<T>(Action<T> register, out Mock<T> mock, out T instance) where T : class

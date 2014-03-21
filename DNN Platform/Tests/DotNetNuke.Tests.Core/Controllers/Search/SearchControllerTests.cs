@@ -163,7 +163,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SetupLocaleController();
 
             _mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => GetUserByIdCallback(portalId, userId));
-            TestableUserController.SetTestableInstance(_mockUserController.Object);
+            UserController.SetTestableInstance(_mockUserController.Object);
 
             DeleteIndexFolder();
             InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());

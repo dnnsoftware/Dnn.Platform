@@ -23,7 +23,6 @@ using System;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -37,7 +36,7 @@ namespace DotNetNuke.Entities.Tabs
 
         public void PublishTab(int tabID, int portalID)
         {
-            var tab = TestableTabController.Instance.GetTab(tabID, portalID);
+            var tab = TabController.Instance.GetTab(tabID, portalID);
             if (!TabPermissionController.CanAdminPage(tab))
             {
                 var errorMessage = Localization.GetExceptionMessage("PublishPagePermissionsNotMet", "Permissions are not met. The page has not been published.");

@@ -29,7 +29,6 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.HttpModules.UrlRewrite;
@@ -171,7 +170,7 @@ namespace DotNetNuke.Tests.Urls
 
             foreach (var tabUrl in CBO.FillCollection<TabUrlInfo>(DataProvider.Instance().GetTabUrls(PortalId)))
             {
-                TestableTabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
+                TabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
             }
 
         }

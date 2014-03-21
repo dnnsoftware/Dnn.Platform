@@ -28,7 +28,6 @@ using System.Net.Http;
 using System.Web.Http;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
@@ -120,7 +119,7 @@ namespace DotNetNuke.Web.InternalServices
                                     IsSystem = dto.IsSystem // false
                                 };
 
-            TestableTabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
+            TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
 
             var response = new
             {

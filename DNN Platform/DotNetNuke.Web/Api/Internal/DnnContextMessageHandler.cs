@@ -25,7 +25,7 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.Internal;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Localization.Internal;
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.Api.Internal
 
         private static bool TabIsInPortal(int tabId, int portalId)
         {
-            var tab = TestableTabController.Instance.GetTab(tabId, portalId);
+            var tab = TabController.Instance.GetTab(tabId, portalId);
 
             return tab != null;
         }

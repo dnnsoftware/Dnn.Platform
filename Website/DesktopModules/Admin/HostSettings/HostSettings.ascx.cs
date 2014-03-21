@@ -133,6 +133,7 @@ namespace DotNetNuke.Modules.Admin.Host
             lblServerTime.Text = DateTime.Now.ToString();
             lblGUID.Text = Entities.Host.Host.GUID;
             chkWebFarm.Checked = CachingProvider.Instance().IsWebFarm();
+
         }
 
         private void BindFriendlyUrlsRequestFilters()

@@ -41,7 +41,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -510,7 +509,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _aliasSkins ?? (_aliasSkins = (TabID == Null.NullInteger) ? new List<TabAliasSkinInfo>() : TestableTabController.Instance.GetAliasSkins(TabID, PortalID));
+                return _aliasSkins ?? (_aliasSkins = (TabID == Null.NullInteger) ? new List<TabAliasSkinInfo>() : TabController.Instance.GetAliasSkins(TabID, PortalID));
             }
         }
 
@@ -519,7 +518,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _customAliases ?? (_customAliases = (TabID == Null.NullInteger) ? new Dictionary<string, string>() : TestableTabController.Instance.GetCustomAliases(TabID, PortalID));
+                return _customAliases ?? (_customAliases = (TabID == Null.NullInteger) ? new Dictionary<string, string>() : TabController.Instance.GetCustomAliases(TabID, PortalID));
             }
         }
 
@@ -586,7 +585,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _tabUrls ?? (_tabUrls = (TabID == Null.NullInteger) ? new List<TabUrlInfo>() : TestableTabController.Instance.GetTabUrls(TabID, PortalID));
+                return _tabUrls ?? (_tabUrls = (TabID == Null.NullInteger) ? new List<TabUrlInfo>() : TabController.Instance.GetTabUrls(TabID, PortalID));
             }
         }
 

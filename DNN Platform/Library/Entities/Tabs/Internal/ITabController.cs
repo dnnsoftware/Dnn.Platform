@@ -29,6 +29,12 @@ namespace DotNetNuke.Entities.Tabs.Internal
     /// </summary>
     public interface ITabController
     {
+        /// <summary>
+        /// Delete a taburl 
+        /// </summary>
+        /// <param name="tabUrl">the taburl</param>
+        /// <param name="portalId">the portal</param>
+        /// <param name="clearCache">whether to clear the cache</param>
         void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
 
         /// <summary>
@@ -39,12 +45,36 @@ namespace DotNetNuke.Entities.Tabs.Internal
         /// <returns>tab info.</returns>
         TabInfo GetTab(int tabId, int portalId);
 
+        /// <summary>
+        /// Get the list of custom aliases associated with a page (tab)
+        /// </summary>
+        /// <param name="tabId">the tab id</param>
+        /// <param name="portalId">the portal id</param>
+        /// <returns>dictionary of tabid and aliases</returns>
         Dictionary<string, string> GetCustomAliases(int tabId, int portalId);
-            
+        
+        /// <summary>
+        /// Get the list of skins per alias at tab level
+        /// </summary>
+        /// <param name="tabId">the tab id</param>
+        /// <param name="portalId">the portal id</param>
+        /// <returns>list of TabAliasSkinInfo</returns>
         List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId);
 
+        /// <summary>
+        /// Get the list of url's associated with a page (tab)
+        /// </summary>
+        /// <param name="tabId">the tab id</param>
+        /// <param name="portalId">the portal id</param>
+        /// <returns>list of urls associated with a tab</returns>
         List<TabUrlInfo> GetTabUrls(int tabId, int portalId);
 
+        /// <summary>
+        /// Save url information for a page (tab)
+        /// </summary>
+        /// <param name="tabUrl">the tab url</param>
+        /// <param name="portalId">the portal id</param>
+        /// <param name="clearCache">whether to clear the cache</param>
         void SaveTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
     }
 }

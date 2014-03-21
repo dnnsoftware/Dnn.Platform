@@ -26,7 +26,6 @@ using System.Web.Http.Hosting;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Web.Api;
 using Moq;
 using NUnit.Framework;

@@ -37,7 +37,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -1151,22 +1150,22 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         }
 
                         //Delete any redirects to the same url
-                        foreach (var redirecturl in TestableTabController.Instance.GetTabUrls(Tab.TabID, Tab.PortalID))
+                        foreach (var redirecturl in TabController.Instance.GetTabUrls(Tab.TabID, Tab.PortalID))
                         {
                             if (redirecturl.Url == url && redirecturl.HttpStatus != "200")
                             {
-                                TestableTabController.Instance.DeleteTabUrl(redirecturl, Tab.PortalID, false);
+                                TabController.Instance.DeleteTabUrl(redirecturl, Tab.PortalID, false);
                             }
                         }
                         //Save url
-                        TestableTabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
+                        TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
                     }
                 }
                 else
                 {
                     if (tabUrl != null)
                     {
-                        TestableTabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
+                        TabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
                     }
                 }
             }

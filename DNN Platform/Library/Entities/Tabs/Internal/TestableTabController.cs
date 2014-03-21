@@ -26,11 +26,12 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Tabs.Internal
 {
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use TabController instead")]
     public class TestableTabController : ServiceLocator<ITabController, TestableTabController>
     {
         protected override Func<ITabController> GetFactory()
         {
-            return () => new TabControllerImpl();
+            return () => new TabController();
         }
     }
 }

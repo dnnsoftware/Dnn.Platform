@@ -36,7 +36,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -389,7 +388,7 @@ namespace DesktopModules.Admin.Console
 
                     if(IncludeParent)
                     {
-                        TabInfo consoleTab = TestableTabController.Instance.GetTab(ConsoleTabID, PortalId);
+                        TabInfo consoleTab = TabController.Instance.GetTab(ConsoleTabID, PortalId);
                         if (consoleTab != null)
                         {
 							_tabs.Add(consoleTab);
