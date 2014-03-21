@@ -140,7 +140,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 _fileFilter = value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    FileUploadControl.Options.Extensions.AddRange(value.Split(',').ToList());
+                    FileUploadControl.Options.Extensions = value.Split(',').ToList();
                 }
                 else
                 {
