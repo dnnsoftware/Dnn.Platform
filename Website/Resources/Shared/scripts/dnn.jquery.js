@@ -2582,11 +2582,6 @@
                     instance.options.folderPicker.initialState.selectedItem = dnn[settings.foldersComboId].selectedItem();
                     instance.options.folderPath = window.dnn.dnnFileUpload.getSelectedPath(dnn[settings.foldersComboId]);
                 }
-                instance.options.folderPicker.onSelectionChangedBackScript = function() {
-                    dnn[settings.foldersComboId].selectedItem(this.selectedItem());
-
-                    window.dnn.dnnFileUpload.updateExpandPath(this, settings.foldersComboId);
-                };
 
                 instance.show(options);
                 
@@ -2597,6 +2592,11 @@
                         data = JSON.parse(data);
                     }
                     if (data && data.fileId) {
+                        var folderPicker = instance._panel._folderPicker;
+                        dnn[settings.foldersComboId].selectedItem(folderPicker.selectedItem());
+                        window.dnn.dnnFileUpload.Folders_Changed(dnn[settings.foldersComboId].selectedItem(), dnn[settings.foldersComboId].$element);
+                        window.dnn.dnnFileUpload.updateExpandPath(folderPicker, settings.foldersComboId);
+                        
                         dnn[settings.filesComboId].refresh(dnn[settings.foldersComboId].selectedItem().key);
                         dnn[settings.filesComboId].selectedItem({ key: data.fileId.toString(), value: data.fileName });
                         window.dnn.dnnFileUpload.Files_Changed(dnn[settings.filesComboId].selectedItem(), dnn[settings.filesComboId].$element);
