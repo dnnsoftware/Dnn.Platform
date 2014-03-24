@@ -26,6 +26,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using DotNetNuke.Entities.Urls;
 
@@ -221,6 +222,27 @@ namespace DotNetNuke.Tests.Core
 
             Assert.IsTrue(replacedUnwantedChars);
             Assert.AreEqual("Carrenno", result);
+        }
+
+        [Test][Ignore]
+        public void PerfTest()
+        {
+            var watch = new Stopwatch();
+            watch.Start();
+
+            const int iterations = 100000;
+            for (var i = 0; i < iterations; i++)
+            {
+                bool replacedUnwantedChars;
+                string result = FriendlyUrlController.CleanNameForUrl("Jimmy Eat World", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
+
+                Assert.IsFalse(replacedUnwantedChars);
+                Assert.AreEqual("JimmyEatWorld", result);
+            }
+
+            watch.Stop();
+
+            Assert.Inconclusive("{0} iterations took {1}ms", iterations, watch.Elapsed);
         }
 
         private static FriendlyUrlOptions CreateFriendlyUrlOptions(
