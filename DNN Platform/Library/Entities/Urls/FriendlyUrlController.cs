@@ -1119,13 +1119,20 @@ namespace DotNetNuke.Entities.Urls
                 {
                     doublePeriod = true;
                 }
+
                 //use string for manipulation
                 string ch = c.ToString();
+
                 //do replacement in pre-defined list?
-                if (replacementChars != null && replacementChars.ContainsKey(c.ToString()))
+                if (replacementChars != null && replacementChars.ContainsKey(ch))
                 {
                     //replace with value
-                    ch = replacementChars[c.ToString()];
+                    ch = replacementChars[ch];
+                    replacedUnwantedChars = true;
+                }
+                else if (convertDiacritics && CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)
+                {
+                    ch = string.Empty;
                     replacedUnwantedChars = true;
                 }
                 else
@@ -1135,11 +1142,11 @@ namespace DotNetNuke.Entities.Urls
 
                     //not in replacement list, check if valid char
                     if (Regex.IsMatch(ch, regexMatch, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-                    {                        
+                    {
                         ch = ""; //not a replacement or allowed char, so doesn't go into Url
                         replacedUnwantedChars = true;
                         //if we are here, this character isn't going into the output Url                        
-                    }                    
+                    }
                 }
 
                 //Check if the final ch is an illegal char

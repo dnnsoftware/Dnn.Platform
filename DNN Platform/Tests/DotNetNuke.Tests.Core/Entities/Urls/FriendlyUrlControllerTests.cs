@@ -152,6 +152,36 @@ namespace DotNetNuke.Tests.Core
             Assert.AreEqual("писа́тьбо́льшая", result);
         }
 
+        [Test]
+        public void ConvertVietnameseDiacritics()
+        {
+            bool replacedUnwantedChars;
+            string result = FriendlyUrlController.CleanNameForUrl("DấuNgãSắcHuyềnNặngHỏi", CreateFriendlyUrlOptions(autoAsciiConvert: true), out replacedUnwantedChars);
+
+            Assert.IsTrue(replacedUnwantedChars);
+            Assert.AreEqual("DauNgaSacHuyenNangHoi", result);
+        }
+
+        [Test]
+        public void ConvertFrenchDiacritics()
+        {
+            bool replacedUnwantedChars;
+            string result = FriendlyUrlController.CleanNameForUrl("CrèmeFraîcheCédille", CreateFriendlyUrlOptions(autoAsciiConvert: true), out replacedUnwantedChars);
+
+            Assert.IsTrue(replacedUnwantedChars);
+            Assert.AreEqual("CremeFraicheCedille", result);
+        }
+
+        [Test]
+        public void ConvertRussianDiacritics()
+        {
+            bool replacedUnwantedChars;
+            string result = FriendlyUrlController.CleanNameForUrl("писа́тьбо́льшая", CreateFriendlyUrlOptions(autoAsciiConvert: true), out replacedUnwantedChars);
+
+            Assert.IsTrue(replacedUnwantedChars);
+            Assert.AreEqual("писатьбольшая", result);
+        }
+
         private static FriendlyUrlOptions CreateFriendlyUrlOptions(
             string replaceSpaceWith = FriendlyUrlSettings.ReplaceSpaceWithNothing,
             string spaceEncodingValue = FriendlyUrlSettings.SpaceEncodingHex,
