@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 while (parentFolder != null)
                 {
                     folderLevel = string.Format("{0},{1}", parentFolder.FolderID, folderLevel);
-                    parentFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
+                    parentFolder = (parentFolder.ParentID < 0) ? null : FolderManager.Instance.GetFolder(parentFolder.ParentID);
                 }
 
                 ExpandPath = folderLevel.TrimEnd(',');
@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 var folderId = SelectedItemValueAsInt;
-                return (folderId == Null.NullInteger) ? null : CBOWrapper.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(folderId));
+                return (folderId == Null.NullInteger) ? null : FolderManager.Instance.GetFolder(folderId);
             }
             set
             {
