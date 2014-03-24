@@ -99,8 +99,8 @@ namespace DotNetNuke.UI.WebControls
             if (editorType != Null.NullInteger)
             {
                 var objListController = new ListController();
-                ListEntryInfo definitionEntry = objListController.GetListEntryInfo(editorType);
-                if ((definitionEntry != null) && (definitionEntry.ListName == "DataType"))
+                ListEntryInfo definitionEntry = objListController.GetListEntryInfo("DataType", editorType);
+                if (definitionEntry != null)
                 {
                     editor = definitionEntry.Text;
                 }

@@ -444,7 +444,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             string retValue = Null.NullString;
             var listController = new ListController();
-            ListEntryInfo definitionEntry = listController.GetListEntryInfo(definition.DataType);
+            ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", definition.DataType);
             if (definitionEntry != null)
             {
                 retValue = definitionEntry.Value;

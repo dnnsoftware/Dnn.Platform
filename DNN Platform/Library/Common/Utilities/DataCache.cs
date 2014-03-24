@@ -170,6 +170,7 @@ namespace DotNetNuke.Common.Utilities
         public const int FolderPermissionCacheTimeOut = 20;
 
         public const string ListsCacheKey = "Lists{0}";
+        public const string ListEntriesCacheKey = "ListEntries|{0}|{1}";
         public const CacheItemPriority ListsCachePriority = CacheItemPriority.Normal;
         public const int ListsCacheTimeOut = 20;
 

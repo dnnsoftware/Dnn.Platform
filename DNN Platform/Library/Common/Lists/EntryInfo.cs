@@ -31,46 +31,19 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class ListEntryInfo
     {
-        private int _DefinitionID;
-        private string _Description = Null.NullString;
-        private string _DisplayName = Null.NullString;
-        private int _EntryID;
-        private bool _HasChildren;
-        private string _Key = Null.NullString;
-        private int _Level;
-        private string _ListName = Null.NullString;
-        private string _Parent = Null.NullString;
-        private int _ParentID;
-        private string _ParentKey = Null.NullString;
-        private int _PortalID;
-        private int _SortOrder;
-        private string _Text = Null.NullString;
-        private string _Value = Null.NullString;
-        private bool _systemlist;
-
-        public int EntryID
+        public ListEntryInfo()
         {
-            get
-            {
-                return _EntryID;
-            }
-            set
-            {
-                _EntryID = value;
-            }
+            ParentKey = Null.NullString;
+            Parent = Null.NullString;
+            Description = Null.NullString;
+            Text = Null.NullString;
+            Value = Null.NullString;
+            ListName = Null.NullString;
         }
 
-        public int PortalID
-        {
-            get
-            {
-                return _PortalID;
-            }
-            set
-            {
-                _PortalID = value;
-            }
-        }
+        public int EntryID { get; set; }
+
+        public int PortalID { get; set; }
 
         public string Key
         {
@@ -85,17 +58,7 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        public string ListName
-        {
-            get
-            {
-                return _ListName;
-            }
-            set
-            {
-                _ListName = value;
-            }
-        }
+        public string ListName { get; set; }
 
         public string DisplayName
         {
@@ -105,136 +68,26 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        public string Value
-        {
-            get
-            {
-                return _Value;
-            }
-            set
-            {
-                _Value = value;
-            }
-        }
+        public string Value { get; set; }
 
-        public string Text
-        {
-            get
-            {
-                return _Text;
-            }
-            set
-            {
-                _Text = value;
-            }
-        }
+        public string Text { get; set; }
 
-        public string Description
-        {
-            get
-            {
-                return _Description;
-            }
-            set
-            {
-                _Description = value;
-            }
-        }
+        public string Description { get; set; }
 
-        public int ParentID
-        {
-            get
-            {
-                return _ParentID;
-            }
-            set
-            {
-                _ParentID = value;
-            }
-        }
+        public int ParentID { get; set; }
 
-        public string Parent
-        {
-            get
-            {
-                return _Parent;
-            }
-            set
-            {
-                _Parent = value;
-            }
-        }
+        public string Parent { get; set; }
 
-        public int Level
-        {
-            get
-            {
-                return _Level;
-            }
-            set
-            {
-                _Level = value;
-            }
-        }
+        public int Level { get; set; }
 
-        public int SortOrder
-        {
-            get
-            {
-                return _SortOrder;
-            }
-            set
-            {
-                _SortOrder = value;
-            }
-        }
+        public int SortOrder { get; set; }
 
-        public int DefinitionID
-        {
-            get
-            {
-                return _DefinitionID;
-            }
-            set
-            {
-                _DefinitionID = value;
-            }
-        }
+        public int DefinitionID { get; set; }
 
-        public bool HasChildren
-        {
-            get
-            {
-                return _HasChildren;
-            }
-            set
-            {
-                _HasChildren = value;
-            }
-        }
+        public bool HasChildren { get; set; }
 
-        public string ParentKey
-        {
-            get
-            {
-                return _ParentKey;
-            }
-            set
-            {
-                _ParentKey = value;
-            }
-        }
+        public string ParentKey { get; set; }
 
-        public bool SystemList
-        {
-            get
-            {
-                return _systemlist;
-            }
-            set
-            {
-                _systemlist = value;
-            }
-        }
+        public bool SystemList { get; set; }
     }
 }

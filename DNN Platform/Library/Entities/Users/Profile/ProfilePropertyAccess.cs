@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities.Users
             if (strDataType == string.Empty)
             {
                 var objListController = new ListController();
-                strDataType = objListController.GetListEntryInfo(definition.DataType).Value;
+                strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
                 DataCache.SetCache(cacheKey, strDataType);
             }
             return strDataType;

@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 writer.WriteElementString("propertycategory", objProfileProperty.PropertyCategory);
                 writer.WriteElementString("propertyname", objProfileProperty.PropertyName);
 
-                objList = objListController.GetListEntryInfo(objProfileProperty.DataType);
+                objList = objListController.GetListEntryInfo("DataType", objProfileProperty.DataType);
                 if (objList == null)
                 {
                     writer.WriteElementString("datatype", "Unknown");
