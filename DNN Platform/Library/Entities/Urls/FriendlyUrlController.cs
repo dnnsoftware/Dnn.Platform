@@ -1093,7 +1093,7 @@ namespace DotNetNuke.Entities.Urls
                 options = new FriendlyUrlOptions();
             }
             bool convertDiacritics = options.ConvertDiacriticChars;
-            string regexMatch = options.RegexMatch;            
+            Regex regexMatch = options.RegexMatchRegex;
             string replaceWith = options.PunctuationReplacement;            
             bool replaceDoubleChars = options.ReplaceDoubleChars;
             Dictionary<string, string> replacementChars = options.ReplaceCharWithChar;
@@ -1145,7 +1145,7 @@ namespace DotNetNuke.Entities.Urls
                     CheckCharsForReplace(options, ref ch, ref replacedUnwantedChars);
 
                     //not in replacement list, check if valid char
-                    if (Regex.IsMatch(ch, regexMatch, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                    if (regexMatch.IsMatch(ch))
                     {
                         ch = ""; //not a replacement or allowed char, so doesn't go into Url
                         replacedUnwantedChars = true;
