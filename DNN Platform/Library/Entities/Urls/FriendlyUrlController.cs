@@ -953,7 +953,7 @@ namespace DotNetNuke.Entities.Urls
             var resultingCh = new StringBuilder(ch.Length);
             foreach (char c in ch) //ch could contain several chars from the pre-defined replacement list
             {
-                if (illegalChars.ToLower().Contains(c.ToString().ToLower()))
+                if (illegalChars.ToUpperInvariant().Contains(char.ToUpperInvariant(c)))
                 {
                     resultingCh.Append(""); //illegal character, removed from list
                     replacedUnwantedChars = true;
