@@ -766,6 +766,9 @@ dnn.controlBar.init = function (settings) {
                         dnn.controlBar.unselectModule(dnn.controlBar.selectedModule);
                     }
                     $this.addClass('ControlBar_Module_Selected');
+                    $this.mousedown(function() {
+                        $(this).addClass("grabbing");
+                    });
                     if (!$('#ControlBar_Module_ModulePosition').is(":visible")) {
                     	$this.find('div.ModuleLocator_Menu').removeClass('ModuleLocator_Hover');
                     }
@@ -806,7 +809,7 @@ dnn.controlBar.init = function (settings) {
                     // this special code is for you -- IE8
                     this.className = this.className;
                 });
-                $(this).addClass("grabbing");
+                dnn.controlBar.addGrabbingStyle($(this));
             })
             .mouseup(function () {
                 $('.dnnDropEmptyPanes').each(function () {
@@ -816,7 +819,7 @@ dnn.controlBar.init = function (settings) {
                     // this special code is for you -- IE8
                     this.className = this.className;
                 });
-                $('div.ControlBar_ModuleDiv', ul).removeClass("grabbing");
+                dnn.controlBar.removeGrabbingStyle($('div.ControlBar_ModuleDiv', ul));
             })
             .draggable({
                 dropOnEmpty: true,
@@ -826,8 +829,8 @@ dnn.controlBar.init = function (settings) {
                     var dragTip = $('<div class="dnnDragdropTip helperGrabbing"></div>');
                     var title = $('span', this).html();
                     dragTip.html(title);
-                    dragTip.mouseup(function() {
-                        $('div.ControlBar_ModuleDiv', ul).removeClass("grabbing");
+                    dragTip.mouseup(function () {
+                        dnn.controlBar.removeGrabbingStyle($('div.ControlBar_ModuleDiv', ul));                        
                     });
                     $('body').append(dragTip);
 
@@ -845,9 +848,16 @@ dnn.controlBar.init = function (settings) {
                 drag: function (e, ui) {
                     if (dnn.controlBar.isCursorOutsideY(e, container)) {
                         $("div.helperGrabbing").removeClass("helperGrabbing");
+                        if (navigator.userAgent.match(/MSIE/i)) {
+                            $("div.dnnDragdropTip").css("cursor", "move");
+                        }                        
                         return;
-                    }
+                    }                    
                     $("div.dnnDragdropTip").addClass("helperGrabbing");
+                    if (navigator.userAgent.match(/MSIE/i)) {
+                        $("div.dnnDragdropTip").css("cursor", "");
+                    }
+                    
                     var xOffset = dnn.controlBar.initialDragPosition.X - e.pageX;
                     var scrollNewX = dnn.controlBar.initialScrollPosition.X + (((980 * (ulWidth + margin)) / windowWidth) * xOffset) / (ulWidth + margin);
                     
@@ -872,7 +882,7 @@ dnn.controlBar.init = function (settings) {
                 },
                 start: function (event, ui) {
                     dnn.controlBar.setInitialPositions(event, scrollContainer);
-                    $('div.actionMenu').hide();
+                    $('div.actionMenu').hide();                    
                 }
             });
 
@@ -935,6 +945,20 @@ dnn.controlBar.init = function (settings) {
         setTimeout(modulesInitFunc, 0);
         if (dnn.controlBar.isFirstModuleLoadingPage()) {
             ul.animate({ left: margin }, 300);
+        }
+    };
+
+    dnn.controlBar.addGrabbingStyle = function($selector) {
+        $selector.addClass("grabbing");
+        if (navigator.userAgent.match(/MSIE/i) || navigator.userAgent.match(/Safari/i)) {
+            $selector.css("cursor", "url('/images/icon_cursor_grabbing.cur'), move");
+        }
+    };
+
+    dnn.controlBar.removeGrabbingStyle = function($selector) {
+        $selector.removeClass("grabbing");
+        if (navigator.userAgent.match(/MSIE/i) || navigator.userAgent.match(/Safari/i)) {
+            $selector.css("cursor", "");
         }
     };
 
@@ -1044,7 +1068,7 @@ dnn.controlBar.init = function (settings) {
 
     //attach mouse move to detect mouse button
     $(document).mousedown(function () {
-        dnn.controlBar.isMouseDown = true;
+        dnn.controlBar.isMouseDown = true;    
     });
     $(document).mouseup(function () {
         dnn.controlBar.isMouseDown = false;
