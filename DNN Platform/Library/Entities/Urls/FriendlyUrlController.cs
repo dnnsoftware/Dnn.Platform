@@ -955,7 +955,6 @@ namespace DotNetNuke.Entities.Urls
             {
                 if (illegalChars.ToUpperInvariant().Contains(char.ToUpperInvariant(c)))
                 {
-                    resultingCh.Append(""); //illegal character, removed from list
                     replacedUnwantedChars = true;
                 }
                 else
