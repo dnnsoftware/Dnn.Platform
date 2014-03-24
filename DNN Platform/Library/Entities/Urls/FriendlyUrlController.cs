@@ -969,19 +969,22 @@ namespace DotNetNuke.Entities.Urls
         private static void CheckCharsForReplace(FriendlyUrlOptions options, ref string ch,
             ref bool replacedUnwantedChars)
         {
-            if (options.ReplaceChars.ToLower().Contains(ch.ToLower()))
+            if (!options.ReplaceChars.ToUpperInvariant().Contains(ch.ToUpperInvariant()))
             {
-                if (ch != " ") // if not replacing spaces, which are implied
-                {
-                    replacedUnwantedChars = true;
-                }
-                ch = options.PunctuationReplacement; //in list of replacment chars
+                return;
+            }
 
-                //If we still have a space ensure its encoded
-                if (ch == " ")
-                {
-                    ch = options.SpaceEncoding;
-                }
+            if (ch != " ") // if not replacing spaces, which are implied
+            {
+                replacedUnwantedChars = true;
+            }
+
+            ch = options.PunctuationReplacement; //in list of replacment chars
+
+            //If we still have a space ensure it's encoded
+            if (ch == " ")
+            {
+                ch = options.SpaceEncoding;
             }
         }
 
@@ -1101,27 +1104,28 @@ namespace DotNetNuke.Entities.Urls
             }
             var result = new StringBuilder(urlName.Length);
             int i = 0;
-            int last = urlName.ToCharArray().GetUpperBound(0);
             string normalisedUrl = urlName;
             if (convertDiacritics)
             {
                 normalisedUrl = urlName.Normalize(NormalizationForm.FormD);
-                if (string.CompareOrdinal(normalisedUrl, urlName) != 0)
+                if (!string.Equals(normalisedUrl, urlName, StringComparison.Ordinal))
                 {
                     replacedUnwantedChars = true; //replaced an accented character
                 }
             }
+
+            int last = normalisedUrl.Length - 1;
             bool doublePeriod = false;
             foreach (char c in normalisedUrl)
             {
                 //look for a double period in the name
-                if (!doublePeriod && c == '.' && i > 0 && urlName[i - 1] == '.')
+                if (!doublePeriod && i > 0 && c == '.' && normalisedUrl[i - 1] == '.')
                 {
                     doublePeriod = true;
                 }
 
                 //use string for manipulation
-                string ch = c.ToString();
+                string ch = c.ToString(CultureInfo.InvariantCulture);
 
                 //do replacement in pre-defined list?
                 if (replacementChars != null && replacementChars.ContainsKey(ch))
