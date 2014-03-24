@@ -123,6 +123,16 @@ namespace DotNetNuke.Tests.Core
         }
 
         [Test]
+        public void DoNotRemoveDoubleReplacements()
+        {
+            bool replacedUnwantedChars;
+            string result = FriendlyUrlController.CleanNameForUrl("This, ,Has Lots Of---Replacements   Don't you think?", CreateFriendlyUrlOptions(replaceDoubleChars: false, replaceSpaceWith: "-"), out replacedUnwantedChars);
+
+            Assert.IsTrue(replacedUnwantedChars);
+            Assert.AreEqual("This---Has-Lots-Of---Replacements---Dont-you-think", result);
+        }
+
+        [Test]
         public void DoNotConvertVietnameseDiacritics()
         {
             bool replacedUnwantedChars;
@@ -153,6 +163,16 @@ namespace DotNetNuke.Tests.Core
         }
 
         [Test]
+        public void DoNotConvertLeoneseDiacritics()
+        {
+            bool replacedUnwantedChars;
+            string result = FriendlyUrlController.CleanNameForUrl("ñavidá", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
+
+            Assert.IsFalse(replacedUnwantedChars);
+            Assert.AreEqual("ñavidá", result);
+        }
+
+        [Test]
         public void ConvertVietnameseDiacritics()
         {
             bool replacedUnwantedChars;
@@ -180,6 +200,27 @@ namespace DotNetNuke.Tests.Core
 
             Assert.IsTrue(replacedUnwantedChars);
             Assert.AreEqual("писатьбольшая", result);
+        }
+
+        [Test]
+        public void ConvertLeoneseDiacritics()
+        {
+            bool replacedUnwantedChars;
+            string result = FriendlyUrlController.CleanNameForUrl("ñavidá", CreateFriendlyUrlOptions(autoAsciiConvert: true), out replacedUnwantedChars);
+
+            Assert.IsTrue(replacedUnwantedChars);
+            Assert.AreEqual("navida", result);
+        }
+
+        [Test]
+        public void ReplaceBeforeConvertingDiacritics()
+        {
+            bool replacedUnwantedChars;
+            var replacements = new Dictionary<string, string>(1) { { "ñ", "nn" }, };
+            string result = FriendlyUrlController.CleanNameForUrl("Carreño", CreateFriendlyUrlOptions(replaceCharacterDictionary: replacements), out replacedUnwantedChars);
+
+            Assert.IsTrue(replacedUnwantedChars);
+            Assert.AreEqual("Carrenno", result);
         }
 
         private static FriendlyUrlOptions CreateFriendlyUrlOptions(
