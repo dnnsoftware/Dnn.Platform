@@ -29,7 +29,9 @@
                     <li><input type="radio" name="privacy" value="E" checked="checked" /><%= LocalizeString("Everyone.Text") %></li>
                     <li><input type="radio" name="privacy" value="C" /><%= LocalizeString("Community.Text") %></li>
                     <li><input type="radio" name="privacy" value="F" /><%= LocalizeString("Friends.Text") %></li>
+                    <% if (!IsGroup) { %>
                     <li><input type="radio" name="privacy" value="U" /><%= LocalizeString("Private.Text") %></li>
+                    <% } %>
                 </ul>
             </div>
         </div>

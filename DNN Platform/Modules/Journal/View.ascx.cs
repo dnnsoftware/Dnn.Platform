@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.Journal {
         public bool CanRender = true;
         public bool ShowEditor = true;
         public bool CanComment = true;
+        public bool IsGroup = false;
         public string BaseUrl;
         public string ProfilePage;
         public int Gid = -1;
@@ -111,6 +112,7 @@ namespace DotNetNuke.Modules.Journal {
                             {
                                 ShowEditor = true;
                                 CanComment = true;
+                                IsGroup = true;
                             } else 
                             {
                                 ShowEditor = false;
