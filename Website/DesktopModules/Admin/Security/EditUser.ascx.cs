@@ -258,30 +258,27 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 dnnServicesDetails.Visible = DisplayServices;
 
-                if (!IsPostBack)
+                var urlSettings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId);
+                var showVanityUrl = (Config.GetFriendlyUrlProvider() == "advanced") && !User.IsSuperUser;
+                if (showVanityUrl)
                 {
-                    var urlSettings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId);
-                    var showVanityUrl = (Config.GetFriendlyUrlProvider() == "advanced") && !User.IsSuperUser;
-                    if (showVanityUrl)
+                    VanityUrlRow.Visible = true;
+                    if (String.IsNullOrEmpty(User.VanityUrl))
                     {
-                        VanityUrlRow.Visible = true;
-                        if (String.IsNullOrEmpty(User.VanityUrl))
-                        {
-                            //Clean Display Name
-                            bool modified;
-                            var options = UrlRewriterUtils.GetOptionsFromSettings(urlSettings);
-                            var cleanUrl = FriendlyUrlController.CleanNameForUrl(User.DisplayName, options, out modified);
-                            var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, PortalSettings, out modified).ToLowerInvariant();
+                        //Clean Display Name
+                        bool modified;
+                        var options = UrlRewriterUtils.GetOptionsFromSettings(urlSettings);
+                        var cleanUrl = FriendlyUrlController.CleanNameForUrl(User.DisplayName, options, out modified);
+                        var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, PortalSettings, out modified).ToLowerInvariant();
 
-                            VanityUrlAlias.Text = String.Format("{0}/{1}/", PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix);
-                            VanityUrlTextBox.Text = uniqueUrl;
-                            ShowVanityUrl = true;
-                        }
-                        else
-                        {
-                            VanityUrl.Text = String.Format("{0}/{1}/{2}", PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix, User.VanityUrl);
-                            ShowVanityUrl = false;
-                        }
+                        VanityUrlAlias.Text = String.Format("{0}/{1}/", PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix);
+                        VanityUrlTextBox.Text = uniqueUrl;
+                        ShowVanityUrl = true;
+                    }
+                    else
+                    {
+                        VanityUrl.Text = String.Format("{0}/{1}/{2}", PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix, User.VanityUrl);
+                        ShowVanityUrl = false;
                     }
                 }
             }

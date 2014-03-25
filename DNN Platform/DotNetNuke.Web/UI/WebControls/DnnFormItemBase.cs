@@ -226,7 +226,8 @@ namespace DotNetNuke.Web.UI.WebControls
                                 {
                                     LocalResourceFile = LocalResourceFile, 
                                     ResourceKey = ResourceKey + ".Text", 
-                                    ToolTipKey = ResourceKey + ".Help"
+                                    ToolTipKey = ResourceKey + ".Help",
+                                    ViewStateMode = ViewStateMode.Disabled
                                 };
 
             if (Required) {
