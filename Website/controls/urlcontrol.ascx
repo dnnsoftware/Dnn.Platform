@@ -1,4 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.UserControls.UrlControl" %>
+<%@ Register TagPrefix="dnn" TagName="FilePickerUploader" Src="filepickeruploader.ascx" %>
 <div class="urlControl">
     <asp:Panel ID="TypeRow" runat="server" CssClass="urlControlLinkType dnnClear">
         <asp:Label ID="lblURLType" runat="server" EnableViewState="False" resourcekey="Type" CssClass="dnnFormLabel" />
@@ -19,25 +20,7 @@
         <asp:DropDownList ID="cboTabs" runat="server" DataTextField="IndentedTabName" DataValueField="TabId" />
     </asp:Panel>
     <asp:Panel id="FileRow" runat="server" CssClass="urlControlFileRow dnnClear">
-        <div class="dnnFormItem">
-            <asp:Label ID="lblFolder" runat="server" EnableViewState="False" resourcekey="Folder" CssClass="dnnFormLabel" />
-            <div>
-                <asp:DropDownList ID="cboFolders" runat="server" AutoPostBack="True" />
-                <asp:Image ID="imgStorageLocationType" runat="server" Visible="False" />
-            </div>
-        </div>
-        <div class="dnnFormItem">    
-            <asp:Label ID="lblFile" runat="server" EnableViewState="False" resourcekey="File" CssClass="dnnFormLabel" />
-            <div>
-                <asp:DropDownList ID="cboFiles" runat="server" DataTextField="Text" DataValueField="Value" />
-                <input id="txtFile" type="file" size="30" name="txtFile" runat="server" />
-            </div>
-	    </div>
-        <div class="dnnFormItem">
-        <asp:LinkButton ID="cmdUpload" resourcekey="Upload" CssClass="dnnSecondaryAction" runat="server" CausesValidation="False" />
-        <asp:LinkButton ID="cmdSave" resourcekey="Save" CssClass="dnnSecondaryAction" runat="server" CausesValidation="False" />
-        <asp:LinkButton ID="cmdCancel" resourcekey="Cancel" CssClass="dnnSecondaryAction" runat="server" CausesValidation="False" />
-        </div>
+        <dnn:FilePickerUploader ID="ctlFile" runat="server" />
     </asp:Panel>
     <asp:Panel id="ImagesRow" runat="server" CssClass="dnnFormItem urlControlImagesRow dnnClear">
         <asp:Label ID="lblImages" runat="server" EnableViewState="False" resourcekey="Image" CssClass="dnnFormLabel" />

@@ -24,8 +24,9 @@ namespace DotNetNuke.Web.UI.WebControls
             Services.SearchTreeMethod = "ItemListService/SearchFiles";
             Services.SortTreeMethod = "ItemListService/SortFiles";
             Services.ServiceRoot = "InternalServices";
-            Services.Parameters.Add("parentId", Null.NullInteger.ToString());
             Options.ItemList.DisableUnspecifiedOrder = true;
+
+            FolderId = Null.NullInteger;
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -51,5 +52,16 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public int FolderId
+        {
+            get
+            {
+                return Services.Parameters.ContainsKey("parentId") ? Convert.ToInt32(Services.Parameters["parentId"]) : Null.NullInteger;
+            }
+            set
+            {
+                Services.Parameters["parentId"] = value.ToString();
+            }
+        }
     }
 }

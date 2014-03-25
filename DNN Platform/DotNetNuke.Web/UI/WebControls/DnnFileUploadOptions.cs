@@ -82,7 +82,8 @@ namespace DotNetNuke.Web.UI.WebControls
     [DataContract]
     public class DnnFileUploadOptions
     {
-
+        private const int DefaultWidth = 780;
+        private const int DefaultHeight = 630;
         [DataMember(Name = "clientId")]
         public string ClientId;
 
@@ -110,6 +111,12 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "resources")]
         public DnnFileUploadResources Resources;
 
+        [DataMember(Name = "width")]
+        public int Width;
+
+        [DataMember(Name = "height")]
+        public int Height;
+
         private Dictionary<string, string> _parameters;
 
         [DataMember(Name = "parameters")]
@@ -129,6 +136,8 @@ namespace DotNetNuke.Web.UI.WebControls
             FolderPicker = new DnnDropDownListOptions();
             MaxFileSize = (int)Config.GetMaxUploadSize();
             Extensions = new List<string>();
+            Width = DefaultWidth;
+            Height = DefaultHeight;
             Resources = new DnnFileUploadResources
             {
                 Title = Utilities.GetLocalizedString("FileUpload.Title.Text"),

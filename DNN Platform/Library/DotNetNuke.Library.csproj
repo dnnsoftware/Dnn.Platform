@@ -1409,6 +1409,7 @@
     <Compile Include="UI\UserControls\HelpButtonControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\UserControls\IFilePickerUploader.cs" />
     <Compile Include="UI\UserControls\LabelControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

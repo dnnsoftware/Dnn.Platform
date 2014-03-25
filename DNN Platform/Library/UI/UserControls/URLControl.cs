@@ -21,27 +21,20 @@
 #region Usings
 
 using System;
-using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -60,14 +53,10 @@ namespace DotNetNuke.UI.UserControls
         protected Panel URLRow;
         protected Panel UserRow;
         private bool _doChangeURL;
-        private bool _doReloadFiles;
-        private bool _doReloadFolders;
         private bool _doRenderTypeControls;
         private bool _doRenderTypes;
         private string _localResourceFile;
         private PortalInfo _objPortal;
-        protected DropDownList cboFiles;
-        protected DropDownList cboFolders;
         protected DropDownList cboImages;
         protected DropDownList cboTabs;
         protected DropDownList cboUrls;
@@ -75,14 +64,8 @@ namespace DotNetNuke.UI.UserControls
         protected CheckBox chkNewWindow;
         protected CheckBox chkTrack;
         protected LinkButton cmdAdd;
-        protected LinkButton cmdCancel;
         protected LinkButton cmdDelete;
-        protected LinkButton cmdSave;
         protected LinkButton cmdSelect;
-        protected LinkButton cmdUpload;
-        protected Image imgStorageLocationType;
-        protected Label lblFile;
-        protected Label lblFolder;
         protected Label lblImages;
         protected Label lblMessage;
         protected Label lblTab;
@@ -90,9 +73,9 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblURLType;
         protected Label lblUser;
         protected RadioButtonList optType;
-        protected HtmlInputFile txtFile;
         protected TextBox txtUrl;
         protected TextBox txtUser;
+        protected IFilePickerUploader ctlFile;
 
         #endregion
 
@@ -104,20 +87,14 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (ViewState["FileFilter"] != null)
                 {
-                    return Convert.ToString(ViewState["FileFilter"]);
+                    return ViewState["FileFilter"].ToString();
                 }
-                else
-                {
-                    return "";
-                }
+
+                return string.Empty;
             }
             set
             {
                 ViewState["FileFilter"] = value;
-                if (IsTrackingViewState)
-                {
-                    _doReloadFiles = true;
-                }
             }
         }
 
@@ -329,54 +306,6 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowSecure
-        {
-            get
-            {
-                if (ViewState["ShowSecure"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["ShowSecure"]);
-                }
-                else
-                {
-                    return true; //Set as default in the old variable
-                }
-            }
-            set
-            {
-                ViewState["ShowSecure"] = value;
-                if (IsTrackingViewState)
-                {
-                    _doReloadFolders = true;
-                }
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowDatabase
-        {
-            get
-            {
-                if (ViewState["ShowDatabase"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["ShowDatabase"]);
-                }
-                else
-                {
-                    return true; //Set as default in the old variable
-                }
-            }
-            set
-            {
-                ViewState["ShowDatabase"] = value;
-                if (IsTrackingViewState)
-                {
-                    _doReloadFolders = true;
-                }
-            }
-        }
-
         public bool ShowTabs
         {
             get
@@ -548,16 +477,13 @@ namespace DotNetNuke.UI.UserControls
                         }
                         break;
                     case "F":
-                        if (cboFiles.SelectedItem != null)
+                        if (ctlFile.FileID > Null.NullInteger)
                         {
-                            if (!String.IsNullOrEmpty(cboFiles.SelectedItem.Value))
-                            {
-                                r = "FileID=" + cboFiles.SelectedItem.Value;
-                            }
-                            else
-                            {
-                                r = "";
-                            }
+                            r = "FileID=" + ctlFile.FileID;
+                        }
+                        else
+                        {
+                            r = "";
                         }
                         break;
                     case "M":
@@ -587,7 +513,6 @@ namespace DotNetNuke.UI.UserControls
                 if (IsTrackingViewState)
                 {
                     _doChangeURL = true;
-                    _doReloadFiles = true;
                 }
             }
         }
@@ -625,8 +550,6 @@ namespace DotNetNuke.UI.UserControls
                     txtUrl.Width = Unit.Parse(value);
                     cboImages.Width = Unit.Parse(value);
                     cboTabs.Width = Unit.Parse(value);
-                    cboFolders.Width = Unit.Parse(value);
-                    cboFiles.Width = Unit.Parse(value);
                     txtUser.Width = Unit.Parse(value);
                     ViewState["SkinControlWidth"] = value;
                 }
@@ -637,74 +560,12 @@ namespace DotNetNuke.UI.UserControls
 
         #region "Private Methods"
 
-        private ArrayList GetFileList(bool NoneSpecified)
-        {
-            int PortalId = Null.NullInteger;
-
-            if ((!IsHostMenu) || (Request.QueryString["pid"] != null))
-            {
-                PortalId = _objPortal.PortalID;
-            }
-            return Globals.GetFileList(PortalId, FileFilter, NoneSpecified, cboFolders.SelectedItem.Value, false);
-        }
-
-        private void LoadFolders(string Permissions)
-        {
-            int PortalId = Null.NullInteger;
-            cboFolders.Items.Clear();
-
-            if ((!IsHostMenu) || (Request.QueryString["pid"] != null))
-            {
-                PortalId = _objPortal.PortalID;
-            }
-            var folders = FolderManager.Instance.GetFolders(UserController.GetCurrentUserInfo(), Permissions);
-            foreach (FolderInfo folder in folders)
-            {
-                var FolderItem = new ListItem();
-                if (folder.FolderPath == Null.NullString)
-                {
-                    FolderItem.Text = Localization.GetString("Root", LocalResourceFile);
-                }
-                else
-                {
-                    FolderItem.Text = folder.DisplayPath;
-                }
-                FolderItem.Value = folder.FolderPath;
-                cboFolders.Items.Add(FolderItem);
-            }
-        }
-
         private void LoadUrls()
         {
             var objUrls = new UrlController();
             cboUrls.Items.Clear();
             cboUrls.DataSource = objUrls.GetUrls(_objPortal.PortalID);
             cboUrls.DataBind();
-        }
-
-        private void SetStorageLocationType()
-        {
-            string FolderName = cboFolders.SelectedValue;
-
-            //Check to see if this is the 'Root' folder, if so we cannot rely on its text value because it is something and not an empty string that we need to lookup the 'root' folder
-            if (cboFolders.SelectedValue == string.Empty)
-            {
-                FolderName = "";
-            }
-            var objFolderInfo = FolderManager.Instance.GetFolder(PortalSettings.PortalId, FolderName);
-            if (objFolderInfo != null)
-            {
-                var folderMapping = FolderMappingController.Instance.GetFolderMapping(objFolderInfo.PortalID, objFolderInfo.FolderMappingID);
-                if (folderMapping.MappingName == "Standard")
-                {
-                    imgStorageLocationType.Visible = false;
-                }
-                else
-                {
-                    imgStorageLocationType.Visible = true;
-                    imgStorageLocationType.ImageUrl = FolderProvider.Instance(folderMapping.FolderProviderType).GetFolderProviderIconPath();
-                }
-            }
         }
 
         private void DoChangeURL()
@@ -1047,19 +908,6 @@ namespace DotNetNuke.UI.UserControls
                         UserRow.Visible = false;
                         ImagesRow.Visible = false;
 
-                        if (ViewState["FoldersLoaded"] == null || _doReloadFolders)
-                        {
-                            LoadFolders("BROWSE,ADD");
-                            ViewState["FoldersLoaded"] = "Y";
-                        }
-                        if (cboFolders.Items.Count == 0)
-                        {
-                            lblMessage.Text = Localization.GetString("NoPermission", LocalResourceFile);
-                            ErrorRow.Visible = true;
-                            FileRow.Visible = false;
-                            return;
-                        }
-
                         //select folder
                         //We Must check if selected folder has changed because of a property change (Secure, Database)
                         string FileName = string.Empty;
@@ -1088,76 +936,10 @@ namespace DotNetNuke.UI.UserControls
                             FileName = LastFileName;
                             FolderPath = LastFolderPath;
                         }
-                        if (cboFolders.Items.FindByValue(FolderPath) != null)
-                        {
-                            cboFolders.ClearSelection();
-                            cboFolders.Items.FindByValue(FolderPath).Selected = true;
-                        }
-                        else if (cboFolders.Items.Count > 0)
-                        {
-                            cboFolders.ClearSelection();
-                            cboFolders.Items[0].Selected = true;
-                            FolderPath = cboFolders.Items[0].Value;
-                        }
-                        if (ViewState["FilesLoaded"] == null || FolderPath != LastFolderPath || _doReloadFiles)
-                        {
-                            //Reload files only if property change or not same folder
-                            _MustRedrawFiles = true;
-                            ViewState["FilesLoaded"] = "Y";
-                        }
-                        else
-                        {
-                            if (cboFiles.Items.Count > 0)
-                            {
-                                if ((Required && String.IsNullOrEmpty(cboFiles.Items[0].Value)) || (!Required && !String.IsNullOrEmpty(cboFiles.Items[0].Value)))
-                                {
-                                    //Required state has changed, so we need to reload files
-                                    _MustRedrawFiles = true;
-                                }
-                            }
-                            else if (!Required)
-                            {
-                                //Required state has changed, so we need to reload files
-                                _MustRedrawFiles = true;
-                            }
-                        }
-                        if (_MustRedrawFiles)
-                        {
-                            cboFiles.DataSource = GetFileList(!Required);
-                            cboFiles.DataBind();
-                            if (cboFiles.Items.FindByText(FileName) != null)
-                            {
-                                cboFiles.ClearSelection();
-                                cboFiles.Items.FindByText(FileName).Selected = true;
-                            }
-                        }
-                        cboFiles.Visible = true;
-                        txtFile.Visible = false;
 
-                        FolderInfo objFolder = (FolderInfo)FolderManager.Instance.GetFolder(_objPortal.PortalID, FolderPath);
-                        cmdUpload.Visible = ShowUpLoad && FolderPermissionController.CanAddFolder(objFolder);
+                        ctlFile.FilePath = FolderPath + FileName;
 
-                        SetStorageLocationType();
                         txtUrl.Visible = false;
-                        cmdSave.Visible = false;
-                        cmdCancel.Visible = false;
-
-                        if (cboFolders.SelectedIndex >= 0)
-                        {
-                            ViewState["LastFolderPath"] = cboFolders.SelectedValue;
-                        }
-                        else
-                        {
-                            ViewState["LastFolderPath"] = "";
-                        }
-                        if (cboFiles.SelectedIndex >= 0)
-                        {
-                            ViewState["LastFileName"] = cboFiles.SelectedValue;
-                        }
-                        else
-                        {
-                            ViewState["LastFileName"] = "";
-                        }
                         break;
                     case "M": //membership users
                         URLRow.Visible = false;
@@ -1190,8 +972,6 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnInit(e);
 
-            AJAX.RegisterPostBackControl(FindControl("cmdSave"));
-
             //prevent unauthorized access
             if (Request.IsAuthenticated == false)
             {
@@ -1203,14 +983,10 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            cboFolders.SelectedIndexChanged += cboFolders_SelectedIndexChanged;
             optType.SelectedIndexChanged += optType_SelectedIndexChanged;
             cmdAdd.Click += cmdAdd_Click;
-            cmdCancel.Click += cmdCancel_Click;
             cmdDelete.Click += cmdDelete_Click;
-            cmdSave.Click += cmdSave_Click;
             cmdSelect.Click += cmdSelect_Click;
-            cmdUpload.Click += cmdUpload_Click;
 
             ErrorRow.Visible = false;
 
@@ -1257,81 +1033,22 @@ namespace DotNetNuke.UI.UserControls
                 {
                     DoChangeURL();
                 }
-                if (_doReloadFolders || _doReloadFiles)
-                {
-                    DoCorrectRadioButtonList();
-                    _doRenderTypeControls = true;
-                }
+                DoCorrectRadioButtonList();
+
                 if (_doRenderTypeControls)
                 {
-                    if (!(_doReloadFolders || _doReloadFiles))
-                    {
-                        DoCorrectRadioButtonList();
-                    }
                     DoRenderTypeControls();
                 }
                 ViewState["Url"] = null;
                 ViewState["IsUrlControlLoaded"] = "Loaded";
+
+                ctlFile.FileFilter = FileFilter;
             }
             catch (Exception exc)
             {
                 //Let's detect possible problems
                 Exceptions.LogException(new Exception("Error rendering URLControl subcontrols.", exc));
             }
-        }
-
-        protected void cboFolders_SelectedIndexChanged(Object sender, EventArgs e)
-        {
-            int PortalId = Null.NullInteger;
-
-            if (!IsHostMenu || Request.QueryString["pid"] != null)
-            {
-                PortalId = _objPortal.PortalID;
-            }
-            var objFolder = FolderManager.Instance.GetFolder(PortalId, cboFolders.SelectedValue);
-            if (FolderPermissionController.CanAddFolder((FolderInfo)objFolder))
-            {
-                if (!txtFile.Visible)
-                {
-                    cmdSave.Visible = false;
-                    //only show if not already in upload mode and not disabled
-                    cmdUpload.Visible = ShowUpLoad;
-                }
-            }
-            else
-            {
-                //reset controls
-                cboFiles.Visible = true;
-                cmdUpload.Visible = false;
-                txtFile.Visible = false;
-                cmdSave.Visible = false;
-                cmdCancel.Visible = false;
-            }
-            cboFiles.Items.Clear();
-            cboFiles.DataSource = GetFileList(!Required);
-            cboFiles.DataBind();
-            SetStorageLocationType();
-            if (cboFolders.SelectedIndex >= 0)
-            {
-                ViewState["LastFolderPath"] = cboFolders.SelectedValue;
-            }
-            else
-            {
-                ViewState["LastFolderPath"] = "";
-            }
-            if (cboFiles.SelectedIndex >= 0)
-            {
-                ViewState["LastFileName"] = cboFiles.SelectedValue;
-            }
-            else
-            {
-                ViewState["LastFileName"] = "";
-            }
-            _doRenderTypeControls = false; //Must not render on this postback
-            _doRenderTypes = false;
-            _doChangeURL = false;
-            _doReloadFolders = false;
-            _doReloadFiles = false;
         }
 
         protected void cmdAdd_Click(object sender, EventArgs e)
@@ -1344,22 +1061,6 @@ namespace DotNetNuke.UI.UserControls
             _doRenderTypeControls = false; //Must not render on this postback
             _doRenderTypes = false;
             _doChangeURL = false;
-            _doReloadFolders = false;
-            _doReloadFiles = false;
-        }
-
-        protected void cmdCancel_Click(Object sender, EventArgs e)
-        {
-            cboFiles.Visible = true;
-            cmdUpload.Visible = true;
-            txtFile.Visible = false;
-            cmdSave.Visible = false;
-            cmdCancel.Visible = false;
-            _doRenderTypeControls = false; //Must not render on this postback
-            _doRenderTypes = false;
-            _doChangeURL = false;
-            _doReloadFolders = false;
-            _doReloadFiles = false;
         }
 
         protected void cmdDelete_Click(object sender, EventArgs e)
@@ -1373,109 +1074,6 @@ namespace DotNetNuke.UI.UserControls
             _doRenderTypeControls = false; //Must not render on this postback
             _doRenderTypes = false;
             _doChangeURL = false;
-            _doReloadFolders = false;
-            _doReloadFiles = false;
-        }
-
-        protected void cmdSave_Click(Object sender, EventArgs e)
-        {
-            cmdUpload.Visible = false;
-
-            //if no file is selected exit
-            if (String.IsNullOrEmpty(txtFile.PostedFile.FileName))
-            {
-                return;
-            }
-            string ParentFolderName;
-            if (Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
-            {
-                ParentFolderName = Globals.HostMapPath;
-            }
-            else
-            {
-                ParentFolderName = PortalSettings.HomeDirectoryMapPath;
-            }
-            ParentFolderName += cboFolders.SelectedItem.Value;
-
-            string strExtension = Path.GetExtension(txtFile.PostedFile.FileName).Replace(".", "");
-            if (!String.IsNullOrEmpty(FileFilter) && ("," + FileFilter.ToLower()).IndexOf("," + strExtension.ToLower()) == -1)
-            {
-                //trying to upload a file not allowed for current filter
-                lblMessage.Text = string.Format(Localization.GetString("UploadError", LocalResourceFile), FileFilter, strExtension);
-                ErrorRow.Visible = true;
-            }
-            else
-            {
-                var fileManager = FileManager.Instance;
-                var folderManager = FolderManager.Instance;
-
-                var settings = PortalController.GetCurrentPortalSettings();
-                var portalID = (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
-
-                var fileName = Path.GetFileName(txtFile.PostedFile.FileName);
-                var folderPath = Globals.GetSubFolderPath(ParentFolderName.Replace("/", "\\") + fileName, portalID);
-
-                var folder = folderManager.GetFolder(portalID, folderPath);
-                ErrorRow.Visible = false;
-
-                try
-                {
-                    fileManager.AddFile(folder, fileName, txtFile.PostedFile.InputStream, true, true, ((FileManager)fileManager).GetContentType(Path.GetExtension(fileName)));
-                }
-                catch (Services.FileSystem.PermissionsNotMetException)
-                {
-                    lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
-                    ErrorRow.Visible = true;
-                }
-                catch (NoSpaceAvailableException)
-                {
-                    lblMessage.Text += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
-                    ErrorRow.Visible = true;
-                }
-                catch (InvalidFileExtensionException)
-                {
-                    lblMessage.Text += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
-                    ErrorRow.Visible = true;
-                }
-                catch (Exception)
-                {
-                    lblMessage.Text += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
-                    ErrorRow.Visible = true;
-                }
-            }
-            if (lblMessage.Text == string.Empty)
-            {
-                cboFiles.Visible = true;
-                cmdUpload.Visible = ShowUpLoad;
-                txtFile.Visible = false;
-                cmdSave.Visible = false;
-                cmdCancel.Visible = false;
-                ErrorRow.Visible = false;
-
-                var Root = new DirectoryInfo(ParentFolderName);
-                cboFiles.Items.Clear();
-                cboFiles.DataSource = GetFileList(false);
-                cboFiles.DataBind();
-
-                string FileName = txtFile.PostedFile.FileName.Substring(txtFile.PostedFile.FileName.LastIndexOf("\\") + 1);
-                if (cboFiles.Items.FindByText(FileName) != null)
-                {
-                    cboFiles.Items.FindByText(FileName).Selected = true;
-                }
-                if (cboFiles.SelectedIndex >= 0)
-                {
-                    ViewState["LastFileName"] = cboFiles.SelectedValue;
-                }
-                else
-                {
-                    ViewState["LastFileName"] = "";
-                }
-            }
-            _doRenderTypeControls = false; //Must not render on this postback
-            _doRenderTypes = false;
-            _doChangeURL = false;
-            _doReloadFolders = false;
-            _doReloadFiles = false;
         }
 
         protected void cmdSelect_Click(object sender, EventArgs e)
@@ -1494,53 +1092,6 @@ namespace DotNetNuke.UI.UserControls
             _doRenderTypeControls = false; //Must not render on this postback
             _doRenderTypes = false;
             _doChangeURL = false;
-            _doReloadFolders = false;
-            _doReloadFiles = false;
-        }
-
-        protected void cmdUpload_Click(object sender, EventArgs e)
-        {
-            string strSaveFolder = cboFolders.SelectedValue;
-            LoadFolders("ADD");
-            if (cboFolders.Items.FindByValue(strSaveFolder) != null)
-            {
-                cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
-                cboFiles.Visible = false;
-                cmdUpload.Visible = false;
-                txtFile.Visible = true;
-                cmdSave.Visible = true;
-                cmdCancel.Visible = true;
-            }
-            else
-            {
-                if (cboFolders.Items.Count > 0)
-                {
-                    cboFolders.Items[0].Selected = true;
-                    cboFiles.Visible = false;
-                    cmdUpload.Visible = false;
-                    txtFile.Visible = true;
-                    cmdSave.Visible = true;
-                    cmdCancel.Visible = true;
-                }
-                else
-                {
-                    //reset controls
-                    LoadFolders("BROWSE,ADD");
-                    cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
-                    cboFiles.Visible = true;
-                    cmdUpload.Visible = false;
-                    txtFile.Visible = false;
-                    cmdSave.Visible = false;
-                    cmdCancel.Visible = false;
-                    lblMessage.Text = Localization.GetString("NoWritePermission", LocalResourceFile);
-                    ErrorRow.Visible = true;
-                }
-            }
-            _doRenderTypeControls = false; //Must not render on this postback
-            _doRenderTypes = false;
-            _doChangeURL = false;
-            _doReloadFolders = false;
-            _doReloadFiles = false;
         }
 
         protected void optType_SelectedIndexChanged(Object sender, EventArgs e)

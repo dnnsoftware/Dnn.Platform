@@ -170,6 +170,13 @@ namespace DotNetNuke.Web.Client.Providers
                 page.Controls.Remove(holderControl);
                 page.Controls.AddAt(0, holderControl);
             }
+
+            var scriptManager = ScriptManager.GetCurrent(page);
+            if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+            {
+                holderControl.ID = "$crm_" + holderControl.ID;
+                scriptManager.RegisterDataItem(holderControl, string.Format("{0}{1}", jsScriptBlock.Text, cssStyleBlock.Text));
+            }
         }
     }
 }

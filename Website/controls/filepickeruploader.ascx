@@ -26,7 +26,8 @@
          </asp:Panel>
     </div>
 </asp:Panel>
-<script type="text/javascript">
+<dnn:DnnScriptBlock runat="server">
+    <script type="text/javascript">
     (function($) {
         var initDnnFileUploader = function() {
             var settings = {
@@ -50,3 +51,4 @@
 
     })(jQuery);
 </script>
+</dnn:DnnScriptBlock>

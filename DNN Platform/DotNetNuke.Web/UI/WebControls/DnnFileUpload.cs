@@ -53,6 +53,18 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool SupportHost { get; set; }
 
+        public int Width
+        {
+            get { return Options.Width; }
+            set { Options.Width = value; }
+        }
+
+        public int Height
+        {
+            get { return Options.Height; }
+            set { Options.Height = value; }
+        }
+
         public static DnnFileUpload GetCurrent(Page page)
         {
             return page.Items[typeof(DnnFileUpload)] as DnnFileUpload;

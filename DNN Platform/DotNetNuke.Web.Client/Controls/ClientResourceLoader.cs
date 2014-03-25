@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using System.Web.UI;
+
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using ClientDependency.Core.Controls;
@@ -33,6 +36,40 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             {
                 path.Name = path.Name.ToLowerInvariant();
             }
+
+            const string handlerScript = @"
+(function($){
+Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, args){
+    var dataItems = args.get_dataItems();
+    for(var item in dataItems){
+        if(item.indexOf('$crm_') > -1){
+            var content = dataItems[item];
+            //check whether script already register to page.
+            var scripts = content.match(/<script.+?><\/script>/gi);
+            if(scripts && scripts.length > 0){
+                for(var i = 0; i < scripts.length; i++){
+                    var src = scripts[i].match(/src=""(.+?)""/i)[1];
+                    if($('script[src=""' + src + '""]').length == 0){
+                        $(document.body).append(scripts[i]);
+                    }
+                }
+            }
+
+            var styles = content.match(/<link[^>]+?>/gi);
+            if(styles && styles.length > 0){
+                for(var i = 0; i < styles.length; i++){
+                    var src = styles[i].match(/href=""(.+?)""/i)[1];
+                    if($('link[href=""' + src + '""]').length == 0){
+                        $(document.body).append(styles[i]);
+                    }
+                }
+            }
+        }
+    }
+});
+}(jQuery));
+";
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);
 
             base.OnPreRender(e);
         }
