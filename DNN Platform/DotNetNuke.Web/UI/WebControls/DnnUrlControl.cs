@@ -39,10 +39,9 @@ using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
-namespace DotNetNuke.UI.UserControls
+namespace DotNetNuke.Web.UI.WebControls
 {
-    [Obsolete("Obsolete in 7.3.0, Please use \"DotNetNuke.Web.UI.WebControls.DnnUrlControl, DotNetNuke.Web.\"")]
-    public abstract class UrlControl : UserControlBase
+    public abstract class DnnUrlControl : UserControlBase
     {
         #region "Private Members"
 
@@ -76,7 +75,7 @@ namespace DotNetNuke.UI.UserControls
         protected RadioButtonList optType;
         protected TextBox txtUrl;
         protected TextBox txtUser;
-        protected IFilePickerUploader ctlFile;
+        protected DnnFilePickerUploader ctlFile;
 
         #endregion
 
@@ -98,12 +97,6 @@ namespace DotNetNuke.UI.UserControls
                 ViewState["FileFilter"] = value;
             }
         }
-
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowSecure { get; set; }
-
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowDatabase { get; set; }
 
         public bool IncludeActiveTab
         {
@@ -921,6 +914,7 @@ namespace DotNetNuke.UI.UserControls
                         string FolderPath = string.Empty;
                         string LastFileName = string.Empty;
                         string LastFolderPath = string.Empty;
+                        bool _MustRedrawFiles = false;
                         //Let's try to remember last selection
                         if (ViewState["LastFolderPath"] != null)
                         {

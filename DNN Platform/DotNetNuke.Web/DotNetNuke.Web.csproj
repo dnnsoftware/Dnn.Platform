@@ -414,6 +414,9 @@
     <Compile Include="UI\WebControls\UniformControlCollection.cs" />
     <Compile Include="UI\WebControls\DnnUnsortedList.cs" />
     <Compile Include="UI\WebControls\DnnUnsortedListItem.cs" />
+    <Compile Include="UI\WebControls\DnnUrlControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Validators\AttributeBasedObjectValidator.cs" />
     <Compile Include="Validators\DataAnnotationsObjectValidator.cs" />
     <Compile Include="Validators\ObjectValidator.cs" />

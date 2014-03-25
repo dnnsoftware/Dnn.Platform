@@ -435,24 +435,24 @@ namespace DotNetNuke.Modules.Admin.Portals
                 switch (optMerge.SelectedValue)
                 {
                     case "Ignore":
-                        objPortalController.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Ignore, false);
+                        PortalController.Instance.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Ignore, false);
                         break;
                     case "Replace":
-                        objPortalController.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Replace, false);
+                        PortalController.Instance.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Replace, false);
                         break;
                     case "Merge":
-                        objPortalController.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Merge, false);
+                        PortalController.Instance.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Merge, false);
                         break;
                 }
             }
 			
             //update Portal info in the database
-            PortalInfo objPortal = objPortalController.GetPortal(PortalId);
+            PortalInfo objPortal = PortalController.Instance.GetPortal(PortalId);
             objPortal.Description = txtDescription.Text;
             objPortal.KeyWords = txtKeyWords.Text;
             objPortal.PortalName = txtPortalName.Text;
             objPortal.LogoFile = String.Format("FileID={0}", ctlLogo.FileID);
-            objPortalController.UpdatePortalInfo(objPortal);
+            PortalController.Instance.UpdatePortalInfo(objPortal);
 
             //Set Portal Skin
             SkinController.SetSkin(SkinController.RootSkin, PortalId, SkinType.Portal, ctlPortalSkin.SkinSrc);

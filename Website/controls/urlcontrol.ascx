@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.UserControls.UrlControl" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Web.UI.WebControls.DnnUrlControl" %>
 <%@ Register TagPrefix="dnn" TagName="FilePickerUploader" Src="filepickeruploader.ascx" %>
 <div class="urlControl">
     <asp:Panel ID="TypeRow" runat="server" CssClass="urlControlLinkType dnnClear">
