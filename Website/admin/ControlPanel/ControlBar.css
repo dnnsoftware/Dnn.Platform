@@ -988,9 +988,9 @@ ul.ControlBar_ModuleList {
         margin: 1px 0 0 1px;
         -webkit-border-radius: 3px;
         border-radius: 3px;
-        background: #303030 url(/images/menu_right.gif) no-repeat center center;        
-        -webkit-box-shadow: none;
-        box-shadow: none;
+        background: #353535 url(controlbarimages/menu_right.gif) no-repeat center center;        
+        -webkit-box-shadow: 1px 1px 3px 0px #303030 inset;
+        box-shadow: 1px 1px 3px 0px #303030 inset;
         cursor: pointer;
     }
 
