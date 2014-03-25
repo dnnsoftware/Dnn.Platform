@@ -430,6 +430,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 			}
 		}
 
+        public static void EnableAsyncPostBackHandler()
+        {
+            if (HttpContext.Current != null && !HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled"))
+            {
+                HttpContext.Current.Items.Add("AsyncPostBackHandlerEnabled", true);
+            }
+        }
+
         #endregion
 
     }

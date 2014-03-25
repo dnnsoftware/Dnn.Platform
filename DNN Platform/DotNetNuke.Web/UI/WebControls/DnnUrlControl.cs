@@ -35,6 +35,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -977,6 +978,8 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 Visible = false;
             }
+
+            ClientResourceManager.EnableAsyncPostBackHandler();
         }
 
         protected override void OnLoad(EventArgs e)

@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+using System.Web;
 using System.Web.UI;
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
@@ -30,6 +32,15 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// </summary>
     public class ClientResourceLoader : ClientDependencyLoader
     {
+        private bool AsyncPostBackHandlerEnabled 
+        {
+            get
+            {
+                return HttpContext.Current != null
+                       && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
+            }
+        }
+
         protected override void OnPreRender(System.EventArgs e)
         {
             foreach (var path in Paths)
@@ -37,7 +48,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 path.Name = path.Name.ToLowerInvariant();
             }
 
-            const string handlerScript = @"
+            if (AsyncPostBackHandlerEnabled)
+            {
+                const string handlerScript = @"
 (function($){
 Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, args){
     var dataItems = args.get_dataItems();
@@ -69,7 +82,8 @@ Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, 
 });
 }(jQuery));
 ";
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);
+            }
 
             base.OnPreRender(e);
         }
