@@ -16,6 +16,10 @@
             <dnn:Label ID="plFile" runat="server" ControlName="cboFiles" Suffix=":" />
               <dnn:DnnComboBox runat="server" ID="cboFiles"  AutoPostBack="true"/>
         </div>
+        <div class="dnnFormItem">
+            <dnn:Label ID="plIncludeSettings"  runat="server" ControlName="chkIncludeSettings" Suffix=":" />
+            <dnn:DnnCheckbox runat="server" ID="chkIncludeSettings" />
+        </div>
     </fieldset>
     <h2 id="dnnPanel-ModuleContent" class="dnnFormSectionHead">
         <a href="#" class="">

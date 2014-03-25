@@ -26,6 +26,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
 
@@ -100,7 +101,23 @@ namespace DotNetNuke.Modules.Admin.Modules
                                 if (strType == Globals.CleanName(Module.DesktopModule.ModuleName) || strType == Globals.CleanName(Module.DesktopModule.FriendlyName))
                                 {
                                     var strVersion = xmlDoc.DocumentElement.GetAttribute("version");
-                                    ((IPortable)objObject).ImportModule(ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, UserInfo.UserID);
+                                    // DNN26810 if rootnode = "content", import only content(the old way)
+                                    if (xmlDoc.DocumentElement.Name.ToLower() == "content" )
+                                    {
+                                        ((IPortable)objObject).ImportModule(ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, UserInfo.UserID);
+                                    }
+                                    // if new format and Checkbox for importing settings is unchecked
+                                    else if (chkIncludeSettings.Checked == false)
+                                    {
+                                        XmlNode contentNode = xmlDoc.DocumentElement.SelectSingleNode("//content");
+                                        string innerXml = HttpUtility.HtmlDecode(contentNode.InnerText);
+                                        ((IPortable)objObject).ImportModule(ModuleId, innerXml, strVersion, UserInfo.UserID);
+                                    }
+                                    // otherwise (="module") import the new way
+                                    else
+                                    {
+                                        ModuleController.DeserializeModule(xmlDoc.DocumentElement, Module, PortalId, TabId);
+                                    }
                                     Response.Redirect(Globals.NavigateURL(), true);
                                 }
                                 else
