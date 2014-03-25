@@ -291,6 +291,47 @@
                             </div>
                         </div>
                     </fieldset>
+                    <h2 id="dnnSitePanel-SMTP" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("SMTP")%></a></h2>
+                    <fieldset>
+                        <div class="dnnFormItem">
+                            <dnn:label id="plSMTPMode" controlname="rblSMTPmode" runat="server" />
+                             <asp:RadioButtonList ID="rblSMTPmode" runat="server" AutoPostBack="true" RepeatDirection="Horizontal">
+                                    <asp:ListItem Value="h">Host</asp:ListItem>
+                                    <asp:ListItem Value="p">Portal</asp:ListItem>
+                             </asp:RadioButtonList>
+                        </div>
+                        <div runat="server" id="SmtpSettings">
+                            <div class="dnnFormItem">
+                                <dnn:label id="plSMTPServer" controlname="txtSMTPServer" runat="server" />
+                                <asp:TextBox ID="txtSMTPServer" runat="server" MaxLength="256" Width="225" />
+                            </div>
+                            <div class="dnnFormItem">
+                                <dnn:label id="plSMTPAuthentication" controlname="optSMTPAuthentication" runat="server" />
+                                <asp:RadioButtonList ID="optSMTPAuthentication" CssClass="dnnHSRadioButtons" runat="server"
+                                    RepeatLayout="Flow">
+                                    <asp:ListItem Value="0" resourcekey="SMTPAnonymous" />
+                                    <asp:ListItem Value="1" resourcekey="SMTPBasic" />
+                                    <asp:ListItem Value="2" resourcekey="SMTPNTLM" />
+                                </asp:RadioButtonList>
+                            </div>
+                            <div class="dnnFormItem">
+                                <dnn:label id="plSMTPEnableSSL" controlname="chkSMTPEnableSSL" runat="server" />
+                                <asp:CheckBox ID="chkSMTPEnableSSL" runat="server" />
+                            </div>
+                            <div id="SMTPUserNameRow" class="dnnFormItem">
+                                <dnn:label id="plSMTPUsername" controlname="txtSMTPUsername" runat="server" />
+                                <asp:TextBox ID="txtSMTPUsername" runat="server" MaxLength="256" Width="300" />
+                            </div>
+                            <div id="SMTPPasswordRow" class="dnnFormItem">
+                                <dnn:label id="plSMTPPassword" controlname="txtSMTPPassword" runat="server" />
+                                <asp:TextBox ID="txtSMTPPassword" runat="server" MaxLength="256" Width="300" TextMode="Password" />
+                            </div>
+                        </div>
+                        <ul class="dnnActions dnnClear">
+                            <li>
+                                <asp:LinkButton ID="cmdEmail" resourcekey="EmailTest" runat="server" CssClass="dnnPrimaryAction" /></li>
+                        </ul>
+                    </fieldset>
                     <h2 id="dnnSitePanel-SSLSettings" class="dnnFormSectionHead">
                         <a href=""><%=LocalizeString("SSLSettings")%></a>
                     </h2>
@@ -668,6 +709,16 @@
         }
     }
 
+    function toggleSmtpCredentials(animation) {
+        var smtpVal = $('#<%= optSMTPAuthentication.ClientID %> input:checked').val(); /*0,1,2*/
+        if (smtpVal == "1") {
+            animation ? $('#SMTPUserNameRow,#SMTPPasswordRow').slideDown() : $('#SMTPUserNameRow,#SMTPPasswordRow').show();
+        }
+        else {
+            animation ? $('#SMTPUserNameRow,#SMTPPasswordRow').slideUp() : $('#SMTPUserNameRow,#SMTPPasswordRow').hide();
+        }
+    }
+
     function toggleSection(id, isToggled) {
         $("div[id$='" + id + "']").toggle(isToggled);
     }
@@ -750,6 +801,11 @@
         toggleRegistrationFormType(false);
         $('#<%= registrationFormType.ClientID %>').change(function () {
             toggleRegistrationFormType(true);
+        });
+
+        toggleSmtpCredentials(false);
+        $('#<%= optSMTPAuthentication.ClientID %>').change(function () {
+            toggleSmtpCredentials(true);
         });
         
         var serviceFramework = $.ServicesFramework(<%=ModuleContext.ModuleId %>);
