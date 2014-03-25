@@ -106,13 +106,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                                     {
                                         ((IPortable)objObject).ImportModule(ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, UserInfo.UserID);
                                     }
-                                    // if new format and Checkbox for importing settings is unchecked
-                                    else if (chkIncludeSettings.Checked == false)
-                                    {
-                                        XmlNode contentNode = xmlDoc.DocumentElement.SelectSingleNode("//content");
-                                        string innerXml = HttpUtility.HtmlDecode(contentNode.InnerText);
-                                        ((IPortable)objObject).ImportModule(ModuleId, innerXml, strVersion, UserInfo.UserID);
-                                    }
                                     // otherwise (="module") import the new way
                                     else
                                     {

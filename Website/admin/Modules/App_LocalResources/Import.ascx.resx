@@ -159,10 +159,4 @@
   <data name="ModuleContent.Text" xml:space="preserve">
     <value>Module Content</value>
   </data>
-  <data name="plIncludeSettings.Help" xml:space="preserve">
-    <value>Check if settings should also be imported</value>
-  </data>
-  <data name="plIncludeSettings.Text" xml:space="preserve">
-    <value>Include Settings</value>
-  </data>
 </root>
