@@ -438,6 +438,10 @@
         border-right: 1px solid #333;
     }
 
+    #ControlBar #ControlBar_CustomMenuItems {
+        margin-left: -6px;
+    }
+
     #ControlBar_CustomMenuItems > li,
     #ControlActionMenu > li {
         position: relative;
