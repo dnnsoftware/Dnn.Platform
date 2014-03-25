@@ -1385,10 +1385,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// Gets the SMTP mode (portal|host)
         /// </summary>
-        /// <history>
-        /// 	[ohine]	    02/01/2009   created
-        ///     [ohine]	    02/22/2014   converted to c#
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static bool SMTPPortalEnabled
         {
@@ -1418,9 +1414,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// Get's the SMTP setting, if portal smtp is configured, it will return items from the portal settings collection.
         /// </summary>
-        /// <history>
-        /// 	[ohine]	    02/24/2014   created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static string GetSmtpSetting(string settingName)
         {
@@ -1436,10 +1429,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the SMTP Password
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        ///   [ohine]	02/01/2009   modifed for portal based smtp
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPPassword
         {
@@ -1479,10 +1468,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the SMTP Server
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        ///   [ohine]	02/01/2009   modifed for portal based smtp
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPServer
         {
@@ -1496,10 +1481,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the SMTP Username
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        ///   [ohine]	02/01/2009   modifed for portal based smtp
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPUsername
         {
