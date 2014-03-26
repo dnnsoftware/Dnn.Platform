@@ -980,6 +980,12 @@ The host-level settings are currently set as follows:
   <data name="Security_CaptchaRetrivePassword.Text" xml:space="preserve">
     <value>Use CAPTCHA to Retrieve Password</value>
   </data>
+  <data name="Security_CaptchaChangePassword.Help" xml:space="preserve">
+    <value>Select to add a CAPTCHA control to Password Change</value>
+  </data>
+  <data name="Security_CaptchaChangePassword.Text" xml:space="preserve">
+    <value>Use CAPTCHA to Change Password</value>
+  </data>
   <data name="Security_RequireValidProfileAtLogin.Help" xml:space="preserve">
     <value>You can optionally require a user to update their Profile before be logged in, if their Profile is no longer Valid.</value>
   </data>

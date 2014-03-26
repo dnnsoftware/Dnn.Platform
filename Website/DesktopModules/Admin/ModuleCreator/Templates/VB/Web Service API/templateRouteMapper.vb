@@ -1,8 +1,8 @@
 #Region "Copyright"
 
 ' 
-' Copyright (c) [YEAR]
-' by [OWNER]
+' Copyright (c) _YEAR_
+' by _OWNER_
 ' 
 
 #End Region
@@ -13,11 +13,11 @@ Imports DotNetNuke.Web.Api
 
 #End Region
 
-Namespace [OWNER].[MODULE]
-    Public Class [MODULE]RouteMapper
+Namespace _OWNER_._MODULE_
+    Public Class _MODULE_RouteMapper
         Implements IServiceRouteMapper
         Public Sub RegisterRoutes(mapRouteManager As IMapRoute)
-            mapRouteManager.MapHttpRoute("[OWNER].[MODULE]", "default", "{controller}/{action}", New () {"[OWNER].[MODULE]"})
+            mapRouteManager.MapHttpRoute("_OWNER_._MODULE_", "default", "{controller}/{action}", New () {"_OWNER_._MODULE_"})
         End Sub
     End Class
 End Namespace

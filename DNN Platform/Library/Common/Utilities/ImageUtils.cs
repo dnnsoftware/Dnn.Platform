@@ -33,9 +33,6 @@ namespace DotNetNuke.Common.Utilities
 {
     public class ImageUtils
     {
-        private static int _imgHeight;
-        private static int _imgWidth;
-
         public static Size GetSize(string sPath)
         {
             Image g = Image.FromFile(sPath);
@@ -78,7 +75,9 @@ namespace DotNetNuke.Common.Utilities
         public static int GetHeightFromStream(Stream sFile)
         {
             Image g = Image.FromStream(sFile, true);
-            return g.Height;
+            int h = g.Height; 
+            g.Dispose();
+            return h;
         }
 
         /// <summary>
@@ -126,8 +125,58 @@ namespace DotNetNuke.Common.Utilities
             }
 
             File.Copy(sFile, tmp);
-            var original = new Bitmap(tmp);
 
+            using (var fileContent = File.OpenRead(tmp))
+            {
+                var content = CreateImage(fileContent, intHeight, intWidth, fi.Extension);
+
+                string sFileExt = fi.Extension;
+                string sFileNoExtension = Path.GetFileNameWithoutExtension(sFile);
+
+                sFile += sFileNoExtension + sFileExt;
+                if (FileWrapper.Instance.Exists(sFile))
+                {
+                    FileWrapper.Instance.SetAttributes(sFile, FileAttributes.Normal);
+                    FileWrapper.Instance.Delete(sFile);
+                }
+
+                var arrData = new byte[2048];
+                using (Stream outStream = FileWrapper.Instance.Create(sFile))
+                {
+                    long originalPosition = content.Position;
+                    content.Position = 0;
+
+                    try
+                    {
+                        int intLength = content.Read(arrData, 0, arrData.Length);
+
+                        while (intLength > 0)
+                        {
+                            outStream.Write(arrData, 0, intLength);
+                            intLength = content.Read(arrData, 0, arrData.Length);
+                        }
+                    }
+                    finally
+                    {
+                        content.Position = originalPosition;
+                    }
+                }
+            }
+            
+            if (FileWrapper.Instance.Exists(tmp))
+            {
+                FileWrapper.Instance.SetAttributes(tmp, FileAttributes.Normal);
+                FileWrapper.Instance.Delete(tmp);
+            }
+
+
+            return sFile;
+        }
+
+        public static Stream CreateImage(Stream stream, int intHeight, int intWidth, string extension)
+        {
+            var original = new Bitmap(stream);
+            int imgHeight, imgWidth;
             PixelFormat format = original.PixelFormat;
             if (format.ToString().Contains("Indexed"))
             {
@@ -140,102 +189,55 @@ namespace DotNetNuke.Common.Utilities
             if (original.Width > newWidth || original.Height > newHeight)
             {
                 imgSize = NewImageSize(original.Width, original.Height, newWidth, newHeight);
-                _imgHeight = imgSize.Height;
-                _imgWidth = imgSize.Width;
+                imgHeight = imgSize.Height;
+                imgWidth = imgSize.Width;
             }
             else
             {
                 imgSize = new Size(original.Width, original.Height);
-                _imgHeight = original.Height;
-                _imgWidth = original.Width;
+                imgHeight = original.Height;
+                imgWidth = original.Width;
             }
 
-            string sFileExt = fi.Extension;
-            string sFileNoExtension = Path.GetFileNameWithoutExtension(sFile);
-            string sPath = Path.GetDirectoryName(sFile);
-            if (sPath != null)
-            {
-                sPath = sPath.Replace("/", "\\");
-            }
-            if (sPath != null && !sPath.EndsWith("\\"))
-            {
-                sPath += "\\";
-            }
-            Image img = Image.FromFile(tmp);
-            var newImg = new Bitmap(_imgWidth, _imgHeight, format);
-            newImg.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+            var newImg = new Bitmap(imgWidth, imgHeight, format);
+            newImg.SetResolution(original.HorizontalResolution, original.VerticalResolution);
 
             Graphics canvas = Graphics.FromImage(newImg);
             canvas.SmoothingMode = SmoothingMode.None;
             canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
             canvas.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-            if (sFileExt.ToLowerInvariant() != ".png")
+            if (extension.ToLowerInvariant() != ".png")
             {
                 canvas.Clear(Color.White);
                 canvas.FillRectangle(Brushes.White, 0, 0, imgSize.Width, imgSize.Height);
             }
-            canvas.DrawImage(img, 0, 0, imgSize.Width, imgSize.Height);
-            img.Dispose();
-            sFile = sPath;
 
-            sFile += sFileNoExtension + sFileExt;
-            if (FileWrapper.Instance.Exists(sFile))
-            {
-                FileWrapper.Instance.SetAttributes(sFile, FileAttributes.Normal);
-                FileWrapper.Instance.Delete(sFile);
-            }
+            canvas.DrawImage(original, 0, 0, imgSize.Width, imgSize.Height);
 
             //newImg.Save
-            var arrData = new byte[2048];
             Stream content = new MemoryStream();
             ImageFormat imgFormat = ImageFormat.Bmp;
-            if (sFileExt.ToLowerInvariant() == ".png")
+            if (extension.ToLowerInvariant() == ".png")
             {
                 imgFormat = ImageFormat.Png;
             }
-            else if (sFileExt.ToLowerInvariant() == ".gif")
+            else if (extension.ToLowerInvariant() == ".gif")
             {
                 imgFormat = ImageFormat.Gif;
             }
-            else if (sFileExt.ToLowerInvariant() == ".jpg")
+            else if (extension.ToLowerInvariant() == ".jpg")
             {
                 imgFormat = ImageFormat.Jpeg;
             }
+
             newImg.Save(content, imgFormat);
-            using (Stream outStream = FileWrapper.Instance.Create(sFile))
-            {
-                long originalPosition = content.Position;
-                content.Position = 0;
-
-                try
-                {
-                    int intLength = content.Read(arrData, 0, arrData.Length);
-
-                    while (intLength > 0)
-                    {
-                        outStream.Write(arrData, 0, intLength);
-                        intLength = content.Read(arrData, 0, arrData.Length);
-                    }
-                }
-                finally
-                {
-                    content.Position = originalPosition;
-                }
-            }
 
             newImg.Dispose();
             original.Dispose();
-
             canvas.Dispose();
-            if (FileWrapper.Instance.Exists(tmp))
-            {
-                FileWrapper.Instance.SetAttributes(tmp, FileAttributes.Normal);
-                FileWrapper.Instance.Delete(tmp);
-            }
 
-
-            return sFile;
+            return content;
         }
 
         /// <summary>
@@ -250,7 +252,8 @@ namespace DotNetNuke.Common.Utilities
             Graphics bmpOutput = Graphics.FromImage(img);
             bmpOutput.InterpolationMode = InterpolationMode.HighQualityBicubic;
             bmpOutput.SmoothingMode = SmoothingMode.HighQuality;
-            var compressionRectange = new Rectangle(0, 0, _imgWidth, _imgHeight);
+            var compressionRectange = new Rectangle(0, 0, img.Width, img.Height);
+
             bmpOutput.DrawImage(img, compressionRectange);
 
             ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/jpeg");
@@ -288,7 +291,8 @@ namespace DotNetNuke.Common.Utilities
         {
             var newStream = new MemoryStream();
             Image g = Image.FromStream(sFile);
-            //Dim thisFormat = g.RawFormat
+            int imgHeight, imgWidth;
+            
             if (intHeight > 0 & intWidth > 0)
             {
                 int newHeight = intHeight;
@@ -296,26 +300,26 @@ namespace DotNetNuke.Common.Utilities
                 if (g.Width > newWidth | g.Height > newHeight)
                 {
                     Size imgSize = NewImageSize(g.Width, g.Height, newWidth, newHeight);
-                    _imgHeight = imgSize.Height;
-                    _imgWidth = imgSize.Width;
+                    imgHeight = imgSize.Height;
+                    imgWidth = imgSize.Width;
                 }
                 else
                 {
-                    _imgHeight = g.Height;
-                    _imgWidth = g.Width;
+                    imgHeight = g.Height;
+                    imgWidth = g.Width;
                 }
             }
             else
             {
-                _imgWidth = g.Width;
-                _imgHeight = g.Height;
+                imgWidth = g.Width;
+                imgHeight = g.Height;
             }
 
-            var imgOutput1 = new Bitmap(g, _imgWidth, _imgHeight);
+            var imgOutput1 = new Bitmap(g, imgWidth, imgHeight);
             Graphics bmpOutput = Graphics.FromImage(imgOutput1);
             bmpOutput.InterpolationMode = InterpolationMode.HighQualityBicubic;
             bmpOutput.SmoothingMode = SmoothingMode.HighQuality;
-            var compressionRectange = new Rectangle(0, 0, _imgWidth, _imgHeight);
+            var compressionRectange = new Rectangle(0, 0, imgWidth, imgHeight);
             bmpOutput.DrawImage(g, compressionRectange);
             ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/jpeg");
             Encoder myEncoder = Encoder.Quality;

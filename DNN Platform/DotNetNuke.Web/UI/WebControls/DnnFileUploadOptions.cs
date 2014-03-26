@@ -83,6 +83,18 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFileUploadOptions
     {
 
+        [DataMember(Name = "clientId")]
+        public string ClientId;
+
+        [DataMember(Name = "moduleId")]
+        public string ModuleId = string.Empty;
+
+        [DataMember(Name = "parentClientId")]
+        public string ParentClientId;
+
+        [DataMember(Name = "showOnStartup")]
+        public bool ShowOnStartup;
+
         [DataMember(Name = "folderPicker")]
         public DnnDropDownListOptions FolderPicker;
 
@@ -97,6 +109,17 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "resources")]
         public DnnFileUploadResources Resources;
+
+        private Dictionary<string, string> _parameters;
+
+        [DataMember(Name = "parameters")]
+        public Dictionary<string, string> Parameters
+        {
+            get
+            {
+                return _parameters ?? (_parameters = new Dictionary<string, string>());
+            }
+        }
 
         public DnnFileUploadOptions()
         {
@@ -115,7 +138,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 CloseButtonText = Utilities.GetLocalizedString("FileUpload.CloseButton.Text"),
                 UploadFromWebButtonText = Utilities.GetLocalizedString("FileUpload.UploadFromWebButton.Text"),
                 DecompressingFile = Utilities.GetLocalizedString("FileUpload.DecompressingFile.Text"),
-                FileIsTooLarge = string.Format(Utilities.GetLocalizedString("FileUpload.FileIsTooLarge.Error") + " Kb", (MaxFileSize / 1024).ToString(CultureInfo.InvariantCulture)),
+                FileIsTooLarge = string.Format(Utilities.GetLocalizedString("FileUpload.FileIsTooLarge.Error") + " Mb", (MaxFileSize / (1024 * 1024)).ToString(CultureInfo.InvariantCulture)),
                 FileUploadCancelled = Utilities.GetLocalizedString("FileUpload.FileUploadCancelled.Error"),
                 FileUploadFailed = Utilities.GetLocalizedString("FileUpload.FileUploadFailed.Error"),
                 TooManyFiles = Utilities.GetLocalizedString("FileUpload.TooManyFiles.Error"),

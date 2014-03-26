@@ -194,6 +194,8 @@ namespace DotNetNuke.Entities.Portals
         public string RegisteredRoleName { get; set; }
         public int RegisterTabId { get; set; }
         public int SearchTabId { get; set; }
+        public int ErrorPage404 { get; private set; }
+        public int ErrorPage500 { get; private set; }
         public int SiteLogHistory { get; set; }
         public int SplashTabId { get; set; }
         public int SuperTabId { get; set; }
@@ -470,22 +472,6 @@ namespace DotNetNuke.Entities.Portals
             get
             {
                 return PortalController.GetPortalSettingAsBoolean("EnableUrlLanguage", PortalId, Host.Host.EnableUrlLanguage);
-            }
-        }
-
-        public int ErrorPage404
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsInteger("AUM_ErrorPage404", PortalId, Null.NullInteger);
-            }
-        }
-
-        public int ErrorPage500
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsInteger("AUM_ErrorPage500", PortalId, Null.NullInteger);
             }
         }
 
@@ -1086,6 +1072,8 @@ namespace DotNetNuke.Entities.Portals
             RegisterTabId = portal.RegisterTabId;
             UserTabId = portal.UserTabId;
             SearchTabId = portal.SearchTabId;
+            ErrorPage404 = portal.Custom404TabId;
+            ErrorPage500 = portal.Custom500TabId;
             DefaultLanguage = portal.DefaultLanguage;
             HomeDirectory = portal.HomeDirectory;
             HomeDirectoryMapPath = portal.HomeDirectoryMapPath;

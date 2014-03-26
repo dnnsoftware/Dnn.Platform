@@ -170,7 +170,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            return list;
+            return list.Distinct().ToList();
         }
 
         private static IEnumerable<int> GetSearchModuleDefIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)

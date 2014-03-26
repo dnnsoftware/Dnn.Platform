@@ -50,7 +50,7 @@
     <HostURL>http://www.dnnsoftware.com</HostURL>
     <HttpCompression>0</HttpCompression>
     <HttpCompressionLevel>0</HttpCompressionLevel>
-    <ModuleCaching>FileModuleCachingProvider</ModuleCaching>
+    <ModuleCaching>MemoryModuleCachingProvider</ModuleCaching>
     <PageQuota></PageQuota>
     <PageStatePersister>P</PageStatePersister>
     <PaymentProcessor>PayPal</PaymentProcessor>

@@ -45,8 +45,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         public override void RenderControl(HtmlTextWriter writer)
         {
-            writer.RenderBeginTag(HtmlTextWriterTag.Script);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text/javascript");
+            writer.RenderBeginTag(HtmlTextWriterTag.Script);
 
             if (ObjectName.Contains("."))
             {
@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 writer.Write("if (typeof " + ObjectName + " == 'undefined') {");
             }
 
-            writer.Write("document.write('<script src='" + FileName + "' type='text/javascript'>");
+            writer.Write("document.write('<script src=\"" + FileName + "\" type=\"text/javascript\"></' + 'script>');");
             writer.Write("}");
             writer.RenderEndTag();
         }

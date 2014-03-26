@@ -170,7 +170,7 @@
   </data>
   <data name="FinalStep.Help" xml:space="preserve">
     <value>The final step is to create the package.  To create a copy of the Manifest file check the "Create Manifest File" check box - the file will be created in the Package's folder.  Regardless of the setting you use here the manifest will be saved in the database and it will be added to the package.&lt;br/&gt;&lt;br/&gt;  
-To create a package check the "Create Package" check box.  The package will be created in the relavant Install folder (eg Install/Modules for modules, Install/Skins for skins etc).</value>
+To create a package check the "Create Package" check box.  The package will be created in the relevant Install folder (eg Install/Modules for modules, Install/Skins for skins etc).</value>
   </data>
   <data name="FinalStep.Title" xml:space="preserve">
     <value>Create Package</value>
@@ -239,8 +239,8 @@ To create a package check the "Create Package" check box.  The package will be c
     <value>You must provide a FileName for the Package</value>
   </data>
   <data name="ManifestHelp.Text" xml:space="preserve">
-    <value>&lt;p&gt;This wizard will create a manifest for your extension.  You have a number of options to choose. If you already created a manifest (either by running this Wizard or by manually creating a manifest file) you can select to use that manifest, by checking "Use Existing Manifest" and choosing the manifest from the drop-dwon list of manifests that the system has found for this extension.&lt;/p&gt;
-&lt;p&gt;In addition you can elect to review the manifest at the last stage of the wizard - in case you want to make some mionor changes to the manifest before the zip package is created.&lt;/p&gt;</value>
+    <value>&lt;p&gt;This wizard will create a manifest for your extension.  You have a number of options to choose. If you already created a manifest (either by running this Wizard or by manually creating a manifest file) you can select to use that manifest, by checking "Use Existing Manifest" and choosing the manifest from the drop-down list of manifests that the system has found for this extension.&lt;/p&gt;
+&lt;p&gt;In addition you can elect to review the manifest at the last stage of the wizard - in case you want to make some minor changes to the manifest before the zip package is created.&lt;/p&gt;</value>
   </data>
   <data name="InvalidPackageName.Text" xml:space="preserve">
     <value>Invalid package name - package name must have a ".zip" extension.</value>

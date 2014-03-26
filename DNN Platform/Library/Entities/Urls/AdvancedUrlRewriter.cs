@@ -37,6 +37,7 @@ using System.Web;
 using System.Web.Configuration;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
@@ -1094,7 +1095,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                             if (redirect)
                             {
-                                errUrl = Globals.NavigateURL();
+                                errUrl = TestableGlobals.Instance.NavigateURL();
                                 response.Redirect(errUrl, true); //redirect and end response.  
                                 //It will mean the user will have to postback again, but it will work the second time
                             }
@@ -2320,7 +2321,7 @@ namespace DotNetNuke.Entities.Urls
                 //ignore all install requests
                 retVal = true;
             }
-            else if (request != null && request.Path.EndsWith("SetGettingStartedPageAsShown"))
+            else if (request != null && (request.Path.EndsWith("SetGettingStartedPageAsShown") || request.Path.ToLower().EndsWith("ImageChallenge.captcha.aspx".ToLower())))
             {
                 //ignore request to the Getting Started Web Method
                 retVal = true;

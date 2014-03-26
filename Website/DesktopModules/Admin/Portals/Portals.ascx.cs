@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
 		    int totalRecords = 0;
 		    ArrayList portals;
-            if (Filter == Localization.GetString("Expired", LocalResourceFile))
+            if (Filter.Equals(Localization.GetString("Expired", LocalResourceFile), StringComparison.InvariantCultureIgnoreCase))
             {
                 portals = PortalController.GetExpiredPortals();
                 totalRecords = portals.Count;
@@ -230,8 +230,8 @@ namespace DotNetNuke.Modules.Admin.Portals
                     {
                         //so first create the format string with a dummy value and then
                         //replace the dummy value with the FormatString place holder
-                        var formatString = EditUrl("pid", "KEYFIELD", "Edit");
-                        formatString = formatString.Replace("KEYFIELD", "{0}");
+                        var formatString = EditUrl("pid", "keyfield", "Edit");
+                        formatString = formatString.Replace("keyfield", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
                     }
 					
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     Filter = Request.QueryString["filter"];
                 }
-                if (Filter == Localization.GetString("All"))
+                if (Filter.Equals(Localization.GetString("All"), StringComparison.InvariantCultureIgnoreCase))
                 {
                     Filter = "";
                 }

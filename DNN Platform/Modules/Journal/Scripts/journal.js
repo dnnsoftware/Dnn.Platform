@@ -131,14 +131,14 @@ function attachPhoto(fileId, path, isImage) {
             if (event.keyCode == 8 || event.keyCode == 46) {
                 return;
             }
-            if ($content.val().length >= $maxLength) {
+            if ($content.val().length >= $maxLength && $maxLength > 0) {
                 return false;
             }
         });
         $content.bind('paste', function (e) {
             setTimeout(function () {
                 $content.val($content.val());
-                if ($content.val().length>=$maxLength) {
+                if ($content.val().length>=$maxLength && $maxLength > 0) {
                     var txt = $content.val().substring(0,$maxLength);
                     $content.val(txt);
                 }

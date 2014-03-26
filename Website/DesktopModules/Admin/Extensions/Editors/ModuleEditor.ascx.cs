@@ -139,6 +139,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
                 cmdDeleteDefinition.Visible = false;
                 cmdUpdateDefinition.Text = Localization.GetString("cmdCreateDefinition", LocalResourceFile);
+                cmdCancelDefinition.Visible = true;
                 pnlDefinition.Visible = true;
                 pnlControls.Visible = false;
             	definitionSelectRow.Visible = false;
@@ -333,6 +334,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             cmdDeleteDefinition.Click += cmdDeleteDefinition_Click;
             cmdUpdate.Click += cmdUpdate_Click;
             cmdUpdateDefinition.Click += cmdUpdateDefinition_Click;
+            cmdCancelDefinition.Click += cmdCancelDefinition_Click;
             grdControls.DeleteCommand += grdControls_DeleteCommand;
             grdControls.ItemDataBound += grdControls_ItemDataBound;
 
@@ -352,6 +354,11 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     }
                 }
             }
+        }
+
+        private void cmdCancelDefinition_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -497,6 +504,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, ModuleContext.PortalId));
 
                 dgPermissions.ResetPermissions();
+                Response.Redirect(Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
             }
         }
 

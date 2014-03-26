@@ -792,6 +792,11 @@ namespace DotNetNuke.Modules.Admin.Languages
                         break;
                 }
                 string selectedFile = SelectedResourceFile.Replace(Server.MapPath(Globals.ApplicationPath + "/"), "");
+
+                UI.Skins.Skin.AddModuleMessage(this,
+                                string.Format(Localization.GetString("Updated", LocalResourceFile), ResourceFile(Locale, rbMode.SelectedValue)),
+                                ModuleMessage.ModuleMessageType.GreenSuccess);
+
                 BindGrid(true);
             }
             catch (Exception exc)
@@ -904,26 +909,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     }
                     break;
                 case "Global Resources":
-                    node = new RadTreeNode();
-                    node.Text = LocalizeString("Exceptions");
-                    node.Value = Server.MapPath("~/App_GlobalResources/Exceptions");
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = Path.GetFileNameWithoutExtension(Localization.GlobalResourceFile);
-                    node.Value = Server.MapPath(Localization.GlobalResourceFile);
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = Path.GetFileNameWithoutExtension(Localization.SharedResourceFile);
-                    node.Value = Server.MapPath(Localization.SharedResourceFile);
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = LocalizeString("Template");
-                    node.Value = Server.MapPath("~/App_GlobalResources/Template");
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = LocalizeString("WebControls");
-                    node.Value = Server.MapPath("~/App_GlobalResources/WebControls");
-                    e.Node.Nodes.Add(node);
+                    GetResxFiles(Server.MapPath("~/App_GlobalResources"), e);
                     break;
                 case "Site Templates":
                     GetResxFiles(Server.MapPath("~/Portals/_default"), e);

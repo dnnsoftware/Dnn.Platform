@@ -25,6 +25,7 @@ using System.Collections;
 using System.Web.UI;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -445,11 +446,11 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 if (PortalID == Null.NullInteger)
                 {
-                    strURL = Globals.NavigateURL(objModule.TabID, true);
+                    strURL = TestableGlobals.Instance.NavigateURL(objModule.TabID, true);
                 }
                 else
                 {
-                    strURL = Globals.NavigateURL(objModule.TabID);
+                    strURL = TestableGlobals.Instance.NavigateURL(objModule.TabID);
                 }
             }
             return strURL;

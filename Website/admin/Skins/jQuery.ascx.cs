@@ -21,6 +21,8 @@
 
 #endregion
 
+using DotNetNuke.Framework.JavaScriptLibraries;
+
 namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
@@ -33,21 +35,22 @@ namespace DotNetNuke.UI.Skins.Controls
 
         protected override void OnInit(EventArgs e)
         {
-            Framework.jQuery.RequestRegistration();
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
             if (jQueryUI)
             {
-                Framework.jQuery.RequestUIRegistration();
+                JavaScript.RequestRegistration(CommonJs.jQueryUI);
             }
 
             if (DnnjQueryPlugins)
             {
-                Framework.jQuery.RequestDnnPluginsRegistration();
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             }
 
             if (jQueryHoverIntent)
             {
-                Framework.jQuery.RequestHoverIntentRegistration();
+                JavaScript.RequestRegistration(CommonJs.HoverIntent);
             }
         }
     }

@@ -1,8 +1,8 @@
 #Region "Copyright"
 
 ' 
-' Copyright (c) [YEAR]
-' by [OWNER]
+' Copyright (c) _YEAR_
+' by _OWNER_
 ' 
 
 #End Region
@@ -10,9 +10,9 @@
 Imports System
 Imports DotNetNuke
 
-Namespace [OWNER].[MODULE]
+Namespace _OWNER_._MODULE_
 
-    Public Class [MODULE]Job
+    Public Class _MODULE_Job
 
         Inherits DotNetNuke.Services.Scheduling.SchedulerClient
 
@@ -26,10 +26,10 @@ Namespace [OWNER].[MODULE]
                 Me.Progressing()
                 Dim strMessage As String = Processing()
                 Me.ScheduleHistoryItem.Succeeded = True
-                Me.ScheduleHistoryItem.AddLogNote("[MODULE] Succeeded")
+                Me.ScheduleHistoryItem.AddLogNote("_MODULE_ Succeeded")
             Catch exc As Exception    
                 Me.ScheduleHistoryItem.Succeeded = False
-                Me.ScheduleHistoryItem.AddLogNote("[MODULE] Failed")
+                Me.ScheduleHistoryItem.AddLogNote("_MODULE_ Failed")
                 Me.Errored(exc)
             End Try
         End Sub

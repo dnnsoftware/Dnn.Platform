@@ -126,7 +126,8 @@ AS
 	SELECT * FROM {databaseOwner}{objectQualifier}PackageTypes
 GO
 
-DROP INDEX IX_{objectQualifier}Packages ON {databaseOwner}[{objectQualifier}Packages]
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Packages]') AND name = N'IX_{objectQualifier}Packages')
+    DROP INDEX IX_{objectQualifier}Packages ON {databaseOwner}[{objectQualifier}Packages]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Packages ON {databaseOwner}[{objectQualifier}Packages]
 	(

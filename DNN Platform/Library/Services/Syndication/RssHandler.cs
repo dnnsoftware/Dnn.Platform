@@ -25,10 +25,10 @@ using System.Collections.Generic;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Search;
 using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
@@ -120,10 +120,10 @@ namespace DotNetNuke.Services.Syndication
             var url = searchResult.Url;
             if (url.Trim() == "")
             {
-                url = Globals.NavigateURL(searchResult.TabId);
+                url = TestableGlobals.Instance.NavigateURL(searchResult.TabId);
                 if (url.ToLower().IndexOf(HttpContext.Current.Request.Url.Host.ToLower()) == -1)
                 {
-                    url = Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
+                    url = TestableGlobals.Instance.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
                 }
             }
 

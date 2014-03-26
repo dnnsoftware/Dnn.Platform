@@ -268,6 +268,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 }
 
                 cmdRun.Enabled = chkEnabled.Checked;
+                cmdRun.Visible = chkEnabled.Checked;
             }
             catch (Exception exc) //Module failed to load
             {

@@ -1,8 +1,8 @@
 ﻿#region Copyright
 
 // 
-// Copyright (c) [YEAR]
-// by [OWNER]
+// Copyright (c) _YEAR_
+// by _OWNER_
 // 
 
 #endregion
@@ -15,16 +15,16 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 
 #endregion
 
-namespace [OWNER].[MODULE]
+namespace _OWNER_._MODULE_
 {
 
-    [TableName("[OWNER]_[CONTROL]s")]
-    [PrimaryKey("[CONTROL]ID")]
+    [TableName("_OWNER___CONTROL_s")]
+    [PrimaryKey("_CONTROL_ID")]
     [Scope("ModuleID")]
-    [Cacheable("[CONTROL]s", CacheItemPriority.Default, 20)]
-    public class [CONTROL]Info
+    [Cacheable("_CONTROL_s", CacheItemPriority.Default, 20)]
+    public class _CONTROL_Info
     {
-        public int [CONTROL]ID { get; set; }
+        public int _CONTROL_ID { get; set; }
         public int ModuleID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

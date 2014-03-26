@@ -39,6 +39,7 @@
         <asp:ListItem Value="500">500</asp:ListItem>
         <asp:ListItem Value="1000">1000</asp:ListItem>
         <asp:ListItem Value="2000">2000</asp:ListItem>
+        <asp:ListItem Value="-1" resourcekey="MessageLength_Unlimited"></asp:ListItem>
     </asp:DropDownList>
   
 </div>

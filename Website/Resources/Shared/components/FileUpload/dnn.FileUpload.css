@@ -82,6 +82,12 @@
     margin: 0 6px 0 0;
 }
 
+.fu-container .fu-dialog-content-header > .dnnRight > span {    
+    line-height: 36px;
+    float: left;
+    width: 200px;
+}
+
 .fu-container .fu-dialog-content-header > .dnnRight > .dnnDropDownList {
     width: 200px;
     float: left;
@@ -254,6 +260,7 @@ a.fu-fileupload-thumbnail:visited,
 a.fu-fileupload-thumbnail:hover,
 a.fu-fileupload-thumbnail:active {
     float: left;
+    position: relative;
     height: 76px;
     width: 76px;
     background: none repeat scroll 0 0 #E8F0FB;
@@ -262,10 +269,28 @@ a.fu-fileupload-thumbnail:active {
     overflow: hidden;
     border-color: #CED4E0;
     border-radius: 4px;
+    opacity: 0.9;
+
+    -webkit-transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+       -moz-transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+         -o-transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 a.fu-fileupload-thumbnail:hover {
-    background: none repeat scroll 0 0 #fff;
+    background-color: #fff;
+    opacity: 1;
+}
+
+a.fu-fileupload-thumbnail-inactive:hover {
+    background-color: #E8F0FB;
+    opacity: 0.9;
+    cursor: default;
+}
+
+.fu-status-error a.fu-fileupload-thumbnail:hover {
+    background: none repeat scroll 0 0 #E8F0FB;
+    cursor: default;
 }
 
 .fu-fileupload-thumbnail div {
@@ -328,6 +353,11 @@ a.fu-fileupload-thumbnail:hover {
     margin: 0 4px;
     font-weight: bold;
     line-height: 12px;
+
+    -webkit-transition: color 0.3s ease-in-out;
+       -moz-transition: color 0.3s ease-in-out;
+         -o-transition: color 0.3s ease-in-out;
+            transition: color 0.3s ease-in-out;
 }
 
 .fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-replace {

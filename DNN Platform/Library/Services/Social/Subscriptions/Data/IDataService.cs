@@ -20,6 +20,7 @@
 #endregion
 
 using System.Data;
+using DotNetNuke.Services.Social.Subscriptions.Entities;
 
 namespace DotNetNuke.Services.Social.Subscriptions.Data
 {
@@ -97,5 +98,14 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         /// <param name="subscriptionId">Subscription Id</param>
         /// <returns>True if the subscription has been deleted, false otherwise</returns>
         bool DeleteSubscription(int subscriptionId);
+
+        /// <summary>
+        /// Updates a Subscription Description
+        /// </summary>
+        /// <param name="objectKey">Subscription Object Key</param>
+        /// <param name="portalId">Subscription Portal Id</param>
+        /// <param name="newDescription">New Subscription Description</param>
+        /// <returns>The number of subscription descriptions that have been updated</returns>
+        int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription);
     }
 }

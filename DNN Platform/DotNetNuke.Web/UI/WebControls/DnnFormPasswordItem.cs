@@ -80,6 +80,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 MaxLength = 20, //ensure password cannot be cut if too long
                 Text = Convert.ToString(Value) // Load from ControlState
             };
+            _password.Attributes.Add("autocomplete", "off");
             _password.TextChanged += TextChanged;
 
             var passwordContainer = new Panel() { ID = "passwordContainer", CssClass = ContainerCssClass };

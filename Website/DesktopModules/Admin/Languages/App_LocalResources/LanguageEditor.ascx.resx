@@ -181,7 +181,7 @@
     <value>Select System to edit the base file for a given language; Host will create a custom version of the localized file for this installation.</value>
   </data>
   <data name="Deleted.Text" xml:space="preserve">
-    <value>File {0} was correctly deleted</value>
+    <value>File {0} has been deleted</value>
   </data>
   <data name="Obsolete.Text" xml:space="preserve">
     <value>This files contains obsolete resources which are no more needed. Click save to remove these items permanently.</value>
@@ -266,5 +266,8 @@
   </data>
   <data name="WebControls.Text" xml:space="preserve">
     <value>WebControls</value>
+  </data>
+  <data name="Updated.Text" xml:space="preserve">
+    <value>File {0} has been saved</value>
   </data>
 </root>

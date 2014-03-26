@@ -3,7 +3,7 @@ if (typeof dnnModule === "undefined" || dnnModule === null) { dnnModule = {}; };
 
 dnnModule.DigitalAssetsController = function (servicesFramework, resources, settings) {
     this.servicesFramework = servicesFramework;
-    this.resources = resources
+    this.resources = resources;
     this.settings = settings;
 };
 
@@ -54,9 +54,6 @@ dnnModule.DigitalAssetsController.prototype = function () {
         },
         updateSelectionToolBar = function (selectionToolbar, gridItems) {
         },
-        initTagsListMenu = function(sender) {
-            
-        },
         extendResources = function (extendedResouces) {
             $.extend(this.resources, extendedResouces);
         },
@@ -88,6 +85,8 @@ dnnModule.DigitalAssetsController.prototype = function () {
                 pageSize: grid.get_pageSize(),
                 userId: this.settings.userId
             };
+        },
+        leftPaneTabActivated = function(id) {
         };
 
     return {
@@ -110,6 +109,7 @@ dnnModule.DigitalAssetsController.prototype = function () {
         executeCommandOnSelectedNode: executeCommandOnSelectedNode,
         getLeftPaneActions: getLeftPaneActions,
         updateModuleState: updateModuleState,
-        getCurrentState: getCurrentState
+        getCurrentState: getCurrentState,
+        leftPaneTabActivated: leftPaneTabActivated
     };
 }();

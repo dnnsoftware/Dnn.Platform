@@ -87,8 +87,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns></returns>
         public static string Version(String jsname)
         {
-            JavaScriptLibrary library =
-                JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == jsname);
+            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == jsname);
             return library != null ? Convert.ToString(library.Version) : String.Empty;
         }
 
@@ -170,8 +169,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         //unable to find a higher major version
                         library = GetHighestVersionLibrary(jsname);
                         AddItemRequest(library.JavaScriptLibraryID);
-                        LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" +
-                                     library.Version);
+                        LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
                     }
                     isProcessed = true;
                     break;
@@ -188,8 +186,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         //unable to find a higher minor version
                         library = GetHighestVersionLibrary(jsname);
                         AddItemRequest(library.JavaScriptLibraryID);
-                        LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" +
-                                     library.Version);
+                        LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
                     }
                     isProcessed = true;
                     break;
@@ -308,7 +305,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     return js.CDNPath;
                 }
             }
-            return ("~/Resources/libraries/" + js.LibraryName + "/" + js.Version + "/" + js.FileName);
+            return ("~/Resources/libraries/" + js.LibraryName + "/" + Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName);
         }
 
         private static string GetScriptLocation(JavaScriptLibrary js)
@@ -409,12 +406,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         break;
                 }
                 Control scriptloader = page.FindControl(pagePortion);
-                var fallback = new DnnJsIncludeFallback(jsl.ObjectName,
-                    VirtualPathUtility.ToAbsolute("~/Resources/libraries/" + jsl.LibraryName + "/" + jsl.Version + "/" +
-                                                  jsl.FileName));
+                var fallback = new DnnJsIncludeFallback(jsl.ObjectName, VirtualPathUtility.ToAbsolute("~/Resources/libraries/" + jsl.LibraryName + "/" + Globals.FormatVersion(jsl.Version, "00", 3, "_") + "/" + jsl.FileName));
                 if (scriptloader != null)
                 {
-                    scriptloader.Controls.Add(fallback);
+                    //add the fallback control after script loader.
+                    var index = scriptloader.Parent.Controls.IndexOf(scriptloader);
+                    scriptloader.Parent.Controls.AddAt(index + 1, fallback);
                 }
             }
         }

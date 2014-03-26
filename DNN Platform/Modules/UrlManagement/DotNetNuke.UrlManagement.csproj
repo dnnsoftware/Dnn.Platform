@@ -64,6 +64,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="AdvancedUrlSettings.ascx.cs">
       <DependentUpon>AdvancedUrlSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

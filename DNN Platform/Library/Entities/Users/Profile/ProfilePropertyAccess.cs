@@ -30,6 +30,7 @@ using System.Linq;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Icons;
@@ -235,7 +236,7 @@ namespace DotNetNuke.Entities.Users
                             TabInfo tab = tabCtrl.GetTab(tabid, Null.NullInteger, false);
                             if (tab != null)
                             {
-                                result = string.Format("<a href='{0}'>{1}</a>", Globals.NavigateURL(tabid), tab.LocalizedTabName);
+                                result = string.Format("<a href='{0}'>{1}</a>", TestableGlobals.Instance.NavigateURL(tabid), tab.LocalizedTabName);
                             }
                         }
                         break;

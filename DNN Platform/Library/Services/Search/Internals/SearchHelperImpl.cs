@@ -340,8 +340,9 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (minWordLength > maxWordLength)
             {
+                var exceptionMessage = Localization.Localization.GetExceptionMessage("SearchAnalyzerMinWordLength", "Search Analyzer: min word length ({0}) is greater than max word length ({1}) value");
                 throw new InvalidDataException(
-                    string.Format("Search Analyzer: min word length ({0}) is greater than max wrod length ({1}) value", minWordLength, maxWordLength));
+                    string.Format(exceptionMessage, minWordLength, maxWordLength));
             }
 
             return new Tuple<int, int>(minWordLength, maxWordLength);

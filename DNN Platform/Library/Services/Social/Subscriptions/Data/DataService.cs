@@ -99,6 +99,15 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         {
             return provider.ExecuteScalar<int>("CoreMessaging_DeleteSubscription", subscriptionId) == 0;
         }
+
+        public int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription)
+        {
+            return provider.ExecuteScalar<int>("CoreMessaging_UpdateSubscriptionDescription",
+                objectKey,
+                portalId,
+                newDescription);
+        }
+
         #endregion
     }
 }

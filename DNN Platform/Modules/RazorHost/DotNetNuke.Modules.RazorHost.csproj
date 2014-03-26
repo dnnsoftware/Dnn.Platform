@@ -94,6 +94,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="AddScript.ascx.designer.cs">
       <DependentUpon>AddScript.ascx</DependentUpon>
@@ -121,6 +124,7 @@
     </Compile>
     <Compile Include="RazorHost.ascx.cs">
       <DependentUpon>RazorHost.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="RazorHostSettingsExtensions.cs" />
     <Compile Include="Settings.ascx.designer.cs">

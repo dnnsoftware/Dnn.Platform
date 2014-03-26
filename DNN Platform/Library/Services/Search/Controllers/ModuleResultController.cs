@@ -25,7 +25,7 @@ using System.Collections;
 using System.Linq;
 using System.Web.Caching;
 
-using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
@@ -77,7 +77,9 @@ namespace DotNetNuke.Services.Search.Controllers
                             {
                                 viewable = true;
                                 if (string.IsNullOrEmpty(searchResult.Url))
-                                    searchResult.Url = Globals.NavigateURL(module.TabID, string.Empty, searchResult.QueryString);
+                                {
+                                    searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty, searchResult.QueryString);
+                                }
                                 break;
                             }
                         }
@@ -110,9 +112,9 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     try
                     {
-                        var portalSettings = new PortalSettings(searchResult.PortalId);
-	                    portalSettings.PortalAlias = TestablePortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
-                        url = Globals.NavigateURL(module.TabID, portalSettings, string.Empty, searchResult.QueryString);
+						var portalSettings = new PortalSettings(searchResult.PortalId);
+                        portalSettings.PortalAlias = TestablePortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
+                        url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty, searchResult.QueryString);
                     }
                     catch (Exception ex)
                     {

@@ -75,6 +75,7 @@
             <div class="dnnFormItem"><asp:Label ID="lblDefinitionError" runat="server" CssClass="dnnFormMessage dnnFormError" Visible="false" ResourceKey="DuplicateName" /> </div>
             <ul class="dnnActions dnnClear">
     	        <li><asp:LinkButton id="cmdUpdateDefinition" runat="server" CssClass="dnnPrimaryAction" /></li>
+                <li><asp:LinkButton id="cmdCancelDefinition" resourcekey="cmdCancelDefinition" CssClass="dnnSecondaryAction" runat="server" Visible="False" Causesvalidation="False" /></li>
                 <li><asp:LinkButton id="cmdDeleteDefinition" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdDeleteDefinition" Causesvalidation="False" /></li>
             </ul>
         </asp:Panel>

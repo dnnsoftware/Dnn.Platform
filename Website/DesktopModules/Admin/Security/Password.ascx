@@ -1,5 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Users.Password" CodeFile="Password.ascx.cs" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 
 <div class="dnnForm dnnPassword dnnClear" id="dnnPassword">
     <fieldset>
@@ -21,9 +23,14 @@
                 <dnn:label id="plNewConfirm" runat="server" controlname="txtNewConfirm" />
                 <asp:textbox id="txtNewConfirm" runat="server" textmode="Password" size="25" maxlength="128" CssClass="password-confirm" />
             </div>
+            <div id="captchaRow" runat="server" visible="false" class="dnnFormItem dnnCaptcha">
+                <dnn:label id="captchaLabel" controlname="ctlCaptcha" runat="server" />
+                <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" ErrorStyle-CssClass="dnnFormMessage dnnFormError dnnCaptcha" runat="server" />
+            </div>
+            <div class="dnnClear"></div>
             <ul class="dnnActions dnnClear">
                  <li><asp:LinkButton id="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="ChangePassword" /></li>
-                </ul>
+            </ul>       
 		</asp:panel>
        	<asp:panel id="pnlReset" runat="server">
             <h2 class="dnnFormSectionHead"><asp:label id="lblResetHeading" runat="server" resourceKey="ResetPassword" /></h2>

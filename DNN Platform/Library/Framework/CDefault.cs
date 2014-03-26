@@ -25,6 +25,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
@@ -32,8 +33,6 @@ using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.GettingStarted;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
-
-using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
@@ -120,11 +119,11 @@ namespace DotNetNuke.Framework
                 if (modules.Count > 0)
                 {
                     var pmb = new PortalModuleBase();
-                    result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
+                    result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + Server.UrlEncode(TestableGlobals.Instance.NavigateURL()));
                 }
                 else
                 {
-                    result = Globals.NavigateURL(tab.TabID);
+                    result = TestableGlobals.Instance.NavigateURL(tab.TabID);
                 }
 
                 return result;

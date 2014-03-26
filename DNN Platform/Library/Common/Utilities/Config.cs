@@ -261,8 +261,8 @@ namespace DotNetNuke.Common.Utilities
 
             if (httpNode == null && Iis7AndAbove())
             {
-                const int DefaultMaxAllowedContentLenght = 30000000;
-                return Math.Min(maxRequestLength, DefaultMaxAllowedContentLenght);
+                const int DefaultMaxAllowedContentLength = 30000000;
+                return Math.Min(maxRequestLength, DefaultMaxAllowedContentLength);
             }
 
             if (httpNode != null)
@@ -272,6 +272,60 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return maxRequestLength;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Returns the maximum file size allowed to be uploaded based on the request filter limit
+        /// </summary>
+        /// <returns>Size in megabytes</returns>
+        /// -----------------------------------------------------------------------------
+        public static long GetRequestFilterSize()
+        {
+            var configNav = Load();
+            const int defaultRequestFilter = 30000000/1024/1024;
+            var httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
+                       configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
+            if (httpNode == null && Iis7AndAbove())
+            {
+                return defaultRequestFilter;
+            }
+
+            if (httpNode != null)
+            {
+                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 0);
+                return maxAllowedContentLength / 1024 / 1024;
+            }
+            return defaultRequestFilter;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Sets the maximum file size allowed to be uploaded to the application in bytes
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void SetMaxUploadSize(long newSize)
+        {
+            if (newSize < 12582912) { newSize = 12582912; }; // 12 Mb minimum
+
+            var configNav = Load();
+
+            var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ??
+                            configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
+            if (httpNode != null)
+            {
+                httpNode.Attributes["maxRequestLength"].InnerText = (newSize / 1024).ToString("#");
+                httpNode.Attributes["requestLengthDiskThreshold"].InnerText = (newSize / 1024).ToString("#");
+            }
+
+            httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
+                       configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
+            if (httpNode != null)
+            {
+                httpNode.Attributes["maxAllowedContentLength"].InnerText = newSize.ToString("#");
+            }
+
+            Save(configNav);
         }
 
         private static bool Iis7AndAbove()

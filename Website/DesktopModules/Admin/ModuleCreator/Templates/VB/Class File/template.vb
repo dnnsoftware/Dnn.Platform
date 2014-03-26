@@ -1,8 +1,8 @@
 #Region "Copyright"
 
 ' 
-' Copyright (c) [YEAR]
-' by [OWNER]
+' Copyright (c) _YEAR_
+' by _OWNER_
 ' 
 
 #End Region
@@ -11,9 +11,9 @@
 
 #End Region
 
-Namespace [OWNER].[MODULE]
+Namespace _OWNER_._MODULE_
 
-    Public Class [MODULE]Controller
+    Public Class _MODULE_Controller
 
     End Class
 

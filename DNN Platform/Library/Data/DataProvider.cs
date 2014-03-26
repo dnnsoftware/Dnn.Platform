@@ -563,7 +563,7 @@ namespace DotNetNuke.Data
                                              string processorPassword, string description, string keyWords,
                                              string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId,
                                              int loginTabId,
-                                             int registerTabId, int userTabId, int searchTabId, string defaultLanguage,
+                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, string defaultLanguage,
                                              string homeDirectory, int lastModifiedByUserID, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalInfo",
@@ -594,36 +594,40 @@ namespace DotNetNuke.Data
                                       GetNull(registerTabId),
                                       GetNull(userTabId),
                                       GetNull(searchTabId),
+                                      GetNull(custom404TabId),
+                                      GetNull(custom500TabId),
                                       GetNull(defaultLanguage),
                                       homeDirectory,
                                       lastModifiedByUserID,
                                       cultureCode);
         }
 
-        public virtual void UpdatePortalSetting(int PortalId, string SettingName, string SettingValue, int UserID,
-                                                string CultureCode)
+        public virtual void UpdatePortalSetting(int portalId, string settingName, string settingValue, int userId,
+                                                string cultureCode)
         {
-            ExecuteNonQuery("UpdatePortalSetting", PortalId, SettingName, SettingValue, UserID, CultureCode);
+            ExecuteNonQuery("UpdatePortalSetting", portalId, settingName, settingValue, userId, cultureCode);
         }
 
-        public virtual void UpdatePortalSetup(int PortalId, int AdministratorId, int AdministratorRoleId,
-                                              int RegisteredRoleId, int SplashTabId, int HomeTabId, int LoginTabId,
-                                              int RegisterTabId,
-                                               int UserTabId, int SearchTabId, int AdminTabId, string CultureCode)
+        public virtual void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId,
+                                              int registeredRoleId, int splashTabId, int homeTabId, int loginTabId,
+                                              int registerTabId,
+                                               int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int adminTabId, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalSetup",
-                                      PortalId,
-                                      AdministratorId,
-                                      AdministratorRoleId,
-                                      RegisteredRoleId,
-                                      SplashTabId,
-                                      HomeTabId,
-                                      LoginTabId,
-                                      RegisterTabId,
-                                      UserTabId,
-                                      SearchTabId,
-                                      AdminTabId,
-                                      CultureCode);
+                                      portalId,
+                                      administratorId,
+                                      administratorRoleId,
+                                      registeredRoleId,
+                                      splashTabId,
+                                      homeTabId,
+                                      loginTabId,
+                                      registerTabId,
+                                      userTabId,
+                                      searchTabId,
+                                      custom404TabId,
+                                      custom500TabId,
+                                      adminTabId,
+                                      cultureCode);
         }
 
         #endregion
@@ -2849,51 +2853,7 @@ namespace DotNetNuke.Data
         #endregion
 
         #region Search
-
-        public virtual int AddSearchItem(string Title, string Description, int Author, DateTime PubDate, int ModuleId,
-                                         string Key, string Guid, int ImageFileId)
-        {
-            return ExecuteScalar<int>("AddSearchItem",
-                                        Title,
-                                        Description,
-                                        GetNull(Author),
-                                        GetNull(PubDate),
-                                        ModuleId,
-                                        Key,
-                                        Guid,
-                                        ImageFileId);
-        }
-
-        public virtual int AddSearchItemWord(int SearchItemId, int SearchWordsID, int Occurrences)
-        {
-            return ExecuteScalar<int>("AddSearchItemWord", SearchItemId, SearchWordsID, Occurrences);
-        }
-
-        public virtual void AddSearchItemWordPosition(int SearchItemWordID, string ContentPositions)
-        {
-            ExecuteNonQuery("AddSearchItemWordPosition", SearchItemWordID, ContentPositions);
-        }
-
-        public virtual int AddSearchWord(string Word)
-        {
-            return ExecuteScalar<int>("AddSearchWord", Word);
-        }
-
-        public virtual void DeleteSearchItem(int SearchItemId)
-        {
-            ExecuteNonQuery("DeleteSearchItem", SearchItemId);
-        }
-
-        public virtual void DeleteSearchItems(int ModuleID)
-        {
-            ExecuteNonQuery("DeleteSearchItems", ModuleID);
-        }
-
-        public virtual void DeleteSearchItemWords(int SearchItemId)
-        {
-            ExecuteNonQuery("DeleteSearchItemWords", SearchItemId);
-        }
-
+        
         public virtual IDataReader GetDefaultLanguageByModule(string ModuleList)
         {
             return ExecuteReader("GetDefaultLanguageByModule", ModuleList);
@@ -2909,58 +2869,16 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetSearchIndexers");
         }
 
-        public virtual IDataReader GetSearchItem(int ModuleID, string SearchKey)
-        {
-            return ExecuteReader("GetSearchItem", GetNull(ModuleID), SearchKey);
-        }
-
-        public virtual IDataReader GetSearchItems(int PortalID, int TabID, int ModuleID)
-        {
-            return ExecuteReader("GetSearchItems", GetNull(PortalID), GetNull(TabID), GetNull(ModuleID));
-        }
-
         public virtual IDataReader GetSearchResultModules(int PortalID)
         {
             return ExecuteReader("GetSearchResultModules", PortalID);
-        }
-
-        public virtual IDataReader GetSearchResults(int PortalID, int TabID, int ModuleID)
-        {
-            return ExecuteReader("GetSearchResults", GetNull(PortalID), GetNull(TabID), GetNull(ModuleID));
-        }
-
-        public virtual IDataReader GetSearchResults(int PortalID, string Word)
-        {
-            return ExecuteReader("GetSearchResultsByWord", PortalID, Word);
         }
 
         public virtual IDataReader GetSearchSettings(int ModuleId)
         {
             return ExecuteReader("GetSearchSettings", ModuleId);
         }
-
-        public virtual IDataReader GetSearchWords()
-        {
-            return ExecuteReader("GetSearchWords");
-        }
-
-        public virtual void UpdateSearchItem(int SearchItemId, string Title, string Description, int Author,
-                                             DateTime PubDate, int ModuleId, string Key, string Guid, int HitCount,
-                                             int ImageFileId)
-        {
-            ExecuteNonQuery("UpdateSearchItem",
-                                    SearchItemId,
-                                    Title,
-                                    Description,
-                                    GetNull(Author),
-                                    GetNull(PubDate),
-                                    ModuleId,
-                                    Key,
-                                    Guid,
-                                    HitCount,
-                                    ImageFileId);
-        }
-
+        
         #endregion
 
         #region Lists
@@ -3814,11 +3732,9 @@ namespace DotNetNuke.Data
                                       FriendlyName);
         }
 
-        public virtual void UpdateScheduleHistory(int ScheduleHistoryID, DateTime EndDate, bool Succeeded,
-                                                  string LogNotes, DateTime NextStart)
+        public virtual void UpdateScheduleHistory(int ScheduleHistoryID, DateTime EndDate, bool Succeeded, string LogNotes, DateTime NextStart)
         {
-            ExecuteNonQuery("UpdateScheduleHistory", ScheduleHistoryID, GetNull(EndDate), GetNull(Succeeded), LogNotes,
-                            GetNull(NextStart));
+            ExecuteNonQuery("UpdateScheduleHistory", ScheduleHistoryID, FixDate(EndDate), GetNull(Succeeded), LogNotes, FixDate(NextStart));
         }
 
         #endregion
