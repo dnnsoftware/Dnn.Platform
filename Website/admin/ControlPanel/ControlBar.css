@@ -1023,6 +1023,7 @@ div.ModuleLocator_Menu.ModuleLocator_Hover {
         -ms-transition: background 500ms ease;
         -o-transition: background 500ms ease;
         transition: background 500ms ease;
+        height: 20px;
     }
 
         .controlBar_ModuleListScrollDummy .jspHorizontalBar:hover,
@@ -1032,6 +1033,9 @@ div.ModuleLocator_Menu.ModuleLocator_Hover {
 
     .controlBar_ModuleListScrollDummy .jspDrag {
         background: #000;
+        height: 14px;
+        border-radius: 7px 7px 7px 7px;
+        -webkit-border-radius: 7px 7px 7px 7px;
     }
 
         .controlBar_ModuleListScrollDummy .jspDrag:hover, .controlBar_ModuleListScrollDummy .jspActive {
@@ -1196,7 +1200,6 @@ ul#ControlBar_Module_ModulePosition {
 #ControlBar_ControlPanel .dnnDropDownList .dt-container .sort-button.asc span {
     background-position: 100% -12px;
 }
-
 
 #ControlBar_Module_AddNewModule .search-container {
     position: absolute;
