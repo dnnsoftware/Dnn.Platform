@@ -270,4 +270,7 @@
   <data name="Updated.Text" xml:space="preserve">
     <value>File {0} has been saved</value>
   </data>
+  <data name="ResourceUpdated.Text" xml:space="preserve">
+    <value>Rersource file has been updated</value>
+  </data> 
 </root>
