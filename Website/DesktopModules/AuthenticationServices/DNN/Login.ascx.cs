@@ -149,8 +149,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
             if (!IsPostBack)
             {
-                if (!string.IsNullOrEmpty(Request.QueryString["verificationcode"]) && 
-                    PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.VerifiedRegistration)
+                if (!string.IsNullOrEmpty(Request.QueryString["verificationcode"]) && PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.VerifiedRegistration)
                 {
                     if (Request.IsAuthenticated)
                     {
@@ -158,7 +157,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
 
                     var verificationCode = Request.QueryString["verificationcode"];
-
 
                     try
                     {
@@ -203,7 +201,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
 			if (!Request.IsAuthenticated)
 			{
-				if (Page.IsPostBack == false)
+				if (!Page.IsPostBack)
 				{
 					try
 					{
