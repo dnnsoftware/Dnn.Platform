@@ -492,6 +492,14 @@ namespace DotNetNuke.Framework
                         checkBox.Text = value;
                     }
                 }
+                if (control is TextBox)
+                {
+                    var textBox = (TextBox)control;
+                    if (!String.IsNullOrEmpty(value))
+                    {
+                        textBox.ToolTip = value;
+                    }
+                }
                 if (control is BaseValidator)
                 {
                     var baseValidator = (BaseValidator)control;
