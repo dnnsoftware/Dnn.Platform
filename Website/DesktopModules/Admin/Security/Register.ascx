@@ -5,7 +5,7 @@
 
 <div class="dnnForm dnnRegistrationForm">
     <div class="dnnFormItem">
-        <div class="dnnFormMessage dnnFormInfo"><asp:label id="userHelpLabel" runat="server" /></div>
+        <div class="dnnFormMessage dnnFormInfo"><asp:label id="userHelpLabel" runat="server" ViewStateMode="Disabled" /></div>
     </div>
     <br/>
     <div class="dnnFormItem dnnClear">
