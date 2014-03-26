@@ -8,6 +8,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -32,6 +33,12 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("file");
+
+            if (IncludeNoneSpecificItem)
+            {
+                UndefinedItem = new ListItem(SharedConstants.Unspecified, Null.NullInteger.ToString(CultureInfo.InvariantCulture));
+            }
+
             base.OnPreRender(e);
         }
 
@@ -63,5 +70,13 @@ namespace DotNetNuke.Web.UI.WebControls
                 Services.Parameters["parentId"] = value.ToString();
             }
         }
+
+        public string Filter
+        {
+            get { return Services.Parameters.ContainsKey("filter") ? Services.Parameters["filter"] : string.Empty; }
+            set { Services.Parameters["filter"] = value; }
+        }
+
+        public bool IncludeNoneSpecificItem { get; set; }
     }
 }

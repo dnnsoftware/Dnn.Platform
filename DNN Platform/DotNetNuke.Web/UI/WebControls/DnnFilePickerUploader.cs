@@ -207,7 +207,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
             FilesComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Files_Changed");
             FilesComboBox.SelectItemDefaultText = SharedConstants.Unspecified;
-            FilesComboBox.Services.Parameters.Add("filter", FileFilter);
+            FilesComboBox.IncludeNoneSpecificItem = true;
+            FilesComboBox.Filter = FileFilter;
 
             if ((HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true")))
             {

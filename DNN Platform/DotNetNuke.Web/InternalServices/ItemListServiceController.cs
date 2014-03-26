@@ -1176,16 +1176,7 @@ namespace DotNetNuke.Web.InternalServices
                 Selectable = true
             }).ToList();
 
-            var sortedList = ApplySort(filesDto, sortOrder).ToList();
-
-            //add the none specific item
-            sortedList.Insert(0, new ItemDto
-            {
-                Key = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
-                Value = SharedConstants.Unspecified,
-                HasChildren = false,
-                Selectable = true
-            });
+            var sortedList = ApplySort(filesDto, sortOrder);
 
             return sortedList;
         }
