@@ -658,12 +658,7 @@
 &lt;span class=&quot;right&quot;&gt;&lt;a class=&quot;primaryButton&quot; href=&quot;#&quot;&gt;[Tab.Home.SidebarPane.Module.Content.2.Text]&lt;/a&gt;&lt;/span&gt;[Tab.Home.SidebarPane.Module.Content.3.Text]&lt;/div&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
               <modulesettings/>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -704,22 +699,8 @@
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;p&gt;[Tab.Home.FooterRightPane.Module.Content.0.Text]&lt;br /&gt;[Tab.Home.FooterRightPane.Module.Content.1.Text]&lt;/p&gt;[Tab.Home.FooterRightPane.Module.Content.2.Text]&lt;br /&gt;[Tab.Home.FooterRightPane.Module.Content.3.Text]]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -781,23 +762,8 @@
     &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>DNN_HTML</definition>
+              <modulesettings/>
+              <tabmodulesettings/>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
           </modules>
@@ -844,22 +810,8 @@
     &lt;li&gt;&lt;a href=&quot;OurProducts.aspx#junior&quot;&gt;[Tab.Home.FooterLeftOuterPane.Module.Content.4.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;OurProducts.aspx#street&quot;&gt;[Tab.Home.FooterLeftOuterPane.Module.Content.5.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -926,22 +878,8 @@
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -999,22 +937,8 @@
 &lt;a data-slide=&quot;prev&quot; href=&quot;#myCarousel&quot; class=&quot;carousel-control left&quot;&gt;&amp;lsaquo;&lt;/a&gt;
 &lt;a data-slide=&quot;next&quot; href=&quot;#myCarousel&quot; class=&quot;carousel-control right&quot;&gt;&amp;rsaquo;&lt;/a&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1054,22 +978,8 @@
 &lt;p&gt;[Tab.Home.Contentpane.Module.Content.2.Text]&lt;br /&gt;[Tab.Home.Contentpane.Module.Content.3.Text]&lt;a href=&quot;#&quot;&gt;[Tab.Home.Contentpane.Module.Content.4.Text]&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;hr /&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1118,22 +1028,8 @@
     &lt;li&gt;&lt;a href=&quot;ContactUs.aspx&quot;&gt;[Tab.Home.FooterLeftPane.Module.Content.5.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;ContactUs.aspx&quot;&gt;[Tab.Home.FooterLeftPane.Module.Content.6.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1178,22 +1074,8 @@
     &lt;li&gt;&lt;a href=&quot;AboutUs.aspx&quot;&gt;[Tab.Home.FooterCenterPane.Module.Content.1.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;AboutUs.aspx&quot;&gt;[Tab.Home.FooterCenterPane.Module.Content.2.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1240,22 +1122,8 @@
     &lt;li&gt;&lt;a href=&quot;http://www.linkedin.com/groups?gid=35599&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_linkedin.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;http://plus.google.com/+dotnetnuke&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_googleplus.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1303,38 +1171,7 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>CacheDuration</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>ExcludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheProvider</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>IncludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>MaxVaryByCount</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheIncludeExclude</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-      </tabsettings>
+      <tabsettings/>
       <panes>
         <pane>
           <name>footerRightPane</name>
@@ -1371,17 +1208,8 @@
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;p&gt;[Tab.About.FooterRightPane.Module.Content.0.Text]&lt;br /&gt;[Tab.About.FooterRightPane.Module.Content.1.Text]&lt;/p&gt;[Tab.About.FooterRightPane.Module.Content.2.Text]&lt;br /&gt;[Tab.About.FooterRightPane.Module.Content.3.Text]]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1429,17 +1257,8 @@
     &lt;li&gt;&lt;a href=&quot;OurProducts.aspx#junior&quot;&gt;[Tab.About.FooterLeftOuterPane.Module.Content.4.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;OurProducts.aspx#street&quot;&gt;[Tab.About.FooterLeftOuterPane.Module.Content.5.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1488,17 +1307,8 @@
     &lt;li&gt;&lt;a href=&quot;ContactUs.aspx&quot;&gt;[Tab.About.FooterLeftPane.Module.Content.5.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;ContactUs.aspx&quot;&gt;[Tab.About.FooterLeftPane.Module.Content.6.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1543,17 +1353,8 @@
     &lt;li&gt;&lt;a href=&quot;AboutUs.aspx&quot;&gt;[Tab.About.FooterCenterPane.Module.Content.1.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;AboutUs.aspx&quot;&gt;[Tab.About.FooterCenterPane.Module.Content.2.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1600,17 +1401,8 @@
     &lt;li&gt;&lt;a href=&quot;http://www.linkedin.com/groups?gid=35599&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_linkedin.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;http://plus.google.com/+dotnetnuke&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_googleplus.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1661,22 +1453,8 @@
 &lt;p&gt;[Tab.About.Contentpane.AboutUsModule.Content.7.Text]&lt;/p&gt;
 &lt;p&gt;[Tab.About.Contentpane.AboutUsModule.Content.8.Text]&lt;em&gt;[Tab.About.Contentpane.AboutUsModule.Content.9.Text]&lt;/em&gt;&lt;/p&gt;
 &lt;hr /&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1791,22 +1569,8 @@
     &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1854,38 +1618,7 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>CacheDuration</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>ExcludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheProvider</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>IncludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>MaxVaryByCount</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheIncludeExclude</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-      </tabsettings>
+      <tabsettings/>
       <panes>
         <pane>
           <name>footerRightPane</name>
@@ -1922,17 +1655,8 @@
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;p&gt;[Tab.Products.FooterRightPane.Module.Content.0.Text]&lt;br /&gt;[Tab.Products.FooterRightPane.Module.Content.1.Text]&lt;/p&gt;[Tab.Products.FooterRightPane.Module.Content.2.Text]&lt;br /&gt;[Tab.Products.FooterRightPane.Module.Content.3.Text]]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -1980,17 +1704,8 @@
     &lt;li&gt;&lt;a href=&quot;OurProducts.aspx#junior&quot;&gt;[Tab.Products.FooterLeftOuterPane.Module.Content.4.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;OurProducts.aspx#street&quot;&gt;[Tab.Products.FooterLeftOuterPane.Module.Content.5.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2071,22 +1786,8 @@
     &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2135,17 +1836,8 @@
     &lt;li&gt;&lt;a href=&quot;ContactUs.aspx&quot;&gt;[Tab.Products.FooterLeftPane.Module.Content.5.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;ContactUs.aspx&quot;&gt;[Tab.Products.FooterLeftPane.Module.Content.6.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2190,17 +1882,8 @@
     &lt;li&gt;&lt;a href=&quot;AboutUs.aspx&quot;&gt;[Tab.Products.FooterCenterPane.Module.Content.1.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;AboutUs.aspx&quot;&gt;[Tab.Products.FooterCenterPane.Module.Content.2.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2247,17 +1930,8 @@
     &lt;li&gt;&lt;a href=&quot;http://www.linkedin.com/groups?gid=35599&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_linkedin.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;http://plus.google.com/+dotnetnuke&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_googleplus.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2305,38 +1979,7 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>CacheDuration</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>ExcludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheProvider</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>IncludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>MaxVaryByCount</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheIncludeExclude</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-      </tabsettings>
+      <tabsettings/>
       <panes>
         <pane>
           <name>footerRightPane</name>
@@ -2373,17 +2016,8 @@
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;p&gt;[Tab.ContactUs.FooterRightPane.Module.Content.0.Text]&lt;br /&gt;[Tab.ContactUs.FooterRightPane.Module.Content.1.Text]&lt;/p&gt;[Tab.ContactUs.FooterRightPane.Module.Content.2.Text]&lt;br /&gt;[Tab.ContactUs.FooterRightPane.Module.Content.3.Text]]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2431,17 +2065,8 @@
     &lt;li&gt;&lt;a href=&quot;OurProducts.aspx#junior&quot;&gt;[Tab.ContactUs.FooterLeftOuterPane.Module.Content.4.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;OurProducts.aspx#street&quot;&gt;[Tab.ContactUs.FooterLeftOuterPane.Module.Content.5.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2488,22 +2113,8 @@
 &lt;p&gt;[Tab.ContactUs.CenterPane.Module.Content.12.Text]&lt;/p&gt;
 &lt;h4&gt;[Tab.ContactUs.CenterPane.Module.Content.13.Text]&lt;/h4&gt;
 &lt;p&gt;[Tab.ContactUs.CenterPane.Module.Content.14.Text]&lt;/p&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2552,22 +2163,8 @@
 &lt;textarea rows=&quot;7&quot;&gt;&lt;/textarea&gt;
 &lt;button class=&quot;primaryButton&quot; type=&quot;submit&quot;&gt;[Tab.ContactUs.RightPane.Module.Content.3.Text]&lt;/button&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2616,17 +2213,8 @@
     &lt;li&gt;&lt;a href=&quot;ContactUs.aspx&quot;&gt;[Tab.ContactUs.FooterLeftPane.Module.Content.5.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;ContactUs.aspx&quot;&gt;[Tab.ContactUs.FooterLeftPane.Module.Content.6.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2671,17 +2259,8 @@
     &lt;li&gt;&lt;a href=&quot;AboutUs.aspx&quot;&gt;[Tab.ContactUs.FooterCenterPane.Module.Content.1.Text]&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;AboutUs.aspx&quot;&gt;[Tab.ContactUs.FooterCenterPane.Module.Content.2.Text]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2728,17 +2307,8 @@
     &lt;li&gt;&lt;a href=&quot;http://www.linkedin.com/groups?gid=35599&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_linkedin.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;http://plus.google.com/+dotnetnuke&quot; target=&quot;_blank&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}/Images/connect_googleplus.png&quot; /&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2789,22 +2359,8 @@
 &lt;input type=&quot;text&quot; value=&quot;Enter address...&quot; /&gt;&lt;button class=&quot;primaryButton&quot; type=&quot;submit&quot;&gt;[Tab.ContactUs.LeftPane.Module.Content.13.Text]&lt;/button&gt;
 &lt;div&gt;[Tab.ContactUs.LeftPane.Module.Content.14.Text]&lt;/div&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2852,38 +2408,7 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>CacheDuration</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>ExcludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheProvider</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>IncludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>MaxVaryByCount</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheIncludeExclude</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-      </tabsettings>
+      <tabsettings/>
       <parent>About Us</parent>
       <panes>
         <pane>
@@ -2932,22 +2457,8 @@
 &lt;p&gt;&lt;a href=&quot;#&quot;&gt;[Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.1.Text]&lt;/a&gt;[Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.2.Text]&lt;/p&gt;
 &lt;h6&gt;[Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.8.Text]&lt;h6&gt;&lt;/h6&gt;
 &lt;p&gt;&lt;a href=&quot;#&quot;&gt;[Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.1.Text]&lt;/a&gt;[Tab.StyleGuide.LeftPaneLowerLeft.Module.Content.2.Text]&lt;/p&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -2999,22 +2510,8 @@
 &lt;button class=&quot;secondaryButton&quot; type=&quot;submit&quot;&gt;[Tab.StyleGuide.LeftPaneLowerRight.ButtonsModule.Content.2.Text]&lt;/button&gt;
 &lt;button class=&quot;altButton&quot; type=&quot;submit&quot;&gt;[Tab.StyleGuide.LeftPaneLowerRight.ButtonsModule.Content.3.Text]&lt;/button&gt;
 &lt;/p&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -3068,22 +2565,8 @@
     &lt;li&gt;[Tab.StyleGuide.LeftPaneLowerRight.ListsModule.Content.3.Text]&lt;/li&gt;
     &lt;li&gt;[Tab.StyleGuide.LeftPaneLowerRight.ListsModule.Content.4.Text]&lt;/li&gt;
 &lt;/ol&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -3177,22 +2660,8 @@
         &lt;/tr&gt;
     &lt;/tbody&gt;
 &lt;/table&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -3245,22 +2714,8 @@
 &lt;div&gt;[Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.8.Text]&lt;/div&gt;
 &lt;/div&gt;
 &lt;a href=&quot;#&quot;&gt;[Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.9.Text]&lt;/a&gt;[Tab.StyleGuide.LeftPaneBottom.ImageAlignmentModule.Content.10.Text]]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
+              <modulesettings/>
+              <tabmodulesettings/>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
@@ -3369,38 +2824,7 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>CacheDuration</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>ExcludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheProvider</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>IncludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>MaxVaryByCount</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheIncludeExclude</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-      </tabsettings>
+      <tabsettings/>
       <tabtype>usertab</tabtype>
       <panes>
         <pane>
@@ -4037,10 +3461,6 @@
                     &lt;h2&gt;[USER:DISPLAYNAME]&lt;/h2&gt;
                     &lt;/div&gt;
                   </settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>IncludeButton</settingname>
