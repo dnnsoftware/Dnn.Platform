@@ -272,22 +272,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		#region Event Handlers
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
-
-            jQuery.RequestDnnPluginsRegistration();
-        }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            //ClientAPI.RegisterKeyCapture(Parent, cmdUpdate.Controls[0], 13);
-            //ClientAPI.RegisterKeyCapture(this, cmdUpdate.Controls[0], 13);
             cmdReset.Click += cmdReset_Click;
             cmdUserReset.Click += cmdUserReset_Click;
             cmdUpdate.Click += cmdUpdate_Click;
@@ -312,8 +299,14 @@ namespace DotNetNuke.Modules.Admin.Users
 
         protected override void OnPreRender(EventArgs e)
         {
-            base.OnPreRender(e);
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
+            jQuery.RequestDnnPluginsRegistration();
+
+            base.OnPreRender(e);
 
 			if (Host.EnableStrengthMeter)
 			{

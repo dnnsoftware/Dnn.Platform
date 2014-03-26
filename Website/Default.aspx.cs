@@ -407,7 +407,7 @@ namespace DotNetNuke.Framework
             }
 
             //register DNN SkinWidgets Inititialization scripts
-            if (PortalSettings.EnableSkinWidgets)
+            if (PortalSettings.EnableSkinWidgets & !IsPopUp)
             {
                 jQuery.RequestRegistration();
                 // don't use the new API to register widgets until we better understand their asynchronous script loading requirements.
@@ -798,16 +798,20 @@ namespace DotNetNuke.Framework
             }
 
             //Set the Head tags
+            metaPanel.Visible = !IsPopUp;
+            if (!IsPopUp)
+            {
+                MetaGenerator.Content = Generator;
+                MetaGenerator.Visible = (!String.IsNullOrEmpty(Generator));
+                MetaAuthor.Content = PortalSettings.PortalName;
+                MetaCopyright.Content = Copyright;
+                MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
+                MetaKeywords.Content = KeyWords;
+                MetaKeywords.Visible = (!String.IsNullOrEmpty(KeyWords));
+                MetaDescription.Content = Description;
+                MetaDescription.Visible = (!String.IsNullOrEmpty(Description));
+            }
             Page.Header.Title = Title;
-            MetaGenerator.Content = Generator;
-            MetaGenerator.Visible = (!String.IsNullOrEmpty(Generator));
-            MetaAuthor.Content = PortalSettings.PortalName;
-            MetaCopyright.Content = Copyright;
-            MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
-            MetaKeywords.Content = KeyWords;
-            MetaKeywords.Visible = (!String.IsNullOrEmpty(KeyWords));
-            MetaDescription.Content = Description;
-            MetaDescription.Visible = (!String.IsNullOrEmpty(Description));
         }
 
 		protected override void Render(HtmlTextWriter writer)

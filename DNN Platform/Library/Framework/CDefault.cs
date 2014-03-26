@@ -60,7 +60,10 @@ namespace DotNetNuke.Framework
         {
             if (Page.Form != null)
             {
-                ServicesFrameworkInternal.Instance.RegisterAjaxScript(Page);
+                if (ServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
+                {
+                    ServicesFrameworkInternal.Instance.RegisterAjaxScript(Page);
+                }
             }
         }
 
