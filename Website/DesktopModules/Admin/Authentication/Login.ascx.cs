@@ -401,10 +401,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             else
                             {
                                 if (authLoginControl.AuthenticationType == defaultAuthProvider)
+                                {
                                     _defaultauthLogin.Add(authLoginControl);
+                                }
                                 else
-                                //Add Login Control to List
-                                _loginControls.Add(authLoginControl);
+                                {
+                                    //Add Login Control to List
+                                    _loginControls.Add(authLoginControl);
+                                }
                             }
                         }
                     }
@@ -437,7 +441,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
                 case 1:
                     //We don't want the control to render with tabbed interface
-                    DisplayLoginControl(_defaultauthLogin.Count == 1 ? _defaultauthLogin[0] : _loginControls.Count == 1 ? _loginControls[0] : _oAuthControls[0], false,
+                    DisplayLoginControl(_defaultauthLogin.Count == 1 
+                                            ? _defaultauthLogin[0] 
+                                            : _loginControls.Count == 1 
+                                                ? _loginControls[0] 
+                                                : _oAuthControls[0], 
+                                        false,
                                         false);
                     break;
                 default:
@@ -471,6 +480,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                                  Path.GetFileNameWithoutExtension(authSystem.LoginControlSrc);
             authLoginControl.RedirectURL = RedirectURL;
             authLoginControl.ModuleConfiguration = ModuleConfiguration;
+            if (authLoginControl.ID != "Login_DNN")
+            {
+                authLoginControl.ViewStateMode = ViewStateMode.Enabled;
+            }
 
             //attempt to inject control attributes
             AddLoginControlAttributes(authLoginControl);
@@ -530,7 +543,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private void DisplayLoginControl(AuthenticationLoginBase authLoginControl, bool addHeader, bool addFooter)
         {
             //Create a <div> to hold the control
-            var container = new HtmlGenericControl { TagName = "div", ID = authLoginControl.AuthenticationType };
+            var container = new HtmlGenericControl { TagName = "div", ID = authLoginControl.AuthenticationType, ViewStateMode = ViewStateMode.Disabled};
 
             //Add Settings Control to Container
             container.Controls.Add(authLoginControl);
