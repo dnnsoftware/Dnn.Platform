@@ -10,6 +10,7 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.hideModuleLocationMenu = true;
     dnn.controlBar.showSelectedModule = false;
     dnn.controlBar.status = null;
+    dnn.controlBar.scrollBarFixedSize = 980;
     
     //Lazy loading settings
     dnn.controlBar.moduleLoadingPageIndex = 0;
@@ -35,7 +36,6 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.initialScrollPosition = null;
     dnn.controlBar.arrowScrollingContainer = null;
     dnn.controlBar.arrowScrollingButtonSpeed = 10;
-    dnn.controlBar.arrowScrollingRepeatFreq = 100;
     
     dnn.controlBar.getService = function () {
         return $.dnnSF();
@@ -619,12 +619,21 @@ dnn.controlBar.init = function (settings) {
             var bookmarkTooltip = dnn.controlBar.getBookmarkTooltip(bookmarkClass);
             ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><a href="javascript:void(0)" class="' + bookmarkClass + '" title="' + bookmarkTooltip + '"/><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
         }
-        if (!dnn.controlBar.allModulesLoaded) {
-            ul.append('<li class="moreModules"><div class="moreModules" title="'+settings.getNextModulesTip+'"></div></li>');
-            $('li.moreModules', ul).click(function() {
-                dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
-            });
-        }
+    };
+
+    dnn.controlBar.cleanViewPort = function() {
+        $(".viewportSeparator").each(function() {
+            $(this).get(0).style.display = '';
+        });            
+    };
+
+    dnn.controlBar.setViewPort = function(windowWidth, margin) {
+        var viewportRelativeSize = Math.round(margin * 100 / windowWidth);
+        $(".viewportSeparator").css("width", viewportRelativeSize + "%").show();
+    };
+
+    dnn.controlBar.getScrollBarMargin = function(windowWidth) {
+        return Math.round((windowWidth - dnn.controlBar.scrollBarFixedSize) / 2);
     };
 
     dnn.controlBar.renderModuleList = function (containerId, moduleList) {
@@ -647,19 +656,21 @@ dnn.controlBar.init = function (settings) {
         dnn.controlBar.fillModuleList(ul, moduleList);
         
         $('#ControlBar_Module_ModulePosition').hide();
-        var ulWidth = (dnn.controlBar.getModuleLoadingCurrentIndex() * 160) + moduleList.length * 160 + (dnn.controlBar.allModulesLoaded ? 0 : 60);
-        ul.css('width', ulWidth + 'px');
+
         // some math here
         var windowWidth = $(window).width();
-        var margin = Math.round((windowWidth - 980) / 2);
-        var dummyScrollWidth = Math.round((980 * (ulWidth + margin)) / windowWidth);
+        var margin = dnn.controlBar.getScrollBarMargin(windowWidth);
+        var ulWidth = (dnn.controlBar.getModuleLoadingCurrentIndex() * 160) + moduleList.length * 160 + (dnn.controlBar.allModulesLoaded ? margin : 0);
+        ul.css('width', ulWidth + 'px');        
+        dnn.controlBar.setViewPort(windowWidth, margin);
+        var dummyScrollWidth = Math.round((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth);
         var ulLeft = margin;        
         var oldX = 0;
         var reloading = false;
         var modulesInitFunc = function () {
             $('div.controlBar_ModuleListScrollDummy_Content', scrollContainer).css('width', dummyScrollWidth);
             if (currentModuleLoadingPageIndex == 0) {
-                scrollContainer.jScrollPane({'arrowButtonSpeed': dnn.controlBar.arrowScrollingButtonSpeed, 'arrowRepeatFreq': dnn.controlBar.arrowScrollingRepeatFreq});
+                scrollContainer.jScrollPane({'arrowButtonSpeed': dnn.controlBar.arrowScrollingButtonSpeed});
             } else {
                 var jspapi = scrollContainer.data('jsp');
                 if (jspapi) {                    
@@ -683,7 +694,7 @@ dnn.controlBar.init = function (settings) {
                     reloading = false;                    
                 } else if (isAtRight) {
                     var justAtRight = (oldX == x);
-                    oldX = Math.round((980 * (ulWidth + margin)) / windowWidth) - 980;                         
+                    oldX = Math.round((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth) - dnn.controlBar.scrollBarFixedSize;                         
                     if (moduleList.length != 0 && justAtRight && !reloading) {                        
                         reloading = true;                        
                         dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
@@ -694,12 +705,12 @@ dnn.controlBar.init = function (settings) {
                     if (x > oldX) {                        
                         // scroll to right
                         xOffset = x - oldX;
-                        leftOffset = ((ulWidth + margin) / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
+                        leftOffset = ((ulWidth + margin) / ((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth)) * xOffset;
                         ulLeft -= Math.abs(leftOffset);
                     } else {                        
                         // scroll to left
                         xOffset = oldX - x;
-                        leftOffset = ((ulWidth + margin) / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
+                        leftOffset = ((ulWidth + margin) / ((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth)) * xOffset;
                         ulLeft += Math.abs(leftOffset);
                     }
                     oldX = x;
@@ -859,7 +870,7 @@ dnn.controlBar.init = function (settings) {
                     }
                     
                     var xOffset = dnn.controlBar.initialDragPosition.X - e.pageX;
-                    var scrollNewX = dnn.controlBar.initialScrollPosition.X + (((980 * (ulWidth + margin)) / windowWidth) * xOffset) / (ulWidth + margin);
+                    var scrollNewX = dnn.controlBar.initialScrollPosition.X + (((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth) * xOffset) / (ulWidth + margin);
                     
                     var jspapi = scrollContainer.data('jsp');                    
                     if (jspapi) {
@@ -1074,6 +1085,19 @@ dnn.controlBar.init = function (settings) {
         dnn.controlBar.isMouseDown = false;
     });
 
+    //attach resize to fix viewPort
+    $(window).resize(function () {
+        if (dnn.controlBar.addNewModule && !$("#ControlBar_ModuleListHolder_NewModule").is(":visible")) {
+            return;
+        }
+        if (!dnn.controlBar.addNewModule && !$("#ControlBar_ModuleListHolder_ExistingModule").is(":visible")) {
+            return;
+        }
+
+        var windowWidth = $(window).width();
+        var margin = dnn.controlBar.getScrollBarMargin(windowWidth);
+        dnn.controlBar.setViewPort(windowWidth, margin);
+    });
     var currentUserMode = settings.currentUserMode;
 
     $('div.subNav').hide();
@@ -1215,7 +1239,8 @@ dnn.controlBar.init = function (settings) {
             return false;
         }        
         dnn.controlBar.resetModuleSearch();
-        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());        
+        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
+        dnn.controlBar.cleanViewPort();
         dnn.controlBar.addNewModule = true;
         toggleModulePane($('#ControlBar_Module_AddNewModule'), true);
         $('#ControlBar_Action_Menu').addClass('onActionMenu');
@@ -1258,7 +1283,8 @@ dnn.controlBar.init = function (settings) {
                 }
             }
         }
-    
+
+        dnn.controlBar.cleanViewPort();
         dnn.controlBar.addNewModule = false;
         toggleModulePane($('#ControlBar_Module_AddExistingModule'), true);
         $('#ControlBar_Action_Menu').addClass('onActionMenu');

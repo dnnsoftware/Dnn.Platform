@@ -979,25 +979,6 @@ ul.ControlBar_ModuleList {
                 display: block;
             }
 
-    ul.ControlBar_ModuleList > li.moreModules {
-        width: 27px;
-        height: 147px;
-        background-color: #434343;
-
-    }
-
-    ul.ControlBar_ModuleList > li > div.moreModules {
-        width: 25px;
-        height: 145px;
-        margin: 1px 0 0 1px;
-        -webkit-border-radius: 3px;
-        border-radius: 3px;
-        background: #353535 url(controlbarimages/menu_right.gif) no-repeat center center;        
-        -webkit-box-shadow: 1px 1px 3px 0px #303030 inset;
-        box-shadow: 1px 1px 3px 0px #303030 inset;
-        cursor: pointer;
-    }
-
 div.ModuleLocator_Menu.ModuleLocator_Hover {
     background: #FFF url(controlbarimages/icons.png) no-repeat -47px 3px;
 }
@@ -1268,6 +1249,37 @@ ul#ControlBar_Module_ModulePosition {
     background-image: url("images/controlbar_cleartext.png");
     background-color: transparent;
 }
+
+#ControlBar_Module_AddExistingModule .viewportSeparator,
+#ControlBar_Module_AddNewModule .viewportSeparator {
+    position: absolute;
+    height: 100%;
+    z-index: 5;
+    width: 20%;
+    display: none;
+}
+
+#ControlBar_Module_AddExistingModule .viewportSeparator.left,
+#ControlBar_Module_AddNewModule .viewportSeparator.left {
+    background: -moz-linear-gradient(right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px , rgba(0,0,0,0.70) 100%);
+    background: -webkit-gradient(linear, right left, right left, color-stop(0%, rgba(0,0,0,0)), color-stop(78px,rgba(0,0,0,0.40)), color-stop(100%,rgba(0,0,0,0.70)));
+    background: -webkit-linear-gradient(right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px , rgba(0,0,0,0.70) 100%);
+    background: -o-linear-gradient(right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px , rgba(0,0,0,0.70) 100%);
+    background: -ms-linear-gradient(right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px , rgba(0,0,0,0.70) 100%);
+    background: linear-gradient(to left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px , rgba(0,0,0,0.70) 100%);    
+}
+
+#ControlBar_Module_AddExistingModule .viewportSeparator.right,
+#ControlBar_Module_AddNewModule .viewportSeparator.right {
+    right: 0%;
+    background: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px, rgba(0,0,0,0.70) 100%);
+    background: -webkit-gradient(linear, left right, left right, color-stop(50%, rgba(0,0,0,0)), color-stop(10%,rgba(0,0,0,0.40)), color-stop(100%,rgba(0,0,0,0.70)));
+    background: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px, rgba(0,0,0,0.70) 100%);
+    background: -o-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px, rgba(0,0,0,0.70) 100%);
+    background: -ms-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px, rgba(0,0,0,0.70) 100%);
+    background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 78px, rgba(0,0,0,0.70) 100%);
+}
+
 
 #ControlBar_ControlPanel .dnnBlackDropDown .dt-container .search-container .search-input-container {
     background: #101010;

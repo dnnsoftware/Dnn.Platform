@@ -299,6 +299,8 @@
          <% if (TabPermissionController.HasTabPermission("EDIT,CONTENT,MANAGE") && PortalSettings.UserMode == PortalSettings.Mode.Edit)
             {%>
         <div id="ControlBar_Module_AddNewModule" class="ControlModulePanel">
+            <div class="viewportSeparator left"></div>
+            <div class="viewportSeparator right"></div>
             <div class="ControlModuleContainer">
                 <dnn:DnnComboBox ID="CategoryList" runat="server" DataTextField="Name" DataValueField="Name"  Skin="DnnBlack"
                     OnClientSelectedIndexChanged="dnn.controlBar.ControlBar_Module_CategoryList_Changed" ViewStateMode="Disabled" />
@@ -321,15 +323,17 @@
                     <%= GetString("LoadingModule.Text")%>
                 </p>
             </div>            
-            <div id="ControlBar_ModuleListHolder_NewModule" class="ControlBar_ModuleListHolder">
+            <div id="ControlBar_ModuleListHolder_NewModule" class="ControlBar_ModuleListHolder">                
                 <ul class="ControlBar_ModuleList">
-                </ul>
+                </ul>                
             </div>
             <div class="controlBar_ModuleListScrollDummy">
                 <div class="controlBar_ModuleListScrollDummy_Content"></div>
             </div>
         </div>
         <div id="ControlBar_Module_AddExistingModule" class="ControlModulePanel">
+            <div class="viewportSeparator left"></div>
+            <div class="viewportSeparator right"></div>
             <div class="ControlModuleContainer">
                 <dnn:DnnPageDropDownList ID="PageList" runat="server" CssClass="dnnLeftComboBox dnnBlackDropDown" IncludeAllTabTypes="True" IncludeDisabledTabs="True" />
                 <dnn:DnnComboBox ID="VisibilityLst" runat="server" CssClass="dnnLeftComboBox" Enabled="false" Skin="DnnBlack" ViewStateMode="Disabled" />
