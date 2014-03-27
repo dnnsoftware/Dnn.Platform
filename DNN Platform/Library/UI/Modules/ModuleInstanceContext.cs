@@ -60,7 +60,6 @@ namespace DotNetNuke.UI.Modules
         private ModuleInfo _configuration;
         private bool? _isEditable;
         private int _nextActionId = -1;
-        private Hashtable _settings;
 
         #endregion
 
@@ -261,20 +260,15 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                var controller = new ModuleController();
-                if (_settings == null)
-                {
-                    //we need to make sure we don't directly modify the ModuleSettings so create new HashTable DNN-8715
-                    _settings = new Hashtable(controller.GetModuleSettings(ModuleId));
+                var settings = Configuration.ModuleSettings;
 
-                    //add the TabModuleSettings to the ModuleSettings
-                    Hashtable tabModuleSettings = controller.GetTabModuleSettings(TabModuleId);
-                    foreach (string strKey in tabModuleSettings.Keys)
-                    {
-                        _settings[strKey] = tabModuleSettings[strKey];
-                    }
+                //add the TabModuleSettings to the ModuleSettings
+                Hashtable tabModuleSettings = Configuration.TabModuleSettings;
+                foreach (string strKey in tabModuleSettings.Keys)
+                {
+                    settings[strKey] = tabModuleSettings[strKey];
                 }
-                return _settings;
+                return settings;
             }
         }
 

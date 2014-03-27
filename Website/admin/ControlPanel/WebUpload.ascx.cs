@@ -162,22 +162,9 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 {
                     _UploadRoles = string.Empty;
 
-                    var objModules = new ModuleController();
-                    //TODO:  Should replace this with a finder method in PortalSettings to look in the cached modules of the activetab - jmb 11/25/2004
-                    ModuleInfo ModInfo;
-
-                    if (IsHostMenu)
+                    if (Convert.ToString(Settings["uploadroles"]) != null)
                     {
-                        ModInfo = objModules.GetModuleByDefinition(Null.NullInteger, "File Manager");
-                    }
-                    else
-                    {
-                        ModInfo = objModules.GetModuleByDefinition(PortalId, "File Manager");
-                    }
-                    Hashtable settings = new ModuleController().GetModuleSettings(ModInfo.ModuleID);
-                    if (Convert.ToString(settings["uploadroles"]) != null)
-                    {
-                        _UploadRoles = Convert.ToString(settings["uploadroles"]);
+                        _UploadRoles = Convert.ToString(Settings["uploadroles"]);
                     }
                 }
                 return _UploadRoles;

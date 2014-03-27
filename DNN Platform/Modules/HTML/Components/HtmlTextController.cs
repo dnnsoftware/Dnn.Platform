@@ -372,39 +372,36 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "ModuleID">The ID of the Module</param>
-        /// <param name = "IsPublished">Whether the content has been published or not</param>
-        /// <param name="WorkflowID">The Workflow ID</param>
+        /// <param name = "moduleId">The ID of the Module</param>
+        /// <param name = "isPublished">Whether the content has been published or not</param>
+        /// <param name="workflowId">The Workflow ID</param>
         /// <history>
         /// </history>
         /// -----------------------------------------------------------------------------
-        public HtmlTextInfo GetTopHtmlText(int ModuleID, bool IsPublished, int WorkflowID)
+        public HtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId)
         {
-            var objHtmlText = (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetTopHtmlText(ModuleID, IsPublished), typeof (HtmlTextInfo)));
-            if (objHtmlText != null)
+            var htmlText = (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetTopHtmlText(moduleId, isPublished), typeof (HtmlTextInfo)));
+            if (htmlText != null)
             {
                 // check if workflow has changed
-                if (IsPublished == false && objHtmlText.WorkflowID != WorkflowID)
+                if (isPublished == false && htmlText.WorkflowID != workflowId)
                 {
                     // get proper state for workflow
-                    var objWorkflow = new WorkflowStateController();
-                    objHtmlText.WorkflowID = WorkflowID;
-                    objHtmlText.WorkflowName = "[REPAIR_WORKFLOW]";
-                    if (objHtmlText.IsPublished)
-                    {
-                        objHtmlText.StateID = objWorkflow.GetLastWorkflowStateID(WorkflowID);
-                    }
-                    else
-                    {
-                        objHtmlText.StateID = objWorkflow.GetFirstWorkflowStateID(WorkflowID);
-                    }
+                    htmlText.WorkflowID = workflowId;
+                    htmlText.WorkflowName = "[REPAIR_WORKFLOW]";
+
+                    var workflowStateController = new WorkflowStateController();
+                    htmlText.StateID = htmlText.IsPublished 
+                                        ? workflowStateController.GetLastWorkflowStateID(workflowId) 
+                                        : workflowStateController.GetFirstWorkflowStateID(workflowId);
                     // update object
-                    UpdateHtmlText(objHtmlText, GetMaximumVersionHistory(objHtmlText.PortalID));
+                    UpdateHtmlText(htmlText, GetMaximumVersionHistory(htmlText.PortalID));
+
                     // get object again
-                    objHtmlText = (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetTopHtmlText(ModuleID, IsPublished), typeof (HtmlTextInfo)));
+                    htmlText = (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetTopHtmlText(moduleId, false), typeof (HtmlTextInfo)));
                 }
             }
-            return objHtmlText;
+            return htmlText;
         }
 
         /// -----------------------------------------------------------------------------
@@ -426,7 +423,8 @@ namespace DotNetNuke.Modules.Html
 
             // get from module settings
             var moduleController = new ModuleController();
-            Hashtable settings = moduleController.GetModuleSettings(ModuleId);
+            var module = moduleController.GetModule(ModuleId, TabId);
+            Hashtable settings = module.ModuleSettings;
             if (settings["WorkflowID"] != null)
             {
                 workFlowId = Convert.ToInt32(settings["WorkflowID"]);

@@ -319,11 +319,9 @@ namespace DotNetNuke.Entities.Tabs
             return portalId;
         }
 
-        private static object GetTabsByPortalCallBack(CacheItemArgs cacheItemArgs)
+        private IEnumerable<TabInfo> GetSiblingTabs(TabInfo objTab)
         {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            List<TabInfo> tabs = CBO.FillCollection<TabInfo>(Provider.GetTabs(portalID));
-            return new TabCollection(tabs);
+            return GetTabsByPortal(objTab.PortalID).WithCulture(objTab.CultureCode, true).WithParentId(objTab.ParentId);
         }
 
         private static object GetTabPathDictionaryCallback(CacheItemArgs cacheItemArgs)
@@ -350,9 +348,50 @@ namespace DotNetNuke.Entities.Tabs
             return tabpathDic;
         }
 
-        private IEnumerable<TabInfo> GetSiblingTabs(TabInfo objTab)
+        private static object GetTabsByPortalCallBack(CacheItemArgs cacheItemArgs)
         {
-            return GetTabsByPortal(objTab.PortalID).WithCulture(objTab.CultureCode, true).WithParentId(objTab.ParentId);
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            List<TabInfo> tabs = CBO.FillCollection<TabInfo>(Provider.GetTabs(portalID));
+            return new TabCollection(tabs);
+        }
+
+        internal IDictionary<int, TabInfo> GetTabsByTabModuleID(int tabModuleID)
+        {
+            return CBO.FillDictionary<int, TabInfo>("TabID", Provider.GetTabsByTabModuleID(tabModuleID));
+        }
+
+        private Dictionary<int, Hashtable> GetTabSettingsByPortal(int portalId)
+        {
+            string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
+            return CBO.GetCachedObject<Dictionary<int, Hashtable>>(new CacheItemArgs(cacheKey,
+                                                                                    DataCache.TabCacheTimeOut,
+                                                                                    DataCache.TabCachePriority),
+                        c =>
+                        {
+                            var tabSettings = new Dictionary<int, Hashtable>();
+                            IDataReader dr = Provider.GetTabSettings(portalId);
+                            while (dr.Read())
+                            {
+                                int tabId = dr.GetInt32(0);
+                                Hashtable settings;
+                                if (!tabSettings.TryGetValue(tabId, out settings))
+                                {
+                                    settings = new Hashtable();
+                                    tabSettings[tabId] = settings;
+                                }
+
+                                if (!dr.IsDBNull(2))
+                                {
+                                    settings[dr.GetString(1)] = dr.GetString(2);
+                                }
+                                else
+                                {
+                                    settings[dr.GetString(1)] = "";
+                                }
+                            }
+                            CBO.CloseDataReader(dr, true);
+                            return tabSettings;
+                        });
         }
 
         private void HardDeleteTabInternal(int tabId)
@@ -964,40 +1003,6 @@ namespace DotNetNuke.Entities.Tabs
                                                                     DataCache.TabCachePriority,
                                                                     portalId),
                                                             GetTabsByPortalCallBack);
-        }
-
-        private Dictionary<int, Hashtable> GetTabSettingsByPortal(int portalId)
-        {
-            string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
-            return CBO.GetCachedObject<Dictionary<int, Hashtable>>(new CacheItemArgs(cacheKey, 
-                                                                                    DataCache.TabCacheTimeOut, 
-                                                                                    DataCache.TabCachePriority),
-                        c =>
-                        {
-                            var tabSettings = new Dictionary<int, Hashtable>();
-                            IDataReader dr = Provider.GetTabSettings(portalId);
-                            while (dr.Read())
-                            {
-                                int tabId = dr.GetInt32(0);
-                                Hashtable settings;
-                                if (!tabSettings.TryGetValue(tabId, out settings))
-                                {
-                                    settings = new Hashtable();
-                                    tabSettings[tabId] = settings;
-                                }
-
-                                if (!dr.IsDBNull(2))
-                                {
-                                    settings[dr.GetString(1)] = dr.GetString(2);
-                                }
-                                else
-                                {
-                                    settings[dr.GetString(1)] = "";
-                                }
-                            }
-                            CBO.CloseDataReader(dr, true);
-                            return tabSettings;
-                        });
         }
 
         /// <summary>

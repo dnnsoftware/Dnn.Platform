@@ -74,9 +74,7 @@ namespace DotNetNuke.Entities.Modules
         private ModuleControlInfo _moduleControl;
         private ModuleDefinitionInfo _moduleDefinition;
         private ModulePermissionCollection _modulePermissions;
-        private Hashtable _moduleSettings;
         private TabInfo _parentTab;
-        private Hashtable _tabModuleSettings;
         private TabPermissionCollection _tabPermissions;
 
         public ModuleInfo()
@@ -313,19 +311,17 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (_moduleSettings == null)
+                Hashtable moduleSettings;
+                if (ModuleID == Null.NullInteger)
                 {
-                    if (ModuleID == Null.NullInteger)
-                    {
-                        _moduleSettings = new Hashtable();
-                    }
-                    else
-                    {
-                        var oModuleCtrl = new ModuleController();
-                        _moduleSettings = oModuleCtrl.GetModuleSettings(ModuleID);
-                    }
+                    moduleSettings = new Hashtable();
                 }
-                return _moduleSettings;
+                else
+                {
+                    var oModuleCtrl = new ModuleController();
+                    moduleSettings = oModuleCtrl.GetModuleSettings(ModuleID, TabID);
+                }
+                return moduleSettings;
             }
         }
 
@@ -358,19 +354,18 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (_tabModuleSettings == null)
+                Hashtable tabModuleSettings;
+
+                if (TabModuleID == Null.NullInteger)
                 {
-                    if (TabModuleID == Null.NullInteger)
-                    {
-                        _tabModuleSettings = new Hashtable();
-                    }
-                    else
-                    {
-                        var oModuleCtrl = new ModuleController();
-                        _tabModuleSettings = oModuleCtrl.GetTabModuleSettings(TabModuleID);
-                    }
+                    tabModuleSettings = new Hashtable();
                 }
-                return _tabModuleSettings;
+                else
+                {
+                    var oModuleCtrl = new ModuleController();
+                    tabModuleSettings = oModuleCtrl.GetTabModuleSettings(TabModuleID, TabID);
+                }
+                return tabModuleSettings;
             }
         }
 

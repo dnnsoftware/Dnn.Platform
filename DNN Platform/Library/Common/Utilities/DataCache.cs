@@ -144,6 +144,7 @@ namespace DotNetNuke.Common.Utilities
         public const int ModuleControlsCacheTimeOut = 20;
 
         public const string TabModuleCacheKey = "TabModules{0}";
+        public const string TabModuleSettingsCacheKey = "TabModuleSettings{0}";
         public const CacheItemPriority TabModuleCachePriority = CacheItemPriority.AboveNormal;
         public const int TabModuleCacheTimeOut = 20;
 
@@ -152,7 +153,9 @@ namespace DotNetNuke.Common.Utilities
         public const int ModulePermissionCacheTimeOut = 20;
 
         public const string ModuleCacheKey = "Modules{0}";
+        public const string ModuleSettingsCacheKey = "ModuleSettings{0}";
         public const int ModuleCacheTimeOut = 20;
+        public const CacheItemPriority ModuleCachePriority = CacheItemPriority.AboveNormal;
 
         public const string FolderCacheKey = "Folders{0}";
         public const int FolderCacheTimeOut = 20;

@@ -148,6 +148,66 @@ AS
 	END
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSettingsByTab]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettingsByTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettingsByTab]
+    @TabId Int
+AS
+	BEGIN
+		SELECT
+			MS.ModuleID,
+			MS.SettingName,
+			CASE WHEN Lower(MS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(MS.SettingValue)
+				 ELSE MS.SettingValue END           
+				 AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}ModuleSettings] MS
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] TM ON MS.ModuleID = TM.ModuleID
+		WHERE  TM.TabID = @TabId
+		ORDER BY MS.ModuleID
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]
+    @TabId Int
+AS
+	BEGIN
+		SELECT
+			TMS.TabModuleID,
+			TMS.SettingName,
+			CASE WHEN Lower(TMS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TMS.SettingValue)
+				 ELSE TMS.SettingValue END           
+				 AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}TabModuleSettings] TMS
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] TM ON TMS.TabModuleID = TM.TabModuleID
+		WHERE  TM.TabID = @TabId
+		ORDER BY TMS.TabModuleID
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabsByTabModuleID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByTabModuleID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByTabModuleID]
+	@TabModuleID Int -- NOT Null
+AS
+	BEGIN
+		SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs] T
+		WHERE IsDeleted = 0
+		  AND TabID IN (SELECT TabID FROM {databaseOwner}[{objectQualifier}TabModules]
+						WHERE TabModuleID = @TabModuleID AND IsDeleted = 0)
+		ORDER BY PortalId, Level, ParentID, TabOrder -- PortalId added for query optimization
+	END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

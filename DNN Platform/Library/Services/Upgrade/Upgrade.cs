@@ -2513,7 +2513,7 @@ namespace DotNetNuke.Services.Upgrade
                     var tabModules = moduleController.GetTabModules(myProfileTabId);
                     foreach (var module in tabModules.Values)
                     {
-                        var settings = moduleController.GetTabModuleSettings(module.TabModuleID);
+                        var settings = module.TabModuleSettings;
                         if (settings.ContainsKey("ProfileTemplate") && settings["ProfileTemplate"].ToString().Contains("<div class=\"pBio\">"))
                         {
                             var template = @"<div class=""pBio"">

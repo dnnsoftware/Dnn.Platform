@@ -43,6 +43,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
@@ -229,6 +230,28 @@ namespace DotNetNuke.Entities.Modules
                 }
             }
             return IsInstance;
+        }
+
+        private void ClearModuleSettingsCache(int moduleId)
+        {
+            var tabController = new TabController();
+
+            foreach (var tab in tabController.GetTabsByModuleID(moduleId).Values)
+            {
+                string cacheKey = String.Format(DataCache.ModuleSettingsCacheKey, tab.TabID);
+                DataCache.RemoveCache(cacheKey);
+            }
+        }
+
+        private void ClearTabModuleSettingsCache(int tabModuleId)
+        {
+            var tabController = new TabController();
+
+            foreach (var tab in tabController.GetTabsByTabModuleID(tabModuleId).Values)
+            {
+                string cacheKey = String.Format(DataCache.TabModuleSettingsCacheKey, tab.TabID);
+                DataCache.RemoveCache(cacheKey);
+            }
         }
 
         private static ModuleInfo DeserializeModule(XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId, int moduleDefId)
@@ -483,6 +506,80 @@ namespace DotNetNuke.Entities.Modules
             return moduleDefinition;
         }
 
+        internal Hashtable GetModuleSettings(int moduleId, int tabId)
+        {
+            string cacheKey = String.Format(DataCache.ModuleSettingsCacheKey, tabId);
+
+            var moduleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(new CacheItemArgs(cacheKey,
+                                                                                    DataCache.ModuleCacheTimeOut,
+                                                                                    DataCache.ModuleCachePriority),
+                            c =>
+                            {
+                                var moduleSettingsDic = new Dictionary<int, Hashtable>();
+                                IDataReader dr = DataProvider.Instance().GetModuleSettingsByTab(tabId);
+                                while (dr.Read())
+                                {
+                                    int mId = dr.GetInt32(0);
+                                    Hashtable settings;
+                                    if (!moduleSettingsDic.TryGetValue(mId, out settings))
+                                    {
+                                        settings = new Hashtable();
+                                        moduleSettingsDic[mId] = settings;
+                                    }
+
+                                    if (!dr.IsDBNull(2))
+                                    {
+                                        settings[dr.GetString(1)] = dr.GetString(2);
+                                    }
+                                    else
+                                    {
+                                        settings[dr.GetString(1)] = "";
+                                    }
+                                }
+                                CBO.CloseDataReader(dr, true);
+                                return moduleSettingsDic;
+                            });
+
+            return moduleSettings.ContainsKey(moduleId) ? moduleSettings[moduleId] : new Hashtable();
+        }
+
+        internal Hashtable GetTabModuleSettings(int tabmoduleId, int tabId)
+        {
+            string cacheKey = String.Format(DataCache.TabModuleSettingsCacheKey, tabId);
+
+            var tabModuleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(new CacheItemArgs(cacheKey,
+                                                                                    DataCache.TabModuleCacheTimeOut,
+                                                                                    DataCache.TabModuleCachePriority),
+                            c =>
+                            {
+                                var tabModuleSettingsDic = new Dictionary<int, Hashtable>();
+                                IDataReader dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId);
+                                while (dr.Read())
+                                {
+                                    int tMId = dr.GetInt32(0);
+                                    Hashtable settings;
+                                    if (!tabModuleSettingsDic.TryGetValue(tMId, out settings))
+                                    {
+                                        settings = new Hashtable();
+                                        tabModuleSettingsDic[tMId] = settings;
+                                    }
+
+                                    if (!dr.IsDBNull(2))
+                                    {
+                                        settings[dr.GetString(1)] = dr.GetString(2);
+                                    }
+                                    else
+                                    {
+                                        settings[dr.GetString(1)] = "";
+                                    }
+                                }
+                                CBO.CloseDataReader(dr, true);
+                                return tabModuleSettingsDic;
+                            });
+
+            return (tabModuleSettings.ContainsKey(tabmoduleId)) ? tabModuleSettings[tabmoduleId] : new Hashtable();
+        }
+
         private static object GetTabModulesCallBack(CacheItemArgs cacheItemArgs)
         {
             var tabID = (int)cacheItemArgs.ParamList[0];
@@ -533,7 +630,7 @@ namespace DotNetNuke.Entities.Modules
                 AddModuleInternal(newModule);
 
                 //copy module settings
-                Hashtable settings = GetModuleSettings(sourceModule.ModuleID);
+                Hashtable settings = GetModuleSettings(sourceModule.ModuleID, sourceModule.TabID);
 
                 //Copy each setting to the new TabModule instance
                 foreach (DictionaryEntry setting in settings)
@@ -641,7 +738,7 @@ namespace DotNetNuke.Entities.Modules
                 CBO.CloseDataReader(dr, true);
             }
 
-            DataCache.RemoveCache("GetModuleSettings" + moduleId);
+            ClearModuleSettingsCache(moduleId);
         }
 
         private void UpdateModuleSettings(ModuleInfo updatedModule)
@@ -1081,7 +1178,6 @@ namespace DotNetNuke.Entities.Modules
             DataCache.ClearModuleCache(TabId);
         }
 
-
          /// <summary>
         /// Copies the module to a new page.
         /// </summary>
@@ -1239,11 +1335,8 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void CopyTabModuleSettings(ModuleInfo fromModule, ModuleInfo toModule)
         {
-            //Get the TabModuleSettings
-            Hashtable settings = GetTabModuleSettings(fromModule.TabModuleID);
-
             //Copy each setting to the new TabModule instance
-            foreach (DictionaryEntry setting in settings)
+            foreach (DictionaryEntry setting in fromModule.TabModuleSettings)
             {
                 UpdateTabModuleSetting(toModule.TabModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
             }
@@ -2181,17 +2274,17 @@ namespace DotNetNuke.Entities.Modules
         ///    [sleupold]   2007-09-24   documented
         ///    [vnguyen]    2010-05-10   Modified: Added update tab module version
         /// </history>
-        public void DeleteModuleSetting(int ModuleId, string SettingName)
+        public void DeleteModuleSetting(int moduleId, string settingName)
         {
-            dataProvider.DeleteModuleSetting(ModuleId, SettingName);
+            dataProvider.DeleteModuleSetting(moduleId, settingName);
             var eventLogController = new EventLogController();
             var logInfo = new LogInfo();
-            logInfo.LogProperties.Add(new LogDetailInfo("ModuleId", ModuleId.ToString()));
-            logInfo.LogProperties.Add(new LogDetailInfo("SettingName", SettingName));
+            logInfo.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString()));
+            logInfo.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
             logInfo.LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString();
             eventLogController.AddLog(logInfo);
-            UpdateTabModuleVersionsByModuleID(ModuleId);
-            DataCache.RemoveCache("GetModuleSettings" + ModuleId);
+            UpdateTabModuleVersionsByModuleID(moduleId);
+            ClearModuleSettingsCache(moduleId);
         }
 
         /// <summary>
@@ -2202,64 +2295,16 @@ namespace DotNetNuke.Entities.Modules
         ///    [sleupold]   2007-09-24   documented
         ///    [vnguyen]    2010-05-10   Modified: Added update tab module version
         /// </history>
-        public void DeleteModuleSettings(int ModuleId)
+        public void DeleteModuleSettings(int moduleId)
         {
-            dataProvider.DeleteModuleSettings(ModuleId);
+            dataProvider.DeleteModuleSettings(moduleId);
             var eventLogController = new EventLogController();
             var logInfo = new LogInfo();
-            logInfo.LogProperties.Add(new LogDetailInfo("ModuleId", ModuleId.ToString()));
+            logInfo.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString()));
             logInfo.LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString();
             eventLogController.AddLog(logInfo);
-            UpdateTabModuleVersionsByModuleID(ModuleId);
-            DataCache.RemoveCache("GetModuleSettings" + ModuleId);
-        }
-
-        /// <summary>
-        /// read all settings for a module from ModuleSettings table
-        /// </summary>
-        /// <param name="ModuleId">ID of the module</param>
-        /// <returns>(cached) hashtable containing all settings</returns>
-        /// <remarks>TabModuleSettings are not included</remarks>
-        /// <history>
-        ///    [sleupold] 2007-09-24 commented
-        /// </history>
-        public Hashtable GetModuleSettings(int ModuleId)
-        {
-            string strCacheKey = "GetModuleSettings" + ModuleId;
-            var settings = (Hashtable)DataCache.GetCache(strCacheKey);
-            if (settings == null)
-            {
-                settings = new Hashtable();
-                IDataReader dr = null;
-                try
-                {
-                    dr = dataProvider.GetModuleSettings(ModuleId);
-                    while (dr.Read())
-                    {
-                        if (!dr.IsDBNull(1))
-                        {
-                            settings[dr.GetString(0)] = dr.GetString(1);
-                        }
-                        else
-                        {
-                            settings[dr.GetString(0)] = string.Empty;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                }
-                finally
-                {
-                    //Ensure DataReader is closed
-                    CBO.CloseDataReader(dr, true);
-                }
-                //cache data
-                int intCacheTimeout = 20 * Convert.ToInt32(Host.Host.PerformanceSetting);
-                DataCache.SetCache(strCacheKey, settings, TimeSpan.FromMinutes(intCacheTimeout));
-            }
-            return settings;
+            UpdateTabModuleVersionsByModuleID(moduleId);
+            ClearModuleSettingsCache(moduleId);
         }
 
         /// <summary>
@@ -2273,9 +2318,9 @@ namespace DotNetNuke.Entities.Modules
         ///    [sleupold]   2007-09-24   added removal for empty settings
         ///    [vnguyen]    2010-05-10   Modified: Added update tab module version
         /// </history>
-        public void UpdateModuleSetting(int ModuleId, string SettingName, string SettingValue)
+        public void UpdateModuleSetting(int moduleId, string settingName, string settingValue)
         {
-            UpdateModuleSettingInternal(ModuleId, SettingName, SettingValue, true);
+            UpdateModuleSettingInternal(moduleId, settingName, settingValue, true);
         }
 
         #endregion
@@ -2285,23 +2330,23 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Delete a specific setting of a tabmodule reference
         /// </summary>
-        /// <param name="TabModuleId">ID of the affected tabmodule</param>
-        /// <param name="SettingName">Name of the setting to remove</param>
+        /// <param name="tabModuleId">ID of the affected tabmodule</param>
+        /// <param name="settingName">Name of the setting to remove</param>
         /// <history>
         ///    [sleupold]   2007-09-24   documented
         ///    [vnguyen]    2010-05-10   Modified: Added update tabmodule version guid
         /// </history>
-        public void DeleteTabModuleSetting(int TabModuleId, string SettingName)
+        public void DeleteTabModuleSetting(int tabModuleId, string settingName)
         {
-            dataProvider.DeleteTabModuleSetting(TabModuleId, SettingName);
-            UpdateTabModuleVersion(TabModuleId);
+            dataProvider.DeleteTabModuleSetting(tabModuleId, settingName);
+            UpdateTabModuleVersion(tabModuleId);
             var eventLogController = new EventLogController();
             var logInfo = new LogInfo();
-            logInfo.LogProperties.Add(new LogDetailInfo("TabModuleId", TabModuleId.ToString()));
-            logInfo.LogProperties.Add(new LogDetailInfo("SettingName", SettingName));
+            logInfo.LogProperties.Add(new LogDetailInfo("TabModuleId", tabModuleId.ToString()));
+            logInfo.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
             logInfo.LogTypeKey = EventLogController.EventLogType.TABMODULE_SETTING_DELETED.ToString();
             eventLogController.AddLog(logInfo);
-            DataCache.RemoveCache("GetTabModuleSettings" + TabModuleId);
+            ClearTabModuleSettingsCache(tabModuleId);
         }
 
         /// <summary>
@@ -2312,63 +2357,17 @@ namespace DotNetNuke.Entities.Modules
         ///    [sleupold]   2007-09-24   documented
         ///    [vnguyen]    2010-05-10   Modified: Added update module version guid
         /// </history>
-        public void DeleteTabModuleSettings(int TabModuleId)
+        public void DeleteTabModuleSettings(int tabModuleId)
         {
-            dataProvider.DeleteTabModuleSettings(TabModuleId);
-            UpdateTabModuleVersion(TabModuleId);
+            dataProvider.DeleteTabModuleSettings(tabModuleId);
+            UpdateTabModuleVersion(tabModuleId);
             var eventLog = new EventLogController();
             eventLog.AddLog("TabModuleID",
-                               TabModuleId.ToString(),
+                               tabModuleId.ToString(),
                                PortalController.GetCurrentPortalSettings(),
                                UserController.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.TABMODULE_SETTING_DELETED);
-            DataCache.RemoveCache("GetTabModuleSettings" + TabModuleId);
-        }
-
-        /// <summary>
-        /// read all settings for a module on a page from TabModuleSettings Table
-        /// </summary>
-        /// <param name="TabModuleId">ID of the tabModule</param>
-        /// <returns>(cached) hashtable containing all settings</returns>
-        /// <remarks>ModuleSettings are not included</remarks>
-        /// <history>
-        ///    [sleupold] 2007-09-24 documented
-        /// </history>
-        public Hashtable GetTabModuleSettings(int TabModuleId)
-        {
-            string cacheKey = "GetTabModuleSettings" + TabModuleId;
-            var settings = (Hashtable)DataCache.GetCache(cacheKey);
-            if (settings == null)
-            {
-                settings = new Hashtable();
-                IDataReader dr = null;
-                try
-                {
-                    dr = dataProvider.GetTabModuleSettings(TabModuleId);
-                    while (dr.Read())
-                    {
-                        if (!dr.IsDBNull(1))
-                        {
-                            settings[dr.GetString(0)] = dr.GetString(1);
-                        }
-                        else
-                        {
-                            settings[dr.GetString(0)] = string.Empty;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-                int intCacheTimeout = 20 * Convert.ToInt32(Host.Host.PerformanceSetting);
-                DataCache.SetCache(cacheKey, settings, TimeSpan.FromMinutes(intCacheTimeout));
-            }
-            return settings;
+            ClearTabModuleSettingsCache(tabModuleId);
         }
 
         /// <summary>
@@ -2416,7 +2415,7 @@ namespace DotNetNuke.Entities.Modules
                 //Ensure DataReader is closed
                 CBO.CloseDataReader(dr, true);
             }
-            DataCache.RemoveCache("GetTabModuleSettings" + tabModuleId);
+            ClearTabModuleSettingsCache(tabModuleId);
         }
 
         #endregion
@@ -2484,6 +2483,7 @@ namespace DotNetNuke.Entities.Modules
         #endregion
         
         #region Obsolete Methods
+
         [Obsolete("The module caching feature has been updated in version 5.2.0.  This method is no longer used.")]
         public static string CacheDirectory()
         {
@@ -2564,6 +2564,38 @@ namespace DotNetNuke.Entities.Modules
             DeleteTabModule(tabId, moduleId, true);
         }
 
+        [Obsolete("Deprecated in DNN 7.3.  Please use the ModuleSettings property of the ModuleInfo object")]
+        public Hashtable GetModuleSettings(int ModuleId)
+        {
+            var settings = new Hashtable();
+            IDataReader dr = null;
+            try
+            {
+                dr = dataProvider.GetModuleSettings(ModuleId);
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(1))
+                    {
+                        settings[dr.GetString(0)] = dr.GetString(1);
+                    }
+                    else
+                    {
+                        settings[dr.GetString(0)] = string.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+            finally
+            {
+                //Ensure DataReader is closed
+                CBO.CloseDataReader(dr, true);
+            }
+            return settings;
+        }
+
         [Obsolete("Replaced in DotNetNuke 5.0 by GetTabModules(Integer)")]
         public ArrayList GetPortalTabModules(int portalID, int tabID)
         {
@@ -2579,6 +2611,37 @@ namespace DotNetNuke.Entities.Modules
         public ArrayList GetModules(int portalID, bool includePermissions)
         {
             return CBO.FillCollection(dataProvider.GetModules(portalID), typeof(ModuleInfo));
+        }
+
+        [Obsolete("Deprecated in DNN 7.3.  Please use the TabModuleSettings property of the ModuleInfo object")]
+        public Hashtable GetTabModuleSettings(int TabModuleId)
+        {
+            var settings = new Hashtable();
+            IDataReader dr = null;
+            try
+            {
+                dr = dataProvider.GetTabModuleSettings(TabModuleId);
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(1))
+                    {
+                        settings[dr.GetString(0)] = dr.GetString(1);
+                    }
+                    else
+                    {
+                        settings[dr.GetString(0)] = string.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+            return settings;
         }
 
         [Obsolete("Replaced in DotNetNuke 5.0 by UpdateTabModuleOrder(Integer)")]

@@ -807,6 +807,11 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetTabsByModuleID", moduleID);
         }
 
+        public virtual IDataReader GetTabsByTabModuleID(int tabModuleID)
+        {
+            return ExecuteReader("GetTabsByTabModuleID", tabModuleID);
+        }
+
         public virtual IDataReader GetTabsByPackageID(int portalID, int packageID, bool forHost)
         {
             return ExecuteReader("GetTabsByPackageID", GetNull(portalID), packageID, forHost);
@@ -1083,6 +1088,11 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetModuleSettings", moduleId);
         }
 
+        public virtual IDataReader GetModuleSettingsByTab(int tabId)
+        {
+            return ExecuteReader("GetModuleSettingsByTab", tabId);
+        }
+
         public virtual IDataReader GetSearchModules(int portalId)
         {
             return ExecuteReader("GetSearchModules", GetNull(portalId));
@@ -1111,6 +1121,11 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetTabModuleSettings(int tabModuleId)
         {
             return ExecuteReader("GetTabModuleSettings", tabModuleId);
+        }
+
+        public virtual IDataReader GetTabModuleSettingsByTab(int tabId)
+        {
+            return ExecuteReader("GetTabModuleSettingsByTab", tabId);
         }
 
         public virtual void MoveTabModule(int fromTabId, int moduleId, int toTabId, string toPaneName,
