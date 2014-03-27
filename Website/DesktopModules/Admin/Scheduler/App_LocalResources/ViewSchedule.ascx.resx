@@ -177,4 +177,22 @@
   <data name="ViewLog.Header" xml:space="preserve">
     <value>Log</value>
   </data>
+  <data name="plSchedulerMode.Text" xml:space="preserve">
+    <value>Scheduler Mode:</value>
+  </data>
+  <data name="plSchedulerMode.Help" xml:space="preserve">
+    <value>The Timer Method maintains a separate thread to execute scheduled tasks while the worker process is alive. Alternatively, the Request Method executes tasks when HTTP Requests are made.  You can also disable the scheduler by selecting Disabled.</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="TimerMethod.Text" xml:space="preserve">
+    <value>Timer Method</value>
+  </data>
+  <data name="RequestMethod.Text" xml:space="preserve">
+    <value>Request Method</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
 </root>

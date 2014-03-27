@@ -1,5 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Scheduler.ViewSchedule" CodeFile="ViewSchedule.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="Telerik.Web.UI" %>
 <div class="dnnViewSchedule dnnClear">
     <dnn:DnnGrid id="dgSchedule" runat="server" AutoGenerateColumns="false" AllowSorting="true" CssClass="dnnGrid">
@@ -37,3 +38,33 @@
 	    <li><asp:Hyperlink id="cmdHistory" runat="server" CssClass="dnnSecondaryAction" resourcekey="ScheduleHistory.Action" /></li>
     </ul>
 </div>
+<div id="dnnAdvancedSettings" class="dnnAdvancedSettings dnnClear">
+		<div class="dnnFormExpandContent"><a href=""><%=Localization.GetString("ExpandAll", Localization.SharedResourceFile)%></a></div>
+		<div class="psasContent dnnClear">
+			<h2 id="dnnPanel-TabsAppearance" class="dnnFormSectionHead"><a href="" class="dnnLabelExpanded"><%=LocalizeString("Settings")%></a></h2>
+			<fieldset>
+				<legend></legend>
+				      <div class="ssosContent dnnClear">
+            <fieldset class="dnnhsOtherSettings">
+               
+                <div class="dnnFormItem">
+                    <dnn:label id="plSchedulerMode" controlname="cboSchedulerMode" runat="server" />
+                    <dnn:dnncombobox id="cboSchedulerMode" runat="server">
+                        <Items>
+                        <dnn:DnnComboBoxItem resourcekey="Disabled" Value="0" />
+                        <dnn:DnnComboBoxItem resourcekey="TimerMethod" Value="1" />
+                        <dnn:DnnComboBoxItem resourcekey="RequestMethod" Value="2" />
+                        </Items>
+                    </dnn:dnncombobox>
+                </div>
+			</fieldset>
+                         
+
+		</div>
+                 </fieldset>
+	</div>
+
+ <ul class="dnnActions dnnClear">
+        <li>
+            <asp:LinkButton ID="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdUpdate" /></li>
+    </ul>

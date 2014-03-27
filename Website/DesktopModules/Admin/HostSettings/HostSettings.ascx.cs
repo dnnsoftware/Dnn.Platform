@@ -372,14 +372,7 @@ namespace DotNetNuke.Modules.Admin.Host
 
             txtFileExtensions.Text = Entities.Host.Host.AllowedExtensionWhitelist.ToStorageString();
 
-            if (cboSchedulerMode.FindItemByValue(((int)Entities.Host.Host.SchedulerMode).ToString()) != null)
-            {
-                cboSchedulerMode.FindItemByValue(((int)Entities.Host.Host.SchedulerMode).ToString()).Selected = true;
-            }
-            else
-            {
-                cboSchedulerMode.FindItemByValue("1").Selected = true;
-            }
+            
 
             chkLogBuffer.Checked = Entities.Host.Host.EventLogBuffer;
             txtHelpURL.Text = Entities.Host.Host.HelpURL;
@@ -400,7 +393,6 @@ namespace DotNetNuke.Modules.Admin.Host
             txtNumberPasswords.Text = Entities.Host.Host.MembershipNumberPasswords.ToString();
 
 
-            ViewState["SelectedSchedulerMode"] = cboSchedulerMode.SelectedItem.Value;
             ViewState["SelectedLogBufferEnabled"] = chkLogBuffer.Checked;
             ViewState["SelectedUsersOnlineEnabled"] = chkUsersOnline.Checked;
 
@@ -803,31 +795,6 @@ namespace DotNetNuke.Modules.Admin.Host
                     restartSchedule = true;
                 }
             }
-
-            var originalSchedulerMode = (SchedulerMode)Convert.ToInt32(ViewState["SelectedSchedulerMode"]);
-            var newSchedulerMode = (SchedulerMode) Enum.Parse(typeof (SchedulerMode), cboSchedulerMode.SelectedItem.Value);
-            if(originalSchedulerMode != newSchedulerMode)
-            {
-                switch (newSchedulerMode)
-                {
-                    case SchedulerMode.DISABLED:
-                        SchedulingProvider.Instance().Halt("Host Settings");
-                        break;
-                    case SchedulerMode.TIMER_METHOD:
-                        var newThread = new Thread(SchedulingProvider.Instance().Start) { IsBackground = true };
-                        newThread.Start();
-                        break;
-                    default:
-                        SchedulingProvider.Instance().Halt("Host Settings");
-                        break;
-                }
-            }
-
-
-            if (restartSchedule && newSchedulerMode == SchedulerMode.TIMER_METHOD)
-            {
-                SchedulingProvider.Instance().ReStart("Host Settings");
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -902,7 +869,6 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("UseCustomErrorMessages", chkUseCustomErrorMessages.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("EnableRequestFilters", chkEnableRequestFilters.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("ControlPanel", cboControlPanel.SelectedItem.Value, false);
-                    HostController.Instance.Update("SchedulerMode", cboSchedulerMode.SelectedItem.Value, false);
                     HostController.Instance.Update("PerformanceSetting", cboPerformance.SelectedItem.Value, false);
                     HostController.Instance.Update("AuthenticatedCacheability", cboCacheability.SelectedItem.Value, false);
                     HostController.Instance.Update("PageStatePersister", cboPageState.SelectedItem.Value); 

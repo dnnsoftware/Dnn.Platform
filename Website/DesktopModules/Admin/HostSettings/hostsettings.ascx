@@ -601,17 +601,7 @@
                     <asp:RegularExpressionValidator ID="valFileExtensions" CssClass="dnnFormMessage dnnFormError"
                         runat="server" ControlToValidate="txtFileExtensions" EnableClientScript="true"
                         ValidationExpression="[A-Za-z0-9,_]*" resourceKey="valFileExtensions.Error" Display="Dynamic" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSchedulerMode" controlname="cboSchedulerMode" runat="server" />
-                    <dnn:dnncombobox id="cboSchedulerMode" runat="server">
-                        <Items>
-                        <dnn:DnnComboBoxItem resourcekey="Disabled" Value="0" />
-                        <dnn:DnnComboBoxItem resourcekey="TimerMethod" Value="1" />
-                        <dnn:DnnComboBoxItem resourcekey="RequestMethod" Value="2" />
-                        </Items>
-                    </dnn:dnncombobox>
-                </div>
+                </div>              
                 <div class="dnnFormItem">
                     <dnn:label id="plLogBuffer" controlname="chkLogBuffer" runat="server" />
                     <asp:CheckBox ID="chkLogBuffer" runat="server" />

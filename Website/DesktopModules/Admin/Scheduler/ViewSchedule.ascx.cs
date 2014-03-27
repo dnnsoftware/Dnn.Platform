@@ -21,7 +21,9 @@
 #region Usings
 
 using System;
+using System.Threading;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Security;
@@ -114,6 +116,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             cmdAdd.NavigateUrl = EditUrl();
             cmdStatus.NavigateUrl = EditUrl("", "", "Status");
             cmdHistory.NavigateUrl = EditUrl("", "", "History");
+            cmdUpdate.Click+=cmdUpdate_Click;
 
             try
             {
@@ -125,6 +128,51 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
+            if (!Page.IsPostBack)
+            {
+                BindSettings();
+            }
+        }
+
+        protected void UpdateSchedule()
+        {
+         var originalSchedulerMode = (SchedulerMode)Convert.ToInt32(ViewState["SelectedSchedulerMode"]);
+            var newSchedulerMode = (SchedulerMode)Enum.Parse(typeof(SchedulerMode), cboSchedulerMode.SelectedItem.Value);
+            if (originalSchedulerMode != newSchedulerMode)
+            {
+                switch (newSchedulerMode)
+                {
+                    case SchedulerMode.DISABLED:
+                        SchedulingProvider.Instance().Halt("Host Settings");
+                        break;
+                    case SchedulerMode.TIMER_METHOD:
+                        var newThread = new Thread(SchedulingProvider.Instance().Start) { IsBackground = true };
+                        newThread.Start();
+                        break;
+                    default:
+                        SchedulingProvider.Instance().Halt("Host Settings");
+                        break;
+                }
+            }
+            }
+        private void cmdUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateSchedule();
+            HostController.Instance.Update("SchedulerMode", cboSchedulerMode.SelectedItem.Value, false);
+        }
+
+        private void BindSettings()
+        {
+            if (cboSchedulerMode.FindItemByValue(((int)Entities.Host.Host.SchedulerMode).ToString()) != null)
+            {
+                cboSchedulerMode.FindItemByValue(((int)Entities.Host.Host.SchedulerMode).ToString()).Selected = true;
+            }
+            else
+            {
+                cboSchedulerMode.FindItemByValue("1").Selected = true;
+            }
+            ViewState["SelectedSchedulerMode"] = cboSchedulerMode.SelectedItem.Value;
         }
 
         protected void OnGridNeedDataSource(object sender, GridNeedDataSourceEventArgs e)
