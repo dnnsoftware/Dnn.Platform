@@ -252,39 +252,43 @@ namespace DotNetNuke.Security.Permissions
         private object GetTabPermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
             var portalID = (int)cacheItemArgs.ParamList[0];
-            IDataReader dr = dataProvider.GetTabPermissionsByPortal(portalID);
             var dic = new Dictionary<int, TabPermissionCollection>();
-            try
+
+            if (portalID > -1)
             {
-                while (dr.Read())
+                IDataReader dr = dataProvider.GetTabPermissionsByPortal(portalID);
+                try
                 {
-                    //fill business object
-                    var tabPermissionInfo = CBO.FillObject<TabPermissionInfo>(dr, false);
-
-                    //add Tab Permission to dictionary
-                    if (dic.ContainsKey(tabPermissionInfo.TabID))
+                    while (dr.Read())
                     {
-                        //Add TabPermission to TabPermission Collection already in dictionary for TabId
-                        dic[tabPermissionInfo.TabID].Add(tabPermissionInfo);
-                    }
-                    else
-                    {
-                        //Create new TabPermission Collection for TabId
-                        var collection = new TabPermissionCollection {tabPermissionInfo};
+                        //fill business object
+                        var tabPermissionInfo = CBO.FillObject<TabPermissionInfo>(dr, false);
 
-                        //Add Collection to Dictionary
-                        dic.Add(tabPermissionInfo.TabID, collection);
+                        //add Tab Permission to dictionary
+                        if (dic.ContainsKey(tabPermissionInfo.TabID))
+                        {
+                            //Add TabPermission to TabPermission Collection already in dictionary for TabId
+                            dic[tabPermissionInfo.TabID].Add(tabPermissionInfo);
+                        }
+                        else
+                        {
+                            //Create new TabPermission Collection for TabId
+                            var collection = new TabPermissionCollection { tabPermissionInfo };
+
+                            //Add Collection to Dictionary
+                            dic.Add(tabPermissionInfo.TabID, collection);
+                        }
                     }
                 }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                //close datareader
-                CBO.CloseDataReader(dr, true);
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+                finally
+                {
+                    //close datareader
+                    CBO.CloseDataReader(dr, true);
+                }
             }
             return dic;
         }

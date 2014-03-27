@@ -491,31 +491,35 @@ namespace DotNetNuke.Entities.Portals
         private static object GetPortalSettingsDictionaryCallback(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
-	        var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1]);
-			if (string.IsNullOrEmpty(cultureCode))
-			{
-				cultureCode = GetActivePortalLanguage(portalId);
-			}
-
             var dicSettings = new Dictionary<string, string>();
-			IDataReader dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
-            try
+
+            if (portalId > -1)
             {
-                while (dr.Read())
+                var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1]);
+                if (string.IsNullOrEmpty(cultureCode))
                 {
-                    if (!dr.IsDBNull(1))
+                    cultureCode = GetActivePortalLanguage(portalId);
+                }
+
+                IDataReader dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
+                try
+                {
+                    while (dr.Read())
                     {
-                        dicSettings.Add(dr.GetString(0), dr.GetString(1));
+                        if (!dr.IsDBNull(1))
+                        {
+                            dicSettings.Add(dr.GetString(0), dr.GetString(1));
+                        }
                     }
                 }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, true);
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+                finally
+                {
+                    CBO.CloseDataReader(dr, true);
+                }
             }
             return dicSettings;
         }
@@ -3682,7 +3686,6 @@ namespace DotNetNuke.Entities.Portals
         /// </remarks>
         public static string GetPortalDefaultLanguage(int portalID)
         {
-            //Return DataProvider.Instance().GetPortalDefaultLanguage(portalID)
             string cacheKey = String.Format("PortalDefaultLanguage_{0}", portalID);
             return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, portalID), GetPortalDefaultLanguageCallBack);
         }
