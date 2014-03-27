@@ -101,26 +101,12 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 txtType.Enabled = false;
                 txtType.Text = scheduleItem.TypeFullName;
                 chkEnabled.Checked = scheduleItem.Enabled;
-                if (scheduleItem.TimeLapse == Null.NullInteger)
-                {
-                    txtTimeLapse.Text = "";
-                }
-                else
-                {
-                    txtTimeLapse.Text = Convert.ToString(scheduleItem.TimeLapse);
-                }
+                txtTimeLapse.Text = Convert.ToString(scheduleItem.TimeLapse);
                 if (ddlTimeLapseMeasurement.FindItemByValue(scheduleItem.TimeLapseMeasurement) != null)
                 {
                     ddlTimeLapseMeasurement.FindItemByValue(scheduleItem.TimeLapseMeasurement).Selected = true;
                 }
-                if (scheduleItem.RetryTimeLapse == Null.NullInteger)
-                {
-                    txtRetryTimeLapse.Text = "";
-                }
-                else
-                {
-                    txtRetryTimeLapse.Text = Convert.ToString(scheduleItem.RetryTimeLapse);
-                }
+                txtRetryTimeLapse.Text = Convert.ToString(scheduleItem.RetryTimeLapse);
                 if (ddlRetryTimeLapseMeasurement.FindItemByValue(scheduleItem.RetryTimeLapseMeasurement) != null)
                 {
                     ddlRetryTimeLapseMeasurement.FindItemByValue(scheduleItem.RetryTimeLapseMeasurement).Selected = true;
@@ -187,24 +173,10 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             var scheduleItem = new ScheduleItem();
             scheduleItem.TypeFullName = txtType.Text;
             scheduleItem.FriendlyName = txtFriendlyName.Text;
-            if (String.IsNullOrEmpty(txtTimeLapse.Text) || txtTimeLapse.Text == "0" || txtTimeLapse.Text == "-1")
-            {
-                scheduleItem.TimeLapse = Null.NullInteger;
-            }
-            else
-            {
-                scheduleItem.TimeLapse = Convert.ToInt32(txtTimeLapse.Text);
-            }
+            //DNN-4964 - values for time lapse and retry frequency can't be set to 0, -1 or left empty (client side validation has been added)
+            scheduleItem.TimeLapse = Convert.ToInt32(txtTimeLapse.Text);
             scheduleItem.TimeLapseMeasurement = ddlTimeLapseMeasurement.SelectedItem.Value;
-
-            if (String.IsNullOrEmpty(txtRetryTimeLapse.Text) || txtRetryTimeLapse.Text == "0" || txtRetryTimeLapse.Text == "-1")
-            {
-                scheduleItem.RetryTimeLapse = Null.NullInteger;
-            }
-            else
-            {
-                scheduleItem.RetryTimeLapse = Convert.ToInt32(txtRetryTimeLapse.Text);
-            }
+            scheduleItem.RetryTimeLapse = Convert.ToInt32(txtRetryTimeLapse.Text);
             scheduleItem.RetryTimeLapseMeasurement = ddlRetryTimeLapseMeasurement.SelectedItem.Value;
             scheduleItem.RetainHistoryNum = Convert.ToInt32(ddlRetainHistoryNum.SelectedItem.Value);
             scheduleItem.AttachToEvent = ddlAttachToEvent.SelectedItem.Value;
