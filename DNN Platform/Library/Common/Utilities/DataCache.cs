@@ -100,6 +100,7 @@ namespace DotNetNuke.Common.Utilities
 
         //Tab cache keys
         public const string TabCacheKey = "Tab_Tabs{0}";
+        public const string TabSettingsCacheKey = "TabSettings{0}";
         public const CacheItemPriority TabCachePriority = CacheItemPriority.High;
         public const int TabCacheTimeOut = 20;
         public const string TabPathCacheKey = "Tab_TabPathDictionary{0}_{1}";

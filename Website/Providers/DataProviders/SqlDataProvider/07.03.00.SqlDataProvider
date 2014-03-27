@@ -123,6 +123,30 @@ END
 
 GO
 
+/* DNN-5107 Improve Startup Performance - Cache Settings */
+/*********************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+    @PortalId Int
+AS
+	BEGIN
+		SELECT
+			TS.TabID,
+			TS.SettingName,
+			CASE WHEN Lower(TS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TS.SettingValue)
+				 ELSE TS.SettingValue END           
+				 AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}TabSettings] TS
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] T ON t.TabID = TS.TabID
+		WHERE  (PortalId = @PortalId)
+		ORDER BY TS.TabID
+	END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

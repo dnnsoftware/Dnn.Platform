@@ -817,9 +817,9 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetTabSetting", TabID, SettingName);
         }
 
-        public virtual IDataReader GetTabSettings(int TabID)
+        public virtual IDataReader GetTabSettings(int portalId)
         {
-            return ExecuteReader("GetTabSettings", TabID);
+            return ExecuteReader("GetTabSettings", portalId);
         }
 
         public virtual IDataReader GetTabAliasSkins(int portalId)

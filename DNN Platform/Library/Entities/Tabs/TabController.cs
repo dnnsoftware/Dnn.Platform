@@ -170,6 +170,13 @@ namespace DotNetNuke.Entities.Tabs
             return tab.TabID;
         }
 
+        private void ClearTabSettingsCache(int tabId)
+        {
+            var portalId = GetPortalId(tabId, -1);
+            string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
+            DataCache.RemoveCache(cacheKey);
+        }
+
         private void CreateTabRedirect(TabInfo tab)
         {
             var settings = PortalController.GetCurrentPortalSettings();
@@ -415,6 +422,15 @@ namespace DotNetNuke.Entities.Tabs
             return deleted;
         }
 
+        private void UpdateTabSettings(ref TabInfo updatedTab)
+        {
+            foreach (string sKeyLoopVariable in updatedTab.TabSettings.Keys)
+            {
+                string sKey = sKeyLoopVariable;
+                UpdateTabSetting(updatedTab.TabID, sKey, Convert.ToString(updatedTab.TabSettings[sKey]));
+            }
+        }
+
         private static void UpdateTabVersion(int tabId)
         {
             Provider.UpdateTabVersion(tabId, Guid.NewGuid());
@@ -619,7 +635,7 @@ namespace DotNetNuke.Entities.Tabs
             eventLogController.AddLog(eventLogInfo);
 
             UpdateTabVersion(tabId);
-            DataCache.RemoveCache("GetTabSettings" + tabId);
+            ClearTabSettingsCache(tabId);
         }
 
         /// <summary>
@@ -638,7 +654,7 @@ namespace DotNetNuke.Entities.Tabs
             eventLogInfo.LogTypeKey = EventLogController.EventLogType.TAB_SETTING_DELETED.ToString();
             eventLogController.AddLog(eventLogInfo);
             UpdateTabVersion(tabId);
-            DataCache.RemoveCache("GetTabSettings" + tabId);
+            ClearTabSettingsCache(tabId);
         }
 
         /// <summary>
@@ -950,6 +966,41 @@ namespace DotNetNuke.Entities.Tabs
                                                             GetTabsByPortalCallBack);
         }
 
+        private Dictionary<int, Hashtable> GetTabSettingsByPortal(int portalId)
+        {
+            string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
+            return
+                CBO.GetCachedObject<Dictionary<int, Hashtable>>(new CacheItemArgs(cacheKey, 
+                                                                                    DataCache.TabCacheTimeOut, 
+                                                                                    DataCache.TabCachePriority),
+                    c =>
+                    {
+                        var tabSettings = new Dictionary<int, Hashtable>();
+                        IDataReader dr = Provider.GetTabSettings(portalId);
+                        while (dr.Read())
+                        {
+                            int tabId = dr.GetInt32(0);
+                            Hashtable settings;
+                            if (!tabSettings.TryGetValue(tabId, out settings))
+                            {
+                                settings = new Hashtable();
+                                tabSettings[tabId] = settings;
+                            }
+
+                            if (!dr.IsDBNull(2))
+                            {
+                                settings[dr.GetString(1)] = dr.GetString(2);
+                            }
+                            else
+                            {
+                                settings[dr.GetString(1)] = "";
+                            }
+                        }
+                        CBO.CloseDataReader(dr, true);
+                        return tabSettings;
+                    });
+        }
+
         /// <summary>
         /// read all settings for a tab from TabSettings table
         /// </summary>
@@ -962,30 +1013,13 @@ namespace DotNetNuke.Entities.Tabs
         ///   </history>
         public Hashtable GetTabSettings(int tabId)
         {
-            string cacheKey = "GetTabSettings" + tabId;
-            var tabSettings = (Hashtable)DataCache.GetCache(cacheKey);
-            if (tabSettings == null)
+            var portalId = GetPortalId(tabId, -1);
+            Hashtable settings;
+            if (!GetTabSettingsByPortal(portalId).TryGetValue(tabId, out settings))
             {
-                tabSettings = new Hashtable();
-                IDataReader dr = Provider.GetTabSettings(tabId);
-                while (dr.Read())
-                {
-                    if (!dr.IsDBNull(1))
-                    {
-                        tabSettings[dr.GetString(0)] = dr.GetString(1);
-                    }
-                    else
-                    {
-                        tabSettings[dr.GetString(0)] = "";
-                    }
-                }
-                dr.Close();
-
-                //cache data
-                int intCacheTimeout = 20 * Convert.ToInt32(Host.Host.PerformanceSetting);
-                DataCache.SetCache(cacheKey, tabSettings, TimeSpan.FromMinutes(intCacheTimeout));
+                settings = new Hashtable();
             }
-            return tabSettings;
+            return settings;
         }
 
         /// <summary>
@@ -1322,19 +1356,6 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Updates the tab settings.
-        /// </summary>
-        /// <param name="updatedTab">The updated tab.</param>
-        private void UpdateTabSettings(ref TabInfo updatedTab)
-        {
-            foreach (string sKeyLoopVariable in updatedTab.TabSettings.Keys)
-            {
-                string sKey = sKeyLoopVariable;
-                UpdateTabSetting(updatedTab.TabID, sKey, Convert.ToString(updatedTab.TabSettings[sKey]));
-            }
-        }
-
-        /// <summary>
         /// Adds or updates a tab's setting value
         /// </summary>
         /// <param name="tabId">ID of the tab to update</param>
@@ -1368,7 +1389,7 @@ namespace DotNetNuke.Entities.Tabs
             dr.Close();
 
             UpdateTabVersion(tabId);
-            DataCache.RemoveCache("GetTabSettings" + tabId);
+            ClearTabSettingsCache(tabId);
         }
 
         /// <summary>
