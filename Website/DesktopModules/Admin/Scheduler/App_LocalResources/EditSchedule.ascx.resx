@@ -144,6 +144,15 @@
   <data name="Hours.Text" xml:space="preserve">
     <value>Hours</value>
   </data>
+  <data name="Weeks.Text" xml:space="preserve">
+    <value>Weeks</value>
+  </data>
+  <data name="Months.Text" xml:space="preserve">
+    <value>Months</value>
+  </data>
+  <data name="Years.Text" xml:space="preserve">
+    <value>Years</value>
+  </data>
   <data name="plRetryTimeLapse.Text" xml:space="preserve">
     <value>Retry Frequency:</value>
   </data>

@@ -72,10 +72,16 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 var strMn = Localization.GetString("Minute", LocalResourceFile);
                 var strHour = Localization.GetString("Hour", LocalResourceFile);
                 var strDay = Localization.GetString("Day", LocalResourceFile);
+                var strWeek = Localization.GetString("Week", LocalResourceFile);
+                var strMonth = Localization.GetString("Month", LocalResourceFile);
+                var strYear = Localization.GetString("Year", LocalResourceFile);
                 var strSecs = Localization.GetString("Seconds");
                 var strMns = Localization.GetString("Minutes");
                 var strHours = Localization.GetString("Hours");
                 var strDays = Localization.GetString("Days");
+                var strWeeks = Localization.GetString("Weeks");
+                var strMonths = Localization.GetString("Months");
+                var strYears = Localization.GetString("Years");
                 switch (timeLapseMeasurement)
                 {
                     case "s":
@@ -89,6 +95,15 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                         break;
                     case "d":
                         str = strPrefix + " " + timeLapse + " " + (timeLapse > 1 ? strDays : strDay);
+                        break;
+                    case "w":
+                        str = strPrefix + " " + timeLapse + " " + (timeLapse > 1 ? strWeeks : strWeek);
+                        break;
+                    case "mo":
+                        str = strPrefix + " " + timeLapse + " " + (timeLapse > 1 ? strMonths : strMonth);
+                        break;
+                    case "y":
+                        str = strPrefix + " " + timeLapse + " " + (timeLapse > 1 ? strYears : strYear);
                         break;
                 }
                 return str;

@@ -42,6 +42,9 @@
                     <dnn:DnnComboBoxItem resourcekey="Minutes" Value="m" />
                     <dnn:DnnComboBoxItem resourcekey="Hours" Value="h" />
                     <dnn:DnnComboBoxItem resourcekey="Days" Value="d" />
+                    <dnn:DnnComboBoxItem resourcekey="Weeks" Value="w" />
+                    <dnn:DnnComboBoxItem resourcekey="Months" Value="mo" />
+                    <dnn:DnnComboBoxItem resourcekey="Years" Value="y" />
                 </Items>
             </dnn:DnnComboBox>
         </div>

@@ -1098,6 +1098,15 @@ namespace DotNetNuke.Services.Scheduling
                             case "d":
                                 scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.RetryTimeLapse);
                                 break;
+                            case "w":
+                                scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.RetryTimeLapse * 7);
+                                break;
+                            case "mo":
+                                scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.RetryTimeLapse);
+                                break;
+                            case "y":
+                                scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.RetryTimeLapse);
+                                break;
                         }
                     }
                     //Update the ScheduleHistory in the database
