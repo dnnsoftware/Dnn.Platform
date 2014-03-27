@@ -247,11 +247,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
             //Standard DataProvider Path for Logging
             _mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
 
-            DataTableReader searchTypes = null;
-            //_mockDataProvider.Setup(ds => ds.GetAllSearchTypes())
-            //    .Callback(() => searchTypes = GetAllSearchTypes().CreateDataReader())
-            //    .Returns(() => searchTypes);
-
             _mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(GetPortalsCallBack);
             _mockDataProvider.Setup(d => d.GetSearchModules(It.IsAny<int>())).Returns(GetSearchModules);
             _mockDataProvider.Setup(d => d.GetModuleDefinitions()).Returns(GetModuleDefinitions);
@@ -260,7 +255,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
             _mockDataProvider.Setup(d => d.GetTabs(It.IsAny<int>())).Returns(GetTabs);
             _mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(GetPortalGroups);
             
-            //_mockDataProvider.Setup(d => d.GetPortalSettings(It.IsAny<int>(), It.IsAny<string>())).Returns<int, string>(GetPortalSettingsCallBack);
             DataService.RegisterInstance(_mockDataService.Object); 
 
 
@@ -269,8 +263,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             var testPortalController = new PortalController();
             var mockPortalController = new Mock<IPortalController>();
-            //var portalSettings = new PortalSettings { PortalId = PortalId0, AdministratorId = 1, UserTabId = TabId};
-            //mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(portalSettings);
             mockPortalController.Setup(x => x.GetPortal(It.IsAny<int>())).Returns(new PortalInfo { PortalID = PortalId0, PortalGroupID = -1, UserTabId = TabId1, });
             PortalController.SetTestableInstance(testPortalController);
         }
@@ -585,8 +577,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
                                                  LocalizedName = UserSearchTypeName,
                                                  ModuleDefinitionId = 0
                                              };
-           var more = false;
-           var totalHits = 0;
            var results = _searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
            return results;
        }

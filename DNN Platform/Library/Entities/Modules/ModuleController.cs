@@ -2268,8 +2268,8 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Delete a Setting of a module instance
         /// </summary>
-        /// <param name="ModuleId">ID of the affected module</param>
-        /// <param name="SettingName">Name of the setting to be deleted</param>
+        /// <param name="moduleId">ID of the affected module</param>
+        /// <param name="settingName">Name of the setting to be deleted</param>
         /// <history>
         ///    [sleupold]   2007-09-24   documented
         ///    [vnguyen]    2010-05-10   Modified: Added update tab module version
@@ -2290,7 +2290,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Delete all Settings of a module instance
         /// </summary>
-        /// <param name="ModuleId">ID of the affected module</param>
+        /// <param name="moduleId">ID of the affected module</param>
         /// <history>
         ///    [sleupold]   2007-09-24   documented
         ///    [vnguyen]    2010-05-10   Modified: Added update tab module version
@@ -2310,9 +2310,9 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Adds or updates a module's setting value
         /// </summary>
-        /// <param name="ModuleId">ID of the module, the setting belongs to</param>
-        /// <param name="SettingName">name of the setting property</param>
-        /// <param name="SettingValue">value of the setting (String).</param>
+        /// <param name="moduleId">ID of the module, the setting belongs to</param>
+        /// <param name="settingName">name of the setting property</param>
+        /// <param name="settingValue">value of the setting (String).</param>
         /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true</remarks>
         /// <history>
         ///    [sleupold]   2007-09-24   added removal for empty settings
@@ -2352,7 +2352,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Delete all settings of a tabmodule reference
         /// </summary>
-        /// <param name="TabModuleId">ID of the affected tabmodule</param>
+        /// <param name="tabModuleId">ID of the affected tabmodule</param>
         /// <history>
         ///    [sleupold]   2007-09-24   documented
         ///    [vnguyen]    2010-05-10   Modified: Added update module version guid

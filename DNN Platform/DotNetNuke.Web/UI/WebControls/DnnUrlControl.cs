@@ -915,7 +915,6 @@ namespace DotNetNuke.Web.UI.WebControls
                         string FolderPath = string.Empty;
                         string LastFileName = string.Empty;
                         string LastFolderPath = string.Empty;
-                        bool _MustRedrawFiles = false;
                         //Let's try to remember last selection
                         if (ViewState["LastFolderPath"] != null)
                         {
