@@ -969,36 +969,35 @@ namespace DotNetNuke.Entities.Tabs
         private Dictionary<int, Hashtable> GetTabSettingsByPortal(int portalId)
         {
             string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
-            return
-                CBO.GetCachedObject<Dictionary<int, Hashtable>>(new CacheItemArgs(cacheKey, 
+            return CBO.GetCachedObject<Dictionary<int, Hashtable>>(new CacheItemArgs(cacheKey, 
                                                                                     DataCache.TabCacheTimeOut, 
                                                                                     DataCache.TabCachePriority),
-                    c =>
-                    {
-                        var tabSettings = new Dictionary<int, Hashtable>();
-                        IDataReader dr = Provider.GetTabSettings(portalId);
-                        while (dr.Read())
+                        c =>
                         {
-                            int tabId = dr.GetInt32(0);
-                            Hashtable settings;
-                            if (!tabSettings.TryGetValue(tabId, out settings))
+                            var tabSettings = new Dictionary<int, Hashtable>();
+                            IDataReader dr = Provider.GetTabSettings(portalId);
+                            while (dr.Read())
                             {
-                                settings = new Hashtable();
-                                tabSettings[tabId] = settings;
-                            }
+                                int tabId = dr.GetInt32(0);
+                                Hashtable settings;
+                                if (!tabSettings.TryGetValue(tabId, out settings))
+                                {
+                                    settings = new Hashtable();
+                                    tabSettings[tabId] = settings;
+                                }
 
-                            if (!dr.IsDBNull(2))
-                            {
-                                settings[dr.GetString(1)] = dr.GetString(2);
+                                if (!dr.IsDBNull(2))
+                                {
+                                    settings[dr.GetString(1)] = dr.GetString(2);
+                                }
+                                else
+                                {
+                                    settings[dr.GetString(1)] = "";
+                                }
                             }
-                            else
-                            {
-                                settings[dr.GetString(1)] = "";
-                            }
-                        }
-                        CBO.CloseDataReader(dr, true);
-                        return tabSettings;
-                    });
+                            CBO.CloseDataReader(dr, true);
+                            return tabSettings;
+                        });
         }
 
         /// <summary>
