@@ -422,9 +422,18 @@ namespace DotNetNuke.Modules.Html
             string workFlowType = Null.NullString;
 
             // get from module settings
-            var moduleController = new ModuleController();
-            var module = moduleController.GetModule(ModuleId, TabId);
-            Hashtable settings = module.ModuleSettings;
+            Hashtable settings;
+            if (ModuleId > -1)
+            {
+                var moduleController = new ModuleController();
+                var module = moduleController.GetModule(ModuleId, TabId);
+                settings = module.ModuleSettings;
+            }
+            else
+            {
+                settings = new Hashtable();
+            }
+
             if (settings["WorkflowID"] != null)
             {
                 workFlowId = Convert.ToInt32(settings["WorkflowID"]);
