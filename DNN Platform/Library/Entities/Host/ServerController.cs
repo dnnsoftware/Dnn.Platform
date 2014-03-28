@@ -21,11 +21,13 @@
 #region Usings
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Caching;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Services.Log.EventLog;
 
 #endregion
 
@@ -118,7 +120,18 @@ namespace DotNetNuke.Entities.Host
 
         public static void UpdateServerActivity(ServerInfo server)
         {
+            var serverExists = GetServers().Any(s => s.ServerName == server.ServerName);
             DataProvider.Instance().UpdateServerActivity(server.ServerName, server.IISAppName, server.CreatedDate, server.LastActivityDate);
+
+            //log the server info
+            var eventLogInfo = new LogInfo();
+            eventLogInfo.AddProperty(serverExists ? "Server Updated" : "Add New Server", server.ServerName);
+            eventLogInfo.AddProperty("IISAppName", server.IISAppName);
+            eventLogInfo.AddProperty("Last Activity Date", server.LastActivityDate.ToString());
+            eventLogInfo.LogTypeKey = serverExists ? EventLogController.EventLogType.WEBSERVER_UPDATED.ToString() 
+                                        : EventLogController.EventLogType.WEBSERVER_CREATED.ToString();
+            new EventLogController().AddLog(eventLogInfo);
+
             ClearCachedServers();
         }
     }

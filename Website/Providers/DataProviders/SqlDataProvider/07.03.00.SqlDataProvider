@@ -208,6 +208,14 @@ AS
 	END
 GO
 
+/***** Fix bug Content-2390: Add log type WEBSERVER_CREATED, WEBSERVER_UPDATED *****/
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_CREATED', N'Web Server Created', N'', N'DotNetNuke.Logging.EventLogType', N'ItemUpdated')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_UPDATED', N'Web Server Updated', N'', N'DotNetNuke.Logging.EventLogType', N'ItemUpdated')
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_CREATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_UPDATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
