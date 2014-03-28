@@ -222,7 +222,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
         {
-            return GetExtensionPackages(portalId).SingleOrDefault(predicate);
+            return GetExtensionPackages(portalId).FirstOrDefault(predicate);
         }
 
         public IList<PackageInfo> GetExtensionPackages(int portalId)

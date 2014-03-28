@@ -284,7 +284,10 @@ namespace DotNetNuke.Framework
                 Localization.SetThreadCultures(PageCulture, PortalSettings);
             }
 
-			AJAX.AddScriptManager(this, !isInstallPage);
+            if (ScriptManager.GetCurrent(this) == null)
+            {
+                AJAX.AddScriptManager(this, !isInstallPage);
+            }
 
             var dnncoreFilePath = HttpContext.Current.IsDebuggingEnabled
                    ? "~/js/Debug/dnncore.js"
