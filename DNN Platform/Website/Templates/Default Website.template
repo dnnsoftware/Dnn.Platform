@@ -764,6 +764,7 @@
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
               <modulesettings/>
               <tabmodulesettings/>
+              <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
           </modules>
