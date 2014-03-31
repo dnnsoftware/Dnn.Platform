@@ -660,7 +660,9 @@ namespace DotNetNuke.UI.Modules
 
             //help module actions available to content editors and administrators
             const string permisisonList = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
-            if (ModulePermissionController.HasModulePermission(Configuration.ModulePermissions, permisisonList) && request.QueryString["ctl"] != "Help")
+            if (ModulePermissionController.HasModulePermission(Configuration.ModulePermissions, permisisonList) 
+                    && request.QueryString["ctl"] != "Help"
+                    && !Globals.IsAdminControl())
             {
                 AddHelpActions();
             }
@@ -671,7 +673,8 @@ namespace DotNetNuke.UI.Modules
                 //print module action available to everyone
                 AddPrintAction();
             }
-            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Host, "MANAGE", Configuration))
+
+            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Host, "MANAGE", Configuration) && !Globals.IsAdminControl())
             {
                 _moduleGenericActions.Actions.Add(GetNextActionID(),
                              Localization.GetString(ModuleActionType.ViewSource, Localization.GlobalResourceFile),

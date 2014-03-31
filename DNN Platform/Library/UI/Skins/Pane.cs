@@ -344,7 +344,7 @@ namespace DotNetNuke.UI.Skins
             var request = PaneControl.Page.Request;
             Containers.Container container = null;
 
-            if (PortalSettings.EnablePopUps && request.Url.ToString().Contains("popUp=true"))
+            if (PortalSettings.EnablePopUps && UrlUtils.InPopUp())
             {
                 containerSrc = module.ContainerPath + "popUpContainer.ascx";
                 //Check Skin for a popup Container

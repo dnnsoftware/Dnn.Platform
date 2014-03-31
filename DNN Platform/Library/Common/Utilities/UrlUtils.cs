@@ -308,5 +308,11 @@ namespace DotNetNuke.Common.Utilities
             }
             return url;
         }
+
+        //Whether current page is show in popup.
+        public static bool InPopUp()
+        {
+            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
+        }
     }
 }

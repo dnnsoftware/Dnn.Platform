@@ -731,7 +731,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 					break;
 			}
 
-			if (showProfile && Request.Url.ToString().Contains("popUp=true"))
+            if (showProfile && UrlUtils.InPopUp())
 			{
 				ScriptManager.RegisterClientScriptBlock(this, GetType(), "ResizePopup", "if(parent.$('#iPopUp').length > 0 && parent.$('#iPopUp').dialog('isOpen')){parent.$('#iPopUp').dialog({width: 950, height: 550}).dialog({position: 'center'});};", true);
 			}

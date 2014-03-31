@@ -287,7 +287,7 @@ namespace DotNetNuke.UI.Skins
         private void InjectControlPanel()
         {
             //if querystring dnnprintmode=true, controlpanel will not be shown
-            if (Request.QueryString["dnnprintmode"] != "true" && Request.QueryString["popUp"] != "true" && Request.QueryString["hidecommandbar"] != "true")
+            if (Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && Request.QueryString["hidecommandbar"] != "true")
             {
                 if ((ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
                 {
@@ -645,7 +645,7 @@ namespace DotNetNuke.UI.Skins
 
             InvokeSkinEvents(SkinEventType.OnSkinPreRender);
 
-            if(TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !HttpContext.Current.Request.Url.ToString().Contains("popUp=true"))
+            if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !UrlUtils.InPopUp())
             {
                 //Register Drag and Drop plugin
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);

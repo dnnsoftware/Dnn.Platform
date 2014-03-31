@@ -210,7 +210,7 @@ namespace DotNetNuke.Web.UI.WebControls
             FilesComboBox.IncludeNoneSpecificItem = true;
             FilesComboBox.Filter = FileFilter;
 
-            if ((HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true")))
+            if (UrlUtils.InPopUp())
             {
                 FileUploadControl.Width = 630;
                 FileUploadControl.Height = 400;
