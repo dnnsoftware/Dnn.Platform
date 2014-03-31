@@ -480,7 +480,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                                  Path.GetFileNameWithoutExtension(authSystem.LoginControlSrc);
             authLoginControl.RedirectURL = RedirectURL;
             authLoginControl.ModuleConfiguration = ModuleConfiguration;
-            if (authLoginControl.ID != "Login_DNN")
+            if (authSystem.AuthenticationType != "DNN")
             {
                 authLoginControl.ViewStateMode = ViewStateMode.Enabled;
             }
