@@ -29,7 +29,6 @@ namespace DotNetNuke.Web.UI.WebControls
             Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForPage";
             Services.ServiceRoot = "InternalServices";
             Services.SortTreeMethod = "ItemListService/SortPages";
-            ViewStateMode = ViewStateMode.Disabled;
         }
 
         protected override void OnPreRender(EventArgs e)
