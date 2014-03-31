@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
                 if (AffiliateId != Null.NullInteger)
                 {
                     //Obtain a single row of banner information
-                    var affiliate = affiliateController.GetAffiliate(AffiliateId, VendorId, PortalId);
+                    var affiliate = affiliateController.GetAffiliate(AffiliateId);
                     if (affiliate != null)
                     {
                         StartDatePicker.SelectedDate = Null.IsNull(affiliate.StartDate) ? (DateTime?) null : affiliate.StartDate;

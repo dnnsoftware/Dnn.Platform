@@ -216,6 +216,22 @@ INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [Log
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_UPDATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 GO
 
+/* DNN-5126 Need AffiliateController.GetAffiliate(int affiliateID) */
+/*******************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAffiliate]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAffiliate]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAffiliate]
+	@AffiliateId int
+AS
+
+	SELECT	*
+	FROM	{databaseOwner}{objectQualifier}Affiliates 
+	WHERE	AffiliateId = @AffiliateId
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

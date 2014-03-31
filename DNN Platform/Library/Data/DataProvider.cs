@@ -2695,35 +2695,34 @@ namespace DotNetNuke.Data
 
         #region Affiliates
 
-        public virtual int AddAffiliate(int VendorId, DateTime StartDate, DateTime EndDate, double CPC, double CPA)
+        public virtual int AddAffiliate(int vendorId, DateTime startDate, DateTime endDate, double CPC, double CPA)
         {
-            return ExecuteScalar<int>("AddAffiliate", VendorId, GetNull(StartDate), GetNull(EndDate), CPC, CPA);
+            return ExecuteScalar<int>("AddAffiliate", vendorId, GetNull(startDate), GetNull(endDate), CPC, CPA);
         }
 
-        public virtual void DeleteAffiliate(int AffiliateId)
+        public virtual void DeleteAffiliate(int affiliateId)
         {
-            ExecuteNonQuery("DeleteAffiliate", AffiliateId);
+            ExecuteNonQuery("DeleteAffiliate", affiliateId);
         }
 
-        public virtual IDataReader GetAffiliate(int AffiliateId, int VendorId, int PortalId)
+        public virtual IDataReader GetAffiliate(int affiliateId)
         {
-            return ExecuteReader("GetAffiliate", AffiliateId, VendorId, GetNull(PortalId));
+            return ExecuteReader("GetAffiliate", affiliateId);
         }
 
-        public virtual IDataReader GetAffiliates(int VendorId)
+        public virtual IDataReader GetAffiliates(int vendorId)
         {
-            return ExecuteReader("GetAffiliates", VendorId);
+            return ExecuteReader("GetAffiliates", vendorId);
         }
 
-        public virtual void UpdateAffiliate(int AffiliateId, DateTime StartDate, DateTime EndDate, double CPC,
-                                            double CPA)
+        public virtual void UpdateAffiliate(int affiliateId, DateTime startDate, DateTime endDate, double CPC, double CPA)
         {
-            ExecuteNonQuery("UpdateAffiliate", AffiliateId, GetNull(StartDate), GetNull(EndDate), CPC, CPA);
+            ExecuteNonQuery("UpdateAffiliate", affiliateId, GetNull(startDate), GetNull(endDate), CPC, CPA);
         }
 
-        public virtual void UpdateAffiliateStats(int AffiliateId, int Clicks, int Acquisitions)
+        public virtual void UpdateAffiliateStats(int affiliateId, int clicks, int acquisitions)
         {
-            ExecuteNonQuery("UpdateAffiliateStats", AffiliateId, Clicks, Acquisitions);
+            ExecuteNonQuery("UpdateAffiliateStats", affiliateId, clicks, acquisitions);
         }
 
         #endregion
