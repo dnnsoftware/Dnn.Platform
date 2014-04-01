@@ -620,6 +620,7 @@
         </permission>
       </tabpermissions>
       <tabsettings/>
+      <tabtype>hometab</tabtype>
     </tab>
     <tab>
       <containersrc />
