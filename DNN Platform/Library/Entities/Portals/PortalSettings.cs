@@ -762,6 +762,21 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        public int SMTPConnectionLimit
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalId, 1);
+            }
+        }
+
+        public int SMTPMaxIdleTime
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalId,  0);
+            }
+        }
         #endregion
 
         #region IPropertyAccess Members

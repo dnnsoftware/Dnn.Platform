@@ -437,7 +437,8 @@ namespace DesktopModules.Admin.Portals
         private void BindSmtpSettings(int portalId)
         {
             txtSMTPServer.Text = Convert.ToString(PortalController.GetPortalSetting("SMTPServer", portalId, String.Empty));
-
+            txtConnectionLimit.Text = Convert.ToString(PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalSettings.Current.PortalId, 1));
+            txtMaxIdleTime.Text = Convert.ToString(PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalSettings.Current.PortalId, 0)); 
             optSMTPAuthentication.Items.FindByValue(PortalController.GetPortalSetting("SMTPAuthentication", portalId, "0").ToString()).Selected = true;
 
 
@@ -1362,6 +1363,8 @@ namespace DesktopModules.Admin.Portals
 
                     PortalController.UpdatePortalSetting(_portalId, "SMTPmode", rblSMTPmode.SelectedValue);
                     PortalController.UpdatePortalSetting(_portalId, "SMTPServer", txtSMTPServer.Text);
+                    PortalController.UpdatePortalSetting(_portalId, "SMTPConnectionLimit", txtConnectionLimit.Text);
+                    PortalController.UpdatePortalSetting(_portalId, "SMTPMaxIdleTime", txtMaxIdleTime.Text);
                     PortalController.UpdatePortalSetting(_portalId, "SMTPAuthentication", optSMTPAuthentication.SelectedValue);
                     PortalController.UpdatePortalSetting(_portalId, "SMTPUsername", txtSMTPUsername.Text);
                     PortalController.UpdateEncryptedString(_portalId, "SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());

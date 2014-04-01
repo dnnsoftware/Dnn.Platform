@@ -1502,6 +1502,10 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
+                if (SMTPPortalEnabled)
+                {
+                    return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalSettings.Current.PortalId, 1);
+                }
                 return HostController.Instance.GetInteger("SMTPConnectionLimit", 1);
             }
         }
@@ -1517,6 +1521,10 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
+                if (SMTPPortalEnabled)
+                {
+                    return PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalSettings.Current.PortalId, 0);
+                }
                 return HostController.Instance.GetInteger("SMTPMaxIdleTime", 0);
             }
         }
