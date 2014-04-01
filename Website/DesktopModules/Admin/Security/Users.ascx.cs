@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             try
             {
-                UserController.DeleteUnauthorizedUsers(PortalId);
+                UserController.DeleteUnauthorizedUsers(UsersPortalId);
                 RebindGrid();
             }
             catch (Exception exc)
