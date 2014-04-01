@@ -418,7 +418,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception exc)
             {
-                Log.AddFailure(Util.INSTALL_Aborted + " - " + Package.Name + " - " + exc.Message);
+                Log.AddFailure(Util.INSTALL_Aborted + " - " + Package.Name);
                 Log.AddFailure(exc);
             }
             if (isCompleted)
