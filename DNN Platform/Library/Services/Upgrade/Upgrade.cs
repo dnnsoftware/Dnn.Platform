@@ -4776,6 +4776,7 @@ namespace DotNetNuke.Services.Upgrade
                         {
                             if (Path.GetExtension(file.ToLower()) == ".zip")
                             {
+                                Logger.Trace("Parsing - " + file.Replace(installPackagePath + @"\", ""));
                                 PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
                                 //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Parsing - " + file.Replace(installPackagePath + @"\", "") + "<br/>");
                             }
@@ -4792,6 +4793,9 @@ namespace DotNetNuke.Services.Upgrade
             var dependentPackages = packages.Where(p => p.Value.Dependencies.Count > 0).ToDictionary(p=> p.Key, p => p.Value);
             int dependentCount = dependentPackages.Count;
             //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Start - Parsing Dependencies<br/>");
+
+            Logger.Trace("Start - Parsing Dependencies");
+
             while (dependentCount != prevDependentCount)
             {
                 prevDependentCount = dependentCount;
@@ -4799,13 +4803,18 @@ namespace DotNetNuke.Services.Upgrade
                 foreach (var package in dependentPackages)
                 {
                     //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Parsing - " + package.Value.Name + "<br/>");
+                    Logger.Trace("Parsing - " + package.Value.Name);
                     foreach (var dependency in package.Value.Dependencies)
                     {
                         if (sortedPackages.Count(p => p.Value.Name == dependency.PackageName && p.Value.Version >= dependency.Version) > 0)
                         {
+                            Logger.Trace("Dependency Resolved - " + package.Value.Name);
                             //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Dependency Resolved - " + package.Value.Name + "<br/>");
-                            sortedPackages.Add(package.Key, package.Value);
-                            addedPackages.Add(package.Key);
+                            if (sortedPackages.ContainsKey(package.Key))
+                            {
+                                sortedPackages.Add(package.Key, package.Value);
+                                addedPackages.Add(package.Key);
+                            }
                         }
                     }
                 }
@@ -4822,12 +4831,14 @@ namespace DotNetNuke.Services.Upgrade
                 sortedPackages.Add(package.Key, package.Value);
             }
 
+            Logger.Trace("End - Parsing Dependencies");
             //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "End - Parsing Dependencies<br/>");
 
-            //foreach (var package in sortedPackages)
-            //{
-            //    HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Installing - " + package.Key + "<br/>");
-            //}
+            foreach (var package in sortedPackages)
+            {
+                //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Installing - " + package.Key + "<br/>");
+                Logger.Trace("Installing - " + package.Key);
+            }
             return sortedPackages;
         }
 
