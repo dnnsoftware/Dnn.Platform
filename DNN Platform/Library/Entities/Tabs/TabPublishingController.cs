@@ -46,10 +46,19 @@ namespace DotNetNuke.Entities.Tabs
             }
             var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
 
-            if (HasAlreadyPermission(tab, "VIEW", allUsersRoleId))
+            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            if (existPermission != null)
             {
-                return;
+                if (existPermission.AllowAccess)
+                {
+                    return;
+                }
+                else
+                {
+                    tab.TabPermissions.Remove(existPermission);
+                }
             }
+
             tab.TabPermissions.Add(GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));            
             TabPermissionController.SaveTabPermissions(tab);
             ClearTabCache(tab);
@@ -64,13 +73,13 @@ namespace DotNetNuke.Entities.Tabs
             DataCache.ClearModuleCache(tabInfo.TabID);
         }
 
-        private bool HasAlreadyPermission(TabInfo tab, string permissionKey, int roleId)
+        private TabPermissionInfo GetAlreadyPermission(TabInfo tab, string permissionKey, int roleId)
         {
             var permission = PermissionController.GetPermissionsByTab().Cast<PermissionInfo>().SingleOrDefault<PermissionInfo>(p => p.PermissionKey == permissionKey);
 
             return
                 tab.TabPermissions.Cast<TabPermissionInfo>()
-                    .Any(tp => tp.AllowAccess && tp.RoleID == roleId && tp.PermissionID == permission.PermissionID);
+                    .FirstOrDefault(tp => tp.RoleID == roleId && tp.PermissionID == permission.PermissionID);
         }
 
         private TabPermissionInfo GetTabPermissionByRole(int tabID, string permissionKey, int roleID)
