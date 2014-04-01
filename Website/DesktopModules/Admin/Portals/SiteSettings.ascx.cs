@@ -1362,7 +1362,7 @@ namespace DesktopModules.Admin.Portals
 
                     PortalController.UpdatePortalSetting(_portalId, "SMTPmode", rblSMTPmode.SelectedValue);
                     PortalController.UpdatePortalSetting(_portalId, "SMTPServer", txtSMTPServer.Text);
-                    PortalController.UpdatePortalSetting(_portalId, "SMTPAuthentication", optSMTPAuthentication.SelectedItem.Value);
+                    PortalController.UpdatePortalSetting(_portalId, "SMTPAuthentication", optSMTPAuthentication.SelectedValue);
                     PortalController.UpdatePortalSetting(_portalId, "SMTPUsername", txtSMTPUsername.Text);
                     PortalController.UpdateEncryptedString(_portalId, "SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());
                     PortalController.UpdatePortalSetting(_portalId, "SMTPEnableSSL", chkSMTPEnableSSL.Checked ? "Y" : "N");
