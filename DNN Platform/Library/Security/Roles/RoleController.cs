@@ -177,7 +177,7 @@ namespace DotNetNuke.Security.Roles
 
         public RoleInfo GetRoleByName(int portalId, string roleName)
         {
-            return TestableRoleController.Instance.GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName);
+            return TestableRoleController.Instance.GetRoles(portalId).SingleOrDefault(r => String.Equals(r.RoleName, roleName, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public ArrayList GetRoles()
