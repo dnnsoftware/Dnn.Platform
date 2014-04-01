@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Installer.Log
 
         public void AddFailure(Exception ex)
         {
-            AddFailure((Util.EXCEPTION + ex));
+            AddFailure(Util.EXCEPTION + " - " + ex.Message);
             Exceptions.Exceptions.LogException(ex);
         }
 
