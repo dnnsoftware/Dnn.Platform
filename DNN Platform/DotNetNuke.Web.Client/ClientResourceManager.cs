@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -286,7 +286,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider)
         {
-            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath.ToLowerInvariant(), AddTag = false };
+            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, AddTag = false };
             var loader = page.FindControl("ClientResourceIncludes");
             if (loader != null)
             {
@@ -351,7 +351,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             if (fileExists || FileExists(page, filePath))
             {
-                var include = new DnnCssInclude {ForceProvider = provider, Priority = priority, FilePath = filePath.ToLowerInvariant(), AddTag = false};
+                var include = new DnnCssInclude {ForceProvider = provider, Priority = priority, FilePath = filePath, AddTag = false};
                 var loader = page.FindControl("ClientResourceIncludes");
 
                 if (loader != null)
