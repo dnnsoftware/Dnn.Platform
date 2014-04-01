@@ -239,6 +239,10 @@ namespace DotNetNuke.Services.Scheduling
         {
             //Do Nothing
         }
+        public virtual void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
+        {
+            //Do Nothing
+        }
 
     }
 }

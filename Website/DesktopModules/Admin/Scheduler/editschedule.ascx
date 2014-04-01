@@ -17,11 +17,15 @@
             <dnn:Label ID="plEnabled" runat="server" ControlName="chkEnabled" />
             <asp:CheckBox ID="chkEnabled" runat="server" AutoPostBack="True" />
         </div>
+        <div class="dnnFormItem">
+		   <dnn:Label ID="plScheduleStartDate" runat="server" ControlName="txtStartDate" />
+		   <dnn:dnndatetimepicker ID="startScheduleDatePicker" runat="server"/>&nbsp;
+		</div>  
         <div class="dnnFormItem timeMeasurement">
             <dnn:Label ID="plTimeLapse" runat="server" ControlName="txtTimeLapse" />
             <asp:TextBox ID="txtTimeLapse" runat="server" MaxLength="10" CssClass="dnnSmallSizeComboBox" />
             <asp:RequiredFieldValidator ID="TimeLapseRequiredValidator" CssClass="dnnFormMessage dnnFormError" EnableViewState="false" runat="server" resourcekey="TimeLapseRequired.ErrorMessage" Display="Dynamic" ControlToValidate="txtTimeLapse" />
-            <asp:RangeValidator runat="server" ControlToValidate="txtTimeLapse" Display="Dynamic" ID="TimeLapseValidator" MinimumValue="1" MaximumValue="999999" Type="Integer" CssClass="dnnFormMessage dnnFormError" resourcekey="TimeLapseValidator.ErrorMessage"></asp:RangeValidator>
+            <asp:RangeValidator runat="server" ControlToValidate="txtTimeLapse" Display="Dynamic" ID="TimeLapseValidator" EnableViewState="false" MinimumValue="1" MaximumValue="999999" Type="Integer" CssClass="dnnFormMessage dnnFormError" resourcekey="TimeLapseValidator.ErrorMessage"></asp:RangeValidator>
             <dnn:DnnComboBox ID="ddlTimeLapseMeasurement" runat="server" CssClass="dnnSmallSizeComboBox">
                 <Items>
                     <dnn:DnnComboBoxItem resourcekey="Seconds" Value="s" />
@@ -35,7 +39,7 @@
             <dnn:Label ID="plRetryTimeLapse" runat="server" ControlName="txtRetryTimeLapse" />
             <asp:TextBox ID="txtRetryTimeLapse" runat="server" MaxLength="10" CssClass="dnnSmallSizeComboBox" />
             <asp:RequiredFieldValidator ID="RetryTimeLapseRequireValidator" CssClass="dnnFormMessage dnnFormError" EnableViewState="false" runat="server" resourcekey="RetryTimeLapseRequired.ErrorMessage" Display="Dynamic" ControlToValidate="txtRetryTimeLapse" />
-            <asp:RangeValidator runat="server" ControlToValidate="txtRetryTimeLapse" Display="Dynamic" ID="RetryTimeLapseValidator" MinimumValue="1" MaximumValue="999999" Type="Integer" CssClass="dnnFormMessage dnnFormError" resourcekey="RetryTimeLapseValidator.ErrorMessage"></asp:RangeValidator>
+            <asp:RangeValidator runat="server" ControlToValidate="txtRetryTimeLapse" Display="Dynamic" ID="RetryTimeLapseValidator" EnableViewState="false" MinimumValue="1" MaximumValue="999999" Type="Integer" CssClass="dnnFormMessage dnnFormError" resourcekey="RetryTimeLapseValidator.ErrorMessage"></asp:RangeValidator>
             <dnn:DnnComboBox ID="ddlRetryTimeLapseMeasurement" runat="server" CssClass="dnnSmallSizeComboBox">
                 <Items>
                     <dnn:DnnComboBoxItem resourcekey="Seconds" Value="s" />
@@ -89,7 +93,7 @@
     </fieldset>
     <ul class="dnnActions dnnClear">
     	<li><asp:LinkButton id="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdUpdate" /></li>
-        <li><asp:LinkButton id="cmdRun" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdRun" Causesvalidation="False" /></li>
+        <li><asp:LinkButton id="cmdRun" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdRun" Causesvalidation="False"/></li>
         <li><asp:LinkButton id="cmdDelete" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdDelete" Causesvalidation="False" /></li>
         <li><asp:HyperLink id="cmdCancel" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" /></li>
     </ul>

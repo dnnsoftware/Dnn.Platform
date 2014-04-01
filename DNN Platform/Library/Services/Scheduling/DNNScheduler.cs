@@ -89,7 +89,8 @@ namespace DotNetNuke.Services.Scheduling
                                                                           scheduleItem.Enabled,
                                                                           scheduleItem.ObjectDependencies,
                                                                           scheduleItem.Servers,
-                                                                          scheduleItem.FriendlyName);
+                                                                          scheduleItem.FriendlyName,
+                                                                          scheduleItem.ScheduleStartDate);
             //Add schedule to queue
             RunScheduleItemNow(scheduleItem);
 
@@ -213,15 +214,15 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        public override void RunScheduleItemNow(ScheduleItem scheduleItem)
+        public override void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
         {
             //Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
-            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem) {NextStart = DateTime.Now};
+            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem) { NextStart = runNow ? DateTime.Now : (scheduleItem.ScheduleStartDate != Null.NullDate ? scheduleItem.ScheduleStartDate : DateTime.Now) };
 
-            if (scheduleHistoryItem.TimeLapse != Null.NullInteger 
-                && scheduleHistoryItem.TimeLapseMeasurement != Null.NullString 
-                && scheduleHistoryItem.Enabled 
+            if (scheduleHistoryItem.TimeLapse != Null.NullInteger
+                && scheduleHistoryItem.TimeLapseMeasurement != Null.NullString
+                && scheduleHistoryItem.Enabled
                 && CanRunOnThisServer(scheduleItem.Servers))
             {
                 scheduleHistoryItem.ScheduleSource = ScheduleSource.STARTED_FROM_SCHEDULE_CHANGE;
@@ -229,6 +230,11 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             DataCache.RemoveCache("ScheduleLastPolled");
+        }
+
+        public override void RunScheduleItemNow(ScheduleItem scheduleItem)
+        {
+            RunScheduleItemNow(scheduleItem, false);
         }
 
         public override void Start()
@@ -279,13 +285,17 @@ namespace DotNetNuke.Services.Scheduling
                                                 scheduleItem.Enabled,
                                                 scheduleItem.ObjectDependencies,
                                                 scheduleItem.Servers,
-                                                scheduleItem.FriendlyName);
+                                                scheduleItem.FriendlyName,
+                                                scheduleItem.ScheduleStartDate);
             //Update items that are already scheduled
             var futureHistory = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
 
+            var scheduleItemStart = scheduleItem.ScheduleStartDate > DateTime.Now
+                                        ? scheduleItem.ScheduleStartDate
+                                        : scheduleItem.NextStart;
             foreach (var scheduleHistoryItem in futureHistory)
             {
-                scheduleHistoryItem.NextStart = scheduleItem.NextStart;
+                scheduleHistoryItem.NextStart = scheduleItemStart;
                 SchedulingController.UpdateScheduleHistory(scheduleHistoryItem);
             }
 

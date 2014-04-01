@@ -3644,7 +3644,7 @@ namespace DotNetNuke.Data
                                        int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
                                        string AttachToEvent, bool CatchUpEnabled, bool Enabled,
                                        string ObjectDependencies, string Servers, int CreatedByUserID,
-                                       string FriendlyName)
+                                       string FriendlyName, DateTime ScheduleStartDate)
         {
             return ExecuteScalar<int>("AddSchedule",
                                             TypeFullName,
@@ -3659,7 +3659,8 @@ namespace DotNetNuke.Data
                                             ObjectDependencies,
                                             GetNull(Servers),
                                             CreatedByUserID,
-                                            FriendlyName);
+                                            FriendlyName,
+                                            GetNull(ScheduleStartDate));
         }
 
         public virtual int AddScheduleHistory(int ScheduleID, DateTime StartDate, string Server)
@@ -3727,7 +3728,7 @@ namespace DotNetNuke.Data
                                            string RetryTimeLapseMeasurement, int RetainHistoryNum,
                                            string AttachToEvent, bool CatchUpEnabled, bool Enabled,
                                            string ObjectDependencies, string Servers, int LastModifiedByUserID,
-                                           string FriendlyName)
+                                           string FriendlyName, DateTime ScheduleStartDate)
         {
             ExecuteNonQuery("UpdateSchedule",
                                       ScheduleID,
@@ -3743,7 +3744,8 @@ namespace DotNetNuke.Data
                                       ObjectDependencies,
                                       GetNull(Servers),
                                       LastModifiedByUserID,
-                                      FriendlyName);
+                                      FriendlyName,
+                                      GetNull(ScheduleStartDate));
         }
 
         public virtual void UpdateScheduleHistory(int ScheduleHistoryID, DateTime EndDate, bool Succeeded, string LogNotes, DateTime NextStart)

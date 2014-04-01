@@ -232,6 +232,113 @@ AS
 	WHERE	AffiliateId = @AffiliateId
 GO
 
+/* DNN-4993 Scheduled Job Start Date and Time */
+/*********************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Schedule
+	ADD ScheduleStartDate datetime NULL 
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateSchedule]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSchedule
+	@ScheduleID int
+	,@TypeFullName varchar(200)
+	,@TimeLapse int
+	,@TimeLapseMeasurement varchar(2)
+	,@RetryTimeLapse int
+	,@RetryTimeLapseMeasurement varchar(2)
+	,@RetainHistoryNum int
+	,@AttachToEvent varchar(50)
+	,@CatchUpEnabled bit
+	,@Enabled bit
+	,@ObjectDependencies varchar(300)
+	,@Servers varchar(150)
+	,@LastModifiedByUserID	int
+	,@FriendlyName varchar(200)
+	,@ScheduleStartDate datetime
+AS
+UPDATE dbo.Schedule
+	SET 
+	TypeFullName = @TypeFullName
+	,FriendlyName = @FriendlyName
+	,TimeLapse = @TimeLapse
+	,TimeLapseMeasurement = @TimeLapseMeasurement
+	,RetryTimeLapse = @RetryTimeLapse
+	,RetryTimeLapseMeasurement = @RetryTimeLapseMeasurement
+	,RetainHistoryNum = @RetainHistoryNum
+	,AttachToEvent = @AttachToEvent
+	,CatchUpEnabled = @CatchUpEnabled
+	,Enabled = @Enabled
+	,ObjectDependencies = @ObjectDependencies
+	,Servers = @Servers,
+	[LastModifiedByUserID] = @LastModifiedByUserID,	
+	[LastModifiedOnDate] = getdate(),
+	ScheduleStartDate = @ScheduleStartDate
+	WHERE ScheduleID = @ScheduleID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSchedule
+
+	@TypeFullName varchar(200)
+	,@TimeLapse int
+	,@TimeLapseMeasurement varchar(2)
+	,@RetryTimeLapse int
+	,@RetryTimeLapseMeasurement varchar(2)
+	,@RetainHistoryNum int
+	,@AttachToEvent varchar(50)
+	,@CatchUpEnabled bit
+	,@Enabled bit
+	,@ObjectDependencies varchar(300)
+	,@Servers varchar(150)
+	,@CreatedByUserID	int
+	,@FriendlyName varchar(200)
+	,@ScheduleStartDate datetime
+AS
+	INSERT INTO dbo.Schedule
+		(TypeFullName
+		,TimeLapse
+		,TimeLapseMeasurement
+		,RetryTimeLapse
+		,RetryTimeLapseMeasurement
+		,RetainHistoryNum
+		,AttachToEvent
+		,CatchUpEnabled
+		,Enabled
+		,ObjectDependencies
+		,Servers
+		,FriendlyName
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+		,ScheduleStartDate
+		)
+	VALUES
+		(@TypeFullName
+		,@TimeLapse
+		,@TimeLapseMeasurement
+		,@RetryTimeLapse
+		,@RetryTimeLapseMeasurement
+		,@RetainHistoryNum
+		,@AttachToEvent
+		,@CatchUpEnabled
+		,@Enabled
+		,@ObjectDependencies
+		,@Servers
+		,@FriendlyName
+		,@CreatedByUserID
+		,getdate()
+		,@CreatedByUserID
+		,getdate()
+		,@ScheduleStartDate
+		)
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

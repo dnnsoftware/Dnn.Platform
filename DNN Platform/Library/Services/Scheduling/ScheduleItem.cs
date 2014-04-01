@@ -60,6 +60,7 @@ namespace DotNetNuke.Services.Scheduling
             ThreadID = Null.NullInteger;
             ProcessGroup = Null.NullInteger;
             Servers = Null.NullString;
+            ScheduleStartDate = Null.NullDate;
         }
 
         #endregion
@@ -71,6 +72,8 @@ namespace DotNetNuke.Services.Scheduling
         public bool CatchUpEnabled { get; set; }
 
         public bool Enabled { get; set; }
+
+        public DateTime ScheduleStartDate { get; set; }
 
         public string FriendlyName { get; set; }
 
@@ -211,7 +214,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 //Ignore 
             }
-
+            ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
             //Fill BaseEntityInfo
             base.FillInternal(dr);
         }

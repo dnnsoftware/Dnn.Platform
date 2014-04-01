@@ -96,11 +96,14 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             {
                 ViewState["ScheduleID"] = Request.QueryString["ScheduleID"];
                 ScheduleItem scheduleItem = SchedulingProvider.Instance().GetSchedule(Convert.ToInt32(Request.QueryString["ScheduleID"]));
-
                 txtFriendlyName.Text = scheduleItem.FriendlyName;
                 txtType.Enabled = false;
                 txtType.Text = scheduleItem.TypeFullName;
                 chkEnabled.Checked = scheduleItem.Enabled;
+                if (!Null.IsNull(scheduleItem.ScheduleStartDate))
+                {
+                    startScheduleDatePicker.SelectedDate = scheduleItem.ScheduleStartDate;
+                }
                 txtTimeLapse.Text = Convert.ToString(scheduleItem.TimeLapse);
                 if (ddlTimeLapseMeasurement.FindItemByValue(scheduleItem.TimeLapseMeasurement) != null)
                 {
@@ -183,6 +186,9 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             scheduleItem.CatchUpEnabled = chkCatchUpEnabled.Checked;
             scheduleItem.Enabled = chkEnabled.Checked;
             scheduleItem.ObjectDependencies = txtObjectDependencies.Text;
+            scheduleItem.ScheduleStartDate = startScheduleDatePicker.SelectedDate != null
+                                                 ? startScheduleDatePicker.SelectedDate.Value
+                                                 : Null.NullDate; 
 
             //if servers are specified, the concatenated string needs to be prefixed and suffixed by commas ( ie. ",SERVER1,SERVER2," )
             var servers = Null.NullString;
@@ -238,9 +244,18 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                     cmdCancel.NavigateUrl = Globals.NavigateURL();
                     BindData();
                 }
+                if (chkEnabled.Checked)
+                {
+                    //if startdate is in the future Run Now will change NextStart value, to prevent this disable it if start date is in the future or present
+                    cmdRun.Visible = (startScheduleDatePicker.SelectedDate!=null ? startScheduleDatePicker.SelectedDate.Value : Null.NullDate)<DateTime.Now;
+                }
+                else
+                {
+                    cmdRun.Enabled = chkEnabled.Checked;
+                    cmdRun.Visible = chkEnabled.Checked;   
+                }
+                
 
-                cmdRun.Enabled = chkEnabled.Checked;
-                cmdRun.Visible = chkEnabled.Checked;
             }
             catch (Exception exc) //Module failed to load
             {
@@ -270,9 +285,9 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             if (ViewState["ScheduleID"] != null)
             {
                 scheduleItem.ScheduleID = Convert.ToInt32(ViewState["ScheduleID"]);
-                SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem);
+                SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem, true);
             }
-            SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem);
+            SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem, true);
 
             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RunNow", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
 

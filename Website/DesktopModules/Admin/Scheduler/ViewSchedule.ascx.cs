@@ -21,6 +21,8 @@
 #region Usings
 
 using System;
+using System.Collections;
+using System.Linq;
 using System.Threading;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
@@ -33,6 +35,7 @@ using DotNetNuke.Services.Scheduling;
 using Telerik.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using System.Collections.Generic;
 
 #endregion
 
@@ -192,8 +195,11 @@ namespace DotNetNuke.Modules.Admin.Scheduler
 
         protected void OnGridNeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
-            var arrSchedule = SchedulingProvider.Instance().GetSchedule();
-
+            var scheduleviews = SchedulingController.GetSchedule();
+            foreach (var item in scheduleviews.Where(x => x.NextStart == Null.NullDate))
+                if (item.ScheduleStartDate != Null.NullDate)
+                    item.NextStart = item.ScheduleStartDate;
+            var arrSchedule = scheduleviews.ToArray();
             dgSchedule.DataSource = arrSchedule;
         }
 
