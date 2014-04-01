@@ -667,7 +667,7 @@
       <tabtype>usertab</tabtype>
       <panes>
         <pane>
-          <name>LeftPaneProfile</name>
+          <name>LeftPane</name>
           <modules>
             <module>
               <alltabs>false</alltabs>
@@ -741,77 +741,7 @@
           </modules>
         </pane>
         <pane>
-          <name>HeaderPaneProfile</name>
-          <modules>
-            <module>
-              <title>ViewProfile</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header />
-              <footer />
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod>FileModuleCachingProvider</cachemethod>
-              <alignment />
-              <color />
-              <border />
-              <iconfile />
-              <visibility>Maximized</visibility>
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
-              <displaytitle>true</displaytitle>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>IncludeButton</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>ProfileTemplate</settingname>
-                  <settingvalue>
-                    &lt;div id="UserDisplayNameHeader"&gt;
-                    &lt;h2&gt;[USER:DISPLAYNAME]&lt;/h2&gt;
-                    &lt;/div&gt;
-
-                  </settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>ViewProfile</definition>
-              <moduledefinition>ViewProfile</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>RightPaneProfile</name>
+          <name>RightPane</name>
           <modules>
             <module>
               <title>Member Directory</title>
@@ -1053,8 +983,73 @@
           </modules>
         </pane>
         <pane>
-          <name>ContentPaneProfile</name>
+          <name>CenterPane</name>
           <modules>
+            <module>
+              <title>ViewProfile</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <displaytitle>true</displaytitle>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>IncludeButton</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>ProfileTemplate</settingname>
+                  <settingvalue>
+                    &lt;div id="UserDisplayNameHeader"&gt;
+                    &lt;h2&gt;[USER:DISPLAYNAME]&lt;/h2&gt;
+                    &lt;/div&gt;
+
+                  </settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>ViewProfile</definition>
+              <moduledefinition>ViewProfile</moduledefinition>
+            </module>
             <module>
               <title>Journal</title>
               <alltabs>false</alltabs>
