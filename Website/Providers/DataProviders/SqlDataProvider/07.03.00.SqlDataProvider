@@ -339,6 +339,29 @@ AS
 		,@ScheduleStartDate
 		)
 GO
+
+/* DNN-4991 Scheduler main view */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
+ @Server varchar(150)
+AS
+BEGIN
+SELECT
+  S.*
+  , (SELECT max(S1.NextStart)
+   FROM {databaseOwner}{objectQualifier}ScheduleHistory S1
+   WHERE S1.ScheduleID = S.ScheduleID) as NextStart
+ FROM {databaseOwner}{objectQualifier}Schedule S
+ WHERE
+  (@Server IS NULL OR S.Servers LIKE '%,' + @Server + ',%' OR S.Servers IS NULL)
+  ORDER BY FriendlyName ASC
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

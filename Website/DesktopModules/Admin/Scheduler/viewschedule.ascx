@@ -2,6 +2,14 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="Telerik.Web.UI" %>
+<div class="dnnFormItem">
+            <dnn:Label ID="plServers" runat="server" ControlName="ddlServerName" />
+            <dnn:DnnComboBox ID="ddlServerName" runat="server" AutoPostBack="True">
+                <Items>
+                    <dnn:DnnComboBoxItem Value="-1" resourcekey="All" Selected="True" />
+                </Items>
+            </dnn:DnnComboBox>
+        </div>
 <div class="dnnViewSchedule dnnClear">
     <dnn:DnnGrid id="dgSchedule" runat="server" AutoGenerateColumns="false" AllowSorting="true" CssClass="dnnGrid">
         <MasterTableView DataKeyNames="ScheduleID,Enabled,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,NextStart">

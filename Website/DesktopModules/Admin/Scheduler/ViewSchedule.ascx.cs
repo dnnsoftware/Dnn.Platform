@@ -26,6 +26,7 @@ using System.Linq;
 using System.Threading;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Security;
@@ -123,10 +124,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -135,6 +132,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             cmdStatus.NavigateUrl = EditUrl("", "", "Status");
             cmdHistory.NavigateUrl = EditUrl("", "", "History");
             cmdUpdate.Click+=cmdUpdate_Click;
+            ddlServerName.SelectedIndexChanged+=ddlServerName_SelectedIndexChanged;
 
             try
             {
@@ -150,7 +148,13 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             if (!Page.IsPostBack)
             {
                 BindSettings();
+                BindServers();
             }
+        }
+
+        private void ddlServerName_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
+        {
+            dgSchedule.Rebind();
         }
 
         protected void UpdateSchedule()
@@ -193,9 +197,31 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             ViewState["SelectedSchedulerMode"] = cboSchedulerMode.SelectedItem.Value;
         }
 
+        private void BindServers()
+        {
+            var servers = ServerController.GetServers();
+            foreach (var webServer in servers)
+            {
+                if (webServer.Enabled)
+                {
+                    var serverName = ServerController.GetServerName(webServer);
+                    ddlServerName.AddItem(serverName, serverName);
+                }
+            }
+        }
+
         protected void OnGridNeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
-            var scheduleviews = SchedulingController.GetSchedule();
+            List<ScheduleItem> scheduleviews;
+            if (ddlServerName.SelectedIndex == 0)
+            {
+                scheduleviews = SchedulingController.GetSchedule();
+            }
+            else
+            {
+                scheduleviews = SchedulingController.GetSchedule(ddlServerName.SelectedValue);
+            }
+
             foreach (var item in scheduleviews.Where(x => x.NextStart == Null.NullDate))
                 if (item.ScheduleStartDate != Null.NullDate)
                     item.NextStart = item.ScheduleStartDate;

@@ -195,4 +195,10 @@
   <data name="Settings.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="plServers.Text" xml:space="preserve">
+    <value>Server Name:</value>
+  </data>
+  <data name="plServers.Help" xml:space="preserve">
+    <value>The particular server (or All) that a scheduled task will run on.</value>
+  </data>
 </root>
