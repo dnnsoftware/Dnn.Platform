@@ -130,7 +130,7 @@
     <value>Schedule Enabled:</value>
   </data>
   <data name="plTimeLapse.Text" xml:space="preserve">
-    <value>Time Lapse:</value>
+    <value>Frequency:</value>
   </data>
   <data name="plTimeLapse.Help" xml:space="preserve">
     <value>Example: "5" and select "Minutes" to run task every 5 minutes.</value>
@@ -154,7 +154,7 @@
     <value>Years</value>
   </data>
   <data name="plRetryTimeLapse.Text" xml:space="preserve">
-    <value>Retry Frequency:</value>
+    <value>Retry Time Lapse:</value>
   </data>
   <data name="plRetryTimeLapse.Help" xml:space="preserve">
     <value>Example: "5" and select "Minutes" to retry the task every 5 minutes after a failure.</value>
@@ -232,10 +232,10 @@
     <value>The type of Schedule Item is required.</value>
   </data>
   <data name="TimeLapseValidator.ErrorMessage" xml:space="preserve">
-    <value>Time Lapse range is from 1 to 999999</value>
+    <value>Frequency range is from 1 to 999999</value>
   </data>
   <data name="TimeLapseRequired.ErrorMessage" xml:space="preserve">
-    <value>You must set Time Lapse value</value>
+    <value>You must set Frequency value</value>
   </data>
   <data name="RetryTimeLapseValidator.ErrorMessage" xml:space="preserve">
     <value>Retry Frequency range is from 1 to 999999</value>
