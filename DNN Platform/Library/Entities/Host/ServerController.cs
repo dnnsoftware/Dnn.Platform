@@ -29,6 +29,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
@@ -118,6 +119,16 @@ namespace DotNetNuke.Entities.Host
         public static void UpdateServer(ServerInfo server)
         {
             DataProvider.Instance().UpdateServer(server.ServerID, server.Url, server.Enabled, server.ServerGroup);
+            if (!string.IsNullOrEmpty(server.Url) 
+                    && PortalAliasController.Instance.GetPortalAlias(server.Url) == null)
+            {
+                PortalAliasController.Instance.AddPortalAlias(new PortalAliasInfo
+                                                              {
+                                                                  HTTPAlias = server.Url,
+                                                                  PortalID = Host.HostPortalID,
+                                                                  IsPrimary = false
+                                                              });
+            }
             ClearCachedServers();
         }
 
