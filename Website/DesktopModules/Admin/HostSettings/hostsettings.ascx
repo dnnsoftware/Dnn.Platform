@@ -501,7 +501,7 @@
                         Operator="GreaterThan" Type="Integer" Display="Dynamic" EnableClientScript="True" resourceKey="valIndexWordMaxLengthCompare.Error"></asp:CompareValidator>
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="txtCustomAnalyzer" />
+                    <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="cbCustomAnalyzer" />
                     <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>
                 </div>
                 <div class="dnnTableHeader">

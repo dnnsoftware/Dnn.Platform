@@ -236,7 +236,7 @@ GO
 /*********************************************************/
 
 ALTER TABLE {databaseOwner}{objectQualifier}Schedule
-	ADD ScheduleStartDate datetime NULL 
+	ADD ScheduleStartDate DATETIME NULL 
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
@@ -260,7 +260,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSchedule
 	,@FriendlyName varchar(200)
 	,@ScheduleStartDate datetime
 AS
-UPDATE dbo.Schedule
+UPDATE {databaseOwner}{objectQualifier}Schedule
 	SET 
 	TypeFullName = @TypeFullName
 	,FriendlyName = @FriendlyName
@@ -300,7 +300,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSchedule
 	,@FriendlyName varchar(200)
 	,@ScheduleStartDate datetime
 AS
-	INSERT INTO dbo.Schedule
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule
 		(TypeFullName
 		,TimeLapse
 		,TimeLapseMeasurement
@@ -362,6 +362,74 @@ SELECT
   ORDER BY FriendlyName ASC
 END
 GO
+
+/* CONTENT-2389:  add column PingFailureCount in WebServers table, and event log type WEBSERVER_DISABLED, WEBSERVER_ENABLED, WEBSERVER_PINGFAILED. */
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_DISABLED', N'Web Server Disabled', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_ENABLED', N'Web Server Enabled', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_PINGFAILED', N'Web Server Ping Failed', N'', N'DotNetNuke.Logging.EventLogType', N'OperationFailure')
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_DISABLED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_ENABLED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_PINGFAILED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+GO
+
+IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}WebServers' AND  COLUMN_NAME = 'PingFailureCount')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}WebServers ADD
+            PingFailureCount INT NOT NULL DEFAULT(0)
+    END 
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateServerActivity]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateServerActivity
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateServerActivity
+    @ServerName			NVARCHAR(50),
+    @IISAppName			NVARCHAR(200),
+    @CreatedDate		DATETIME,
+    @LastActivityDate	DATETIME,
+    @PingFailureCount   INT
+AS
+
+	DECLARE @ServerID int
+	SET @ServerID = (SELECT ServerID FROM {databaseOwner}{objectQualifier}WebServers WHERE ServerName = @ServerName AND IISAppName = @IISAppName)
+
+	IF @ServerID IS NULL
+		BEGIN
+			-- Insert
+			INSERT INTO {databaseOwner}{objectQualifier}WebServers (
+				ServerName,
+				IISAppName,
+				CreatedDate,
+				LastActivityDate,
+                PingFailureCount,
+				[Enabled]
+			)
+			VALUES (
+				@ServerName,
+				@IISAppName,
+				@CreatedDate,
+				@LastActivityDate,
+                @PingFailureCount,
+				0
+			)
+
+            SELECT @ServerID = SCOPE_IDENTITY()
+		END
+	ELSE
+		BEGIN
+			-- Update
+			UPDATE {databaseOwner}{objectQualifier}WebServers 
+				SET 
+					LastActivityDate = @LastActivityDate, PingFailureCount = @PingFailureCount
+				WHERE  ServerName = @ServerName AND IISAppName = @IISAppName
+		END
+
+    SELECT @ServerID
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

@@ -177,7 +177,10 @@ namespace DotNetNuke.Services.Log.EventLog
             SCRIPT_COLLISION,
             POTENTIAL_PAYPAL_PAYMENT_FRAUD,
             WEBSERVER_CREATED,
-            WEBSERVER_UPDATED
+            WEBSERVER_UPDATED,
+            WEBSERVER_DISABLED,
+            WEBSERVER_ENABLED,
+            WEBSERVER_PINGFAILED
         }
 
         #endregion

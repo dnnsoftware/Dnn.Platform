@@ -45,6 +45,7 @@ namespace DotNetNuke.Entities.Host
             ServerGroup = String.Empty;
             CreatedDate = created;
             LastActivityDate = lastactivity;
+            Enabled = true;
         }
 
         public int ServerID { get; set; }
@@ -62,6 +63,8 @@ namespace DotNetNuke.Entities.Host
         public DateTime CreatedDate { get; set; }
 
         public DateTime LastActivityDate { get; set; }
+
+        public int PingFailureCount { get; set; }
 
         #region IHydratable Members
 
@@ -84,6 +87,7 @@ namespace DotNetNuke.Entities.Host
             Enabled = Null.SetNullBoolean(dr["Enabled"]);
             CreatedDate = Null.SetNullDateTime(dr["CreatedDate"]);
             LastActivityDate = Null.SetNullDateTime(dr["LastActivityDate"]);
+            PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
         }
 
         /// -----------------------------------------------------------------------------

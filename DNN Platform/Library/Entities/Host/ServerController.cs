@@ -20,6 +20,7 @@
 #endregion
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Caching;
@@ -27,6 +28,9 @@ using System.Web.Caching;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -35,10 +39,14 @@ namespace DotNetNuke.Entities.Host
 {
     public class ServerController
     {
+
+        public const string DefaultUrlAdapter = "DotNetNuke.Entities.Host.ServerUrlAdapter, DotNetNuke";
+
         private const string cacheKey = "WebServers";
         private const int cacheTimeout = 20;
         private const CacheItemPriority cachePriority = CacheItemPriority.High;
         private static readonly DataProvider dataProvider = DataProvider.Instance();
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
 
         public static bool UseAppName
         {
@@ -51,11 +59,6 @@ namespace DotNetNuke.Entities.Host
                 }
                 return uniqueServers.Count < GetEnabledServers().Count;
             }
-        }
-
-        private static object GetServersCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillCollection<ServerInfo>(dataProvider.GetServers());
         }
 
         public static void ClearCachedServers()
@@ -120,8 +123,15 @@ namespace DotNetNuke.Entities.Host
 
         public static void UpdateServerActivity(ServerInfo server)
         {
-            var serverExists = GetServers().Any(s => s.ServerName == server.ServerName);
-            DataProvider.Instance().UpdateServerActivity(server.ServerName, server.IISAppName, server.CreatedDate, server.LastActivityDate);
+            var serverExists = GetServers().Any(s => s.ServerName == server.ServerName && s.IISAppName == server.IISAppName);
+            var serverId = DataProvider.Instance().UpdateServerActivity(server.ServerName, server.IISAppName, server.CreatedDate, server.LastActivityDate, server.PingFailureCount);
+            if (!serverExists)
+            {
+                server.ServerID = serverId;
+                //try to detect the server url from url adapter.
+                server.Url = GetServerUrl();
+                UpdateServer(server);
+            }
 
             //log the server info
             var eventLogInfo = new LogInfo();
@@ -133,6 +143,32 @@ namespace DotNetNuke.Entities.Host
             new EventLogController().AddLog(eventLogInfo);
 
             ClearCachedServers();
+        }
+
+        private static object GetServersCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillCollection<ServerInfo>(dataProvider.GetServers());
+        }
+
+        private static string GetServerUrl()
+        {
+            var adapterConfig = HostController.Instance.GetString("WebServer_UrlAdapter", DefaultUrlAdapter);
+            try
+            {
+                var adapterType = Reflection.CreateType(adapterConfig);
+                var adpapter = Reflection.CreateInstance(adapterType) as IServerUrlAdapter;
+                if (adpapter == null)
+                {
+                    return string.Empty;
+                }
+
+                return adpapter.GetServerUrl();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return string.Empty;
+            }
         }
     }
 }

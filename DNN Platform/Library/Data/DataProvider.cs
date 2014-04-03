@@ -472,10 +472,10 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("UpdateServer", serverId, url, enabled, group);
         }
 
-        public virtual void UpdateServerActivity(string ServerName, string IISAppName, DateTime CreatedDate,
-                                                 DateTime LastActivityDate)
+        public virtual int UpdateServerActivity(string serverName, string iisAppName, DateTime createdDate,
+                                                 DateTime lastActivityDate, int pingFailureCount)
         {
-            ExecuteNonQuery("UpdateServerActivity", ServerName, IISAppName, CreatedDate, LastActivityDate);
+            return ExecuteScalar<int>("UpdateServerActivity", serverName, iisAppName, createdDate, lastActivityDate, pingFailureCount);
         }
 
         #endregion

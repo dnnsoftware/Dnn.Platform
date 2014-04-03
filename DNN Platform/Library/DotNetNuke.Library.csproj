@@ -266,6 +266,8 @@
     <Compile Include="Entities\Content\Workflow\ContentWorkflowState.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowStatePermission.cs" />
     <Compile Include="Entities\DataStructures\NTree.cs" />
+    <Compile Include="Entities\Host\IServerUrlAdapter.cs" />
+    <Compile Include="Entities\Host\ServerUrlAdapter.cs" />
     <Compile Include="Entities\IPFilter\IIPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterInfo.cs" />

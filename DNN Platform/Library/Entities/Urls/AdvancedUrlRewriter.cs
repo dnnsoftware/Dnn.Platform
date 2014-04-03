@@ -826,6 +826,11 @@ namespace DotNetNuke.Entities.Urls
                 var portalId = Host.Host.HostPortalID;
                 if (portalId > Null.NullInteger)
                 {
+                    if (string.IsNullOrEmpty(result.DomainName))
+                    {
+                        result.DomainName = Globals.GetDomainName(context.Request); //parse the domain name out of the request
+                    }
+
                     //Get all the existing aliases
                     var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
 
@@ -855,7 +860,7 @@ namespace DotNetNuke.Entities.Urls
                         var portalAliasInfo = new PortalAliasInfo
                                                   {
                                                       PortalID = portalId, 
-                                                      HTTPAlias = result.RewritePath,
+                                                      HTTPAlias = result.DomainName,
                                                       IsPrimary = isPrimary
                                                   };
                         PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
