@@ -186,6 +186,9 @@
   <data name="cmdReturn.Text" xml:space="preserve">
     <value>Return</value>
   </data>
+  <data name="cmdStop.Text" xml:space="preserve">
+    <value>Stop</value>
+  </data>
   <data name="cmdDownLoad.Text" xml:space="preserve">
     <value>Download</value>
   </data>

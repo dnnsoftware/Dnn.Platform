@@ -49,6 +49,11 @@
 							<%# DataBinder.Eval(Container.DataItem,"Servers") %>
 					</ItemTemplate>
 					</dnnweb:DnnGridTemplateColumn>
+                    <dnnweb:DnnGridTemplateColumn>
+                            <ItemTemplate>
+                                <asp:LinkButton id="cmdStopSchedule" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "ScheduleID").ToString() %>' CommandName="ScheduleID" runat="server" CssClass="dnnSecondaryAction" ResourceKey="cmdStop" OnClick="CmdStopScheduleClick"  />
+                            </ItemTemplate>
+                    </dnnweb:DnnGridTemplateColumn>
 				</Columns>
 			</MasterTableView>
 		</dnnweb:DnnGrid>

@@ -22,7 +22,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Security;
@@ -138,6 +138,16 @@ namespace DotNetNuke.Modules.Admin.Scheduler
 			}
 		}
 
+        public void CmdStopScheduleClick(object sender, EventArgs e)
+        {
+            var stopBtn = (LinkButton)sender;
+            ScheduleItem scheduleItem = SchedulingProvider.Instance().GetSchedule(Convert.ToInt32(stopBtn.CommandArgument));
+            //Stop from execution
+            SchedulingProvider.Instance().RemoveFromScheduleInProgress(scheduleItem);
+            BindData();
+            BindStatus();
+
+        }
 		#endregion
 
 		#region Protected Methods
