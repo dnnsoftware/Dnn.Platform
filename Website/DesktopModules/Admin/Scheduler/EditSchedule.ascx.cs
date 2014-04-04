@@ -137,9 +137,24 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 cmdDelete.Visible = false;
                 cmdRun.Visible = false;
                 txtType.Enabled = true;
+                LoadServers();
             }
         }
 
+        private void LoadServers()
+        {
+            var servers = ServerController.GetServers();
+
+            foreach (var webServer in servers)
+            {
+                if (webServer.Enabled)
+                {
+                    var serverName = ServerController.GetServerName(webServer);
+                    var serverItem = new ListItem(serverName, serverName);
+                    lstServers.Items.Add(serverItem);
+                }
+            }
+        }
         private void BindServers(string selectedServers)
         {
             var servers = ServerController.GetServers();
