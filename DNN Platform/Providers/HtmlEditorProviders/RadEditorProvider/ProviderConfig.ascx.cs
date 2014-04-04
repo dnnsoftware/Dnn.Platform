@@ -18,10 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-using System.Web.Configuration;
 
+using System.Text.RegularExpressions;
+using System.Web.Configuration;
+using System.Web.Services.Description;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
@@ -40,6 +43,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.UI.WebControls;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.Providers.RadEditorProvider
 {
@@ -138,6 +142,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 						if (! IsPostBack)
 						{
 							BindEditorList();
+						    BindRoles();
 						}
 
 						BindCurrentEditor();
@@ -206,18 +211,14 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			this.cmdCreate.Visible = true;
 			rblMode.SelectedIndex = 0;
 
-			if (treeTools.SelectedNode.Text.StartsWith("Everyone"))
-			{
-				rblMode.SelectedIndex = 1;
-			}
-			else if (treeTools.SelectedNode.Text.StartsWith("Users"))
-			{
-				rblMode.SelectedIndex = 2;
-			}
-			else if (treeTools.SelectedNode.Text.StartsWith("Admin"))
-			{
-				rblMode.SelectedIndex = 3;
-			}
+		    if (treeTools.SelectedNode != null)
+		    {
+		        var role = RoleController.Instance.GetRoleByName(PortalId, treeTools.SelectedNode.Text);
+		        if (role != null)
+		        {
+		            rblMode.SelectedValue = role.RoleID.ToString();
+		        }
+		    }
 		}
 
 		protected void OnDeleteClick(object sender, System.EventArgs e)
@@ -245,10 +246,10 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			string newConfigPath = Server.MapPath(this.TemplateSourceDirectory) + "\\ConfigFile\\ConfigFile";
 			string newToolsPath = Server.MapPath(this.TemplateSourceDirectory) + "\\ToolsFile\\ToolsFile";
 
-			if ( ! string.IsNullOrEmpty(rblMode.SelectedValue))
+			if ( !string.IsNullOrEmpty(rblMode.SelectedValue) && rblMode.SelectedValue != Globals.glbRoleAllUsers)
 			{
-				newConfigPath += "." + rblMode.SelectedValue;
-				newToolsPath += "." + rblMode.SelectedValue;
+				newConfigPath += ".RoleId." + rblMode.SelectedValue;
+				newToolsPath += ".RoleId." + rblMode.SelectedValue;
 			}
 
 			if (chkPortal.Checked)
@@ -413,6 +414,28 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
             MessagePanel.Visible = GetSelectedEditor() != radEditorProviderName;
 		}
+
+	    private void BindRoles()
+	    {
+            var roles = RoleController.Instance.GetRoles(PortalId, 
+                                                            r => r.SecurityMode != SecurityMode.SocialGroup 
+                                                                && r.Status == RoleStatus.Approved);
+
+            roles.Insert(0, new RoleInfo { 
+                                        RoleID = int.Parse(Globals.glbRoleAllUsers), 
+                                        RoleName = Globals.glbRoleAllUsersName 
+                                   });
+            roles.Insert(1, new RoleInfo
+            {
+                RoleID = int.Parse(Globals.glbRoleSuperUser),
+                RoleName = Globals.glbRoleSuperUserName
+            });
+
+            rblMode.DataSource = roles;
+	        rblMode.DataTextField = "RoleName";
+	        rblMode.DataValueField = "RoleId";
+            rblMode.DataBind();
+	    }
 
 		private List<string> GetEditorsList()
 		{
@@ -1602,30 +1625,22 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 						if (strTargetGroup.Length > 0)
 						{
-
-							if (strTargetGroup.ToLower().StartsWith("host"))
+						    var roleMatch = Regex.Match(strTargetGroup, "^RoleId\\.([-\\d]+)", RegexOptions.IgnoreCase);
+							if (roleMatch.Success)
 							{
-								rblMode.SelectedValue = "Host";
-								strTargetTab = strTargetGroup.ToLower().Replace("host.", "");
-								nodeTitle = "Host";
+							    var roleId = roleMatch.Groups[1].Value;
+                                rblMode.SelectedValue = roleId;
+							    strTargetTab = strTargetGroup.Replace(roleMatch.Value + ".", string.Empty);
+							    var role = RoleController.Instance.GetRole(Convert.ToInt32(roleId), PortalId);
+							    if (role != null)
+							    {
+							        nodeTitle = role.RoleName;
+							    }
+							    else
+							    {
+							        blnAddNode = false; //do not show the node if the role is not in current portal, or the role is not valid any more(such as deleted).
+							    }
 							}
-							else if (strTargetGroup.ToLower().StartsWith("admin"))
-							{
-								rblMode.SelectedValue = "Admin";
-								strTargetTab = strTargetGroup.ToLower().Replace("admin.", "");
-								nodeTitle = "Admin";
-							}
-							else if (strTargetGroup.ToLower().StartsWith("registered"))
-							{
-								rblMode.SelectedValue = "Registered";
-								strTargetTab = strTargetGroup.ToLower().Replace("registered.", "");
-								nodeTitle = "Users";
-							}
-							else
-							{
-								strTargetTab = strTargetGroup;
-							}
-
 						}
 
 						if (strTargetTab.Length > 0)

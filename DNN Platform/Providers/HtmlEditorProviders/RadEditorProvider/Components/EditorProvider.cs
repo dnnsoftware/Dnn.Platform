@@ -41,6 +41,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.HTMLEditorProvider;
 using DotNetNuke.RadEditorProvider.Components;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI;
@@ -147,64 +148,67 @@ namespace DotNetNuke.Providers.RadEditorProvider
                 {
                     if (objUserInfo.IsSuperUser)
                     {
-                        rolepath = path.Replace(".xml", ".Host.xml");
-                        tabpath = path.Replace(".xml", ".Host.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
-                        portalpath = path.Replace(".xml", ".Host.PortalId." + PortalSettings.PortalId + ".xml");
+                        var hostPart = ".RoleId." + DotNetNuke.Common.Globals.glbRoleSuperUser;
+                        rolepath = path.Replace(".xml", hostPart + ".xml");
+                        tabpath = path.Replace(".xml", hostPart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        portalpath = path.Replace(".xml", hostPart + ".PortalId." + PortalSettings.PortalId + ".xml");
 
                         if (File.Exists(tabpath))
                         {
-                            return tempConfigFile.ToLower().Replace(".xml", ".Host.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                            return tempConfigFile.ToLower().Replace(".xml", hostPart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
                         }
                         if (File.Exists(portalpath))
                         {
-                            return tempConfigFile.ToLower().Replace(".xml", ".Host.PortalId." + PortalSettings.PortalId + ".xml");
+                            return tempConfigFile.ToLower().Replace(".xml", hostPart + ".PortalId." + PortalSettings.PortalId + ".xml");
                         }
                         if (File.Exists(rolepath))
                         {
-                            return tempConfigFile.ToLower().Replace(".xml", ".Host.xml");
+                            return tempConfigFile.ToLower().Replace(".xml", hostPart + ".xml");
                         }
                     }
-                }
 
-                //lookup admin specific config file
-                if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
-                {
-                    rolepath = path.Replace(".xml", ".Admin.xml");
-                    tabpath = path.Replace(".xml", ".Admin.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
-                    portalpath = path.Replace(".xml", ".Admin.PortalId." + PortalSettings.PortalId + ".xml");
+                    //lookup admin specific config file
+                    if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
+                    {
+                        var adminPart = ".RoleId." + PortalSettings.AdministratorRoleId;
+                        rolepath = path.Replace(".xml", adminPart + ".xml");
+                        tabpath = path.Replace(".xml", adminPart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        portalpath = path.Replace(".xml", adminPart + ".PortalId." + PortalSettings.PortalId + ".xml");
 
-                    if (File.Exists(tabpath))
-                    {
-                        return tempConfigFile.ToLower().Replace(".xml", ".Admin.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        if (File.Exists(tabpath))
+                        {
+                            return tempConfigFile.ToLower().Replace(".xml", adminPart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        }
+                        if (File.Exists(portalpath))
+                        {
+                            return tempConfigFile.ToLower().Replace(".xml", adminPart + ".PortalId." + PortalSettings.PortalId + ".xml");
+                        }
+                        if (File.Exists(rolepath))
+                        {
+                            return tempConfigFile.ToLower().Replace(".xml", adminPart + ".xml");
+                        }
                     }
-                    if (File.Exists(portalpath))
-                    {
-                        return tempConfigFile.ToLower().Replace(".xml", ".Admin.PortalId." + PortalSettings.PortalId + ".xml");
-                    }
-                    if (File.Exists(rolepath))
-                    {
-                        return tempConfigFile.ToLower().Replace(".xml", ".Admin.xml");
-                    }
-                }
 
-                //lookup registered users specific config file
-                if (PortalSecurity.IsInRole(PortalSettings.RegisteredRoleName))
-                {
-                    rolepath = path.Replace(".xml", ".Registered.xml");
-                    tabpath = path.Replace(".xml", ".Registered.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
-                    portalpath = path.Replace(".xml", ".Registered.PortalId." + PortalSettings.PortalId + ".xml");
+                    //lookup user roles specific config file
+                    foreach (var role in RoleController.Instance.GetUserRoles(objUserInfo, false))
+                    {
+                        var rolePart = ".RoleId." + role.RoleID;
+                        rolepath = path.Replace(".xml", rolePart + ".xml");
+                        tabpath = path.Replace(".xml", rolePart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        portalpath = path.Replace(".xml", rolePart + ".PortalId." + PortalSettings.PortalId + ".xml");
 
-                    if (File.Exists(tabpath))
-                    {
-                        return tempConfigFile.ToLower().Replace(".xml", ".Registered.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
-                    }
-                    if (File.Exists(portalpath))
-                    {
-                        return tempConfigFile.ToLower().Replace(".xml", ".Registered.PortalId." + PortalSettings.PortalId + ".xml");
-                    }
-                    if (File.Exists(rolepath))
-                    {
-                        return tempConfigFile.ToLower().Replace(".xml", ".Registered.xml");
+                        if (File.Exists(tabpath))
+                        {
+                            return tempConfigFile.ToLower().Replace(".xml", rolePart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        }
+                        if (File.Exists(portalpath))
+                        {
+                            return tempConfigFile.ToLower().Replace(".xml", rolePart + ".PortalId." + PortalSettings.PortalId + ".xml");
+                        }
+                        if (File.Exists(rolepath))
+                        {
+                            return tempConfigFile.ToLower().Replace(".xml", rolePart + ".xml");
+                        }
                     }
                 }
 
@@ -273,64 +277,67 @@ namespace DotNetNuke.Providers.RadEditorProvider
                 {
                     if (objUserInfo.IsSuperUser)
                     {
-                        rolepath = path.Replace(".xml", ".Host.xml");
-                        tabpath = path.Replace(".xml", ".Host.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
-                        portalpath = path.Replace(".xml", ".Host.PortalId." + PortalSettings.PortalId + ".xml");
+                        var hostPart = ".RoleId." + DotNetNuke.Common.Globals.glbRoleSuperUser;
+                        rolepath = path.Replace(".xml", hostPart + ".xml");
+                        tabpath = path.Replace(".xml", hostPart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        portalpath = path.Replace(".xml", hostPart + ".PortalId." + PortalSettings.PortalId + ".xml");
 
                         if (File.Exists(tabpath))
                         {
-                            return tempToolsFile.ToLower().Replace(".xml", ".Host.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                            return tempToolsFile.ToLower().Replace(".xml", hostPart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
                         }
                         if (File.Exists(portalpath))
                         {
-                            return tempToolsFile.ToLower().Replace(".xml", ".Host.PortalId." + PortalSettings.PortalId + ".xml");
+                            return tempToolsFile.ToLower().Replace(".xml", hostPart + ".PortalId." + PortalSettings.PortalId + ".xml");
                         }
                         if (File.Exists(rolepath))
                         {
-                            return tempToolsFile.ToLower().Replace(".xml", ".Host.xml");
+                            return tempToolsFile.ToLower().Replace(".xml", hostPart + ".xml");
                         }
                     }
-                }
 
-                //lookup admin specific tools file
-                if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
-                {
-                    rolepath = path.Replace(".xml", ".Admin.xml");
-                    tabpath = path.Replace(".xml", ".Admin.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
-                    portalpath = path.Replace(".xml", ".Admin.PortalId." + PortalSettings.PortalId + ".xml");
+                    //lookup admin specific tools file
+                    if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
+                    {
+                        var adminPart = ".RoleId." + PortalSettings.AdministratorRoleId;
+                        rolepath = path.Replace(".xml", adminPart + ".xml");
+                        tabpath = path.Replace(".xml", adminPart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        portalpath = path.Replace(".xml", adminPart + ".PortalId." + PortalSettings.PortalId + ".xml");
 
-                    if (File.Exists(tabpath))
-                    {
-                        return tempToolsFile.ToLower().Replace(".xml", ".Admin.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        if (File.Exists(tabpath))
+                        {
+                            return tempToolsFile.ToLower().Replace(".xml", adminPart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        }
+                        if (File.Exists(portalpath))
+                        {
+                            return tempToolsFile.ToLower().Replace(".xml", adminPart + ".PortalId." + PortalSettings.PortalId + ".xml");
+                        }
+                        if (File.Exists(rolepath))
+                        {
+                            return tempToolsFile.ToLower().Replace(".xml", adminPart + ".xml");
+                        }
                     }
-                    if (File.Exists(portalpath))
-                    {
-                        return tempToolsFile.ToLower().Replace(".xml", ".Admin.PortalId." + PortalSettings.PortalId + ".xml");
-                    }
-                    if (File.Exists(rolepath))
-                    {
-                        return tempToolsFile.ToLower().Replace(".xml", ".Admin.xml");
-                    }
-                }
 
-                //lookup registered users specific tools file
-                if (PortalSecurity.IsInRole(PortalSettings.RegisteredRoleName))
-                {
-                    rolepath = path.Replace(".xml", ".Registered.xml");
-                    tabpath = path.Replace(".xml", ".Registered.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
-                    portalpath = path.Replace(".xml", ".Registered.PortalId." + PortalSettings.PortalId + ".xml");
+                    //lookup user roles specific tools file
+                    foreach (var role in RoleController.Instance.GetUserRoles(objUserInfo, false))
+                    {
+                        var rolePart = ".RoleId." + role.RoleID;
+                        rolepath = path.Replace(".xml", rolePart + ".xml");
+                        tabpath = path.Replace(".xml", rolePart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        portalpath = path.Replace(".xml", rolePart + ".PortalId." + PortalSettings.PortalId + ".xml");
 
-                    if (File.Exists(tabpath))
-                    {
-                        return tempToolsFile.ToLower().Replace(".xml", ".Registered.TabId." + PortalSettings.ActiveTab.TabID + ".xml");
-                    }
-                    if (File.Exists(portalpath))
-                    {
-                        return tempToolsFile.ToLower().Replace(".xml", ".Registered.PortalId." + PortalSettings.PortalId + ".xml");
-                    }
-                    if (File.Exists(rolepath))
-                    {
-                        return tempToolsFile.ToLower().Replace(".xml", ".Registered.xml");
+                        if (File.Exists(tabpath))
+                        {
+                            return tempToolsFile.ToLower().Replace(".xml", rolePart + ".TabId." + PortalSettings.ActiveTab.TabID + ".xml");
+                        }
+                        if (File.Exists(portalpath))
+                        {
+                            return tempToolsFile.ToLower().Replace(".xml", rolePart + ".PortalId." + PortalSettings.PortalId + ".xml");
+                        }
+                        if (File.Exists(rolepath))
+                        {
+                            return tempToolsFile.ToLower().Replace(".xml", rolePart + ".xml");
+                        }
                     }
                 }
 
