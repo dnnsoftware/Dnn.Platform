@@ -58,6 +58,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\DotNetNuke.Web.DDRMenu.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.WebControls">
