@@ -59,6 +59,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Web.DDRMenu.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.WebControls">
@@ -86,6 +87,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Actions.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -178,6 +182,7 @@
     <None Include="DDRMenu.dnn">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Module.build" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BuildScripts\" />

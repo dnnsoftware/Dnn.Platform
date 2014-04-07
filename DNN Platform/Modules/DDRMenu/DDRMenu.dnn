@@ -1,10 +1,9 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DDRMenu" type="Module" version="02.01.00">
+		<package name="DDRMenu" type="Module" version="07.03.00">
 			<friendlyName>DDR Menu</friendlyName>
-			<description>DotNetNuke navigation provider.</description>
+			<description>DotNetNuke Navigation Provider.</description>
 			<owner>
-				<name>Mark Allan</name>
 				<organization>DotNetNuke Corporation</organization>
 				<url>
 					<![CDATA[<a href="http://www.dotnetnuke.com/">www.dotnetnuke.com</a>]]>
