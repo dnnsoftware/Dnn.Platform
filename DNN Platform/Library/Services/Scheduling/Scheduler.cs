@@ -248,6 +248,24 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             /// <summary>
+            /// add a log note to the schedule history
+            /// </summary>
+            /// <param name="scheduleHistoryItem">the schedule history item</param>
+            /// <param name="logNote">the additional log note for appending to any existing log note</param>
+            public static void AddLogNote(ScheduleHistoryItem scheduleHistoryItem,string logNote)
+            {
+                try
+                {
+                    scheduleHistoryItem.LogNotes = scheduleHistoryItem.LogNotes + logNote;
+                    SchedulingController.UpdateScheduleHistory(scheduleHistoryItem);
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.Exceptions.ProcessSchedulerException(exc);
+                }
+            }
+
+            /// <summary>
             /// Adds an item to the collection of schedule items in queue.
             /// </summary>
             /// <param name="scheduleHistoryItem"></param>
@@ -625,8 +643,17 @@ namespace DotNetNuke.Services.Scheduling
             {
                 List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), ServerController.GetExecutingServerName());
 
+                var thisServer = ServerController.GetServers().Single(s => s.ServerName == DotNetNuke.Common.Globals.ServerName && s.IISAppName == DotNetNuke.Common.Globals.IISAppName);
+                bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
+
+                var serverGroupServers = ServerGroupServers(thisServer);
+
                 foreach (ScheduleItem scheduleItem in schedule)
                 {
+                    if (runningInAGroup && String.IsNullOrEmpty(scheduleItem.Servers))
+                    {
+                        scheduleItem.Servers = serverGroupServers;
+                    }
                     var historyItem = new ScheduleHistoryItem(scheduleItem);
 
                     if (!IsInQueue(historyItem) &&
@@ -646,8 +673,19 @@ namespace DotNetNuke.Services.Scheduling
 
                 List<ScheduleItem> schedule = SchedulingController.GetSchedule(ServerController.GetExecutingServerName());
 
+                var thisServer = ServerController.GetServers().Single(s => s.ServerName == DotNetNuke.Common.Globals.ServerName && s.IISAppName == DotNetNuke.Common.Globals.IISAppName);
+                bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
+                
+                var serverGroupServers = ServerGroupServers(thisServer);
+
+
                 foreach (ScheduleItem scheduleItem in schedule)
                 {
+                    if (runningInAGroup && String.IsNullOrEmpty(scheduleItem.Servers))
+                    {
+                        scheduleItem.Servers = serverGroupServers;
+                    }
+
                     var historyItem = new ScheduleHistoryItem(scheduleItem);
 
                     if (!IsInQueue(historyItem) &&
@@ -666,6 +704,21 @@ namespace DotNetNuke.Services.Scheduling
                         AddToScheduleQueue(historyItem);
                     }
                 }
+            }
+
+            private static string ServerGroupServers(ServerInfo thisServer)
+            {
+//Get the servers
+                var servers = ServerController.GetEnabledServers().Where(s => s.ServerName != thisServer.ServerName
+                                                                              && s.IISAppName != thisServer.IISAppName
+                                                                              && s.ServerGroup == thisServer.ServerGroup
+                                                                              && !String.IsNullOrEmpty(s.Url));
+                string serverGroupServers = string.Empty;
+                foreach (var serverInfo in servers)
+                {
+                    serverGroupServers = serverGroupServers + serverInfo.ServerName + ",";
+                }
+                return serverGroupServers;
             }
 
             public static void PurgeScheduleHistory()
