@@ -715,10 +715,6 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
     width: 410px;
 }
 
-#dnnModuleDigitalAssetsPermissions table.dnnPermissionsGrid {
-    width: 100%;
-}
-
 #dnnModuleDigitalAssetsButtonPane .dnnActions {
     padding-top: 15px;
     border-top: 1px solid #c0c0c0;
