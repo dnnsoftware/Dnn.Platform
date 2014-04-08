@@ -449,7 +449,9 @@ div.RadWindow table.rwTitlebarControls ul.rwControlButtons li
 .reTlbVertical a span
 {
 	float: left;
-	width: 22px;
+	width: 30px;
+    height: 24px;
+    line-height: 24px;
 }
 
 .reButton_text
@@ -1328,35 +1330,38 @@ ul.reCustomLinks ul
 .ImageManager,
 .InsertImage
 {
-	background-position: -366px center;
+	background-position: -1170px center;
 }
 
 .ImageMapDialog
 {
-	background-position: -396px center;
+	background-position: -1230px center;
 }
 
 .FlashManager,
 .InsertFlash
 {
-	background-position: -1476px center;
+	background-position: -1140px center;
 }
 
 .MediaManager,
 .InsertMedia
 {
-	background-position: -1476px center;
+	background-position: -1200px center;
 }
 
 .DocumentManager,
 .InsertDocument
 {
-	background-position: -1476px center;
+	background-position: -1110px center;
 }
-
+.SaveTemplate 
+{
+    background-position: -1440px center;
+}
 .TemplateManager
 {
-	background-position: -2765px center;
+	background-position: -1470px center;
 }
 
 .InsertTable{
@@ -1469,28 +1474,31 @@ ul.reCustomLinks ul
 .Paste,
 .PasteStrip
 {
-	background-position: -652px center;
+	background-position: -1260px center;
 }
 
-.PasteAsHtml,
+.PasteAsHtml
+{
+	background-position: -1290px center;
+}
 .PasteHtml
 {
-	background-position: -815px center;
+	background-position: -1380px center;
 }
 
 .PasteFromWord
 {
-	background-position: -845px center;
+	background-position: -1320px center;
 }
 
 .PasteFromWordNoFontsNoSizes
 {
-	background-position: -875px center;
+	background-position: -1350px center;
 }
 
 .PastePlainText
 {
-	background-position: -905px center;
+	background-position: -1410px center;
 }
 
 .Print
@@ -1805,6 +1813,12 @@ ul.reCustomLinks ul
 {
 	border: 0;
 	background: none;
+}
+
+.reToolbar span
+{
+	background-image: url('../images/editorSprite.png');
+	background-repeat: no-repeat;
 }
 /* end of toolbar */
 
