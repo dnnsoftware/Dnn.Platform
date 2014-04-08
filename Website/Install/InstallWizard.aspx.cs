@@ -1107,7 +1107,8 @@ namespace DotNetNuke.Services.Install
                                             {installSite, 20},
                                             {createSuperUser, 5},
                                             {activateLicense, 4},
-                                            {new InstallVersionStep(), 1}
+                                            {new InstallVersionStep(), 1}, 
+                                            {new AddFcnModeStep(), 1}
                                         };
 
         [System.Web.Services.WebMethod]

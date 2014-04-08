@@ -22,6 +22,7 @@
 
 using System;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -169,11 +170,14 @@ namespace DotNetNuke.Services.Install
 
                     var installVersion = DataProvider.Instance().GetInstallVersion();
                     string strError = Config.UpdateInstallVersion(installVersion);
+
+                    //Adding FCN mode to web.config
+                    strError += Config.AddFCNMode(Config.FcnMode.Single);
                     if (!string.IsNullOrEmpty(strError))
                     {
                         Logger.Error(strError);
                     }
-
+                    
                     Response.Write("<h2>Installation Complete</h2>");
                     Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
                     Response.Flush();
@@ -265,6 +269,9 @@ namespace DotNetNuke.Services.Install
                     //calling GetInstallVersion after SQL scripts exection to ensure sp GetDatabaseInstallVersion exists
                     var installVersion = DataProvider.Instance().GetInstallVersion();
                     string strError = Config.UpdateInstallVersion(installVersion);
+
+                    //Adding FCN mode to web.config
+                    strError += Config.AddFCNMode(Config.FcnMode.Single);
                     if (!string.IsNullOrEmpty(strError))
                     {
                         Logger.Error(strError);
@@ -455,7 +462,7 @@ namespace DotNetNuke.Services.Install
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
+            string test = Config.AddFCNMode(Config.FcnMode.Single);
             //Get current Script time-out
             int scriptTimeOut = Server.ScriptTimeout;
 

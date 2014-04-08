@@ -64,7 +64,19 @@ namespace DotNetNuke.Common.Utilities
 
         #endregion
 
-        /// <summary>
+        #region FcnMode enum
+
+        public enum FcnMode
+        {
+            Default,
+            Disabled,
+            NotSet, 
+            Single
+        }
+
+        #endregion
+        
+            /// <summary>
         /// Adds a new AppSetting to Web.Config. The update parameter allows you to define if,
         /// when the key already exists, this need to be updated or not
         /// </summary>
@@ -238,6 +250,21 @@ namespace DotNetNuke.Common.Utilities
             return result;
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Returns the fcnMode from webconfig httpRuntime
+        /// </summary>
+        /// <returns>decryption key</returns>
+        /// -----------------------------------------------------------------------------
+        public static string GetFcnMode()
+        {
+            var configNav = Load();
+            var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime").CreateNavigator();
+
+            var result = XmlUtils.GetAttributeValue(httpNode, "fcnMode");
+
+            return result;
+        }
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Returns the maximum file size allowed to be uploaded to the application in bytes
@@ -861,6 +888,37 @@ namespace DotNetNuke.Common.Utilities
 
             return xmlConfig;
         }
+
+        public static string AddFCNMode(FcnMode fcnMode)
+        {
+            string strError = "";
+            var xmlConfig = new XmlDocument();
+            try
+            {
+                //open the web.config
+                xmlConfig = Load();
+
+                //check current .net version and if attribute has been added already
+                if (Environment.Version.ToString(2) == "4.5" && String.IsNullOrEmpty(GetFcnMode()))
+                {
+                    XmlNode xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime");
+                    XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                strError += ex.Message;
+            }
+
+            //save the web.config
+            strError += Save(xmlConfig);
+
+            return strError;  
+
+        }
+
 
     }
 }

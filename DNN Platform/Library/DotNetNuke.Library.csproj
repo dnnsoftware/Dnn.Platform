@@ -1260,6 +1260,7 @@
     <Compile Include="Services\Tokens\PropertyAccess\PropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\TicksPropertyAccess.cs" />
     <Compile Include="Services\Tokens\TokenReplace.cs" />
+    <Compile Include="Services\Upgrade\Internals\Steps\AddFcnModeStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\BaseInstallationStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\InstallVersionStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\IISVerificationStep.cs" />
