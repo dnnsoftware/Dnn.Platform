@@ -638,3 +638,15 @@ ul.buttonList .windowslive a span
 .dnnFormItem input.unmatched {
     background: url("/Icons/Sigma/Delete_16x16_Standard_2.png") #fff no-repeat 98% center;
 }
+
+.dnnProfileDetails .dnnFileUploadScope .dnnFoldersLabel {
+    width: 120px;
+}
+
+.dnnProfileDetails .dnnFileUploadScope .dnnFileUploadFolder {
+    height: 30px;
+}
+
+.dnnProfileDetails .dnnDropDownList.aspNetDisabled {
+    display: none;
+}

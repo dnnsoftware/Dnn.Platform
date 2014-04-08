@@ -51,10 +51,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
 		#endregion
 
-		#region protected properties
+		#region Protected Properties
 
         protected DnnFileDropDownList FilesComboBox;
         protected DnnFolderDropDownList FoldersComboBox;
+        protected Label FoldersLabel;
         protected DnnFileUpload FileUploadControl;
 
         protected string FolderLabel
@@ -247,6 +248,8 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
 
+            FoldersLabel.Text = FolderManager.Instance.MyFolderName;
+
             FileUploadControl.Options.FolderPicker.Disabled = UsePersonalFolder;
             if (FileUploadControl.Options.FolderPicker.Disabled && FoldersComboBox.SelectedFolder != null)
             {
@@ -275,7 +278,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 var user = User ?? UserController.GetCurrentUserInfo();
                 var userFolder = FolderManager.Instance.GetUserFolder(user);
                 FoldersComboBox.SelectedFolder = userFolder;
-                FoldersComboBox.Enabled = false;
             }
             else
             {
@@ -300,6 +302,9 @@ namespace DotNetNuke.Web.UI.WebControls
                     FilesComboBox.SelectedFile = FileManager.Instance.GetFile(FoldersComboBox.SelectedFolder, fileName);
                 }
             }
+
+            FoldersComboBox.Enabled = !UsePersonalFolder;
+            FoldersLabel.Visible = UsePersonalFolder;
         }
 
         #endregion

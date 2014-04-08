@@ -2649,7 +2649,7 @@
             //get the selected folder path
             var selectedPathArray = dnn[settings.foldersComboId].selectedPath();
             if (selectedPathArray.length === 0 && settings.folder) {
-                return this.options.folder;
+                return settings.folder;
             }
             var selectedPath = "";
             if (selectedPathArray.length > 1) {

@@ -3,7 +3,9 @@
 <asp:Panel runat="server" ID="dnnFileUploadScope" CssClass="dnnFileUploadScope">
     <div class="dnnLeft">
         <div class="dnnFormItem dnnFileUploadFolder">
-            <span><%= FolderLabel  %></span><dnn:DnnFolderDropDownList runat="server" ID="FoldersComboBox" />
+            <span><%= FolderLabel  %></span>
+            <dnn:DnnFolderDropDownList runat="server" ID="FoldersComboBox" />
+            <asp:Label runat="server" ID="FoldersLabel" CssClass="dnnFoldersLabel"></asp:Label>
         </div>
         <div class="dnnFormItem">
             <span><%= FileLabel  %></span><dnn:DnnFileDropDownList runat="server" ID="FilesComboBox" />
