@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return Util.INSTALL_Permissions + " - " + Permission;
+                return Util.INSTALL_Permissions + " - " + Localization.Localization.GetString(Permission, Localization.Localization.GlobalResourceFile);
             }
         }
 

@@ -1561,4 +1561,13 @@ Sincerely,
   <data name="//Admin//UserSwitcher.String" xml:space="preserve">
     <value>User Switcher</value>
   </data>
+  <data name="AspNetHostingPermission.Text" xml:space="preserve">
+    <value>This extension requires Full Trust.</value>
+  </data>
+  <data name="ReflectionPermission.Text" xml:space="preserve">
+    <value>This extension requries Reflection permission.</value>
+  </data>
+  <data name="WebPermission.Text" xml:space="preserve">
+    <value>This extension requires Web permission.</value>
+  </data>
 </root>

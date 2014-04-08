@@ -137,9 +137,9 @@ namespace DotNetNuke.Framework
             {
                 foreach (string per in (permissions + ";").Split(Convert.ToChar(";")))
                 {
-                    permission = per;
-                    if (!String.IsNullOrEmpty(permission.Trim()))
+                    if (!String.IsNullOrEmpty(per.Trim()))
                     {
+                        permission = per;
                         switch (permission)
                         {
                             case AspNetHostingPermission:
