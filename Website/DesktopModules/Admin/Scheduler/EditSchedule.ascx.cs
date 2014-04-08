@@ -176,12 +176,22 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                         {
                             if (selectedServer == serverName)
                             {
+                                
                                 serverItem.Selected = true;
                                 break;
                             }
+                           
                         }
                     }
                     lstServers.Items.Add(serverItem);
+
+                }
+                 foreach (var selectedServer in selectedServers.Split(','))
+                {
+                    if (lstServers.Items.FindByText(selectedServer)==null && !String.IsNullOrEmpty(selectedServer))
+                    {
+                        txtAdditionalServers.Text = selectedServer;
+                    }
                 }
             }
         }
@@ -218,6 +228,10 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 {
                     bAllSelected = Null.NullBoolean;
                 }
+            }
+            if (!String.IsNullOrEmpty(txtAdditionalServers.Text))
+            {
+                servers += "," + txtAdditionalServers.Text;
             }
             if (bAllSelected)
             {

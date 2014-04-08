@@ -210,6 +210,12 @@
   <data name="plServers.Help" xml:space="preserve">
     <value>Select the web server(s) that this schedule should run on.</value>
   </data>
+  <data name="plAdditionalServers.Text" xml:space="preserve">
+    <value>Run on unconfigured Servers:</value>
+  </data>
+  <data name="plAdditionalServers.Help" xml:space="preserve">
+    <value>Select the currently unknown web server(s) that this schedule should run on.</value>
+  </data>
   <data name="Seconds.Text" xml:space="preserve">
     <value>Seconds</value>
   </data>
