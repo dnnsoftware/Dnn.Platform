@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework;
 using DotNetNuke.Modules.MobileManagement.Presenters;
 using DotNetNuke.Modules.MobileManagement.Views;
 using DotNetNuke.Services.ClientCapability;
@@ -34,7 +35,8 @@ namespace DotNetNuke.Modules.MobileManagement
     [PresenterBinding(typeof(RedirectionSettingsPresenter))]
     public partial class RedirectionSettingsView : ModuleView, IRedirectionSettingsView
     {
-        #region "Properties
+        #region Properties
+
         public int RedirectId
         {
             get
@@ -76,13 +78,17 @@ namespace DotNetNuke.Modules.MobileManagement
 
         private string _capability = string.Empty;
         private string _capabilityValue = string.Empty;
+
         #endregion
 
-        #region "Event Handlers"
+        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
 
             dgCapabilityList.ItemCommand += OnCapabilitiesItemCommand;
             dgCapabilityList.ItemDataBound += CapabilitiesItemDataBound;
@@ -165,7 +171,8 @@ namespace DotNetNuke.Modules.MobileManagement
 
         #endregion
 
-        #region "Private Methods"
+        #region Private Methods
+
         private void BindRedirection(int redirectId)
         {
             // Populating existing redirection settings
@@ -242,6 +249,7 @@ namespace DotNetNuke.Modules.MobileManagement
             BindPortals();
             BindCapabilities();
         }
+
         private void BindPortals()
         {
             // Populating Portals dropdown
@@ -274,6 +282,7 @@ namespace DotNetNuke.Modules.MobileManagement
             cboCapabilityName.DataSource = capabilities;
             cboCapabilityName.DataBind();
         }
+
         private void BindCapabilityValues(string capability)
         {
             if (capability != string.Empty)
@@ -289,11 +298,13 @@ namespace DotNetNuke.Modules.MobileManagement
             }
             cboCapabilityValue.DataBind();                 
         }
+
         private void SetCapabilityAndValue()
         {
             if (_capability == string.Empty) _capability = cboCapabilityName.SelectedValue;
             if (_capabilityValue == string.Empty) _capabilityValue = cboCapabilityValue.SelectedValue;
         }
+
         private void SaveRedirection()
         {
             IRedirection redirection = new Redirection();
@@ -398,7 +409,8 @@ namespace DotNetNuke.Modules.MobileManagement
 
         #endregion
 
-        #region "Event Handlers"
+        #region Event Handlers
+
         private void lnkSave_OnClick(object sender, EventArgs e)
         {
                      
