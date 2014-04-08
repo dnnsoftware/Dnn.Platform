@@ -384,7 +384,7 @@ namespace DotNetNuke.Entities.Urls
             NoFriendlyUrlRegex = GetStringSetting(DoNotUseFriendlyUrlRegexSetting, @"/Rss\.aspx");
 
             //703 default debug code to false
-            AllowDebugCode = GetBooleanSetting(AllowDebugCodeSetting, false);
+            AllowDebugCode = Host.Host.DebugMode;
 
             VanityUrlPrefix = GetStringSetting(VanityUrlPrefixSetting, "users");
 
