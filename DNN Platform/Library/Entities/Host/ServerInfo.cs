@@ -82,12 +82,23 @@ namespace DotNetNuke.Entities.Host
             ServerID = Null.SetNullInteger(dr["ServerID"]);
             IISAppName = Null.SetNullString(dr["IISAppName"]);
             ServerName = Null.SetNullString(dr["ServerName"]);
-            ServerGroup = Null.SetNullString(dr["ServerGroup"]);
             Url = Null.SetNullString(dr["URL"]);
             Enabled = Null.SetNullBoolean(dr["Enabled"]);
             CreatedDate = Null.SetNullDateTime(dr["CreatedDate"]);
             LastActivityDate = Null.SetNullDateTime(dr["LastActivityDate"]);
-            PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
+
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
+            {
+                if (schema.Select("ColumnName = 'PingFailureCount'").Length > 0)
+                {
+                    PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
+                }
+                if (schema.Select("ColumnName = 'ServerGroup'").Length > 0)
+                {
+                    ServerGroup = Null.SetNullString(dr["ServerGroup"]);
+                }
+            }
         }
 
         /// -----------------------------------------------------------------------------
