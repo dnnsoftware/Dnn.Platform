@@ -13,12 +13,23 @@ namespace DotNetNuke.Entities.Host
     {
         public string GetServerUrl()
         {
+            var domainName = string.Empty;
             if (HttpContext.Current != null)
             {
-                return Globals.GetDomainName(HttpContext.Current.Request);
+                domainName = Globals.GetDomainName(HttpContext.Current.Request);
+                
+                if (domainName.Contains("/"))
+                {
+                    domainName = domainName.Substring(0, domainName.IndexOf("/"));
+
+                    if (!string.IsNullOrEmpty(Globals.ApplicationPath))
+                    {
+                        domainName = string.Format("{0}{1}", domainName, Globals.ApplicationPath);
+                    }
+                }
             }
 
-            return string.Empty;
+            return domainName;
         }
     }
 }
