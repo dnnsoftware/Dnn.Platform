@@ -58,11 +58,27 @@ dnn.controlBar.init = function (settings) {
         var selectedPageId = dnn.controlBar.selectedPage ? dnn.controlBar.selectedPage.id : '';
         var selectedPageName = dnn.controlBar.selectedPage ? dnn.controlBar.selectedPage.name : '';
         var visibilityComboVal = $find(settings.visibilityComboId).get_value();
-        var persistValue = [dnn.controlBar.addNewModule, categoryComboVal, selectedPageId, selectedPageName, visibilityComboVal].join('|');
+        var moduleLoadIndex = dnn.controlBar.moduleLoadingPageIndex;
+        var forceScrollX = dnn.controlBar.getCurrentScrollPositionX($('#ControlBar_ModuleListHolder_NewModule').next().data('jsp'));
+        var searchTerm = dnn.controlBar.getSearchTermValue();
+        var persistValue = [
+                                dnn.controlBar.addNewModule,
+                                categoryComboVal,
+                                selectedPageId,
+                                selectedPageName,
+                                visibilityComboVal,
+                                moduleLoadIndex,
+                                forceScrollX,
+                                searchTerm
+                            ].join('|');
         dnn.dom.setCookie('ControlBarInitStatus', persistValue);
         dnn.controlBar.status = null;
     };
     dnn.controlBar.loadStatus = function () {
+        if (dnn.controlBar.status) {
+            return;
+        }
+
         var persistValue = dnn.dom.getCookie('ControlBarInitStatus');
         if (persistValue) {
             var persits = persistValue.split('|');
@@ -71,7 +87,10 @@ dnn.controlBar.init = function (settings) {
                 category: persits[1],
                 pageId: persits[2],
                 pageName: persits[3],
-                visibility: persits[4]
+                visibility: persits[4],
+                moduleLoadIndex: persits[5],
+                forceScrollX: persits[6],
+                searchTerm: persits[7]
             };
         }
         else {
@@ -198,6 +217,9 @@ dnn.controlBar.init = function (settings) {
     
     dnn.controlBar.getModuleLoadingCurrentPageSize = function () {
         if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            if (dnn.controlBar.forceModuleLoadIndex) {
+                return dnn.controlBar.moduleLoadingInitialPageSize + dnn.controlBar.forceModuleLoadIndex * dnn.controlBar.moduleLoadingSize;
+            }
             return dnn.controlBar.moduleLoadingInitialPageSize;            
         } else {
             return dnn.controlBar.moduleLoadingSize;
@@ -227,13 +249,14 @@ dnn.controlBar.init = function (settings) {
         var serviceUrl = dnn.controlBar.getServiceUrl(service);                
         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
         var startDate = new Date();
+        var currentIndex = dnn.controlBar.getModuleLoadingCurrentIndex();
+        var pageSize = dnn.controlBar.getModuleLoadingCurrentPageSize();
         $.ajax({
             url: serviceUrl + 'GetPortalDesktopModules',
             type: 'GET',
-            data: 'category=' + category + '&loadingStartIndex='+ dnn.controlBar.getModuleLoadingCurrentIndex() +'&loadingPageSize='+dnn.controlBar.getModuleLoadingCurrentPageSize() + '&searchTerm=' +val,
+            data: 'category=' + category + '&loadingStartIndex=' + currentIndex + '&loadingPageSize=' + pageSize + '&searchTerm=' +val,
             beforeSend: service.setModuleHeaders,
             success: function (d) {
-                
                 setTimeout(function() {
                     if (d && d.length) {                        
                         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false);
@@ -242,8 +265,26 @@ dnn.controlBar.init = function (settings) {
                         if ((dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingInitialPageSize) || (!dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingSize)) {
                             dnn.controlBar.allModulesLoaded = true;
                         }
+
+                        if (dnn.controlBar.isFirstModuleLoadingPage()
+                                && d.length > dnn.controlBar.moduleLoadingInitialPageSize
+                                && (d.length - dnn.controlBar.moduleLoadingInitialPageSize) % dnn.controlBar.moduleLoadingSize != 0) {
+                                dnn.controlBar.allModulesLoaded = true;
+                        }
+
                         dnn.controlBar.renderModuleList(containerId, d);
-                        dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
+                        if (dnn.controlBar.isFirstModuleLoadingPage() && d.length > dnn.controlBar.moduleLoadingInitialPageSize) {
+                            var pageCount = d.length - dnn.controlBar.moduleLoadingInitialPageSize;
+                            if (pageCount % dnn.controlBar.moduleLoadingSize == 0) {
+                                dnn.controlBar.moduleLoadingPageIndex = parseInt(pageCount / dnn.controlBar.moduleLoadingSize) + 1;
+                            } else {
+                                dnn.controlBar.moduleLoadingPageIndex = parseInt(pageCount / dnn.controlBar.moduleLoadingSize) + 2;
+                            }
+                            
+                        } else {
+                            dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
+                        }
+                        
                     } else {                        
                         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false, true);
                         dnn.controlBar.allModulesLoaded = true;
@@ -267,6 +308,7 @@ dnn.controlBar.init = function (settings) {
 
     dnn.controlBar.initModuleSearch = function() {
         var $searchInput = $("#" + settings.searchInputId);
+
         $searchInput.mouseup(function () {
             return false;
         }).keypress(function (e) {
@@ -667,6 +709,7 @@ dnn.controlBar.init = function (settings) {
         var ulLeft = margin;        
         var oldX = 0;
         var reloading = false;
+        var isFirstModuleLoadingPage = dnn.controlBar.isFirstModuleLoadingPage();
         var modulesInitFunc = function () {
             $('div.controlBar_ModuleListScrollDummy_Content', scrollContainer).css('width', dummyScrollWidth);
             if (currentModuleLoadingPageIndex == 0) {
@@ -952,11 +995,20 @@ dnn.controlBar.init = function (settings) {
                     }
                 }, 200);
             });
+
+            if (isFirstModuleLoadingPage && dnn.controlBar.forceScrollX) {
+                var jspapi = scrollContainer.data('jsp');                    
+                if (jspapi) {
+                    jspapi.scrollToX(dnn.controlBar.forceScrollX, null);
+                    dnn.controlBar.forceScrollX = null;
+                }
+            }
         };
-        setTimeout(modulesInitFunc, 0);
-        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+        if (dnn.controlBar.isFirstModuleLoadingPage()
+                && (!dnn.controlBar.forceScrollX || dnn.controlBar.forceScrollX == 0)) {
             ul.animate({ left: margin }, 300);
         }
+        setTimeout(modulesInitFunc, 0);
     };
 
     dnn.controlBar.addGrabbingStyle = function($selector) {
@@ -1014,6 +1066,9 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.resetModuleSearch = function () {
         var $searchInput = $("#" + settings.searchInputId);
         $searchInput.val('').focus();
+        if (dnn.controlBar.status && dnn.controlBar.status.searchTerm) {
+            $searchInput.val(dnn.controlBar.status.searchTerm);
+        }
         dnn.controlBar.moduleLoadingPageIndex = 0;
         dnn.controlBar.allModulesLoaded = false;
         dnn.controlBar.mousedown = false;
@@ -1239,12 +1294,22 @@ dnn.controlBar.init = function (settings) {
             return false;
         }        
         dnn.controlBar.resetModuleSearch();
+
+        if (dnn.controlBar.status && dnn.controlBar.status.moduleLoadIndex) {
+            dnn.controlBar.forceModuleLoadIndex = dnn.controlBar.status.moduleLoadIndex;
+        }
+        if (dnn.controlBar.status && dnn.controlBar.status.forceScrollX) {
+            dnn.controlBar.forceScrollX = dnn.controlBar.status.forceScrollX;
+        }
+
         dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
         dnn.controlBar.cleanViewPort();
         dnn.controlBar.addNewModule = true;
         toggleModulePane($('#ControlBar_Module_AddNewModule'), true);
         $('#ControlBar_Action_Menu').addClass('onActionMenu');
         $('#ControlBar_ModuleListMessage_NewModule').hide();
+
+        dnn.controlBar.forceModuleLoadIndex = null;
         return false;
     }
     $('#controlBar_AddExistingModule').click(function () {
