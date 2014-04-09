@@ -412,9 +412,9 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Log.AddFailure(Util.INSTALL_Aborted + " - " + Package.Name);
+                Log.AddFailure(Util.INSTALL_Aborted + " - " + Package.Name + ":" + ex.Message);
             }
             if (isCompleted)
             {
