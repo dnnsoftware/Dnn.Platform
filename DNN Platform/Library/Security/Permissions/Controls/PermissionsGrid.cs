@@ -24,18 +24,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.ControlPanels;
+using DotNetNuke.UI.Utilities;
+using DotNetNuke.UI.WebControls;
 using DotNetNuke.UI.WebControls.Internal;
+using DotNetNuke.Web.Client;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+using Globals = DotNetNuke.Common.Globals;
+using Logger = log4net.Repository.Hierarchy.Logger;
 
 #endregion
 
@@ -56,12 +65,15 @@ namespace DotNetNuke.Security.Permissions.Controls
         private ArrayList _permissions;
         private ArrayList _users;
         private DropDownList cboRoleGroups;
+        private DropDownList cboSelectRole;
         private LinkButton cmdUser;
+        private LinkButton cmdRole;
         private DataGrid rolePermissionsGrid;
         private DataGrid userPermissionsGrid;
         private Label lblGroups;
-        private Label lblUser;
-        private Panel pnlPermissions;
+        private Label lblSelectRole;
+        private Label lblErrorMessage;
+        private Panel pnlPermissions;        
         private TextBox txtUser;
 
         public PermissionsGrid()
@@ -70,6 +82,23 @@ namespace DotNetNuke.Security.Permissions.Controls
             dtRolePermissions = new DataTable();
         }
 
+        #endregion
+
+        #region private Properties
+        private int unAuthUsersRoleId = Int32.Parse(Globals.glbRoleUnauthUser);
+        private int UnAuthUsersRoleId
+        {
+            get { return unAuthUsersRoleId; }
+        }
+        
+        private int allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
+        private int AllUsersRoleId
+        {
+            get
+            {
+                return allUsersRoleId;                
+            }            
+        }
         #endregion
 
         #region Protected Properties
@@ -296,7 +325,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         #endregion
 
         #region Private Methods
-
+        
         private void BindData()
         {
             EnsureChildControls();
@@ -327,7 +356,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             GetRoles();
 
-            UpdateRolePermissions();
+            //UpdateRolePermissions();
             for (int i = 0; i <= Roles.Count - 1; i++)
             {
                 var role = (RoleInfo)Roles[i];
@@ -432,7 +461,10 @@ namespace DotNetNuke.Security.Permissions.Controls
                 }
                 else
                 {
-                    userPermissionsGrid.Visible = false;
+                    dtUserPermissions.Rows.Clear();
+                    userPermissionsGrid.DataSource = dtUserPermissions;
+                    userPermissionsGrid.DataBind();
+                    userPermissionsGrid.Visible = false;                    
                 }
             }
         }
@@ -440,25 +472,30 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void GetRoles()
         {
             int roleGroupId = -2;
-            if ((cboRoleGroups != null) && (cboRoleGroups.SelectedValue != null))
+            
+            var checkedRoles = GetCheckedRoles();
+            Roles = new ArrayList(RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved && checkedRoles.Contains(r.RoleID)).ToArray());
+        
+            if (checkedRoles.Contains(UnAuthUsersRoleId))
             {
-                roleGroupId = int.Parse(cboRoleGroups.SelectedValue);
-            }
-            if (roleGroupId > -2)
+                Roles.Add(new RoleInfo { RoleID = UnAuthUsersRoleId, RoleName = Globals.glbRoleUnauthUserName });                    
+            }            
+            if (checkedRoles.Contains(AllUsersRoleId))
             {
-                Roles = new ArrayList(RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
+                Roles.Add(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });                    
             }
-            else
-            {
-                Roles = new ArrayList(RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
-            }
-            if (roleGroupId < 0)
-            {
-                Roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
-                Roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
-            }
+        
             Roles.Reverse();
             Roles.Sort(new RoleComparer());
+        }
+
+        private IEnumerable<int> GetCheckedRoles()
+        {
+            if (PermissionsList == null)
+            {
+                return new List<int>();
+            }
+            return PermissionsList.Select(r => r.RoleID).Distinct();
         }
 
         private void SetUpGrid(DataGrid grid, string nameColumnDataField, string idColumnDataField)
@@ -466,11 +503,11 @@ namespace DotNetNuke.Security.Permissions.Controls
             grid.Columns.Clear();
             var nameColumn = new BoundColumn
                                 {
-                                    HeaderText = "&nbsp;",
+                                    HeaderText = Localization.GetString("PermissionRoleHeader.Text", PermissionProvider.Instance().LocalResourceFile),
                                     DataField = nameColumnDataField
-                                };
-            nameColumn.ItemStyle.Width = Unit.Parse("150px");
-            nameColumn.ItemStyle.HorizontalAlign = HorizontalAlign.Right;
+                                };            
+            nameColumn.ItemStyle.CssClass = "permissionHeader";
+            nameColumn.HeaderStyle.CssClass = "permissionHeader";
             grid.Columns.Add(nameColumn);
 
             var idColumn = new BoundColumn
@@ -492,29 +529,83 @@ namespace DotNetNuke.Security.Permissions.Controls
                                                 };
                 templateCol.ItemTemplate = columnTemplate;
 
-                var locName = "";
-                if (permission.ModuleDefID > 0)
-                {
-                    if (!String.IsNullOrEmpty(ResourceFile))
-                    {
-                        //custom permission
-                        locName = Localization.GetString(permission.PermissionName + ".Permission", ResourceFile);
-                    }
-                }
-                else
-                {
-                    //system permission
-                    locName = Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile);
-                }
-
-                templateCol.HeaderText = !String.IsNullOrEmpty(locName) ? locName : permission.PermissionName;
-                templateCol.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
-                templateCol.HeaderStyle.VerticalAlign = VerticalAlign.Bottom;
-                templateCol.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-                templateCol.ItemStyle.Width = Unit.Parse("70px");
+                var locName = (permission.ModuleDefID <= 0) ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) //system permission
+                                                            : (!String.IsNullOrEmpty(ResourceFile) ? Localization.GetString(permission.PermissionName + ".Permission", ResourceFile) //custom permission
+                                                                                                    : "");
+                templateCol.HeaderText = !String.IsNullOrEmpty(locName) ? locName : permission.PermissionName;                
                 templateCol.HeaderStyle.Wrap = true;
                 grid.Columns.Add(templateCol);
             }
+            var actionsColumn = new ImageCommandColumn
+            {
+                CommandName = "Delete/" + nameColumnDataField,
+                KeyField = idColumnDataField,
+                IconKey = "Delete",
+                IconSize = "16x16",
+                IconStyle = "PermissionGrid",
+                HeaderText = Localization.GetString("PermissionActionsHeader.Text", PermissionProvider.Instance().LocalResourceFile)
+            };
+            grid.Columns.Add(actionsColumn);
+            grid.ItemCommand += grid_ItemCommand;
+        }
+
+        void grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+            var entityID = int.Parse(e.CommandArgument.ToString());
+            var command = GetGridCommand(e.CommandName);
+            var entityType = GetCommandType(e.CommandName);
+            switch (command)
+            {
+                case "DELETE":
+                    if (entityType == "ROLE")
+                    {
+                        DeleteRolePermissions(entityID);
+                    }
+                    else if (entityType == "USER")
+                    {
+                        DeleteUserPermissions(entityID);
+                    }
+                    BindData();
+                    break;
+            }
+        }
+
+        private void DeleteRolePermissions(int entityID)
+        {
+            //PermissionsList.RemoveAll(p => p.RoleID == entityID);
+            var permissionToDelete = PermissionsList.Where(p => p.RoleID == entityID);
+            foreach (PermissionInfoBase permission in permissionToDelete)
+            {
+                RemovePermission(permission.PermissionID, entityID, permission.UserID);
+            }
+        }
+        private void DeleteUserPermissions(int entityID)
+        {
+            var permissionToDelete = PermissionsList.Where(p => p.UserID == entityID);
+            foreach (PermissionInfoBase permission in permissionToDelete)
+            {
+                RemovePermission(permission.PermissionID, permission.RoleID, entityID);
+            }
+        }
+
+        private string GetCommandType(string commandName)
+        {
+            var command = commandName.ToLower(CultureInfo.InvariantCulture);
+            if (command.Contains("rolename"))
+            {
+                return "ROLE";
+            }
+            if (command.Contains("displayname"))
+            {
+                return "USER";
+            }
+            return Null.NullString;
+        }
+
+        private string GetGridCommand(string commandName)
+        {
+            var commandParts = commandName.Split('/');
+            return commandParts[0].ToUpper(CultureInfo.InvariantCulture);
         }
 
         private void SetUpRolesGrid()
@@ -528,6 +619,35 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 SetUpGrid(userPermissionsGrid, "DisplayName", "userid");
             }
+        }
+        private void FillSelectRoleComboBox(int selectedRoleId)
+        {
+            cboSelectRole.Items.Clear();
+            var groupRoles = (selectedRoleId > -2) ? RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == selectedRoleId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                : RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+
+            if (selectedRoleId < 0)
+            {                
+                groupRoles.Add(new RoleInfo { RoleID = Int32.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });                                
+                groupRoles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });            
+            }
+            
+            foreach (var role in groupRoles.OrderBy( r => r.RoleName))
+            {
+                cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
+            }
+
+        }
+
+        private void SetErrorMessage(string errorKey)
+        {
+            lblErrorMessage = new Label
+            {
+                //TODO Remove DEBUG test
+                Text = "<br />" + (errorKey.StartsWith("DEBUG")? errorKey: Localization.GetString(errorKey)),
+                CssClass = "NormalRed"
+            };
+            pnlPermissions.Controls.Add(lblErrorMessage);
         }
 
         #endregion
@@ -544,6 +664,15 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="permissions">The permissions collection</param>
         /// <param name="user">The user to add</param>
         protected virtual void AddPermission(ArrayList permissions, UserInfo user)
+        {
+        }
+
+        /// <summary>
+        /// Updates a Permission
+        /// </summary>
+        /// <param name="permissions">The permissions collection</param>
+        /// <param name="user">The role to add</param>
+        protected virtual void AddPermission(ArrayList permissions, RoleInfo role)
         {
         }
 
@@ -607,32 +736,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             pnlPermissions = new Panel { CssClass = "dnnGrid dnnPermissionsGrid" };
 
             //Optionally Add Role Group Filter
-            var portalSettings = PortalController.GetCurrentPortalSettings();
-            var arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
-            if (arrGroups.Count > 0)
-            {
-                var divRoleGroups = new Panel { CssClass = "dnnFormItem" };
-
-                lblGroups = new Label { Text = Localization.GetString("RoleGroupFilter") };
-                cboRoleGroups = new DropDownList { AutoPostBack = true, ID = "cboRoleGroups" };
-                cboRoleGroups.SelectedIndexChanged += RoleGroupsSelectedIndexChanged;
-                lblGroups.AssociatedControlID = cboRoleGroups.ID;
-
-                divRoleGroups.Controls.Add(lblGroups);
-
-                cboRoleGroups.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
-                var liItem = new ListItem(Localization.GetString("GlobalRoles"), "-1") { Selected = true };
-                cboRoleGroups.Items.Add(liItem);
-
-                foreach (RoleGroupInfo roleGroup in arrGroups)
-                {
-                    cboRoleGroups.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString()));
-                }
-
-                divRoleGroups.Controls.Add(cboRoleGroups);
-
-                pnlPermissions.Controls.Add(divRoleGroups);
-            }
+            CreateAddRoleControls();
 
             rolePermissionsGrid = new DataGrid { AutoGenerateColumns = false, CellSpacing = 0, CellPadding = 2, GridLines = GridLines.None };
             rolePermissionsGrid.CssClass = "dnnPermissionsGrid";
@@ -640,7 +744,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             rolePermissionsGrid.HeaderStyle.CssClass = "dnnGridHeader";
             rolePermissionsGrid.ItemStyle.CssClass = "dnnGridItem";
             rolePermissionsGrid.AlternatingItemStyle.CssClass = "dnnGridAltItem";
-
+            rolePermissionsGrid.ItemDataBound += rolePermissionsGrid_ItemDataBound;
             SetUpRolesGrid();
             pnlPermissions.Controls.Add(rolePermissionsGrid);
 
@@ -659,11 +763,11 @@ namespace DotNetNuke.Security.Permissions.Controls
 
                 var divAddUser = new Panel { CssClass = "dnnFormItem" };
 
-                lblUser = new Label { Text = Localization.GetString("User") };
+                lblErrorMessage = new Label { Text = Localization.GetString("User") };
                 txtUser = new TextBox { ID = "txtUser" };
-                lblUser.AssociatedControlID = txtUser.ID;
+                lblErrorMessage.AssociatedControlID = txtUser.ID;
 
-                divAddUser.Controls.Add(lblUser);
+                divAddUser.Controls.Add(lblErrorMessage);
                 divAddUser.Controls.Add(txtUser);
 
                 cmdUser = new LinkButton { Text = Localization.GetString("Add"), CssClass = "dnnSecondaryAction" };
@@ -673,6 +777,66 @@ namespace DotNetNuke.Security.Permissions.Controls
                 pnlPermissions.Controls.Add(divAddUser);
             }
             Controls.Add(pnlPermissions);
+        }
+
+        void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var item = e.Item;
+
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {                
+                var roleID = Int32.Parse(((DataRowView)item.DataItem)[0].ToString());
+                if (roleID == PortalSettings.Current.AdministratorRoleId)
+                {
+                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
+                    if (actionImage != null)
+                    {
+                        actionImage.Visible = false;
+                    }
+                }
+            }
+        }
+
+        private void CreateAddRoleControls()
+        {
+            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
+
+            var divAddRoleControles = new Panel {CssClass = "dnnFormItem"};
+            var divRoleGroups = new Panel {CssClass = "leftGroup"};
+            var divSelectRole = new Panel { CssClass = "rightGroup" };
+
+            lblGroups = new Label {Text = Localization.GetString("RoleGroupFilter")};
+            cboRoleGroups = new DropDownList { AutoPostBack = true, ID = "cboRoleGroups" };
+            lblGroups.AssociatedControlID = cboRoleGroups.ID;
+            divRoleGroups.Controls.Add(lblGroups);
+
+            cboRoleGroups.SelectedIndexChanged += RoleGroupsSelectedIndexChanged;
+            cboRoleGroups.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
+            var liItem = new ListItem(Localization.GetString("GlobalRoles"), "-1") {Selected = true};
+            cboRoleGroups.Items.Add(liItem);
+            foreach (RoleGroupInfo roleGroup in arrGroups)
+            {
+                cboRoleGroups.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString(CultureInfo.InvariantCulture)));
+            }
+            divRoleGroups.Controls.Add(cboRoleGroups);
+            divAddRoleControles.Controls.Add(divRoleGroups);
+
+            lblSelectRole = new Label { Text = Localization.GetString("RoleSelect") };
+            cboSelectRole = new DropDownList {ID = "cboSelectRole"};
+            lblSelectRole.AssociatedControlID = cboSelectRole.ID;
+            //lblSelectRole.Style.Add(HtmlTextWriterStyle.MarginLeft, "35px");
+            divSelectRole.Controls.Add(lblSelectRole);
+            
+            FillSelectRoleComboBox(-1); //Default Role Group is Global Roles
+            divSelectRole.Controls.Add(cboSelectRole);
+
+            cmdRole = new LinkButton { Text = Localization.GetString("Add"), CssClass = "dnnSecondaryAction" };
+            cmdRole.Click += AddRole;
+            divSelectRole.Controls.Add(cmdRole);
+            divAddRoleControles.Controls.Add(divSelectRole);
+
+            pnlPermissions.Controls.Add(divAddRoleControles);
         }
 
         /// <summary>
@@ -842,6 +1006,8 @@ namespace DotNetNuke.Security.Permissions.Controls
             BindData();
         }
 
+        
+
         protected virtual void ParsePermissionKeys(PermissionInfoBase permission, string[] Settings)
         {
             permission.PermissionID = Convert.ToInt32(Settings[1]);
@@ -949,9 +1115,9 @@ namespace DotNetNuke.Security.Permissions.Controls
                 foreach (DataGridItem dgi in rolePermissionsGrid.Items)
                 {
                     int i;
-                    for (i = 2; i <= dgi.Cells.Count - 1; i++)
+                    for (i = 2; i <= dgi.Cells.Count - 2; i++) //
                     {
-                        //all except first two cells which is role names and role ids
+                        //all except first two cells which is role names and role ids and last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
                         {
                             var permissionInfo = (PermissionInfo)_permissions[i - 2];
@@ -980,9 +1146,9 @@ namespace DotNetNuke.Security.Permissions.Controls
                 foreach (DataGridItem dgi in userPermissionsGrid.Items)
                 {
                     int i;
-                    for (i = 2; i <= dgi.Cells.Count - 1; i++)
+                    for (i = 2; i <= dgi.Cells.Count - 2; i++)
                     {
-                        //all except first two cells which is displayname and userid
+                        //all except first two cells which is displayname and userid and Last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
                         {
                             var permissionInfo = (PermissionInfo)_permissions[i - 2];
@@ -1013,7 +1179,9 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// </history>
         protected virtual void RoleGroupsSelectedIndexChanged(object sender, EventArgs e)
         {
-            UpdatePermissions();
+            //UpdatePermissions();
+            var selectedRoleId = Int32.Parse(cboRoleGroups.SelectedValue);
+            FillSelectRoleComboBox(selectedRoleId);
         }
 
         /// <summary>
@@ -1036,14 +1204,65 @@ namespace DotNetNuke.Security.Permissions.Controls
                 else
                 {
                     //user does not exist
-                    lblUser = new Label
-                                    {
-                                        Text = "<br />" + Localization.GetString("InvalidUserName"),
-                                        CssClass = "NormalRed"
-                                    };
-                    pnlPermissions.Controls.Add(lblUser);
+                    SetErrorMessage("InvalidUserName");
                 }
             }
+        }
+
+        /// <summary>
+        /// AddRole runs when the Add Role linkbutton is clicked
+        /// </summary>
+        /// <history>
+        /// </history>
+        void AddRole(object sender, EventArgs e)
+        {
+            UpdatePermissions();
+            int selectedRoleId;
+            if (!Int32.TryParse(cboSelectRole.SelectedValue, out selectedRoleId))
+            {
+                //Role not selected
+                SetErrorMessage("InvalidRoleId");
+                return;
+            }
+
+            //verify role         
+            var role = GetSelectedRole(selectedRoleId);
+            if (role != null)
+            {
+                AddPermission(_permissions, role);
+                BindData();
+            }
+            else
+            {
+                //role does not exist
+                SetErrorMessage("RoleNotFound");
+            }            
+        }
+
+        private RoleInfo GetSelectedRole(int selectedRoleId)
+        {
+            RoleInfo role = null;
+            if (selectedRoleId == AllUsersRoleId)
+            {
+                role = new RoleInfo
+                {
+                    RoleID = AllUsersRoleId,
+                    RoleName = Globals.glbRoleAllUsersName
+                };
+            }
+            else if (selectedRoleId == UnAuthUsersRoleId)
+            {
+                role = new RoleInfo
+                {
+                    RoleID = UnAuthUsersRoleId,
+                    RoleName = Globals.glbRoleUnauthUserName
+                };
+            }
+            else
+            {
+                role = RoleController.Instance.GetRole(selectedRoleId, PortalId);
+            }
+            return role;
         }
 
         #endregion
