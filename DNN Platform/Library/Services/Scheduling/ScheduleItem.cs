@@ -206,15 +206,19 @@ namespace DotNetNuke.Services.Scheduling
             CatchUpEnabled = Null.SetNullBoolean(dr["CatchUpEnabled"]);
             Enabled = Null.SetNullBoolean(dr["Enabled"]);
             Servers = Null.SetNullString(dr["Servers"]);
-            try
+
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
             {
-                NextStart = Null.SetNullDateTime(dr["NextStart"]);
+                if (schema.Select("ColumnName = 'NextStart'").Length > 0)
+                {
+                    NextStart = Null.SetNullDateTime(dr["NextStart"]);
+                }
+                if (schema.Select("ColumnName = 'ScheduleStartDate'").Length > 0)
+                {
+                    ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
+                }
             }
-            catch (IndexOutOfRangeException)
-            {
-                //Ignore 
-            }
-            ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
             //Fill BaseEntityInfo
             base.FillInternal(dr);
         }
