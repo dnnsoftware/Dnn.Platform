@@ -839,8 +839,7 @@ span.dnnSecondaryAction > a.dnnSecondaryAction {
 /* Action Button behind input */
 .dnnFormItem input[type="text"] + a.dnnPrimaryAction,
 .dnnFormItem input[type="text"] + a.dnnSecondaryAction,
-.dnnFormItem input[type="text"] + a.dnnTerriaryAction,
-.dnnFormItem select + a.dnnSecondaryAction { 
+.dnnFormItem input[type="text"] + a.dnnTerriaryAction { 
     margin-left: 5px;
 }
 
@@ -2629,26 +2628,43 @@ table.dnnASPGrid {
         text-align: left;
     }
 
-    .dnnPermissionsGrid > .dnnFormItem > label {
+    .dnnPermissionsGrid > .dnnFormItem label {
         margin-right: 8px;        
         color: #777;
     }
 
-    .dnnPermissionsGrid > .dnnFormItem > select {
+    .dnnPermissionsGrid > .dnnFormItem select {
         width: 25%;
-        margin-bottom: 0;
+        margin: 0 5px 5px 0;
         min-width: 180px;
         color: #777;
     }
 
-    .dnnPermissionsGrid > .dnnFormItem > input {        
+    .dnnPermissionsGrid > .dnnFormItem input {        
         margin-bottom: 0;
         height: 17px;
         color: #777;
     }
 
+    .dnnPermissionsGrid > .dnnFormItem > .leftGroup {
+        margin-right: 35px;
+        float:left;
+        margin-top: -15px;
+        margin-bottom: 15px;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem >  .rightGroup {
+        margin-top: -15px;
+        float: left;
+        margin-bottom: 15px;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem >  .rightGroup  > .dnnSecondaryAction {
+        position: absolute;
+    }
+
     .dnnPermissionsGrid > .dnnFormItem {
-        margin-bottom: 18px;
+        margin-bottom: 18px;        
     }
 
 .dnnGridHeader td, thead.dnnGridHeader th,  tr.dnnGridHeader th{
