@@ -119,6 +119,8 @@ namespace DotNetNuke.Entities.Host
         public static void UpdateServer(ServerInfo server)
         {
             DataProvider.Instance().UpdateServer(server.ServerID, server.Url, server.Enabled, server.ServerGroup);
+            ClearCachedServers();
+            
             if (!string.IsNullOrEmpty(server.Url) 
                     && PortalAliasController.Instance.GetPortalAlias(server.Url) == null)
             {
@@ -128,8 +130,7 @@ namespace DotNetNuke.Entities.Host
                                                                   PortalID = Host.HostPortalID,
                                                                   IsPrimary = false
                                                               });
-            }
-            ClearCachedServers();
+            } 
         }
 
         public static void UpdateServerActivity(ServerInfo server)
