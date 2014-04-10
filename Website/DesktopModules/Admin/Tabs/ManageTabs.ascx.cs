@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             _tab = new TabInfo { TabID = Null.NullInteger, PortalID = PortalId };
                             break;
                         case "copy":
-                            _tab = objTabs.GetTab(TabId, PortalId, true).Clone();
+                            _tab = objTabs.GetTab(TabId, PortalId, false).Clone();
                             _tab.TabID = Null.NullInteger;
                             _tab.VersionGuid = Guid.NewGuid();
                             _tab.LocalizedVersionGuid = Guid.NewGuid();
@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                             break;
                         default:
-                            _tab = objTabs.GetTab(TabId, PortalId, true);
+                            _tab = objTabs.GetTab(TabId, PortalId, false);
                             break;
                     }
                 }
