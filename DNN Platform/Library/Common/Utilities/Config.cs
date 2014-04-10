@@ -899,7 +899,8 @@ namespace DotNetNuke.Common.Utilities
                 xmlConfig = Load();
 
                 //check current .net version and if attribute has been added already
-                if (Environment.Version.ToString(2) == "4.5" && String.IsNullOrEmpty(GetFcnMode()))
+                var fcnMinRequiredVersion = new Version("4.5");
+                if (Environment.Version >= fcnMinRequiredVersion && String.IsNullOrEmpty(GetFcnMode()))
                 {
                     XmlNode xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime");
                     XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
