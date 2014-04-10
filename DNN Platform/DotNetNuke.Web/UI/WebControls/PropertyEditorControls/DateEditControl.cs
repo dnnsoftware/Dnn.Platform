@@ -249,7 +249,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
                 dataChanged = true;
             }
-
+            LoadDateControls();
             return dataChanged;
         }
 
