@@ -364,7 +364,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var moduleInfo = ModuleController.Instance.GetModule(ModuleID, TabId);
 
             var permissionController = new PermissionController();
-            var permissions = permissionController.GetPermissionsByModuleID(ModuleID);
+            var permissions = permissionController.GetPermissionsByModule(ModuleID, TabId);
 
             var permissionList = new ArrayList();
             for (int i = 0; i <= permissions.Count - 1; i++)

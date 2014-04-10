@@ -1637,12 +1637,9 @@ namespace DotNetNuke.Data
 
         #region Permission Methods
 
-        public virtual int AddPermission(string permissionCode, int moduleDefID, string permissionKey,
-                                         string permissionName,
-                                            int createdByUserID)
+        public virtual int AddPermission(string permissionCode, int moduleDefID, string permissionKey, string permissionName, int createdByUserID)
         {
-            return ExecuteScalar<int>("AddPermission", moduleDefID, permissionCode, permissionKey, permissionName,
-                                      createdByUserID);
+            return ExecuteScalar<int>("AddPermission", moduleDefID, permissionCode, permissionKey, permissionName, createdByUserID);
         }
 
         public virtual void DeletePermission(int permissionID)
@@ -1650,51 +1647,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeletePermission", permissionID);
         }
 
-        public virtual IDataReader GetPermission(int permissionID)
+        public virtual void UpdatePermission(int permissionID, string permissionCode, int moduleDefID, string permissionKey, string permissionName, int lastModifiedByUserID)
         {
-            return ExecuteReader("GetPermission", permissionID);
-        }
-
-        public virtual IDataReader GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
-        {
-            return ExecuteReader("GetPermissionByCodeAndKey", GetNull(permissionCode), GetNull(permissionKey));
-        }
-
-        public virtual IDataReader GetPermissionsByFolder()
-        {
-            return ExecuteReader("GetPermissionsByFolder");
-        }
-
-        public virtual IDataReader GetPermissionsByModuleDefID(int moduleDefId)
-        {
-            return ExecuteReader("GetPermissionsByModuleDefID", moduleDefId);
-        }
-
-        public virtual IDataReader GetPermissionsByModuleID(int moduleId)
-        {
-            return ExecuteReader("GetPermissionsByModuleID", moduleId);
-        }
-
-        public virtual IDataReader GetPermissionsByPortalDesktopModule()
-        {
-            return ExecuteReader("GetPermissionsByPortalDesktopModule");
-        }
-
-        public virtual IDataReader GetPermissionsByTab()
-        {
-            return ExecuteReader("GetPermissionsByTab");
-        }
-
-        public virtual void UpdatePermission(int permissionID, string permissionCode, int moduleDefID,
-                                             string permissionKey, string permissionName, int lastModifiedByUserID)
-        {
-            ExecuteNonQuery("UpdatePermission",
-                                      permissionID,
-                                      permissionCode,
-                                      moduleDefID,
-                                      permissionKey,
-                                      permissionName,
-                                      lastModifiedByUserID);
+            ExecuteNonQuery("UpdatePermission", permissionID, permissionCode, moduleDefID, permissionKey, permissionName, lastModifiedByUserID);
         }
 
         #endregion

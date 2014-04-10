@@ -39,68 +39,33 @@ namespace DotNetNuke.Security.Permissions
     /// <summary>
     /// PermissionInfo provides the Entity Layer for Permissions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class PermissionInfo : BaseEntityInfo
     {
-		#region "Private Members"
+		#region Private Members
 
-        private int _ModuleDefID;
-        private string _PermissionCode;
-        private int _PermissionID;
-        private string _PermissionKey;
-        private string _PermissionName;
+        #endregion
 		
-		#endregion
-		
-		#region "Public Properties"
+		#region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Mdoule Definition ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
-        public int ModuleDefID
-        {
-            get
-            {
-                return _ModuleDefID;
-            }
-            set
-            {
-                _ModuleDefID = value;
-            }
-        }
+        public int ModuleDefID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Permission Code
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("permissioncode")]
-        public string PermissionCode
-        {
-            get
-            {
-                return _PermissionCode;
-            }
-            set
-            {
-                _PermissionCode = value;
-            }
-        }
+        public string PermissionCode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -112,63 +77,27 @@ namespace DotNetNuke.Security.Permissions
         /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("permissionid")]
-        public int PermissionID
-        {
-            get
-            {
-                return _PermissionID;
-            }
-            set
-            {
-                _PermissionID = value;
-            }
-        }
+        public int PermissionID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Permission Key
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("permissionkey")]
-        public string PermissionKey
-        {
-            get
-            {
-                return _PermissionKey;
-            }
-            set
-            {
-                _PermissionKey = value;
-            }
-        }
+        public string PermissionKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Permission Name
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
-        public string PermissionName
-        {
-            get
-            {
-                return _PermissionName;
-            }
-            set
-            {
-                _PermissionName = value;
-            }
-        }
-		
-		#endregion
+        public string PermissionName { get; set; }
+
+        #endregion
 		
 		#region "Protected methods"
 
@@ -177,9 +106,6 @@ namespace DotNetNuke.Security.Permissions
         /// FillInternal fills a PermissionInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {

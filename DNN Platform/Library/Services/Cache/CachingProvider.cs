@@ -193,6 +193,7 @@ namespace DotNetNuke.Services.Cache
             RemoveCacheKey("CompressionConfig", clearRuntime);
             RemoveCacheKey(DataCache.SubscriptionTypesCacheKey, clearRuntime);
             RemoveCacheKey(DataCache.PackageTypesCacheKey, clearRuntime);
+            RemoveCacheKey(DataCache.PermissionsCacheKey, clearRuntime);
             RemoveCacheKey(DataCache.ContentTypesCacheKey, clearRuntime);
             RemoveCacheKey(DataCache.JavaScriptLibrariesCacheKey, clearRuntime);
 

@@ -22,12 +22,14 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
@@ -40,63 +42,82 @@ namespace DotNetNuke.Security.Permissions
 {
     public class PermissionController
     {
-		#region Public Methods
-		
         private static readonly DataProvider provider = DataProvider.Instance();
 
-        public int AddPermission(PermissionInfo objPermission)
+        private static IEnumerable<PermissionInfo> GetPermissions()
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(objPermission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
-            return
-                Convert.ToInt32(provider.AddPermission(objPermission.PermissionCode,
-                                                       objPermission.ModuleDefID,
-                                                       objPermission.PermissionKey,
-                                                       objPermission.PermissionName,
+            return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(new CacheItemArgs(DataCache.PermissionsCacheKey,
+                                                                                DataCache.PermissionsCacheTimeout,
+                                                                                DataCache.PermissionsCachePriority),
+                                                                c => CBO.FillCollection<PermissionInfo>(provider.ExecuteReader("GetPermissions")));
+        }
+
+        private void ClearCache()
+        {
+            DataCache.RemoveCache(DataCache.PermissionsCacheKey);
+        }
+
+        #region Public Methods
+		
+        public int AddPermission(PermissionInfo permission)
+        {
+            var eventLogController = new EventLogController();
+            eventLogController.AddLog(permission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
+            var permissionId =  Convert.ToInt32(provider.AddPermission(permission.PermissionCode,
+                                                       permission.ModuleDefID,
+                                                       permission.PermissionKey,
+                                                       permission.PermissionName,
                                                        UserController.GetCurrentUserInfo().UserID));
+
+            ClearCache();
+            return permissionId;
         }
 
         public void DeletePermission(int permissionID)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("PermissionID",
+            var eventLogController = new EventLogController();
+            eventLogController.AddLog("PermissionID",
                                permissionID.ToString(),
                                PortalController.GetCurrentPortalSettings(),
                                UserController.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.PERMISSION_DELETED);
             provider.DeletePermission(permissionID);
+            ClearCache();
         }
 
         public PermissionInfo GetPermission(int permissionID)
         {
-            return CBO.FillObject<PermissionInfo>(provider.GetPermission(permissionID));
+            return GetPermissions().SingleOrDefault(p => p.PermissionID == permissionID);
         }
 
         public ArrayList GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
         {
-            return CBO.FillCollection(provider.GetPermissionByCodeAndKey(permissionCode, permissionKey), typeof (PermissionInfo));
+            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == permissionCode && p.PermissionKey == permissionKey).ToArray());
         }
 
         public ArrayList GetPermissionsByModuleDefID(int moduleDefID)
         {
-            return CBO.FillCollection(provider.GetPermissionsByModuleDefID(moduleDefID), typeof (PermissionInfo));
+            return new ArrayList(GetPermissions().Where(p => p.ModuleDefID == moduleDefID).ToArray());
         }
 
-        public ArrayList GetPermissionsByModuleID(int moduleID)
+        public ArrayList GetPermissionsByModule(int moduleId, int tabId)
         {
-            return CBO.FillCollection(provider.GetPermissionsByModuleID(moduleID), typeof (PermissionInfo));
+            var module = new ModuleController().GetModule(moduleId, tabId);
+
+            return new ArrayList(GetPermissions().Where(p => p.ModuleDefID == module.ModuleDefID || p.PermissionCode == "SYSTEM_MODULE_DEFINITION").ToArray());
         }
 
-        public void UpdatePermission(PermissionInfo objPermission)
+        public void UpdatePermission(PermissionInfo permission)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(objPermission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_UPDATED);
-            provider.UpdatePermission(objPermission.PermissionID,
-                                      objPermission.PermissionCode,
-                                      objPermission.ModuleDefID,
-                                      objPermission.PermissionKey,
-                                      objPermission.PermissionName,
+            var eventLogController = new EventLogController();
+            eventLogController.AddLog(permission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_UPDATED);
+            provider.UpdatePermission(permission.PermissionID,
+                                      permission.PermissionCode,
+                                      permission.ModuleDefID,
+                                      permission.PermissionKey,
+                                      permission.PermissionName,
                                       UserController.GetCurrentUserInfo().UserID);
+            ClearCache();
         }
 		
 		#endregion
@@ -149,17 +170,17 @@ namespace DotNetNuke.Security.Permissions
 
         public static ArrayList GetPermissionsByFolder()
         {
-            return CBO.FillCollection(provider.GetPermissionsByFolder(), typeof (PermissionInfo));
+            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_FOLDER").ToArray());
         }
 
         public static ArrayList GetPermissionsByPortalDesktopModule()
         {
-            return CBO.FillCollection(provider.GetPermissionsByPortalDesktopModule(), typeof (PermissionInfo));
+            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_DESKTOPMODULE").ToArray());
         }
 
         public static ArrayList GetPermissionsByTab()
         {
-            return CBO.FillCollection(provider.GetPermissionsByTab(), typeof (PermissionInfo));
+            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_TAB").ToArray());
         }
 
         public T RemapPermission<T>(T permission, int portalId) where T : PermissionInfoBase
@@ -224,19 +245,27 @@ namespace DotNetNuke.Security.Permissions
         [Obsolete("Deprecated in DNN 5.0.1. Replaced by GetPermissionsByFolder()")]
         public ArrayList GetPermissionsByFolder(int portalID, string folder)
         {
-            return CBO.FillCollection(provider.GetPermissionsByFolder(), typeof (PermissionInfo));
+            return GetPermissionsByFolder();
+        }
+
+        [Obsolete("Deprecated in DNN 7.3.0. Replaced by GetPermissionsByModule(int, int)")]
+        public ArrayList GetPermissionsByModuleID(int moduleId)
+        {
+            var module = new ModuleController().GetModule(moduleId);
+
+            return GetPermissionsByModuleDefID(module.ModuleDefID);
         }
 
         [Obsolete("Deprecated in DNN 5.0.1. Replaced by GetPermissionsByTab()")]
         public ArrayList GetPermissionsByTabID(int tabID)
         {
-            return CBO.FillCollection(provider.GetPermissionsByTab(), typeof (PermissionInfo));
+            return GetPermissionsByTab();
         }
 
         [Obsolete("Deprecated in DNN 5.0.1. Replaced by GetPermissionsByPortalDesktopModule()")]
         public ArrayList GetPermissionsByPortalDesktopModuleID()
         {
-            return CBO.FillCollection(provider.GetPermissionsByPortalDesktopModule(), typeof (PermissionInfo));
+            return GetPermissionsByPortalDesktopModule();
         }
     }
 }

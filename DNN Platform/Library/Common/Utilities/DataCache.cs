@@ -260,6 +260,10 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority ContentTypesCachePriority = CacheItemPriority.AboveNormal;
         public const int ContentTypesCacheTimeOut = 20;
 
+        public const string PermissionsCacheKey = "Permissions";
+        public const CacheItemPriority PermissionsCachePriority = CacheItemPriority.AboveNormal;
+        public const int PermissionsCacheTimeout = 20;
+
         public const string PackageTypesCacheKey = "PackagesTypes";
         public const CacheItemPriority PackageTypesCachePriority = CacheItemPriority.AboveNormal;
         public const int PackageTypesCacheTimeout = 20;
