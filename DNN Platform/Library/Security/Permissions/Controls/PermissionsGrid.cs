@@ -738,8 +738,14 @@ namespace DotNetNuke.Security.Permissions.Controls
             //Optionally Add Role Group Filter
             CreateAddRoleControls();
 
-            rolePermissionsGrid = new DataGrid { AutoGenerateColumns = false, CellSpacing = 0, CellPadding = 2, GridLines = GridLines.None };
-            rolePermissionsGrid.CssClass = "dnnPermissionsGrid";
+            rolePermissionsGrid = new DataGrid
+            {
+                AutoGenerateColumns = false,
+                CellSpacing = 0,
+                CellPadding = 2,
+                GridLines = GridLines.None,
+                CssClass = "dnnPermissionsGrid"
+            };
             rolePermissionsGrid.FooterStyle.CssClass = "dnnGridFooter";
             rolePermissionsGrid.HeaderStyle.CssClass = "dnnGridHeader";
             rolePermissionsGrid.ItemStyle.CssClass = "dnnGridItem";
@@ -751,8 +757,13 @@ namespace DotNetNuke.Security.Permissions.Controls
             _users = GetUsers();
             if (_users != null)
             {
-                userPermissionsGrid = new DataGrid { AutoGenerateColumns = false, CellSpacing = 0, GridLines = GridLines.None };
-                userPermissionsGrid.CssClass = "dnnPermissionsGrid";
+                userPermissionsGrid = new DataGrid
+                {
+                    AutoGenerateColumns = false,
+                    CellSpacing = 0,
+                    GridLines = GridLines.None,
+                    CssClass = "dnnPermissionsGrid"
+                };
                 userPermissionsGrid.FooterStyle.CssClass = "dnnGridFooter";
                 userPermissionsGrid.HeaderStyle.CssClass = "dnnGridHeader";
                 userPermissionsGrid.ItemStyle.CssClass = "dnnGridItem";
@@ -807,7 +818,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var divSelectRole = new Panel { CssClass = "rightGroup" };
 
             lblGroups = new Label {Text = Localization.GetString("RoleGroupFilter")};
-            cboRoleGroups = new DropDownList { AutoPostBack = true, ID = "cboRoleGroups" };
+            cboRoleGroups = new DropDownList { AutoPostBack = true, ID = "cboRoleGroups", ViewStateMode = ViewStateMode.Disabled };
             lblGroups.AssociatedControlID = cboRoleGroups.ID;
             divRoleGroups.Controls.Add(lblGroups);
 
@@ -823,7 +834,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             divAddRoleControles.Controls.Add(divRoleGroups);
 
             lblSelectRole = new Label { Text = Localization.GetString("RoleSelect") };
-            cboSelectRole = new DropDownList {ID = "cboSelectRole"};
+            cboSelectRole = new DropDownList { ID = "cboSelectRole", ViewStateMode = ViewStateMode.Disabled };
             lblSelectRole.AssociatedControlID = cboSelectRole.ID;
             //lblSelectRole.Style.Add(HtmlTextWriterStyle.MarginLeft, "35px");
             divSelectRole.Controls.Add(lblSelectRole);

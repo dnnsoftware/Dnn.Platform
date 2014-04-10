@@ -41,6 +41,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
 			Services.Parameters.Add("includeDisabled", IncludeDisabledTabs.ToString().ToLowerInvariant());
 			Services.Parameters.Add("includeAllTypes", IncludeAllTabTypes.ToString().ToLowerInvariant());
+            Services.Parameters.Add("includeActive", IncludeActiveTab.ToString().ToLowerInvariant());
 
             base.OnPreRender(e);
 
@@ -61,7 +62,12 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-		/// <summary>
+        /// <summary>
+        /// Whether include active page.
+        /// </summary>
+        public bool IncludeActiveTab { get; set; }
+        
+        /// <summary>
 		/// Whether include pages which are disabled.
 		/// </summary>
 		public bool IncludeDisabledTabs { get; set; }

@@ -2862,7 +2862,7 @@ span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
             margin-bottom: 10px;
         }
 
-    .dnnFileUploadScope .dnnFormItem span {
+    .dnnFileUploadScope .dnnFormItem span, .urlControlTab .dnnFormItem>span {
         display: block;
         float: left;
         width: 40px;

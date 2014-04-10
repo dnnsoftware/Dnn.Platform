@@ -1,9 +1,10 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Web.UI.WebControls.DnnUrlControl" %>
 <%@ Register TagPrefix="dnn" TagName="FilePickerUploader" Src="filepickeruploader.ascx" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <div class="urlControl">
     <asp:Panel ID="TypeRow" runat="server" CssClass="urlControlLinkType dnnClear">
         <asp:Label ID="lblURLType" runat="server" EnableViewState="False" resourcekey="Type" CssClass="dnnFormLabel" />
-        <asp:RadioButtonList ID="optType" AutoPostBack="True" runat="server" RepeatDirection="Vertical" CssClass="ucLinkTypeRadioButtons" />
+        <asp:RadioButtonList ID="optType" AutoPostBack="True" runat="server" RepeatDirection="Vertical" CssClass="ucLinkTypeRadioButtons"  />
     </asp:Panel>
     <asp:Panel ID="URLRow" runat="server" CssClass="urlControlFile dnnClear">
         <asp:Label ID="lblURL" runat="server" EnableViewState="False" resourcekey="URL" />
@@ -15,9 +16,11 @@
             <asp:LinkButton ID="cmdAdd" resourcekey="Add" CssClass="dnnSecondaryAction" runat="server" CausesValidation="False" />
 	    </div>
     </asp:Panel>
-    <asp:Panel ID="TabRow" runat="server" CssClass="urlControlTab dnnClear">
-        <asp:Label ID="lblTab" runat="server" EnableViewState="False" resourcekey="Tab" />
-        <asp:DropDownList ID="cboTabs" runat="server" DataTextField="IndentedTabName" DataValueField="TabId" />
+    <asp:Panel ID="TabRow" runat="server" CssClass="urlControlTab dnnClear" >
+        <div class="dnnFormItem">
+            <asp:Label ID="lblTab" runat="server" EnableViewState="False" resourcekey="Tab" />
+            <dnn:DnnPageDropDownList ID="cboTabs" runat="server"  />
+        </div>
     </asp:Panel>
     <asp:Panel id="FileRow" runat="server" CssClass="urlControlFileRow dnnClear">
         <dnn:FilePickerUploader ID="ctlFile" runat="server" />

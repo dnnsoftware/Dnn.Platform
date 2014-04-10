@@ -294,6 +294,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             _selectedValue = new HtmlAnchor { HRef = "javascript:void(0);", Title = LocalizeString("DropDownList.SelectedItemExpandTooltip") };
             _selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
+            _selectedValue.ViewStateMode = ViewStateMode.Disabled;
             selectedItemPanel.Controls.Add(_selectedValue);
             Controls.Add(selectedItemPanel);
 

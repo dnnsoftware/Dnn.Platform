@@ -36,6 +36,8 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Web.Common;
+
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -44,7 +46,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public abstract class DnnUrlControl : UserControlBase
     {
-        #region "Private Members"
+        #region Private Members
 
         protected Panel ErrorRow;
         protected Panel FileRow;
@@ -59,7 +61,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private string _localResourceFile;
         private PortalInfo _objPortal;
         protected DropDownList cboImages;
-        protected DropDownList cboTabs;
+        protected DnnPageDropDownList cboTabs;
         protected DropDownList cboUrls;
         protected CheckBox chkLog;
         protected CheckBox chkNewWindow;
@@ -80,7 +82,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        #region "Public Properties"
+        #region Public Properties
 
         public string FileFilter
         {
@@ -559,7 +561,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        #region "Private Methods"
+        #region Private Methods
 
         private void LoadUrls()
         {
@@ -887,20 +889,14 @@ namespace DotNetNuke.Web.UI.WebControls
                         UserRow.Visible = false;
                         ImagesRow.Visible = false;
 
-                        cboTabs.Items.Clear();
+                        cboTabs.IncludeAllTabTypes = false;
+                        cboTabs.IncludeActiveTab = IncludeActiveTab;
+                        cboTabs.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
 
                         PortalSettings _settings = PortalController.GetCurrentPortalSettings();
-                        cboTabs.DataSource = TabController.GetPortalTabs(_settings.PortalId, Null.NullInteger, !Required, "none available", true, false, false, true, false);
-                        cboTabs.DataBind();
-                        if (cboTabs.Items.FindByValue(_Url) != null)
-                        {
-                            cboTabs.Items.FindByValue(_Url).Selected = true;
-                        }
-
-                        if (!IncludeActiveTab && cboTabs.Items.FindByValue(_settings.ActiveTab.TabID.ToString()) != null)
-                        {
-                            cboTabs.Items.FindByValue(_settings.ActiveTab.TabID.ToString()).Attributes.Add("disabled", "disabled");
-                        }
+                        var tabId = Int32.Parse(_Url);
+                        var page = new TabController().GetTab(tabId, _settings.PortalId);
+                        cboTabs.SelectedPage = page;
                         break;
                     case "F": //file
                         URLRow.Visible = false;
@@ -966,7 +962,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        #region "Event Handlers"
+        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
