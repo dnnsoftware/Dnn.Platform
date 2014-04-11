@@ -953,9 +953,8 @@ namespace DotNetNuke.Entities.Urls
             var resultingCh = new StringBuilder(ch.Length);
             foreach (char c in ch) //ch could contain several chars from the pre-defined replacement list
             {
-                if (illegalChars.ToLower().Contains(c.ToString().ToLower()))
+                if (illegalChars.ToUpperInvariant().Contains(char.ToUpperInvariant(c)))
                 {
-                    resultingCh.Append(""); //illegal character, removed from list
                     replacedUnwantedChars = true;
                 }
                 else
@@ -969,19 +968,22 @@ namespace DotNetNuke.Entities.Urls
         private static void CheckCharsForReplace(FriendlyUrlOptions options, ref string ch,
             ref bool replacedUnwantedChars)
         {
-            if (options.ReplaceChars.ToLower().Contains(ch.ToLower()))
+            if (!options.ReplaceChars.ToUpperInvariant().Contains(ch.ToUpperInvariant()))
             {
-                if (ch != " ") // if not replacing spaces, which are implied
-                {
-                    replacedUnwantedChars = true;
-                }
-                ch = options.PunctuationReplacement; //in list of replacment chars
+                return;
+            }
 
-                //If we still have a space ensure its encoded
-                if (ch == " ")
-                {
-                    ch = options.SpaceEncoding;
-                }
+            if (ch != " ") // if not replacing spaces, which are implied
+            {
+                replacedUnwantedChars = true;
+            }
+
+            ch = options.PunctuationReplacement; //in list of replacment chars
+
+            //If we still have a space ensure it's encoded
+            if (ch == " ")
+            {
+                ch = options.SpaceEncoding;
             }
         }
 
@@ -1090,7 +1092,7 @@ namespace DotNetNuke.Entities.Urls
                 options = new FriendlyUrlOptions();
             }
             bool convertDiacritics = options.ConvertDiacriticChars;
-            string regexMatch = options.RegexMatch;            
+            Regex regexMatch = options.RegexMatchRegex;
             string replaceWith = options.PunctuationReplacement;            
             bool replaceDoubleChars = options.ReplaceDoubleChars;
             Dictionary<string, string> replacementChars = options.ReplaceCharWithChar;
@@ -1101,31 +1103,39 @@ namespace DotNetNuke.Entities.Urls
             }
             var result = new StringBuilder(urlName.Length);
             int i = 0;
-            int last = urlName.ToCharArray().GetUpperBound(0);
             string normalisedUrl = urlName;
             if (convertDiacritics)
             {
                 normalisedUrl = urlName.Normalize(NormalizationForm.FormD);
-                if (string.CompareOrdinal(normalisedUrl, urlName) != 0)
+                if (!string.Equals(normalisedUrl, urlName, StringComparison.Ordinal))
                 {
                     replacedUnwantedChars = true; //replaced an accented character
                 }
             }
+
+            int last = normalisedUrl.Length - 1;
             bool doublePeriod = false;
             foreach (char c in normalisedUrl)
             {
                 //look for a double period in the name
-                if (!doublePeriod && c == '.' && i > 0 && urlName[i - 1] == '.')
+                if (!doublePeriod && i > 0 && c == '.' && normalisedUrl[i - 1] == '.')
                 {
                     doublePeriod = true;
                 }
+
                 //use string for manipulation
-                string ch = c.ToString();
+                string ch = c.ToString(CultureInfo.InvariantCulture);
+
                 //do replacement in pre-defined list?
-                if (replacementChars != null && replacementChars.ContainsKey(c.ToString()))
+                if (replacementChars != null && replacementChars.ContainsKey(ch))
                 {
                     //replace with value
-                    ch = replacementChars[c.ToString()];
+                    ch = replacementChars[ch];
+                    replacedUnwantedChars = true;
+                }
+                else if (convertDiacritics && CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)
+                {
+                    ch = string.Empty;
                     replacedUnwantedChars = true;
                 }
                 else
@@ -1134,12 +1144,12 @@ namespace DotNetNuke.Entities.Urls
                     CheckCharsForReplace(options, ref ch, ref replacedUnwantedChars);
 
                     //not in replacement list, check if valid char
-                    if (Regex.IsMatch(ch, regexMatch, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-                    {                        
+                    if (regexMatch.IsMatch(ch))
+                    {
                         ch = ""; //not a replacement or allowed char, so doesn't go into Url
                         replacedUnwantedChars = true;
                         //if we are here, this character isn't going into the output Url                        
-                    }                    
+                    }
                 }
 
                 //Check if the final ch is an illegal char
