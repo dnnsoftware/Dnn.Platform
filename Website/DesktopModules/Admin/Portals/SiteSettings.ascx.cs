@@ -27,6 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -1497,6 +1498,10 @@ namespace DesktopModules.Admin.Portals
                     }
                     
                     BindPortal(_portalId, SelectedCultureCode);
+                }
+                catch (ThreadAbortException)
+                {
+                    //Do nothing Response.redirect
                 }
                 catch (Exception exc)
                 {
