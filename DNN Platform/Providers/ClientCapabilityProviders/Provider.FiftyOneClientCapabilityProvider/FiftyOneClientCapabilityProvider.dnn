@@ -146,7 +146,6 @@
                 <nodes>
                   <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/detection" action="update" collision="ignore">
                     <detection binaryFilePath="~/App_Data/51Degrees-Lite.dat"
-                        imageOptimisationEnabled="false"
                         bandwidthMonitoringEnabled="false"
                         featureDetectionEnabled="false"
                         memoryMode="false"
@@ -155,6 +154,11 @@
                 </nodes>
               </configuration>
             </install>
+            <uninstall>
+              <configuration>
+                <nodes/>
+              </configuration>
+            </uninstall>
           </config>
         </component>
         <component type="Cleanup" version="07.03.00" fileName ="07.03.00.txt" />
