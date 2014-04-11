@@ -27,6 +27,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -48,6 +49,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
@@ -56,6 +58,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
+//using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 using DotNetNuke.Web.Client;
 using ICSharpCode.SharpZipLib.Zip;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
@@ -559,7 +562,8 @@ namespace DotNetNuke.Entities.Portals
                 //Save new File
 	            try
 	            {
-					using (var fileContent = fileManager.GetFileContent(objInfo))
+                    //Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider					
+                    using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(objInfo))
 					{
 						objInfo.FileId = fileManager.AddFile(objFolder, fileName, fileContent, false).FileId;
 					}
@@ -634,16 +638,62 @@ namespace DotNetNuke.Entities.Portals
             FolderPermissionController.SaveFolderPermissions(folder);
         }
 
+
+        private void CreatePredefinedFolderTypes(int portalId)
+        {            
+            foreach (FolderTypeConfig folderTypeConfig in FolderMappingsConfigController.Instance.FolderTypes)
+            {
+                try
+                {
+                    FolderMappingController.Instance.AddFolderMapping(GetFolderMappingFromConfig(folderTypeConfig,
+                        portalId));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error")+": "+folderTypeConfig.Name, ex);
+                }                
+            }
+        }
+        
+        private FolderMappingInfo GetFolderMappingFromConfig(FolderTypeConfig node, int portalId)
+        {
+            var folderMapping = new FolderMappingInfo
+            {
+                PortalID = portalId,
+                MappingName = node.Name,
+                FolderProviderType = node.Provider
+            };
+            
+            foreach (FolderTypeSettingConfig settingNode in node.Settings)
+            {                                                                    
+                var settingValue = EnsureSettingValue(folderMapping.FolderProviderType, settingNode, portalId);                
+                folderMapping.FolderMappingSettings.Add(settingNode.Name, settingValue);
+            }
+            
+            return folderMapping;
+        }
+
+        private string EnsureSettingValue(string folderProviderType, FolderTypeSettingConfig settingNode, int portalId)
+        {
+            var ensuredSettingValue =
+                settingNode.Value.Replace("{PortalId}", (portalId != -1) ? portalId.ToString(CultureInfo.InvariantCulture) : "_default").Replace("{HostId}", Host.Host.GUID);
+            if (settingNode.Encrypt)
+            {
+                return FolderProvider.Instance(folderProviderType).EncryptValue(ensuredSettingValue);
+                //return new PortalSecurity().Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
+            }
+            return ensuredSettingValue;
+        }
+
         private void ParseFolders(XmlNode nodeFolders, int PortalId)
         {
             IFolderInfo objInfo;
-            string folderPath;
-            int storageLocation;
+            string folderPath;            
             bool isProtected = false;
             var folderManager = FolderManager.Instance;
             var folderMappingController = FolderMappingController.Instance;
             FolderMappingInfo folderMapping = null;
-
+            var folderMappingsConfigController = new FolderMappingsConfigController();
             //DNN-2949 set ignorewhitelist to true to allow files with not allowed extensions to be added during portal creation
             HostController.Instance.Update("IgnoreWhiteList", "Y", true);
             try
@@ -666,27 +716,41 @@ namespace DotNetNuke.Entities.Portals
                         }
                         else
                         {
-                            storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(node, "storagelocation", "0"));
-
-                            switch (storageLocation)
+                            try
                             {
-                                case (int) FolderController.StorageLocationTypes.InsecureFileSystem:
-                                    folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
-                                    break;
-                                case (int) FolderController.StorageLocationTypes.SecureFileSystem:
-                                    folderMapping = folderMappingController.GetFolderMapping(PortalId, "Secure");
-                                    break;
-                                case (int) FolderController.StorageLocationTypes.DatabaseSecure:
-                                    folderMapping = folderMappingController.GetFolderMapping(PortalId, "Database");
-                                    break;
-                                default:
-                                    break;
+                                folderMapping = GetFolderType(PortalId, folderPath, FolderMappingsConfigController.Instance.FolderMappings);
+                                if (folderMapping == null)
+                                {
+                                    folderMapping = GetFolderMappingFromStorageLocation(PortalId, node);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Error(ex);
+                                folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
                             }
 
                             isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
                         }
-                        //Save new folder
-                        objInfo = folderManager.AddFolder(folderMapping, folderPath);
+                        try
+                        {
+                            //Save new folder
+                            objInfo = folderManager.AddFolder(folderMapping, folderPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+                            //Retry with default folderMapping
+                            var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
+                            if (folderMapping.FolderMappingID != defaultFolderMapping.FolderMappingID)
+                            {
+                                objInfo = folderManager.AddFolder(defaultFolderMapping, folderPath);
+                            }
+                            else
+                            {
+                                throw ex;
+                            }
+                        }
                         objInfo.IsProtected = isProtected;
 
                         folderManager.UpdateFolder(objInfo);
@@ -711,6 +775,30 @@ namespace DotNetNuke.Entities.Portals
             {
                 //DNN-2949 ensure ignorewhitelist is set back to false in case of any exceptions during files parsing/adding
                 HostController.Instance.Update("IgnoreWhiteList", "N", true);
+            }
+        }
+
+        private FolderMappingInfo GetFolderType(int portalId, string folderPath, IDictionary<string, string> folderMappings )
+        {
+            if (!folderMappings.ContainsKey(folderPath))
+            {
+                return null;
+            }
+            return FolderMappingController.Instance.GetFolderMapping(portalId, folderMappings[folderPath]);               
+        }
+
+        private FolderMappingInfo GetFolderMappingFromStorageLocation(int portalId, XmlNode folderNode)
+        {
+            var storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(folderNode, "storagelocation", "0"));
+
+            switch (storageLocation)
+            {
+                case (int)FolderController.StorageLocationTypes.SecureFileSystem:
+                    return FolderMappingController.Instance.GetFolderMapping(portalId, "Secure");                    
+                case (int)FolderController.StorageLocationTypes.DatabaseSecure:
+                    return FolderMappingController.Instance.GetFolderMapping(portalId, "Database");   
+                default:
+                    return FolderMappingController.Instance.GetDefaultFolderMapping(portalId);             
             }
         }
 
@@ -1725,6 +1813,7 @@ namespace DotNetNuke.Entities.Portals
                     {
                         try
                         {
+                            CreatePredefinedFolderTypes(portalId);
                             ParseTemplate(portalId, templatePath, templateFile, administratorId, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
                         }
                         catch (Exception Exc)
@@ -1877,8 +1966,6 @@ namespace DotNetNuke.Entities.Portals
 
             return portalId;
         }
-
-     
 
         /// <summary>
         /// Creates the portal.
@@ -2044,6 +2131,7 @@ namespace DotNetNuke.Entities.Portals
                     {
                         try
                         {
+                            CreatePredefinedFolderTypes(portalId);
                             ParseTemplate(portalId, templatePath, templateFile, administratorId, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
                         }
                         catch (Exception Exc)
@@ -2684,6 +2772,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 ParsePortalDesktopModules(node.CreateNavigator(), portalId);
             }
+
             node = xmlPortal.SelectSingleNode("//portal/folders");
             if (node != null)
             {
@@ -2773,7 +2862,7 @@ namespace DotNetNuke.Entities.Portals
                 ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
             }
         }
-
+        
         /// <summary>
         /// Processes the resource file for the template file selected
         /// </summary>

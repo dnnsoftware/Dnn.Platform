@@ -20,12 +20,15 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Security;
 
 namespace DotNetNuke.Services.FileSystem
 {
@@ -43,6 +46,7 @@ namespace DotNetNuke.Services.FileSystem
         #region Private Variables
 
         private string _providerName;
+        private readonly string _encryptionKey = Host.GUID;
 
         #endregion
 
@@ -293,6 +297,16 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             folderProvider.DeleteFolder(new FolderInfo { FolderPath = folderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID });
+        }
+
+        public string GetEncryptedSetting(Hashtable folderMappingSettings, string settingName)
+        {
+            return new PortalSecurity().Decrypt(_encryptionKey, folderMappingSettings[settingName].ToString());
+        }
+
+        public string EncryptValue(string settingValue)
+        {
+            return new PortalSecurity().Encrypt(_encryptionKey, settingValue.Trim());
         }
 
         #endregion

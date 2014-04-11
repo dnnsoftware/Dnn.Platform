@@ -21,38 +21,21 @@
 #region Usings
 
 using System;
-using System.Collections.Generic;
 
 #endregion
 
-namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
+namespace DotNetNuke.Services.FileSystem
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// InstallConfig - A class that represents DotNetNuke.Install.Config XML configuration file
-    /// TODO This class may not capture all the details from the config file
+    /// HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings
     /// </summary>
     /// -----------------------------------------------------------------------------    
-        
-    public class InstallConfig
+
+    public class FolderTypeSettingConfig
     {
-        public IList<string> Scripts { get; set; }
-        public string Version { get; set; }
-        public string InstallCulture { get; set; }
-        public SuperUserConfig SuperUser { get; set; }
-        public ConnectionConfig Connection { get; set; }
-        public LicenseConfig License { get; set; }
-        public IList<PortalConfig> Portals { get; set; }
-        public IList<HostSettingConfig> Settings { get; set; }
-
-        public string FolderMappingsSettings { get; set; } 
-        public InstallConfig()
-        {
-            Portals = new List<PortalConfig>();
-            Scripts = new List<string>();
-            Settings = new List<HostSettingConfig>();
-        }
+        public string Name { get; set; }
+        public string Value { get; set; }
+        public bool Encrypt { get; set; }
     }
-
-
 }

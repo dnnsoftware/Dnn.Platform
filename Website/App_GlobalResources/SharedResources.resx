@@ -1869,4 +1869,7 @@
   <data name="RoleSelect.Text" xml:space="preserve">
     <value>Select Role:</value>
   </data>
+  <data name="CreatingConfiguredFolderMapping.Error" xml:space="preserve">
+    <value>Error when creating a folder mapping from config file</value>
+  </data>
 </root>

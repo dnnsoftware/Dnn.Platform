@@ -24,6 +24,7 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -35,6 +36,7 @@ using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 
@@ -170,6 +172,19 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 AppendNewXmlNode(ref installTemplate, ref superUserNode, "password", installConfig.SuperUser.Password);
                 AppendNewXmlNode(ref installTemplate, ref superUserNode, "email", installConfig.SuperUser.Email);
                 AppendNewXmlNode(ref installTemplate, ref superUserNode, "updatepassword", "false");
+            }
+
+            //Set Folder Mappings Settings            
+            if (!string.IsNullOrEmpty(installConfig.FolderMappingsSettings))
+            {
+                XmlNode folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/"+FolderMappingsConfigController.Instance.ConfigNode);
+
+                if (folderMappingsNode == null)
+                {
+                    folderMappingsNode = AppendNewXmlNode(ref installTemplate, ref dotnetnukeNode, FolderMappingsConfigController.Instance.ConfigNode, installConfig.FolderMappingsSettings);
+                }
+
+                folderMappingsNode.InnerText = installConfig.FolderMappingsSettings;
             }
 
             //Set Portals
@@ -392,6 +407,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     }
                 }
             }
+            var folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/"+FolderMappingsConfigController.Instance.ConfigNode);
+            installConfig.FolderMappingsSettings =  (folderMappingsNode != null)? folderMappingsNode.InnerXml : String.Empty;
 
             //Parse the portals node
             XmlNodeList portalsNode = installTemplate.SelectNodes("//dotnetnuke/portals/portal");
@@ -615,7 +632,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
             return culture;
         }
-
+        
         private CultureInfo GetCultureFromQs()
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)

@@ -21,12 +21,14 @@
 #region Usings
 
 using System;
+using System.IO;
 using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Upgrade.Internals;
 using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
@@ -133,6 +135,11 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (portal.IsChild)
                 childPath = portalAlias.Substring(portalAlias.LastIndexOf("/") + 1);
             
+            //Create Folder Mappings config
+            if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
+            {
+                FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
+            }
             //Create Portal
             var portalId = PortalController.Instance.CreatePortal(portal.PortalName,
                                                      userInfo,
@@ -166,6 +173,15 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             InstallController.Instance.RemoveFromInstallConfig("//dotnetnuke/superuser/password");
         }
+
+        //private void CreateFolderMappingConfig(string folderMappinsSettings)
+        //{
+        //    string folderMappingsConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
+        //    if (!File.Exists(folderMappingsConfigPath))
+        //    {
+        //        File.AppendAllText(folderMappingsConfigPath, "<folderMappingsSettings>" + folderMappinsSettings + "</folderMappingsSettings>");
+        //    }
+        //}
 
         #endregion
 

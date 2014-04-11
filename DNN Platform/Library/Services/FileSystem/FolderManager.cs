@@ -52,6 +52,7 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderManager));
 
         private const string DefaultUsersFoldersPath = "Users";
+        private const string DefaultMappedPathSetting = "DefaultMappedPath";
         
         #region Private Events
         private event EventHandler<FolderDeletedEventArgs> FolderDeleted;
@@ -332,6 +333,16 @@ namespace DotNetNuke.Services.FileSystem
             return false;
         }
 
+        private string GetDefaultMappedPath(FolderMappingInfo folderMapping)
+        {
+            var defaultMappedPath = folderMapping.FolderMappingSettings[DefaultMappedPathSetting];
+            if (defaultMappedPath == null)
+            {
+                return String.Empty;
+            }
+            return defaultMappedPath.ToString();
+        }
+
         #region On Folder Events
         private void OnFolderMoved(IFolderInfo folderInfo, int userId, string oldFolderPath)
         {
@@ -437,7 +448,8 @@ namespace DotNetNuke.Services.FileSystem
             var parentFolder = GetParentFolder(folderMapping.PortalID, folderPath);
             if (parentFolder != null)
             {
-                var parentFolderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, parentFolder.FolderMappingID);
+                var parentFolderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID,
+                    parentFolder.FolderMappingID);
                 if (FolderProvider.Instance(parentFolderMapping.FolderProviderType).SupportsMappedPaths)
                 {
                     folderMapping = parentFolderMapping;
@@ -449,6 +461,16 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     mappedPath = folderPath;
                 }
+                else
+                {
+                    //Parent foldermapping DOESN'T support mapped path
+                    // abd current foldermapping YES support mapped path
+                    mappedPath = PathUtils.Instance.FormatFolderPath(GetDefaultMappedPath(folderMapping) + mappedPath);
+                }
+            }
+            else if (FolderProvider.Instance(folderMapping.FolderProviderType).SupportsMappedPaths)
+            {
+                mappedPath = PathUtils.Instance.FormatFolderPath(GetDefaultMappedPath(folderMapping) + mappedPath);
             }
 
             try
