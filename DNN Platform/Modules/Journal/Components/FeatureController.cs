@@ -116,13 +116,18 @@ namespace DotNetNuke.Modules.Journal.Components {
             {
                 beginDate = SqlDateTime.MinValue.Value;
             }
+
+            if (beginDate > SqlDateTime.MinValue.Value)
+            {
+                beginDate = beginDate.ToUniversalTime();
+            }
             try
             {
                 while (true)
                 {
                     var reader = DataProvider.Instance()
                                              .ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID,
-                                                            moduleInfo.TabModuleID, beginDate.ToUniversalTime(), lastJournalId,
+                                                            moduleInfo.TabModuleID, beginDate, lastJournalId,
                                                             Constants.SearchBatchSize);
                     var journalIds = new Dictionary<int, int>();
 

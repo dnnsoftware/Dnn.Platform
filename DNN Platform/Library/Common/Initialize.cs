@@ -201,6 +201,8 @@ namespace DotNetNuke.Common
                     //Try and Upgrade to Current Framewok
                     Upgrade.TryUpgradeNETFramework();
 
+                    //Log Server information
+                    ServerController.UpdateServerActivity(new ServerInfo());
                     //Start Scheduler
                     StartScheduler();
                     //Log Application Start
@@ -215,8 +217,6 @@ namespace DotNetNuke.Common
                     //Set Flag so we can determine the first Page Request after Application Start
                     app.Context.Items.Add("FirstRequest", true);
 
-                    //Log Server information
-                    ServerController.UpdateServerActivity(new ServerInfo());
                     Logger.Info("Application Initialized");
 
                     initialized = true;

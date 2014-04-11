@@ -4,6 +4,7 @@ using System.Security;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 
@@ -114,7 +115,7 @@ namespace DotNetNuke.Web.DDRMenu
 		    var mdc = new ModuleDefinitionController();
 			var mc = new ModuleController();
 
-            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, PortalSettings.Current.PortalId);
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
 			if (desktopModule == null)
 			{
 				return;

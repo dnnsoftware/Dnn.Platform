@@ -92,7 +92,8 @@ namespace DotNetNuke.Security.Permissions
 
         public ArrayList GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
         {
-            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == permissionCode && p.PermissionKey == permissionKey).ToArray());
+            return new ArrayList(GetPermissions().Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.InvariantCultureIgnoreCase)
+                                                             && p.PermissionKey.Equals(permissionKey, StringComparison.InvariantCultureIgnoreCase)).ToArray());
         }
 
         public ArrayList GetPermissionsByModuleDefID(int moduleDefID)
