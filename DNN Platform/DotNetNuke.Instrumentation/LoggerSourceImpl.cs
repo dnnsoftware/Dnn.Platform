@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using log4net;
@@ -62,6 +63,7 @@ namespace DotNetNuke.Instrumentation
 
                             if (File.Exists(configPath))
                             {
+                                AddGlobalContext();
                                 XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
                             }
                             _configured = true;
@@ -88,6 +90,21 @@ namespace DotNetNuke.Instrumentation
 //                LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
 //                LogManager.GetRepository().LevelMap.Add(LevelLogError);
 
+            }
+
+            private static void AddGlobalContext()
+            {
+                try
+                {
+                    GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D");
+                    GlobalContext.Properties["processid"] = Process.GetCurrentProcess().Id.ToString("D");
+                }
+// ReSharper disable EmptyGeneralCatchClause
+                catch
+// ReSharper restore EmptyGeneralCatchClause
+                {
+                    //do nothing but just make sure no exception here.
+                }
             }
 
             public bool IsDebugEnabled { get { return Logger.IsEnabledFor(_levelDebug); } }
