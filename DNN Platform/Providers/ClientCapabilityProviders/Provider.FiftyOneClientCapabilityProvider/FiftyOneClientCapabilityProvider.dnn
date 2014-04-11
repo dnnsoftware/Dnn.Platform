@@ -25,7 +25,15 @@
             </file>
           </files>
         </component>
-
+        <component type="File">
+          <files>
+            <file>
+              <path>App_Data</path>
+              <name>51Degrees-Lite.dat</name>
+              <sourceFileName>51Degrees-Lite.dat</sourceFileName>
+            </file>
+          </files>
+        </component>
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/Admin/FiftyOneClientCapabilityProvider</basePath>
@@ -129,7 +137,27 @@
             </uninstall>
           </config>
         </component>
-        
+
+        <component type="Config">
+          <config>
+            <configFile>51Degrees.mobi.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/detection" action="update" collision="ignore">
+                    <detection binaryFilePath="~/App_Data/51Degrees-Lite.dat"
+                        imageOptimisationEnabled="false"
+                        bandwidthMonitoringEnabled="false"
+                        featureDetectionEnabled="false"
+                        memoryMode="false"
+                    />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+          </config>
+        </component>
+        <component type="Cleanup" version="07.03.00" fileName ="07.03.00.txt" />
       </components>
     </package>
   </packages>
