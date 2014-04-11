@@ -2518,12 +2518,12 @@ td.reTlbVertical .reToolbar
 	margin: 0 1px;
 	color:#d9d9d9;
 }
-
+/*
 .reDropDownBody .reTlbVertical .reToolbar .reTool_text span.reButton_text
 {
 	padding-left: 13px;
 }
-
+*/
 .reTool span
 {
 	background-image: url('../images/editorSprite.png');
