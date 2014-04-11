@@ -1,2 +1,2 @@
-﻿' remove Lite data file
-51Degrees-Lite.dat
+﻿' remove old stylesheet
+module.css
