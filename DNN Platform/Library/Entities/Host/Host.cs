@@ -639,6 +639,10 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
+                if (SMTPPortalEnabled)
+                {
+                    return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", PortalSettings.Current.PortalId, false);
+                }
                 return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
             }
         }
