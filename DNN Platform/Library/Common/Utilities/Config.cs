@@ -889,6 +889,12 @@ namespace DotNetNuke.Common.Utilities
             return xmlConfig;
         }
 
+        public static bool IsNet45OrNewer()
+        {
+            // Class "ReflectionContext" exists from .NET 4.5 onwards.
+            return Type.GetType("System.Reflection.ReflectionContext", false) != null;
+        }
+
         public static string AddFCNMode(FcnMode fcnMode)
         {
             string strError = "";
@@ -899,13 +905,11 @@ namespace DotNetNuke.Common.Utilities
                 xmlConfig = Load();
 
                 //check current .net version and if attribute has been added already
-                var fcnMinRequiredVersion = new Version("4.5");
-                if (Environment.Version >= fcnMinRequiredVersion && String.IsNullOrEmpty(GetFcnMode()))
+                if ((IsNet45OrNewer()) && String.IsNullOrEmpty(GetFcnMode()))
                 {
                     XmlNode xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime");
                     XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
                 }
-
             }
             catch (Exception ex)
             {
