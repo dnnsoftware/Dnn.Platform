@@ -278,7 +278,6 @@
     <Compile Include="Entities\Portals\IPortalAliasController.cs" />
     <Compile Include="Entities\Portals\Internal\IPortalTemplateIO.cs" />
     <Compile Include="Entities\Portals\Internal\PortalTemplateIO.cs" />
-    <Compile Include="Entities\Portals\Internal\PortalTemplateIOImpl.cs" />
     <Compile Include="Entities\Obsolete\TestablePortalAliasController.cs" />
     <Compile Include="Entities\Portals\Internal\TestablePortalController.cs" />
     <Compile Include="Entities\Tabs\ITabPublishingController.cs" />
