@@ -181,6 +181,32 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
+            /// <summary>
+            /// Gets a schedulehistory item from the collection of schedule items in progress.
+            /// </summary>
+            /// <param name="scheduleItem"></param>
+            /// <remarks>Thread Safe</remarks>
+            private static ScheduleHistoryItem GetScheduleItemFromScheduleInProgress(ScheduleItem scheduleItem)
+            {
+                try
+                {
+                    using (ScheduleInProgress.GetWriteLock(LockTimeout))
+                    {
+                        ScheduleHistoryItem item = ScheduleInProgress.Where(si => si.ScheduleID == scheduleItem.ScheduleID).SingleOrDefault();
+                        return item;
+                    }
+                    
+                }
+                catch (ApplicationException ex)
+                {
+                    // The writer lock request timed out.
+                    Interlocked.Increment(ref _writerTimeouts);
+                    Exceptions.Exceptions.LogException(ex);
+                }
+                return null;
+            }
+
+
             private static bool ScheduleInProgressContains(ScheduleHistoryItem scheduleHistoryItem)
             {
                 try
@@ -1279,8 +1305,7 @@ namespace DotNetNuke.Services.Scheduling
                     //object property to note the start time.
                     scheduleHistoryItem.StartDate = DateTime.Now;
                     AddScheduleHistory(scheduleHistoryItem);
-
-
+                    
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         //Write out the log entry for this event
@@ -1337,110 +1362,128 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             //DNN-5001
-            public static void StopScheduleInProgress(ScheduleItem scheduleItem)
+            public static void StopScheduleInProgress(ScheduleItem scheduleItem, ScheduleHistoryItem runningscheduleHistoryItem)
             {
                 try
                 {
-                    var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem);
-                    //ScheduleHistoryItem scheduleHistoryItem = schedulerClient.ScheduleHistoryItem;
-                    //Remove the object in the ScheduleInProgress collection
-                    RemoveFromScheduleInProgress(scheduleHistoryItem);
-
-                    //A SchedulerClient is notifying us that their
-                    //process has completed.  Decrease our ActiveThreadCount
-                    Interlocked.Decrement(ref _activeThreadCount);
-
-                    //Update the schedule item object property
-                    //to note the end time and next start
-                    scheduleHistoryItem.EndDate = DateTime.Now;
-
-                    if (scheduleHistoryItem.ScheduleSource == ScheduleSource.STARTED_FROM_EVENT)
+                    //attempt to stop task only if it is still in progress
+                    if (GetScheduleItemFromScheduleInProgress(scheduleItem) != null)
                     {
-                        scheduleHistoryItem.NextStart = Null.NullDate;
-                    }
-                    else
-                    {
-                        if (scheduleHistoryItem.CatchUpEnabled)
+                        var scheduleHistoryItem = GetScheduleItemFromScheduleInProgress(scheduleItem);
+                        scheduleHistoryItem.ScheduleHistoryID = runningscheduleHistoryItem.ScheduleHistoryID;
+                        scheduleHistoryItem.StartDate = runningscheduleHistoryItem.StartDate;
+                        //Remove the object in the ScheduleInProgress collection
+                        RemoveFromScheduleInProgress(scheduleHistoryItem);
+
+                        //A SchedulerClient is notifying us that their
+                        //process has completed.  Decrease our ActiveThreadCount
+                        Interlocked.Decrement(ref _activeThreadCount);
+
+                        //Update the schedule item object property
+                        //to note the end time and next start
+                        scheduleHistoryItem.EndDate = DateTime.Now;
+
+                        if (scheduleHistoryItem.ScheduleSource == ScheduleSource.STARTED_FROM_EVENT)
                         {
-                            switch (scheduleHistoryItem.TimeLapseMeasurement)
-                            {
-                                case "s":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddSeconds(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "m":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddMinutes(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "h":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddHours(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "d":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "w":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
-                                    break;
-                                case "mo":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "y":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
-                                    break;
-                            }
+                            scheduleHistoryItem.NextStart = Null.NullDate;
                         }
                         else
                         {
-                            switch (scheduleHistoryItem.TimeLapseMeasurement)
+                            if (scheduleHistoryItem.CatchUpEnabled)
                             {
-                                case "s":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddSeconds(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "m":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMinutes(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "h":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddHours(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "d":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "w":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
-                                    break;
-                                case "mo":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
-                                    break;
-                                case "y":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
-                                    break;
+                                switch (scheduleHistoryItem.TimeLapseMeasurement)
+                                {
+                                    case "s":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.NextStart.AddSeconds(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "m":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.NextStart.AddMinutes(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "h":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.NextStart.AddHours(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "d":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "w":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse*7);
+                                        break;
+                                    case "mo":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "y":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                switch (scheduleHistoryItem.TimeLapseMeasurement)
+                                {
+                                    case "s":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddSeconds(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "m":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddMinutes(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "h":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddHours(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "d":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "w":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse*7);
+                                        break;
+                                    case "mo":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "y":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                }
                             }
                         }
-                    }
+                        //Update the ScheduleHistory in the database
+                        UpdateScheduleHistory(scheduleHistoryItem);
 
-                    //Update the ScheduleHistory in the database
-                    UpdateScheduleHistory(scheduleHistoryItem);
+                        var eventLogInfo = new LogInfo();
 
-                    var eventLogInfo = new LogInfo();
-
-                    if (scheduleHistoryItem.NextStart != Null.NullDate)
-                    {
-                        //Put the object back into the ScheduleQueue
-                        //collection with the new NextStart date.
-                        scheduleHistoryItem.StartDate = Null.NullDate;
-                        scheduleHistoryItem.EndDate = Null.NullDate;
-                        scheduleHistoryItem.LogNotes = "";
-                        scheduleHistoryItem.ProcessGroup = -1;
-                        AddToScheduleQueue(scheduleHistoryItem);
-                    }
+                        if (scheduleHistoryItem.NextStart != Null.NullDate)
+                        {
+                            //Put the object back into the ScheduleQueue
+                            //collection with the new NextStart date.
+                            scheduleHistoryItem.StartDate = Null.NullDate;
+                            scheduleHistoryItem.EndDate = Null.NullDate;
+                            scheduleHistoryItem.LogNotes = "";
+                            scheduleHistoryItem.ProcessGroup = -1;
+                            AddToScheduleQueue(scheduleHistoryItem);
+                        }
 
                         //Write out the log entry for this event
                         var objEventLog = new EventLogController();
-                        eventLogInfo.AddProperty("REASON", "Scheduler task has been stopped manually");    
+                        eventLogInfo.AddProperty("REASON", "Scheduler task has been stopped manually");
                         eventLogInfo.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         eventLogInfo.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
                         eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_COMPLETED";
                         objEventLog.AddLog(eventLogInfo);
-                   
+                    }
+
                 }
                 catch (Exception exc)
                 {

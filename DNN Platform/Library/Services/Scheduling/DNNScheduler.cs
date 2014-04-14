@@ -307,7 +307,9 @@ namespace DotNetNuke.Services.Scheduling
         //DNN-5001 Possibility to stop already running tasks
         public override void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
         {
-            Scheduler.CoreScheduler.StopScheduleInProgress(scheduleItem);
+            //get ScheduleHistoryItem of the running task
+            var runningscheduleHistoryItem = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().ElementAtOrDefault(0);
+            Scheduler.CoreScheduler.StopScheduleInProgress(scheduleItem, runningscheduleHistoryItem);
         }
 
         #endregion
