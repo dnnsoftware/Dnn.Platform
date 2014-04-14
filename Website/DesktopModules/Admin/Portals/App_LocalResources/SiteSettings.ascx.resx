@@ -1163,6 +1163,9 @@ The host-level settings are currently set as follows:
   <data name="EmailTest.Text" xml:space="preserve">
     <value>Test SMTP Settings</value>
   </data>
+  <data name="plSMTPAuthentication.Text" xml:space="preserve">
+    <value>SMTP Authentication:</value>
+  </data>
   <data name="plSMTPAuthentication.Help" xml:space="preserve">
     <value>Enter the SMTP Server Authentication method ( default = Anonymous )</value>
   </data>
@@ -1185,6 +1188,9 @@ The host-level settings are currently set as follows:
   </data>
   <data name="plSMTPServer.Text" xml:space="preserve">
     <value>SMTP Server and port:</value>
+  </data>
+  <data name="plSMTPUsername.Text" xml:space="preserve">
+    <value>SMTP Username:</value>
   </data>
   <data name="plSMTPUsername.Help" xml:space="preserve">
     <value>Enter the Username for the SMTP Server</value>

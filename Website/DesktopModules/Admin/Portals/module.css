@@ -228,3 +228,20 @@ a[id$='IncrementCrmVersionButton']{
 #ssStylesheetEditor .editor {
     margin-bottom: 2em;
 }
+.dnnSiteSettings br {
+display: none !important;
+font-size: 0;
+line-height: 0;
+border-collapse: collapse;
+}
+.dnnSiteSettings .dnnFormItem .dnnHSRadioButtons {
+    overflow: hidden;
+}
+.dnnSiteSettings .dnnFormItem .dnnHSRadioButtons label{
+    width: auto;
+    padding: 0 5px 0 0;
+    margin-left: 3px;
+    text-align: left;
+    font-weight: normal;
+    margin-top: 0;
+}
