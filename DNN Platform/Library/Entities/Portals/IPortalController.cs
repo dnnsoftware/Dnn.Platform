@@ -71,8 +71,8 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, string templatePath, string templateFile, string homeDirectory, string portalAlias,
-                         string serverPath, string childPath, bool isChildPortal);
+        int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, string templatePath, string templateFile, 
+                                            string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>
         /// Creates the portal.
@@ -89,7 +89,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalController.PortalTemplateInfo template,
-                                         string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
+                                            string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -121,8 +121,9 @@ namespace DotNetNuke.Entities.Portals
         /// 	[cnurse]	11/08/2004	created (most of this code was moved from SignUp.ascx.vb)
         /// </history>
         /// -----------------------------------------------------------------------------
-        int CreatePortal(string portalName, string firstName, string lastName, string username, string password, string email, string description, string keyWords, string templatePath,
-                         string templateFile, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
+        int CreatePortal(string portalName, string firstName, string lastName, string username, string password, string email, 
+                                            string description, string keyWords, string templatePath, string templateFile, 
+                                            string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>
         /// Creates the portal.
@@ -138,10 +139,8 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords,
-                         PortalController.PortalTemplateInfo template,
-                         string homeDirectory, string portalAlias, string serverPath, string childPath,
-                         bool isChildPortal);
+        int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalController.PortalTemplateInfo template,
+                         string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// -----------------------------------------------------------------------------
         /// <summary>

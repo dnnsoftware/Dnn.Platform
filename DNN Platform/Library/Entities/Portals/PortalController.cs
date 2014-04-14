@@ -2430,12 +2430,13 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public ArrayList GetPortals()
         {
-            string cultureCode = Localization.SystemLocale;
-            string cacheKey = String.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
-            var portals = CBO.GetCachedObject<List<PortalInfo>>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, cultureCode), 
-                                                    GetPortalsCallBack);
-            return new ArrayList(portals);
+            return new ArrayList(GetPortalList(Localization.SystemLocale));
         }
+
+        //public ArrayList GetPortals()
+        //{
+        //    return new ArrayList(GetPortalList(Localization.SystemLocale));
+        //}
 
         /// <summary>
         /// Get portals in specific culture.
