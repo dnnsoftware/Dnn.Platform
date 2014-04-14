@@ -90,8 +90,7 @@ namespace DotNetNuke.Entities.Urls
                 if (redirect.PortalAliasId > 0)
                 {
                     //has a custom portal alias
-                    var pac = new PortalAliasController();
-                    PortalAliasInfo customAlias = pac.GetPortalAliasByPortalAliasID(redirect.PortalAliasId);
+                    PortalAliasInfo customAlias = PortalAliasController.Instance.GetPortalAliasByPortalAliasID(redirect.PortalAliasId);
                     if (customAlias != null)
                     {
                         //this will be used to add the Url to the dictionary

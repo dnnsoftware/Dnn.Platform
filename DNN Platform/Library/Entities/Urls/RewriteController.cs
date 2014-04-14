@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Urls
             string defaultPage = Globals.glbDefaultPage.ToLower();
             string portalAliasUrl = url.ToLower().Replace("/" + defaultPage, "");
             //if there is a straight match on a portal alias, it's the home page for that portal requested 
-            var portalAlias = PortalAliasController.GetPortalAliasInfo(portalAliasUrl);
+            var portalAlias = PortalAliasController.Instance.GetPortalAlias(portalAliasUrl);
             if (portalAlias != null)
             {
                 //special case : sometimes, some servers issue root/default.aspx when root/ was requested, sometimes not.  It depends

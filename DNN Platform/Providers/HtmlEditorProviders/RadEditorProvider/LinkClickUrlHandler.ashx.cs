@@ -69,7 +69,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (LinkClickUrlHandler));
 
-		private PortalAliasController _portalAliasController = new PortalAliasController();
+		private IPortalAliasController _portalAliasController = PortalAliasController.Instance;
 		private UrlController _urlController = new UrlController();
 		private FileController _fileController = new FileController();
 
@@ -85,7 +85,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 		private string GetLinkUrl(ref DialogParams dialogParams, string link)
 		{
-			ArrayList aliasList = _portalAliasController.GetPortalAliasArrayByPortalID(dialogParams.PortalId);
+            var aliasList = _portalAliasController.GetPortalAliasesByPortalId(dialogParams.PortalId);
 
 			if (dialogParams.LinkUrl.Contains(dialogParams.HomeDirectory))
 			{

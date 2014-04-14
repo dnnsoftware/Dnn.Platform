@@ -21,7 +21,7 @@
 
 using System.Collections.Generic;
 
-namespace DotNetNuke.Entities.Portals.Internal
+namespace DotNetNuke.Entities.Portals
 {
     /// <summary>
     /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
@@ -50,17 +50,29 @@ namespace DotNetNuke.Entities.Portals.Internal
         PortalAliasInfo GetPortalAlias(string alias);
 
         /// <summary>
-        /// Gets the portal alias by portal ID.
+        /// Gets the portal alias info.
         /// </summary>
-        /// <param name="portalId">The portal ID.</param>
-        /// <returns>Portal alias collection.</returns>
-        IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId);
+        /// <param name="alias">The portal alias.</param>
+        /// <param name="portalId">The Id of the portal in question</param>
+        /// <returns>Portal alias info</returns>
+        PortalAliasInfo GetPortalAlias(string alias, int portalId);
+
+        PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId);
 
         /// <summary>
         /// Gets all the portal aliases defined
         /// </summary>
         /// <returns>A dictionary keyed by the HTTP Alias</returns>
         IDictionary<string, PortalAliasInfo> GetPortalAliases();
+
+        /// <summary>
+        /// Gets the portal alias by portal ID.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>Portal alias collection.</returns>
+        IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId);
+
+        PortalInfo GetPortalByPortalAliasID(int PortalAliasId);
 
         /// <summary>
         /// Updates the portal alias info.

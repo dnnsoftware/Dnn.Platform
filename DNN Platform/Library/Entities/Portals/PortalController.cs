@@ -1596,10 +1596,9 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public void AddPortalAlias(int portalId, string portalAlias)
         {
-            var portalAliasController = new PortalAliasController();
 
             //Check if the Alias exists
-            PortalAliasInfo portalAliasInfo = portalAliasController.GetPortalAlias(portalAlias, portalId);
+            PortalAliasInfo portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
 
             //If alias does not exist add new
             if (portalAliasInfo == null)

@@ -402,7 +402,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                     //Validate Portal Alias
                     if (!string.IsNullOrEmpty(strPortalAlias))
                     {
-                        PortalAliasInfo portalAlias = PortalAliasController.GetPortalAliasLookup(strPortalAlias.ToLower());
+                        PortalAliasInfo portalAlias = PortalAliasController.Instance.GetPortalAlias(strPortalAlias.ToLower());
                         if (portalAlias != null)
                         {
                             message = Localization.GetString("DuplicatePortalAlias", LocalResourceFile);

@@ -274,12 +274,12 @@
     <Compile Include="Entities\Modules\IShareable.cs" />
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
-    <Compile Include="Entities\Portals\Internal\IPortalAliasController.cs" />
+    <Compile Include="Entities\Obsolete\PortalAliasController.cs" />
+    <Compile Include="Entities\Portals\IPortalAliasController.cs" />
     <Compile Include="Entities\Portals\Internal\IPortalTemplateIO.cs" />
-    <Compile Include="Entities\Portals\Internal\PortalAliasControllerImpl.cs" />
     <Compile Include="Entities\Portals\Internal\PortalTemplateIO.cs" />
     <Compile Include="Entities\Portals\Internal\PortalTemplateIOImpl.cs" />
-    <Compile Include="Entities\Portals\Internal\TestablePortalAliasController.cs" />
+    <Compile Include="Entities\Obsolete\TestablePortalAliasController.cs" />
     <Compile Include="Entities\Portals\Internal\TestablePortalController.cs" />
     <Compile Include="Entities\Tabs\ITabPublishingController.cs" />
     <Compile Include="Entities\Tabs\TabAliasSkinInfo.cs" />
@@ -463,7 +463,6 @@
     <Compile Include="Entities\Portals\IPortalSettings.cs" />
     <Compile Include="Entities\Portals\TestablePortalSettings.cs" />
     <Compile Include="Entities\Tabs\Internal\ITabController.cs" />
-    <Compile Include="Entities\Tabs\Internal\TabControllerImpl.cs" />
     <Compile Include="Entities\Tabs\Internal\TestableTabController.cs" />
     <Compile Include="Framework\IServicesFramework.cs" />
     <Compile Include="Framework\ServicesFramework.cs" />

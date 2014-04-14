@@ -2936,19 +2936,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeletePortalAlias", PortalAliasID);
         }
 
-        public virtual IDataReader GetPortalAlias(string PortalAlias, int PortalID)
+        public virtual IDataReader GetPortalAliases()
         {
-            return ExecuteReader("GetPortalAlias", PortalAlias, PortalID);
-        }
-
-        public virtual IDataReader GetPortalAliasByPortalAliasID(int PortalAliasID)
-        {
-            return ExecuteReader("GetPortalAliasByPortalAliasID", PortalAliasID);
-        }
-
-        public virtual IDataReader GetPortalAliasByPortalID(int PortalID)
-        {
-            return ExecuteReader("GetPortalAliasByPortalID", PortalID);
+            return ExecuteReader("GetPortalAliases");
         }
 
         public virtual IDataReader GetPortalByPortalAliasID(int PortalAliasId)

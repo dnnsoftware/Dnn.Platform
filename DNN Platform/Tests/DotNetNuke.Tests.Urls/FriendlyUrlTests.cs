@@ -75,7 +75,7 @@ namespace DotNetNuke.Tests.Urls
             _tabId = tab.TabID;
 
             //Add Portal Aliases
-            var aliasController = new PortalAliasController();
+            var aliasController = PortalAliasController.Instance;
             TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
                         {
                             string[] fields = line.Split(',');
@@ -129,7 +129,7 @@ namespace DotNetNuke.Tests.Urls
         {
             base.TestFixtureTearDown();
 
-            var aliasController = new PortalAliasController();
+            var aliasController =PortalAliasController.Instance;
             TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
                         {
                             string[] fields = line.Split(',');

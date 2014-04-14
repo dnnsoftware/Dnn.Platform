@@ -20,16 +20,20 @@
 #endregion
 
 using System;
+using System.ComponentModel;
+
 using DotNetNuke.Framework;
 
+// ReSharper disable once CheckNamespace
 namespace DotNetNuke.Entities.Portals.Internal
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalAliasController instead")]
     public class TestablePortalAliasController : ServiceLocator<IPortalAliasController, TestablePortalAliasController>
     {
         protected override Func<IPortalAliasController> GetFactory()
         {
-            return () => new PortalAliasControllerImpl();
+            return () => new PortalAliasController();
         }
     }
 }

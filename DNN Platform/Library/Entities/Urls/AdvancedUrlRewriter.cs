@@ -261,7 +261,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 //get the portal alias info for the requested alias (which is the wrong one)
                                 //and set that as the alias, but also set the found alias as the primary
-                                PortalAliasInfo wrongAliasInfo = PortalAliasController.GetPortalAliasInfo(wrongAlias);
+                                PortalAliasInfo wrongAliasInfo = PortalAliasController.Instance.GetPortalAlias(wrongAlias);
                                 if (wrongAliasInfo != null)
                                 {
                                     result.PortalAlias = wrongAliasInfo;
@@ -288,7 +288,7 @@ namespace DotNetNuke.Entities.Urls
                     if (!redirectAlias && IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryHttpAlias))
                     {
                         //it was an incorrect alias
-                        PortalAliasInfo primaryAlias = PortalAliasController.GetPortalAliasInfo(primaryHttpAlias);
+                        PortalAliasInfo primaryAlias = PortalAliasController.Instance.GetPortalAlias(primaryHttpAlias);
                         if (primaryAlias != null) result.PrimaryAlias = primaryAlias;
                         //try and redirect the alias if the settings allow it
                         redirectAlias = RedirectPortalAlias(primaryHttpAlias, ref result, settings);
@@ -1035,8 +1035,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 if (result.HttpAlias != null && result.PortalId > -1)
                                 {
-                                    var pac = new PortalAliasController();
-                                    PortalAliasInfo pa = pac.GetPortalAlias(result.HttpAlias, result.PortalId);
+                                    PortalAliasInfo pa = PortalAliasController.Instance.GetPortalAlias(result.HttpAlias, result.PortalId);
                                     ps = new PortalSettings(errTabId, pa);
                                 }
                                 else
@@ -1949,7 +1948,7 @@ namespace DotNetNuke.Entities.Urls
                 if (queryStringCol["alias"] != null && queryStringCol["captcha"] == null)
                 {
                     string alias = queryStringCol["alias"];
-                    PortalAliasInfo portalAlias = PortalAliasController.GetPortalAliasInfo(alias);
+                    PortalAliasInfo portalAlias = PortalAliasController.Instance.GetPortalAlias(alias);
                     if (portalAlias != null)
                     {
                         //ok the portal alias was found by the alias name
@@ -2009,8 +2008,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             //the tabid is different to the identified portalid from the original alias identified
                             //so get a new alias 
-                            var pac = new PortalAliasController();
-                            PortalAliasInfo tabPortalAlias = pac.GetPortalAlias(httpAliasFromTab, tab.PortalID);
+                            PortalAliasInfo tabPortalAlias = PortalAliasController.Instance.GetPortalAlias(httpAliasFromTab, tab.PortalID);
                             if (tabPortalAlias != null)
                             {
                                 result.PortalId = tabPortalAlias.PortalID;
@@ -2027,15 +2025,15 @@ namespace DotNetNuke.Entities.Urls
             {
                 if (!string.IsNullOrEmpty(result.HttpAlias))
                 {
-                    result.PortalAlias = PortalAliasController.GetPortalAliasInfo(result.HttpAlias);
+                    result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.HttpAlias);
                 }
                 else
                 {
-                    result.PortalAlias = PortalAliasController.GetPortalAliasInfo(result.DomainName);
+                    result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);
                     if (result.PortalAlias == null && result.DomainName.EndsWith("/"))
                     {
                         result.DomainName = result.DomainName.TrimEnd('/');
-                        result.PortalAlias = PortalAliasController.GetPortalAliasInfo(result.DomainName);
+                        result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);
                     }
                 }
             }

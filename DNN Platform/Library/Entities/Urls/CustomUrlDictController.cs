@@ -94,8 +94,7 @@ namespace DotNetNuke.Entities.Urls
                         if (redirect.PortalAliasUsage != PortalAliasUsageType.Default && redirect.PortalAliasId > 0)
                         {
                             //there is a custom http alias specified for this portal alias
-                            var pac = new PortalAliasController();
-                            PortalAliasInfo alias = pac.GetPortalAliasByPortalAliasID(redirect.PortalAliasId);
+                            PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAliasByPortalAliasID(redirect.PortalAliasId);
                             if (alias != null)
                             {
                                 string customHttpAlias = alias.HTTPAlias;

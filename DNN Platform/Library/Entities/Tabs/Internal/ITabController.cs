@@ -38,12 +38,12 @@ namespace DotNetNuke.Entities.Tabs.Internal
         void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
 
         /// <summary>
-        /// Gets the tab.
+        /// Get the list of skins per alias at tab level
         /// </summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>tab info.</returns>
-        TabInfo GetTab(int tabId, int portalId);
+        /// <param name="tabId">the tab id</param>
+        /// <param name="portalId">the portal id</param>
+        /// <returns>list of TabAliasSkinInfo</returns>
+        List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId);
 
         /// <summary>
         /// Get the list of custom aliases associated with a page (tab)
@@ -54,12 +54,12 @@ namespace DotNetNuke.Entities.Tabs.Internal
         Dictionary<string, string> GetCustomAliases(int tabId, int portalId);
         
         /// <summary>
-        /// Get the list of skins per alias at tab level
+        /// Gets the tab.
         /// </summary>
-        /// <param name="tabId">the tab id</param>
-        /// <param name="portalId">the portal id</param>
-        /// <returns>list of TabAliasSkinInfo</returns>
-        List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId);
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>tab info.</returns>
+        TabInfo GetTab(int tabId, int portalId);
 
         /// <summary>
         /// Get the list of url's associated with a page (tab)

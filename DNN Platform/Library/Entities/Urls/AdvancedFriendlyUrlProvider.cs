@@ -217,8 +217,7 @@ namespace DotNetNuke.Entities.Urls
             if (cultureSpecificAlias && portalAlias != portalSettings.PortalAlias.HTTPAlias)
             {
                 //was a change in alias, need to update the portalSettings with a new portal alias
-                var pac = new PortalAliasController();
-                PortalAliasInfo pa = pac.GetPortalAlias(portalAlias, portalSettings.PortalId);
+                PortalAliasInfo pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalSettings.PortalId);
                 if (pa != null)
                 {
                     portalSettings.PortalAlias = pa;
@@ -446,8 +445,7 @@ namespace DotNetNuke.Entities.Urls
 
                 if (portalSettings == null)
                 {
-                    var pac = new PortalAliasController();
-                    PortalAliasInfo alias = pac.GetPortalAlias(portalAlias, tab.PortalID);
+                    PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
 
                     portalSettings = new PortalSettings(tab.TabID, alias);
                 }
@@ -470,8 +468,7 @@ namespace DotNetNuke.Entities.Urls
         private static PortalAliasInfo GetAliasForPortal(string httpAlias, int portalId, ref List<string> messages)
         {
             //if no match found, then call database to find (don't rely on cache for this one, because it is an exception event, not an expected event)
-            var pac = new PortalAliasController();
-            PortalAliasInfo alias = pac.GetPortalAlias(httpAlias, portalId);
+            PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(httpAlias, portalId);
             if (alias == null)
             {
                 //no match between alias and portal id

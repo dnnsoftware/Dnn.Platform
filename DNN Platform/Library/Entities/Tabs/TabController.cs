@@ -301,6 +301,116 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        private Dictionary<int, List<TabAliasSkinInfo>> GetAliasSkins(int portalId)
+        {
+            string cacheKey = string.Format(DataCache.TabAliasSkinCacheKey, portalId);
+            return CBO.GetCachedObject<Dictionary<int, List<TabAliasSkinInfo>>>(new CacheItemArgs(cacheKey,
+                                                                                                DataCache.TabAliasSkinCacheTimeOut,
+                                                                                                DataCache.TabAliasSkinCachePriority,
+                                                                                                portalId),
+                                                                                        GetAliasSkinsCallback);
+
+        }
+
+        private object GetAliasSkinsCallback(CacheItemArgs cacheItemArgs)
+        {
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            var dic = new Dictionary<int, List<TabAliasSkinInfo>>();
+            if (portalID > -1)
+            {
+                IDataReader dr = DataProvider.Instance().GetTabAliasSkins(portalID);
+                try
+                {
+                    while (dr.Read())
+                    {
+                        //fill business object
+                        var tabAliasSkin = CBO.FillObject<TabAliasSkinInfo>(dr, false);
+
+                        //add Tab Alias Skin to dictionary
+                        if (dic.ContainsKey(tabAliasSkin.TabId))
+                        {
+                            //Add Tab Alias Skin to Tab Alias Skin Collection already in dictionary for TabId
+                            dic[tabAliasSkin.TabId].Add(tabAliasSkin);
+                        }
+                        else
+                        {
+                            //Create new Tab Alias Skin Collection for TabId
+                            var collection = new List<TabAliasSkinInfo> { tabAliasSkin };
+
+                            //Add Collection to Dictionary
+                            dic.Add(tabAliasSkin.TabId, collection);
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+                finally
+                {
+                    //close datareader
+                    CBO.CloseDataReader(dr, true);
+                }
+            }
+            return dic;
+        }
+
+        private Dictionary<int, Dictionary<string, string>> GetCustomAliases(int portalId)
+        {
+            string cacheKey = string.Format(DataCache.TabCustomAliasCacheKey, portalId);
+            return CBO.GetCachedObject<Dictionary<int, Dictionary<string, string>>>(new CacheItemArgs(cacheKey,
+                                                                                                DataCache.TabCustomAliasCacheTimeOut,
+                                                                                                DataCache.TabCustomAliasCachePriority,
+                                                                                                portalId),
+                                                                                        GetCustomAliasesCallback);
+
+        }
+
+        private object GetCustomAliasesCallback(CacheItemArgs cacheItemArgs)
+        {
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            var dic = new Dictionary<int, Dictionary<string, string>>();
+            if (portalID > -1)
+            {
+                IDataReader dr = DataProvider.Instance().GetTabCustomAliases(portalID);
+                try
+                {
+                    while (dr.Read())
+                    {
+                        //fill business object
+                        var tabId = (int)dr["TabId"];
+                        var customAlias = (string)dr["httpAlias"];
+                        var cultureCode = (string)dr["cultureCode"];
+
+                        //add Custom Alias to dictionary
+                        if (dic.ContainsKey(tabId))
+                        {
+                            //Add Custom Alias to Custom Alias Collection already in dictionary for TabId
+                            dic[tabId][cultureCode] = customAlias;
+                        }
+                        else
+                        {
+                            //Create new Custom Alias Collection for TabId
+                            var collection = new Dictionary<string, string> { { cultureCode, customAlias } };
+
+                            //Add Collection to Dictionary
+                            dic.Add(tabId, collection);
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+                finally
+                {
+                    //close datareader
+                    CBO.CloseDataReader(dr, true);
+                }
+            }
+            return dic;
+        }
+
         private static int GetIndexOfTab(TabInfo objTab, IEnumerable<TabInfo> tabs)
         {
             return Null.NullInteger + tabs.TakeWhile(tab => tab.TabID != objTab.TabID).Count();
@@ -392,6 +502,61 @@ namespace DotNetNuke.Entities.Tabs
                             CBO.CloseDataReader(dr, true);
                             return tabSettings;
                         });
+        }
+
+        internal Dictionary<int, List<TabUrlInfo>> GetTabUrls(int portalId)
+        {
+            string cacheKey = string.Format(DataCache.TabUrlCacheKey, portalId);
+            return CBO.GetCachedObject<Dictionary<int, List<TabUrlInfo>>>(new CacheItemArgs(cacheKey,
+                                                                                                DataCache.TabUrlCacheTimeOut,
+                                                                                                DataCache.TabUrlCachePriority,
+                                                                                                portalId),
+                                                                                        GetTabUrlsCallback);
+
+        }
+
+        private object GetTabUrlsCallback(CacheItemArgs cacheItemArgs)
+        {
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            var dic = new Dictionary<int, List<TabUrlInfo>>();
+
+            if (portalID > -1)
+            {
+                IDataReader dr = DataProvider.Instance().GetTabUrls(portalID);
+                try
+                {
+                    while (dr.Read())
+                    {
+                        //fill business object
+                        var tabRedirect = CBO.FillObject<TabUrlInfo>(dr, false);
+
+                        //add Tab Redirect to dictionary
+                        if (dic.ContainsKey(tabRedirect.TabId))
+                        {
+                            //Add Tab Redirect to Tab Redirect Collection already in dictionary for TabId
+                            dic[tabRedirect.TabId].Add(tabRedirect);
+                        }
+                        else
+                        {
+                            //Create new Tab Redirect Collection for TabId
+                            var collection = new List<TabUrlInfo> { tabRedirect };
+
+                            //Add Collection to Dictionary
+                            dic.Add(tabRedirect.TabId, collection);
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+                finally
+                {
+                    //close datareader
+                    CBO.CloseDataReader(dr, true);
+                }
+            }
+            return dic;
         }
 
         private void HardDeleteTabInternal(int tabId)
@@ -845,6 +1010,17 @@ namespace DotNetNuke.Entities.Tabs
         public ArrayList GetAllTabs()
         {
             return CBO.FillCollection(Provider.GetAllTabs(), typeof(TabInfo));
+        }
+
+        /// <summary>
+        /// Gets the tab.
+        /// </summary>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>tab info.</returns>
+        public TabInfo GetTab(int tabId, int portalId)
+        {
+            return GetTab(tabId, portalId, false);
         }
 
         /// <summary>
@@ -2249,173 +2425,6 @@ namespace DotNetNuke.Entities.Tabs
 
         #endregion
 
-        
-
-        private object GetAliasSkinsCallback(CacheItemArgs cacheItemArgs)
-        {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            var dic = new Dictionary<int, List<TabAliasSkinInfo>>();
-            if (portalID > -1)
-            {
-                IDataReader dr = DataProvider.Instance().GetTabAliasSkins(portalID);
-                try
-                {
-                    while (dr.Read())
-                    {
-                        //fill business object
-                        var tabAliasSkin = CBO.FillObject<TabAliasSkinInfo>(dr, false);
-
-                        //add Tab Alias Skin to dictionary
-                        if (dic.ContainsKey(tabAliasSkin.TabId))
-                        {
-                            //Add Tab Alias Skin to Tab Alias Skin Collection already in dictionary for TabId
-                            dic[tabAliasSkin.TabId].Add(tabAliasSkin);
-                        }
-                        else
-                        {
-                            //Create new Tab Alias Skin Collection for TabId
-                            var collection = new List<TabAliasSkinInfo> { tabAliasSkin };
-
-                            //Add Collection to Dictionary
-                            dic.Add(tabAliasSkin.TabId, collection);
-                        }
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Exceptions.LogException(exc);
-                }
-                finally
-                {
-                    //close datareader
-                    CBO.CloseDataReader(dr, true);
-                }
-            }
-            return dic;
-        }
-
-        private object GetCustomAliasesCallback(CacheItemArgs cacheItemArgs)
-        {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            var dic = new Dictionary<int, Dictionary<string, string>>();
-            if (portalID > -1)
-            {
-                IDataReader dr = DataProvider.Instance().GetTabCustomAliases(portalID);
-                try
-                {
-                    while (dr.Read())
-                    {
-                        //fill business object
-                        var tabId = (int)dr["TabId"];
-                        var customAlias = (string)dr["httpAlias"];
-                        var cultureCode = (string)dr["cultureCode"];
-
-                        //add Custom Alias to dictionary
-                        if (dic.ContainsKey(tabId))
-                        {
-                            //Add Custom Alias to Custom Alias Collection already in dictionary for TabId
-                            dic[tabId][cultureCode] = customAlias;
-                        }
-                        else
-                        {
-                            //Create new Custom Alias Collection for TabId
-                            var collection = new Dictionary<string, string> { { cultureCode, customAlias } };
-
-                            //Add Collection to Dictionary
-                            dic.Add(tabId, collection);
-                        }
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Exceptions.LogException(exc);
-                }
-                finally
-                {
-                    //close datareader
-                    CBO.CloseDataReader(dr, true);
-                }
-            }
-            return dic;
-        }
-
-        private object GetTabUrlsCallback(CacheItemArgs cacheItemArgs)
-        {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            var dic = new Dictionary<int, List<TabUrlInfo>>();
-
-            if (portalID > -1)
-            {
-                IDataReader dr = DataProvider.Instance().GetTabUrls(portalID);
-                try
-                {
-                    while (dr.Read())
-                    {
-                        //fill business object
-                        var tabRedirect = CBO.FillObject<TabUrlInfo>(dr, false);
-
-                        //add Tab Redirect to dictionary
-                        if (dic.ContainsKey(tabRedirect.TabId))
-                        {
-                            //Add Tab Redirect to Tab Redirect Collection already in dictionary for TabId
-                            dic[tabRedirect.TabId].Add(tabRedirect);
-                        }
-                        else
-                        {
-                            //Create new Tab Redirect Collection for TabId
-                            var collection = new List<TabUrlInfo> { tabRedirect };
-
-                            //Add Collection to Dictionary
-                            dic.Add(tabRedirect.TabId, collection);
-                        }
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Exceptions.LogException(exc);
-                }
-                finally
-                {
-                    //close datareader
-                    CBO.CloseDataReader(dr, true);
-                }
-            }
-            return dic;
-        }
-
-        private Dictionary<int, List<TabAliasSkinInfo>> GetAliasSkins(int portalId)
-        {
-            string cacheKey = string.Format(DataCache.TabAliasSkinCacheKey, portalId);
-            return CBO.GetCachedObject<Dictionary<int, List<TabAliasSkinInfo>>>(new CacheItemArgs(cacheKey,
-                                                                                                DataCache.TabAliasSkinCacheTimeOut,
-                                                                                                DataCache.TabAliasSkinCachePriority,
-                                                                                                portalId),
-                                                                                        GetAliasSkinsCallback);
-
-        }
-
-        private Dictionary<int, Dictionary<string, string>> GetCustomAliases(int portalId)
-        {
-            string cacheKey = string.Format(DataCache.TabCustomAliasCacheKey, portalId);
-            return CBO.GetCachedObject<Dictionary<int, Dictionary<string, string>>>(new CacheItemArgs(cacheKey,
-                                                                                                DataCache.TabCustomAliasCacheTimeOut,
-                                                                                                DataCache.TabCustomAliasCachePriority,
-                                                                                                portalId),
-                                                                                        GetCustomAliasesCallback);
-
-        }
-
-        internal Dictionary<int, List<TabUrlInfo>> GetTabUrls(int portalId)
-        {
-            string cacheKey = string.Format(DataCache.TabUrlCacheKey, portalId);
-            return CBO.GetCachedObject<Dictionary<int, List<TabUrlInfo>>>(new CacheItemArgs(cacheKey,
-                                                                                                DataCache.TabUrlCacheTimeOut,
-                                                                                                DataCache.TabUrlCachePriority,
-                                                                                                portalId),
-                                                                                        GetTabUrlsCallback);
-
-        }
-
         public void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache)
         {
             DataProvider.Instance().DeleteTabUrl(tabUrl.TabId, tabUrl.SeqNum);
@@ -2433,17 +2442,6 @@ namespace DotNetNuke.Entities.Tabs
                 var tab = GetTab(tabUrl.TabId, portalId);
                 tab.ClearTabUrls();
             }
-        }
-
-        /// <summary>
-        /// Gets the tab.
-        /// </summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>tab info.</returns>
-        public TabInfo GetTab(int tabId, int portalId)
-        {
-            return GetTab(tabId, portalId, false);
         }
 
         public Dictionary<string, string> GetCustomAliases(int tabId, int portalId)

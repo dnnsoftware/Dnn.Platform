@@ -1429,7 +1429,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasInfo")]
         public static PortalAliasInfo GetPortalAliasInfo(string portalAlias)
         {
-            return PortalAliasController.GetPortalAliasInfo(portalAlias);
+            return PortalAliasController.Instance.GetPortalAlias(portalAlias);
         }
 
         [Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasByPortal")]
