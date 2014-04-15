@@ -51,8 +51,6 @@ namespace DotNetNuke.Entities.Portals
 	/// </remarks>
     public partial class PortalController
     {
-        #region Obsolete Methods
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads")]
         public int CreatePortal(string portalName, string firstName, string lastName, string username, string password, string email,
@@ -247,7 +245,5 @@ namespace DotNetNuke.Entities.Portals
             };
             UpdatePortalInfo(portal);
         }
-
-        #endregion
-	}
+ 	}
 }

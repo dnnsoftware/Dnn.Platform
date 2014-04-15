@@ -104,8 +104,7 @@ namespace DotNetNuke.Modules.Journal {
 
                     if (GroupId > 0) 
                     {
-                        var roleController = new RoleController();
-                        RoleInfo roleInfo = roleController.GetRole(GroupId, moduleInfo.OwnerPortalID);
+                        RoleInfo roleInfo = RoleController.Instance.GetRoleById(moduleInfo.OwnerPortalID, GroupId);
                         if (roleInfo != null) 
                         {
                             if (UserInfo.IsInRole(roleInfo.RoleName)) 

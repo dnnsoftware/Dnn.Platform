@@ -36,8 +36,6 @@ namespace DotNetNuke.Services.Messaging.Scheduler
     {
         
         private readonly MessagingController _mController = new MessagingController();
-        private readonly PortalController _pController = new PortalController();
-
         private readonly UserController _uController = new UserController();
 
         public MessagingScheduler(ScheduleHistoryItem objScheduleHistoryItem)

@@ -261,10 +261,9 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
         private void SetupPortalSettings()
         {
-            var testPortalController = new PortalController();
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController.Setup(x => x.GetPortal(It.IsAny<int>())).Returns(new PortalInfo { PortalID = PortalId0, PortalGroupID = -1, UserTabId = TabId1, });
-            PortalController.SetTestableInstance(testPortalController);
+            PortalController.SetTestableInstance(mockPortalController.Object);
         }
         private void SetupModuleController()
         {

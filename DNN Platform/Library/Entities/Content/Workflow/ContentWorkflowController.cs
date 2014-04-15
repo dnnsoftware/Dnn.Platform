@@ -528,19 +528,18 @@ namespace DotNetNuke.Entities.Content.Workflow
         private IEnumerable<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<ContentWorkflowStatePermission> permissions)
         {
             var roles = new List<RoleInfo>();
-            var roleController = new RoleController();
             
             foreach (var permission in permissions)
             {
                 if (permission.AllowAccess && permission.RoleID > Null.NullInteger)
                 {
-                    roles.Add(roleController.GetRole(permission.RoleID, settings.PortalId));
+                    roles.Add(RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID));
                 }
             }
 
             if(!IsAdministratorRoleAlreadyIncluded(settings, roles))
             {
-                var adminRole = roleController.GetRoleByName(settings.PortalId, settings.AdministratorRoleName);
+                var adminRole = RoleController.Instance.GetRoleByName(settings.PortalId, settings.AdministratorRoleName);
                 roles.Add(adminRole);
             }
             return roles;

@@ -122,8 +122,8 @@ namespace DotNetNuke.Modules.Groups
                 var siteAdmin = UserController.GetUserById(PortalSettings.PortalId, PortalSettings.AdministratorId);
                 notifications.AddGroupNotification(Constants.GroupRejectedNotification, _tabId, _moduleId, _roleInfo, siteAdmin, new List<RoleInfo> { _roleInfo }, roleCreator);
 
-                var roleController = new RoleController();
-                roleController.DeleteRole(_roleId, PortalSettings.PortalId);
+                var role = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == _roleId);
+                RoleController.Instance.DeleteRole(role);
                 NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
                 return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.Groups
                 if (UserInfo.UserID >= 0 && postData.RoleId > -1)
                 {
                     var roleController = new RoleController();
-                    _roleInfo = roleController.GetRole(postData.RoleId, PortalSettings.PortalId);
+                    _roleInfo = RoleController.Instance.GetRoleById(PortalSettings.PortalId, postData.RoleId);
                     if (_roleInfo != null)
                     {
 
@@ -202,7 +202,7 @@ namespace DotNetNuke.Modules.Groups
                 if (UserInfo.UserID >= 0 && postData.RoleId > 0)
                 {
                     var roleController = new RoleController();
-                    _roleInfo = roleController.GetRole(postData.RoleId, PortalSettings.PortalId);
+                    _roleInfo = RoleController.Instance.GetRoleById(PortalSettings.PortalId, postData.RoleId);
 
                     if (_roleInfo != null)
                     {
@@ -336,8 +336,7 @@ namespace DotNetNuke.Modules.Groups
             }
             if (_roleId > 0)
             {
-                var roleController = new RoleController();
-                _roleInfo = roleController.GetRole(_roleId, PortalSettings.PortalId);
+                _roleInfo = RoleController.Instance.GetRoleById(PortalSettings.PortalId, _roleId);
             }
         }
 

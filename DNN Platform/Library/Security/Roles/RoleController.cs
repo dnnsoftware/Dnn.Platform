@@ -41,25 +41,33 @@ using DotNetNuke.Services.Messaging.Data;
 
 namespace DotNetNuke.Security.Roles
 {
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Security.Roles
-    /// Class:      RoleController
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The RoleController class provides Business Layer methods for Roles
     /// </summary>
-    /// <history>
-    ///     [cnurse]    05/23/2005  made compatible with .NET 2.0
-    /// </history>
     /// -----------------------------------------------------------------------------
-    public class RoleController : ServiceLocator<IRoleController, RoleController>, IRoleController
+    public partial class RoleController : ServiceLocator<IRoleController, RoleController>, IRoleController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RoleController));
+        private static readonly string[] UserRoleActionsCaption = { "ASSIGNMENT", "UPDATE", "UNASSIGNMENT" };
+        private static readonly RoleProvider provider = RoleProvider.Instance();
+
+        public RoleController()
+        {
+            
+        }
+
+        private enum UserRoleActions
+        {
+            add = 0,
+            update = 1,
+            delete = 2
+        }
+
         protected override Func<IRoleController> GetFactory()
         {
             return () => new RoleController();
         }
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RoleController));
+
         #region Private Methods
 
         private void AddMessage(RoleInfo roleInfo, EventLogController.EventLogType logType)
@@ -95,18 +103,85 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        public void ClearRoleCache(int portalId)
+        private static bool DeleteUserRoleInternal(int portalId, int userId, int roleId)
         {
-            DataCache.RemoveCache(String.Format(DataCache.RolesCacheKey, portalId));
-            if (portalId != Null.NullInteger)
+            var roleController = new RoleController();
+            var user = UserController.GetUserById(portalId, userId);
+            var userRole = roleController.GetUserRole(portalId, userId, roleId);
+            bool delete = true;
+            var portal = PortalController.Instance.GetPortal(portalId);
+            if (portal != null && userRole != null)
             {
-                DataCache.RemoveCache(String.Format(DataCache.RolesCacheKey, Null.NullInteger));
+                if (CanRemoveUserFromRole(portal, userId, roleId))
+                {
+                    provider.RemoveUserFromRole(portalId, user, userRole);
+                    var objEventLog = new EventLogController();
+                    objEventLog.AddLog(userRole, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.ROLE_UPDATED);
+
+                    //Remove the UserInfo from the Cache, as it has been modified
+                    DataCache.ClearUserCache(portalId, user.Username);
+                    Instance.ClearRoleCache(portalId);
+                }
+                else
+                {
+                    delete = false;
+                }
             }
+            return delete;
+        }
+
+        private static void SendNotification(UserInfo objUser, RoleInfo objRole, PortalSettings PortalSettings, UserRoleActions Action)
+        {
+            var objRoles = new RoleController();
+            var Custom = new ArrayList { objRole.RoleName, objRole.Description };
+            switch (Action)
+            {
+                case UserRoleActions.add:
+                case UserRoleActions.update:
+                    string preferredLocale = objUser.Profile.PreferredLocale;
+                    if (string.IsNullOrEmpty(preferredLocale))
+                    {
+                        preferredLocale = PortalSettings.DefaultLanguage;
+                    }
+                    var ci = new CultureInfo(preferredLocale);
+                    UserRoleInfo objUserRole = objRoles.GetUserRole(PortalSettings.PortalId, objUser.UserID, objRole.RoleID);
+                    Custom.Add(Null.IsNull(objUserRole.EffectiveDate)
+                                   ? DateTime.Today.ToString("g", ci)
+                                   : objUserRole.EffectiveDate.ToString("g", ci));
+                    Custom.Add(Null.IsNull(objUserRole.ExpiryDate) ? "-" : objUserRole.ExpiryDate.ToString("g", ci));
+                    break;
+                case UserRoleActions.delete:
+                    Custom.Add("");
+                    break;
+            }
+            var _message = new Message
+            {
+                FromUserID = PortalSettings.AdministratorId,
+                ToUserID = objUser.UserID,
+                Subject =
+                    Localization.GetSystemMessage(objUser.Profile.PreferredLocale, PortalSettings,
+                                                  "EMAIL_ROLE_" +
+                                                  UserRoleActionsCaption[(int)Action] +
+                                                  "_SUBJECT", objUser),
+                Body = Localization.GetSystemMessage(objUser.Profile.PreferredLocale,
+                                                     PortalSettings,
+                                                     "EMAIL_ROLE_" +
+                                                     UserRoleActionsCaption[(int)Action] + "_BODY",
+                                                     objUser,
+                                                     Localization.GlobalResourceFile,
+                                                     Custom),
+                Status = MessageStatusType.Unread
+            };
+
+            //_messagingController.SaveMessage(_message);
+            Mail.SendEmail(PortalSettings.Email, objUser.Email, _message.Subject, _message.Body);
         }
 
         #endregion
-        #region "Public instance methods suitable for testing"
-        int IRoleController.AddRole(RoleInfo role)
+
+        #region Public Methods
+
+        public int AddRole(RoleInfo role)
         {
             return Instance.AddRole(role, true);
         }
@@ -129,6 +204,15 @@ namespace DotNetNuke.Security.Roles
             }
 
             return roleId;
+        }
+
+        public void ClearRoleCache(int portalId)
+        {
+            DataCache.RemoveCache(String.Format(DataCache.RolesCacheKey, portalId));
+            if (portalId != Null.NullInteger)
+            {
+                DataCache.RemoveCache(String.Format(DataCache.RolesCacheKey, Null.NullInteger));
+            }
         }
 
         public void DeleteRole(RoleInfo role)
@@ -164,12 +248,21 @@ namespace DotNetNuke.Security.Roles
             return GetRoles(portalId).Where(predicate).FirstOrDefault();
         }
 
+        public RoleInfo GetRoleById(int portalId, int roleId)
+        {
+            return GetRole(portalId, r => r.RoleID == roleId);
+        }
+
+        public RoleInfo GetRoleByName(int portalId, string roleName)
+        {
+            return GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName);
+        }
+
         public IList<RoleInfo> GetRoles(int portalId)
         {
             var cacheKey = String.Format(DataCache.RolesCacheKey, portalId);
-            return CBO.GetCachedObject<IList<RoleInfo>>(
-                new CacheItemArgs(cacheKey, DataCache.RolesCacheTimeOut, DataCache.RolesCachePriority),
-                c => provider.GetRoles(portalId).Cast<RoleInfo>().ToList());
+            return CBO.GetCachedObject<IList<RoleInfo>>(new CacheItemArgs(cacheKey, DataCache.RolesCacheTimeOut, DataCache.RolesCachePriority),
+                                                                    c => provider.GetRoles(portalId).Cast<RoleInfo>().ToList());
         }
 
         public IList<RoleInfo> GetRoles(int portalId, Func<RoleInfo, bool> predicate)
@@ -182,6 +275,8 @@ namespace DotNetNuke.Security.Roles
             return provider.GetRolesBasicSearch(portalID, pageSize, filterBy);
         }
 
+
+
         public IDictionary<string, string> GetRoleSettings(int roleId)
         {
             return provider.GetRoleSettings(roleId);
@@ -190,6 +285,11 @@ namespace DotNetNuke.Security.Roles
         void IRoleController.UpdateRole(RoleInfo role)
         {
             UpdateRole(role, true);
+        }
+
+        public void UpdateRole(RoleInfo role)
+        {
+            Instance.UpdateRole(role);
         }
 
         public void UpdateRole(RoleInfo role, bool addToExistUsers)
@@ -215,151 +315,6 @@ namespace DotNetNuke.Security.Roles
             {
                 ClearRoleCache(role.PortalID);
             }
-        }
-
-        #endregion
-
-        #region Private Nested Type: UserRoleActions
-
-        private enum UserRoleActions
-        {
-            add = 0,
-            update = 1,
-            delete = 2
-        }
-
-        #endregion
-
-		#region Private Shared Members
-		
-        private static readonly string[] UserRoleActionsCaption = {"ASSIGNMENT", "UPDATE", "UNASSIGNMENT"};
-
-        private static readonly RoleProvider provider = RoleProvider.Instance();
-
-        #endregion
-		
-		#region Private Methods
-
-        private static bool DeleteUserRoleInternal(int portalId, int userId, int roleId)
-        {
-            var roleController = new RoleController();
-            var user = UserController.GetUserById(portalId, userId);
-            var userRole = roleController.GetUserRole(portalId, userId, roleId);
-            bool delete = true;
-            var portal = PortalController.Instance.GetPortal(portalId);
-            if (portal != null && userRole != null)
-            {
-                if (CanRemoveUserFromRole(portal, userId, roleId))
-                {
-                    provider.RemoveUserFromRole(portalId, user, userRole);
-                    var objEventLog = new EventLogController();
-                    objEventLog.AddLog(userRole, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.ROLE_UPDATED);
-
-                    //Remove the UserInfo from the Cache, as it has been modified
-                    DataCache.ClearUserCache(portalId, user.Username);
-                    RoleController.Instance.ClearRoleCache(portalId);
-                }
-                else
-                {
-                    delete = false;
-                }
-            }
-            return delete;
-        }
-
-        private static void SendNotification(UserInfo objUser, RoleInfo objRole, PortalSettings PortalSettings, UserRoleActions Action)
-        {
-            var objRoles = new RoleController();
-            var Custom = new ArrayList {objRole.RoleName, objRole.Description};
-            switch (Action)
-            {
-                case UserRoleActions.add:
-                case UserRoleActions.update:
-                    string preferredLocale = objUser.Profile.PreferredLocale;
-                    if (string.IsNullOrEmpty(preferredLocale))
-                    {
-                        preferredLocale = PortalSettings.DefaultLanguage;
-                    }
-                    var ci = new CultureInfo(preferredLocale);
-                    UserRoleInfo objUserRole = objRoles.GetUserRole(PortalSettings.PortalId, objUser.UserID, objRole.RoleID);
-                    Custom.Add(Null.IsNull(objUserRole.EffectiveDate)
-                                   ? DateTime.Today.ToString("g", ci)
-                                   : objUserRole.EffectiveDate.ToString("g", ci));
-                    Custom.Add(Null.IsNull(objUserRole.ExpiryDate) ? "-" : objUserRole.ExpiryDate.ToString("g", ci));
-                    break;
-                case UserRoleActions.delete:
-                    Custom.Add("");
-                    break;
-            }
-            var _message = new Message
-                               {
-                                   FromUserID = PortalSettings.AdministratorId,
-                                   ToUserID = objUser.UserID,
-                                   Subject =
-                                       Localization.GetSystemMessage(objUser.Profile.PreferredLocale, PortalSettings,
-                                                                     "EMAIL_ROLE_" +
-                                                                     UserRoleActionsCaption[(int) Action] +
-                                                                     "_SUBJECT", objUser),
-                                   Body = Localization.GetSystemMessage(objUser.Profile.PreferredLocale,
-                                                                        PortalSettings,
-                                                                        "EMAIL_ROLE_" +
-                                                                        UserRoleActionsCaption[(int) Action] + "_BODY",
-                                                                        objUser,
-                                                                        Localization.GlobalResourceFile,
-                                                                        Custom),
-                                   Status = MessageStatusType.Unread
-                               };
-
-            //_messagingController.SaveMessage(_message);
-            Mail.SendEmail(PortalSettings.Email, objUser.Email, _message.Subject, _message.Body);
-        }
-
-        #endregion
-
-        #region Role Methods
-
-        public int AddRole(RoleInfo role)
-        {
-            return RoleController.Instance.AddRole(role);
-        }
-
-        public void DeleteRole(int roleId, int portalId)
-        {
-            RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
-            if (role != null)
-            {
-                Instance.DeleteRole(role);
-            }
-        }
-
-        public ArrayList GetPortalRoles(int portalId)
-        {
-            return new ArrayList(Instance.GetRoles(portalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
-        }
-
-        public RoleInfo GetRole(int roleId, int portalId)
-        {
-            return Instance.GetRole(portalId, r => r.RoleID == roleId);
-        }
-
-        public RoleInfo GetRoleByName(int portalId, string roleName)
-        {
-            return Instance.GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName);
-        }
-
-        public ArrayList GetRoles()
-        {
-            return new ArrayList(Instance.GetRoles(Null.NullInteger, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
-        }
-
-        public ArrayList GetRolesByGroup(int portalId, int roleGroupId)
-        {
-            return new ArrayList(Instance.GetRoles(portalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).ToArray());
-        }
-
-        public void UpdateRole(RoleInfo role)
-        {
-            Instance.UpdateRole(role);
         }
 
         #endregion
@@ -901,150 +856,6 @@ namespace DotNetNuke.Security.Roles
         }
 		
 		#endregion
-
-        #region Obsoleted Methods, retained for Binary Compatability
-
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by AddRole(objRoleInfo)")]
-        public int AddRole(RoleInfo role, bool synchronizationMode)
-        {
-            role.SecurityMode = SecurityMode.SecurityRole;
-            role.Status = RoleStatus.Approved;
-            return RoleController.Instance.AddRole(role);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public static bool DeleteUserRole(int userId, RoleInfo role, PortalSettings portalSettings, bool notifyUser)
-        {
-            UserInfo objUser = UserController.GetUserById(portalSettings.PortalId, userId);
-            return DeleteUserRole(objUser, role, portalSettings, notifyUser);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public static bool DeleteUserRole(int roleId, UserInfo user, PortalSettings portalSettings, bool notifyUser)
-        {
-            RoleInfo role = RoleController.Instance.GetRole(portalSettings.PortalId, r => r.RoleID == roleId);
-            return DeleteUserRole(user, role, portalSettings, notifyUser);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public bool DeleteUserRole(int portalId, int userId, int roleId)
-        {
-            return DeleteUserRoleInternal(portalId, userId, roleId);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by GetPortalRoles(PortalId)")]
-        public ArrayList GetPortalRoles(int portalId, bool synchronizeRoles)
-        {
-            return GetPortalRoles(portalId);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public string[] GetRoleNames(int portalId)
-        {
-            string[] roles = { };
-            var roleList = RoleController.Instance.GetRoles(portalId, role => role.SecurityMode != SecurityMode.SocialGroup && role.Status == RoleStatus.Approved);
-            var strRoles = roleList.Aggregate("", (current, role) => current + (role.RoleName + "|"));
-            if (strRoles.IndexOf("|", StringComparison.Ordinal) > 0)
-            {
-                roles = strRoles.Substring(0, strRoles.Length - 1).Split('|');
-            }
-            return roles;
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by GetRolesByUser")]
-        public string[] GetPortalRolesByUser(int UserId, int PortalId)
-        {
-            return GetRolesByUser(UserId, PortalId);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public string[] GetRolesByUser(int UserId, int PortalId)
-        {
-            if(UserId == -1)
-            {
-                return new string[0];
-            }
-            return UserController.GetUserById(PortalId, UserId).Roles;
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by GetUserRoles")]
-        public ArrayList GetServices(int PortalId)
-        {
-            return GetServices(PortalId, -1);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by GetUserRoles")]
-        public ArrayList GetServices(int PortalId, int UserId)
-        {
-            return provider.GetUserRoles(PortalId, UserId, false);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public ArrayList GetUserRoles(int PortalId)
-        {
-            return GetUserRoles(PortalId, -1);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Replaced by overload that returns IList")]
-        public ArrayList GetUserRoles(int PortalId, int UserId)
-        {
-            return provider.GetUserRoles(PortalId, UserId, true);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Replaced by overload that returns IList")]
-        public ArrayList GetUserRoles(int PortalId, int UserId, bool includePrivate)
-        {
-            return provider.GetUserRoles(PortalId, UserId, includePrivate);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Replaced by overload of GetUserRoles that returns IList")]
-        public ArrayList GetUserRolesByUsername(int PortalID, string Username, string Rolename)
-        {
-            return provider.GetUserRoles(PortalID, Username, Rolename);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public ArrayList GetUserRolesByRoleName(int portalId, string roleName)
-        {
-            return provider.GetUserRoles(portalId, null, roleName);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by GetUserRolesByRoleName")]
-        public ArrayList GetUsersInRole(int PortalID, string RoleName)
-        {
-            return provider.GetUserRolesByRoleName(PortalID, RoleName);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public static void SerializeRoles(XmlWriter writer, int portalId)
-        {
-            //Serialize Global Roles
-            writer.WriteStartElement("roles");
-            foreach (RoleInfo role in RoleController.Instance.GetRoles(portalId, r => r.RoleGroupID == Null.NullInteger))
-            {
-                CBO.SerializeObject(role, writer);
-            }
-            writer.WriteEndElement();
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by UpdateUserRole")]
-        public void UpdateService(int PortalId, int UserId, int RoleId)
-        {
-            UpdateUserRole(PortalId, UserId, RoleId, false);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by UpdateUserRole")]
-        public void UpdateService(int PortalId, int UserId, int RoleId, bool Cancel)
-        {
-            UpdateUserRole(PortalId, UserId, RoleId, Cancel);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 7.0. This function has been replaced by AddUserRole with additional params")]
-        public static void AddUserRole(UserInfo user, RoleInfo role, PortalSettings portalSettings, DateTime effectiveDate, DateTime expiryDate, int userId, bool notifyUser)
-        {
-            AddUserRole(user, role, portalSettings, RoleStatus.Approved, effectiveDate, expiryDate, notifyUser, false);
-        }
-        #endregion
 
      }
 }

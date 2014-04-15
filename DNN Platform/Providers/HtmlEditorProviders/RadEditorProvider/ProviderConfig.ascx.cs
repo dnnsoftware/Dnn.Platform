@@ -1631,7 +1631,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 							    var roleId = roleMatch.Groups[1].Value;
                                 rblMode.SelectedValue = roleId;
 							    strTargetTab = strTargetGroup.Replace(roleMatch.Value + ".", string.Empty);
-							    var role = RoleController.Instance.GetRole(Convert.ToInt32(roleId), PortalId);
+							    var role = RoleController.Instance.GetRoleById(PortalId, Convert.ToInt32(roleId));
 							    if (role != null)
 							    {
 							        nodeTitle = role.RoleName;

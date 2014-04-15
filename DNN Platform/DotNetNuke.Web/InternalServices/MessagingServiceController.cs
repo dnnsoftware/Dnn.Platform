@@ -129,18 +129,14 @@ namespace DotNetNuke.Web.InternalServices
                 results.AddRange(from roleInfo in roles
                                     where
                                         isAdmin ||
-                                        UserInfo.Social.Roles.SingleOrDefault(
-                                            ur => ur.RoleID == roleInfo.RoleID) != null
+                                        UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID) != null
                                     select new SearchResult
                                     {
                                         id = "role-" + roleInfo.RoleID,
                                         name = roleInfo.RoleName,
-                                        iconfile =
-                                            TestableGlobals.Instance.ResolveUrl(
-                                                string.IsNullOrEmpty(roleInfo.IconFile)
+                                        iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
                                                     ? "~/images/no_avatar.gif"
-                                                    : PortalSettings.HomeDirectory.TrimEnd('/') + "/" +
-                                                    roleInfo.IconFile)
+                                                    : PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile)
                                     });
 
                 return Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));

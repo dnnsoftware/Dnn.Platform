@@ -77,21 +77,13 @@ namespace DotNetNuke.Entities.Portals
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PortalController));
         private static readonly EventLogController _eventLogController = new EventLogController();
 
-        #region ServiceLocator Implement
+        public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
+        public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
 
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
         }
-
-        #endregion
-
-        #region const values
-
-        public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
-        public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
-        
-        #endregion
 
         #region Private Methods
 
@@ -264,7 +256,7 @@ namespace DotNetNuke.Entities.Portals
                     try
                     {
                         CreatePredefinedFolderTypes(portalId);
-                        ParseTemplate(portalId, templatePath, templateFile, adminUser.UserID, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
+                        ParseTemplateInternal(portalId, templatePath, templateFile, adminUser.UserID, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
                     }
                     catch (Exception Exc)
                     {
@@ -2557,8 +2549,8 @@ namespace DotNetNuke.Entities.Portals
 		/// <summary>
 		/// Updates the portal expiry.
 		/// </summary>
-		/// <param name="PortalId">The portal id.</param>
-		/// <param name="CultureCode">The culture code.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="cultureCode">The culture code.</param>
         public void UpdatePortalExpiry(int portalId, string cultureCode)
         {
             var portal = GetPortal(portalId, cultureCode);

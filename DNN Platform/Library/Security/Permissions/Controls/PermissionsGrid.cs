@@ -1269,7 +1269,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                role = RoleController.Instance.GetRole(selectedRoleId, PortalId);
+                role = RoleController.Instance.GetRoleById(PortalId, selectedRoleId);
             }
             return role;
         }

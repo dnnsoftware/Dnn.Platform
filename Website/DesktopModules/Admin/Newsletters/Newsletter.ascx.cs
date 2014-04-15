@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
                 if (int.TryParse(value, out id) && (user = UserController.GetUserById(PortalId, id)) != null)
                     entities.AppendFormat(@"{{ id: ""user-{0}"", name: ""{1}"" }},", user.UserID, user.DisplayName.Replace("\"", ""));
             foreach (var value in (Request.QueryString["roles"] ?? string.Empty).Split(','))
-                if (int.TryParse(value, out id) && (role = roleController.GetRole(id, PortalId)) != null)
+                if (int.TryParse(value, out id) && (role = RoleController.Instance.GetRoleById(PortalId, id)) != null)
                     entities.AppendFormat(@"{{ id: ""role-{0}"", name: ""{1}"" }},", role.RoleID, role.RoleName.Replace("\"", ""));
 
             return entities.Append(']').ToString();
@@ -401,8 +401,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
                 }
             }
 
-            var roleController = new RoleController();
-            objRoleNames.AddRange(recipients.Value.Split(',').Where(value => value.StartsWith("role-")).Select(value => roleController.GetRole(int.Parse(value.Substring(5)), PortalId).RoleName).Where(roleName => !string.IsNullOrWhiteSpace(roleName)));
+            objRoleNames.AddRange(recipients.Value.Split(',').Where(value => value.StartsWith("role-")).Select(value => RoleController.Instance.GetRoleById(PortalId, int.Parse(value.Substring(5))).RoleName).Where(roleName => !string.IsNullOrWhiteSpace(roleName)));
             objUsers.AddRange(recipients.Value.Split(',').Where(value => value.StartsWith("user-")).Select(value => UserController.GetUserById(PortalId, int.Parse(value.Substring(5)))).Where(user => user != null));
         }
 

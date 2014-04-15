@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.Groups
 
             txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
             txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
-            if (roleController.GetRoleByName(PortalId, txtGroupName.Text) != null)
+            if (RoleController.Instance.GetRoleByName(PortalId, txtGroupName.Text) != null)
             {
                 lblInvalidGroupName.Visible = true;
                 return;
@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.Groups
                 {
 	                if (modulePermissionInfo.RoleID > int.Parse(Globals.glbRoleNothing))
 	                {
-		                modRoles.Add(roleController.GetRole(modulePermissionInfo.RoleID, PortalId));
+                        modRoles.Add(RoleController.Instance.GetRoleById(PortalId, modulePermissionInfo.RoleID));
 	                }
 					else if (modulePermissionInfo.UserID > Null.NullInteger)
 					{
@@ -109,8 +109,8 @@ namespace DotNetNuke.Modules.Groups
             }
             roleInfo.RoleGroupID = DefaultRoleGroupId;
 
-            roleInfo.RoleID = roleController.AddRole(roleInfo);
-            roleInfo = roleController.GetRole(roleInfo.RoleID, PortalId);
+            roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
+            roleInfo = RoleController.Instance.GetRoleById(PortalId, roleInfo.RoleID);
 
 	        var groupUrl = Globals.NavigateURL(GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString()});
 			if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))

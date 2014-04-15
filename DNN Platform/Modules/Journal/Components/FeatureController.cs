@@ -225,7 +225,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             if (securityKeys.Any(s => s.StartsWith("R")))
             {
                 var groupId = Convert.ToInt32(securityKeys.First(s => s.StartsWith("R")).Substring(1));
-                var role = new RoleController().GetRole(groupId, searchResult.PortalId);
+                var role = RoleController.Instance.GetRoleById(searchResult.PortalId, groupId);
                 if (role != null && !role.IsPublic && !userInfo.IsInRole(role.RoleName))
                 {
                     return false;

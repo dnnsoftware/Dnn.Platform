@@ -628,8 +628,7 @@ namespace DotNetNuke.Entities.Modules
             };
             notification.Subject = GetNotificationSubject(notificationType, newUser.Profile.PreferredLocale, newUser, portalSettings);
             notification.Body = GetNotificationBody(notificationType, newUser.Profile.PreferredLocale, newUser, portalSettings);
-            var roleController = new RoleController();
-            var adminrole = roleController.GetRole(portalSettings.AdministratorRoleId, portalSettings.PortalId);
+            var adminrole = RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
             var roles = new List<RoleInfo>();
             roles.Add(adminrole);
             NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());

@@ -39,8 +39,7 @@ namespace DotNetNuke.Modules.Groups
             imgGroup.Src = Page.ResolveUrl("~/DesktopModules/SocialGroups/Images/") + "sample-group-profile.jpg";
             if (!Page.IsPostBack && GroupId > 0)
             {
-                RoleController roleController = new RoleController();
-                var roleInfo = roleController.GetRole(GroupId, PortalId);
+                var roleInfo = RoleController.Instance.GetRoleById(PortalId, GroupId);
 
                 if (roleInfo != null)
                 {
@@ -93,8 +92,8 @@ namespace DotNetNuke.Modules.Groups
                 txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
                 txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
                 txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
-                
-                var roleInfo = roleController.GetRole(GroupId, PortalId);
+
+                var roleInfo = RoleController.Instance.GetRoleById(PortalId, GroupId);
                 if (roleInfo != null)
                 {
 
@@ -102,7 +101,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         if (txtGroupName.Text != roleInfo.RoleName)
                         {
-                            if (roleController.GetRoleByName(PortalId, txtGroupName.Text) != null)
+                            if (RoleController.Instance.GetRoleByName(PortalId, txtGroupName.Text) != null)
                             {
                                 lblInvalidGroupName.Visible = true;
                                 return;
