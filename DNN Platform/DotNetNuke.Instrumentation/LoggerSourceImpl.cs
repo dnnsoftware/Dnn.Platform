@@ -2,6 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Security;
+using System.Web;
+
 using log4net;
 using log4net.Config;
 using log4net.Core;
@@ -97,7 +100,22 @@ namespace DotNetNuke.Instrumentation
                 try
                 {
                     GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D");
-                    GlobalContext.Properties["processid"] = Process.GetCurrentProcess().Id.ToString("D");
+                    //bool isFullTrust = false;
+                    //try
+                    //{
+                    //    CodeAccessPermission securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
+                    //    securityTest.Demand();
+                    //    isFullTrust = true;
+                    //}
+                    //catch
+                    //{
+                    //    //code access security error
+                    //    isFullTrust = false;
+                    //}
+                    //if (isFullTrust)
+                    //{
+                    //    GlobalContext.Properties["processid"] = Process.GetCurrentProcess().Id.ToString("D");
+                    //}
                 }
 // ReSharper disable EmptyGeneralCatchClause
                 catch
