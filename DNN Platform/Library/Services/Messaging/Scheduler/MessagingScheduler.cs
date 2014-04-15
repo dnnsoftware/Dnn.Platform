@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Messaging.Scheduler
         private void SendMessage(Data.Message objMessage)
         {
             string senderAddress = UserController.GetUserById(objMessage.PortalID, objMessage.FromUserID).Email;
-            string fromAddress = _pController.GetPortal(objMessage.PortalID).Email;
+            string fromAddress = PortalController.Instance.GetPortal(objMessage.PortalID).Email;
             string toAddress = _uController.GetUser(objMessage.PortalID, objMessage.ToUserID).Email;
 
 

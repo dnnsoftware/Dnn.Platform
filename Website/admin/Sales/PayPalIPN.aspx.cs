@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         float portalPrice = objPortalInfo.HostFee;
                         if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLower()) == strProcessorID))
                         {
-                            PortalController.Instance.UpdatePortalExpiry(intPortalID);
+                            PortalController.Instance.UpdatePortalExpiry(intPortalID, PortalController.GetActivePortalLanguage(intPortalID));
                         }
                         else
                         {

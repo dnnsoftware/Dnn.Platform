@@ -835,12 +835,11 @@ namespace DesktopModules.Admin.Portals
                 {
                     portalAlias = portalAlias.Remove(0, portalAlias.IndexOf("://", StringComparison.Ordinal) + 3);
                 }
-                var objPortalAliasController = new PortalAliasController();
-                var objPortalAlias = objPortalAliasController.GetPortalAlias(portalAlias, portalID);
-                if (objPortalAlias == null)
+                var alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalID);
+                if (alias == null)
                 {
-                    objPortalAlias = new PortalAliasInfo { PortalID = portalID, HTTPAlias = portalAlias };
-                    PortalAliasController.Instance.AddPortalAlias(objPortalAlias);
+                    alias = new PortalAliasInfo { PortalID = portalID, HTTPAlias = portalAlias };
+                    PortalAliasController.Instance.AddPortalAlias(alias);
                 }
             }
             return portalAlias;

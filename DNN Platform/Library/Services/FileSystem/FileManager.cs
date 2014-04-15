@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.FileSystem.EventArgs;
@@ -423,7 +424,7 @@ namespace DotNetNuke.Services.FileSystem
                         }
                     }
 
-                    if (!PortalControllerWrapper.Instance.HasSpaceAvailable(folder.PortalID, file.Size))
+                    if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, file.Size))
                     {
                         throw new NoSpaceAvailableException(
                             Localization.Localization.GetExceptionMessage("AddFileNoSpaceAvailable",
@@ -571,7 +572,7 @@ namespace DotNetNuke.Services.FileSystem
                     throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("CopyFilePermissionsNotMet", "Permissions are not met. The file has not been copied."));
                 }
 
-                if (!PortalControllerWrapper.Instance.HasSpaceAvailable(destinationFolder.PortalID, file.Size))
+                if (!PortalController.Instance.HasSpaceAvailable(destinationFolder.PortalID, file.Size))
                 {
                     throw new NoSpaceAvailableException(Localization.Localization.GetExceptionMessage("CopyFileNoSpaceAvailable", "The portal has no space available to store the specified file. The file has not been copied."));
                 }

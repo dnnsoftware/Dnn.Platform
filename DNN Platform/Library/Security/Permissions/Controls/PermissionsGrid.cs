@@ -471,8 +471,6 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private void GetRoles()
         {
-            int roleGroupId = -2;
-            
             var checkedRoles = GetCheckedRoles();
             Roles = new ArrayList(RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved && checkedRoles.Contains(r.RoleID)).ToArray());
         
@@ -671,7 +669,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// Updates a Permission
         /// </summary>
         /// <param name="permissions">The permissions collection</param>
-        /// <param name="user">The role to add</param>
+        /// <param name="role">The role to add</param>
         protected virtual void AddPermission(ArrayList permissions, RoleInfo role)
         {
         }

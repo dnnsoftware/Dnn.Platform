@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
 
@@ -190,28 +191,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
-        private string FormatPortalAliases(int PortalID, int TabId)
-        {
-            var str = new StringBuilder();
-            try
-            {
-                var objPortalAliasController = new PortalAliasController();
-                ArrayList arr = objPortalAliasController.GetPortalAliasArrayByPortalID(PortalID);
-                PortalAliasInfo objPortalAliasInfo;
-                int i;
-                for (i = 0; i <= arr.Count - 1; i++)
-                {
-                    objPortalAliasInfo = (PortalAliasInfo) arr[i];
-                    str.Append("<a href=\"" + Globals.AddHTTP(objPortalAliasInfo.HTTPAlias) + "\">" + objPortalAliasInfo.HTTPAlias + "</a>");
-                }
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-            return str.ToString();
-        }
-
         protected string GetFormattedLink(object dataItem)
         {
             var returnValue = new StringBuilder();
@@ -231,10 +210,9 @@ namespace DotNetNuke.Modules.Admin.Extensions
                         if ((tab.BreadCrumbs.Count - 1 == index))
                         {
                             string url;
-                            var objPortalAliasController = new PortalAliasController();
-                            ArrayList arr = objPortalAliasController.GetPortalAliasArrayByPortalID(t.PortalID);
-                            var objPortalAliasInfo = (PortalAliasInfo) arr[0];
-                            url = Globals.AddHTTP(objPortalAliasInfo.HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
+                            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList();
+                            var alias = aliases[0];
+                            url = Globals.AddHTTP(alias.HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
                             returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                         }
                         else

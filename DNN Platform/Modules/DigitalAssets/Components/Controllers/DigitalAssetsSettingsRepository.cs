@@ -130,8 +130,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         private string GetSettingByKey(int moduleId, string key)
         {
-            var settings = this.moduleController.GetModuleSettings(moduleId);
-            return (string)settings[key];               
+            var module = moduleController.GetModule(moduleId);
+            var moduleSettings = module.ModuleSettings; 
+            return (string)moduleSettings[key];               
         }
     }
 

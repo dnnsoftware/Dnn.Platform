@@ -33,7 +33,8 @@ namespace DotNetNuke.Web.DDRMenu
 		public string ExportModule(int moduleId)
 		{
 			var controller = new ModuleController();
-			var moduleSettings = controller.GetModuleSettings(moduleId);
+		    var module = controller.GetModule(moduleId);
+			var moduleSettings = module.ModuleSettings;
 
 			var settings = new Settings
 			               {

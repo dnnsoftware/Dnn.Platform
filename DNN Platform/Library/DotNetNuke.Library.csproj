@@ -275,6 +275,7 @@
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
     <Compile Include="Entities\Obsolete\PortalAliasController.cs" />
+    <Compile Include="Entities\Obsolete\PortalController.cs" />
     <Compile Include="Entities\Portals\IPortalAliasController.cs" />
     <Compile Include="Entities\Portals\Internal\IPortalTemplateIO.cs" />
     <Compile Include="Entities\Portals\Internal\PortalTemplateIO.cs" />
