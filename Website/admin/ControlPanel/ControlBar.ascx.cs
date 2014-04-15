@@ -803,9 +803,6 @@ namespace DotNetNuke.UI.ControlPanels
             VisibilityLst.DataTextField = "value";
             VisibilityLst.DataSource = items;
             VisibilityLst.DataBind();
-
-            // Hide Getting Started Link if no Getting Started Page is present.
-            if (GetTabURL("Getting Started", false).Length < 1) gettingStartedLink.Visible = false;
         }
 
         private static IEnumerable<PortalInfo> GetCurrentPortalsGroup()
