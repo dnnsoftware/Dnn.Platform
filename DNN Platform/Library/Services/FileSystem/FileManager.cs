@@ -397,7 +397,7 @@ namespace DotNetNuke.Services.FileSystem
 
                     // Retrieve Metadata
                     file.Size = (int)fileContent.Length;
-                    file.SHA1Hash = GetHash(fileContent);
+                    file.SHA1Hash = folderProvider.GetHashCode(file, fileContent);
                     fileContent.Position = 0;
 
                     file.Width = 0;
@@ -467,6 +467,7 @@ namespace DotNetNuke.Services.FileSystem
                 else
                 {
                     file.Size = (int)folderProvider.GetFileSize(file);
+                    file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
                 if (folderWorkflow == null || !fileExists)

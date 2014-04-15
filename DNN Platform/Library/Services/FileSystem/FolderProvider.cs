@@ -24,6 +24,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
@@ -307,6 +309,42 @@ namespace DotNetNuke.Services.FileSystem
         public string EncryptValue(string settingValue)
         {
             return new PortalSecurity().Encrypt(_encryptionKey, settingValue.Trim());
+        }
+
+        public virtual string GetHashCode(IFileInfo file)
+        {
+            var currentHashCode = String.Empty;
+            using (var fileContent = GetFileStream(file))
+            {
+                currentHashCode = GetHashCode(file, fileContent);
+            }
+            return currentHashCode;
+        }
+
+        public virtual string GetHashCode(IFileInfo file, Stream fileContent)
+        {
+            Requires.NotNull("stream", fileContent);
+
+            if (!fileContent.CanSeek)
+            {
+                var tmp = FileManager.Instance.GetSeekableStream(fileContent);
+                fileContent.Close();
+                fileContent = tmp;
+            }
+
+            var hashText = "";
+            string hexValue;
+
+            var hashData = SHA1.Create().ComputeHash(fileContent);
+
+            foreach (var b in hashData)
+            {
+                hexValue = b.ToString("X").ToLower();
+                //Lowercase for compatibility on case-sensitive systems
+                hashText += (hexValue.Length == 1 ? "0" : "") + hexValue;
+            }
+
+            return hashText;
         }
 
         #endregion

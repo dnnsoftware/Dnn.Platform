@@ -517,25 +517,13 @@ namespace DotNetNuke.Services.FileSystem
         private void LoadHashProperty()
         {
             var fileManager = (FileManager)FileManager.Instance;
-            var fileContent = fileManager.GetFileContent(this);
-
-            if (fileContent == null)
+            var currentHashCode = FolderProvider.Instance( FolderMappingController.Instance.GetFolderMapping(FolderMappingID).FolderProviderType).GetHashCode(this);
+            if (currentHashCode != _sha1Hash)
             {
-                //If can't get file content then just exit the function, so it will load again next time.
-                return;
-            }
-
-            if (!fileContent.CanSeek)
-            {
-                var tmp = fileManager.GetSeekableStream(fileContent);
-                fileContent.Close();
-                fileContent = tmp;
+                _sha1Hash = currentHashCode;
+                fileManager.UpdateFile(this);
             }
             
-            _sha1Hash = fileManager.GetHash(fileContent);
-            fileContent.Close();
-
-            fileManager.UpdateFile(this);
         }
 
         #endregion
