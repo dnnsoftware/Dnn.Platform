@@ -611,7 +611,12 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings/>
+      <tabsettings>
+        <tabsetting>
+          <settingname>CustomStylesheet</settingname>
+          <settingvalue>home.css</settingvalue>
+        </tabsetting>
+      </tabsettings>
       <tabtype>hometab</tabtype>
       <panes>
         <pane>
@@ -810,38 +815,7 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>CacheDuration</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>ExcludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheProvider</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>IncludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>MaxVaryByCount</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheIncludeExclude</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-      </tabsettings>
+      <tabsettings/>
       <tabtype>usertab</tabtype>
       <panes>
         <pane>
