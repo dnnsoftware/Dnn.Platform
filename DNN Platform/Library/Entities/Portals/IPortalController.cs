@@ -91,6 +91,18 @@ namespace DotNetNuke.Entities.Portals
                          string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>
+        /// Get all the available portal templates grouped by culture
+        /// </summary>
+        /// <returns>List of PortalTemplateInfo objects</returns>
+        IList<PortalController.PortalTemplateInfo> GetAvailablePortalTemplates();
+
+        /// <summary>
+        /// Gets the current portal settings.
+        /// </summary>
+        /// <returns>portal settings.</returns>
+        PortalSettings GetCurrentPortalSettings();
+
+        /// <summary>
         ///   Gets information of a portal
         /// </summary>
         /// <param name = "portalId">Id of the portal</param>
@@ -131,6 +143,14 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalId">The portal id.</param>
         /// <returns>Space used in bytes</returns>
         long GetPortalSpaceUsedBytes(int portalId = -1);
+
+        /// <summary>
+        /// Load info for a portal template
+        /// </summary>
+        /// <param name="templateFileName">The file name of the portal template</param>
+        /// <param name="cultureCode">the culture code if any for the localization of the portal template</param>
+        /// <returns>A portal template</returns>
+        PortalController.PortalTemplateInfo GetPortalTemplate(string templateFileName, string cultureCode);
 
         /// <summary>
         /// Verifies if there's enough space to upload a new file on the given portal
@@ -188,52 +208,12 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="cultureCode">The culture code.</param>
         void UpdatePortalExpiry(int portalId, string cultureCode);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates basic portal information
         /// </summary>
         /// <param name="portal"></param>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	10/13/2004	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         void UpdatePortalInfo(PortalInfo portal);
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Updates basic portal information
-        /// </summary>
-        /// <param name="portal"></param>
-        /// <param name="clearCache">Whether clear cache after update portal info.</param>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	10/13/2004	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        void UpdatePortalInfo(PortalInfo portal, bool clearCache);
-
-        /// <summary>
-        /// Gets the current portal settings.
-        /// </summary>
-        /// <returns>portal settings.</returns>
-        PortalSettings GetCurrentPortalSettings();
-
-        /// <summary>
-        /// Get all the available portal templates grouped by culture
-        /// </summary>
-        /// <returns>List of PortalTemplateInfo objects</returns>
-        IList<PortalController.PortalTemplateInfo> GetAvailablePortalTemplates();
-
-        /// <summary>
-        /// Load info for a portal template
-        /// </summary>
-        /// <param name="templateFileName">The file name of the portal template</param>
-        /// <param name="cultureCode">the culture code if any for the localization of the portal template</param>
-        /// <returns>A portal template</returns>
-        PortalController.PortalTemplateInfo GetPortalTemplate(string templateFileName, string cultureCode);
     }
 }
         

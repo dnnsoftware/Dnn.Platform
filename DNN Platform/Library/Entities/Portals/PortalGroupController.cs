@@ -194,7 +194,7 @@ namespace DotNetNuke.Entities.Portals
 
             //Add portal to group
             portal.PortalGroupID = portalGroup.PortalGroupId;
-            _portalController.UpdatePortalInfo(portal);
+            PortalController.Instance.UpdatePortalInfo(portal);
 
             OnAddPortalToGroupFinished(callback, portal, portalGroup, users.Count);
         }
@@ -245,7 +245,7 @@ namespace DotNetNuke.Entities.Portals
             if (portal != null)
             {
                 portal.PortalGroupID = portalGroup.PortalGroupId;
-                _portalController.UpdatePortalInfo(portal);
+                PortalController.Instance.UpdatePortalInfo(portal);
             }
 
             ClearCache();
@@ -265,7 +265,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 DeleteSharedModules(portal);
                 portal.PortalGroupID = -1;
-                _portalController.UpdatePortalInfo(portal);
+                PortalController.Instance.UpdatePortalInfo(portal);
             }
 
             _dataService.DeletePortalGroup(portalGroup);
@@ -313,7 +313,7 @@ namespace DotNetNuke.Entities.Portals
             //Remove portal from group
             DeleteSharedModules(portal);
             portal.PortalGroupID = -1;
-            _portalController.UpdatePortalInfo(portal);
+            PortalController.Instance.UpdatePortalInfo(portal);
 
             var userNo = 0;
             if (copyUsers)

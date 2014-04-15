@@ -156,6 +156,13 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the other overloads.")]
+        public void UpdatePortalInfo(PortalInfo portal, bool clearCache)
+        {
+            UpdatePortalInternal(portal, clearCache);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 6.1. Replaced by UpdatePortalInfo(PortalInfo)")]
         public void UpdatePortalInfo(int portalId, string portalName, string logoFile, string footerText, DateTime expiryDate, int userRegistration, int bannerAdvertising, string currency,
                             int administratorId, double hostFee, double hostSpace, int pageQuota, int userQuota, string paymentProcessor, string processorUserId, string processorPassword,
