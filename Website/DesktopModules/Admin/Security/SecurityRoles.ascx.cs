@@ -382,11 +382,10 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private IList<UserRoleInfo> GetPagedDataSource()
         {
-            var objRoleController = new RoleController();
             var roleName = RoleId != Null.NullInteger ? Role.RoleName : Null.NullString;
             var userName = UserId != Null.NullInteger ? User.Username : Null.NullString;
 
-            var userList = objRoleController.GetUserRoles(PortalId, userName, roleName);
+            var userList = RoleController.Instance.GetUserRoles(PortalId, userName, roleName);
             _totalRecords = userList.Count;
             _totalPages = _totalRecords%PageSize == 0 ? _totalRecords/PageSize : _totalRecords/PageSize + 1;
 
@@ -412,8 +411,7 @@ namespace DotNetNuke.Modules.Admin.Security
         	DateTime? expiryDate = null;
         	DateTime? effectiveDate = null;
 
-            var objRoles = new RoleController();
-            UserRoleInfo objUserRole = objRoles.GetUserRole(PortalId, UserId, RoleId);
+            UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(PortalId, UserId, RoleId);
             if (objUserRole != null)
             {
                 if (Null.IsNull(objUserRole.EffectiveDate) == false)
@@ -781,7 +779,6 @@ namespace DotNetNuke.Modules.Admin.Security
                 int roleId = Convert.ToInt32(cmdDeleteUserRole.Attributes["roleId"]);
                 int userId = Convert.ToInt32(cmdDeleteUserRole.Attributes["userId"]);
 
-                var roleController = new RoleController();
                 RoleInfo role = RoleController.Instance.GetRole(PortalId, r => r.RoleID == roleId);
                 if (!RoleController.DeleteUserRole(UserController.GetUserById(PortalId, userId), role, PortalSettings, chkNotify.Checked))
                 {

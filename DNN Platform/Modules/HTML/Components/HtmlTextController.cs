@@ -121,9 +121,7 @@ namespace DotNetNuke.Modules.Html
             if (objHtmlText.StateID != objWorkflow.GetFirstWorkflowStateID(objHtmlText.WorkflowID) && objHtmlText.IsPublished == false)
             {
                 // get users from permissions for state
-                var objRoles = new RoleController();
-                foreach (WorkflowStatePermissionInfo permission in
-                    WorkflowStatePermissionController.GetWorkflowStatePermissions(objHtmlText.StateID))
+                foreach (WorkflowStatePermissionInfo permission in WorkflowStatePermissionController.GetWorkflowStatePermissions(objHtmlText.StateID))
                 {
                     if (permission.AllowAccess)
                     {
@@ -133,7 +131,7 @@ namespace DotNetNuke.Modules.Html
                             RoleInfo objRole = RoleController.Instance.GetRole(objHtmlText.PortalID, r => r.RoleID == roleId);
                             if ((objRole != null))
                             {
-                                foreach (UserRoleInfo objUserRole in objRoles.GetUserRoles(objHtmlText.PortalID, null, objRole.RoleName))
+                                foreach (UserRoleInfo objUserRole in RoleController.Instance.GetUserRoles(objHtmlText.PortalID, null, objRole.RoleName))
                                 {
                                     if (!arrUsers.Contains(objUserRole.UserID))
                                     {

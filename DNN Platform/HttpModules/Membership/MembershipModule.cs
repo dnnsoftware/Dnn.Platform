@@ -156,7 +156,6 @@ namespace DotNetNuke.HttpModules.Membership
 
             if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)
             {
-                var roleController = new RoleController();
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
 				//if current login is from windows authentication, the ignore the process
 				if (user == null && context.User is WindowsPrincipal)
@@ -210,7 +209,7 @@ namespace DotNetNuke.HttpModules.Membership
                     {
                         if (role.RSVPCode == request.QueryString["rsvp"])
                         {
-                            roleController.UpdateUserRole(portalSettings.PortalId, user.UserID, role.RoleID);
+                            RoleController.Instance.UpdateUserRole(portalSettings.PortalId, user.UserID, role.RoleID, RoleStatus.Approved, false, false);
                         }
                     }
                 }

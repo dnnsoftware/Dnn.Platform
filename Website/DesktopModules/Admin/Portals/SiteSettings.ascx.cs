@@ -394,8 +394,7 @@ namespace DesktopModules.Admin.Portals
                         rblSMTPmode.Items.FindByValue(objSMTPmode).Selected = true;
                 }
 
-                var roleController = new RoleController();
-                cboAdministratorId.DataSource = roleController.GetUserRoles(portalId, null, portal.AdministratorRoleName);
+                cboAdministratorId.DataSource = RoleController.Instance.GetUserRoles(portalId, null, portal.AdministratorRoleName);
                 cboAdministratorId.DataBind(portal.AdministratorId.ToString());
 
                 

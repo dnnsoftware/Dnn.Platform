@@ -76,12 +76,11 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized!");
                 }
-                var roleController = new RoleController();
                 _roleInfo.Status = RoleStatus.Approved;
-                roleController.UpdateRole(_roleInfo);
+                RoleController.Instance.UpdateRole(_roleInfo);
                 var roleCreator = UserController.GetUserById(PortalSettings.PortalId, _roleInfo.CreatedByUserID);
                 //Update the original creator's role
-                roleController.UpdateUserRole(PortalSettings.PortalId, roleCreator.UserID, _roleInfo.RoleID, RoleStatus.Approved, true, false);
+                RoleController.Instance.UpdateUserRole(PortalSettings.PortalId, roleCreator.UserID, _roleInfo.RoleID, RoleStatus.Approved, true, false);
                 GroupUtilities.CreateJournalEntry(_roleInfo, roleCreator);
 
                 var notifications = new Notifications();
@@ -144,7 +143,6 @@ namespace DotNetNuke.Modules.Groups
             {
                 if (UserInfo.UserID >= 0 && postData.RoleId > -1)
                 {
-                    var roleController = new RoleController();
                     _roleInfo = RoleController.Instance.GetRoleById(PortalSettings.PortalId, postData.RoleId);
                     if (_roleInfo != null)
                     {
@@ -157,8 +155,8 @@ namespace DotNetNuke.Modules.Groups
 
                         if ((_roleInfo.IsPublic || UserInfo.IsInRole(PortalSettings.AdministratorRoleName)) && !requireApproval)
                         {
-                            roleController.AddUserRole(PortalSettings.PortalId, UserInfo.UserID, _roleInfo.RoleID, Null.NullDate);
-                            roleController.UpdateRole(_roleInfo);
+                            RoleController.Instance.AddUserRole(PortalSettings.PortalId, UserInfo.UserID, _roleInfo.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+                            RoleController.Instance.UpdateRole(_roleInfo);
 
                             var url = Globals.NavigateURL(postData.GroupViewTabId, "", new[] { "groupid=" + _roleInfo.RoleID });
                             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = url });
@@ -166,7 +164,7 @@ namespace DotNetNuke.Modules.Groups
                         }
                         if (_roleInfo.IsPublic && requireApproval)
                         {
-                            roleController.AddUserRole(PortalSettings.PortalId, UserInfo.UserID, _roleInfo.RoleID, RoleStatus.Pending, false, Null.NullDate, Null.NullDate);
+                            RoleController.Instance.AddUserRole(PortalSettings.PortalId, UserInfo.UserID, _roleInfo.RoleID, RoleStatus.Pending, false, Null.NullDate, Null.NullDate);
                             var notifications = new Notifications();
                             notifications.AddGroupOwnerNotification(Constants.MemberPendingNotification, _tabId, _moduleId, _roleInfo, UserInfo);
                             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = string.Empty });
@@ -201,7 +199,6 @@ namespace DotNetNuke.Modules.Groups
             {
                 if (UserInfo.UserID >= 0 && postData.RoleId > 0)
                 {
-                    var roleController = new RoleController();
                     _roleInfo = RoleController.Instance.GetRoleById(PortalSettings.PortalId, postData.RoleId);
 
                     if (_roleInfo != null)
@@ -253,10 +250,9 @@ namespace DotNetNuke.Modules.Groups
 
                 if (member != null)
                 {
-                    var roleController = new RoleController();
-                    var memberRoleInfo = roleController.GetUserRole(PortalSettings.PortalId, _memberId, _roleInfo.RoleID);
+                    var memberRoleInfo = RoleController.Instance.GetUserRole(PortalSettings.PortalId, _memberId, _roleInfo.RoleID);
                     memberRoleInfo.Status = RoleStatus.Approved;
-                    roleController.UpdateUserRole(PortalSettings.PortalId, _memberId, _roleInfo.RoleID, RoleStatus.Approved, false, false);
+                    RoleController.Instance.UpdateUserRole(PortalSettings.PortalId, _memberId, _roleInfo.RoleID, RoleStatus.Approved, false, false);
                     
                     var notifications = new Notifications();
                     var groupOwner = UserController.GetUserById(PortalSettings.PortalId, _roleInfo.CreatedByUserID);

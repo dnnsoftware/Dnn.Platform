@@ -180,9 +180,7 @@ namespace DotNetNuke.Entities.Portals
                     userNo += 1;
                     foreach (var autoAssignRole in autoAssignRoles)
                     {
-                        var roleController = new RoleController();
-                        roleController.AddUserRole(portalGroup.MasterPortalId, user.UserID, autoAssignRole.RoleID,
-                                                   Null.NullDate, Null.NullDate);
+                        RoleController.Instance.AddUserRole(portalGroup.MasterPortalId, user.UserID, autoAssignRole.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                     }
                     OnUserAddedToSiteGroup(callback, portal, user, totalUsers, userNo);
                 }
@@ -340,10 +338,8 @@ namespace DotNetNuke.Entities.Portals
             else
             {
                 //Get admin users
-                var roleController = new RoleController();
-                var adminUsers = roleController.GetUsersByRoleName(Null.NullInteger, portal.AdministratorRoleName)
-                    .Cast<UserInfo>()
-                    .Where(u => roleController.GetUserRole(portal.PortalID, u.UserID, portal.AdministratorRoleId) != null);
+                var adminUsers = RoleController.Instance.GetUsersByRole(Null.NullInteger, portal.AdministratorRoleName)
+                    .Where(u => RoleController.Instance.GetUserRole(portal.PortalID, u.UserID, portal.AdministratorRoleId) != null);
 
                 foreach (var user in adminUsers)
                 {

@@ -48,6 +48,25 @@ namespace DotNetNuke.Security.Roles
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 7.0. This function has been replaced by AddUserRole with additional params")]
+        public static void AddUserRole(UserInfo user, RoleInfo role, PortalSettings portalSettings, DateTime effectiveDate, DateTime expiryDate, int userId, bool notifyUser)
+        {
+            AddUserRole(user, role, portalSettings, RoleStatus.Approved, effectiveDate, expiryDate, notifyUser, false);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by overload with extra parameters")]
+        public void AddUserRole(int portalId, int userId, int roleId, DateTime expiryDate)
+        {
+            AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, Null.NullDate, expiryDate);
+        }
+
+        public void AddUserRole(int portalId, int userId, int roleId, DateTime effectiveDate, DateTime expiryDate)
+        {
+            AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, effectiveDate, expiryDate);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by DeleteRole(role)")]
         public void DeleteRole(int roleId, int portalId)
         {
@@ -196,7 +215,14 @@ namespace DotNetNuke.Security.Roles
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by GetUserRolesByRoleName")]
+        [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by GetUserRolesByRole")]
+        public ArrayList GetUsersByRoleName(int portalId, string roleName)
+        {
+            return provider.GetUsersByRoleName(portalId, roleName);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by GetUserRolesByRole")]
         public ArrayList GetUsersInRole(int PortalID, string RoleName)
         {
             return provider.GetUserRolesByRoleName(PortalID, RoleName);
@@ -216,6 +242,13 @@ namespace DotNetNuke.Security.Roles
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by RoleController.Instance.UpdateRole(role)")]
+        public void UpdateRole(RoleInfo role)
+        {
+            Instance.UpdateRole(role);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by UpdateUserRole")]
         public void UpdateService(int PortalId, int UserId, int RoleId)
         {
@@ -230,10 +263,19 @@ namespace DotNetNuke.Security.Roles
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.0. This function has been replaced by AddUserRole with additional params")]
-        public static void AddUserRole(UserInfo user, RoleInfo role, PortalSettings portalSettings, DateTime effectiveDate, DateTime expiryDate, int userId, bool notifyUser)
+        [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by overload with extra parameters")]
+        public void UpdateUserRole(int portalId, int userId, int roleId)
         {
-            AddUserRole(user, role, portalSettings, RoleStatus.Approved, effectiveDate, expiryDate, notifyUser, false);
+            UpdateUserRole(portalId, userId, roleId, RoleStatus.Approved, false, false);
         }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by overload with extra parameters")]
+        public void UpdateUserRole(int portalId, int userId, int roleId, bool cancel)
+        {
+            UpdateUserRole(portalId, userId, roleId, RoleStatus.Approved, false, cancel);
+        }
+
+
      }
 }

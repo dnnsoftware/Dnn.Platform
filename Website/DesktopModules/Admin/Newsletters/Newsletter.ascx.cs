@@ -94,7 +94,6 @@ namespace DotNetNuke.Modules.Admin.Newsletters
             UserInfo user;
             RoleInfo role;
             var entities = new StringBuilder("[");
-            var roleController = new RoleController();
 
             foreach (var value in (Request.QueryString["users"] ?? string.Empty).Split(','))
                 if (int.TryParse(value, out id) && (user = UserController.GetUserById(PortalId, id)) != null)

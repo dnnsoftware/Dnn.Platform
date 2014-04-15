@@ -111,9 +111,6 @@ namespace DotNetNuke.Modules.Groups.Controls
 
         protected override void Render(HtmlTextWriter output)
         {
-
-            var rc = new RoleController();
-
             var whereCls = new List<Func<RoleInfo, bool>>();
             whereCls.Add(grp => grp.SecurityMode != SecurityMode.SecurityRole);
 	        if (RoleGroupId >= -1)

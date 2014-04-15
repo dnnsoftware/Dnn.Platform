@@ -438,18 +438,17 @@ namespace DotNetNuke.Services.Mail
 
             var userList = new List<UserInfo>();
             var keyList = new List<string>();
-            var roleController = new RoleController();
             
             foreach (string roleName in _addressedRoles)
             {
                 string role = roleName;
                 var roleInfo = RoleController.Instance.GetRole(_portalSettings.PortalId, r => r.RoleName == role);
 
-                foreach (UserInfo objUser in roleController.GetUsersByRoleName(_portalSettings.PortalId, roleName))
+                foreach (UserInfo objUser in RoleController.Instance.GetUsersByRole(_portalSettings.PortalId, roleName))
                 {
                     UserInfo user = objUser;
                     ProfileController.GetUserProfile(ref user);
-                    var userRole = roleController.GetUserRole(_portalSettings.PortalId, objUser.UserID, roleInfo.RoleID);
+                    var userRole = RoleController.Instance.GetUserRole(_portalSettings.PortalId, objUser.UserID, roleInfo.RoleID);
                     //only add if user role has not expired and effectivedate has been passed
                     if ((userRole.EffectiveDate <= DateTime.Now || Null.IsNull(userRole.EffectiveDate)) && (userRole.ExpiryDate >= DateTime.Now || Null.IsNull(userRole.ExpiryDate)))
                     {

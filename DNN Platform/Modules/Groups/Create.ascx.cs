@@ -50,7 +50,6 @@ namespace DotNetNuke.Modules.Groups
         }
         private void Create_Click(object sender, EventArgs e)
         {
-            RoleController roleController = new RoleController();
             Security.PortalSecurity ps = new Security.PortalSecurity();
             txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
             txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
@@ -140,14 +139,14 @@ namespace DotNetNuke.Modules.Groups
                     var fileName = Path.GetFileName(inpFile.PostedFile.FileName);
                     var fileInfo = _fileManager.AddFile(groupFolder, fileName, inpFile.PostedFile.InputStream, true);
                     roleInfo.IconFile = "FileID=" + fileInfo.FileId;
-                    roleController.UpdateRole(roleInfo);
+                    RoleController.Instance.UpdateRole(roleInfo);
                 }
             }
 
             var notifications = new Notifications();
 
 
-            roleController.AddUserRole(PortalId, UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(PortalId, UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
             if (roleInfo.Status == RoleStatus.Pending)
             {
                 //Send notification to Group Moderators to approve/reject group.

@@ -2690,18 +2690,15 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="users">The users.</param>
         public void GiveTranslatorRoleEditRights(TabInfo localizedTab, Dictionary<int, UserInfo> users)
         {
-            var roleCtrl = new RoleController();
             var permissionCtrl = new PermissionController();
             ArrayList permissionsList = permissionCtrl.GetPermissionByCodeAndKey("SYSTEM_TAB", "EDIT");
 
-            string translatorRoles =
-                PortalController.GetPortalSetting(
-                    string.Format("DefaultTranslatorRoles-{0}", localizedTab.CultureCode), localizedTab.PortalID, "");
+            string translatorRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", localizedTab.CultureCode), localizedTab.PortalID, "");
             foreach (string translatorRole in translatorRoles.Split(';'))
             {
                 if (users != null)
                 {
-                    foreach (UserInfo translator in roleCtrl.GetUsersByRoleName(localizedTab.PortalID, translatorRole))
+                    foreach (UserInfo translator in RoleController.Instance.GetUsersByRole(localizedTab.PortalID, translatorRole))
                     {
                         users[translator.UserID] = translator;
                     }

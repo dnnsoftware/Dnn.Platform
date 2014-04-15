@@ -69,7 +69,6 @@ namespace DotNetNuke.Modules.Admin.Sales
 //                string strEmail;
                 bool blnCancel = false;
                 string strPayPalID = Null.NullString;
-                var objRoles = new RoleController();
                 string strPost = "cmd=_notify-validate";
                 foreach (string strName in Request.Form)
                 {
@@ -207,7 +206,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         float trialPrice = objRoleInfo.TrialFee;
                         if ((rolePrice.ToString() == dblAmount.ToString() || trialPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLower()) == strProcessorID))
                         {
-                            objRoles.UpdateUserRole(intPortalID, intUserID, intRoleID, blnCancel);
+                            RoleController.Instance.UpdateUserRole(intPortalID, intUserID, intRoleID, RoleStatus.Approved, false, blnCancel);
                         }
                         else
                         {

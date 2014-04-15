@@ -118,11 +118,9 @@ namespace DotNetNuke.Entities.Users
 
         private static void AutoAssignUsersToPortalRoles(UserInfo user, int portalId)
         {
-            var roleController = new RoleController();
-
             foreach (var role in RoleController.Instance.GetRoles(portalId, role => role.AutoAssignment && role.Status == RoleStatus.Approved))
             {
-                roleController.AddUserRole(portalId, user.UserID, role.RoleID, Null.NullDate, Null.NullDate);
+                RoleController.Instance.AddUserRole(portalId, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
             }
 
             //Clear the roles cache - so the usercount is correct
@@ -131,7 +129,6 @@ namespace DotNetNuke.Entities.Users
 
         private static void AutoAssignUsersToRoles(UserInfo user, int portalId)
         {
-            var roleController = new RoleController();
             var thisPortal = PortalController.Instance.GetPortal(portalId);
 
             if (IsMemberOfPortalGroup(portalId))
@@ -141,7 +138,7 @@ namespace DotNetNuke.Entities.Users
                     if (!user.Membership.Approved && portal.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                     {
                         var role = RoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == "Unverified Users");
-                        roleController.AddUserRole(portal.PortalID, user.UserID, role.RoleID, Null.NullDate, Null.NullDate);
+                        RoleController.Instance.AddUserRole(portal.PortalID, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                     }
                     else
                     {
@@ -154,7 +151,7 @@ namespace DotNetNuke.Entities.Users
                 if (!user.Membership.Approved && thisPortal.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                 {
                     var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == "Unverified Users");
-                    roleController.AddUserRole(portalId, user.UserID, role.RoleID, Null.NullDate, Null.NullDate);
+                    RoleController.Instance.AddUserRole(portalId, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                 }
                 else
                 {

@@ -85,7 +85,6 @@ namespace DotNetNuke.Modules.Groups
         {
             if (GroupId > 0)
             {
-                RoleController roleController = new RoleController();
                 Security.PortalSecurity ps = new Security.PortalSecurity();
 
                 txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
@@ -123,7 +122,7 @@ namespace DotNetNuke.Modules.Groups
                         roleInfo.Settings.Add("ReviewMembers", chkMemberApproved.Checked.ToString());
 
                     RoleController.Instance.UpdateRoleSettings(roleInfo, true);
-                    roleController.UpdateRole(roleInfo);
+                    RoleController.Instance.UpdateRole(roleInfo);
 
                     if (inpFile.PostedFile.ContentLength > 0)
                     {
@@ -141,7 +140,7 @@ namespace DotNetNuke.Modules.Groups
                             var fileName = Path.GetFileName(inpFile.PostedFile.FileName);
                             var fileInfo = _fileManager.AddFile(groupFolder, fileName, inpFile.PostedFile.InputStream, true);
                             roleInfo.IconFile = "FileID=" + fileInfo.FileId;
-                            roleController.UpdateRole(roleInfo);
+                            RoleController.Instance.UpdateRole(roleInfo);
                         }
                     }
 

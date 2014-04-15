@@ -114,8 +114,6 @@ namespace DotNetNuke.Entities.Portals
 
         private static void CreateDefaultPortalRoles(int portalId, int administratorId, ref int administratorRoleId, ref int registeredRoleId, ref int subscriberRoleId, int unverifiedRoleId)
         {
-            var controller = new RoleController();
-
             //create required roles if not already created
             if (administratorRoleId == -1)
             {
@@ -133,9 +131,9 @@ namespace DotNetNuke.Entities.Portals
             {
                 CreateRole(portalId, "Unverified Users", "Unverified Users", 0, 0, "M", 0, 0, "N", false, false);
             }
-            controller.AddUserRole(portalId, administratorId, administratorRoleId, Null.NullDate, Null.NullDate);
-            controller.AddUserRole(portalId, administratorId, registeredRoleId, Null.NullDate, Null.NullDate);
-            controller.AddUserRole(portalId, administratorId, subscriberRoleId, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(portalId, administratorId, administratorRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(portalId, administratorId, registeredRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(portalId, administratorId, subscriberRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
         }
 
         private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template,
@@ -525,9 +523,6 @@ namespace DotNetNuke.Entities.Portals
         private static void CreateRoleGroup(RoleGroupInfo roleGroup)
         {
             RoleGroupInfo objRoleGroupInfo;
-            RoleController objRoleController = new RoleController();
-            int roleGroupId = Null.NullInteger;
-
             //First check if the role exists
             objRoleGroupInfo = RoleController.GetRoleGroupByName(roleGroup.PortalID, roleGroup.RoleGroupName);
 

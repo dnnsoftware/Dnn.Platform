@@ -54,7 +54,6 @@ namespace DotNetNuke.Entities.Users.Social
         private IList<UserRelationship> _userRelationships;
         private  IList<UserRoleInfo> _roles;
         private readonly UserInfo _userInfo;
-        private readonly RoleController _roleController;
 
         #endregion
 
@@ -62,7 +61,6 @@ namespace DotNetNuke.Entities.Users.Social
 
         public UserSocial(UserInfo userInfo)
         {
-            _roleController = new RoleController();
             _userInfo = userInfo;
         }
 
@@ -164,7 +162,7 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 return _roles ?? (_roles = (_userInfo.PortalID == -1 && _userInfo.UserID == -1)
                                             ? new List<UserRoleInfo>()
-                                            : _roleController.GetUserRoles(_userInfo, true)
+                                            : RoleController.Instance.GetUserRoles(_userInfo, true)
                                 ); 
             }
         }

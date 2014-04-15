@@ -509,13 +509,11 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void SendEmailNotifications(PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment)
         {
-            //TODO: Confirm the final body and comment format
             var fullbody = GetFullBody(body, comment);
-            var roleController = new RoleController();
             var emailUsers = users.ToList();
             foreach (var role in roles)
             {
-                var roleUsers = roleController.GetUsersByRoleName(settings.PortalId, role.RoleName);
+                var roleUsers = RoleController.Instance.GetUsersByRole(settings.PortalId, role.RoleName);
                 emailUsers.AddRange(from UserInfo user in roleUsers select user);
             }
 
