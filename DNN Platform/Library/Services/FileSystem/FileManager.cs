@@ -1175,8 +1175,8 @@ namespace DotNetNuke.Services.FileSystem
                         }
                     }
                 }
-
-                file.SHA1Hash = GetHash(fileContent);
+                
+                file.SHA1Hash = FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(file.FolderMappingID).FolderProviderType).GetHashCode(file, fileContent);
             }
 
             // Get file size from folder provider.
@@ -1567,10 +1567,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>SHA1 hash of the file</returns>
         internal virtual string GetHash(IFileInfo fileInfo)
         {
-            using (var stream = GetFileContent(fileInfo))
-            {
-                return GetHash(stream);
-            }
+            return FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(fileInfo.FolderMappingID).FolderProviderType).GetHashCode(fileInfo);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
