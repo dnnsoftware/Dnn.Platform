@@ -174,7 +174,6 @@ namespace DotNetNuke.Entities.Urls
                     //OK what we have now is a list of redirects for the currently requested tab (either because it was specified by tab id,
                     // or because there is a replaced for 'all tabs'
 
-                    var tc = new TabController();
                     if (parmRedirects != null && parmRedirects.Count > 0 && rewrittenUrl != null)
                     {
                         foreach (ParameterRedirectAction parmRedirect in parmRedirects)

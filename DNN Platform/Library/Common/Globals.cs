@@ -3757,7 +3757,7 @@ namespace DotNetNuke.Common
         public static bool IsHostTab(int tabId)
         {
             bool isHostTab = false;
-            TabCollection hostTabs = new TabController().GetTabsByPortal(Null.NullInteger);
+            TabCollection hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
 
             if (hostTabs != null)
             {

@@ -986,7 +986,6 @@ namespace DotNetNuke.Entities.Urls
                     if (useDNNTab && errTabId > -1)
                     {
                         unhandled404 = false; //we're handling it here
-                        var tc = new TabController();
                         TabInfo errTab = TabController.Instance.GetTab(errTabId, result.PortalId, true);
                         if (errTab != null)
                         {
@@ -2452,8 +2451,6 @@ namespace DotNetNuke.Entities.Urls
                         || result.Action == ActionType.Redirect302)) //or specific 302 redirect
                 {
                     //we have ordered a 301 redirect earlier in the code
-                    var tc = new TabController();
-
                     //get the url for redirection by re-submitting the path into the Friendly Url Provider
                     string pathOnly = RewriteController.GetRewriteOrRequestedPath(result, requestUri);
                     //727 prevent redirectLoop with do301 in querystring

@@ -650,7 +650,6 @@ namespace DotNetNuke.UI
         {
             int i;
             PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
-            bool blnFoundStart = intStartTabId == -1;
 
             var objBreadCrumbs = new Hashtable();
             var objTabLookup = new Hashtable();
@@ -663,7 +662,6 @@ namespace DotNetNuke.UI
                 objBreadCrumbs.Add(((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID, 1);
                 intLastBreadCrumbId = ((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID;
             }
-            var objTabController = new TabController();
             List<TabInfo> portalTabs = TabController.GetTabsBySortOrder(objPortalSettings.PortalId, objPortalSettings.CultureCode, true);
             List<TabInfo> hostTabs = TabController.GetTabsBySortOrder(Null.NullInteger, Localization.SystemLocale, true);
             foreach (TabInfo objTab in portalTabs)

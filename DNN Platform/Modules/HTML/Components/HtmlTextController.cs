@@ -635,7 +635,6 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public void UpdateWorkflow(int ObjectID, string WorkFlowType, int WorkflowID, bool ReplaceExistingSettings)
         {
-            var tabController = new TabController();
             var moduleController = new ModuleController();
 
             switch (WorkFlowType)
@@ -644,7 +643,7 @@ namespace DotNetNuke.Modules.Html
                     moduleController.UpdateModuleSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
                     break;
                 case "Page":
-                    tabController.UpdateTabSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
+                    TabController.Instance.UpdateTabSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
                     if (ReplaceExistingSettings)
                     {
                         //Get All Modules on the current Tab
@@ -659,7 +658,7 @@ namespace DotNetNuke.Modules.Html
                     if (ReplaceExistingSettings)
                     {
                         //Get All Tabs aon the Site
-                        foreach (var kvp in tabController.GetTabsByPortal(ObjectID))
+                        foreach (var kvp in TabController.Instance.GetTabsByPortal(ObjectID))
                         {
                             TabController.Instance.DeleteTabSetting(kvp.Value.TabID, "WorkFlowID");
                         }

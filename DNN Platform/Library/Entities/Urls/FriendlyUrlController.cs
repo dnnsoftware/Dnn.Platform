@@ -662,11 +662,10 @@ namespace DotNetNuke.Entities.Urls
 
         public static Dictionary<int, TabInfo> GetTabs(int portalId, bool includeStdUrls, PortalSettings portalSettings, FriendlyUrlSettings settings)
         {
-            var tc = new TabController();
             //811 : friendly urls for admin/host tabs
             var tabs = new Dictionary<int, TabInfo>();
-            var portalTabs = tc.GetTabsByPortal(portalId);
-            var hostTabs = tc.GetTabsByPortal(-1);
+            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
+            var hostTabs = TabController.Instance.GetTabsByPortal(-1);
 
             foreach (TabInfo tab in portalTabs.Values)
             {

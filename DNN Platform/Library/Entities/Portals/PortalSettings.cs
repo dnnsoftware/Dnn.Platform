@@ -1038,9 +1038,8 @@ namespace DotNetNuke.Entities.Portals
         private void GetBreadCrumbsRecursively(ref ArrayList breadCrumbs, int tabId)
         {
             TabInfo tab;
-            var tabController = new TabController();
-            var portalTabs = tabController.GetTabsByPortal(PortalId);
-            var hostTabs = tabController.GetTabsByPortal(Null.NullInteger);
+            var portalTabs = TabController.Instance.GetTabsByPortal(PortalId);
+            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
             bool tabFound = portalTabs.TryGetValue(tabId, out tab);
             if (!tabFound)
             {
@@ -1174,9 +1173,8 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         private bool VerifyPortalTab(int portalId, int tabId)
         {
-            var tabController = new TabController();
-            var portalTabs = tabController.GetTabsByPortal(portalId);
-            var hostTabs = tabController.GetTabsByPortal(Null.NullInteger);
+            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
+            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
 
             //Check portal
             bool isVerified = VerifyTabExists(tabId, portalTabs);

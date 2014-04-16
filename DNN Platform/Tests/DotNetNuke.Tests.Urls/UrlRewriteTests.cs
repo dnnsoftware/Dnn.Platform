@@ -317,28 +317,25 @@ namespace DotNetNuke.Tests.Urls
 
         private void UpdateTab(TabInfo tab)
         {
-            var tc = new TabController();
             if (tab != null)
             {
-                tc.UpdateTab(tab);
+                TabController.Instance.UpdateTab(tab);
             }
             
         }
 
         private void UpdateTabName(int tabId, string newName)
         {
-            var tc = new TabController();
             var tab = TabController.Instance.GetTab(tabId, PortalId, false);
             tab.TabName = newName;
-            tc.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
         }
 
         private void UpdateTabSkin(int tabId, string newSkin)
         {
-            var tc = new TabController();
             var tab = TabController.Instance.GetTab(tabId, PortalId, false);
             tab.SkinSrc = newSkin;
-            tc.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
         }
 
         #endregion
@@ -426,10 +423,9 @@ namespace DotNetNuke.Tests.Urls
 
             settings.PortalId = PortalId;
 
-            var tc = new TabController();
             var tab = TabController.Instance.GetTabByName(_testPage, PortalId);
             tab.Url = testFields["ExternalUrl"];
-            tc.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
 
             ExecuteTest(settings, testFields, true);
         }
@@ -511,10 +507,9 @@ namespace DotNetNuke.Tests.Urls
             if (!String.IsNullOrEmpty(testPageName))
             {
                 var tabName = testFields["Page Name"];
-                var tc = new TabController();
                 tab = TabController.Instance.GetTabByName(tabName, PortalId);
                 tab.TabName = testPageName;
-                tc.UpdateTab(tab);
+                TabController.Instance.UpdateTab(tab);
 
                 //Refetch tab from DB
                 tab = TabController.Instance.GetTab(tab.TabID, tab.PortalID, false);
@@ -715,10 +710,9 @@ namespace DotNetNuke.Tests.Urls
 
         private void UpdateTabSetting(string tabName, string settingName, string settingValue)
         {
-            var tc = new TabController();
             var tab = TabController.Instance.GetTabByName(tabName, PortalId);
             tab.TabSettings[settingName] = settingValue;
-            tc.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
         }
 
         #endregion

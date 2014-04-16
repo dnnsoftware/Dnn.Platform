@@ -130,7 +130,7 @@ namespace DesktopModules.Admin.Console
 					//Add host tabs
                     if (UserInfo != null && UserInfo.IsSuperUser)
                     {
-                        var hostTabs = new TabController().GetTabsByPortal(Null.NullInteger);
+                        var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
                         portalTabs.AddRange(hostTabs.Values);
                     }
                     ParentTab.Items.Clear();

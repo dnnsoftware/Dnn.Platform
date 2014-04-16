@@ -82,7 +82,6 @@ namespace DotNetNuke.Web.InternalServices
         #region private methods
 
         private readonly ModuleController _moduleController = new ModuleController();
-        private readonly TabController _tabController = new TabController();
         
         private int HtmlModuleDefitionId;
 

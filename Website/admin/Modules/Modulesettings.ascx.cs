@@ -101,18 +101,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        private TabController TabCtrl
-        {
-            get
-            {
-                if ((_tabCtrl == null))
-                {
-                    _tabCtrl = new TabController();
-                }
-                return _tabCtrl;
-            }
-        }
-
         private string ReturnURL
         {
             get
@@ -279,7 +267,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             if (tab != null)
             {
                 var index = 0;
-                TabCtrl.PopulateBreadCrumbs(ref tab);
+                TabController.Instance.PopulateBreadCrumbs(ref tab);
                 var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID)
                                         .OrderByDescending(a => a.IsPrimary)
                                         .FirstOrDefault();
@@ -439,8 +427,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     {
                         if (cboTab.FindItemByValue(Module.TabID.ToString()) == null)
                         {
-                            var objtabs = new TabController();
-                            var objTab = objtabs.GetTab(Module.TabID, Module.PortalID, false);
+                            var objTab = TabController.Instance.GetTab(Module.TabID, Module.PortalID, false);
                             cboTab.AddItem(objTab.LocalizedTabName, objTab.TabID.ToString());
                         }
                     }
@@ -542,7 +529,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         protected void OnPagesGridNeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
         {
-            var tabsByModule = TabCtrl.GetTabsByModuleID(_moduleId);
+            var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
             tabsByModule.Remove(TabId);
             dgOnTabs.DataSource = tabsByModule.Values;
         }

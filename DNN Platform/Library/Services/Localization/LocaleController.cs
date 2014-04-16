@@ -291,8 +291,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     // only publish tabs if we actually need to do that
                     // we cannot "unpublish"
-                    var tabCtrl = new TabController();
-                    tabCtrl.PublishTabs(TabController.GetTabsBySortOrder(portalid, cultureCode, false));
+                    TabController.Instance.PublishTabs(TabController.GetTabsBySortOrder(portalid, cultureCode, false));
                 }
             }
         }

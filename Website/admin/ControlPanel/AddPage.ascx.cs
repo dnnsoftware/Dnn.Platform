@@ -80,10 +80,8 @@ namespace DotNetNuke.UI.ControlPanel
 
         protected void CmdAddPageClick(object sender, EventArgs e)
         {
-            var tabCtrl = new TabController();
-
             int selectedTabID = Int32.Parse(PageLst.SelectedValue);
-            TabInfo selectedTab = tabCtrl.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
+            TabInfo selectedTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
             var tabLocation = (TabRelativeLocation) Enum.Parse(typeof (TabRelativeLocation), LocationLst.SelectedValue);
             TabInfo newTab = RibbonBarManager.InitTabInfoObject(selectedTab, tabLocation);
 
@@ -117,7 +115,7 @@ namespace DotNetNuke.UI.ControlPanel
 
             //Update Cached Tabs as TabPath may be needed before cache is cleared
             TabInfo tempTab;
-            if (new TabController().GetTabsByPortal(PortalSettings.ActiveTab.PortalID).TryGetValue(newTab.TabID, out tempTab))
+            if (TabController.Instance.GetTabsByPortal(PortalSettings.ActiveTab.PortalID).TryGetValue(newTab.TabID, out tempTab))
             {
                 tempTab.TabPath = newTab.TabPath;
             }

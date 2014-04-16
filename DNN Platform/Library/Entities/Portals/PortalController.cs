@@ -1710,8 +1710,7 @@ namespace DotNetNuke.Entities.Portals
             if (!IsNewPortal)
             {
                 Hashtable hTabNames = new Hashtable();
-                TabController objTabs = new TabController();
-                foreach (KeyValuePair<int, TabInfo> tabPair in objTabs.GetTabsByPortal(PortalId))
+                foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(PortalId))
                 {
                     TabInfo objTab = tabPair.Value;
                     if (!objTab.IsDeleted)
@@ -1747,10 +1746,9 @@ namespace DotNetNuke.Entities.Portals
                 string tabPath = XmlUtils.GetNodeValue(nodeTab, "url", Null.NullString);
                 if (tabId > Null.NullInteger)
                 {
-                    TabController controller = new TabController();
                     TabInfo objTab = TabController.Instance.GetTab(tabId, PortalId, false);
                     objTab.Url = TabController.GetTabByTabPath(PortalId, tabPath, Null.NullString).ToString();
-                    controller.UpdateTab(objTab);
+                    TabController.Instance.UpdateTab(objTab);
                 }
             }
             var folderManager = FolderManager.Instance;
@@ -1762,7 +1760,6 @@ namespace DotNetNuke.Entities.Portals
                 var filePath = XmlUtils.GetNodeValue(nodeTab, "url", Null.NullString);
                 if (tabId > Null.NullInteger)
                 {
-                    var controller = new TabController();
                     var objTab = TabController.Instance.GetTab(tabId, PortalId, false);
 
                     var fileName = Path.GetFileName(filePath);
@@ -1773,7 +1770,7 @@ namespace DotNetNuke.Entities.Portals
                     var file = fileManager.GetFile(folder, fileName);
 
                     objTab.Url = "FileID=" + file.FileId;
-                    controller.UpdateTab(objTab);
+                    TabController.Instance.UpdateTab(objTab);
                 }
             }
         }
@@ -1872,15 +1869,14 @@ namespace DotNetNuke.Entities.Portals
 
             if (mergeTabs == PortalTemplateModuleAction.Replace)
             {
-                TabController objTabs = new TabController();
                 TabInfo objTab;
-                foreach (KeyValuePair<int, TabInfo> tabPair in objTabs.GetTabsByPortal(portalId))
+                foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(portalId))
                 {
                     objTab = tabPair.Value;
                     objTab.TabName = objTab.TabName + "_old";
                     objTab.TabPath = Globals.GenerateTabPath(objTab.ParentId, objTab.TabName);
                     objTab.IsDeleted = true;
-                    objTabs.UpdateTab(objTab);
+                    TabController.Instance.UpdateTab(objTab);
                     ModuleController objModules = new ModuleController();
                     ModuleInfo objModule;
                     foreach (KeyValuePair<int, ModuleInfo> modulePair in objModules.GetTabModules(objTab.TabID))

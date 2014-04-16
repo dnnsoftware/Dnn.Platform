@@ -64,15 +64,6 @@ namespace DotNetNuke.Modules.Admin.Languages
     public partial class LanguageEnabler : PortalModuleBase
     {
         #region "Private Properties"
-        private TabController _tabController;
-        private TabController TabController
-        {
-            get
-            {
-                return _tabController ?? (_tabController = new TabController());
-            }
-        }
-
         private string _PortalDefault = "";
 
         private string PageSelectorCookieName
@@ -113,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.Languages
 
         private TabCollection GetLocalizedPages(string code, bool includeNeutral)
         {
-            return TabController.GetTabsByPortal(PortalId).WithCulture(code, includeNeutral);
+            return TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, includeNeutral);
         }
 
         #endregion
@@ -192,7 +183,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             string status = "";
             if (!IsDefaultLanguage(code) && IsLocalized(code))
             {
-                int translatedCount = (from t in TabController.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated && !t.IsDeleted select t).Count();
+                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated && !t.IsDeleted select t).Count();
                 status = translatedCount.ToString(CultureInfo.InvariantCulture);
             }
             return status;
@@ -204,7 +195,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             if (!IsDefaultLanguage(code) && IsLocalized(code))
             {
                 int localizedCount = GetLocalizedPages(code, false).Count;
-                int translatedCount = (from t in TabController.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated select t).Count();
+                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated select t).Count();
                 status = string.Format("{0:#0%}", translatedCount / (float)localizedCount);
             }
             return status;
@@ -294,7 +285,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 if (UserInfo.IsSuperUser || UserInfo.IsInRole("Administrators"))
                 {
                     // only show "Convert to neutral" if page has no child pages
-                    MakeNeutral.Visible = (TabController.GetTabsByPortal(PortalId).WithParentId(tabInfo.TabID).Count == 0);
+                    MakeNeutral.Visible = (TabController.Instance.GetTabsByPortal(PortalId).WithParentId(tabInfo.TabID).Count == 0);
 
                     // only show "add missing languages" if not all languages are available
                         AddMissing.Visible = TabController.Instance.HasMissingLanguages(PortalId, tabInfo.TabID);
@@ -426,7 +417,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 bool goodValue = int.TryParse(Request.Cookies[PageSelectorCookieName].Value, out selectedPage);
                 if (goodValue)
                 {
-                    tabInfo = _tabController.GetTab(selectedPage, PortalId, false);
+                    tabInfo = TabController.Instance.GetTab(selectedPage, PortalId, false);
                     if (tabInfo.IsDeleted)
                     {
                         tabInfo = null;
@@ -435,7 +426,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 }
                 if (tabInfo == null)
                 {
-                    tabInfo = _tabController.GetTab(PortalSettings.HomeTabId, PortalId, false);
+                    tabInfo = TabController.Instance.GetTab(PortalSettings.HomeTabId, PortalId, false);
                 }
                 goodValue = (tabInfo != null);
                 if (goodValue)
@@ -488,7 +479,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     Dictionary<string, Locale> enabledLanguages = LocaleController.Instance.GetLocales(PortalId);
 
                     var localizedTabs = PortalSettings.ContentLocalizationEnabled ?
-                        TabController.GetTabsByPortal(PortalId).WithCulture(locale.Code, false).AsList() : new List<TabInfo>();
+                        TabController.Instance.GetTabsByPortal(PortalId).WithCulture(locale.Code, false).AsList() : new List<TabInfo>();
 
                     var redirectUrl = string.Empty;
                     if (enabledCheckbox.Enabled)
@@ -506,7 +497,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                             var moduleController = new ModuleController();
                             foreach (var tab in localizedTabs)
                             {
-                                TabController.RestoreTab(tab, PortalSettings);
+                                TabController.Instance.RestoreTab(tab, PortalSettings);
                                 moduleController.GetTabModules(tab.TabID).Values.ToList().ForEach(moduleController.RestoreModule);
                             }
                         }
@@ -527,7 +518,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                             foreach (var tab in localizedTabs)
                             {
                                 tab.DefaultLanguageGuid = Guid.Empty;
-                                TabController.SoftDeleteTab(tab.TabID, PortalSettings);
+                                TabController.Instance.SoftDeleteTab(tab.TabID, PortalSettings);
                             }
                         }
                     }
@@ -785,7 +776,7 @@ namespace DotNetNuke.Modules.Admin.Languages
         {
             var tab = ddlPages.SelectedPage;
             var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
-            TabController.LocalizeTab(tab, defaultLocale, false);
+            TabController.Instance.LocalizeTab(tab, defaultLocale, false);
             TabController.Instance.AddMissingLanguages(PortalId, tab.TabID);
             TabController.Instance.ClearCache(PortalId);
             BindCLControl();
@@ -794,7 +785,7 @@ namespace DotNetNuke.Modules.Admin.Languages
         protected void MakeNeutral_Click(object sender, EventArgs e)
         {
             var tab = ddlPages.SelectedPage;
-            if (TabController.GetTabsByPortal(PortalId).WithParentId(tab.TabID).Count == 0)
+            if (TabController.Instance.GetTabsByPortal(PortalId).WithParentId(tab.TabID).Count == 0)
             {
                 var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
 

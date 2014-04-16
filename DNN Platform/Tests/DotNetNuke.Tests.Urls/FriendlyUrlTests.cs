@@ -229,10 +229,9 @@ namespace DotNetNuke.Tests.Urls
 
         private void UpdateTabName(int tabId, string newName)
         {
-            var tc = new TabController();
             var tab = TabController.Instance.GetTab(tabId, PortalId, false);
             tab.TabName = newName;
-            tc.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
         }
 
         #endregion
@@ -395,10 +394,9 @@ namespace DotNetNuke.Tests.Urls
             if (!String.IsNullOrEmpty(testPageName))
             {
                 var tabName = testFields["Page Name"];
-                var tc = new TabController();
                 tab = TabController.Instance.GetTabByName(tabName, PortalId);
                 tab.TabName = testPageName;
-                tc.UpdateTab(tab);
+                TabController.Instance.UpdateTab(tab);
 
                 //Refetch tab from DB
                 tab = TabController.Instance.GetTab(tab.TabID, tab.PortalID, false);

@@ -440,7 +440,6 @@ namespace DotNetNuke.Services.Upgrade
         private static TabInfo AddPage(int portalId, int parentId, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, TabPermissionCollection permissions, bool isAdmin)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddPage:" + tabName);
-            var tabController = new TabController();
 
             TabInfo tab = TabController.Instance.GetTabByName(tabName, portalId, parentId);
 
@@ -1447,7 +1446,6 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion510()
         {
-            var tabController = new TabController();
             var moduleController = new ModuleController();
             int moduleDefId;
 
@@ -1744,7 +1742,6 @@ namespace DotNetNuke.Services.Upgrade
             }
             if (File.Exists(hostTemplateFile))
             {
-                var tabController = new TabController();
                 ArrayList portals = PortalController.Instance.GetPortals();
                 foreach (PortalInfo portal in portals)
                 {
@@ -1857,7 +1854,6 @@ namespace DotNetNuke.Services.Upgrade
                 PortalController.Instance.UpdatePortalInfo(portal);
 
                 //Add ContentList to Search Results Page
-                var tabController = new TabController();
                 int tabId = TabController.GetTabByTabPath(portal.PortalID, "//SearchResults", Null.NullString);
                 TabInfo searchPage = TabController.Instance.GetTab(tabId, portal.PortalID, false);
                 AddModuleToPage(searchPage, moduleDefId, "Results", "");
@@ -2148,16 +2144,14 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion600()
         {
-            var tabController = new TabController();
-
-            var hostPages = tabController.GetTabsByPortal(Null.NullInteger);
+            var hostPages = TabController.Instance.GetTabsByPortal(Null.NullInteger);
 
             //This ensures that all host pages have a tab path.
             //so they can be found later. (DNNPRO-17129)
             foreach (var hostPage in hostPages.Values)
             {
                 hostPage.TabPath = Globals.GenerateTabPath(hostPage.ParentId, hostPage.TabName);
-                tabController.UpdateTab(hostPage);
+                TabController.Instance.UpdateTab(hostPage);
             }
 
             var settings = PortalController.GetCurrentPortalSettings();
@@ -2168,7 +2162,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 var hostTab = TabController.Instance.GetTab(settings.SuperTabId, Null.NullInteger, false);
                 hostTab.IsVisible = false;
-                tabController.UpdateTab(hostTab);
+                TabController.Instance.UpdateTab(hostTab);
                 foreach (var module in moduleController.GetTabModules(settings.SuperTabId).Values)
                 {
                     moduleController.UpdateTabModuleSetting(module.TabModuleID, "hideadminborder", "true");
@@ -2204,7 +2198,7 @@ namespace DotNetNuke.Services.Upgrade
                 var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, false);
 
                 adminTab.IsVisible = false;
-                tabController.UpdateTab(adminTab);
+                TabController.Instance.UpdateTab(adminTab);
 
                 foreach (var module in moduleController.GetTabModules(portal.AdminTabId).Values)
                 {
@@ -2286,14 +2280,13 @@ namespace DotNetNuke.Services.Upgrade
             //Fix the icons for SiteMap page
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                var tabController = new TabController();
                 var siteMap = TabController.Instance.GetTabByName("Search Engine SiteMap", portal.PortalID);
 
                 if (siteMap != null)
                 {
                     siteMap.IconFile = "~/Icons/Sigma/Sitemap_16X16_Standard.png";
                     siteMap.IconFileLarge = "~/Icons/Sigma/Sitemap_32X32_Standard.png";
-                    tabController.UpdateTab(siteMap);
+                    TabController.Instance.UpdateTab(siteMap);
                 }
             }
         }
@@ -2312,10 +2305,9 @@ namespace DotNetNuke.Services.Upgrade
 
             EnableModalPopUps();
 
-            var tabController = new TabController();
             var tab = TabController.Instance.GetTabByName("Portals", Null.NullInteger);
             tab.TabName = "Site Management";
-            tabController.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
 
             var moduleController = new ModuleController();
             foreach (var module in moduleController.GetTabModules(tab.TabID).Values)
@@ -2429,7 +2421,6 @@ namespace DotNetNuke.Services.Upgrade
             //Rename admin pages page's title to 'Page Management'.
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                var tabController = new TabController();
                 var pagesTabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin//Pages", Null.NullString);
 
                 if (pagesTabId != Null.NullInteger)
@@ -2438,7 +2429,7 @@ namespace DotNetNuke.Services.Upgrade
                     if (pagesTab != null && pagesTab.Title == "Pages")
                     {
                         pagesTab.Title = "Page Management";
-                        tabController.UpdateTab(pagesTab);
+                        TabController.Instance.UpdateTab(pagesTab);
                     }
                 }
             }
@@ -2701,8 +2692,6 @@ namespace DotNetNuke.Services.Upgrade
                 LogTypePortalID = "*"
             };
             logController.AddLogTypeConfigInfo(logTypeFilterConf);
-
-            var tabController = new TabController();
 
             int tabID = TabController.GetTabByTabPath(Null.NullInteger, "//Host//SearchAdmin", Null.NullString);
             if (tabID > Null.NullInteger)
@@ -3375,7 +3364,6 @@ namespace DotNetNuke.Services.Upgrade
         {
             //copy getting started css to portals folder.
             var hostGettingStartedFile = string.Format("{0}GettingStarted.css", Globals.HostMapPath);
-            var tabController = new TabController();
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
 
@@ -3395,7 +3383,7 @@ namespace DotNetNuke.Services.Upgrade
                     // check if tab exists
                     if (TabController.Instance.GetTab(gettingStartedTabId, portal.PortalID, true) != null)
                     {
-                        tabController.UpdateTabSetting(gettingStartedTabId, "CustomStylesheet", "GettingStarted.css");
+                        TabController.Instance.UpdateTabSetting(gettingStartedTabId, "CustomStylesheet", "GettingStarted.css");
                     }
                 }
             }

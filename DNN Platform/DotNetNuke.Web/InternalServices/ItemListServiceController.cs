@@ -397,8 +397,7 @@ namespace DotNetNuke.Web.InternalServices
             if (portalId > -1)
             {
                 var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
-                tabs =
-                    TabController.GetPortalTabs(portalId, Null.NullInteger, false, null, includeHiddenTabs, false, false, true, false)
+                tabs = TabController.GetPortalTabs(portalId, Null.NullInteger, false, null, includeHiddenTabs, false, false, true, false)
                                  .Where(tab => searchFunc(tab) && tab.ParentId == parentId && (includeDisabled || !tab.DisableLink) && (includeAllTypes || tab.TabType == TabType.Normal))
                                  .OrderBy(tab => tab.TabOrder)
                                  .ToList();
@@ -407,9 +406,8 @@ namespace DotNetNuke.Web.InternalServices
             {
                 if (PortalSettings.UserInfo.IsSuperUser)
                 {
-                    var tabController = new TabController();
 
-                    tabs = tabController.GetTabsByPortal(-1).AsList()
+                    tabs = TabController.Instance.GetTabsByPortal(-1).AsList()
                         .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink)
                         .OrderBy(tab => tab.TabOrder)
                         .ToList();
@@ -525,8 +523,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 if (PortalSettings.UserInfo.IsSuperUser)
                 {
-                    var tabController = new TabController();
-                    tabs = tabController.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink).ToList();
+                    tabs = TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink).ToList();
                 }
             }
             return tabs;

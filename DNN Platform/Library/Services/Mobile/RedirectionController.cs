@@ -169,7 +169,6 @@ namespace DotNetNuke.Services.Mobile
             }
 			
 			var clientCapability = ClientCapabilityProvider.Instance().GetClientCapability(userAgent);
-			var tabController = new TabController();
 			foreach (var redirection in redirections)
 			{
 				if (redirection.Enabled)
@@ -187,7 +186,7 @@ namespace DotNetNuke.Services.Mobile
 						else if (redirection.IncludeChildTabs)
 						{
 							//Get all the descendents of the source tab and find out if current tab is in source tab's hierarchy or not.
-							foreach (var childTab in tabController.GetTabsByPortal(portalId).DescendentsOf(redirection.SourceTabId))
+                            foreach (var childTab in TabController.Instance.GetTabsByPortal(portalId).DescendentsOf(redirection.SourceTabId))
 							{
 								if (childTab.TabID == currentTabId)
 								{
@@ -438,7 +437,7 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="portalId"></param>
         public void PurgeInvalidRedirections(int portalId)
         {
-            var allTabs = new TabController().GetTabsByPortal(portalId);
+            var allTabs = TabController.Instance.GetTabsByPortal(portalId);
             var redirects = GetRedirectionsByPortal(portalId);
 
             //remove rules for deleted source tabs

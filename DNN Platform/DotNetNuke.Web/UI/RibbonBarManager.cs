@@ -61,7 +61,6 @@ namespace DotNetNuke.Web.UI
 
         public static TabInfo InitTabInfoObject(TabInfo relativeToTab, TabRelativeLocation location)
         {
-            TabController tabCtrl = new TabController();
             if (((relativeToTab == null)))
             {
                 if (((PortalSettings.Current != null) && (PortalSettings.Current.ActiveTab != null)))
@@ -70,15 +69,17 @@ namespace DotNetNuke.Web.UI
                 }
             }
 
-            TabInfo newTab = new TabInfo();
-            newTab.TabID = Null.NullInteger;
-            newTab.TabName = "";
-            newTab.Title = "";
-            newTab.IsVisible = false;
-            newTab.DisableLink = false;
-            newTab.IsDeleted = false;
-            newTab.IsSecure = false;
-            newTab.PermanentRedirect = false;
+            var newTab = new TabInfo
+            {
+                TabID = Null.NullInteger,
+                TabName = "",
+                Title = "",
+                IsVisible = false,
+                DisableLink = false,
+                IsDeleted = false,
+                IsSecure = false,
+                PermanentRedirect = false
+            };
 
             TabInfo parentTab = GetParentTab(relativeToTab, location);
 
@@ -152,10 +153,9 @@ namespace DotNetNuke.Web.UI
             UserInfo userInfo = UserController.GetCurrentUserInfo();
             if (((userInfo != null) && userInfo.UserID != Null.NullInteger))
             {
-                TabController tabCtrl = new TabController();
                 if ((userInfo.IsSuperUser && PortalSettings.Current.ActiveTab.IsSuperTab))
                 {
-                    portalTabs = tabCtrl.GetTabsByPortal(Null.NullInteger).AsList();
+                    portalTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger).AsList();
                 }
                 else
                 {
@@ -211,8 +211,6 @@ namespace DotNetNuke.Web.UI
 
         public static int SaveTabInfoObject(TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateMapPath)
         {
-            TabController tabCtrl = new TabController();
-
             //Validation:
             //Tab name is required
             //Tab name is invalid
@@ -244,7 +242,7 @@ namespace DotNetNuke.Web.UI
                     {
                         //get the siblings from the selectedtab and iterate through until you find a sibbling with a corresponding defaultlanguagetab
                         //if none are found get a list of all the tabs from the default language and then select the last one
-                        var selectedTabSibblings = tabCtrl.GetTabsByPortal(tab.PortalID).WithCulture(tab.CultureCode, true).AsList();
+                        var selectedTabSibblings = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(tab.CultureCode, true).AsList();
                         foreach (TabInfo sibling in selectedTabSibblings)
                         {
                             TabInfo siblingDefaultTab = sibling.DefaultLanguageTab;
@@ -258,7 +256,7 @@ namespace DotNetNuke.Web.UI
                         //still haven't found it
                         if ((defaultLanguageSelectedTab == null))
                         {
-                            var defaultLanguageTabs = tabCtrl.GetTabsByPortal(tab.PortalID).WithCulture(PortalSettings.Current.DefaultLanguage, true).AsList();
+                            var defaultLanguageTabs = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(PortalSettings.Current.DefaultLanguage, true).AsList();
                             defaultLanguageSelectedTab = defaultLanguageTabs[defaultLanguageTabs.Count];
                             //get the last tab
                         }
@@ -361,27 +359,27 @@ namespace DotNetNuke.Web.UI
 
                     if (_PortalSettings.ContentLocalizationEnabled)
                     {
-                        tabCtrl.CreateLocalizedCopies(tab);
+                        TabController.Instance.CreateLocalizedCopies(tab);
                     }
 
-                    tabCtrl.UpdateTabSetting(tab.TabID, "CacheProvider", "");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "CacheDuration", "");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "CacheIncludeExclude", "0");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "IncludeVaryBy", "");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "ExcludeVaryBy", "");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "MaxVaryByCount", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheProvider", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheDuration", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheIncludeExclude", "0");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "IncludeVaryBy", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "ExcludeVaryBy", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "MaxVaryByCount", "");
                 }
                 else
                 {
-                    tabCtrl.UpdateTab(tab);
+                    TabController.Instance.UpdateTab(tab);
 
                     if ((location == TabRelativeLocation.AFTER && (relativeToTab != null)))
                     {
-                        tabCtrl.MoveTabAfter(tab, relativeToTab.TabID);
+                        TabController.Instance.MoveTabAfter(tab, relativeToTab.TabID);
                     }
                     else if ((location == TabRelativeLocation.BEFORE && (relativeToTab != null)))
                     {
-                        tabCtrl.MoveTabBefore(tab, relativeToTab.TabID);
+                        TabController.Instance.MoveTabBefore(tab, relativeToTab.TabID);
                     }
                 }
             }
@@ -488,7 +486,7 @@ namespace DotNetNuke.Web.UI
                 }
             }
 
-            new TabController().UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
         }
     }
 

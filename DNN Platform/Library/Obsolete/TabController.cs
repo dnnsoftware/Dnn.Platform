@@ -145,10 +145,28 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 7.3. RUse alternate overload")]
+        public void CreateLocalizedCopy(List<TabInfo> tabs, Locale locale)
+        {
+            foreach (TabInfo t in tabs)
+            {
+                CreateLocalizedCopy(t, locale, true);
+            }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 7.3. RUse alternate overload")]
+        public void CreateLocalizedCopy(TabInfo originalTab, Locale locale)
+        {
+            CreateLocalizedCopy(originalTab, locale, true);
+        }
+
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.2. Replaced by SoftDeleteTab(tabId, portalSettings)")]
         public static bool DeleteTab(int tabId, PortalSettings portalSettings, int userId)
         {
-            return new TabController().SoftDeleteTab(tabId, portalSettings);
+            return Instance.SoftDeleteTab(tabId, portalSettings);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -183,12 +201,32 @@ namespace DotNetNuke.Entities.Tabs
             return CBO.FillCollection(Provider.GetAllTabs(), typeof(TabInfo));
         }
 
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.2. Method is not scalable. Use GetTabasByPortal")]
         public ArrayList GetAllTabs(bool checkLegacyFields)
         {
             return CBO.FillCollection(Provider.GetAllTabs(), typeof(TabInfo));
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 7.3. Method is not neccessary.  Use LINQ and GetPortalTabs()")]
+        public List<TabInfo> GetCultureTabList(int portalid)
+        {
+            return (from kvp in GetTabsByPortal(portalid)
+                    where !kvp.Value.TabPath.StartsWith("//Admin")
+                          && kvp.Value.CultureCode == PortalController.GetCurrentPortalSettings().DefaultLanguage
+                          && !kvp.Value.IsDeleted
+                    select kvp.Value).ToList();
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 7.3. Method is not neccessary.  Use LINQ and GetPortalTabs()")]
+        public List<TabInfo> GetDefaultCultureTabList(int portalid)
+        {
+            return (from kvp in GetTabsByPortal(portalid)
+                    where !kvp.Value.TabPath.StartsWith("//Admin")
+                          && !kvp.Value.IsDeleted
+                    select kvp.Value).ToList();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -278,10 +316,41 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 7.3. Use one of the alternate MoveTabxxx methods)")]
+        public void MoveTab(TabInfo tab, TabMoveType type)
+        {
+            //Get the List of tabs with the same parent
+            IOrderedEnumerable<TabInfo> siblingTabs = GetSiblingTabs(tab).OrderBy(t => t.TabOrder);
+            int tabIndex = GetIndexOfTab(tab, siblingTabs);
+            switch (type)
+            {
+                case TabMoveType.Top:
+                    MoveTabBefore(tab, siblingTabs.First().TabID);
+                    break;
+                case TabMoveType.Bottom:
+                    MoveTabAfter(tab, siblingTabs.Last().TabID);
+                    break;
+                case TabMoveType.Up:
+                    MoveTabBefore(tab, siblingTabs.ElementAt(tabIndex - 1).TabID);
+                    break;
+                case TabMoveType.Down:
+                    MoveTabAfter(tab, siblingTabs.ElementAt(tabIndex + 1).TabID);
+                    break;
+                case TabMoveType.Promote:
+                    MoveTabAfter(tab, tab.ParentId);
+                    break;
+                case TabMoveType.Demote:
+                    MoveTabToParent(tab, siblingTabs.ElementAt(tabIndex - 1).TabID);
+                    break;
+            }
+            ClearCache(tab.PortalID);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.2. Replaced by RestoreTab(tabId, portalSettings)")]
         public static void RestoreTab(TabInfo tab, PortalSettings portalSettings, int userId)
         {
-            new TabController().RestoreTab(tab, portalSettings);
+            Instance.RestoreTab(tab, portalSettings);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

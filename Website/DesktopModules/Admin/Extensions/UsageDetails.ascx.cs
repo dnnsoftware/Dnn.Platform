@@ -53,7 +53,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         private PackageInfo _Package;
         private int _PackageID = Null.NullInteger;
         private IDictionary<int, PortalInfo> _Portals;
-        private TabController _TabCtrl;
 
         protected int PackageID
         {
@@ -83,18 +82,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     }
                 }
                 return _Package;
-            }
-        }
-
-        protected TabController TabCtrl
-        {
-            get
-            {
-                if (_TabCtrl == null)
-                {
-                    _TabCtrl = new TabController();
-                }
-                return _TabCtrl;
             }
         }
 
@@ -200,7 +187,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if ((tab != null))
                 {
                     int index = 0;
-                    TabCtrl.PopulateBreadCrumbs(ref tab);
+                    TabController.Instance.PopulateBreadCrumbs(ref tab);
                     foreach (TabInfo t in tab.BreadCrumbs)
                     {
                         if ((index > 0))
@@ -302,8 +289,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         private IDictionary<int, TabInfo> BuildData(int portalID)
         {
-            IDictionary<int, TabInfo> tabsWithModule = TabCtrl.GetTabsByPackageID(portalID, PackageID, false);
-            TabCollection allPortalTabs = TabCtrl.GetTabsByPortal(portalID);
+            IDictionary<int, TabInfo> tabsWithModule = TabController.Instance.GetTabsByPackageID(portalID, PackageID, false);
+            TabCollection allPortalTabs = TabController.Instance.GetTabsByPortal(portalID);
             IDictionary<int, TabInfo> tabsInOrder = new Dictionary<int, TabInfo>();
 
 			//must get each tab, they parent may not exist

@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.MobileManagement
                 txtRedirectName.Text = redirect.Name;
                 chkEnable.Checked = redirect.Enabled;
                 chkChildPages.Checked = redirect.IncludeChildTabs;
-                var tabs = new TabController().GetTabsByPortal(ModuleContext.PortalId).AsList().Where(IsVisible);
+                var tabs = TabController.Instance.GetTabsByPortal(ModuleContext.PortalId).AsList().Where(IsVisible);
                 var tabInfos = tabs as IList<TabInfo> ?? tabs.ToList();
                 if (redirect.SourceTabId != -1)
                 {

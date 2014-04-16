@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (_Tab == null)
                 {
-                    _Tab = new TabController().GetTab(ToLocalizeTabId, PortalSettings.PortalId, false);
+                    _Tab = TabController.Instance.GetTab(ToLocalizeTabId, PortalSettings.PortalId, false);
                 }
                 return _Tab;
             }
@@ -219,11 +219,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
             foreach (GridDataItem row in localizedTabsGrid.SelectedItems)
             {
                 var language = (string) row.OwnerTableView.DataKeyValues[row.ItemIndex]["CultureCode"];
-                var tabCtrl = new TabController();
                 TabInfo localizedTab = null;
                 if (Tab.LocalizedTabs.TryGetValue(language, out localizedTab))
                 {
-                    tabCtrl.UpdateTranslationStatus(localizedTab, translated);
+                    TabController.Instance.UpdateTranslationStatus(localizedTab, translated);
                 }
             }
 

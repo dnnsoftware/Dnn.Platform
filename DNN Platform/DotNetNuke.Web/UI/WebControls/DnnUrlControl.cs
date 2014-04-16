@@ -895,7 +895,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         PortalSettings _settings = PortalController.GetCurrentPortalSettings();
                         var tabId = Int32.Parse(_Url);
-                        var page = new TabController().GetTab(tabId, _settings.PortalId);
+                        var page = TabController.Instance.GetTab(tabId, _settings.PortalId);
                         cboTabs.SelectedPage = page;
                         break;
                     case "F": //file

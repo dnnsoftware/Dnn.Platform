@@ -50,7 +50,6 @@ namespace DotNetNuke.Modules.PreviewProfileManagement.Components
         private void RemoveProVersion()
         {
             //update the tab module to use CE version
-            var tabController = new TabController();
             var moduleController = new ModuleController();
             TabInfo newTab;
 
@@ -72,7 +71,7 @@ namespace DotNetNuke.Modules.PreviewProfileManagement.Components
                     newTab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
                     newTab.IconFile = "~/desktopmodules/DevicePreviewManagement/images/DevicePreview_Standard_16X16.png";
                     newTab.IconFileLarge = "~/desktopmodules/DevicePreviewManagement/images/DevicePreview_Standard_32X32.png";
-                    tabController.UpdateTab(newTab);
+                    TabController.Instance.UpdateTab(newTab);
                 }
 
                 //Remove Pro edition module

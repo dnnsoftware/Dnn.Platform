@@ -404,14 +404,13 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId <= 0)
             {
-                var tabController = new TabController();
                 var moduleController = new ModuleController();
 
                 messageTabId = portalSettings.UserTabId;
                 var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
                 if (profileTab != null)
                 {
-                    var childTabs = tabController.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
+                    var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
                     foreach (var tab in childTabs)
                     {
                         foreach (var kvp in moduleController.GetTabModules(tab.TabID))
@@ -477,13 +476,12 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         private static object GetMessageTabCallback(CacheItemArgs cacheItemArgs)
         {
             var portalSettings = cacheItemArgs.Params[0] as PortalSettings;
-            var tabController = new TabController();
             var moduleController = new ModuleController();
 
             var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
             if (profileTab != null)
             {
-                var childTabs = tabController.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
+                var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
                 foreach (var tab in childTabs)
                 {
                     foreach (var kvp in moduleController.GetTabModules(tab.TabID))

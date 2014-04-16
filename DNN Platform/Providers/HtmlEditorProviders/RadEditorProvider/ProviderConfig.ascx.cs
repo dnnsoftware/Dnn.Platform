@@ -1556,18 +1556,15 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 		private void LoadPages()
 		{
-			this.treePages.Nodes.Clear();
+			treePages.Nodes.Clear();
 
-			TabController tc = new TabController();
-			TabCollection tabs = tc.GetTabsByPortal(PortalSettings.PortalId);
+            var tabs = TabController.Instance.GetTabsByPortal(PortalSettings.PortalId);
 			foreach (var oTab in tabs.Values)
 			{
 				if (oTab.Level == 0)
 				{
-					RadTreeNode node = new RadTreeNode();
-					node.Text = oTab.TabName;
-					node.Value = oTab.TabID.ToString();
-					treePages.Nodes.Add(node);
+					var node = new RadTreeNode {Text = oTab.TabName, Value = oTab.TabID.ToString()};
+				    treePages.Nodes.Add(node);
 					AddChildren(ref node);
 				}
 			}
@@ -1575,8 +1572,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 		private void AddChildren(ref RadTreeNode treenode)
 		{
-			TabController tc = new TabController();
-			TabCollection tabs = tc.GetTabsByPortal(PortalSettings.PortalId);
+            var tabs = TabController.Instance.GetTabsByPortal(PortalSettings.PortalId);
 			foreach (var objTab in tabs.Values)
 			{
 				if (objTab.ParentId == int.Parse(treenode.Value))

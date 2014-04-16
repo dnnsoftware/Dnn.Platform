@@ -60,10 +60,9 @@ namespace DotNetNuke.Services.Search.Controllers
             if (searchResult.ModuleId > 0)
             {
                 //Get All related tabIds from moduleId (while minimizing DB access; using caching)
-                var tabController = new TabController();
                 var moduleId = searchResult.ModuleId;
                 // The next call has over 30% performance enhancement over the above one
-                var tabModules = tabController.GetTabsByPortal(searchResult.PortalId).Values
+                var tabModules = TabController.Instance.GetTabsByPortal(searchResult.PortalId).Values
                     .SelectMany(tabinfo => tabinfo.ChildModules.Where(kv => kv.Key == moduleId)).Select(m => m.Value);
 
                 foreach (ModuleInfo module in tabModules)

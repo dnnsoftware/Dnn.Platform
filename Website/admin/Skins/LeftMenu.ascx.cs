@@ -543,7 +543,6 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var objTabController = new TabController();
             int i;
             int iItemIndex;
             int iRootGroupId = 0;
@@ -561,7 +560,7 @@ namespace DotNetNuke.UI.Skins.Controls
             if (!Page.IsPostBack)
             {
 				//optional code to support displaying a specific branch of the page tree
-                GetShowOnlyCurrent(objTabController, ref StartingItemId, ref iRootGroupId);
+                GetShowOnlyCurrent(ref StartingItemId, ref iRootGroupId);
                 //Fixed: For i = 0 To Me.PortalSettings.DesktopTabs.Count - 1
                 int portalID = PortalSettings.ActiveTab.IsSuperTab ? -1 : PortalSettings.PortalId;
                 IList<TabInfo> desktopTabs = TabController.GetTabsBySortOrder(portalID, PortalController.GetActivePortalLanguage(portalID), true);
@@ -570,7 +569,7 @@ namespace DotNetNuke.UI.Skins.Controls
 	                var tab = desktopTabs[i];
 					if (tab.TabID == PortalSettings.ActiveTab.TabID)
                     {
-						FillShowPathArray(ref arrayShowPath, tab.TabID, objTabController);
+						FillShowPathArray(ref arrayShowPath, tab.TabID);
                     }
                     if (tab.IsVisible && !tab.IsDeleted &&
 						(AdminMode || ((Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
@@ -644,7 +643,7 @@ namespace DotNetNuke.UI.Skins.Controls
             return false;
         }
 
-        private void GetShowOnlyCurrent(TabController objTabController, ref int StartingItemId, ref int iRootGroupId)
+        private void GetShowOnlyCurrent(ref int StartingItemId, ref int iRootGroupId)
         {
             StartingItemId = 0;
             iRootGroupId = 0;
@@ -678,9 +677,9 @@ namespace DotNetNuke.UI.Skins.Controls
             if (("RootItem" == ShowOnlyCurrent))
             {
                 iRootGroupId = PortalSettings.ActiveTab.TabID;
-                while (((objTabController.GetTab(iRootGroupId, PortalSettings.PortalId, true)).ParentId != -1))
+                while (((TabController.Instance.GetTab(iRootGroupId, PortalSettings.PortalId, true)).ParentId != -1))
                 {
-                    iRootGroupId = (objTabController.GetTab(iRootGroupId, PortalSettings.PortalId, true)).ParentId;
+                    iRootGroupId = (TabController.Instance.GetTab(iRootGroupId, PortalSettings.PortalId, true)).ParentId;
                 }
             }
         }
@@ -712,13 +711,13 @@ namespace DotNetNuke.UI.Skins.Controls
             return true;
         }
 
-        private void FillShowPathArray(ref ArrayList arrayShowPath, int selectedTabID, TabController objTabController)
+        private void FillShowPathArray(ref ArrayList arrayShowPath, int selectedTabID)
         {
-            TabInfo tempTab = objTabController.GetTab(selectedTabID, PortalSettings.PortalId, true);
+            TabInfo tempTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.PortalId, true);
             while ((tempTab.ParentId != -1))
             {
                 arrayShowPath.Add(tempTab.TabID);
-                tempTab = objTabController.GetTab(tempTab.ParentId, PortalSettings.PortalId, true);
+                tempTab = TabController.Instance.GetTab(tempTab.ParentId, PortalSettings.PortalId, true);
             }
             arrayShowPath.Add(tempTab.TabID);
         }

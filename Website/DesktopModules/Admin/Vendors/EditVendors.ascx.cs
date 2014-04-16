@@ -118,8 +118,6 @@ namespace DotNetNuke.Modules.Admin.Vendors
 
             try
             {
-                var objTabs = new TabController();
-
                 var blnBanner = false;
                 var blnSignup = false;
 

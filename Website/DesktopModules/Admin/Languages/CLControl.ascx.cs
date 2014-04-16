@@ -67,15 +67,6 @@ namespace DotNetNuke.Modules.Admin.Languages
             }
         }
 
-        private TabController _tabController;
-        private TabController TabController
-        {
-            get
-            {
-                return _tabController ?? (_tabController = new TabController());
-            }
-        }
-
         private ModuleController _moduleController;
         private ModuleController ModuleController
         {
@@ -232,13 +223,13 @@ namespace DotNetNuke.Modules.Admin.Languages
         public void BindAll(int tabID)
         {
             TabID = tabID;
-            var currentTab = TabController.GetTab(tabID, PortalSettings.PortalId, false);
+            var currentTab = TabController.Instance.GetTab(tabID, PortalSettings.PortalId, false);
 
             //Unique id of default language page
             var uniqueId = currentTab.DefaultLanguageGuid != Null.NullGuid ? currentTab.DefaultLanguageGuid : currentTab.UniqueId;
 
             // get all non admin pages and not deleted
-            var allPages = TabController.GetTabsByPortal(PortalSettings.PortalId).Values.Where(t => t.TabID != PortalSettings.AdminTabId && (Null.IsNull(t.ParentId) || t.ParentId != PortalSettings.AdminTabId));
+            var allPages = TabController.Instance.GetTabsByPortal(PortalSettings.PortalId).Values.Where(t => t.TabID != PortalSettings.AdminTabId && (Null.IsNull(t.ParentId) || t.ParentId != PortalSettings.AdminTabId));
             allPages = allPages.Where(t => t.IsDeleted == false);
             // get all localized pages of current page
             var tabInfos = allPages as IList<TabInfo> ?? allPages.ToList();
@@ -327,7 +318,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 dnnPage.Title = localTabInfo.Title;
                 dnnPage.Description = localTabInfo.Description;
                 dnnPage.Path = localTabInfo.TabPath.Substring(0, localTabInfo.TabPath.LastIndexOf("//", StringComparison.Ordinal)).Replace("//", "");
-                dnnPage.HasChildren = (TabController.GetTabsByPortal(PortalSettings.PortalId).WithParentId(tabInfo.TabID).Count != 0);
+                dnnPage.HasChildren = (TabController.Instance.GetTabsByPortal(PortalSettings.PortalId).WithParentId(tabInfo.TabID).Count != 0);
                 dnnPage.CanAdminPage = TabPermissionController.CanAdminPage(tabInfo);
                 dnnPage.CanViewPage = TabPermissionController.CanViewPage(tabInfo);
                 dnnPage.LocalResourceFile = LocalResourceFile;
@@ -347,7 +338,7 @@ namespace DotNetNuke.Modules.Admin.Languages
 
                 dnnPage.DefaultLanguageGuid = localTabInfo.DefaultLanguageGuid;
                 dnnPage.IsTranslated = localTabInfo.IsTranslated;
-                dnnPage.IsPublished = TabController.IsTabPublished(localTabInfo);
+                dnnPage.IsPublished = TabController.Instance.IsTabPublished(localTabInfo);
                 // generate modules information
                 foreach (var moduleInfo in ModuleController.GetTabModules(localTabInfo.TabID).Values)
                 //foreach (var moduleInfo in ModuleController.GetTabModules(localTabInfo.TabID).Values.Where(m => !m.IsDeleted))
@@ -386,7 +377,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     dnnModule.IsTranslated = moduleInfo.IsTranslated;
                     dnnModule.IsLocalized = moduleInfo.IsLocalized;
 
-                    dnnModule.IsShared = TabController.GetTabsByModuleID(moduleInfo.ModuleID).Values.Count(t => t.CultureCode == moduleInfo.CultureCode) > 1;
+                    dnnModule.IsShared = TabController.Instance.GetTabsByModuleID(moduleInfo.ModuleID).Values.Count(t => t.CultureCode == moduleInfo.CultureCode) > 1;
 
                     // detect error : the default language module is on an other page
                     dnnModule.ErrorDefaultOnOtherTab = moduleInfo.DefaultLanguageGuid != Null.NullGuid && moduleInfo.DefaultLanguageModule == null;
@@ -429,7 +420,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 }
                 if (tabID > 0)
                 {
-                    var tabInfo = TabController.GetTab(tabID, PortalSettings.PortalId, true);
+                    var tabInfo = TabController.Instance.GetTab(tabID, PortalSettings.PortalId, true);
                     var updateTab = false;
                     if (tabInfo.TabName != tabName)
                     {
@@ -448,7 +439,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     }
                     if (updateTab)
                     {
-                        TabController.UpdateTab(tabInfo);
+                        TabController.Instance.UpdateTab(tabInfo);
                     }
 
                 }
@@ -513,7 +504,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                                     { // default 
                                         var hfTabID = (HiddenField)rDnnPage.Items[riDnnModule.ItemIndex].FindControl("hfTabID");
                                         var tabId = int.Parse(hfTabID.Value);
-                                        var toTabInfo = TabController.GetTab(tabId, PortalSettings.PortalId, false);
+                                        var toTabInfo = TabController.Instance.GetTab(tabId, PortalSettings.PortalId, false);
                                         ModuleController.CopyModule(miCopy, toTabInfo, Null.NullString, true);
                                         var localizedModule = ModuleController.GetModule(miCopy.ModuleID, tabId);
                                         ModuleController.LocalizeModule(localizedModule,LocaleController.Instance.GetLocale(localizedModule.CultureCode));
@@ -523,7 +514,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                                         var miCopyDefault = ModuleController.GetModuleByUniqueID(miCopy.DefaultLanguageGuid);
                                         var hfTabID = (HiddenField)rDnnPage.Items[riDnnModule.ItemIndex].FindControl("hfTabID");
                                         var tabId = int.Parse(hfTabID.Value);
-                                        var toTabInfo = TabController.GetTab(tabId, PortalSettings.PortalId, false);
+                                        var toTabInfo = TabController.Instance.GetTab(tabId, PortalSettings.PortalId, false);
                                         ModuleController.CopyModule(miCopyDefault, toTabInfo, Null.NullString, true);
                                     }
 
@@ -581,12 +572,12 @@ namespace DotNetNuke.Modules.Admin.Languages
                 }
                 if (tabID > 0)
                 {
-                    var tabInfo = TabController.GetTab(tabID, PortalSettings.PortalId, true);
+                    var tabInfo = TabController.Instance.GetTab(tabID, PortalSettings.PortalId, true);
                     if (!tabInfo.IsDefaultLanguage)
                     {
                         if (tabInfo.IsTranslated != tabTranslated)
                         {
-                            TabController.UpdateTranslationStatus(tabInfo, tabTranslated);
+                            TabController.Instance.UpdateTranslationStatus(tabInfo, tabTranslated);
 
                             if (tabTranslated)
                             {
@@ -623,10 +614,10 @@ namespace DotNetNuke.Modules.Admin.Languages
                 }
 
                 //First mark tab as translated
-                TabController.UpdateTranslationStatus(tabInfo, true);
+                TabController.Instance.UpdateTranslationStatus(tabInfo, true);
 
                 //Next publish Tab (update Permissions)
-                TabController.PublishTab(tabInfo);
+                TabController.Instance.PublishTab(tabInfo);
             }
 
             // manage translated status of tab. In order to do that, we need to check if all modules on the page are translated
@@ -642,7 +633,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 }
                 if (tabID > 0)
                 {
-                    var tabInfo = TabController.GetTab(tabID, PortalSettings.PortalId, true);
+                    var tabInfo = TabController.Instance.GetTab(tabID, PortalSettings.PortalId, true);
                     if (tabInfo != null)
                     {
                         if (tabInfo.ChildModules.Any(moduleKVP => !moduleKVP.Value.IsTranslated))
@@ -652,7 +643,7 @@ namespace DotNetNuke.Modules.Admin.Languages
 
                         if (tabTranslatedStatus && !tabInfo.IsTranslated)
                         {
-                            TabController.UpdateTranslationStatus(tabInfo, true);
+                            TabController.Instance.UpdateTranslationStatus(tabInfo, true);
                         }
                     }
                 }

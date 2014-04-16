@@ -55,8 +55,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (_tab == null)
                 {
-                    var objTabs = new TabController();
-                    _tab = objTabs.GetTab(TabId, PortalId, false);
+                    _tab = TabController.Instance.GetTab(TabId, PortalId, false);
                 }
                 return _tab;
             }
@@ -68,7 +67,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             cboParentTab.UndefinedItem = new ListItem(noneSpecified, string.Empty);
             var parentTab = cboParentTab.SelectedPage;
 
-            List<TabInfo> listTabs = parentTab != null ? new TabController().GetTabsByPortal(parentTab.PortalID).WithParentId(parentTab.TabID) : new TabController().GetTabsByPortal(PortalId).WithParentId(Null.NullInteger);
+            List<TabInfo> listTabs = parentTab != null ? TabController.Instance.GetTabsByPortal(parentTab.PortalID).WithParentId(parentTab.TabID) : TabController.Instance.GetTabsByPortal(PortalId).WithParentId(Null.NullInteger);
             listTabs = TabController.GetPortalTabs(listTabs, Null.NullInteger, true, noneSpecified, false, false, false, false, true);
             cboPositionTab.DataSource = listTabs;
             cboPositionTab.DataBind();
@@ -217,12 +216,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     }
                     objTab.TabPath = Globals.GenerateTabPath(objTab.ParentId, objTab.TabName);
                     var tabId = TabController.GetTabByTabPath(objTab.PortalID, objTab.TabPath, Null.NullString);
-                    var objTabs = new TabController();
 
                     //Check if tab exists
                     if (tabId != Null.NullInteger)
                     {
-                        TabInfo existingTab = objTabs.GetTab(tabId, PortalId, false);
+                        TabInfo existingTab = TabController.Instance.GetTab(tabId, PortalId, false);
                         if (existingTab != null && existingTab.IsDeleted)
                         {
                             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TabRecycled", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
@@ -236,34 +234,18 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                     var positionTabId = Int32.Parse(cboPositionTab.SelectedItem.Value);
 
-                    //var pc = new PermissionController();
-
-                    //var permission = pc.GetPermissionByCodeAndKey("SYSTEM_TAB", "VIEW");
-                    //if (permission.Count > 0)
-                    //{
-                    //    var pid = ((PermissionInfo)permission[0]).PermissionID;
-                    //    objTab.TabPermissions.Add(new TabPermissionInfo { PermissionID = pid, AllowAccess = true, RoleID = 0 });
-                    //}
-
-                    //permission = pc.GetPermissionByCodeAndKey("SYSTEM_TAB", "EDIT");
-                    //if (permission.Count > 0)
-                    //{
-                    //    var pid = ((PermissionInfo)permission[0]).PermissionID;
-                    //    objTab.TabPermissions.Add(new TabPermissionInfo { PermissionID = pid, AllowAccess = true, RoleID = 0 });
-                    //}
-
                     var objEventLog = new EventLogController();
                     if (rbInsertPosition.SelectedValue == "After" && positionTabId > Null.NullInteger)
                     {
-                        objTab.TabID = objTabs.AddTabAfter(objTab, positionTabId);
+                        objTab.TabID = TabController.Instance.AddTabAfter(objTab, positionTabId);
                     }
                     else if (rbInsertPosition.SelectedValue == "Before" && positionTabId > Null.NullInteger)
                     {
-                        objTab.TabID = objTabs.AddTabBefore(objTab, positionTabId);
+                        objTab.TabID = TabController.Instance.AddTabBefore(objTab, positionTabId);
                     }
                     else
                     {
-                        objTab.TabID = objTabs.AddTab(objTab);
+                        objTab.TabID = TabController.Instance.AddTab(objTab);
                     }
                     objEventLog.AddLog(objTab, PortalSettings, UserId, "", EventLogController.EventLogType.TAB_CREATED);
 

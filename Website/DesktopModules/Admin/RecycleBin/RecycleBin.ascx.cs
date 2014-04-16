@@ -74,8 +74,6 @@ namespace DesktopModules.Admin.RecycleBin
                 LoadData();
             }
 
-			var tabController = new TabController();
-
             modulesListBox.Items.Clear();
             tabsListBox.Items.Clear();
 
@@ -129,7 +127,6 @@ namespace DesktopModules.Admin.RecycleBin
 	    private void DeleteTab(TabInfo tab, bool deleteDescendants)
 		{
 			var eventLogController = new EventLogController();
-			var tabController = new TabController();
 			var moduleController = new ModuleController();
 
 			//get tab modules before deleting page
@@ -154,12 +151,11 @@ namespace DesktopModules.Admin.RecycleBin
         private void LoadData()
         {
             var moduleController = new ModuleController();
-            var tabController = new TabController();
             var currentLocale = LocaleController.Instance.GetCurrentLocale(PortalId);
 
             TabCollection tabsList = modeButtonList.SelectedValue == "ALL"
-                             ? tabController.GetTabsByPortal(PortalId)
-                             : tabController.GetTabsByPortal(PortalId).WithCulture(currentLocale.Code, true);
+                             ? TabController.Instance.GetTabsByPortal(PortalId)
+                             : TabController.Instance.GetTabsByPortal(PortalId).WithCulture(currentLocale.Code, true);
 
             DeletedTabs = tabsList.Values.Where(tab => tab.IsDeleted)
                                             .OrderBy(tab => tab.TabPath)
@@ -207,8 +203,7 @@ namespace DesktopModules.Admin.RecycleBin
 				}
 				else
 				{
-				    var tabController = new TabController();
-                    tabController.RestoreTab(tab, PortalSettings);
+                    TabController.Instance.RestoreTab(tab, PortalSettings);
 					DeletedTabs.Remove(tab);
 
 					//restore modules in this tab

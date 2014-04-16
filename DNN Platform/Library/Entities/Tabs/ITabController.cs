@@ -22,6 +22,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Tabs
@@ -90,6 +92,20 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tab">The updated tab.</param>
         void CreateContentItem(TabInfo tab);
+
+        /// <summary>
+        /// Creates the localized copies.
+        /// </summary>
+        /// <param name="originalTab">The original tab.</param>
+        void CreateLocalizedCopies(TabInfo originalTab);
+
+        /// <summary>
+        /// Creates the localized copy.
+        /// </summary>
+        /// <param name="originalTab">The original tab.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="clearCache">Clear the cache?</param>
+        void CreateLocalizedCopy(TabInfo originalTab, Locale locale, bool clearCache);
 
         /// <summary>
         /// Deletes a tab permanently from the database
@@ -208,12 +224,35 @@ namespace DotNetNuke.Entities.Tabs
         TabInfo GetTabByName(string tabName, int portalId, int parentId);
 
         /// <summary>
+        /// Gets the tabs which use the module.
+        /// </summary>
+        /// <param name="moduleID">The module ID.</param>
+        /// <returns>tab collection</returns>
+        IDictionary<int, TabInfo> GetTabsByModuleID(int moduleID);
+
+        /// <summary>
+        /// Gets the tabs which use the package.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="packageID">The package ID.</param>
+        /// <param name="forHost">if set to <c>true</c> [for host].</param>
+        /// <returns>tab collection</returns>
+        IDictionary<int, TabInfo> GetTabsByPackageID(int portalID, int packageID, bool forHost);
+        
+        /// <summary>
         /// Gets the tabs by portal.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
         /// <returns>tab collection</returns>
         TabCollection GetTabsByPortal(int portalId);
 
+        /// <summary>
+        /// Gets the tabs which use the module.
+        /// </summary>
+        /// <param name="tabModuleId">The tabmodule ID.</param>
+        /// <returns>tab collection</returns>
+        IDictionary<int, TabInfo> GetTabsByTabModuleID(int tabModuleId);
+        
         /// <summary>
         /// read all settings for a tab from TabSettings table
         /// </summary>
@@ -232,6 +271,13 @@ namespace DotNetNuke.Entities.Tabs
         List<TabUrlInfo> GetTabUrls(int tabId, int portalId);
 
         /// <summary>
+        /// Gives the translator role edit rights.
+        /// </summary>
+        /// <param name="localizedTab">The localized tab.</param>
+        /// <param name="users">The users.</param>
+        void GiveTranslatorRoleEditRights(TabInfo localizedTab, Dictionary<int, UserInfo> users);
+        
+        /// <summary>
         /// Returns True if a page is missing a translated version in at least one other language
         /// </summary>
         /// <param name="portalId"></param>
@@ -239,7 +285,81 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns></returns>
         bool HasMissingLanguages(int portalId, int tabId);
 
+        /// <summary>
+        /// Checks whether the tab is published. Published means: view permissions of tab are identical to the DefaultLanguageTab
+        /// </summary>
+        /// <param name="publishTab">The tab that is checked</param>
+        /// <returns>true if tab is published</returns>
+        bool IsTabPublished(TabInfo publishTab);
+        
+        /// <summary>
+        /// Localizes the tab.
+        /// </summary>
+        /// <param name="originalTab">The original tab.</param>
+        /// <param name="locale">The locale.</param>
+        void LocalizeTab(TabInfo originalTab, Locale locale);
 
+        /// <summary>
+        /// Localizes the tab, with optional clear cache
+        /// </summary>
+        /// <param name="originalTab"></param>
+        /// <param name="locale"></param>
+        /// <param name="clearCache"></param>
+        void LocalizeTab(TabInfo originalTab, Locale locale, bool clearCache);
+
+        /// <summary>
+        /// Moves the tab after a specific tab.
+        /// </summary>
+        /// <param name="tab">The tab want to move.</param>
+        /// <param name="afterTabId">will move objTab after this tab.</param>
+        void MoveTabAfter(TabInfo tab, int afterTabId);
+
+        /// <summary>
+        /// Moves the tab before a specific tab.
+        /// </summary>
+        /// <param name="tab">The tab want to move.</param>
+        /// <param name="beforeTabId">will move objTab before this tab.</param>
+        void MoveTabBefore(TabInfo tab, int beforeTabId);
+
+        /// <summary>
+        /// Moves the tab to a new parent
+        /// </summary>
+        /// <param name="tab">The tab want to move.</param>
+        /// <param name="parentId">will move tab to this parent.</param>
+        void MoveTabToParent(TabInfo tab, int parentId);
+
+        /// <summary>
+        /// Populates the bread crumbs.
+        /// </summary>
+        /// <param name="tab">The tab.</param>
+        void PopulateBreadCrumbs(ref TabInfo tab);
+
+        /// <summary>
+        /// Populates the bread crumbs.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="breadCrumbs">The bread crumbs.</param>
+        /// <param name="tabID">The tab ID.</param>
+        void PopulateBreadCrumbs(int portalID, ref ArrayList breadCrumbs, int tabID);
+
+        /// <summary>
+        /// Publishes the tab.
+        /// </summary>
+        /// <param name="publishTab">The publish tab.</param>
+        void PublishTab(TabInfo publishTab);
+
+        /// <summary>
+        /// Publishes the tabs.
+        /// </summary>
+        /// <param name="tabs">The tabs.</param>
+        void PublishTabs(List<TabInfo> tabs);
+        
+        /// <summary>
+        /// Restores the tab.
+        /// </summary>
+        /// <param name="tab">The obj tab.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        void RestoreTab(TabInfo tab, PortalSettings portalSettings);
 
         /// <summary>
         /// Save url information for a page (tab)
@@ -248,5 +368,35 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="portalId">the portal id</param>
         /// <param name="clearCache">whether to clear the cache</param>
         void SaveTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
+
+        /// <summary>
+        /// Soft Deletes the tab by setting the IsDeleted property to true.
+        /// </summary>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <returns></returns>
+        bool SoftDeleteTab(int tabId, PortalSettings portalSettings);
+
+        /// <summary>
+        /// Updates the tab to databse.
+        /// </summary>
+        /// <param name="updatedTab">The updated tab.</param>
+        void UpdateTab(TabInfo updatedTab);
+
+        /// <summary>
+        /// Adds or updates a tab's setting value
+        /// </summary>
+        /// <param name="tabId">ID of the tab to update</param>
+        /// <param name="settingName">name of the setting property</param>
+        /// <param name="settingValue">value of the setting (String).</param>
+        /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true</remarks>
+        void UpdateTabSetting(int tabId, string settingName, string settingValue);
+
+        /// <summary>
+        /// Updates the translation status.
+        /// </summary>
+        /// <param name="localizedTab">The localized tab.</param>
+        /// <param name="isTranslated">if set to <c>true</c> means the tab has already been translated.</param>
+        void UpdateTranslationStatus(TabInfo localizedTab, bool isTranslated);
     }
 }

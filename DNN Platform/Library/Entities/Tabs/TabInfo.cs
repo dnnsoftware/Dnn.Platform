@@ -246,8 +246,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (_defaultLanguageTab == null && (!DefaultLanguageGuid.Equals(Null.NullGuid)))
                 {
-                    var tabCtrl = new TabController();
-                    _defaultLanguageTab = (from kvp in tabCtrl.GetTabsByPortal(PortalID) where kvp.Value.UniqueId == DefaultLanguageGuid select kvp.Value).SingleOrDefault();
+                    _defaultLanguageTab = (from kvp in TabController.Instance.GetTabsByPortal(PortalID) where kvp.Value.UniqueId == DefaultLanguageGuid select kvp.Value).SingleOrDefault();
                 }
                 return _defaultLanguageTab;
             }
@@ -442,9 +441,8 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (_localizedTabs == null)
                 {
-                    var tabCtrl = new TabController();
                     _localizedTabs =
-                        (from kvp in tabCtrl.GetTabsByPortal(PortalID)
+                        (from kvp in TabController.Instance.GetTabsByPortal(PortalID)
                          where kvp.Value.DefaultLanguageGuid == UniqueId && LocaleController.Instance.GetLocale(PortalID, kvp.Value.CultureCode) != null
                          select kvp.Value).ToDictionary(t => t.CultureCode);
                 }

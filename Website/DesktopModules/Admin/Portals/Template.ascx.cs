@@ -268,8 +268,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// -----------------------------------------------------------------------------
         private void SerializeTabs(XmlWriter writer, PortalInfo portal)
         {
-            var tabController = new TabController();
-
             //supporting object to build the tab hierarchy
             var tabs = new Hashtable();
 
@@ -278,13 +276,13 @@ namespace DotNetNuke.Modules.Admin.Portals
             if (chkMultilanguage.Checked)
             {
                 //Process Default Language first
-                SerializeTabs(writer, portal, tabs, tabController.GetTabsByPortal(portal.PortalID).WithCulture(portal.DefaultLanguage, true));
+                SerializeTabs(writer, portal, tabs, TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(portal.DefaultLanguage, true));
 
                 //Process other locales
                 foreach (ListItem language in chkLanguages.Items)
                 {
                     if (language.Selected && language.Value != portal.DefaultLanguage)
-                        SerializeTabs(writer, portal, tabs, tabController.GetTabsByPortal(portal.PortalID).WithCulture(language.Value, false));
+                        SerializeTabs(writer, portal, tabs, TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(language.Value, false));
                 }
             }
             else
@@ -293,11 +291,11 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     // only export 1 language
                     string language = languageComboBox.SelectedValue;
-                    SerializeTabs(writer, portal, tabs, tabController.GetTabsByPortal(portal.PortalID).WithCulture(language, true));
+                    SerializeTabs(writer, portal, tabs, TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(language, true));
                 }
                 else
                 {
-                    SerializeTabs(writer, portal, tabs, tabController.GetTabsByPortal(portal.PortalID));
+                    SerializeTabs(writer, portal, tabs, TabController.Instance.GetTabsByPortal(portal.PortalID));
                 }
             }
 
@@ -503,7 +501,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             ctlPages.Nodes.Clear();
 
-            var tabController = new TabController();
             var rootNode = new RadTreeNode
                 {
                     Text = PortalSettings.PortalName,
@@ -575,7 +572,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
             var parentId = int.Parse(parentNode.Value);
 
-            var Tabs = new TabController().GetTabsByPortal(portal.PortalID).WithCulture(languageComboBox.SelectedValue, true).WithParentId(parentId);
+            var Tabs = TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(languageComboBox.SelectedValue, true).WithParentId(parentId);
 
 
             foreach (var tab in Tabs)

@@ -501,7 +501,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
         private void AddChildLinks(int TabId, ref EditorLink links)
         {
-            var tc = new TabController();
             List<TabInfo> tabs = TabController.GetPortalTabs(PortalSettings.PortalId, Null.NullInteger, false, "", true, false, true, true, false);
             foreach (TabInfo objTab in tabs)
             {
@@ -528,7 +527,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
             _editor.Links.Add(portalLinks);
 
             //Add links to custom link menu
-            var tc = new TabController();
             List<TabInfo> tabs = TabController.GetPortalTabs(PortalSettings.PortalId, Null.NullInteger, false, "", true, false, true, true, false);
             foreach (TabInfo objTab in tabs)
             {

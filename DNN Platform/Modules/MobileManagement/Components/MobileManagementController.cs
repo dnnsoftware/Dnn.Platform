@@ -37,7 +37,6 @@ namespace DotNetNuke.Modules.MobileManagement.Components
         private void RemoveProVersion()
         {
             //update the tab module to use CE version
-            var tabController = new TabController();
             var moduleController = new ModuleController();
 
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
@@ -59,7 +58,7 @@ namespace DotNetNuke.Modules.MobileManagement.Components
                     newTab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
                     newTab.IconFile = "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_16x16.png";
                     newTab.IconFileLarge = "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_32x32.png";
-                    tabController.UpdateTab(newTab);
+                    TabController.Instance.UpdateTab(newTab);
                 }
 
                 //Remove Pro edition module

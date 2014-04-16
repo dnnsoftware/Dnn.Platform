@@ -86,7 +86,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (_tab == null)
                 {
-                    var objTabs = new TabController();
                     switch (_strAction)
                     {
                         case "":
@@ -94,7 +93,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             _tab = new TabInfo { TabID = Null.NullInteger, PortalID = PortalId };
                             break;
                         case "copy":
-                            _tab = objTabs.GetTab(TabId, PortalId, false).Clone();
+                            _tab = TabController.Instance.GetTab(TabId, PortalId, false).Clone();
                             _tab.TabID = Null.NullInteger;
                             _tab.VersionGuid = Guid.NewGuid();
                             _tab.LocalizedVersionGuid = Guid.NewGuid();
@@ -105,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                             break;
                         default:
-                            _tab = objTabs.GetTab(TabId, PortalId, false);
+                            _tab = TabController.Instance.GetTab(TabId, PortalId, false);
                             break;
                     }
                 }
@@ -160,8 +159,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             if (cboParentTab.SelectedItem != null)
             {
                 var parentTabID = cboParentTab.SelectedItemValueAsInt;
-                var controller = new TabController();
-                parentTab = controller.GetTab(parentTabID, -1, false);
+                parentTab = TabController.Instance.GetTab(parentTabID, -1, false);
             }
 
             if (parentTab != null)
@@ -171,11 +169,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 {
                     parentTabCulture = PortalController.GetActivePortalLanguage(PortalId);
                 }
-                listTabs = new TabController().GetTabsByPortal(parentTab.PortalID).WithCulture(parentTabCulture, true).WithParentId(parentTab.TabID);
+                listTabs = TabController.Instance.GetTabsByPortal(parentTab.PortalID).WithCulture(parentTabCulture, true).WithParentId(parentTab.TabID);
             }
             else
             {
-                listTabs = new TabController().GetTabsByPortal(PortalId).WithCulture(PortalController.GetActivePortalLanguage(PortalId), true).WithParentId(Null.NullInteger);
+                listTabs = TabController.Instance.GetTabsByPortal(PortalId).WithCulture(PortalController.GetActivePortalLanguage(PortalId), true).WithParentId(Null.NullInteger);
             }
             listTabs = TabController.GetPortalTabs(listTabs, Null.NullInteger, false, Null.NullString, false, false, false, false, true);
             cboPositionTab.DataSource = listTabs;
@@ -258,10 +256,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 CLControl1.enablePageEdit = true;
                 CLControl1.BindAll(_tab.TabID);
                 cmdUpdateLocalization.Visible = true;
-                var controller = new TabController();
 
                 // only show "Convert to neutral" if page has no child pages
-                MakeNeutral.Visible = (controller.GetTabsByPortal(PortalId).WithParentId(_tab.TabID).Count == 0);
+                MakeNeutral.Visible = (TabController.Instance.GetTabsByPortal(PortalId).WithParentId(_tab.TabID).Count == 0);
 
                 // only show "add missing languages" if not all languages are available
                 AddMissing.Visible = TabController.Instance.HasMissingLanguages(PortalId, _tab.TabID);
@@ -517,16 +514,15 @@ namespace DotNetNuke.Modules.Admin.Tabs
             var bDeleted = Null.NullBoolean;
             if (TabPermissionController.CanDeletePage())
             {
-                var tabController = new TabController();
-                bDeleted = tabController.SoftDeleteTab(deleteTabId, PortalSettings);
+                bDeleted = TabController.Instance.SoftDeleteTab(deleteTabId, PortalSettings);
                 if (!bDeleted)
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DeleteSpecialPage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                    Skin.AddModuleMessage(this, Localization.GetString("DeleteSpecialPage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DeletePermissionError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                Skin.AddModuleMessage(this, Localization.GetString("DeletePermissionError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
             }
 
             return bDeleted;
@@ -577,7 +573,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private void GetHostTabs(List<TabInfo> tabs)
         {
-            foreach (var kvp in new TabController().GetTabsByPortal(Null.NullInteger))
+            foreach (var kvp in TabController.Instance.GetTabsByPortal(Null.NullInteger))
             {
                 tabs.Add(kvp.Value);
             }
@@ -586,7 +582,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
         private IEnumerable<TabInfo> GetTabs(bool includeCurrent, bool includeURL, bool includeParent, bool includeDescendants)
         {
             var tabs = new List<TabInfo>();
-            var controller = new TabController();
 
             var excludeTabId = Null.NullInteger;
             if (!includeCurrent)
@@ -607,7 +602,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 //Need to include the Parent Tab if its not already in the list of tabs
                 if (includeParent && PortalSettings.ActiveTab.ParentId != Null.NullInteger && parentTab == null)
                 {
-                    tabs.Add(controller.GetTab(PortalSettings.ActiveTab.ParentId, PortalId, false));
+                    tabs.Add(TabController.Instance.GetTab(PortalSettings.ActiveTab.ParentId, PortalId, false));
                 }
 
                 if (UserInfo.IsSuperUser && TabId == Null.NullInteger)
@@ -656,8 +651,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             if (intTabId != -1)
             {
-                var tabController = new TabController();
-                var tabInfo = tabController.GetTab(intTabId, portalId, false);
+                var tabInfo = TabController.Instance.GetTab(intTabId, portalId, false);
 
                 if (tabInfo.Level == 0)
                 {
@@ -729,8 +723,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
             string strIcon = ctlIcon.Url;
             string strIconLarge = ctlIconLarge.Url;
 
-            var objTabs = new TabController();
-
             Tab.TabName = txtTabName.Text;
             Tab.Title = txtTitle.Text;
             Tab.Description = txtDescription.Text;
@@ -742,8 +734,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             if (cboParentTab.SelectedItem != null)
             {
                 var parentTabId = cboParentTab.SelectedItemValueAsInt;
-                var controller = new TabController();
-                parentTab = controller.GetTab(parentTabId, -1, false);
+                parentTab = TabController.Instance.GetTab(parentTabId, -1, false);
             }
 
             if (parentTab != null)
@@ -817,7 +808,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     //Fix parent 
                     if (Tab.ParentId > Null.NullInteger)
                     {
-                        parentTab = objTabs.GetTab(Tab.ParentId, PortalId, false);
+                        parentTab = TabController.Instance.GetTab(Tab.ParentId, PortalId, false);
                         if (parentTab.CultureCode != Tab.CultureCode)
                         {
                             parentTab = TabController.Instance.GetTabByCulture(Tab.ParentId, PortalId, tabLocale);
@@ -855,7 +846,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                 if (tabID != Null.NullInteger)
                 {
-                    var existingTab = objTabs.GetTab(tabID, PortalId, false);
+                    var existingTab = TabController.Instance.GetTab(tabID, PortalId, false);
                     if (existingTab != null && existingTab.IsDeleted)
                     {
                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TabRecycled", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
@@ -898,7 +889,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 // trap circular tab reference
                 if (cboParentTab.SelectedItem != null && Tab.TabID != cboParentTab.SelectedItemValueAsInt && !IsCircularReference(cboParentTab.SelectedItemValueAsInt, Tab.PortalID))
                 {
-                    objTabs.UpdateTab(Tab);
+                    TabController.Instance.UpdateTab(Tab);
                     if (IsHostMenu && Tab.PortalID != Null.NullInteger)
                     {
                         //Host Tab moved to Portal so clear Host cache
@@ -915,30 +906,30 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (positionTabId == Null.NullInteger)
                 {
-                    Tab.TabID = objTabs.AddTab(Tab);
+                    Tab.TabID = TabController.Instance.AddTab(Tab);
                 }
                 else
                 {
                     if (rbInsertPosition.SelectedValue == "After" && positionTabId > Null.NullInteger)
                     {
-                        Tab.TabID = objTabs.AddTabAfter(Tab, positionTabId);
+                        Tab.TabID = TabController.Instance.AddTabAfter(Tab, positionTabId);
                     }
                     else if (rbInsertPosition.SelectedValue == "Before" && positionTabId > Null.NullInteger)
                     {
-                        Tab.TabID = objTabs.AddTabBefore(Tab, positionTabId);
+                        Tab.TabID = TabController.Instance.AddTabBefore(Tab, positionTabId);
                     }
                     else
                     {
-                        Tab.TabID = objTabs.AddTab(Tab);
+                        Tab.TabID = TabController.Instance.AddTab(Tab);
                     }
                 }
 
                 //Create Localized versions
                 if (PortalSettings.ContentLocalizationEnabled && cultureTypeList.SelectedValue == "Localized")
                 {
-                    objTabs.CreateLocalizedCopies(Tab);
+                    TabController.Instance.CreateLocalizedCopies(Tab);
                     //Refresh tab
-                    _tab = objTabs.GetTab(Tab.TabID, Tab.PortalID, true);
+                    _tab = TabController.Instance.GetTab(Tab.TabID, Tab.PortalID, true);
                 }
 
                 var copyTabId = cboCopyPage.Visible && cboCopyPage.SelectedItem != null ? cboCopyPage.SelectedItemValueAsInt : Null.NullInteger;
@@ -1067,7 +1058,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                                 {
                                     Tab.ContainerSrc = XmlUtils.GetNodeValue(tabNode, "containersrc", "");
                                 }
-                                objTabs.UpdateTab(Tab);
+                                TabController.Instance.UpdateTab(Tab);
                             }
                             tabIndex++;
                         }
@@ -1090,7 +1081,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
             //Update Cached Tabs as TabPath may be needed before cache is cleared
             TabInfo tempTab;
-            if (new TabController().GetTabsByPortal(PortalId).TryGetValue(Tab.TabID, out tempTab))
+            if (TabController.Instance.GetTabsByPortal(PortalId).TryGetValue(Tab.TabID, out tempTab))
             {
                 tempTab.TabPath = Tab.TabPath;
             }
@@ -1268,8 +1259,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             var tabID = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
             if (tabID != Null.NullInteger && tabID != tab.TabID)
             {
-                var controller = new TabController();
-                var existingTab = controller.GetTab(tabID, tab.PortalID, false);
+                var existingTab = TabController.Instance.GetTab(tabID, tab.PortalID, false);
                 if (existingTab != null && existingTab.IsDeleted)
                     ShowWarningMessage(Localization.GetString("TabRecycled", LocalResourceFile));
                 else
@@ -1354,10 +1344,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
             if (Tab.ContentItemId == Null.NullInteger && Tab.TabID != Null.NullInteger)
             {
-                var tabCtl = new TabController();
                 //This tab does not have a valid ContentItem
                 TabController.Instance.CreateContentItem(Tab);
-                tabCtl.UpdateTab(Tab);
+                TabController.Instance.UpdateTab(Tab);
             }
 
             DisableHostAdminFunctions();
@@ -1448,8 +1437,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             AdvancedSettingExtensionControl.Visible = false;
                             break;
                         case "edit":
-                            var tabCtrl = new TabController();
-                            copyPermissionRow.Visible = (TabPermissionController.CanAdminPage() && tabCtrl.GetTabsByPortal(PortalId).DescendentsOf(TabId).Count > 0);
+                            copyPermissionRow.Visible = (TabPermissionController.CanAdminPage() && TabController.Instance.GetTabsByPortal(PortalId).DescendentsOf(TabId).Count > 0);
                             rowCopySkin.Visible = true;
                             copyPanel.Visible = false;
                             cmdDelete.Visible = TabPermissionController.CanDeletePage() && !TabController.IsSpecialTab(TabId, PortalSettings);
@@ -1611,7 +1599,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             try
             {
-                TabController.CopyPermissionsToChildren(new TabController().GetTab(TabId, PortalId, false), dgPermissions.Permissions);
+                TabController.CopyPermissionsToChildren(TabController.Instance.GetTab(TabId, PortalId, false), dgPermissions.Permissions);
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PermissionsCopied", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             catch (Exception ex)
@@ -1625,7 +1613,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             try
             {
-                TabController.CopyDesignToChildren(new TabController().GetTab(TabId, PortalId, false), pageSkinCombo.SelectedValue, pageContainerCombo.SelectedValue);
+                TabController.CopyDesignToChildren(TabController.Instance.GetTab(TabId, PortalId, false), pageSkinCombo.SelectedValue, pageContainerCombo.SelectedValue);
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DesignCopied", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             catch (Exception ex)
@@ -1783,10 +1771,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 {
                     var translatedCheckbox = (DnnCheckBox)sender;
                     int tabId = int.Parse(translatedCheckbox.CommandArgument);
-                    var tabCtrl = new TabController();
-                    TabInfo localizedTab = tabCtrl.GetTab(tabId, PortalId, false);
+                    TabInfo localizedTab = TabController.Instance.GetTab(tabId, PortalId, false);
 
-                    tabCtrl.UpdateTranslationStatus(localizedTab, translatedCheckbox.Checked);
+                    TabController.Instance.UpdateTranslationStatus(localizedTab, translatedCheckbox.Checked);
 
                 }
             }
@@ -1820,16 +1807,13 @@ namespace DotNetNuke.Modules.Admin.Tabs
             sendTranslationMessageConfirm.Visible = true;
             try
             {
-
-                var tabCtrl = new TabController();
-
                 // loop through all localized version of this page
                 foreach (TabInfo localizedTab in Tab.LocalizedTabs.Values)
                 {
                     var users = new Dictionary<int, UserInfo>();
 
                     //Give default translators for this language and administrators permissions
-                    tabCtrl.GiveTranslatorRoleEditRights(localizedTab, users);
+                    TabController.Instance.GiveTranslatorRoleEditRights(localizedTab, users);
 
                     //Send Messages to all the translators of new content
                     foreach (var translator in users.Values.Where(user => user.UserID != PortalSettings.AdministratorId))
@@ -1855,8 +1839,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         protected void MakeNeutral_Click(object sender, EventArgs e)
         {
-            var t = new TabController();
-            if (t.GetTabsByPortal(PortalId).WithParentId(_tab.TabID).Count == 0)
+            if (TabController.Instance.GetTabsByPortal(PortalId).WithParentId(_tab.TabID).Count == 0)
             {
                 var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
 
@@ -1875,9 +1858,8 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         protected void MakeTranslatable_Click(object sender, EventArgs e)
         {
-            var t = new TabController();
             var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
-            t.LocalizeTab(_tab, defaultLocale);
+            TabController.Instance.LocalizeTab(_tab, defaultLocale);
             TabController.Instance.AddMissingLanguages(PortalId, _tab.TabID);
             TabController.Instance.ClearCache(PortalId);
             Response.Redirect(Request.RawUrl, false);

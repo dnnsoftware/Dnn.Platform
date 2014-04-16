@@ -234,9 +234,7 @@ namespace DotNetNuke.Entities.Modules
 
         private void ClearModuleSettingsCache(int moduleId)
         {
-            var tabController = new TabController();
-
-            foreach (var tab in tabController.GetTabsByModuleID(moduleId).Values)
+            foreach (var tab in TabController.Instance.GetTabsByModuleID(moduleId).Values)
             {
                 string cacheKey = String.Format(DataCache.ModuleSettingsCacheKey, tab.TabID);
                 DataCache.RemoveCache(cacheKey);
@@ -245,9 +243,7 @@ namespace DotNetNuke.Entities.Modules
 
         private void ClearTabModuleSettingsCache(int tabModuleId)
         {
-            var tabController = new TabController();
-
-            foreach (var tab in tabController.GetTabsByTabModuleID(tabModuleId).Values)
+            foreach (var tab in TabController.Instance.GetTabsByTabModuleID(tabModuleId).Values)
             {
                 string cacheKey = String.Format(DataCache.TabModuleSettingsCacheKey, tab.TabID);
                 DataCache.RemoveCache(cacheKey);
@@ -2095,8 +2091,7 @@ namespace DotNetNuke.Entities.Modules
                 //apply settings to all desktop modules in portal
                 if (module.AllModules)
                 {
-                    var tabController = new TabController();
-                    foreach (KeyValuePair<int, TabInfo> tabPair in tabController.GetTabsByPortal(module.PortalID))
+                    foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(module.PortalID))
                     {
                         TabInfo tab = tabPair.Value;
                         foreach (KeyValuePair<int, ModuleInfo> modulePair in GetTabModules(tab.TabID))

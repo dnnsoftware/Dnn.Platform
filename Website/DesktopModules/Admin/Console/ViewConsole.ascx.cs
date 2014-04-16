@@ -265,7 +265,7 @@ namespace DesktopModules.Admin.Console
             {
                 if (UserInfo != null && UserInfo.IsSuperUser)
                 {
-                    var hostTabs = new TabController().GetTabsByPortal(Null.NullInteger);
+                    var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
                     if (hostTabs.Keys.Any(key => key == ConsoleTabID))
                     {
                         returnValue = true;

@@ -773,8 +773,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         }
                         tabPath = tabPath.Replace("/", "//");
                         tabPath = tabPath.Replace(".aspx", "");
-                        var objTabController = new TabController();
-                        TabCollection objTabs = objTabController.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalID);
+                        TabCollection objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalID);
                         foreach (KeyValuePair<int, TabInfo> kvp in objTabs)
                         {
                             if ((kvp.Value.IsDeleted == false && kvp.Value.TabPath.ToLower() == tabPath))
