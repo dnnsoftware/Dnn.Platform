@@ -556,6 +556,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                         break;
 
                     default:
+                        //handle upgrades where FilterCondition didn't exist
+                        SettingsRepository.SetDefaultFilterCondition(ModuleId);
                         this.RootFolderViewModel = this.controller.GetRootFolder(ModuleId);
                         break;
                 }

@@ -134,6 +134,18 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var moduleSettings = module.ModuleSettings; 
             return (string)moduleSettings[key];               
         }
+
+        internal bool SettingExists(int moduleId, string settingName)
+        {
+            return !String.IsNullOrEmpty(GetSettingByKey(moduleId, settingName));
+        }
+
+        internal void SetDefaultFilterCondition(int moduleId)
+        {
+            //handle upgrades where FilterCondition didn't exist
+            if (this.SettingExists(moduleId, "RootFolderId") && !this.SettingExists(moduleId, "FilterCondition"))
+                this.SaveFilterCondition(moduleId, FilterCondition.FilterByFolder);
+        }
     }
 
     public enum DigitalAssestsMode

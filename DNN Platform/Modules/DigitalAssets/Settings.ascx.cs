@@ -137,9 +137,12 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void LoadFilterViewSettings()
         {
+            //handle upgrades where FilterCondition didn't exist
+            SettingsRepository.SetDefaultFilterCondition(ModuleId);
+
             FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(ModuleId).ToString();
             SubfolderFilterRadioButtonList.SelectedValue = SettingsRepository.GetSubfolderFilter(ModuleId).ToString();
-
+            
             if (FilterOptionsRadioButtonsList.SelectedValue == FilterCondition.FilterByFolder.ToString())
             {
                 var folderId = SettingsRepository.GetRootFolderId(ModuleId);
