@@ -38,6 +38,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Controllers;
@@ -897,12 +898,26 @@ namespace DotNetNuke.Entities.Portals
             {
                 try
                 {
+                    EnsureProviderRegistration<FolderProvider>(folderTypeConfig.Provider);
                     FolderMappingController.Instance.AddFolderMapping(GetFolderMappingFromConfig(folderTypeConfig,
                         portalId));
                 }
                 catch (Exception ex)
                 {
                     Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error")+": "+folderTypeConfig.Name, ex);
+                }                
+            }
+        }
+        private static void EnsureProviderRegistration<TAbstract>(string nameClass)
+            where TAbstract : class            
+        {
+            var provider = ComponentFactory.GetComponent<TAbstract>();
+            if (provider == null)
+            {
+                var typeClass = Type.GetType(nameClass);
+                if (typeClass != null)
+                {
+                    ComponentFactory.RegisterComponentInstance<TAbstract>(nameClass, Activator.CreateInstance(typeClass));
                 }                
             }
         }
