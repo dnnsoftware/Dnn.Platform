@@ -460,13 +460,6 @@ namespace DotNetNuke.Entities.Tabs
             return tabpathDic;
         }
 
-        private static object GetTabsByPortalCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            List<TabInfo> tabs = CBO.FillCollection<TabInfo>(Provider.GetTabs(portalID));
-            return new TabCollection(tabs);
-        }
-
         internal IDictionary<int, TabInfo> GetTabsByTabModuleID(int tabModuleID)
         {
             return CBO.FillDictionary<int, TabInfo>("TabID", Provider.GetTabsByTabModuleID(tabModuleID));
@@ -658,6 +651,50 @@ namespace DotNetNuke.Entities.Tabs
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Adds localized copies of the page in all missing languages
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="tabId"></param>
+        public void AddMissingLanguages(int portalId, int tabId)
+        {
+            var currentTab = GetTab(tabId, portalId, false);
+            if (currentTab.CultureCode != null)
+            {
+                var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalId);
+                var workingTab = currentTab;
+                if (workingTab.CultureCode != defaultLocale.Code && workingTab.DefaultLanguageTab == null)
+                {
+                    // we are adding missing languages to a single culture page that is not in the default language
+                    // so we must first add a page in the default culture
+
+                    CreateLocalizedCopy(workingTab, defaultLocale, false);
+                }
+
+                if (currentTab.DefaultLanguageTab != null)
+                {
+                    workingTab = currentTab.DefaultLanguageTab;
+                }
+
+                foreach (Locale locale in LocaleController.Instance.GetLocales(portalId).Values)
+                {
+                    if (!LocaleController.Instance.IsDefaultLanguage(locale.Code))
+                    {
+                        bool missing = true;
+                        foreach (var localizedTab in workingTab.LocalizedTabs.Values.Where(localizedTab => localizedTab.CultureCode == locale.Code))
+                        {
+                            missing = false;
+                        }
+                        if (missing)
+                        {
+                            CreateLocalizedCopy(workingTab, locale, false);
+                        }
+                    }
+                }
+
+            }
+        }
 
         /// <summary>
         /// Adds a tab
@@ -1038,122 +1075,6 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Get the list of url's associated with a page (tab)
-        /// </summary>
-        /// <param name="tabId">the tab id</param>
-        /// <param name="portalId">the portal id</param>
-        /// <returns>list of urls associated with a tab</returns>
-        public List<TabUrlInfo> GetTabUrls(int tabId, int portalId)
-        {
-            //Get the Portal TabUrl Dictionary
-            Dictionary<int, List<TabUrlInfo>> dicTabUrls = GetTabUrls(portalId);
-
-            //Get the Collection from the Dictionary
-            List<TabUrlInfo> tabRedirects;
-            bool bFound = dicTabUrls.TryGetValue(tabId, out tabRedirects);
-            if (!bFound)
-            {
-                //Return empty collection
-                tabRedirects = new List<TabUrlInfo>();
-            }
-            return tabRedirects;
-        }
-
-        /// <summary>
-        /// Returns True if a page is missing a translated version in at least one other language
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <returns></returns>
-        public bool HasMissingLanguages(int portalId, int tabId)
-        {
-            var currentTab = GetTab(tabId, portalId, false);
-            var workingTab = currentTab;
-            var locales = LocaleController.Instance.GetLocales(portalId);
-            var LocaleCount = locales.Count;
-            if (currentTab.DefaultLanguageTab != null)
-            {
-                workingTab = currentTab.DefaultLanguageTab;
-            }
-
-            var localizedCount = 1 +
-                                 locales.Values.Where(locale => !LocaleController.Instance.IsDefaultLanguage(locale.Code))
-                                        .Count(locale => workingTab.LocalizedTabs.Values.Any(localizedTab => localizedTab.CultureCode == locale.Code));
-
-            return ((LocaleCount - localizedCount) != 0);
-
-        }
-
-
-
-
-
-
-
-        /// <summary>
-        /// Adds localized copies of the page in all missing languages
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        public void AddMissingLanguages(int portalId, int tabId)
-        {
-            var currentTab = GetTab(tabId, portalId, false);
-            if (currentTab.CultureCode != null)
-            {
-                var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalId);
-                var workingTab = currentTab;
-                if (workingTab.CultureCode != defaultLocale.Code && workingTab.DefaultLanguageTab == null)
-                {
-                    // we are adding missing languages to a single culture page that is not in the default language
-                    // so we must first add a page in the default culture
-
-                    CreateLocalizedCopy(workingTab, defaultLocale, false);
-                }
-
-                if (currentTab.DefaultLanguageTab != null)
-                {
-                    workingTab = currentTab.DefaultLanguageTab;
-                }
-
-                foreach (Locale locale in LocaleController.Instance.GetLocales(portalId).Values)
-                {
-                    if (!LocaleController.Instance.IsDefaultLanguage(locale.Code))
-                    {
-                        bool missing = true;
-                        foreach (var localizedTab in workingTab.LocalizedTabs.Values.Where(localizedTab => localizedTab.CultureCode == locale.Code))
-                        {
-                            missing = false;
-                        }
-                        if (missing)
-                        {
-                            CreateLocalizedCopy(workingTab, locale, false);
-                        }
-                    }
-                }
-
-            }
-        }
-
-        /// <summary>
-        /// Gets all tabs.
-        /// </summary>
-        /// <returns>tab collection</returns>
-        public ArrayList GetAllTabs()
-        {
-            return CBO.FillCollection(Provider.GetAllTabs(), typeof(TabInfo));
-        }
-
-        /// <summary>
-        /// Gets the tab by unique ID.
-        /// </summary>
-        /// <param name="uniqueID">The unique ID.</param>
-        /// <returns>tab info.</returns>
-        public TabInfo GetTabByUniqueID(Guid uniqueID)
-        {
-            return CBO.FillObject<TabInfo>(Provider.GetTabByUniqueID(uniqueID));
-        }
-
-        /// <summary>
         /// Gets the tab by culture.
         /// </summary>
         /// <param name="tabId">The tab id.</param>
@@ -1230,13 +1151,25 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Gets the tab count in portal.
+        /// Get the list of url's associated with a page (tab)
         /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>tab's count.</returns>
-        public int GetTabCount(int portalId)
+        /// <param name="tabId">the tab id</param>
+        /// <param name="portalId">the portal id</param>
+        /// <returns>list of urls associated with a tab</returns>
+        public List<TabUrlInfo> GetTabUrls(int tabId, int portalId)
         {
-            return GetTabsByPortal(portalId).Count;
+            //Get the Portal TabUrl Dictionary
+            Dictionary<int, List<TabUrlInfo>> dicTabUrls = GetTabUrls(portalId);
+
+            //Get the Collection from the Dictionary
+            List<TabUrlInfo> tabRedirects;
+            bool bFound = dicTabUrls.TryGetValue(tabId, out tabRedirects);
+            if (!bFound)
+            {
+                //Return empty collection
+                tabRedirects = new List<TabUrlInfo>();
+            }
+            return tabRedirects;
         }
 
         /// <summary>
@@ -1249,9 +1182,12 @@ namespace DotNetNuke.Entities.Tabs
             string cacheKey = string.Format(DataCache.TabCacheKey, portalId);
             return CBO.GetCachedObject<TabCollection>(new CacheItemArgs(cacheKey,
                                                                     DataCache.TabCacheTimeOut,
-                                                                    DataCache.TabCachePriority,
-                                                                    portalId),
-                                                            GetTabsByPortalCallBack);
+                                                                    DataCache.TabCachePriority),
+                                                            c =>
+                                                            {
+                                                                List<TabInfo> tabs = CBO.FillCollection<TabInfo>(Provider.GetTabs(portalId));
+                                                                return new TabCollection(tabs);
+                                                            });
         }
 
         /// <summary>
@@ -1261,9 +1197,6 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns>
         /// (cached) hashtable containing all settings
         /// </returns>
-        /// <history>
-        /// [jlucarino] 2009-08-31 Created
-        ///   </history>
         public Hashtable GetTabSettings(int tabId)
         {
             var portalId = GetPortalId(tabId, -1);
@@ -1274,6 +1207,38 @@ namespace DotNetNuke.Entities.Tabs
             }
             return settings;
         }
+
+        /// <summary>
+        /// Returns True if a page is missing a translated version in at least one other language
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="tabId"></param>
+        /// <returns></returns>
+        public bool HasMissingLanguages(int portalId, int tabId)
+        {
+            var currentTab = GetTab(tabId, portalId, false);
+            var workingTab = currentTab;
+            var locales = LocaleController.Instance.GetLocales(portalId);
+            var LocaleCount = locales.Count;
+            if (currentTab.DefaultLanguageTab != null)
+            {
+                workingTab = currentTab.DefaultLanguageTab;
+            }
+
+            var localizedCount = 1 +
+                                 locales.Values.Where(locale => !LocaleController.Instance.IsDefaultLanguage(locale.Code))
+                                        .Count(locale => workingTab.LocalizedTabs.Values.Any(localizedTab => localizedTab.CultureCode == locale.Code));
+
+            return ((LocaleCount - localizedCount) != 0);
+
+        }
+
+
+
+
+
+
+
 
         /// <summary>
         /// Gets the tabs which use the module.
@@ -1521,6 +1486,43 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
+        /// Adds or updates a tab's setting value
+        /// </summary>
+        /// <param name="tabId">ID of the tab to update</param>
+        /// <param name="settingName">name of the setting property</param>
+        /// <param name="settingValue">value of the setting (String).</param>
+        /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true</remarks>
+        /// <history>
+        ///    [jlucarino] 2009-10-01 Created
+        /// </history>
+        public void UpdateTabSetting(int tabId, string settingName, string settingValue)
+        {
+            IDataReader dr = Provider.GetTabSetting(tabId, settingName);
+            if (dr.Read())
+            {
+                if (dr.GetString(0) != settingValue)
+                {
+                    Provider.UpdateTabSetting(tabId, settingName, settingValue,
+                                              UserController.GetCurrentUserInfo().UserID);
+                    EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_UPDATED,
+                                                     "TabId", tabId, settingName, settingValue,
+                                                     UserController.GetCurrentUserInfo().UserID);
+                }
+            }
+            else
+            {
+                Provider.AddTabSetting(tabId, settingName, settingValue, UserController.GetCurrentUserInfo().UserID);
+                EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
+                                                 "TabId", tabId, settingName, settingValue,
+                                                 UserController.GetCurrentUserInfo().UserID);
+            }
+            dr.Close();
+
+            UpdateTabVersion(tabId);
+            ClearTabSettingsCache(tabId);
+        }
+
+        /// <summary>
         /// Updates the tab to databse.
         /// </summary>
         /// <param name="updatedTab">The updated tab.</param>
@@ -1606,43 +1608,6 @@ namespace DotNetNuke.Entities.Tabs
             {
                 ClearCache(originalTab.PortalID);
             }
-        }
-
-        /// <summary>
-        /// Adds or updates a tab's setting value
-        /// </summary>
-        /// <param name="tabId">ID of the tab to update</param>
-        /// <param name="settingName">name of the setting property</param>
-        /// <param name="settingValue">value of the setting (String).</param>
-        /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true</remarks>
-        /// <history>
-        ///    [jlucarino] 2009-10-01 Created
-        /// </history>
-        public void UpdateTabSetting(int tabId, string settingName, string settingValue)
-        {
-            IDataReader dr = Provider.GetTabSetting(tabId, settingName);
-            if (dr.Read())
-            {
-                if (dr.GetString(0) != settingValue)
-                {
-                    Provider.UpdateTabSetting(tabId, settingName, settingValue,
-                                              UserController.GetCurrentUserInfo().UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_UPDATED,
-                                                     "TabId", tabId, settingName, settingValue,
-                                                     UserController.GetCurrentUserInfo().UserID);
-                }
-            }
-            else
-            {
-                Provider.AddTabSetting(tabId, settingName, settingValue, UserController.GetCurrentUserInfo().UserID);
-                EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
-                                                 "TabId", tabId, settingName, settingValue,
-                                                 UserController.GetCurrentUserInfo().UserID);
-            }
-            dr.Close();
-
-            UpdateTabVersion(tabId);
-            ClearTabSettingsCache(tabId);
         }
 
         /// <summary>
@@ -2261,9 +2226,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         //Parent node doesn't spcecify the path, search by name.
                         //Possible incoherence if tabname not unique
-                        TabInfo objParent =
-                            tabController.GetTabByName(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent"),
-                                                       portalId);
+                        TabInfo objParent = Instance.GetTabByName(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent"),portalId);
                         if (objParent != null)
                         {
                             tab.ParentId = objParent.TabID;
@@ -2294,7 +2257,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         //Parent node doesn't spcecify the path, search by name.
                         //Possible incoherence if tabname not unique
-                        TabInfo defaultLanguageTab = tabController.GetTabByName(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab"), portalId);
+                        TabInfo defaultLanguageTab = Instance.GetTabByName(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab"), portalId);
                         if (defaultLanguageTab != null)
                         {
                             tab.DefaultLanguageGuid = defaultLanguageTab.UniqueId;
@@ -2390,8 +2353,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="checkEditPermission">if set to <c>true</c> [check edit permission].</param>
         /// <returns></returns>
         public static List<TabInfo> GetPortalTabs(int portalId, int excludeTabId, bool includeNoneSpecified,
-                                                  string noneSpecifiedText, bool includeHidden, bool includeDeleted,
-                                                  bool includeURL,
+                                                  string noneSpecifiedText, bool includeHidden, bool includeDeleted, bool includeURL,
                                                   bool checkViewPermisison, bool checkEditPermission)
         {
             return GetPortalTabs(GetTabsBySortOrder(portalId, PortalController.GetActivePortalLanguage(portalId), true),
@@ -2419,8 +2381,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="checkEditPermission">if set to <c>true</c> [check edit permission].</param>
         /// <returns></returns>
         public static List<TabInfo> GetPortalTabs(List<TabInfo> tabs, int excludeTabId, bool includeNoneSpecified,
-                                                  string noneSpecifiedText, bool includeHidden, bool includeDeleted,
-                                                  bool includeURL,
+                                                  string noneSpecifiedText, bool includeHidden, bool includeDeleted, bool includeURL,
                                                   bool checkViewPermisison, bool checkEditPermission)
         {
             var listTabs = new List<TabInfo>();

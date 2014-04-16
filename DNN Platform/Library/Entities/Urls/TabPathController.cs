@@ -112,9 +112,8 @@ namespace DotNetNuke.Entities.Urls
             if (String.Compare(defaultCulture, cultureCode, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 //not the default culture, so there could be a different home page for the different cultulre in 5.5+ builds
-                var tc = new TabController();
                 var cultureLocale = new Locale { Code = cultureCode, Fallback = cultureCode, Text = cultureCode };
-                TabInfo tab = tc.GetTabByCulture(defaultHomeTabId, portalId, cultureLocale);
+                TabInfo tab = TabController.Instance.GetTabByCulture(defaultHomeTabId, portalId, cultureLocale);
                 if (tab != null)
                 {
                     //this is the culture specific tab of the home page

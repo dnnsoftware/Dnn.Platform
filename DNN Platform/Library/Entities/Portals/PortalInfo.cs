@@ -708,8 +708,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (_pages < 0)
                 {
-                    var objTabController = new TabController();
-                    _pages = objTabController.GetTabCount(PortalID);
+                    _pages = TabController.Instance.GetTabsByPortal(PortalID).Count;
                 }
                 return _pages;
             }

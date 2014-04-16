@@ -572,7 +572,7 @@ namespace DotNetNuke.UI.ControlPanel
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
                     //check whether original tab is exists, if true then set culture code to default language,
                     //otherwise set culture code to current.
-                    if (new TabController().GetTabByCulture(objModule.TabID, PortalSettings.Current.PortalId, defaultLocale) != null)
+                    if (TabController.Instance.GetTabByCulture(objModule.TabID, PortalSettings.Current.PortalId, defaultLocale) != null)
                     {
                         objModule.CultureCode = defaultLocale.Code;
                     }

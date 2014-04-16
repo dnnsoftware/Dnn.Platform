@@ -458,28 +458,27 @@ namespace DotNetNuke.Web.InternalServices
                 searchFunc = page => page.LocalizedTabName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1;
             }
 
-            var tabController = new TabController();
-            var allTabs = tabController.GetAllTabs().ToArray().Select(tab => (TabInfo)tab).ToList();
-
             if (portalId > -1)
             {
                 var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
 
-                if (!includeHiddenTabs) allTabs = allTabs.Where(t => t.IsVisible).ToList();
-                tabs = allTabs.Where(tab => tab.PortalID == portalId
-                                        && (includeActive || tab.TabID != PortalSettings.ActiveTab.TabID)
-                                        && (includeDisabled || !tab.DisableLink) 
-                                        && (includeAllTypes || tab.TabType == TabType.Normal) 
-                                        && searchFunc(tab))
-                    .OrderBy(tab => tab.TabOrder)
+                tabs = TabController.Instance.GetTabsByPortal(portalId).Where(tab =>
+                                        (includeActive || tab.Value.TabID != PortalSettings.ActiveTab.TabID)
+                                        && (includeHiddenTabs || tab.Value.IsVisible)
+                                        && (includeDisabled || !tab.Value.DisableLink) 
+                                        && (includeAllTypes || tab.Value.TabType == TabType.Normal) 
+                                        && searchFunc(tab.Value))
+                    .OrderBy(tab => tab.Value.TabOrder)
+                    .Select(tab => tab.Value)
                     .ToList();
             }
             else
             {
                 if (PortalSettings.UserInfo.IsSuperUser)
                 {
-                    tabs = allTabs.Where(tab => tab.PortalID == -1 && !tab.DisableLink && searchFunc(tab))
-                    .OrderBy(tab => tab.TabOrder)
+                    tabs = TabController.Instance.GetTabsByPortal(-1).Where(tab => !tab.Value.DisableLink && searchFunc(tab.Value))
+                    .OrderBy(tab => tab.Value.TabOrder)
+                    .Select(tab => tab.Value)
                     .ToList();
                 }
                 else

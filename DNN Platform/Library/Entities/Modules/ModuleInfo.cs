@@ -529,7 +529,6 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (_parentTab == null)
                 {
-                    var tabCtrl = new TabController();
                     if (PortalID == Null.NullInteger || string.IsNullOrEmpty(CultureCode))
                     {
                         _parentTab = TabController.Instance.GetTab(TabID, PortalID, false);
@@ -537,7 +536,7 @@ namespace DotNetNuke.Entities.Modules
                     else
                     {
                         Locale locale = LocaleController.Instance.GetLocale(CultureCode);
-                        _parentTab = tabCtrl.GetTabByCulture(TabID, PortalID, locale);
+                        _parentTab = TabController.Instance.GetTabByCulture(TabID, PortalID, locale);
                     }
                 }
                 return _parentTab;

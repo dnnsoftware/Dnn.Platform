@@ -1033,10 +1033,9 @@ namespace DotNetNuke.Entities.Modules
         {
             var moduleController = new ModuleController();
             ArrayList modules = moduleController.GetModuleTabs(moduleID);
-            var tabController = new TabController();
             foreach (ModuleInfo module in modules)
             {
-                Hashtable tabSettings = tabController.GetTabSettings(module.TabID);
+                Hashtable tabSettings = TabController.Instance.GetTabSettings(module.TabID);
                 if (tabSettings["CacheProvider"] != null && tabSettings["CacheProvider"].ToString().Length > 0)
                 {
                     var outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());

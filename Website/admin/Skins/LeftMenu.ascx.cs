@@ -667,7 +667,7 @@ namespace DotNetNuke.UI.Skins.Controls
 			//check if user specified a page name
             if ((ShowOnlyCurrent.StartsWith("PageItem:")))
             {
-                TabInfo temptab = objTabController.GetTabByName(ShowOnlyCurrent.Substring(("PageItem:").Length), PortalSettings.PortalId);
+                TabInfo temptab = TabController.Instance.GetTabByName(ShowOnlyCurrent.Substring(("PageItem:").Length), PortalSettings.PortalId);
                 if ((temptab != null))
                 {
                     StartingItemId = temptab.TabID;

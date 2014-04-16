@@ -199,12 +199,10 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         private void InitializePage()
         {
-            var tabController = new TabController();
-
             //redirect to a specific tab based on name
             if (!String.IsNullOrEmpty(Request.QueryString["tabname"]))
             {
-                TabInfo tab = tabController.GetTabByName(Request.QueryString["TabName"], ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).PortalId);
+                TabInfo tab = TabController.Instance.GetTabByName(Request.QueryString["TabName"], ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).PortalId);
                 if (tab != null)
                 {
                     var parameters = new List<string>(); //maximum number of elements

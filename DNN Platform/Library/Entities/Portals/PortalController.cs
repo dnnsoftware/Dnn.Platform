@@ -2421,8 +2421,6 @@ namespace DotNetNuke.Entities.Portals
         /// </remarks>
         public void MapLocalizedSpecialPages(int portalId, string cultureCode)
         {
-            TabController tabCont = new TabController();
-
             DataCache.ClearHostCache(true);
             DataProvider.Instance().EnsureLocalizationExists(portalId, cultureCode);
 
@@ -2433,7 +2431,7 @@ namespace DotNetNuke.Entities.Portals
             TabInfo tempTab;
             if (defaultPortal.HomeTabId != Null.NullInteger)
             {
-                tempTab = tabCont.GetTabByCulture(defaultPortal.HomeTabId, portalId, targetLocale);
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.HomeTabId, portalId, targetLocale);
                 if (tempTab != null)
                 {
                     targetPortal.HomeTabId = tempTab.TabID;
@@ -2441,7 +2439,7 @@ namespace DotNetNuke.Entities.Portals
             }
             if (defaultPortal.LoginTabId != Null.NullInteger)
             {
-                tempTab = tabCont.GetTabByCulture(defaultPortal.LoginTabId, portalId, targetLocale);
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.LoginTabId, portalId, targetLocale);
                 if (tempTab != null)
                 {
                     targetPortal.LoginTabId = tempTab.TabID;
@@ -2449,7 +2447,7 @@ namespace DotNetNuke.Entities.Portals
             }
             if (defaultPortal.RegisterTabId != Null.NullInteger)
             {
-                tempTab = tabCont.GetTabByCulture(defaultPortal.RegisterTabId, portalId, targetLocale);
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.RegisterTabId, portalId, targetLocale);
                 if (tempTab != null)
                 {
                     targetPortal.RegisterTabId = tempTab.TabID;
@@ -2457,7 +2455,7 @@ namespace DotNetNuke.Entities.Portals
             }
             if (defaultPortal.SplashTabId != Null.NullInteger)
             {
-                tempTab = tabCont.GetTabByCulture(defaultPortal.SplashTabId, portalId, targetLocale);
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.SplashTabId, portalId, targetLocale);
                 if (tempTab != null)
                 {
                     targetPortal.SplashTabId = tempTab.TabID;
@@ -2465,7 +2463,7 @@ namespace DotNetNuke.Entities.Portals
             }
             if (defaultPortal.UserTabId != Null.NullInteger)
             {
-                tempTab = tabCont.GetTabByCulture(defaultPortal.UserTabId, portalId, targetLocale);
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.UserTabId, portalId, targetLocale);
                 if (tempTab != null)
                 {
                     targetPortal.UserTabId = tempTab.TabID;
@@ -2473,7 +2471,7 @@ namespace DotNetNuke.Entities.Portals
             }
             if (defaultPortal.SearchTabId != Null.NullInteger)
             {
-                tempTab = tabCont.GetTabByCulture(defaultPortal.SearchTabId, portalId, targetLocale);
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.SearchTabId, portalId, targetLocale);
                 if (tempTab != null)
                 {
                     targetPortal.SearchTabId = tempTab.TabID;
@@ -2481,7 +2479,7 @@ namespace DotNetNuke.Entities.Portals
             }
             if (defaultPortal.Custom404TabId != Null.NullInteger)
             {
-                tempTab = tabCont.GetTabByCulture(defaultPortal.Custom404TabId, portalId, targetLocale);
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.Custom404TabId, portalId, targetLocale);
                 if (tempTab != null)
                 {
                     targetPortal.Custom404TabId = tempTab.TabID;
@@ -2489,7 +2487,7 @@ namespace DotNetNuke.Entities.Portals
             }
             if (defaultPortal.Custom500TabId != Null.NullInteger)
             {
-                tempTab = tabCont.GetTabByCulture(defaultPortal.Custom500TabId, portalId, targetLocale);
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.Custom500TabId, portalId, targetLocale);
                 if (tempTab != null)
                 {
                     targetPortal.Custom500TabId = tempTab.TabID;

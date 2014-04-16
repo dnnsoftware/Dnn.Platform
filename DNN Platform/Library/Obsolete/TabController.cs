@@ -177,10 +177,18 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 6.2. Method is redundant. Replaced by GetAllTabs()")]
+        [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabasByPortal")]
+        public ArrayList GetAllTabs()
+        {
+            return CBO.FillCollection(Provider.GetAllTabs(), typeof(TabInfo));
+        }
+
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 6.2. Method is not scalable. Use GetTabasByPortal")]
         public ArrayList GetAllTabs(bool checkLegacyFields)
         {
-            return GetAllTabs();
+            return CBO.FillCollection(Provider.GetAllTabs(), typeof(TabInfo));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -195,6 +203,20 @@ namespace DotNetNuke.Entities.Tabs
         public static int GetTabByTabPath(int portalId, string tabPath)
         {
             return GetTabByTabPath(portalId, tabPath, Null.NullString);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 7.3. Use LINQ queries on tab collections thata re cached")]
+        public TabInfo GetTabByUniqueID(Guid uniqueID)
+        {
+            return CBO.FillObject<TabInfo>(Provider.GetTabByUniqueID(uniqueID));
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 7.3. Use GetTabsByPortal(portalId).Count")]
+        public int GetTabCount(int portalId)
+        {
+            return GetTabsByPortal(portalId).Count;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

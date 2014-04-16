@@ -365,7 +365,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 installLanguagePackLink.NavigateUrl = Util.InstallURL(ModuleContext.TabId, "");
 
                 installAvailableLanguagePackLink.Visible = UserInfo.IsSuperUser;
-                var tab = TabController.GetTabByName("Extensions", Null.NullInteger);
+                var tab = TabController.Instance.GetTabByName("Extensions", Null.NullInteger);
                 installAvailableLanguagePackLink.NavigateUrl = string.Format("{0}#availableExtensions", tab.FullUrl);
 
                 if (!ModulePermissionController.CanAdminModule(ModuleConfiguration))
@@ -786,7 +786,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             var tab = ddlPages.SelectedPage;
             var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
             TabController.LocalizeTab(tab, defaultLocale, false);
-            TabController.AddMissingLanguages(PortalId, tab.TabID);
+            TabController.Instance.AddMissingLanguages(PortalId, tab.TabID);
             TabController.Instance.ClearCache(PortalId);
             BindCLControl();
         }
@@ -810,7 +810,7 @@ namespace DotNetNuke.Modules.Admin.Languages
 
         protected void AddMissing_Click(object sender, EventArgs e)
         {
-            TabController.AddMissingLanguages(PortalId, ddlPages.SelectedPage.TabID);
+            TabController.Instance.AddMissingLanguages(PortalId, ddlPages.SelectedPage.TabID);
 
             BindCLControl();
 

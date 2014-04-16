@@ -19,7 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Collections;
 using System.Collections.Generic;
+
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Tabs
 {
@@ -29,6 +32,13 @@ namespace DotNetNuke.Entities.Tabs
     /// </summary>
     public interface ITabController
     {
+        /// <summary>
+        /// Adds localized copies of the page in all missing languages
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="tabId"></param>
+        void AddMissingLanguages(int portalId, int tabId);
+
         /// <summary>
         /// Adds a tab
         /// </summary>
@@ -170,6 +180,48 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="ignoreCache">if set to <c>true</c> will get tab info directly from database.</param>
         /// <returns>tab info.</returns>
         TabInfo GetTab(int tabId, int portalId, bool ignoreCache);
+
+        /// <summary>
+        /// Gets the tab by culture.
+        /// </summary>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="locale">The locale.</param>
+        /// <returns>tab info.</returns>
+        TabInfo GetTabByCulture(int tabId, int portalId, Locale locale);
+
+        /// <summary>
+        /// Gets the name of the tab by name.
+        /// </summary>
+        /// <param name="tabName">Name of the tab.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>tab info.</returns>
+        TabInfo GetTabByName(string tabName, int portalId);
+
+        /// <summary>
+        /// Gets the name of the tab by name and parent id.
+        /// </summary>
+        /// <param name="tabName">Name of the tab.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="parentId">The parent id.</param>
+        /// <returns>tab info</returns>
+        TabInfo GetTabByName(string tabName, int portalId, int parentId);
+
+        /// <summary>
+        /// Gets the tabs by portal.
+        /// </summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>tab collection</returns>
+        TabCollection GetTabsByPortal(int portalId);
+
+        /// <summary>
+        /// read all settings for a tab from TabSettings table
+        /// </summary>
+        /// <param name="tabId">ID of the Tab to query</param>
+        /// <returns>
+        /// (cached) hashtable containing all settings
+        /// </returns>
+        Hashtable GetTabSettings(int tabId);
 
         /// <summary>
         /// Get the list of url's associated with a page (tab)

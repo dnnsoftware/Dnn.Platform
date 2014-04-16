@@ -442,7 +442,7 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddPage:" + tabName);
             var tabController = new TabController();
 
-            TabInfo tab = tabController.GetTabByName(tabName, portalId, parentId);
+            TabInfo tab = TabController.Instance.GetTabByName(tabName, portalId, parentId);
 
             if (tab == null || tab.ParentId != parentId)
             {
@@ -906,10 +906,9 @@ namespace DotNetNuke.Services.Upgrade
         private static bool HostTabExists(string tabName)
         {
             bool tabExists = false;
-            var tabController = new TabController();
-            var hostTab = tabController.GetTabByName("Host", Null.NullInteger);
+            var hostTab = TabController.Instance.GetTabByName("Host", Null.NullInteger);
 
-            var tab = tabController.GetTabByName(tabName, Null.NullInteger, hostTab.TabID);
+            var tab = TabController.Instance.GetTabByName(tabName, Null.NullInteger, hostTab.TabID);
             if ((tab != null))
             {
                 tabExists = true;
@@ -1089,8 +1088,7 @@ namespace DotNetNuke.Services.Upgrade
             switch (parentTabName)
             {
                 case "Host":
-                    var tabController = new TabController();
-                    var tab = tabController.GetTabByName("Host", Null.NullInteger, Null.NullInteger);
+                    var tab = TabController.Instance.GetTabByName("Host", Null.NullInteger, Null.NullInteger);
 
                     if (tab != null)
                     {
@@ -1140,9 +1138,8 @@ namespace DotNetNuke.Services.Upgrade
         private static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModule:" + desktopModuleName);
-            var tabController = new TabController();
             var moduleController = new ModuleController();
-            TabInfo tab = tabController.GetTabByName(tabName, Null.NullInteger, parentId);
+            TabInfo tab = TabController.Instance.GetTabByName(tabName, Null.NullInteger, parentId);
             int moduleDefId = 0;
             int count = 0;
 
@@ -1513,7 +1510,7 @@ namespace DotNetNuke.Services.Upgrade
             DesktopModuleController.DeleteDesktopModule("Module Definition Validator");
 
             //Get Module Definitions
-            TabInfo definitionsPage = tabController.GetTabByName("Module Definitions", Null.NullInteger);
+            TabInfo definitionsPage = TabController.Instance.GetTabByName("Module Definitions", Null.NullInteger);
 
             //Add Module To Page if not present
             int moduleId = AddModuleToPage(definitionsPage, moduleDefId, "Module Definitions", "~/images/icon_moduledefinitions_32px.gif");
@@ -1788,7 +1785,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         string tabName = XmlUtils.GetNodeValue(userTabNode.CreateNavigator(), "name");
 
-                        var userTab = tabController.GetTabByName(tabName, portal.PortalID) ?? TabController.DeserializeTab(userTabNode, null, portal.PortalID, PortalTemplateModuleAction.Merge);
+                        var userTab = TabController.Instance.GetTabByName(tabName, portal.PortalID) ?? TabController.DeserializeTab(userTabNode, null, portal.PortalID, PortalTemplateModuleAction.Merge);
 
                         //Update SiteSettings to point to the new page
                         if (portal.UserTabId > Null.NullInteger)
@@ -2228,7 +2225,7 @@ namespace DotNetNuke.Services.Upgrade
 
             FavIconsToPortalSettings();
 
-            var tab = tabController.GetTabByName("Host", Null.NullInteger, Null.NullInteger);
+            var tab = TabController.Instance.GetTabByName("Host", Null.NullInteger, Null.NullInteger);
 
             if (tab != null)
             {
@@ -2290,7 +2287,7 @@ namespace DotNetNuke.Services.Upgrade
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var tabController = new TabController();
-                var siteMap = tabController.GetTabByName("Search Engine SiteMap", portal.PortalID);
+                var siteMap = TabController.Instance.GetTabByName("Search Engine SiteMap", portal.PortalID);
 
                 if (siteMap != null)
                 {
@@ -2316,7 +2313,7 @@ namespace DotNetNuke.Services.Upgrade
             EnableModalPopUps();
 
             var tabController = new TabController();
-            var tab = tabController.GetTabByName("Portals", Null.NullInteger);
+            var tab = TabController.Instance.GetTabByName("Portals", Null.NullInteger);
             tab.TabName = "Site Management";
             tabController.UpdateTab(tab);
 
@@ -3500,8 +3497,7 @@ namespace DotNetNuke.Services.Upgrade
         public static TabInfo AddHostPage(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddHostPage:" + tabName);
-            var tabController = new TabController();
-            TabInfo hostPage = tabController.GetTabByName("Host", Null.NullInteger);
+            TabInfo hostPage = TabController.Instance.GetTabByName("Host", Null.NullInteger);
 
             if ((hostPage != null))
             {
@@ -4861,8 +4857,7 @@ namespace DotNetNuke.Services.Upgrade
         public static void RemoveHostPage(string pageName)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveHostPage:" + pageName);
-            var controller = new TabController();
-            TabInfo skinsTab = controller.GetTabByName(pageName, Null.NullInteger);
+            TabInfo skinsTab = TabController.Instance.GetTabByName(pageName, Null.NullInteger);
             if (skinsTab != null)
             {
                 TabController.Instance.DeleteTab(skinsTab.TabID, Null.NullInteger);

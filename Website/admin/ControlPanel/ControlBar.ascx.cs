@@ -427,8 +427,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetTabURL(string tabName, int portalId, int? parentId)
         {
-            var tabController = new TabController();
-			var tab = parentId.HasValue ? tabController.GetTabByName(tabName, portalId, parentId.Value) : tabController.GetTabByName(tabName, portalId);
+            var tab = parentId.HasValue ? TabController.Instance.GetTabByName(tabName, portalId, parentId.Value) : TabController.Instance.GetTabByName(tabName, portalId);
 
             if (tab != null)
             {
@@ -1012,11 +1011,10 @@ namespace DotNetNuke.UI.ControlPanels
 
         private void GetHostTabs()
         {
-            var tabController = new TabController();
             var hostTab = TabController.GetTabByTabPath(Null.NullInteger, "//Host", string.Empty);
             var hosts = TabController.GetTabsByParent(hostTab, -1);
 
-            var professionalTab = tabController.GetTabByName("Professional Features", -1);
+            var professionalTab = TabController.Instance.GetTabByName("Professional Features", -1);
             List<TabInfo> professionalTabs;
             if (professionalTab != null)
             {

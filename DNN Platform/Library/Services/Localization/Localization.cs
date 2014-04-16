@@ -533,7 +533,7 @@ namespace DotNetNuke.Services.Localization
 
                 alias = String.Format("{0}/{1}", httpAlias, modifiedLocale);
 
-                var tab = new TabController().GetTabByName(modifiedLocale, portalId);
+                var tab = TabController.Instance.GetTabByName(modifiedLocale, portalId);
                 isValid = (tab == null);
 
                 if (isValid)

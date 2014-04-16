@@ -316,7 +316,7 @@ namespace DotNetNuke.UI.Skins.Controls
 				tab = tab.DefaultLanguageTab;
 			}
 
-			return new TabController().GetTabByCulture(tab.TabID, tab.PortalID, locale) != null;
+            return TabController.Instance.GetTabByCulture(tab.TabID, tab.PortalID, locale) != null;
 		}
 
 		#endregion

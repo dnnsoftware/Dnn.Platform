@@ -105,11 +105,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
         private List<ModuleInfo> GetChildModules(int tabId, string cultureCode)
         {
             var modules = new List<ModuleInfo>();
-            var tabCtrl = new TabController();
             Locale locale = LocaleController.Instance.GetLocale(cultureCode);
             if (locale != null)
             {
-                modules = (from kvp in tabCtrl.GetTabByCulture(tabId, PortalSettings.PortalId, locale).ChildModules where !kvp.Value.IsDeleted select kvp.Value).ToList();
+                modules = (from kvp in TabController.Instance.GetTabByCulture(tabId, PortalSettings.PortalId, locale).ChildModules where !kvp.Value.IsDeleted select kvp.Value).ToList();
             }
             return modules;
         }
@@ -136,14 +135,14 @@ namespace DotNetNuke.Modules.Admin.Tabs
         protected bool CanEdit(int editTabId, string cultureCode)
         {
             Locale locale = LocaleController.Instance.GetLocale(cultureCode);
-            return TabPermissionController.CanManagePage(new TabController().GetTabByCulture(editTabId, PortalSettings.PortalId, locale));
+            return TabPermissionController.CanManagePage(TabController.Instance.GetTabByCulture(editTabId, PortalSettings.PortalId, locale));
         }
 
         protected bool CanView(int viewTabId, string cultureCode)
         {
             Locale locale = LocaleController.Instance.GetLocale(cultureCode);
-            TabInfo viewTab = new TabController().GetTabByCulture(viewTabId, PortalSettings.PortalId, locale);
-            return CanEdit(viewTabId, cultureCode) || (!viewTab.DisableLink && TabPermissionController.CanViewPage(new TabController().GetTabByCulture(viewTabId, PortalSettings.PortalId, locale)));
+            TabInfo viewTab = TabController.Instance.GetTabByCulture(viewTabId, PortalSettings.PortalId, locale);
+            return CanEdit(viewTabId, cultureCode) || (!viewTab.DisableLink && TabPermissionController.CanViewPage(TabController.Instance.GetTabByCulture(viewTabId, PortalSettings.PortalId, locale)));
         }
 
         protected string GetLocalizedModules(int tabId, string cultureCode)

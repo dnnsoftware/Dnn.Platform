@@ -239,7 +239,7 @@ namespace DotNetNuke.UI.Skins.Controls
             int tabId = objPortal.ActiveTab.TabID;
             bool islocalized = false;
 
-            TabInfo localizedTab = new TabController().GetTabByCulture(tabId, objPortal.PortalId, newLocale);
+            TabInfo localizedTab = TabController.Instance.GetTabByCulture(tabId, objPortal.PortalId, newLocale);
             if (localizedTab != null)
             {
                 islocalized = true;

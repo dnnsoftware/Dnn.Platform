@@ -465,8 +465,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 rblCacheIncludeExclude.Items[0].Selected = true;
             }
 
-            var tabController = new TabController();
-            var tabSettings = tabController.GetTabSettings(TabId);
+            var tabSettings = TabController.Instance.GetTabSettings(TabId);
             SetValue(cboCacheProvider, tabSettings, "CacheProvider");
             SetValue(txtCacheDuration, tabSettings, "CacheDuration");
             SetValue(rblCacheIncludeExclude, tabSettings, "CacheIncludeExclude");
@@ -821,7 +820,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         parentTab = objTabs.GetTab(Tab.ParentId, PortalId, false);
                         if (parentTab.CultureCode != Tab.CultureCode)
                         {
-                            parentTab = objTabs.GetTabByCulture(Tab.ParentId, PortalId, tabLocale);
+                            parentTab = TabController.Instance.GetTabByCulture(Tab.ParentId, PortalId, tabLocale);
                         }
                         if (parentTab != null)
                         {
@@ -832,10 +831,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     //Fix position TabId
                     if (positionTabId > Null.NullInteger)
                     {
-                        var positionTab = objTabs.GetTab(positionTabId, PortalId, false);
+                        var positionTab = TabController.Instance.GetTab(positionTabId, PortalId, false);
                         if (positionTab.CultureCode != Tab.CultureCode)
                         {
-                            positionTab = objTabs.GetTabByCulture(positionTabId, PortalId, tabLocale);
+                            positionTab = TabController.Instance.GetTabByCulture(positionTabId, PortalId, tabLocale);
                         }
                         if (positionTab != null)
                         {
@@ -1869,7 +1868,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         protected void AddMissing_Click(object sender, EventArgs e)
         {
-            new TabController().AddMissingLanguages(PortalId, _tab.TabID);
+            TabController.Instance.AddMissingLanguages(PortalId, _tab.TabID);
 
             BindCLControl();
         }
@@ -1879,7 +1878,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             var t = new TabController();
             var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
             t.LocalizeTab(_tab, defaultLocale);
-            t.AddMissingLanguages(PortalId, _tab.TabID);
+            TabController.Instance.AddMissingLanguages(PortalId, _tab.TabID);
             TabController.Instance.ClearCache(PortalId);
             Response.Redirect(Request.RawUrl, false);
         }

@@ -220,15 +220,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
                     }
                     else
                     {
-                        TabInfo objTab;
-						if (Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
-                        {
-                            objTab = objTabs.GetTabByName("Vendors", Null.NullInteger);
-                        }
-                        else
-                        {
-                            objTab = objTabs.GetTabByName("Vendors", PortalId);
-                        }
+                        TabInfo objTab = TabController.Instance.GetTabByName("Vendors", Globals.IsHostTab(PortalSettings.ActiveTab.TabID) ? Null.NullInteger : PortalId);
                         if (objTab != null)
                         {
                             ViewState["filter"] = Request.QueryString["filter"];

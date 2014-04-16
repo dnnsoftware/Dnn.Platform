@@ -487,7 +487,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _settings ?? (_settings = (TabID == Null.NullInteger) ? new Hashtable() : new TabController().GetTabSettings(TabID));
+                return _settings ?? (_settings = (TabID == Null.NullInteger) ? new Hashtable() : TabController.Instance.GetTabSettings(TabID));
             }
         }
 

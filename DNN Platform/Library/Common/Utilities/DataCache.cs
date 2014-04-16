@@ -379,9 +379,7 @@ namespace DotNetNuke.Common.Utilities
             Dictionary<int, int> portals = PortalController.GetPortalDictionary();
             if (portals.ContainsKey(TabId))
             {
-                var tabController = new TabController();
-
-                Hashtable tabSettings = tabController.GetTabSettings(TabId);
+                Hashtable tabSettings = TabController.Instance.GetTabSettings(TabId);
                 if (tabSettings["CacheProvider"] != null && tabSettings["CacheProvider"].ToString().Length > 0)
                 {
                     OutputCachingProvider outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());

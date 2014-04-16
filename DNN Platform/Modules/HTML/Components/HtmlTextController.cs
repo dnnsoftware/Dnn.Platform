@@ -440,7 +440,7 @@ namespace DotNetNuke.Modules.Html
             if (workFlowId == Null.NullInteger)
             {
                 // if undefined at module level, get from tab settings
-                settings = new TabController().GetTabSettings(TabId);
+                settings = TabController.Instance.GetTabSettings(TabId);
                 if (settings["WorkflowID"] != null)
                 {
                     workFlowId = Convert.ToInt32(settings["WorkflowID"]);

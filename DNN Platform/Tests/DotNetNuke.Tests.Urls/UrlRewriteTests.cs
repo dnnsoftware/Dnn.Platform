@@ -143,8 +143,7 @@ namespace DotNetNuke.Tests.Urls
 
             if (!String.IsNullOrEmpty(_securePageName))
             {
-                var tc = new TabController();
-                var tab = tc.GetTabByName(_securePageName, PortalId);
+                var tab = TabController.Instance.GetTabByName(_securePageName, PortalId);
                 if (tab != null)
                 {
                     tab.IsSecure = false;
@@ -180,8 +179,7 @@ namespace DotNetNuke.Tests.Urls
         {
             base.TestFixtureSetUp();
 
-            var tc = new TabController();
-            var tab = tc.GetTabByName(_aboutUsPageName, PortalId);
+            var tab = TabController.Instance.GetTabByName(_aboutUsPageName, PortalId);
             _tabId = tab.TabID;
 
             //Add Portal Aliases
@@ -242,8 +240,7 @@ namespace DotNetNuke.Tests.Urls
 
         private void DeleteTab(string tabName)
         {
-            var tc = new TabController();
-            var tab = tc.GetTabByName(tabName, PortalId);
+            var tab = TabController.Instance.GetTabByName(tabName, PortalId);
 
             if (tab != null)
             {
@@ -308,8 +305,7 @@ namespace DotNetNuke.Tests.Urls
         private void ExecuteTest(FriendlyUrlSettings settings, Dictionary<string, string> testFields, bool setDefaultAlias)
         {
             var tabName = testFields["Page Name"];
-            var tc = new TabController();
-            var tab = tc.GetTabByName(tabName, PortalId);
+            var tab = TabController.Instance.GetTabByName(tabName, PortalId);
 
             if (setDefaultAlias)
             {
@@ -368,8 +364,7 @@ namespace DotNetNuke.Tests.Urls
 
             settings.PortalId = PortalId;
 
-            var tc = new TabController();
-            var tab = tc.GetTabByName(_testPage, PortalId);
+            var tab = TabController.Instance.GetTabByName(_testPage, PortalId);
             if (Convert.ToBoolean(testFields["HardDeleted"]))
             {
                 DeleteTab(_testPage);
@@ -432,7 +427,7 @@ namespace DotNetNuke.Tests.Urls
             settings.PortalId = PortalId;
 
             var tc = new TabController();
-            var tab = tc.GetTabByName(_testPage, PortalId);
+            var tab = TabController.Instance.GetTabByName(_testPage, PortalId);
             tab.Url = testFields["ExternalUrl"];
             tc.UpdateTab(tab);
 
@@ -517,7 +512,7 @@ namespace DotNetNuke.Tests.Urls
             {
                 var tabName = testFields["Page Name"];
                 var tc = new TabController();
-                tab = tc.GetTabByName(tabName, PortalId);
+                tab = TabController.Instance.GetTabByName(tabName, PortalId);
                 tab.TabName = testPageName;
                 tc.UpdateTab(tab);
 
@@ -667,8 +662,7 @@ namespace DotNetNuke.Tests.Urls
 
             if (isSecure)
             {
-                var tc = new TabController();
-                var tab = tc.GetTabByName(_securePageName, PortalId);
+                var tab = TabController.Instance.GetTabByName(_securePageName, PortalId);
                 tab.IsSecure = true;
 
                 UpdateTab(tab);
@@ -722,7 +716,7 @@ namespace DotNetNuke.Tests.Urls
         private void UpdateTabSetting(string tabName, string settingName, string settingValue)
         {
             var tc = new TabController();
-            var tab = tc.GetTabByName(tabName, PortalId);
+            var tab = TabController.Instance.GetTabByName(tabName, PortalId);
             tab.TabSettings[settingName] = settingValue;
             tc.UpdateTab(tab);
         }

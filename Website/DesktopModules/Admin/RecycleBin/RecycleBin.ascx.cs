@@ -89,8 +89,8 @@ namespace DesktopModules.Admin.RecycleBin
                 var locale = LocaleController.Instance.GetLocale(module.CultureCode);
 
                 TabInfo tab = locale != null
-                                ? tabController.GetTabByCulture(module.TabID, PortalId, locale)
-                                : tabController.GetTab(module.TabID, PortalId, false);
+                                ? TabController.Instance.GetTabByCulture(module.TabID, PortalId, locale)
+                                : TabController.Instance.GetTab(module.TabID, PortalId, false);
 
                 if (tab == null)
                 {

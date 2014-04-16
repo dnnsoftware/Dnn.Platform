@@ -70,8 +70,7 @@ namespace DotNetNuke.Tests.Urls
         {
             base.TestFixtureSetUp();
 
-            var tc = new TabController();
-            var tab = tc.GetTabByName(_aboutUsPageName, PortalId);
+            var tab = TabController.Instance.GetTabByName(_aboutUsPageName, PortalId);
             _tabId = tab.TabID;
 
             //Add Portal Aliases
@@ -162,8 +161,7 @@ namespace DotNetNuke.Tests.Urls
         private void ExecuteTest(string test, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
         {
             var tabName = testFields["Page Name"];
-            var tc = new TabController();
-            var tab = tc.GetTabByName(tabName, PortalId);
+            var tab = TabController.Instance.GetTabByName(tabName, PortalId);
 
             ExecuteTestForTab(test, tab, settings, testFields);            
         }
@@ -398,7 +396,7 @@ namespace DotNetNuke.Tests.Urls
             {
                 var tabName = testFields["Page Name"];
                 var tc = new TabController();
-                tab = tc.GetTabByName(tabName, PortalId);
+                tab = TabController.Instance.GetTabByName(tabName, PortalId);
                 tab.TabName = testPageName;
                 tc.UpdateTab(tab);
 

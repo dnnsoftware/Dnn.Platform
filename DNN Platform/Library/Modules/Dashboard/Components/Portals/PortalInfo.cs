@@ -48,8 +48,7 @@ namespace DotNetNuke.Modules.Dashboard.Components.Portals
             {
                 if (_Pages < 0)
                 {
-                    var controller = new TabController();
-                    _Pages = controller.GetTabCount(PortalID);
+                    _Pages = TabController.Instance.GetTabsByPortal(PortalID).Count;
                 }
                 return _Pages;
             }
