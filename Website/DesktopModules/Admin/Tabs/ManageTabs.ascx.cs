@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 MakeNeutral.Visible = (controller.GetTabsByPortal(PortalId).WithParentId(_tab.TabID).Count == 0);
 
                 // only show "add missing languages" if not all languages are available
-                AddMissing.Visible = controller.HasMissingLanguages(PortalId, _tab.TabID);
+                AddMissing.Visible = TabController.Instance.HasMissingLanguages(PortalId, _tab.TabID);
             }
         }
 
@@ -903,12 +903,12 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     if (IsHostMenu && Tab.PortalID != Null.NullInteger)
                     {
                         //Host Tab moved to Portal so clear Host cache
-                        objTabs.ClearCache(Null.NullInteger);
+                        TabController.Instance.ClearCache(Null.NullInteger);
                     }
                     if (!IsHostMenu && Tab.PortalID == Null.NullInteger)
                     {
                         //Portal Tab moved to Host so clear portal cache
-                        objTabs.ClearCache(PortalId);
+                        TabController.Instance.ClearCache(PortalId);
                     }
                 }
             }
@@ -1357,7 +1357,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 var tabCtl = new TabController();
                 //This tab does not have a valid ContentItem
-                tabCtl.CreateContentItem(Tab);
+                TabController.Instance.CreateContentItem(Tab);
                 tabCtl.UpdateTab(Tab);
             }
 
@@ -1861,7 +1861,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
 
-                t.ConvertTabToNeutralLanguage(PortalId, _tab.TabID, defaultLocale.Code, true);
+                TabController.Instance.ConvertTabToNeutralLanguage(PortalId, _tab.TabID, defaultLocale.Code, true);
 
                 Response.Redirect(Request.RawUrl, false);
             }
@@ -1880,7 +1880,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
             t.LocalizeTab(_tab, defaultLocale);
             t.AddMissingLanguages(PortalId, _tab.TabID);
-            t.ClearCache(PortalId);
+            TabController.Instance.ClearCache(PortalId);
             Response.Redirect(Request.RawUrl, false);
         }
 

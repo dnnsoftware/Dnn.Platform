@@ -233,14 +233,11 @@ namespace DotNetNuke.Tests.Urls
 
         #region Private Methods
 
-        private TabInfo CreateTab(string tabName)
+        private void CreateTab(string tabName)
         {
-            var tc = new TabController();
             var tab = new TabInfo { PortalID = PortalId, TabName = tabName };
 
-            tc.AddTab(tab);
-
-            return tab;
+            TabController.Instance.AddTab(tab);
         }
 
         private void DeleteTab(string tabName)
@@ -250,7 +247,7 @@ namespace DotNetNuke.Tests.Urls
 
             if (tab != null)
             {
-                tc.DeleteTab(tab.TabID, PortalId);
+                TabController.Instance.DeleteTab(tab.TabID, PortalId);
             }
         }
 

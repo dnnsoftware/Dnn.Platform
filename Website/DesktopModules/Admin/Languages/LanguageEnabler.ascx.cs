@@ -297,7 +297,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     MakeNeutral.Visible = (TabController.GetTabsByPortal(PortalId).WithParentId(tabInfo.TabID).Count == 0);
 
                     // only show "add missing languages" if not all languages are available
-                        AddMissing.Visible = TabController.HasMissingLanguages(PortalId, tabInfo.TabID);
+                        AddMissing.Visible = TabController.Instance.HasMissingLanguages(PortalId, tabInfo.TabID);
                     }
                 }
             }
@@ -704,7 +704,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     int languageId = int.Parse(cmdDeleteTranslation.CommandArgument);
                     Locale locale = LocaleController.Instance.GetLocale(languageId);
 
-                    TabController.DeleteTranslatedTabs(PortalId, locale.Code, false);
+                    TabController.Instance.DeleteTranslatedTabs(PortalId, locale.Code, false);
 
                     PortalController.Instance.RemovePortalLocalization(PortalId, locale.Code, false);
 
@@ -733,13 +733,13 @@ namespace DotNetNuke.Modules.Admin.Languages
                     {
 
                         LocaleController.Instance.PublishLanguage(PortalId, locale.Code, false);
-                        TabController.DeleteTranslatedTabs(PortalId, locale.Code, false);
+                        TabController.Instance.DeleteTranslatedTabs(PortalId, locale.Code, false);
                         PortalController.Instance.RemovePortalLocalization(PortalId, locale.Code, false);
 
                     }
                 }
 
-                TabController.EnsureNeutralLanguage(PortalId, PortalDefault, false);
+                TabController.Instance.EnsureNeutralLanguage(PortalId, PortalDefault, false);
 
                 PortalController.UpdatePortalSetting(PortalId, "ContentLocalizationEnabled", "False");
 
@@ -787,7 +787,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
             TabController.LocalizeTab(tab, defaultLocale, false);
             TabController.AddMissingLanguages(PortalId, tab.TabID);
-            TabController.ClearCache(PortalId);
+            TabController.Instance.ClearCache(PortalId);
             BindCLControl();
         }
 
@@ -798,7 +798,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             {
                 var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
 
-                TabController.ConvertTabToNeutralLanguage(PortalId, tab.TabID, defaultLocale.Code, true);
+                TabController.Instance.ConvertTabToNeutralLanguage(PortalId, tab.TabID, defaultLocale.Code, true);
 
                 BindCLControl();
             }

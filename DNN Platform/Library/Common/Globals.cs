@@ -763,16 +763,7 @@ namespace DotNetNuke.Common
             string cultureCode = Null.NullString;
             if (settings != null)
             {
-                TabInfo linkTab = default(TabInfo);
-                var controller = new TabController();
-                if (IsSuperTab)
-                {
-                    linkTab = controller.GetTab(TabID, Null.NullInteger, false);
-                }
-                else
-                {
-                    linkTab = controller.GetTab(TabID, settings.PortalId, false);
-                }
+                TabInfo linkTab = TabController.Instance.GetTab(TabID, IsSuperTab ? Null.NullInteger : settings.PortalId, false);
                 if (linkTab != null)
                 {
                     cultureCode = linkTab.CultureCode;

@@ -136,7 +136,7 @@ namespace DesktopModules.Admin.RecycleBin
 			var tabModules = moduleController.GetTabModules(tab.TabID);
 
 			//hard delete the tab
-			tabController.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
+			TabController.Instance.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
 			
 			//delete modules that do not have other instances
 			foreach (var kvp in tabModules)

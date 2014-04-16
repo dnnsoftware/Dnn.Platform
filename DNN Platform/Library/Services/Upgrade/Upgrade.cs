@@ -463,7 +463,7 @@ namespace DotNetNuke.Services.Upgrade
                               IconFileLarge = tabIconFileLarge,
                               IsDeleted = false
                           };
-                tab.TabID = tabController.AddTab(tab, !isAdmin);
+                tab.TabID = TabController.Instance.AddTab(tab, !isAdmin);
 
                 if (((permissions != null)))
                 {
@@ -1169,7 +1169,7 @@ namespace DotNetNuke.Services.Upgrade
                 //If Tab has no modules optionally remove tab
                 if (count == 0 && removeTab)
                 {
-                    tabController.DeleteTab(tab.TabID, tab.PortalID);
+                    TabController.Instance.DeleteTab(tab.TabID, tab.PortalID);
                 }
             }
 
@@ -2712,7 +2712,9 @@ namespace DotNetNuke.Services.Upgrade
 
             int tabID = TabController.GetTabByTabPath(Null.NullInteger, "//Host//SearchAdmin", Null.NullString);
             if (tabID > Null.NullInteger)
-                tabController.DeleteTab(tabID, Null.NullInteger);
+            {
+                TabController.Instance.DeleteTab(tabID, Null.NullInteger);
+            }
 
             var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Search Admin");
 
@@ -2823,19 +2825,18 @@ namespace DotNetNuke.Services.Upgrade
 
             //Remove Professional Features pages from CE
             int advancedFeaturesTabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host//ProfessionalFeatures", Null.NullString);
-            var tabController = new TabController();
             if (DotNetNukeContext.Current.Application.Name == "DNNCORP.CE")
             {
                 foreach (var tab in TabController.GetTabsByParent(advancedFeaturesTabId, Null.NullInteger))
                 {
-                    tabController.DeleteTab(tab.TabID, Null.NullInteger);
+                    TabController.Instance.DeleteTab(tab.TabID, Null.NullInteger);
                 }
-                tabController.DeleteTab(advancedFeaturesTabId, Null.NullInteger);
+                TabController.Instance.DeleteTab(advancedFeaturesTabId, Null.NullInteger);
             }
 
             //Remove Whats New
             int whatsNewTabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host//WhatsNew", Null.NullString);
-            tabController.DeleteTab(whatsNewTabId, Null.NullInteger);
+            TabController.Instance.DeleteTab(whatsNewTabId, Null.NullInteger);
 
             //Remove WhatsNew module
             DesktopModuleController.DeleteDesktopModule("WhatsNew");
@@ -4854,7 +4855,6 @@ namespace DotNetNuke.Services.Upgrade
         public static void RemoveAdminPages(string tabPath)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveAdminPages:" + tabPath);
-            var tabController = new TabController();
 
             var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
@@ -4862,7 +4862,7 @@ namespace DotNetNuke.Services.Upgrade
                 var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
                 if ((tabID != Null.NullInteger))
                 {
-                    tabController.DeleteTab(tabID, portal.PortalID);
+                    TabController.Instance.DeleteTab(tabID, portal.PortalID);
                 }
             }
         }
@@ -4874,7 +4874,7 @@ namespace DotNetNuke.Services.Upgrade
             TabInfo skinsTab = controller.GetTabByName(pageName, Null.NullInteger);
             if (skinsTab != null)
             {
-                controller.DeleteTab(skinsTab.TabID, Null.NullInteger);
+                TabController.Instance.DeleteTab(skinsTab.TabID, Null.NullInteger);
             }
         }
 

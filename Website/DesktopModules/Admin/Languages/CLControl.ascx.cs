@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 var cmdDeleteTranslation = (LinkButton)sender;
                 var args = cmdDeleteTranslation.CommandArgument.Split('|');
                 int tabId = int.Parse(args[0]);
-                TabController.DeleteTab(tabId, PortalSettings.PortalId);
+                TabController.Instance.DeleteTab(tabId, PortalSettings.PortalId);
                 Response.Redirect(Request.RawUrl, false);
             }
         }

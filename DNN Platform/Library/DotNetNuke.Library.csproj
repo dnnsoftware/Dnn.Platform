@@ -280,6 +280,7 @@
     <Compile Include="Entities\Portals\Internal\IPortalTemplateIO.cs" />
     <Compile Include="Entities\Portals\Internal\PortalTemplateIO.cs" />
     <Compile Include="Obsolete\RoleController.cs" />
+    <Compile Include="Obsolete\TabController.cs" />
     <Compile Include="Obsolete\TestablePortalAliasController.cs" />
     <Compile Include="Entities\Portals\Internal\TestablePortalController.cs" />
     <Compile Include="Entities\Tabs\ITabPublishingController.cs" />
@@ -463,7 +464,7 @@
     <Compile Include="Entities\Modules\Internal\TestableModuleController.cs" />
     <Compile Include="Entities\Portals\IPortalSettings.cs" />
     <Compile Include="Entities\Portals\TestablePortalSettings.cs" />
-    <Compile Include="Entities\Tabs\Internal\ITabController.cs" />
+    <Compile Include="Entities\Tabs\ITabController.cs" />
     <Compile Include="Entities\Tabs\Internal\TestableTabController.cs" />
     <Compile Include="Framework\IServicesFramework.cs" />
     <Compile Include="Framework\ServicesFramework.cs" />

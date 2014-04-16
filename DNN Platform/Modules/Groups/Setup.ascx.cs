@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.Groups
             newTab.IsVisible = includeInMenu;
             newTab.SkinSrc = GetSkin();
             
-            id = tc.AddTab(newTab);
+            id = TabController.Instance.AddTab(newTab);
             tab = tc.GetTab(id, portalId, true);
 
             return tab;

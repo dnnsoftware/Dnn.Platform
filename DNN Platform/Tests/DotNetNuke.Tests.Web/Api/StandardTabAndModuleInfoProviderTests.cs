@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Web.Api
             request.Headers.Add("tabid", ValidTabId.ToString(CultureInfo.InvariantCulture));
             request.Headers.Add("moduleid", ValidModuleId.ToString(CultureInfo.InvariantCulture));
             
-            _mockTabController.Setup(x => x.GetTab(ValidTabId, ValidPortalId)).Returns(new TabInfo());
+            _mockTabController.Setup(x => TabController.Instance.GetTab(ValidTabId, ValidPortalId)).Returns(new TabInfo());
             var moduleInfo = new ModuleInfo();
             _mockModuleController.Setup(x => x.GetModule(ValidModuleId, ValidTabId)).Returns(moduleInfo);
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Tests.Web.Api
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
             //Assert
-            _mockTabController.Verify(x => x.GetTab(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
+            _mockTabController.Verify(x => TabController.Instance.GetTab(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
             _mockModuleController.Verify(x => x.GetModule(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
             Assert.IsNull(returnedModuleInfo);
             Assert.IsFalse(result);
@@ -84,8 +84,8 @@ namespace DotNetNuke.Tests.Web.Api
             //no moduleid
             var request = new HttpRequestMessage();
             request.Headers.Add("tabid", ValidTabId.ToString(CultureInfo.InvariantCulture));
-            
-            _mockTabController.Setup(x => x.GetTab(ValidTabId, ValidPortalId)).Returns(new TabInfo());
+
+            _mockTabController.Setup(x => TabController.Instance.GetTab(ValidTabId, ValidPortalId)).Returns(new TabInfo());
 
             //Act
             ModuleInfo returnedModuleInfo;

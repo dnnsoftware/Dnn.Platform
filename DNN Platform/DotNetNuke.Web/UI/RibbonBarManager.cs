@@ -351,15 +351,15 @@ namespace DotNetNuke.Web.UI
 
                     if ((location == TabRelativeLocation.AFTER && (relativeToTab != null)))
                     {
-                        tab.TabID = tabCtrl.AddTabAfter(tab, relativeToTab.TabID);
+                        tab.TabID = TabController.Instance.AddTabAfter(tab, relativeToTab.TabID);
                     }
                     else if ((location == TabRelativeLocation.BEFORE && (relativeToTab != null)))
                     {
-                        tab.TabID = tabCtrl.AddTabBefore(tab, relativeToTab.TabID);
+                        tab.TabID = TabController.Instance.AddTabBefore(tab, relativeToTab.TabID);
                     }
                     else
                     {
-                        tab.TabID = tabCtrl.AddTab(tab);
+                        tab.TabID = TabController.Instance.AddTab(tab);
                     }
 
                     if (_PortalSettings.ContentLocalizationEnabled)

@@ -661,7 +661,7 @@ namespace DotNetNuke.Modules.Html
                         //Get All Tabs aon the Site
                         foreach (var kvp in tabController.GetTabsByPortal(ObjectID))
                         {
-                            tabController.DeleteTabSetting(kvp.Value.TabID, "WorkFlowID");
+                            TabController.Instance.DeleteTabSetting(kvp.Value.TabID, "WorkFlowID");
                         }
                         //Get All Modules in the current Site
                         foreach (ModuleInfo objModule in moduleController.GetModules(ObjectID))
