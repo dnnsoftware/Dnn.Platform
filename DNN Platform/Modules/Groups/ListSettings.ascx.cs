@@ -161,35 +161,31 @@ namespace DotNetNuke.Modules.Groups
             }
         }
         private void BindPages() {
-            ModuleController mc = new ModuleController();
-            TabController tc = new TabController();
-            TabInfo tabInfo;
-            foreach (ModuleInfo moduleInfo in mc.GetModules(PortalId)) {
-
-                if (moduleInfo.DesktopModule.ModuleName.Contains("Social Groups") && moduleInfo.IsDeleted == false) {
-                    tabInfo = tc.GetTab(moduleInfo.TabID, PortalId, false);
-                    if (tabInfo != null) {
-                        if (tabInfo.IsDeleted == false) {
-
-                            foreach (KeyValuePair<string, ModuleDefinitionInfo> def in moduleInfo.DesktopModule.ModuleDefinitions) {
-                                if (moduleInfo.ModuleDefinition.FriendlyName == def.Key) {
-                                    
-                                        if (drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null) {
-                                            drpGroupViewPage.Items.Add(new ListItem(tabInfo.TabName + " - " + def.Key, tabInfo.TabID.ToString()));
-                                        }
-                                                             
-
+            var mc = new ModuleController();
+            foreach (ModuleInfo moduleInfo in mc.GetModules(PortalId)) 
+            {
+                if (moduleInfo.DesktopModule.ModuleName.Contains("Social Groups") && moduleInfo.IsDeleted == false)
+                {
+                    TabInfo tabInfo = TabController.Instance.GetTab(moduleInfo.TabID, PortalId, false);
+                    if (tabInfo != null) 
+                    {
+                        if (tabInfo.IsDeleted == false) 
+                        {
+                            foreach (KeyValuePair<string, ModuleDefinitionInfo> def in moduleInfo.DesktopModule.ModuleDefinitions) 
+                            {
+                                if (moduleInfo.ModuleDefinition.FriendlyName == def.Key) 
+                                {
+                                    if (drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null) 
+                                    {
+                                        drpGroupViewPage.Items.Add(new ListItem(tabInfo.TabName + " - " + def.Key, tabInfo.TabID.ToString()));
                                     }
-
                                 }
+
                             }
-
-
-
                         }
                     }
                 }
             }
-        
+        }
     }
 }

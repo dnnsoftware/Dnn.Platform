@@ -829,7 +829,7 @@ namespace DotNetNuke.Entities.Modules
             }
 
             // DNN-24983 get culture from page
-            var tabInfo = new TabController().GetTab(tabId, portalId, false);
+            var tabInfo = TabController.Instance.GetTab(tabId, portalId, false);
             if (tabInfo != null)
             {
                 module.CultureCode = tabInfo.CultureCode;
@@ -898,7 +898,7 @@ namespace DotNetNuke.Entities.Modules
                     DeserializeTabModuleSettings(nodeTabModuleSettings, module);
 
                     // DNN-24983 get culture from page
-                    var tabInfo = new TabController().GetTab(tabId, portalId, false);
+                    var tabInfo = TabController.Instance.GetTab(tabId, portalId, false);
                     if (tabInfo != null)
                     {
                         module.CultureCode = tabInfo.CultureCode;
@@ -2527,7 +2527,7 @@ namespace DotNetNuke.Entities.Modules
         {
             PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
             ModuleInfo objModule = GetModule(moduleId, fromTabId, false);
-            TabInfo objTab = new TabController().GetTab(toTabId, _portalSettings.PortalId, false);
+            TabInfo objTab = TabController.Instance.GetTab(toTabId, _portalSettings.PortalId, false);
             CopyModule(objModule, objTab, toPaneName, includeSettings);
         }
 

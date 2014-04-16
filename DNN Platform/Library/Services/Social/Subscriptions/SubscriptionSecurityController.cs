@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
         private static TabInfo GetTabFromSubscription(Subscription subscription)
         {
-            return new TabController().GetTab(subscription.TabId, subscription.PortalId, false);
+            return TabController.Instance.GetTab(subscription.TabId, subscription.PortalId, false);
         }
 
         private static ModuleInfo GetModuleFromSubscription(Subscription subscription)

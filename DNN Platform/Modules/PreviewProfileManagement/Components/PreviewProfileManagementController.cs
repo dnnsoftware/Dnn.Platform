@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.PreviewProfileManagement.Components
                 }
                 else
                 {
-                    newTab = tabController.GetTab(tabId, portal.PortalID, true);
+                    newTab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
                     newTab.IconFile = "~/desktopmodules/DevicePreviewManagement/images/DevicePreview_Standard_16X16.png";
                     newTab.IconFileLarge = "~/desktopmodules/DevicePreviewManagement/images/DevicePreview_Standard_32X32.png";
                     tabController.UpdateTab(newTab);

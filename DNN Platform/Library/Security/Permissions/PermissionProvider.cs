@@ -660,7 +660,7 @@ namespace DotNetNuke.Security.Permissions
             bool canView;
             if (module.InheritViewPermissions)
             {
-                TabInfo objTab = new TabController().GetTab(module.TabID, module.PortalID, false);
+                TabInfo objTab = TabController.Instance.GetTab(module.TabID, module.PortalID, false);
                 canView = TabPermissionController.CanViewPage(objTab);
             }
             else
@@ -727,7 +727,7 @@ namespace DotNetNuke.Security.Permissions
         {
             bool isAuthorized = false;
             UserInfo userInfo = UserController.GetCurrentUserInfo();
-            TabInfo tab = new TabController().GetTab(moduleConfiguration.TabID, moduleConfiguration.PortalID, false);
+            TabInfo tab = TabController.Instance.GetTab(moduleConfiguration.TabID, moduleConfiguration.PortalID, false);
             if (userInfo != null && userInfo.IsSuperUser)
             {
                 isAuthorized = true;

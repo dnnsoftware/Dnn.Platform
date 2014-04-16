@@ -987,7 +987,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         unhandled404 = false; //we're handling it here
                         var tc = new TabController();
-                        TabInfo errTab = tc.GetTab(errTabId, result.PortalId, true);
+                        TabInfo errTab = TabController.Instance.GetTab(errTabId, result.PortalId, true);
                         if (errTab != null)
                         {
                             bool redirect = false;
@@ -2001,8 +2001,7 @@ namespace DotNetNuke.Entities.Urls
                         //691 : change logic to force change in portal alias context rather than force back.
                         //This is because the tabid in the query string should take precedence over the portal alias
                         //to handle parent.com/default.aspx?tabid=xx where xx lives in parent.com/child/ 
-                        var tc = new TabController();
-                        var tab = tc.GetTab(result.TabId, Null.NullInteger, false);
+                        var tab = TabController.Instance.GetTab(result.TabId, Null.NullInteger, false);
                         //when result alias is null or result alias is different from tab-identified portalAlias
                         if (tab != null && (result.PortalAlias == null || tab.PortalID != result.PortalAlias.PortalID))
                         {
@@ -2477,7 +2476,7 @@ namespace DotNetNuke.Entities.Urls
                                 && settings.DeletedTabHandlingType == DeletedTabHandlingType.Do301RedirectToPortalHome)
                             {
                                 //redirecting to home page  
-                                TabInfo homeTab = tc.GetTab(portalHomeTabId, result.PortalId, false);
+                                TabInfo homeTab = TabController.Instance.GetTab(portalHomeTabId, result.PortalId, false);
                                 if (homeTab != null)
                                 {
                                     string homePageUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(homeTab, 
@@ -2760,8 +2759,7 @@ namespace DotNetNuke.Entities.Urls
         private static bool CheckFor301RedirectExclusion(int tabId, int portalId, bool checkBaseUrls, out TabInfo tab, FriendlyUrlSettings settings)
         {
             bool doRedirect = false;
-            var tc = new TabController();
-            tab = tc.GetTab(tabId, portalId, false);
+            tab = TabController.Instance.GetTab(tabId, portalId, false);
             //don't redirect unless allowed, the tab is valid, and it's not an admin or super tab 
             if (tab != null && tab.IsSuperTab == false && !tab.DoNotRedirect)
             {

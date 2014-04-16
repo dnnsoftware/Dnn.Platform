@@ -133,7 +133,6 @@ namespace DotNetNuke.Web.UI
                 return null;
             }
 
-            TabController tabCtrl = new TabController();
             TabInfo parentTab = null;
             if ((location == TabRelativeLocation.CHILD))
             {
@@ -141,7 +140,7 @@ namespace DotNetNuke.Web.UI
             }
             else if (((relativeToTab != null) && relativeToTab.ParentId != Null.NullInteger))
             {
-                parentTab = tabCtrl.GetTab(relativeToTab.ParentId, relativeToTab.PortalID, false);
+                parentTab = TabController.Instance.GetTab(relativeToTab.ParentId, relativeToTab.PortalID, false);
             }
 
             return parentTab;
@@ -199,7 +198,7 @@ namespace DotNetNuke.Web.UI
                     return false;
                 }
 
-                TabInfo parentTab = new TabController().GetTab(parentTabID, PortalSettings.Current.ActiveTab.PortalID, false);
+                TabInfo parentTab = TabController.Instance.GetTab(parentTabID, PortalSettings.Current.ActiveTab.PortalID, false);
                 string permissionList = "MANAGE";
                 if ((!TabPermissionController.HasTabPermission(parentTab.TabPermissions, permissionList)))
                 {
@@ -210,8 +209,6 @@ namespace DotNetNuke.Web.UI
             return true;
         }
 
-        //todo: Settings
-        //Public Function SaveTabInfoObject(ByVal newTab As DotNetNuke.Entities.Tabs.TabInfo, ByVal relativeToTab As DotNetNuke.Entities.Tabs.TabInfo, ByVal location As TabRelativeLocation, ByVal templateMapPath As String, ByVal tabSettings As Hashtable) As Integer
         public static int SaveTabInfoObject(TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateMapPath)
         {
             TabController tabCtrl = new TabController();
@@ -425,33 +422,23 @@ namespace DotNetNuke.Web.UI
         {
             if (tabID != -1)
             {
-                TabController objTabs = new TabController();
-                TabInfo objtab = objTabs.GetTab(tabID, portalID, false);
+                TabInfo objtab = TabController.Instance.GetTab(tabID, portalID, false);
 
                 if (((objtab == null)))
                 {
                     return false;
                 }
-                else if (objtab.Level == 0)
+                if (objtab.Level == 0)
                 {
                     return false;
                 }
-                else
+                if (tabID == objtab.ParentId)
                 {
-                    if (tabID == objtab.ParentId)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return Validate_IsCircularReference(portalID, objtab.ParentId);
-                    }
+                    return true;
                 }
+                return Validate_IsCircularReference(portalID, objtab.ParentId);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static void DeserializeTabPermissions(XmlNodeList nodeTabPermissions, TabInfo tab)

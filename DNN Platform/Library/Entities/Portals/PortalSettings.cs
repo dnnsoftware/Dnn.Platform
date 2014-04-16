@@ -1227,13 +1227,11 @@ namespace DotNetNuke.Entities.Portals
 
         private bool VerifySpecialTab(int portalId, int tabId)
         {
-            var tabController = new TabController();
-            TabInfo tab;
             bool isVerified = false;
 
             if (tabId > 0)
             {
-                tab = tabController.GetTab(tabId, portalId, false);
+                TabInfo tab = TabController.Instance.GetTab(tabId, portalId, false);
                 if (tab != null)
                 {
                     ActiveTab = tab.Clone();
@@ -1246,11 +1244,11 @@ namespace DotNetNuke.Entities.Portals
 
         private bool VerifyTabExists(int tabId, TabCollection tabs)
         {
-            TabInfo tab;
             bool isVerified = false;
 
             if (tabId != Null.NullInteger)
             {
+                TabInfo tab;
                 if (tabs.TryGetValue(tabId, out tab))
                 {
                     if (!tab.IsDeleted)

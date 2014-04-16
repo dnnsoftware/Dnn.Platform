@@ -49,8 +49,7 @@ namespace DotNetNuke.Security.Permissions
 
 		private static void ClearPermissionCache(int tabId)
 		{
-			var objTabs = new TabController();
-			var objTab = objTabs.GetTab(tabId, Null.NullInteger, false);
+            var objTab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
 			DataCache.ClearTabPermissionsCache(objTab.PortalID);
 		}
 

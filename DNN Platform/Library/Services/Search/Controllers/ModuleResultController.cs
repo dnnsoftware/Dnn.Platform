@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
                 foreach (ModuleInfo module in tabModules)
                 {
-                    var tab = tabController.GetTab(module.TabID, searchResult.PortalId, false);
+                    var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
                     if (!module.IsDeleted && !tab.IsDeleted && TabPermissionController.CanViewPage(tab))
                     {
                         //Check If authorised to View Module
@@ -108,13 +108,12 @@ namespace DotNetNuke.Services.Search.Controllers
                 return searchResult.Url;
 
             var url = Localization.Localization.GetString("SEARCH_NoLink");
-            var tabController = new TabController();
             //Get All related tabIds from moduleId
             var tabModules = GetModuleTabs(searchResult.ModuleId);
 
             foreach (ModuleInfo module in tabModules)
             {
-                var tab = tabController.GetTab(module.TabID, searchResult.PortalId, false);
+                var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
                 if (TabPermissionController.CanViewPage(tab) && ModulePermissionController.CanViewModule(module))
                 {
                     try

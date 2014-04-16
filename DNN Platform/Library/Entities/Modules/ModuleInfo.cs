@@ -532,7 +532,7 @@ namespace DotNetNuke.Entities.Modules
                     var tabCtrl = new TabController();
                     if (PortalID == Null.NullInteger || string.IsNullOrEmpty(CultureCode))
                     {
-                        _parentTab = tabCtrl.GetTab(TabID, PortalID, false);
+                        _parentTab = TabController.Instance.GetTab(TabID, PortalID, false);
                     }
                     else
                     {

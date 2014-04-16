@@ -392,7 +392,6 @@ namespace DotNetNuke.Modules.MobileManagement
             
             if(tab.ParentId != Null.NullInteger)
             {
-                var tabController = new TabController();
                 do
                 {
                     if (tab.ParentId == PortalSettings.Current.AdminTabId || tab.ParentId == PortalSettings.Current.UserTabId)
@@ -400,7 +399,7 @@ namespace DotNetNuke.Modules.MobileManagement
                         return false;
                     }
 
-                    tab = tabController.GetTab(tab.ParentId, tab.PortalID, false);
+                    tab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
                 } while (tab != null && tab.ParentId != Null.NullInteger);
             }
 

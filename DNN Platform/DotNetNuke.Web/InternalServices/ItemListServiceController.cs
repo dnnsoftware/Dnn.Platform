@@ -1248,7 +1248,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private int GetActivePortalId(int pageId)
         {
-            var page = new TabController().GetTab(pageId, Null.NullInteger, false);
+            var page = TabController.Instance.GetTab(pageId, Null.NullInteger, false);
             var portalId = page.PortalID;
 
             if (portalId == Null.NullInteger)

@@ -248,7 +248,6 @@ namespace DotNetNuke.Services.Search
 			
             //Process results against permissions and mandatory and excluded results
             var results = new SearchResultsInfoCollection();
-            var objTabController = new TabController();
             foreach (KeyValuePair<int, Dictionary<int, SearchResultsInfo>> kvpResults in dicResults)
             {
                 foreach (SearchResultsInfo result in kvpResults.Value.Values)
@@ -256,7 +255,7 @@ namespace DotNetNuke.Services.Search
                     if (!result.Delete)
                     {
 						//Check If authorised to View Tab
-                        TabInfo objTab = objTabController.GetTab(result.TabId, portalId, false);
+                        TabInfo objTab = TabController.Instance.GetTab(result.TabId, portalId, false);
                         if (TabPermissionController.CanViewPage(objTab))
                         {
 							//Check If authorised to View Module

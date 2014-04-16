@@ -413,7 +413,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
                     //set the culture of the module to that of the tab
-                    var tabInfo = new TabController().GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
+                    var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
                     objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
                 }
                 else

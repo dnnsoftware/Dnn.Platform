@@ -105,12 +105,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private static Dictionary<int, string> GetTabModules(int tabID)
         {
-            var tabCtrl = new TabController();
             var moduleCtrl = new ModuleController();
             var tabModules = moduleCtrl.GetTabModules(tabID);
 
             // Is this tab from another site?
-            var isRemote = tabCtrl.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
+            var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
 
             var pageModules = tabModules.Values.Where(m => !isRemote || ModuleSuportsSharing(m)).Where(m => ModulePermissionController.CanAdminModule(m) && m.IsDeleted == false).ToList();
 

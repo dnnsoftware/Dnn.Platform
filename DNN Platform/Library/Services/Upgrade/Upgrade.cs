@@ -158,15 +158,13 @@ namespace DotNetNuke.Services.Upgrade
         private static void AddAdminRoleToPage(string tabPath)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddAdminRoleToPage:" + tabPath);
-            var tabController = new TabController();
-            TabInfo tab;
 
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 int tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
                 if ((tabID != Null.NullInteger))
                 {
-                    tab = tabController.GetTab(tabID, portal.PortalID, true);
+                    TabInfo tab = TabController.Instance.GetTab(tabID, portal.PortalID, true);
 
                     if ((tab.TabPermissions.Count == 0))
                     {
@@ -1323,7 +1321,6 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion500()
         {
             ArrayList portals = PortalController.Instance.GetPortals();
-            var tabController = new TabController();
 
             //Add Edit Permissions for Admin Tabs to legacy portals
             var permissionController = new PermissionController();
@@ -1339,7 +1336,7 @@ namespace DotNetNuke.Services.Upgrade
 
                 foreach (PortalInfo portal in portals)
                 {
-                    var adminTab = tabController.GetTab(portal.AdminTabId, portal.PortalID, true);
+                    var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, true);
                     if (adminTab != null)
                     {
                         var tabPermission = new TabPermissionInfo { TabID = adminTab.TabID, PermissionID = permissionId, AllowAccess = true, RoleID = portal.AdministratorRoleId };
@@ -1603,7 +1600,7 @@ namespace DotNetNuke.Services.Upgrade
             //add console settings for host page
             if ((tabId != Null.NullInteger))
             {
-                tab = tabController.GetTab(tabId, Null.NullInteger, true);
+                tab = TabController.Instance.GetTab(tabId, Null.NullInteger, true);
                 if (((tab != null)))
                 {
                     AddConsoleModuleSettings(moduleId);
@@ -1616,7 +1613,7 @@ namespace DotNetNuke.Services.Upgrade
                 tabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin", Null.NullString);
                 if ((tabId != Null.NullInteger))
                 {
-                    tab = tabController.GetTab(tabId, portal.PortalID, true);
+                    tab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
                     if (((tab != null)))
                     {
                         moduleId = AddModuleToPage(tab, moduleDefId, "Basic Features", "", true);
@@ -1865,7 +1862,7 @@ namespace DotNetNuke.Services.Upgrade
                 //Add ContentList to Search Results Page
                 var tabController = new TabController();
                 int tabId = TabController.GetTabByTabPath(portal.PortalID, "//SearchResults", Null.NullString);
-                TabInfo searchPage = tabController.GetTab(tabId, portal.PortalID, false);
+                TabInfo searchPage = TabController.Instance.GetTab(tabId, portal.PortalID, false);
                 AddModuleToPage(searchPage, moduleDefId, "Results", "");
             }
         }
@@ -2172,7 +2169,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (settings != null)
             {
-                var hostTab = tabController.GetTab(settings.SuperTabId, Null.NullInteger, false);
+                var hostTab = TabController.Instance.GetTab(settings.SuperTabId, Null.NullInteger, false);
                 hostTab.IsVisible = false;
                 tabController.UpdateTab(hostTab);
                 foreach (var module in moduleController.GetTabModules(settings.SuperTabId).Values)
@@ -2207,7 +2204,7 @@ namespace DotNetNuke.Services.Upgrade
                     ProfileController.DeletePropertyDefinition(ppdTimeZone);
                 }
 
-                var adminTab = tabController.GetTab(portal.AdminTabId, portal.PortalID, false);
+                var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, false);
 
                 adminTab.IsVisible = false;
                 tabController.UpdateTab(adminTab);
@@ -2440,7 +2437,7 @@ namespace DotNetNuke.Services.Upgrade
 
                 if (pagesTabId != Null.NullInteger)
                 {
-                    var pagesTab = tabController.GetTab(pagesTabId, portal.PortalID, false);
+                    var pagesTab = TabController.Instance.GetTab(pagesTabId, portal.PortalID, false);
                     if (pagesTab != null && pagesTab.Title == "Pages")
                     {
                         pagesTab.Title = "Page Management";
@@ -3258,8 +3255,6 @@ namespace DotNetNuke.Services.Upgrade
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "ReplaceMessagingModule");
             var moduleController = new ModuleController();
-            var tabController = new TabController();
-
             var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
             if (moduleDefinition == null) return;
 
@@ -3269,7 +3264,7 @@ namespace DotNetNuke.Services.Upgrade
                 if (portal.UserTabId > Null.NullInteger)
                 {
                     //Find TabInfo
-                    TabInfo tab = tabController.GetTab(portal.UserTabId, portal.PortalID, true);
+                    TabInfo tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalID, true);
                     if (tab != null)
                     {
                         //Add new module to the page
@@ -3401,7 +3396,7 @@ namespace DotNetNuke.Services.Upgrade
                 if (gettingStartedTabId > Null.NullInteger)
                 {
                     // check if tab exists
-                    if (tabController.GetTab(gettingStartedTabId, portal.PortalID, true) != null)
+                    if (TabController.Instance.GetTab(gettingStartedTabId, portal.PortalID, true) != null)
                     {
                         tabController.UpdateTabSetting(gettingStartedTabId, "CustomStylesheet", "GettingStarted.css");
                     }
@@ -3477,8 +3472,7 @@ namespace DotNetNuke.Services.Upgrade
         public static TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddAdminPage:" + tabName);
-            var tabController = new TabController();
-            TabInfo adminPage = tabController.GetTab(portal.AdminTabId, portal.PortalID, false);
+            TabInfo adminPage = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, false);
 
             if ((adminPage != null))
             {
@@ -3637,13 +3631,12 @@ namespace DotNetNuke.Services.Upgrade
 
         public static int AddModuleToPage(string tabPath, int portalId, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
-            var tabController = new TabController();
             int moduleId = Null.NullInteger;
 
             int tabID = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
             if ((tabID != Null.NullInteger))
             {
-                TabInfo tab = tabController.GetTab(tabID, portalId, true);
+                TabInfo tab = TabController.Instance.GetTab(tabID, portalId, true);
                 if ((tab != null))
                 {
                     moduleId = AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
@@ -3654,15 +3647,13 @@ namespace DotNetNuke.Services.Upgrade
 
         public static void AddModuleToPages(string tabPath, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
-            var tabController = new TabController();
-
             var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
             {
                 int tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
                 if ((tabID != Null.NullInteger))
                 {
-                    var tab = tabController.GetTab(tabID, portal.PortalID, true);
+                    var tab = TabController.Instance.GetTab(tabID, portal.PortalID, true);
                     if ((tab != null))
                     {
                         AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);

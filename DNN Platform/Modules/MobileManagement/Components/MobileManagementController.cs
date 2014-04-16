@@ -39,12 +39,12 @@ namespace DotNetNuke.Modules.MobileManagement.Components
             //update the tab module to use CE version
             var tabController = new TabController();
             var moduleController = new ModuleController();
-            TabInfo newTab;
 
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //Update Site Redirection management page
                 var tabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin//SiteRedirectionManagement", Null.NullString);
+                TabInfo newTab;
                 if(tabId == Null.NullInteger)
                 {
                     newTab = Upgrade.AddAdminPage(portal,
@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.MobileManagement.Components
                 }
                 else
                 {
-                    newTab = tabController.GetTab(tabId, portal.PortalID, true);
+                    newTab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
                     newTab.IconFile = "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_16x16.png";
                     newTab.IconFileLarge = "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_32x32.png";
                     tabController.UpdateTab(newTab);

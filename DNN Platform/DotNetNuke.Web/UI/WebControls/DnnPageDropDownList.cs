@@ -16,8 +16,6 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnPageDropDownList : DnnDropDownList
     {
 
-        private readonly Lazy<TabController> _controller = new Lazy<TabController>(() => new TabController());
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -50,12 +48,11 @@ namespace DotNetNuke.Web.UI.WebControls
             if (selectedPage != null && selectedPage.ParentId > Null.NullInteger)
             {
                 var tabLevel = string.Empty;
-                var tabController = new TabController();
-                var parentTab = tabController.GetTab(selectedPage.ParentId, PortalId, false);
+                var parentTab = TabController.Instance.GetTab(selectedPage.ParentId, PortalId, false);
                 while (parentTab != null)
                 {
                     tabLevel = string.Format("{0},{1}", parentTab.TabID, tabLevel);
-                    parentTab = tabController.GetTab(parentTab.ParentId, PortalId, false);
+                    parentTab = TabController.Instance.GetTab(parentTab.ParentId, PortalId, false);
                 }
 
                 ExpandPath = tabLevel.TrimEnd(',');
@@ -114,7 +111,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 var pageId = SelectedItemValueAsInt;
-                return (pageId == Null.NullInteger) ? null : _controller.Value.GetTab(pageId, PortalId, false);
+                return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, PortalId, false);
             }
             set
             {

@@ -103,8 +103,6 @@ namespace DotNetNuke.Modules.Groups
         private TabInfo CreatePage(TabInfo tab, int portalId, int parentTabId, string tabName, bool includeInMenu)
         {
             int id = -1;
-            var tc = new TabController();
-            var tPermissions = new TabPermissionCollection();
             var newTab = new TabInfo();
 
             if (tab != null)
@@ -127,7 +125,7 @@ namespace DotNetNuke.Modules.Groups
                                        UserID = t.UserID,
                                        Username = t.Username
                                    };
-                    newTab.TabPermissions.Add(t);
+                    newTab.TabPermissions.Add(tNew);
                 }
             }
 
@@ -139,7 +137,7 @@ namespace DotNetNuke.Modules.Groups
             newTab.SkinSrc = GetSkin();
             
             id = TabController.Instance.AddTab(newTab);
-            tab = tc.GetTab(id, portalId, true);
+            tab = TabController.Instance.GetTab(id, portalId, true);
 
             return tab;
         }
@@ -147,23 +145,24 @@ namespace DotNetNuke.Modules.Groups
         private string GetSkin()
         {
             //attempt to find and load a  skin from the assigned skinned source
-            var tabController = new TabController();
             var skinSource = PortalSettings.DefaultPortalSkin;
 
-            var tab = tabController.GetTab(TabId, PortalId, false);
+            var tab = TabController.Instance.GetTab(TabId, PortalId, false);
 
             if (!string.IsNullOrEmpty(tab.SkinSrc))
+            {
                 skinSource = tab.SkinSrc;
+            }
             else
             {
                 skinSource = SkinController.FormatSkinPath(skinSource) + "groups.ascx";
                 var physicalSkinFile = SkinController.FormatSkinSrc(skinSource, PortalSettings);
 
                 if (!File.Exists(HttpContext.Current.Server.MapPath(physicalSkinFile)))
+                {
                     skinSource = ""; //this will load the default skin
-                
+                }
             }
-
             return skinSource;
         }
 

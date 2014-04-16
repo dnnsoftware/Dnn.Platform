@@ -1485,7 +1485,6 @@ namespace DotNetNuke.Entities.Portals
         private void ParseTab(XmlNode nodeTab, int PortalId, bool IsAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
         {
             TabInfo tab = null;
-            var tabController = new TabController();
             string strName = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "name");
             var portal = GetPortal(PortalId);
             if (!String.IsNullOrEmpty(strName))
@@ -1499,7 +1498,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                     if (hTabs[parenttabname + strName] != null)
                     {
-                        tab = tabController.GetTab(Convert.ToInt32(hTabs[parenttabname + strName]), PortalId, false);
+                        tab = TabController.Instance.GetTab(Convert.ToInt32(hTabs[parenttabname + strName]), PortalId, false);
                     }
                 }
                 if (tab == null || isNewPortal)
@@ -1749,7 +1748,7 @@ namespace DotNetNuke.Entities.Portals
                 if (tabId > Null.NullInteger)
                 {
                     TabController controller = new TabController();
-                    TabInfo objTab = controller.GetTab(tabId, PortalId, false);
+                    TabInfo objTab = TabController.Instance.GetTab(tabId, PortalId, false);
                     objTab.Url = TabController.GetTabByTabPath(PortalId, tabPath, Null.NullString).ToString();
                     controller.UpdateTab(objTab);
                 }
@@ -1764,7 +1763,7 @@ namespace DotNetNuke.Entities.Portals
                 if (tabId > Null.NullInteger)
                 {
                     var controller = new TabController();
-                    var objTab = controller.GetTab(tabId, PortalId, false);
+                    var objTab = TabController.Instance.GetTab(tabId, PortalId, false);
 
                     var fileName = Path.GetFileName(filePath);
 

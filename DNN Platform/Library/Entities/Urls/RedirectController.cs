@@ -263,7 +263,7 @@ namespace DotNetNuke.Entities.Urls
                                     //if the tabid has been supplied, do a friendly url provider lookup to get the correct format for the tab url
                                     if (tabId > -1)
                                     {
-                                        TabInfo tab = tc.GetTab(tabId, result.PortalId, false);
+                                        TabInfo tab = TabController.Instance.GetTab(tabId, result.PortalId, false);
                                         if (tab != null)
                                         {
                                             string path = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tab.TabID, "");
@@ -407,8 +407,7 @@ namespace DotNetNuke.Entities.Urls
             if (int.TryParse(tab.Url, out redirectTabId))
             {
                 //ok, redirecting to a new tab, specified by the tabid in the Url field
-                var tc = new TabController();
-                TabInfo redirectTab = tc.GetTab(redirectTabId, tab.PortalID, false);
+                TabInfo redirectTab = TabController.Instance.GetTab(redirectTabId, tab.PortalID, false);
                 if (redirectTab != null)
                 {
                     //now get the friendly url for that tab

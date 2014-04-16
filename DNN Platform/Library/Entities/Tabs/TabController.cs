@@ -108,7 +108,7 @@ namespace DotNetNuke.Entities.Tabs
                 //that are all "deleted" then even if the Module itself is not deleted, we would not expect the 
                 //Module to be added
                 var canAdd =
-                (from ModuleInfo allTabsInstance in objmodules.GetModuleTabs(allTabsModule.ModuleID) select new TabController().GetTab(allTabsInstance.TabID, tab.PortalID, false)).Any(
+                (from ModuleInfo allTabsInstance in objmodules.GetModuleTabs(allTabsModule.ModuleID) select Instance.GetTab(allTabsInstance.TabID, tab.PortalID, false)).Any(
                     t => !t.IsDeleted) && (!portalSettings.ContentLocalizationEnabled || allTabsModule.CultureCode == tab.CultureCode);
                 if (canAdd)
                 {
@@ -2283,9 +2283,8 @@ namespace DotNetNuke.Entities.Tabs
                     if (tabs[XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab")] != null)
                     {
                         //parent node specifies the path (tab1/tab2/tab3), use saved tabid
-                        int defaultLanguageTabId =
-                            Convert.ToInt32(tabs[XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab")]);
-                        TabInfo defaultLanguageTab = tabController.GetTab(defaultLanguageTabId, portalId, false);
+                        int defaultLanguageTabId = Convert.ToInt32(tabs[XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab")]);
+                        TabInfo defaultLanguageTab = Instance.GetTab(defaultLanguageTabId, portalId, false);
                         if (defaultLanguageTab != null)
                         {
                             tab.DefaultLanguageGuid = defaultLanguageTab.UniqueId;
@@ -2295,9 +2294,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         //Parent node doesn't spcecify the path, search by name.
                         //Possible incoherence if tabname not unique
-                        TabInfo defaultLanguageTab =
-                            tabController.GetTabByName(
-                                XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab"), portalId);
+                        TabInfo defaultLanguageTab = tabController.GetTabByName(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab"), portalId);
                         if (defaultLanguageTab != null)
                         {
                             tab.DefaultLanguageGuid = defaultLanguageTab.UniqueId;
@@ -2678,7 +2675,7 @@ namespace DotNetNuke.Entities.Tabs
                 case TabType.Tab:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
                     //Get the tab being linked to
-                    TabInfo tempTab = new TabController().GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
+                    TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
                     urlNode.InnerXml = tempTab.TabPath;
                     break;
                 case TabType.File:

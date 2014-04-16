@@ -229,11 +229,10 @@ namespace DotNetNuke.Entities.Users
                         result = int.Parse(property.PropertyValue).ToString(formatString, formatProvider);
                         break;
                     case "page":
-                        var tabCtrl = new TabController();
                         int tabid;
                         if (int.TryParse(property.PropertyValue, out tabid))
                         {
-                            TabInfo tab = tabCtrl.GetTab(tabid, Null.NullInteger, false);
+                            TabInfo tab = TabController.Instance.GetTab(tabid, Null.NullInteger, false);
                             if (tab != null)
                             {
                                 result = string.Format("<a href='{0}'>{1}</a>", TestableGlobals.Instance.NavigateURL(tabid), tab.LocalizedTabName);

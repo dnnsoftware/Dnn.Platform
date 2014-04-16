@@ -15,8 +15,6 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnPortalPageDropDownList runat='server'></{0}:DnnPortalPageDropDownList>")]
     public class DnnPortalPageDropDownList : DnnDropDownList
     {
-
-        private readonly Lazy<TabController> _controller = new Lazy<TabController>(() => new TabController());
         private readonly Lazy<int> _portalId = new Lazy<int>(() => PortalSettings.Current.ActiveTab.IsSuperTab ? -1 : PortalSettings.Current.PortalId);
 
         protected override void OnInit(EventArgs e)
@@ -47,7 +45,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 var pageId = SelectedItemValueAsInt;
-                return (pageId == Null.NullInteger) ? null : _controller.Value.GetTab(pageId, _portalId.Value, false);
+                return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, _portalId.Value, false);
             }
             set
             {

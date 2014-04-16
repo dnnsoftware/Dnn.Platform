@@ -314,8 +314,8 @@ namespace DotNetNuke.Providers.RadEditorProvider
 								
 							}
                             else if (dialogParams.LinkUrl.ToLowerInvariant().Contains("linkclick.aspx"))
-							{
-								try
+                            {
+                                try
 								{
 									if (dialogParams.LinkUrl.Contains("?"))
 									{
@@ -326,11 +326,10 @@ namespace DotNetNuke.Providers.RadEditorProvider
 										}
 									}
 
-									int tabId = 0;
-									if (int.TryParse(link, out tabId)) //if it's a tabid get the tab path
+								    int tabId;
+								    if (int.TryParse(link, out tabId)) //if it's a tabid get the tab path
 									{
-										var tabController = new TabController();
-										dialogParams.LinkClickUrl = tabController.GetTab(tabId, dialogParams.PortalId, true).FullUrl;
+                                        dialogParams.LinkClickUrl = TabController.Instance.GetTab(tabId, dialogParams.PortalId, true).FullUrl;
 										linkTrackingInfo = _urlController.GetUrlTracking(dialogParams.PortalId, tabId.ToString(), dialogParams.ModuleId);
 									}
 									else
@@ -345,9 +344,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
 								    Logger.Error(ex);
 									dialogParams.LinkClickUrl = dialogParams.LinkUrl;
 								}
-							}
+                            }
 
-							if (linkTrackingInfo == null)
+						    if (linkTrackingInfo == null)
 							{
 								dialogParams.Track = false;
 								dialogParams.TrackUser = false;

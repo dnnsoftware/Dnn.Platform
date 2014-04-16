@@ -869,9 +869,8 @@ namespace DotNetNuke.Entities.Urls
                                 portalId = portalDic[tabId];
                             }
 
-                            var tc = new TabController();
-                            TabInfo tab1 = tc.GetTab(tabIdOriginal, portalId, false);
-                            TabInfo tab2 = tc.GetTab(tabId, portalId, false);
+                            TabInfo tab1 = TabController.Instance.GetTab(tabIdOriginal, portalId, false);
+                            TabInfo tab2 = TabController.Instance.GetTab(tabId, portalId, false);
                             if (tab1 != null)
                             {
                                 tab1Name = tab1.TabName + " [" + tab1.TabPath + "]";

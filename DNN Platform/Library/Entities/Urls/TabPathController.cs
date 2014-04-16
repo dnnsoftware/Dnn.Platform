@@ -369,8 +369,7 @@ namespace DotNetNuke.Entities.Urls
             string path = "";
             if ((tab.ParentId > -1))
             {
-                var tc = new TabController();
-                TabInfo parentTab = tc.GetTab(tab.ParentId, tab.PortalID, false);
+                TabInfo parentTab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
                 //822 : don't assume parent tab is going to exist - database might be corrupted
                 //896 : check to make sure tabid and parentid are different - or stack overflow occurs with terminal loop
                 if (parentTab != null && parentTab.TabID != tab.TabID)

@@ -232,7 +232,7 @@ namespace DotNetNuke.Tests.Urls
         private void UpdateTabName(int tabId, string newName)
         {
             var tc = new TabController();
-            var tab = tc.GetTab(tabId, PortalId, false);
+            var tab = TabController.Instance.GetTab(tabId, PortalId, false);
             tab.TabName = newName;
             tc.UpdateTab(tab);
         }
@@ -403,7 +403,7 @@ namespace DotNetNuke.Tests.Urls
                 tc.UpdateTab(tab);
 
                 //Refetch tab from DB
-                tab = tc.GetTab(tab.TabID, tab.PortalID, false);
+                tab = TabController.Instance.GetTab(tab.TabID, tab.PortalID, false);
             }
 
             string autoAscii = testFields.GetValue("AutoAscii");

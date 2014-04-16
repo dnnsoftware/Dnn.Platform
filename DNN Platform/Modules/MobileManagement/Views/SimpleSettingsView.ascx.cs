@@ -31,8 +31,7 @@ namespace DotNetNuke.Modules.MobileManagement
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var controller = new TabController();
-            lblHomePage.Text = controller.GetTab(ModuleContext.PortalSettings.HomeTabId, ModuleContext.PortalId,false).TabName;
+            lblHomePage.Text = TabController.Instance.GetTab(ModuleContext.PortalSettings.HomeTabId, ModuleContext.PortalId, false).TabName;
             
             if (!IsPostBack) BindSettingControls();
         }
@@ -131,30 +130,6 @@ namespace DotNetNuke.Modules.MobileManagement
 
             // Save the redirect
             redirectionController.Save(redirection);
-        }
-
-        private bool IsVisible(TabInfo tab)
-        {
-            if (tab == null || tab.TabID == PortalSettings.Current.AdminTabId || tab.TabID == PortalSettings.Current.UserTabId)
-            {
-                return false;
-            }
-
-            if (tab.ParentId != Null.NullInteger)
-            {
-                var tabController = new TabController();
-                do
-                {
-                    if (tab.ParentId == PortalSettings.Current.AdminTabId || tab.ParentId == PortalSettings.Current.UserTabId)
-                    {
-                        return false;
-                    }
-
-                    tab = tabController.GetTab(tab.ParentId, tab.PortalID, false);
-                } while (tab != null && tab.ParentId != Null.NullInteger);
-            }
-
-            return true;
         }
     }
 }

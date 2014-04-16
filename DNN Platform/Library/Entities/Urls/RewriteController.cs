@@ -386,7 +386,7 @@ namespace DotNetNuke.Entities.Urls
 
                             //Get the User profile Tab
                             var portal = PortalController.Instance.GetPortal(result.PortalId);
-                            var profilePage = new TabController().GetTab(portal.UserTabId, result.PortalId, false);
+                            var profilePage = TabController.Instance.GetTab(portal.UserTabId, result.PortalId, false);
 
                             FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                             string profilePagePath = TabPathHelper.GetFriendlyUrlTabPath(profilePage, options, Guid.NewGuid());
@@ -586,8 +586,7 @@ namespace DotNetNuke.Entities.Urls
             TabInfo tab = null;
             if (tabId > 0 && portalId > -1)
             {
-                var tc = new TabController();
-                tab = tc.GetTab(tabId, portalId, false);
+                tab = TabController.Instance.GetTab(tabId, portalId, false);
             }
             //don't overwrite specific skin at tab level for rewritten Urls
             if (tab == null || string.IsNullOrEmpty(tab.SkinSrc))

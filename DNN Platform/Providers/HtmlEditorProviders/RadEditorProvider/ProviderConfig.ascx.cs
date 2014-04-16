@@ -1649,8 +1649,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 							{
 								try
 								{
-									TabController tc = new TabController();
-									TabInfo t = tc.GetTab(Convert.ToInt32(strTargetTab.ToLower().Replace("tabid.", "")), PortalSettings.PortalId, false);
+                                    TabInfo t = TabController.Instance.GetTab(Convert.ToInt32(strTargetTab.ToLower().Replace("tabid.", "")), PortalSettings.PortalId, false);
 									if (t != null)
 									{
 										if (t.PortalID != PortalSettings.PortalId)

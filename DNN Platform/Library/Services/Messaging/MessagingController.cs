@@ -118,8 +118,7 @@ namespace DotNetNuke.Services.Messaging
                     var mi = a[0] as ModuleInfo;
                     if ((mi != null))
                     {
-                        var tc = new TabController();
-                        _MessagingPage = tc.GetTab(mi.TabID, PortalSettings.Current.PortalId, false);
+                        _MessagingPage = TabController.Instance.GetTab(mi.TabID, PortalSettings.Current.PortalId, false);
                     }
                 }
             }

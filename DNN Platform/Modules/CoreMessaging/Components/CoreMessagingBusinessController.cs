@@ -47,7 +47,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                 {
                     case "06.02.00":
                         var moduleController = new ModuleController();
-                        var tabController = new TabController();
 
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
                         if (moduleDefinition != null)
@@ -58,7 +57,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                                 if (portal.UserTabId > Null.NullInteger)
                                 {
                                     //Find TabInfo
-                                    var tab = tabController.GetTab(portal.UserTabId, portal.PortalID, true);
+                                    var tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalID, true);
                                     if (tab != null)
                                     {
                                         foreach (var module in moduleController.GetTabModules(portal.UserTabId).Values)

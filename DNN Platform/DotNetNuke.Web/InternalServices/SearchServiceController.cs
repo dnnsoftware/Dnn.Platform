@@ -280,7 +280,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (first.TabId > 0)
                     {
-                        var tab = _tabController.GetTab(first.TabId, first.PortalId, false);
+                        var tab = TabController.Instance.GetTab(first.TabId, first.PortalId, false);
                         if (tab != null)
                             group.Title = tab.TabName;
                     }

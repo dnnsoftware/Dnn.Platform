@@ -147,12 +147,11 @@ namespace DotNetNuke.Web.DDRMenu
 				if (nodeText.StartsWith("["))
 				{
 					var roleName = nodeText.Substring(1, nodeText.Length - 2);
-					var tc = new TabController();
 					filteredNodes.AddRange(
 						RootNode.Children.FindAll(
 							n =>
 							{
-								var tab = tc.GetTab(n.TabId, Null.NullInteger, false);
+                                var tab = TabController.Instance.GetTab(n.TabId, Null.NullInteger, false);
 								foreach (TabPermissionInfo perm in tab.TabPermissions)
 								{
 									if (perm.AllowAccess && (perm.PermissionKey == "VIEW") &&

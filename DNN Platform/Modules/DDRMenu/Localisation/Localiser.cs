@@ -8,7 +8,6 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 	public class Localiser
 	{
 		private readonly int portalId;
-		private readonly TabController controller;
 		private static bool apiChecked;
 		private static ILocalisation _LocalisationApi;
 		private static ILocalisation LocalisationApi
@@ -39,12 +38,11 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 		public Localiser(int portalId)
 		{
 			this.portalId = portalId;
-			controller = new TabController();
 		}
 
 		public void LocaliseNode(MenuNode node)
 		{
-			var tab = (node.TabId > 0) ? controller.GetTab(node.TabId, Null.NullInteger, false) : null;
+            var tab = (node.TabId > 0) ? TabController.Instance.GetTab(node.TabId, Null.NullInteger, false) : null;
 			if (tab != null)
 			{
 				var localised = LocaliseTab(tab);

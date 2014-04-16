@@ -200,8 +200,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private IList<ModuleInfo> GetModules(int tabID)
         {
-            var tabCtrl = new TabController();
-            var isRemote = tabCtrl.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
+            var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
             var moduleCtrl = new ModuleController();
             var tabModules = moduleCtrl.GetTabModules(tabID);
 
@@ -758,7 +757,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
                     //set the culture of the module to that of the tab
-                    var tabInfo = new TabController().GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
+                    var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
                     objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
                 }
                 else

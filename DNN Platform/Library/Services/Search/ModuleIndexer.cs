@@ -379,7 +379,6 @@ namespace DotNetNuke.Services.Search
 
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
         {
-            var tabController = new TabController();
             var moduleController = new ModuleController();
             var businessControllers = new Hashtable();
             var searchModuleIds = new HashSet<int>();
@@ -391,7 +390,7 @@ namespace DotNetNuke.Services.Search
             {
                 try
                 {
-                    var tab = tabController.GetTab(module.TabID, portalId, false);
+                    var tab = TabController.Instance.GetTab(module.TabID, portalId, false);
                     //Only index modules on tabs that are set to be Indexed.
                     if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
                     {

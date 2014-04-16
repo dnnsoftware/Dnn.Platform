@@ -567,8 +567,7 @@ namespace DotNetNuke.Services.Mobile
                 int targetTabId = int.Parse(redirection.TargetValue.ToString());
                 if (targetTabId != currentTabId) //ensure it's not redirecting to itself
                 {
-                    var tabController = new TabController();
-                    var tab = tabController.GetTab(targetTabId, portalId, false);
+                    var tab = TabController.Instance.GetTab(targetTabId, portalId, false);
                     if (tab != null && !tab.IsDeleted)
                     {
                         redirectUrl = TestableGlobals.Instance.NavigateURL(targetTabId);

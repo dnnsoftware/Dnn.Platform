@@ -408,7 +408,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 var moduleController = new ModuleController();
 
                 messageTabId = portalSettings.UserTabId;
-                var profileTab = tabController.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
+                var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
                 if (profileTab != null)
                 {
                     var childTabs = tabController.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
@@ -480,7 +480,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var tabController = new TabController();
             var moduleController = new ModuleController();
 
-            var profileTab = tabController.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
+            var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
             if (profileTab != null)
             {
                 var childTabs = tabController.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);

@@ -2797,8 +2797,7 @@ namespace DotNetNuke.Common
                 case TabType.Tab:
                     if (Int32.TryParse(url, out intId))
                     {
-                        var objTabController = new TabController();
-                        if (objTabController.GetTab(intId, portalSettings.PortalId, false) == null)
+                        if (TabController.Instance.GetTab(intId, portalSettings.PortalId, false) == null)
                         {
                             //the tab does not exist
                             strUrl = "";
@@ -3039,13 +3038,11 @@ namespace DotNetNuke.Common
                 url += "&portalid=" + settings.PortalId;
             }
 
-            var controller = new TabController();
-
             TabInfo tab = null;
 
             if (settings != null)
             {
-                tab = controller.GetTab(tabID, isSuperTab ? Null.NullInteger : settings.PortalId, false);
+                tab = TabController.Instance.GetTab(tabID, isSuperTab ? Null.NullInteger : settings.PortalId, false);
             }
 
             //only add language to url if more than one locale is enabled
@@ -3493,12 +3490,11 @@ namespace DotNetNuke.Common
         public static string GenerateTabPath(int parentId, string tabName)
         {
             string strTabPath = "";
-            var objTabs = new TabController();
 
             if (!Null.IsNull(parentId))
             {
                 string strTabName;
-                var objTab = objTabs.GetTab(parentId, Null.NullInteger, false);
+                var objTab = TabController.Instance.GetTab(parentId, Null.NullInteger, false);
                 while (objTab != null)
                 {
                     strTabName = Regex.Replace(objTab.TabName, _tabPathInvalidCharsEx, string.Empty);
@@ -3509,7 +3505,7 @@ namespace DotNetNuke.Common
                     }
                     else
                     {
-                        objTab = objTabs.GetTab(objTab.ParentId, objTab.PortalID, false);
+                        objTab = TabController.Instance.GetTab(objTab.ParentId, objTab.PortalID, false);
                     }
                 }
             }
@@ -3590,7 +3586,7 @@ namespace DotNetNuke.Common
 				if (objModule.ModuleDefinition.FriendlyName == moduleName)
                 {
                     //We need to ensure that Anonymous Users or All Users have View permissions to the login page
-                    TabInfo tab = new TabController().GetTab(tabId, objModule.PortalID, false);
+                    TabInfo tab = TabController.Instance.GetTab(tabId, objModule.PortalID, false);
                     if (TabPermissionController.CanViewPage(tab))
                     {
 						hasModule = true;
