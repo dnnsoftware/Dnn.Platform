@@ -347,7 +347,7 @@ Fax: (555) 555-4564</value>
     <value>CMS by DNN</value>
   </data>
   <data name="Tab.Home.Header.Content" xml:space="preserve">
-    <value>DNN® makes it easy for you to install and use the DNN® Platform.  We have multiple options to suit your needs, whether you want to try the CMS out in the cloud, install it on your own server, or use it on your desktop for development.  You are just a click away from getting started with DNN®.</value>
+    <value>DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt; makes it easy for you to install and use the DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt; Platform.  We have multiple options to suit your needs, whether you want to try the CMS out in the cloud, install it on your own server, or use it on your desktop for development.  You are just a click away from getting started with DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt;.</value>
   </data>
   <data name="Tab.Home.Header.Title" xml:space="preserve">
     <value>Every journey begins with the first step. </value>
