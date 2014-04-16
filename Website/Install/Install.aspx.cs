@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using DotNetNuke.Services.FileSystem;
+
 #region Usings
 
 using System;
@@ -145,7 +148,11 @@ namespace DotNetNuke.Services.Install
                     }
 
                     var installConfig = InstallController.Instance.GetInstallConfig();
-
+                    //Create Folder Mappings config
+                    if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
+                    {
+                        FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
+                    }
                     Upgrade.Upgrade.InstallDNN(strProviderPath);
                     //remove en-US from portal if installing in a different language
                     if (!installConfig.InstallCulture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
