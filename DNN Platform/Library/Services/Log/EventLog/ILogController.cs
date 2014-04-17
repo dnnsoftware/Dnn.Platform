@@ -31,5 +31,7 @@ namespace DotNetNuke.Services.Log.EventLog
         void AddLogType(string configFile, string fallbackConfigFile);
 
         void AddLogType(LogTypeInfo logType);
+
+        object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType);
     }
 }

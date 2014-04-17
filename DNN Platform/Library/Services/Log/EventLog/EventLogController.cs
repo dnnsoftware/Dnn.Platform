@@ -352,6 +352,11 @@ namespace DotNetNuke.Services.Log.EventLog
             LogController.Instance.AddLogType(logType);
         }
 
+        public object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
+        {
+            return LogController.Instance.GetSingleLog(log, returnType);
+        }
+
         #endregion
 
         #region Helper Methods
