@@ -104,6 +104,12 @@ namespace DotNetNuke.Entities.Users.Membership
                 ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
                 NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
             }
+            else //setup default values during install process.
+            {
+                EnableStrengthMeter = true;
+                EnableBannedList = true;
+                EnablePasswordHistory = true;
+            }
         }
 
         public int PortalId { get; set; }

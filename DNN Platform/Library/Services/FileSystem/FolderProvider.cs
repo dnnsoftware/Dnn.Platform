@@ -48,7 +48,6 @@ namespace DotNetNuke.Services.FileSystem
         #region Private Variables
 
         private string _providerName;
-        private readonly string _encryptionKey = Host.GUID;
 
         #endregion
 
@@ -303,12 +302,12 @@ namespace DotNetNuke.Services.FileSystem
 
         public string GetEncryptedSetting(Hashtable folderMappingSettings, string settingName)
         {
-            return new PortalSecurity().Decrypt(_encryptionKey, folderMappingSettings[settingName].ToString());
+            return new PortalSecurity().Decrypt(Host.GUID, folderMappingSettings[settingName].ToString());
         }
 
         public string EncryptValue(string settingValue)
         {
-            return new PortalSecurity().Encrypt(_encryptionKey, settingValue.Trim());
+            return new PortalSecurity().Encrypt(Host.GUID, settingValue.Trim());
         }
 
         public virtual string GetHashCode(IFileInfo file)
