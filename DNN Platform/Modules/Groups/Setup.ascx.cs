@@ -60,17 +60,14 @@ namespace DotNetNuke.Modules.Groups
 
             //Add Module to Child Page
             int groupViewModuleId = AddModule(tab, PortalId, "Social Groups", "ContentPane");
-            int journalModuleId = AddModule(tab, PortalId, "Journal", "ContentPane");
             int consoleId = AddModule(tab, PortalId, "Console", "RightPane");
 
-            var mc = new ModuleController();
-
-            ModuleInfo groupConsoleModule = mc.GetModule(consoleId, tab.TabID);
+            ModuleInfo groupConsoleModule = ModuleController.Instance.GetModule(consoleId, tab.TabID, false);
             TabInfo memberTab = CreatePage(PortalSettings.ActiveTab, PortalId, tab.TabID, "Members", false);
-            mc.CopyModule(groupConsoleModule, memberTab, "RightPane", true);
+            ModuleController.Instance.CopyModule(groupConsoleModule, memberTab, "RightPane", true);
 
-            ModuleInfo groupViewModule = mc.GetModule(groupViewModuleId, tab.TabID);
-            mc.CopyModule(groupViewModule, memberTab, "ContentPane", true);
+            ModuleInfo groupViewModule = ModuleController.Instance.GetModule(groupViewModuleId, tab.TabID, false);
+            ModuleController.Instance.CopyModule(groupViewModule, memberTab, "ContentPane", true);
             AddModule(memberTab, PortalId, "DotNetNuke.Modules.MemberDirectory", "ContentPane");
 
 
@@ -179,7 +176,7 @@ namespace DotNetNuke.Modules.Groups
                     moduleId = AddNewModule(tab, string.Empty, desktopModuleId, pane, 0, string.Empty);
                 }
                 id = moduleId;
-                ModuleInfo mi = mc.GetModule(moduleId, tab.TabID);
+                ModuleInfo mi = ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
                 if (moduleName == "Social Groups")
                 {
                     mc.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupLoadView, GroupMode.View.ToString());
@@ -288,7 +285,7 @@ namespace DotNetNuke.Modules.Groups
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
-                return objModules.AddModule(objModule);
+                return ModuleController.Instance.AddModule(objModule);
             }
             return -1;
         }

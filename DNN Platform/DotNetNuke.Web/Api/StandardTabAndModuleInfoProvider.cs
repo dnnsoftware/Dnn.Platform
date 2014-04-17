@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.Api
             int tabId, moduleId;
             if(TryFindTabId(request, out tabId) && TryFindModuleId(request, out moduleId))
             {
-                moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId);
+                moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
             }
 
             return moduleInfo != null;

@@ -90,7 +90,7 @@ namespace DotNetNuke.Services.Syndication
                     {
                         if (Settings.ActiveTab.StartDate < DateTime.Now && Settings.ActiveTab.EndDate > DateTime.Now)
                         {
-                            objModule = objModules.GetModule(result.ModuleId, query.TabId);
+                            objModule = ModuleController.Instance.GetModule(result.ModuleId, query.TabId, false);
                             if (objModule != null && objModule.DisplaySyndicate && objModule.IsDeleted == false)
                             {
                                 if (ModulePermissionController.CanViewModule(objModule))

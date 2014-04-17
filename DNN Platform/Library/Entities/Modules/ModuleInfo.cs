@@ -1101,8 +1101,7 @@ namespace DotNetNuke.Entities.Modules
             AllModules = Null.NullBoolean;
             if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
             {
-                var objModules = new ModuleController();
-                ModuleInfo objModule = objModules.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
+                ModuleInfo objModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
                 if (objModule != null)
                 {
                     Alignment = objModule.Alignment;

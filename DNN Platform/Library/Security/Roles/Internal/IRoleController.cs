@@ -112,7 +112,7 @@ namespace DotNetNuke.Security.Roles.Internal
         /// <summary>
         ///     get a list of roles based on progressive search
         /// </summary>
-        /// <param name="portalID">the id of the portal</param>
+        /// <param name="portalId">the id of the portal</param>
         /// <param name="pageSize">the number of items to return</param>
         /// <param name="filterBy">the text used to trim data</param>
         /// <returns></returns>
@@ -128,9 +128,9 @@ namespace DotNetNuke.Security.Roles.Internal
         /// <summary>
         ///     Gets a User/Role
         /// </summary>
-        /// <param name="PortalID">The Id of the Portal</param>
-        /// <param name="UserId">The Id of the user</param>
-        /// <param name="RoleId">The Id of the Role</param>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="userId">The Id of the user</param>
+        /// <param name="roleId">The Id of the Role</param>
         /// <returns>A UserRoleInfo object</returns>
         UserRoleInfo GetUserRole(int portalId, int userId, int roleId);
 
@@ -145,7 +145,7 @@ namespace DotNetNuke.Security.Roles.Internal
         /// <summary>
         ///     Gets a list of UserRoles for the user
         /// </summary>
-        /// <param name="portalID">Id of the portal</param>
+        /// <param name="portalId">Id of the portal</param>
         /// <param name="userName">The user to fetch roles for</param>
         /// <param name="roleName">The role to fetch users for</param>
         /// <returns>A list of UserRoleInfo objects</returns>

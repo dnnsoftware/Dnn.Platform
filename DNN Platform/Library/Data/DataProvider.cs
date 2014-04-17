@@ -1073,11 +1073,6 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetModules", portalId);
         }
 
-        public virtual IDataReader GetRecycleModules(int portalId)
-        {
-            return ExecuteReader("GetRecycleModules", portalId);
-        }
-
         public virtual IDataReader GetModuleSetting(int moduleId, string settingName)
         {
             return ExecuteReader("GetModuleSetting", moduleId, settingName);

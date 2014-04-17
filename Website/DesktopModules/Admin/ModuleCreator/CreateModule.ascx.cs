@@ -344,7 +344,7 @@ namespace DesktopModules.Admin.ModuleCreator
 
                         //Update current module to reference new moduledefinition
                         var objModules = new ModuleController();
-                        var objModule = objModules.GetModule(ModuleId, TabId, false);
+                        var objModule = ModuleController.Instance.GetModule(ModuleId, TabId, false);
                         objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
                         objModule.ModuleTitle = txtModule.Text;
 

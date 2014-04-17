@@ -21,6 +21,8 @@
 
 using System;
 using System.Globalization;
+
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
@@ -130,7 +132,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         private string GetSettingByKey(int moduleId, string key)
         {
-            var module = moduleController.GetModule(moduleId);
+            var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
             var moduleSettings = module.ModuleSettings; 
             return (string)moduleSettings[key];               
         }

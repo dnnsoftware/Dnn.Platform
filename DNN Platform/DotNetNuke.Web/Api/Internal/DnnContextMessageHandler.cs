@@ -86,7 +86,7 @@ namespace DotNetNuke.Web.Api.Internal
 
                 if (moduleId != Null.NullInteger)
                 {
-                    var module = ModuleController.Instance.GetModule(moduleId, tabId);
+                    var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
                     if (module == null)
                     {
                         throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("TabModuleNotExist", Localization.ExceptionsResourceFile)));

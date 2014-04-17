@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return _module ?? (_module = new ModuleController().GetModule(ModuleId, TabId, false));
+                return _module ?? (_module = ModuleController.Instance.GetModule(ModuleId, TabId, false));
             }
         }
 

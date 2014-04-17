@@ -361,7 +361,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override ArrayList GetPermissions()
         {
-            var moduleInfo = ModuleController.Instance.GetModule(ModuleID, TabId);
+            var moduleInfo = ModuleController.Instance.GetModule(ModuleID, TabId, false);
 
             var permissionController = new PermissionController();
             var permissions = permissionController.GetPermissionsByModule(ModuleID, TabId);

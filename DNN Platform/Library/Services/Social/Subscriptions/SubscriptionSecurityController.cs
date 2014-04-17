@@ -20,6 +20,8 @@
 #endregion
 
 using System;
+
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -79,7 +81,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
         private static ModuleInfo GetModuleFromSubscription(Subscription subscription)
         {
-            return new ModuleController().GetModule(subscription.ModuleId);
+            return ModuleController.Instance.GetModule(subscription.ModuleId, Null.NullInteger, true);
         }
 
         private static UserInfo GetUserFromSubscription(Subscription subscription)

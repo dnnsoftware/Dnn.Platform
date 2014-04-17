@@ -56,8 +56,7 @@ namespace DotNetNuke.Security.Permissions
 
         private static void ClearPermissionCache(int moduleId)
         {
-            var objModules = new ModuleController();
-            ModuleInfo objModule = objModules.GetModule(moduleId, Null.NullInteger, false);
+            ModuleInfo objModule = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
             DataCache.ClearModulePermissionsCache(objModule.TabID);
         }
 

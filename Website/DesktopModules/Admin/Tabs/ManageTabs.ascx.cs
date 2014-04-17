@@ -953,7 +953,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             optReference = (RadioButton)objDataGridItem.FindControl("optReference");
                             txtCopyTitle = (TextBox)objDataGridItem.FindControl("txtCopyTitle");
 
-                            objModule = objModules.GetModule(intModuleID, copyTabId, false);
+                            objModule = ModuleController.Instance.GetModule(intModuleID, copyTabId, false);
                             ModuleInfo newModule = null;
                             if ((objModule != null))
                             {

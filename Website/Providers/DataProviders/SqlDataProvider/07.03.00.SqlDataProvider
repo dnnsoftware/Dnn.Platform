@@ -493,6 +493,12 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortalAliases
 AS
 	SELECT * FROM {databaseOwner}{objectQualifier}PortalAlias
 GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRecycleModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetRecycleModules
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

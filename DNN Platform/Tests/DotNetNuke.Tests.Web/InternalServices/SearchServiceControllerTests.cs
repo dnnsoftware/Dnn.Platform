@@ -267,14 +267,14 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
         private void SetupModuleController()
         {
-            _mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId1), It.Is<int>(p => p == PortalId0))).Returns(
+            _mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId1), It.Is<int>(p => p == PortalId0), false)).Returns(
     new ModuleInfo { ModuleID = HtmlModuleId1, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle1 });
-            _mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId2), It.Is<int>(p => p == PortalId0))).Returns(
+            _mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId2), It.Is<int>(p => p == PortalId0), false)).Returns(
             new ModuleInfo { ModuleID = HtmlModuleId2, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle2 });
-            _mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId3), It.Is<int>(p => p == PortalId0))).Returns(
+            _mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId3), It.Is<int>(p => p == PortalId0), false)).Returns(
             new ModuleInfo { ModuleID = HtmlModuleId3, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle3 });
 
-            _mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId4), It.Is<int>(p => p == PortalId0))).Returns(
+            _mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId4), It.Is<int>(p => p == PortalId0), false)).Returns(
             new ModuleInfo { ModuleID = HtmlModuleId4, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle4 });
             ModuleController.SetTestableInstance(_mockModuleController.Object);
         }

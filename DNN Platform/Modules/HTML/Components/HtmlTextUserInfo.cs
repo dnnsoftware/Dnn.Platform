@@ -75,8 +75,7 @@ namespace DotNetNuke.Modules.Html
             {
                 if (_Module == null)
                 {
-                    var ctrl = new ModuleController();
-                    _Module = ctrl.GetModule(ModuleID, TabID);
+                    _Module = ModuleController.Instance.GetModule(ModuleID, TabID, false);
                 }
                 return _Module;
             }

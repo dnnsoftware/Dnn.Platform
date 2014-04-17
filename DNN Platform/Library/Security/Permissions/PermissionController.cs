@@ -103,7 +103,7 @@ namespace DotNetNuke.Security.Permissions
 
         public ArrayList GetPermissionsByModule(int moduleId, int tabId)
         {
-            var module = new ModuleController().GetModule(moduleId, tabId);
+            var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
 
             return new ArrayList(GetPermissions().Where(p => p.ModuleDefID == module.ModuleDefID || p.PermissionCode == "SYSTEM_MODULE_DEFINITION").ToArray());
         }
@@ -252,7 +252,7 @@ namespace DotNetNuke.Security.Permissions
         [Obsolete("Deprecated in DNN 7.3.0. Replaced by GetPermissionsByModule(int, int)")]
         public ArrayList GetPermissionsByModuleID(int moduleId)
         {
-            var module = new ModuleController().GetModule(moduleId);
+            var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
 
             return GetPermissionsByModuleDefID(module.ModuleDefID);
         }

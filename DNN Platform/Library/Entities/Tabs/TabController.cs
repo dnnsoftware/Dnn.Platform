@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             var objmodules = new ModuleController();
             var portalSettings = new PortalSettings(tab.TabID, tab.PortalID);
-            foreach (ModuleInfo allTabsModule in objmodules.GetAllTabsModules(tab.PortalID, true))
+            foreach (ModuleInfo allTabsModule in ModuleController.Instance.GetAllTabsModules(tab.PortalID, true))
             {
                 //[DNN-6276]We need to check that the Module is not implicitly deleted.  ie If all instances are on Pages
                 //that are all "deleted" then even if the Module itself is not deleted, we would not expect the 
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Tabs
                     t => !t.IsDeleted) && (!portalSettings.ContentLocalizationEnabled || allTabsModule.CultureCode == tab.CultureCode);
                 if (canAdd)
                 {
-                    objmodules.CopyModule(allTabsModule, tab, Null.NullString, true);
+                    ModuleController.Instance.CopyModule(allTabsModule, tab, Null.NullString, true);
                 }
             }
         }
@@ -555,7 +555,7 @@ namespace DotNetNuke.Entities.Tabs
             var moduleController = new ModuleController();
             foreach (ModuleInfo m in moduleController.GetTabModules(tabId).Values)
             {
-                moduleController.DeleteTabModule(m.TabID, m.ModuleID, false);
+                ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, false);
             }
 
             //Delete Tab
@@ -597,7 +597,7 @@ namespace DotNetNuke.Entities.Tabs
                     var moduleCtrl = new ModuleController();
                     foreach (ModuleInfo m in moduleCtrl.GetTabModules(tabToDelete.TabID).Values)
                     {
-                        moduleCtrl.DeleteTabModule(m.TabID, m.ModuleID, true);
+                        ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, true);
                     }
 
                     var eventLogController = new EventLogController();
@@ -892,7 +892,7 @@ namespace DotNetNuke.Entities.Tabs
 
                 //Make shallow copies of all modules
                 var moduleCtrl = new ModuleController();
-                moduleCtrl.CopyModules(originalTab, localizedCopy, true);
+                ModuleController.Instance.CopyModules(originalTab, localizedCopy, true);
 
                 //Convert these shallow copies to deep copies
                 foreach (KeyValuePair<int, ModuleInfo> kvp in moduleCtrl.GetTabModules(localizedCopy.TabID))
@@ -1642,14 +1642,12 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             var eventLogController = new EventLogController();
-            eventLogController.AddLog(tab, portalSettings, portalSettings.UserId, "",
-                                      EventLogController.EventLogType.TAB_RESTORED);
+            eventLogController.AddLog(tab, portalSettings, portalSettings.UserId, "", EventLogController.EventLogType.TAB_RESTORED);
 
-            var moduleController = new ModuleController();
-            ArrayList allTabsModules = moduleController.GetAllTabsModules(tab.PortalID, true);
+            ArrayList allTabsModules = ModuleController.Instance.GetAllTabsModules(tab.PortalID, true);
             foreach (ModuleInfo objModule in allTabsModules)
             {
-                moduleController.CopyModule(objModule, tab, Null.NullString, true);
+                ModuleController.Instance.CopyModule(objModule, tab, Null.NullString, true);
             }
 
             ClearCache(tab.PortalID);
@@ -2027,7 +2025,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 foreach (KeyValuePair<int, ModuleInfo> kvp in dicModules.Where(kvp => !kvp.Value.AllTabs))
                 {
-                    moduleController.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
+                    ModuleController.Instance.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
                 }
             }
 

@@ -554,8 +554,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private int DoAddExistingModule(int moduleId, int tabId, string paneName, int position, string align, bool cloneModule)
         {
-            var moduleCtrl = new ModuleController();
-            ModuleInfo moduleInfo = moduleCtrl.GetModule(moduleId, tabId, false);
+            ModuleInfo moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
 
             int userID = -1;
           
@@ -599,7 +598,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     newModule.ModuleID = Null.NullInteger;
                     //reset the module id
-                    newModule.ModuleID = moduleCtrl.AddModule(newModule);
+                    newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                     {
@@ -616,7 +615,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    moduleCtrl.AddModule(newModule);
+                    ModuleController.Instance.AddModule(newModule);
                 }
 
                 if (remote)
@@ -743,7 +742,7 @@ namespace DotNetNuke.Web.InternalServices
                     objModule.CacheTime = objModuleDefinition.DefaultCacheTime;
                     if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
                     {
-                        ModuleInfo defaultModule = objModules.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
+                        ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
                         if ((defaultModule != null))
                         {
                             objModule.CacheTime = defaultModule.CacheTime;
@@ -767,7 +766,7 @@ namespace DotNetNuke.Web.InternalServices
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
-                objModules.AddModule(objModule);
+                ModuleController.Instance.AddModule(objModule);
 
 				if (tabModuleId == Null.NullInteger)
 				{

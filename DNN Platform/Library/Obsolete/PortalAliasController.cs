@@ -39,8 +39,6 @@ namespace DotNetNuke.Entities.Portals
 {
     public partial class PortalAliasController
     {
-        #region Obsolete Methods
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.DeletePortalAlias")]
         public void DeletePortalAlias(int portalAliasId)
@@ -112,7 +110,5 @@ namespace DotNetNuke.Entities.Portals
         {
             Instance.UpdatePortalAlias(portalAlias);
         }
-
-        #endregion
     }
 }

@@ -80,11 +80,10 @@ namespace DotNetNuke.UI
         {
             HttpRequest request = HttpContext.Current.Request;
 
-            var moduleController = new ModuleController();
             ModuleInfo slaveModule = null;
             if (moduleId != -1)
             {
-                ModuleInfo module = moduleController.GetModule(moduleId, tabId, false);
+                ModuleInfo module = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 if (module != null)
                 {
                     slaveModule = module.Clone();

@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private ModuleInfo Module
         {
-            get { return _module ?? (_module = ModuleCtrl.GetModule(_moduleId, TabId, false)); }
+            get { return _module ?? (_module = ModuleController.Instance.GetModule(_moduleId, TabId, false)); }
         }
 
         private ModuleController ModuleCtrl
@@ -346,7 +346,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             if (Module.ContentItemId == Null.NullInteger && Module.ModuleID != Null.NullInteger)
             {
                 //This tab does not have a valid ContentItem
-                moduleController.CreateContentItem(Module);
+                ModuleController.Instance.CreateContentItem(Module);
 
                 moduleController.UpdateModule(Module);
             }
@@ -512,8 +512,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             try
             {
-                var objModules = new ModuleController();
-                objModules.DeleteTabModule(TabId, _moduleId, true);
+                ModuleController.Instance.DeleteTabModule(TabId, _moduleId, true);
                 Response.Redirect(ReturnURL, true);
             }
             catch (Exception exc)
@@ -667,7 +666,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         if (TabId != newTabId)
                         {
                             //First check if there already is an instance of the module on the target page
-                            var tmpModule = moduleController.GetModule(_moduleId, newTabId);
+                            var tmpModule = ModuleController.Instance.GetModule(_moduleId, newTabId, false);
                             if (tmpModule == null)
                             {
                                 //Move module
@@ -692,7 +691,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                             {
                                 foreach (var destinationTab in listTabs)
                                 {
-                                    var module = moduleController.GetModule(_moduleId, destinationTab.TabID);
+                                    var module = ModuleController.Instance.GetModule(_moduleId, destinationTab.TabID, false);
                                     if (module != null)
                                     {
                                         if (module.IsDeleted)
@@ -704,7 +703,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                     {
                                         if (!PortalSettings.ContentLocalizationEnabled || (Module.CultureCode == destinationTab.CultureCode))
                                         {
-                                            moduleController.CopyModule(Module, destinationTab, Module.PaneName, true);
+                                            ModuleController.Instance.CopyModule(Module, destinationTab, Module.PaneName, true);
                                         }
                                     }
                                 }
@@ -712,7 +711,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                         else
                         {
-                            moduleController.DeleteAllModules(_moduleId, TabId, listTabs);
+                            ModuleController.Instance.DeleteAllModules(_moduleId, TabId, listTabs, true, false, false);
                         }
                     }
 

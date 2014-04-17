@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Security;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -32,8 +33,7 @@ namespace DotNetNuke.Web.DDRMenu
 
 		public string ExportModule(int moduleId)
 		{
-			var controller = new ModuleController();
-		    var module = controller.GetModule(moduleId);
+            var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
 			var moduleSettings = module.ModuleSettings;
 
 			var settings = new Settings
@@ -139,7 +139,7 @@ namespace DotNetNuke.Web.DDRMenu
                 var oldModDefId = modDefKeyPair.Value.ModuleDefID;
 				if (oldModDefId != currentModDefId)
 				{
-					foreach (ModuleInfo mod in mc.GetAllModules())
+					foreach (ModuleInfo mod in ModuleController.Instance.GetAllModules())
 					{
 						if (mod.ModuleDefID == oldModDefId)
 						{

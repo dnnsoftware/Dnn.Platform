@@ -316,9 +316,9 @@ namespace DotNetNuke.Security.Roles
         /// <summary>
         /// Gets a User/Role
         /// </summary>
-        /// <param name="PortalID">The Id of the Portal</param>
-        /// <param name="UserId">The Id of the user</param>
-        /// <param name="RoleId">The Id of the Role</param>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="userId">The Id of the user</param>
+        /// <param name="roleId">The Id of the Role</param>
         /// <returns>A UserRoleInfo object</returns>
         public UserRoleInfo GetUserRole(int portalId, int userId, int roleId)
         {

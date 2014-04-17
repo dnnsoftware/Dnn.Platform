@@ -47,7 +47,7 @@ namespace DotNetNuke.Tests.Web.Api
             
             _mockTabController.Setup(x => TabController.Instance.GetTab(ValidTabId, ValidPortalId)).Returns(new TabInfo());
             var moduleInfo = new ModuleInfo();
-            _mockModuleController.Setup(x => x.GetModule(ValidModuleId, ValidTabId)).Returns(moduleInfo);
+            _mockModuleController.Setup(x => x.GetModule(ValidModuleId, ValidTabId, false)).Returns(moduleInfo);
 
             //Act
             ModuleInfo returnedModuleInfo;
@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             //Assert
             _mockTabController.Verify(x => TabController.Instance.GetTab(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
-            _mockModuleController.Verify(x => x.GetModule(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
+            _mockModuleController.Verify(x => x.GetModule(It.IsAny<int>(), It.IsAny<int>(), false), Times.Never());
             Assert.IsNull(returnedModuleInfo);
             Assert.IsFalse(result);
         }
@@ -92,7 +92,7 @@ namespace DotNetNuke.Tests.Web.Api
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
             //Assert
-            _mockModuleController.Verify(x => x.GetModule(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
+            _mockModuleController.Verify(x => x.GetModule(It.IsAny<int>(), It.IsAny<int>(), false), Times.Never());
             Assert.IsNull(returnedModuleInfo);
             Assert.IsFalse(result);
         }

@@ -1882,7 +1882,7 @@ namespace DotNetNuke.Entities.Portals
                     foreach (KeyValuePair<int, ModuleInfo> modulePair in objModules.GetTabModules(objTab.TabID))
                     {
                         objModule = modulePair.Value;
-                        objModules.DeleteTabModule(objModule.TabID, objModule.ModuleID, false);
+                        ModuleController.Instance.DeleteTabModule(objModule.TabID, objModule.ModuleID, false);
                     }
                 }
             }

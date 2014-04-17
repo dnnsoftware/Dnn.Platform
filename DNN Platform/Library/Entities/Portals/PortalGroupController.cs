@@ -208,16 +208,15 @@ namespace DotNetNuke.Entities.Portals
         private void DeleteSharedModules(PortalInfo portal)
         {
             var sharedModules = GetSharedModulesWithPortal(portal);
-            var moduleController = new ModuleController();
             foreach (var sharedModule in sharedModules)
             {
-                moduleController.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);                
+                ModuleController.Instance.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);                
             }
 
             sharedModules = GetSharedModulesByPortal(portal);
             foreach (var sharedModule in sharedModules)
             {
-                moduleController.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);
+                ModuleController.Instance.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);
             }
         }
 

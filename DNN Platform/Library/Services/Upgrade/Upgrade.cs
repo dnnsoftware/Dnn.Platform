@@ -1151,7 +1151,7 @@ namespace DotNetNuke.Services.Upgrade
                     if (module.DesktopModule.FriendlyName == desktopModuleName)
                     {
                         //Delete the Module from the Modules list
-                        moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
+                        ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
                         moduleDefId = module.ModuleDefID;
                     }
                     else
@@ -3263,7 +3263,7 @@ namespace DotNetNuke.Services.Upgrade
                         if (module.DesktopModule.FriendlyName == "Messaging")
                         {
                             //Delete the Module from the Modules list
-                            moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
+                            ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
                             break;
                         }
                     }
@@ -3599,7 +3599,7 @@ namespace DotNetNuke.Services.Upgrade
 
 					try
 					{
-						moduleId = moduleController.AddModule(moduleInfo);
+						moduleId = ModuleController.Instance.AddModule(moduleInfo);
 					}
 					catch (Exception exc)
 					{

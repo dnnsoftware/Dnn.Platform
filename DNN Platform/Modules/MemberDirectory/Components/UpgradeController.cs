@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Components
             {
 				foreach (ModuleInfo module in moduleController.GetModulesByDefinition(portal.PortalID, "Member Directory"))
 	            {
-					foreach (ModuleInfo tabModule in moduleController.GetAllTabsModulesByModuleID(module.ModuleID))
+					foreach (ModuleInfo tabModule in ModuleController.Instance.GetAllTabsModulesByModuleID(module.ModuleID))
 		            {
 			            if (tabModule.TabModuleSettings.ContainsKey("DisplaySearch"))
 			            {

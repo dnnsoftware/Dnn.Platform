@@ -78,10 +78,9 @@ namespace DotNetNuke.Modules.Html
 
         private void ClearModuleSettings(ModuleInfo objModule)
         {
-            var moduleController = new ModuleController();
             if (objModule.ModuleDefinition.FriendlyName == "Text/HTML")
             {
-                moduleController.DeleteModuleSetting(objModule.ModuleID, "WorkFlowID");
+                ModuleController.Instance.DeleteModuleSetting(objModule.ModuleID, "WorkFlowID");
             }
         }
 
@@ -155,8 +154,7 @@ namespace DotNetNuke.Modules.Html
             if (arrUsers.Count > 0 || (objHtmlText.IsPublished && objHtmlText.Notify))
             {
                 // get tabid from module 
-                var objModules = new ModuleController();
-                ModuleInfo objModule = objModules.GetModule(objHtmlText.ModuleID);
+                ModuleInfo objModule = ModuleController.Instance.GetModule(objHtmlText.ModuleID, Null.NullInteger, true);
 
                 PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
                 if (objPortalSettings != null)
@@ -423,8 +421,7 @@ namespace DotNetNuke.Modules.Html
             Hashtable settings;
             if (ModuleId > -1)
             {
-                var moduleController = new ModuleController();
-                var module = moduleController.GetModule(ModuleId, TabId);
+                var module = ModuleController.Instance.GetModule(ModuleId, TabId, false);
                 settings = module.ModuleSettings;
             }
             else
@@ -663,7 +660,7 @@ namespace DotNetNuke.Modules.Html
                             TabController.Instance.DeleteTabSetting(kvp.Value.TabID, "WorkFlowID");
                         }
                         //Get All Modules in the current Site
-                        foreach (ModuleInfo objModule in moduleController.GetModules(ObjectID))
+                        foreach (ModuleInfo objModule in ModuleController.Instance.GetModules(ObjectID))
                         {
                             ClearModuleSettings(objModule);
                         }
@@ -748,8 +745,7 @@ namespace DotNetNuke.Modules.Html
         {
             string xml = "";
 
-            var moduleController = new ModuleController();
-            ModuleInfo module = moduleController.GetModule(moduleId);
+            ModuleInfo module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
             int workflowID = GetWorkflow(moduleId, module.TabID, module.PortalID).Value;
 
             HtmlTextInfo content = GetTopHtmlText(moduleId, true, workflowID);
@@ -778,8 +774,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public void ImportModule(int ModuleID, string Content, string Version, int UserId)
         {
-            var moduleController = new ModuleController();
-            ModuleInfo module = moduleController.GetModule(ModuleID);
+            ModuleInfo module = ModuleController.Instance.GetModule(ModuleID, Null.NullInteger, true);
             var workflowStateController = new WorkflowStateController();
             int workflowID = GetWorkflow(ModuleID, module.TabID, module.PortalID).Value;
             XmlNode xml = Globals.GetContent(Content, "htmltext");

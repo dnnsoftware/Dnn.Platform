@@ -387,8 +387,7 @@ namespace DotNetNuke.UI.ControlPanels
                 additionalParams = new List<string>();
             }
 
-            var moduleCtrl = new ModuleController();
-            var moduleInfo = moduleCtrl.GetModuleByDefinition(portalId, moduleFriendlyName);
+            var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, moduleFriendlyName);
 
             if (((moduleInfo != null)))
             {

@@ -138,7 +138,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			bool result = User.Identity.IsAuthenticated && int.TryParse(Request.QueryString["ModuleId"], out moduleId);
 	        if (result)
 	        {
-		        var module = new ModuleController().GetModule(moduleId);
+                var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
 		        result = module != null && ModulePermissionController.CanEditModuleContent(module);
 	        }
 	        return result;

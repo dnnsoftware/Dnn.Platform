@@ -555,8 +555,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 additionalParams = new List<string>();
             }
 
-            var moduleCtrl = new ModuleController();
-            var moduleInfo = moduleCtrl.GetModuleByDefinition(portalId, ToolInfo.ModuleFriendlyName);
+            var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, ToolInfo.ModuleFriendlyName);
 
             if (((moduleInfo != null)))
             {
@@ -596,8 +595,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private static ModuleInfo GetInstalledModule(int portalID, string friendlyName)
         {
-            var moduleCtrl = new ModuleController();
-            return moduleCtrl.GetModuleByDefinition(portalID, friendlyName);
+            return ModuleController.Instance.GetModuleByDefinition(portalID, friendlyName);
         }
 
         protected virtual void ClearCache()

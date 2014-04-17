@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.MobileManagement.Components
 
                 if (moduleID != Null.NullInteger)
                 {
-                    moduleController.DeleteTabModule(newTab.TabID, moduleID, false);
+                    ModuleController.Instance.DeleteTabModule(newTab.TabID, moduleID, false);
                 }
 
                 //Add community edition module

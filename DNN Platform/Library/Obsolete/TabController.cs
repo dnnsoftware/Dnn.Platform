@@ -29,29 +29,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml;
 
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.Internal;
-using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
@@ -134,13 +120,12 @@ namespace DotNetNuke.Entities.Tabs
         [Obsolete("Deprecated in DotNetNuke 5.5.Replaced by ModuleController.CopyModules")]
         public void CopyTab(int portalId, int fromTabId, int toTabId, bool asReference)
         {
-            var modules = new ModuleController();
             TabInfo sourceTab = GetTab(fromTabId, portalId, false);
             TabInfo destinationTab = GetTab(fromTabId, toTabId, false);
 
             if (sourceTab != null && destinationTab != null)
             {
-                modules.CopyModules(sourceTab, destinationTab, asReference);
+                ModuleController.Instance.CopyModules(sourceTab, destinationTab, asReference);
             }
         }
 
@@ -160,7 +145,6 @@ namespace DotNetNuke.Entities.Tabs
         {
             CreateLocalizedCopy(originalTab, locale, true);
         }
-
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.2. Replaced by SoftDeleteTab(tabId, portalSettings)")]

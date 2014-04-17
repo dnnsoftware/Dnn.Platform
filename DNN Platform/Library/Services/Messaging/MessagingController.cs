@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.Messaging
             }
 
             var mc = new ModuleController();
-            ModuleInfo md = mc.GetModuleByDefinition(PortalSettings.Current.PortalId, ModuleFriendlyName);
+            ModuleInfo md = ModuleController.Instance.GetModuleByDefinition(PortalSettings.Current.PortalId, ModuleFriendlyName);
             if ((md != null))
             {
                 ArrayList a = mc.GetModuleTabs(md.ModuleID);

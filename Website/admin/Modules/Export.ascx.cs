@@ -61,13 +61,12 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private new int ModuleId = -1;
         private ModuleInfo _module;
-	    private const string _invalidCharsRegex = "[\x00-\x08]|[\x0B-\x0C]|[\x0E-\x1F]";
 
         private ModuleInfo Module
         {
             get
             {
-                return _module ?? (_module = new ModuleController().GetModule(ModuleId, TabId, false));
+                return _module ?? (_module = ModuleController.Instance.GetModule(ModuleId, TabId, false));
             }
         }
 

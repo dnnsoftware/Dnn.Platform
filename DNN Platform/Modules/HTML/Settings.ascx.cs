@@ -164,7 +164,7 @@ namespace DotNetNuke.Modules.Html
                 // disable module caching if token replace is enabled
                 if (chkReplaceTokens.Checked)
                 {
-                    ModuleInfo module = moduleController.GetModule(ModuleId, TabId, false);
+                    ModuleInfo module = ModuleController.Instance.GetModule(ModuleId, TabId, false);
                     if (module.CacheTime > 0)
                     {
                         module.CacheTime = 0;

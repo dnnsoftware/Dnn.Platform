@@ -274,6 +274,7 @@
     <Compile Include="Entities\Modules\IShareable.cs" />
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
+    <Compile Include="Entities\Modules\ModuleController.cs" />
     <Compile Include="Obsolete\PortalAliasController.cs" />
     <Compile Include="Obsolete\PortalController.cs" />
     <Compile Include="Entities\Portals\IPortalAliasController.cs" />
@@ -459,8 +460,7 @@
     <Compile Include="Entities\Host\ServerController.cs" />
     <Compile Include="Entities\Host\ServerInfo.cs" />
     <Compile Include="Entities\Icons\IconController.cs" />
-    <Compile Include="Entities\Modules\Internal\IModuleController.cs" />
-    <Compile Include="Entities\Modules\Internal\ModuleControllerImpl.cs" />
+    <Compile Include="Entities\Modules\IModuleController.cs" />
     <Compile Include="Entities\Modules\Internal\TestableModuleController.cs" />
     <Compile Include="Entities\Portals\IPortalSettings.cs" />
     <Compile Include="Entities\Portals\TestablePortalSettings.cs" />
@@ -723,7 +723,7 @@
     <Compile Include="Entities\Modules\ModuleControlInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Entities\Modules\ModuleController.cs">
+    <Compile Include="Obsolete\ModuleController.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Modules\ModuleInfo.cs">

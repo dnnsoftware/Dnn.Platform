@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                var moduleInfo = new ModuleController().GetModule(moduleId, tabId);
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
 
                 desktopModule = moduleInfo.DesktopModule;
 

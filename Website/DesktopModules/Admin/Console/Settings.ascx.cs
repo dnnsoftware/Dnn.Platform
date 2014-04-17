@@ -218,7 +218,7 @@ namespace DesktopModules.Admin.Console
                 }
                 if ((ParentTab.SelectedValue == string.Empty))
                 {
-                    moduleController.DeleteModuleSetting(ModuleId, "ParentTabID");
+                    ModuleController.Instance.DeleteModuleSetting(ModuleId, "ParentTabID");
                 }
                 else
                 {

@@ -243,8 +243,7 @@ namespace DotNetNuke.Services.Cache
                 {
                     ClearModuleCacheInternal(tabPair.Value.TabID, clearRuntime);
                 }
-                var moduleController = new ModuleController();
-                foreach (ModuleInfo moduleInfo in moduleController.GetModules(portalId))
+                foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(portalId))
                 {
                     RemoveCacheKey("GetModuleSettings" + moduleInfo.ModuleID, clearRuntime);
                 }

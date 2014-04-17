@@ -624,9 +624,8 @@ namespace DesktopModules.Admin.Tabs
             var moduleId = Convert.ToInt32(((ImageButton)sender).CommandArgument);
             var tabId = Convert.ToInt32(ctlPages.SelectedNode.Value);
 
-            var moduleController = new ModuleController();
-            moduleController.DeleteTabModule(tabId, moduleId, true);
-            moduleController.ClearCache(tabId);
+            ModuleController.Instance.DeleteTabModule(tabId, moduleId, true);
+            ModuleController.Instance.ClearCache(tabId);
 
             grdModules.Rebind();
         }
@@ -1292,8 +1291,7 @@ namespace DesktopModules.Admin.Tabs
         {
             if (IsNumeric(moduleId))
             {
-                var moduleController = new ModuleController();
-                var module = moduleController.GetModule(moduleId);
+                var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
                 if (module != null)
                 {
                     return ModuleContext.NavigateUrl(module.TabID, "", false, "ctl=Module", "ModuleId=" + moduleId);

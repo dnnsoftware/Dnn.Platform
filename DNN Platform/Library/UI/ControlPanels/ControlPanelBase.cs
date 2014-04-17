@@ -249,7 +249,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// -----------------------------------------------------------------------------
         protected void AddExistingModule(int moduleId, int tabId, string paneName, int position, string align)
         {
-            var objModules = new ModuleController();
             ModuleInfo objModule;
             var objEventLog = new EventLogController();
 
@@ -259,7 +258,7 @@ namespace DotNetNuke.UI.ControlPanels
                 UserInfo objUserInfo = UserController.GetCurrentUserInfo();
                 UserId = objUserInfo.UserID;
             }
-            objModule = objModules.GetModule(moduleId, tabId, false);
+            objModule = ModuleController.Instance.GetModule(moduleId, tabId, false);
             if (objModule != null)
             {
                 //clone the module object ( to avoid creating an object reference to the data cache )
@@ -268,7 +267,7 @@ namespace DotNetNuke.UI.ControlPanels
                 objClone.ModuleOrder = position;
                 objClone.PaneName = paneName;
                 objClone.Alignment = align;
-                objModules.AddModule(objClone);
+                ModuleController.Instance.AddModule(objClone);
                 objEventLog.AddLog(objClone, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_CREATED);
             }
         }
@@ -333,7 +332,7 @@ namespace DotNetNuke.UI.ControlPanels
                     objModule.CacheTime = objModuleDefinition.DefaultCacheTime;
                     if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
                     {
-                        ModuleInfo defaultModule = objModules.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
+                        ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
                         if (defaultModule != null)
                         {
                             objModule.CacheTime = defaultModule.CacheTime;
@@ -423,7 +422,7 @@ namespace DotNetNuke.UI.ControlPanels
 
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
-                objModules.AddModule(objModule);
+                ModuleController.Instance.AddModule(objModule);
             }
         }
 
@@ -440,8 +439,7 @@ namespace DotNetNuke.UI.ControlPanels
         protected string BuildURL(int PortalID, string FriendlyName)
         {
             string strURL = "~/" + Globals.glbDefaultPage;
-            var objModules = new ModuleController();
-            ModuleInfo objModule = objModules.GetModuleByDefinition(PortalID, FriendlyName);
+            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(PortalID, FriendlyName);
             if (objModule != null)
             {
                 if (PortalID == Null.NullInteger)
@@ -459,8 +457,7 @@ namespace DotNetNuke.UI.ControlPanels
         protected bool GetModulePermission(int PortalID, string FriendlyName)
         {
             bool AllowAccess = Null.NullBoolean;
-            var objModules = new ModuleController();
-            ModuleInfo objModule = objModules.GetModuleByDefinition(PortalID, FriendlyName);
+            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(PortalID, FriendlyName);
             if (objModule != null)
             {
                 AllowAccess = ModulePermissionController.CanViewModule(objModule);

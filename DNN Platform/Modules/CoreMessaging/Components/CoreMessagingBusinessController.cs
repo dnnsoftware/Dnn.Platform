@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                                             if (module.DesktopModule.FriendlyName == "Messaging")
                                             {
                                                 //Delete the Module from the Modules list
-                                                moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
+                                                ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
 
                                                 //Add new module to the page
                                                 Upgrade.AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", "", true);

@@ -412,7 +412,7 @@ namespace DotNetNuke.Web.InternalServices
         private object GetTabTitleCallBack(CacheItemArgs cacheItemArgs)
         {
             var moduleId = (int)cacheItemArgs.ParamList[0];
-            var moduleInfo = _moduleController.GetModule(moduleId);
+            var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
             if (moduleInfo != null)
             {
                 return moduleInfo.ParentTab.TabName;

@@ -161,8 +161,7 @@ namespace DotNetNuke.Modules.Groups
             }
         }
         private void BindPages() {
-            var mc = new ModuleController();
-            foreach (ModuleInfo moduleInfo in mc.GetModules(PortalId)) 
+            foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(PortalId)) 
             {
                 if (moduleInfo.DesktopModule.ModuleName.Contains("Social Groups") && moduleInfo.IsDeleted == false)
                 {

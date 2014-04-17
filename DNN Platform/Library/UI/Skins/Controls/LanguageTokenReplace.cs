@@ -146,7 +146,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                                 int.TryParse(queryStringCollection[ModuleIdKey], out moduleID);
                                 int.TryParse(queryStringCollection["tabid"], out tabid);
-                                ModuleInfo localizedModule = new ModuleController().GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
+                                ModuleInfo localizedModule = ModuleController.Instance.GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
                                 if (localizedModule != null)
                                 {
                                     if (!string.IsNullOrEmpty(returnValue))

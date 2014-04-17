@@ -196,8 +196,7 @@ namespace DotNetNuke.Services.Search
         #pragma warning disable 0618
         public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
         {
-            var moduleController = new ModuleController();
-            var module = moduleController.GetModule(searchItem.ModuleId);
+            var module = ModuleController.Instance.GetModule(searchItem.ModuleId, Null.NullInteger, true);
 
             var searchDoc = new SearchDocument
             {

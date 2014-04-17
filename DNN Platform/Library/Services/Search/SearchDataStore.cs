@@ -259,7 +259,7 @@ namespace DotNetNuke.Services.Search
                         if (TabPermissionController.CanViewPage(objTab))
                         {
 							//Check If authorised to View Module
-                            ModuleInfo objModule = new ModuleController().GetModule(result.ModuleId, result.TabId, false);
+                            ModuleInfo objModule = ModuleController.Instance.GetModule(result.ModuleId, result.TabId, false);
                             if (ModulePermissionController.CanViewModule(objModule))
                             {
                                 results.Add(result);
@@ -289,7 +289,6 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         public override void StoreSearchItems(SearchItemInfoCollection searchItems)
         {
-            var moduleController = new ModuleController();
             var indexer = new ModuleIndexer();
             
             var modulesDic = new Dictionary<int, string>();
@@ -297,7 +296,7 @@ namespace DotNetNuke.Services.Search
             {                
                 if (!modulesDic.ContainsKey(item.ModuleId))
                 {
-                    var module = moduleController.GetModule(item.ModuleId);
+                    var module = ModuleController.Instance.GetModule(item.ModuleId, Null.NullInteger, true);
                     modulesDic.Add(item.ModuleId, module.CultureCode);
                     
                     //Remove all indexed items for this module

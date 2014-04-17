@@ -152,7 +152,7 @@ namespace DotNetNuke.Admin.Modules
 			//Check if we have module scope
 			if (ModuleId > Null.NullInteger)
 			{
-				ModuleInfo sourceModule = moduleCtl.GetModule(ModuleId, TabId);
+                ModuleInfo sourceModule = ModuleController.Instance.GetModule(ModuleId, TabId, false);
 				if (sourceModule.LocalizedModules != null)
 				{
 					foreach (ModuleInfo localizedModule in sourceModule.LocalizedModules.Values)
@@ -235,7 +235,7 @@ namespace DotNetNuke.Admin.Modules
 			{
 				var localizedModuleId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["ModuleId"];
 				var localizedTabId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["TabId"];
-				ModuleInfo sourceModule = moduleCtrl.GetModule(localizedModuleId, localizedTabId, false);
+                ModuleInfo sourceModule = ModuleController.Instance.GetModule(localizedModuleId, localizedTabId, false);
 
 				if (sourceModule != null)
 				{
@@ -249,7 +249,7 @@ namespace DotNetNuke.Admin.Modules
 						else
 						{
 							//Delocalize
-							moduleCtrl.DeLocalizeModule(sourceModule);
+                            ModuleController.Instance.DeLocalizeModule(sourceModule);
 
 							//Mark module as Not Translated
 							moduleCtrl.UpdateTranslationStatus(sourceModule, false);
@@ -258,7 +258,7 @@ namespace DotNetNuke.Admin.Modules
 				}
 			}
 
-			moduleCtrl.ClearCache(TabId);
+            ModuleController.Instance.ClearCache(TabId);
 
 			//Rebind localized Modules
 			DataBind();
@@ -275,7 +275,7 @@ namespace DotNetNuke.Admin.Modules
 			{
 				var localizedModuleId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["ModuleId"];
 				var localizedTabId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["TabId"];
-				ModuleInfo sourceModule = moduleCtrl.GetModule(localizedModuleId, localizedTabId, false);
+                ModuleInfo sourceModule = ModuleController.Instance.GetModule(localizedModuleId, localizedTabId, false);
 
 				if (sourceModule.IsLocalized)
 				{
@@ -283,7 +283,7 @@ namespace DotNetNuke.Admin.Modules
 				}
 			}
 
-			moduleCtrl.ClearCache(TabId);
+			ModuleController.Instance.ClearCache(TabId);
 
             //Raise Changed event
             OnModuleLocalizationChanged(EventArgs.Empty);

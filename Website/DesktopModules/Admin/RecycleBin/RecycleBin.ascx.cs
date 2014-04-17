@@ -117,10 +117,9 @@ namespace DesktopModules.Admin.RecycleBin
         private void DeleteModule(ModuleInfo module)
         {
             var eventLogController = new EventLogController();
-            var moduleController = new ModuleController();
             
             //hard-delete Tab Module Instance
-            moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
+            ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
             eventLogController.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_DELETED);
         }
 
@@ -139,10 +138,10 @@ namespace DesktopModules.Admin.RecycleBin
 			foreach (var kvp in tabModules)
 			{
 				//check if all modules instances have been deleted
-				var delModule = moduleController.GetModule(kvp.Value.ModuleID, Null.NullInteger, false);
+                var delModule = ModuleController.Instance.GetModule(kvp.Value.ModuleID, Null.NullInteger, false);
 				if (delModule == null || delModule.TabID == Null.NullInteger)
 				{
-					moduleController.DeleteModule(kvp.Value.ModuleID);
+                    ModuleController.Instance.DeleteModule(kvp.Value.ModuleID);
 				}
 			}
 			eventLogController.AddLog(tab, PortalSettings, UserId, "", EventLogController.EventLogType.TAB_DELETED);
@@ -161,7 +160,7 @@ namespace DesktopModules.Admin.RecycleBin
                                             .OrderBy(tab => tab.TabPath)
                                             .ToList();
 
-            DeletedModules = moduleController.GetRecycleModules(PortalId)
+            DeletedModules = moduleController.GetModules(PortalId)
                                                 .Cast<ModuleInfo>()
                                                 .Where(module => module.IsDeleted && (modeButtonList.SelectedValue == "ALL" || module.CultureCode == currentLocale.Code))
                                                 .ToList();
@@ -173,7 +172,7 @@ namespace DesktopModules.Admin.RecycleBin
             var moduleController = new ModuleController();
 
             // restore module
-            var module = moduleController.GetModule(moduleId, tabId, false);
+            var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
             if ((module != null))
             {
                 if (DeletedTabs.Any(t => t.TabID == module.TabID))

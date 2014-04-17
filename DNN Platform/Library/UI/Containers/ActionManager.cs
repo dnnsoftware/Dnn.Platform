@@ -129,7 +129,7 @@ namespace DotNetNuke.UI.Containers
         private void Delete(ModuleAction Command)
         {
             var moduleController = new ModuleController();
-            var module = moduleController.GetModule(int.Parse(Command.CommandArgument), ModuleContext.TabId, true);
+            var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), ModuleContext.TabId, true);
 
             //Check if this is the owner instance of a shared module.
             var user = UserController.GetCurrentUserInfo();
@@ -141,13 +141,13 @@ namespace DotNetNuke.UI.Containers
                     if(instance.IsShared)
                     {
                         //HARD Delete Shared Instance
-                        moduleController.DeleteTabModule(instance.TabID, instance.ModuleID, false);
+                        ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
                         eventLogController.AddLog(instance, PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_DELETED);
                     }
                 }
             }
 
-            moduleController.DeleteTabModule(ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
+            ModuleController.Instance.DeleteTabModule(ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
             eventLogController.AddLog(module, PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
             //Redirect to the same page to pick up changes
@@ -169,7 +169,7 @@ namespace DotNetNuke.UI.Containers
         private void Localize(ModuleAction Command)
         {
             var moduleCtrl = new ModuleController();
-            ModuleInfo sourceModule = moduleCtrl.GetModule(ModuleContext.ModuleId, ModuleContext.TabId, false);
+            ModuleInfo sourceModule = ModuleController.Instance.GetModule(ModuleContext.ModuleId, ModuleContext.TabId, false);
 
             switch (Command.CommandName)
             {
@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.Containers
                     moduleCtrl.LocalizeModule(sourceModule, LocaleController.Instance.GetCurrentLocale(ModuleContext.PortalId));
                     break;
                 case ModuleActionType.DeLocalizeModule:
-                    moduleCtrl.DeLocalizeModule(sourceModule);
+                    ModuleController.Instance.DeLocalizeModule(sourceModule);
                     break;
             }
 
@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.Containers
         private void Translate(ModuleAction Command)
         {
             var moduleCtrl = new ModuleController();
-            ModuleInfo sourceModule = moduleCtrl.GetModule(ModuleContext.ModuleId, ModuleContext.TabId, false);
+            ModuleInfo sourceModule = ModuleController.Instance.GetModule(ModuleContext.ModuleId, ModuleContext.TabId, false);
             switch (Command.CommandName)
             {
                 case ModuleActionType.TranslateModule:
