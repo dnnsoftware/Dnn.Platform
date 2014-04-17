@@ -24,7 +24,6 @@ using System.ComponentModel.Composition;
 
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.ExtensionPoints;
-using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
@@ -32,28 +31,28 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
     [Export(typeof(IToolBarButtonExtensionPoint))]
     [ExportMetadata("Module", "DigitalAssets")]
     [ExportMetadata("Name", "DigitalAssetsToolBarButton")]
-    [ExportMetadata("Group", "Selection")]
+    [ExportMetadata("Group", "Main")]
     [ExportMetadata("Priority", 1)]
-    public class DownloadToolBarButtonExtensionPoint : IToolBarButtonExtensionPoint
+    public class ManageFolderTypesToolBarButtonExtensionPoint : IToolBarButtonExtensionPoint
     {
         public string ButtonId
         {
-            get { return "DigitalAssetsDownloadBtnId"; }
+            get { return "DigitalAssetsManageFolderTypesBtnId"; }
         }
 
         public string CssClass
         {
-            get { return "DigitalAssetsSelectionToolBar DigitalAssetsDownload permission_READ onlyFiles"; }
+            get { return "rightButton split leftAligned folderRequired permission_ADD"; }
         }
 
         public string Action
         {
-            get { return "dnnModule.digitalAssets.download()"; }
+            get { return "dnnModule.digitalAssets.createFolder()"; }
         }
 
         public string AltText
         {
-            get { return LocalizationHelper.GetString("DownloadToolBarButtonExtensionPoint.AltText"); }
+            get { return LocalizationHelper.GetString("ManageFolderTypesToolBarButtonExtensionPoint.AltText"); }
         }
 
         public bool ShowText
@@ -68,24 +67,17 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public string Text
         {
-            get { return LocalizationHelper.GetString("DownloadToolBarButtonExtensionPoint.Text"); }
+            get { return LocalizationHelper.GetString("ManageFolderTypesToolBarButtonExtensionPoint.Text"); }
         }
 
         public string Icon
         {
-            get { return IconController.IconURL("FileDownload", "16x16", "Gray"); }
+            get { return "../DesktopModules/DigitalAssets/Images/manageFolderTypes.png"; }
         }
 
         public int Order
         {
-            get { return 1; }
+            get { return 8; }
         }
-
-        public bool Enabled
-        {
-            get { return true; }
-        }
-
-        public ModuleInstanceContext ModuleContext { get; set; }
     }
 }

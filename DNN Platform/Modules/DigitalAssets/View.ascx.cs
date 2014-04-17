@@ -618,6 +618,9 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 InitializeGrid();
                 FolderTypeComboBox.ItemDataBound += OnItemDataBoundFolderTypeComboBox;
+
+                MainToolBar.ModuleContext = ModuleContext;
+                SelectionToolBar.ModuleContext = ModuleContext;
             }
             catch (Exception exc) //Module failed to load
             {

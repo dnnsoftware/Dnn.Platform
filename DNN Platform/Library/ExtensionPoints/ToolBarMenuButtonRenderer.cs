@@ -29,12 +29,19 @@ namespace DotNetNuke.ExtensionPoints
         public string GetOutput(IExtensionPoint extensionPoint)
         {
             var extension = (IToolBarMenuButtonExtensionPoint)extensionPoint;
-            
+
+            var cssClass = extension.CssClass;
+            var action = extension.Action;
+            if (!extension.Enabled)
+            {
+                cssClass += " disabled";
+                action = "void(0);";
+            }
             var str = new StringBuilder();
             str.AppendFormat("<div id='{0}_wrapper' class='{1}_wrapper'>", extension.ButtonId, extension.MenuCssClass);
             str.AppendFormat(
                         "<button id='{0}' class='{1} {2}' onclick='{3}; return false;' title='{4}'>",
-                        extension.ButtonId, extension.CssClass, extension.MenuCssClass, extension.Action, extension.Text);
+                        extension.ButtonId, cssClass, extension.MenuCssClass, action, extension.Text);
             str.AppendFormat(
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",
                 extension.ButtonId,

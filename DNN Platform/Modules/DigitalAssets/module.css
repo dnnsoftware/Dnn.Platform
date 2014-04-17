@@ -292,6 +292,20 @@ span.dnnModuleDigitalAssetsNoItems {
     margin-right: 0;
 }
 
+#dnnModuleDigitalAssetsMainToolbar button.middleButton {
+    margin-right: 0;
+    margin-left: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    -webkit-border-bottom-left-radius: 1px;
+    -moz-border-radius-bottomleft: 1px;
+    border-bottom-left-radius: 1px;
+}
+
+#dnnModuleDigitalAssetsMainToolbar button.split {
+    border-left-width: 1px;
+}
+
 #dnnModuleDigitalAssetsMainToolbar button.rightButton {
     -webkit-border-top-right-radius: 3px;
     -webkit-border-bottom-right-radius: 3px;
@@ -1000,10 +1014,13 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_wrapper {
     height:16px;    
     margin-top: 5px;
-    min-width:25px;
+    min-width:1px;
     position: relative;
-    float: right;
+    float: left;
     top: -5px;
+}
+#dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_wrapper button {
+    margin-left: 6px;
 }
 
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton {

@@ -30,10 +30,18 @@ namespace DotNetNuke.ExtensionPoints
         {
             var extension = (IToolBarButtonExtensionPoint)extensionPoint;
 
+            var cssClass = extension.CssClass;
+            var action = extension.Action;
+            if (!extension.Enabled)
+            {
+                cssClass += " disabled";
+                action = "void(0);";
+            }
+            var quote = action.Contains("'") ? "\"" : "'";
             var str = new StringBuilder();
             str.AppendFormat(
-                        "<button id='{0}' class='{1}' onclick='{2}; return false;' title='{3}'>",
-                        extension.ButtonId, extension.CssClass, extension.Action, extension.Text);
+                        "<button id=\"{0}\" class=\"{1}\" onclick={4}{2}; return false;{4} title=\"{3}\">",
+                        extension.ButtonId, cssClass, action, extension.Text, quote);
 
             str.AppendFormat(
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",

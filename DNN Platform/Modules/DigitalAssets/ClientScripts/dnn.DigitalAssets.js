@@ -2878,9 +2878,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
-    function showProperties() {
-        var items = convertToItemsFromGridItems(grid.get_selectedItems());
-        showPropertiesDialog(items[0].ItemId, items[0].IsFolder);
+    function showProperties(showCurrent) {
+        if (showCurrent) { // show current folder's property.
+            showPropertiesDialog(getCurrentFolderId(), true);
+        } else {
+            var items = convertToItemsFromGridItems(grid.get_selectedItems());
+            if (items.length > 0) {
+                showPropertiesDialog(items[0].ItemId, items[0].IsFolder);
+            }
+        }
     }
 
     function getFullUrl(relativePath) {

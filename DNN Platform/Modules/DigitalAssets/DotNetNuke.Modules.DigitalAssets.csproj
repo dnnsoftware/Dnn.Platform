@@ -105,6 +105,7 @@
     <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\ExtensionPoint\ToolBarButton\ManageFolderTypesToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\UnzipFileToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\DefaultMenuButtonItem.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\SyncToolBarMenuButtonExtensionPoint.cs" />

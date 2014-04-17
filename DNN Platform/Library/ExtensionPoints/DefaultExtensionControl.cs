@@ -22,6 +22,7 @@
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.ExtensionPoints
 {
@@ -73,5 +74,7 @@ namespace DotNetNuke.ExtensionPoints
                 ViewState["Name"] = value;
             }
         }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
     }
 }
