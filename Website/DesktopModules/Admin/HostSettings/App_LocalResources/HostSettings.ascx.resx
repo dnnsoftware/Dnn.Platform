@@ -954,6 +954,9 @@
   <data name="plResetLinkValidity.Text" xml:space="preserve">
     <value>Reset link timeout (minutes)</value>
   </data>
+    <data name="plAdminResetLinkValidity.Text" xml:space="preserve">
+    <value>Administrator reset link timeout (minutes)</value>
+  </data>
   <data name="plNumberPasswords.Text" xml:space="preserve">
     <value>Number of passwords to store</value>
   </data>
@@ -1022,6 +1025,12 @@
   </data>
   <data name="valResetLink.Error" xml:space="preserve">
     <value>Reset link timeouts must be greater than 0</value>
+  </data>
+  <data name="plAdminResetLinkValidity.Help" xml:space="preserve">
+    <value>Administrator reset links are only valid for (in minutes).</value>
+  </data>
+  <data name="valAdminResetLink.Error" xml:space="preserve">
+    <value>Administrator reset link timeouts must be greater than 0</value>
   </data>
   <data name="AlwaysUse.Text" xml:space="preserve">
     <value>All URLs.</value>

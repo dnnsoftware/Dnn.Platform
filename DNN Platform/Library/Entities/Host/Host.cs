@@ -885,6 +885,17 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
+        /// set length of time (in minutes) that reset links are valid for - default is 24 hours (1440 min)
+        /// </summary>
+        public static int AdminMembershipResetLinkValidity
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("AdminMembershipResetLinkValidity", 1440);
+            }
+        }
+
+        /// <summary>
         /// set number of passwords stored for password change comparison operations - default is 5
         /// </summary>
         public static int MembershipNumberPasswords

@@ -370,8 +370,8 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             try
             {
-                //create resettoken valid for 24hrs
-                UserController.ResetPasswordToken(User,1440);
+                //create resettoken
+                UserController.ResetPasswordToken(User, Entities.Host.Host.AdminMembershipResetLinkValidity);
 
                 bool canSend = Mail.SendMail(User, MessageType.PasswordReminder, PortalSettings) == string.Empty;
                 var message = String.Empty;

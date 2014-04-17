@@ -390,6 +390,7 @@ namespace DotNetNuke.Modules.Admin.Host
             chkIPChecking.Checked = Entities.Host.Host.EnableIPChecking;
             chkEnablePasswordHistory.Checked = Entities.Host.Host.EnablePasswordHistory;
             txtResetLinkValidity.Text = Entities.Host.Host.MembershipResetLinkValidity.ToString();
+            txtAdminResetLinkValidity.Text = Entities.Host.Host.AdminMembershipResetLinkValidity.ToString();
             txtNumberPasswords.Text = Entities.Host.Host.MembershipNumberPasswords.ToString();
 
 
@@ -920,6 +921,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("EnableIPChecking", chkIPChecking.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("EnablePasswordHistory", chkEnablePasswordHistory.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("MembershipResetLinkValidity", txtResetLinkValidity.Text, false);
+                    HostController.Instance.Update("AdminMembershipResetLinkValidity", txtAdminResetLinkValidity.Text, false);
                     HostController.Instance.Update("MembershipNumberPasswords", txtNumberPasswords.Text, false);
 
                     FriendlyUrlsExtensionControl.SaveAction(-1, -1, -1);

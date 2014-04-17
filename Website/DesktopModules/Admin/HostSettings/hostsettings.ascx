@@ -446,6 +446,13 @@
                     <asp:Label ID="lblResetLinkValidity" runat="server" />
                 </div>
                 <div class="dnnFormItem">
+                    <dnn:label id="plAdminResetLinkValidity" controlname="txtAdminResetLinkValidity" runat="server" />
+                    <asp:TextBox ID="txtAdminResetLinkValidity" runat="server" MaxLength="8" />
+                    <asp:CompareValidator ID="valAdminResetLink" runat="server" ValueToCompare="0" ControlToValidate="txtAdminResetLinkValidity" CssClass="dnnFormMessage dnnFormError"
+                        resourceKey="valAdminResetLink.Error" Operator="GreaterThan" Type="Integer" Display="Dynamic"></asp:CompareValidator>
+                    <asp:Label ID="lblAdminResetLinkValidity" runat="server" />
+                </div>
+                <div class="dnnFormItem">
                     <dnn:label id="plEnablePasswordHistory" controlname="chkEnablePasswordHistory" runat="server" />
                     <asp:CheckBox ID="chkEnablePasswordHistory" runat="server" />
                 </div>
