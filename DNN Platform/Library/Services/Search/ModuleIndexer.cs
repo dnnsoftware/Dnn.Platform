@@ -309,8 +309,7 @@ namespace DotNetNuke.Services.Search
         protected SearchContentModuleInfoCollection GetModuleList(int portalId)
         {
             var results = new SearchContentModuleInfoCollection();
-            var objModules = new ModuleController();
-            var arrModules = objModules.GetSearchModules(portalId);
+            var arrModules = ModuleController.Instance.GetSearchModules(portalId);
             var businessControllers = new Hashtable();
             var htModules = new Hashtable();
             
@@ -378,12 +377,11 @@ namespace DotNetNuke.Services.Search
 
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
         {
-            var moduleController = new ModuleController();
             var businessControllers = new Hashtable();
             var searchModuleIds = new HashSet<int>();
             var searchModules = new List<ModuleInfo>();
             //Only get modules that are set to be Indexed.
-            var modules = moduleController.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
+            var modules = ModuleController.Instance.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
 
             foreach (var module in modules.Where(module => !searchModuleIds.Contains(module.ModuleID)))
             {

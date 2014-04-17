@@ -86,12 +86,12 @@ namespace DotNetNuke.Web.Mvp
 
             foreach (var setting in View.Model.ModuleSettings)
             {
-                controller.UpdateModuleSetting(ModuleId, setting.Key, setting.Value);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, setting.Key, setting.Value);
             }
 
             foreach (var setting in View.Model.TabModuleSettings)
             {
-                controller.UpdateTabModuleSetting(ModuleContext.TabModuleId, setting.Key, setting.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(ModuleContext.TabModuleId, setting.Key, setting.Value);
             }
         }
 

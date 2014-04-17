@@ -36,9 +36,6 @@ namespace DotNetNuke.Modules.MobileManagement.Components
 
         private void RemoveProVersion()
         {
-            //update the tab module to use CE version
-            var moduleController = new ModuleController();
-
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //Update Site Redirection management page
@@ -63,7 +60,7 @@ namespace DotNetNuke.Modules.MobileManagement.Components
 
                 //Remove Pro edition module
                 int moduleID = Null.NullInteger;
-                IDictionary<int, ModuleInfo> modules = moduleController.GetTabModules(newTab.TabID);
+                IDictionary<int, ModuleInfo> modules = ModuleController.Instance.GetTabModules(newTab.TabID);
 
                 if (modules != null)
                 {

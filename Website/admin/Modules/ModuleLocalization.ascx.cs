@@ -146,7 +146,6 @@ namespace DotNetNuke.Admin.Modules
 
 		private List<ModuleInfo> LoadTabModules()
 		{
-			var moduleCtl = new ModuleController();
 			var moduleList = new List<ModuleInfo>();
 
 			//Check if we have module scope
@@ -163,7 +162,7 @@ namespace DotNetNuke.Admin.Modules
 			}
 			else
 			{
-				foreach (ModuleInfo m in moduleCtl.GetTabModules(TabId).Values)
+                foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(TabId).Values)
 				{
 					if (!m.IsDeleted)
 					{
@@ -229,8 +228,6 @@ namespace DotNetNuke.Admin.Modules
 
 		public void LocalizeSelectedItems(bool localize)
 		{
-			var moduleCtrl = new ModuleController();
-
 			foreach (GridDataItem row in localizedModulesGrid.SelectedItems)
 			{
 				var localizedModuleId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["ModuleId"];
@@ -244,7 +241,7 @@ namespace DotNetNuke.Admin.Modules
 						if (localize)
 						{
 							//Localize
-							moduleCtrl.LocalizeModule(sourceModule, LocaleController.Instance.GetLocale(sourceModule.CultureCode));
+                            ModuleController.Instance.LocalizeModule(sourceModule, LocaleController.Instance.GetLocale(sourceModule.CultureCode));
 						}
 						else
 						{
@@ -252,7 +249,7 @@ namespace DotNetNuke.Admin.Modules
                             ModuleController.Instance.DeLocalizeModule(sourceModule);
 
 							//Mark module as Not Translated
-							moduleCtrl.UpdateTranslationStatus(sourceModule, false);
+                            ModuleController.Instance.UpdateTranslationStatus(sourceModule, false);
 						}
 					}
 				}
@@ -269,8 +266,6 @@ namespace DotNetNuke.Admin.Modules
 
 		public void MarkTranslatedSelectedItems(bool translated)
 		{
-			var moduleCtrl = new ModuleController();
-
 			foreach (GridDataItem row in localizedModulesGrid.SelectedItems)
 			{
 				var localizedModuleId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["ModuleId"];
@@ -279,7 +274,7 @@ namespace DotNetNuke.Admin.Modules
 
 				if (sourceModule.IsLocalized)
 				{
-					moduleCtrl.UpdateTranslationStatus(sourceModule, translated);
+                    ModuleController.Instance.UpdateTranslationStatus(sourceModule, translated);
 				}
 			}
 

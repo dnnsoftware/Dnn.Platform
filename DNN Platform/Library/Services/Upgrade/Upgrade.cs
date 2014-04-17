@@ -179,13 +179,12 @@ namespace DotNetNuke.Services.Upgrade
         private static void AddConsoleModuleSettings(int moduleID)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddConsoleModuleSettings:" + moduleID);
-            var moduleController = new ModuleController();
 
-            moduleController.UpdateModuleSetting(moduleID, "DefaultSize", "IconFileLarge");
-            moduleController.UpdateModuleSetting(moduleID, "AllowSizeChange", "False");
-            moduleController.UpdateModuleSetting(moduleID, "DefaultView", "Hide");
-            moduleController.UpdateModuleSetting(moduleID, "AllowViewChange", "False");
-            moduleController.UpdateModuleSetting(moduleID, "ShowTooltip", "True");
+            ModuleController.Instance.UpdateModuleSetting(moduleID, "DefaultSize", "IconFileLarge");
+            ModuleController.Instance.UpdateModuleSetting(moduleID, "AllowSizeChange", "False");
+            ModuleController.Instance.UpdateModuleSetting(moduleID, "DefaultView", "Hide");
+            ModuleController.Instance.UpdateModuleSetting(moduleID, "AllowViewChange", "False");
+            ModuleController.Instance.UpdateModuleSetting(moduleID, "ShowTooltip", "True");
         }
 
         private static void AddEventQueueApplicationStartFirstRequest()
@@ -1137,7 +1136,6 @@ namespace DotNetNuke.Services.Upgrade
         private static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModule:" + desktopModuleName);
-            var moduleController = new ModuleController();
             TabInfo tab = TabController.Instance.GetTabByName(tabName, Null.NullInteger, parentId);
             int moduleDefId = 0;
             int count = 0;
@@ -1145,7 +1143,7 @@ namespace DotNetNuke.Services.Upgrade
             //Get the Modules on the Tab
             if (tab != null)
             {
-                foreach (KeyValuePair<int, ModuleInfo> kvp in moduleController.GetTabModules(tab.TabID))
+                foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(tab.TabID))
                 {
                     var module = kvp.Value;
                     if (module.DesktopModule.FriendlyName == desktopModuleName)
@@ -1360,7 +1358,6 @@ namespace DotNetNuke.Services.Upgrade
 
             //Update Host/Admin modules Visibility setting
             bool superTabProcessed = Null.NullBoolean;
-            var moduleController = new ModuleController();
             foreach (PortalInfo portal in portals)
             {
                 if (!superTabProcessed)
@@ -1368,10 +1365,10 @@ namespace DotNetNuke.Services.Upgrade
                     //Process Host Tabs
                     foreach (TabInfo childTab in TabController.GetTabsByParent(portal.SuperTabId, Null.NullInteger))
                     {
-                        foreach (ModuleInfo tabModule in moduleController.GetTabModules(childTab.TabID).Values)
+                        foreach (ModuleInfo tabModule in ModuleController.Instance.GetTabModules(childTab.TabID).Values)
                         {
                             tabModule.Visibility = VisibilityState.None;
-                            moduleController.UpdateModule(tabModule);
+                            ModuleController.Instance.UpdateModule(tabModule);
                         }
                     }
                 }
@@ -1379,10 +1376,10 @@ namespace DotNetNuke.Services.Upgrade
                 //Process Portal Tabs
                 foreach (TabInfo childTab in TabController.GetTabsByParent(portal.AdminTabId, portal.PortalID))
                 {
-                    foreach (ModuleInfo tabModule in moduleController.GetTabModules(childTab.TabID).Values)
+                    foreach (ModuleInfo tabModule in ModuleController.Instance.GetTabModules(childTab.TabID).Values)
                     {
                         tabModule.Visibility = VisibilityState.None;
-                        moduleController.UpdateModule(tabModule);
+                        ModuleController.Instance.UpdateModule(tabModule);
                     }
                 }
             }
@@ -1446,7 +1443,6 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion510()
         {
-            var moduleController = new ModuleController();
             int moduleDefId;
 
             //add Dashboard module and tab
@@ -1512,13 +1508,13 @@ namespace DotNetNuke.Services.Upgrade
 
             //Add Module To Page if not present
             int moduleId = AddModuleToPage(definitionsPage, moduleDefId, "Module Definitions", "~/images/icon_moduledefinitions_32px.gif");
-            moduleController.UpdateModuleSetting(moduleId, "Extensions_Mode", "Module");
+            ModuleController.Instance.UpdateModuleSetting(moduleId, "Extensions_Mode", "Module");
 
             //Add Extensions Host Page
             TabInfo extensionsPage = AddHostPage("Extensions", "Install, add, modify and delete extensions, such as modules, skins and language packs.", "~/images/icon_extensions_16px.gif", "~/images/icon_extensions_32px.png", true);
 
             moduleId = AddModuleToPage(extensionsPage, moduleDefId, "Extensions", "~/images/icon_extensions_32px.png");
-            moduleController.UpdateModuleSetting(moduleId, "Extensions_Mode", "All");
+            ModuleController.Instance.UpdateModuleSetting(moduleId, "Extensions_Mode", "All");
 
             //Add Extensions Module to Admin Page for all Portals
             AddAdminPages("Extensions", "Install, add, modify and delete extensions, such as modules, skins and language packs.", "~/images/icon_extensions_16px.gif", "~/images/icon_extensions_32px.png", true, moduleDefId, "Extensions", "~/images/icon_extensions_32px.png");
@@ -2156,16 +2152,14 @@ namespace DotNetNuke.Services.Upgrade
 
             var settings = PortalController.GetCurrentPortalSettings();
 
-            var moduleController = new ModuleController();
-
             if (settings != null)
             {
                 var hostTab = TabController.Instance.GetTab(settings.SuperTabId, Null.NullInteger, false);
                 hostTab.IsVisible = false;
                 TabController.Instance.UpdateTab(hostTab);
-                foreach (var module in moduleController.GetTabModules(settings.SuperTabId).Values)
+                foreach (var module in ModuleController.Instance.GetTabModules(settings.SuperTabId).Values)
                 {
-                    moduleController.UpdateTabModuleSetting(module.TabModuleID, "hideadminborder", "true");
+                    ModuleController.Instance.UpdateTabModuleSetting(module.TabModuleID, "hideadminborder", "true");
                 }
             }
 
@@ -2200,9 +2194,9 @@ namespace DotNetNuke.Services.Upgrade
                 adminTab.IsVisible = false;
                 TabController.Instance.UpdateTab(adminTab);
 
-                foreach (var module in moduleController.GetTabModules(portal.AdminTabId).Values)
+                foreach (var module in ModuleController.Instance.GetTabModules(portal.AdminTabId).Values)
                 {
-                    moduleController.UpdateTabModuleSetting(module.TabModuleID, "hideadminborder", "true");
+                    ModuleController.Instance.UpdateTabModuleSetting(module.TabModuleID, "hideadminborder", "true");
                 }
             }
 
@@ -2309,13 +2303,12 @@ namespace DotNetNuke.Services.Upgrade
             tab.TabName = "Site Management";
             TabController.Instance.UpdateTab(tab);
 
-            var moduleController = new ModuleController();
-            foreach (var module in moduleController.GetTabModules(tab.TabID).Values)
+            foreach (var module in ModuleController.Instance.GetTabModules(tab.TabID).Values)
             {
                 if (module.ModuleTitle == "Portals")
                 {
                     module.ModuleTitle = "Site Management";
-                    moduleController.UpdateModule(module);
+                    ModuleController.Instance.UpdateModule(module);
                 }
             }
 
@@ -2488,14 +2481,13 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion621()
         {
             //update administrators' role description.
-            var moduleController = new ModuleController();
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //update about me's template
                 var myProfileTabId = TabController.GetTabByTabPath(portal.PortalID, "//ActivityFeed//MyProfile", string.Empty);
                 if (myProfileTabId != Null.NullInteger)
                 {
-                    var tabModules = moduleController.GetTabModules(myProfileTabId);
+                    var tabModules = ModuleController.Instance.GetTabModules(myProfileTabId);
                     foreach (var module in tabModules.Values)
                     {
                         var settings = module.TabModuleSettings;
@@ -2526,7 +2518,7 @@ namespace DotNetNuke.Services.Upgrade
                                     </ul>
                                     </div>
                                     <div class=""dnnClear""></div>";
-                            moduleController.UpdateTabModuleSetting(module.TabModuleID, "ProfileTemplate", template);
+                            ModuleController.Instance.UpdateTabModuleSetting(module.TabModuleID, "ProfileTemplate", template);
                         }
                     }
                 }
@@ -2736,15 +2728,14 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion712()
         {
             //update console module in Admin/Host page to set OrderTabsByHierarchy setting to true.
-            var moduleController = new ModuleController();
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var tabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin", Null.NullString);
                 if (tabId != Null.NullInteger)
                 {
-                    foreach (var module in new ModuleController().GetTabModules(tabId).Where(m => m.Value.ModuleDefinition.FriendlyName == "Console"))
+                    foreach (var module in ModuleController.Instance.GetTabModules(tabId).Where(m => m.Value.ModuleDefinition.FriendlyName == "Console"))
                     {
-                        moduleController.UpdateModuleSetting(module.Key, "OrderTabsByHierarchy", "True");
+                        ModuleController.Instance.UpdateModuleSetting(module.Key, "OrderTabsByHierarchy", "True");
                     }
                 }
             }
@@ -2752,9 +2743,9 @@ namespace DotNetNuke.Services.Upgrade
             var hostTabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host", Null.NullString);
             if (hostTabId != Null.NullInteger)
             {
-                foreach (var module in new ModuleController().GetTabModules(hostTabId).Where(m => m.Value.ModuleDefinition.FriendlyName == "Console"))
+                foreach (var module in ModuleController.Instance.GetTabModules(hostTabId).Where(m => m.Value.ModuleDefinition.FriendlyName == "Console"))
                 {
-                    moduleController.UpdateModuleSetting(module.Key, "OrderTabsByHierarchy", "True");
+                    ModuleController.Instance.UpdateModuleSetting(module.Key, "OrderTabsByHierarchy", "True");
                 }
             }
         }
@@ -3240,7 +3231,6 @@ namespace DotNetNuke.Services.Upgrade
         private static void ReplaceMessagingModule()
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "ReplaceMessagingModule");
-            var moduleController = new ModuleController();
             var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
             if (moduleDefinition == null) return;
 
@@ -3257,7 +3247,7 @@ namespace DotNetNuke.Services.Upgrade
                         AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", "", true);
                     }
 
-                    foreach (KeyValuePair<int, ModuleInfo> kvp in moduleController.GetTabModules(portal.UserTabId))
+                    foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(portal.UserTabId))
                     {
                         var module = kvp.Value;
                         if (module.DesktopModule.FriendlyName == "Messaging")
@@ -3561,14 +3551,13 @@ namespace DotNetNuke.Services.Upgrade
 		public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions, bool displayTitle, string paneName)
 		{
 			DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
-			var moduleController = new ModuleController();
 			ModuleInfo moduleInfo;
 			int moduleId = Null.NullInteger;
 
 			if ((page != null))
 			{
 				bool isDuplicate = false;
-				foreach (var kvp in moduleController.GetTabModules(page.TabID))
+                foreach (var kvp in ModuleController.Instance.GetTabModules(page.TabID))
 				{
 					moduleInfo = kvp.Value;
 					if (moduleInfo.ModuleDefID == moduleDefId)

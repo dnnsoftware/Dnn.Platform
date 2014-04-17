@@ -322,8 +322,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                     else
                     {
-                        var oModuleCtrl = new ModuleController();
-                        _moduleSettings = oModuleCtrl.GetModuleSettings(ModuleID, TabID);
+                        _moduleSettings = new ModuleController().GetModuleSettings(ModuleID, TabID);
                     }
                 }
                 return _moduleSettings;
@@ -367,8 +366,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                     else
                     {
-                        var oModuleCtrl = new ModuleController();
-                        _tabModuleSettings = oModuleCtrl.GetTabModuleSettings(TabModuleID, TabID);
+                        _tabModuleSettings = new ModuleController().GetTabModuleSettings(TabModuleID, TabID);
                     }
                 }
 

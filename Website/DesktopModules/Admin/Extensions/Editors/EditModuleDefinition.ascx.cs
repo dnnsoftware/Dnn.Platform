@@ -713,8 +713,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 							objModule.ModuleDefID = moduleDefinition.ModuleDefID;
 							objModule.InheritViewPermissions = true;
 							objModule.AllTabs = false;
-							var moduleCtl = new ModuleController();
-							moduleCtl.AddModule(objModule);
+                            ModuleController.Instance.AddModule(objModule);
 							Response.Redirect(Globals.NavigateURL(newTab.TabID), true);
 						}
 						else

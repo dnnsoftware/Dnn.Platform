@@ -180,9 +180,79 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="portalID">ID of the portal</param>
         /// <returns>ArrayList of ModuleInfo objects</returns>
         ArrayList GetModules(int portalID);
+
+        /// <summary>
+        /// Gets the modules by definition.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="friendlyName">Name of the friendly.</param>
+        /// <returns>module collection</returns>
+        ArrayList GetModulesByDefinition(int portalID, string friendlyName);
+
+        /// <summary>
+        /// For a portal get a list of all active module and tabmodule references that are Searchable
+        /// either by inheriting from ModuleSearchBase or implementing the older ISearchable interface.
+        /// </summary>
+        /// <param name="portalID">ID of the portal to be searched</param>
+        /// <returns>Arraylist of ModuleInfo for modules supporting search.</returns>
+        ArrayList GetSearchModules(int portalID);
+
+        /// <summary>
+        ///   get a Module object
+        /// </summary>
+        /// <param name = "tabModuleID">ID of the tabmodule</param>
+        /// <returns>An ModuleInfo object</returns>
+        ModuleInfo GetTabModule(int tabModuleID);
+
+        /// <summary>
+        /// Get all Module references on a tab
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <returns>Dictionary of ModuleID and ModuleInfo</returns>
+        Dictionary<int, ModuleInfo> GetTabModules(int tabId);
+
+        /// <summary>
+        ///   Get a list of all TabModule references of a module instance
+        /// </summary>
+        /// <param name = "moduleID">ID of the Module</param>
+        /// <returns>ArrayList of ModuleInfo</returns>
+        IList<ModuleInfo> GetTabModulesByModule(int moduleID);
         
-        
-        
+        void InitialModulePermission(ModuleInfo module, int tabId, int permissionType);
+
+        void LocalizeModule(ModuleInfo sourceModule, Locale locale);
+
+        /// <summary>
+        /// MoveModule moes a Module from one Tab to another including all the
+        ///	TabModule settings
+        /// </summary>
+        ///	<param name="moduleId">The Id of the module to move</param>
+        ///	<param name="fromTabId">The Id of the source tab</param>
+        ///	<param name="toTabId">The Id of the destination tab</param>
+        ///	<param name="toPaneName">The name of the Pane on the destination tab where the module will end up</param>
+        void MoveModule(int moduleId, int fromTabId, int toTabId, string toPaneName);
+
+        /// <summary>
+        /// Restores the module.
+        /// </summary>
+        /// <param name="objModule">The module.</param>
+        void RestoreModule(ModuleInfo objModule);
+
+        /// <summary>
+        /// Update module settings and permissions in database from ModuleInfo
+        /// </summary>
+        /// <param name="module">ModuleInfo of the module to update</param>
+        void UpdateModule(ModuleInfo module);
+
+        /// <summary>
+        /// set/change the module position within a pane on a page
+        /// </summary>
+        /// <param name="TabId">ID of the page</param>
+        /// <param name="ModuleId">ID of the module on the page</param>
+        /// <param name="ModuleOrder">position within the controls list on page, -1 if to be added at the end</param>
+        /// <param name="PaneName">name of the pane, the module is placed in on the page</param>
+        void UpdateModuleOrder(int TabId, int ModuleId, int ModuleOrder, string PaneName);
+
         /// <summary>
         /// Adds or updates a module's setting value
         /// </summary>
@@ -193,6 +263,12 @@ namespace DotNetNuke.Entities.Modules
         void UpdateModuleSetting(int moduleId, string settingName, string settingValue);
 
         /// <summary>
+        /// set/change all module's positions within a page
+        /// </summary>
+        /// <param name="TabId">ID of the page</param>
+        void UpdateTabModuleOrder(int TabId);
+
+        /// <summary>
         /// Adds or updates a tab module's setting value
         /// </summary>
         /// <param name="tabModuleId">ID of the tabmodule, the setting belongs to</param>
@@ -200,5 +276,12 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="settingValue">value of the setting (String).</param>
         /// <remarks>Empty SettingValue will remove the setting</remarks>
         void UpdateTabModuleSetting(int tabModuleId, string settingName, string settingValue);
+
+        /// <summary>
+        /// Updates the translation status.
+        /// </summary>
+        /// <param name="localizedModule">The localized module.</param>
+        /// <param name="isTranslated">if set to <c>true</c> will mark the module as translated].</param>
+        void UpdateTranslationStatus(ModuleInfo localizedModule, bool isTranslated);
     }
 }

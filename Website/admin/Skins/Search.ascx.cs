@@ -362,8 +362,7 @@ namespace DotNetNuke.UI.Skins.Controls
             int searchTabId = PortalSettings.SearchTabId;
             if (searchTabId == Null.NullInteger)
             {
-                var objModules = new ModuleController();
-                ArrayList arrModules = objModules.GetModulesByDefinition(PortalSettings.PortalId, "Search Results");
+                ArrayList arrModules = ModuleController.Instance.GetModulesByDefinition(PortalSettings.PortalId, "Search Results");
                 if (arrModules.Count > 1)
                 {
                     foreach (ModuleInfo SearchModule in arrModules)

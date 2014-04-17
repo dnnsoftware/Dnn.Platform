@@ -35,8 +35,7 @@ Namespace _OWNER_._MODULE_
 
         Public Overrides Sub UpdateSettings()
             Try
-                Dim controller As New ModuleController()
-                controller.UpdateTabModuleSetting(TabModuleId, "field", txtField.Text)
+                ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, "field", txtField.Text)
             Catch exc As Exception
                 ' Module failed to load
                 Exceptions.ProcessModuleLoadException(Me, exc)

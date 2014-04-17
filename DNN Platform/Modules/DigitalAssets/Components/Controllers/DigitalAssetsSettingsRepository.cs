@@ -36,13 +36,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         private const string FilterConditionSetting = "FilterCondition";
         private const string SubfolderFilterSetting = "SubfolderFilter";
 
-        private readonly ModuleController moduleController;
-
-        public DigitalAssetsSettingsRepository()
-        {
-            this.moduleController = new ModuleController();
-        }
-
         public int? GetDefaultFolderTypeId(int moduleId)
         {
             var defaultFolderTypeId = this.GetSettingByKey(moduleId, DefaultFolderTypeIdSetting);
@@ -107,27 +100,27 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         
         public void SaveDefaultFolderTypeId(int moduleId, int defaultFolderTypeId)
         {
-            this.moduleController.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));            
+            ModuleController.Instance.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));            
         }
 
         public void SaveMode(int moduleId, DigitalAssestsMode mode)
         {
-            this.moduleController.UpdateModuleSetting(moduleId, ModeSetting, mode.ToString());
+            ModuleController.Instance.UpdateModuleSetting(moduleId, ModeSetting, mode.ToString());
         }
 
         public void SaveRootFolderId(int moduleId, int rootFolderId)
         {
-            this.moduleController.UpdateModuleSetting(moduleId, RootFolderIdSetting, rootFolderId.ToString(CultureInfo.InvariantCulture));
+            ModuleController.Instance.UpdateModuleSetting(moduleId, RootFolderIdSetting, rootFolderId.ToString(CultureInfo.InvariantCulture));
         }
 
         public void SaveExcludeSubfolders(int moduleId, SubfolderFilter subfolderFilter)
         {
-            moduleController.UpdateModuleSetting(moduleId, SubfolderFilterSetting, subfolderFilter.ToString());
+            ModuleController.Instance.UpdateModuleSetting(moduleId, SubfolderFilterSetting, subfolderFilter.ToString());
         }
 
         public void SaveFilterCondition(int moduleId, FilterCondition filterCondition)
         {
-            moduleController.UpdateModuleSetting(moduleId, FilterConditionSetting, filterCondition.ToString());
+            ModuleController.Instance.UpdateModuleSetting(moduleId, FilterConditionSetting, filterCondition.ToString());
         }
 
         private string GetSettingByKey(int moduleId, string key)

@@ -404,8 +404,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId <= 0)
             {
-                var moduleController = new ModuleController();
-
                 messageTabId = portalSettings.UserTabId;
                 var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
                 if (profileTab != null)
@@ -413,7 +411,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                     var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
                     foreach (var tab in childTabs)
                     {
-                        foreach (var kvp in moduleController.GetTabModules(tab.TabID))
+                        foreach (var kvp in ModuleController.Instance.GetTabModules(tab.TabID))
                         {
                             var module = kvp.Value;
                             if (module.DesktopModule.FriendlyName == "Message Center")
@@ -476,7 +474,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         private static object GetMessageTabCallback(CacheItemArgs cacheItemArgs)
         {
             var portalSettings = cacheItemArgs.Params[0] as PortalSettings;
-            var moduleController = new ModuleController();
 
             var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
             if (profileTab != null)
@@ -484,7 +481,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
                 foreach (var tab in childTabs)
                 {
-                    foreach (var kvp in moduleController.GetTabModules(tab.TabID))
+                    foreach (var kvp in ModuleController.Instance.GetTabModules(tab.TabID))
                     {
                         var module = kvp.Value;
                         if (module.DesktopModule.FriendlyName == "Message Center")

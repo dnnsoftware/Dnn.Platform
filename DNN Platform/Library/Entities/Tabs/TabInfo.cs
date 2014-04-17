@@ -235,7 +235,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return new ModuleController().GetTabModules(TabID);
+                return ModuleController.Instance.GetTabModules(TabID);
             }
         }
 

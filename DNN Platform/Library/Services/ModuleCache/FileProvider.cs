@@ -291,8 +291,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         public override void Remove(int tabModuleId)
         {
-            var controller = new ModuleController();
-            ModuleInfo tabModule = controller.GetTabModule(tabModuleId);
+            ModuleInfo tabModule = ModuleController.Instance.GetTabModule(tabModuleId);
 
             int portalId = tabModule.PortalID;
             if (portalId == Null.NullInteger)

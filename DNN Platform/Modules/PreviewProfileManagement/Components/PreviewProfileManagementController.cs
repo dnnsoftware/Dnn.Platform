@@ -50,7 +50,6 @@ namespace DotNetNuke.Modules.PreviewProfileManagement.Components
         private void RemoveProVersion()
         {
             //update the tab module to use CE version
-            var moduleController = new ModuleController();
             TabInfo newTab;
 
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
@@ -76,7 +75,7 @@ namespace DotNetNuke.Modules.PreviewProfileManagement.Components
 
                 //Remove Pro edition module
                 int moduleID = Null.NullInteger;
-                IDictionary<int, ModuleInfo> modules = moduleController.GetTabModules(newTab.TabID);
+                IDictionary<int, ModuleInfo> modules = ModuleController.Instance.GetTabModules(newTab.TabID);
 
                 if (modules != null)
                 {

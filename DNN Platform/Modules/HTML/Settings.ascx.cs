@@ -156,10 +156,9 @@ namespace DotNetNuke.Modules.Html
                 var htmlTextController = new HtmlTextController();
 
                 // update replace token setting
-                var moduleController = new ModuleController();
-                moduleController.UpdateModuleSetting(ModuleId, "HtmlText_ReplaceTokens", chkReplaceTokens.Checked.ToString());
-				moduleController.UpdateModuleSetting(ModuleId, "HtmlText_UseDecorate", cbDecorate.Checked ? "1" : "0");
-				moduleController.UpdateModuleSetting(ModuleId, "HtmlText_SearchDescLength", txtSearchDescLength.Text);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "HtmlText_ReplaceTokens", chkReplaceTokens.Checked.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "HtmlText_UseDecorate", cbDecorate.Checked ? "1" : "0");
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "HtmlText_SearchDescLength", txtSearchDescLength.Text);
 
                 // disable module caching if token replace is enabled
                 if (chkReplaceTokens.Checked)
@@ -168,7 +167,7 @@ namespace DotNetNuke.Modules.Html
                     if (module.CacheTime > 0)
                     {
                         module.CacheTime = 0;
-                        moduleController.UpdateModule(module);
+                        ModuleController.Instance.UpdateModule(module);
                     }
                 }
 

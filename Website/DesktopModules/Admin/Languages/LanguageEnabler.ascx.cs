@@ -494,11 +494,10 @@ namespace DotNetNuke.Modules.Admin.Languages
                             }
 
                             //restore the tabs and modules
-                            var moduleController = new ModuleController();
                             foreach (var tab in localizedTabs)
                             {
                                 TabController.Instance.RestoreTab(tab, PortalSettings);
-                                moduleController.GetTabModules(tab.TabID).Values.ToList().ForEach(moduleController.RestoreModule);
+                                ModuleController.Instance.GetTabModules(tab.TabID).Values.ToList().ForEach(ModuleController.Instance.RestoreModule);
                             }
                         }
                         else

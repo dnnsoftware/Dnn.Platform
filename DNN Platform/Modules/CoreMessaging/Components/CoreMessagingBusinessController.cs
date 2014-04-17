@@ -46,8 +46,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                 switch (Version)
                 {
                     case "06.02.00":
-                        var moduleController = new ModuleController();
-
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
                         if (moduleDefinition != null)
                         {
@@ -60,7 +58,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                                     var tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalID, true);
                                     if (tab != null)
                                     {
-                                        foreach (var module in moduleController.GetTabModules(portal.UserTabId).Values)
+                                        foreach (var module in ModuleController.Instance.GetTabModules(portal.UserTabId).Values)
                                         {
                                             if (module.DesktopModule.FriendlyName == "Messaging")
                                             {

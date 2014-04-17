@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -97,8 +98,7 @@ namespace DotNetNuke.Services.Search.Internals
 
                         // get searchable module definition list
                         var portalId = int.Parse(cacheItem.CacheKey.Split('-')[1]);
-                        var moduleController = new ModuleController();
-                        var modules = moduleController.GetSearchModules(portalId);
+                        var modules = ModuleController.Instance.GetSearchModules(portalId);
                         var modDefIds = new HashSet<int>();
 
                         foreach (ModuleInfo module in modules)

@@ -72,10 +72,8 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             try
             {
-                var objModules = new ModuleController();
-
-                objModules.UpdateTabModuleSetting(TabModuleId, "ProfileTemplate", txtTemplate.Text);
-                objModules.UpdateTabModuleSetting(TabModuleId, "IncludeButton", IncludeButton.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, "ProfileTemplate", txtTemplate.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, "IncludeButton", IncludeButton.Checked.ToString(CultureInfo.InvariantCulture));
             }
             catch (Exception exc)
             {

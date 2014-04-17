@@ -66,16 +66,6 @@ namespace DotNetNuke.Modules.Admin.Languages
                 return fileRoot;
             }
         }
-
-        private ModuleController _moduleController;
-        private ModuleController ModuleController
-        {
-            get
-            {
-                return _moduleController ?? (_moduleController = new ModuleController());
-            }
-        }
-
         #endregion
 
         #region Protected
@@ -114,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             {
                 var cmdDeleteModule = (LinkButton)sender;
                 var tabModuleId = int.Parse(cmdDeleteModule.CommandArgument);
-                var moduleInfo = ModuleController.GetTabModule(tabModuleId);
+                var moduleInfo = ModuleController.Instance.GetTabModule(tabModuleId);
                 ModuleController.Instance.DeleteTabModule(moduleInfo.TabID, moduleInfo.ModuleID, false);
                 Response.Redirect(Request.RawUrl, false);
             }
@@ -127,8 +117,8 @@ namespace DotNetNuke.Modules.Admin.Languages
             {
                 var cmdRestoreModule = (LinkButton)sender;
                 var tabModuleId = int.Parse(cmdRestoreModule.CommandArgument);
-                var moduleInfo = ModuleController.GetTabModule(tabModuleId);
-                ModuleController.RestoreModule(moduleInfo);
+                var moduleInfo = ModuleController.Instance.GetTabModule(tabModuleId);
+                ModuleController.Instance.RestoreModule(moduleInfo);
                 Response.Redirect(Request.RawUrl, false);
             }
         }
@@ -340,8 +330,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 dnnPage.IsTranslated = localTabInfo.IsTranslated;
                 dnnPage.IsPublished = TabController.Instance.IsTabPublished(localTabInfo);
                 // generate modules information
-                foreach (var moduleInfo in ModuleController.GetTabModules(localTabInfo.TabID).Values)
-                //foreach (var moduleInfo in ModuleController.GetTabModules(localTabInfo.TabID).Values.Where(m => !m.IsDeleted))
+                foreach (var moduleInfo in ModuleController.Instance.GetTabModules(localTabInfo.TabID).Values)
                 {
                     var guid = moduleInfo.DefaultLanguageGuid == Null.NullGuid ? moduleInfo.UniqueId : moduleInfo.DefaultLanguageGuid;
 
@@ -463,17 +452,17 @@ namespace DotNetNuke.Modules.Admin.Languages
                         var moduleLocalized = cbLocalized.Checked;
                         var cbTranslated = (CheckBox)riDnnModule.FindControl("cbTranslated");
                         var moduleTranslated = cbTranslated.Checked;
-                        var tabModule = ModuleController.GetTabModule(tabModuleID);
+                        var tabModule = ModuleController.Instance.GetTabModule(tabModuleID);
                         if (tabModule.ModuleTitle != moduleTitle)
                         {
                             tabModule.ModuleTitle = moduleTitle;
-                            ModuleController.UpdateModule(tabModule);
+                            ModuleController.Instance.UpdateModule(tabModule);
                         }
                         if (tabModule.DefaultLanguageGuid != Null.NullGuid && tabModule.IsLocalized != moduleLocalized)
                         {
                             var locale = LocaleController.Instance.GetLocale(tabModule.CultureCode);
                             if (moduleLocalized)
-                                ModuleController.LocalizeModule(tabModule, locale);
+                                ModuleController.Instance.LocalizeModule(tabModule, locale);
                             else
                                 ModuleController.Instance.DeLocalizeModule(tabModule);
                         }
@@ -483,7 +472,7 @@ namespace DotNetNuke.Modules.Admin.Languages
 
                         if (!moduleTranslateOverride && tabModule.IsTranslated != moduleTranslated)
                         {
-                            ModuleController.UpdateTranslationStatus(tabModule, moduleTranslated);
+                            ModuleController.Instance.UpdateTranslationStatus(tabModule, moduleTranslated);
                         }
 
                     }
@@ -499,7 +488,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                                 int tabModuleIDCopy = int.Parse(hfTabModuleIDCopy.Value);
                                 if (tabModuleIDCopy > 0)
                                 {
-                                    ModuleInfo miCopy = ModuleController.GetTabModule(tabModuleIDCopy);
+                                    ModuleInfo miCopy = ModuleController.Instance.GetTabModule(tabModuleIDCopy);
                                     if (miCopy.DefaultLanguageGuid == Null.NullGuid)
                                     { // default 
                                         var hfTabID = (HiddenField)rDnnPage.Items[riDnnModule.ItemIndex].FindControl("hfTabID");
@@ -507,7 +496,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                                         var toTabInfo = TabController.Instance.GetTab(tabId, PortalSettings.PortalId, false);
                                         ModuleController.Instance.CopyModule(miCopy, toTabInfo, Null.NullString, true);
                                         var localizedModule = ModuleController.Instance.GetModule(miCopy.ModuleID, tabId, false);
-                                        ModuleController.LocalizeModule(localizedModule,LocaleController.Instance.GetLocale(localizedModule.CultureCode));
+                                        ModuleController.Instance.LocalizeModule(localizedModule, LocaleController.Instance.GetLocale(localizedModule.CultureCode));
                                     }
                                     else
                                     {
@@ -538,7 +527,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                                                     {
                                                         moduleInfo.DefaultLanguageGuid = miDefault.UniqueId;
                                                     }
-                                                    ModuleController.UpdateModule(moduleInfo);
+                                                    ModuleController.Instance.UpdateModule(moduleInfo);
                                                 }
                                             }
                                         }
@@ -583,14 +572,14 @@ namespace DotNetNuke.Modules.Admin.Languages
                             {
                                 moduleTranslateOverride = true;
 
-                                var tabModules = ModuleController.GetTabModules(tabInfo.TabID);
+                                var tabModules = ModuleController.Instance.GetTabModules(tabInfo.TabID);
                                 foreach (
                                     var moduleKVP in
                                         tabModules.Where(
                                             moduleKVP =>
                                             moduleKVP.Value.DefaultLanguageModule != null && moduleKVP.Value.LocalizedVersionGuid != moduleKVP.Value.DefaultLanguageModule.LocalizedVersionGuid))
                                 {
-                                    ModuleController.UpdateTranslationStatus(moduleKVP.Value, true);
+                                    ModuleController.Instance.UpdateTranslationStatus(moduleKVP.Value, true);
                                 }
                             }
                         }
@@ -608,9 +597,9 @@ namespace DotNetNuke.Modules.Admin.Languages
             foreach (var tabInfo in tabsToPublish)
             {
                 //First mark all modules as translated
-                foreach (ModuleInfo m in ModuleController.GetTabModules(tabInfo.TabID).Values)
+                foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(tabInfo.TabID).Values)
                 {
-                    ModuleController.UpdateTranslationStatus(m, true);
+                    ModuleController.Instance.UpdateTranslationStatus(m, true);
                 }
 
                 //First mark tab as translated
@@ -667,9 +656,9 @@ namespace DotNetNuke.Modules.Admin.Languages
                     }
                     else if (dnnModule.ErrorCultureOfModuleNotCultureOfTab)
                     { // # culture tab and module
-                        ModuleInfo moduleInfo = ModuleController.GetTabModule(dnnModule.TabModuleID);
+                        ModuleInfo moduleInfo = ModuleController.Instance.GetTabModule(dnnModule.TabModuleID);
                         moduleInfo.CultureCode = dnnModule.CultureCode;
-                        ModuleController.UpdateModule(moduleInfo);
+                        ModuleController.Instance.UpdateModule(moduleInfo);
                     }
                     else if (dnnModule.ErrorDuplicateModule) // duplicate
                     {

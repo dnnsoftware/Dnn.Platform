@@ -47,7 +47,6 @@ namespace DotNetNuke.Services.Syndication
         /// <remarks></remarks>
         protected override void PopulateChannel(string channelName, string userName)
         {
-            var objModules = new ModuleController();
             ModuleInfo objModule;
             if (Request == null || Settings == null || Settings.ActiveTab == null || ModuleId == Null.NullInteger)
             {

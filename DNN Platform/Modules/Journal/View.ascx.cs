@@ -91,8 +91,7 @@ namespace DotNetNuke.Modules.Journal {
             
             ModuleInfo moduleInfo = ModuleContext.Configuration;
 
-            var moduleController = new ModuleController();
-            foreach (var module in moduleController.GetTabModules(TabId).Values) 
+            foreach (var module in ModuleController.Instance.GetTabModules(TabId).Values) 
             {
                 if (module.ModuleDefinition.FriendlyName == "Social Groups") 
                 {

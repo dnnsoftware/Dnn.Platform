@@ -108,14 +108,13 @@ namespace DotNetNuke.Services.Messaging
                 return _MessagingPage;
             }
 
-            var mc = new ModuleController();
             ModuleInfo md = ModuleController.Instance.GetModuleByDefinition(PortalSettings.Current.PortalId, ModuleFriendlyName);
             if ((md != null))
             {
-                ArrayList a = mc.GetModuleTabs(md.ModuleID);
+                var a = ModuleController.Instance.GetTabModulesByModule(md.ModuleID);
                 if ((a != null))
                 {
-                    var mi = a[0] as ModuleInfo;
+                    var mi = a[0];
                     if ((mi != null))
                     {
                         _MessagingPage = TabController.Instance.GetTab(mi.TabID, PortalSettings.Current.PortalId, false);

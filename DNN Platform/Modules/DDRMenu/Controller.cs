@@ -57,18 +57,16 @@ namespace DotNetNuke.Web.DDRMenu
 		{
 			var settings = Settings.FromXml(content);
 
-			var controller = new ModuleController();
-
-			controller.UpdateModuleSetting(moduleId, "MenuStyle", (settings.MenuStyle ?? ""));
-			controller.UpdateModuleSetting(moduleId, "NodeXmlPath", (settings.NodeXmlPath ?? ""));
-			controller.UpdateModuleSetting(moduleId, "NodeSelector", (settings.NodeSelector ?? ""));
-			controller.UpdateModuleSetting(moduleId, "IncludeNodes", (settings.IncludeNodes ?? ""));
-			controller.UpdateModuleSetting(moduleId, "ExcludeNodes", (settings.ExcludeNodes ?? ""));
-			controller.UpdateModuleSetting(moduleId, "NodeManipulator", (settings.NodeManipulator ?? ""));
-			controller.UpdateModuleSetting(moduleId, "IncludeContext", settings.IncludeContext.ToString());
-			controller.UpdateModuleSetting(moduleId, "IncludeHidden", settings.IncludeHidden.ToString());
-			controller.UpdateModuleSetting(moduleId, "TemplateArguments", Settings.ToSettingString(settings.TemplateArguments));
-			controller.UpdateModuleSetting(moduleId, "ClientOptions", Settings.ToSettingString(settings.ClientOptions));
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "MenuStyle", (settings.MenuStyle ?? ""));
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "NodeXmlPath", (settings.NodeXmlPath ?? ""));
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "NodeSelector", (settings.NodeSelector ?? ""));
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "IncludeNodes", (settings.IncludeNodes ?? ""));
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "ExcludeNodes", (settings.ExcludeNodes ?? ""));
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "NodeManipulator", (settings.NodeManipulator ?? ""));
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "IncludeContext", settings.IncludeContext.ToString());
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "IncludeHidden", settings.IncludeHidden.ToString());
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "TemplateArguments", Settings.ToSettingString(settings.TemplateArguments));
+			ModuleController.Instance.UpdateModuleSetting(moduleId, "ClientOptions", Settings.ToSettingString(settings.ClientOptions));
 		}
 
 		private static void UpdateWebConfig()
@@ -114,7 +112,6 @@ namespace DotNetNuke.Web.DDRMenu
 		private static void RemoveLegacyModuleDefinitions(string moduleName, string currentModuleDefinitionName)
 		{
 		    var mdc = new ModuleDefinitionController();
-			var mc = new ModuleController();
 
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
 			if (desktopModule == null)
@@ -144,7 +141,7 @@ namespace DotNetNuke.Web.DDRMenu
 						if (mod.ModuleDefID == oldModDefId)
 						{
 							mod.ModuleDefID = currentModDefId;
-							mc.UpdateModule(mod);
+                            ModuleController.Instance.UpdateModule(mod);
 						}
 					}
 

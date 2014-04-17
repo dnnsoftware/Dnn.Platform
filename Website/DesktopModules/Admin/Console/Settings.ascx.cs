@@ -199,8 +199,6 @@ namespace DesktopModules.Admin.Console
         {
             try
             {
-                var moduleController = new ModuleController();
-
 				//validate console width value
                 var wdth = string.Empty;
                 if ((ConsoleWidth.Text.Trim().Length > 0))
@@ -222,17 +220,17 @@ namespace DesktopModules.Admin.Console
                 }
                 else
                 {
-                    moduleController.UpdateModuleSetting(ModuleId, "ParentTabID", ParentTab.SelectedValue);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ParentTabID", ParentTab.SelectedValue);
                 }
-                moduleController.UpdateModuleSetting(ModuleId, "Mode", modeList.SelectedValue);
-                moduleController.UpdateModuleSetting(ModuleId, "DefaultSize", DefaultSize.SelectedValue);
-                moduleController.UpdateModuleSetting(ModuleId, "AllowSizeChange", AllowResize.Checked.ToString(CultureInfo.InvariantCulture));
-                moduleController.UpdateModuleSetting(ModuleId, "DefaultView", DefaultView.SelectedValue);
-                moduleController.UpdateModuleSetting(ModuleId, "AllowViewChange", AllowViewChange.Checked.ToString(CultureInfo.InvariantCulture));
-                moduleController.UpdateModuleSetting(ModuleId, "ShowTooltip", ShowTooltip.Checked.ToString(CultureInfo.InvariantCulture));
-				moduleController.UpdateModuleSetting(ModuleId, "OrderTabsByHierarchy", OrderTabsByHierarchy.Checked.ToString(CultureInfo.InvariantCulture));
-                moduleController.UpdateModuleSetting(ModuleId, "IncludeParent", IncludeParent.Checked.ToString(CultureInfo.InvariantCulture)); 
-                moduleController.UpdateModuleSetting(ModuleId, "ConsoleWidth", wdth);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "Mode", modeList.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "DefaultSize", DefaultSize.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "AllowSizeChange", AllowResize.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "DefaultView", DefaultView.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "AllowViewChange", AllowViewChange.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowTooltip", ShowTooltip.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "OrderTabsByHierarchy", OrderTabsByHierarchy.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeParent", IncludeParent.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "ConsoleWidth", wdth);
 
                 foreach (RepeaterItem item in tabs.Items)
                 {
@@ -242,7 +240,7 @@ namespace DesktopModules.Admin.Console
 						var visibility = (item.FindControl("tabVisibility") as DnnComboBox).SelectedValue;
 
                         var key = String.Format("TabVisibility{0}", tabPath.Replace("//","-"));
-                        moduleController.UpdateModuleSetting(ModuleId, key, visibility);
+                        ModuleController.Instance.UpdateModuleSetting(ModuleId, key, visibility);
                     }
                 }
             }

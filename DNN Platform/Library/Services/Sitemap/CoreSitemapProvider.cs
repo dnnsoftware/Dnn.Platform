@@ -96,8 +96,7 @@ namespace DotNetNuke.Services.Sitemap
             pageUrl.Url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
             pageUrl.Priority = GetPriority(objTab);
             pageUrl.LastModified = objTab.LastModifiedOnDate;
-            var modCtrl = new ModuleController();
-            foreach (ModuleInfo m in modCtrl.GetTabModules(objTab.TabID).Values)
+            foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(objTab.TabID).Values)
             {
                 if (m.LastModifiedOnDate > objTab.LastModifiedOnDate)
                 {

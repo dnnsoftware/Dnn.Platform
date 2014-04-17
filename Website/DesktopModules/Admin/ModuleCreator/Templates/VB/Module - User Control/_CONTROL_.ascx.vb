@@ -34,8 +34,7 @@ Namespace _OWNER_._MODULE_
         End Sub
 
         Protected Sub cmdSave_Click(sender As Object, e As EventArgs) Handles cmdSave.Click
-            Dim controller As New ModuleController()
-            controller.UpdateModuleSetting(ModuleId, "field", txtField.Text)
+            ModuleController.Instance.UpdateModuleSetting(ModuleId, "field", txtField.Text)
             Skins.Skin.AddModuleMessage(Me, "Update Successful", Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess)
         End Sub
 

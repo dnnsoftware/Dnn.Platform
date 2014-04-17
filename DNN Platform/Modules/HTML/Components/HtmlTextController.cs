@@ -632,19 +632,17 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public void UpdateWorkflow(int ObjectID, string WorkFlowType, int WorkflowID, bool ReplaceExistingSettings)
         {
-            var moduleController = new ModuleController();
-
             switch (WorkFlowType)
             {
                 case "Module":
-                    moduleController.UpdateModuleSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
                     break;
                 case "Page":
                     TabController.Instance.UpdateTabSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
                     if (ReplaceExistingSettings)
                     {
                         //Get All Modules on the current Tab
-                        foreach (var kvp in moduleController.GetTabModules(ObjectID))
+                        foreach (var kvp in ModuleController.Instance.GetTabModules(ObjectID))
                         {
                             ClearModuleSettings(kvp.Value);
                         }

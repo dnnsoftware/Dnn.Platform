@@ -537,8 +537,7 @@ namespace DesktopModules.Admin.Tabs
             if (ctlPages.SelectedNode != null)
             {
                 var tabid = Convert.ToInt32(ctlPages.SelectedNode.Value);
-                var moduleController = new ModuleController();
-                var dic = moduleController.GetTabModules(tabid);
+                var dic = ModuleController.Instance.GetTabModules(tabid);
 
                 lst.AddRange(dic.Values.Where(objModule => objModule.IsDeleted == false));
             }

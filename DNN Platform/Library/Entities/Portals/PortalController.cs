@@ -1877,9 +1877,8 @@ namespace DotNetNuke.Entities.Portals
                     objTab.TabPath = Globals.GenerateTabPath(objTab.ParentId, objTab.TabName);
                     objTab.IsDeleted = true;
                     TabController.Instance.UpdateTab(objTab);
-                    ModuleController objModules = new ModuleController();
                     ModuleInfo objModule;
-                    foreach (KeyValuePair<int, ModuleInfo> modulePair in objModules.GetTabModules(objTab.TabID))
+                    foreach (KeyValuePair<int, ModuleInfo> modulePair in ModuleController.Instance.GetTabModules(objTab.TabID))
                     {
                         objModule = modulePair.Value;
                         ModuleController.Instance.DeleteTabModule(objModule.TabID, objModule.ModuleID, false);

@@ -3581,7 +3581,7 @@ namespace DotNetNuke.Common
 		public static bool ValidateModuleInTab(int tabId, string moduleName)
 		{
 			bool hasModule = Null.NullBoolean;
-            foreach (ModuleInfo objModule in new ModuleController().GetTabModules(tabId).Values)
+            foreach (ModuleInfo objModule in ModuleController.Instance.GetTabModules(tabId).Values)
             {
 				if (objModule.ModuleDefinition.FriendlyName == moduleName)
                 {

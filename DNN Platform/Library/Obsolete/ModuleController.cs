@@ -260,6 +260,13 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprectaed in DNN 7.3. Replaced by GetTabModulesByModule(moduleID)")]
+        public ArrayList GetModuleTabs(int moduleID)
+        {
+            return new ArrayList(GetTabModulesByModule(moduleID).ToArray());
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprectaed in DNN 7.3. Replaced by GetModules(portalId)")]
         public ArrayList GetRecycleModules(int portalID)
         {

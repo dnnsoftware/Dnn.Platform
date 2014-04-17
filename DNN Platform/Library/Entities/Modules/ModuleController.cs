@@ -62,11 +62,6 @@ namespace DotNetNuke.Entities.Modules
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleController));
         private static readonly DataProvider dataProvider = DataProvider.Instance();
 
-        public ModuleController()
-        {
-            
-        }
-
         protected override Func<IModuleController> GetFactory()
         {
             return () => new ModuleController();
@@ -391,8 +386,7 @@ namespace DotNetNuke.Entities.Modules
 
         private static bool FindModule(XmlNode nodeModule, int tabId, PortalTemplateModuleAction mergeTabs)
         {
-            var moduleController = new ModuleController();
-            var modules = moduleController.GetTabModules(tabId);
+            var modules = Instance.GetTabModules(tabId);
 
             bool moduleFound = false;
             string modTitle = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "title");
@@ -563,12 +557,6 @@ namespace DotNetNuke.Entities.Modules
                             });
 
             return (tabModuleSettings.ContainsKey(tabmoduleId)) ? tabModuleSettings[tabmoduleId] : new Hashtable();
-        }
-
-        private static object GetTabModulesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var tabID = (int)cacheItemArgs.ParamList[0];
-            return CBO.FillDictionary("ModuleID", dataProvider.GetTabModules(tabID), new Dictionary<int, ModuleInfo>());
         }
 
         private int LocalizeModuleInternal(ModuleInfo sourceModule)
@@ -1434,15 +1422,6 @@ namespace DotNetNuke.Entities.Modules
             return CBO.FillCollection(dataProvider.GetModules(portalID), typeof(ModuleInfo));
         }
 
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// Gets the modules by definition.
         /// </summary>
@@ -1454,72 +1433,110 @@ namespace DotNetNuke.Entities.Modules
             return CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalID, friendlyName), typeof(ModuleInfo));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Get a list of all TabModule references of a module instance
-        /// </summary>
-        /// <param name = "moduleID">ID of the Module</param>
-        /// <returns>ArrayList of ModuleInfo</returns>
-        /// <history>
-        ///   [sleupold]   2007-09-24 documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public ArrayList GetModuleTabs(int moduleID)
-        {
-            return CBO.FillCollection(dataProvider.GetModule(moduleID, Null.NullInteger), typeof(ModuleInfo));
-        }
-
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// For a portal get a list of all active module and tabmodule references that are Searchable
         /// either by inheriting from ModuleSearchBase or implementing the older ISearchable interface.
         /// </summary>
         /// <param name="portalID">ID of the portal to be searched</param>
         /// <returns>Arraylist of ModuleInfo for modules supporting search.</returns>
-        /// <history>
-        ///    [sleupold]   2007-09-24 commented
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public ArrayList GetSearchModules(int portalID)
         {
             return CBO.FillCollection(dataProvider.GetSearchModules(portalID), typeof(ModuleInfo));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   get a Module object
         /// </summary>
         /// <param name = "tabModuleID">ID of the tabmodule</param>
         /// <returns>An ModuleInfo object</returns>
-        /// <history>
-        ///   [vnguyen]   04-07-2010
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public ModuleInfo GetTabModule(int tabModuleID)
         {
             return CBO.FillObject<ModuleInfo>(dataProvider.GetTabModule(tabModuleID));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get all Module references on a tab
         /// </summary>
         /// <param name="tabId"></param>
         /// <returns>Dictionary of ModuleID and ModuleInfo</returns>
-        /// <history>
-        ///    [sleupold]   2007-09-24 commented
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public Dictionary<int, ModuleInfo> GetTabModules(int tabId)
         {
             string cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
-            return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority, tabId), GetTabModulesCallBack);
+            return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(new CacheItemArgs(cacheKey,
+                                                                            DataCache.TabModuleCacheTimeOut,
+                                                                            DataCache.TabModuleCachePriority),
+                                                                    c => CBO.FillDictionary("ModuleID", dataProvider.GetTabModules(tabId), new Dictionary<int, ModuleInfo>()));
         }
 
+        /// <summary>
+        ///   Get a list of all TabModule references of a module instance
+        /// </summary>
+        /// <param name = "moduleID">ID of the Module</param>
+        /// <returns>ArrayList of ModuleInfo</returns>
+        public IList<ModuleInfo> GetTabModulesByModule(int moduleID)
+        {
+            return CBO.FillCollection<ModuleInfo>(dataProvider.GetModule(moduleID, Null.NullInteger));
+        }
 
+        public void InitialModulePermission(ModuleInfo module, int tabId, int permissionType)
+        {
+            var tabPermissions = TabPermissionController.GetTabPermissions(tabId, module.PortalID);
+            var permissionController = new PermissionController();
 
+            module.InheritViewPermissions = permissionType == 0;
 
+            // get the default module view permissions
+            ArrayList systemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
 
+            // get the permissions from the page
+            foreach (TabPermissionInfo tabPermission in tabPermissions)
+            {
+                if (tabPermission.PermissionKey == "VIEW" && permissionType == 0)
+                {
+                    //Don't need to explicitly add View permisisons if "Same As Page"
+                    continue;
+                }
+
+                // get the system module permissions for the permissionkey
+                ArrayList systemModulePermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", tabPermission.PermissionKey);
+                // loop through the system module permissions
+                int j;
+                for (j = 0; j <= systemModulePermissions.Count - 1; j++)
+                {
+                    // create the module permission
+                    var systemModulePermission = (PermissionInfo)systemModulePermissions[j];
+                    if (systemModulePermission.PermissionKey == "VIEW" && permissionType == 1 && tabPermission.PermissionKey != "EDIT")
+                    {
+                        //Only Page Editors get View permissions if "Page Editors Only"
+                        continue;
+                    }
+
+                    ModulePermissionInfo modulePermission = AddModulePermission(module, systemModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
+
+                    // ensure that every EDIT permission which allows access also provides VIEW permission
+                    if (modulePermission.PermissionKey == "EDIT" && modulePermission.AllowAccess)
+                    {
+                        AddModulePermission(module, (PermissionInfo)systemModuleViewPermissions[0], modulePermission.RoleID, modulePermission.UserID, true);
+                    }
+                }
+
+                //Get the custom Module Permissions,  Assume that roles with Edit Tab Permissions
+                //are automatically assigned to the Custom Module Permissions
+                if (tabPermission.PermissionKey == "EDIT")
+                {
+                    ArrayList customModulePermissions = permissionController.GetPermissionsByModuleDefID(module.ModuleDefID);
+
+                    // loop through the custom module permissions
+                    for (j = 0; j <= customModulePermissions.Count - 1; j++)
+                    {
+                        // create the module permission
+                        var customModulePermission = (PermissionInfo)customModulePermissions[j];
+
+                        AddModulePermission(module, customModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
+                    }
+                }
+            }
+        }
 
         public void LocalizeModule(ModuleInfo sourceModule, Locale locale)
         {
@@ -1532,7 +1549,7 @@ namespace DotNetNuke.Entities.Modules
 
                 if (defaultModule != null)
                 {
-                    ArrayList tabModules = GetModuleTabs(defaultModule.ModuleID);
+                    var tabModules = GetTabModulesByModule(defaultModule.ModuleID);
                     if (tabModules.Count > 1)
                     {
                         //default language version is a reference copy
@@ -1566,7 +1583,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// MoveModule moes a Module from one Tab to another including all the
         ///	TabModule settings
@@ -1575,10 +1591,6 @@ namespace DotNetNuke.Entities.Modules
         ///	<param name="fromTabId">The Id of the source tab</param>
         ///	<param name="toTabId">The Id of the destination tab</param>
         ///	<param name="toPaneName">The name of the Pane on the destination tab where the module will end up</param>
-        /// <history>
-        ///    [cnurse]	    10/21/2004	 created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void MoveModule(int moduleId, int fromTabId, int toTabId, string toPaneName)
         {
             //Move the module to the Tab
@@ -1601,17 +1613,10 @@ namespace DotNetNuke.Entities.Modules
             ClearCache(objModule.TabID);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Update module settings and permissions in database from ModuleInfo
         /// </summary>
         /// <param name="module">ModuleInfo of the module to update</param>
-        /// <history>
-        ///    [sleupold]   2007-09-24   commented
-        ///    [vnguyen]    2010-05-10   Modified: Added update tabmodule version guid
-        ///    [sleupold]   2010-12-09   Fixed .AllModule updates
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void UpdateModule(ModuleInfo module)
         {
             //Update ContentItem If neccessary
@@ -1760,13 +1765,12 @@ namespace DotNetNuke.Entities.Modules
                 }
             }
             //Clear Cache for all TabModules
-            foreach (ModuleInfo tabModule in GetModuleTabs(module.ModuleID))
+            foreach (ModuleInfo tabModule in GetTabModulesByModule(module.ModuleID))
             {
                 ClearCache(tabModule.TabID);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// set/change the module position within a pane on a page
         /// </summary>
@@ -1774,10 +1778,6 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="ModuleId">ID of the module on the page</param>
         /// <param name="ModuleOrder">position within the controls list on page, -1 if to be added at the end</param>
         /// <param name="PaneName">name of the pane, the module is placed in on the page</param>
-        /// <history>
-        ///    [sleupold]   2007-09-24   commented
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void UpdateModuleOrder(int TabId, int ModuleId, int ModuleOrder, string PaneName)
         {
             ModuleInfo objModule = GetModule(ModuleId, TabId, false);
@@ -1812,16 +1812,22 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Adds or updates a module's setting value
+        /// </summary>
+        /// <param name="moduleId">ID of the module, the setting belongs to</param>
+        /// <param name="settingName">name of the setting property</param>
+        /// <param name="settingValue">value of the setting (String).</param>
+        /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true</remarks>
+        public void UpdateModuleSetting(int moduleId, string settingName, string settingValue)
+        {
+            UpdateModuleSettingInternal(moduleId, settingName, settingValue, true);
+        }
+
         /// <summary>
         /// set/change all module's positions within a page
         /// </summary>
         /// <param name="TabId">ID of the page</param>
-        /// <history>
-        ///    [sleupold]   2007-09-24   documented
-        ///    [vnguyen]    2010-05-10   Modified: Added update tabmodule version guid
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void UpdateTabModuleOrder(int TabId)
         {
             IDataReader dr = dataProvider.GetTabPanes(TabId);
@@ -1862,6 +1868,50 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
+        /// Adds or updates a module's setting value
+        /// </summary>
+        /// <param name="tabModuleId">ID of the tabmodule, the setting belongs to</param>
+        /// <param name="settingName">name of the setting property</param>
+        /// <param name="settingValue">value of the setting (String).</param>
+        /// <remarks>empty SettingValue will relove the setting</remarks>
+        public void UpdateTabModuleSetting(int tabModuleId, string settingName, string settingValue)
+        {
+            IDataReader dr = null;
+            try
+            {
+                dr = dataProvider.GetTabModuleSetting(tabModuleId, settingName);
+                if (dr.Read())
+                {
+                    if (dr.GetString(1) != settingValue)
+                    {
+                        dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, UserController.GetCurrentUserInfo().UserID);
+                        EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+                                                        "TabModuleId", tabModuleId, settingName, settingValue,
+                                                        UserController.GetCurrentUserInfo().UserID);
+                    }
+                }
+                else
+                {
+                    dataProvider.AddTabModuleSetting(tabModuleId, settingName, settingValue, UserController.GetCurrentUserInfo().UserID);
+                    EventLogController.AddSettingLog(EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
+                                                    "TabModuleId", tabModuleId, settingName, settingValue,
+                                                    UserController.GetCurrentUserInfo().UserID);
+                }
+                UpdateTabModuleVersion(tabModuleId);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+            finally
+            {
+                //Ensure DataReader is closed
+                CBO.CloseDataReader(dr, true);
+            }
+            ClearTabModuleSettingsCache(tabModuleId);
+        }
+
+        /// <summary>
         /// Updates the translation status.
         /// </summary>
         /// <param name="localizedModule">The localized module.</param>
@@ -1882,132 +1932,6 @@ namespace DotNetNuke.Entities.Modules
             ClearCache(localizedModule.TabID);
         }
 
-
-
-        /// <summary>
-        /// Adds or updates a module's setting value
-        /// </summary>
-        /// <param name="moduleId">ID of the module, the setting belongs to</param>
-        /// <param name="settingName">name of the setting property</param>
-        /// <param name="settingValue">value of the setting (String).</param>
-        /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true</remarks>
-        /// <history>
-        ///    [sleupold]   2007-09-24   added removal for empty settings
-        ///    [vnguyen]    2010-05-10   Modified: Added update tab module version
-        /// </history>
-        public void UpdateModuleSetting(int moduleId, string settingName, string settingValue)
-        {
-            UpdateModuleSettingInternal(moduleId, settingName, settingValue, true);
-        }
-
-        /// <summary>
-        /// Adds or updates a module's setting value
-        /// </summary>
-        /// <param name="tabModuleId">ID of the tabmodule, the setting belongs to</param>
-        /// <param name="settingName">name of the setting property</param>
-        /// <param name="settingValue">value of the setting (String).</param>
-        /// <remarks>empty SettingValue will relove the setting</remarks>
-        /// <history>
-        ///    [sleupold]   2007-09-24   added removal for empty settings
-        ///    [vnguyen]    2010-05-10   Modified: Added update tabmodule version guid
-        /// </history>
-        public void UpdateTabModuleSetting(int tabModuleId, string settingName, string settingValue)
-        {
-            IDataReader dr = null;
-            try
-            {
-                dr = dataProvider.GetTabModuleSetting(tabModuleId, settingName);
-                if (dr.Read())
-                {
-                    if(dr.GetString(1) != settingValue)
-                    {
-                        dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, UserController.GetCurrentUserInfo().UserID);
-                        EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-                                                        "TabModuleId", tabModuleId, settingName, settingValue, 
-                                                        UserController.GetCurrentUserInfo().UserID);
-                    }
-                }
-                else
-                {
-                    dataProvider.AddTabModuleSetting(tabModuleId, settingName, settingValue, UserController.GetCurrentUserInfo().UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
-                                                    "TabModuleId", tabModuleId, settingName, settingValue, 
-                                                    UserController.GetCurrentUserInfo().UserID);
-                }
-                UpdateTabModuleVersion(tabModuleId);
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-            }
-            finally
-            {
-                //Ensure DataReader is closed
-                CBO.CloseDataReader(dr, true);
-            }
-            ClearTabModuleSettingsCache(tabModuleId);
-        }
-
-		public void InitialModulePermission(ModuleInfo module, int tabId, int permissionType)
-		{
-			var tabPermissions = TabPermissionController.GetTabPermissions(tabId, module.PortalID);
-            var permissionController = new PermissionController();
-
-            module.InheritViewPermissions = permissionType == 0;
-
-            // get the default module view permissions
-            ArrayList systemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
-
-            // get the permissions from the page
-			foreach (TabPermissionInfo tabPermission in tabPermissions)
-			{
-				if (tabPermission.PermissionKey == "VIEW" && permissionType == 0)
-				{
-					//Don't need to explicitly add View permisisons if "Same As Page"
-					continue;
-				}
-
-				// get the system module permissions for the permissionkey
-				ArrayList systemModulePermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", tabPermission.PermissionKey);
-				// loop through the system module permissions
-				int j;
-				for (j = 0; j <= systemModulePermissions.Count - 1; j++)
-				{
-					// create the module permission
-					var systemModulePermission = (PermissionInfo) systemModulePermissions[j];
-					if (systemModulePermission.PermissionKey == "VIEW" && permissionType == 1 && tabPermission.PermissionKey != "EDIT")
-					{
-						//Only Page Editors get View permissions if "Page Editors Only"
-						continue;
-					}
-
-					ModulePermissionInfo modulePermission = AddModulePermission(module, systemModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
-
-					// ensure that every EDIT permission which allows access also provides VIEW permission
-					if (modulePermission.PermissionKey == "EDIT" && modulePermission.AllowAccess)
-					{
-						AddModulePermission(module, (PermissionInfo) systemModuleViewPermissions[0], modulePermission.RoleID, modulePermission.UserID, true);
-					}
-				}
-
-				//Get the custom Module Permissions,  Assume that roles with Edit Tab Permissions
-				//are automatically assigned to the Custom Module Permissions
-				if (tabPermission.PermissionKey == "EDIT")
-				{
-					ArrayList customModulePermissions = permissionController.GetPermissionsByModuleDefID(module.ModuleDefID);
-
-					// loop through the custom module permissions
-					for (j = 0; j <= customModulePermissions.Count - 1; j++)
-					{
-						// create the module permission
-						var customModulePermission = (PermissionInfo)customModulePermissions[j];
-
-						AddModulePermission(module, customModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
-					}
-				}
-			}
-		}
-
         #endregion
 
         #region Static Methods
@@ -2021,7 +1945,6 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="tabId">The tab id.</param>
         public static void DeserializeModule(XmlNode nodeModule, ModuleInfo module, int portalId, int tabId)
         {
-            var moduleController = new ModuleController();
             var moduleDefinition = GetModuleDefinition(nodeModule);
 
             // Create dummy pane node for private DeserializeModule method
@@ -2070,7 +1993,7 @@ namespace DotNetNuke.Entities.Modules
             }
 
             // save changes
-            moduleController.UpdateModule(module);
+            Instance.UpdateModule(module);
 
             //deserialize Module's settings
             XmlNodeList nodeModuleSettings = nodeModule.SelectNodes("modulesettings/modulesetting");
@@ -2264,8 +2187,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="moduleID">The module ID.</param>
         public static void SynchronizeModule(int moduleID)
         {
-            var moduleController = new ModuleController();
-            ArrayList modules = moduleController.GetModuleTabs(moduleID);
+            var modules = Instance.GetTabModulesByModule(moduleID);
             foreach (ModuleInfo module in modules)
             {
                 Hashtable tabSettings = TabController.Instance.GetTabSettings(module.TabID);
@@ -2296,10 +2218,10 @@ namespace DotNetNuke.Entities.Modules
                 //We should also indicate that the Transalation Status has changed
                 if (PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", module.PortalID, false))
                 {
-                    moduleController.UpdateTranslationStatus(module, false);
+                    Instance.UpdateTranslationStatus(module, false);
                 }
                 // and clear the cache
-                moduleController.ClearCache(module.TabID);
+                Instance.ClearCache(module.TabID);
             }
         }
 

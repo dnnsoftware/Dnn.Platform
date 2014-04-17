@@ -343,7 +343,6 @@ namespace DesktopModules.Admin.ModuleCreator
                         ModuleControlController.AddModuleControl(objModuleControl);
 
                         //Update current module to reference new moduledefinition
-                        var objModules = new ModuleController();
                         var objModule = ModuleController.Instance.GetModule(ModuleId, TabId, false);
                         objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
                         objModule.ModuleTitle = txtModule.Text;
@@ -351,7 +350,7 @@ namespace DesktopModules.Admin.ModuleCreator
                         //HACK - need core enhancement to be able to update ModuleDefID
                         DotNetNuke.Data.DataProvider.Instance().ExecuteSQL("Update dbo.Modules set ModuleDefID = " + objModule.ModuleDefID.ToString() + " where ModuleID = " + ModuleId.ToString());
 
-                        objModules.UpdateModule(objModule);
+                        ModuleController.Instance.UpdateModule(objModule);
 
                         return true;
                     }

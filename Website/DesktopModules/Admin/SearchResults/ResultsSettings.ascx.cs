@@ -130,9 +130,7 @@ namespace DotNetNuke.Modules.SearchResults
             {
                 if (Page.IsValid)
                 {
-                    var objModules = new ModuleController();
-                    
-                    objModules.UpdateModuleSetting(ModuleId, "LinkTarget", comboBoxLinkTarget.SelectedValue);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "LinkTarget", comboBoxLinkTarget.SelectedValue);
 
                     var selectedPortals = new StringBuilder();
                     foreach (var p in comboBoxPortals.CheckedItems)
@@ -147,7 +145,7 @@ namespace DotNetNuke.Modules.SearchResults
                         }
                     }
 
-                    objModules.UpdateModuleSetting(ModuleId, "ScopeForPortals", selectedPortals.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForPortals", selectedPortals.ToString());
 
                     var selectedFilters = new StringBuilder();
                     foreach (var p in comboBoxFilters.CheckedItems)
@@ -162,9 +160,9 @@ namespace DotNetNuke.Modules.SearchResults
                         }
                     }
 
-                    objModules.UpdateModuleSetting(ModuleId, "ScopeForFilters", selectedFilters.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForFilters", selectedFilters.ToString());
 
-                    objModules.UpdateModuleSetting(ModuleId, "EnableWildSearch", chkEnableWildSearch.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "EnableWildSearch", chkEnableWildSearch.Checked.ToString());
                 }
             }
             catch (Exception exc)

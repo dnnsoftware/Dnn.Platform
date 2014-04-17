@@ -201,8 +201,7 @@ namespace DotNetNuke.Web.InternalServices
         private IList<ModuleInfo> GetModules(int tabID)
         {
             var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
-            var moduleCtrl = new ModuleController();
-            var tabModules = moduleCtrl.GetTabModules(tabID);
+            var tabModules = ModuleController.Instance.GetTabModules(tabID);
 
             var pageModules = isRemote 
                                 ? tabModules.Values.Where(m => ModuleSupportsSharing(m)).ToList() 
@@ -517,7 +516,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private string GetTabModuleImage(int tabId, int moduleId)
         {
-            var tabModules = new ModuleController().GetTabModules(tabId);
+            var tabModules = ModuleController.Instance.GetTabModules(tabId);
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
             var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
@@ -710,7 +709,6 @@ namespace DotNetNuke.Web.InternalServices
 
         private int DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
         {
-            var objModules = new ModuleController();
             try
             {
                 DesktopModuleInfo desktopModule;
@@ -750,7 +748,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-				objModules.InitialModulePermission(objModule, objModule.TabID, permissionType);
+                ModuleController.Instance.InitialModulePermission(objModule, objModule.TabID, permissionType);
 
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
@@ -773,7 +771,7 @@ namespace DotNetNuke.Web.InternalServices
 					tabModuleId = objModule.ModuleID;
 				}
 				//update the position to let later modules with add after previous one.
-	            position = objModules.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
+                position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
             }
 
 			return tabModuleId;

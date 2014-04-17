@@ -42,9 +42,8 @@ namespace _OWNER_._MODULE_
 		
 		protected void cmdSave_Click(object sender, EventArgs e)
 		{
-                    ModuleController controller = new ModuleController();
-                    controller.UpdateModuleSetting(ModuleId, "field", txtField.Text);
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, "Update Successful", DotNetNuke.UI.Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess);
+            ModuleController.Instance.UpdateModuleSetting(ModuleId, "field", txtField.Text);
+            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, "Update Successful", DotNetNuke.UI.Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess);
 		}
 
 

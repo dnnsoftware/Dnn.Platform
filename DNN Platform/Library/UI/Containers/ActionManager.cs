@@ -128,7 +128,6 @@ namespace DotNetNuke.UI.Containers
 
         private void Delete(ModuleAction Command)
         {
-            var moduleController = new ModuleController();
             var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), ModuleContext.TabId, true);
 
             //Check if this is the owner instance of a shared module.
@@ -136,7 +135,7 @@ namespace DotNetNuke.UI.Containers
             var eventLogController = new EventLogController();
             if (!module.IsShared)
             {
-                foreach(ModuleInfo instance in moduleController.GetModuleTabs(module.ModuleID))
+                foreach (ModuleInfo instance in ModuleController.Instance.GetTabModulesByModule(module.ModuleID))
                 {
                     if(instance.IsShared)
                     {
@@ -168,13 +167,12 @@ namespace DotNetNuke.UI.Containers
 
         private void Localize(ModuleAction Command)
         {
-            var moduleCtrl = new ModuleController();
             ModuleInfo sourceModule = ModuleController.Instance.GetModule(ModuleContext.ModuleId, ModuleContext.TabId, false);
 
             switch (Command.CommandName)
             {
                 case ModuleActionType.LocalizeModule:
-                    moduleCtrl.LocalizeModule(sourceModule, LocaleController.Instance.GetCurrentLocale(ModuleContext.PortalId));
+                    ModuleController.Instance.LocalizeModule(sourceModule, LocaleController.Instance.GetCurrentLocale(ModuleContext.PortalId));
                     break;
                 case ModuleActionType.DeLocalizeModule:
                     ModuleController.Instance.DeLocalizeModule(sourceModule);
@@ -187,15 +185,14 @@ namespace DotNetNuke.UI.Containers
 
         private void Translate(ModuleAction Command)
         {
-            var moduleCtrl = new ModuleController();
             ModuleInfo sourceModule = ModuleController.Instance.GetModule(ModuleContext.ModuleId, ModuleContext.TabId, false);
             switch (Command.CommandName)
             {
                 case ModuleActionType.TranslateModule:
-                    moduleCtrl.UpdateTranslationStatus(sourceModule, true);
+                    ModuleController.Instance.UpdateTranslationStatus(sourceModule, true);
                     break;
                 case ModuleActionType.UnTranslateModule:
-                    moduleCtrl.UpdateTranslationStatus(sourceModule, false);
+                    ModuleController.Instance.UpdateTranslationStatus(sourceModule, false);
                     break;
             }
 
@@ -205,10 +202,8 @@ namespace DotNetNuke.UI.Containers
 
         private void MoveToPane(ModuleAction Command)
         {
-            var objModules = new ModuleController();
-
-            objModules.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, -1, Command.CommandArgument);
-            objModules.UpdateTabModuleOrder(ModuleContext.TabId);
+            ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, -1, Command.CommandArgument);
+            ModuleController.Instance.UpdateTabModuleOrder(ModuleContext.TabId);
 
             //Redirect to the same page to pick up changes
             Response.Redirect(Request.RawUrl, true);
@@ -216,23 +211,22 @@ namespace DotNetNuke.UI.Containers
 
         private void MoveUpDown(ModuleAction Command)
         {
-            var objModules = new ModuleController();
             switch (Command.CommandName)
             {
                 case ModuleActionType.MoveTop:
-                    objModules.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, 0, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, 0, Command.CommandArgument);
                     break;
                 case ModuleActionType.MoveUp:
-                    objModules.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, ModuleContext.Configuration.ModuleOrder - 3, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, ModuleContext.Configuration.ModuleOrder - 3, Command.CommandArgument);
                     break;
                 case ModuleActionType.MoveDown:
-                    objModules.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, ModuleContext.Configuration.ModuleOrder + 3, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, ModuleContext.Configuration.ModuleOrder + 3, Command.CommandArgument);
                     break;
                 case ModuleActionType.MoveBottom:
-                    objModules.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, (ModuleContext.Configuration.PaneModuleCount*2) + 1, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, (ModuleContext.Configuration.PaneModuleCount * 2) + 1, Command.CommandArgument);
                     break;
             }
-            objModules.UpdateTabModuleOrder(ModuleContext.TabId);
+            ModuleController.Instance.UpdateTabModuleOrder(ModuleContext.TabId);
 
             //Redirect to the same page to pick up changes
             Response.Redirect(Request.RawUrl, true);

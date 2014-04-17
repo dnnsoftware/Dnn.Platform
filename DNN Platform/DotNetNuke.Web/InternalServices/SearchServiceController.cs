@@ -81,8 +81,6 @@ namespace DotNetNuke.Web.InternalServices
 
         #region private methods
 
-        private readonly ModuleController _moduleController = new ModuleController();
-        
         private int HtmlModuleDefitionId;
 
         private bool IsWildCardEnabledForModule()

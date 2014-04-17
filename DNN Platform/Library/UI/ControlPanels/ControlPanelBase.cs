@@ -290,7 +290,6 @@ namespace DotNetNuke.UI.ControlPanels
         {
             TabPermissionCollection objTabPermissions = PortalSettings.ActiveTab.TabPermissions;
             var objPermissionController = new PermissionController();
-            var objModules = new ModuleController();
             try
             {
                 DesktopModuleInfo desktopModule;

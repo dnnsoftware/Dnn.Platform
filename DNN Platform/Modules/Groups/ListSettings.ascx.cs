@@ -131,18 +131,17 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, drpRoleGroup.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, drpGroupViewPage.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListTemplate, txtListTemplate.Text);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewTemplate, txtViewTemplate.Text);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupModerationEnabled, chkGroupModeration.Checked.ToString());
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, drpViewMode.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListPageSize, txtPageSize.Text);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSearchEnabled, chkEnableSearch.Checked.ToString());
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortField, lstSortField.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortDirection, radSortDirection.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListUserGroupsOnly, chkUserGroups.Checked.ToString());
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, drpRoleGroup.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, drpGroupViewPage.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListTemplate, txtListTemplate.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewTemplate, txtViewTemplate.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupModerationEnabled, chkGroupModeration.Checked.ToString());
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, drpViewMode.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListPageSize, txtPageSize.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSearchEnabled, chkEnableSearch.Checked.ToString());
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortField, lstSortField.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortDirection, radSortDirection.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListUserGroupsOnly, chkUserGroups.Checked.ToString());
             }
             catch (Exception exc) //Module failed to load
             {

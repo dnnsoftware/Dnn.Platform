@@ -664,10 +664,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private List<ModuleInfo> LoadTabModules(int TabID)
         {
-            var moduleCtl = new ModuleController();
             var moduleList = new List<ModuleInfo>();
 
-            foreach (var m in moduleCtl.GetTabModules(TabID).Values)
+            foreach (var m in ModuleController.Instance.GetTabModules(TabID).Values)
             {
                 if (TabPermissionController.CanAddContentToPage() && !m.IsDeleted && !m.AllTabs)
                 {
@@ -936,7 +935,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                 if (copyTabId != Null.NullInteger)
                 {
-                    var objModules = new ModuleController();
                     ModuleInfo objModule;
                     CheckBox chkModule;
                     RadioButton optCopy;
@@ -968,10 +966,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                                 if (!optReference.Checked)
                                 {
                                     newModule.ModuleID = Null.NullInteger;
-                                    objModules.InitialModulePermission(newModule, newModule.TabID, 0);
+                                    ModuleController.Instance.InitialModulePermission(newModule, newModule.TabID, 0);
                                 }
 
-                                newModule.ModuleID = objModules.AddModule(newModule);
+                                newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
                                 if (optCopy.Checked)
                                 {
@@ -1001,7 +999,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                                     newLocalizedModule.CultureCode = localizedTab.CultureCode;
                                     newLocalizedModule.ModuleTitle = txtCopyTitle.Text;
                                     newLocalizedModule.DefaultLanguageGuid = newModule.UniqueId;
-                                    newLocalizedModule.ModuleID = objModules.AddModule(newLocalizedModule);
+                                    newLocalizedModule.ModuleID = ModuleController.Instance.AddModule(newLocalizedModule);
                                 }
                             }
                         }

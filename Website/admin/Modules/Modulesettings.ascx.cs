@@ -73,24 +73,10 @@ namespace DotNetNuke.Modules.Admin.Modules
         private int _moduleId = -1;
         private Control _control;
         private ModuleInfo _module;
-        private ModuleController _moduleCtrl;
-        private TabController _tabCtrl;
 
         private ModuleInfo Module
         {
             get { return _module ?? (_module = ModuleController.Instance.GetModule(_moduleId, TabId, false)); }
-        }
-
-        private ModuleController ModuleCtrl
-        {
-            get
-            {
-                if ((_moduleCtrl == null))
-                {
-                    _moduleCtrl = new ModuleController();
-                }
-                return _moduleCtrl;
-            }
         }
 
         private ISettingsControl SettingsControl
@@ -336,8 +322,6 @@ namespace DotNetNuke.Modules.Admin.Modules
 
             jQuery.RequestDnnPluginsRegistration();
 
-            var moduleController = new ModuleController();
-
             //get ModuleId
             if ((Request.QueryString["ModuleId"] != null))
             {
@@ -348,7 +332,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 //This tab does not have a valid ContentItem
                 ModuleController.Instance.CreateContentItem(Module);
 
-                moduleController.UpdateModule(Module);
+                ModuleController.Instance.UpdateModule(Module);
             }
 
             //Verify that the current user has access to edit this module
@@ -539,7 +523,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 if (Page.IsValid)
                 {
-                    var moduleController = new ModuleController();
                     var allTabsChanged = false;
                     //TODO: REMOVE IF UNUSED
                     //var allowIndexChanged = false;
@@ -570,15 +553,15 @@ namespace DotNetNuke.Modules.Admin.Modules
                         allTabsChanged = true;
                     }
                     Module.AllTabs = chkAllTabs.Checked;
-                    moduleController.UpdateTabModuleSetting(Module.TabModuleID, "hideadminborder", chkAdminBorder.Checked.ToString());
+                    ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "hideadminborder", chkAdminBorder.Checked.ToString());
 
                     //check whether allow index value is changed
                     var allowIndex = Settings.ContainsKey("AllowIndex") && Convert.ToBoolean(Settings["AllowIndex"]);
                     if (allowIndex != chkAllowIndex.Checked)
                     {
-                        moduleController.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked ? "True" : "False");
+                        ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked ? "True" : "False");
                     }
-                    moduleController.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked.ToString());
+                    ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked.ToString());
 
 
                     switch (Int32.Parse(cboVisibility.SelectedItem.Value))
@@ -634,7 +617,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
                     Module.IsDefaultModule = chkDefault.Checked;
                     Module.AllModules = chkAllModules.Checked;
-                    moduleController.UpdateModule(Module);
+                    ModuleController.Instance.UpdateModule(Module);
 
                     //Update Custom Settings
                     if (SettingsControl != null)
@@ -670,7 +653,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                             if (tmpModule == null)
                             {
                                 //Move module
-                                moduleController.MoveModule(_moduleId, TabId, newTabId, Globals.glbDefaultPane);
+                                ModuleController.Instance.MoveModule(_moduleId, TabId, newTabId, Globals.glbDefaultPane);
                             }
                             else
                             {
@@ -696,7 +679,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                     {
                                         if (module.IsDeleted)
                                         {
-                                            moduleController.RestoreModule(module);
+                                            ModuleController.Instance.RestoreModule(module);
                                         }
                                     }
                                     else

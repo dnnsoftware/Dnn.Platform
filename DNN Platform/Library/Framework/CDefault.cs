@@ -116,8 +116,7 @@ namespace DotNetNuke.Framework
             {
                 string result ;
                 var tab = TabController.Instance.GetTabByName("Advanced Settings", PortalSettings.PortalId);
-                var modulecontroller = new ModuleController();
-                var modules = modulecontroller.GetTabModules(tab.TabID).Values;
+                var modules = ModuleController.Instance.GetTabModules(tab.TabID).Values;
 
                 if (modules.Count > 0)
                 {

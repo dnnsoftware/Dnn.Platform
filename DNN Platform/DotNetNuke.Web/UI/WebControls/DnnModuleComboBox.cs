@@ -105,8 +105,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private static Dictionary<int, string> GetTabModules(int tabID)
         {
-            var moduleCtrl = new ModuleController();
-            var tabModules = moduleCtrl.GetTabModules(tabID);
+            var tabModules = ModuleController.Instance.GetTabModules(tabID);
 
             // Is this tab from another site?
             var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
@@ -147,7 +146,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void BindTabModuleImages(int tabID)
         {
-            var tabModules = new ModuleController().GetTabModules(tabID);
+            var tabModules = ModuleController.Instance.GetTabModules(tabID);
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
             var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);

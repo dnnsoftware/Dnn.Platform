@@ -25,18 +25,17 @@ namespace DotNetNuke.Web.DDRMenu
 
 		public override void UpdateSettings()
 		{
-			var controller = new ModuleController();
 
-			controller.UpdateModuleSetting(ModuleId, "MenuStyle", (MenuStyle.Value ?? "").ToString());
-			controller.UpdateModuleSetting(ModuleId, "NodeXmlPath", (NodeXmlPath.Value ?? "").ToString());
-			controller.UpdateModuleSetting(ModuleId, "NodeSelector", (NodeSelector.Value ?? "").ToString());
-			controller.UpdateModuleSetting(ModuleId, "IncludeNodes", (IncludeNodes.Value ?? "").ToString());
-			controller.UpdateModuleSetting(ModuleId, "ExcludeNodes", (ExcludeNodes.Value ?? "").ToString());
-			controller.UpdateModuleSetting(ModuleId, "NodeManipulator", (NodeManipulator.Value ?? "").ToString());
-			controller.UpdateModuleSetting(ModuleId, "IncludeContext", (IncludeContext.Value ?? "false").ToString());
-			controller.UpdateModuleSetting(ModuleId, "IncludeHidden", (IncludeHidden.Value ?? "false").ToString());
-			controller.UpdateModuleSetting(ModuleId, "TemplateArguments", (TemplateArguments.Value ?? "").ToString());
-			controller.UpdateModuleSetting(ModuleId, "ClientOptions", (ClientOptions.Value ?? "").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "MenuStyle", (MenuStyle.Value ?? "").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "NodeXmlPath", (NodeXmlPath.Value ?? "").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "NodeSelector", (NodeSelector.Value ?? "").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeNodes", (IncludeNodes.Value ?? "").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "ExcludeNodes", (ExcludeNodes.Value ?? "").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "NodeManipulator", (NodeManipulator.Value ?? "").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeContext", (IncludeContext.Value ?? "false").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeHidden", (IncludeHidden.Value ?? "false").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "TemplateArguments", (TemplateArguments.Value ?? "").ToString());
+			ModuleController.Instance.UpdateModuleSetting(ModuleId, "ClientOptions", (ClientOptions.Value ?? "").ToString());
 		}
 
 		protected override void OnPreRender(EventArgs e)

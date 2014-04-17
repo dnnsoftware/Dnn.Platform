@@ -126,10 +126,9 @@ namespace DesktopModules.Admin.RecycleBin
 	    private void DeleteTab(TabInfo tab, bool deleteDescendants)
 		{
 			var eventLogController = new EventLogController();
-			var moduleController = new ModuleController();
 
 			//get tab modules before deleting page
-			var tabModules = moduleController.GetTabModules(tab.TabID);
+            var tabModules = ModuleController.Instance.GetTabModules(tab.TabID);
 
 			//hard delete the tab
 			TabController.Instance.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
@@ -149,7 +148,6 @@ namespace DesktopModules.Admin.RecycleBin
 
         private void LoadData()
         {
-            var moduleController = new ModuleController();
             var currentLocale = LocaleController.Instance.GetCurrentLocale(PortalId);
 
             TabCollection tabsList = modeButtonList.SelectedValue == "ALL"
@@ -160,7 +158,7 @@ namespace DesktopModules.Admin.RecycleBin
                                             .OrderBy(tab => tab.TabPath)
                                             .ToList();
 
-            DeletedModules = moduleController.GetModules(PortalId)
+            DeletedModules = ModuleController.Instance.GetModules(PortalId)
                                                 .Cast<ModuleInfo>()
                                                 .Where(module => module.IsDeleted && (modeButtonList.SelectedValue == "ALL" || module.CultureCode == currentLocale.Code))
                                                 .ToList();
@@ -169,7 +167,6 @@ namespace DesktopModules.Admin.RecycleBin
         private void RestoreModule(int moduleId, int tabId)
         {
             var eventLogController = new EventLogController();
-            var moduleController = new ModuleController();
 
             // restore module
             var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
@@ -182,7 +179,7 @@ namespace DesktopModules.Admin.RecycleBin
                                                    ModuleMessage.ModuleMessageType.RedError);
                     return;
                 }
-                moduleController.RestoreModule(module);
+                ModuleController.Instance.RestoreModule(module);
                 eventLogController.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_RESTORED);
             }
         }

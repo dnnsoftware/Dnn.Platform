@@ -95,7 +95,6 @@ namespace DotNetNuke.Entities.Tabs
 
         private static void AddAllTabsModules(TabInfo tab)
         {
-            var objmodules = new ModuleController();
             var portalSettings = new PortalSettings(tab.TabID, tab.PortalID);
             foreach (ModuleInfo allTabsModule in ModuleController.Instance.GetAllTabsModules(tab.PortalID, true))
             {
@@ -103,7 +102,7 @@ namespace DotNetNuke.Entities.Tabs
                 //that are all "deleted" then even if the Module itself is not deleted, we would not expect the 
                 //Module to be added
                 var canAdd =
-                (from ModuleInfo allTabsInstance in objmodules.GetModuleTabs(allTabsModule.ModuleID) select Instance.GetTab(allTabsInstance.TabID, tab.PortalID, false)).Any(
+                (from ModuleInfo allTabsInstance in ModuleController.Instance.GetTabModulesByModule(allTabsModule.ModuleID) select Instance.GetTab(allTabsInstance.TabID, tab.PortalID, false)).Any(
                     t => !t.IsDeleted) && (!portalSettings.ContentLocalizationEnabled || allTabsModule.CultureCode == tab.CultureCode);
                 if (canAdd)
                 {
@@ -552,8 +551,7 @@ namespace DotNetNuke.Entities.Tabs
         private void HardDeleteTabInternal(int tabId)
         {
             //Delete all tabModule Instances
-            var moduleController = new ModuleController();
-            foreach (ModuleInfo m in moduleController.GetTabModules(tabId).Values)
+            foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(tabId).Values)
             {
                 ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, false);
             }
@@ -594,8 +592,7 @@ namespace DotNetNuke.Entities.Tabs
                     tabToDelete.IsDeleted = true;
                     UpdateTab(tabToDelete);
 
-                    var moduleCtrl = new ModuleController();
-                    foreach (ModuleInfo m in moduleCtrl.GetTabModules(tabToDelete.TabID).Values)
+                    foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(tabToDelete.TabID).Values)
                     {
                         ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, true);
                     }
@@ -891,13 +888,12 @@ namespace DotNetNuke.Entities.Tabs
                 AddTabInternal(localizedCopy, -1, -1, true);
 
                 //Make shallow copies of all modules
-                var moduleCtrl = new ModuleController();
                 ModuleController.Instance.CopyModules(originalTab, localizedCopy, true);
 
                 //Convert these shallow copies to deep copies
-                foreach (KeyValuePair<int, ModuleInfo> kvp in moduleCtrl.GetTabModules(localizedCopy.TabID))
+                foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(localizedCopy.TabID))
                 {
-                    moduleCtrl.LocalizeModule(kvp.Value, locale);
+                    ModuleController.Instance.LocalizeModule(kvp.Value, locale);
                 }
 
                 //Add Translator Role
@@ -2016,9 +2012,7 @@ namespace DotNetNuke.Entities.Tabs
         public static void DeserializePanes(XmlNode nodePanes, int portalId, int tabId,
                                             PortalTemplateModuleAction mergeTabs, Hashtable hModules)
         {
-            var moduleController = new ModuleController();
-
-            Dictionary<int, ModuleInfo> dicModules = moduleController.GetTabModules(tabId);
+            Dictionary<int, ModuleInfo> dicModules = ModuleController.Instance.GetTabModules(tabId);
 
             //If Mode is Replace remove all the modules already on this Tab
             if (mergeTabs == PortalTemplateModuleAction.Replace)
@@ -2633,11 +2627,10 @@ namespace DotNetNuke.Entities.Tabs
             XmlNode moduleNode;
             XmlDocument moduleXml;
             ModuleInfo module;
-            var moduleController = new ModuleController();
 
             //Serialize modules
             panesNode = tabNode.AppendChild(tabXml.CreateElement("panes"));
-            foreach (KeyValuePair<int, ModuleInfo> kvp in moduleController.GetTabModules(tab.TabID))
+            foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(tab.TabID))
             {
                 module = kvp.Value;
                 if (!module.IsDeleted)

@@ -432,7 +432,6 @@ namespace DotNetNuke.UI.ControlPanel
 
         private void DoAddExistingModule(int moduleId, int tabId, string paneName, int position, string align, bool cloneModule)
         {
-            var moduleCtrl = new ModuleController();
             ModuleInfo moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
 
             int userID = -1;
@@ -479,7 +478,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     newModule.ModuleID = Null.NullInteger;
                     //reset the module id
-                    newModule.ModuleID = moduleCtrl.AddModule(newModule);
+                    newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                     {
@@ -496,7 +495,7 @@ namespace DotNetNuke.UI.ControlPanel
                 }
                 else
                 {
-                    moduleCtrl.AddModule(newModule);
+                    ModuleController.Instance.AddModule(newModule);
                 }
 
                 if (remote)
@@ -524,8 +523,6 @@ namespace DotNetNuke.UI.ControlPanel
 
         private static void DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
         {
-            var objModules = new ModuleController();
-
             try
             {
                 DesktopModuleInfo desktopModule;
@@ -564,7 +561,7 @@ namespace DotNetNuke.UI.ControlPanel
                     }
                 }
 
-                objModules.InitialModulePermission(objModule, objModule.TabID, permissionType);
+                ModuleController.Instance.InitialModulePermission(objModule, objModule.TabID, permissionType);
 
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
@@ -587,7 +584,7 @@ namespace DotNetNuke.UI.ControlPanel
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
-                objModules.AddModule(objModule);
+                ModuleController.Instance.AddModule(objModule);
             }
         }
 
@@ -674,7 +671,6 @@ namespace DotNetNuke.UI.ControlPanel
                 //Get list of modules for the selected tab
                 if (!string.IsNullOrEmpty(PageLst.SelectedValue))
                 {
-                    var moduleCtrl = new ModuleController();
                     var tabId = int.Parse(PageLst.SelectedValue);
                     if (tabId >= 0)
                     {
@@ -690,7 +686,7 @@ namespace DotNetNuke.UI.ControlPanel
             else
             {
                 ModuleLst.Filter = CategoryList.SelectedValue == "All"
-                                        ? (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => true)
+                                        ? (kvp => true)
                                          : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == CategoryList.SelectedValue);
                 ModuleLst.BindAllPortalDesktopModules();
             }

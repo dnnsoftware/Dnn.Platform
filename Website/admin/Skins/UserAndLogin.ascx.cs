@@ -202,8 +202,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private int FindMessageTab()
         {
-            var moduleController = new ModuleController();
-
             //On brand new install the new Message Center Module is on the child page of User Profile Page 
             //On Upgrade to 6.2.0, the Message Center module is on the User Profile Page
             var profileTab = TabController.Instance.GetTab(PortalSettings.UserTabId, PortalSettings.PortalId, false);
@@ -212,7 +210,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
                 foreach (TabInfo tab in childTabs)
                 {
-                    foreach (KeyValuePair<int, ModuleInfo> kvp in moduleController.GetTabModules(tab.TabID))
+                    foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(tab.TabID))
                     {
                         var module = kvp.Value;
                         if (module.DesktopModule.FriendlyName == "Message Center" && !module.IsDeleted)
