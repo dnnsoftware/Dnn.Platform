@@ -308,25 +308,24 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (Globals.Status == Globals.UpgradeStatus.None)
                 {
-                    var objEventLogInfo = new LogInfo();
+                    var log = new LogInfo();
                     switch (removedReason)
                     {
                         case CacheItemRemovedReason.Removed:
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.CACHE_REMOVED.ToString();
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_REMOVED.ToString();
                             break;
                         case CacheItemRemovedReason.Expired:
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.CACHE_EXPIRED.ToString();
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_EXPIRED.ToString();
                             break;
                         case CacheItemRemovedReason.Underused:
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.CACHE_UNDERUSED.ToString();
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_UNDERUSED.ToString();
                             break;
                         case CacheItemRemovedReason.DependencyChanged:
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
                             break;
                     }
-                    objEventLogInfo.LogProperties.Add(new LogDetailInfo(key, removedReason.ToString()));
-                    var objEventLog = new EventLogController();
-                    objEventLog.AddLog(objEventLogInfo);
+                    log.LogProperties.Add(new LogDetailInfo(key, removedReason.ToString()));
+                    LogController.Instance.AddLog(log);
                 }
             }
             catch (Exception exc)
@@ -345,10 +344,9 @@ namespace DotNetNuke.Common.Utilities
             }
 
             //log the cache clear event
-            var objEventLogInfo = new LogInfo {LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString()};
-            objEventLogInfo.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(objEventLogInfo);
+            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString()};
+            log.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
+            LogController.Instance.AddLog(log);
         }
 
         public static void ClearCache(string cachePrefix)
@@ -498,13 +496,9 @@ namespace DotNetNuke.Common.Utilities
                             if (GetCache(cacheItemArgs.CacheKey) == null)
                             {
                                 // log the event if the item was not saved in the cache ( likely because we are out of memory )
-                                var objEventLogInfo = new LogInfo
-                                    {
-                                        LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString()
-                                    };
-                                objEventLogInfo.LogProperties.Add(new LogDetailInfo(cacheItemArgs.CacheKey, "Overflow - Item Not Cached"));
-                                var objEventLog = new EventLogController();
-                                objEventLog.AddLog(objEventLogInfo);
+                                var log = new LogInfo{ LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString() };
+                                log.LogProperties.Add(new LogDetailInfo(cacheItemArgs.CacheKey, "Overflow - Item Not Cached"));
+                                LogController.Instance.AddLog(log);
                             }
                         }
 

@@ -605,10 +605,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void RestartApplication()
         {
-            var objEv = new EventLogController();
-            var objEventLogInfo = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-            objEventLogInfo.AddProperty("Message", GetString("UserRestart"));
-            objEv.AddLog(objEventLogInfo);
+            var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+            log.AddProperty("Message", GetString("UserRestart"));
+            LogController.Instance.AddLog(log);
             Config.Touch();
         }
 

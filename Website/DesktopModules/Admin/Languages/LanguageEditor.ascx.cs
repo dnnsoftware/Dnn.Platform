@@ -798,12 +798,10 @@ namespace DotNetNuke.Modules.Admin.Languages
                 if (changedResources.Count > 0)
                 {
                     string values = string.Join("; ", changedResources.Select(x => x.Key + "=" + x.Value).ToArray());
-                    var eventLogController = new EventLogController();
-                    var logInfo = new LogInfo();
-                    logInfo.LogProperties.Add(new LogDetailInfo(Localization.GetString("ResourceUpdated", LocalResourceFile), ResourceFile(Locale, rbMode.SelectedValue)));
-                    logInfo.LogProperties.Add(new LogDetailInfo("Updated Values", values));
-                    logInfo.LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString();
-                    eventLogController.AddLog(logInfo);
+                    var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()};
+                    log.LogProperties.Add(new LogDetailInfo(Localization.GetString("ResourceUpdated", LocalResourceFile), ResourceFile(Locale, rbMode.SelectedValue)));
+                    log.LogProperties.Add(new LogDetailInfo("Updated Values", values));
+                    LogController.Instance.AddLog(log);
                 }
                 UI.Skins.Skin.AddModuleMessage(this,
                                 string.Format(Localization.GetString("Updated", LocalResourceFile), ResourceFile(Locale, rbMode.SelectedValue)),

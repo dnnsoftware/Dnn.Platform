@@ -453,25 +453,25 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             var portalSecurity = new PortalSecurity();
 
-            var objEventLog = new EventLogController();
-            var objEventLogInfo = new LogInfo();
+            var log = new LogInfo
+            {
+                LogPortalID = PortalSettings.PortalId,
+                LogPortalName = PortalSettings.PortalName,
+                LogUserID = UserId,
+                LogUserName = portalSecurity.InputFilter(User.Username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup)
+            };
 
-            objEventLogInfo.LogPortalID = PortalSettings.PortalId;
-            objEventLogInfo.LogPortalName = PortalSettings.PortalName;
-            objEventLogInfo.LogUserID = UserId;
-            objEventLogInfo.LogUserName = portalSecurity.InputFilter(User.Username,
-                                                                     PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             if (string.IsNullOrEmpty(message))
             {
-                objEventLogInfo.LogTypeKey = "PASSWORD_SENT_SUCCESS";
+                log.LogTypeKey = "PASSWORD_SENT_SUCCESS";
             }
             else
             {
-                objEventLogInfo.LogTypeKey = "PASSWORD_SENT_FAILURE";
-                objEventLogInfo.LogProperties.Add(new LogDetailInfo("Cause", message));
+                log.LogTypeKey = "PASSWORD_SENT_FAILURE";
+                log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
 
-            objEventLog.AddLog(objEventLogInfo);
+            LogController.Instance.AddLog(log);
         }
 
         private void cmdUpdate_Click(Object sender, EventArgs e)

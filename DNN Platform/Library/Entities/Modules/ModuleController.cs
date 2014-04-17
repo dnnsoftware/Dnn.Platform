@@ -769,7 +769,6 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>ID of the created module</returns>
         public int AddModule(ModuleInfo module)
         {
-            var eventLogController = new EventLogController();
             //add module
             AddModuleInternal(module);
 
@@ -823,14 +822,16 @@ namespace DotNetNuke.Entities.Modules
                                           module.CultureCode,
                                           UserController.GetCurrentUserInfo().UserID);
 
-                var eventLogInfo = new LogInfo();
-                eventLogInfo.LogProperties.Add(new LogDetailInfo("TabPath", module.ParentTab.TabPath));
-                eventLogInfo.LogProperties.Add(new LogDetailInfo("Module Type", module.ModuleDefinition.FriendlyName));
-                eventLogInfo.LogProperties.Add(new LogDetailInfo("TabId", module.TabID.ToString()));
-                eventLogInfo.LogProperties.Add(new LogDetailInfo("ModuleID", module.ModuleID.ToString()));
-                eventLogInfo.LogTypeKey = EventLogController.EventLogType.TABMODULE_CREATED.ToString();
-                eventLogInfo.LogPortalID = module.PortalID;
-                eventLogController.AddLog(eventLogInfo);
+                var log = new LogInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.TABMODULE_CREATED.ToString(),
+                    LogPortalID = module.PortalID
+                };
+                log.LogProperties.Add(new LogDetailInfo("TabPath", module.ParentTab.TabPath));
+                log.LogProperties.Add(new LogDetailInfo("Module Type", module.ModuleDefinition.FriendlyName));
+                log.LogProperties.Add(new LogDetailInfo("TabId", module.TabID.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("ModuleID", module.ModuleID.ToString()));
+                LogController.Instance.AddLog(log);
                 if (module.ModuleOrder == -1)
                 {
                     //position module at bottom of pane
@@ -1103,12 +1104,10 @@ namespace DotNetNuke.Entities.Modules
         public void DeleteModuleSetting(int moduleId, string settingName)
         {
             dataProvider.DeleteModuleSetting(moduleId, settingName);
-            var eventLogController = new EventLogController();
-            var logInfo = new LogInfo();
-            logInfo.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString()));
-            logInfo.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
-            logInfo.LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString();
-            eventLogController.AddLog(logInfo);
+            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString()};
+            log.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
+            LogController.Instance.AddLog(log);
             UpdateTabModuleVersionsByModuleID(moduleId);
             ClearModuleSettingsCache(moduleId);
         }
@@ -1129,12 +1128,10 @@ namespace DotNetNuke.Entities.Modules
             {
                 //delete the module instance for the tab
                 dataProvider.DeleteTabModule(tabId, moduleId, softDelete);
-                var eventLog = new EventLogController();
-                var logInfo = new LogInfo();
-                logInfo.LogProperties.Add(new LogDetailInfo("tabId", tabId.ToString()));
-                logInfo.LogProperties.Add(new LogDetailInfo("moduleId", moduleId.ToString()));
-                logInfo.LogTypeKey = EventLogController.EventLogType.TABMODULE_DELETED.ToString();
-                eventLog.AddLog(logInfo);
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.TABMODULE_DELETED.ToString()};
+                log.LogProperties.Add(new LogDetailInfo("tabId", tabId.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("moduleId", moduleId.ToString()));
+                LogController.Instance.AddLog(log);
 
                 //reorder all modules on tab
                 UpdateTabModuleOrder(tabId);
@@ -1158,12 +1155,13 @@ namespace DotNetNuke.Entities.Modules
         {
             dataProvider.DeleteTabModuleSetting(tabModuleId, settingName);
             UpdateTabModuleVersion(tabModuleId);
-            var eventLogController = new EventLogController();
-            var logInfo = new LogInfo();
-            logInfo.LogProperties.Add(new LogDetailInfo("TabModuleId", tabModuleId.ToString()));
-            logInfo.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
-            logInfo.LogTypeKey = EventLogController.EventLogType.TABMODULE_SETTING_DELETED.ToString();
-            eventLogController.AddLog(logInfo);
+            var log = new LogInfo
+            {
+                LogTypeKey = EventLogController.EventLogType.TABMODULE_SETTING_DELETED.ToString()
+            };
+            log.LogProperties.Add(new LogDetailInfo("TabModuleId", tabModuleId.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
+            LogController.Instance.AddLog(log);
             ClearTabModuleSettingsCache(tabModuleId);
         }
 

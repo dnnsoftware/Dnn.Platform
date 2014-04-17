@@ -146,13 +146,13 @@ namespace DotNetNuke.Entities.Host
             }
 
             //log the server info
-            var eventLogInfo = new LogInfo();
-            eventLogInfo.AddProperty(serverExists ? "Server Updated" : "Add New Server", server.ServerName);
-            eventLogInfo.AddProperty("IISAppName", server.IISAppName);
-            eventLogInfo.AddProperty("Last Activity Date", server.LastActivityDate.ToString());
-            eventLogInfo.LogTypeKey = serverExists ? EventLogController.EventLogType.WEBSERVER_UPDATED.ToString() 
+            var log = new LogInfo();
+            log.AddProperty(serverExists ? "Server Updated" : "Add New Server", server.ServerName);
+            log.AddProperty("IISAppName", server.IISAppName);
+            log.AddProperty("Last Activity Date", server.LastActivityDate.ToString());
+            log.LogTypeKey = serverExists ? EventLogController.EventLogType.WEBSERVER_UPDATED.ToString() 
                                         : EventLogController.EventLogType.WEBSERVER_CREATED.ToString();
-            new EventLogController().AddLog(eventLogInfo);
+            LogController.Instance.AddLog(log);
 
             ClearCachedServers();
         }

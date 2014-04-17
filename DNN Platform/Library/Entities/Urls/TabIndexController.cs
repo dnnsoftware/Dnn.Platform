@@ -888,16 +888,15 @@ namespace DotNetNuke.Entities.Urls
                         const string msg2 = "PLEASE NOTE : this is an information message only, this message does not affect site operations in any way.";
 
                         //771 : change to admin alert instead of exception
-                        var elc = new EventLogController();
                         //log a host alert
-                        var logValue = new LogInfo { LogTypeKey = "HOST_ALERT" };
-                        logValue.AddProperty("Advanced Friendly URL Provider Duplicate URL Warning", "Page Naming Conflict");
-                        logValue.AddProperty("Duplicate Page Details", msg);
-                        logValue.AddProperty("Warning Information", msg2);
-                        logValue.AddProperty("Suggested Action", "Rename one or both of the pages to ensure a unique URL");
-                        logValue.AddProperty("Hide this message", "To stop this message from appearing in the log, uncheck the option for 'Produce an Exception in the Site Log if two pages have the same name/path?' in the Advanced Url Rewriting settings.");
-                        logValue.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-                        elc.AddLog(logValue);
+                        var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
+                        log.AddProperty("Advanced Friendly URL Provider Duplicate URL Warning", "Page Naming Conflict");
+                        log.AddProperty("Duplicate Page Details", msg);
+                        log.AddProperty("Warning Information", msg2);
+                        log.AddProperty("Suggested Action", "Rename one or both of the pages to ensure a unique URL");
+                        log.AddProperty("Hide this message", "To stop this message from appearing in the log, uncheck the option for 'Produce an Exception in the Site Log if two pages have the same name/path?' in the Advanced Url Rewriting settings.");
+                        log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 else
@@ -1668,8 +1667,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             //add log entry for cache clearance
-            var elc = new EventLogController();
-            var logValue = new LogInfo { LogTypeKey = "HOST_ALERT" };
+            var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
             try
             {
                 //817 : not clearing items correctly from dictionary
@@ -1681,9 +1679,9 @@ namespace DotNetNuke.Entities.Urls
                 Services.Exceptions.Exceptions.LogException(ex);
             }
 
-            logValue.AddProperty("Url Rewriting Caching Message", "Page Index Cache Cleared.  Reason: " + reason);
-            logValue.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-            elc.AddLog(logValue);
+            log.AddProperty("Url Rewriting Caching Message", "Page Index Cache Cleared.  Reason: " + reason);
+            log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+            LogController.Instance.AddLog(log);
         }
 
         #endregion

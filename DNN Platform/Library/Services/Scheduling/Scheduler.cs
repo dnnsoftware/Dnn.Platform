@@ -435,13 +435,12 @@ namespace DotNetNuke.Services.Scheduling
                         }
                         strDebug.Append(" task has conflicting dependency");
                     }
-                    var objEventLog = new EventLogController();
-                    var objEventLogInfo = new LogInfo();
-                    objEventLogInfo.AddProperty("EVENT NOT RUN REASON", strDebug.ToString());
-                    objEventLogInfo.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
-                    objEventLogInfo.AddProperty("TYPE FULL NAME", scheduleItem.TypeFullName);
-                    objEventLogInfo.LogTypeKey = "DEBUG";
-                    objEventLog.AddLog(objEventLogInfo);
+                    var log = new LogInfo();
+                    log.AddProperty("EVENT NOT RUN REASON", strDebug.ToString());
+                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
+                    log.AddProperty("TYPE FULL NAME", scheduleItem.TypeFullName);
+                    log.LogTypeKey = "DEBUG";
+                    LogController.Instance.AddLog(log);
                 }
             }
 
@@ -449,12 +448,11 @@ namespace DotNetNuke.Services.Scheduling
             {
                 if (_debug)
                 {
-                    var objEventLog = new EventLogController();
-                    var objEventLogInfo = new LogInfo();
-                    objEventLogInfo.AddProperty("EVENT ADDED TO PROCESS GROUP " + scheduleItem.ProcessGroup, scheduleItem.TypeFullName);
-                    objEventLogInfo.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
-                    objEventLogInfo.LogTypeKey = "DEBUG";
-                    objEventLog.AddLog(objEventLogInfo);
+                    var log = new LogInfo();
+                    log.AddProperty("EVENT ADDED TO PROCESS GROUP " + scheduleItem.ProcessGroup, scheduleItem.TypeFullName);
+                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
+                    log.LogTypeKey = "DEBUG";
+                    LogController.Instance.AddLog(log);
                 }
             }
 
@@ -613,12 +611,11 @@ namespace DotNetNuke.Services.Scheduling
 				{
 					return;
 				}
-                var eventLogController = new EventLogController();
                 SetScheduleStatus(ScheduleStatus.SHUTTING_DOWN);
-                var eventLogInfo = new LogInfo();
-                eventLogInfo.AddProperty("Initiator", sourceOfHalt);
-                eventLogInfo.LogTypeKey = "SCHEDULER_SHUTTING_DOWN";
-                eventLogController.AddLog(eventLogInfo);
+                var log = new LogInfo();
+                log.LogTypeKey = "SCHEDULER_SHUTTING_DOWN";
+                log.AddProperty("Initiator", sourceOfHalt);
+                LogController.Instance.AddLog(log);
 
                 KeepRunning = false;
 
@@ -787,11 +784,9 @@ namespace DotNetNuke.Services.Scheduling
             {
                 try
                 {
-                    var eventLogController = new EventLogController();
-                    var eventLogInfo = new LogInfo();
-                    eventLogInfo.AddProperty("EVENT", eventName.ToString());
-                    eventLogInfo.LogTypeKey = "SCHEDULE_FIRED_FROM_EVENT";
-                    eventLogController.AddLog(eventLogInfo);
+                    var log = new LogInfo {LogTypeKey = "SCHEDULE_FIRED_FROM_EVENT"};
+                    log.AddProperty("EVENT", eventName.ToString());
+                    LogController.Instance.AddLog(log);
 
                     //We allow for three threads to run simultaneously.
                     //As long as we have an open thread, continue.
@@ -875,10 +870,9 @@ namespace DotNetNuke.Services.Scheduling
                     //Loop until KeepRunning = false
                     if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || _debug)
                     {
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo();
-                        eventLogInfo.LogTypeKey = "SCHEDULER_STARTED";
-                        eventLogController.AddLog(eventLogInfo);
+                        var log = new LogInfo();
+                        log.LogTypeKey = "SCHEDULER_STARTED";
+                        LogController.Instance.AddLog(log);
                     }
 
                     while (KeepRunning)
@@ -1014,9 +1008,8 @@ namespace DotNetNuke.Services.Scheduling
                     }
                     if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || _debug)
                     {
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo { LogTypeKey = "SCHEDULER_STOPPED" };
-                        eventLogController.AddLog(eventLogInfo);
+                        var log = new LogInfo { LogTypeKey = "SCHEDULER_STOPPED" };
+                        LogController.Instance.AddLog(log);
                     }
                 }
             }
@@ -1114,7 +1107,6 @@ namespace DotNetNuke.Services.Scheduling
 
                     //Update the ScheduleHistory in the database
                     UpdateScheduleHistory(scheduleHistoryItem);
-                    var eventLogInfo = new LogInfo();
 
                     if (scheduleHistoryItem.NextStart != Null.NullDate)
                     {
@@ -1130,21 +1122,18 @@ namespace DotNetNuke.Services.Scheduling
 
                     if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
                     {
-                        //Write out the log entry for this event
-                        var objEventLog = new EventLogController();
-
-                        eventLogInfo.AddProperty("TYPE", schedulerClient.GetType().FullName);
-                        eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
-                        eventLogInfo.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
-                        eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
-                        eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        eventLogInfo.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
-                        eventLogInfo.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        eventLogInfo.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
-                        eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_COMPLETED";
-                        objEventLog.AddLog(eventLogInfo);
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_COMPLETED"};
+                        log.AddProperty("TYPE", schedulerClient.GetType().FullName);
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
+                        log.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
+                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
+                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 catch (Exception exc)
@@ -1223,24 +1212,22 @@ namespace DotNetNuke.Services.Scheduling
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         //Write out the log entry for this event
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo();
-                        eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_FAILURE"};
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         if (exception != null)
                         {
-                            eventLogInfo.AddProperty("EXCEPTION", exception.Message);
+                            log.AddProperty("EXCEPTION", exception.Message);
                         }
-                        eventLogInfo.AddProperty("RESCHEDULED FOR", Convert.ToString(scheduleHistoryItem.NextStart));
-                        eventLogInfo.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
-                        eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
-                        eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        eventLogInfo.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
-                        eventLogInfo.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        eventLogInfo.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
-                        eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_FAILURE";
-                        eventLogController.AddLog(eventLogInfo);
+                        log.AddProperty("RESCHEDULED FOR", Convert.ToString(scheduleHistoryItem.NextStart));
+                        log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
+                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
+                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 catch (Exception exc)
@@ -1258,19 +1245,17 @@ namespace DotNetNuke.Services.Scheduling
                     if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         //Write out the log entry for this event
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo();
-                        eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("TYPE", schedulerClient.GetType().FullName);
-                        eventLogInfo.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
-                        eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
-                        eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        eventLogInfo.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
-                        eventLogInfo.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        eventLogInfo.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
-                        eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_PROGRESSING";
-                        eventLogController.AddLog(eventLogInfo);
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_PROGRESSING"};
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("TYPE", schedulerClient.GetType().FullName);
+                        log.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
+                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
+                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 catch (Exception exc)
@@ -1309,19 +1294,17 @@ namespace DotNetNuke.Services.Scheduling
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         //Write out the log entry for this event
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo();
-                        eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
-                        eventLogInfo.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
-                        eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
-                        eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        eventLogInfo.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
-                        eventLogInfo.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        eventLogInfo.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
-                        eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_STARTED";
-                        eventLogController.AddLog(eventLogInfo);
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_STARTED"};
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
+                        log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
+                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
+                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 catch (Exception exc)
@@ -1461,7 +1444,6 @@ namespace DotNetNuke.Services.Scheduling
                         //Update the ScheduleHistory in the database
                         UpdateScheduleHistory(scheduleHistoryItem);
 
-                        var eventLogInfo = new LogInfo();
 
                         if (scheduleHistoryItem.NextStart != Null.NullDate)
                         {
@@ -1475,13 +1457,12 @@ namespace DotNetNuke.Services.Scheduling
                         }
 
                         //Write out the log entry for this event
-                        var objEventLog = new EventLogController();
-                        eventLogInfo.AddProperty("REASON", "Scheduler task has been stopped manually");
-                        eventLogInfo.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
-                        eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
-                        eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_COMPLETED";
-                        objEventLog.AddLog(eventLogInfo);
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_COMPLETED"};
+                        log.AddProperty("REASON", "Scheduler task has been stopped manually");
+                        log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
+                        LogController.Instance.AddLog(log);
                     }
 
                 }

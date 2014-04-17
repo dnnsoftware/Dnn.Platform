@@ -342,11 +342,9 @@ namespace DotNetNuke.Services.FileSystem
             //DNN-2949 If it is host user and IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
             if (!IsAllowedExtension(fileName) && (UserController.GetCurrentUserInfo().IsSuperUser) && HostController.Instance.GetBoolean("IgnoreWhiteList", false))
              {
-                 var eventLogController = new EventLogController();
-                 var logInfo = new LogInfo();
-                 logInfo.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
-                 logInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                 eventLogController.AddLog(logInfo);
+                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                 log.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
+                 LogController.Instance.AddLog(log);
              }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);

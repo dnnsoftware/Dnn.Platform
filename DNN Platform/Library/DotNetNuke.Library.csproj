@@ -275,6 +275,7 @@
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
     <Compile Include="Entities\Modules\ModuleController.cs" />
+    <Compile Include="Obsolete\LogController.cs" />
     <Compile Include="Obsolete\PortalAliasController.cs" />
     <Compile Include="Obsolete\PortalController.cs" />
     <Compile Include="Entities\Portals\IPortalAliasController.cs" />
@@ -543,6 +544,7 @@
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
+    <Compile Include="Services\Log\EventLog\ILogController.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\IModuleSearchResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
@@ -1655,7 +1657,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Services\Log\Logger\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj">

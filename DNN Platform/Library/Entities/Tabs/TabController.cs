@@ -963,12 +963,10 @@ namespace DotNetNuke.Entities.Tabs
         public void DeleteTabSetting(int tabId, string settingName)
         {
             Provider.DeleteTabSetting(tabId, settingName);
-            var eventLogController = new EventLogController();
-            var eventLogInfo = new LogInfo();
-            eventLogInfo.LogProperties.Add(new LogDetailInfo("TabID", tabId.ToString()));
-            eventLogInfo.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
-            eventLogInfo.LogTypeKey = EventLogController.EventLogType.TAB_SETTING_DELETED.ToString();
-            eventLogController.AddLog(eventLogInfo);
+            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.TAB_SETTING_DELETED.ToString()};
+            log.LogProperties.Add(new LogDetailInfo("TabID", tabId.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
+            LogController.Instance.AddLog(log);
 
             UpdateTabVersion(tabId);
             ClearTabSettingsCache(tabId);
@@ -984,11 +982,9 @@ namespace DotNetNuke.Entities.Tabs
         public void DeleteTabSettings(int tabId)
         {
             Provider.DeleteTabSettings(tabId);
-            var eventLogController = new EventLogController();
-            var eventLogInfo = new LogInfo();
-            eventLogInfo.LogProperties.Add(new LogDetailInfo("TabId", tabId.ToString()));
-            eventLogInfo.LogTypeKey = EventLogController.EventLogType.TAB_SETTING_DELETED.ToString();
-            eventLogController.AddLog(eventLogInfo);
+            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.TAB_SETTING_DELETED.ToString()};
+            log.LogProperties.Add(new LogDetailInfo("TabId", tabId.ToString()));
+            LogController.Instance.AddLog(log);
             UpdateTabVersion(tabId);
             ClearTabSettingsCache(tabId);
         }

@@ -162,11 +162,9 @@ namespace DotNetNuke.Entities.Modules
         public void DeleteModuleSettings(int moduleId)
         {
             dataProvider.DeleteModuleSettings(moduleId);
-            var eventLogController = new EventLogController();
-            var logInfo = new LogInfo();
-            logInfo.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString()));
-            logInfo.LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString();
-            eventLogController.AddLog(logInfo);
+            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString()};
+            log.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString()));
+            LogController.Instance.AddLog(log);
             UpdateTabModuleVersionsByModuleID(moduleId);
             ClearModuleSettingsCache(moduleId);
         }

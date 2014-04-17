@@ -100,20 +100,20 @@ namespace DotNetNuke.Entities.Users
 
         private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
         {
-            var objEventLog = new EventLogController();
-
             //initialize log record
-            var objEventLogInfo = new LogInfo();
             var objSecurity = new PortalSecurity();
-            objEventLogInfo.AddProperty("IP", ip);
-            objEventLogInfo.LogPortalID = portalId;
-            objEventLogInfo.LogPortalName = portalName;
-            objEventLogInfo.LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
-            objEventLogInfo.LogUserID = userId;
+            var log = new LogInfo
+            {
+                LogTypeKey = loginStatus.ToString(),
+                LogPortalID = portalId,
+                LogPortalName = portalName,
+                LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
+                LogUserID = userId
+            };
+            log.AddProperty("IP", ip);
 
             //create log record
-            objEventLogInfo.LogTypeKey = loginStatus.ToString();
-            objEventLog.AddLog(objEventLogInfo);
+            LogController.Instance.AddLog(log);
         }
 
         private static void AutoAssignUsersToPortalRoles(UserInfo user, int portalId)

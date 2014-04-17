@@ -304,11 +304,12 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static void LogStart()
         {
-            var objEv = new EventLogController();
-            var objEventLogInfo = new LogInfo();
-            objEventLogInfo.BypassBuffering = true;
-            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString();
-            objEv.AddLog(objEventLogInfo);
+            var log = new LogInfo
+            {
+                BypassBuffering = true,
+                LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString()
+            };
+            LogController.Instance.AddLog(log);
         }
 
         /// -----------------------------------------------------------------------------
@@ -375,12 +376,13 @@ namespace DotNetNuke.Common
                         shutdownDetail = "No shutdown reason provided.";
                         break;
                 }
-                var objEv = new EventLogController();
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.BypassBuffering = true;
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString();
-                objEventLogInfo.AddProperty("Shutdown Details", shutdownDetail);
-                objEv.AddLog(objEventLogInfo);
+                var log = new LogInfo
+                {
+                    BypassBuffering = true,
+                    LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString()
+                };
+                log.AddProperty("Shutdown Details", shutdownDetail);
+                LogController.Instance.AddLog(log);
 
                 Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
             }

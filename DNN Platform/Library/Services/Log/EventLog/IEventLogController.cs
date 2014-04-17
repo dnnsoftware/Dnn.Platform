@@ -6,7 +6,7 @@ namespace DotNetNuke.Services.Log.EventLog
     /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
     /// There is no guarantee that this interface will not change.
     /// </summary>
-    public interface IEventLogController
+    public interface IEventLogController : ILogController
     {
         void AddLog(string propertyName, string propertyValue, EventLogController.EventLogType logType);
 

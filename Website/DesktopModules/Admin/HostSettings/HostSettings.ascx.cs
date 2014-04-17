@@ -708,10 +708,9 @@ namespace DotNetNuke.Modules.Admin.Host
 
         protected void RestartApplication(object sender, EventArgs e)
         {
-            var objEv = new EventLogController();
-            var objEventLogInfo = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-            objEventLogInfo.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
-            objEv.AddLog(objEventLogInfo);
+            var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+            log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
+            LogController.Instance.AddLog(log);
             Config.Touch();
             Response.Redirect(Globals.NavigateURL(), true);
         }

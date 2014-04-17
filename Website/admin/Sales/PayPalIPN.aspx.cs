@@ -189,13 +189,14 @@ namespace DotNetNuke.Modules.Admin.Sales
                         }
                         else
                         {
-                            var objEventLog = new EventLogController();
-                            var objEventLogInfo = new LogInfo();
-                            objEventLogInfo.LogPortalID = intPortalID;
-                            objEventLogInfo.LogPortalName = PortalSettings.PortalName;
-                            objEventLogInfo.LogUserID = intUserID;
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString();
-                            objEventLog.AddLog(objEventLogInfo);
+                            var log = new LogInfo
+                            {
+                                LogPortalID = intPortalID,
+                                LogPortalName = PortalSettings.PortalName,
+                                LogUserID = intUserID,
+                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
+                            };
+                            LogController.Instance.AddLog(log);
                         }
                     }
                     else
@@ -210,13 +211,14 @@ namespace DotNetNuke.Modules.Admin.Sales
                         }
                         else
                         {
-                            var objEventLog = new EventLogController();
-                            var objEventLogInfo = new LogInfo();
-                            objEventLogInfo.LogPortalID = intPortalID;
-                            objEventLogInfo.LogPortalName = PortalSettings.PortalName;
-                            objEventLogInfo.LogUserID = intUserID;
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString();
-                            objEventLog.AddLog(objEventLogInfo);
+                            var log = new LogInfo
+                            {
+                                LogPortalID = intPortalID,
+                                LogPortalName = PortalSettings.PortalName,
+                                LogUserID = intUserID,
+                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
+                            };
+                            LogController.Instance.AddLog(log);
                         }
                     }
                 }

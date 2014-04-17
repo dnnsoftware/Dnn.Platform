@@ -165,13 +165,12 @@ namespace DotNetNuke.Entities.Host
 
         private void LogBannedIPAttempt(string ipAddress)
         {
-            var controller = new LogController();
             var log = new LogInfo
             {
                 LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString()
             };
             log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
-            controller.AddLog(log);
+            LogController.Instance.AddLog(log);
         }
 
         /// <summary>

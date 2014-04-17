@@ -1232,13 +1232,11 @@ namespace DotNetNuke.Services.Upgrade
                     catch (Exception e)
                     {
                         string message = string.Format("Unable to setup Favicon for Portal: {0}", portalInfo.PortalName);
-                        var controller = new EventLogController();
-                        var info = new LogInfo();
-                        info.LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString();
-                        info.AddProperty("Issue", message);
-                        info.AddProperty("ExceptionMessage", e.Message);
-                        info.AddProperty("StackTrace", e.StackTrace);
-                        controller.AddLog(info);
+                        var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()};
+                        log.AddProperty("Issue", message);
+                        log.AddProperty("ExceptionMessage", e.Message);
+                        log.AddProperty("StackTrace", e.StackTrace);
+                        LogController.Instance.AddLog(log);
 
                         Logger.Warn(message, e);
                     }
@@ -4926,13 +4924,14 @@ namespace DotNetNuke.Services.Upgrade
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                var objEventLog = new EventLogController();
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.AddProperty("Upgraded DotNetNuke", "General");
-                objEventLogInfo.AddProperty("Warnings", "Error: " + ex.Message + Environment.NewLine);
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                objEventLogInfo.BypassBuffering = true;
-                objEventLog.AddLog(objEventLogInfo);
+                var log = new LogInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    BypassBuffering = true
+                };
+                log.AddProperty("Upgraded DotNetNuke", "General");
+                log.AddProperty("Warnings", "Error: " + ex.Message + Environment.NewLine);
+                LogController.Instance.AddLog(log);
                 try
                 {
                     Exceptions.Exceptions.LogException(ex);
@@ -5398,20 +5397,21 @@ namespace DotNetNuke.Services.Upgrade
                 // update the version
                 Globals.UpdateDataBaseVersion(version);
 
-                var eventLogController = new EventLogController();
-                var eventLogInfo = new LogInfo();
-                eventLogInfo.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version));
+                var log = new LogInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    BypassBuffering = true
+                };
+                log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version));
                 if (exceptions.Length > 0)
                 {
-                    eventLogInfo.AddProperty("Warnings", exceptions);
+                    log.AddProperty("Warnings", exceptions);
                 }
                 else
                 {
-                    eventLogInfo.AddProperty("No Warnings", "");
+                    log.AddProperty("No Warnings", "");
                 }
-                eventLogInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                eventLogInfo.BypassBuffering = true;
-                eventLogController.AddLog(eventLogInfo);
+                LogController.Instance.AddLog(log);
             }
             if (string.IsNullOrEmpty(exceptions))
             {

@@ -552,16 +552,14 @@ namespace DotNetNuke.UI.Skins
 			//log installation event
             try
             {
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                objEventLogInfo.LogProperties.Add(new LogDetailInfo("Install Skin:", skinName));
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                log.LogProperties.Add(new LogDetailInfo("Install Skin:", skinName));
                 Array arrMessage = strMessage.Split(new[] {"<br />"}, StringSplitOptions.None);
                 foreach (string strRow in arrMessage)
                 {
-                    objEventLogInfo.LogProperties.Add(new LogDetailInfo("Info:", HtmlUtils.StripTags(strRow, true)));
+                    log.LogProperties.Add(new LogDetailInfo("Info:", HtmlUtils.StripTags(strRow, true)));
                 }
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(objEventLogInfo);
+                LogController.Instance.AddLog(log);
             }
             catch (Exception exc)
             {

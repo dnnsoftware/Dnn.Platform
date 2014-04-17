@@ -348,10 +348,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             if (UserController.GetCurrentUserInfo().IsSuperUser)
             {
-                var objEv = new EventLogController();
-                var objEventLogInfo = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-                objEventLogInfo.AddProperty("Message", "UserRestart");
-                objEv.AddLog(objEventLogInfo);
+                var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                log.AddProperty("Message", "UserRestart");
+                LogController.Instance.AddLog(log);
                 Config.Touch();
                 return Request.CreateResponse(HttpStatusCode.OK);
             }

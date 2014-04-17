@@ -363,26 +363,26 @@ namespace DotNetNuke.Entities.Portals
 
                     try
                     {
-                        var logInfo = new LogInfo
+                        var log = new LogInfo
                                                     {
                                                         BypassBuffering = true,
                                                         LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()
                                                     };
-                        logInfo.LogProperties.Add(new LogDetailInfo("Install Portal:", portalName));
-                        logInfo.LogProperties.Add(new LogDetailInfo("FirstName:", adminUser.FirstName));
-                        logInfo.LogProperties.Add(new LogDetailInfo("LastName:", adminUser.LastName));
-                        logInfo.LogProperties.Add(new LogDetailInfo("Username:", adminUser.Username));
-                        logInfo.LogProperties.Add(new LogDetailInfo("Email:", adminUser.Email));
-                        logInfo.LogProperties.Add(new LogDetailInfo("Description:", description));
-                        logInfo.LogProperties.Add(new LogDetailInfo("Keywords:", keyWords));
-                        logInfo.LogProperties.Add(new LogDetailInfo("Template:", template.TemplateFilePath));
-                        logInfo.LogProperties.Add(new LogDetailInfo("TemplateCulture:", template.CultureCode));
-                        logInfo.LogProperties.Add(new LogDetailInfo("HomeDirectory:", homeDirectory));
-                        logInfo.LogProperties.Add(new LogDetailInfo("PortalAlias:", portalAlias));
-                        logInfo.LogProperties.Add(new LogDetailInfo("ServerPath:", serverPath));
-                        logInfo.LogProperties.Add(new LogDetailInfo("ChildPath:", childPath));
-                        logInfo.LogProperties.Add(new LogDetailInfo("IsChildPortal:", isChildPortal.ToString()));
-                        _eventLogController.AddLog(logInfo);
+                        log.LogProperties.Add(new LogDetailInfo("Install Portal:", portalName));
+                        log.LogProperties.Add(new LogDetailInfo("FirstName:", adminUser.FirstName));
+                        log.LogProperties.Add(new LogDetailInfo("LastName:", adminUser.LastName));
+                        log.LogProperties.Add(new LogDetailInfo("Username:", adminUser.Username));
+                        log.LogProperties.Add(new LogDetailInfo("Email:", adminUser.Email));
+                        log.LogProperties.Add(new LogDetailInfo("Description:", description));
+                        log.LogProperties.Add(new LogDetailInfo("Keywords:", keyWords));
+                        log.LogProperties.Add(new LogDetailInfo("Template:", template.TemplateFilePath));
+                        log.LogProperties.Add(new LogDetailInfo("TemplateCulture:", template.CultureCode));
+                        log.LogProperties.Add(new LogDetailInfo("HomeDirectory:", homeDirectory));
+                        log.LogProperties.Add(new LogDetailInfo("PortalAlias:", portalAlias));
+                        log.LogProperties.Add(new LogDetailInfo("ServerPath:", serverPath));
+                        log.LogProperties.Add(new LogDetailInfo("ChildPath:", childPath));
+                        log.LogProperties.Add(new LogDetailInfo("IsChildPortal:", isChildPortal.ToString()));
+                        LogController.Instance.AddLog(log);
                     }
                     catch (Exception exc)
                     {
