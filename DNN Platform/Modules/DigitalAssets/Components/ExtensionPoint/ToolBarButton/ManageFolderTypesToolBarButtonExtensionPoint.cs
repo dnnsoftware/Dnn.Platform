@@ -24,6 +24,8 @@ using System.ComponentModel.Composition;
 
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.ExtensionPoints;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
@@ -47,7 +49,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public string Action
         {
-            get { return "dnnModule.digitalAssets.createFolder()"; }
+            get
+            {
+                if (ModuleContext == null)
+                {
+                    return string.Empty;
+                }
+
+                return ModuleContext.EditUrl("FolderMappings");
+            }
         }
 
         public string AltText
@@ -79,5 +89,13 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
         {
             get { return 8; }
         }
+
+        public bool Enabled
+        {
+            get { return ModuleContext != null
+                            && ModulePermissionController.CanManageModule(ModuleContext.Configuration); }
+        }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
     }
 }
