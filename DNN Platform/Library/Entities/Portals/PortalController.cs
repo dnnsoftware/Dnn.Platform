@@ -53,6 +53,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -893,33 +894,46 @@ namespace DotNetNuke.Entities.Portals
         }
 
         private void CreatePredefinedFolderTypes(int portalId)
-        {            
+        {
+            try
+            {
+                EnsureRequiredProvidersForFolderTypes();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error"), ex);                
+            }
             foreach (FolderTypeConfig folderTypeConfig in FolderMappingsConfigController.Instance.FolderTypes)
             {
                 try
                 {
-                    EnsureProviderRegistration<FolderProvider>(folderTypeConfig.Provider);
+                    EnsureFolderProviderRegistration<FolderProvider>(folderTypeConfig);
                     FolderMappingController.Instance.AddFolderMapping(GetFolderMappingFromConfig(folderTypeConfig,
                         portalId));
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error")+": "+folderTypeConfig.Name, ex);
+                    Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error") + ": " + folderTypeConfig.Name, ex);
                 }                
             }
         }
-        private static void EnsureProviderRegistration<TAbstract>(string nameClass)
+
+        private static void EnsureRequiredProvidersForFolderTypes()
+        {
+            if (ComponentFactory.GetComponent<CryptographyProvider>() == null)
+            {
+                ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(CoreCryptographyProvider)));
+                ComponentFactory.RegisterComponentInstance<CryptographyProvider>(new CoreCryptographyProvider());
+            }
+        }
+        private static void EnsureFolderProviderRegistration<TAbstract>(FolderTypeConfig folderTypeConfig)
             where TAbstract : class            
         {
-            var provider = ComponentFactory.GetComponent<TAbstract>();
-            if (provider == null)
+            var typeClass = Type.GetType(folderTypeConfig.BusinessClassQualifiedName);
+            if (typeClass != null)
             {
-                var typeClass = Type.GetType(nameClass);
-                if (typeClass != null)
-                {
-                    ComponentFactory.RegisterComponentInstance<TAbstract>(nameClass, Activator.CreateInstance(typeClass));
-                }                
-            }
+                ComponentFactory.RegisterComponentInstance<TAbstract>(folderTypeConfig.Provider, Activator.CreateInstance(typeClass));
+            }                     
         }
 
         private static bool EnableBrowserLanguageInDefault(int portalId)
@@ -980,16 +994,7 @@ namespace DotNetNuke.Entities.Portals
 
             return folderMapping;
         }
-
-        private FolderMappingInfo GetFolderType(int portalId, string folderPath, IDictionary<string, string> folderMappings)
-        {
-            if (!folderMappings.ContainsKey(folderPath))
-            {
-                return null;
-            }
-            return FolderMappingController.Instance.GetFolderMapping(portalId, folderMappings[folderPath]);               
-        }
-
+        
         private FolderMappingInfo GetFolderMappingFromStorageLocation(int portalId, XmlNode folderNode)
         {
             var storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(folderNode, "storagelocation", "0"));
@@ -1081,7 +1086,7 @@ namespace DotNetNuke.Entities.Portals
                         {
                             try
                             {
-                                folderMapping = GetFolderType(PortalId, folderPath, FolderMappingsConfigController.Instance.FolderMappings);
+                                folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(PortalId, folderPath); 
                                 if (folderMapping == null)
                                 {
                                     folderMapping = GetFolderMappingFromStorageLocation(PortalId, node);
@@ -1875,7 +1880,8 @@ namespace DotNetNuke.Entities.Portals
 
             if (FolderManager.Instance.GetFolder(portalId, "Templates/") == null)
             {
-                objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, "Templates/");
+                var folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, "Templates/") ?? defaultFolderMapping;
+                objFolder = FolderManager.Instance.AddFolder(folderMapping, "Templates/");
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
@@ -1885,7 +1891,8 @@ namespace DotNetNuke.Entities.Portals
             // force creation of users folder if not present on template
             if (FolderManager.Instance.GetFolder(portalId, "Users/") == null)
             {
-                objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, "Users/");
+                var folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, "Users/") ?? defaultFolderMapping;
+                objFolder = FolderManager.Instance.AddFolder(folderMapping, "Users/");
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 

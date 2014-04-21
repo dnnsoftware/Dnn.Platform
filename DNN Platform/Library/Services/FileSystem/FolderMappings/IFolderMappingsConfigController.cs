@@ -11,12 +11,7 @@ namespace DotNetNuke.Services.FileSystem.FolderMappings
         /// All folder types read from folderMappings config file
         /// </summary>
         IList<FolderTypeConfig> FolderTypes { get; }
-
-        /// <summary>
-        /// All folder mappings read from folderMappings config file
-        /// </summary>
-        IDictionary<string, string> FolderMappings { get;}
-
+        
         /// <summary>
         /// Root node in folderMappings config file
         /// </summary>
@@ -32,5 +27,12 @@ namespace DotNetNuke.Services.FileSystem.FolderMappings
         /// </summary>
         /// <param name="folderMappinsSettings"></param>
         void SaveConfig(string folderMappinsSettings);
+
+        /// <summary>
+        /// Gets the folderMapping configured for a specific folder
+        /// </summary>
+        /// <param name="portalId">Portal Id where the folder is</param>
+        /// <param name="folderPath">Specific folder path</param>        
+        FolderMappingInfo GetFolderMapping(int portalId, string folderPath);
     }
 }

@@ -1189,11 +1189,11 @@ namespace DotNetNuke.Services.FileSystem
             //user _default portal for all super users
             var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
 
-            var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
+            var folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, DefaultUsersFoldersPath) ?? FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
 
             if (!FolderExists(portalId, DefaultUsersFoldersPath))
             {
-                AddFolder(defaultFolderMapping, DefaultUsersFoldersPath);
+                AddFolder(folderMapping, DefaultUsersFoldersPath);
             }
 
 #pragma warning disable 612,618
@@ -1204,7 +1204,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (!FolderExists(portalId, folderPath))
             {
-                AddFolder(defaultFolderMapping, folderPath);
+                AddFolder(folderMapping, folderPath);
             }
 
 #pragma warning disable 612,618
@@ -1213,14 +1213,14 @@ namespace DotNetNuke.Services.FileSystem
 
             if (!FolderExists(portalId, folderPath))
             {
-                AddFolder(defaultFolderMapping, folderPath);
+                AddFolder(folderMapping, folderPath);
             }
 
             folderPath = PathUtils.Instance.FormatFolderPath(String.Concat(folderPath, user.UserID.ToString(CultureInfo.InvariantCulture)));
 
             if (!FolderExists(portalId, folderPath))
             {
-                AddFolder(defaultFolderMapping, folderPath);
+                AddFolder(folderMapping, folderPath);
 
                 var folder = GetFolder(portalId, folderPath);
 
