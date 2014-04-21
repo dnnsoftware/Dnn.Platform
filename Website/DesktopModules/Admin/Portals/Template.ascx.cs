@@ -784,6 +784,43 @@ namespace DotNetNuke.Modules.Admin.Portals
                     writer.WriteElementString("timezone", setting);
                 }
 
+                settingsDictionary.TryGetValue("EnablePopups", out setting);
+                if (!string.IsNullOrEmpty(setting))
+                {
+                    writer.WriteElementString("enablepopups", setting);
+                }
+
+                settingsDictionary.TryGetValue("InlineEditorEnabled", out setting);
+                if (!string.IsNullOrEmpty(setting))
+                {
+                    writer.WriteElementString("inlineeditorenabled", setting);
+                }
+
+                settingsDictionary.TryGetValue("HideFoldersEnabled", out setting);
+                if (!string.IsNullOrEmpty(setting))
+                {
+                    writer.WriteElementString("hidefoldersenabled", setting);
+                }
+
+                settingsDictionary.TryGetValue("ControlPanelMode", out setting);
+                if (!string.IsNullOrEmpty(setting))
+                {
+                    writer.WriteElementString("controlpanelmode", setting);
+                }
+
+                settingsDictionary.TryGetValue("ControlPanelSecurity", out setting);
+                if (!string.IsNullOrEmpty(setting))
+                {
+                    writer.WriteElementString("controlpanelsecurity", setting);
+                }
+
+                settingsDictionary.TryGetValue("ControlPanelVisibility", out setting);
+                if (!string.IsNullOrEmpty(setting))
+                {
+                    writer.WriteElementString("controlpanelvisibility", setting);
+                }
+
+
                 writer.WriteElementString("hostspace", portal.HostSpace.ToString());
                 writer.WriteElementString("userquota", portal.UserQuota.ToString());
                 writer.WriteElementString("pagequota", portal.PageQuota.ToString());
