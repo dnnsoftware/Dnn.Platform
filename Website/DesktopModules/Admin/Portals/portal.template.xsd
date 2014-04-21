@@ -33,6 +33,11 @@
               <xs:element name="portalaliasmapping" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="contentlocalizationenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="inlineeditorenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="enablepopups" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="hidefoldersenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="controlpanelmode" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="controlpanelsecurity" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="controlpanelvisibility" type="xs:string" minOccurs="0" maxOccurs="1" />
             </xs:all>
             <xs:attribute name="sku" type="xs:string"/>
           </xs:complexType>
