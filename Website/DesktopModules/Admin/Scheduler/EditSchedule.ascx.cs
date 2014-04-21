@@ -35,7 +35,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
-
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -336,6 +335,10 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </history>
         protected void OnUpdateClick(Object sender, EventArgs e)
         {
+            if (VerifyValidTimeLapseRetry() == false)
+            {
+                return;
+            }
             var objScheduleItem = CreateScheduleItem();
             if (ViewState["ScheduleID"] != null)
             {
@@ -353,6 +356,48 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 SchedulingProvider.Instance().ReStart("Change made to schedule.");
             }
             Response.Redirect(Globals.NavigateURL(), true);
+        }
+
+        private bool VerifyValidTimeLapseRetry()
+        {
+            var timeLapse = CalculateTime(Convert.ToInt32(txtTimeLapse.Text), ddlTimeLapseMeasurement.SelectedItem.Value);
+            var retry = CalculateTime(Convert.ToInt32(txtRetryTimeLapse.Text), ddlRetryTimeLapseMeasurement.SelectedItem.Value);
+            if (retry > timeLapse)
+            {
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InvalidFrequencyAndRetry", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                return false;
+            }
+            return true;
+        }
+
+        private static DateTime CalculateTime(int lapse, string measurement)
+        {
+            var nextTime = new DateTime();
+            switch (measurement)
+            {
+                case "s":
+                    nextTime = DateTime.Now.AddSeconds(lapse);
+                    break;
+                case "m":
+                    nextTime = DateTime.Now.AddMinutes(lapse);
+                    break;
+                case "h":
+                    nextTime = DateTime.Now.AddHours(lapse);
+                    break;
+                case "d":
+                    nextTime = DateTime.Now.AddDays(lapse);
+                    break;
+                case "w":
+                    nextTime = DateTime.Now.AddDays(lapse);
+                    break;
+                case "mo":
+                    nextTime = DateTime.Now.AddMonths(lapse);
+                    break;
+                case "y":
+                    nextTime = DateTime.Now.AddYears(lapse);
+                    break;
+            }
+            return nextTime;
         }
 
         #endregion

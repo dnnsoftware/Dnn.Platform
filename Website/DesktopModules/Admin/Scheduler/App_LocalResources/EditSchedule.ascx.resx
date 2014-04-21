@@ -255,4 +255,7 @@
   <data name="plScheduleStartDate.Help" xml:space="preserve">
     <value>Enter the start date/time for scheduled job. NOTE: If the server is down at the time it is supposed to run or other jobs are already running, then it will run as soon as the server comes back on online.</value>
   </data>
+  <data name="InvalidFrequencyAndRetry.Text" xml:space="preserve">
+    <value>The values for frequency and retry are invalid as the retry interval exceeds the frequency interval</value>
+  </data>
 </root>
