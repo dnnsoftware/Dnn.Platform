@@ -165,11 +165,6 @@ namespace DotNetNuke.Web.Client.Providers
                 form.Controls.Remove(holderControl);
                 form.Controls.AddAt(0, holderControl);
             }
-            else
-            {
-                page.Controls.Remove(holderControl);
-                page.Controls.AddAt(0, holderControl);
-            }
 
             var scriptManager = ScriptManager.GetCurrent(page);
             if (scriptManager != null && scriptManager.IsInAsyncPostBack)
