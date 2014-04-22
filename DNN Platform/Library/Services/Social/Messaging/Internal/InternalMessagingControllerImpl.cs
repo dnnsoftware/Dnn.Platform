@@ -390,7 +390,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         internal virtual bool IsAdminOrHost(UserInfo userInfo)
         {
-            return userInfo.IsSuperUser || userInfo.IsInRole(TestablePortalSettings.Instance.AdministratorRoleName);
+            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
         }
 
         internal virtual string InputFilter(string input)

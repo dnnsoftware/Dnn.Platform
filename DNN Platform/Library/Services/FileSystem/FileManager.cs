@@ -41,6 +41,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Log.EventLog;
@@ -330,7 +331,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            if (checkPermissions && !FolderPermissionControllerWrapper.Instance.CanAddFolder(folder))
+            if (checkPermissions && !FolderPermissionController.Instance.CanAddFolder(folder))
             {
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
             }
@@ -565,7 +566,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (file.FolderMappingID == destinationFolder.FolderMappingID)
             {
-                if (!FolderPermissionControllerWrapper.Instance.CanAddFolder(destinationFolder))
+                if (!FolderPermissionController.Instance.CanAddFolder(destinationFolder))
                 {
                     throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("CopyFilePermissionsNotMet", "Permissions are not met. The file has not been copied."));
                 }
@@ -745,7 +746,7 @@ namespace DotNetNuke.Services.FileSystem
             var file = DataCache.GetCache(strCacheKey);
             if (file == null)
             {
-                file = CBOWrapper.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFileById(fileID, retrieveUnpublishedFiles));
+                file = CBO.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFileById(fileID, retrieveUnpublishedFiles));
                 if (file != null)
                 {
                     var intCacheTimeout = 20 * Convert.ToInt32(GetPerformanceSetting());
@@ -779,7 +780,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNullOrEmpty("fileName", fileName);
             Requires.NotNull("folder", folder);
 
-            return CBOWrapper.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFile(fileName, folder.FolderID, retrieveUnpublishedFiles));
+            return CBO.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFile(fileName, folder.FolderID, retrieveUnpublishedFiles));
         }
 
         /// <summary>
@@ -1235,7 +1236,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            if (!FolderPermissionControllerWrapper.Instance.CanViewFolder(folder))
+            if (!FolderPermissionController.Instance.CanViewFolder(folder))
             {
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("WriteFileToResponsePermissionsNotMet", "Permissions are not met. The file cannot be downloaded."));
             }

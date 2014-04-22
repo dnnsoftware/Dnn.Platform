@@ -271,7 +271,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
         internal virtual bool IsAdminOrHost(UserInfo userInfo)
         {
-            return userInfo.IsSuperUser || userInfo.IsInRole(TestablePortalSettings.Instance.AdministratorRoleName);
+            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
         }
 
         #endregion

@@ -35,7 +35,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
-
+using DotNetNuke.Security.Permissions;
 using Moq;
 
 using NUnit.Framework;
@@ -94,11 +94,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileDeletionController = new Mock<IFileDeletionController>();
             
             FolderManager.RegisterInstance(_folderManager.Object);
-            FolderPermissionControllerWrapper.RegisterInstance(_folderPermissionController.Object);
+            FolderPermissionController.SetTestableInstance(_folderPermissionController.Object);
             PortalController.SetTestableInstance(_portalController.Object);
             FolderMappingController.RegisterInstance(_folderMappingController.Object);
             TestableGlobals.SetTestableInstance(_globals.Object);
-            CBOWrapper.RegisterInstance(_cbo.Object);
+            CBO.SetTestableInstance(_cbo.Object);
             PathUtils.RegisterInstance(_pathUtils.Object);
             FileVersionController.RegisterInstance(_fileVersionController.Object);
             ContentWorkflowController.RegisterInstance(_contentWorkflowController.Object);

@@ -1475,9 +1475,7 @@ namespace DotNetNuke.Security.Membership
                 else
                 {
                     //Next try the Database
-                    onlineUser =
-                        (OnlineUserInfo)
-                        CBO.FillObject(_dataProvider.GetOnlineUser(user.UserID), typeof (OnlineUserInfo));
+                    onlineUser = CBO.FillObject<OnlineUserInfo>(_dataProvider.GetOnlineUser(user.UserID));
                     if (onlineUser != null)
                     {
                         isOnline = true;

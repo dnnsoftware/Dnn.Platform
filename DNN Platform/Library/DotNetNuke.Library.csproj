@@ -275,6 +275,8 @@
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
     <Compile Include="Entities\Modules\ModuleController.cs" />
+    <Compile Include="Obsolete\CBO.cs" />
+    <Compile Include="Obsolete\FolderPermissionController.cs" />
     <Compile Include="Obsolete\LogController.cs" />
     <Compile Include="Obsolete\PortalAliasController.cs" />
     <Compile Include="Obsolete\PortalController.cs" />
@@ -462,8 +464,6 @@
     <Compile Include="Entities\Icons\IconController.cs" />
     <Compile Include="Entities\Modules\IModuleController.cs" />
     <Compile Include="Entities\Modules\Internal\TestableModuleController.cs" />
-    <Compile Include="Entities\Portals\IPortalSettings.cs" />
-    <Compile Include="Entities\Portals\TestablePortalSettings.cs" />
     <Compile Include="Entities\Tabs\ITabController.cs" />
     <Compile Include="Entities\Tabs\Internal\TestableTabController.cs" />
     <Compile Include="Framework\IServicesFramework.cs" />
@@ -476,6 +476,7 @@
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />
+    <Compile Include="Security\Permissions\IFolderPermissionController.cs" />
     <Compile Include="Security\Profile\DNNProfileProvider.cs" />
     <Compile Include="Security\Roles\DNNRoleProvider.cs" />
     <Compile Include="Security\Roles\Internal\TestableRoleController.cs" />
@@ -1007,14 +1008,11 @@
     <Compile Include="Services\FileSystem\IFileManager.cs" />
     <Compile Include="Services\FileSystem\IFolderInfo.cs" />
     <Compile Include="Services\FileSystem\IFolderManager.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\CBOWrapper.cs" />
     <Compile Include="Services\FileSystem\Wrappers\DirectoryWrapper.cs" />
     <Compile Include="Services\FileSystem\Wrappers\FileWrapper.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\FolderPermissionControllerWrapper.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\ICBO.cs" />
+    <Compile Include="Common\Utilities\ICBO.cs" />
     <Compile Include="Services\FileSystem\Wrappers\IDirectory.cs" />
     <Compile Include="Services\FileSystem\Wrappers\IFile.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\IFolderPermissionController.cs" />
     <Compile Include="Services\FileSystem\Providers\DatabaseFolderProvider.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileAlreadyExistsException.cs" />
     <Compile Include="Services\FileSystem\FileController.cs" />

@@ -359,7 +359,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public HtmlTextInfo GetHtmlText(int ModuleID, int ItemID)
         {
-            return (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetHtmlText(ModuleID, ItemID), typeof (HtmlTextInfo)));
+            return CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetHtmlText(ModuleID, ItemID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -376,7 +376,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public HtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId)
         {
-            var htmlText = (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetTopHtmlText(moduleId, isPublished), typeof (HtmlTextInfo)));
+            var htmlText = CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetTopHtmlText(moduleId, isPublished));
             if (htmlText != null)
             {
                 // check if workflow has changed
@@ -394,7 +394,7 @@ namespace DotNetNuke.Modules.Html
                     UpdateHtmlText(htmlText, GetMaximumVersionHistory(htmlText.PortalID));
 
                     // get object again
-                    htmlText = (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetTopHtmlText(moduleId, false), typeof (HtmlTextInfo)));
+                    htmlText = CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetTopHtmlText(moduleId, false));
                 }
             }
             return htmlText;

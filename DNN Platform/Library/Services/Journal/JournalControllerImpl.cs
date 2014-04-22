@@ -488,7 +488,7 @@ namespace DotNetNuke.Services.Journal
             {
                 return null;
             }
-            return (JournalItem)CBO.FillObject(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted), typeof(JournalItem));
+            return CBO.FillObject<JournalItem>(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
         }
 
         public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)

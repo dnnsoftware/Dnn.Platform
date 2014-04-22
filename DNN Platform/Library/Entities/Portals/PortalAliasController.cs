@@ -253,7 +253,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal info.</returns>
         public PortalInfo GetPortalByPortalAliasID(int PortalAliasId)
         {
-            return (PortalInfo)CBO.FillObject(DataProvider.Instance().GetPortalByPortalAliasID(PortalAliasId), typeof(PortalInfo));
+            return CBO.FillObject<PortalInfo>(DataProvider.Instance().GetPortalByPortalAliasID(PortalAliasId));
         }
 
         public void UpdatePortalAlias(PortalAliasInfo portalAlias)

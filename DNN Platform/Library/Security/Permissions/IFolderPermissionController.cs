@@ -18,18 +18,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-using System.Collections.Generic;
-using System.Data;
 
-using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.FileSystem;
 
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Security.Permissions
 {
-    internal interface ICBO
+    public interface IFolderPermissionController
     {
-        List<T> FillCollection<T>(IDataReader dr) where T : new();
-        T FillObject<T>(IDataReader dr) where T : new();
-        SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr);
-        T GetCachedObject<T>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired);
+        bool CanAddFolder(IFolderInfo folder);
+        bool CanAdminFolder(IFolderInfo folder);
+        bool CanViewFolder(IFolderInfo folder);
     }
 }

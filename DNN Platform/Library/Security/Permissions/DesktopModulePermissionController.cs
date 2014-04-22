@@ -253,7 +253,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static DesktopModulePermissionInfo GetDesktopModulePermission(int DesktopModulePermissionID)
         {
-            return CBO.FillObject<DesktopModulePermissionInfo>(provider.GetDesktopModulePermission(DesktopModulePermissionID), true);
+            return CBO.FillObject<DesktopModulePermissionInfo>(provider.GetDesktopModulePermission(DesktopModulePermissionID));
         }
 
         /// -----------------------------------------------------------------------------

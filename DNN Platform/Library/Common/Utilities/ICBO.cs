@@ -21,35 +21,17 @@
 using System.Collections.Generic;
 using System.Data;
 
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
 
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Common.Utilities
 {
-    internal class CBOWrapper : ComponentBase<ICBO, CBOWrapper>, ICBO
+    public interface ICBO
     {
-        internal CBOWrapper()
-        {
-        }
+        List<TObject> FillCollection<TObject>(IDataReader dr) where TObject : new();
 
-        public List<T> FillCollection<T>(IDataReader dr) where T : new()
-        {
-            return CBO.FillCollection<T>(dr);
-        }
+        TObject FillObject<TObject>(IDataReader dr) where TObject : new();
 
-        public T FillObject<T>(IDataReader dr) where T : new()
-        {
-            return CBO.FillObject<T>(dr);
-        }
+        //SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr);
 
-        public SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr)
-        {
-            return CBO.FillSortedList<TKey, TValue>(keyField, dr);
-        }
-
-        public T GetCachedObject<T>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
-        {
-            return CBO.GetCachedObject<T>(cacheItemArgs, cacheItemExpired);
-        }
+        TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary);
     }
 }

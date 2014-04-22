@@ -364,7 +364,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
         {
-            return (LogTypeConfigInfo) CBO.FillObject(DataProvider.Instance().GetLogTypeConfigInfoByID(Convert.ToInt32(id)), typeof (LogTypeConfigInfo));
+            return CBO.FillObject<LogTypeConfigInfo>(DataProvider.Instance().GetLogTypeConfigInfoByID(Convert.ToInt32(id)));
         }
 
         public override ArrayList GetLogTypeInfo()

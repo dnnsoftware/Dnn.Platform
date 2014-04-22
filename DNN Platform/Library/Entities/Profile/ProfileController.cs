@@ -635,7 +635,7 @@ namespace DotNetNuke.Entities.Profile
         [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead")]
         public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
         {
-            return (ProfilePropertyDefinition) CBO.FillObject(_dataProvider.GetPropertyDefinition(definitionId), typeof (ProfilePropertyDefinition));
+            return CBO.FillObject<ProfilePropertyDefinition>(_dataProvider.GetPropertyDefinition(definitionId));
         }
 
         #endregion

@@ -264,7 +264,7 @@ namespace DotNetNuke.Security.Permissions
         [Obsolete("Deprecated in DNN 5.1.")]
         public ModulePermissionInfo GetModulePermission(int modulePermissionID)
         {
-            return CBO.FillObject<ModulePermissionInfo>(DataProvider.Instance().GetModulePermission(modulePermissionID), true);
+            return CBO.FillObject<ModulePermissionInfo>(DataProvider.Instance().GetModulePermission(modulePermissionID));
         }
 
         [Obsolete("Deprecated in DNN 5.0. Replaced by ModulePermissionColelction.ToString(String)")]
