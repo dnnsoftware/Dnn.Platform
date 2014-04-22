@@ -729,47 +729,6 @@
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
             </module>
-            <module>
-              <contentKey />
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
-              <cachetime>1200</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>false</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Text/HTML</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <content type="DNNHTML" version="07.03.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;copyright-container&amp;quot;&amp;gt;
-&amp;lt;span class=&amp;quot;split&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;
-&amp;lt;a href=&amp;quot;[Tab.Home.Copyright.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span&amp;gt;[Tab.Home.Copyright.Title]&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;
-&amp;lt;span class=&amp;quot;split&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;
-&amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings/>
-              <tabmodulesettings/>
-              <definition>DNN_HTML</definition>
-              <moduledefinition>Text/HTML</moduledefinition>
-            </module>
           </modules>
         </pane>
       </panes>

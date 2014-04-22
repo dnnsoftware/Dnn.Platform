@@ -2220,3 +2220,32 @@ ul.footerConnect {
 	display: block;
 	margin-bottom: 25px;
 } 
+.copyright-container{
+	margin-bottom: 20px;
+	text-align: center;
+	background: url('images/copyright-background.png') no-repeat center center;
+	min-width: 830px;
+}
+.copyright-container a{
+	color: #fff;
+	font-family: Arial;
+	font-size: 14px;
+	background: url('Images/icon-btn-sm-circle-arrow.png') no-repeat right 12px center;
+	background-color: #aaaaaa;
+	-webkit-border-radius: 3px;
+    border-radius: 3px;
+	margin: 0 12px;
+	padding: 9px 36px 9px 16px;
+}
+.copyright-container a:hover{
+	background-color: #666666;
+}
+.copyright-container > span.split{
+	border-bottom: 1px solid #d9d9d9;
+	display: inline-block;
+	width: 200px;
+	height: 0px;
+	overflow: hidden;
+	padding-top: 9px;
+	vertical-align: top;
+}

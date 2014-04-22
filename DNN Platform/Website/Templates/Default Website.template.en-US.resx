@@ -340,12 +340,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Home.CompanyIntro.Text" xml:space="preserve">
     <value>DNN (formerly DotNetNuke) provides a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees.  DNN products and technology are the foundation for 750,000+ websites worldwide.  In addition to our commercial CMS and Social Community solutiosn, DNN is the steward of the DotNetNuke Open Source Project.</value>
   </data>
-  <data name="Tab.Home.Copyright.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=cms-by-dnn&amp;utm_content=gravity-skin-link&amp;utm_campaign=dnn-platform-home</value>
-  </data>
-  <data name="Tab.Home.Copyright.Title" xml:space="preserve">
-    <value>CMS by DNN</value>
-  </data>
   <data name="Tab.Home.Header.Content" xml:space="preserve">
     <value>DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt; makes it easy for you to install and use the DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt; Platform.  We have multiple options to suit your needs, whether you want to try the CMS out in the cloud, install it on your own server, or use it on your desktop for development.  You are just a click away from getting started with DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt;.</value>
   </data>
