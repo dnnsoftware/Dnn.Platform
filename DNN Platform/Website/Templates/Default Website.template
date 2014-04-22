@@ -5235,7 +5235,7 @@
           <extension>css</extension>
           <filename>home.css</filename>
           <height>0</height>
-          <size>9098</size>
+          <size>11830</size>
           <width>0</width>
         </file>
         <file>
@@ -5303,33 +5303,33 @@
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon_facebook.png</filename>
+          <filename>icon-social-facebook.png</filename>
           <height>29</height>
-          <size>2031</size>
+          <size>1715</size>
           <width>29</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon_linkedin.png</filename>
+          <filename>icon-social-linkedin.png</filename>
           <height>29</height>
-          <size>2144</size>
+          <size>2319</size>
           <width>29</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon_twitter.png</filename>
+          <filename>icon-social-twitter.png</filename>
           <height>29</height>
-          <size>2097</size>
+          <size>1966</size>
           <width>29</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon_youtube.png</filename>
+          <filename>icon-social-youtube.png</filename>
           <height>29</height>
-          <size>2334</size>
+          <size>3702</size>
           <width>29</width>
         </file>
         <file>
@@ -5441,7 +5441,7 @@
           <extension>png</extension>
           <filename>logo-evoq-content.png</filename>
           <height>65</height>
-          <size>4601</size>
+          <size>4662</size>
           <width>240</width>
         </file>
         <file>
@@ -5449,7 +5449,7 @@
           <extension>png</extension>
           <filename>logo-evoq-social.png</filename>
           <height>68</height>
-          <size>4675</size>
+          <size>4530</size>
           <width>223</width>
         </file>
       </files>

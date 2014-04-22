@@ -2224,7 +2224,6 @@ ul.footerConnect {
 	margin-bottom: 20px;
 	text-align: center;
 	background: url('images/copyright-background.png') no-repeat center center;
-	min-width: 830px;
 }
 .copyright-container a{
 	color: #fff;
@@ -2243,7 +2242,7 @@ ul.footerConnect {
 .copyright-container > span.split{
 	border-bottom: 1px solid #d9d9d9;
 	display: inline-block;
-	width: 200px;
+	width: 20px;
 	height: 0px;
 	overflow: hidden;
 	padding-top: 9px;
