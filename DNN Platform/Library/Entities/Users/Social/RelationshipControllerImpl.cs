@@ -57,7 +57,8 @@ namespace DotNetNuke.Entities.Users.Social
 
         #region Constructors
 
-        public RelationshipControllerImpl() : this(DataService.Instance, new EventLogController())
+        public RelationshipControllerImpl()
+            : this(DataService.Instance, EventLogController.Instance)
         {
         }
 

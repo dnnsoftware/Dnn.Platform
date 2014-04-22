@@ -69,8 +69,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void AddLog(PackageInfo package, EventLogController.EventLogType logType)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(package, 
+            EventLogController.Instance.AddLog(package, 
                         PortalController.GetCurrentPortalSettings(), 
                         UserController.GetCurrentUserInfo().UserID, 
                         "",

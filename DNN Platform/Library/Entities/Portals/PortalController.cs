@@ -77,7 +77,6 @@ namespace DotNetNuke.Entities.Portals
     public partial class PortalController : ServiceLocator<IPortalController, PortalController>, IPortalController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PortalController));
-        private static readonly EventLogController _eventLogController = new EventLogController();
 
         public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
@@ -465,8 +464,7 @@ namespace DotNetNuke.Entities.Portals
                 //clear portal cache
                 DataCache.ClearHostCache(true);
 
-                var eventLogController = new EventLogController();
-                eventLogController.AddLog("PortalName", portalName, GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_CREATED);
+                EventLogController.Instance.AddLog("PortalName", portalName, GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_CREATED);
             }
             catch (Exception ex)
             {
@@ -544,16 +542,15 @@ namespace DotNetNuke.Entities.Portals
 
             DataProvider.Instance().DeletePortalInfo(portalId);
 
-            _eventLogController.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
+            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
 
             DataCache.ClearHostCache(true);
         }
 
         private static bool DoesLogTypeExists(string logTypeKey)
         {
-            var logController = new LogController();
             LogTypeInfo logType;
-            Dictionary<string, LogTypeInfo> logTypeDictionary = logController.GetLogTypeInfoDictionary();
+            Dictionary<string, LogTypeInfo> logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
             logTypeDictionary.TryGetValue(logTypeKey, out logType);
             if (logType == null)
             {
@@ -564,7 +561,6 @@ namespace DotNetNuke.Entities.Portals
 
         internal static void EnsureRequiredEventLogTypesExist()
         {
-            var logController = new LogController();
             if (!DoesLogTypeExists(EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString()))
             {
                 //Add 404 Log
@@ -576,7 +572,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeCSSClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                 };
-                logController.AddLogType(logTypeInfo);
+                LogController.Instance.AddLogType(logTypeInfo);
 
                 //Add LogType
                 var logTypeConf = new LogTypeConfigInfo
@@ -591,7 +587,7 @@ namespace DotNetNuke.Entities.Portals
                     MailToAddress = Null.NullString,
                     LogTypePortalID = "*"
                 };
-                logController.AddLogTypeConfigInfo(logTypeConf);
+                LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
             }
 
 
@@ -606,7 +602,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeCSSClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                 };
-                logController.AddLogType(logTypeFilterInfo);
+                LogController.Instance.AddLogType(logTypeFilterInfo);
 
                 //Add LogType
                 var logTypeFilterConf = new LogTypeConfigInfo
@@ -621,7 +617,7 @@ namespace DotNetNuke.Entities.Portals
                     MailToAddress = Null.NullString,
                     LogTypePortalID = "*"
                 };
-                logController.AddLogTypeConfigInfo(logTypeFilterConf);
+                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
             }
 
             if (!DoesLogTypeExists(EventLogController.EventLogType.TABURL_CREATED.ToString()))
@@ -634,15 +630,15 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeCSSClass = "OperationSuccess",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                 };
-                logController.AddLogType(logTypeInfo);
+                LogController.Instance.AddLogType(logTypeInfo);
 
                 logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
                 logTypeInfo.LogTypeFriendlyName = "TabURL updated";
-                logController.AddLogType(logTypeInfo);
+                LogController.Instance.AddLogType(logTypeInfo);
 
                 logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
                 logTypeInfo.LogTypeFriendlyName = "TabURL deleted";
-                logController.AddLogType(logTypeInfo);
+                LogController.Instance.AddLogType(logTypeInfo);
 
                 //Add LogType
                 var logTypeUrlConf = new LogTypeConfigInfo
@@ -657,13 +653,13 @@ namespace DotNetNuke.Entities.Portals
                     MailToAddress = Null.NullString,
                     LogTypePortalID = "*"
                 };
-                logController.AddLogTypeConfigInfo(logTypeUrlConf);
+                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
 
                 logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
-                logController.AddLogTypeConfigInfo(logTypeUrlConf);
+                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
 
                 logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
-                logController.AddLogTypeConfigInfo(logTypeUrlConf);
+                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
             }
 
             if (!DoesLogTypeExists(EventLogController.EventLogType.SCRIPT_COLLISION.ToString()))
@@ -677,7 +673,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeCSSClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                 };
-                logController.AddLogType(logTypeFilterInfo);
+                LogController.Instance.AddLogType(logTypeFilterInfo);
 
                 //Add LogType
                 var logTypeFilterConf = new LogTypeConfigInfo
@@ -692,7 +688,7 @@ namespace DotNetNuke.Entities.Portals
                     MailToAddress = Null.NullString,
                     LogTypePortalID = "*"
                 };
-                logController.AddLogTypeConfigInfo(logTypeFilterConf);
+                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
             }
 
         }
@@ -1535,7 +1531,6 @@ namespace DotNetNuke.Entities.Portals
                 {
                     tab = TabController.DeserializeTab(nodeTab, null, hTabs, PortalId, IsAdminTemplate, mergeTabs, hModules);
                 }
-                var eventLogController = new EventLogController();
 
                 //when processing the template we should try and identify the Admin tab
                 if (tab.TabName == "Admin")
@@ -1555,7 +1550,7 @@ namespace DotNetNuke.Entities.Portals
                                       portal.Custom500TabId,
                                       portal.AdminTabId,
                                       GetActivePortalLanguage(PortalId));
-                    eventLogController.AddLog("AdminTab",
+                    EventLogController.Instance.AddLog("AdminTab",
                                        tab.TabID.ToString(),
                                        GetCurrentPortalSettings(),
                                        UserController.GetCurrentUserInfo().UserID,
@@ -1580,7 +1575,7 @@ namespace DotNetNuke.Entities.Portals
                                           portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
-                        eventLogController.AddLog("SplashTab",
+                        EventLogController.Instance.AddLog("SplashTab",
                                            tab.TabID.ToString(),
                                            GetCurrentPortalSettings(),
                                            UserController.GetCurrentUserInfo().UserID,
@@ -1602,7 +1597,7 @@ namespace DotNetNuke.Entities.Portals
                                           portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
-                        eventLogController.AddLog("HomeTab",
+                        EventLogController.Instance.AddLog("HomeTab",
                                            tab.TabID.ToString(),
                                            GetCurrentPortalSettings(),
                                            UserController.GetCurrentUserInfo().UserID,
@@ -1624,7 +1619,7 @@ namespace DotNetNuke.Entities.Portals
                                           portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
-                        eventLogController.AddLog("LoginTab",
+                        EventLogController.Instance.AddLog("LoginTab",
                                            tab.TabID.ToString(),
                                            GetCurrentPortalSettings(),
                                            UserController.GetCurrentUserInfo().UserID,
@@ -1646,7 +1641,7 @@ namespace DotNetNuke.Entities.Portals
                                           portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
-                        eventLogController.AddLog("UserTab",
+                        EventLogController.Instance.AddLog("UserTab",
                                            tab.TabID.ToString(),
                                            GetCurrentPortalSettings(),
                                            UserController.GetCurrentUserInfo().UserID,
@@ -1668,7 +1663,7 @@ namespace DotNetNuke.Entities.Portals
                                           portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
-                        eventLogController.AddLog("SearchTab",
+                        EventLogController.Instance.AddLog("SearchTab",
                                            tab.TabID.ToString(),
                                            GetCurrentPortalSettings(),
                                            UserController.GetCurrentUserInfo().UserID,
@@ -1693,7 +1688,7 @@ namespace DotNetNuke.Entities.Portals
                                           portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
-                        eventLogController.AddLog("Custom404Tab",
+                        EventLogController.Instance.AddLog("Custom404Tab",
                                            tab.TabID.ToString(),
                                            GetCurrentPortalSettings(),
                                            UserController.GetCurrentUserInfo().UserID,
@@ -1715,7 +1710,7 @@ namespace DotNetNuke.Entities.Portals
                                           portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
-                        eventLogController.AddLog("Custom500Tab",
+                        EventLogController.Instance.AddLog("Custom500Tab",
                                            tab.TabID.ToString(),
                                            GetCurrentPortalSettings(),
                                            UserController.GetCurrentUserInfo().UserID,
@@ -2031,15 +2026,16 @@ namespace DotNetNuke.Entities.Portals
                                             UserController.GetCurrentUserInfo().UserID,
                                             portal.CultureCode);
 
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog("PortalId", portal.PortalID.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
+            EventLogController.Instance.AddLog("PortalId", portal.PortalID.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
 
             //ensure a localization item exists (in case a new default language has been set)
             DataProvider.Instance().EnsureLocalizationExists(portal.PortalID, portal.DefaultLanguage);
 
             //clear portal cache
             if (clearCache)
+            {
                 DataCache.ClearHostCache(true);
+            }
         }
 
         private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
@@ -2059,8 +2055,7 @@ namespace DotNetNuke.Entities.Portals
                                                       custom500TabId,
                                                       adminTabId,
                                                       cultureCode);
-            EventLogController objEventLog = new EventLogController();
-            objEventLog.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
+            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
             DataCache.ClearHostCache(true);
         }
 		
@@ -2930,8 +2925,7 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSetting(int portalID, string settingName, string CultureCode)
         {
             DataProvider.Instance().DeletePortalSetting(portalID, settingName, CultureCode.ToLower());
-            EventLogController objEventLog = new EventLogController();
-            objEventLog.AddLog("SettingName", settingName, GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            EventLogController.Instance.AddLog("SettingName", settingName, GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -2942,8 +2936,7 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSettings(int portalID)
         {
             DataProvider.Instance().DeletePortalSettings(portalID);
-            EventLogController objEventLog = new EventLogController();
-            objEventLog.AddLog("PortalID", portalID.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            EventLogController.Instance.AddLog("PortalID", portalID.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -3121,8 +3114,7 @@ namespace DotNetNuke.Entities.Portals
             if (currentSetting != settingValue)
             {
                 DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.GetCurrentUserInfo().UserID, culturecode);
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(settingName, settingValue, GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                EventLogController.Instance.AddLog(settingName, settingValue, GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
                 if (clearCache)
                 {
                     DataCache.ClearPortalCache(portalID, false);

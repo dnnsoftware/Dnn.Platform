@@ -517,8 +517,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                                 closePopUpStr = (PortalSettings.EnablePopUps) ? "onclick=\"return " + UrlUtils.ClosePopUp(true,webUrl,true) + "\"" : "";
                                 message = string.Format(Localization.GetString("UnknownSendMail.Error", LocalResourceFile), webUrl, closePopUpStr);
                             }
-                            var objEventLog = new EventLogController();
-                            objEventLog.AddLog(PortalController.Instance.GetPortal(intPortalId), PortalSettings, UserId, "", EventLogController.EventLogType.PORTAL_CREATED);
+                            EventLogController.Instance.AddLog(PortalController.Instance.GetPortal(intPortalId), PortalSettings, UserId, "", EventLogController.EventLogType.PORTAL_CREATED);
 
                             // mark default language as published if content localization is enabled
                             bool ContentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", PortalId, false);

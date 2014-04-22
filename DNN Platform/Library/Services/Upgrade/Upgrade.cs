@@ -1254,9 +1254,8 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion323()
         {
             //add new SecurityException
-            var logController = new LogController();
             string configFile = Globals.HostMapPath + "Logs\\LogConfig\\SecurityExceptionTemplate.xml.resources";
-            logController.AddLogType(configFile, Null.NullString);
+            LogController.Instance.AddLogType(configFile, Null.NullString);
         }
 
         private static void UpgradeToVersion440()
@@ -1434,9 +1433,8 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion501()
         {
             //add new Cache Error Event Type
-            var logController = new LogController();
             string configFile = string.Format("{0}Logs\\LogConfig\\CacheErrorTemplate.xml.resources", Globals.HostMapPath);
-            logController.AddLogType(configFile, Null.NullString);
+            LogController.Instance.AddLogType(configFile, Null.NullString);
         }
 
         private static void UpgradeToVersion510()
@@ -1823,8 +1821,7 @@ namespace DotNetNuke.Services.Upgrade
                 //attempt to remove "System.Web.Extensions" configuration section
                 string upgradeFile = string.Format("{0}\\Config\\SystemWebExtensions.config", Globals.InstallMapPath);
                 string message = UpdateConfig(upgradeFile, DotNetNukeContext.Current.Application.Version, "Remove System.Web.Extensions");
-                var eventLogController = new EventLogController();
-                eventLogController.AddLog("UpgradeConfig",
+                EventLogController.Instance.AddLog("UpgradeConfig",
                                           string.IsNullOrEmpty(message)
                                               ? "Remove System Web Extensions"
                                               : string.Format("Remove System Web Extensions failed. Error reported during attempt to update:{0}", message),
@@ -2626,7 +2623,6 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             //Add 404 Log
-            var logController = new LogController();
             var logTypeInfo = new LogTypeInfo
             {
                 LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
@@ -2635,7 +2631,7 @@ namespace DotNetNuke.Services.Upgrade
                 LogTypeCSSClass = "OperationFailure",
                 LogTypeOwner = "DotNetNuke.Logging.EventLogType"
             };
-            logController.AddLogType(logTypeInfo);
+            LogController.Instance.AddLogType(logTypeInfo);
 
             //Add LogType
             var logTypeConf = new LogTypeConfigInfo
@@ -2650,7 +2646,7 @@ namespace DotNetNuke.Services.Upgrade
                 MailToAddress = Null.NullString,
                 LogTypePortalID = "*"
             };
-            logController.AddLogTypeConfigInfo(logTypeConf);
+            LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
 
             UninstallPackage("DotNetNuke.SearchInput");
 
@@ -2666,7 +2662,7 @@ namespace DotNetNuke.Services.Upgrade
                 LogTypeCSSClass = "OperationFailure",
                 LogTypeOwner = "DotNetNuke.Logging.EventLogType"
             };
-            logController.AddLogType(logTypeFilterInfo);
+            LogController.Instance.AddLogType(logTypeFilterInfo);
 
             //Add LogType
             var logTypeFilterConf = new LogTypeConfigInfo
@@ -2681,7 +2677,7 @@ namespace DotNetNuke.Services.Upgrade
                 MailToAddress = Null.NullString,
                 LogTypePortalID = "*"
             };
-            logController.AddLogTypeConfigInfo(logTypeFilterConf);
+            LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
 
             int tabID = TabController.GetTabByTabPath(Null.NullInteger, "//Host//SearchAdmin", Null.NullString);
             if (tabID > Null.NullInteger)
@@ -2702,7 +2698,6 @@ namespace DotNetNuke.Services.Upgrade
             DesktopModuleController.DeleteDesktopModule("FileManager");
 
             //Add TabUrl Logtypes
-            var logController = new LogController();
             var logTypeInfo = new LogTypeInfo
             {
                 LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
@@ -2711,15 +2706,15 @@ namespace DotNetNuke.Services.Upgrade
                 LogTypeCSSClass = "OperationSuccess",
                 LogTypeOwner = "DotNetNuke.Logging.EventLogType"
             };
-            logController.AddLogType(logTypeInfo);
+            LogController.Instance.AddLogType(logTypeInfo);
 
             logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
             logTypeInfo.LogTypeFriendlyName = "TabURL updated";
-            logController.AddLogType(logTypeInfo);
+            LogController.Instance.AddLogType(logTypeInfo);
 
             logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
             logTypeInfo.LogTypeFriendlyName = "TabURL deleted";
-            logController.AddLogType(logTypeInfo);
+            LogController.Instance.AddLogType(logTypeInfo);
 
         }
 
@@ -2863,7 +2858,6 @@ namespace DotNetNuke.Services.Upgrade
             //add event log type:POTENTIAL_PAYPAL_PAYMENT_FRAUD
             if (!DoesLogTypeExists(EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()))
             {
-                var logController = new LogController();
                 var logTypeInfo = new LogTypeInfo
                                       {
                                           LogTypeKey =
@@ -2873,7 +2867,7 @@ namespace DotNetNuke.Services.Upgrade
                                           LogTypeCSSClass = "OperationFailure",
                                           LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                                       };
-                logController.AddLogType(logTypeInfo);
+                LogController.Instance.AddLogType(logTypeInfo);
             }
 
             //AdvancedSettings module needs to be made a system package
@@ -3379,9 +3373,8 @@ namespace DotNetNuke.Services.Upgrade
 
         private static bool DoesLogTypeExists(string logTypeKey)
         {
-            var logController = new LogController();
             LogTypeInfo logType;
-            Dictionary<string, LogTypeInfo> logTypeDictionary = logController.GetLogTypeInfoDictionary();
+            Dictionary<string, LogTypeInfo> logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
             logTypeDictionary.TryGetValue(logTypeKey, out logType);
             if (logType == null)
             {
@@ -4848,7 +4841,6 @@ namespace DotNetNuke.Services.Upgrade
 
         public static void TryUpgradeNETFramework()
         {
-            var eventLogController = new EventLogController();
             switch (Globals.NETFrameworkVersion.ToString(2))
             {
                 case "3.5":
@@ -4864,12 +4856,12 @@ namespace DotNetNuke.Services.Upgrade
 
                             //Log Upgrade
 
-                            eventLogController.AddLog("UpgradeNet", "Upgraded Site to .NET 3.5", PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
+                            EventLogController.Instance.AddLog("UpgradeNet", "Upgraded Site to .NET 3.5", PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
                         }
                         else
                         {
                             //Log Failed Upgrade
-                            eventLogController.AddLog("UpgradeNet", string.Format("Upgrade to .NET 3.5 failed. Error reported during attempt to update:{0}", message), PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
+                            EventLogController.Instance.AddLog("UpgradeNet", string.Format("Upgrade to .NET 3.5 failed. Error reported during attempt to update:{0}", message), PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
                         }
                     }
                     break;
@@ -4879,7 +4871,7 @@ namespace DotNetNuke.Services.Upgrade
                         //Upgrade to .NET 4.0
                         string upgradeFile = string.Format("{0}\\Config\\Net40.config", Globals.InstallMapPath);
                         string strMessage = UpdateConfig(upgradeFile, DotNetNukeContext.Current.Application.Version, ".NET 4.0 Upgrade");
-                        eventLogController.AddLog("UpgradeNet",
+                        EventLogController.Instance.AddLog("UpgradeNet",
                                                   string.IsNullOrEmpty(strMessage)
                                                       ? "Upgraded Site to .NET 4.0"
                                                       : string.Format("Upgrade to .NET 4.0 failed. Error reported during attempt to update:{0}", strMessage),
@@ -5450,8 +5442,7 @@ namespace DotNetNuke.Services.Upgrade
                     activationResult = licenseActivation.LicenseResult;
 
                     //Log Event to Event Log
-                    var objEventLog = new EventLogController();
-                    objEventLog.AddLog("License Activation",
+                    EventLogController.Instance.AddLog("License Activation",
                                        "License Activated during install for: " + licenseConfig.AccountEmail + " | invoice: " + licenseConfig.InvoiceNumber,
                                        EventLogController.EventLogType.HOST_ALERT);
                 }

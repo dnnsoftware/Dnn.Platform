@@ -1038,11 +1038,10 @@ namespace DotNetNuke.Security.Permissions
         public virtual void SaveTabPermissions(TabInfo tab)
         {
             TabPermissionCollection objCurrentTabPermissions = GetTabPermissions(tab.TabID, tab.PortalID);
-            var objEventLog = new EventLogController();
             if (!objCurrentTabPermissions.CompareTo(tab.TabPermissions))
             {
                 dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
-                objEventLog.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+                EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
                 if (tab.TabPermissions != null)
                 {
                     foreach (TabPermissionInfo objTabPermission in tab.TabPermissions)
@@ -1053,7 +1052,7 @@ namespace DotNetNuke.Security.Permissions
                                                       objTabPermission.AllowAccess,
                                                       objTabPermission.UserID,
                                                       UserController.GetCurrentUserInfo().UserID);
-                        objEventLog.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
+                        EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
                     }
                 }
             }

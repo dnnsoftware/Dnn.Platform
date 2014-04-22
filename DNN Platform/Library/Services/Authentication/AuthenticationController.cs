@@ -79,8 +79,7 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_CREATED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_CREATED);
             return provider.AddAuthentication(authSystem.PackageID,
                                               authSystem.AuthenticationType,
                                               authSystem.IsEnabled,
@@ -104,13 +103,11 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public static int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
         {
-            var objEventLog = new EventLogController();
-
             UserAuthenticationInfo userAuth = GetUserAuthentication(userID);
 
             if (userAuth == null || String.IsNullOrEmpty(userAuth.AuthenticationType))
             {
-                objEventLog.AddLog("userID/authenticationType",
+                EventLogController.Instance.AddLog("userID/authenticationType",
                                    userID + "/" + authenticationType,
                                    PortalController.GetCurrentPortalSettings(),
                                    UserController.GetCurrentUserInfo().UserID,
@@ -120,7 +117,7 @@ namespace DotNetNuke.Services.Authentication
             else
             {
 
-                objEventLog.AddLog("userID/authenticationType already exists",
+                EventLogController.Instance.AddLog("userID/authenticationType already exists",
                    userID + "/" + authenticationType,
                    PortalController.GetCurrentPortalSettings(),
                    UserController.GetCurrentUserInfo().UserID,
@@ -148,8 +145,7 @@ namespace DotNetNuke.Services.Authentication
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
         {
             provider.DeleteAuthentication(authSystem.AuthenticationID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_DELETED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_DELETED);
         }
 
         /// -----------------------------------------------------------------------------
@@ -436,8 +432,7 @@ namespace DotNetNuke.Services.Authentication
                                           authSystem.LoginControlSrc,
                                           authSystem.LogoffControlSrc,
                                           UserController.GetCurrentUserInfo().UserID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_UPDATED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_UPDATED);
         }
 		
 		#endregion

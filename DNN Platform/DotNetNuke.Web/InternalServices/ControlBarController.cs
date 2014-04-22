@@ -634,8 +634,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 //Add Event Log
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
 
                 return newModule.ModuleID;
             }

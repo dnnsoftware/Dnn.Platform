@@ -21,6 +21,8 @@
 
 #endregion
 
+using System.Collections;
+using System.Collections.Generic;
 
 namespace DotNetNuke.Services.Log.EventLog
 {
@@ -32,6 +34,30 @@ namespace DotNetNuke.Services.Log.EventLog
 
         void AddLogType(LogTypeInfo logType);
 
+        void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig);
+
+        void ClearLog();
+
+        void DeleteLog(LogInfo logInfo);
+
+        void DeleteLogType(LogTypeInfo logType);
+
+        void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig);
+
+        List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords);
+
+        ArrayList GetLogTypeConfigInfo();
+
+        LogTypeConfigInfo GetLogTypeConfigInfoByID(string id);
+
+        Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary();
+
         object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType);
+
+        void PurgeLogBuffer();
+
+        void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig);
+
+        void UpdateLogType(LogTypeInfo logType);
     }
 }

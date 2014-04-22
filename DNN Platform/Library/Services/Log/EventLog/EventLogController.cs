@@ -22,7 +22,10 @@
 #region Usings
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -352,10 +355,71 @@ namespace DotNetNuke.Services.Log.EventLog
             LogController.Instance.AddLogType(logType);
         }
 
+        public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        {
+            LogController.Instance.AddLogTypeConfigInfo(logTypeConfig);
+        }
+
+        public void ClearLog()
+        {
+            LogController.Instance.ClearLog();
+        }
+
+        public void DeleteLog(LogInfo logInfo)
+        {
+            LogController.Instance.DeleteLog(logInfo);
+        }
+
+        public void DeleteLogType(LogTypeInfo logType)
+        {
+            LogController.Instance.DeleteLogType(logType);
+        }
+
+        public void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        {
+            LogController.Instance.DeleteLogTypeConfigInfo(logTypeConfig);
+        }
+
+        public List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
+        {
+            return LogController.Instance.GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords);
+        }
+
+        public ArrayList GetLogTypeConfigInfo()
+        {
+            return LogController.Instance.GetLogTypeConfigInfo();
+        }
+
+        public LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
+        {
+            return LogController.Instance.GetLogTypeConfigInfoByID(id);
+        }
+
+        public Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary()
+        {
+            return LogController.Instance.GetLogTypeInfoDictionary();
+        }
+
         public object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
         {
             return LogController.Instance.GetSingleLog(log, returnType);
         }
+
+        public void PurgeLogBuffer()
+        {
+            LogController.Instance.PurgeLogBuffer();
+        }
+
+        public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        {
+            LogController.Instance.UpdateLogTypeConfigInfo(logTypeConfig);
+        }
+
+        public virtual void UpdateLogType(LogTypeInfo logType)
+        {
+            LogController.Instance.UpdateLogType(logType);
+        }
+
 
         #endregion
 

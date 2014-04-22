@@ -1158,14 +1158,12 @@ namespace DotNetNuke.Services.FileSystem
 
         internal virtual void AddLogEntry(IFolderInfo folder, EventLogController.EventLogType eventLogType)
         {
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(folder, PortalController.GetCurrentPortalSettings(), GetCurrentUserId(), "", eventLogType);
+            EventLogController.Instance.AddLog(folder, PortalController.GetCurrentPortalSettings(), GetCurrentUserId(), "", eventLogType);
         }
 
         internal virtual void AddLogEntry(string propertyName, string propertyValue, EventLogController.EventLogType eventLogType)
         {
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(propertyName, propertyValue, PortalController.GetCurrentPortalSettings(), GetCurrentUserId(), eventLogType);
+            EventLogController.Instance.AddLog(propertyName, propertyValue, PortalController.GetCurrentPortalSettings(), GetCurrentUserId(), eventLogType);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>

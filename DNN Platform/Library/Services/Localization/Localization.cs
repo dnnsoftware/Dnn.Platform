@@ -441,8 +441,7 @@ namespace DotNetNuke.Services.Localization
                     string cacheKey = string.Format(DataCache.LocalesCacheKey, portalID);
                     DataCache.RemoveCache(cacheKey);
 
-                    var objEventLog = new EventLogController();
-                    objEventLog.AddLog("portalID/languageID",
+                    EventLogController.Instance.AddLog("portalID/languageID",
                                        portalID + "/" + languageID,
                                        PortalController.GetCurrentPortalSettings(),
                                        UserController.GetCurrentUserInfo().UserID,
@@ -740,8 +739,7 @@ namespace DotNetNuke.Services.Localization
             RemoveLanguageFromPortals(language.LanguageId);
 
             DataProvider.Instance().DeleteLanguage(language.LanguageId);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(language, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_DELETED);
+            EventLogController.Instance.AddLog(language, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -1912,8 +1910,7 @@ namespace DotNetNuke.Services.Localization
                 }
 
                 DataProvider.Instance().DeletePortalLanguages(portalID, languageID);
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog("portalID/languageID",
+                EventLogController.Instance.AddLog("portalID/languageID",
                                    portalID + "/" + languageID,
                                    PortalController.GetCurrentPortalSettings(),
                                    UserController.GetCurrentUserInfo().UserID,
@@ -1947,16 +1944,15 @@ namespace DotNetNuke.Services.Localization
 
         public static void SaveLanguage(Locale locale, bool clearCache)
         {
-            var objEventLog = new EventLogController();
             if (locale.LanguageId == Null.NullInteger)
             {
                 locale.LanguageId = DataProvider.Instance().AddLanguage(locale.Code, locale.Text, locale.Fallback, UserController.GetCurrentUserInfo().UserID);
-                objEventLog.AddLog(locale, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_CREATED);
+                EventLogController.Instance.AddLog(locale, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_CREATED);
             }
             else
             {
                 DataProvider.Instance().UpdateLanguage(locale.LanguageId, locale.Code, locale.Text, locale.Fallback, UserController.GetCurrentUserInfo().UserID);
-                objEventLog.AddLog(locale, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_UPDATED);
+                EventLogController.Instance.AddLog(locale, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_UPDATED);
             }
             if (clearCache)
                 DataCache.ClearHostCache(true);

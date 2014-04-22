@@ -296,8 +296,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                     var strMessage = PortalController.DeletePortal(portal, Globals.GetAbsoluteServerPath(Request));
                     if (string.IsNullOrEmpty(strMessage))
                     {
-                        var objEventLog = new EventLogController();
-                        objEventLog.AddLog("PortalName", portal.PortalName, PortalSettings, UserId, EventLogController.EventLogType.PORTAL_DELETED);
+                        EventLogController.Instance.AddLog("PortalName", portal.PortalName, PortalSettings, UserId, EventLogController.EventLogType.PORTAL_DELETED);
                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PortalDeleted", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                     }
                     else

@@ -250,7 +250,6 @@ namespace DotNetNuke.UI.ControlPanels
         protected void AddExistingModule(int moduleId, int tabId, string paneName, int position, string align)
         {
             ModuleInfo objModule;
-            var objEventLog = new EventLogController();
 
             int UserId = -1;
             if (Request.IsAuthenticated)
@@ -268,7 +267,7 @@ namespace DotNetNuke.UI.ControlPanels
                 objClone.PaneName = paneName;
                 objClone.Alignment = align;
                 ModuleController.Instance.AddModule(objClone);
-                objEventLog.AddLog(objClone, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(objClone, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_CREATED);
             }
         }
 

@@ -718,8 +718,7 @@ namespace DotNetNuke.Security.Membership
             Requires.NotNullOrEmpty("newUsername", newUsername);
 
             _dataProvider.ChangeUsername(userId, newUsername);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("userId",
+            EventLogController.Instance.AddLog("userId",
                                userId.ToString(),
                                PortalController.GetCurrentPortalSettings(),
                                UserController.GetCurrentUserInfo().UserID,
@@ -850,7 +849,6 @@ namespace DotNetNuke.Security.Membership
         public override UserCreateStatus CreateUser(ref UserInfo user)
         {
             UserCreateStatus createStatus = ValidateForProfanity(user);
-            EventLogController aLog = new EventLogController();
             string service = HttpContext.Current != null ? HttpContext.Current.Request.Params["state"] : string.Empty;
 
             //DNN-4016
@@ -883,8 +881,7 @@ namespace DotNetNuke.Security.Membership
                 catch (Exception ex)
                 {
                     createStatus = UserCreateStatus.UnexpectedError;
-                    EventLogController objEventLog = new EventLogController();
-                    objEventLog.AddLog("CreateUser", "Exception checking oauth authentication in CreateUser for userid : " + user.UserID + " " + ex.InnerException.Message, EventLogController.EventLogType.ADMIN_ALERT);
+                    EventLogController.Instance.AddLog("CreateUser", "Exception checking oauth authentication in CreateUser for userid : " + user.UserID + " " + ex.InnerException.Message, EventLogController.EventLogType.ADMIN_ALERT);
                 }
             }
 

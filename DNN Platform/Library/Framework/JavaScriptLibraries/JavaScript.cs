@@ -366,12 +366,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private static void LogCollision(string collisionText)
         {
             //need to log an event
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("Javascript Libraries",
-                collisionText,
-                PortalController.GetCurrentPortalSettings(),
-                UserController.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.SCRIPT_COLLISION);
+            EventLogController.Instance.AddLog("Javascript Libraries",
+                                            collisionText,
+                                            PortalController.GetCurrentPortalSettings(),
+                                            UserController.GetCurrentUserInfo().UserID,
+                                            EventLogController.EventLogType.SCRIPT_COLLISION);
             string strMessage = Localization.GetString("ScriptCollision", Localization.SharedResourceFile);
             var page = HttpContextSource.Current.Handler as Page;
             if (page != null)

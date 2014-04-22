@@ -46,8 +46,7 @@ namespace DotNetNuke.Entities.Portals
 
             DataProvider.Instance().DeletePortalAlias(portalAliasId);
 
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog("PortalAliasID",
+            EventLogController.Instance.AddLog("PortalAliasID",
                                portalAliasId.ToString(),
                                PortalController.GetCurrentPortalSettings(),
                                UserController.GetCurrentUserInfo().UserID,

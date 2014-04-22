@@ -116,17 +116,13 @@ namespace DesktopModules.Admin.RecycleBin
 
         private void DeleteModule(ModuleInfo module)
         {
-            var eventLogController = new EventLogController();
-            
             //hard-delete Tab Module Instance
             ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
-            eventLogController.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_DELETED);
+            EventLogController.Instance.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_DELETED);
         }
 
 	    private void DeleteTab(TabInfo tab, bool deleteDescendants)
 		{
-			var eventLogController = new EventLogController();
-
 			//get tab modules before deleting page
             var tabModules = ModuleController.Instance.GetTabModules(tab.TabID);
 
@@ -143,7 +139,7 @@ namespace DesktopModules.Admin.RecycleBin
                     ModuleController.Instance.DeleteModule(kvp.Value.ModuleID);
 				}
 			}
-			eventLogController.AddLog(tab, PortalSettings, UserId, "", EventLogController.EventLogType.TAB_DELETED);
+            EventLogController.Instance.AddLog(tab, PortalSettings, UserId, "", EventLogController.EventLogType.TAB_DELETED);
 		}
 
         private void LoadData()
@@ -166,8 +162,6 @@ namespace DesktopModules.Admin.RecycleBin
 
         private void RestoreModule(int moduleId, int tabId)
         {
-            var eventLogController = new EventLogController();
-
             // restore module
             var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
             if ((module != null))
@@ -180,7 +174,7 @@ namespace DesktopModules.Admin.RecycleBin
                     return;
                 }
                 ModuleController.Instance.RestoreModule(module);
-                eventLogController.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_RESTORED);
+                EventLogController.Instance.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_RESTORED);
             }
         }
 

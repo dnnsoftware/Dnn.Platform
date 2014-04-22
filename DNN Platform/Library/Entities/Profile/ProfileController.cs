@@ -286,8 +286,7 @@ namespace DotNetNuke.Entities.Profile
                                                                definition.Length,
                                                                (int) definition.DefaultVisibility,
                                                                UserController.GetCurrentUserInfo().UserID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
+            EventLogController.Instance.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
             return intDefinition;
         }
@@ -312,8 +311,7 @@ namespace DotNetNuke.Entities.Profile
         public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
         {
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
+            EventLogController.Instance.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
         }
 
@@ -491,8 +489,7 @@ namespace DotNetNuke.Entities.Profile
                                               definition.Length,
                                               (int) definition.DefaultVisibility,
                                               UserController.GetCurrentUserInfo().UserID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
+            EventLogController.Instance.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
         }
 

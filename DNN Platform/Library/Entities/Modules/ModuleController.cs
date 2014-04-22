@@ -120,7 +120,6 @@ namespace DotNetNuke.Entities.Modules
 
         private void AddModuleInternal(ModuleInfo module)
         {
-            var eventLogController = new EventLogController();
             // add module
             if (Null.IsNull(module.ModuleID))
             {
@@ -143,7 +142,7 @@ namespace DotNetNuke.Entities.Modules
                 var contentController = Util.GetContentController();
                 contentController.UpdateContentItem(module);
 
-                eventLogController.AddLog(module, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(module, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.MODULE_CREATED);
 
                 // set module permissions
                 ModulePermissionController.SaveModulePermissions(module);
@@ -1088,8 +1087,7 @@ namespace DotNetNuke.Entities.Modules
             }
 
             //Log deletion
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog("ModuleId", moduleId.ToString(), PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.MODULE_DELETED);
+            EventLogController.Instance.AddLog("ModuleId", moduleId.ToString(), PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.MODULE_DELETED);
         }
 
         /// <summary>
@@ -1644,8 +1642,7 @@ namespace DotNetNuke.Entities.Modules
                 termController.AddTermToContent(_Term, module);
             }
 
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(module, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.MODULE_UPDATED);
+            EventLogController.Instance.AddLog(module, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.MODULE_UPDATED);
 
             //save module permissions
             ModulePermissionController.SaveModulePermissions(module);
@@ -1685,7 +1682,7 @@ namespace DotNetNuke.Entities.Modules
                                              module.CultureCode,
                                              UserController.GetCurrentUserInfo().UserID);
 
-                eventLogController.AddLog(module, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABMODULE_UPDATED);
+                EventLogController.Instance.AddLog(module, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABMODULE_UPDATED);
 
                 //update module order in pane
                 UpdateModuleOrder(module.TabID, module.ModuleID, module.ModuleOrder, module.PaneName);

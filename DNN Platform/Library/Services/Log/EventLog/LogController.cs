@@ -26,7 +26,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -37,7 +36,6 @@ using System.Xml;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -232,15 +230,12 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     Logger.Error(exc);
 
-                    //AddLogToFile(logInfo);
+                    AddLogToFile(logInfo);
                 }
             }
         }
 
-
-
-
-        public virtual void AddLogType(string configFile, string fallbackConfigFile)
+        public void AddLogType(string configFile, string fallbackConfigFile)
         {
             var xmlDoc = new XmlDocument();
             try
@@ -301,12 +296,12 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
-        public virtual void AddLogType(LogTypeInfo logType)
+        public void AddLogType(LogTypeInfo logType)
         {
             LoggingProvider.Instance().AddLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
         }
 
-        public virtual void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             LoggingProvider.Instance().AddLogTypeConfigInfo(logTypeConfig.ID,
                                                             logTypeConfig.LoggingIsActive,
@@ -367,24 +362,9 @@ namespace DotNetNuke.Services.Log.EventLog
             return LoggingProvider.Instance().GetSingleLog(log, returnType);
         }
 
-        public bool LoggingIsEnabled(string logType, int portalID)
-        {
-            return LoggingProvider.Instance().LoggingIsEnabled(logType, portalID);
-        }
-
         public void PurgeLogBuffer()
         {
             LoggingProvider.Instance().PurgeLogBuffer();
-        }
-
-        public virtual bool SupportsEmailNotification()
-        {
-            return LoggingProvider.Instance().SupportsEmailNotification();
-        }
-
-        public virtual bool SupportsInternalViewer()
-        {
-            return LoggingProvider.Instance().SupportsInternalViewer();
         }
 
         public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)

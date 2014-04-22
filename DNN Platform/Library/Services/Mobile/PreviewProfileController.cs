@@ -153,8 +153,7 @@ namespace DotNetNuke.Services.Mobile
 
 		private void AddLog(string logContent)
 		{
-			var objEventLog = new EventLogController();
-			objEventLog.AddLog("Message", logContent, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
+            EventLogController.Instance.AddLog("Message", logContent, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
 		}
 
 

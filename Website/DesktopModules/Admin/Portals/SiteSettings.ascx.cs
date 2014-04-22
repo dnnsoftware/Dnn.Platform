@@ -997,8 +997,7 @@ namespace DesktopModules.Admin.Portals
 
                     if (string.IsNullOrEmpty(strMessage))
                     {
-                        var objEventLog = new EventLogController();
-                        objEventLog.AddLog("PortalName", objPortalInfo.PortalName, PortalSettings, UserId, EventLogController.EventLogType.PORTAL_DELETED);
+                        EventLogController.Instance.AddLog("PortalName", objPortalInfo.PortalName, PortalSettings, UserId, EventLogController.EventLogType.PORTAL_DELETED);
 
                         //Redirect to another site
                         if (_portalId == PortalId)

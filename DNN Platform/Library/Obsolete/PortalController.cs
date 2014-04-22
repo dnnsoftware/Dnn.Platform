@@ -93,7 +93,7 @@ namespace DotNetNuke.Entities.Portals
 
             DataProvider.Instance().DeletePortalInfo(portalId);
 
-            _eventLogController.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
+            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
 
             DataCache.ClearHostCache(true);
         }

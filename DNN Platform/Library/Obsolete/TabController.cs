@@ -89,8 +89,7 @@ namespace DotNetNuke.Entities.Tabs
                                    tab.SiteMapPriority,
                                    UserController.GetCurrentUserInfo().UserID,
                                    tab.CultureCode);
-                var eventLog = new EventLogController();
-                eventLog.AddLog(tab, PortalController.GetCurrentPortalSettings(),
+                EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(),
                                 UserController.GetCurrentUserInfo().UserID, "",
                                 EventLogController.EventLogType.TAB_UPDATED);
             }
@@ -363,8 +362,7 @@ namespace DotNetNuke.Entities.Tabs
             Provider.UpdateTabOrder(objTab.TabID, objTab.TabOrder, objTab.ParentId,
                                     UserController.GetCurrentUserInfo().UserID);
             UpdateTabVersion(objTab.TabID);
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(objTab, PortalController.GetCurrentPortalSettings(),
+            EventLogController.Instance.AddLog(objTab, PortalController.GetCurrentPortalSettings(),
                                       UserController.GetCurrentUserInfo().UserID, "",
                                       EventLogController.EventLogType.TAB_ORDER_UPDATED);
             ClearCache(objTab.PortalID);

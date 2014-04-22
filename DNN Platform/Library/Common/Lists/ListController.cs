@@ -151,8 +151,7 @@ namespace DotNetNuke.Common.Lists
 
             if (entryId != Null.NullInteger)
             {
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(listEntry, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
+                EventLogController.Instance.AddLog(listEntry, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
             }
             ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
             return entryId;
@@ -166,8 +165,7 @@ namespace DotNetNuke.Common.Lists
 		public void DeleteList(string listName, string parentKey, int portalId)
 		{
 			ListInfo list = GetListInfo(listName, parentKey, portalId);
-			var objEventLog = new EventLogController();
-			objEventLog.AddLog("ListName", listName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
+            EventLogController.Instance.AddLog("ListName", listName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
 			DataProvider.Instance().DeleteList(listName, parentKey);
 		    if (list != null)
 		    {
@@ -340,8 +338,7 @@ namespace DotNetNuke.Common.Lists
         public void UpdateListEntry(ListEntryInfo listEntry)
         {
             DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.Text, listEntry.Description, UserController.GetCurrentUserInfo().UserID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(listEntry, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
+            EventLogController.Instance.AddLog(listEntry, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
             ClearListCache(listEntry.PortalID);
             ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
         }

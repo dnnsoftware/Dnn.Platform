@@ -588,8 +588,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion, string passwordAnswer)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
+            EventLogController.Instance.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
             return MembershipProvider.Instance().ChangePasswordQuestionAndAnswer(user, password, passwordQuestion, passwordAnswer);
         }
 
@@ -745,8 +744,7 @@ namespace DotNetNuke.Entities.Users
                 user.PasswordResetExpiration = passwordExpiry;
                 user.PasswordResetToken = passwordGuid;
                 UpdateUser(user.PortalID, user);
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_CREATED);
+                EventLogController.Instance.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_CREATED);
                 DataCache.ClearPortalCache(portalId, false);
                 if (!user.IsSuperUser)
                 {
@@ -811,8 +809,7 @@ namespace DotNetNuke.Entities.Users
             if (canDelete)
             {
                 //Obtain PortalSettings from Current Context
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_DELETED);
+                EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_DELETED);
                 if (notify && !user.IsSuperUser)
                 {
                     //send email notification to portal administrator that the user was removed from the portal
@@ -1469,8 +1466,7 @@ namespace DotNetNuke.Entities.Users
                 var portalSettings = PortalController.GetCurrentPortalSettings();
 
                 //Log event
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
+                EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
                 //Delete userFolder - DNN-3787
 #pragma warning disable 618
@@ -1580,8 +1576,7 @@ namespace DotNetNuke.Entities.Users
                 var portalSettings = PortalController.GetCurrentPortalSettings();
 
                 //Log event
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
+                EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
 
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);
@@ -1681,8 +1676,6 @@ namespace DotNetNuke.Entities.Users
 			MembershipProvider.Instance().UpdateUser(user);
 			if (loggedAction)
 			{
-				var objEventLog = new EventLogController();
-
                 //if the httpcontext is null, then get portal settings by portal id.
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
@@ -1694,7 +1687,7 @@ namespace DotNetNuke.Entities.Users
                     portalSettings = new PortalSettings(portalId);
                 }
 
-			    objEventLog.AddLog(user, portalSettings, GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
+                EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
 			}
 			//Remove the UserInfo from the Cache, as it has been modified
 			if (clearCache)

@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.InternalServices
             try
             {
                 var logInfo = new LogInfo {LogGUID = guid};
-                logInfo = new EventLogController().GetSingleLog(logInfo, LoggingProvider.ReturnType.LogInfoObjects) as LogInfo;
+                logInfo = EventLogController.Instance.GetSingleLog(logInfo, LoggingProvider.ReturnType.LogInfoObjects) as LogInfo;
                 if (logInfo == null)
                 {
                     return Request.CreateResponse(HttpStatusCode.BadRequest);

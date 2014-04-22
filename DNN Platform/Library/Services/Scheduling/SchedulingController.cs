@@ -62,8 +62,7 @@ namespace DotNetNuke.Services.Scheduling
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                                       bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("TypeFullName", TypeFullName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
+            EventLogController.Instance.AddLog("TypeFullName", TypeFullName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
             return DataProvider.Instance().AddSchedule(TypeFullName,
                                                        TimeLapse,
                                                        TimeLapseMeasurement,
@@ -93,8 +92,7 @@ namespace DotNetNuke.Services.Scheduling
         public static void DeleteSchedule(int ScheduleID)
         {
             DataProvider.Instance().DeleteSchedule(ScheduleID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("ScheduleID",
+            EventLogController.Instance.AddLog("ScheduleID",
                                ScheduleID.ToString(),
                                PortalController.GetCurrentPortalSettings(),
                                UserController.GetCurrentUserInfo().UserID,
@@ -210,8 +208,7 @@ namespace DotNetNuke.Services.Scheduling
                                                    UserController.GetCurrentUserInfo().UserID,
                                                    FriendlyName,
                                                    ScheduleStartDate);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("TypeFullName", TypeFullName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_UPDATED);
+            EventLogController.Instance.AddLog("TypeFullName", TypeFullName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_UPDATED);
         }
 
         public static void UpdateScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)

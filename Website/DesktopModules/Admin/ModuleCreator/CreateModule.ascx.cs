@@ -116,11 +116,9 @@ namespace DesktopModules.Admin.ModuleCreator
 
         private string CreateModuleControl()
         {
-            EventLogController objEventLog = new EventLogController();
-
             var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
 
-            objEventLog.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+            EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
 
             var controlName = Null.NullString;
@@ -195,7 +193,7 @@ namespace DesktopModules.Admin.ModuleCreator
                     tw.WriteLine(sourceCode);
                     tw.Close();
 
-                    objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+                    EventLogController.Instance.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
                 }
 

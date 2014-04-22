@@ -132,7 +132,6 @@ namespace DotNetNuke.UI.Containers
 
             //Check if this is the owner instance of a shared module.
             var user = UserController.GetCurrentUserInfo();
-            var eventLogController = new EventLogController();
             if (!module.IsShared)
             {
                 foreach (ModuleInfo instance in ModuleController.Instance.GetTabModulesByModule(module.ModuleID))
@@ -141,13 +140,13 @@ namespace DotNetNuke.UI.Containers
                     {
                         //HARD Delete Shared Instance
                         ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
-                        eventLogController.AddLog(instance, PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_DELETED);
+                        EventLogController.Instance.AddLog(instance, PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_DELETED);
                     }
                 }
             }
 
             ModuleController.Instance.DeleteTabModule(ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
-            eventLogController.AddLog(module, PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
+            EventLogController.Instance.AddLog(module, PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
             //Redirect to the same page to pick up changes
             Response.Redirect(Request.RawUrl, true);

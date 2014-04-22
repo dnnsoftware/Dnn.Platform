@@ -61,8 +61,7 @@ namespace DotNetNuke.Security.Permissions
 		
         public int AddPermission(PermissionInfo permission)
         {
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(permission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
+            EventLogController.Instance.AddLog(permission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
             var permissionId =  Convert.ToInt32(provider.AddPermission(permission.PermissionCode,
                                                        permission.ModuleDefID,
                                                        permission.PermissionKey,
@@ -75,8 +74,7 @@ namespace DotNetNuke.Security.Permissions
 
         public void DeletePermission(int permissionID)
         {
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog("PermissionID",
+            EventLogController.Instance.AddLog("PermissionID",
                                permissionID.ToString(),
                                PortalController.GetCurrentPortalSettings(),
                                UserController.GetCurrentUserInfo().UserID,
@@ -110,8 +108,7 @@ namespace DotNetNuke.Security.Permissions
 
         public void UpdatePermission(PermissionInfo permission)
         {
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(permission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_UPDATED);
+            EventLogController.Instance.AddLog(permission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_UPDATED);
             provider.UpdatePermission(permission.PermissionID,
                                       permission.PermissionCode,
                                       permission.ModuleDefID,

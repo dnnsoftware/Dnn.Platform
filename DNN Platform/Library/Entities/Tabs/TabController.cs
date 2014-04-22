@@ -140,8 +140,7 @@ namespace DotNetNuke.Entities.Tabs
                 termController.AddTermToContent(term, tab);
             }
 
-            var eventLog = new EventLogController();
-            eventLog.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID,
+            EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID,
                             "", EventLogController.EventLogType.TAB_CREATED);
 
             //Add Tab Permissions
@@ -560,8 +559,7 @@ namespace DotNetNuke.Entities.Tabs
             Provider.DeleteTab(tabId);
 
             //Log deletion
-            var eventLog = new EventLogController();
-            eventLog.AddLog("TabID",
+            EventLogController.Instance.AddLog("TabID",
                             tabId.ToString(),
                             PortalController.GetCurrentPortalSettings(),
                             UserController.GetCurrentUserInfo().UserID,
@@ -597,8 +595,7 @@ namespace DotNetNuke.Entities.Tabs
                         ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, true);
                     }
 
-                    var eventLogController = new EventLogController();
-                    eventLogController.AddLog(tabToDelete, portalSettings, portalSettings.UserId, "",
+                    EventLogController.Instance.AddLog(tabToDelete, portalSettings, portalSettings.UserId, "",
                                               EventLogController.EventLogType.TAB_SENT_TO_RECYCLE_BIN);
                 }
                 else
@@ -999,8 +996,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             DataProvider.Instance().DeleteTabUrl(tabUrl.TabId, tabUrl.SeqNum);
 
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog("tabUrl.TabId",
+            EventLogController.Instance.AddLog("tabUrl.TabId",
                                tabUrl.TabId.ToString(),
                                PortalController.GetCurrentPortalSettings(),
                                UserController.GetCurrentUserInfo().UserID,
@@ -1633,8 +1629,7 @@ namespace DotNetNuke.Entities.Tabs
                 UpdateTab(localizedtab);
             }
 
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(tab, portalSettings, portalSettings.UserId, "", EventLogController.EventLogType.TAB_RESTORED);
+            EventLogController.Instance.AddLog(tab, portalSettings, portalSettings.UserId, "", EventLogController.EventLogType.TAB_RESTORED);
 
             ArrayList allTabsModules = ModuleController.Instance.GetAllTabsModules(tab.PortalID, true);
             foreach (ModuleInfo objModule in allTabsModules)
@@ -1677,8 +1672,7 @@ namespace DotNetNuke.Entities.Tabs
 
             DataProvider.Instance().SaveTabUrl(tabUrl.TabId, tabUrl.SeqNum, portalAliasId, (int)tabUrl.PortalAliasUsage, tabUrl.Url, tabUrl.QueryString, tabUrl.CultureCode, tabUrl.HttpStatus, tabUrl.IsSystem, UserController.GetCurrentUserInfo().UserID);
 
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("tabUrl",
+            EventLogController.Instance.AddLog("tabUrl",
                                tabUrl.ToString(),
                                PortalController.GetCurrentPortalSettings(),
                                UserController.GetCurrentUserInfo().UserID,
@@ -1790,8 +1784,7 @@ namespace DotNetNuke.Entities.Tabs
                 termController.AddTermToContent(term, updatedTab);
             }
 
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(updatedTab, PortalController.GetCurrentPortalSettings(),
+            EventLogController.Instance.AddLog(updatedTab, PortalController.GetCurrentPortalSettings(),
                                       UserController.GetCurrentUserInfo().UserID, "",
                                       EventLogController.EventLogType.TAB_UPDATED);
 
@@ -1947,8 +1940,7 @@ namespace DotNetNuke.Entities.Tabs
 
                     UpdateTabVersion(tab.TabID);
 
-                    var eventLogController = new EventLogController();
-                    eventLogController.AddLog(tab, PortalController.GetCurrentPortalSettings(),
+                    EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(),
                                               UserController.GetCurrentUserInfo().UserID, "",
                                               EventLogController.EventLogType.TAB_UPDATED);
                     clearCache = true;

@@ -93,9 +93,8 @@ namespace DotNetNuke.Modules.Admin.LogViewer
 
             pnlEditLogTypeConfigInfo.Visible = true;
             pnlLogTypeConfigInfo.Visible = false;
-            var logController = new LogController();
 
-        	var arrLogTypeInfo = logController.GetLogTypeInfoDictionary().Values.OrderBy(t => t.LogTypeFriendlyName);
+            var arrLogTypeInfo = LogController.Instance.GetLogTypeInfoDictionary().Values.OrderBy(t => t.LogTypeFriendlyName);
 
             cboLogTypeKey.DataTextField = "LogTypeFriendlyName";
             cboLogTypeKey.DataValueField = "LogTypeKey";
@@ -139,8 +138,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
 
         private void BindSummaryData()
         {
-            var objLogController = new LogController();
-            ArrayList arrLogTypeConfigInfo = objLogController.GetLogTypeConfigInfo();
+            ArrayList arrLogTypeConfigInfo = LogController.Instance.GetLogTypeConfigInfo();
 
             dgLogTypeConfigInfo.DataSource = arrLogTypeConfigInfo;
             dgLogTypeConfigInfo.DataBind();
@@ -270,12 +268,11 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         /// -----------------------------------------------------------------------------
         protected void OnDeleteClick(Object sender, EventArgs e)
         {
-            var objLogTypeConfigInfo = new LogTypeConfigInfo();
-            var l = new LogController();
-            objLogTypeConfigInfo.ID = Convert.ToString(ViewState["LogID"]);
+            var logTypeConfigInfo = new LogTypeConfigInfo();
+            logTypeConfigInfo.ID = Convert.ToString(ViewState["LogID"]);
             try
             {
-                l.DeleteLogTypeConfigInfo(objLogTypeConfigInfo);
+                LogController.Instance.DeleteLogTypeConfigInfo(logTypeConfigInfo);
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ConfigDeleted", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                 BindSummaryData();
             }
@@ -314,18 +311,17 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                                                MailFromAddress = txtMailFromAddress.Text,
                                                MailToAddress = txtMailToAddress.Text
                                            };
-            var l = new LogController();
 
             if (ViewState["LogID"] != null)
             {
                 objLogTypeConfigInfo.ID = Convert.ToString(ViewState["LogID"]);
-                l.UpdateLogTypeConfigInfo(objLogTypeConfigInfo);
+                LogController.Instance.UpdateLogTypeConfigInfo(objLogTypeConfigInfo);
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ConfigUpdated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             else
             {
                 objLogTypeConfigInfo.ID = Guid.NewGuid().ToString();
-                l.AddLogTypeConfigInfo(objLogTypeConfigInfo);
+                LogController.Instance.AddLogTypeConfigInfo(objLogTypeConfigInfo);
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ConfigAdded", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             BindSummaryData();
@@ -350,9 +346,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
 
             BindDetailData();
 
-            var l = new LogController();
-
-            LogTypeConfigInfo objLogTypeConfigInfo = l.GetLogTypeConfigInfoByID(logID);
+            LogTypeConfigInfo objLogTypeConfigInfo = LogController.Instance.GetLogTypeConfigInfoByID(logID);
 
             chkIsActive.Checked = objLogTypeConfigInfo.LoggingIsActive;
             chkEmailNotificationStatus.Checked = objLogTypeConfigInfo.EmailNotificationIsActive;

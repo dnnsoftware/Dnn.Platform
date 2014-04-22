@@ -234,7 +234,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                     var positionTabId = Int32.Parse(cboPositionTab.SelectedItem.Value);
 
-                    var objEventLog = new EventLogController();
                     if (rbInsertPosition.SelectedValue == "After" && positionTabId > Null.NullInteger)
                     {
                         objTab.TabID = TabController.Instance.AddTabAfter(objTab, positionTabId);
@@ -247,7 +246,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         objTab.TabID = TabController.Instance.AddTab(objTab);
                     }
-                    objEventLog.AddLog(objTab, PortalSettings, UserId, "", EventLogController.EventLogType.TAB_CREATED);
+                    EventLogController.Instance.AddLog(objTab, PortalSettings, UserId, "", EventLogController.EventLogType.TAB_CREATED);
 
                     objTab = TabController.DeserializeTab(tabNodes[0], objTab, PortalId, PortalTemplateModuleAction.Replace);
 

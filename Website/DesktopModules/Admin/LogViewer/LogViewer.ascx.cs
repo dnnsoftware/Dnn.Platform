@@ -83,18 +83,17 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         {
             //ddlLogType.Items.Add(new ListItem(Localization.GetString("All"), "*"));
             ddlLogType.AddItem(Localization.GetString("All"), "*");
-            var logController = new LogController();
 
             List<LogTypeConfigInfo> logTypes;
             if (String.IsNullOrEmpty(EventFilter))
             {
-                logTypes = logController.GetLogTypeConfigInfo().Cast<LogTypeConfigInfo>()
+                logTypes = LogController.Instance.GetLogTypeConfigInfo().Cast<LogTypeConfigInfo>()
                     .Where(l => l.LoggingIsActive)
                     .OrderBy(l => l.LogTypeFriendlyName).ToList();
             }
             else
             {
-                logTypes = logController.GetLogTypeConfigInfo().Cast<LogTypeConfigInfo>()
+                logTypes = LogController.Instance.GetLogTypeConfigInfo().Cast<LogTypeConfigInfo>()
                     .Where(l => l.LogTypeKey.StartsWith(EventFilter) && l.LoggingIsActive)
                     .OrderBy(l => l.LogTypeFriendlyName).ToList();
             }
@@ -152,7 +151,6 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                     {
                         positions = new[] {s};
                     }
-                    var objLoggingController = new LogController();
                     if (positions != null)
                     {
                         var j = positions.Length;
@@ -161,7 +159,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                             j -= 1;
                             var excKey = positions[j].Split(Convert.ToChar("|"));
                             var objLogInfo = new LogInfo {LogGUID = excKey[0], LogFileID = excKey[1]};
-                            objLoggingController.DeleteLog(objLogInfo);
+                            LogController.Instance.DeleteLog(objLogInfo);
                         }
                     }
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DeleteSuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
@@ -192,7 +190,6 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                     {
                         excPositions = new[] {s};
                     }
-                    var objLoggingController = new LogController();
                     objXML.LoadXml("<LogEntries></LogEntries>");
                     if (excPositions != null)
                     {
@@ -202,7 +199,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                             j -= 1;
                             var excKey = excPositions[j].Split(Convert.ToChar("|"));
                             var objLogInfo = new LogInfo {LogGUID = excKey[0], LogFileID = excKey[1]};
-                            var objNode = objXML.ImportNode((XmlNode) objLoggingController.GetSingleLog(objLogInfo, LoggingProvider.ReturnType.XML), true);
+                            var objNode = objXML.ImportNode((XmlNode) LogController.Instance.GetSingleLog(objLogInfo, LoggingProvider.ReturnType.XML), true);
                             if (objXML.DocumentElement != null)
                             {
                                 objXML.DocumentElement.AppendChild(objNode);
@@ -349,12 +346,10 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                 _pageIndex = Convert.ToInt32(Request.QueryString["CurrentPage"]);
             }
 
-            var logController = new LogController();
-            _logTypeDictionary = logController.GetLogTypeInfoDictionary();
+            _logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
         }
 
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Page_Load runs when the page loads
         /// </summary>
@@ -362,10 +357,6 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 17/9/2004  Updated for localization, Help and 508
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -375,8 +366,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
 				// If this is the first visit to the page, populate the site data
                 if (Page.IsPostBack == false)
                 {
-                    var logController = new LogController();
-                    logController.PurgeLogBuffer();
+                    LogController.Instance.PurgeLogBuffer();
                     if (Request.QueryString["PageRecords"] != null)
                     {
                         ddlRecordsPerPage.SelectedValue = Request.QueryString["PageRecords"];
@@ -394,13 +384,11 @@ namespace DotNetNuke.Modules.Admin.LogViewer
 
         private void BtnClearClick(Object sender, EventArgs e)
         {
-            var objLoggingController = new LogController();
-            objLoggingController.ClearLog();
+            LogController.Instance.ClearLog();
             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("LogCleared", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
-            var objEventLog = new EventLogController();
 			
             //add entry to log recording it was cleared
-            objEventLog.AddLog(Localization.GetString("LogCleared", LocalResourceFile),
+            EventLogController.Instance.AddLog(Localization.GetString("LogCleared", LocalResourceFile),
                                Localization.GetString("Username", LocalResourceFile) + ":" + UserInfo.Username,
                                PortalSettings,
                                -1,
@@ -478,13 +466,12 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                 currentPage = currentPage - 1;
             }
 
-            var logController = new LogController();
             var filteredKey = _logTypeKey;
             if (_logTypeKey == "*" && !String.IsNullOrEmpty(EventFilter))
             {
                 filteredKey = EventFilter + "%";
             }
-            var logs = logController.GetLogs(_portalId, filteredKey == "*" ? String.Empty : filteredKey, pageSize, currentPage, ref totalRecords);
+            var logs = LogController.Instance.GetLogs(_portalId, filteredKey == "*" ? String.Empty : filteredKey, pageSize, currentPage, ref totalRecords);
 
             if (logs.Count > 0)
             {

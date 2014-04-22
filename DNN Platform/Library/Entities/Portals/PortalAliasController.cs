@@ -127,8 +127,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     //relate the PortalAlias to the default portal on a fresh database installation
                     DataProvider.Instance().UpdatePortalAlias(httpAlias.ToLower().Trim('/'), UserController.GetCurrentUserInfo().UserID);
-                    var objEventLog = new EventLogController();
-                    objEventLog.AddLog("PortalAlias",
+                    EventLogController.Instance.AddLog("PortalAlias",
                                        httpAlias,
                                        PortalController.GetCurrentPortalSettings(),
                                        UserController.GetCurrentUserInfo().UserID,
@@ -147,8 +146,7 @@ namespace DotNetNuke.Entities.Portals
         private static void LogEvent(PortalAliasInfo portalAlias, EventLogController.EventLogType logType)
         {
             int userId = UserController.GetCurrentUserInfo().UserID;
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(portalAlias, PortalController.GetCurrentPortalSettings(), userId, "", logType);
+            EventLogController.Instance.AddLog(portalAlias, PortalController.GetCurrentPortalSettings(), userId, "", logType);
         }
 
         private static bool ValidateAlias(string portalAlias, bool ischild, bool isDomain)

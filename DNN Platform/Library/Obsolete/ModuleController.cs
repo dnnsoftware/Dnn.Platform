@@ -182,8 +182,7 @@ namespace DotNetNuke.Entities.Modules
         {
             dataProvider.DeleteTabModuleSettings(tabModuleId);
             UpdateTabModuleVersion(tabModuleId);
-            var eventLog = new EventLogController();
-            eventLog.AddLog("TabModuleID",
+            EventLogController.Instance.AddLog("TabModuleID",
                                tabModuleId.ToString(),
                                PortalController.GetCurrentPortalSettings(),
                                UserController.GetCurrentUserInfo().UserID,
