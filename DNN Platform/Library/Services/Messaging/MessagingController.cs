@@ -180,7 +180,7 @@ namespace DotNetNuke.Services.Messaging
 
         public void UpdateMessage(Message message)
         {
-            var user = UserController.GetCurrentUserInfo().UserID;
+            var user = UserController.Instance.GetCurrentUserInfo().UserID;
             switch (message.Status)
             {
                 case MessageStatusType.Unread:

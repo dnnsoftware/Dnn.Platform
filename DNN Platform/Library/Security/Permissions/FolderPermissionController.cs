@@ -221,7 +221,7 @@ namespace DotNetNuke.Security.Permissions
                                                                objFolderPermission.RoleID,
                                                                objFolderPermission.AllowAccess,
                                                                objFolderPermission.UserID,
-                                                               UserController.GetCurrentUserInfo().UserID);
+                                                               UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         [Obsolete("Deprecated in DNN 5.1.")]
@@ -294,7 +294,7 @@ namespace DotNetNuke.Security.Permissions
                                                            objFolderPermission.RoleID,
                                                            objFolderPermission.AllowAccess,
                                                            objFolderPermission.UserID,
-                                                           UserController.GetCurrentUserInfo().UserID);
+                                                           UserController.Instance.GetCurrentUserInfo().UserID);
             ClearPermissionCache(objFolderPermission.PortalID);
         }
 

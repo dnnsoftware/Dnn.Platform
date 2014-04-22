@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Mail
                 }
                 else
                 {
-                    PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+                    PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     _strSenderLanguage = portalSettings.DefaultLanguage;
                 }
             }
@@ -245,7 +245,7 @@ namespace DotNetNuke.Services.Mail
         /// <summary>internal method to initialize used objects, depending on parameters of construct method</summary>
         private void Initialize()
         {
-            _portalSettings = PortalController.GetCurrentPortalSettings();
+            _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             PortalAlias = _portalSettings.PortalAlias.HTTPAlias;
             SendingUser = (UserInfo) HttpContext.Current.Items["UserInfo"];
             _tokenReplace = new TokenReplace();

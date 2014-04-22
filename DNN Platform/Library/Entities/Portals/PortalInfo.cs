@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Portals
     ///            Dim _PhysicalPath As String
     ///            Dim PortalSettings As PortalSettings = Nothing
     ///            If Not HttpContext.Current Is Nothing Then
-    ///                PortalSettings = PortalController.GetCurrentPortalSettings()
+    ///                PortalSettings = PortalController.Instance.GetCurrentPortalSettings()
     ///            End If
     ///            If PortalId = Null.NullInteger Then
     ///                _PhysicalPath = DotNetNuke.Common.Globals.HostMapPath + RelativePath

@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                     languageCounter += 1;
                     pageList = (from kvp in TabController.Instance.GetTabsByPortal(PortalId)
                                 where !kvp.Value.TabPath.StartsWith("//Admin")
-                                      && kvp.Value.CultureCode == PortalController.GetCurrentPortalSettings().DefaultLanguage
+                                      && kvp.Value.CultureCode == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage
                                       && !kvp.Value.IsDeleted
                                 select kvp.Value).ToList();
 

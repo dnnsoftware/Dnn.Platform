@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             //can only update username if a host/admin and account being managed is not a superuser
-            if (UserController.GetCurrentUserInfo().IsSuperUser)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 //only allow updates for non-superuser accounts
                 if (User.IsSuperUser==false)
@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             //if an admin, check if the user is only within this portal
-            if (UserController.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
             {
                 //only allow updates for non-superuser accounts
                 if (User.IsSuperUser)

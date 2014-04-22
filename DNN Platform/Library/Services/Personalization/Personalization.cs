@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Personalization
                 var _portalSettings = (PortalSettings) context.Items["PortalSettings"];
 
                 //load the user info object
-                UserInfo UserInfo = UserController.GetCurrentUserInfo();
+                UserInfo UserInfo = UserController.Instance.GetCurrentUserInfo();
 
                 //get the personalization object
                 var personalizationController = new PersonalizationController();

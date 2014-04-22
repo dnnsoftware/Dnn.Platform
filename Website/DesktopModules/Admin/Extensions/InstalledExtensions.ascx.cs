@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 if ((_packagesInUse == null))
                 {
-                    _packagesInUse = PackageController.GetModulePackagesInUse(PortalController.GetCurrentPortalSettings().PortalId, ModuleContext.PortalSettings.ActiveTab.IsSuperTab);
+                    _packagesInUse = PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentPortalSettings().PortalId, ModuleContext.PortalSettings.ActiveTab.IsSuperTab);
                 }
                 return _packagesInUse;
             }
@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                         var formatString = ModuleContext.NavigateUrl(ModuleContext.TabId, "UnInstall", false, parameters);                        
                         formatString = formatString.Replace("keyfield", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
-                        imageColumn.Visible = UserController.GetCurrentUserInfo().IsSuperUser;
+                        imageColumn.Visible = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
                     }
                     if (imageColumn.CommandName == "Edit")
                     {

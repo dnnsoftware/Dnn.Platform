@@ -1015,9 +1015,6 @@
     <Compile Include="Services\FileSystem\Wrappers\IDirectory.cs" />
     <Compile Include="Services\FileSystem\Wrappers\IFile.cs" />
     <Compile Include="Services\FileSystem\Wrappers\IFolderPermissionController.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\IUserController.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\PortalControllerWrapper.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\UserControllerWrapper.cs" />
     <Compile Include="Services\FileSystem\Providers\DatabaseFolderProvider.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileAlreadyExistsException.cs" />
     <Compile Include="Services\FileSystem\FileController.cs" />

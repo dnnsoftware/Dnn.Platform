@@ -70,8 +70,8 @@ namespace DotNetNuke.Services.Installer.Packages
         private static void AddLog(PackageInfo package, EventLogController.EventLogType logType)
         {
             EventLogController.Instance.AddLog(package, 
-                        PortalController.GetCurrentPortalSettings(), 
-                        UserController.GetCurrentUserInfo().UserID, 
+                        PortalController.Instance.GetCurrentPortalSettings(), 
+                        UserController.Instance.GetCurrentUserInfo().UserID, 
                         "",
                         logType);
             
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                                 package.Email,
                                                 package.ReleaseNotes,
                                                 package.IsSystemPackage,
-                                                UserController.GetCurrentUserInfo().UserID,
+                                                UserController.Instance.GetCurrentUserInfo().UserID,
                                                 package.FolderName,
                                                 package.IconFile);
 
@@ -155,7 +155,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                    package.Email,
                                    package.ReleaseNotes,
                                    package.IsSystemPackage,
-                                   UserController.GetCurrentUserInfo().UserID,
+                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                    package.FolderName,
                                    package.IconFile);
 

@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
         public string GetRedirectUrl(string userAgent)
         {            
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings != null && portalSettings.ActiveTab != null)
             {
                 string redirectUrl = GetRedirectUrl(userAgent, portalSettings.PortalId, portalSettings.ActiveTab.TabID);
@@ -227,7 +227,7 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found</returns>
         public string GetFullSiteUrl()
         {
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings != null && portalSettings.ActiveTab != null)
             {
                 string fullSiteUrl = GetFullSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
@@ -326,7 +326,7 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found</returns>
         public string GetMobileSiteUrl()
         {
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings != null && portalSettings.ActiveTab != null)
             {
                 string fullSiteUrl = GetMobileSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
@@ -418,7 +418,7 @@ namespace DotNetNuke.Services.Mobile
 			                                        (int) redirection.TargetType,
 			                                        redirection.TargetValue,
 													redirection.Enabled,
-			                                        UserController.GetCurrentUserInfo().UserID);
+			                                        UserController.Instance.GetCurrentUserInfo().UserID);
 
 			foreach (IMatchRule rule in redirection.MatchRules)
 			{
@@ -661,7 +661,7 @@ namespace DotNetNuke.Services.Mobile
 
 		private void AddLog(string logContent)
 		{
-            EventLogController.Instance.AddLog("Site Redirection Rule", logContent, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
+            EventLogController.Instance.AddLog("Site Redirection Rule", logContent, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
 		}
 
         private bool DoesCapabilityMatchWithRule(IClientCapability clientCapability, IRedirection redirection)

@@ -583,7 +583,7 @@ namespace DotNetNuke.UI.Skins
             {
                 AddPageMessage(this, Localization.GetString("CriticalError.Error"), Server.HtmlEncode(Request.QueryString["error"]), ModuleMessage.ModuleMessageType.RedError);
 
-                if (UserController.GetCurrentUserInfo().IsSuperUser)
+                if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                 {
                     ServicesFramework.Instance.RequestAjaxScriptSupport();
                     ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

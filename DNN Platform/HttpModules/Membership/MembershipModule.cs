@@ -142,7 +142,7 @@ namespace DotNetNuke.HttpModules.Membership
             }
 
             //Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             bool isActiveDirectoryAuthHeaderPresent = false;
             var auth = request.Headers.Get("Authorization");

@@ -659,7 +659,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             //Try and get the folder from the portal cache
             IFolderInfo folder = null;
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings != null)
             {
                 var folders = GetFolders(portalSettings.PortalId);
@@ -1158,12 +1158,12 @@ namespace DotNetNuke.Services.FileSystem
 
         internal virtual void AddLogEntry(IFolderInfo folder, EventLogController.EventLogType eventLogType)
         {
-            EventLogController.Instance.AddLog(folder, PortalController.GetCurrentPortalSettings(), GetCurrentUserId(), "", eventLogType);
+            EventLogController.Instance.AddLog(folder, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserId(), "", eventLogType);
         }
 
         internal virtual void AddLogEntry(string propertyName, string propertyValue, EventLogController.EventLogType eventLogType)
         {
-            EventLogController.Instance.AddLog(propertyName, propertyValue, PortalController.GetCurrentPortalSettings(), GetCurrentUserId(), eventLogType);
+            EventLogController.Instance.AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserId(), eventLogType);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
@@ -1408,7 +1408,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual int GetCurrentUserId()
         {
-            return UserController.GetCurrentUserInfo().UserID;
+            return UserController.Instance.GetCurrentUserInfo().UserID;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>

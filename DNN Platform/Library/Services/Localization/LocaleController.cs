@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="locale">The locale.</param>
         public void UpdatePortalLocale(Locale locale)
         {
-            DataProvider.Instance().UpdatePortalLanguage(locale.PortalId, locale.LanguageId, locale.IsPublished, UserController.GetCurrentUserInfo().UserID);
+            DataProvider.Instance().UpdatePortalLanguage(locale.PortalId, locale.LanguageId, locale.IsPublished, UserController.Instance.GetCurrentUserInfo().UserID);
             DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, locale.PortalId));
         }
 
@@ -269,7 +269,7 @@ namespace DotNetNuke.Services.Localization
         /// </returns>
         public bool IsDefaultLanguage(string code)
         {
-            bool returnValue = code == PortalController.GetCurrentPortalSettings().DefaultLanguage;
+            bool returnValue = code == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
             return returnValue;
         }
 

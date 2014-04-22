@@ -245,7 +245,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -824,7 +824,7 @@ namespace DotNetNuke.UI.Modules
         public string NavigateUrl(int tabID, string controlKey, string pageName, bool pageRedirect, params string[] additionalParameters)
         {
             var isSuperTab = TestableGlobals.Instance.IsHostTab(tabID);
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var language = Globals.GetCultureCode(tabID, isSuperTab, settings);
             var url = TestableGlobals.Instance.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
 

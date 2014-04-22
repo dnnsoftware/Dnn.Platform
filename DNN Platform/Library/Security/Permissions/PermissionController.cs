@@ -61,12 +61,12 @@ namespace DotNetNuke.Security.Permissions
 		
         public int AddPermission(PermissionInfo permission)
         {
-            EventLogController.Instance.AddLog(permission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
+            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
             var permissionId =  Convert.ToInt32(provider.AddPermission(permission.PermissionCode,
                                                        permission.ModuleDefID,
                                                        permission.PermissionKey,
                                                        permission.PermissionName,
-                                                       UserController.GetCurrentUserInfo().UserID));
+                                                       UserController.Instance.GetCurrentUserInfo().UserID));
 
             ClearCache();
             return permissionId;
@@ -76,8 +76,8 @@ namespace DotNetNuke.Security.Permissions
         {
             EventLogController.Instance.AddLog("PermissionID",
                                permissionID.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.PERMISSION_DELETED);
             provider.DeletePermission(permissionID);
             ClearCache();
@@ -108,13 +108,13 @@ namespace DotNetNuke.Security.Permissions
 
         public void UpdatePermission(PermissionInfo permission)
         {
-            EventLogController.Instance.AddLog(permission, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_UPDATED);
+            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_UPDATED);
             provider.UpdatePermission(permission.PermissionID,
                                       permission.PermissionCode,
                                       permission.ModuleDefID,
                                       permission.PermissionKey,
                                       permission.PermissionName,
-                                      UserController.GetCurrentUserInfo().UserID);
+                                      UserController.Instance.GetCurrentUserInfo().UserID);
             ClearCache();
         }
 		

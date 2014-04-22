@@ -142,7 +142,7 @@ namespace DotNetNuke.UI
         {
             var request = HttpContext.Current.Request;
             var isLegacyUi = true;
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             if (settings != null)
             {
                 isLegacyUi = !(settings.EnablePopUps && !request.Browser.Crawler && request.Browser.EcmaScriptVersion >= new Version(1, 0));

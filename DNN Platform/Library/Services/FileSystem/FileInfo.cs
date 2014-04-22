@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.FileSystem
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
-                    portalSettings = PortalController.GetCurrentPortalSettings();
+                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 }
 
                 if (PortalId == Null.NullInteger)

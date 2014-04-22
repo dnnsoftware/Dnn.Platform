@@ -187,7 +187,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
-            if (!ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "CONTENT,EDIT") && !UserController.GetCurrentUserInfo().IsInRole("Administrators"))
+            if (!ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "CONTENT,EDIT") && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
             {
                 Response.Redirect(Globals.NavigateURL("Access Denied"), true);
             }
@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// -----------------------------------------------------------------------------
         private void LoadFolders()
         {
-            var user = UserController.GetCurrentUserInfo();
+            var user = UserController.Instance.GetCurrentUserInfo();
 
             var folders = FolderManager.Instance.GetFolders(FolderPortalID, "ADD", user.UserID);
             ddlFolders.Services.Parameters.Add("permission", "ADD");

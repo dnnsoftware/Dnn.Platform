@@ -218,7 +218,7 @@ namespace DotNetNuke.Security.Permissions
                                                                  modulePermission.RoleID,
                                                                  modulePermission.AllowAccess,
                                                                  modulePermission.UserID,
-                                                                 UserController.GetCurrentUserInfo().UserID);
+                                                                 UserController.Instance.GetCurrentUserInfo().UserID);
             DataCache.ClearModulePermissionsCache(tabId);
             return id;
         }
@@ -234,7 +234,7 @@ namespace DotNetNuke.Security.Permissions
                                                                  modulePermission.RoleID,
                                                                  modulePermission.AllowAccess,
                                                                  modulePermission.UserID,
-                                                                 UserController.GetCurrentUserInfo().UserID);
+                                                                 UserController.Instance.GetCurrentUserInfo().UserID);
             ClearPermissionCache(modulePermission.ModuleID);
             return id;
         }
@@ -364,7 +364,7 @@ namespace DotNetNuke.Security.Permissions
                                                            modulePermission.RoleID,
                                                            modulePermission.AllowAccess,
                                                            modulePermission.UserID,
-                                                           UserController.GetCurrentUserInfo().UserID);
+                                                           UserController.Instance.GetCurrentUserInfo().UserID);
             ClearPermissionCache(modulePermission.ModuleID);
         }
 

@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs)
         {
-            SendMessage(message, roles, users, fileIDs, UserController.GetCurrentUserInfo());
+            SendMessage(message, roles, users, fileIDs, UserController.Instance.GetCurrentUserInfo());
         }
 
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs, UserInfo sender)
@@ -199,14 +199,14 @@ namespace DotNetNuke.Services.Social.Messaging
             message.SenderUserID = sender.UserID;
             message.From = sender.DisplayName;
 
-            message.MessageID = _dataService.SaveMessage(message, PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID), UserController.GetCurrentUserInfo().UserID);
+            message.MessageID = _dataService.SaveMessage(message, PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID), UserController.Instance.GetCurrentUserInfo().UserID);
 
             //associate attachments
             if (fileIDs != null)
             {
                 foreach (var attachment in fileIDs.Select(fileId => new MessageAttachment { MessageAttachmentID = Null.NullInteger, FileID = fileId, MessageID = message.MessageID }))
                 {
-                    _dataService.SaveMessageAttachment(attachment, UserController.GetCurrentUserInfo().UserID);
+                    _dataService.SaveMessageAttachment(attachment, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
             }
 
@@ -219,7 +219,7 @@ namespace DotNetNuke.Services.Social.Messaging
                     .Aggregate(roleIds, (current, roleId) => current + (roleId + ","))
                     .Trim(',');
 
-                _dataService.CreateMessageRecipientsForRole(message.MessageID, roleIds, UserController.GetCurrentUserInfo().UserID);
+                _dataService.CreateMessageRecipientsForRole(message.MessageID, roleIds, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //send message to each User - this should be called after CreateMessageRecipientsForRole.
@@ -230,13 +230,13 @@ namespace DotNetNuke.Services.Social.Messaging
 
             foreach (var recipient in from user in users where InternalMessagingController.Instance.GetMessageRecipient(message.MessageID, user.UserID) == null select new MessageRecipient { MessageID = message.MessageID, UserID = user.UserID, Read = false, RecipientID = Null.NullInteger })
             {
-                _dataService.SaveMessageRecipient(recipient, UserController.GetCurrentUserInfo().UserID);
+                _dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             if (users.All(u => u.UserID != sender.UserID))
             {
                 //add sender as a recipient of the message
-                var recipientId = _dataService.SaveMessageRecipient(new MessageRecipient { MessageID = message.MessageID, UserID = sender.UserID, Read = false, RecipientID = Null.NullInteger }, UserController.GetCurrentUserInfo().UserID);
+                var recipientId = _dataService.SaveMessageRecipient(new MessageRecipient { MessageID = message.MessageID, UserID = sender.UserID, Read = false, RecipientID = Null.NullInteger }, UserController.Instance.GetCurrentUserInfo().UserID);
                 InternalMessagingController.Instance.MarkMessageAsDispatched(message.MessageID, recipientId);
             }
 
@@ -250,7 +250,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
         internal virtual UserInfo GetCurrentUserInfo()
         {
-            return UserController.GetCurrentUserInfo();
+            return UserController.Instance.GetCurrentUserInfo();
         }
 
         internal virtual string GetPortalSetting(string settingName, int portalId, string defaultValue)

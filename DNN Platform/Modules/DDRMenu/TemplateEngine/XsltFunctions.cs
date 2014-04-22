@@ -14,7 +14,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 	{
 		public bool UserIsInRole(string roleName)
 		{
-			return UserController.GetCurrentUserInfo().IsInRole(roleName);
+			return UserController.Instance.GetCurrentUserInfo().IsInRole(roleName);
 		}
 
 		public string GetLoginURL()
@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			try
 			{
 				return HttpContext.Current.Request.IsAuthenticated
-				       	? UserController.GetCurrentUserInfo().DisplayName
+				       	? UserController.Instance.GetCurrentUserInfo().DisplayName
 				       	: Localization.GetString(
 				       		"Register",
 				       		// ReSharper disable PossibleNullReferenceException

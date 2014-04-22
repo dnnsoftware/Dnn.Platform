@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 		public Page Page { get { return _Page ?? (_Page = HostControl.Page); } }
 
 		private PortalSettings _PortalSettings;
-		public PortalSettings PortalSettings { get { return _PortalSettings ?? (_PortalSettings = PortalController.GetCurrentPortalSettings()); } }
+		public PortalSettings PortalSettings { get { return _PortalSettings ?? (_PortalSettings = PortalController.Instance.GetCurrentPortalSettings()); } }
 
 		private TabInfo _ActiveTab;
 		public TabInfo ActiveTab { get { return _ActiveTab ?? (_ActiveTab = PortalSettings.ActiveTab); } }

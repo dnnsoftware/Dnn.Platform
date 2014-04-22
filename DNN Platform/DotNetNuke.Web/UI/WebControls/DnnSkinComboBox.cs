@@ -99,7 +99,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void AttachEvents()
         {
-            if (!UserController.GetCurrentUserInfo().IsSuperUser)
+            if (!UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 return;
             }

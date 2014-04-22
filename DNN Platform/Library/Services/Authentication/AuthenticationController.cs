@@ -79,14 +79,14 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
-            EventLogController.Instance.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_CREATED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_CREATED);
             return provider.AddAuthentication(authSystem.PackageID,
                                               authSystem.AuthenticationType,
                                               authSystem.IsEnabled,
                                               authSystem.SettingsControlSrc,
                                               authSystem.LoginControlSrc,
                                               authSystem.LogoffControlSrc,
-                                              UserController.GetCurrentUserInfo().UserID);
+                                              UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -109,18 +109,18 @@ namespace DotNetNuke.Services.Authentication
             {
                 EventLogController.Instance.AddLog("userID/authenticationType",
                                    userID + "/" + authenticationType,
-                                   PortalController.GetCurrentPortalSettings(),
-                                   UserController.GetCurrentUserInfo().UserID,
+                                   PortalController.Instance.GetCurrentPortalSettings(),
+                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                    EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
-                return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.GetCurrentUserInfo().UserID);
+                return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
 
                 EventLogController.Instance.AddLog("userID/authenticationType already exists",
                    userID + "/" + authenticationType,
-                   PortalController.GetCurrentPortalSettings(),
-                   UserController.GetCurrentUserInfo().UserID,
+                   PortalController.Instance.GetCurrentPortalSettings(),
+                   UserController.Instance.GetCurrentUserInfo().UserID,
                    EventLogController.EventLogType.AUTHENTICATION_USER_UPDATED);
 
                 return userAuth.UserAuthenticationID;
@@ -145,7 +145,7 @@ namespace DotNetNuke.Services.Authentication
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
         {
             provider.DeleteAuthentication(authSystem.AuthenticationID);
-            EventLogController.Instance.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_DELETED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_DELETED);
         }
 
         /// -----------------------------------------------------------------------------
@@ -431,8 +431,8 @@ namespace DotNetNuke.Services.Authentication
                                           authSystem.SettingsControlSrc,
                                           authSystem.LoginControlSrc,
                                           authSystem.LogoffControlSrc,
-                                          UserController.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_UPDATED);
+                                          UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_UPDATED);
         }
 		
 		#endregion

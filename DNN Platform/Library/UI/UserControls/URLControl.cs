@@ -895,7 +895,7 @@ namespace DotNetNuke.UI.UserControls
 
                         cboTabs.Items.Clear();
 
-                        PortalSettings _settings = PortalController.GetCurrentPortalSettings();
+                        PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
                         cboTabs.DataSource = TabController.GetPortalTabs(_settings.PortalId, Null.NullInteger, !Required, "none available", true, false, false, true, false);
                         cboTabs.DataBind();
                         if (cboTabs.Items.FindByValue(_Url) != null)
@@ -998,7 +998,7 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                if ((Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.GetCurrentUserInfo().IsSuperUser))
+                if ((Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
                     _objPortal = PortalController.Instance.GetPortal(Int32.Parse(Request.QueryString["pid"]));
                 }

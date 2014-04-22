@@ -97,11 +97,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             if ((term.IsHeirarchical))
             {
-                term.TermId = _DataService.AddHeirarchicalTerm(term, UserController.GetCurrentUserInfo().UserID);
+                term.TermId = _DataService.AddHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
-                term.TermId = _DataService.AddSimpleTerm(term, UserController.GetCurrentUserInfo().UserID);
+                term.TermId = _DataService.AddSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //Clear Cache
@@ -260,11 +260,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             if ((term.IsHeirarchical))
             {
-                _DataService.UpdateHeirarchicalTerm(term, UserController.GetCurrentUserInfo().UserID);
+                _DataService.UpdateHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
-                _DataService.UpdateSimpleTerm(term, UserController.GetCurrentUserInfo().UserID);
+                _DataService.UpdateSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //Clear Cache

@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.Localization
             //}
 
             DataProvider.Instance().DeleteLanguagePack(languagePack.LanguagePackID);
-            EventLogController.Instance.AddLog(languagePack, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGEPACK_DELETED);
+            EventLogController.Instance.AddLog(languagePack, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGEPACK_DELETED);
         }
 
         public static LanguagePackInfo GetLanguagePackByPackage(int packageID)
@@ -63,8 +63,8 @@ namespace DotNetNuke.Services.Localization
                 languagePack.LanguagePackID = DataProvider.Instance().AddLanguagePack(languagePack.PackageID,
                                                                                       languagePack.LanguageID,
                                                                                       languagePack.DependentPackageID,
-                                                                                      UserController.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(languagePack, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGEPACK_CREATED);
+                                                                                      UserController.Instance.GetCurrentUserInfo().UserID);
+                EventLogController.Instance.AddLog(languagePack, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGEPACK_CREATED);
             }
             else
             {
@@ -73,8 +73,8 @@ namespace DotNetNuke.Services.Localization
                                                            languagePack.PackageID,
                                                            languagePack.LanguageID,
                                                            languagePack.DependentPackageID,
-                                                           UserController.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(languagePack, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGEPACK_UPDATED);
+                                                           UserController.Instance.GetCurrentUserInfo().UserID);
+                EventLogController.Instance.AddLog(languagePack, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGEPACK_UPDATED);
             }
         }
     }

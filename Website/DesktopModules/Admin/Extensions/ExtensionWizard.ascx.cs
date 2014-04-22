@@ -357,7 +357,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                     SkinController.AddSkinPackage(skinPackage);
                                     break;
                                 case "CoreLanguagePack":
-                                    locale = LocaleController.Instance.GetLocale(PortalController.GetCurrentPortalSettings().DefaultLanguage);
+                                    locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
                                     languagePack = new LanguagePackInfo
                                     {
                                         PackageID = newPackage.PackageID,
@@ -367,7 +367,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                     LanguagePackController.SaveLanguagePack(languagePack);
                                     break;
                                 case "ExtensionLanguagePack":
-                                    locale = LocaleController.Instance.GetLocale(PortalController.GetCurrentPortalSettings().DefaultLanguage);
+                                    locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
                                     languagePack = new LanguagePackInfo
                                     {
                                         PackageID = newPackage.PackageID,

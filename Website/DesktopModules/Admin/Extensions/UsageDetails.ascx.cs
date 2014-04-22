@@ -140,7 +140,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 }
                 else
                 {
-                    BindUsageList(PortalId, PortalController.GetCurrentPortalSettings().PortalName);
+                    BindUsageList(PortalId, PortalController.Instance.GetCurrentPortalSettings().PortalName);
                 }
             }
             catch (Exception ex)

@@ -1405,7 +1405,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                 if (portalSettings == null)
                 {
@@ -1451,7 +1451,7 @@ namespace DotNetNuke.Entities.Host
             {
                 if (SMTPPortalEnabled)
                 {
-                    return PortalController.GetEncryptedString("SMTPPassword", PortalController.GetCurrentPortalSettings().PortalId, Config.GetDecryptionkey());
+                    return PortalController.GetEncryptedString("SMTPPassword", PortalController.Instance.GetCurrentPortalSettings().PortalId, Config.GetDecryptionkey());
                 }
                 else
                 {

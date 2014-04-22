@@ -48,8 +48,8 @@ namespace DotNetNuke.Entities.Portals
 
             EventLogController.Instance.AddLog("PortalAliasID",
                                portalAliasId.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.PORTALALIAS_DELETED);
 
             DataCache.RemoveCache(DataCache.PortalAliasCacheKey);

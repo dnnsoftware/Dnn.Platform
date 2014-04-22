@@ -550,7 +550,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, Profile.PreferredTimeZone);
             }
-            return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.GetCurrentPortalSettings().TimeZone);
+            return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentPortalSettings().TimeZone);
         }
 
         /// -----------------------------------------------------------------------------

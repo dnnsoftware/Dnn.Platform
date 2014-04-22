@@ -241,7 +241,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings().AdministratorRoleId;
+                return PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleId;
             }
         }
 
@@ -252,7 +252,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings().RegisteredRoleId;
+                return PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleId;
             }
         }
 
@@ -289,7 +289,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             get
             {
                 //Obtain PortalSettings from Current Context
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 int portalID;
                 if (Globals.IsHostTab(portalSettings.ActiveTab.TabID)) //if we are in host filemanager then we need to pass a null portal id
                 {
@@ -472,7 +472,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void GetRoles()
         {
             var checkedRoles = GetCheckedRoles();
-            Roles = new ArrayList(RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved && checkedRoles.Contains(r.RoleID)).ToArray());
+            Roles = new ArrayList(RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved && checkedRoles.Contains(r.RoleID)).ToArray());
         
             if (checkedRoles.Contains(UnAuthUsersRoleId))
             {
@@ -621,8 +621,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void FillSelectRoleComboBox(int selectedRoleId)
         {
             cboSelectRole.Items.Clear();
-            var groupRoles = (selectedRoleId > -2) ? RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == selectedRoleId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
-                : RoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+            var groupRoles = (selectedRoleId > -2) ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == selectedRoleId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 
             if (selectedRoleId < 0)
             {                
@@ -808,7 +808,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private void CreateAddRoleControls()
         {
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
 
             var divAddRoleControles = new Panel {CssClass = "dnnFormItem"};

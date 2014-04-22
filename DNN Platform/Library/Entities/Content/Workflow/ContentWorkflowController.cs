@@ -273,7 +273,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         public bool IsReviewer(int stateID)
         {
             var permissions = GetWorkflowStatePermissionByState(stateID);
-            var user = UserController.GetCurrentUserInfo();
+            var user = UserController.Instance.GetCurrentUserInfo();
             return IsReviewer(user, PortalSettings.Current, permissions);
         }
 

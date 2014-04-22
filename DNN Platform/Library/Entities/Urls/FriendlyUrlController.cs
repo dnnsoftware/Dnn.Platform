@@ -655,7 +655,7 @@ namespace DotNetNuke.Entities.Urls
             //716 just ignore portal settings if we don't actually need it 
             if (includeStdUrls)
             {
-                portalSettings = PortalController.GetCurrentPortalSettings();
+                portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             }
             return GetTabs(portalId, includeStdUrls, portalSettings, settings);
         }
@@ -711,7 +711,7 @@ namespace DotNetNuke.Entities.Urls
 
         public static TabInfo GetTab(int tabId, bool addStdUrls)
         {
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return GetTab(tabId, addStdUrls, portalSettings, GetCurrentSettings(portalSettings.PortalId));
         }
 

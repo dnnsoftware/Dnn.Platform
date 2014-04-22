@@ -893,7 +893,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         cboTabs.IncludeActiveTab = IncludeActiveTab;
                         cboTabs.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
 
-                        PortalSettings _settings = PortalController.GetCurrentPortalSettings();
+                        PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
                         var tabId = Int32.Parse(_Url);
                         var page = TabController.Instance.GetTab(tabId, _settings.PortalId);
                         cboTabs.SelectedPage = page;
@@ -990,7 +990,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             try
             {
-                if ((Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.GetCurrentUserInfo().IsSuperUser))
+                if ((Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
                     _objPortal = PortalController.Instance.GetPortal(Int32.Parse(Request.QueryString["pid"]));
                 }

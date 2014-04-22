@@ -459,12 +459,12 @@ namespace DotNetNuke.Entities.Portals
                                                                 Host.Host.UserQuota,
                                                                 Host.Host.SiteLogHistory,
                                                                 homeDirectory,
-                                                                UserController.GetCurrentUserInfo().UserID);
+                                                                UserController.Instance.GetCurrentUserInfo().UserID);
 
                 //clear portal cache
                 DataCache.ClearHostCache(true);
 
-                EventLogController.Instance.AddLog("PortalName", portalName, GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_CREATED);
+                EventLogController.Instance.AddLog("PortalName", portalName, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_CREATED);
             }
             catch (Exception ex)
             {
@@ -542,7 +542,7 @@ namespace DotNetNuke.Entities.Portals
 
             DataProvider.Instance().DeletePortalInfo(portalId);
 
-            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
+            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
 
             DataCache.ClearHostCache(true);
         }
@@ -692,6 +692,17 @@ namespace DotNetNuke.Entities.Portals
             }
 
         }
+
+        private static PortalSettings GetCurrentPortalSettingsInternal()
+        {
+            PortalSettings objPortalSettings = null;
+            if (HttpContext.Current != null)
+            {
+                objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+            }
+            return objPortalSettings;
+        }
+
 
         private static PortalInfo GetPortalInternal(int portalId, string cultureCode)
         {
@@ -1590,8 +1601,8 @@ namespace DotNetNuke.Entities.Portals
                                   GetActivePortalLanguage(PortalId));
                 EventLogController.Instance.AddLog(logType,
                                    tab.TabID.ToString(),
-                                   GetCurrentPortalSettings(),
-                                   UserController.GetCurrentUserInfo().UserID,
+                                   GetCurrentPortalSettingsInternal(),
+                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                    EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
             }
         }
@@ -1899,10 +1910,10 @@ namespace DotNetNuke.Entities.Portals
                                             portal.Custom500TabId,
                                             portal.DefaultLanguage,
                                             portal.HomeDirectory,
-                                            UserController.GetCurrentUserInfo().UserID,
+                                            UserController.Instance.GetCurrentUserInfo().UserID,
                                             portal.CultureCode);
 
-            EventLogController.Instance.AddLog("PortalId", portal.PortalID.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
+            EventLogController.Instance.AddLog("PortalId", portal.PortalID.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
 
             //ensure a localization item exists (in case a new default language has been set)
             DataProvider.Instance().EnsureLocalizationExists(portal.PortalID, portal.DefaultLanguage);
@@ -1931,7 +1942,7 @@ namespace DotNetNuke.Entities.Portals
                                                       custom500TabId,
                                                       adminTabId,
                                                       cultureCode);
-            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
+            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
             DataCache.ClearHostCache(true);
         }
 		
@@ -2145,6 +2156,15 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
+        /// Gets the current portal settings.
+        /// </summary>
+        /// <returns>portal settings.</returns>
+        PortalSettings IPortalController.GetCurrentPortalSettings()
+        {
+            return GetCurrentPortalSettingsInternal();
+        }
+
+        /// <summary>
         ///   Gets information of a portal
         /// </summary>
         /// <param name = "portalId">Id of the portal</param>
@@ -2297,7 +2317,7 @@ namespace DotNetNuke.Entities.Portals
             }
             else
             {
-                PortalSettings ps = GetCurrentPortalSettings();
+                PortalSettings ps = GetCurrentPortalSettingsInternal();
                 if (ps != null && ps.PortalId == portalId)
                 {
                     hostSpace = ps.HostSpace;
@@ -2477,19 +2497,6 @@ namespace DotNetNuke.Entities.Portals
         {
             UpdatePortalInternal(portal, true);
         }
-
-		#endregion
-
-		#region Interface Implementation
-
-		/// <summary>
-		/// Gets the current portal settings.
-		/// </summary>
-		/// <returns>portal settings.</returns>
-		PortalSettings IPortalController.GetCurrentPortalSettings()
-		{
-			return GetCurrentPortalSettings();
-		}
 
 		#endregion
 
@@ -2704,20 +2711,6 @@ namespace DotNetNuke.Entities.Portals
             return CBO.FillCollection(DataProvider.Instance().GetPortalsByUser(userId), type);
         }
 
-        /// <summary>
-        /// Gets the current portal settings.
-        /// </summary>
-        /// <returns>portal settings.</returns>
-        public static PortalSettings GetCurrentPortalSettings()
-        {
-            PortalSettings objPortalSettings = null;
-            if (HttpContext.Current != null)
-            {
-                objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            }
-            return objPortalSettings;
-        }
-
         public static int GetEffectivePortalId(int portalId)
         {
             if (portalId > Null.NullInteger && Globals.Status != Globals.UpgradeStatus.Upgrade)
@@ -2801,7 +2794,7 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSetting(int portalID, string settingName, string CultureCode)
         {
             DataProvider.Instance().DeletePortalSetting(portalID, settingName, CultureCode.ToLower());
-            EventLogController.Instance.AddLog("SettingName", settingName, GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            EventLogController.Instance.AddLog("SettingName", settingName, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -2812,7 +2805,7 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSettings(int portalID)
         {
             DataProvider.Instance().DeletePortalSettings(portalID);
-            EventLogController.Instance.AddLog("PortalID", portalID.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            EventLogController.Instance.AddLog("PortalID", portalID.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -2989,8 +2982,8 @@ namespace DotNetNuke.Entities.Portals
 
             if (currentSetting != settingValue)
             {
-                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.GetCurrentUserInfo().UserID, culturecode);
-                EventLogController.Instance.AddLog(settingName, settingValue, GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, culturecode);
+                EventLogController.Instance.AddLog(settingName, settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
                 if (clearCache)
                 {
                     DataCache.ClearPortalCache(portalID, false);
@@ -3074,7 +3067,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    PortalSettings _PortalSettings = GetCurrentPortalSettings();
+                    PortalSettings _PortalSettings = GetCurrentPortalSettingsInternal();
                     if (_PortalSettings != null && _PortalSettings.ActiveTab != null && !String.IsNullOrEmpty(_PortalSettings.ActiveTab.CultureCode))
                     {
                         Language = _PortalSettings.ActiveTab.CultureCode;

@@ -285,8 +285,8 @@ namespace DotNetNuke.Entities.Profile
                                                                definition.Visible,
                                                                definition.Length,
                                                                (int) definition.DefaultVisibility,
-                                                               UserController.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
+                                                               UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
             return intDefinition;
         }
@@ -311,7 +311,7 @@ namespace DotNetNuke.Entities.Profile
         public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
         {
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
-            EventLogController.Instance.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
         }
 
@@ -488,8 +488,8 @@ namespace DotNetNuke.Entities.Profile
                                               definition.Visible,
                                               definition.Length,
                                               (int) definition.DefaultVisibility,
-                                              UserController.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
+                                              UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
         }
 

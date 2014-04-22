@@ -294,7 +294,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 return;
             }
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             try
             {
                 if (!Host.UseCustomErrorMessages)
@@ -355,7 +355,7 @@ namespace DotNetNuke.Services.Exceptions
 		/// <param name="exc">The exc.</param>
         public static void ProcessPageLoadException(Exception exc)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string appURL = Globals.ApplicationURL();
             if (appURL.IndexOf("?") == Null.NullInteger)
             {
@@ -380,7 +380,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 return;
             }
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (!Host.UseCustomErrorMessages)
             {
                 throw new PageLoadException((exc == null ? "" : exc.Message), exc);

@@ -257,7 +257,7 @@ namespace DotNetNuke.Security.Membership
                                                           displayName,
                                                           updatePassword,
                                                           isApproved,
-                                                          UserController.GetCurrentUserInfo().UserID));
+                                                          UserController.Instance.GetCurrentUserInfo().UserID));
             }
             catch (Exception ex)
             {
@@ -720,8 +720,8 @@ namespace DotNetNuke.Security.Membership
             _dataProvider.ChangeUsername(userId, newUsername);
             EventLogController.Instance.AddLog("userId",
                                userId.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.USERNAME_UPDATED);
             DataCache.ClearCache();          
         }
@@ -1652,7 +1652,7 @@ namespace DotNetNuke.Security.Membership
                                      user.PasswordResetToken,
                                      user.PasswordResetExpiration,
                                      user.IsDeleted,
-                                     UserController.GetCurrentUserInfo().UserID);
+                                     UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Persist the Profile to the Data Store
             ProfileController.UpdateUserProfile(user);

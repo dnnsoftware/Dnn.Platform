@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.Admin.Languages
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -826,7 +826,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             {
                 get
                 {
-                    var portalSettings = PortalController.GetCurrentPortalSettings();
+                    var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     if (CultureCode == portalSettings.DefaultLanguage) return Localization.GetString("Default.Text", LocalResourceFile);
                     if (!IsLanguagePublished(portalSettings.PortalId, CultureCode)) return Localization.GetString("NotActive.Text", LocalResourceFile);
                     return "";

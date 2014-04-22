@@ -133,7 +133,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
             get
             {
                 //get current user
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 //load default tools file
                 string tempConfigFile = ConfigFileName;
                 //get absolute path of default tools file
@@ -262,7 +262,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
             get
             {
                 //get current user
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 //load default tools file
                 string tempToolsFile = ToolsFileName;
                 //get absolute path of default tools file
@@ -402,7 +402,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
             }
 			else if (folderPath.ToUpperInvariant() == "[USERFOLDER]")
 			{
-				var userFolderPath = FolderManager.Instance.GetUserFolder(UserController.GetCurrentUserInfo()).FolderPath;
+				var userFolderPath = FolderManager.Instance.GetUserFolder(UserController.Instance.GetCurrentUserInfo()).FolderPath;
 				var path = RemoveEndSlash(RootImageDirectory) + AddSlash(userFolderPath);
 				WritePaths.Add(path);
 				ReadPaths.Add(path);

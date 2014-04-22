@@ -299,8 +299,8 @@ namespace DotNetNuke.Entities.Users
                 ProfilePropertyDefinition photoProperty = GetProperty(USERPROFILE_Photo);
                 if ((photoProperty != null))
                 {
-                    UserInfo user = UserController.GetCurrentUserInfo();
-                    PortalSettings settings = PortalController.GetCurrentPortalSettings();
+                    UserInfo user = UserController.Instance.GetCurrentUserInfo();
+                    PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
                     bool isVisible = (user.UserID == _user.UserID);
                     if (!isVisible)
@@ -345,8 +345,8 @@ namespace DotNetNuke.Entities.Users
                 ProfilePropertyDefinition photoProperty = GetProperty(USERPROFILE_Photo);
                 if ((photoProperty != null))
                 {
-                    UserInfo user = UserController.GetCurrentUserInfo();
-                    PortalSettings settings = PortalController.GetCurrentPortalSettings();
+                    UserInfo user = UserController.Instance.GetCurrentUserInfo();
+                    PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
                     bool isVisible = (user.UserID == _user.UserID);
                     if (!isVisible)
@@ -445,7 +445,7 @@ namespace DotNetNuke.Entities.Users
                 //Next check if there is a Portal Setting
                 else
                 {
-                    PortalSettings _PortalSettings = PortalController.GetCurrentPortalSettings();
+                    PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     if (_PortalSettings != null)
                     {
                         _TimeZone = _PortalSettings.TimeZone;

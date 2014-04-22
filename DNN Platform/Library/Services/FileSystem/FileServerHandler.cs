@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.FileSystem
         /// -----------------------------------------------------------------------------
         public void ProcessRequest(HttpContext context)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             int TabId = -1;
             int ModuleId = -1;
             try

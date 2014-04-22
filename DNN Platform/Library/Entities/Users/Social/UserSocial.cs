@@ -76,7 +76,7 @@ namespace DotNetNuke.Entities.Users.Social
             get
             {
                 var _friendsRelationship = RelationshipController.Instance.GetFriendsRelationshipByPortal(_userInfo.PortalID);
-                var currentUser = UserController.GetCurrentUserInfo();
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _friendsRelationship.RelationshipId
                                                                 && 
                                                                 (ur.UserId == _userInfo.UserID &&
@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Users.Social
             get
             {
                 var _followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(_userInfo.PortalID);
-                var currentUser = UserController.GetCurrentUserInfo();
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
                                                                 &&
                                                                 (ur.UserId == _userInfo.UserID &&
@@ -113,7 +113,7 @@ namespace DotNetNuke.Entities.Users.Social
             get
             {
                 var _followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(_userInfo.PortalID);
-                var currentUser = UserController.GetCurrentUserInfo();
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
                                                                 &&
                                                                 (ur.UserId == currentUser.UserID &&

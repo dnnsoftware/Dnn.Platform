@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -181,7 +181,7 @@ namespace DotNetNuke.UI.ControlPanels
                     }
                 }
             }
-            return PortalController.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
+            return PortalController.Instance.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
         }
 
         internal static bool IsPageAdminInternal()
@@ -254,7 +254,7 @@ namespace DotNetNuke.UI.ControlPanels
             int UserId = -1;
             if (Request.IsAuthenticated)
             {
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserId = objUserInfo.UserID;
             }
             objModule = ModuleController.Instance.GetModule(moduleId, tabId, false);
@@ -304,7 +304,7 @@ namespace DotNetNuke.UI.ControlPanels
             int UserId = -1;
             if (Request.IsAuthenticated)
             {
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserId = objUserInfo.UserID;
             }
             foreach (ModuleDefinitionInfo objModuleDefinition in

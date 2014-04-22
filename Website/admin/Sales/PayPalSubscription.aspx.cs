@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 int intUserID = -1;
                 if (Request.IsAuthenticated)
                 {
-                    objUserInfo = UserController.GetCurrentUserInfo();
+                    objUserInfo = UserController.Instance.GetCurrentUserInfo();
                     if (objUserInfo != null)
                     {
                         intUserID = objUserInfo.UserID;

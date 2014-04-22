@@ -199,7 +199,7 @@ namespace DotNetNuke.Services.Log.EventLog
                         {
                             if (HttpContext.Current.Request.IsAuthenticated)
                             {
-                                logInfo.LogUserName = UserController.GetCurrentUserInfo().Username;
+                                logInfo.LogUserName = UserController.Instance.GetCurrentUserInfo().Username;
                             }
                         }
                     }

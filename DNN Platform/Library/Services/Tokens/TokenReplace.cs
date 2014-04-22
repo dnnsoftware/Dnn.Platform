@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Tokens
                 {
                     if (HttpContext.Current != null)
                     {
-                        this.PortalSettings = PortalController.GetCurrentPortalSettings();
+                        this.PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     }
                 }
                 else

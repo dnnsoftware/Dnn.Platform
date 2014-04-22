@@ -194,7 +194,7 @@ namespace DotNetNuke.UI.Skins
 
             try
             {
-				if (Request.QueryString["pid"] != null && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.GetCurrentUserInfo().IsSuperUser))
+				if (Request.QueryString["pid"] != null && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
                     _objPortal = PortalController.Instance.GetPortal(Int32.Parse(Request.QueryString["pid"]));
                 }

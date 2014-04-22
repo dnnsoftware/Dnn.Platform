@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.Html
         private static void AddHtmlNotification(string subject, string body, UserInfo user)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType("HtmlNotification");
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var sender = UserController.GetUserById(portalSettings.PortalId, portalSettings.AdministratorId);
 
             var notification = new Notification {NotificationTypeID = notificationType.NotificationTypeId, Subject = subject, Body = body, IncludeDismissAction = true, SenderUserID = sender.UserID};
@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.Html
                 // get tabid from module 
                 ModuleInfo objModule = ModuleController.Instance.GetModule(objHtmlText.ModuleID, Null.NullInteger, true);
 
-                PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
+                PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (objPortalSettings != null)
                 {
                     string strResourceFile = string.Format("{0}/DesktopModules/{1}/{2}/{3}",
@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
 		public static string FormatHtmlText(int moduleId, string content, Hashtable settings)
 		{
-			return FormatHtmlText(moduleId, content, settings, PortalController.GetCurrentPortalSettings());
+			return FormatHtmlText(moduleId, content, settings, PortalController.Instance.GetCurrentPortalSettings());
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -314,7 +314,7 @@ namespace DotNetNuke.Modules.Html
 			if (blnReplaceTokens)
 			{
 				var tr = new TokenReplace();
-				tr.AccessingUser = UserController.GetCurrentUserInfo();
+				tr.AccessingUser = UserController.Instance.GetCurrentUserInfo();
 				tr.DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View;
 				tr.ModuleId = moduleId;
 				tr.PortalSettings = portalSettings;
@@ -592,13 +592,13 @@ namespace DotNetNuke.Modules.Html
 																		 htmlContent.Summary,
                                                                          htmlContent.StateID,
                                                                          htmlContent.IsPublished,
-                                                                         UserController.GetCurrentUserInfo().UserID,
+                                                                         UserController.Instance.GetCurrentUserInfo().UserID,
                                                                          MaximumVersionHistory);
             }
             else
             {
                 // update content
-				DataProvider.Instance().UpdateHtmlText(htmlContent.ItemID, htmlContent.Content, htmlContent.Summary, htmlContent.StateID, htmlContent.IsPublished, UserController.GetCurrentUserInfo().UserID);
+				DataProvider.Instance().UpdateHtmlText(htmlContent.ItemID, htmlContent.Content, htmlContent.Summary, htmlContent.StateID, htmlContent.IsPublished, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             // add log history
@@ -716,7 +716,7 @@ namespace DotNetNuke.Modules.Html
             }
 
             // save portal setting
-            PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (PortalSecurity.IsInRole(objPortalSettings.AdministratorRoleName))
             {
                 PortalController.UpdatePortalSetting(PortalID, "MaximumVersionHistory", MaximumVersionHistory.ToString());

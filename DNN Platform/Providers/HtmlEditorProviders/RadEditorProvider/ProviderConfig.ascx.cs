@@ -89,7 +89,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			{
 				if (_dnnConfig == null)
 				{
-					UserInfo currentUser = UserController.GetCurrentUserInfo();
+					UserInfo currentUser = UserController.Instance.GetCurrentUserInfo();
 					if (currentUser != null && currentUser.IsSuperUser)
 					{
 						_dnnConfig = Config.Load();

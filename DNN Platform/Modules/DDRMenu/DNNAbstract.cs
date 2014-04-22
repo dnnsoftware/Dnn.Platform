@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.DDRMenu
 			}
 			else
 			{
-				var objUserInfo = UserController.GetCurrentUserInfo();
+				var objUserInfo = UserController.Instance.GetCurrentUserInfo();
 				if (objUserInfo.UserID != -1)
 				{
 				    return Globals.UserProfileURL(objUserInfo.UserID);

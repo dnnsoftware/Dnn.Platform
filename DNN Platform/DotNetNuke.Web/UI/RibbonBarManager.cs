@@ -150,7 +150,7 @@ namespace DotNetNuke.Web.UI
         public static IList<TabInfo> GetPagesList()
         {
             IList<TabInfo> portalTabs = null;
-            UserInfo userInfo = UserController.GetCurrentUserInfo();
+            UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
             if (((userInfo != null) && userInfo.UserID != Null.NullInteger))
             {
                 if ((userInfo.IsSuperUser && PortalSettings.Current.ActiveTab.IsSuperTab))
@@ -332,7 +332,7 @@ namespace DotNetNuke.Web.UI
                         }
                     }
 
-                    PortalSettings _PortalSettings = PortalController.GetCurrentPortalSettings();
+                    PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                     if (_PortalSettings.ContentLocalizationEnabled)
                     {

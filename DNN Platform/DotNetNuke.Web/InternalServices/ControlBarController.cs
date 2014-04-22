@@ -112,7 +112,7 @@ namespace DotNetNuke.Web.InternalServices
                 category = "All";                
             }            
             var bookmarCategory = Controller.GetBookmarkCategory(PortalSettings.Current.PortalId);
-            var bookmarkedModules = Controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.GetCurrentUserInfo().UserID, searchTerm);
+            var bookmarkedModules = Controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID, searchTerm);
             var bookmarkCategoryModules = Controller.GetCategoryDesktopModules(PortalSettings.PortalId, bookmarCategory, searchTerm);
 
             var filteredList = bookmarCategory == category ? bookmarkCategoryModules.OrderBy(m => m.Key).Union(bookmarkedModules.OrderBy(m => m.Key)).Distinct() 
@@ -216,7 +216,7 @@ namespace DotNetNuke.Web.InternalServices
         [DnnPageEditor]
         public HttpResponseMessage CopyPermissionsToChildren()
         {
-            if(TabPermissionController.CanManagePage() && UserController.GetCurrentUserInfo().IsInRole("Administrators")
+            if(TabPermissionController.CanManagePage() && UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")
                 && ActiveTabHasChildren() && !PortalSettings.ActiveTab.IsSuperTab)
             {
                 TabController.CopyPermissionsToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.TabPermissions);
@@ -331,7 +331,7 @@ namespace DotNetNuke.Web.InternalServices
         [RequireHost]
         public HttpResponseMessage ClearHostCache()
         {
-            if (UserController.GetCurrentUserInfo().IsSuperUser)           
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)           
             {
                 DataCache.ClearCache();
 				ClientResourceManager.ClearCache();
@@ -346,7 +346,7 @@ namespace DotNetNuke.Web.InternalServices
         [RequireHost]
         public HttpResponseMessage RecycleApplicationPool()
         {
-            if (UserController.GetCurrentUserInfo().IsSuperUser)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
                 log.AddProperty("Message", "UserRestart");
@@ -363,7 +363,7 @@ namespace DotNetNuke.Web.InternalServices
         [RequireHost]
         public HttpResponseMessage SwitchSite(SwitchSiteDTO dto)
         {
-            if (UserController.GetCurrentUserInfo().IsSuperUser)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 try
                 {
@@ -395,7 +395,7 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SwitchLanguage(SwitchLanguageDTO dto)
         {
-            if (UserController.GetCurrentUserInfo().IsSuperUser)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 try
                 {
@@ -556,7 +556,7 @@ namespace DotNetNuke.Web.InternalServices
 
             int userID = -1;
           
-            UserInfo user = UserController.GetCurrentUserInfo();
+            UserInfo user = UserController.Instance.GetCurrentUserInfo();
             if (user != null)
             {
                 userID = user.UserID;

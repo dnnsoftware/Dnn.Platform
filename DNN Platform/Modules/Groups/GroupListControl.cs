@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.Groups.Controls
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Groups.Controls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            currentUser = UserController.GetCurrentUserInfo();
+            currentUser = UserController.Instance.GetCurrentUserInfo();
 
         }
 

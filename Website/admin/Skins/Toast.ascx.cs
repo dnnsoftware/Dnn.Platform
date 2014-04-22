@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public bool IsOnline()
         {
-             var userInfo = UserController.GetCurrentUserInfo();
+             var userInfo = UserController.Instance.GetCurrentUserInfo();
              return userInfo.UserID != -1;
         }
 

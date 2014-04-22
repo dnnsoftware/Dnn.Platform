@@ -159,7 +159,7 @@ namespace DotNetNuke.UI.ControlPanel
 					PositionLst.Enabled = Enabled;
 					PaneModulesLst.Enabled = Enabled;
 
-					UserInfo objUser = UserController.GetCurrentUserInfo();
+					UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
 					if ((objUser != null))
 					{
 						if (objUser.IsSuperUser)
@@ -437,7 +437,7 @@ namespace DotNetNuke.UI.ControlPanel
             int userID = -1;
             if (Request.IsAuthenticated)
             {
-                UserInfo user = UserController.GetCurrentUserInfo();
+                UserInfo user = UserController.Instance.GetCurrentUserInfo();
                 if (((user != null)))
                 {
                     userID = user.UserID;

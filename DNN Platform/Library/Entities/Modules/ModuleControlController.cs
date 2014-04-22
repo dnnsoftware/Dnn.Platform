@@ -190,7 +190,7 @@ namespace DotNetNuke.Entities.Modules
                                                                 moduleControl.HelpURL,
                                                                 moduleControl.SupportsPartialRendering,
                                                                 moduleControl.SupportsPopUps,
-                                                                UserController.GetCurrentUserInfo().UserID);
+                                                                UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
@@ -206,7 +206,7 @@ namespace DotNetNuke.Entities.Modules
                                                  moduleControl.HelpURL,
                                                  moduleControl.SupportsPartialRendering,
                                                  moduleControl.SupportsPopUps,
-                                                 UserController.GetCurrentUserInfo().UserID);
+                                                 UserController.Instance.GetCurrentUserInfo().UserID);
             }
             if (clearCache)
             {

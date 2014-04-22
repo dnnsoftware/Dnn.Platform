@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Mobile
 														profile.Height,
 														profile.UserAgent,
 														profile.SortOrder,
-														UserController.GetCurrentUserInfo().UserID);
+														UserController.Instance.GetCurrentUserInfo().UserID);
 
 			profile.Id = id;
 
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.Mobile
 
 		private void AddLog(string logContent)
 		{
-            EventLogController.Instance.AddLog("Message", logContent, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
+            EventLogController.Instance.AddLog("Message", logContent, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
 		}
 
 

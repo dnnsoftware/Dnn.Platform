@@ -110,7 +110,7 @@ namespace DotNetNuke.Common.Utilities
                     {
                         if (UserID == -1)
                         {
-                            UserID = UserController.GetCurrentUserInfo().UserID;
+                            UserID = UserController.Instance.GetCurrentUserInfo().UserID;
                         }
                         DataProvider.Instance().AddUrlLog(objUrlTracking.UrlTrackingID, UserID);
                     }

@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
             //when current user is host user and exception is PageLoadException, try to log the log guid into cookies.
             //so that this log can be picked and do more action on it later.
-            if (logType == ExceptionLogType.PAGE_LOAD_EXCEPTION && HttpContext.Current != null && UserController.GetCurrentUserInfo().IsSuperUser)
+            if (logType == ExceptionLogType.PAGE_LOAD_EXCEPTION && HttpContext.Current != null && UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 HttpContext.Current.Response.Cookies.Add(new HttpCookie("LogGUID", log.LogGUID){HttpOnly = false});
             }

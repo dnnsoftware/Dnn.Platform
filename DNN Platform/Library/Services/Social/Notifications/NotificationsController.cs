@@ -211,7 +211,7 @@ namespace DotNetNuke.Services.Social.Notifications
                 _messagingDataService.CreateMessageRecipientsForRole(
                     notification.NotificationID,
                     roleIds,
-                    UserController.GetCurrentUserInfo().UserID);
+                    UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //send message to each User - this should be called after CreateMessageRecipientsForRole.
@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 _messagingDataService.SaveMessageRecipient(
                     recipient,
-                    UserController.GetCurrentUserInfo().UserID);
+                    UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //if sendToast is true, then mark all recipients' as ready for toast.
@@ -413,7 +413,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal virtual int GetCurrentUserId()
         {
-            return UserController.GetCurrentUserInfo().UserID;
+            return UserController.Instance.GetCurrentUserInfo().UserID;
         }
 
         internal virtual DateTime GetExpirationDate(int notificationTypeId)

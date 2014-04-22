@@ -1825,8 +1825,8 @@ namespace DotNetNuke.Services.Upgrade
                                           string.IsNullOrEmpty(message)
                                               ? "Remove System Web Extensions"
                                               : string.Format("Remove System Web Extensions failed. Error reported during attempt to update:{0}", message),
-                                          PortalController.GetCurrentPortalSettings(),
-                                          UserController.GetCurrentUserInfo().UserID,
+                                          PortalController.Instance.GetCurrentPortalSettings(),
+                                          UserController.Instance.GetCurrentUserInfo().UserID,
                                           EventLogController.EventLogType.HOST_ALERT);
             }
 
@@ -2145,7 +2145,7 @@ namespace DotNetNuke.Services.Upgrade
                 TabController.Instance.UpdateTab(hostPage);
             }
 
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
 
             if (settings != null)
             {
@@ -4856,12 +4856,12 @@ namespace DotNetNuke.Services.Upgrade
 
                             //Log Upgrade
 
-                            EventLogController.Instance.AddLog("UpgradeNet", "Upgraded Site to .NET 3.5", PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
+                            EventLogController.Instance.AddLog("UpgradeNet", "Upgraded Site to .NET 3.5", PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
                         }
                         else
                         {
                             //Log Failed Upgrade
-                            EventLogController.Instance.AddLog("UpgradeNet", string.Format("Upgrade to .NET 3.5 failed. Error reported during attempt to update:{0}", message), PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
+                            EventLogController.Instance.AddLog("UpgradeNet", string.Format("Upgrade to .NET 3.5 failed. Error reported during attempt to update:{0}", message), PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
                         }
                     }
                     break;
@@ -4875,8 +4875,8 @@ namespace DotNetNuke.Services.Upgrade
                                                   string.IsNullOrEmpty(strMessage)
                                                       ? "Upgraded Site to .NET 4.0"
                                                       : string.Format("Upgrade to .NET 4.0 failed. Error reported during attempt to update:{0}", strMessage),
-                                                  PortalController.GetCurrentPortalSettings(),
-                                                  UserController.GetCurrentUserInfo().UserID,
+                                                  PortalController.Instance.GetCurrentPortalSettings(),
+                                                  UserController.Instance.GetCurrentUserInfo().UserID,
                                                   EventLogController.EventLogType.HOST_ALERT);
                     }
                     break;

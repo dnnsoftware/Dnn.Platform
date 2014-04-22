@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.DDRMenu
 		private HttpContext CurrentContext { get { return currentContext ?? (currentContext = HttpContext.Current); } }
 
 		private PortalSettings hostPortalSettings;
-		internal PortalSettings HostPortalSettings { get { return hostPortalSettings ?? (hostPortalSettings = PortalController.GetCurrentPortalSettings()); } }
+		internal PortalSettings HostPortalSettings { get { return hostPortalSettings ?? (hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); } }
 
 		private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
 																		  {
@@ -101,7 +101,7 @@ namespace DotNetNuke.Web.DDRMenu
 			UserInfo user = null;
 			if (menuSettings.IncludeContext)
 			{
-				user = UserController.GetCurrentUserInfo();
+				user = UserController.Instance.GetCurrentUserInfo();
 				user.Roles = user.Roles; // Touch roles to populate
 			}
 

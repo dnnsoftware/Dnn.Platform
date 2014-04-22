@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Host
         public int AddIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
-            int id = DataProvider.Instance().AddIPFilter(ipFilter.IPAddress, ipFilter.SubnetMask, ipFilter.RuleType, UserController.GetCurrentUserInfo().UserID);
+            int id = DataProvider.Instance().AddIPFilter(ipFilter.IPAddress, ipFilter.SubnetMask, ipFilter.RuleType, UserController.Instance.GetCurrentUserInfo().UserID);
             return id;
         }
 
@@ -83,7 +83,7 @@ namespace DotNetNuke.Entities.Host
         public void UpdateIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
-            DataProvider.Instance().UpdateIPFilter(ipFilter.IPFilterID, ipFilter.IPAddress, ipFilter.SubnetMask, ipFilter.RuleType, UserController.GetCurrentUserInfo().UserID);
+            DataProvider.Instance().UpdateIPFilter(ipFilter.IPFilterID, ipFilter.IPAddress, ipFilter.SubnetMask, ipFilter.RuleType, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public void DeleteIPFilter(IPFilterInfo ipFilter)

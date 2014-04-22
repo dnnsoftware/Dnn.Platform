@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         private static string GetCacheFolder()
         {
-            int portalId = PortalController.GetCurrentPortalSettings().PortalId;
+            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
             return GetCacheFolder(portalId);
         }
 

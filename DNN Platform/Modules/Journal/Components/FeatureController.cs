@@ -212,7 +212,7 @@ namespace DotNetNuke.Modules.Journal.Components {
         public bool HasViewPermission(SearchResult searchResult)
         {
             var securityKeys = searchResult.UniqueKey.Split('_')[2].Split(',');
-            var userInfo = UserController.GetCurrentUserInfo();
+            var userInfo = UserController.Instance.GetCurrentUserInfo();
             
             var selfKey = string.Format("U{0}", userInfo.UserID);
 
@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.Journal.Components {
         public string GetDocUrl(SearchResult searchResult)
         {
             var url = string.Empty;
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
             var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
             var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);

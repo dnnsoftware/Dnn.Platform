@@ -263,7 +263,7 @@ namespace DesktopModules.Admin.Tabs
 
             try
             {
-                if (PortalSettings.Pages < PortalSettings.PageQuota || UserController.GetCurrentUserInfo().IsSuperUser || PortalSettings.PageQuota == 0)
+                if (PortalSettings.Pages < PortalSettings.PageQuota || UserController.Instance.GetCurrentUserInfo().IsSuperUser || PortalSettings.PageQuota == 0)
                 {
                     btnBulkCreate.Enabled = true;
                 }
@@ -1352,7 +1352,7 @@ namespace DesktopModules.Admin.Tabs
                 tab.ContainerSrc = objRoot.ContainerSrc;
             }
 
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings.ContentLocalizationEnabled)
             {
                 tab.CultureCode = LocaleController.Instance.GetDefaultLocale(tab.PortalID).Code;

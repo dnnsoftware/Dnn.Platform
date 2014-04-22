@@ -580,7 +580,7 @@ namespace DotNetNuke.Security.Permissions
                                                          folderPermission.RoleID,
                                                          folderPermission.AllowAccess,
                                                          folderPermission.UserID,
-                                                         UserController.GetCurrentUserInfo().UserID);
+                                                         UserController.Instance.GetCurrentUserInfo().UserID);
                     }
                 }
             }
@@ -726,7 +726,7 @@ namespace DotNetNuke.Security.Permissions
         public virtual bool HasModuleAccess(SecurityAccessLevel accessLevel, string permissionKey, ModuleInfo moduleConfiguration)
         {
             bool isAuthorized = false;
-            UserInfo userInfo = UserController.GetCurrentUserInfo();
+            UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
             TabInfo tab = TabController.Instance.GetTab(moduleConfiguration.TabID, moduleConfiguration.PortalID, false);
             if (userInfo != null && userInfo.IsSuperUser)
             {
@@ -852,7 +852,7 @@ namespace DotNetNuke.Security.Permissions
                                                              modulePermission.RoleID,
                                                              modulePermission.AllowAccess,
                                                              modulePermission.UserID,
-                                                             UserController.GetCurrentUserInfo().UserID);
+                                                             UserController.Instance.GetCurrentUserInfo().UserID);
                         }
                     }
                 }
@@ -1041,7 +1041,7 @@ namespace DotNetNuke.Security.Permissions
             if (!objCurrentTabPermissions.CompareTo(tab.TabPermissions))
             {
                 dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
-                EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+                EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
                 if (tab.TabPermissions != null)
                 {
                     foreach (TabPermissionInfo objTabPermission in tab.TabPermissions)
@@ -1051,8 +1051,8 @@ namespace DotNetNuke.Security.Permissions
                                                       objTabPermission.RoleID,
                                                       objTabPermission.AllowAccess,
                                                       objTabPermission.UserID,
-                                                      UserController.GetCurrentUserInfo().UserID);
-                        EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
+                                                      UserController.Instance.GetCurrentUserInfo().UserID);
+                        EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
                     }
                 }
             }

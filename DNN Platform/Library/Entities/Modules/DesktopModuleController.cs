@@ -179,8 +179,8 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.DeleteDesktopModule(desktopModuleID);
             EventLogController.Instance.AddLog("DesktopModuleID",
                                desktopModuleID.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.DESKTOPMODULE_DELETED);
             DataCache.ClearHostCache(true);
         }
@@ -349,8 +349,8 @@ namespace DotNetNuke.Entities.Modules
                                                                 desktopModule.Dependencies,
                                                                 desktopModule.Permissions,
                                                                 desktopModule.ContentItemId,
-                                                                UserController.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(desktopModule, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.DESKTOPMODULE_CREATED);
+                                                                UserController.Instance.GetCurrentUserInfo().UserID);
+                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.DESKTOPMODULE_CREATED);
             }
             else
             {
@@ -376,7 +376,7 @@ namespace DotNetNuke.Entities.Modules
                                                  desktopModule.Dependencies,
                                                  desktopModule.Permissions,
                                                  desktopModule.ContentItemId,
-                                                 UserController.GetCurrentUserInfo().UserID);
+                                                 UserController.Instance.GetCurrentUserInfo().UserID);
 
                 //Update Tags
                 if (saveTerms)
@@ -389,7 +389,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
 
-                EventLogController.Instance.AddLog(desktopModule, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.DESKTOPMODULE_UPDATED);
+                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.DESKTOPMODULE_UPDATED);
             }
             if (saveChildren)
             {
@@ -413,7 +413,7 @@ namespace DotNetNuke.Entities.Modules
 
         public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo)
         {
-            UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.GetCurrentUserInfo() == null) ? "" : UserController.GetCurrentUserInfo().Username, true);
+            UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.Instance.GetCurrentUserInfo() == null) ? "" : UserController.Instance.GetCurrentUserInfo().Username, true);
         }
 
         public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo, string sender, bool forceAppRestart)
@@ -476,11 +476,11 @@ namespace DotNetNuke.Entities.Modules
             PortalDesktopModuleInfo portalDesktopModule = GetPortalDesktopModule(portalId, desktopModuleId);
             if (portalDesktopModule == null)
             {
-                portalDesktopModuleID = DataProvider.Instance().AddPortalDesktopModule(portalId, desktopModuleId, UserController.GetCurrentUserInfo().UserID);
+                portalDesktopModuleID = DataProvider.Instance().AddPortalDesktopModule(portalId, desktopModuleId, UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.Instance.AddLog("PortalDesktopModuleID",
                                    portalDesktopModuleID.ToString(),
-                                   PortalController.GetCurrentPortalSettings(),
-                                   UserController.GetCurrentUserInfo().UserID,
+                                   PortalController.Instance.GetCurrentPortalSettings(),
+                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                    EventLogController.EventLogType.PORTALDESKTOPMODULE_CREATED);
                 if (addPermissions)
                 {
@@ -566,8 +566,8 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.Instance().DeletePortalDesktopModules(portalId, desktopModuleId);
             EventLogController.Instance.AddLog("DesktopModuleID",
                                desktopModuleId.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             if (clearCache)
             {
@@ -580,8 +580,8 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.Instance().DeletePortalDesktopModules(Null.NullInteger, desktopModuleId);
             EventLogController.Instance.AddLog("DesktopModuleID",
                                desktopModuleId.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             DataCache.ClearHostCache(true);
         }
@@ -591,8 +591,8 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.Instance().DeletePortalDesktopModules(portalId, Null.NullInteger);
             EventLogController.Instance.AddLog("PortalID",
                                portalId.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             DataCache.ClearPortalCache(portalId, true);
         }
@@ -643,11 +643,11 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method AddDesktopModuleToPortal(Integer, Integer)")]
         public void AddPortalDesktopModule(int portalID, int desktopModuleID)
         {
-            DataProvider.Instance().AddPortalDesktopModule(portalID, desktopModuleID, UserController.GetCurrentUserInfo().UserID);
+            DataProvider.Instance().AddPortalDesktopModule(portalID, desktopModuleID, UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog("DesktopModuleID",
                                desktopModuleID.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.PORTALDESKTOPMODULE_CREATED);
         }
 
@@ -657,8 +657,8 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.Instance().DeletePortalDesktopModules(portalID, desktopModuleID);
             EventLogController.Instance.AddLog("DesktopModuleID",
                                desktopModuleID.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             DataCache.ClearPortalCache(portalID, true);
         }

@@ -891,7 +891,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private bool UserNeedsVerification()
         {
-            var userInfo = UserController.GetCurrentUserInfo();
+            var userInfo = UserController.Instance.GetCurrentUserInfo();
 
             return !userInfo.IsSuperUser && userInfo.IsInRole("Unverified Users") &&
                 PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration &&

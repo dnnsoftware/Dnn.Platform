@@ -512,7 +512,7 @@ namespace DotNetNuke.Framework
                 //log visit
                 var objSiteLogs = new SiteLogController();
 
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 objSiteLogs.AddSiteLog(PortalSettings.PortalId, objUserInfo.UserID, urlReferrer, Request.Url.ToString(),
                                        Request.UserAgent, Request.UserHostAddress, Request.UserHostName,
                                        PortalSettings.ActiveTab.TabID, affiliateId, intSiteLogBuffer,

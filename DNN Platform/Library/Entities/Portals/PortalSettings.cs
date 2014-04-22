@@ -276,7 +276,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -706,7 +706,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return UserController.GetCurrentUserInfo();
+                return UserController.Instance.GetCurrentUserInfo();
             }
         }
 

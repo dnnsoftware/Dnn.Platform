@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.ControlPanel
 
             try
             {
-                if (PortalSettings.Pages < PortalSettings.PageQuota || UserController.GetCurrentUserInfo().IsSuperUser || PortalSettings.PageQuota == 0)
+                if (PortalSettings.Pages < PortalSettings.PageQuota || UserController.Instance.GetCurrentUserInfo().IsSuperUser || PortalSettings.PageQuota == 0)
                 {
                     cmdAddPage.Enabled = true;
                 }

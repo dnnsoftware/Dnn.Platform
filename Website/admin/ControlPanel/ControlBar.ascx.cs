@@ -177,13 +177,13 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected bool CheckPageQuota()
         {
-            UserInfo objUser = UserController.GetCurrentUserInfo();
+            UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
             return (objUser != null && objUser.IsSuperUser) || PortalSettings.PageQuota == 0 || PortalSettings.Pages < PortalSettings.PageQuota;
         }
 
         protected string GetUpgradeIndicator()
         {
-            UserInfo objUser = UserController.GetCurrentUserInfo();
+            UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
            
             if (objUser != null && objUser.IsSuperUser)
             {
@@ -290,7 +290,7 @@ namespace DotNetNuke.UI.ControlPanels
         protected string BuildToolUrl(string toolName, bool isHostTool, string moduleFriendlyName, 
                                       string controlKey, string navigateUrl, bool showAsPopUp)
         {
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return "javascript:void(0);";
             }
@@ -415,7 +415,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetTabURL(string tabName, bool isHostTool, int? parentId)
         {
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return "javascript:void(0);";
             }
@@ -438,7 +438,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetMenuItem(string tabName, bool isHostTool)
         {
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return string.Empty;
             }
@@ -461,7 +461,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetMenuItem(string tabName, bool isHostTool, bool isRemoveBookmark, bool isHideBookmark = false)
         {
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return string.Empty;
             }

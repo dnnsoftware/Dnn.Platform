@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.Containers
     {
 		#region Private Members
 
-        private readonly PortalSettings PortalSettings = PortalController.GetCurrentPortalSettings();
+        private readonly PortalSettings PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
         private readonly HttpRequest Request = HttpContext.Current.Request;
         private readonly HttpResponse Response = HttpContext.Current.Response;
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.UI.Containers
             var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), ModuleContext.TabId, true);
 
             //Check if this is the owner instance of a shared module.
-            var user = UserController.GetCurrentUserInfo();
+            var user = UserController.Instance.GetCurrentUserInfo();
             if (!module.IsShared)
             {
                 foreach (ModuleInfo instance in ModuleController.Instance.GetTabModulesByModule(module.ModuleID))

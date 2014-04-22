@@ -209,6 +209,27 @@ namespace DotNetNuke.Entities.Users
             return MembershipProvider.Instance().GetUserByUserName(portalId, username);
         }
 
+        private static UserInfo GetCurrentUserInternal()
+        {
+            UserInfo user;
+            if ((HttpContext.Current == null))
+            {
+                if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)
+                {
+                    return new UserInfo();
+                }
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                if (portalSettings != null)
+                {
+                    user = GetCachedUser(portalSettings.PortalId, Thread.CurrentPrincipal.Identity.Name);
+                    return user ?? new UserInfo();
+                }
+                return new UserInfo();
+            }
+            user = (UserInfo)HttpContext.Current.Items["UserInfo"];
+            return user ?? new UserInfo();            
+        }
+
         private static int GetEffectivePortalId(int portalId)
         {
             return PortalController.GetEffectivePortalId(portalId);
@@ -477,6 +498,11 @@ namespace DotNetNuke.Entities.Users
 
         #region Public Mehods
 
+        UserInfo IUserController.GetCurrentUserInfo()
+        {
+            return GetCurrentUserInternal();
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUser retrieves a User from the DataStore
@@ -560,7 +586,7 @@ namespace DotNetNuke.Entities.Users
         {
             Requires.NotNull("user", user);
 
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var role = RoleController.Instance.GetRole(settings.PortalId, r => r.RoleName == "Unverified Users");
 
             RoleController.DeleteUserRole(user, role, settings, false);
@@ -666,7 +692,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion, string passwordAnswer)
         {
-            EventLogController.Instance.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
+            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_UPDATED);
             return MembershipProvider.Instance().ChangePasswordQuestionAndAnswer(user, password, passwordQuestion, passwordAnswer);
         }
 
@@ -756,7 +782,7 @@ namespace DotNetNuke.Entities.Users
                 user.PasswordResetExpiration = passwordExpiry;
                 user.PasswordResetToken = passwordGuid;
                 UpdateUser(user.PortalID, user);
-                EventLogController.Instance.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_CREATED);
+                EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_CREATED);
                 DataCache.ClearPortalCache(portalId, false);
                 if (!user.IsSuperUser)
                 {
@@ -808,7 +834,7 @@ namespace DotNetNuke.Entities.Users
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             var canDelete = deleteAdmin || (user.UserID != portalSettings.AdministratorId);
 
@@ -911,33 +937,6 @@ namespace DotNetNuke.Entities.Users
             }
 
             return user;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Get the current UserInfo object
-        /// </summary>
-        /// <returns>The current UserInfo if authenticated, oherwise an empty user</returns>
-        /// -----------------------------------------------------------------------------
-        public static UserInfo GetCurrentUserInfo()
-        {
-            UserInfo user;
-            if ((HttpContext.Current == null))
-            {
-                if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)
-                {
-                    return new UserInfo();
-                }
-                var portalSettings = PortalController.GetCurrentPortalSettings();
-                if (portalSettings != null)
-                {
-                    user = GetCachedUser(portalSettings.PortalId, Thread.CurrentPrincipal.Identity.Name);
-                    return user ?? new UserInfo();
-                }
-                return new UserInfo();
-            }
-            user = (UserInfo)HttpContext.Current.Items["UserInfo"];
-            return user ?? new UserInfo();
         }
 
         public static ArrayList GetDeletedUsers(int portalId)
@@ -1157,7 +1156,7 @@ namespace DotNetNuke.Entities.Users
         public static Hashtable GetDefaultUserSettings()
         {
             var portalId = -1;
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             if (portalSettings != null)
             {
@@ -1469,7 +1468,7 @@ namespace DotNetNuke.Entities.Users
             if ((retValue))
             {
                 // Obtain PortalSettings from Current Context
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                 //Log event
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
@@ -1507,8 +1506,8 @@ namespace DotNetNuke.Entities.Users
         /// <returns></returns>
         public static bool ResetAndChangePassword(UserInfo user, string newPassword)
         {
-            var portalSettings = PortalController.GetCurrentPortalSettings();
-            if (GetCurrentUserInfo().IsInRole(portalSettings.AdministratorRoleName))
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (GetCurrentUserInternal().IsInRole(portalSettings.AdministratorRoleName))
             {
                 string resetPassword = ResetPassword(user, String.Empty);
                 return ChangePassword(user, resetPassword, newPassword);
@@ -1562,7 +1561,7 @@ namespace DotNetNuke.Entities.Users
             UpdateUser(user.PortalID, user);
             if (sendEmail)
             {
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 return  Mail.SendMail(user, MessageType.PasswordReminder, portalSettings) == string.Empty;
             }
             return true;
@@ -1589,7 +1588,7 @@ namespace DotNetNuke.Entities.Users
                 RestoreUserPermissions(user);
 
                 // Obtain PortalSettings from Current Context
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                 //Log event
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
@@ -1679,14 +1678,14 @@ namespace DotNetNuke.Entities.Users
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
-                    portalSettings = PortalController.GetCurrentPortalSettings();
+                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 }
                 else if (portalId > Null.NullInteger)
                 {
                     portalSettings = new PortalSettings(portalId);
                 }
 
-                EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
+                EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_UPDATED);
 			}
 			//Remove the UserInfo from the Cache, as it has been modified
 			if (clearCache)

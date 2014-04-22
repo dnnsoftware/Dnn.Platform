@@ -614,7 +614,7 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("In DotNetNuke 5.2 replaced by UserController.GetUserSettings(settings).")]
         public static Hashtable GetSettings(Hashtable settings)
         {
-            return UserController.GetUserSettings(PortalController.GetCurrentPortalSettings().PortalId, settings);
+            return UserController.GetUserSettings(PortalController.Instance.GetCurrentPortalSettings().PortalId, settings);
         }
 
         #region Private methods

@@ -171,10 +171,10 @@ namespace DotNetNuke.Security.Permissions
                                                          objDesktopModulePermission.RoleID,
                                                          objDesktopModulePermission.AllowAccess,
                                                          objDesktopModulePermission.UserID,
-                                                         UserController.GetCurrentUserInfo().UserID);
+                                                         UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(objDesktopModulePermission,
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                "",
                                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_CREATED);
             ClearPermissionCache();
@@ -195,8 +195,8 @@ namespace DotNetNuke.Security.Permissions
             provider.DeleteDesktopModulePermission(DesktopModulePermissionID);
             EventLogController.Instance.AddLog("DesktopModulePermissionID",
                                DesktopModulePermissionID.ToString(CultureInfo.InvariantCulture),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_DELETED);
             ClearPermissionCache();
         }
@@ -216,8 +216,8 @@ namespace DotNetNuke.Security.Permissions
             provider.DeleteDesktopModulePermissionsByPortalDesktopModuleID(portalDesktopModuleID);
             EventLogController.Instance.AddLog("PortalDesktopModuleID",
                                portalDesktopModuleID.ToString(CultureInfo.InvariantCulture),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.DESKTOPMODULE_DELETED);
             ClearPermissionCache();
         }
@@ -236,8 +236,8 @@ namespace DotNetNuke.Security.Permissions
             provider.DeleteDesktopModulePermissionsByUserID(objUser.UserID, objUser.PortalID);
             EventLogController.Instance.AddLog("UserID",
                                objUser.UserID.ToString(CultureInfo.InvariantCulture),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.DESKTOPMODULE_DELETED);
             ClearPermissionCache();
         }
@@ -313,10 +313,10 @@ namespace DotNetNuke.Security.Permissions
                                                    objDesktopModulePermission.RoleID,
                                                    objDesktopModulePermission.AllowAccess,
                                                    objDesktopModulePermission.UserID,
-                                                   UserController.GetCurrentUserInfo().UserID);
+                                                   UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(objDesktopModulePermission,
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                "",
                                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_UPDATED);
             ClearPermissionCache();

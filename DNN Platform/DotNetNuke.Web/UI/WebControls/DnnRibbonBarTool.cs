@@ -374,7 +374,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 isHostTool = AllTools[toolName].IsHostTool;
             }
 
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return false;
             }
@@ -453,7 +453,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual string BuildToolUrl()
         {
-            if ((ToolInfo.IsHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((ToolInfo.IsHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return "javascript:void(0);";
             }

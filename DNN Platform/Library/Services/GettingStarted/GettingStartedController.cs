@@ -14,9 +14,9 @@ namespace DotNetNuke.Services.GettingStarted
                 var result = false;
                 if (GettingStartedTabId > -1)
                 {
-                    if (!IsPage(GettingStartedTabId) && PortalController.GetCurrentPortalSettings().UserInfo.IsSuperUser && Host.EnableGettingStartedPage)
+                    if (!IsPage(GettingStartedTabId) && PortalController.Instance.GetCurrentPortalSettings().UserInfo.IsSuperUser && Host.EnableGettingStartedPage)
                     {
-                        var settings = PortalController.GetCurrentPortalSettings();
+                        var settings = PortalController.Instance.GetCurrentPortalSettings();
                         result =
                             HostController.Instance.GetBoolean(String.Format("GettingStarted_Display_{0}", settings.UserId), true) &&
                             !HostController.Instance.GetBoolean(String.Format("GettingStarted_Hide_{0}", settings.UserId), false);
@@ -30,13 +30,13 @@ namespace DotNetNuke.Services.GettingStarted
         {
             get
             {
-                return PortalController.GetPortalSettingAsInteger("GettingStartedTabId", PortalController.GetCurrentPortalSettings().PortalId, -1);
+                return PortalController.GetPortalSettingAsInteger("GettingStartedTabId", PortalController.Instance.GetCurrentPortalSettings().PortalId, -1);
             }
         }
 
         private static bool IsPage(int tabId)
         {
-            return (PortalController.GetCurrentPortalSettings().ActiveTab.TabID == tabId);
+            return (PortalController.Instance.GetCurrentPortalSettings().ActiveTab.TabID == tabId);
         }
 
     }

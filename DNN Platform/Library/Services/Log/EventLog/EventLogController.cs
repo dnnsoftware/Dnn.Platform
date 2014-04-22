@@ -199,7 +199,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLog(string propertyName, string propertyValue, EventLogType logType)
         {
-            AddLog(propertyName, propertyValue, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, logType);
+            AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, logType);
         }
 
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, EventLogType logType)

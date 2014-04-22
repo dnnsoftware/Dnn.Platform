@@ -243,7 +243,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 cmdAuthorize.Visible = !UserMembership.Approved;
                 cmdPassword.Visible = !UserMembership.UpdatePassword;
             }
-            if (UserController.GetCurrentUserInfo().IsSuperUser && UserController.GetCurrentUserInfo().UserID!=User.UserID)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser && UserController.Instance.GetCurrentUserInfo().UserID!=User.UserID)
             {
                 cmdToggleSuperuser.Visible = true;
                
@@ -415,7 +415,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (Request.IsAuthenticated != true) return;
             ////ensure only superusers can change user superuser state
-            if (UserController.GetCurrentUserInfo().IsSuperUser != true) return;
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser != true) return;
             
             var currentSuperUserState = User.IsSuperUser;
             User.IsSuperUser = !currentSuperUserState;

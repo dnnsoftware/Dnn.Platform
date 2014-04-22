@@ -93,9 +93,16 @@ namespace DotNetNuke.Entities.Portals
 
             DataProvider.Instance().DeletePortalInfo(portalId);
 
-            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
+            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
 
             DataCache.ClearHostCache(true);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by PortalController.Instance.GetCurrentPortalSettings")]
+        public static PortalSettings GetCurrentPortalSettings()
+        {
+            return GetCurrentPortalSettingsInternal();
         }
 
 

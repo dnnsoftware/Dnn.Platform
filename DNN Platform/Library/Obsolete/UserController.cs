@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Data;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -54,6 +55,7 @@ namespace DotNetNuke.Entities.Users
     /// -----------------------------------------------------------------------------
     public partial class UserController
     {
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.CreateUser")]
         public int AddUser(UserInfo objUser)
         {
@@ -61,6 +63,7 @@ namespace DotNetNuke.Entities.Users
             return objUser.UserID;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.CreateUser")]
         public int AddUser(UserInfo objUser, bool addToMembershipProvider)
         {
@@ -68,6 +71,7 @@ namespace DotNetNuke.Entities.Users
             return objUser.UserID;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.2.2. This method has been replaced by UserController.MoveUserToPortal and UserControllar.CopyUserToPortal")]
         public static void CopyUserToPortal(UserInfo user, PortalInfo portal, bool mergeUser, bool deleteUser)
         {
@@ -81,12 +85,14 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.DeleteUsers")]
         public void DeleteAllUsers(int portalId)
         {
             DeleteUsers(portalId, false, true);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.DeleteUser")]
         public bool DeleteUser(int portalId, int userId)
         {
@@ -96,12 +102,14 @@ namespace DotNetNuke.Entities.Users
             return DeleteUser(ref objUser, true, false);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.DeleteUsers")]
         public void DeleteUsers(int portalId)
         {
             DeleteUsers(portalId, true, false);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.1.")]
         public static ArrayList FillUserCollection(int portalId, IDataReader dr, ref int totalRecords)
         {
@@ -136,6 +144,7 @@ namespace DotNetNuke.Entities.Users
             return arrUsers;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.1.")]
         public static ArrayList FillUserCollection(int portalId, IDataReader dr)
         {
@@ -165,6 +174,7 @@ namespace DotNetNuke.Entities.Users
             return arrUsers;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.1.")]
         public static UserInfo FillUserInfo(int portalId, IDataReader dr, bool closeDataReader)
         {
@@ -230,86 +240,92 @@ namespace DotNetNuke.Entities.Users
             return objUserInfo;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUserByName")]
         public UserInfo FillUserInfo(int portalID, string username)
         {
             return GetCachedUser(portalID, username);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function should be replaced by String.Format(DataCache.UserCacheKey, portalId, username)")]
         public string GetCacheKey(int portalID, string username)
         {
             return string.Format(DataCache.UserCacheKey, portalID, username);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function should be replaced by String.Format(DataCache.UserCacheKey, portalId, username)")]
         public static string CacheKey(int portalId, string username)
         {
             return string.Format(DataCache.UserCacheKey, portalId, username);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 7.3. Replaced bu UserController.Instance.GetCurrentUserInfo()")]
+        public static UserInfo GetCurrentUserInfo()
+        {
+            return GetCurrentUserInternal();
+        }
+
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. Not needed any longer for due to autohydration")]
         public static ArrayList GetUnAuthorizedUsers(int portalId, bool isHydrated)
         {
             return GetUnAuthorizedUsers(portalId);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. Not needed any longer for due to autohydration")]
         public static UserInfo GetUser(int portalId, int userId, bool isHydrated)
         {
             return GetUserById(portalId, userId);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   GetUser retrieves a User from the DataStore
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "portalId">The Id of the Portal</param>
-        /// <param name = "userId">The Id of the user being retrieved from the Data Store.</param>
-        /// <param name = "isHydrated">A flag that determines whether the user is hydrated.</param>
-        /// <param name = "hydrateRoles">A flag that instructs the method to automatically hydrate the roles</param>
-        /// <returns>The User as a UserInfo object</returns>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. Not needed any longer for single users due to autohydration")]
         public static UserInfo GetUser(int portalId, int userId, bool isHydrated, bool hydrateRoles)
         {
             return GetUserById(portalId, userId);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUserByName")]
         public UserInfo GetUserByUsername(int portalID, string username)
         {
             return GetCachedUser(portalID, username);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUserByName")]
         public UserInfo GetUserByUsername(int portalID, string username, bool synchronizeUsers)
         {
             return GetCachedUser(portalID, username);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUserByName")]
         public static UserInfo GetUserByName(int portalId, string username, bool isHydrated)
         {
             return GetCachedUser(portalId, username);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
         public ArrayList GetSuperUsers()
         {
             return GetUsers(Null.NullInteger);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
         public ArrayList GetUsers(bool synchronizeUsers, bool progressiveHydration)
         {
             return GetUsers(Null.NullInteger);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
         public ArrayList GetUsers(int portalId, bool synchronizeUsers, bool progressiveHydration)
         {
@@ -317,6 +333,7 @@ namespace DotNetNuke.Entities.Users
             return GetUsers(portalId, -1, -1, ref totalRecords);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
         public static ArrayList GetUsers(int portalId, bool isHydrated)
         {
@@ -324,53 +341,62 @@ namespace DotNetNuke.Entities.Users
             return GetUsers(portalId, -1, -1, ref totalRecords);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
         public static ArrayList GetUsers(int portalId, bool isHydrated, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsers(portalId, pageIndex, pageSize, ref totalRecords);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsersByEmail")]
         public static ArrayList GetUsersByEmail(int portalId, bool isHydrated, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsersByUserName")]
         public static ArrayList GetUsersByUserName(int portalId, bool isHydrated, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsersByUserName(portalId, userNameToMatch, pageIndex, pageSize, ref totalRecords);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsersByProfileProperty")]
         public static ArrayList GetUsersByProfileProperty(int portalId, bool isHydrated, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsersByProfileProperty(portalId, propertyName, propertyValue, pageIndex, pageSize, ref totalRecords);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.1. The method had no implementation !!!")]
         public static void SetAuthCookie(string username, bool createPersistentCookie)
         {
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.ChangePassword")]
         public bool SetPassword(UserInfo objUser, string newPassword)
         {
             return ChangePassword(objUser, Null.NullString, newPassword);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.ChangePassword")]
         public bool SetPassword(UserInfo objUser, string oldPassword, string newPassword)
         {
             return ChangePassword(objUser, oldPassword, newPassword);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.UnlockUserAccount")]
         public void UnlockUserAccount(UserInfo objUser)
         {
             UnLockUser(objUser);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.UpdateUser")]
         public void UpdateUser(UserInfo objUser)
         {

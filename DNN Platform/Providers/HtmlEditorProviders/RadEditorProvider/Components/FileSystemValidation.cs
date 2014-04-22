@@ -354,7 +354,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		{
 			get
 			{
-				string homeDir = PortalController.GetCurrentPortalSettings().HomeDirectory;
+				string homeDir = PortalController.Instance.GetCurrentPortalSettings().HomeDirectory;
 				homeDir = homeDir.Replace("\\", "/");
 
 				if (homeDir.EndsWith("/"))
@@ -383,7 +383,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 				//Return text.Replace("/", " ").Replace("\", " ").Trim()
 
-				string homeDir = PortalController.GetCurrentPortalSettings().HomeDirectory;
+				string homeDir = PortalController.Instance.GetCurrentPortalSettings().HomeDirectory;
 				homeDir = homeDir.Replace("\\", "/");
 
 				if (homeDir.EndsWith("/"))
@@ -829,7 +829,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		{
 			try
 			{
-                if (!PortalController.Instance.HasSpaceAvailable(PortalController.GetCurrentPortalSettings().PortalId, contentLength))
+                if (!PortalController.Instance.HasSpaceAvailable(PortalController.Instance.GetCurrentPortalSettings().PortalId, contentLength))
 				{
 					return string.Format(Localization.GetString("DiskSpaceExceeded"), ToEndUserPath(virtualPathAndName));
 				}
@@ -959,7 +959,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 					log.AddProperty("TabName", PortalSettings.ActiveTab.TabName);
 				}
 
-				Entities.Users.UserInfo user = Entities.Users.UserController.GetCurrentUserInfo();
+				Entities.Users.UserInfo user = Entities.Users.UserController.Instance.GetCurrentUserInfo();
 				if (user != null)
 				{
 					log.AddProperty("UserID", user.UserID.ToString(CultureInfo.InvariantCulture));

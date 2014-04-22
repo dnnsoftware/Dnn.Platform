@@ -227,7 +227,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (FoldersComboBox.SelectedFolder != null && FoldersComboBox.SelectedFolder.FolderPath.StartsWith("Users/", StringComparison.InvariantCultureIgnoreCase))
             {
-                var userFolder = FolderManager.Instance.GetUserFolder(User ?? UserController.GetCurrentUserInfo());
+                var userFolder = FolderManager.Instance.GetUserFolder(User ?? UserController.Instance.GetCurrentUserInfo());
                 if (FoldersComboBox.SelectedFolder.FolderID == userFolder.FolderID)
                 {
                     FoldersComboBox.SelectedItem = new ListItem
@@ -275,7 +275,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (UsePersonalFolder)
             {
-                var user = User ?? UserController.GetCurrentUserInfo();
+                var user = User ?? UserController.Instance.GetCurrentUserInfo();
                 var userFolder = FolderManager.Instance.GetUserFolder(user);
                 FoldersComboBox.SelectedFolder = userFolder;
             }

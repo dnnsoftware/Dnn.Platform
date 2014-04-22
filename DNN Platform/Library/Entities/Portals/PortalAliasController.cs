@@ -126,11 +126,11 @@ namespace DotNetNuke.Entities.Portals
                 if (portalAliases.Keys.Count == 0 || (portalAliases.Count == 1 && portalAliases.ContainsKey("_default")))
                 {
                     //relate the PortalAlias to the default portal on a fresh database installation
-                    DataProvider.Instance().UpdatePortalAlias(httpAlias.ToLower().Trim('/'), UserController.GetCurrentUserInfo().UserID);
+                    DataProvider.Instance().UpdatePortalAlias(httpAlias.ToLower().Trim('/'), UserController.Instance.GetCurrentUserInfo().UserID);
                     EventLogController.Instance.AddLog("PortalAlias",
                                        httpAlias,
-                                       PortalController.GetCurrentPortalSettings(),
-                                       UserController.GetCurrentUserInfo().UserID,
+                                       PortalController.Instance.GetCurrentPortalSettings(),
+                                       UserController.Instance.GetCurrentUserInfo().UserID,
                                        EventLogController.EventLogType.PORTALALIAS_UPDATED);
 
                     //clear the cachekey "GetPortalByAlias" otherwise portalalias "_default" stays in cache after first install
@@ -145,8 +145,8 @@ namespace DotNetNuke.Entities.Portals
 
         private static void LogEvent(PortalAliasInfo portalAlias, EventLogController.EventLogType logType)
         {
-            int userId = UserController.GetCurrentUserInfo().UserID;
-            EventLogController.Instance.AddLog(portalAlias, PortalController.GetCurrentPortalSettings(), userId, "", logType);
+            int userId = UserController.Instance.GetCurrentUserInfo().UserID;
+            EventLogController.Instance.AddLog(portalAlias, PortalController.Instance.GetCurrentPortalSettings(), userId, "", logType);
         }
 
         private static bool ValidateAlias(string portalAlias, bool ischild, bool isDomain)
@@ -178,7 +178,7 @@ namespace DotNetNuke.Entities.Portals
                                             portalAlias.Skin,
                                             portalAlias.BrowserType.ToString(),
                                             portalAlias.IsPrimary,
-                                            UserController.GetCurrentUserInfo().UserID);
+                                            UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Log Event
             LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_CREATED);
@@ -266,7 +266,7 @@ namespace DotNetNuke.Entities.Portals
                                                             portalAlias.Skin,
                                                             portalAlias.BrowserType.ToString(),
                                                             portalAlias.IsPrimary,
-                                                            UserController.GetCurrentUserInfo().UserID);
+                                                            UserController.Instance.GetCurrentUserInfo().UserID);
             //Log Event
             LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_UPDATED);
 

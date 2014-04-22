@@ -87,10 +87,10 @@ namespace DotNetNuke.Entities.Tabs
                                    tab.IsSecure,
                                    tab.PermanentRedirect,
                                    tab.SiteMapPriority,
-                                   UserController.GetCurrentUserInfo().UserID,
+                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                    tab.CultureCode);
-                EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(),
-                                UserController.GetCurrentUserInfo().UserID, "",
+                EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(),
+                                UserController.Instance.GetCurrentUserInfo().UserID, "",
                                 EventLogController.EventLogType.TAB_UPDATED);
             }
             if (tabs.Count > 0)
@@ -197,7 +197,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             return (from kvp in GetTabsByPortal(portalid)
                     where !kvp.Value.TabPath.StartsWith("//Admin")
-                          && kvp.Value.CultureCode == PortalController.GetCurrentPortalSettings().DefaultLanguage
+                          && kvp.Value.CultureCode == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage
                           && !kvp.Value.IsDeleted
                     select kvp.Value).ToList();
         }
@@ -360,10 +360,10 @@ namespace DotNetNuke.Entities.Tabs
         public void UpdateTabOrder(TabInfo objTab)
         {
             Provider.UpdateTabOrder(objTab.TabID, objTab.TabOrder, objTab.ParentId,
-                                    UserController.GetCurrentUserInfo().UserID);
+                                    UserController.Instance.GetCurrentUserInfo().UserID);
             UpdateTabVersion(objTab.TabID);
-            EventLogController.Instance.AddLog(objTab, PortalController.GetCurrentPortalSettings(),
-                                      UserController.GetCurrentUserInfo().UserID, "",
+            EventLogController.Instance.AddLog(objTab, PortalController.Instance.GetCurrentPortalSettings(),
+                                      UserController.Instance.GetCurrentUserInfo().UserID, "",
                                       EventLogController.EventLogType.TAB_ORDER_UPDATED);
             ClearCache(objTab.PortalID);
         }

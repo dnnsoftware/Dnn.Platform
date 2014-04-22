@@ -12,7 +12,7 @@
             </div>
             <!-- close ServiceIcon -->
             <ul id="ControlNav">
-                <% if (UserController.GetCurrentUserInfo().IsInRole("Administrators"))
+                <% if (UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
                    {%>
                 <li><a href="<%= GetTabURL("Admin", false, Null.NullInteger) %>">
                     <%= GetString("Tool.Admin.Text") %></a>
@@ -49,7 +49,7 @@
                     </div>
                     <!--close subNav-->
                 </li>
-                <% if (UserController.GetCurrentUserInfo().IsSuperUser)
+                <% if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                    {%>
                 <li><a href="<%= GetTabURL("Host", true, Null.NullInteger) %>">
                     <%= GetString("Tool.Host.Text") %></a>
@@ -96,7 +96,7 @@
                                     <li>
                                         <a href="javascript: openFileUploader();"><%= GetString("Tool.UploadFile.Text") %></a>
                                     </li>
-                                   <% if (UserController.GetCurrentUserInfo().IsSuperUser)
+                                   <% if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                                       {%>
                                     <li><a href='javascript:void(0)' id="controlBar_ClearCache">
                                         <%= GetString("Tool.ClearCache.Text") %></a></li>
@@ -135,7 +135,7 @@
                             <dd>
                                 <ul>
                                     <asp:Literal ID="helpLink" runat="server" ViewStateMode="Disabled"></asp:Literal>
-                                    <% if (UserController.GetCurrentUserInfo().IsSuperUser)
+                                    <% if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                                        {%>
                                         <li id="gettingStartedLink" runat="server"><a href="javascript:dnn.GettingStartedDialog.getInstance().show();">
                                             <%= GetString("Tool.GettingStarted.Text") %></a></li>
@@ -159,7 +159,7 @@
                             <%= GetString("Tool.AddNewModule.Text") %></a> </li>
                         <li><a href="javascript:void(0)" id="controlBar_AddExistingModule">
                             <%= GetString("Tool.AddExistingModule.Text") %></a> </li>
-                        <% if (UserController.GetCurrentUserInfo().IsSuperUser)
+                        <% if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                            {%>
 						<li class="separator"></li>
                         <li><a href="javascript:void(0)" id="controlBar_CreateModule">
@@ -203,7 +203,7 @@
                 </li>
                 <% } %>
                 
-                 <% if (UserController.GetCurrentUserInfo().IsInRole("Administrators"))
+                 <% if (UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
                     {%>
                 <li><a href="javascript:void(0)">
                     <%= GetString("Tool.Users.Text") %></a>

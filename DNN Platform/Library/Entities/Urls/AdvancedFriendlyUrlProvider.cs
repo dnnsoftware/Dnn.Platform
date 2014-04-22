@@ -66,12 +66,12 @@ namespace DotNetNuke.Entities.Urls
 
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
-            return FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.GetCurrentPortalSettings());
+            return FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            return FriendlyUrl(tab, path, pageName, PortalController.GetCurrentPortalSettings());
+            return FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings portalSettings)

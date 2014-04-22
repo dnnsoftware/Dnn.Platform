@@ -27,6 +27,8 @@ namespace DotNetNuke.Entities.Users
 {
     public interface IUserController
     {
+        UserInfo GetCurrentUserInfo();
+
         UserInfo GetUser(int portalId, int userId);
 
         /// <summary>

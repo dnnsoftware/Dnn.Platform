@@ -83,9 +83,9 @@ namespace DotNetNuke.Entities.Tabs
             get
             {
                 TabInfo tab = null;
-                if (PortalController.GetCurrentPortalSettings() != null)
+                if (PortalController.Instance.GetCurrentPortalSettings() != null)
                 {
-                    tab = PortalController.GetCurrentPortalSettings().ActiveTab;
+                    tab = PortalController.Instance.GetCurrentPortalSettings().ActiveTab;
                 }
                 return tab;
             }
@@ -121,13 +121,13 @@ namespace DotNetNuke.Entities.Tabs
             //Add Tab
             if (afterTabId > 0)
             {
-                tab.TabID = Provider.AddTabAfter(tab, afterTabId, UserController.GetCurrentUserInfo().UserID);
+                tab.TabID = Provider.AddTabAfter(tab, afterTabId, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
                 tab.TabID = beforeTabId > 0
-                                ? Provider.AddTabBefore(tab, beforeTabId, UserController.GetCurrentUserInfo().UserID)
-                                : Provider.AddTabToEnd(tab, UserController.GetCurrentUserInfo().UserID);
+                                ? Provider.AddTabBefore(tab, beforeTabId, UserController.Instance.GetCurrentUserInfo().UserID)
+                                : Provider.AddTabToEnd(tab, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //Clear the Cache
@@ -140,7 +140,7 @@ namespace DotNetNuke.Entities.Tabs
                 termController.AddTermToContent(term, tab);
             }
 
-            EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID,
+            EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID,
                             "", EventLogController.EventLogType.TAB_CREATED);
 
             //Add Tab Permissions
@@ -179,7 +179,7 @@ namespace DotNetNuke.Entities.Tabs
 
         private void CreateTabRedirect(TabInfo tab)
         {
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
 
 
             if (settings != null && tab.TabID != settings.HomeTabId && tab.TabUrls.Count(u => u.HttpStatus == "200") == 0)
@@ -561,8 +561,8 @@ namespace DotNetNuke.Entities.Tabs
             //Log deletion
             EventLogController.Instance.AddLog("TabID",
                             tabId.ToString(),
-                            PortalController.GetCurrentPortalSettings(),
-                            UserController.GetCurrentUserInfo().UserID,
+                            PortalController.Instance.GetCurrentPortalSettings(),
+                            UserController.Instance.GetCurrentUserInfo().UserID,
                             EventLogController.EventLogType.TAB_DELETED);
         }
 
@@ -998,8 +998,8 @@ namespace DotNetNuke.Entities.Tabs
 
             EventLogController.Instance.AddLog("tabUrl.TabId",
                                tabUrl.TabId.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.TABURL_DELETED);
             if (clearCache)
             {
@@ -1020,9 +1020,9 @@ namespace DotNetNuke.Entities.Tabs
         public bool DeleteTranslatedTabs(int portalId, string cultureCode, bool clearCache)
         {
             bool returnValue = true;
-            if (PortalController.GetCurrentPortalSettings() != null)
+            if (PortalController.Instance.GetCurrentPortalSettings() != null)
             {
-                var defaultLanguage = PortalController.GetCurrentPortalSettings().DefaultLanguage;
+                var defaultLanguage = PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
                 if (cultureCode != defaultLanguage)
                 {
                     Provider.DeleteTranslatedTabs(portalId, cultureCode);
@@ -1444,7 +1444,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="clearCache"></param>
         public void LocalizeTab(TabInfo originalTab, Locale locale, bool clearCache)
         {
-            Provider.LocalizeTab(originalTab.TabID, locale.Code, UserController.GetCurrentUserInfo().UserID);
+            Provider.LocalizeTab(originalTab.TabID, locale.Code, UserController.Instance.GetCurrentUserInfo().UserID);
             if (clearCache)
             {
                 DataCache.ClearModuleCache(originalTab.TabID);
@@ -1468,7 +1468,7 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             //Move Tab
-            Provider.MoveTabAfter(tab.TabID, afterTabId, UserController.GetCurrentUserInfo().UserID);
+            Provider.MoveTabAfter(tab.TabID, afterTabId, UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Clear the Cache
             ClearCache(tab.PortalID);
@@ -1491,7 +1491,7 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             //Move Tab
-            Provider.MoveTabBefore(tab.TabID, beforeTabId, UserController.GetCurrentUserInfo().UserID);
+            Provider.MoveTabBefore(tab.TabID, beforeTabId, UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Clear the Cache
             ClearCache(tab.PortalID);
@@ -1511,7 +1511,7 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             //Move Tab
-            Provider.MoveTabToParent(tab.TabID, parentId, UserController.GetCurrentUserInfo().UserID);
+            Provider.MoveTabToParent(tab.TabID, parentId, UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Clear the Cache
             ClearCache(tab.PortalID);
@@ -1670,12 +1670,12 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            DataProvider.Instance().SaveTabUrl(tabUrl.TabId, tabUrl.SeqNum, portalAliasId, (int)tabUrl.PortalAliasUsage, tabUrl.Url, tabUrl.QueryString, tabUrl.CultureCode, tabUrl.HttpStatus, tabUrl.IsSystem, UserController.GetCurrentUserInfo().UserID);
+            DataProvider.Instance().SaveTabUrl(tabUrl.TabId, tabUrl.SeqNum, portalAliasId, (int)tabUrl.PortalAliasUsage, tabUrl.Url, tabUrl.QueryString, tabUrl.CultureCode, tabUrl.HttpStatus, tabUrl.IsSystem, UserController.Instance.GetCurrentUserInfo().UserID);
 
             EventLogController.Instance.AddLog("tabUrl",
                                tabUrl.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                saveLog);
 
             if (clearCache)
@@ -1772,7 +1772,7 @@ namespace DotNetNuke.Entities.Tabs
                                updatedTab.IsSecure,
                                updatedTab.PermanentRedirect,
                                updatedTab.SiteMapPriority,
-                               UserController.GetCurrentUserInfo().UserID,
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                updatedTab.CultureCode);
 
             //Update Tags
@@ -1784,8 +1784,8 @@ namespace DotNetNuke.Entities.Tabs
                 termController.AddTermToContent(term, updatedTab);
             }
 
-            EventLogController.Instance.AddLog(updatedTab, PortalController.GetCurrentPortalSettings(),
-                                      UserController.GetCurrentUserInfo().UserID, "",
+            EventLogController.Instance.AddLog(updatedTab, PortalController.Instance.GetCurrentPortalSettings(),
+                                      UserController.Instance.GetCurrentUserInfo().UserID, "",
                                       EventLogController.EventLogType.TAB_UPDATED);
 
             //Update Tab permissions
@@ -1830,18 +1830,18 @@ namespace DotNetNuke.Entities.Tabs
                 if (dr.GetString(0) != settingValue)
                 {
                     Provider.UpdateTabSetting(tabId, settingName, settingValue,
-                                              UserController.GetCurrentUserInfo().UserID);
+                                              UserController.Instance.GetCurrentUserInfo().UserID);
                     EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_UPDATED,
                                                      "TabId", tabId, settingName, settingValue,
-                                                     UserController.GetCurrentUserInfo().UserID);
+                                                     UserController.Instance.GetCurrentUserInfo().UserID);
                 }
             }
             else
             {
-                Provider.AddTabSetting(tabId, settingName, settingValue, UserController.GetCurrentUserInfo().UserID);
+                Provider.AddTabSetting(tabId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
                                                  "TabId", tabId, settingName, settingValue,
-                                                 UserController.GetCurrentUserInfo().UserID);
+                                                 UserController.Instance.GetCurrentUserInfo().UserID);
             }
             dr.Close();
 
@@ -1866,7 +1866,7 @@ namespace DotNetNuke.Entities.Tabs
             }
             DataProvider.Instance()
                         .UpdateTabTranslationStatus(localizedTab.TabID, localizedTab.LocalizedVersionGuid,
-                                                    UserController.GetCurrentUserInfo().UserID);
+                                                    UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Clear Tab Caches
             ClearCache(localizedTab.PortalID);
@@ -1935,13 +1935,13 @@ namespace DotNetNuke.Entities.Tabs
                                        tab.IsSecure,
                                        tab.PermanentRedirect,
                                        tab.SiteMapPriority,
-                                       UserController.GetCurrentUserInfo().UserID,
+                                       UserController.Instance.GetCurrentUserInfo().UserID,
                                        tab.CultureCode);
 
                     UpdateTabVersion(tab.TabID);
 
-                    EventLogController.Instance.AddLog(tab, PortalController.GetCurrentPortalSettings(),
-                                              UserController.GetCurrentUserInfo().UserID, "",
+                    EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(),
+                                              UserController.Instance.GetCurrentUserInfo().UserID, "",
                                               EventLogController.EventLogType.TAB_UPDATED);
                     clearCache = true;
                 }
@@ -2289,7 +2289,7 @@ namespace DotNetNuke.Entities.Tabs
             }
             foreach (TabInfo objTab in tabs)
             {
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 if (((excludeTabId < 0) || (objTab.TabID != excludeTabId)) &&
                     (!objTab.IsSuperTab || objUserInfo.IsSuperUser))
                 {

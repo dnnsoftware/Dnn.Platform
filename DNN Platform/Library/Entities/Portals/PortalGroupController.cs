@@ -235,7 +235,7 @@ namespace DotNetNuke.Entities.Portals
             //Argument Contract
             Requires.NotNull("portalGroup", portalGroup);
 
-            portalGroup.PortalGroupId = _dataService.AddPortalGroup(portalGroup, UserController.GetCurrentUserInfo().UserID);
+            portalGroup.PortalGroupId = _dataService.AddPortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Update portal
             var portal = _portalController.GetPortal(portalGroup.MasterPortalId);
@@ -375,7 +375,7 @@ namespace DotNetNuke.Entities.Portals
             Requires.NotNull("portalGroup", portalGroup);
             Requires.PropertyNotNegative("portalGroup", "PortalGroupId", portalGroup.PortalGroupId);
 
-            _dataService.UpdatePortalGroup(portalGroup, UserController.GetCurrentUserInfo().UserID);
+            _dataService.UpdatePortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
 
             ClearCache();
         }

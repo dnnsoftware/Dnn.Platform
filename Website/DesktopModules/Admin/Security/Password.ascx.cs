@@ -280,7 +280,7 @@ namespace DotNetNuke.Modules.Admin.Users
             cmdUpdate.Click += cmdUpdate_Click;
             cmdUpdateQA.Click += cmdUpdateQA_Click;
 
-			if (MembershipProviderConfig.RequiresQuestionAndAnswer && User.UserID != UserController.GetCurrentUserInfo().UserID)
+			if (MembershipProviderConfig.RequiresQuestionAndAnswer && User.UserID != UserController.Instance.GetCurrentUserInfo().UserID)
 			{
 				pnlChange.Visible = false;
 			    cmdUpdate.Visible = false;

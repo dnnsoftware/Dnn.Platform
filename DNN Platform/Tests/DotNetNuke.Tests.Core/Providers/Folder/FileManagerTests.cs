@@ -95,7 +95,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             
             FolderManager.RegisterInstance(_folderManager.Object);
             FolderPermissionControllerWrapper.RegisterInstance(_folderPermissionController.Object);
-            PortalControllerWrapper.RegisterInstance(_portalController.Object);
+            PortalController.SetTestableInstance(_portalController.Object);
             FolderMappingController.RegisterInstance(_folderMappingController.Object);
             TestableGlobals.SetTestableInstance(_globals.Object);
             CBOWrapper.RegisterInstance(_cbo.Object);

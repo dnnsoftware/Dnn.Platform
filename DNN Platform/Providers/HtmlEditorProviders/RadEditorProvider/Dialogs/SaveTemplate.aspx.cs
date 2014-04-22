@@ -79,7 +79,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 				    FixAllowedExtensions();
 
-					int portalID = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings().PortalId;
+					int portalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId;
 					ArrayList folders = DotNetNuke.Common.Utilities.FileSystemUtils.GetFoldersByUser(portalID, true, true, "Add");
 
 					//filter out only folders below the editor's template path

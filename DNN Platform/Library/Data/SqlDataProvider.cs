@@ -118,8 +118,8 @@ namespace DotNetNuke.Data
                         var props = new LogProperties { new LogDetailInfo("SQL Script Modified", query) };
 
                         EventLogController.Instance.AddLog(props,
-                                    PortalController.GetCurrentPortalSettings(),
-                                    UserController.GetCurrentUserInfo().UserID,
+                                    PortalController.Instance.GetCurrentPortalSettings(),
+                                    UserController.Instance.GetCurrentUserInfo().UserID,
                                     EventLogController.EventLogType.HOST_ALERT.ToString(),
                                     true);
                     }

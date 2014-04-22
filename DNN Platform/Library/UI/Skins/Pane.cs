@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 

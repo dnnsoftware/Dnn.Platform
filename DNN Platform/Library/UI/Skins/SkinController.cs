@@ -139,8 +139,8 @@ namespace DotNetNuke.UI.Skins
 
         public static int AddSkinPackage(SkinPackageInfo skinPackage)
         {
-            EventLogController.Instance.AddLog(skinPackage, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_CREATED);
-            return DataProvider.Instance().AddSkinPackage(skinPackage.PackageID, skinPackage.PortalID, skinPackage.SkinName, skinPackage.SkinType, UserController.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_CREATED);
+            return DataProvider.Instance().AddSkinPackage(skinPackage.PackageID, skinPackage.PortalID, skinPackage.SkinName, skinPackage.SkinType, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public static bool CanDeleteSkin(string folderPath, string portalHomeDirMapPath)
@@ -158,7 +158,7 @@ namespace DotNetNuke.UI.Skins
                 skinType = "L";
                 skinFolder = folderPath.ToLower().Replace(portalHomeDirMapPath.ToLower(), "").Replace("\\", "/");
             }
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             string skin = "[" + skinType.ToLowerInvariant() + "]" + skinFolder.ToLowerInvariant();
             if (skinFolder.ToLowerInvariant().Contains("skins"))
@@ -193,7 +193,7 @@ namespace DotNetNuke.UI.Skins
         public static void DeleteSkinPackage(SkinPackageInfo skinPackage)
         {
             DataProvider.Instance().DeleteSkinPackage(skinPackage.SkinPackageID);
-            EventLogController.Instance.AddLog(skinPackage, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_DELETED);
+            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_DELETED);
         }
 
         public static string FormatMessage(string title, string body, int level, bool isError)
@@ -418,8 +418,8 @@ namespace DotNetNuke.UI.Skins
                                                       skinPackage.PortalID,
                                                       skinPackage.SkinName,
                                                       skinPackage.SkinType,
-                                                      UserController.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(skinPackage, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_UPDATED);
+                                                      UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_UPDATED);
             foreach (KeyValuePair<int, string> kvp in skinPackage.Skins)
             {
                 UpdateSkin(kvp.Key, kvp.Value);

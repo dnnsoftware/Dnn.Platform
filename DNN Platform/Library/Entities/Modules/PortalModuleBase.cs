@@ -421,7 +421,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache";
+                return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache";
             }
         }
 
@@ -444,7 +444,7 @@ namespace DotNetNuke.Entities.Modules
                 string strCacheKey = "TabModule:";
                 strCacheKey += TabModuleId + ":";
                 strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-                return PortalController.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
+                return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
             }
         }
 
@@ -481,7 +481,7 @@ namespace DotNetNuke.Entities.Modules
             string strCacheKey = "TabModule:";
             strCacheKey += tabModuleId + ":";
             strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-            return PortalController.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
+            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
         }
 
         [Obsolete("This property is deprecated.  Please use ModuleController.CacheKey(TabModuleID)")]

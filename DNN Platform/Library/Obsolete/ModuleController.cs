@@ -65,7 +65,7 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("The module caching feature has been updated in version 5.2.0.  This method is no longer used.")]
         public static string CacheDirectory()
         {
-            return PortalController.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache";
+            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache";
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities.Modules
             string strCacheKey = "TabModule:";
             strCacheKey += TabModuleID + ":";
             strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-            return PortalController.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
+            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("Deprecated in DNN 5.5.  Replaced by CopyModule(ModuleInfo, TabInfo, String, Boolean)")]
         public void CopyModule(int moduleId, int fromTabId, int toTabId, string toPaneName, bool includeSettings)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             ModuleInfo objModule = GetModule(moduleId, fromTabId, false);
             TabInfo objTab = TabController.Instance.GetTab(toTabId, _portalSettings.PortalId, false);
             CopyModule(objModule, objTab, toPaneName, includeSettings);
@@ -184,8 +184,8 @@ namespace DotNetNuke.Entities.Modules
             UpdateTabModuleVersion(tabModuleId);
             EventLogController.Instance.AddLog("TabModuleID",
                                tabModuleId.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.TABMODULE_SETTING_DELETED);
             ClearTabModuleSettingsCache(tabModuleId);
         }

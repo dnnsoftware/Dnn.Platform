@@ -147,11 +147,11 @@ namespace DotNetNuke.Common.Lists
                                                         listEntry.Description,
                                                         listEntry.PortalID,
                                                         listEntry.SystemList,
-                                                        UserController.GetCurrentUserInfo().UserID);
+                                                        UserController.Instance.GetCurrentUserInfo().UserID);
 
             if (entryId != Null.NullInteger)
             {
-                EventLogController.Instance.AddLog(listEntry, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
+                EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
             }
             ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
             return entryId;
@@ -165,7 +165,7 @@ namespace DotNetNuke.Common.Lists
 		public void DeleteList(string listName, string parentKey, int portalId)
 		{
 			ListInfo list = GetListInfo(listName, parentKey, portalId);
-            EventLogController.Instance.AddLog("ListName", listName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
+            EventLogController.Instance.AddLog("ListName", listName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
 			DataProvider.Instance().DeleteList(listName, parentKey);
 		    if (list != null)
 		    {
@@ -337,8 +337,8 @@ namespace DotNetNuke.Common.Lists
 
         public void UpdateListEntry(ListEntryInfo listEntry)
         {
-            DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.Text, listEntry.Description, UserController.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(listEntry, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
+            DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.Text, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
             ClearListCache(listEntry.PortalID);
             ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
         }

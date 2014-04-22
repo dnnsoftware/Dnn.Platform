@@ -149,7 +149,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 else
                 {
-                    var userInfo = UserController.GetCurrentUserInfo();
+                    var userInfo = UserController.Instance.GetCurrentUserInfo();
                     if (userInfo.UserID != -1)
                     {
                         registerLink.Text = userInfo.DisplayName;                                                

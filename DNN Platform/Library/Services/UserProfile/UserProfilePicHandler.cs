@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.UserProfile
            
             CalculateSize(ref height, ref width, ref size);
 
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             var user = UserController.Instance.GetUser(settings.PortalId, userId);
 
             IFileInfo photoFile = null;
@@ -163,8 +163,8 @@ namespace DotNetNuke.Services.UserProfile
             bool isVisible = false;
             photoFile = null;
 
-            UserInfo user = UserController.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            UserInfo user = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             var photoProperty = targetUser.Profile.GetProperty("Photo");
             if (photoProperty != null)
             {
@@ -252,7 +252,7 @@ namespace DotNetNuke.Services.UserProfile
 
         private void SetupCulture()
         {
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             if (settings == null) return;
 
             CultureInfo pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
