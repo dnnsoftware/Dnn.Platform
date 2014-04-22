@@ -174,8 +174,7 @@ namespace DotNetNuke.Security.Roles
             UserInfo user;
             if(userId != -1)
             {
-                var userController = new UserController();
-                user = userController.GetUser(portalId, userId);
+                user = UserController.Instance.GetUser(portalId, userId);
             }
             else
             {

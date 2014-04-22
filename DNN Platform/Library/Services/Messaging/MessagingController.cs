@@ -167,8 +167,7 @@ namespace DotNetNuke.Services.Messaging
 
             var users = new List<UserInfo>();
 
-            var userController = new UserController();
-            users.Add(userController.GetUser(message.PortalID, message.ToUserID));
+            users.Add(UserController.Instance.GetUser(message.PortalID, message.ToUserID));
 
             List<RoleInfo> emptyRoles = null;
             List<int> files = null;

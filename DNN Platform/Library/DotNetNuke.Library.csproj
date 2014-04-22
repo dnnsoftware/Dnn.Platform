@@ -347,9 +347,8 @@
     <Compile Include="Entities\Users\Exceptions\InvalidVerificationCodeException.cs" />
     <Compile Include="Entities\Users\Exceptions\UserAlreadyVerifiedException.cs" />
     <Compile Include="Entities\Users\Exceptions\UserDoesNotExistException.cs" />
-    <Compile Include="Entities\Users\Internal\IUserController.cs" />
+    <Compile Include="Entities\Users\IUserController.cs" />
     <Compile Include="Entities\Users\Internal\TestableUserController.cs" />
-    <Compile Include="Entities\Users\Internal\UserControllerImpl.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordController.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordSettings.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPropertyAccess.cs" />
@@ -473,6 +472,7 @@
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
     <Compile Include="Modules\SQL\Components\SqlQueryController.cs" />
     <Compile Include="Modules\SQL\Components\SqlQuery.cs" />
+    <Compile Include="Obsolete\UserController.cs" />
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />

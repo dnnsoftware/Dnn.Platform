@@ -1533,190 +1533,66 @@ namespace DotNetNuke.Entities.Portals
                 }
 
                 //when processing the template we should try and identify the Admin tab
+                var logType = "AdminTab";
                 if (tab.TabName == "Admin")
                 {
                     portal.AdminTabId = tab.TabID;
-                    UpdatePortalSetup(PortalId,
-                                      portal.AdministratorId,
-                                      portal.AdministratorRoleId,
-                                      portal.RegisteredRoleId,
-                                      portal.SplashTabId,
-                                      portal.HomeTabId,
-                                      portal.LoginTabId,
-                                      portal.RegisterTabId,
-                                      portal.UserTabId,
-                                      portal.SearchTabId,
-                                      portal.Custom404TabId,
-                                      portal.Custom500TabId,
-                                      portal.AdminTabId,
-                                      GetActivePortalLanguage(PortalId));
-                    EventLogController.Instance.AddLog("AdminTab",
-                                       tab.TabID.ToString(),
-                                       GetCurrentPortalSettings(),
-                                       UserController.GetCurrentUserInfo().UserID,
-                                       EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
                 }
                 //when processing the template we can find: hometab, usertab, logintab
                 switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", ""))
                 {
                     case "splashtab":
                         portal.SplashTabId = tab.TabID;
-                        UpdatePortalSetup(PortalId,
-                                          portal.AdministratorId,
-                                          portal.AdministratorRoleId,
-                                          portal.RegisteredRoleId,
-                                          portal.SplashTabId,
-                                          portal.HomeTabId,
-                                          portal.LoginTabId,
-                                          portal.RegisterTabId,
-                                          portal.UserTabId,
-                                          portal.SearchTabId,
-                                          portal.Custom404TabId,
-                                          portal.Custom500TabId,
-                                          portal.AdminTabId,
-                                          GetActivePortalLanguage(PortalId));
-                        EventLogController.Instance.AddLog("SplashTab",
-                                           tab.TabID.ToString(),
-                                           GetCurrentPortalSettings(),
-                                           UserController.GetCurrentUserInfo().UserID,
-                                           EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                        logType = "SplashTab";
                         break;
                     case "hometab":
                         portal.HomeTabId = tab.TabID;
-                        UpdatePortalSetup(PortalId,
-                                          portal.AdministratorId,
-                                          portal.AdministratorRoleId,
-                                          portal.RegisteredRoleId,
-                                          portal.SplashTabId,
-                                          portal.HomeTabId,
-                                          portal.LoginTabId,
-                                          portal.RegisterTabId,
-                                          portal.UserTabId,
-                                          portal.SearchTabId,
-                                          portal.Custom404TabId,
-                                          portal.Custom500TabId,
-                                          portal.AdminTabId,
-                                          GetActivePortalLanguage(PortalId));
-                        EventLogController.Instance.AddLog("HomeTab",
-                                           tab.TabID.ToString(),
-                                           GetCurrentPortalSettings(),
-                                           UserController.GetCurrentUserInfo().UserID,
-                                           EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                        logType = "HomeTab";
                         break;
                     case "logintab":
                         portal.LoginTabId = tab.TabID;
-                        UpdatePortalSetup(PortalId,
-                                          portal.AdministratorId,
-                                          portal.AdministratorRoleId,
-                                          portal.RegisteredRoleId,
-                                          portal.SplashTabId,
-                                          portal.HomeTabId,
-                                          portal.LoginTabId,
-                                          portal.RegisterTabId,
-                                          portal.UserTabId,
-                                          portal.SearchTabId,
-                                          portal.Custom404TabId,
-                                          portal.Custom500TabId,
-                                          portal.AdminTabId,
-                                          GetActivePortalLanguage(PortalId));
-                        EventLogController.Instance.AddLog("LoginTab",
-                                           tab.TabID.ToString(),
-                                           GetCurrentPortalSettings(),
-                                           UserController.GetCurrentUserInfo().UserID,
-                                           EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                        logType = "LoginTab";
                         break;
                     case "usertab":
                         portal.UserTabId = tab.TabID;
-                        UpdatePortalSetup(PortalId,
-                                          portal.AdministratorId,
-                                          portal.AdministratorRoleId,
-                                          portal.RegisteredRoleId,
-                                          portal.SplashTabId,
-                                          portal.HomeTabId,
-                                          portal.LoginTabId,
-                                          portal.RegisterTabId,
-                                          portal.UserTabId,
-                                          portal.SearchTabId,
-                                          portal.Custom404TabId,
-                                          portal.Custom500TabId,
-                                          portal.AdminTabId,
-                                          GetActivePortalLanguage(PortalId));
-                        EventLogController.Instance.AddLog("UserTab",
-                                           tab.TabID.ToString(),
-                                           GetCurrentPortalSettings(),
-                                           UserController.GetCurrentUserInfo().UserID,
-                                           EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                        logType = "UserTab";
                         break;
                     case "searchtab":
                         portal.SearchTabId = tab.TabID;
-                        UpdatePortalSetup(PortalId,
-                                          portal.AdministratorId,
-                                          portal.AdministratorRoleId,
-                                          portal.RegisteredRoleId,
-                                          portal.SplashTabId,
-                                          portal.HomeTabId,
-                                          portal.LoginTabId,
-                                          portal.RegisterTabId,
-                                          portal.UserTabId,
-                                          portal.SearchTabId,
-                                          portal.Custom404TabId,
-                                          portal.Custom500TabId,
-                                          portal.AdminTabId,
-                                          GetActivePortalLanguage(PortalId));
-                        EventLogController.Instance.AddLog("SearchTab",
-                                           tab.TabID.ToString(),
-                                           GetCurrentPortalSettings(),
-                                           UserController.GetCurrentUserInfo().UserID,
-                                           EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                        logType = "SearchTab";
                         break;
                     case "gettingStartedTab":                        
                         UpdatePortalSetting(PortalId, "GettingStartedTabId", tab.TabID.ToString());
+                        logType = "GettingStartedTabId";
                         break;
                     case "404Tab":
                         portal.Custom404TabId = tab.TabID;
-                        UpdatePortalSetup(PortalId,
-                                          portal.AdministratorId,
-                                          portal.AdministratorRoleId,
-                                          portal.RegisteredRoleId,
-                                          portal.SplashTabId,
-                                          portal.HomeTabId,
-                                          portal.LoginTabId,
-                                          portal.RegisterTabId,
-                                          portal.UserTabId,
-                                          portal.SearchTabId,
-                                          portal.Custom404TabId,
-                                          portal.Custom500TabId,
-                                          portal.AdminTabId,
-                                          GetActivePortalLanguage(PortalId));
-                        EventLogController.Instance.AddLog("Custom404Tab",
-                                           tab.TabID.ToString(),
-                                           GetCurrentPortalSettings(),
-                                           UserController.GetCurrentUserInfo().UserID,
-                                           EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                        logType = "Custom404Tab";
                         break;
                     case "500Tab":
                         portal.Custom500TabId = tab.TabID;
-                        UpdatePortalSetup(PortalId,
-                                          portal.AdministratorId,
-                                          portal.AdministratorRoleId,
-                                          portal.RegisteredRoleId,
-                                          portal.SplashTabId,
-                                          portal.HomeTabId,
-                                          portal.LoginTabId,
-                                          portal.RegisterTabId,
-                                          portal.UserTabId,
-                                          portal.SearchTabId,
-                                          portal.Custom404TabId,
-                                          portal.Custom500TabId,
-                                          portal.AdminTabId,
-                                          GetActivePortalLanguage(PortalId));
-                        EventLogController.Instance.AddLog("Custom500Tab",
-                                           tab.TabID.ToString(),
-                                           GetCurrentPortalSettings(),
-                                           UserController.GetCurrentUserInfo().UserID,
-                                           EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                        logType = "Custom500Tab";
                         break;
                 }
+                UpdatePortalSetup(PortalId,
+                                  portal.AdministratorId,
+                                  portal.AdministratorRoleId,
+                                  portal.RegisteredRoleId,
+                                  portal.SplashTabId,
+                                  portal.HomeTabId,
+                                  portal.LoginTabId,
+                                  portal.RegisterTabId,
+                                  portal.UserTabId,
+                                  portal.SearchTabId,
+                                  portal.Custom404TabId,
+                                  portal.Custom500TabId,
+                                  portal.AdminTabId,
+                                  GetActivePortalLanguage(PortalId));
+                EventLogController.Instance.AddLog(logType,
+                                   tab.TabID.ToString(),
+                                   GetCurrentPortalSettings(),
+                                   UserController.GetCurrentUserInfo().UserID,
+                                   EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
             }
         }
 

@@ -90,8 +90,7 @@ namespace DotNetNuke.Services.UserProfile
             CalculateSize(ref height, ref width, ref size);
 
             PortalSettings settings = PortalController.GetCurrentPortalSettings();
-            var userController = new UserController();
-            var user = userController.GetUser(settings.PortalId, userId);
+            var user = UserController.Instance.GetUser(settings.PortalId, userId);
 
             IFileInfo photoFile = null;
             var photoLoaded = false;

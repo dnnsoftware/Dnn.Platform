@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
         private static UserInfo GetUserFromSubscription(Subscription subscription)
         {
-            return new UserController().GetUser(subscription.PortalId, subscription.UserId);
+            return UserController.Instance.GetUser(subscription.PortalId, subscription.UserId);
         }
         #endregion
     }

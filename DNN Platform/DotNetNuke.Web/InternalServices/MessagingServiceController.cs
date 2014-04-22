@@ -88,8 +88,7 @@ namespace DotNetNuke.Web.InternalServices
                 List<UserInfo> users = null;
                 if (userIdsList != null)
                 {
-                    var userController = new UserController();
-                    users = userIdsList.Select(id => userController.GetUser(portalId, id)).Where(user => user != null).ToList();
+                    users = userIdsList.Select(id => UserController.Instance.GetUser(portalId, id)).Where(user => user != null).ToList();
                 }
 
                 var message = new Message { Subject = HttpUtility.UrlDecode(postData.Subject), Body = HttpUtility.UrlDecode(postData.Body) };

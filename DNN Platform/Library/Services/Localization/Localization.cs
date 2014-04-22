@@ -1574,7 +1574,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     if (userInfo.UserID != accessingUserID)
                     {
-                        objTokenReplace.AccessingUser = new UserController().GetUser(portalSettings.PortalId, accessingUserID);
+                        objTokenReplace.AccessingUser = UserController.Instance.GetUser(portalSettings.PortalId, accessingUserID);
                     }
                 }
                 if (customArray != null)

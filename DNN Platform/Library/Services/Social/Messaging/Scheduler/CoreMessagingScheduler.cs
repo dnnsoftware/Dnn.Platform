@@ -40,8 +40,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 {
     public class CoreMessagingScheduler : SchedulerClient
     {
-        private readonly UserController userController = new UserController();
-
         private const string SettingLastHourlyRun = "CoreMessagingLastHourlyDigestRun";
         private const string SettingLastDailyRun = "CoreMessagingLastDailyDigestRun";
         private const string SettingLastWeeklyRun = "CoreMessagingLastWeeklyDigestRun";
@@ -153,8 +151,8 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                                 var messageDetails = InternalMessagingController.Instance.GetMessage(singleMessage.MessageID);
                                 var portalSettings = new PortalSettings(messageDetails.PortalID);
 
-                                var senderUser = userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
-                                var recipientUser = userController.GetUser(messageDetails.PortalID, singleMessage.UserID);
+                                var senderUser = UserController.Instance.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
+                                var recipientUser = UserController.Instance.GetUser(messageDetails.PortalID, singleMessage.UserID);
 
                                 SendDigest(messageRecipients, portalSettings, senderUser, recipientUser);
                             }
@@ -332,7 +330,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             //todo: check if host user can send to multiple portals...
             var messageDetails = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);
 
-            var toUser = userController.GetUser(messageDetails.PortalID, messageRecipient.UserID);
+            var toUser = UserController.Instance.GetUser(messageDetails.PortalID, messageRecipient.UserID);
             if (!IsUserAbleToReceiveAnEmail(toUser))
             {
                 InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
@@ -350,8 +348,8 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var emailSubjectTemplate = GetEmailSubjectTemplate(defaultLanguage);
             var emailBodyTemplate = GetEmailBodyTemplate(defaultLanguage);
             var emailBodyItemTemplate =  GetEmailBodyItemTemplate(defaultLanguage);
-            
-            var author = userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
+
+            var author = UserController.Instance.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
             var portalSettings = new PortalSettings(messageDetails.PortalID);
             var fromAddress = portalSettings.Email;
 

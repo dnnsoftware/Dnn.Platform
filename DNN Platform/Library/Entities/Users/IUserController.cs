@@ -23,10 +23,12 @@
 
 using System.Collections.Generic;
 
-namespace DotNetNuke.Entities.Users.Internal
+namespace DotNetNuke.Entities.Users
 {
     public interface IUserController
     {
+        UserInfo GetUser(int portalId, int userId);
+
         /// <summary>
         /// Get a user based on their display name and portal
         /// </summary>
