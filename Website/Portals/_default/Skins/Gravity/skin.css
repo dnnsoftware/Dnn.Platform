@@ -239,7 +239,7 @@ table.tableDefault {
     }
 
     table.tableDefault tr:nth-child(odd) {
-        background: #transparent;
+        background: transparent;
     }
 
     table.tableDefault tr:nth-child(even) {
