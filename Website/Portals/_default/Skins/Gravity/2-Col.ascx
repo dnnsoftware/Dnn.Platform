@@ -96,7 +96,7 @@
                 </div>
                 <div class="row-fluid copyright-container">
 					<span class="split"></span>
-					<a href="http://www.dnnsoftware.com/?utm_source=dnn-platform-install&utm_medium=web-link&utm_term=cms-by-dnn&utm_content=gravity-skin-link&utm_campaign=dnn-platform-home" target="_blank">CMS By DNN</a>
+					<a href="http://www.dnnsoftware.com/?utm_source=dnn-install&utm_medium=web-link&utm_term=cms-by-dnn&utm_content=gravity-skin-link&utm_campaign=dnn-install" target="_blank">CMS By DNN</a>
 					<span class="split"></span>
 				</div>
             </div>
