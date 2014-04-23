@@ -879,7 +879,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         try
                         {
-                            if (Common.Globals.ElapsedSinceAppStart.TotalSeconds < HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1)*60) 
+                            if (Common.Globals.ElapsedSinceAppStart.TotalSeconds < SchedulingProvider.DelayAtAppStart) 
                             {
                                 if (!KeepThreadAlive)
                                     return;
