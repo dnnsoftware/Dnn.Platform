@@ -496,12 +496,12 @@ namespace DotNetNuke.Security.Permissions.Controls
             return PermissionsList.Select(r => r.RoleID).Distinct();
         }
 
-        private void SetUpGrid(DataGrid grid, string nameColumnDataField, string idColumnDataField)
+        private void SetUpGrid(DataGrid grid, string nameColumnDataField, string idColumnDataField, string permissionHeaderText)
         {
             grid.Columns.Clear();
             var nameColumn = new BoundColumn
                                 {
-                                    HeaderText = Localization.GetString("PermissionRoleHeader.Text", PermissionProvider.Instance().LocalResourceFile),
+                                    HeaderText = permissionHeaderText,
                                     DataField = nameColumnDataField
                                 };            
             nameColumn.ItemStyle.CssClass = "permissionHeader";
@@ -608,14 +608,14 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private void SetUpRolesGrid()
         {
-            SetUpGrid(rolePermissionsGrid, "RoleName", "roleid");
+            SetUpGrid(rolePermissionsGrid, "RoleName", "roleid", Localization.GetString("PermissionRoleHeader.Text", PermissionProvider.Instance().LocalResourceFile));
         }
 
         private void SetUpUsersGrid()
         {
             if (userPermissionsGrid != null)
             {
-                SetUpGrid(userPermissionsGrid, "DisplayName", "userid");
+                SetUpGrid(userPermissionsGrid, "DisplayName", "userid", Localization.GetString("PermissionUserHeader.Text", PermissionProvider.Instance().LocalResourceFile));
             }
         }
         private void FillSelectRoleComboBox(int selectedRoleId)

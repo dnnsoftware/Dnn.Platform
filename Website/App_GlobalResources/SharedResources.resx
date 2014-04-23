@@ -1872,4 +1872,7 @@
   <data name="CreatingConfiguredFolderMapping.Error" xml:space="preserve">
     <value>Error when creating a folder mapping from config file</value>
   </data>
+  <data name="PermissionUserHeader.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
 </root>
