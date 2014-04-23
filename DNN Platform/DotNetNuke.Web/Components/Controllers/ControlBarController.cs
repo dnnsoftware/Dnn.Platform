@@ -97,14 +97,7 @@ namespace DotNetNuke.Web.Components.Controllers
         public UpgradeIndicatorViewModel GetUpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
         {
             var imageUrl = Upgrade.UpgradeIndicator(version, isLocal, isSecureConnection);
-            UpgradeIndicatorViewModel upgradeIndicator = null;
-            if (!string.IsNullOrEmpty(imageUrl))
-            {
-                var upgradeIndicatorExtensionPoint = mef.GetToolBarButtonExtensionPointFirstByPriority("ControlBar", "UpgradeIndicatorButton");
-                upgradeIndicator = upgradeIndicatorExtensionPoint != null ? GetUpgradeIndicatorFromExtensionPoint(upgradeIndicatorExtensionPoint, imageUrl) 
-                                                                            : GetDefaultUpgradeIndicator(imageUrl);
-            }
-            return upgradeIndicator;
+            return !String.IsNullOrEmpty(imageUrl) ? GetDefaultUpgradeIndicator(imageUrl) : null;            
         }
 
         public string GetControlBarLogoURL()
