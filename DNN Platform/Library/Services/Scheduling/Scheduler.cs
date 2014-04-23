@@ -24,9 +24,9 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
@@ -879,7 +879,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         try
                         {
-                            if (Common.Globals.ElapsedSinceAppStart.TotalSeconds < SchedulingProvider.DelayAtAppStart)
+                            if (Common.Globals.ElapsedSinceAppStart.TotalSeconds < HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1)*60) 
                             {
                                 if (!KeepThreadAlive)
                                     return;

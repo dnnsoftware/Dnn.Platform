@@ -1210,7 +1210,21 @@ namespace DotNetNuke.Entities.Host
                 return setting;
             }
         }
-
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the delayAtAppStart value
+        /// </summary>
+        /// <remarks>
+        ///   Defaults is 1 min(60 sec)
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static int SchedulerdelayAtAppStart
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1);
+            }
+        }
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether to inlcude Common Words in the Search Index

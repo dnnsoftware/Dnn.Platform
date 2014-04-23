@@ -23,11 +23,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
-
 using Microsoft.VisualBasic;
 
 #endregion
@@ -106,16 +105,16 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 MaxThreads = value;
 
-                if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
-                {
-                    value = 60;
-                }
-                DelayAtAppStart = value;
+                //if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
+                //{
+                //    value = 60;
+                //}
+                DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;
             }
             else
             {
                 MaxThreads = 1;
-                DelayAtAppStart = 60;
+                DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;
             }
         }
 

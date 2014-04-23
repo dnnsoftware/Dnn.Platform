@@ -182,6 +182,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         {
             UpdateSchedule();
             HostController.Instance.Update("SchedulerMode", cboSchedulerMode.SelectedItem.Value, false);
+            HostController.Instance.Update("SchedulerdelayAtAppStart", txtScheduleAppStartDelay.Text);
         }
 
         private void BindSettings()
@@ -195,6 +196,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 cboSchedulerMode.FindItemByValue("1").Selected = true;
             }
             ViewState["SelectedSchedulerMode"] = cboSchedulerMode.SelectedItem.Value;
+            txtScheduleAppStartDelay.Text = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1).ToString();
         }
 
         private void BindServers()
