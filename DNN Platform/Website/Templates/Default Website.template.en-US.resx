@@ -325,18 +325,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.GoogleAnalytics.Title.Text" xml:space="preserve">
     <value>Google Analytics</value>
   </data>
-  <data name="Tab.GoogleAnalyticsPro.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Google Analytics Pro</value>
-  </data>
-  <data name="Tab.GoogleAnalyticsPro.Description.Text" xml:space="preserve">
-    <value>Configure Site Google Analytics Pro settings.</value>
-  </data>
-  <data name="Tab.GoogleAnalyticsPro.Name.Text" xml:space="preserve">
-    <value>Google Analytics Pro</value>
-  </data>
-  <data name="Tab.GoogleAnalyticsPro.Title.Text" xml:space="preserve">
-    <value>Google Analytics Pro</value>
-  </data>
   <data name="Tab.Home.CompanyIntro.Text" xml:space="preserve">
     <value>DNN (formerly DotNetNuke) provides a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees.  DNN products and technology are the foundation for 750,000+ websites worldwide.  In addition to our commercial CMS and Social Community solutiosn, DNN is the steward of the DotNetNuke Open Source Project.</value>
   </data>

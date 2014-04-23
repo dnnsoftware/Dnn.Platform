@@ -4684,9 +4684,9 @@
       </panes>
     </tab>
     <!-- EE, PE-->
-    <tab sku="EE,PE">
+    <tab sku="CE">
       <containersrc />
-      <description>[Tab.GoogleAnalyticsPro.Description.Text]</description>
+      <description>[Tab.GoogleAnalytics.Description.Text]</description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <iconfile>~/Icons/Sigma/GoogleAnalytics_16X16_Standard.png</iconfile>
@@ -4702,8 +4702,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Google Analytics Pro</name>
-      <title>[Tab.GoogleAnalyticsPro.Title.Text]</title>
+      <name>Google Analytics</name>
+      <title>[Tab.GoogleAnalytics.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -4726,7 +4726,7 @@
           <name>ContentPane</name>
           <modules>
             <module>
-              <title>[Tab.GoogleAnalyticsPro.ContentPane.Module.Title.Text]</title>
+              <title>[Tab.GoogleAnalytics.ContentPane.Module.Title.Text]</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
               <header>
@@ -4764,171 +4764,14 @@
                   <settingvalue>True</settingvalue>
                 </tabmodulesetting>
               </tabmodulesettings>
-              <definition>DNNCorp\GoogleAnalytics</definition>
-              <moduledefinition>GoogleAnalyticsPro</moduledefinition>
+              <definition>GoogleAnalytics</definition>
+              <moduledefinition>GoogleAnalytics</moduledefinition>
             </module>
           </modules>
         </pane>
       </panes>
     </tab>
     <!-- EE -->
-    <tab sku="EE">
-      <containersrc />
-      <description>[Tab.ContentStaging.Description.Text]</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <iconfile>~/desktopmodules/DNNCorp/ContentStaging/images/icon_staging_16px.gif</iconfile>
-      <iconfilelarge>~/desktopmodules/DNNCorp/ContentStaging/images/icon_staging_32px.gif</iconfilelarge>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <keywords>
-      </keywords>
-      <pageheadtext>
-      </pageheadtext>
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Content Staging</name>
-      <title>
-      </title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <title>[Tab.ContentStaging.ContentPane.Module.Title.Text]</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header>
-              </header>
-              <footer>
-              </footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod />
-              <alignment />
-              <color />
-              <border />
-              <iconfile>~/desktopmodules/DNNCorp/ContentStaging/images/icon_staging_32px.gif</iconfile>
-              <visibility>None</visibility>
-              <containersrc />
-              <displaytitle>true</displaytitle>
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions />
-              <modulesettings />
-              <tabmodulesettings />
-              <definition>DotNetNuke.ContentStaging</definition>
-              <moduledefinition>Content Staging</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-    </tab>
-    <tab sku="EE">
-      <containersrc />
-      <description>[Tab.Sharepoint.Description.Text]</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <iconfile>~/Icons/Sigma/SharePoint_16x16.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/SharePoint_32x32.png</iconfilelarge>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <keywords>
-      </keywords>
-      <pageheadtext>
-      </pageheadtext>
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>SharePoint Connector</name>
-      <title>
-      </title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <title>[Tab.Sharepoint.ContentPane.Module.Title.Text]</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header>
-              </header>
-              <footer>
-              </footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod />
-              <alignment />
-              <color />
-              <border />
-              <iconfile>~/images/icon_configuration_16px.png</iconfile>
-              <visibility>None</visibility>
-              <containersrc />
-              <displaytitle>true</displaytitle>
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>DotNetNuke.SharePoint</definition>
-              <moduledefinition>SharePointConnector</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-    </tab>
     <tab sku="CE,PE,EE">
       <content>[Tab.404ErrorPage.Content.Text]</content>
       <contentKey />
@@ -5017,87 +4860,6 @@
               </tabmodulesettings>
               <definition>DNN_HTML</definition>
               <moduledefinition>Text/HTML</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-    </tab>
-    <tab sku="PE,EE">
-      <containersrc />
-      <description>[Tab.AdvUrlManagement.Description.Text]</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <iconfile>~/Icons/Sigma/AdvancedUrlMngmt_16x16.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/AdvancedUrlMngmt_32x32.png</iconfilelarge>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <keywords>
-      </keywords>
-      <pageheadtext>
-      </pageheadtext>
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Advanced URL Management</name>
-      <title>
-      </title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <title>[Tab.AdvUrlManagement.ContentPane.Module.Title.Text]</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header>
-              </header>
-              <footer>
-              </footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod />
-              <alignment />
-              <color />
-              <border />
-              <iconfile>~/Icons/Sigma/AdvancedUrlMngmt_16x16.png</iconfile>
-              <visibility>None</visibility>
-              <containersrc />
-              <displaytitle>true</displaytitle>
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>DNN_AdvUrlManagement</definition>
-              <moduledefinition>Advanced URL Management</moduledefinition>
             </module>
           </modules>
         </pane>
