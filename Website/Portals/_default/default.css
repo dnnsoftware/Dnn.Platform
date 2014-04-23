@@ -2597,6 +2597,7 @@ table.dnnASPGrid {
 
     table.dnnPermissionsGrid {
         color: #777;
+        display: inline-block;
     }
 
     table.dnnPermissionsGrid tr.dnnGridHeader td {
