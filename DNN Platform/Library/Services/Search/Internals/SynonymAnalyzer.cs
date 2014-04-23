@@ -49,15 +49,16 @@ namespace DotNetNuke.Services.Search.Internals
                 new PorterStemFilter( // stemming filter
                     new ASCIIFoldingFilter( // accents filter
                         new SynonymFilter(
-                            new StopFilter(true,
-                                new LowerCaseFilter(
+                            new LowerCaseFilter(
+                                new StopFilter(true,
                                     new LengthFilter(
                                         new StandardFilter(
                                             new StandardTokenizer(Constants.LuceneVersion, reader)
                                         )
                                     , wordLengthMinMax.Item1, wordLengthMinMax.Item2)
-                                )
-                            , stops)
+                                
+                                , stops)
+                            )
                         )
                     )
                 )
