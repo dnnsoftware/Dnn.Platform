@@ -1667,6 +1667,7 @@ namespace DotNetNuke.Entities.Users
 		/// </remarks>
 		internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool clearCache)
 		{
+		    var originalPortalId = user.PortalID;
 			portalId = GetEffectivePortalId(portalId);
 			user.PortalID = portalId;
 
@@ -1687,6 +1688,10 @@ namespace DotNetNuke.Entities.Users
 
                 EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_UPDATED);
 			}
+
+            //Reset PortalId
+            FixMemberPortalId(user, originalPortalId);
+
 			//Remove the UserInfo from the Cache, as it has been modified
 			if (clearCache)
 			{
