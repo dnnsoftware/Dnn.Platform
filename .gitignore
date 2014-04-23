@@ -87,6 +87,8 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 
 [Ww]ebsite/*/[Dd]efault.aspx
 
+[Ww]ebsite/[Aa]pp_[Cc]ode
+
 [Ww]ebsite/[Aa]pp_[Dd]ata
 
 [Ww]ebsite/[Bb]in
@@ -118,6 +120,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Ss]ubscriptions[Mm]gmt
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Ii]dentity[Ss]witcher
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Bb]log
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Ii][Ff]rame
 [Ww]ebsite/[Dd]esktop[Mm]odules/dnnGlimpse
 
 [Ww]ebsite/[Ii]nstall/*/*.zip
