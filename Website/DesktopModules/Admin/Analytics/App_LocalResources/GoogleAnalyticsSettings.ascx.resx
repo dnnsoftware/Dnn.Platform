@@ -141,4 +141,7 @@
   <data name="lblTrackForAdmin.Text" xml:space="preserve">
     <value>Track For Administrators?</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Google Analytics</value>
+  </data>
 </root>

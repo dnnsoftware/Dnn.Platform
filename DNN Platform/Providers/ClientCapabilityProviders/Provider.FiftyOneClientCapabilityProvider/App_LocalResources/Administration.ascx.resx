@@ -337,4 +337,7 @@ The web servers firewall or another firewall is blocking access to the host or t
   <data name="LicenseType_Premium.Text" xml:space="preserve">
     <value>Premium</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Device Detection</value>
+  </data>
 </root>
