@@ -239,8 +239,8 @@ namespace DotNetNuke.Modules.Admin.Users
             else
             {
                 cmdUnLock.Visible = UserMembership.LockedOut;
-                cmdUnAuthorize.Visible = UserMembership.Approved;
-                cmdAuthorize.Visible = !UserMembership.Approved;
+                cmdUnAuthorize.Visible = UserMembership.Approved && !User.IsInRole("Unverified Users");
+                cmdAuthorize.Visible = !UserMembership.Approved || User.IsInRole("Unverified Users");
                 cmdPassword.Visible = !UserMembership.UpdatePassword;
             }
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser && UserController.Instance.GetCurrentUserInfo().UserID!=User.UserID)
