@@ -469,6 +469,10 @@ namespace DotNetNuke.Entities.Modules
                             Boolean.TryParse(reader.ReadElementContentAsString(), out isPremium);
                             IsPremium = isPremium;
                             break;
+                        default:
+                            var content = reader.ReadElementContentAsString();
+                            break;
+
                     }
                 }
             }
