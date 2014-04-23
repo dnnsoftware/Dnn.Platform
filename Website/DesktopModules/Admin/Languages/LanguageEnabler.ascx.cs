@@ -672,11 +672,11 @@ namespace DotNetNuke.Modules.Admin.Languages
             int languageId = int.Parse(cmdTranslateAll.CommandArgument);
             var locale = new LocaleController().GetLocale(languageId);
 
-            var nonTranslated = (from t in TabController.GetTabsByPortal(PortalId).WithCulture(locale.Code, false).Values where !t.IsTranslated && !t.IsDeleted select t);
+            var nonTranslated = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(locale.Code, false).Values where !t.IsTranslated && !t.IsDeleted select t);
             foreach (TabInfo page in nonTranslated)
             {
                 page.LocalizedVersionGuid = page.DefaultLanguageTab.LocalizedVersionGuid;
-                TabController.UpdateTab(page);
+                TabController.Instance.UpdateTab(page);
             }
             BindGrid();
         }
