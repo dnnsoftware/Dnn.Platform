@@ -645,7 +645,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     //Check if the Module is to be Moved to a new Tab
                     if (!chkAllTabs.Checked)
                     {
-                        var newTabId = Int32.Parse(cboTab.SelectedItem.Value);
+                        var newTabId = Int32.Parse(cboTab.SelectedValue);
                         if (TabId != newTabId)
                         {
                             //First check if there already is an instance of the module on the target page
