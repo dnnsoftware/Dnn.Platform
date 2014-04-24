@@ -473,33 +473,30 @@ namespace DotNetNuke.UI.Skins.Controls
             cmdSearch.Click += CmdSearchClick;
             cmdSearchNew.Click += CmdSearchNewClick;
 
-            if (!Page.IsPostBack)
-            {
-                if (MinCharRequired == 0) MinCharRequired = 2;
-                if (AutoSearchDelayInMilliSecond == 0) AutoSearchDelayInMilliSecond = 400;
-                PortalId = PortalSettings.ActiveTab.IsSuperTab ? PortalSettings.PortalId : -1;
+            if (MinCharRequired == 0) MinCharRequired = 2;
+            if (AutoSearchDelayInMilliSecond == 0) AutoSearchDelayInMilliSecond = 400;
+            PortalId = PortalSettings.ActiveTab.IsSuperTab ? PortalSettings.PortalId : -1;
 
-                if (!String.IsNullOrEmpty(Submit))
+            if (!String.IsNullOrEmpty(Submit))
+            {
+                if (Submit.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
-                    if (Submit.IndexOf("src=", StringComparison.Ordinal) != -1)
-                    {
-                        Submit = Submit.Replace("src=\"", "src=\"" + PortalSettings.ActiveTab.SkinPath);
-                        Submit = Submit.Replace("src='", "src='" + PortalSettings.ActiveTab.SkinPath);
-                    }
+                    Submit = Submit.Replace("src=\"", "src=\"" + PortalSettings.ActiveTab.SkinPath);
+                    Submit = Submit.Replace("src='", "src='" + PortalSettings.ActiveTab.SkinPath);
                 }
-                else
-                {
-                    Submit = Localization.GetString("Search", Localization.GetResourceFile(this, MyFileName));
-                }
-                cmdSearch.Text = Submit;
-                cmdSearchNew.Text = Submit;
-                if (!String.IsNullOrEmpty(CssClass))
-                {
-                    WebRadioButton.CssClass = CssClass;
-                    SiteRadioButton.CssClass = CssClass;
-                    cmdSearch.CssClass = CssClass;
-                    cmdSearchNew.CssClass = CssClass;
-                }
+            }
+            else
+            {
+                Submit = Localization.GetString("Search", Localization.GetResourceFile(this, MyFileName));
+            }
+            cmdSearch.Text = Submit;
+            cmdSearchNew.Text = Submit;
+            if (!String.IsNullOrEmpty(CssClass))
+            {
+                WebRadioButton.CssClass = CssClass;
+                SiteRadioButton.CssClass = CssClass;
+                cmdSearch.CssClass = CssClass;
+                cmdSearchNew.CssClass = CssClass;
             }
         }
 
@@ -572,28 +569,25 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             else
             {
-                if (!Page.IsPostBack)
+                WebRadioButton.Visible = ShowWeb;
+                SiteRadioButton.Visible = ShowSite;
+
+                if (WebRadioButton.Visible)
                 {
-                    WebRadioButton.Visible = ShowWeb;
-                    SiteRadioButton.Visible = ShowSite;
-
-                    if (WebRadioButton.Visible)
-                    {
-                        WebRadioButton.Checked = true;
-                        WebRadioButton.Text = WebText;
-                        WebRadioButton.ToolTip = WebToolTip;
-                    }
-                    if (SiteRadioButton.Visible)
-                    {
-                        SiteRadioButton.Checked = true;
-                        SiteRadioButton.Text = SiteText;
-                        SiteRadioButton.ToolTip = SiteToolTip;
-                    }
-
-                    SearchType = "S";
-                    txtSearch.Attributes.Add("autocomplete", "off");
-                    txtSearch.Attributes.Add("placeholder", PlaceHolderText);
+                    WebRadioButton.Checked = true;
+                    WebRadioButton.Text = WebText;
+                    WebRadioButton.ToolTip = WebToolTip;
                 }
+                if (SiteRadioButton.Visible)
+                {
+                    SiteRadioButton.Checked = true;
+                    SiteRadioButton.Text = SiteText;
+                    SiteRadioButton.ToolTip = SiteToolTip;
+                }
+
+                SearchType = "S";
+                txtSearch.Attributes.Add("autocomplete", "off");
+                txtSearch.Attributes.Add("placeholder", PlaceHolderText);
             }
         }
 
