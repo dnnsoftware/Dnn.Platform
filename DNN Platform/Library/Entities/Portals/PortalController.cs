@@ -2174,6 +2174,11 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>PortalInfo object with portal definition</returns>
         public PortalInfo GetPortal(int portalId)
         {
+            if (portalId == -1)
+            {
+                return null;
+            }
+
             string defaultLanguage = GetActivePortalLanguage(portalId);
             PortalInfo portal = GetPortal(portalId, defaultLanguage);
             if (portal == null)
@@ -2192,6 +2197,11 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="cultureCode">The culture code.</param>
         public PortalInfo GetPortal(int portalId, string cultureCode)
         {
+            if (portalId == -1)
+            {
+                return null;
+            }
+            
             PortalInfo portal = GetPortalInternal(portalId, cultureCode);
 
             if (Localization.ActiveLanguagesByPortalID(portalId) > 1)
