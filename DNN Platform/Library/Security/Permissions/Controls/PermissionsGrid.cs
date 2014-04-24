@@ -472,7 +472,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void GetRoles()
         {
             var checkedRoles = GetCheckedRoles();
-            Roles = new ArrayList(RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved && checkedRoles.Contains(r.RoleID)).ToArray());
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            Roles = new ArrayList(RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved && checkedRoles.Contains(r.RoleID)).ToArray());
         
             if (checkedRoles.Contains(UnAuthUsersRoleId))
             {
@@ -481,6 +482,12 @@ namespace DotNetNuke.Security.Permissions.Controls
             if (checkedRoles.Contains(AllUsersRoleId))
             {
                 Roles.Add(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });                    
+            }
+
+            //Administrators Role always has implicit permissions, then it should be always in
+            if (Roles.Cast<RoleInfo>().All(r => r.RoleID != portalSettings.AdministratorRoleId))
+            {
+                Roles.Add(RoleController.Instance.GetRoleById(portalSettings.PortalId,  portalSettings.AdministratorRoleId));
             }
         
             Roles.Reverse();
