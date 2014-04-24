@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.FileSystem;
 using System.IO;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Services.Journal;
 
 namespace DotNetNuke.Modules.Groups
 {
@@ -50,7 +42,7 @@ namespace DotNetNuke.Modules.Groups
         }
         private void Create_Click(object sender, EventArgs e)
         {
-            Security.PortalSecurity ps = new Security.PortalSecurity();
+            var ps = new Security.PortalSecurity();
             txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
             txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
 

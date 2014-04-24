@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
 using System.IO;
 using DotNetNuke.Common;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
 
 namespace DotNetNuke.Modules.Groups
 {

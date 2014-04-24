@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.Groups
             int consoleId = AddModule(tab, PortalId, "Console", "RightPane");
 
             ModuleInfo groupConsoleModule = ModuleController.Instance.GetModule(consoleId, tab.TabID, false);
-            TabInfo memberTab = CreatePage(PortalSettings.ActiveTab, PortalId, tab.TabID, "Members", false);
+            TabInfo memberTab = CreatePage(PortalSettings.ActiveTab, PortalId, tab.TabID, "Members", true);
             ModuleController.Instance.CopyModule(groupConsoleModule, memberTab, "RightPane", true);
 
             ModuleInfo groupViewModule = ModuleController.Instance.GetModule(groupViewModuleId, tab.TabID, false);
