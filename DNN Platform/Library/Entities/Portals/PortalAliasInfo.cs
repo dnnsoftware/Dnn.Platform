@@ -135,6 +135,12 @@ namespace DotNetNuke.Entities.Portals
                     case "primary":
                         IsPrimary = reader.ReadElementContentAsBoolean();
                         break;
+                    default:
+                        if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                        {
+                            reader.ReadElementContentAsString();
+                        }
+                        break;
                 }
             }
         }

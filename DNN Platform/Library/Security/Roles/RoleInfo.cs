@@ -657,6 +657,12 @@ namespace DotNetNuke.Security.Roles
                                     break;
                             }
                             break;
+                        default:
+                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            {
+                                reader.ReadElementContentAsString();
+                            }
+                            break;
                     }
                 }
             }
