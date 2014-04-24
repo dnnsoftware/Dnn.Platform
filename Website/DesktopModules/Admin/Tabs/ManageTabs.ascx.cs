@@ -1008,7 +1008,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 else
                 {
                     // create the page from a template
-                    if (cboTemplate.SelectedItem != null && cboTemplate.SelectedItem.Value != Null.NullInteger.ToString())
+                    if (!string.IsNullOrEmpty(cboTemplate.SelectedValue))
                     {
                         var xmlDoc = new XmlDocument();
                         try
