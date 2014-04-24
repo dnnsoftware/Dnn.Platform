@@ -218,7 +218,12 @@ namespace DotNetNuke.Common.Utilities
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect, int windowHeight, int windowWidth, bool refresh, string closingUrl)
         {
-	        var popUpUrl = url;
+	        
+            if (UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request))
+            {
+                url = url.Replace("http://", "https://");
+            }
+            var popUpUrl = url;
             //ensure delimiters are not used
 	        if (!popUpUrl.Contains("dnnModal.show"))
 	        {
