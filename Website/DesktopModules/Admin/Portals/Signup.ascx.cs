@@ -46,6 +46,8 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 
+using Telerik.Web.UI;
+
 #endregion
 
 namespace DotNetNuke.Modules.Admin.Portals
@@ -53,6 +55,7 @@ namespace DotNetNuke.Modules.Admin.Portals
     public partial class Signup : PortalModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Signup));
+
         #region Private Properties
 
         private CultureDropDownTypes DisplayType { get; set; }
@@ -79,17 +82,11 @@ namespace DotNetNuke.Modules.Admin.Portals
             jQuery.RequestDnnPluginsRegistration();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	5/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -109,6 +106,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 if (!Page.IsPostBack)
                 {
                     BindTemplates();
+                    BindSiteGroups();
                     // load template description
                     cboTemplate_SelectedIndexChanged(null, null);
 
@@ -188,13 +186,24 @@ namespace DotNetNuke.Modules.Admin.Portals
 
             if (cboTemplate.Items.Count == 0)
             {
-                UI.Skins.Skin.AddModuleMessage(this, "", Localization.GetString("PortalMissing", LocalResourceFile),
-                                                ModuleMessage.ModuleMessageType.RedError);
+                UI.Skins.Skin.AddModuleMessage(this, "", Localization.GetString("PortalMissing", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 cmdUpdate.Enabled = false;
             }
-            //cboTemplate.InsertItem(0, Localization.GetString("None_Specified"), "");
-            //cboTemplate.SelectedIndex = 0;
+        }
 
+        void BindSiteGroups()
+        {
+            var portalGroups = PortalGroupController.Instance.GetPortalGroups().ToList();
+            var showGroups = portalGroups.Any();
+            if (showGroups)
+            {
+                cboSiteGroups.Items.Add(new RadComboBoxItem(LocalizeString("None_Specified"), "-1"));
+                foreach (var portalGroup in portalGroups)
+                {
+                    cboSiteGroups.Items.Add(new RadComboBoxItem(portalGroup.PortalGroupName, portalGroup.PortalGroupId.ToString()));
+                }
+            }
+            pnlSiteGroups.Visible = showGroups;
         }
 
         void SelectADefaultTemplate(IList<PortalController.PortalTemplateInfo> templates)
@@ -254,18 +263,6 @@ namespace DotNetNuke.Modules.Admin.Portals
             return new ListItem(text, value);
         }
         
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdCancel_Click runs when the Cancel button is clicked
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	5/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             try
@@ -278,17 +275,6 @@ namespace DotNetNuke.Modules.Admin.Portals
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdUpdate_Click runs when the Update button is clicked
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	5/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(Object sender, EventArgs e)
         {
             if (Page.IsValid)
@@ -473,8 +459,20 @@ namespace DotNetNuke.Modules.Admin.Portals
                             intPortalId = Null.NullInteger;
                             message = ex.Message;
                         }
+
                         if (intPortalId != -1)
                         {
+                            //Add new portal to Site Group
+                            if (cboSiteGroups.SelectedValue != "-1")
+                            {
+                                var portal = PortalController.Instance.GetPortal(intPortalId);
+                                var portalGroup = PortalGroupController.Instance.GetPortalGroups().SingleOrDefault(g => g.PortalGroupId == Int32.Parse(cboSiteGroups.SelectedValue));
+                                if (portalGroup != null)
+                                {
+                                    PortalGroupController.Instance.AddPortalToGroup(portal, portalGroup, args => { });
+                                }
+                            }
+
                             //Create a Portal Settings object for the new Portal
                             PortalInfo objPortal = PortalController.Instance.GetPortal(intPortalId);
                             var newSettings = new PortalSettings { PortalAlias = new PortalAliasInfo { HTTPAlias = strPortalAlias }, PortalId = intPortalId, DefaultLanguage = objPortal.DefaultLanguage };
@@ -550,17 +548,6 @@ namespace DotNetNuke.Modules.Admin.Portals
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// optType_SelectedIndexChanged runs when the Portal Type is changed
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	5/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void optType_SelectedIndexChanged(object sender, EventArgs e)
         {
             try

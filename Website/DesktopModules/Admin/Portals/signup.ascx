@@ -52,6 +52,10 @@
             <div class="dnnFormMessage dnnFormInfo suTemplateInfo">
 			<asp:Label id="lblTemplateDescription" runat="server" /></div>
         </div>
+        <div class="dnnFormItem" id="pnlSiteGroups" runat="server" Visible="false">
+            <dnn:label id="plSiteGroups" runat="server" controlname="cboSiteGroups" />
+            <dnn:DnnComboBox id="cboSiteGroups"  runat="server" CausesValidation="False" />
+        </div>
         <div id="useCurrentPanel" runat="server" class="dnnFormItem">
             <dnn:label id="useCurrentLabel" runat="server" controlname="useCurrent" />
             <asp:CheckBox ID="useCurrent" runat="server" AutoPostBack="true" />
