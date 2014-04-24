@@ -438,8 +438,19 @@ namespace DotNetNuke.Services.Installer.Packages
 
                                         if ((iconFileNav.Value != string.Empty) && (package.PackageType == "Module" || package.PackageType == "Auth_System" || package.PackageType == "Container" || package.PackageType == "Skin"))
                                         {
-                                            package.IconFile = package.FolderName + "/" + iconFileNav.Value;
-                                            package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
+                                            if (iconFileNav.Value.StartsWith("~/"))
+                                            {
+                                                package.IconFile = iconFileNav.Value;
+                                            }
+                                            else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
+                                            {
+                                                package.IconFile = string.Format("~/{0}", iconFileNav.Value);
+                                            }
+                                            else
+                                            {
+                                                package.IconFile = (String.IsNullOrEmpty(package.FolderName) ? "" : package.FolderName + "/") + iconFileNav.Value;
+                                                package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
+                                            }
                                         }
                                     }
 

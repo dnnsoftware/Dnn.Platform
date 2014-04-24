@@ -35,9 +35,10 @@
                                 <asp:Label ID="lblVersion" runat="server" Text='<%# FormatVersion(Container.DataItem) %>' />
                             </ItemTemplate>
                         </asp:TemplateColumn>
-                        <asp:TemplateColumn headerStyle-width="75px">
+                        <asp:TemplateColumn headerStyle-width="160px">
                             <ItemTemplate>
                                     <asp:HyperLink id="cmdInstall" runat="server" CssClass="dnnSecondaryAction" ResourceKey="installExtension" />
+                                    <asp:HyperLink id="cmdDownload" runat="server" CssClass="dnnSecondaryAction" ResourceKey="download" />
                             </ItemTemplate>
                         </asp:TemplateColumn>
                     </Columns>
