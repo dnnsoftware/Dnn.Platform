@@ -61,6 +61,7 @@ using DotNetNuke.Services.Log.EventLog;
 //using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 using DotNetNuke.Web.Client;
 using ICSharpCode.SharpZipLib.Zip;
+using Assembly = System.Reflection.Assembly;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 #endregion
@@ -909,11 +910,12 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error"), ex);                
             }
+            var webConfig = Config.Load();
             foreach (FolderTypeConfig folderTypeConfig in FolderMappingsConfigController.Instance.FolderTypes)
             {
                 try
                 {
-                    EnsureFolderProviderRegistration<FolderProvider>(folderTypeConfig);
+                    EnsureFolderProviderRegistration<FolderProvider>(folderTypeConfig, webConfig);
                     FolderMappingController.Instance.AddFolderMapping(GetFolderMappingFromConfig(folderTypeConfig,
                         portalId));
                 }
@@ -932,14 +934,16 @@ namespace DotNetNuke.Entities.Portals
                 ComponentFactory.RegisterComponentInstance<CryptographyProvider>(new CoreCryptographyProvider());
             }
         }
-        private static void EnsureFolderProviderRegistration<TAbstract>(FolderTypeConfig folderTypeConfig)
+        private static void EnsureFolderProviderRegistration<TAbstract>(FolderTypeConfig folderTypeConfig, XmlDocument webConfig)
             where TAbstract : class            
         {
-            var typeClass = Type.GetType(folderTypeConfig.BusinessClassQualifiedName);
+            var providerBusinessClassNode = webConfig.SelectSingleNode("configuration/dotnetnuke/folder/providers/add[@name='"+folderTypeConfig.Provider+"']");
+            
+            var typeClass = Type.GetType(providerBusinessClassNode.Attributes["type"].Value);
             if (typeClass != null)
             {
                 ComponentFactory.RegisterComponentInstance<TAbstract>(folderTypeConfig.Provider, Activator.CreateInstance(typeClass));
-            }                     
+            }
         }
 
         private static bool EnableBrowserLanguageInDefault(int portalId)

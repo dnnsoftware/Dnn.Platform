@@ -79,8 +79,7 @@ namespace DotNetNuke.Services.FileSystem
             var folderType = new FolderTypeConfig()
             {
                 Name = XmlUtils.GetAttributeValue(nodeNavigator, "name"),
-                Provider = XmlUtils.GetNodeValue(nodeNavigator, "provider"),
-                BusinessClassQualifiedName = XmlUtils.GetNodeValue(nodeNavigator, "businessClassQualifiedName")
+                Provider = XmlUtils.GetNodeValue(nodeNavigator, "provider"),                
             };
             XmlNodeList settingsNode = node.SelectNodes("settings/setting");
             if (settingsNode != null)

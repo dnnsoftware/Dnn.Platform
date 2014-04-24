@@ -36,7 +36,6 @@ namespace DotNetNuke.Services.FileSystem
     {
         public string Name { get; set; }
         public string Provider { get; set; }
-        public string BusinessClassQualifiedName { get; set; }
         public IList<FolderTypeSettingConfig> Settings { get; set; }
 
         public FolderTypeConfig()
