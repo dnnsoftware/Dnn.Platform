@@ -5057,14 +5057,6 @@
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>copyright-background.png</filename>
-          <height>1</height>
-          <size>146</size>
-          <width>2000</width>
-        </file>
-        <file>
-          <contenttype>image/png</contenttype>
-          <extension>png</extension>
           <filename>icon-social-facebook.png</filename>
           <height>29</height>
           <size>1715</size>
@@ -5101,14 +5093,6 @@
           <height>92</height>
           <size>991</size>
           <width>80</width>
-        </file>
-        <file>
-          <contenttype>image/png</contenttype>
-          <extension>png</extension>
-          <filename>icon-btn-sm-circle-arrow.png</filename>
-          <height>14</height>
-          <size>1180</size>
-          <width>14</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>

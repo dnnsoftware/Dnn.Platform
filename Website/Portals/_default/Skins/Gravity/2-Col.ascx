@@ -53,7 +53,7 @@
     <div id="contentWrapper">
         <div class="container">
             <div class="row-fluid">
-    	        <div id="Breadcrumb" class="span12"><dnn:BREADCRUMB ID="dnnBreadcrumb" runat="server" CssClass="breadcrumbLink" RootLevel="0" Separator="&lt;img src=&quot;images/breadcrumb.png&quot;&gt;" /></div>
+    	        <div id="Breadcrumb" class="span12"><dnn:BREADCRUMB ID="dnnBreadcrumb" runat="server" CssClass="breadcrumbLink" RootLevel="0" Separator="&lt;img src=&quot;images/breadcrumb.png&quot;&gt;" HideWithNoBreadCrumb="true" /></div>
             </div>
             <div class="row-fluid">
 		        <div id="ContentPane" class="contentPane" runat="server"></div>
