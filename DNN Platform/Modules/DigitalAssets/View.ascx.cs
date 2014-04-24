@@ -264,6 +264,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 nextNode.Expanded = false;
                 nextNode.Selected = true;
+                rootNode.Selected = false;
             }
 
             if (rootNode.Nodes.Count == 0)

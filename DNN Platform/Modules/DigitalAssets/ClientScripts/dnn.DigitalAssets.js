@@ -2890,7 +2890,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function getFullUrl(relativePath) {
-        return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + relativePath;
+        return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + location.pathname + relativePath;
     }
 
     function getUrlFromFileId(fileId) {
