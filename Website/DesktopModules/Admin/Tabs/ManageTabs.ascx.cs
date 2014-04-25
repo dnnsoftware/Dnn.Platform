@@ -1101,7 +1101,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     }
 
                     string currentUrl = String.Empty;
-                    var friendlyUrlSettings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalId);
+                    var friendlyUrlSettings = new FriendlyUrlSettings(PortalId);
                     if (Tab.TabID > -1 && !Tab.IsSuperTab)
                     {
                         var baseUrl = Globals.AddHTTP(PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + Tab.TabID;
@@ -1109,7 +1109,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                                                                                     baseUrl,
                                                                                     Globals.glbDefaultPage,
                                                                                     PortalAlias.HTTPAlias,
-                                                                                    false, //dnndev-27493 :we want any custom Urls that apply
+                                                                                    false,
                                                                                     friendlyUrlSettings,
                                                                                     Guid.Empty);
 
@@ -1120,22 +1120,35 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         if (tabUrl == null)
                         {
+                            //Add new custom url
                             tabUrl = new TabUrlInfo()
-                            {
-                                TabId = Tab.TabID,
-                                SeqNum = 0,
-                                PortalAliasId = -1,
-                                PortalAliasUsage = PortalAliasUsageType.Default,
-                                QueryString = String.Empty,
-                                Url = url,
-                                HttpStatus = "200",
-                                IsSystem = true
-                            };
+                                            {
+                                                TabId = Tab.TabID,
+                                                SeqNum = 0,
+                                                PortalAliasId = -1,
+                                                PortalAliasUsage = PortalAliasUsageType.Default,
+                                                QueryString = String.Empty,
+                                                Url = url,
+                                                HttpStatus = "200",
+                                                IsSystem = true
+                                            };
+                            //Save url
+                            TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
                         }
                         else
                         {
+                            //Change the original 200 url to a redirect
+                            tabUrl.HttpStatus = "301";
+                            tabUrl.SeqNum = Tab.TabUrls.Max(t => t.SeqNum) + 1;
+                            TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
+
+                            //Add new custom url
                             tabUrl.Url = url;
+                            tabUrl.HttpStatus = "200";
+                            tabUrl.SeqNum = 0;
+                            TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
                         }
+
 
                         //Delete any redirects to the same url
                         foreach (var redirecturl in TabController.Instance.GetTabUrls(Tab.TabID, Tab.PortalID))
@@ -1145,8 +1158,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
                                 TabController.Instance.DeleteTabUrl(redirecturl, Tab.PortalID, false);
                             }
                         }
-                        //Save url
-                        TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
                     }
                 }
                 else
