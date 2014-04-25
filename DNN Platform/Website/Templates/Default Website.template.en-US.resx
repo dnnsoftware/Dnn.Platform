@@ -1064,7 +1064,7 @@ Fax: (555) 555-4564</value>
     <value>Visit the DNN Forum</value>
   </data>
   <data name="Tab.Home.Main.LeaderBoard.SubLink.Text" xml:space="preserve">
-    <value>Check the Community Leaderboard</value>
+    <value>Check the Leaderboard</value>
   </data>
   <data name="Tab.Home.Main.OnlineHelp.SubLink.Text" xml:space="preserve">
     <value>View Online Help</value>
