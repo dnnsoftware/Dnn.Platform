@@ -1419,8 +1419,10 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {
-            //fallback position - all portals match 'Admin'
-            const string adminPageName = "Admin";
+            var portal = PortalController.Instance.GetPortal(portalId);
+            var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portalId);
+            
+            string adminPageName = adminTab.TabName;
             //we should be checking that the tab path matches //Admin//pagename or //admin
             //in this way we should avoid partial matches (ie //Administrators
             if (tabPath.StartsWith("//" + adminPageName + "//", StringComparison.CurrentCultureIgnoreCase)

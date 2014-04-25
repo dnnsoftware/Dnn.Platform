@@ -1366,7 +1366,7 @@ namespace DotNetNuke.Entities.Urls
             //840 : change to re-introduce lower case restrictions on admin / host tabs
             if (tab != null)
             {
-                if (!RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings))
+                if (!(tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)))
                 {
                     bool forceLowerCase = (settings.ForceLowerCase);
                     if (forceLowerCase)
