@@ -469,6 +469,14 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        private void EnsureRole(RoleInfo role)
+        {
+            if (Roles.Cast<RoleInfo>().All(r => r.RoleID != role.RoleID))
+            {
+                Roles.Add(role);
+            }
+        }
+
         private void GetRoles()
         {
             var checkedRoles = GetCheckedRoles();
@@ -485,11 +493,12 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
 
             //Administrators Role always has implicit permissions, then it should be always in
-            if (Roles.Cast<RoleInfo>().All(r => r.RoleID != portalSettings.AdministratorRoleId))
-            {
-                Roles.Add(RoleController.Instance.GetRoleById(portalSettings.PortalId,  portalSettings.AdministratorRoleId));
-            }
-        
+            EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId));
+            
+            //Show also default roles
+            EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.RegisteredRoleId));
+            EnsureRole(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });
+            
             Roles.Reverse();
             Roles.Sort(new RoleComparer());
         }
@@ -628,20 +637,26 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void FillSelectRoleComboBox(int selectedRoleId)
         {
             cboSelectRole.Items.Clear();
-            var groupRoles = (selectedRoleId > -2) ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == selectedRoleId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
-                : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();            
+            var groupRoles = (selectedRoleId > -2) ? RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == selectedRoleId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 
             if (selectedRoleId < 0)
             {                
-                groupRoles.Add(new RoleInfo { RoleID = Int32.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });                                
-                groupRoles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });            
+                groupRoles.Add(new RoleInfo { RoleID = UnAuthUsersRoleId, RoleName = Globals.glbRoleUnauthUserName });                                
+                groupRoles.Add(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });            
             }
             
             foreach (var role in groupRoles.OrderBy( r => r.RoleName))
             {
                 cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
+            }            
+            int[] defaultRoleIds = {AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId};            
+            var itemToSelect = cboSelectRole.Items.Cast<ListItem>().FirstOrDefault(i => !defaultRoleIds.Contains(int.Parse(i.Value)));
+            if (itemToSelect != null)
+            {
+                cboSelectRole.SelectedValue = itemToSelect.Value;
             }
-
         }
 
         private void SetErrorMessage(string errorKey)
@@ -840,8 +855,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             lblSelectRole = new Label { Text = Localization.GetString("RoleSelect") };
             cboSelectRole = new DropDownList { ID = "cboSelectRole", ViewStateMode = ViewStateMode.Disabled };
-            lblSelectRole.AssociatedControlID = cboSelectRole.ID;
-            //lblSelectRole.Style.Add(HtmlTextWriterStyle.MarginLeft, "35px");
+            lblSelectRole.AssociatedControlID = cboSelectRole.ID;            
             divSelectRole.Controls.Add(lblSelectRole);
             
             FillSelectRoleComboBox(-1); //Default Role Group is Global Roles

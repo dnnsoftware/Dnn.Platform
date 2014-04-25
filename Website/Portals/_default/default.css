@@ -2645,6 +2645,7 @@ table.dnnASPGrid {
         margin-bottom: 0;
         height: 17px;
         color: #777;
+        width: 25%;
     }
 
     .dnnPermissionsGrid > .dnnFormItem > .leftGroup {
