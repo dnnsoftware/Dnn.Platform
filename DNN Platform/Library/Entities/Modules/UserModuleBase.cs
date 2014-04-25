@@ -60,33 +60,19 @@ namespace DotNetNuke.Entities.Modules
         TextBox = 1
     }
 
-    /// -----------------------------------------------------------------------------
-    /// Project	 :  DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class	 :  UserModuleBase
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserModuleBase class defines a custom base class inherited by all
     /// desktop portal modules within the Portal that manage Users.
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	03/20/2006
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class UserModuleBase : PortalModuleBase
     {
         private UserInfo _User;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether we are in Add User mode
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/06/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool AddUser
         {
             get
@@ -95,23 +81,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        ///// <summary>
-        ///// Gets the effective portalId for User (returns the current PortalId unless Portal
-        ///// is in a PortalGroup, when it will return the PortalId of the Master Portal).
-        ///// </summary>
-        //protected int EffectivePortalId
-        //{
-        //    get { return PortalController.GetEffectivePortalId(PortalId); }
-        //}
-
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the current user is an Administrator (or SuperUser)
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/03/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsAdmin
         {
             get
@@ -134,14 +106,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether this control is in the Host menu
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/13/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsHostTab
         {
             get
@@ -150,14 +117,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the control is being called form the User Accounts module
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/07/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsEdit
         {
             get
@@ -166,7 +128,7 @@ namespace DotNetNuke.Entities.Modules
                 if (Request.QueryString["ctl"] != null)
                 {
                     string ctl = Request.QueryString["ctl"];
-                    if (ctl == "Edit")
+                    if (ctl.ToLowerInvariant() == "edit")
                     {
                         _IsEdit = true;
                     }
@@ -175,14 +137,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the current user is modifying their profile
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsProfile
         {
             get
@@ -204,7 +161,7 @@ namespace DotNetNuke.Entities.Modules
                         if (Request.QueryString["ctl"] != null)
                         {
                             string ctl = Request.QueryString["ctl"];
-                            if (ctl == "Profile")
+                            if (ctl.ToLowerInvariant() == "profile")
                             {
                                 _IsProfile = true;
                             }
@@ -215,14 +172,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether an anonymous user is trying to register
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsRegister
         {
             get
@@ -231,14 +183,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the User is editing their own information
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/03/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsUser
         {
             get
@@ -247,14 +194,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the PortalId to use for this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/21/2007  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected int UserPortalID
         {
             get
@@ -263,14 +205,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the User associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/02/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public UserInfo User
         {
             get
@@ -287,14 +224,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the UserId associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public new int UserId
         {
             get
@@ -320,17 +252,11 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a Setting for the Module
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	05/01/2006  Created
-        ///     [cnurse]    02/07/2008  DNN-7003 Fixed GetSetting() in UserModuleBase so it handles situation where one or more settings are missing.
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static object GetSetting(int portalId, string settingKey)
         {
             Hashtable settings = UserController.GetUserSettings(portalId);
@@ -353,16 +279,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates the Settings for the Module
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	06/27/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void UpdateSettings(int portalId, Hashtable settings)
         {
             string key;
@@ -376,14 +295,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// InitialiseUser initialises a "new" user
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/13/2006
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private UserInfo InitialiseUser()
         {
             var newUser = new UserInfo();
@@ -483,18 +397,12 @@ namespace DotNetNuke.Entities.Modules
             return country;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddLocalizedModuleMessage adds a localized module message
         /// </summary>
         /// <param name="message">The localized message</param>
         /// <param name="type">The type of message</param>
         /// <param name="display">A flag that determines whether the message should be displayed</param>
-        /// <history>
-        /// 	[cnurse]	03/14/2006
-        /// 	[cnurse]	07/03/2007  Moved to Base Class and changed to Protected
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void AddLocalizedModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
         {
             if (display)
@@ -503,18 +411,12 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddModuleMessage adds a module message
         /// </summary>
         /// <param name="message">The message</param>
         /// <param name="type">The type of message</param>
         /// <param name="display">A flag that determines whether the message should be displayed</param>
-        /// <history>
-        /// 	[cnurse]	03/14/2006
-        /// 	[cnurse]	07/03/2007  Moved to Base Class and changed to Protected
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void AddModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
         {
             AddLocalizedModuleMessage(Localization.GetString(message, LocalResourceFile), type, display);
