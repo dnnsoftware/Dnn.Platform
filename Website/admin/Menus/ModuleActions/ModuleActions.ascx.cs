@@ -113,7 +113,9 @@ namespace DotNetNuke.Admin.Containers
                                     if ((EditMode && Globals.IsAdminControl() == false) ||
                                         (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                     {
-                                        if (!action.Icon.Contains("://") && !action.Icon.StartsWith("/"))
+                                        if (!action.Icon.Contains("://")
+                                                && !action.Icon.StartsWith("/")
+                                                && !action.Icon.StartsWith("~/"))
                                         {
                                             action.Icon = "~/images/" + action.Icon;
                                         }

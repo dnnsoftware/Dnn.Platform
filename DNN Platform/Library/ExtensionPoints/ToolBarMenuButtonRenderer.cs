@@ -21,6 +21,8 @@
 
 using System;
 using System.Text;
+using System.Web;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.ExtensionPoints
 {
@@ -37,6 +39,12 @@ namespace DotNetNuke.ExtensionPoints
                 cssClass += " disabled";
                 action = "void(0);";
             }
+            var icon = extension.Icon;
+            if (icon.StartsWith("~/"))
+            {
+                icon = Globals.ResolveUrl(icon);
+            }
+
             var str = new StringBuilder();
             str.AppendFormat("<div id='{0}_wrapper' class='{1}_wrapper'>", extension.ButtonId, extension.MenuCssClass);
             str.AppendFormat(
@@ -46,7 +54,7 @@ namespace DotNetNuke.ExtensionPoints
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",
                 extension.ButtonId,
                 !extension.ShowText ? "text-indent: -10000000px;" : "",
-                extension.ShowIcon ? extension.Icon : "",
+                extension.ShowIcon ? icon : "",
                 extension.Text);
             str.AppendLine("</button>");
             str.AppendFormat("<div class='{0}_menu dnnClear'>", extension.MenuCssClass);

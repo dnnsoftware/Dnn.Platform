@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public string Icon
         {
-            get { return "../DesktopModules/DigitalAssets/Images/manageFolderTypes.png"; }
+            get { return "~/DesktopModules/DigitalAssets/Images/manageFolderTypes.png"; }
         }
 
         public int Order

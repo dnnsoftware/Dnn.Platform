@@ -87,7 +87,7 @@
                                         onclick="dnnModule.digitalAssets.listviewOnClick(this, event);">
                                         <input type="checkbox" class="dnnModuleDigitalAssetsListViewItemCheckBox" />
                                         <div class="dnnModuleDigitalAssetsThumbnail">
-                                            <img src="../../images/loading.gif" data-src="#= format(ThumbnailUrl) #" class="#= format(ThumbnailClass) #" alt="#= format(ItemName) #"/>
+                                            <img data-src="#= format(ThumbnailUrl) #" class="#= format(ThumbnailClass) #" alt="#= format(ItemName) #"/>
                                         </div>
                                         <span class="dnnModuleDigitalAssetsListViewItemLinkName" title="#= format(ItemName) #" >#= dnnModule.digitalAssets.highlightItemName( dnnModule.digitalAssets.getReducedItemName(ItemName, IsFolder) ) #</span>
                                     </div>
