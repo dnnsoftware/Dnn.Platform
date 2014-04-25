@@ -770,7 +770,7 @@ namespace DotNetNuke.UI.ControlPanels
             CategoryList.DataBind();
             if (!IsPostBack)
             {
-                CategoryList.Select("All", false);
+                CategoryList.Select(!String.IsNullOrEmpty(BookmarkedModuleKeys) ? BookmarkModuleCategory : "All", false);
             }
         }
 
