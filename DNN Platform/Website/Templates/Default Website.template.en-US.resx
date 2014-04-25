@@ -431,7 +431,7 @@ Fax: (555) 555-4564</value>
     <value>CREATE &amp; MANAGE CONTENT</value>
   </data>
   <data name="Tab.Home.Product.Content.Text" xml:space="preserve">
-    <value>Richer content, stronger security and improved SEO is right at your fingertips</value>
+    <value>Richer content, stronger&lt;br /&gt;security and improved&lt;br /&gt;SEO is right at&lt;br /&gt;your fingertips</value>
   </data>
   <data name="Tab.Home.Product.Social.Link" xml:space="preserve">
     <value>http://www.dnnsoftware.com/solutions/evoq-social-online-community-management?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=evoq-social&amp;utm_content=7.3-banner&amp;utm_campaign=dnn-platform-home</value>
@@ -1056,5 +1056,32 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.Vendors.Title.Text" xml:space="preserve">
     <value>Vendors</value>
+  </data>
+  <data name="Tab.Home.Main.Blog.SubLink.Text" xml:space="preserve">
+    <value>Read the Community Blog</value>
+  </data>
+  <data name="Tab.Home.Main.Forums.SubLink.Text" xml:space="preserve">
+    <value>Visit the DNN Forum</value>
+  </data>
+  <data name="Tab.Home.Main.LeaderBoard.SubLink.Text" xml:space="preserve">
+    <value>Check the Community Leaderboard</value>
+  </data>
+  <data name="Tab.Home.Main.OnlineHelp.SubLink.Text" xml:space="preserve">
+    <value>View Online Help</value>
+  </data>
+  <data name="Tab.Home.Main.QA.SubLink.Text" xml:space="preserve">
+    <value>Visit Q&amp;A</value>
+  </data>
+  <data name="Tab.Home.Main.Shop.SubLink.Text" xml:space="preserve">
+    <value>Shop at the DNN Store</value>
+  </data>
+  <data name="Tab.Home.Main.Videos.SubLink.Text" xml:space="preserve">
+    <value>Watch DNN Videos</value>
+  </data>
+  <data name="Tab.Home.Main.Webinars.SubLink.Text" xml:space="preserve">
+    <value>Attend a DNN Webinar</value>
+  </data>
+  <data name="Tab.Home.Main.Wikis.SubLink.Text" xml:space="preserve">
+    <value>Read the DNN Wiki</value>
   </data>
 </root>
