@@ -319,7 +319,7 @@
                 </p>
             </div>
             <div id="ControlBar_ModuleListWaiter_NewModule" class="ControlBar_ModuleListWaiter">
-                <p>
+                <p id="ControlBar_ModuleListWaiter_LoadingMessage">
                     <%= GetString("LoadingModule.Text")%>
                 </p>
             </div>            
@@ -426,7 +426,10 @@
         bookmarkModuleCategory: '<%= BookmarkModuleCategory%>',
         bookmarkedModuleKeys: '<%= BookmarkedModuleKeys%>',
         defaultCategoryValue: 'All',
-        getNextModulesTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("GetNextModules.ToolTip")) %>'
+        
+        loadingModulesId: 'ControlBar_ModuleListWaiter_LoadingMessage',
+        loadingModulesMessage: '<%= GetString("LoadingModule.Text")%>',
+        loadingModulesOnNoDefaultCategoryMessage: "<%= GetString("LoadingModuleOnNoDefaultCategory.Text")%>"
     };
     
     $(function() {

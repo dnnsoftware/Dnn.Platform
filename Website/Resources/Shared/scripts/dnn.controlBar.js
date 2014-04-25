@@ -19,6 +19,7 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.allModulesLoaded = false;
     dnn.controlBar.forceLoadingPane = false;
     dnn.controlBar.forceCategorySelection = false;
+    dnn.controlBar.forceCategorySearch = false;
     dnn.controlBar.scrollTrigger = true;
 
     //Search Module settings
@@ -261,6 +262,7 @@ dnn.controlBar.init = function (settings) {
                     if (d && d.length) {                        
                         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false);
                         dnn.controlBar.forceLoadingPane = false;
+                        dnn.controlBar.setLoadingModulesMessage(settings.loadingModulesMessage);                        
                         var containerId = '#ControlBar_ModuleListHolder_NewModule';
                         if ((dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingInitialPageSize) || (!dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingSize)) {
                             dnn.controlBar.allModulesLoaded = true;
@@ -285,9 +287,17 @@ dnn.controlBar.init = function (settings) {
                             dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
                         }
                         
-                    } else {                        
-                        dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false, true);
-                        dnn.controlBar.allModulesLoaded = true;
+                    } else {
+                        if (dnn.controlBar.getSelectedCategory() == settings.defaultCategoryValue) {
+                            dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false, true);
+                            dnn.controlBar.setLoadingModulesMessage(settings.loadingModulesMessage);
+                            dnn.controlBar.allModulesLoaded = true;
+                        } else {
+                            dnn.controlBar.setLoadingModulesMessage(String.format(settings.loadingModulesOnNoDefaultCategoryMessage, dnn.controlBar.getSelectedCategory()));
+                            dnn.controlBar.forceCategorySearch = true;
+                            $find(settings.categoryComboId).findItemByValue(settings.defaultCategoryValue).select();
+                        }
+                        
                     }
                 }, dnn.controlBar.getWaitingTime(startDate));
 
@@ -299,6 +309,11 @@ dnn.controlBar.init = function (settings) {
                 }
             }
         });
+    };
+
+    dnn.controlBar.setLoadingModulesMessage = function(message) {
+        var $loadingMessageElement = $("#" + settings.loadingModulesId);
+        $loadingMessageElement.text(message);
     };
 
     dnn.controlBar.getSearchTermValue = function() {
@@ -1069,10 +1084,14 @@ dnn.controlBar.init = function (settings) {
         if (dnn.controlBar.status && dnn.controlBar.status.searchTerm) {
             $searchInput.val(dnn.controlBar.status.searchTerm);
         }
+        dnn.controlBar.resetModuleLoadingSettings();
+    };
+
+    dnn.controlBar.resetModuleLoadingSettings = function() {
         dnn.controlBar.moduleLoadingPageIndex = 0;
         dnn.controlBar.allModulesLoaded = false;
         dnn.controlBar.mousedown = false;
-    };
+    }
 
     dnn.controlBar.getSelectedCategory = function () {
         var category = null;
@@ -1101,8 +1120,13 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.ControlBar_Module_CategoryList_Changed = function (sender, e) {
         var item = e.get_item();
         if (item && !dnn.controlBar.forceCategorySelection) {
-            //Reset module search
-            dnn.controlBar.resetModuleSearch();
+            if (!dnn.controlBar.forceCategorySearch) {
+                //Reset module search
+                dnn.controlBar.resetModuleSearch();
+            } else {
+                dnn.controlBar.forceCategorySearch = false;
+                dnn.controlBar.resetModuleLoadingSettings();
+            }          
             dnn.controlBar.getDesktopModulesForNewModule(item.get_value(), dnn.controlBar.getSearchTermValue());
         } else if (dnn.controlBar.forceCategorySelection) {
             dnn.controlBar.forceCategorySelection = false;
