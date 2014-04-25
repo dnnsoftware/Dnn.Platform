@@ -1130,6 +1130,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                                                 QueryString = String.Empty,
                                                 Url = url,
                                                 HttpStatus = "200",
+                                                CultureCode = PortalSettings.CultureCode,
                                                 IsSystem = true
                                             };
                             //Save url
