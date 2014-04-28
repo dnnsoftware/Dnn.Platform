@@ -994,6 +994,8 @@ namespace DotNetNuke.Providers.RadEditorProvider
                                    "') !important; }</style>"));
              */
 
+            _editor.OnClientSubmit = "OnDnnEditorClientSubmit";
+
             //add editor control to panel
             _panel.Controls.Add(_editor);
         }
