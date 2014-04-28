@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Internals;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Telerik.Web.UI;
 
@@ -258,7 +259,7 @@ namespace DotNetNuke.Modules.SearchResults
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             jQuery.RegisterDnnJQueryPlugins(Page);
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.searchBox.js");
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css");
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/admin/SearchResults/dnn.searchResult.js");
 
             CultureCode = Thread.CurrentThread.CurrentCulture.ToString();
