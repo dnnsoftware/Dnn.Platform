@@ -13,6 +13,15 @@ if (typeof (Sys.Browser.Chrome) == "undefined") {
         Sys.Browser.hasDebuggerStatement = true;
     }
 }
+else if (Sys.Browser.agent === Sys.Browser.InternetExplorer && Sys.Browser.version > 10) {
+    // when browse in IE11, we need add attachEvent/detachEvent handler to make it works with MS AJAX library.
+    HTMLAnchorElement.prototype.attachEvent = function(eventName, handler) {
+        this.addEventListener(eventName, handler, false);
+    }
+    HTMLAnchorElement.prototype.detachEvent = function(eventName, handler) {
+        this.removeEventListener(eventName, handler, false);
+    }
+}
 
 var DNN_HIGHLIGHT_COLOR = '#9999FF';
 var COL_DELIMITER = String.fromCharCode(18);
