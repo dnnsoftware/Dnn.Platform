@@ -470,9 +470,11 @@ namespace DotNetNuke.Entities.Modules
                             IsPremium = isPremium;
                             break;
                         default:
-                            var content = reader.ReadElementContentAsString();
+                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            {
+                                reader.ReadElementContentAsString();
+                            }
                             break;
-
                     }
                 }
             }

@@ -273,6 +273,12 @@ namespace DotNetNuke.Security.Roles
                         case "description":
                             Description = reader.ReadElementContentAsString();
                             break;
+                        default:
+                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            {
+                                reader.ReadElementContentAsString();
+                            }
+                            break;
                     }
                 }
             }

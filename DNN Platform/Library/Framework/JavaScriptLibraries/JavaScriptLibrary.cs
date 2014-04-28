@@ -121,6 +121,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         case "CDNPath":
                             CDNPath = reader.ReadElementContentAsString();
                             break;
+                        default:
+                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            {
+                                reader.ReadElementContentAsString();
+                            }
+                            break;
                     }
                 }
             }
