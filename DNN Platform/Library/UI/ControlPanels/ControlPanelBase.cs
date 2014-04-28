@@ -174,7 +174,7 @@ namespace DotNetNuke.UI.ControlPanels
                 if (!objModule.IsDeleted)
                 {
                     bool blnHasModuleEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, objModule);
-                    if (blnHasModuleEditPermissions && objModule.ModuleDefinition.DefaultCacheTime != -1)
+                    if (blnHasModuleEditPermissions)
                     {
                         _IsModuleAdmin = true;
                         break;
