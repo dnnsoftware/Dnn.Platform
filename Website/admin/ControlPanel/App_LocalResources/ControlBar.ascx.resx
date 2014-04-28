@@ -340,6 +340,6 @@
     <value>Search</value>
   </data>
   <data name="LoadingModuleOnNoDefaultCategory.Text" xml:space="preserve">
-    <value>No Modules Available in '{0}', Searching 'All'</value>
+    <value>No Modules Available in '{0}', Searching in 'All'</value>
   </data>
 </root>
