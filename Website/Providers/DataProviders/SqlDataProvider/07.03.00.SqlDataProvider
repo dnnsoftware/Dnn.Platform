@@ -583,7 +583,8 @@ AS
 			WHERE ContentItemID = @ContentItemID
 
 		SELECT @TabId
-	ENDGO
+	END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
