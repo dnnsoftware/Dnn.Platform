@@ -184,12 +184,12 @@ namespace DotNetNuke.Services.Social.Notifications
             }
 
             //Profanity Filter
-            var profanityFilterSetting = GetPortalSetting("MessagingProfanityFilters", pid, "NO");
-            if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
-            {
-                notification.Subject = InputFilter(notification.Subject);
-                notification.Body = InputFilter(notification.Body);
-            }
+            //var profanityFilterSetting = GetPortalSetting("MessagingProfanityFilters", pid, "NO");
+            //if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
+            //{
+            //    notification.Subject = InputFilter(notification.Subject);
+            //    notification.Body = InputFilter(notification.Body);
+            //}
 
             notification.To = sbTo.ToString().Trim(',');
             if (notification.ExpirationDate != new DateTime())
