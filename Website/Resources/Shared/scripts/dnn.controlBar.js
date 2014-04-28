@@ -35,8 +35,9 @@ dnn.controlBar.init = function (settings) {
     //Scrolling when dragging
     dnn.controlBar.initialDragPosition = null;
     dnn.controlBar.initialScrollPosition = null;
-    dnn.controlBar.arrowScrollingContainer = null;
+    dnn.controlBar.arrowScrollingContainer = null;    
     dnn.controlBar.arrowScrollingButtonSpeed = 10;
+    dnn.controlBar.mouseWheelScrollingContainer = null;
     
     dnn.controlBar.getService = function () {
         return $.dnnSF();
@@ -609,6 +610,10 @@ dnn.controlBar.init = function (settings) {
         dnn.controlBar.arrowScrollingContainer = container;
     };
 
+    dnn.controlBar.initialiseMouseWheelScrolling = function (container) {
+        dnn.controlBar.mouseWheelScrollingContainer = container.parent();
+    };
+
     dnn.controlBar.isValidArrowScrollingContainer = function() {
         if (dnn.controlBar.arrowScrollingContainer && dnn.controlBar.arrowScrollingContainer.is(":visible")) {
             return true;
@@ -616,15 +621,57 @@ dnn.controlBar.init = function (settings) {
         return false;
     };
 
-    dnn.controlBar.moveArrowScrollingContainer = function (keyCode) {
+    dnn.controlBar.isValidMouseWheelScrollingContainer = function(targetElement) {
+        if (dnn.controlBar.mouseWheelScrollingContainer && dnn.controlBar.mouseWheelScrollingContainer.has(targetElement).length > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    dnn.controlBar.getWheelEventDelta = function(event) {
+        if (event.deltaY) {
+            return event.deltaY;
+        }
+        if (event.wheelDelta) {
+            return event.wheelDelta * (-1); //IE uses wheelDelta property
+        }
+        return event.detail;
+    };
+
+    dnn.controlBar.moveScrollingContainer = function (direction, speed) {
+        if (!speed) {
+            speed = 1;
+        }
         if (!dnn.controlBar.scrollTrigger) {
             return;
         }
-        var xOffset = keyCode == 37 ? dnn.controlBar.arrowScrollingButtonSpeed * (-1) : (keyCode == 39 ? dnn.controlBar.arrowScrollingButtonSpeed : 0);
+        var xOffset = direction == "left" ? dnn.controlBar.arrowScrollingButtonSpeed * (-1) * speed: (direction == "right" ? dnn.controlBar.arrowScrollingButtonSpeed * speed : 0);
         var scrollContainer = dnn.controlBar.arrowScrollingContainer.next();
-        var jspapi = scrollContainer.data('jsp');        
+        var jspapi = scrollContainer.data('jsp');
         if (jspapi && xOffset != 0) {
             jspapi.scrollByX(xOffset);
+        }
+    };
+
+    dnn.controlBar.moveArrowScrollingContainer = function (keyCode) {        
+        if (keyCode == 37) {
+            dnn.controlBar.moveScrollingContainer("left", 1);
+        }else if (keyCode == 39) {
+            dnn.controlBar.moveScrollingContainer("right", 1);
+        }
+        //var xOffset = keyCode == 37 ? dnn.controlBar.arrowScrollingButtonSpeed * (-1) : (keyCode == 39 ? dnn.controlBar.arrowScrollingButtonSpeed : 0);
+        //var scrollContainer = dnn.controlBar.arrowScrollingContainer.next();
+        //var jspapi = scrollContainer.data('jsp');        
+        //if (jspapi && xOffset != 0) {
+        //    jspapi.scrollByX(xOffset);
+        //}
+    };
+
+    dnn.controlBar.moveMouseWheelScrollingContainer = function(delta) {
+        if (delta < 0) {
+            dnn.controlBar.moveScrollingContainer("left", 3);
+        } else {
+            dnn.controlBar.moveScrollingContainer("right", 3);
         }
     };
     
@@ -698,6 +745,7 @@ dnn.controlBar.init = function (settings) {
         var currentModuleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex;
         var container = $(containerId);
         dnn.controlBar.initialiseArrowScrolling(container);
+        dnn.controlBar.initialiseMouseWheelScrolling(container);
 
         var scrollContainer = container.next();        
         if (dnn.controlBar.isFirstModuleLoadingPage()) {
@@ -1649,6 +1697,18 @@ dnn.controlBar.init = function (settings) {
         {        
             dnn.controlBar.moveArrowScrollingContainer(e.keyCode);
         }
+    });
+
+    $(document.body).mousewheel(function (event) {
+        var wheelEvent = event.originalEvent;
+        if (!wheelEvent) {
+            return;
+        }        
+        if (!dnn.controlBar.isValidMouseWheelScrollingContainer(wheelEvent.target)) {
+            return;
+        }
+        dnn.controlBar.moveMouseWheelScrollingContainer(dnn.controlBar.getWheelEventDelta(wheelEvent));
+        event.preventDefault();
     });
 
     $(document.body).on('click', 'div.subNav a.removeBookmark', function () {
