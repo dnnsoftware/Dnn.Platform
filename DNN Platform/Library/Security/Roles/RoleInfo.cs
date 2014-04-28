@@ -553,6 +553,8 @@ namespace DotNetNuke.Security.Roles
                 {
                     switch (reader.Name.ToLowerInvariant())
                     {
+                        case "role":
+                            break;
                         case "rolename":
                             RoleName = reader.ReadElementContentAsString();
                             break;

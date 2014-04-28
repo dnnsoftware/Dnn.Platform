@@ -244,6 +244,8 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 {
                     switch (reader.Name)
                     {
+                        case "moduleDefinition":
+                            break;
                         case "friendlyName":
                             FriendlyName = reader.ReadElementContentAsString();
                             break;

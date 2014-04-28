@@ -261,6 +261,8 @@ namespace DotNetNuke.Security.Roles
                 {
                     switch (reader.Name.ToLowerInvariant())
                     {
+                        case "rolegroup":
+                            break;
                         case "roles":
                             if (!reader.IsEmptyElement)
                             {

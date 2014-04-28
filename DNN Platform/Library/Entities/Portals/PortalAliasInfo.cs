@@ -113,6 +113,8 @@ namespace DotNetNuke.Entities.Portals
                 }
                 switch (reader.Name)
                 {
+                    case "portalAlias":
+                        break;
                     case "portalID":
                         PortalID = reader.ReadElementContentAsInt();
                         break;
