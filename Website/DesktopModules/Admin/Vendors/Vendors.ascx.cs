@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
 
 	    protected bool CanEdit()
         {
-            return PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+            return ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EDIT", ModuleConfiguration);
         }
 
         private void SetDataSource()
