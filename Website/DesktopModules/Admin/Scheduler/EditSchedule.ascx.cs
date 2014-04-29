@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             {
                 servers += "," + txtAdditionalServers.Text;
             }
-            if (bAllSelected)
+            if (bAllSelected && String.IsNullOrEmpty(txtAdditionalServers.Text))
             {
                 servers = Null.NullString;
             }
