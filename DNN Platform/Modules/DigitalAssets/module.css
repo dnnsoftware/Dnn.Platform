@@ -238,11 +238,27 @@ span.dnnModuleDigitalAssetsNoItems {
     height: 20px;    
     width: 20px;
 }
-
+#dnnModuleDigitalAssetsMainToolbarTitle {
+    padding: 5px 0 5px 10px;
+}
+#dnnModuleDigitalAssetsMainToolbarTitle span {
+    display: inline-block;
+}
+#dnnModuleDigitalAssetsMainToolbarTitle span.title-currentFolder {
+    float: right;
+    margin-right: 10px;
+}
+#dnnModuleDigitalAssetsMainToolbarTitle span.title-currentFolder img {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    vertical-align: text-bottom;
+}
 #dnnModuleDigitalAssetsMainToolbar {
     height: 34px;
     padding: 5px 0 5px 10px;
     border-left: 1px solid #CCCCCC;
+    position: relative;
 }
 
 #dnnModuleDigitalAssetsMainToolbar button {

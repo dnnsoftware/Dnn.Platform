@@ -56,7 +56,11 @@
             <div id="dnnModuleDigitalAssetsBreadcrumb">
                 <ul></ul>
             </div>
-            
+            <div id="dnnModuleDigitalAssetsMainToolbarTitle">
+                <span class="title-views"><%=Localization.GetString("ToolbarTitle.Views.Text", LocalResourceFile)%></span>
+                <span class="title-actions"><%=Localization.GetString("ToolbarTitle.Actions.Text", LocalResourceFile)%></span>
+                <span class="title-currentFolder"></span>
+            </div>
             <div id="dnnModuleDigitalAssetsMainToolbar">                
                 <dnnext:ToolBarButtonExtensionControl Module="DigitalAssets" runat="server" ID="MainToolBar" Group="Main" IsHost="<%# IsHostPortal %>" />                
             </div>

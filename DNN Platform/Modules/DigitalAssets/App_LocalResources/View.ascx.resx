@@ -450,4 +450,10 @@
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>File Management</value>
   </data>
+  <data name="ToolbarTitle.Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="ToolbarTitle.Views.Text" xml:space="preserve">
+    <value>Views</value>
+  </data>
 </root>

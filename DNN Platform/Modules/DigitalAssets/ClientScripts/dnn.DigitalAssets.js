@@ -14,6 +14,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         setupDnnTabs();
         setupDnnMainMenuButtons();
+        setupDnnMainToolbarTitles();
 
         //fileUpload = new dnnModule.DigitalAssetsFileUpload($, sf, moduleSettings, resourcesSettings, refreshFolder, getCurrentFolderPath);
     }
@@ -140,6 +141,18 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 }
             }, 250);
         });
+    }
+
+    function setupDnnMainToolbarTitles() {
+        var leftButtons = $('#dnnModuleDigitalAssetsMainToolbar').find('.leftButton');
+        var labels = $('#dnnModuleDigitalAssetsMainToolbarTitle span');
+        for (var i = 0; i < labels.length - 1; i++) {
+            var currentTool = leftButtons.eq(i);
+            var nextTool = leftButtons.eq(i + 1);
+            var label = labels.eq(i);
+            currentTool.is(':visible') ? label.show() : label.hide();
+            label.width(nextTool.position().left - currentTool.position().left);
+        }
     }
 
     function onOpeningRefreshMenu() {
@@ -1333,6 +1346,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
     function checkCurrentFolderToolBarPermissions(permissions) {
         checkPermissions("#" + controls.mainToolBarId, permissions, true, false);
+        setupDnnMainToolbarTitles();
     }
 
     function checkSinglePermission(permissions, permissionKey) {
@@ -1445,6 +1459,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         if (controller.loadContent(folderId, startIndex, numItems, sortExpression, settings, controls.scopeWrapperId)) {
             currentFolder = null;
+            setupDnnMainToolbarTitles();
             return;
         }
         
@@ -2096,6 +2111,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         } else {
             ul.html($("<li />").text(node.get_text()).attr("title", node.get_text()));
         }
+
+        var currentFolderLabel = $('#dnnModuleDigitalAssetsMainToolbarTitle span.title-currentFolder');
+        currentFolderLabel.html('<img src="' + $(node.get_imageElement()).attr('src') + '" />' + node.get_text());
 
         while (node.get_value() != rootFolderId) {
             node = node.get_parent();
@@ -3406,6 +3424,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         createModuleState: createModuleState,
         openGetUrlModal: openGetUrlModal,
         loadInitialContent: loadInitialContent,
-        getFullUrl: getFullUrl
+        getFullUrl: getFullUrl,
+        setupDnnMainToolbarTitles: setupDnnMainToolbarTitles
     };
 }(jQuery, $find, $telerik, dnnModal);
